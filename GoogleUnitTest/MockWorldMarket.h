@@ -15,6 +15,21 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
 
+    MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubCompanyProfileConcise, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubDayLine, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubRTQuote, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubPeer, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubEconomicCalendar, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubEPSSurprise, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubForexExchange, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubForexSymbol, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubForexDayLine, (), (override));
+
+    MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
+    MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
+
     MOCK_METHOD(bool, ProcessFinnhubStockProfile, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
     MOCK_METHOD(bool, ProcessFinnhubStockProfileConcise, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
     MOCK_METHOD(bool, ProcessFinnhubStockSymbol, (CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock), (override));

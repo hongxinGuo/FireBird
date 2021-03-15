@@ -980,7 +980,7 @@ void CMainFrame::OnRebuildEpsSurprise() {
 
 void CMainFrame::OnRebuildPeer() {
   // TODO: Add your command handler code here
-  gl_pWorldMarket->ReBuildPeer();
+  gl_pWorldMarket->RebuildPeer();
 }
 
 void CMainFrame::OnRebuildDayline() {

@@ -126,6 +126,21 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
   }
 
+  TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
+    CWorldStockPtr pStock = nullptr;
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetUpdateProfileDB(false);
+    }
+    EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+
+    gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+
+    gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+  }
+
   TEST_F(CWorldMarketTest, TestAddStock) {
     CWorldStockPtr pStock = make_shared<CWorldStock>();
     long lTotalStock = gl_pWorldMarket->GetTotalStock();
@@ -964,5 +979,69 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
     CString str = gl_systemMessage.PopInformationMessage();
     EXPECT_STREQ(str, _T("世界市场初始化完毕"));
+  }
+
+  TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {
+    CWorldStockPtr pStock = nullptr;
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetLastEPSSurpriseUpdateDate(20200101);
+      pStock->m_fEPSSurpriseUpdated = true;
+    }
+    gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
+
+    gl_pWorldMarket->RebuildEPSSurprise();
+
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
+      EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
+    }
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEPSSurpriseUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestRebuildPeer) {
+    CWorldStockPtr pStock = nullptr;
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetPeerUpdateDate(20200101);
+      pStock->SetPeerUpdated(true);
+      pStock->SetUpdateProfileDB(false);
+    }
+    gl_pWorldMarket->SetFinnhubPeerUpdated(true);
+
+    gl_pWorldMarket->RebuildPeer();
+
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
+      EXPECT_FALSE(pStock->IsPeerUpdated());
+      EXPECT_TRUE(pStock->IsUpdateProfileDB());
+    }
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubPeerUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
+    CWorldStockPtr pStock = nullptr;
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetIPOStatus(__STOCK_IPOED__);
+      pStock->SetDayLineStartDate(20200101);
+      pStock->SetDayLineEndDate(20200101);
+      pStock->SetDayLineNeedUpdate(false);
+      pStock->SetUpdateProfileDB(false);
+    }
+    gl_pWorldMarket->SetFinnhubStockProfileUpdated(true);
+
+    gl_pWorldMarket->RebuildStockDayLineDB();
+
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
+      EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
+      EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+      EXPECT_TRUE(pStock->IsUpdateProfileDB());
+    }
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockProfileUpdated());
   }
 }

@@ -55,6 +55,7 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry->SetReadingWebData(false);
 
       gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T(""));
+      gl_pMockWorldMarket->SetSystemReady(true);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -789,5 +790,111 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
     EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoInquiring());
     EXPECT_STREQ(gl_pTiingoWebInquiry->GetInquiringStringMiddle(), _T(""));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {
+    gl_pMockWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165700));
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170200));
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170201));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub2) {
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165700));
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170200));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    gl_pMockWorldMarket->SetSystemReady(false);
+    Sequence seq;
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(170201));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub4) {
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    gl_pMockWorldMarket->SetSystemReady(true);
+    gl_pMockWorldMarket->SetFinnhubDayLineUpdated(false);
+    Sequence seq;
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0); //"目前未使用"
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0); //"目前未使用"
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub5) {
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    gl_pMockWorldMarket->SetSystemReady(true);
+    gl_pMockWorldMarket->SetFinnhubDayLineUpdated(true);
+    Sequence seq;
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo1) {
+    gl_pMockWorldMarket->SetSystemReady(false);
+    gl_pMockWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
+
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
+    gl_pMockWorldMarket->SetSystemReady(true);
+    gl_pMockWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
+
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo3) {
+    gl_pMockWorldMarket->SetSystemReady(false);
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
+
+    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
+  }
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo4) {
+    gl_pMockWorldMarket->SetSystemReady(true);
+    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+    Sequence seq;
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());
   }
 }

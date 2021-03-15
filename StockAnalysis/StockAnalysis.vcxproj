@@ -125,7 +125,7 @@
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>true</EnableASAN>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -249,7 +249,7 @@
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -436,6 +436,7 @@
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
   // 第二个数据缺项
   TiingoWebData tiingoWebData3(3, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"Missing\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
   // 正确的数据
-  TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
+  TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have data\",\"sicCode\":\"1234\",\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFileingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
   // 正确的数据
   TiingoWebData tiingoWebData10(10, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
@@ -81,6 +81,13 @@ namespace StockAnalysisTest {
     case 4:
     EXPECT_TRUE(fSucceed);
     EXPECT_EQ(m_vStock.size(), 1);
+    EXPECT_STREQ(m_vStock.at(0)->m_strTiingoIndustry, _T("industry have data"));
+    EXPECT_STREQ(m_vStock.at(0)->m_strTiingoSector, _T("sector have data"));
+    EXPECT_STREQ(m_vStock.at(0)->m_strSICIndustry, _T("sicIndustry have data"));
+    EXPECT_STREQ(m_vStock.at(0)->m_strSICSector, _T("sicSector have data"));
+    EXPECT_STREQ(m_vStock.at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
+    EXPECT_STREQ(m_vStock.at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
+    EXPECT_EQ(m_vStock.at(0)->m_iSICCode, 1234);
     break;
     case 10:
     EXPECT_TRUE(fSucceed);
@@ -90,13 +97,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_vStock.at(1)->m_fIsActive);
     EXPECT_FALSE(m_vStock.at(1)->m_fIsADR);
 
-    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoIndustry, _T("Field not available for free/evaluation"));
-    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoSector, _T("Field not available for free/evaluation"));
+    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoIndustry, _T("")) << "当字符串为Field not available for free/evcaluation时，返回空串";
+    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoSector, _T(""));
     EXPECT_EQ(m_vStock.at(1)->m_iSICCode, 0);
-    EXPECT_STREQ(m_vStock.at(1)->m_strSICIndustry, _T("Field not available for free/evaluation"));
-    EXPECT_STREQ(m_vStock.at(1)->m_strSICSector, _T("Field not available for free/evaluation"));
-    EXPECT_STREQ(m_vStock.at(1)->m_strCompanyWebSite, _T("Field not available for free/evaluation"));
-    EXPECT_STREQ(m_vStock.at(1)->m_strSECFilingWebSite, _T("Field not available for free/evaluation"));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSICIndustry, _T(""));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSICSector, _T(""));
+    EXPECT_STREQ(m_vStock.at(1)->m_strCompanyWebSite, _T(""));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSECFilingWebSite, _T(""));
     EXPECT_EQ(m_vStock.at(1)->m_lStatementUpdateDate, 20210302);
     EXPECT_EQ(m_vStock.at(1)->m_lDailyDataUpdateDate, 20210312);
     break;

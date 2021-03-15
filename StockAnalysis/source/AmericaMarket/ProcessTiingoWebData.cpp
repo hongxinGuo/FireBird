@@ -14,6 +14,7 @@ using namespace boost::property_tree;
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
+  string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
@@ -36,23 +37,37 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
       pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
       pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
       s = pt2.get<string>(_T("industry"));
-      if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
-      s = pt2.get<string>(_T("sector"));
-      if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
-      s = pt2.get<string>(_T("sicCode"));
-      if (s.at(0) == 'F') {
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
       }
-      else {
+      s = pt2.get<string>(_T("sector"));
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
+      }
+      s = pt2.get<string>(_T("sicCode"));
+      if (s.compare(strNotAvailable) != 0) {
         pStock->m_iSICCode = atoi(s.c_str());
       }
       s = pt2.get<string>(_T("sicIndustry"));
-      if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
+      }
       s = pt2.get<string>(_T("sicSector"));
-      if (s.size() > 0) pStock->m_strSICSector = s.c_str();
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strSICSector = s.c_str();
+      }
+      s = pt2.get<string>(_T("location"));
+      if (s.compare(strNotAvailable) != 0) {
+        if ((s.size() > 0)) pStock->SetAddress(s.c_str());
+      }
       s = pt2.get<string>(_T("companyWebsite"));
-      if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
+      }
       s = pt2.get<string>(_T("secFilingWebsite"));
-      if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
+      if (s.compare(strNotAvailable) != 0) {
+        if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
+      }
       s = pt2.get<string>(_T("statementLastUpdated"));
       if (s.size() > 0) str = s.c_str();
       sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
@@ -97,8 +112,8 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
     return false;
   }
 
-  try {
-    for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    try {
       pDayLine = make_shared<CDayLine>();
       pt2 = it->second;
       s = pt2.get<string>(_T("date"));
@@ -118,9 +133,9 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
       pDayLine->SetVolume(lTemp);
       vDayLine.push_back(pDayLine);
     }
-  }
-  catch (ptree_error&) {
-    return false; // 数据解析出错的话，则放弃。
+    catch (ptree_error&) {
+      return false; // 数据解析出错的话，则放弃。
+    }
   }
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
   for (auto& pDayLine2 : vDayLine) {

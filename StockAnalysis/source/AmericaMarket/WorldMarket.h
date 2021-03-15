@@ -128,21 +128,21 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
-  bool TaskInquiryFinnhubCountryList(void);
-  bool TaskInquiryFinnhubCompanySymbol(void);
-  bool TaskInquiryFinnhubCompanyProfileConcise(void);
-  bool TaskInquiryFinnhubDayLine(void);
-  bool TaskInquiryFinnhubRTQuote(void);
-  bool TaskInquiryFinnhubPeer(void);
-  bool TaskInquiryFinnhubEconomicCalendar(void);
-  bool TaskInquiryFinnhubEPSSurprise(void);
-  bool TaskInquiryFinnhubForexExchange(void);
-  bool TaskInquiryFinnhubForexSymbol(void);
-  bool TaskInquiryFinnhubForexDayLine(void);
+  virtual bool TaskInquiryFinnhubCountryList(void);
+  virtual bool TaskInquiryFinnhubCompanySymbol(void);
+  virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
+  virtual bool TaskInquiryFinnhubDayLine(void);
+  virtual bool TaskInquiryFinnhubRTQuote(void);
+  virtual bool TaskInquiryFinnhubPeer(void);
+  virtual bool TaskInquiryFinnhubEconomicCalendar(void);
+  virtual bool TaskInquiryFinnhubEPSSurprise(void);
+  virtual bool TaskInquiryFinnhubForexExchange(void);
+  virtual bool TaskInquiryFinnhubForexSymbol(void);
+  virtual bool TaskInquiryFinnhubForexDayLine(void);
 
-  void TaskInquiryTiingo(void);
-  bool TaskInquiryTiingoCompanySymbol(void);
-  bool TaskInquiryTiingoDayLine(void);
+  bool TaskInquiryTiingo(void);
+  virtual bool TaskInquiryTiingoCompanySymbol(void);
+  virtual bool TaskInquiryTiingoDayLine(void);
 
   // Finnhub数据处理函数
   virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
@@ -292,7 +292,7 @@ public:
   bool RebuildStockDayLineDB(void);
   virtual bool UpdateStockDayLineStartEndDate(void);
   bool RebuildEPSSurprise(void);
-  bool ReBuildPeer(void);
+  bool RebuildPeer(void);
 
   bool SortStockVector(void);
 
