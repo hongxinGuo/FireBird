@@ -92,6 +92,8 @@ INT64 FormatToDateTime(const tm* ptm) noexcept {
 }
 
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
+  ASSERT(lEarlyDate >= 19700101);
+  ASSERT(lLatelyDate >= 19700101);
   CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
   const long year = lEarlyDate / 10000;
   const long month = lEarlyDate / 100 - year * 100;

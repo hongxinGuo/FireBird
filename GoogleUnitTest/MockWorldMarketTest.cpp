@@ -494,7 +494,7 @@ namespace StockAnalysisTest {
     if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
       gl_WebInquirer.PushFinnhubData(pWebData);
     }
-    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdateDate(00000000);
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdateDate(19700101);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdated(false);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
@@ -505,6 +505,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsProfileUpdated());
     EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsUpdateProfileDB());
     EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
+
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__COMPANY_PROFILE_CONCISE__) {
@@ -520,7 +522,7 @@ namespace StockAnalysisTest {
     if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
       gl_WebInquirer.PushFinnhubData(pWebData);
     }
-    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdateDate(00000000);
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdateDate(19700101);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdated(false);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
@@ -531,6 +533,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsProfileUpdated());
     EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsUpdateProfileDB());
     EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
+
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__COMPANY_SYMBOLS__) {
@@ -852,33 +856,13 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo1) {
     gl_pMockWorldMarket->SetSystemReady(false);
-    gl_pMockWorldMarket->SetFinnhubInquiring(true);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
 
     EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
   }
-
   TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
     gl_pMockWorldMarket->SetSystemReady(true);
-    gl_pMockWorldMarket->SetFinnhubInquiring(true);
-    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
-    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
-
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
-  }
-
-  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo3) {
-    gl_pMockWorldMarket->SetSystemReady(false);
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
-    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
-    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
-
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
-  }
-  TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo4) {
-    gl_pMockWorldMarket->SetSystemReady(true);
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
     Sequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);

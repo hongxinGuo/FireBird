@@ -268,6 +268,13 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   setWorldStock.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setWorldStock.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setWorldStock.m_IPOStatus = m_lIPOStatus;
+  ASSERT(m_lProfileUpdateDate >= 19700101);
+  ASSERT(m_lDayLineStartDate >= 19700101);
+  ASSERT(m_lDayLineEndDate >= 19700101);
+  ASSERT(m_lPeerUpdateDate >= 19700101);
+  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
+  ASSERT(m_lLastEPSSurpriseUpdateDate >= 19700101);
+  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
 
   // Tiingo–≈œ¢
   setWorldStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;

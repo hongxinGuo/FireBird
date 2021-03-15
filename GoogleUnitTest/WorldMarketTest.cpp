@@ -131,7 +131,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CWorldMarketTest, TestGetTotalStock) {
-    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 5059) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
+    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 4846) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
   }
 
   TEST_F(CWorldMarketTest, TestIsStock) {

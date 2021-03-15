@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
       m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
       EXPECT_TRUE(m_pStock != nullptr);
       m_pStock->SetProfileUpdated(false);
-      m_pStock->SetProfileUpdateDate(000000);
+      m_pStock->SetProfileUpdateDate(19700101);
       m_pStock->SetCity(_T(""));
       m_pWebData = pData->m_pData;
     }
@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
     case 2: // 格式不对
     EXPECT_FALSE(fSucceed);
     EXPECT_FALSE(m_pStock->IsProfileUpdated());
-    EXPECT_EQ(m_pStock->GetProfileUpdateDate(), 000000);
+    EXPECT_EQ(m_pStock->GetProfileUpdateDate(), 19700101);
     break;
     case 3: // 缺乏address项
     EXPECT_FALSE(fSucceed);
@@ -117,6 +117,7 @@ namespace StockAnalysisTest {
     }
     virtual void TearDown(void) override {
       // clearup
+      m_pStock->SetUpdateProfileDB(false);
     }
 
   public:
@@ -174,6 +175,7 @@ namespace StockAnalysisTest {
     }
     virtual void TearDown(void) override {
       // clearup
+      m_pStock->SetUpdateProfileDB(false);
     }
 
   public:
@@ -387,6 +389,7 @@ namespace StockAnalysisTest {
       m_pStock->SetOpen(0);
       m_pStock->SetLastClose(0);
       m_pStock->SetTransactionTime(0);
+      m_pStock->SetUpdateProfileDB(false);
     }
 
   public:
@@ -527,7 +530,7 @@ namespace StockAnalysisTest {
 
       //m_pForexSymbol->SetDayLineNeedUpdate(true);
       // m_pForexSymbol->SetDayLineNeedSaving(false);
-      //m_pForexSymbol->SetUpdateProfileDB(false);
+      m_pForexSymbol->SetUpdateProfileDB(false);
     }
 
   public:
@@ -640,7 +643,6 @@ namespace StockAnalysisTest {
 
   public:
     long m_lIndex;
-    CWorldStockPtr m_pStock;
     CWebDataPtr m_pWebData;
     vector<CString> m_vExchange;
   };
@@ -696,7 +698,6 @@ namespace StockAnalysisTest {
 
   public:
     long m_lIndex;
-    CWorldStockPtr m_pStock;
     CWebDataPtr m_pWebData;
     vector<CForexSymbolPtr> m_vForexSymbol;
   };
@@ -759,7 +760,6 @@ namespace StockAnalysisTest {
 
   public:
     long m_lIndex;
-    CWorldStockPtr m_pStock;
     CWebDataPtr m_pWebData;
     vector<CCountryPtr> m_vCountry;
   };
@@ -826,6 +826,7 @@ namespace StockAnalysisTest {
     }
     virtual void TearDown(void) override {
       // clearup
+      m_pStock->SetUpdateProfileDB(false);
     }
 
   public:
@@ -961,6 +962,7 @@ namespace StockAnalysisTest {
     }
     virtual void TearDown(void) override {
       // clearup
+      m_pStock->SetUpdateProfileDB(false);
     }
 
   public:
