@@ -85,6 +85,7 @@ bool CDayLine::LoadChinaMarketExtendData(not_null<CSetDayLineExtendInfo*> psetDa
 bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
 
+  ASSERT(GetFormatedMarketDate() >= 19700101);
   psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
   psetDayLineBasicInfo->m_Symbol = GetSymbol();
   psetDayLineBasicInfo->m_StockName = GetStockName();

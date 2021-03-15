@@ -362,6 +362,7 @@
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
+    <ClCompile Include="TiingoStockFundanmentalTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

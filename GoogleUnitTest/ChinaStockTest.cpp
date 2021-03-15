@@ -780,6 +780,25 @@ namespace StockAnalysisTest {
     setStockCode.Close();
   }
 
+  TEST_F(CChinaStockTest, TestLoadStockCodeDB3) {
+    CSetStockCode setStockCode;
+    CChinaStock stock;
+
+    gl_pChinaStockMarket->CalculateTime();
+    stock.SetDayLineEndDate(gl_pChinaStockMarket->GetPrevDay(gl_pChinaStockMarket->GetFormatedMarketDate(), 31));
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    long lCurrentDate = gl_pChinaStockMarket->GetFormatedMarketDate();
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    setStockCode.m_strFilter = _T("[Symbol] = '000003.SZ'");
+    setStockCode.Open();
+    stock.LoadStockCodeDB(setStockCode);
+    EXPECT_STREQ(stock.GetSymbol(), _T("000003.SZ"));
+    EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
+    EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
+    EXPECT_EQ(stock.GetDayLineEndDate(), gl_pChinaStockMarket->GetPrevDay(gl_pChinaStockMarket->GetFormatedMarketDate(), 31));
+    setStockCode.Close();
+  }
+
   TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
     CChinaStock stock;
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());

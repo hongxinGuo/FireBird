@@ -185,6 +185,14 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 }
 
 void CWorldStock::Save(CSetWorldStock& setWorldStock) {
+  ASSERT(m_lProfileUpdateDate >= 19700101);
+  ASSERT(m_lDayLineStartDate >= 19700101);
+  ASSERT(m_lDayLineEndDate >= 19700101);
+  ASSERT(m_lPeerUpdateDate >= 19700101);
+  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
+  ASSERT(m_lLastEPSSurpriseUpdateDate >= 19700101);
+  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
+
   // 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
   m_strSymbol = m_strSymbol.Left(45);
   m_strExchangeCode = m_strExchangeCode.Left(45);
@@ -268,13 +276,6 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   setWorldStock.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setWorldStock.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setWorldStock.m_IPOStatus = m_lIPOStatus;
-  ASSERT(m_lProfileUpdateDate >= 19700101);
-  ASSERT(m_lDayLineStartDate >= 19700101);
-  ASSERT(m_lDayLineEndDate >= 19700101);
-  ASSERT(m_lPeerUpdateDate >= 19700101);
-  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
-  ASSERT(m_lLastEPSSurpriseUpdateDate >= 19700101);
-  ASSERT(m_lLastRTDataUpdateDate >= 19700101);
 
   // Tiingo信息
   setWorldStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
@@ -490,7 +491,7 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
   long date = lCurrentDate - year * 10000 - month * 100;
 
   strMiddle += m_strSymbol;
-  strMiddle += _T("/prices?&startDate=1950-1-1&endDate=");
+  strMiddle += _T("/prices?&startDate=1980-1-1&endDate=");
   sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
   strTemp = buffer;
   strMiddle += strTemp;

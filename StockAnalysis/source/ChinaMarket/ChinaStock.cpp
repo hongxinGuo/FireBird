@@ -408,6 +408,7 @@ bool CChinaStock::SaveDayLineBasicInfo(void) {
 
 void CChinaStock::UpdateDayLineStartEndDate(void) {
   bool fUpdated = false;
+
   if (m_DayLine.GetDataSize() > 0) {
     if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
       SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
@@ -1471,6 +1472,10 @@ void CChinaStock::ReportGuadan(void) {
 
 void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
+
+  ASSERT(m_lDayLineEndDate >= 19700101);
+  ASSERT(m_lDayLineStartDate >= 19700101);
+
   setStockCode.m_Symbol = GetSymbol();
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字

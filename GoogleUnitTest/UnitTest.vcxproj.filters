@@ -698,6 +698,9 @@
     <ClCompile Include="ProcessTiingoWebDataTest.cpp">
       <Filter>Test源文件\World Market\实现</Filter>
     </ClCompile>
+    <ClCompile Include="TiingoStockFundanmentalTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
