@@ -844,7 +844,7 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
-  if (!IsFinnhubInquiring() && ((lCurrentTime < 165700) || (lCurrentTime > 170200))) { // 下午五时重启系统，故而此时不允许接收网络信息。
+  if (((lCurrentTime < 165700) || (lCurrentTime > 170200))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubForexExchange();
     TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
@@ -1170,7 +1170,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 }
 
 bool CWorldMarket::TaskInquiryTiingo(void) {
-  if (IsSystemReady() && !IsFinnhubInquiring()) {
+  if (IsSystemReady()) {
     TaskInquiryTiingoCompanySymbol();
     // 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
     TaskInquiryTiingoDayLine(); // 初步测试完毕。

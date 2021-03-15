@@ -19,6 +19,8 @@ ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\users\\hxguo\\source\\repos\\Stock
 ExcludeSourceFromCodeCoverage(Exclude3, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
 //ExcludeSourceFromCodeCoverage(Exclude4, L"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\*.*"); // 排除VS系统库
 ExcludeSourceFromCodeCoverage(Exclude4, L"C:\\Program Files (x86)\\*.*"); // 排除VS系统库
+ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
+
 // 排除无需测试的单个文件
 ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");
 ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.h");

@@ -78,12 +78,40 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->SetResetMarket(false);
   }
 
-  TEST_F(CWorldMarketTest, TestGetCurrentFinnhubPrefixIndex) {
-    WebInquiry inquiry;
+  TEST_F(CWorldMarketTest, TestGetCurrentFinnhubInquiry) {
+    WebInquiry inquiry, inquiry2;
     inquiry.m_iPriority = 10;
     inquiry.m_lInquiryIndex = 20;
     inquiry.m_lStockIndex = 30;
-    // ´ýÍê³É
+    gl_pWorldMarket->SetCurrentFinnhubInquiry(inquiry);
+    inquiry2 = gl_pWorldMarket->GetCurrentFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
+    EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
+  }
+
+  TEST_F(CWorldMarketTest, TestGetCurrentTiingoInquiry) {
+    WebInquiry inquiry, inquiry2;
+    inquiry.m_iPriority = 10;
+    inquiry.m_lInquiryIndex = 20;
+    inquiry.m_lStockIndex = 30;
+    gl_pWorldMarket->SetCurrentTiingoInquiry(inquiry);
+    inquiry2 = gl_pWorldMarket->GetCurrentTiingoInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
+    EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
+  }
+
+  TEST_F(CWorldMarketTest, TestGetCurrentQuandlInquiry) {
+    WebInquiry inquiry, inquiry2;
+    inquiry.m_iPriority = 10;
+    inquiry.m_lInquiryIndex = 20;
+    inquiry.m_lStockIndex = 30;
+    gl_pWorldMarket->SetCurrentQuandlInquiry(inquiry);
+    inquiry2 = gl_pWorldMarket->GetCurrentQuandlInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
+    EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
   }
 
   TEST_F(CWorldMarketTest, TestIsFinnhubInquiring) {
@@ -990,7 +1018,7 @@ namespace StockAnalysisTest {
     }
     gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
 
-    gl_pWorldMarket->RebuildEPSSurprise();
+    EXPECT_TRUE(gl_pWorldMarket->RebuildEPSSurprise());
 
     for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
       pStock = gl_pWorldMarket->GetStock(i);
@@ -1010,7 +1038,7 @@ namespace StockAnalysisTest {
     }
     gl_pWorldMarket->SetFinnhubPeerUpdated(true);
 
-    gl_pWorldMarket->RebuildPeer();
+    EXPECT_TRUE(gl_pWorldMarket->RebuildPeer());
 
     for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
       pStock = gl_pWorldMarket->GetStock(i);
@@ -1033,7 +1061,7 @@ namespace StockAnalysisTest {
     }
     gl_pWorldMarket->SetFinnhubStockProfileUpdated(true);
 
-    gl_pWorldMarket->RebuildStockDayLineDB();
+    EXPECT_TRUE(gl_pWorldMarket->RebuildStockDayLineDB());
 
     for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
       pStock = gl_pWorldMarket->GetStock(i);

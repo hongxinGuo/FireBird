@@ -793,21 +793,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {
-    gl_pMockWorldMarket->SetFinnhubInquiring(true);
     EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165700));
     EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170200));
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170201));
   }
 
   TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub2) {
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165700));
-    EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170200));
-  }
-
-  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
     gl_pMockWorldMarket->SetSystemReady(false);
     Sequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
@@ -824,8 +814,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(170201));
   }
 
-  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub4) {
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {
     gl_pMockWorldMarket->SetSystemReady(true);
     gl_pMockWorldMarket->SetFinnhubDayLineUpdated(false);
     Sequence seq;
@@ -843,8 +832,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
   }
 
-  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub5) {
-    gl_pMockWorldMarket->SetFinnhubInquiring(false);
+  TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub4) {
     gl_pMockWorldMarket->SetSystemReady(true);
     gl_pMockWorldMarket->SetFinnhubDayLineUpdated(true);
     Sequence seq;
