@@ -185,8 +185,8 @@ namespace StockAnalysisTest {
 
   TEST_P(ProcessNeteaseDayLineTest2, ProcessNeteaseDayLineData2) {
     bool fSucceed;
-    if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData2(_T("sz000001"), m_pData, m_lCountPos);
-    else fSucceed = m_DayLinePtr->ProcessNeteaseData2(_T("600000.SS"), m_pData, m_lCountPos);
+    if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pData, m_lCountPos);
+    else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("600000.SS"), m_pData, m_lCountPos);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
@@ -376,7 +376,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
     char buffer[30];
-    bool fSucceed = ReadOneValueOfNeteaseDayLine2(m_pData, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pData, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

@@ -247,120 +247,7 @@ bool CDayLine::LoadForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength) {
-  long iCount = 0;
-  static char buffer2[200], buffer3[100];
-  long i = 0;
-  tm tm_;
-  int year = 0, month = 0, day = 0;
-  long lDate = 0;
-  CString str;
-  double dTemp = 0;
-
-  i = 0;
-  while ((*pCurrentPos != 0x02c)) { // 读取日期，直到遇到逗号
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
-      return false; // 数据出错，放弃载入
-    }
-    buffer3[i++] = *pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  buffer3[i] = 0x00;
-  sscanf_s(buffer3, _T("%04d-%02d-%02d"), &year, &month, &day);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = 15;
-  tm_.tm_min = 0;
-  tm_.tm_sec = 0;
-  tm_.tm_isdst = 0;
-  SetTime(mktime(&tm_));
-  lDate = year * 10000 + month * 100 + day;
-  SetDate(lDate);
-  //TRACE("%d %d %d\n", year, month, day);
-
-  if (*pCurrentPos != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
-  pCurrentPos++;
-  iCount++;
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  str = buffer2;
-  SetSymbol(strStockCode);
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  str = buffer2;
-  SetStockName(str);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  dTemp = atof(buffer2);
-  SetClose(dTemp * 1000);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  dTemp = atof(buffer2);
-  SetHigh(dTemp * 1000);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  dTemp = atof(buffer2);
-  SetLow(dTemp * 1000);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  dTemp = atof(buffer2);
-  SetOpen(dTemp * 1000);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  dTemp = atof(buffer2);
-  SetLastClose(dTemp * 1000);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  if (GetOpen() == 0) {
-    //ASSERT(strcmp(buffer2, _T("None") == 0);
-    SetUpDown(0.0);
-  }
-  else SetUpDown(buffer2);
-
-  if (GetLastClose() == 0) { // 设置涨跌幅。
-    SetUpDownRate(0.0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
-  }
-  else {
-    // 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，也要增大100倍。
-    SetUpDownRate(((double)(GetUpDown() * 100000.0)) / GetLastClose());
-  }
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetChangeHandRate(buffer2);
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetVolume(buffer2); // 读入的是股数
-
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetAmount(buffer2);
-
-  // 总市值的数据有两种形式，需要程序判定
-  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetTotalValue(buffer2); // 总市值的单位为：元
-
-  // 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数
-  // 流通市值的数据形式有两种，故而需要程序判定。
-  i = 0;
-  while (*pCurrentPos != 0x00d) {
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 30)) return false; // 数据出错，放弃载入
-    buffer2[i++] = *pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  buffer2[i] = 0x000;
-  SetCurrentValue(buffer2); // 流通市值的单位为：元。
-  // \r后面紧跟着应该是\n
-  if (*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
-  iCount++;
-
-  lLength += iCount;
-  return true;
-}
-
-bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos) {
+bool CDayLine::ProcessNeteaseData(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos) {
   static char buffer2[200], buffer3[100];
   long i = 0;
   tm tm_;
@@ -394,35 +281,35 @@ bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, 
   if (pBuffer.at(lCurrentPos) != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
   lCurrentPos++;
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   str = buffer2;
   SetSymbol(strStockCode);
   str = strStockCode.Left(2);
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   str = buffer2;
   SetStockName(str);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);
   SetClose(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);
   SetHigh(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);
   SetLow(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);
   SetOpen(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);
   SetLastClose(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   if (GetOpen() == 0) {
     //ASSERT(strcmp(buffer2, _T("None") == 0);
     SetUpDown(0.0);
@@ -437,17 +324,17 @@ bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, 
     SetUpDownRate(((double)(GetUpDown() * 100000.0)) / GetLastClose());
   }
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   SetChangeHandRate(buffer2);
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   SetVolume(buffer2); // 读入的是股数
 
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   SetAmount(buffer2);
 
   // 总市值的数据有两种形式，需要程序判定
-  if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
   SetTotalValue(buffer2); // 总市值的单位为：元
 
   // 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数

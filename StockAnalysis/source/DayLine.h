@@ -34,8 +34,7 @@ public:
   bool AppendForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);
   bool LoadForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);
 
-  bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
-  bool ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos);
+  bool ProcessNeteaseData(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos);
   bool IsActive(void);
 
 public:

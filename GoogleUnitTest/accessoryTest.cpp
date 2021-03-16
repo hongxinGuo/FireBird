@@ -242,6 +242,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(XferStandredToNetease(_T("60001.SS")), _T("060001."));
     EXPECT_STREQ(XferStandredToNetease(_T("00001.SZ")), _T("100001."));
   }
+
+  TEST_F(AccessoryTest, TestXferStandredToTengxun) {
+    EXPECT_STREQ(XferStandredToTengxun(_T("600001.SS")), _T("sh600001"));
+    EXPECT_STREQ(XferStandredToTengxun(_T("000001.SZ")), _T("sz000001"));
+    EXPECT_STREQ(XferStandredToTengxun(_T("60001.SS")), _T("sh60001."));
+    EXPECT_STREQ(XferStandredToTengxun(_T("00001.SZ")), _T("sz00001."));
+  }
 }
 
 namespace StockAnalysisTest {

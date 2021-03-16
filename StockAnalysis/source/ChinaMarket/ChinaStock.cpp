@@ -186,8 +186,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   CString strTemp;
   while (lCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
-    //if (!pDayLine->ProcessNeteaseData(GetSymbol(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
-    if (!pDayLine->ProcessNeteaseData2(GetSymbol(), m_vDayLineBuffer, lCurrentPos)) { // 处理一条日线数据
+    if (!pDayLine->ProcessNeteaseData(GetSymbol(), m_vDayLineBuffer, lCurrentPos)) { // 处理一条日线数据
       TRACE(_T("%s日线数据出错\n"), GetSymbol().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();

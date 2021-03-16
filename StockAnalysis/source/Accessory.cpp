@@ -425,23 +425,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
   return str;
 }
 
-bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber) {
-  int i = 0;
-
-  while (*pCurrentPos != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 100)) { // 遇到回车、换行或者字符串结束符,或者超过了100个字符
-      return false; // 数据出错，放弃载入
-    }
-    buffer[i++] = *pCurrentPos++;
-  }
-  buffer[i] = 0x000;
-  pCurrentPos++;
-  i++;
-  iReadNumber += i;
-  return true;
-}
-
-bool ReadOneValueOfNeteaseDayLine2(vector<char>& pBuffer, char* buffer, INT64& lCurrentPos) {
+bool ReadOneValueOfNeteaseDayLine(vector<char>& pBuffer, char* buffer, INT64& lCurrentPos) {
   int i = 0;
 
   while (pBuffer.at(lCurrentPos) != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。

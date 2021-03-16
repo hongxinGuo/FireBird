@@ -639,7 +639,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Close();
   }
 
-  TEST_F(CStockDayLineTest, TestLoadData) {
+  TEST_F(CStockDayLineTest, TestLoadChinaMarketData) {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLine id, idLoaded;
 
@@ -714,7 +714,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(dayLine.IsActive());
   }
 
-  TEST_F(CStockDayLineTest, TestLoadDayLine) {
+  TEST_F(CStockDayLineTest, TestLoadChinaMarketStockDayLine) {
     CDayLine id, id2;
     CSetDayLineBasicInfo setDayLineBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
