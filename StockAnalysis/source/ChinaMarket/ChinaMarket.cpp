@@ -1173,7 +1173,7 @@ bool CChinaMarket::SchedulingTask(void) {
     TaskProcessWebRTDataGetFromSinaServer();
     TaskProcessWebRTDataGetFromNeteaseServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fStartReceivingData && IsSystemReady()) m_iCountDownSlowReadingRTData = 100 * m_iRTDataInquiryTickNumber; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = 100 * m_iRTDataInquiryTickNumber; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = m_iRTDataInquiryTickNumber;  // 默认计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1482,16 +1482,16 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 
 bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
   if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-    m_fStartReceivingData = false;
-    return(m_fStartReceivingData);
+    m_fFastReceivingRTData = false;
+    return(m_fFastReceivingRTData);
   }
-  else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
-    m_fStartReceivingData = false;
+  else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+    m_fFastReceivingRTData = false;
 
-    return(m_fStartReceivingData);
+    return(m_fFastReceivingRTData);
   }
-  else m_fStartReceivingData = true;
-  return m_fStartReceivingData;
+  else m_fFastReceivingRTData = true;
+  return m_fFastReceivingRTData;
 }
 
 bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {

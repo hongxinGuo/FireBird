@@ -10,6 +10,18 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
+  TEST(WebInquiryTest, TestPriority) {
+    WebInquiry inquiry, inquiry2, inquiry3;
+    priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> qInquiry;
+
+    inquiry.m_iPriority = 10;
+    inquiry2.m_iPriority = 20;
+    qInquiry.push(inquiry);
+    qInquiry.push(inquiry2);
+    inquiry3 = qInquiry.top();
+    EXPECT_EQ(inquiry3.m_iPriority, 20) << "按优先级排列";
+  }
+
   class CWorldMarketTest : public ::testing::Test
   {
   protected:

@@ -333,7 +333,7 @@ public:
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
   void SetMarketOpened(bool fFlag) noexcept { m_fMarketOpened = fFlag; }
-  bool IsStartReceivingData(void) noexcept { return m_fStartReceivingData; }
+  bool IsFastReceivingRTData(void) noexcept { return m_fFastReceivingRTData; }
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
   void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
@@ -446,7 +446,7 @@ protected:
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
   bool m_fMarketOpened; // 是否开市
-  bool m_fStartReceivingData; // 是否开始接收实时数据
+  bool m_fFastReceivingRTData; // 是否开始接收实时数据
   bool m_fGetRTData; // 读取实时数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。

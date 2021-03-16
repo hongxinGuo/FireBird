@@ -722,43 +722,43 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
   }
 
-  TEST_F(CChinaMarketTest, TestCheckStartReceivingData) {
+  TEST_F(CChinaMarketTest, TestCheckFastReceivingRTData) {
     tm tm_;
     tm_.tm_wday = 1;
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(91159));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(91200));
-    EXPECT_TRUE(gl_pChinaStockMarket->IsStartReceivingData());
-    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(113500));
-    EXPECT_TRUE(gl_pChinaStockMarket->IsStartReceivingData());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(113501));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(125459));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
-    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(125500));
-    EXPECT_TRUE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsFastReceivingRTData());
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(114500));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsFastReceivingRTData());
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(114501));
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(124459));
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(124500));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckStartReceivingData(150630));
-    EXPECT_TRUE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(150631));
     tm_.tm_wday = 0;
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(91459));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(91500));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(113459));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(113500));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(125459));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(125500));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(150630));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckStartReceivingData(150631));
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsFastReceivingRTData());
   }
 
   TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {
