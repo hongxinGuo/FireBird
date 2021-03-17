@@ -400,6 +400,18 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus7) {
+    CWorldStock stock;
+
+    stock.SetDayLineNeedUpdate(true);
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.m_fIsActive = true;
+    stock.SetDayLineEndDate(20210108); // 上一交易日日线数据已接收
+    EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20210109, 20210108, 170000, 6)) << "周六，检查上一交易日日线";
+    stock.SetDayLineNeedUpdate(true); // 重置之
+    EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20210110, 20210108, 170000, 0)) << "周日，检查上一交易日日线";
+  }
+
   TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
     CWorldStock stock;
     long lCurrentDate = 20200101;

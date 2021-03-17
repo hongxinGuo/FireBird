@@ -32,6 +32,7 @@ namespace StockAnalysisTest {
   public:
     CMockVirtualWebInquiry m_VirtualWebInquiry;
   };
+
   TEST_F(CVirtualWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T(""));
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T(""));
@@ -198,5 +199,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 500) << _T("Ä¬ÈÏÖµÎª500");
     m_VirtualWebInquiry.SetInquiringNumber(800);
     EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 800);
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestGetTotalByteReaded) {
+    m_VirtualWebInquiry.ClearTotalByteReaded();
+    EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 0);
+    m_VirtualWebInquiry.SetTotalByteReaded(1000);
+    EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 1000);
+    m_VirtualWebInquiry.ClearTotalByteReaded();
+    EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 0);
   }
 }

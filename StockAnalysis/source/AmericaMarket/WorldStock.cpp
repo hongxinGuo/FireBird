@@ -165,7 +165,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
     SetDayLineNeedUpdate(false);
   }
   else {
-    if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+    if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) { // 周一至周五
       if (lTime > 170000) {
         if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
           SetDayLineNeedUpdate(false); // 日线数据不需要更新
@@ -177,7 +177,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
         }
       }
     }
-    else if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+    else if (lLastTradeDate <= GetDayLineEndDate()) { // 周六周日时， 最新日线数据为上一个交易日的数据
       SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
   }
@@ -396,9 +396,7 @@ void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 }
 
 void CWorldStock::UpdateDayLineStartEndDate(void) {
-  if (m_vDayLine.size() == 0) {
-  }
-  else {
+  if (m_vDayLine.size() > 0) {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
       SetUpdateProfileDB(true);

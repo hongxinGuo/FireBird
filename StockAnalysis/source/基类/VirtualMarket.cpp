@@ -58,8 +58,9 @@ void CVirtualMarket::ResetMarket(void) {
   ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
-void CVirtualMarket::UpdateMarketInfo(void) {
+bool CVirtualMarket::UpdateMarketInfo(void) {
   // do nothing
+  return true;
 }
 
 void CVirtualMarket::CalculateTime(void) noexcept {

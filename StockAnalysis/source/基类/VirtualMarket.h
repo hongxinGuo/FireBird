@@ -16,7 +16,7 @@ public:
 public:
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void);
-  virtual void UpdateMarketInfo(void); // 更新本市场信息（从FinnhubExchange中）。
+  virtual bool UpdateMarketInfo(void); // 更新本市场信息。
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次

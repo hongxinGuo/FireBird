@@ -37,13 +37,22 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CWebDataTest, TestGetData1) {
+    char buffer[10];
+
+    EXPECT_EQ(m_id.GetBufferLength(), 1024 * 1024 * 16);
+    EXPECT_EQ(m_id.GetCurrentPos(), 0);
+    m_id.SetCurrentPos(1024 * 1024 * 16 - 9);
+    EXPECT_FALSE(m_id.GetData(buffer, 10)) << "越界";
+  }
+
+  TEST_F(CWebDataTest, TestGetData2) {
     m_id.SetData(0, 'a');
     EXPECT_EQ(m_id.GetData(0), 'a');
     m_id.SetData(10, 'a');
     EXPECT_EQ(m_id.GetData(10), 'a');
   }
 
-  TEST_F(CWebDataTest, TestGetData2) {
+  TEST_F(CWebDataTest, TestGetData3) {
     CString strTest = "abcdefg";
     EXPECT_TRUE(m_id.SetData(strTest.GetBuffer(), strTest.GetLength(), 0));
     char buffer[8];
@@ -62,7 +71,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_id.SetData(strTest.GetBuffer(), strTest.GetLength(), 0)) << "数据容器长度为6个字节，但需要存储七个字节的数据，导致函数报错";
   }
 
-  TEST_F(CWebDataTest, TestGetData3) {
+  TEST_F(CWebDataTest, TestGetData4) {
     CString strTest = "abcdefg";
     m_id.SetCurrentPos(0);
     EXPECT_TRUE(m_id.SetData(strTest.GetBuffer(), strTest.GetLength()));
