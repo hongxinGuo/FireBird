@@ -517,7 +517,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __FOREX_SYMBOLS__:
       if (ProcessFinnhubForexSymbol(pWebData, vForexSymbol)) {
         for (auto& pSymbol : vForexSymbol) {
-          if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
+          if (!IsForexSymbol(pSymbol->GetSymbol())) {
             pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
             AddForexSymbol(pSymbol);
           }
@@ -526,7 +526,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __FOREX_CANDLES__:
       if (ProcessFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
-        TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol.GetBuffer());
+        TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
       }
       break;
       case __FOREX_ALL_RATES__:
@@ -1159,7 +1159,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       SetFinnhubInquiring(true);
       pForexSymbol->SetDayLineNeedUpdate(false);
-      TRACE("申请Forex%s日线数据\n", pForexSymbol->m_strSymbol.GetBuffer());
+      TRACE("申请Forex%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
     }
     else {
       SetFinnhubForexDayLineUpdated(true);
@@ -1467,7 +1467,7 @@ bool CWorldMarket::DeleteForexExchange(CString strForexExchange) {
 }
 
 void CWorldMarket::AddForexSymbol(CForexSymbolPtr pForexSymbol) {
-  m_mapForexSymbol[pForexSymbol->m_strSymbol] = m_mapForexSymbol.size();
+  m_mapForexSymbol[pForexSymbol->GetSymbol()] = m_mapForexSymbol.size();
   m_vForexSymbol.push_back(pForexSymbol);
 }
 
@@ -1822,7 +1822,7 @@ bool CWorldMarket::LoadForexSymbol(void) {
     pSymbol->Load(setForexSymbol);
     pSymbol->SetCheckingDayLineStatus();
     m_vForexSymbol.push_back(pSymbol);
-    m_mapForexSymbol[pSymbol->m_strSymbol] = i++;
+    m_mapForexSymbol[pSymbol->GetSymbol()] = i++;
     setForexSymbol.MoveNext();
   }
   setForexSymbol.Close();

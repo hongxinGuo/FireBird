@@ -227,7 +227,7 @@ public:
   CString GetForexExchange(long lIndex) { return m_vForexExchange.at(lIndex); }
 
   bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
-  bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->m_strSymbol); }
+  bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->GetSymbol()); }
   void AddForexSymbol(CForexSymbolPtr pForexSymbol);
   bool DeleteForexSymbol(CForexSymbolPtr pForexSysbol);
   CForexSymbolPtr GetForexSymbol(long lIndex) { return m_vForexSymbol.at(lIndex); }

@@ -724,8 +724,8 @@ namespace StockAnalysisTest {
     break;
     case 10:
     EXPECT_TRUE(fSucceed);
-    EXPECT_STREQ(m_vForexSymbol.at(0)->m_strSymbol, _T("OANDA:SG30_SGD"));
-    EXPECT_STREQ(m_vForexSymbol.at(1)->m_strSymbol, _T("OANDA:DE10YB_EUR"));
+    EXPECT_STREQ(m_vForexSymbol.at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
+    EXPECT_STREQ(m_vForexSymbol.at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
     EXPECT_EQ(m_vForexSymbol.size(), 2);
     break;
     default:

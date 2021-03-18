@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
     CFinnhubForexSymbol FinnhubForexSymbol;
     EXPECT_STREQ(FinnhubForexSymbol.m_strDescription, _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T(" "));
-    EXPECT_STREQ(FinnhubForexSymbol.m_strSymbol, _T(" "));
+    EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T(" "));
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
@@ -159,7 +159,7 @@ namespace StockAnalysisTest {
     CFinnhubForexSymbol symbol;
     CString str;
 
-    symbol.m_strSymbol = _T("ABCDE");
+    symbol.SetSymbol(_T("ABCDE"));
     str = symbol.GetFinnhubDayLineInquiryString(123456789);
     EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315558000&to=123456789")) << "当前时间小于19800101，315558000就是19800101";
   }
@@ -168,7 +168,7 @@ namespace StockAnalysisTest {
     CFinnhubForexSymbol symbol;
     CString str;
 
-    symbol.m_strSymbol = _T("ABCDE");
+    symbol.SetSymbol(_T("ABCDE"));
     str = symbol.GetFinnhubDayLineInquiryString(1131536000);
     EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
   }
@@ -179,7 +179,7 @@ namespace StockAnalysisTest {
 
     FinnhubForexSymbol.m_strDescription = _T("abc");
     FinnhubForexSymbol.m_strDisplaySymbol = _T("cba");
-    FinnhubForexSymbol.m_strSymbol = _T("AAAAA");
+    FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
     FinnhubForexSymbol.m_strExchange = _T("US");
     FinnhubForexSymbol.SetDayLineStartDate(20000101);
     FinnhubForexSymbol.SetDayLineEndDate(10000101);
@@ -201,7 +201,7 @@ namespace StockAnalysisTest {
     FinnhubForexSymbol2.Load(setFinnhubForexSymbol2);
     EXPECT_STREQ(FinnhubForexSymbol.m_strDescription, _T("abc"));
     EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T("cba"));
-    EXPECT_STREQ(FinnhubForexSymbol.m_strSymbol, _T("AAAAA"));
+    EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAAAA"));
     EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T("US"));
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 20000101);
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 10000101);

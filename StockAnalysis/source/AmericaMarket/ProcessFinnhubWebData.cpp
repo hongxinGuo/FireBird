@@ -390,7 +390,7 @@ bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForex
       s = pt2.get<string>(_T("displaySymbol"));
       pSymbol->m_strDisplaySymbol = s.c_str();
       s = pt2.get<string>(_T("symbol"));
-      pSymbol->m_strSymbol = s.c_str();
+      pSymbol->SetSymbol(s.c_str());
       vForexSymbol.push_back(pSymbol);
     }
     catch (ptree_error&) {
@@ -417,7 +417,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("下载");
-    str += pForexSymbol->m_strSymbol;
+    str += pForexSymbol->GetSymbol();
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -433,7 +433,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
     }
     if (s.compare(_T("ok")) != 0) {
       str = _T("下载");
-      str += pForexSymbol->m_strSymbol;
+      str += pForexSymbol->GetSymbol();
       str += _T("日线返回值不为ok\n");
       TRACE("%s", str.GetBuffer());
       gl_systemMessage.PushInformationMessage(str);

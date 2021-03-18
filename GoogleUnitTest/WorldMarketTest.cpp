@@ -244,11 +244,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
 
     CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
-    pForexSymbol->m_strSymbol = _T("ABC");
+    pForexSymbol->SetSymbol(_T("ABC"));
     EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-    pForexSymbol->m_strSymbol = _T("OANDA:XAU_SGD");
+    pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-    pForexSymbol->m_strSymbol = _T("FXCM:EUR/CHF");
+    pForexSymbol->SetSymbol(_T("FXCM:EUR/CHF"));
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
   }
 

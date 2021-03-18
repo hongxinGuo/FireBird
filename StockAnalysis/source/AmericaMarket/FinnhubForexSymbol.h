@@ -26,8 +26,6 @@ public:
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
   CString GetExchange(void) { return m_strExchange; }
   void SetExchange(CString strExchange) { m_strExchange = strExchange; }
-  CString GetSymbol(void) { return m_strSymbol; }
-  void SetSymbol(CString strSymbol) { m_strSymbol = strSymbol; }
   CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
   void SetDisplaySymbol(CString strSymbol) { m_strDisplaySymbol = strSymbol; }
 
@@ -45,9 +43,10 @@ public:
   CString m_strDescription;
   CString m_strDisplaySymbol;
   CString m_strExchange;
-  CString m_strSymbol;
 
   vector<CDayLinePtr> m_vDayLine;
+
+protected:
 };
 
 typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;
