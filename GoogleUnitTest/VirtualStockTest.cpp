@@ -23,6 +23,13 @@ namespace StockAnalysisTest {
     }
   };
 
+  TEST_F(CVirtualStockTest, TestGetExchangeCode) {
+    CVirtualStock stock;
+    EXPECT_STREQ(stock.GetExchangeCode(), _T(""));
+    stock.SetExchangeCode(_T("SS"));
+    EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
+  }
+
   TEST_F(CVirtualStockTest, TestGetSymbol) {
     CVirtualStock stock;
     EXPECT_STREQ(stock.GetSymbol(), _T(""));

@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubForexSymbol.m_strDescription, _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T(" "));
-    EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T(" "));
+    EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T(" "));
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
     EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STOCK_NOT_CHECKED__);
@@ -59,12 +59,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(symbol.GetSymbol(), _T("abcdefg"));
   }
 
-  TEST_F(CFinnhubForexSymbolTest, TestGetExchange) {
-    CFinnhubForexSymbol symbol;
-
-    symbol.SetExchange(_T("abcdefg"));
-    EXPECT_STREQ(symbol.GetExchange(), _T("abcdefg"));
-  }
   TEST_F(CFinnhubForexSymbolTest, TestGetDayLineStartDate) {
     CFinnhubForexSymbol symbol;
 
@@ -180,7 +174,7 @@ namespace StockAnalysisTest {
     FinnhubForexSymbol.m_strDescription = _T("abc");
     FinnhubForexSymbol.m_strDisplaySymbol = _T("cba");
     FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
-    FinnhubForexSymbol.m_strExchange = _T("US");
+    FinnhubForexSymbol.SetExchangeCode(_T("US"));
     FinnhubForexSymbol.SetDayLineStartDate(20000101);
     FinnhubForexSymbol.SetDayLineEndDate(10000101);
     FinnhubForexSymbol.SetIPOStatus(__STOCK_DELISTED__);
@@ -202,7 +196,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubForexSymbol.m_strDescription, _T("abc"));
     EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T("cba"));
     EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAAAA"));
-    EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T("US"));
+    EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T("US"));
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 20000101);
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 10000101);
     EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STOCK_DELISTED__);

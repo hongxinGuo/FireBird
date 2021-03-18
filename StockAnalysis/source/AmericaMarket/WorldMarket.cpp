@@ -518,7 +518,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       if (ProcessFinnhubForexSymbol(pWebData, vForexSymbol)) {
         for (auto& pSymbol : vForexSymbol) {
           if (!IsForexSymbol(pSymbol->GetSymbol())) {
-            pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+            pSymbol->SetExchangeCode(m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex));
             AddForexSymbol(pSymbol);
           }
         }

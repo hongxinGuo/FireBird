@@ -11,7 +11,7 @@ void CFinnhubForexSymbol::Reset(void) {
   CVirtualStock::Reset();
   m_strDescription = _T(" ");
   m_strDisplaySymbol = _T(" ");
-  m_strExchange = _T(" ");
+  m_strExchangeCode = _T(" ");
   m_strSymbol = _T(" ");
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
@@ -20,7 +20,7 @@ void CFinnhubForexSymbol::Reset(void) {
 void CFinnhubForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
   m_strDescription = setForexSymbol.m_Description;
   m_strDisplaySymbol = setForexSymbol.m_DisplaySymbol;
-  m_strExchange = setForexSymbol.m_Exchange;
+  m_strExchangeCode = setForexSymbol.m_Exchange;
   m_strSymbol = setForexSymbol.m_Symbol;
   m_lDayLineStartDate = setForexSymbol.m_DayLineStartDate;
   m_lDayLineEndDate = setForexSymbol.m_DayLineEndDate;
@@ -42,7 +42,7 @@ void CFinnhubForexSymbol::Update(CSetFinnhubForexSymbol& setForexSymbol) {
 void CFinnhubForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.m_Description = m_strDescription;
   setForexSymbol.m_DisplaySymbol = m_strDisplaySymbol;
-  setForexSymbol.m_Exchange = m_strExchange;
+  setForexSymbol.m_Exchange = m_strExchangeCode;
   setForexSymbol.m_Symbol = m_strSymbol;
   setForexSymbol.m_DayLineStartDate = m_lDayLineStartDate;
   setForexSymbol.m_DayLineEndDate = m_lDayLineEndDate;

@@ -55,8 +55,6 @@ public:
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
   CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
   void SetDisplaySymbol(CString strDisplaySymbol) { m_strDisplaySymbol = strDisplaySymbol; }
-  CString GetExchangeCode(void) { return m_strExchangeCode; }
-  void SetExchangeCode(CString strExchangeCode) { m_strExchangeCode = strExchangeCode; }
   CString GetType(void) { return m_strType; }
   void SetType(CString strType) { m_strType = strType; }
   CString GetMic(void) { return m_strMic; }
@@ -159,7 +157,6 @@ protected:
   // Finnhub symbol信息
   CString m_strDescription;
   CString m_strDisplaySymbol;
-  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
   CString m_strType;
   CString m_strMic;
   CString m_strFigi;

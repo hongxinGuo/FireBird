@@ -12,6 +12,7 @@ CVirtualStock::~CVirtualStock() {
 }
 
 void CVirtualStock::Reset(void) {
+  m_strExchangeCode = _T("");
   m_strSymbol = _T("");
 
   m_TransactionTime = 0;

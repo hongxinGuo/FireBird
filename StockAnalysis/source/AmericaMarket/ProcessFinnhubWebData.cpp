@@ -386,9 +386,9 @@ bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForex
     try {
       pt2 = it->second;
       s = pt2.get<string>(_T("description"));
-      if (s.size() > 0) pSymbol->m_strDescription = s.c_str();
+      if (s.size() > 0) pSymbol->SetDescription(s.c_str());
       s = pt2.get<string>(_T("displaySymbol"));
-      pSymbol->m_strDisplaySymbol = s.c_str();
+      pSymbol->SetDisplaySymbol(s.c_str());
       s = pt2.get<string>(_T("symbol"));
       pSymbol->SetSymbol(s.c_str());
       vForexSymbol.push_back(pSymbol);
@@ -452,7 +452,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
       pt3 = it->second;
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
-      pDayLine->SetMarketString(pForexSymbol->m_strExchange);
+      pDayLine->SetMarketString(pForexSymbol->GetExchangeCode());
       pDayLine->SetSymbol(pForexSymbol->GetSymbol());
       pDayLine->SetTime(tTemp);
       lTemp = FormatToDate(tTemp);

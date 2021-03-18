@@ -14,6 +14,8 @@ public:
   virtual void Reset(void);
 
 public:
+  CString GetExchangeCode(void) { return m_strExchangeCode; }
+  void SetExchangeCode(CString strExchangeCode) { m_strExchangeCode = strExchangeCode; }
   CString GetSymbol(void) { return m_strSymbol; }
   void SetSymbol(CString str) { m_strSymbol = str; }
 
@@ -76,6 +78,7 @@ public:
   bool IsDayLineNeedSavingAndClearFlag(void) noexcept { const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false); return fNeedSaving; }
 
 protected:
+  CString m_strExchangeCode; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
   CString m_strSymbol; // 股票代码。十位以内，前六位为数字代码，后两位为市场前缀。如600601.SS，000001.SZ
 
   // 实时数据区
