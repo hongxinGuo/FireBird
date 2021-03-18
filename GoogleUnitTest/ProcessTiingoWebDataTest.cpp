@@ -97,13 +97,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_vStock.at(1)->m_fIsActive);
     EXPECT_FALSE(m_vStock.at(1)->m_fIsADR);
 
-    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoIndustry, _T("")) << "当字符串为Field not available for free/evcaluation时，返回空串";
-    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoSector, _T(""));
+    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evcaluation时，返回空串(一个空格)";
+    EXPECT_STREQ(m_vStock.at(1)->m_strTiingoSector, _T(" "));
     EXPECT_EQ(m_vStock.at(1)->m_iSICCode, 0);
-    EXPECT_STREQ(m_vStock.at(1)->m_strSICIndustry, _T(""));
-    EXPECT_STREQ(m_vStock.at(1)->m_strSICSector, _T(""));
-    EXPECT_STREQ(m_vStock.at(1)->m_strCompanyWebSite, _T(""));
-    EXPECT_STREQ(m_vStock.at(1)->m_strSECFilingWebSite, _T(""));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSICIndustry, _T(" "));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSICSector, _T(" "));
+    EXPECT_STREQ(m_vStock.at(1)->m_strCompanyWebSite, _T(" "));
+    EXPECT_STREQ(m_vStock.at(1)->m_strSECFilingWebSite, _T(" "));
     EXPECT_EQ(m_vStock.at(1)->m_lStatementUpdateDate, 20210302);
     EXPECT_EQ(m_vStock.at(1)->m_lDailyDataUpdateDate, 20210312);
     break;

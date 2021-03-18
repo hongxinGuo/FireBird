@@ -15,6 +15,7 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
   string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
+  CString strNULL = _T(" ");
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
@@ -40,34 +41,42 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
       }
+      else pStock->m_strTiingoIndustry = strNULL;
       s = pt2.get<string>(_T("sector"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
       }
+      else pStock->m_strTiingoSector = strNULL;
       s = pt2.get<string>(_T("sicCode"));
       if (s.compare(strNotAvailable) != 0) {
         pStock->m_iSICCode = atoi(s.c_str());
       }
+      else pStock->m_iSICCode = 0;
       s = pt2.get<string>(_T("sicIndustry"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
       }
+      else pStock->m_strSICIndustry = strNULL;
       s = pt2.get<string>(_T("sicSector"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strSICSector = s.c_str();
       }
+      else pStock->m_strSICSector = strNULL;
       s = pt2.get<string>(_T("location"));
       if (s.compare(strNotAvailable) != 0) {
         if ((s.size() > 0)) pStock->SetAddress(s.c_str());
       }
+      else pStock->SetAddress(_T(" "));
       s = pt2.get<string>(_T("companyWebsite"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
       }
+      else pStock->m_strCompanyWebSite = strNULL;
       s = pt2.get<string>(_T("secFilingWebsite"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
       }
+      else pStock->m_strSECFilingWebSite = strNULL;
       s = pt2.get<string>(_T("statementLastUpdated"));
       if (s.size() > 0) str = s.c_str();
       sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);

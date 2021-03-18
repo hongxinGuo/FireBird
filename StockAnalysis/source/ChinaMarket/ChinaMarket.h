@@ -130,8 +130,8 @@ public:
   CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fCheckActiveStock);
   CString	GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-  CString GetNextSinaStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
-  CString GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
+  CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long& lStockIndex, CString strPostfix, long lTotalNumber);
+  CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(CString strPostfix, long lTotalNumber);
   CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition);
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition);
@@ -354,6 +354,8 @@ public:
   size_t GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
+  void SetSinaStockRTDataInquiringIndexFromTotalStockSet(long lIndex) noexcept { m_lSinaStockRTDataInquiringIndexFromTotalStockSet = lIndex; }
+  long GetSinaStockRTDataInquiringIndexFromTotalStockSet(void) noexcept { return m_lSinaStockRTDataInquiringIndexFromTotalStockSet; }
   void SetSinaStockRTDataInquiringIndex(long lIndex) noexcept { m_lSinaStockRTDataInquiringIndex = lIndex; }
   void SetTengxunRTDataInquiringIndex(long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
   void SetNeteaseRTDataInquiringIndex(long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
@@ -415,8 +417,8 @@ protected:
   vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
   bool m_fUpdateStockSection; // 更新StockSection标识
 
-  vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
-  map<CString, long> m_mapCurrentStockSet; // 当前所有股票代码的映射
+  vector<CString> m_vTotalStockSet; // 当前所有的股票代码
+  map<CString, long> m_mapTotalStockSet; // 当前所有股票代码的映射
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
@@ -465,6 +467,7 @@ protected:
   CString m_strNeteaseRTDataInquiringStr;
   CString m_strNeteaseDayLineDataInquiringStr;
 
+  long m_lSinaStockRTDataInquiringIndexFromTotalStockSet;
   long m_lSinaStockRTDataInquiringIndex;
   long m_lTengxunRTDataInquiringIndex;
   long m_lNeteaseRTDataInquiringIndex;

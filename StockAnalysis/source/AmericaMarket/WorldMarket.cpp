@@ -692,6 +692,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       break;
       case  __COMPANY_SYMBOLS__:
       if (ProcessTiingoStockSymbol(pWebData, vStock)) {
+        lTemp = 0;
         for (auto& pStock2 : vStock) {
           if (pStock2->m_fIsActive && (IsStock(pStock2->GetSymbol()))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
             lTemp++;
@@ -711,6 +712,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
             pStock->SetUpdateProfileDB(true);
           }
         }
+        TRACE("今日Tiingo活跃股票数为：%d\n", lTemp);
       }
       SetTiingoSymbolUpdated(true);
       break;

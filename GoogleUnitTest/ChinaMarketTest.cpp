@@ -108,6 +108,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
       EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 4833);
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
     }
   };
 
@@ -1052,6 +1053,7 @@ namespace StockAnalysisTest {
     gl_pTengxunRTWebInquiry->SetReadingWebData(false);
     gl_pNeteaseRTWebInquiry->SetReadingWebData(false);
     gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
   }
 
   TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb2) {
@@ -1096,6 +1098,7 @@ namespace StockAnalysisTest {
     gl_pSinaRTWebInquiry->SetReadingWebData(false);
     gl_pTengxunRTWebInquiry->SetReadingWebData(false);
     gl_pNeteaseRTWebInquiry->SetReadingWebData(false);
+    gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetRTDataReceived) {
