@@ -701,6 +701,24 @@
     <ClCompile Include="TiingoStockFundanmentalTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="SICIndustryTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="NaicsIndustryTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -1035,6 +1053,18 @@
     </ClInclude>
     <ClInclude Include="MockWeekLineContainer.h">
       <Filter>Mock类\China Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h">
+      <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

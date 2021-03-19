@@ -840,6 +840,10 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\Accessory.h" />
     <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h" />
+    <ClInclude Include="source\AmericaMarket\NaicsIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\SetNaicsIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\SetSICIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\SICIndustry.h" />
     <ClInclude Include="source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="source\AmericaMarket\Country.h" />
@@ -928,6 +932,10 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetNaicsIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetSICIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="source\AmericaMarket\WorldStock.cpp" />
@@ -1019,7 +1027,9 @@
     <ClCompile Include="source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebRTData.cpp" />
-    <ClCompile Include="source\QueueWebData.cpp" />
+    <ClCompile Include="source\QueueWebData.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="source\WebRTDataContainer.cpp" />
     <ClCompile Include="source\DayLine.cpp" />

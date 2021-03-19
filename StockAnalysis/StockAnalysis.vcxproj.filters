@@ -375,6 +375,18 @@
     <ClInclude Include="source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetSICIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SICIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetNaicsIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\NaicsIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -721,6 +733,18 @@
     </ClCompile>
     <ClCompile Include="source\基类\VirtualMarket.cpp">
       <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetSICIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SICIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetNaicsIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

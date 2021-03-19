@@ -241,6 +241,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
@@ -251,11 +252,14 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
@@ -348,6 +352,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
+    <ClCompile Include="NaicsIndustryTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">Create</PrecompiledHeader>
@@ -359,6 +364,7 @@
     </ClCompile>
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
+    <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
@@ -390,6 +396,10 @@
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
     <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
@@ -432,7 +442,9 @@
     <ClCompile Include="TengxunWebRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
-    <ClCompile Include="VirtualWebInquiryTest.cpp" />
+    <ClCompile Include="VirtualWebInquiryTest.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="WebInquirerTest.cpp" />
     <ClCompile Include="WeekLineContainerTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />

@@ -670,7 +670,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
   CWebDataPtr pWebData = nullptr;
   CWorldStockPtr pStock = nullptr;
-  CString str = _T("");
+  CString str = _T(""), strNumber = _T("");
   vector<CString> vExchange;
   vector<CForexSymbolPtr> vForexSymbol;
   vector<CEconomicCalendarPtr> vEconomicCalendar;
@@ -679,6 +679,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
   long lTemp = 0;
   const bool fFoundNewStock = false;
   bool fDone = false;
+  char buffer[50];
 
   ASSERT(gl_WebInquirer.GetTiingoDataSize() <= 1);
   if (IsTiingoDataReceived()) { // 如果网络数据接收完成
@@ -694,7 +695,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       if (ProcessTiingoStockSymbol(pWebData, vStock)) {
         lTemp = 0;
         for (auto& pStock2 : vStock) {
-          if (pStock2->m_fIsActive && (IsStock(pStock2->GetSymbol()))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+          if (IsStock(pStock2->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
             lTemp++;
             pStock = m_vWorldStock.at(m_mapWorldStock.at(pStock2->GetSymbol()));
             pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
@@ -711,8 +712,17 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
             pStock->m_lStatementUpdateDate = pStock2->m_lStatementUpdateDate;
             pStock->SetUpdateProfileDB(true);
           }
+          else { // new stock，
+            // do nothing now.
+            int iiii = 0;
+            iiii++; // for debug
+          }
         }
         TRACE("今日Tiingo活跃股票数为：%d\n", lTemp);
+        sprintf_s(buffer, _T("%6d"), lTemp);
+        strNumber = buffer;
+        str = _T("今日Tiingo Symbol活跃股票总数为") + strNumber;
+        gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
       SetTiingoSymbolUpdated(true);
       break;
