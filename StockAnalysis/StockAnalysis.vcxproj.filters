@@ -267,10 +267,10 @@
     <ClInclude Include="source\AmericaMarket\SetFinnhubForexExchange.h">
       <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetTiingoStockFundanmental.h">
+    <ClInclude Include="source\AmericaMarket\SetTiingoStockProfile.h">
       <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\TiingoStockFundanmental.h">
+    <ClInclude Include="source\AmericaMarket\TiingoStockProfile.h">
       <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetFinnhubForexSymbol.h">
@@ -560,10 +560,10 @@
     <ClCompile Include="source\AmericaMarket\SetFinnhubForexExchange.cpp">
       <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetTiingoStockFundanmental.cpp">
+    <ClCompile Include="source\AmericaMarket\SetTiingoStockProfile.cpp">
       <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\TiingoStockFundanmental.cpp">
+    <ClCompile Include="source\AmericaMarket\TiingoStockProfile.cpp">
       <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetFinnhubForexSymbol.cpp">
@@ -745,6 +745,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetNaicsIndustry.cpp">
       <Filter>源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

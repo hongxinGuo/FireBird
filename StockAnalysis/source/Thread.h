@@ -108,6 +108,8 @@ UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStock); // 此工作线程返回
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为42
 // 从日线数据中重建起止日期
 UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarket* pMarket); // 此工作线程返回值为43
+// 更新美国股票的日线历史数据。
+UINT ThreadUpdateTiingoStockProfileDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为44
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

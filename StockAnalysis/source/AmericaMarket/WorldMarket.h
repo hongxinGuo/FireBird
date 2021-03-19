@@ -8,6 +8,7 @@
 #include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
+#include"TiingoStockProfile.h"
 
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
@@ -170,6 +171,8 @@ public:
   bool TaskUpdateCountryListDB(void);
   bool TaskUpdateEPSSurpriseDB(void);
   bool TaskUpdateEconomicCalendarDB(void);
+  bool TaskUpdateTiingoStockFundamentalDB(void);
+
   bool TaskCheckSystemReady(void);
 
   bool TaskUpdateDayLineStartEndDate(void);
@@ -182,28 +185,29 @@ public:
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
+  virtual bool RunningThreadUpdateTiingoStockProfileDB(void);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
   // 各种状态
   WebInquiry GetCurrentFinnhubInquiry(void) noexcept { return m_CurrentFinnhubInquiry; }
-  void SetCurrentFinnhubInquiry(WebInquiry inquiry) { m_CurrentFinnhubInquiry = inquiry; }
+  void SetCurrentFinnhubInquiry(WebInquiry inquiry) noexcept { m_CurrentFinnhubInquiry = inquiry; }
   WebInquiry GetCurrentTiingoInquiry(void) noexcept { return m_CurrentTiingoInquiry; }
-  void SetCurrentTiingoInquiry(WebInquiry inquiry) { m_CurrentTiingoInquiry = inquiry; }
+  void SetCurrentTiingoInquiry(WebInquiry inquiry) noexcept { m_CurrentTiingoInquiry = inquiry; }
   WebInquiry GetCurrentQuandlInquiry(void) noexcept { return m_CurrentQuandlInquiry; }
-  void SetCurrentQuandlInquiry(WebInquiry inquiry) { m_CurrentQuandlInquiry = inquiry; }
+  void SetCurrentQuandlInquiry(WebInquiry inquiry) noexcept { m_CurrentQuandlInquiry = inquiry; }
 
   bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
   void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
-  bool IsFinnhubDataReceived(void) noexcept { bool f = m_fFinnhubDataReceived; return f; }
+  bool IsFinnhubDataReceived(void) noexcept { const bool f = m_fFinnhubDataReceived; return f; }
   void SetQuandlInquiring(bool fFlag) noexcept { m_fQuandlInquiring = fFlag; }
   void SetQuandlDataReceived(bool fFlag) noexcept { m_fQuandlDataReceived = fFlag; }
-  bool IsQuandlDataReceived(void) noexcept { bool f = m_fQuandlDataReceived; return f; }
+  bool IsQuandlDataReceived(void) noexcept { const bool f = m_fQuandlDataReceived; return f; }
   bool IsTiingoInquiring(void) noexcept { return m_fTiingoInquiring; }
   void SetTiingoInquiring(bool fFlag) noexcept { m_fTiingoInquiring = fFlag; }
   void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
-  bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
+  bool IsTiingoDataReceived(void) noexcept { const bool f = m_fTiingoDataReceived; return f; }
 
   CFinnhubExchangePtr GetExchange(long lIndex) { return m_vFinnhubExchange.at(lIndex); }
   size_t GetExchangeSize(void) noexcept { return m_mapFinnhubExchange.size(); }
@@ -219,6 +223,9 @@ public:
   long GetStockIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
 
   CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
+
+  bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStockProfile.find(strSymbol) == m_mapTiingoStockProfile.end()) return false; else return true; }
+  bool IsTiingoStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);
@@ -241,7 +248,7 @@ public:
   bool DeleteCountry(CCountryPtr pCountry);
 
   size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubWebInquiry.size(); }
-  void PushFinnhubInquiry(WebInquiry inquiry) noexcept { m_qFinnhubWebInquiry.push(inquiry); }
+  void PushFinnhubInquiry(WebInquiry inquiry) { m_qFinnhubWebInquiry.push(inquiry); }
   WebInquiry GetFinnhubInquiry(void);
 
   bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
@@ -271,7 +278,7 @@ public:
   void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
   size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoWebInquiry.size(); }
-  void PushTiingoInquiry(WebInquiry inquiry) noexcept { m_qTiingoWebInquiry.push(inquiry); }
+  void PushTiingoInquiry(WebInquiry inquiry) { m_qTiingoWebInquiry.push(inquiry); }
   WebInquiry GetTiingoInquiry(void);
 
   // 数据库操作
@@ -283,11 +290,14 @@ public:
   virtual bool UpdateStockProfileDB(void);
   virtual bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
+  virtual bool UpdateTiingoStockProfileDB(void);
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
   bool LoadCountryDB(void);
   bool LoadEconomicCalendarDB(void);
+
+  bool LoadTiingoStockFundamental(void);
 
   bool RebuildStockDayLineDB(void);
   virtual bool UpdateStockDayLineStartEndDate(void);
@@ -350,6 +360,10 @@ protected:
   vector<CEconomicCalendarPtr> m_vEconomicCalendar;
   map<CString, long> m_mapEconomicCalendar;
   long m_lLastTotalEconomicCalendar;
+
+  vector<CTiingoStockProfilePtr> m_vTiingoStockProfile;
+  map<CString, long> m_mapTiingoStockProfile;
+  long m_lLastTotalTiingoStockProfile;
 
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
   bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介

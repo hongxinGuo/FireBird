@@ -1,6 +1,6 @@
-// CSetTiingoStockFundanmental.cpp : CSetStockCode 类的实现
+// CSetTiingoStockProfile.cpp : CSetStockCode 类的实现
 
-// CSetTiingoStockFundanmental 实现
+// CSetTiingoStockProfile 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -8,22 +8,22 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetTiingoStockFundanmental.h"
+#include "SetTiingoStockProfile.h"
 
-IMPLEMENT_DYNAMIC(CSetTiingoStockFundanmental, CRecordset)
+IMPLEMENT_DYNAMIC(CSetTiingoStockProfile, CRecordset)
 
-CSetTiingoStockFundanmental::CSetTiingoStockFundanmental(CDatabase* pdb)
+CSetTiingoStockProfile::CSetTiingoStockProfile(CDatabase* pdb)
   : CRecordset(pdb) {
   m_TiingoPermaTicker = _T("");
   m_Ticker = _T("");
   m_Name = _T("");
   m_IsActive = true;
   m_IsADR = false;
-  m_TiingoIndustry = _T("");
-  m_TiingoSector = _T("");
   m_SICCode = 0;
   m_SICIndustry = _T("");
   m_SICSector = _T("");
+  m_TiingoIndustry = _T("");
+  m_TiingoSector = _T("");
   m_ReportingCurrency = _T("");
   m_Location = _T("");
   m_CompanyWebSite = _T("");
@@ -34,15 +34,15 @@ CSetTiingoStockFundanmental::CSetTiingoStockFundanmental(CDatabase* pdb)
   m_nFields = 17;
 }
 
-CString CSetTiingoStockFundanmental::GetDefaultConnect() {
+CString CSetTiingoStockProfile::GetDefaultConnect() {
   return GetWorldMarketSchemaConnect();
 }
 
-CString CSetTiingoStockFundanmental::GetDefaultSQL() {
-  return _T("[tinngo_stock_fundanmental]");
+CString CSetTiingoStockProfile::GetDefaultSQL() {
+  return _T("[tiingo_stock_fundanmental]");
 }
 
-void CSetTiingoStockFundanmental::DoFieldExchange(CFieldExchange* pFX) {
+void CSetTiingoStockProfile::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -66,14 +66,14 @@ void CSetTiingoStockFundanmental::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[DailyDataUpdateDate]"), m_DailyDataUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetTiingoStockFundanmental 诊断
+// CSetTiingoStockProfile 诊断
 
 #ifdef _DEBUG
-void CSetTiingoStockFundanmental::AssertValid() const {
+void CSetTiingoStockProfile::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetTiingoStockFundanmental::Dump(CDumpContext& dc) const {
+void CSetTiingoStockProfile::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

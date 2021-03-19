@@ -12,6 +12,7 @@
 #include"SetCountry.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
+#include"SetTiingoStockProfile.h"
 
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 
@@ -170,6 +171,7 @@ void CWorldMarket::ResetMarket(void) {
   LoadForexExchange();
   LoadForexSymbol();
   LoadEconomicCalendarDB();
+  LoadTiingoStockFundamental();
 
   CString str = _T("重置World Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -1360,6 +1362,11 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
   return true;
 }
 
+bool CWorldMarket::TaskUpdateTiingoStockFundamentalDB(void) {
+  RunningThreadUpdateTiingoStockProfileDB();
+  return true;
+}
+
 bool CWorldMarket::TaskCheckSystemReady(void) {
   CString str = _T("");
 
@@ -1418,6 +1425,12 @@ bool CWorldMarket::RunningThreadUpdateCountryListDB(void) {
 
 bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
   thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CWorldMarket::RunningThreadUpdateTiingoStockProfileDB(void) {
+  thread thread1(ThreadUpdateTiingoStockProfileDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1769,6 +1782,25 @@ bool CWorldMarket::UpdateEconomicCalendarDB(void) {
   return true;
 }
 
+bool CWorldMarket::UpdateTiingoStockProfileDB(void) {
+  CTiingoStockProfilePtr pTiingoStockProfile = nullptr;
+  CSetTiingoStockProfile setTiingoStockProfile;
+
+  if (m_lLastTotalTiingoStockProfile < m_vTiingoStockProfile.size()) {
+    setTiingoStockProfile.Open();
+    setTiingoStockProfile.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalTiingoStockProfile; l < m_vTiingoStockProfile.size(); l++) {
+      pTiingoStockProfile = m_vTiingoStockProfile.at(l);
+      pTiingoStockProfile->Append(setTiingoStockProfile);
+    }
+    setTiingoStockProfile.m_pDatabase->CommitTrans();
+    setTiingoStockProfile.Close();
+    m_lLastTotalTiingoStockProfile = m_vTiingoStockProfile.size();
+  }
+
+  return true;
+}
+
 bool CWorldMarket::RebuildEPSSurprise(void) {
   for (auto& p : m_vWorldStock) {
     p->SetLastEPSSurpriseUpdateDate(19800101);
@@ -1876,6 +1908,25 @@ bool CWorldMarket::LoadEconomicCalendarDB(void) {
   }
   setEconomicCalendar.Close();
   m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
+
+  return true;
+}
+
+bool CWorldMarket::LoadTiingoStockFundamental(void) {
+  CSetTiingoStockProfile setTiingoStockProfile;
+  CTiingoStockProfilePtr pTiingoStockProfile = nullptr;
+  CString strSymbol = _T("");
+
+  setTiingoStockProfile.Open();
+  while (!setTiingoStockProfile.IsEOF()) {
+    pTiingoStockProfile = make_shared<CTiingoStockProfile>();
+    pTiingoStockProfile->Load(setTiingoStockProfile);
+    m_mapTiingoStockProfile[pTiingoStockProfile->m_strTicker] = m_vTiingoStockProfile.size();
+    m_vTiingoStockProfile.push_back(pTiingoStockProfile);
+    setTiingoStockProfile.MoveNext();
+  }
+  setTiingoStockProfile.Close();
+  m_lLastTotalTiingoStockProfile = m_vTiingoStockProfile.size();
 
   return true;
 }

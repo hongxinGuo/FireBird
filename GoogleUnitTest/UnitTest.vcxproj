@@ -254,7 +254,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp" />
@@ -270,7 +270,8 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
@@ -368,7 +369,7 @@
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
-    <ClCompile Include="TiingoStockFundanmentalTest.cpp" />
+    <ClCompile Include="TiingoStockProflieTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
@@ -399,7 +400,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
@@ -461,8 +464,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEconomicCalendar.h" />
@@ -471,12 +472,10 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />

@@ -491,9 +491,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -504,9 +501,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
@@ -698,9 +692,6 @@
     <ClCompile Include="ProcessTiingoWebDataTest.cpp">
       <Filter>Test源文件\World Market\实现</Filter>
     </ClCompile>
-    <ClCompile Include="TiingoStockFundanmentalTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -718,6 +709,18 @@
     </ClCompile>
     <ClCompile Include="NaicsIndustryTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
+    <ClCompile Include="TiingoStockProflieTest.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp">
+      <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -925,12 +928,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEPSSurprise.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -955,9 +952,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -968,9 +962,6 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h">
@@ -1064,6 +1055,14 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

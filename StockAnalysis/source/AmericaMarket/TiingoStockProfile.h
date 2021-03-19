@@ -5,15 +5,22 @@
 #include"EPSSurprise.h"
 #include"SetWorldStock.h"
 
+#include"SetTiingoStockProfile.h"
+
 using namespace std;
 #include<memory>
 #include<atomic>
 #include<vector>
 
-class CTiingoStockFundanmental : public CObject {
+class CTiingoStockProfile : public CObject {
 public:
-  CTiingoStockFundanmental();
+  CTiingoStockProfile();
   void Reset(void);
+
+  void Load(CSetTiingoStockProfile& setTiingoStockProfile);
+  void Append(CSetTiingoStockProfile& setTiingoStockProfile);
+  void Save(CSetTiingoStockProfile& setTiingoStockProfile);
+
 public:
   CString m_strTiingoPermaTicker; // Tiingo永久代码标识
   CString m_strTicker;
@@ -36,4 +43,4 @@ protected:
   // 无需存储数据区
 };
 
-typedef shared_ptr<CTiingoStockFundanmental> CTiingoStockFundanmentalPtr;
+typedef shared_ptr<CTiingoStockProfile> CTiingoStockProfilePtr;
