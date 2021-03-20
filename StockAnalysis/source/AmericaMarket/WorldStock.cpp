@@ -215,10 +215,10 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   m_strIPODate = m_strIPODate.Left(20);
   m_strIsin = m_strIsin.Left(45);
   m_strNaics = m_strNaics.Left(45);
-  m_strNaicsNationalIndustry = m_strNaicsNationalIndustry.Left(45);
-  m_strNaicsSector = m_strNaicsSector.Left(45);
-  m_strNaicsSubsector = m_strNaicsSubsector.Left(45);
-  m_strName = m_strName.Left(100);
+  m_strNaicsNationalIndustry = m_strNaicsNationalIndustry.Left(100);
+  m_strNaicsSector = m_strNaicsSector.Left(100);
+  m_strNaicsSubsector = m_strNaicsSubsector.Left(100);
+  m_strName = m_strName.Left(200);
   m_strPhone = m_strPhone.Left(100);
   m_strState = m_strState.Left(45);
   m_strTicker = m_strTicker.Left(45);
@@ -227,12 +227,12 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   m_strFinnhubIndustry = m_strFinnhubIndustry.Left(100);
   m_strPeer = m_strPeer.Left(200);
 
-  m_strSICIndustry = m_strSICIndustry.Left(45);
-  m_strSICSector = m_strSICSector.Left(45);
-  m_strTiingoIndustry = m_strTiingoIndustry.Left(45);
-  m_strTiingoSector = m_strTiingoSector.Left(45);
+  m_strSICIndustry = m_strSICIndustry.Left(100);
+  m_strSICSector = m_strSICSector.Left(100);
+  m_strTiingoIndustry = m_strTiingoIndustry.Left(100);
+  m_strTiingoSector = m_strTiingoSector.Left(100);
   m_strCompanyWebSite = m_strCompanyWebSite.Left(100);
-  m_strSECFilingWebSite = m_strSECFilingWebSite.Left(100);
+  m_strSECFilingWebSite = m_strSECFilingWebSite.Left(150);
 
   setWorldStock.m_Symbol = m_strSymbol;
   setWorldStock.m_ExchangeCode = m_strExchangeCode;

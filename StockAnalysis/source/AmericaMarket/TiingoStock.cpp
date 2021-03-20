@@ -53,6 +53,23 @@ void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
 }
 
 void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
+  if ((m_strCompanyWebSite.GetLength() > 100)
+      || (m_strName.GetLength() > 200)
+      || (m_strSECFilingWebSite.GetLength() > 150)
+      || (m_strSICIndustry.GetLength() > 100)
+      || (m_strSICSector.GetLength() > 100)
+      || (m_strTiingoIndustry.GetLength() > 100)
+      || (m_strTiingoSector.GetLength() > 100)) {
+    TRACE("×Ö·û´®Ì«³¤\n");
+  }
+  m_strName = m_strName.Left(200);
+  m_strSICIndustry = m_strSICIndustry.Left(100);
+  m_strSICSector = m_strSICSector.Left(100);
+  m_strTiingoIndustry = m_strTiingoIndustry.Left(100);
+  m_strTiingoSector = m_strTiingoSector.Left(100);
+  m_strCompanyWebSite = m_strCompanyWebSite.Left(100);
+  m_strSECFilingWebSite = m_strSECFilingWebSite.Left(150);
+
   setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
   setTiingoStock.m_Ticker = m_strTicker;
   setTiingoStock.m_Name = m_strName;

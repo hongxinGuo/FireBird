@@ -18,6 +18,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
   m_strInquire = _T("");
   m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
+  m_vBuffer.resize(2 * 1024 * 1024);
 
   m_lInquiringNumber = 500; // 每次查询数量默认值为500
 
@@ -64,9 +65,9 @@ bool CVirtualWebInquiry::ReadWebData(void) {
     do {
       lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
     } while (lCurrentByteReaded > 0);
-    ASSERT(m_lByteRead < 1024 * 1024 * 16);
+    ASSERT(m_vBuffer.size() > m_lByteRead);
     m_lTotalByteReaded += m_lByteRead;
-    m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
+    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
     m_pFile->Close();
   }
   catch (CInternetException* exception) {
@@ -131,8 +132,8 @@ bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecond
         }
       }
     }
-    ASSERT(m_lByteRead < 1024 * 1024 * 16);
-    m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
+    ASSERT(m_vBuffer.size() > m_lByteRead);
+    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
     m_pFile->Close();
     m_lTotalByteReaded += m_lByteRead; //
   }
@@ -168,7 +169,10 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
   char buffer[1024];
   const UINT uByteRead = m_pFile->Read(buffer, 1024);
   for (int i = 0; i < uByteRead; i++) {
-    m_buffer[m_lByteRead++] = buffer[i];
+    m_vBuffer.at(m_lByteRead++) = buffer[i];
+  }
+  if (m_vBuffer.size() < (m_lByteRead + 1024 * 1024)) { // 相差不到1M时
+    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大数据范围
   }
   ASSERT(m_lByteRead < 1024 * 1024 * 16);
   return uByteRead;
@@ -178,7 +182,7 @@ CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
   CWebDataPtr pWebDataReceived = make_shared<CWebData>();
   pWebDataReceived->Resize(GetByteReaded() + 1);
   for (int i = 0; i < GetByteReaded() + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
-    pWebDataReceived->SetData(i, m_buffer[i]);
+    pWebDataReceived->SetData(i, m_vBuffer.at(i));
   }
   pWebDataReceived->SetBufferLength(GetByteReaded());
   pWebDataReceived->ResetCurrentPos();
@@ -212,19 +216,25 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
-  for (long i = 0; i < lTotalNumber; i++) {
-    m_buffer[i] = buffer[i];
+  if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
+    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024);
   }
-  m_buffer[lTotalNumber] = 0x000;
+  for (long i = 0; i < lTotalNumber; i++) {
+    m_vBuffer.at(i) = buffer[i];
+  }
+  m_vBuffer.at(lTotalNumber) = 0x000;
   m_lByteRead = lTotalNumber;
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();
-  for (long i = 0; i < lTotalNumber; i++) {
-    m_buffer[i] = buffer[i];
+  if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
+    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024);
   }
-  m_buffer[lTotalNumber] = 0x000;
+  for (long i = 0; i < lTotalNumber; i++) {
+    m_vBuffer.at(i) = buffer[i];
+  }
+  m_vBuffer.at(lTotalNumber) = 0x000;
   m_lByteRead = lTotalNumber;
 }
