@@ -1,15 +1,15 @@
-// CSetTiingoStockProfile.h : CSetStockCode 的声明
+// CSetTiingoStock.h : CSetStockCode 的声明
 
 #pragma once
 #include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetTiingoStockProfile : public CRecordset
+class CSetTiingoStock : public CRecordset
 {
 public:
-  CSetTiingoStockProfile(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetTiingoStockProfile)
+  CSetTiingoStock(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetTiingoStock)
 
   // 字段/参数数据
 

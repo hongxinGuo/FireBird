@@ -1,6 +1,6 @@
-// CSetTiingoStockProfile.cpp : CSetStockCode 类的实现
+// CSetTiingoStock.cpp : CSetStockCode 类的实现
 
-// CSetTiingoStockProfile 实现
+// CSetTiingoStock 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -8,11 +8,11 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetTiingoStockProfile.h"
+#include "SetTiingoStock.h"
 
-IMPLEMENT_DYNAMIC(CSetTiingoStockProfile, CRecordset)
+IMPLEMENT_DYNAMIC(CSetTiingoStock, CRecordset)
 
-CSetTiingoStockProfile::CSetTiingoStockProfile(CDatabase* pdb)
+CSetTiingoStock::CSetTiingoStock(CDatabase* pdb)
   : CRecordset(pdb) {
   m_TiingoPermaTicker = _T("");
   m_Ticker = _T("");
@@ -34,15 +34,15 @@ CSetTiingoStockProfile::CSetTiingoStockProfile(CDatabase* pdb)
   m_nFields = 17;
 }
 
-CString CSetTiingoStockProfile::GetDefaultConnect() {
+CString CSetTiingoStock::GetDefaultConnect() {
   return GetWorldMarketSchemaConnect();
 }
 
-CString CSetTiingoStockProfile::GetDefaultSQL() {
+CString CSetTiingoStock::GetDefaultSQL() {
   return _T("[tiingo_stock_fundanmental]");
 }
 
-void CSetTiingoStockProfile::DoFieldExchange(CFieldExchange* pFX) {
+void CSetTiingoStock::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -66,14 +66,14 @@ void CSetTiingoStockProfile::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[DailyDataUpdateDate]"), m_DailyDataUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetTiingoStockProfile 诊断
+// CSetTiingoStock 诊断
 
 #ifdef _DEBUG
-void CSetTiingoStockProfile::AssertValid() const {
+void CSetTiingoStock::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetTiingoStockProfile::Dump(CDumpContext& dc) const {
+void CSetTiingoStock::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

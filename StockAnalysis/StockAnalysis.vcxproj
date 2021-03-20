@@ -863,8 +863,8 @@
     <ClInclude Include="source\AmericaMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="source\AmericaMarket\SetFinnhubForexExchange.h" />
     <ClInclude Include="source\AmericaMarket\SetFinnhubForexSymbol.h" />
-    <ClInclude Include="source\AmericaMarket\SetTiingoStockProfile.h" />
-    <ClInclude Include="source\AmericaMarket\TiingoStockProfile.h" />
+    <ClInclude Include="source\AmericaMarket\SetTiingoStock.h" />
+    <ClInclude Include="source\AmericaMarket\TiingoStock.h" />
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\ChinaMarket.h" />
     <ClInclude Include="source\ChinaMarket\ChinaStock.h" />
@@ -937,7 +937,7 @@
     <ClCompile Include="source\AmericaMarket\SetSICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
     <ClCompile Include="source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="source\AmericaMarket\Country.cpp" />
@@ -959,7 +959,7 @@
     <ClCompile Include="source\AmericaMarket\SetWorldStockDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\SetFinnhubForexSymbol.cpp" />
-    <ClCompile Include="source\AmericaMarket\SetTiingoStockProfile.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetTiingoStock.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
@@ -969,7 +969,7 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\TiingoStockProfile.cpp" />
+    <ClCompile Include="source\AmericaMarket\TiingoStock.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp" />
     <ClCompile Include="source\ChinaMarket\ChinaStock.cpp" />

@@ -13,10 +13,10 @@ using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
-bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
+bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
   string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
   CString strNULL = _T(" ");
-  CWorldStockPtr pStock = make_shared<CWorldStock>();
+  CTiingoStockPtr pStock = make_shared<CTiingoStock>();
   ptree pt, pt2;
   string s;
   int iCount = 0;
@@ -27,14 +27,16 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pStock = make_shared<CWorldStock>();
+    pStock = make_shared<CTiingoStock>();
     try {
       pt2 = it->second;
       s = pt2.get<string>(_T("permaTicker"));
       if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
       s = pt2.get<string>(_T("ticker"));
       transform(s.begin(), s.end(), s.begin(), toupper);
-      pStock->SetSymbol(s.c_str());
+      pStock->m_strTicker = s.c_str();
+      s = pt2.get<string>(_T("name"));
+      if (s.size() > 0) pStock->m_strName = s.c_str();
       pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
       pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
       s = pt2.get<string>(_T("industry"));
@@ -62,11 +64,16 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
         if (s.size() > 0) pStock->m_strSICSector = s.c_str();
       }
       else pStock->m_strSICSector = strNULL;
+      s = pt2.get<string>(_T("reportingCurrency"));
+      if (s.compare(strNotAvailable) != 0) {
+        if ((s.size() > 0)) pStock->m_strReportingCurrency = s.c_str();
+      }
+      else pStock->m_strReportingCurrency = _T(" ");
       s = pt2.get<string>(_T("location"));
       if (s.compare(strNotAvailable) != 0) {
-        if ((s.size() > 0)) pStock->SetAddress(s.c_str());
+        if ((s.size() > 0)) pStock->m_strLocation = s.c_str();
       }
-      else pStock->SetAddress(_T(" "));
+      else pStock->m_strLocation = _T(" ");
       s = pt2.get<string>(_T("companyWebsite"));
       if (s.compare(strNotAvailable) != 0) {
         if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
@@ -90,7 +97,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
       fSucceed = false;
       break;
     }
-    vStock.push_back(pStock);
+    vTiingoStock.push_back(pStock);
     iCount++;
   }
   TRACE("今日Tiingo Symbol总数为%d\n", iCount);

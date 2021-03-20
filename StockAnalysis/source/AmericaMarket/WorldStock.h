@@ -5,6 +5,7 @@
 
 #include"DayLine.h"
 #include"EPSSurprise.h"
+#include"TiingoStock.h"
 #include"SetWorldStock.h"
 
 using namespace std;
@@ -30,8 +31,10 @@ public:
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
+  void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
+
   void UpdateDayLineStartEndDate(void);
-  long GetDayLineSize(void) noexcept { return (long)m_vDayLine.size(); }
+  long GetDayLineSize(void) noexcept { return static_cast<long>(m_vDayLine.size()); }
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
 

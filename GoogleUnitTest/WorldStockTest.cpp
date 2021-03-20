@@ -693,6 +693,46 @@ namespace StockAnalysisTest {
     EXPECT_EQ(i, 1);
   }
 
+  TEST_F(CWorldStockTest, TestUpdateStockProfile) {
+    CWorldStock stock;
+    CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+
+    stock.SetSymbol(_T("asdjfkajsfkj"));
+
+    pTiingoStock->m_strTiingoPermaTicker = _T("askfkasjf");
+    pTiingoStock->m_strTicker = _T("asdjfkajsfkj");
+    pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
+    pTiingoStock->m_fIsActive = true;
+    pTiingoStock->m_fIsADR = true;
+    pTiingoStock->m_iSICCode = 1234343445;
+    pTiingoStock->m_strSICIndustry = _T("kjkjljkjgklj");
+    pTiingoStock->m_strSICSector = _T("eiruir");
+    pTiingoStock->m_strTiingoIndustry = _T("kdfjgkjfierj");
+    pTiingoStock->m_strTiingoSector = _T("quwerpqi");
+    pTiingoStock->m_strReportingCurrency = _T("asjdxcmsm");
+    pTiingoStock->m_strLocation = _T("mcmvkmcvkv");
+    pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
+    pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
+    pTiingoStock->m_lStatementUpdateDate = 457843759;
+    pTiingoStock->m_lDailyDataUpdateDate = 234234;
+
+    stock.UpdateStockProfile(pTiingoStock);
+
+    EXPECT_STREQ(stock.m_strTiingoPermaTicker, pTiingoStock->m_strTiingoPermaTicker);
+    EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->m_strTicker);
+    EXPECT_TRUE(stock.m_fIsActive);
+    EXPECT_TRUE(stock.m_fIsADR);
+    EXPECT_EQ(stock.m_iSICCode, pTiingoStock->m_iSICCode);
+    EXPECT_STREQ(stock.m_strSICIndustry, pTiingoStock->m_strSICIndustry);
+    EXPECT_STREQ(stock.m_strSICSector, pTiingoStock->m_strSICSector);
+    EXPECT_STREQ(stock.m_strTiingoIndustry, pTiingoStock->m_strTiingoIndustry);
+    EXPECT_STREQ(stock.m_strSICSector, pTiingoStock->m_strSICSector);
+    EXPECT_STREQ(stock.m_strCompanyWebSite, pTiingoStock->m_strCompanyWebSite);
+    EXPECT_STREQ(stock.m_strSECFilingWebSite, pTiingoStock->m_strSECFilingWebSite);
+    EXPECT_EQ(stock.m_lStatementUpdateDate, pTiingoStock->m_lStatementUpdateDate);
+    EXPECT_EQ(stock.m_lDailyDataUpdateDate, pTiingoStock->m_lDailyDataUpdateDate);
+  }
+
   TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
     CWorldStock stock;
     vector<CDayLinePtr> vDayLine;

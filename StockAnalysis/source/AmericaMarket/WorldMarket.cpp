@@ -12,7 +12,7 @@
 #include"SetCountry.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
-#include"SetTiingoStockProfile.h"
+#include"SetTiingoStock.h"
 
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 
@@ -678,6 +678,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
   vector<CEconomicCalendarPtr> vEconomicCalendar;
   vector<CEPSSurprisePtr> vEPSSurprise;
   vector<CWorldStockPtr> vStock;
+  vector<CTiingoStockPtr> vTiingoStock;
   long lTemp = 0;
   const bool fFoundNewStock = false;
   bool fDone = false;
@@ -694,24 +695,16 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       case __COMPANY_PROFILE_CONCISE__:
       break;
       case  __COMPANY_SYMBOLS__:
-      if (ProcessTiingoStockSymbol(pWebData, vStock)) {
+      if (ProcessTiingoStockSymbol(pWebData, vTiingoStock)) {
         lTemp = 0;
-        for (auto& pStock2 : vStock) {
-          if (IsStock(pStock2->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+        for (auto& pTiingoStock : vTiingoStock) {
+          if (!IsTiingoStock(pTiingoStock->m_strTicker)) {
+            m_vTiingoStock.push_back(pTiingoStock);
+          }
+          if (IsStock(pTiingoStock->m_strTicker)) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
             lTemp++;
-            pStock = m_vWorldStock.at(m_mapWorldStock.at(pStock2->GetSymbol()));
-            pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
-            pStock->m_fIsActive = pStock2->m_fIsActive;
-            pStock->m_fIsADR = pStock2->m_fIsADR;
-            pStock->m_strTiingoIndustry = pStock2->m_strTiingoIndustry;
-            pStock->m_strTiingoSector = pStock2->m_strTiingoSector;
-            pStock->m_strSICIndustry = pStock2->m_strSICIndustry;
-            pStock->m_strSICSector = pStock2->m_strSICSector;
-            pStock->m_iSICCode = pStock2->m_iSICCode;
-            pStock->m_strCompanyWebSite = pStock2->m_strCompanyWebSite;
-            pStock->m_strSECFilingWebSite = pStock2->m_strSECFilingWebSite;
-            pStock->m_lDailyDataUpdateDate = pStock2->m_lDailyDataUpdateDate;
-            pStock->m_lStatementUpdateDate = pStock2->m_lStatementUpdateDate;
+            pStock = m_vWorldStock.at(m_mapWorldStock.at(pTiingoStock->m_strTicker));
+            pStock->UpdateStockProfile(pTiingoStock);
             pStock->SetUpdateProfileDB(true);
           }
           else { // new stock，
@@ -825,6 +818,8 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
   if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
     TaskUpdateStockProfileDB();
   }
+
+  TaskUpdateTiingoStockDB();
 
   return true;
 }
@@ -1362,8 +1357,8 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
   return true;
 }
 
-bool CWorldMarket::TaskUpdateTiingoStockFundamentalDB(void) {
-  RunningThreadUpdateTiingoStockProfileDB();
+bool CWorldMarket::TaskUpdateTiingoStockDB(void) {
+  RunningThreadUpdateTiingoStockDB();
   return true;
 }
 
@@ -1429,8 +1424,8 @@ bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
   return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateTiingoStockProfileDB(void) {
-  thread thread1(ThreadUpdateTiingoStockProfileDB, this);
+bool CWorldMarket::RunningThreadUpdateTiingoStockDB(void) {
+  thread thread1(ThreadUpdateTiingoStockDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1782,20 +1777,20 @@ bool CWorldMarket::UpdateEconomicCalendarDB(void) {
   return true;
 }
 
-bool CWorldMarket::UpdateTiingoStockProfileDB(void) {
-  CTiingoStockProfilePtr pTiingoStockProfile = nullptr;
-  CSetTiingoStockProfile setTiingoStockProfile;
+bool CWorldMarket::UpdateTiingoStockDB(void) {
+  CTiingoStockPtr pTiingoStock = nullptr;
+  CSetTiingoStock setTiingoStock;
 
-  if (m_lLastTotalTiingoStockProfile < m_vTiingoStockProfile.size()) {
-    setTiingoStockProfile.Open();
-    setTiingoStockProfile.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalTiingoStockProfile; l < m_vTiingoStockProfile.size(); l++) {
-      pTiingoStockProfile = m_vTiingoStockProfile.at(l);
-      pTiingoStockProfile->Append(setTiingoStockProfile);
+  if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
+    setTiingoStock.Open();
+    setTiingoStock.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalTiingoStock; l < m_vTiingoStock.size(); l++) {
+      pTiingoStock = m_vTiingoStock.at(l);
+      pTiingoStock->Append(setTiingoStock);
     }
-    setTiingoStockProfile.m_pDatabase->CommitTrans();
-    setTiingoStockProfile.Close();
-    m_lLastTotalTiingoStockProfile = m_vTiingoStockProfile.size();
+    setTiingoStock.m_pDatabase->CommitTrans();
+    setTiingoStock.Close();
+    m_lLastTotalTiingoStock = m_vTiingoStock.size();
   }
 
   return true;
@@ -1913,20 +1908,20 @@ bool CWorldMarket::LoadEconomicCalendarDB(void) {
 }
 
 bool CWorldMarket::LoadTiingoStockFundamental(void) {
-  CSetTiingoStockProfile setTiingoStockProfile;
-  CTiingoStockProfilePtr pTiingoStockProfile = nullptr;
+  CSetTiingoStock setTiingoStock;
+  CTiingoStockPtr pTiingoStock = nullptr;
   CString strSymbol = _T("");
 
-  setTiingoStockProfile.Open();
-  while (!setTiingoStockProfile.IsEOF()) {
-    pTiingoStockProfile = make_shared<CTiingoStockProfile>();
-    pTiingoStockProfile->Load(setTiingoStockProfile);
-    m_mapTiingoStockProfile[pTiingoStockProfile->m_strTicker] = m_vTiingoStockProfile.size();
-    m_vTiingoStockProfile.push_back(pTiingoStockProfile);
-    setTiingoStockProfile.MoveNext();
+  setTiingoStock.Open();
+  while (!setTiingoStock.IsEOF()) {
+    pTiingoStock = make_shared<CTiingoStock>();
+    pTiingoStock->Load(setTiingoStock);
+    m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
+    m_vTiingoStock.push_back(pTiingoStock);
+    setTiingoStock.MoveNext();
   }
-  setTiingoStockProfile.Close();
-  m_lLastTotalTiingoStockProfile = m_vTiingoStockProfile.size();
+  setTiingoStock.Close();
+  m_lLastTotalTiingoStock = m_vTiingoStock.size();
 
   return true;
 }

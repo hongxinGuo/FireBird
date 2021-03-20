@@ -254,7 +254,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp" />
@@ -270,8 +270,8 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
@@ -400,9 +400,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />

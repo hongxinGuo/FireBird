@@ -1,10 +1,10 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"TiingoStockProfile.h"
+#include"TiingoStock.h"
 
 namespace StockAnalysisTest {
-  class CTiingoStockProfileTest : public ::testing::Test
+  class CTiingoStockTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -25,8 +25,8 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CTiingoStockProfileTest, TestInitialize) {
-    CTiingoStockProfile tiingo;
+  TEST_F(CTiingoStockTest, TestInitialize) {
+    CTiingoStock tiingo;
 
     EXPECT_STREQ(tiingo.m_strTiingoPermaTicker, _T(""));
     EXPECT_STREQ(tiingo.m_strTicker, _T(""));
@@ -46,9 +46,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(tiingo.m_lDailyDataUpdateDate, 19800101);
   }
 
-  TEST_F(CTiingoStockProfileTest, TestSave) {
-    CTiingoStockProfile stock, stock2;
-    CSetTiingoStockProfile setTiingoStockProfile;
+  TEST_F(CTiingoStockTest, TestSave) {
+    CTiingoStock stock, stock2;
+    CSetTiingoStock setTiingoStock;
 
     stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
     stock.m_strTicker = _T("000001.US");
@@ -67,15 +67,15 @@ namespace StockAnalysisTest {
     stock.m_lDailyDataUpdateDate = 20202020;
     stock.m_lStatementUpdateDate = 10101010;
 
-    setTiingoStockProfile.Open();
-    stock.Append(setTiingoStockProfile);
-    setTiingoStockProfile.Close();
+    setTiingoStock.Open();
+    stock.Append(setTiingoStock);
+    setTiingoStock.Close();
 
-    setTiingoStockProfile.m_strFilter = _T("[Ticker] = '000001.US'");
-    setTiingoStockProfile.Open();
-    stock2.Load(setTiingoStockProfile);
-    setTiingoStockProfile.Delete();
-    setTiingoStockProfile.Close();
+    setTiingoStock.m_strFilter = _T("[Ticker] = '000001.US'");
+    setTiingoStock.Open();
+    stock2.Load(setTiingoStock);
+    setTiingoStock.Delete();
+    setTiingoStock.Close();
 
     EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
     EXPECT_STREQ(stock.m_strTicker, stock2.m_strTicker);

@@ -713,13 +713,13 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="TiingoStockProflieTest.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockProfileDB.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1059,10 +1059,10 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockProfile.h">
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockProfile.h">
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

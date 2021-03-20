@@ -395,6 +395,28 @@ void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 使用TiingoStock更新。
+// Ticker, Name, Location和ReportingCurrency这四个数据不使用。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
+  m_strTiingoPermaTicker = pTiingoStock->m_strTiingoPermaTicker;
+  m_fIsActive = pTiingoStock->m_fIsActive;
+  m_fIsADR = pTiingoStock->m_fIsADR;
+  m_strTiingoIndustry = pTiingoStock->m_strTiingoIndustry;
+  m_strTiingoSector = pTiingoStock->m_strTiingoSector;
+  m_strSICIndustry = pTiingoStock->m_strSICIndustry;
+  m_strSICSector = pTiingoStock->m_strSICSector;
+  m_iSICCode = pTiingoStock->m_iSICCode;
+  m_strCompanyWebSite = pTiingoStock->m_strCompanyWebSite;
+  m_strSECFilingWebSite = pTiingoStock->m_strSECFilingWebSite;
+  m_lDailyDataUpdateDate = pTiingoStock->m_lDailyDataUpdateDate;
+  m_lStatementUpdateDate = pTiingoStock->m_lStatementUpdateDate;
+}
+
 void CWorldStock::UpdateDayLineStartEndDate(void) {
   if (m_vDayLine.size() > 0) {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {

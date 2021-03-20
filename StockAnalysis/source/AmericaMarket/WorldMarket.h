@@ -8,7 +8,7 @@
 #include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
-#include"TiingoStockProfile.h"
+#include"TiingoStock.h"
 
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
@@ -160,7 +160,7 @@ public:
   virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
   // Tiingo数据处理函数
-  virtual bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
+  virtual bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock);
   virtual bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 
   bool TaskUpdateStockProfileDB(void);
@@ -171,7 +171,7 @@ public:
   bool TaskUpdateCountryListDB(void);
   bool TaskUpdateEPSSurpriseDB(void);
   bool TaskUpdateEconomicCalendarDB(void);
-  bool TaskUpdateTiingoStockFundamentalDB(void);
+  bool TaskUpdateTiingoStockDB(void);
 
   bool TaskCheckSystemReady(void);
 
@@ -185,7 +185,7 @@ public:
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
-  virtual bool RunningThreadUpdateTiingoStockProfileDB(void);
+  virtual bool RunningThreadUpdateTiingoStockDB(void);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -224,7 +224,7 @@ public:
 
   CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
 
-  bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStockProfile.find(strSymbol) == m_mapTiingoStockProfile.end()) return false; else return true; }
+  bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStock.find(strSymbol) == m_mapTiingoStock.end()) return false; else return true; }
   bool IsTiingoStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
@@ -290,7 +290,7 @@ public:
   virtual bool UpdateStockProfileDB(void);
   virtual bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
-  virtual bool UpdateTiingoStockProfileDB(void);
+  virtual bool UpdateTiingoStockDB(void);
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
@@ -361,9 +361,9 @@ protected:
   map<CString, long> m_mapEconomicCalendar;
   long m_lLastTotalEconomicCalendar;
 
-  vector<CTiingoStockProfilePtr> m_vTiingoStockProfile;
-  map<CString, long> m_mapTiingoStockProfile;
-  long m_lLastTotalTiingoStockProfile;
+  vector<CTiingoStockPtr> m_vTiingoStock;
+  map<CString, long> m_mapTiingoStock;
+  long m_lLastTotalTiingoStock;
 
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
   bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
