@@ -712,7 +712,7 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
-    <ClCompile Include="TiingoStockProflieTest.cpp" />
+    <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>

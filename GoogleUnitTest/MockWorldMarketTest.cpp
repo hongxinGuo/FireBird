@@ -137,6 +137,12 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), 39);
   }
 
+  TEST_F(CMockWorldMarketTest, TestUpdateTiingoStockDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoStockDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateTiingoStockDB(gl_pMockWorldMarket.get()), 44);
+  }
+
   TEST_F(CMockWorldMarketTest, TestUpdateDayLineStartEndDate) {
     EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineStartEndDate)
       .Times(1);

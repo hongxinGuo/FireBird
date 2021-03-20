@@ -171,7 +171,7 @@ void CWorldMarket::ResetMarket(void) {
   LoadForexExchange();
   LoadForexSymbol();
   LoadEconomicCalendarDB();
-  LoadTiingoStockFundamental();
+  LoadTiingoStock();
 
   CString str = _T("重置World Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -1907,7 +1907,7 @@ bool CWorldMarket::LoadEconomicCalendarDB(void) {
   return true;
 }
 
-bool CWorldMarket::LoadTiingoStockFundamental(void) {
+bool CWorldMarket::LoadTiingoStock(void) {
   CSetTiingoStock setTiingoStock;
   CTiingoStockPtr pTiingoStock = nullptr;
   CString strSymbol = _T("");

@@ -225,7 +225,7 @@ public:
   CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
 
   bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStock.find(strSymbol) == m_mapTiingoStock.end()) return false; else return true; }
-  bool IsTiingoStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
+  bool IsTiingoStock(CWorldStockPtr pStock) { return IsTiingoStock(pStock->GetSymbol()); }
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);
@@ -297,7 +297,7 @@ public:
   bool LoadCountryDB(void);
   bool LoadEconomicCalendarDB(void);
 
-  bool LoadTiingoStockFundamental(void);
+  bool LoadTiingoStock(void);
 
   bool RebuildStockDayLineDB(void);
   virtual bool UpdateStockDayLineStartEndDate(void);

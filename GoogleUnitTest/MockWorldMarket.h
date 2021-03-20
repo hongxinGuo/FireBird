@@ -50,6 +50,7 @@ namespace testing {
     MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
     MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));
+    MOCK_METHOD(bool, UpdateTiingoStockDB, (), (override));
   };
   typedef shared_ptr<CMockWorldMarket> CMockWorldMarketPtr;
 }
