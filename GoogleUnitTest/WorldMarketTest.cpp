@@ -168,20 +168,20 @@ namespace StockAnalysisTest {
 
   TEST_F(CWorldMarketTest, TestIsTiingoStock) {
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000000.SS")));
-    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000001.SS")));
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("AA")));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("600601.SS")));
-    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("A")));
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("A")));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
     CWorldStockPtr pStock = make_shared<CWorldStock>();
     pStock->SetSymbol(_T("000000.SS"));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
-    pStock->SetSymbol(_T("000001.SS"));
-    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+    pStock->SetSymbol(_T("AA"));
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
     pStock->SetSymbol(_T("600601.SS"));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
     pStock->SetSymbol(_T("A"));
-    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
     pStock->SetSymbol(_T("000001.SZ"));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
   }

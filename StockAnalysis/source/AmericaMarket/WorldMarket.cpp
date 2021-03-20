@@ -143,6 +143,10 @@ void CWorldMarket::ResetFinnhub(void) {
   m_lLastTotalCountry = 0;
   m_lLastTotalEconomicCalendar = 0;
 
+  m_lLastTotalTiingoIndustry = 0;
+  m_lLastTotalSICIndustry = 0;
+  m_lLastTotalNaicsIndustry = 0;
+
   if (GetDayOfWeek() == 6) { // 每周的星期六更新一次EPSSurprise
     m_lCurrentUpdateEPSSurprisePos = 0;
     SetFinnhubEPSSurpriseUpdated(false);

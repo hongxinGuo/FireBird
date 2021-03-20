@@ -142,7 +142,6 @@ bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecond
     if (m_pFile != nullptr) m_pFile->Close();
     m_dwWebErrorCode = exception->m_dwError;
     str1 = GetInquiringString();
-
     strLeft = str1.Left(120);
     TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
     str1 = _T("Error Web : ") + strLeft + _T("\n");
@@ -174,7 +173,6 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
   if (m_vBuffer.size() < (m_lByteRead + 1024 * 1024)) { // 相差不到1M时
     m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大数据范围
   }
-  ASSERT(m_lByteRead < 1024 * 1024 * 16);
   return uByteRead;
 }
 
@@ -217,7 +215,7 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
-    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024);
+    m_vBuffer.resize(lTotalNumber + 1024 * 1024);
   }
   for (long i = 0; i < lTotalNumber; i++) {
     m_vBuffer.at(i) = buffer[i];
@@ -230,7 +228,7 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();
   if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
-    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024);
+    m_vBuffer.resize(lTotalNumber + 1024 * 1024);
   }
   for (long i = 0; i < lTotalNumber; i++) {
     m_vBuffer.at(i) = buffer[i];

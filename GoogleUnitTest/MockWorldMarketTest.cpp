@@ -27,8 +27,7 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
-      gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在EnvironmentSetUp.h中的全局TearDown才赋值nullptr.这样容易看到错误信息
-      gl_pMockWorldMarket->ResetMarket();
+      EXPECT_TRUE(gl_pMockWorldMarket != nullptr) << "此Mock变量需要在EnvironmentSetUp.h中生成";
       EXPECT_FALSE(gl_fExitingSystem);
     }
 

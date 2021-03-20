@@ -387,6 +387,12 @@
     <ClInclude Include="source\AmericaMarket\NaicsIndustry.h">
       <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\TiingoIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetTiingoIndustry.h">
+      <Filter>头文件\World Market\类型和数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -748,6 +754,12 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\TiingoIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetTiingoIndustry.cpp">
+      <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

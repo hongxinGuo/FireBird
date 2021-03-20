@@ -10,6 +10,10 @@
 #include"EconomicCalendar.h"
 #include"TiingoStock.h"
 
+#include"TiingoIndustry.h"
+#include"SICIndustry.h"
+#include"NaicsIndustry.h"
+
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
 
@@ -377,7 +381,20 @@ protected:
 
   bool m_fTiingoSymbolUpdated; // 每日更新公司代码库
   bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
-//
+
+  vector<CTiingoIndustryPtr> m_vTiingoIndustry;
+  map<CString, long> m_mapTiingoIndustry;
+  long m_lLastTotalTiingoIndustry;
+
+  vector<CSICIndustryPtr> m_vSICIndustry;
+  map<CString, long> m_mapSICIndustry;
+  long m_lLastTotalSICIndustry;
+
+  vector<CNaicsIndustryPtr> m_vNaicsIndustry;
+  map<CString, long> m_mapNaicsIndustry;
+  long m_lLastTotalNaicsIndustry;
+
+  //
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 

@@ -43,6 +43,10 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();
+
+      gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
+      gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
+
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
       gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
@@ -77,7 +81,11 @@ namespace StockAnalysisTest {
       ASSERT_TRUE(gl_fTestMode);
       ASSERT_FALSE(gl_fNormalMode);
 
-      gl_pChinaStockMarket->LoadStockCodeDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为4833.
+      gl_pChinaStockMarket->ResetMarket();
+      gl_pWorldMarket->ResetMarket();
+      gl_pMockChinaMarket->ResetMarket();
+      gl_pMockWorldMarket->ResetMarket();
+
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaStockMarket->GetStock(i);
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -87,13 +95,6 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       gl_pChinaStockMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-
-      gl_pWorldMarket->LoadStockDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为2462,皆为上海交易所股票.
-      gl_pWorldMarket->LoadCountryDB();
-      gl_pWorldMarket->LoadWorldExchangeDB();
-      gl_pWorldMarket->LoadForexExchange();
-      gl_pWorldMarket->LoadForexSymbol();
-      gl_pWorldMarket->LoadWorldChoicedStock();
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();

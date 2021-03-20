@@ -710,8 +710,6 @@
     <ClCompile Include="NaicsIndustryTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.cpp">
       <Filter>dependency</Filter>
@@ -720,6 +718,15 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoIndustryTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoIndustry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1057,12 +1064,16 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoIndustry.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

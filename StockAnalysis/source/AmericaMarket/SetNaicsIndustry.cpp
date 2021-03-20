@@ -28,7 +28,7 @@ CString CSetNaicsIndustry::GetDefaultConnect() {
 }
 
 CString CSetNaicsIndustry::GetDefaultSQL() {
-  return _T("[naics_industry_sector]");
+  return _T("[naics_industry]");
 }
 
 void CSetNaicsIndustry::DoFieldExchange(CFieldExchange* pFX) {
