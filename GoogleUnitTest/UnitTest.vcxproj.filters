@@ -109,6 +109,9 @@
     <Filter Include="Test源文件\World Market\实现">
       <UniqueIdentifier>{2c240f4e-9ce9-485d-b026-1df75266f212}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\MyLab">
+      <UniqueIdentifier>{dad70c1a-48d9-49de-9471-f2161a6b9610}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -195,9 +198,6 @@
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp">
       <Filter>Test源文件\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="SemaphoreTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -273,48 +273,6 @@
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp">
       <Filter>Test源文件\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineToday.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRealTimeData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSOption.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="MockChinaMarketTest.cpp">
       <Filter>Test源文件\China Market</Filter>
     </ClCompile>
@@ -332,12 +290,6 @@
     </ClCompile>
     <ClCompile Include="MockCrweberIndexMarketTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp">
-      <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp">
       <Filter>dependency</Filter>
@@ -398,9 +350,6 @@
     <ClCompile Include="MockDayLineContainerTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="CalculateHighLowTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
@@ -416,9 +365,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -432,12 +378,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetEconimicCalendar.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetEPSSurprise.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp">
@@ -473,34 +413,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubExchange.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
@@ -623,9 +539,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaStockTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
@@ -692,16 +605,10 @@
     <ClCompile Include="ProcessTiingoWebDataTest.cpp">
       <Filter>Test源文件\World Market\实现</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="SICIndustryTest.cpp">
@@ -709,9 +616,6 @@
     </ClCompile>
     <ClCompile Include="NaicsIndustryTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.cpp">
-      <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
       <Filter>dependency</Filter>
@@ -725,9 +629,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoIndustry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="TiingoStockTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
@@ -738,6 +639,108 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="SemaphoreTest.cpp">
+      <Filter>Test源文件\MyLab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineToday.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRealTimeData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSOption.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetCountry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetEconimicCalendar.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetEPSSurprise.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubExchange.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubForexExchange.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubForexSymbol.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetForexDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetNaicsIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetSICIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetTiingoIndustry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetTiingoStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldChoicedStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldMarketOption.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -844,56 +847,8 @@
     <ClInclude Include="MockPotenDailyBriefingMarket.h">
       <Filter>Mock类\Poten Daily Briefing Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineToday.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRealTimeData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSOption.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="MockCrweberIndexMarket.h">
       <Filter>Mock类\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h">
-      <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h">
       <Filter>dependency</Filter>
@@ -925,13 +880,7 @@
     <ClInclude Include="MockDayLineContainer.h">
       <Filter>Mock类\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h">
@@ -940,46 +889,16 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEconomicCalendar.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEPSSurprise.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubExchange.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h">
@@ -1027,9 +946,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\基类\VirtualMarket.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -1063,19 +979,10 @@
     <ClInclude Include="MockWeekLineContainer.h">
       <Filter>Mock类\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetSICIndustry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetNaicsIndustry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h">
@@ -1084,7 +991,103 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoIndustry.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineToday.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRealTimeData.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetCountry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetEconomicCalendar.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetEPSSurprise.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubExchange.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubForexExchange.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetFinnhubForexSymbol.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetForexDayLine.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetNaicsIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetSICIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetTiingoIndustry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetTiingoStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldChoicedStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldMarketOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

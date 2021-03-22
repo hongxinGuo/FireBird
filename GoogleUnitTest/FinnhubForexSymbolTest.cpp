@@ -211,4 +211,89 @@ namespace StockAnalysisTest {
     setFinnhubForexSymbol2.m_pDatabase->CommitTrans();
     setFinnhubForexSymbol2.Close();
   }
+
+  TEST_F(CFinnhubForexSymbolTest, TestUpdate) {
+    CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2, setFinnhubForexSymbol3;
+    CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+
+    FinnhubForexSymbol.SetDescription(_T("abc"));
+    FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
+    FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
+    FinnhubForexSymbol.SetExchangeCode(_T("US"));
+    FinnhubForexSymbol.SetDayLineStartDate(20000101);
+    FinnhubForexSymbol.SetDayLineEndDate(10000101);
+    FinnhubForexSymbol.SetIPOStatus(__STOCK_DELISTED__);
+    FinnhubForexSymbol.SetDayLineNeedUpdate(false);
+    FinnhubForexSymbol.SetDayLineNeedSaving(true);
+    FinnhubForexSymbol.SetUpdateProfileDB(true);
+
+    ASSERT(!gl_fNormalMode);
+    setFinnhubForexSymbol.Open();
+    setFinnhubForexSymbol.m_pDatabase->BeginTrans();
+    FinnhubForexSymbol.Append(setFinnhubForexSymbol);
+    setFinnhubForexSymbol.m_pDatabase->CommitTrans();
+    setFinnhubForexSymbol.Close();
+
+    // 改成新值
+    FinnhubForexSymbol.SetDescription(_T("abc changed"));
+    FinnhubForexSymbol.SetDisplaySymbol(_T("changed"));
+    FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
+    FinnhubForexSymbol.SetExchangeCode(_T("US changed"));
+    FinnhubForexSymbol.SetDayLineStartDate(101);
+    FinnhubForexSymbol.SetDayLineEndDate(101);
+    FinnhubForexSymbol.SetIPOStatus(__STOCK_IPOED__);
+    FinnhubForexSymbol.SetDayLineNeedUpdate(TRUE);
+    FinnhubForexSymbol.SetDayLineNeedSaving(FALSE);
+    FinnhubForexSymbol.SetUpdateProfileDB(FALSE);
+
+    setFinnhubForexSymbol3.m_strFilter = _T("[Symbol] = 'AAAAA'");
+    setFinnhubForexSymbol3.Open();
+    setFinnhubForexSymbol3.m_pDatabase->BeginTrans();
+    FinnhubForexSymbol.Update(setFinnhubForexSymbol3);
+    setFinnhubForexSymbol3.m_pDatabase->CommitTrans();
+    setFinnhubForexSymbol3.Close();
+
+    setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+    setFinnhubForexSymbol2.Open();
+    EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AA";
+    FinnhubForexSymbol2.Load(setFinnhubForexSymbol2);
+    EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T("abc changed"));
+    EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T("changed"));
+    EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAAAA"));
+    EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T("US changed"));
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 101);
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 101);
+    EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_TRUE(FinnhubForexSymbol.IsDayLineNeedUpdate());
+    EXPECT_FALSE(FinnhubForexSymbol.IsDayLineNeedSaving());
+    EXPECT_FALSE(FinnhubForexSymbol.IsUpdateProfileDB());
+    setFinnhubForexSymbol2.m_pDatabase->BeginTrans();
+    while (!setFinnhubForexSymbol2.IsEOF()) {
+      setFinnhubForexSymbol2.Delete();
+      setFinnhubForexSymbol2.MoveNext();
+    }
+    setFinnhubForexSymbol2.m_pDatabase->CommitTrans();
+    setFinnhubForexSymbol2.Close();
+  }
+
+  TEST_F(CFinnhubForexSymbolTest, TestSaveDayLine) {
+    CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    vector<CDayLinePtr> vDayLine;
+    CSetForexDayLine setForexDayLine;
+
+    pDayLine->SetDate(10101010);
+    pDayLine->SetSymbol(_T("abcdefg"));
+    vDayLine.push_back(pDayLine);
+    FinnhubForexSymbol.UpdateDayLine(vDayLine);
+    FinnhubForexSymbol.SaveDayLine();
+
+    setForexDayLine.m_strFilter = _T("[Symbol] = 'abcdefg'");
+    setForexDayLine.Open();
+    EXPECT_EQ(setForexDayLine.m_Date, 10101010);
+    setForexDayLine.m_pDatabase->BeginTrans();
+    setForexDayLine.Delete();
+    setForexDayLine.m_pDatabase->CommitTrans();
+    setForexDayLine.Close();
+  }
 }

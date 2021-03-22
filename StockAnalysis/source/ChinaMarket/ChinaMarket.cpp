@@ -2714,7 +2714,10 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 bool CChinaMarket::DeleteTodayTempDB(void) {
   CDatabase database;
 
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1); //退出系统
+  }
 
   database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();

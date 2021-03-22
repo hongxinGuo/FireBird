@@ -73,9 +73,6 @@
     <Filter Include="头文件\World Market\网络通信">
       <UniqueIdentifier>{93c51bfc-3e6e-44e6-96ba-17ed5465cb2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\World Market\类型和数据库">
-      <UniqueIdentifier>{6c99dadd-719f-4a11-ac93-1ceb6e62d26b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\World Market">
       <UniqueIdentifier>{23275e11-b50c-4b14-9534-fa11e3ab2c89}</UniqueIdentifier>
     </Filter>
@@ -87,9 +84,6 @@
     </Filter>
     <Filter Include="源文件\World Market\网络通信">
       <UniqueIdentifier>{7e6320d9-417b-45fd-aa3d-a30d5249b0d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\World Market\类型和数据库">
-      <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\China Market">
       <UniqueIdentifier>{16557625-a09d-4e58-97a5-4f794fb65075}</UniqueIdentifier>
@@ -108,6 +102,18 @@
     </Filter>
     <Filter Include="源文件\China Market\基类">
       <UniqueIdentifier>{6bc823fd-4718-4603-9453-614fb5c07332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\World Market\数据库">
+      <UniqueIdentifier>{fb1337e7-27d8-46b2-be67-46d0c97ace66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\World Market\类型">
+      <UniqueIdentifier>{6c99dadd-719f-4a11-ac93-1ceb6e62d26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\World Market\数据库">
+      <UniqueIdentifier>{93432e80-4cf4-49eb-ba7e-969344fdab6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\World Market\类型">
+      <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,68 +252,32 @@
     <ClInclude Include="GlobeSymbolDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetForexDayLine.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetCountry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h">
       <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h">
       <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetFinnhubForexExchange.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetTiingoStock.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\TiingoStock.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetFinnhubForexSymbol.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\FinnhubForexSymbol.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\Country.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\EPSSurprise.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\EconomicCalendar.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\FinnhubExchange.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetFinnhubExchange.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetWorldMarketOption.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\WorldStock.h">
       <Filter>头文件\World Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetWorldStockDayLine.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetWorldStock.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetWorldChoicedStock.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\WorldMarket.h">
       <Filter>头文件\World Market</Filter>
@@ -375,23 +345,59 @@
     <ClInclude Include="source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetSICIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\SICIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetNaicsIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\NaicsIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\TiingoIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetTiingoIndustry.h">
-      <Filter>头文件\World Market\类型和数据库</Filter>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetCountry.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetEconomicCalendar.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetEPSSurprise.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubExchange.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubForexExchange.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubForexSymbol.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetForexDayLine.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetNaicsIndustry.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetSICIndustry.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetTiingoIndustry.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetTiingoStock.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldChoicedStock.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldMarketOption.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStock.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
+      <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -521,23 +527,11 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetForexDayLine.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetCountry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
@@ -563,50 +557,26 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetFinnhubForexExchange.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetTiingoStock.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\TiingoStock.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetFinnhubForexSymbol.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\FinnhubForexSymbol.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\Country.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\FinnhubExchange.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetFinnhubExchange.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetWorldMarketOption.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetWorldStock.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetWorldStockDayLine.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\WorldStock.cpp">
       <Filter>源文件\World Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetWorldChoicedStock.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\WorldMarket.cpp">
       <Filter>源文件\World Market</Filter>
@@ -740,26 +710,17 @@
     <ClCompile Include="source\基类\VirtualMarket.cpp">
       <Filter>源文件\基类</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetSICIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetNaicsIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\TiingoIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetTiingoIndustry.cpp">
-      <Filter>源文件\World Market\类型和数据库</Filter>
+      <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
@@ -769,6 +730,51 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetCountry.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetEconimicCalendar.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetEPSSurprise.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubExchange.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubForexExchange.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubForexSymbol.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetForexDayLine.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetNaicsIndustry.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetSICIndustry.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetTiingoIndustry.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetTiingoStock.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldChoicedStock.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldMarketOption.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStock.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

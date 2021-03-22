@@ -21,15 +21,19 @@ ExcludeSourceFromCodeCoverage(Exclude3, L"C:\\users\\hxguo\\source\\repos\\Stock
 ExcludeSourceFromCodeCoverage(Exclude4, L"C:\\Program Files (x86)\\*.*"); // 排除VS系统库
 ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
 
+ExcludeSourceFromCodeCoverage(Exclude6, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Poten Daily\\*.*"); // 排除PotenDaily Market.此市场不再使用
+ExcludeSourceFromCodeCoverage(Exclude7, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Crweber\\*.*"); // 排除Crweber.com.此市场不再使用
+ExcludeSourceFromCodeCoverage(Exclude8, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\AmericaMarket\\数据库类\\*.*"); // 排除数据库类
+
 // 排除无需测试的单个文件
-ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");
-ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.h");
-ExcludeSourceFromCodeCoverage(Exclude13, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");
-ExcludeSourceFromCodeCoverage(Exclude14, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.h");
-ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.cpp");
-ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.h");
-ExcludeSourceFromCodeCoverage(Exclude17, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.cpp");
-ExcludeSourceFromCodeCoverage(Exclude18, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.h");
+ExcludeSourceFromCodeCoverage(Exclude101, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");
+ExcludeSourceFromCodeCoverage(Exclude102, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.h");
+ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");
+ExcludeSourceFromCodeCoverage(Exclude104, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.h");
+ExcludeSourceFromCodeCoverage(Exclude105, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.cpp");
+ExcludeSourceFromCodeCoverage(Exclude106, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.h");
+ExcludeSourceFromCodeCoverage(Exclude107, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.cpp");
+ExcludeSourceFromCodeCoverage(Exclude108, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.h");
 
 //  排除单个类或单个类函数
 ExcludeFromCodeCoverage(CMainFrame1, L"CMainFrame::AssertValid");
