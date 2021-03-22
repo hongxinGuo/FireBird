@@ -270,7 +270,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp" />

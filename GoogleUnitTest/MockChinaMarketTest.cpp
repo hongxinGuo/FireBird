@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      EXPECT_TRUE(gl_pMockChinaMarket != nullptr) << "此Mock变量需要在EnvironmentSetUp.h中生成";
+      EXPECT_TRUE(gl_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
       gl_pMockChinaMarket->SetTodayStockProcessed(false);
       EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);

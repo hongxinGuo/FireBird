@@ -7,13 +7,16 @@
 namespace testing {
   class CMockWorldMarket : public CWorldMarket {
   public:
-    MOCK_METHOD(bool, RunningthreadUpdateDayLneStartEndDate, (CWorldMarket* pMarket), (override));
+    MOCK_METHOD(bool, RunningthreadUpdateDayLneStartEndDate, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateDayLineDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexSymbolDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateTiingoIndustry, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateSICIndustry, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateNaicsIndustry, (), (override));
 
     MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
@@ -51,6 +54,9 @@ namespace testing {
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
     MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));
     MOCK_METHOD(bool, UpdateTiingoStockDB, (), (override));
+    MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
+    MOCK_METHOD(bool, UpdateSICIndustry, (), (override));
+    MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
   };
   typedef shared_ptr<CMockWorldMarket> CMockWorldMarketPtr;
 }

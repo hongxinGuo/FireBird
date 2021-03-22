@@ -149,6 +149,10 @@ public:
   virtual bool TaskInquiryTiingoCompanySymbol(void);
   virtual bool TaskInquiryTiingoDayLine(void);
 
+  virtual bool TaskUpdateTiingoIndustry(void);
+  virtual bool TaskUpdateSICIndustry(void);
+  virtual bool TaskUpdateNaicsIndustry(void);
+
   // Finnhub数据处理函数
   virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
   virtual bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
@@ -182,7 +186,7 @@ public:
   bool TaskUpdateDayLineStartEndDate(void);
 
   // 各工作线程调用包裹函数
-  virtual bool RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket);
+  virtual bool RunningthreadUpdateDayLneStartEndDate(void);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningThreadUpdateStockProfileDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
@@ -190,6 +194,9 @@ public:
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
   virtual bool RunningThreadUpdateTiingoStockDB(void);
+  virtual bool RunningThreadUpdateTiingoIndustry(void);
+  virtual bool RunningThreadUpdateSICIndustry(void);
+  virtual bool RunningThreadUpdateNaicsIndustry(void);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -295,6 +302,9 @@ public:
   virtual bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
   virtual bool UpdateTiingoStockDB(void);
+  virtual bool UpdateTiingoIndustry(void);
+  virtual bool UpdateSICIndustry(void);
+  virtual bool UpdateNaicsIndustry(void);
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);

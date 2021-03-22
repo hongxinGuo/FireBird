@@ -940,6 +940,9 @@
     <ClCompile Include="source\AmericaMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\WorldMarket.cpp" />

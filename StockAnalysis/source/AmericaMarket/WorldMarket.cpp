@@ -1253,6 +1253,30 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
   return fHaveInquiry;
 }
 
+bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
+  if (IsFinnhubStockProfileUpdated()) {
+    RunningThreadUpdateTiingoIndustry();
+    return true;
+  }
+  return false;
+}
+
+bool CWorldMarket::TaskUpdateSICIndustry(void) {
+  if (IsFinnhubStockProfileUpdated()) {
+    RunningThreadUpdateSICIndustry();
+    return true;
+  }
+  return false;
+}
+
+bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
+  if (IsFinnhubStockProfileUpdated()) {
+    RunningThreadUpdateNaicsIndustry();
+    return true;
+  }
+  return false;
+}
+
 bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
   CSetFinnhubForexExchange setForexExchange;
 
@@ -1382,12 +1406,12 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 }
 
 bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
-  RunningthreadUpdateDayLneStartEndDate(this);
+  RunningthreadUpdateDayLneStartEndDate();
   return true;
 }
 
-bool CWorldMarket::RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket) {
-  thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, pMarket);
+bool CWorldMarket::RunningthreadUpdateDayLneStartEndDate(void) {
+  thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1430,6 +1454,24 @@ bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
 
 bool CWorldMarket::RunningThreadUpdateTiingoStockDB(void) {
   thread thread1(ThreadUpdateTiingoStockDB, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CWorldMarket::RunningThreadUpdateTiingoIndustry(void) {
+  thread thread1(ThreadUpdateTiingoIndustry, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CWorldMarket::RunningThreadUpdateSICIndustry(void) {
+  thread thread1(ThreadUpdateSICIndustry, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CWorldMarket::RunningThreadUpdateNaicsIndustry(void) {
+  thread thread1(ThreadUpdateNaicsIndustry, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1798,6 +1840,21 @@ bool CWorldMarket::UpdateTiingoStockDB(void) {
   }
 
   return true;
+}
+
+bool CWorldMarket::UpdateTiingoIndustry(void) {
+  // 尚未实现
+  return false;
+}
+
+bool CWorldMarket::UpdateSICIndustry(void) {
+  // 尚未实现
+  return false;
+}
+
+bool CWorldMarket::UpdateNaicsIndustry(void) {
+  // 尚未实现
+  return false;
 }
 
 bool CWorldMarket::RebuildEPSSurprise(void) {
