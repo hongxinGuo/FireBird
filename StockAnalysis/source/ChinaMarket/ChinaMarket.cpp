@@ -1855,7 +1855,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   CWeekLinePtr pWeekLine;
   for (auto& pData : *pDayLineData) {
-    if (setWeekLineStockCode.find(pData->GetSymbol()) == setWeekLineStockCode.end()) { //周线数据容器中无此日线数据
+    if (setWeekLineStockCode.find(pData->GetStockSymbol()) == setWeekLineStockCode.end()) { //周线数据容器中无此日线数据
        // 存储此日线数据至周线数据容器
       pWeekLine = make_shared<CWeekLine>();
       pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(pData));
@@ -1882,12 +1882,12 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 }
 
 bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryDataPtr>*> pvData) {
-  CString strStockCode;
+  CString strStockSymbol;
   vector<CString> vectorStockCode;
 
   for (auto& pData : *pvData) {
-    strStockCode = pData->GetSymbol();
-    vectorStockCode.push_back(strStockCode);
+    strStockSymbol = pData->GetStockSymbol();
+    vectorStockCode.push_back(strStockSymbol);
   }
   setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
 

@@ -743,6 +743,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\基类\VirtualHistoryData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -1088,6 +1091,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\基类\VirtualHistoryData.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

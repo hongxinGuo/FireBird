@@ -283,7 +283,7 @@ namespace StockAnalysisTest {
     CSetForexDayLine setForexDayLine;
 
     pDayLine->SetDate(10101010);
-    pDayLine->SetSymbol(_T("abcdefg"));
+    pDayLine->SetStockSymbol(_T("abcdefg"));
     vDayLine.push_back(pDayLine);
     FinnhubForexSymbol.UpdateDayLine(vDayLine);
     FinnhubForexSymbol.SaveDayLine();

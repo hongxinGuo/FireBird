@@ -9,14 +9,14 @@ CDayLineContainer::CDayLineContainer() {
 CDayLineContainer::~CDayLineContainer() {
 }
 
-bool CDayLineContainer::SaveData(CString strStockCode) {
-  SaveDayLineBasicInfo(strStockCode);
+bool CDayLineContainer::SaveData(CString strStockSymbol) {
+  SaveDayLineBasicInfo(strStockSymbol);
 
   return true;
 }
 
-bool CDayLineContainer::LoadData(CString strStockCode) {
-  LoadDayLine(strStockCode);
+bool CDayLineContainer::LoadData(CString strStockSymbol) {
+  LoadDayLine(strStockSymbol);
 
   return true;
 }
@@ -28,7 +28,7 @@ bool CDayLineContainer::LoadData(CString strStockCode) {
 // 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
+bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockSymbol) {
   CSetDayLineBasicInfo setDayLineBasicInfo, setDayLineBasicInfo2;
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
@@ -40,7 +40,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
 
   lSize = GetDataSize();
   setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
-  setDayLineBasicInfo.m_strFilter += strStockCode + _T("'");
+  setDayLineBasicInfo.m_strFilter += strStockSymbol + _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Date]");
 
   setDayLineBasicInfo.Open();

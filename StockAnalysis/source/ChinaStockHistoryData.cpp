@@ -3,7 +3,9 @@
 #include"globedef.h"
 #include"ChinaStockHistoryData.h"
 
-CChinaStockHistoryData::CChinaStockHistoryData() : CObject() {
+int CChinaStockHistoryData::s_iRatio = 1000;
+
+CChinaStockHistoryData::CChinaStockHistoryData() : CVirtualHistoryData() {
   Reset();
 }
 
@@ -23,7 +25,8 @@ void CChinaStockHistoryData::CalculateRSLogarithm1(double dRS) {
 void CChinaStockHistoryData::Reset(void) {
   m_lDate = 0;		// 类型
   m_time = 0;
-  m_strSymbol = _T("");
+  m_strExchange = _T("");
+  m_strStockSymbol = _T("");
   m_strStockName = _T("");
   m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0; // 收盘价
   m_llVolume = 0;

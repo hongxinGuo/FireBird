@@ -1375,7 +1375,7 @@ namespace StockAnalysisTest {
     CSetDayLineBasicInfo setDayLine, setDayLine2;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
 
-    pDayLine->SetSymbol(_T("600000.SS"));
+    pDayLine->SetStockSymbol(_T("600000.SS"));
     pDayLine->SetDate(19900101);
 
     _ltoa_s(19900101, buffer, 10);
@@ -1410,7 +1410,7 @@ namespace StockAnalysisTest {
     CSetDayLineExtendInfo setDayLine, setDayLine2;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
 
-    pDayLine->SetSymbol(_T("600000.SS"));
+    pDayLine->SetStockSymbol(_T("600000.SS"));
     pDayLine->SetDate(19900101);
 
     _ltoa_s(19900101, buffer, 10);
@@ -1444,7 +1444,7 @@ namespace StockAnalysisTest {
     CSetWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 
-    pWeekLine->SetSymbol(_T("600000.SS"));
+    pWeekLine->SetStockSymbol(_T("600000.SS"));
     pWeekLine->SetDate(GetCurrentMonday(20200101));
     setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
     setCurrentWeekLine.Open();
@@ -1470,7 +1470,7 @@ namespace StockAnalysisTest {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     CWeekLineContainer weekLineContainer, weekLineContainer2;
 
-    pWeekLine->SetSymbol(_T("600000.SS"));
+    pWeekLine->SetStockSymbol(_T("600000.SS"));
     pWeekLine->SetDate(GetCurrentMonday(20200101));
     weekLineContainer.StoreData(pWeekLine);
 
@@ -1479,7 +1479,7 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->LoadCurrentWeekLine(weekLineContainer2);
     pWeekLine = weekLineContainer2.GetData(0);
-    EXPECT_STREQ(pWeekLine->GetSymbol(), _T("600000.SS"));
+    EXPECT_STREQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
     EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), 20191230) << "20200101之前的星期一";
 
     gl_pChinaStockMarket->DeleteCurrentWeekWeekLine();
@@ -1508,7 +1508,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Open();
     while (!setDayLineBasicInfo.IsEOF()) {
       pDayLine = dayLineContainer.GetData(i++);
-      EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetSymbol());
+      EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
       setDayLineBasicInfo.MoveNext();
     }
     EXPECT_EQ(i, dayLineContainer.GetDataSize());
@@ -1518,18 +1518,18 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
     vector<CChinaStockHistoryDataPtr> vData;
     CChinaStockHistoryDataPtr pData = make_shared<CChinaStockHistoryData>();
-    pData->SetSymbol(_T("600000.SS"));
+    pData->SetStockSymbol(_T("600000.SS"));
     vData.resize(2);
     vData[0] = pData;
     pData = make_shared<CChinaStockHistoryData>();
-    pData->SetSymbol(_T("sh600004"));
+    pData->SetStockSymbol(_T("600004.SS"));
     vData[1] = pData;
 
     set<CString> setStockCode;
     gl_pChinaStockMarket->CreateStockCodeSet(setStockCode, &vData);
 
     EXPECT_TRUE(setStockCode.find(_T("600000.SS")) != setStockCode.end());
-    EXPECT_TRUE(setStockCode.find(_T("sh600004")) != setStockCode.end());
-    EXPECT_FALSE(setStockCode.find(_T("sh600001")) != setStockCode.end());
+    EXPECT_TRUE(setStockCode.find(_T("600004.SS")) != setStockCode.end());
+    EXPECT_FALSE(setStockCode.find(_T("600001.SS")) != setStockCode.end());
   }
 }

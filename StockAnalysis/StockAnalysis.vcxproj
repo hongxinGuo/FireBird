@@ -919,6 +919,7 @@
     <ClInclude Include="source\ThreadStatus.h" />
     <ClInclude Include="source\WeekLine.h" />
     <ClInclude Include="source\WeekLineContainer.h" />
+    <ClInclude Include="source\基类\VirtualHistoryData.h" />
     <ClInclude Include="source\基类\VirtualMarket.h" />
     <ClInclude Include="source\基类\VirtualStock.h" />
     <ClInclude Include="source\基类\VirtualWebInquiry.h" />
@@ -1052,6 +1053,7 @@
     <ClCompile Include="source\基类\VirtualMarket.cpp" />
     <ClCompile Include="source\基类\VirtualStock.cpp" />
     <ClCompile Include="source\基类\VirtualWebInquiry.cpp" />
+    <ClCompile Include="source\基类\VirtualHistoryData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|Win32'">Create</PrecompiledHeader>

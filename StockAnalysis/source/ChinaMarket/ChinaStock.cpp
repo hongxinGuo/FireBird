@@ -194,7 +194,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     }
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetTodayActive(pDayLine->GetSymbol(), pDayLine->GetStockName());
+      SetTodayActive(pDayLine->GetStockSymbol(), pDayLine->GetStockName());
       TRACE("下载日线函数生成新的活跃股票%s\n", GetSymbol().GetBuffer());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面

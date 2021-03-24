@@ -349,6 +349,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\基类\VirtualHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp" />
@@ -440,6 +441,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\基类\VirtualHistoryData.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />

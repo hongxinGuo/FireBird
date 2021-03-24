@@ -1164,7 +1164,7 @@ namespace StockAnalysisTest {
 
     pid = make_shared<CDayLine>();
     pid->SetDate(21900101);
-    pid->SetSymbol(_T("600011.SS"));
+    pid->SetStockSymbol(_T("600011.SS"));
     pid->SetStockName(_T("首创股份"));
     pid->SetLastClose(34235345);
     pid->SetOpen(1000000);
@@ -1274,7 +1274,7 @@ namespace StockAnalysisTest {
     pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
     EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
-    EXPECT_STREQ(pDayLine->GetSymbol(), _T("600011.SS"));
+    EXPECT_STREQ(pDayLine->GetStockSymbol(), _T("600011.SS"));
     EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
     EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
     EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1386,7 +1386,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
-      pid->SetSymbol(_T("600016.SS"));
+      pid->SetStockSymbol(_T("600016.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1415,7 +1415,7 @@ namespace StockAnalysisTest {
       dayLine.LoadChinaMarketBasicData(&setDayLineBasicInfo);
       pid = pStock->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
-      EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetSymbol());
+      EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * 1000, pid->GetOpen());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_High) * 1000, pid->GetHigh());
@@ -1455,7 +1455,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
-      pid->SetSymbol(_T("600010.SS"));
+      pid->SetStockSymbol(_T("600010.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1484,7 +1484,7 @@ namespace StockAnalysisTest {
       pid = stock.GetDayLine(i);
       pDayLine = pStock->GetDayLine(i);
       EXPECT_EQ(pDayLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
-      EXPECT_STREQ(pDayLine->GetSymbol(), pid->GetSymbol());
+      EXPECT_STREQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
       EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
       EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
       EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1521,7 +1521,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
-      pid->SetSymbol(_T("600004.SS"));
+      pid->SetStockSymbol(_T("600004.SS"));
       pid->SetStockName(_T("白云机场"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1557,7 +1557,7 @@ namespace StockAnalysisTest {
     for (int i = 1; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
-      pid->SetSymbol(_T("600008.SS"));
+      pid->SetStockSymbol(_T("600008.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1593,7 +1593,7 @@ namespace StockAnalysisTest {
     for (int i = 1; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
-      pid->SetSymbol(_T("600008.SS"));
+      pid->SetStockSymbol(_T("600008.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1779,7 +1779,7 @@ namespace StockAnalysisTest {
     dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
     EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
-    EXPECT_STREQ(dayLine.GetSymbol(), _T(""));
+    EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
     EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
     EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
     EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), stock.GetTransactionNumberBelow50000());
@@ -1878,7 +1878,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
-      pid->SetSymbol(_T("600016.SS"));
+      pid->SetStockSymbol(_T("600016.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1906,7 +1906,7 @@ namespace StockAnalysisTest {
       stock.LoadBasicData(&setWeekLineBasicInfo);
       pid = pStock->GetWeekLine(i);
       EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
-      EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetSymbol());
+      EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, pid->GetOpen());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, pid->GetHigh());
@@ -1947,7 +1947,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
-      pid->SetSymbol(_T("600010.SS"));
+      pid->SetStockSymbol(_T("600010.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1976,7 +1976,7 @@ namespace StockAnalysisTest {
       pid = stock.GetWeekLine(i);
       pWeekLine = pStock->GetWeekLine(i);
       EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
-      EXPECT_STREQ(pWeekLine->GetSymbol(), pid->GetSymbol());
+      EXPECT_STREQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
       EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
       EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
       EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());

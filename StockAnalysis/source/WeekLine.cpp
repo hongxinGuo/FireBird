@@ -15,7 +15,7 @@ bool CWeekLine::AppendData(CSetWeekLineInfo* psetWeekLineInfo) {
   ASSERT(psetWeekLineInfo->IsOpen());
   psetWeekLineInfo->AddNew();
   psetWeekLineInfo->m_Date = GetFormatedMarketDate();
-  psetWeekLineInfo->m_Symbol = GetSymbol();
+  psetWeekLineInfo->m_Symbol = GetStockSymbol();
   psetWeekLineInfo->m_StockName = GetStockName();
   psetWeekLineInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetWeekLineInfo->m_High = ConvertValueToString(GetHigh(), 1000);
@@ -107,7 +107,7 @@ bool CWeekLine::SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   ASSERT(psetWeekLineBasicInfo->IsOpen());
 
   psetWeekLineBasicInfo->m_Date = GetFormatedMarketDate();
-  psetWeekLineBasicInfo->m_Symbol = GetSymbol();
+  psetWeekLineBasicInfo->m_Symbol = GetStockSymbol();
   psetWeekLineBasicInfo->m_StockName = GetStockName();
   psetWeekLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetWeekLineBasicInfo->m_High = ConvertValueToString(GetHigh(), 1000);
@@ -140,7 +140,7 @@ bool CWeekLine::AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
 bool CWeekLine::SaveData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
   ASSERT(psetWeekLineExtendInfo->IsOpen());
   psetWeekLineExtendInfo->m_Date = m_lDate;
-  psetWeekLineExtendInfo->m_Symbol = m_strSymbol;
+  psetWeekLineExtendInfo->m_Symbol = m_strStockSymbol;
   psetWeekLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   psetWeekLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   psetWeekLineExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
@@ -221,7 +221,7 @@ bool CWeekLine::AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
   ASSERT(psetWeekLineInfo->IsOpen());
   m_lDate = psetWeekLineInfo->m_Date;
-  m_strSymbol = psetWeekLineInfo->m_Symbol;
+  m_strStockSymbol = psetWeekLineInfo->m_Symbol;
   m_strStockName = psetWeekLineInfo->m_StockName;
   m_lLastClose = atof(psetWeekLineInfo->m_LastClose) * 1000;
   m_lOpen = atof(psetWeekLineInfo->m_Open) * 1000;
@@ -312,7 +312,7 @@ bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
 bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   ASSERT(psetWeekLineBasicInfo->IsOpen());
   m_lDate = psetWeekLineBasicInfo->m_Date;
-  m_strSymbol = psetWeekLineBasicInfo->m_Symbol;
+  m_strStockSymbol = psetWeekLineBasicInfo->m_Symbol;
   m_strStockName = psetWeekLineBasicInfo->m_StockName;
   m_lLastClose = atof(psetWeekLineBasicInfo->m_LastClose) * 1000;
   m_lOpen = atof(psetWeekLineBasicInfo->m_Open) * 1000;
@@ -407,7 +407,7 @@ bool CWeekLine::LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 bool CWeekLine::UpdateWeekLine(CDayLinePtr pDayLine) {
   if (m_lDate == 0) m_lDate = GetCurrentMonday(pDayLine->GetFormatedMarketDate());;
   if (m_time == 0) m_time = pDayLine->GetFormatedMarketTime();
-  if (m_strSymbol == _T("")) m_strSymbol = pDayLine->GetSymbol();
+  if (m_strStockSymbol == _T("")) m_strStockSymbol = pDayLine->GetStockSymbol();
   if (m_strStockName == _T("")) m_strStockName = pDayLine->GetStockName();
 
   if (m_lOpen == 0) m_lOpen = pDayLine->GetOpen();

@@ -7,13 +7,13 @@
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 
-bool CWeekLineContainer::LoadData(CString strStockCode) {
-  LoadWeekLine(strStockCode);
+bool CWeekLineContainer::LoadData(CString strStockSymbol) {
+  LoadWeekLine(strStockSymbol);
 
   return true;
 }
 
-bool CWeekLineContainer::SaveData(CString strStockCode) {
+bool CWeekLineContainer::SaveData(CString strStockSymbol) {
   SaveWeekLine();
 
   return true;
@@ -184,7 +184,7 @@ void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 
 bool CWeekLineContainer::UpdateData(CDayLinePtr pDayLine) {
   for (auto pData : m_vHistoryData) {
-    if (strcmp(pData->GetSymbol(), pDayLine->GetSymbol()) == 0) { //
+    if (strcmp(pData->GetStockSymbol(), pDayLine->GetStockSymbol()) == 0) { //
       dynamic_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pDayLine);
       break;
     }

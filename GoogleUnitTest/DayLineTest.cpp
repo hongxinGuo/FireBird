@@ -43,9 +43,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDayLineTest, TestGetStockCode) {
     CDayLine dl;
-    EXPECT_STREQ(dl.GetSymbol(), _T(""));
-    dl.SetSymbol(_T("600000.SS"));
-    EXPECT_STREQ(dl.GetSymbol(), _T("600000.SS"));
+    EXPECT_STREQ(dl.GetStockSymbol(), _T(""));
+    dl.SetStockSymbol(_T("600000.SS"));
+    EXPECT_STREQ(dl.GetStockSymbol(), _T("600000.SS"));
   }
 
   TEST_F(CStockDayLineTest, TestGetStockName) {
@@ -561,7 +561,7 @@ namespace StockAnalysisTest {
     CDayLine id, id2;
 
     id.SetDate(21101101);
-    id.SetSymbol(_T("600008.SS"));
+    id.SetStockSymbol(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
@@ -591,7 +591,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Open();
     id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
-    EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, id.GetSymbol());
+    EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, id.GetStockSymbol());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * 1000, id.GetLastClose());
     EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * 1000, id.GetOpen());
@@ -611,7 +611,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Close();
 
     EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
-    EXPECT_STREQ(id2.GetSymbol(), id.GetSymbol());
+    EXPECT_STREQ(id2.GetStockSymbol(), id.GetStockSymbol());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
     EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
@@ -644,7 +644,7 @@ namespace StockAnalysisTest {
     CDayLine id, idLoaded;
 
     id.SetDate(21101101);
-    id.SetSymbol(_T("600008.SS"));
+    id.SetStockSymbol(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
@@ -674,7 +674,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Open();
     idLoaded.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
-    EXPECT_STREQ(idLoaded.GetSymbol(), id.GetSymbol());
+    EXPECT_STREQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
     EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
@@ -718,7 +718,7 @@ namespace StockAnalysisTest {
     CDayLine id, id2;
     CSetDayLineBasicInfo setDayLineBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-    id.SetSymbol(_T("600000.SS"));
+    id.SetStockSymbol(_T("600000.SS"));
     id.SetStockName(_T("浦发银行"));
     id.SetLastClose(1010);
     id.SetOpen(1100);
@@ -738,7 +738,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Open();
     id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
-    EXPECT_STREQ(id.GetSymbol(), id2.GetSymbol());
+    EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 
     setDayLineBasicInfo.Delete();

@@ -399,6 +399,9 @@
     <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\基类\VirtualHistoryData.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -775,6 +778,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
       <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\基类\VirtualHistoryData.cpp">
+      <Filter>源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

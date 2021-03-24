@@ -9,13 +9,13 @@
 
 class CWeekLineContainer : public CChinaStockHistoryDataContainer {
 public:
-  virtual bool LoadData(CString strStockCode) override;
-  virtual bool SaveData(CString strStockCode) override;
+  virtual bool LoadData(CString strStockSymbol) override;
+  virtual bool SaveData(CString strStockSymbol) override;
 
   bool SaveWeekLine(void);
   bool SaveBasicInfo(void);
   bool SaveExtendInfo(void);
-  bool LoadWeekLine(CString strStockCode);
+  bool LoadWeekLine(CString strStockSymbol);
   bool LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 

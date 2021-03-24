@@ -689,7 +689,7 @@ namespace StockAnalysisTest {
     WebInquiry inquiry;
     vector<CDayLinePtr> vDayLine;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->SetSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
+    pDayLine->SetStockSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
     pDayLine->SetDate(gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetFormatedMarketDate(), 101)); // 早于100天之前
 
     vDayLine.resize(0);
@@ -719,7 +719,7 @@ namespace StockAnalysisTest {
     WebInquiry inquiry;
     vector<CDayLinePtr> vDayLine;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->SetSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
+    pDayLine->SetStockSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
     pDayLine->SetDate(gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetFormatedMarketDate(), 99)); // 晚于100天之前
 
     vDayLine.resize(0);
