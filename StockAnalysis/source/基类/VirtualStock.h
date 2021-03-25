@@ -12,6 +12,7 @@ public:
   CVirtualStock();
   virtual ~CVirtualStock();
   virtual void Reset(void);
+  virtual int GetRatio(void) = 0;// 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
 
 public:
   CString GetExchangeCode(void) { return m_strExchangeCode; }

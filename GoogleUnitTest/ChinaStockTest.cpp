@@ -58,6 +58,233 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock;
   };
 
+  TEST_F(CChinaStockTest, TestGetExchangeCode) {
+    CChinaStock stock;
+    EXPECT_STREQ(stock.GetExchangeCode(), _T(""));
+    stock.SetExchangeCode(_T("SS"));
+    EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
+  }
+
+  TEST_F(CChinaStockTest, TestGetSymbol) {
+    CChinaStock stock;
+    EXPECT_STREQ(stock.GetSymbol(), _T(""));
+    stock.SetSymbol(_T("600000.SS"));
+    EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
+  }
+
+  TEST_F(CChinaStockTest, TestGetTransactionTime) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
+    stock.SetTransactionTime(1010101010);
+    EXPECT_EQ(stock.GetTransactionTime(), 1010101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetLastClose) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    stock.SetLastClose(10101010);
+    EXPECT_EQ(stock.GetLastClose(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetOpen) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetOpen(), 0);
+    stock.SetOpen(10101);
+    EXPECT_EQ(stock.GetOpen(), 10101);
+  }
+
+  TEST_F(CChinaStockTest, TestGetHigh) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetHigh(), 0);
+    stock.SetHigh(19980101);
+    EXPECT_EQ(stock.GetHigh(), 19980101);
+  }
+
+  TEST_F(CChinaStockTest, TestGetLow) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetLow(), 0);
+    stock.SetLow(19980101);
+    EXPECT_EQ(stock.GetLow(), 19980101);
+  }
+
+  TEST_F(CChinaStockTest, TestGetNew) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetNew(), 0);
+    stock.SetNew(10101010);
+    EXPECT_EQ(stock.GetNew(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetUpDown) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetUpDown(), 0);
+    stock.SetUpDown(10101010);
+    EXPECT_EQ(stock.GetUpDown(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetAmount) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetAmount(), 0);
+    stock.SetAmount(1010101010101010);
+    EXPECT_EQ(stock.GetAmount(), 1010101010101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetVolume) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetVolume(), 0);
+    stock.SetVolume(10101010);
+    EXPECT_EQ(stock.GetVolume(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetTotalValue) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetTotalValue(), 0);
+    stock.SetTotalValue(10101010);
+    EXPECT_EQ(stock.GetTotalValue(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetCurrentValue) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetCurrentValue(), 0);
+    stock.SetCurrentValue(10101010);
+    EXPECT_EQ(stock.GetCurrentValue(), 10101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetChangeHandRate) {
+    CChinaStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
+    stock.SetChangeHandRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
+  }
+
+  TEST_F(CChinaStockTest, TestGetUpDownRate) {
+    CChinaStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0.0);
+    stock.SetUpDownRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 1.1);
+  }
+
+  TEST_F(CChinaStockTest, TestIsTodayNewStock) {
+    CChinaStock stock;
+
+    EXPECT_FALSE(stock.IsTodayNewStock());
+    stock.SetTodayNewStock(true);
+    EXPECT_TRUE(stock.IsTodayNewStock());
+    stock.SetTodayNewStock(false);
+    EXPECT_FALSE(stock.IsTodayNewStock());
+  }
+
+  TEST_F(CChinaStockTest, TestIsUpdateStockProfileDB) {
+    CChinaStock stock;
+
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(false);
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+  }
+
+  TEST_F(CChinaStockTest, TestIsUpdateProfileDBAndClearFlag) {
+    CChinaStock stock;
+
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+  }
+
+  TEST_F(CChinaStockTest, TestIsActive) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsActive());
+    stock.SetActive(true);
+    EXPECT_TRUE(stock.IsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.IsActive());
+  }
+
+  TEST_F(CChinaStockTest, TestGetDayLineEndDate) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19900101);
+    stock.SetDayLineEndDate(19980101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
+  }
+
+  TEST_F(CChinaStockTest, TestGetDayLineStartDate) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetDayLineStartDate(), 19900101);
+    stock.SetDayLineStartDate(19980101);
+    EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+  }
+
+  TEST_F(CChinaStockTest, TestGetIPOStatus) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(255);
+    EXPECT_EQ(stock.GetIPOStatus(), 255);
+  }
+
+  TEST_F(CChinaStockTest, TestIsNullStock) {
+    CChinaStock stock;
+    stock.SetIPOStatus(__STOCK_NULL__);
+    EXPECT_TRUE(stock.IsNullStock());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsNullStock());
+  }
+
+  TEST_F(CChinaStockTest, TestIsIPOed) {
+    CChinaStock stock;
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    EXPECT_TRUE(stock.IsIPOed());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsIPOed());
+  }
+
+  TEST_F(CChinaStockTest, TestIsNotChecked) {
+    CChinaStock stock;
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(__STOCK_DELISTED__);
+    EXPECT_FALSE(stock.IsNotChecked());
+  }
+
+  TEST_F(CChinaStockTest, TestIsDelisted) {
+    CChinaStock stock;
+    stock.SetIPOStatus(__STOCK_DELISTED__);
+    EXPECT_TRUE(stock.IsDelisted());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsDelisted());
+  }
+
+  TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(false);
+    EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(true);
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+  }
+
+  TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(true);
+    EXPECT_TRUE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(false);
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+  }
+
+  TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(false);
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+  }
+
   TEST_F(CChinaStockTest, TestInitialize) {
     CChinaStock stock;
     EXPECT_STREQ(stock.GetSymbol(), _T(""));
@@ -113,59 +340,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetOffset(), -1);
     stock.SetOffset(10101);
     EXPECT_EQ(stock.GetOffset(), 10101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetDayLineEndDate) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
-    stock.SetDayLineEndDate(19980101);
-    EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetDayLineStartDate) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__);
-    stock.SetDayLineStartDate(19980101);
-    EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetIPOStatus) {
-    CChinaStock stock;
-    EXPECT_TRUE(stock.IsNotChecked());
-    stock.SetIPOStatus(255);
-    EXPECT_EQ(stock.GetIPOStatus(), 255);
-  }
-
-  TEST_F(CChinaStockTest, TestIsNullStock) {
-    CChinaStock stock;
-    stock.SetIPOStatus(__STOCK_NULL__);
-    EXPECT_TRUE(stock.IsNullStock());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
-    EXPECT_FALSE(stock.IsNullStock());
-  }
-
-  TEST_F(CChinaStockTest, TestIsIPOed) {
-    CChinaStock stock;
-    stock.SetIPOStatus(__STOCK_IPOED__);
-    EXPECT_TRUE(stock.IsIPOed());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
-    EXPECT_FALSE(stock.IsIPOed());
-  }
-
-  TEST_F(CChinaStockTest, TestIsNotChecked) {
-    CChinaStock stock;
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
-    EXPECT_TRUE(stock.IsNotChecked());
-    stock.SetIPOStatus(__STOCK_DELISTED__);
-    EXPECT_FALSE(stock.IsNotChecked());
-  }
-
-  TEST_F(CChinaStockTest, TestIsDelisted) {
-    CChinaStock stock;
-    stock.SetIPOStatus(__STOCK_DELISTED__);
-    EXPECT_TRUE(stock.IsDelisted());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
-    EXPECT_FALSE(stock.IsDelisted());
   }
 
   TEST_F(CChinaStockTest, TestGetHighLimit) {
@@ -985,14 +1159,14 @@ namespace StockAnalysisTest {
     setDayLineToday.Open();
     EXPECT_EQ(setDayLineToday.m_Date, 20191101);
     EXPECT_STREQ(setDayLineToday.m_Symbol, pStock->GetSymbol());
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStock->GetOpen() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStock->GetHigh() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Low), (double)pStock->GetLow() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Close), (double)pStock->GetNew() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / pStock->GetRatio());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStock->GetOpen() / pStock->GetRatio());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStock->GetHigh() / pStock->GetRatio());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Low), (double)pStock->GetLow() / pStock->GetRatio());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Close), (double)pStock->GetNew() / pStock->GetRatio());
     EXPECT_EQ(atoll(setDayLineToday.m_Volume), pStock->GetVolume());
     EXPECT_EQ(atoll(setDayLineToday.m_Amount), pStock->GetAmount());
-    EXPECT_EQ(atof(setDayLineToday.m_UpAndDown), (double)pStock->GetUpDown() / 1000);
+    EXPECT_EQ(atof(setDayLineToday.m_UpAndDown), (double)pStock->GetUpDown() / pStock->GetRatio());
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_UpDownRate), pStock->GetUpDownRate());
     EXPECT_EQ(atoll(setDayLineToday.m_CurrentValue), pStock->GetCurrentValue());
     EXPECT_EQ(atoll(setDayLineToday.m_TotalValue), pStock->GetTotalValue());
@@ -1173,7 +1347,7 @@ namespace StockAnalysisTest {
     pid->SetClose(452435);
     pid->SetVolume(34523454);
     pid->SetAmount(3245235345);
-    pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+    pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
     pid->SetUpDownRate(123.45);
     pid->SetTotalValue(234523452345);
     pid->SetCurrentValue(234145345245);
@@ -1395,7 +1569,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1464,7 +1638,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1530,7 +1704,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1566,7 +1740,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1602,7 +1776,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1887,7 +2061,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
@@ -1956,7 +2130,7 @@ namespace StockAnalysisTest {
       pid->SetClose(452435);
       pid->SetVolume(34523454);
       pid->SetAmount(3245235345);
-      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
       pid->SetUpDownRate(123.45);
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);

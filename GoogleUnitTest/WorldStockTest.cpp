@@ -26,6 +26,233 @@ namespace StockAnalysisTest {
     CWorldStockPtr pStock;
   };
 
+  TEST_F(CWorldStockTest, TestGetExchangeCode) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));
+    stock.SetExchangeCode(_T("SS"));
+    EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetSymbol) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetSymbol(), _T(""));
+    stock.SetSymbol(_T("600000.SS"));
+    EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetTransactionTime) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
+    stock.SetTransactionTime(1010101010);
+    EXPECT_EQ(stock.GetTransactionTime(), 1010101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetLastClose) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    stock.SetLastClose(10101010);
+    EXPECT_EQ(stock.GetLastClose(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetOpen) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetOpen(), 0);
+    stock.SetOpen(10101);
+    EXPECT_EQ(stock.GetOpen(), 10101);
+  }
+
+  TEST_F(CWorldStockTest, TestGetHigh) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetHigh(), 0);
+    stock.SetHigh(19980101);
+    EXPECT_EQ(stock.GetHigh(), 19980101);
+  }
+
+  TEST_F(CWorldStockTest, TestGetLow) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetLow(), 0);
+    stock.SetLow(19980101);
+    EXPECT_EQ(stock.GetLow(), 19980101);
+  }
+
+  TEST_F(CWorldStockTest, TestGetNew) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetNew(), 0);
+    stock.SetNew(10101010);
+    EXPECT_EQ(stock.GetNew(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetUpDown) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetUpDown(), 0);
+    stock.SetUpDown(10101010);
+    EXPECT_EQ(stock.GetUpDown(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetAmount) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetAmount(), 0);
+    stock.SetAmount(1010101010101010);
+    EXPECT_EQ(stock.GetAmount(), 1010101010101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetVolume) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetVolume(), 0);
+    stock.SetVolume(10101010);
+    EXPECT_EQ(stock.GetVolume(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetTotalValue) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetTotalValue(), 0);
+    stock.SetTotalValue(10101010);
+    EXPECT_EQ(stock.GetTotalValue(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetCurrentValue) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetCurrentValue(), 0);
+    stock.SetCurrentValue(10101010);
+    EXPECT_EQ(stock.GetCurrentValue(), 10101010);
+  }
+
+  TEST_F(CWorldStockTest, TestGetChangeHandRate) {
+    CWorldStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
+    stock.SetChangeHandRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
+  }
+
+  TEST_F(CWorldStockTest, TestGetUpDownRate) {
+    CWorldStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0.0);
+    stock.SetUpDownRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 1.1);
+  }
+
+  TEST_F(CWorldStockTest, TestIsTodayNewStock) {
+    CWorldStock stock;
+
+    EXPECT_FALSE(stock.IsTodayNewStock());
+    stock.SetTodayNewStock(true);
+    EXPECT_TRUE(stock.IsTodayNewStock());
+    stock.SetTodayNewStock(false);
+    EXPECT_FALSE(stock.IsTodayNewStock());
+  }
+
+  TEST_F(CWorldStockTest, TestIsUpdateStockProfileDB) {
+    CWorldStock stock;
+
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(false);
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+  }
+
+  TEST_F(CWorldStockTest, TestIsUpdateProfileDBAndClearFlag) {
+    CWorldStock stock;
+
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+  }
+
+  TEST_F(CWorldStockTest, TestIsActive) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsActive());
+    stock.SetActive(true);
+    EXPECT_TRUE(stock.IsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.IsActive());
+  }
+
+  TEST_F(CWorldStockTest, TestGetDayLineEndDate) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+    stock.SetDayLineEndDate(19980101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
+  }
+
+  TEST_F(CWorldStockTest, TestGetDayLineStartDate) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
+    stock.SetDayLineStartDate(19980101);
+    EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+  }
+
+  TEST_F(CWorldStockTest, TestGetIPOStatus) {
+    CWorldStock stock;
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(255);
+    EXPECT_EQ(stock.GetIPOStatus(), 255);
+  }
+
+  TEST_F(CWorldStockTest, TestIsNullStock) {
+    CWorldStock stock;
+    stock.SetIPOStatus(__STOCK_NULL__);
+    EXPECT_TRUE(stock.IsNullStock());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsNullStock());
+  }
+
+  TEST_F(CWorldStockTest, TestIsIPOed) {
+    CWorldStock stock;
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    EXPECT_TRUE(stock.IsIPOed());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsIPOed());
+  }
+
+  TEST_F(CWorldStockTest, TestIsNotChecked) {
+    CWorldStock stock;
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(__STOCK_DELISTED__);
+    EXPECT_FALSE(stock.IsNotChecked());
+  }
+
+  TEST_F(CWorldStockTest, TestIsDelisted) {
+    CWorldStock stock;
+    stock.SetIPOStatus(__STOCK_DELISTED__);
+    EXPECT_TRUE(stock.IsDelisted());
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsDelisted());
+  }
+
+  TEST_F(CWorldStockTest, TestIsDayLineNeedUpdate) {
+    CWorldStock stock;
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(false);
+    EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(true);
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+  }
+
+  TEST_F(CWorldStockTest, TestIsDayLineNeedProcess) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(true);
+    EXPECT_TRUE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(false);
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+  }
+
+  TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(false);
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+  }
+
   TEST_F(CWorldStockTest, TestGetProfileUpdateDate) {
     CWorldStock stock;
     EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
@@ -89,13 +316,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetDisplaySymbol(), _T(" "));
     stock.SetDisplaySymbol(_T("abcdef"));
     EXPECT_STREQ(stock.GetDisplaySymbol(), _T("abcdef"));
-  }
-
-  TEST_F(CWorldStockTest, TestGetExchangeCode) {
-    CWorldStock stock;
-    EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));
-    stock.SetExchangeCode(_T("abcdef"));
-    EXPECT_STREQ(stock.GetExchangeCode(), _T("abcdef"));
   }
 
   TEST_F(CWorldStockTest, TestGetType) {

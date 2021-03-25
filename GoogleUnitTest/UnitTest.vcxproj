@@ -473,7 +473,6 @@
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
     <ClCompile Include="TiingoWebInquiryTest.cpp" />
     <ClCompile Include="UpdateWeekLineTest.cpp" />
-    <ClCompile Include="VirtualStockTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />

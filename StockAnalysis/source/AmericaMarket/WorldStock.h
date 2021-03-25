@@ -18,6 +18,8 @@ public:
   CWorldStock();
   ~CWorldStock();
   virtual void Reset(void);
+  virtual int GetRatio(void) noexcept override final { return s_iRatio; }
+
 public:
   void Load(CSetWorldStock& setWorldStock);
   bool CheckProfileUpdateStatus(long lTodayDate);
@@ -93,8 +95,8 @@ public:
   void SetIPODate(CString strIPODate) { m_strIPODate = strIPODate; }
   CString GetIsin(void) { return m_strIsin; }
   void SetIsin(CString strIsin) { m_strIsin = strIsin; }
-  double GetMarketCapitalization(void) { return m_dMarketCapitalization; }
-  void SetMarketCapitalization(double dMarketCapitalization) { m_dMarketCapitalization = dMarketCapitalization; }
+  double GetMarketCapitalization(void) noexcept { return m_dMarketCapitalization; }
+  void SetMarketCapitalization(double dMarketCapitalization) noexcept { m_dMarketCapitalization = dMarketCapitalization; }
   CString GetNaics(void) { return m_strNaics; }
   void SetNaics(CString strNaics) { m_strNaics = strNaics; }
   CString GetNaicsNationalIndustry(void) { return m_strNaicsNationalIndustry; }
@@ -201,6 +203,9 @@ protected:
   // 无需存储数据区
   bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
+
+private:
+  static int s_iRatio;
 };
 
 typedef shared_ptr<CWorldStock> CWorldStockPtr;

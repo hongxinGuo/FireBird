@@ -653,7 +653,7 @@ namespace StockAnalysisTest {
     id.SetClose(452435);
     id.SetVolume(34523454);
     id.SetAmount(3245235345);
-    id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / 1000);
+    id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / id.GetRatio());
     id.SetUpDownRate(123.45);
     id.SetTotalValue(234523452345);
     id.SetCurrentValue(234145345245);

@@ -806,7 +806,7 @@ namespace StockAnalysisTest {
     id.SetClose(452435);
     id.SetVolume(34523454);
     id.SetAmount(3245235345);
-    id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / 1000);
+    id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / id.GetRatio());
     id.SetUpDownRate(123.45);
     id.SetTotalValue(234523452345);
     id.SetCurrentValue(234145345245);
@@ -900,7 +900,7 @@ namespace StockAnalysisTest {
     pDayLine->SetHigh(3030);
     pDayLine->SetLow(4040);
     pDayLine->SetLastClose(5050);
-    pDayLine->SetUpDown((double)(pDayLine->GetClose() - pDayLine->GetLastClose()) / 1000);
+    pDayLine->SetUpDown((double)(pDayLine->GetClose() - pDayLine->GetLastClose()) / pDayLine->GetRatio());
     pDayLine->SetVolume(1010101010101010);
     pDayLine->SetAmount(2020202020202020);
     pDayLine->SetCurrentValue(303030303030303);
@@ -1060,7 +1060,7 @@ namespace StockAnalysisTest {
     pDayLine1->SetHigh(3030);
     pDayLine1->SetLow(4040);
     pDayLine1->SetLastClose(5050);
-    pDayLine1->SetUpDown((double)(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / 1000);
+    pDayLine1->SetUpDown((double)(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / pDayLine1->GetRatio());
 
     pDayLine1->SetVolume(1010101010101010);
     pDayLine1->SetAmount(2020202020202020);
@@ -1152,7 +1152,7 @@ namespace StockAnalysisTest {
     pDayLine2->SetHigh(3030);
     pDayLine2->SetLow(4040);
     pDayLine2->SetLastClose(5050);
-    pDayLine2->SetUpDown((double)(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / 1000);
+    pDayLine2->SetUpDown((double)(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / pDayLine2->GetRatio());
 
     pDayLine2->SetVolume(1010101010101010);
     pDayLine2->SetAmount(2020202020202020);
@@ -1247,7 +1247,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetHigh(), pDayLine1->GetHigh() > pDayLine2->GetHigh() ? pDayLine1->GetHigh() : pDayLine2->GetHigh());
     EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
     EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
-    EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), (double)(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / 1000);
+    EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), (double)(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / pDayLine2->GetRatio());
 
     EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
     EXPECT_EQ(weekLine.GetAmount(), pDayLine1->GetAmount() + pDayLine2->GetAmount());

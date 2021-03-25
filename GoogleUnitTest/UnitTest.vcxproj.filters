@@ -560,9 +560,6 @@
     <ClCompile Include="ChinaStockHistoryDataTest.cpp">
       <Filter>Test源文件\China Market\基类</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualStockTest.cpp">
-      <Filter>Test源文件\基类</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
       <Filter>dependency</Filter>
     </ClCompile>

@@ -56,6 +56,7 @@ public:
   CChinaStock(void);
   virtual ~CChinaStock(void);
   virtual void Reset(void);
+  virtual int GetRatio(void) noexcept override final { return s_iRatio; }
 
 public:
   void UpdateStatus(CWebRTDataPtr pRTData);
@@ -566,4 +567,7 @@ protected:
   INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
+
+private:
+  static int s_iRatio;
 };

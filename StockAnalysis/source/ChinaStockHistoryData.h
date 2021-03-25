@@ -20,8 +20,8 @@ class CChinaStockHistoryData : public CVirtualHistoryData {
 public:
   CChinaStockHistoryData();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
-  virtual int GetRatio(void) override { return s_iRatio; }; // 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
-  virtual void SetRatio(int iRatio = 1000) override { s_iRatio = iRatio; }; // 此函数需要继承类各自实现
+  virtual int GetRatio(void) override final { return s_iRatio; }; // 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
+  virtual void SetRatio(int iRatio = 1000) override final { s_iRatio = iRatio; }; // 此函数需要继承类各自实现
 
   void CalculateRSLogarithm1(double dRS);
 
