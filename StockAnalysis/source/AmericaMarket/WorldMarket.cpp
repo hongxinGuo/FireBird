@@ -1716,10 +1716,20 @@ bool CWorldMarket::UpdateCountryListDB(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::UpdateStockProfileDB(void) {
+  static bool sm_fInProcess = false;
   CWorldStockPtr pStock = nullptr;
   CSetWorldStock setWorldStock;
   int iUpdatedStock = 0;
   int iCount = 0;
+  time_t tt = GetTickCount64();
+
+  if (sm_fInProcess) {
+    TRACE("此任务五分钟之内没有完成\n");
+    return false;
+  }
+  else {
+    sm_fInProcess = true;
+  }
 
   //更新原有的代码集状态
   if (IsStockProfileNeedUpdate()) {
@@ -1756,6 +1766,8 @@ bool CWorldMarket::UpdateStockProfileDB(void) {
     m_lLastTotalWorldStock = m_vWorldStock.size();
   }
   ASSERT(iCount == iUpdatedStock);
+  sm_fInProcess = false;
+  tt = GetTickCount64() - tt;
   return true;
 }
 

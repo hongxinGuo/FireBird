@@ -74,6 +74,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -81,6 +82,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -88,6 +90,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -95,6 +98,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -102,6 +106,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -109,11 +114,13 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
     <EnableASAN>false</EnableASAN>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <VCToolsVersion>14.28.29910</VCToolsVersion>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <UseOfMfc>Dynamic</UseOfMfc>

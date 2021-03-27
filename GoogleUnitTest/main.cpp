@@ -11,6 +11,10 @@
 #error _T("本系统使用多字节字符集")
 #endif
 
+#ifndef __GOOGLEMOCK__
+#error _T("本系统必须使用GOOGLE MOCK")
+#endif
+
 // 排除外部代码
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)

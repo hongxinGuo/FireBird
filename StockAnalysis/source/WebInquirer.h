@@ -12,7 +12,7 @@
 
 extern int gl_cMaxSavingOneDayLineThreads;
 
-#ifdef __GOOGLEMOCK__
+#ifdef __GOOGLEMOCK__ // 测试时使用Mock类
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
@@ -38,7 +38,7 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日
 extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 extern CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry; // Finnhub.io证券信息
 extern CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry; // Finnhub.io证券信息
-#else
+#else // 实际运行时使用实体类
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"

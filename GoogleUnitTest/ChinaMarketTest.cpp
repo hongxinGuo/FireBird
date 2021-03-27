@@ -1031,7 +1031,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb1) {
+  TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb1) { // 这三个从网络读取数据的测试有内存泄露问题，待查。
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
     gl_pChinaStockMarket->SetSystemReady(false);

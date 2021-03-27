@@ -27,6 +27,9 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
+      gl_pMockWorldMarket->ResetMarket();
+
       EXPECT_TRUE(gl_pMockWorldMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
       EXPECT_FALSE(gl_fExitingSystem);
     }
@@ -863,7 +866,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub2) {
     gl_pMockWorldMarket->SetSystemReady(false);
-    Sequence seq;
+    InSequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
@@ -881,7 +884,7 @@ namespace StockAnalysisTest {
   TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {
     gl_pMockWorldMarket->SetSystemReady(true);
     gl_pMockWorldMarket->SetFinnhubDayLineUpdated(false);
-    Sequence seq;
+    InSequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
@@ -891,6 +894,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0); //"目前未使用"
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubDayLine).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
 
     EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
@@ -899,7 +903,7 @@ namespace StockAnalysisTest {
   TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub4) {
     gl_pMockWorldMarket->SetSystemReady(true);
     gl_pMockWorldMarket->SetFinnhubDayLineUpdated(true);
-    Sequence seq;
+    InSequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
@@ -909,6 +913,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubDayLine).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
 
     EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
@@ -923,7 +928,7 @@ namespace StockAnalysisTest {
   }
   TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
     gl_pMockWorldMarket->SetSystemReady(true);
-    Sequence seq;
+    InSequence seq;
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
 

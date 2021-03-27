@@ -20,7 +20,7 @@ public:
 
 public:
   virtual int GetRatio(void) = 0; // 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
-  virtual void SetRatio(int iRatio = 1) = 0; // 此函数需要继承类各自实现
+  virtual void SetRatio(int iRatio) = 0; // 此函数需要继承类各自实现
 
   long GetFormatedMarketDate(void) noexcept { return m_lDate; }
   void SetDate(long lDate) noexcept { m_lDate = lDate; }

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <GoogleTestAdapterSettings>
+    <SolutionSettings>
+      <Settings>
+        <ExitCodeTestCase>MemoryLeakTest</ExitCodeTestCase>
+        <AdditionalTestExecutionParam>-is_run_by_gta</AdditionalTestExecutionParam>
+      </Settings>
+    </SolutionSettings>
+    <ProjectSettings>
+    </ProjectSettings>
+  </GoogleTestAdapterSettings>
+</RunSettings>

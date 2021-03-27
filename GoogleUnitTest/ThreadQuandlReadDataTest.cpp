@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
-    EXPECT_EQ(pWebData->GetBufferLength(), 8);
+    EXPECT_EQ(pWebData->GetBufferLength(), 8) << "testData×Ö·û´®³¤¶ÈÎª8";
     char buffer[30];
     int i = 0;
     while ((i < 30) && (pWebData->GetData(i) != 0x000)) {

@@ -7,7 +7,7 @@
 
 int gl_cMaxSavingOneDayLineThreads = 4; // ¥À±‰¡ø»°÷µ∑∂ŒßŒ™1-4
 
-#ifdef __GOOGLEMOCK__
+#ifdef __GOOGLEMOCK__ // ≤‚ ‘ ± π”√Mock¿‡
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
@@ -31,7 +31,7 @@ CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // Õ¯“
 CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr;
 CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr;
 CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr;
-#else
+#else //  µº ‘À–– ± π”√ µÃÂ
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
@@ -61,7 +61,7 @@ CWebInquirer::~CWebInquirer(void) {
 }
 
 void CWebInquirer::Initialize(void) {
-#ifdef __GOOGLEMOCK__
+#ifdef __GOOGLEMOCK__ // ≤‚ ‘ ±Ω®¡¢Mock¿‡
   gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
   gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
   gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
@@ -75,7 +75,7 @@ void CWebInquirer::Initialize(void) {
   gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
   gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
-#else
+#else //  µº ‘À–– ±Ω®¡¢ µÃÂ¿‡
   gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
   gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
   gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
