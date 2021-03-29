@@ -65,10 +65,10 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
       }
       else pStock->m_strSICSector = strNULL;
       s = pt2.get<string>(_T("reportingCurrency"));
-      if (s.compare(strNotAvailable) != 0) {
+      if (s.compare(strNotAvailable) != 0) { // 此项应该永远存在
         if ((s.size() > 0)) pStock->m_strReportingCurrency = s.c_str();
       }
-      else pStock->m_strReportingCurrency = _T(" ");
+      else pStock->m_strReportingCurrency = strNULL;
       s = pt2.get<string>(_T("location"));
       if (s.compare(strNotAvailable) != 0) {
         if ((s.size() > 0)) pStock->m_strLocation = s.c_str();

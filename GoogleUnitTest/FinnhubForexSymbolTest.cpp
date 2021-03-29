@@ -39,6 +39,12 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(FinnhubForexSymbol.IsUpdateProfileDB());
   }
 
+  TEST_F(CFinnhubForexSymbolTest, TestGetRatio) {
+    CFinnhubForexSymbol symbol;
+
+    EXPECT_EQ(symbol.GetRatio(), 1000);
+  }
+
   TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
     CFinnhubForexSymbol symbol;
 

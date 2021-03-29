@@ -55,8 +55,8 @@ class CChinaStock : public CVirtualStock {
 public:
   CChinaStock(void);
   virtual ~CChinaStock(void);
-  virtual void Reset(void);
-  virtual int GetRatio(void) noexcept override final { return s_iRatio; }
+  virtual void Reset(void) override;
+  virtual int GetRatio(void) override { return s_iRatio; }
 
 public:
   void UpdateStatus(CWebRTDataPtr pRTData);

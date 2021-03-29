@@ -36,6 +36,7 @@ namespace StockAnalysisTest {
       gl_pMockChinaMarket->SetTodayStockProcessed(false);
       EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
+      EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -63,6 +64,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       CChinaStockPtr pStock;
       if (gl_pMockChinaMarket->GetDayLineNeedSaveNumber() > 0) {

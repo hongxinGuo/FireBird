@@ -72,4 +72,8 @@ namespace StockAnalysisTest {
     }
     gl_pWorldMarket->SetSystemReady(false);
   }
+
+  TEST_F(CFinnhubWebInquiryTest, TestGetNextInquiringMiddleStr) {
+    EXPECT_STREQ(m_FinnhubWebInquiry.GetNextInquiringMiddleStr(), _T("")) << "此函数不执行任何动作";
+  }
 }

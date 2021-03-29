@@ -14,7 +14,7 @@ class CFinnhubForexSymbol : public CVirtualStock {
 public:
   CFinnhubForexSymbol();
   virtual void Reset(void);
-  virtual int GetRatio(void) { return s_iRatio; }// 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
+  virtual int GetRatio(void) override { return s_iRatio; }// 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
 
   void Load(CSetFinnhubForexSymbol& setForexSymbol);
   void Append(CSetFinnhubForexSymbol& setForexSymbol);

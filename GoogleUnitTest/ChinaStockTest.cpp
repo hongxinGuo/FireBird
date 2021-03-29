@@ -58,6 +58,11 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock;
   };
 
+  TEST_F(CChinaStockTest, TestGetRatio) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetRatio(), 1000) << "中国市场的股票价格，放大倍数为1000";
+  }
+
   TEST_F(CChinaStockTest, TestGetExchangeCode) {
     CChinaStock stock;
     EXPECT_STREQ(stock.GetExchangeCode(), _T(""));

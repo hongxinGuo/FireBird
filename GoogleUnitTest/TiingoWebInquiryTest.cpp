@@ -67,4 +67,8 @@ namespace StockAnalysisTest {
     }
     gl_pWorldMarket->SetSystemReady(false);
   }
+
+  TEST_F(CTiingoWebInquiryTest, TestGetNextInquiringMiddleStr) {
+    EXPECT_STREQ(m_TiingoWebInquiry.GetNextInquiringMiddleStr(), _T("")) << "此函数不执行任何动作";
+  }
 }

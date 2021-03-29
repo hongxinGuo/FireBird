@@ -1,6 +1,7 @@
 # FireBird StockAnalysis
 
 ### 声明
+Version 0.18:收集全球70个交易所的基本情况。
 Version 0.15.0已可用。增加美国股市股票信息。
 Version 0.14.0已可用。增加周线。
 

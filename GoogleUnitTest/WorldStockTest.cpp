@@ -26,6 +26,11 @@ namespace StockAnalysisTest {
     CWorldStockPtr pStock;
   };
 
+  TEST_F(CWorldStockTest, TestGetRatio) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetRatio(), 1000) << "国际市场的股票价格，放大倍数为1000";
+  }
+
   TEST_F(CWorldStockTest, TestGetExchangeCode) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));

@@ -465,7 +465,15 @@
     <ClCompile Include="QuandlWebInquiryTest.cpp" />
     <ClCompile Include="QueueWebRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
-    <ClCompile Include="SemaphoreTest.cpp" />
+    <ClCompile Include="SemaphoreTest.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MockSystemMessageTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />

@@ -112,6 +112,9 @@
     <Filter Include="Test源文件\MyLab">
       <UniqueIdentifier>{dad70c1a-48d9-49de-9471-f2161a6b9610}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GoogleTest源文件">
+      <UniqueIdentifier>{90714063-2043-40d6-9f23-a2d20d3dc6e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">

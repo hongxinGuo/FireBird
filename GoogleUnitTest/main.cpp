@@ -149,6 +149,18 @@ ExcludeFromCodeCoverage(CCrweberIndexMarket3, L"CCrweberIndexMarket::ShedulingTa
 ExcludeFromCodeCoverage(CCrweberIndexMarket4, L"CCrweberIndexMarket::ShedulingTaskPerSecond");
 ExcludeFromCodeCoverage(CCrweberIndexMarket5, L"CCrweberIndexMarket::ShedulingTask");
 
+ExcludeFromCodeCoverage(CWorldMarket1, L"CWorldMarket::RunningthreadUpdateDayLneStartEndDate");
+ExcludeFromCodeCoverage(CWorldMarket2, L"CWorldMarket::RunningThreadUpdateDayLineDB");
+ExcludeFromCodeCoverage(CWorldMarket3, L"CWorldMarket::RunningThreadUpdateStockProfileDB");
+ExcludeFromCodeCoverage(CWorldMarket4, L"CWorldMarket::RunningThreadUpdateForexDayLineDB");
+ExcludeFromCodeCoverage(CWorldMarket5, L"CWorldMarket::RunningThreadUpdateForexSymbolDB");
+ExcludeFromCodeCoverage(CWorldMarket6, L"CWorldMarket::RunningThreadUpdateCountryListDB");
+ExcludeFromCodeCoverage(CWorldMarket7, L"CWorldMarket::RunningThreadUpdateEPSSurpriseDB");
+ExcludeFromCodeCoverage(CWorldMarket8, L"CWorldMarket::RunningThreadUpdateTiingoStockDB");
+ExcludeFromCodeCoverage(CWorldMarket9, L"CWorldMarket::RunningThreadUpdateTiingoIndustry");
+ExcludeFromCodeCoverage(CWorldMarket10, L"CWorldMarket::RunningThreadUpdateSICIndustry");
+ExcludeFromCodeCoverage(CWorldMarket11, L"CWorldMarket::RunningThreadUpdateNaicsIndustry");
+
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
 
