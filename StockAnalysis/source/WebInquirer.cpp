@@ -5,7 +5,7 @@
 
 #include"WebInquirer.h"
 
-int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
+int gl_iMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
 
 #ifdef __GOOGLEMOCK__ // 测试时使用Mock类
 #include"MockSinaRTWebInquiry.h"
@@ -92,8 +92,8 @@ void CWebInquirer::Initialize(void) {
 bool CWebInquirer::GetNeteaseDayLineData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。目前使用两个。
-  ASSERT((gl_cMaxSavingOneDayLineThreads <= 32) && (gl_cMaxSavingOneDayLineThreads > 0));
-  switch (gl_cMaxSavingOneDayLineThreads) {
+  ASSERT((gl_iMaxSavingOneDayLineThreads <= 32) && (gl_iMaxSavingOneDayLineThreads > 0));
+  switch (gl_iMaxSavingOneDayLineThreads) {
   case 6:
   case 5:
   case 4:

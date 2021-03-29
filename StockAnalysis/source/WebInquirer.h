@@ -10,7 +10,7 @@
 #include"globedef.h"
 #include"CrweberIndex.h"
 
-extern int gl_cMaxSavingOneDayLineThreads;
+extern int gl_iMaxSavingOneDayLineThreads;
 
 #ifdef __GOOGLEMOCK__ // 测试时使用Mock类
 #include"MockSinaRTWebInquiry.h"
