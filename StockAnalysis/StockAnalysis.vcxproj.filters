@@ -31,12 +31,6 @@
     <Filter Include="源文件\网络数据提取器">
       <UniqueIdentifier>{72c0370f-98bb-40af-9cd0-d0eb922a24c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\基类">
-      <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\基类">
-      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Crweber.com Market">
       <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
     </Filter>
@@ -114,6 +108,12 @@
     </Filter>
     <Filter Include="源文件\World Market\类型">
       <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base Class">
+      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base Class">
+      <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -333,15 +333,6 @@
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h">
       <Filter>头文件\China Market\基类</Filter>
     </ClInclude>
-    <ClInclude Include="source\基类\VirtualMarket.h">
-      <Filter>头文件\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\基类\VirtualWebInquiry.h">
-      <Filter>头文件\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\基类\VirtualStock.h">
-      <Filter>头文件\基类</Filter>
-    </ClInclude>
     <ClInclude Include="source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
@@ -399,8 +390,17 @@
     <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\基类\VirtualHistoryData.h">
-      <Filter>头文件\基类</Filter>
+    <ClInclude Include="source\Base Class\VirtualHistoryData.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Base Class\VirtualMarket.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Base Class\VirtualStock.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Base Class\VirtualWebInquiry.h">
+      <Filter>头文件\Base Class</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -692,12 +692,6 @@
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp">
       <Filter>源文件\China Market\基类</Filter>
     </ClCompile>
-    <ClCompile Include="source\基类\VirtualWebInquiry.cpp">
-      <Filter>源文件\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\基类\VirtualStock.cpp">
-      <Filter>源文件\基类</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaMarket\StockSection.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
@@ -709,9 +703,6 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStockProfileDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\基类\VirtualMarket.cpp">
-      <Filter>源文件\基类</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp">
       <Filter>源文件\World Market\类型</Filter>
@@ -779,8 +770,17 @@
     <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\基类\VirtualHistoryData.cpp">
-      <Filter>源文件\基类</Filter>
+    <ClCompile Include="source\Base Class\VirtualHistoryData.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Base Class\VirtualMarket.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Base Class\VirtualStock.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Base Class\VirtualWebInquiry.cpp">
+      <Filter>源文件\Base Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

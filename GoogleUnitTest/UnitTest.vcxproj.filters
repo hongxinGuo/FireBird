@@ -548,15 +548,6 @@
     <ClCompile Include="MockChinaStockTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp">
       <Filter>Test源文件\China Market\基类</Filter>
     </ClCompile>
@@ -743,7 +734,16 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualHistoryData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -949,15 +949,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -1093,7 +1084,16 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualHistoryData.h">
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

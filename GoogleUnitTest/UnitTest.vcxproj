@@ -146,7 +146,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -158,7 +158,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -170,7 +170,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -182,7 +182,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -193,7 +193,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -204,7 +204,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -215,7 +215,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\基类;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;$(IncludePath);C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -287,6 +287,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
@@ -356,10 +360,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualHistoryData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
@@ -430,6 +430,10 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\数据库类\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />
@@ -448,7 +452,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualHistoryData.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
@@ -554,9 +557,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\基类\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\stdafx.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
