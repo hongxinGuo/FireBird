@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
     NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_FALSE(gl_pChinaStockMarket->GetStock(_T("600601.SS"))->IsDayLineNeedProcess());
+    EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsDayLineNeedProcess());
 
     EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
     NeteaseDayLineWebInquiry.SetReadingWebData(true);
@@ -45,8 +45,8 @@ namespace StockAnalysisTest {
     NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_TRUE(gl_pChinaStockMarket->GetStock(_T("600601.SS"))->IsDayLineNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
+    EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsDayLineNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
 
-    gl_pChinaStockMarket->GetStock(_T("600601.SS"))->SetDayLineNeedProcess(false);
+    gl_pChinaMarket->GetStock(_T("600601.SS"))->SetDayLineNeedProcess(false);
   }
 }

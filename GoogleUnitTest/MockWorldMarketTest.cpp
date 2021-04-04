@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
-      //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
       EXPECT_TRUE(gl_pMockWorldMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
       EXPECT_FALSE(gl_fExitingSystem);
@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
     }
 
     virtual void SetUp(void) override {
-      //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       gl_fExitingSystem = false;
       gl_pFinnhubWebInquiry->SetReadingWebData(false);
       gl_pTiingoWebInquiry->SetReadingWebData(false);

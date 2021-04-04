@@ -21,12 +21,12 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite(void) {
       EXPECT_FALSE(gl_fExitingSystem);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
+      EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       pStock = make_shared<CMockChinaStock>();
-      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -35,8 +35,8 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       gl_fExitingSystem = false;
-      gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->SetUpdateOptionDB(false);
+      gl_pChinaMarket->CalculateTime();
+      gl_pChinaMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

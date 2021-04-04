@@ -12,35 +12,35 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
 
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
+      gl_pChinaMarket->CalculateTime();
+      gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
-      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+      EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
-      gl_pChinaStockMarket->SetResetMarket(true);
-      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
+      EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
+      gl_pChinaMarket->SetResetMarket(true);
+      gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_pChinaStockMarket->SetSystemReady(false);
-      gl_pChinaStockMarket->SetCurrentStockChanged(false);
+      gl_pChinaMarket->SetSystemReady(false);
+      gl_pChinaMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
-      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
-        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+      for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
     CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };
@@ -52,11 +52,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+    EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseDayLineWebInquiry.GetWebData());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(false);
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaMarket->SetSystemReady(true);
     EXPECT_CALL(m_NeteaseDayLineWebInquiry, StartReadingThread)
       .Times(1);
     m_NeteaseDayLineWebInquiry.GetWebData();
@@ -78,9 +78,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestPrepareNextInquiringStr) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+    EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     CString str;
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
       if (m_NeteaseDayLineWebInquiry.PrepareNextInquiringStr()) {
         str = m_NeteaseDayLineWebInquiry.GetInquiringString();
@@ -88,6 +88,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
-    gl_pChinaStockMarket->SetSystemReady(false);
+    gl_pChinaMarket->SetSystemReady(false);
   }
 }

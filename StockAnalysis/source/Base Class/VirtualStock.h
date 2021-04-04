@@ -64,10 +64,10 @@ public:
 
   long GetIPOStatus(void) const noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
-  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
-  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
-  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STOCK_IPOED__); }
-  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STOCK_NOT_CHECKED__); }
+  bool IsDelisted(void) const noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
+  bool IsNullStock(void) const noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
+  bool IsIPOed(void) const noexcept { return(m_lIPOStatus == __STOCK_IPOED__); }
+  bool IsNotChecked(void) const noexcept { return(m_lIPOStatus == __STOCK_NOT_CHECKED__); }
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) const noexcept { return m_fDayLineNeedUpdate; }

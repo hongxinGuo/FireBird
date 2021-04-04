@@ -29,15 +29,15 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
   CString strStockCode;
 
   // 准备网易日线数据申请格式
-  if (gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaStockMarket->GetTotalStock())) {
+  if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaMarket->GetTotalStock())) {
     strStockCode = XferNeteaseToStandred(strMiddle);
     SetDownLoadingStockCode(strStockCode);
-    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strStockCode);
+    gl_pChinaMarket->SetStockCodeForInquiringNeteaseDayLine(strStockCode);
     strMiddle += _T("&start=19900101&end=");
-    sprintf_s(buffer2, _T("%8d"), gl_pChinaStockMarket->GetFormatedMarketDate());
+    sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetFormatedMarketDate());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
-    gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
+    gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
 
     return true;
   }

@@ -33,8 +33,8 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLinear());
     }
     virtual void TearDown(void) override {
-      gl_pChinaStockMarket->ResetCurrentStock();
-      gl_pChinaStockMarket->SetCurrentStockChanged(false);
+      gl_pChinaMarket->ResetCurrentStock();
+      gl_pChinaMarket->SetCurrentStockChanged(false);
       delete s_pStockAnalysisView;
     }
   public:
@@ -50,7 +50,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestShowOrdinaryBuySell) {
     CDC DC;
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
     pStock->SetVolume(10000);
@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestShowCanceledBuySell) {
     CDC DC;
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
     pStock->SetCanceledBuyVolume(10000);
@@ -205,13 +205,13 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSInLogarithm) {
     CCmdUI cmdUI;
-    gl_pChinaStockMarket->ResetCurrentStock();
+    gl_pChinaMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
 
-    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
-    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
+    EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
       .Times(1);
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLogarithm());
@@ -241,12 +241,12 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSInLinear) {
     CCmdUI cmdUI;
-    gl_pChinaStockMarket->ResetCurrentStock();
+    gl_pChinaMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLinear(&cmdUI);
-    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
-    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
+    EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
       .Times(1);
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLinear());
@@ -266,13 +266,13 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSIndex) {
     CCmdUI cmdUI;
-    gl_pChinaStockMarket->ResetCurrentStock();
+    gl_pChinaMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsIndex(&cmdUI);
-    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
+    gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
     s_pStockAnalysisView->SetShowRSOption(2);
-    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
       .Times(1);
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
@@ -331,8 +331,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestOnShow) {
     CDC dc;
-    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
-    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(true);
+    gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
+    gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
     s_pStockAnalysisView->SetCurrentShowType(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
       .Times(1);
@@ -352,6 +352,6 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(2);
     s_pStockAnalysisView->Show(&dc);
 
-    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(false);
+    gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
   }
 }

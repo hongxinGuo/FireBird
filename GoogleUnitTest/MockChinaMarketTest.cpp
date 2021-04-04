@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
       EXPECT_TRUE(gl_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
       gl_pMockChinaMarket->SetTodayStockProcessed(false);
@@ -44,11 +44,11 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+      EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
     }
     virtual void SetUp(void) override {
-      //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       EXPECT_FALSE(gl_fExitingSystem);
 

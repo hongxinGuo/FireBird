@@ -132,7 +132,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       GuadanData* pData = GetParam();
       // Ô¤Éè20¸ö¹Òµ¥
       for (int i = 0; i < 200; i += 10) {
@@ -163,7 +163,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
     }
 
   public:

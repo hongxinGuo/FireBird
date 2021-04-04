@@ -30,7 +30,7 @@ UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
     pMarket->BuildWeekLineOfCurrentWeek();
     pMarket->BuildWeekLineRSOfDate(GetCurrentMonday(lDate));
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
-      pMarket->SetRSEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+      pMarket->SetRSEndDate(gl_pChinaMarket->GetFormatedMarketDate());
       pMarket->SetUpdateOptionDB(true);   // 更新状态
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
     }

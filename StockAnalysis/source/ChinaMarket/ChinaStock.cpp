@@ -202,7 +202,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
   ReportDayLineDownLoaded();
-  if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+  if (gl_pChinaMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
@@ -839,7 +839,7 @@ bool CChinaStock::ProcessRTData(void) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if (pRTData->IsActive()) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
-      if (gl_pChinaStockMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
+      if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
         ProcessOneRTData(pRTData);
         CheckCurrentRTData();
         m_fRTDataCalculated = true;
@@ -1380,7 +1380,7 @@ bool CChinaStock::CheckCurrentRTData() {
     if (GetAttackSellVolume() < 0) j += 8;
     if (GetStrongBuyVolume() < 0) j += 16;
     if (GetStrongSellVolume() < 0) j += 32;
-    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetFormatedMarketTime(), GetSymbol().GetBuffer(), j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaMarket->GetFormatedMarketTime(), GetSymbol().GetBuffer(), j);
     return false;
   }
   return true;
@@ -1529,11 +1529,11 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 void CChinaStock::SetCheckingDayLineStatus(void) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
+    if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
       SetDayLineNeedUpdate(false);
     }
   }
@@ -1549,8 +1549,8 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
     SaveWeekLine();
   }
 
-  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    if (!IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
+  if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
+    if (!IsSameStock(gl_pChinaMarket->GetCurrentStock())) {
       UnloadDayLine();
       UnloadWeekLine();
     }

@@ -47,12 +47,12 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseDayLineData* pData = GetParam();
-      m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strSymbol);
+      m_pStock = gl_pChinaMarket->GetStock(pData->m_strSymbol);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
       if (!m_pStock->IsNullStock()) {
         lDate = m_pStock->GetDayLineEndDate();
-        m_pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+        m_pStock->SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
       }
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();

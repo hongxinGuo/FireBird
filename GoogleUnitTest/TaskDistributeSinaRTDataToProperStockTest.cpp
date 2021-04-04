@@ -42,14 +42,14 @@ namespace StockAnalysisTest {
   class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     static void SetUpTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
+      CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
       pStock->SetIPOStatus(__STOCK_NULL__); // 故意将此股票状态设置为未上市。
-      s_tCurrentMarketTime = gl_pChinaStockMarket->GetMarketTime();
+      s_tCurrentMarketTime = gl_pChinaMarket->GetMarketTime();
     }
 
     static void TearDownTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
+      CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(true);
     }
 
@@ -57,15 +57,15 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      if (gl_pChinaStockMarket->IsStock(pData->m_strSymbol)) {
-        pStock = gl_pChinaStockMarket->GetStock(pData->m_strSymbol);
+      if (gl_pChinaMarket->IsStock(pData->m_strSymbol)) {
+        pStock = gl_pChinaMarket->GetStock(pData->m_strSymbol);
         pStock->ClearRTDataDeque();
         pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
       }
-      gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
+      gl_pChinaMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
       pRTData->SetSymbol(pData->m_strSymbol);
@@ -75,7 +75,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       gl_ThreadStatus.SetRTDataNeedCalculate(false);
       pStock->ClearRTDataDeque();
     }
@@ -92,12 +92,12 @@ namespace StockAnalysisTest {
 
   TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
-    long lTotalStock = gl_pChinaStockMarket->GetTotalStock();
+    long lTotalStock = gl_pChinaMarket->GetTotalStock();
     CString strSymbol;
 
     gl_WebRTDataContainer.PushSinaData(pRTData);
     EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeSinaRTDataToProperStock());
+    EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToProperStock());
     EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     switch (m_iCount) {
@@ -105,42 +105,42 @@ namespace StockAnalysisTest {
     EXPECT_GE(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << _T("无效实时数据，报错后直接返回");
     break;
     case 2:
-    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
+    EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 10);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 0);
     break;
     case 3:
-    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     break;
     case 4:
-    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
     //EXPECT_FALSE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     break;
     case 5:
-    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 5);
+    EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 5);
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 5);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_TRUE(pStock->IsIPOed());
     break;
     case 6:
-    EXPECT_EQ(lTotalStock + 1, gl_pChinaStockMarket->GetTotalStock()) << "发现新的股票，股票总数增加了一个";
+    EXPECT_EQ(lTotalStock + 1, gl_pChinaMarket->GetTotalStock()) << "发现新的股票，股票总数增加了一个";
     EXPECT_EQ(pStock, nullptr) << "新股票代码，则不预置此指针";
-    pStock = gl_pChinaStockMarket->GetStock(pRTData->GetSymbol());
+    pStock = gl_pChinaMarket->GetStock(pRTData->GetSymbol());
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     strSymbol = pStock->GetSymbol();
-    gl_pChinaStockMarket->DeleteStock(pStock);
-    EXPECT_EQ(lTotalStock, gl_pChinaStockMarket->GetTotalStock()) << "删除了新增加的股票";
-    EXPECT_EQ(lTotalStock, gl_pChinaStockMarket->GetTotalStockMapSize()) << "也同时删除了map索引";
-    EXPECT_FALSE(gl_pChinaStockMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
+    gl_pChinaMarket->DeleteStock(pStock);
+    EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStock()) << "删除了新增加的股票";
+    EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStockMapSize()) << "也同时删除了map索引";
+    EXPECT_FALSE(gl_pChinaMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
     break;
     default:
     break;

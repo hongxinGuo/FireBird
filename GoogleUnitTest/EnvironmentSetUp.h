@@ -13,6 +13,8 @@
 #include"MockWorldMarket.h"
 #include"MockChinaMarket.h"
 
+#include"MockMainFrm.h"
+
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
@@ -33,6 +35,7 @@ namespace StockAnalysisTest {
   // 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
   CMockWorldMarketPtr gl_pMockWorldMarket;
   CMockChinaMarketPtr gl_pMockChinaMarket;
+  CMockMainFrame* gl_pMockMainFrame;
 
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
@@ -61,18 +64,18 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
       // 下列全局智能指针为实际类
-      gl_pChinaStockMarket = make_shared<CChinaMarket>();
+      gl_pChinaMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();
-      gl_pChinaStockMarket->ResetMarket();
+      gl_pChinaMarket->ResetMarket();
       gl_pWorldMarket->ResetMarket();
 
       //_CrtMemCheckpoint(&state);
 
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-      gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
+      gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 
@@ -81,15 +84,19 @@ namespace StockAnalysisTest {
       gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
       gl_pMockWorldMarket->ResetMarket();
 
-      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
-        auto pStock = gl_pChinaStockMarket->GetStock(i);
+      EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
+      gl_pMockMainFrame = new CMockMainFrame;
+      EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
+
+      for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+        auto pStock = gl_pChinaMarket->GetStock(i);
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
-      EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
-      EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
-      gl_pChinaStockMarket->SetSystemReady(true);
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
+      EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      gl_pChinaMarket->SetSystemReady(true);
+      EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -98,11 +105,23 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       // 重置以下指针，以测试是否存在没有配对的Mock。
       gl_pMockChinaMarket = nullptr;
       gl_pMockWorldMarket = nullptr;
+
+      if (CMFCVisualManager::GetInstance() != NULL) {
+        delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
+      }
+
+      for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+        auto pStock = gl_pChinaMarket->GetStock(i);
+        pStock->SetUpdateProfileDB(false); // gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止结构gl_pMockMainFrame时更新数据库。
+      }
+      delete gl_pMockMainFrame;
+      EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
+      gl_fExitingSystem = false;
 
       //_CrtMemDumpAllObjectsSince(&state);
 
@@ -120,12 +139,12 @@ namespace StockAnalysisTest {
       gl_pTiingoWebInquiry = nullptr;
       gl_pQuandlWebInquiry = nullptr;
 
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
       gl_pWorldMarket = nullptr;
-      gl_pChinaStockMarket = nullptr;
+      gl_pChinaMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
       gl_vMarketPtr.clear();
