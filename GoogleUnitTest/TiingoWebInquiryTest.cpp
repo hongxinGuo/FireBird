@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CTiingoWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringPrefix(), _T(""));
-    EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
+    EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"));
     EXPECT_STREQ(m_TiingoWebInquiry.GetConnectionName(), _T("Tiingo"));
   }
 
@@ -61,7 +61,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 4; i++) {
       if (m_TiingoWebInquiry.PrepareNextInquiringStr()) {
         str = m_TiingoWebInquiry.GetInquiringString();
-        EXPECT_STREQ(str.Right(47), _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
+        EXPECT_STREQ(str.Right(47), _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"));
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }

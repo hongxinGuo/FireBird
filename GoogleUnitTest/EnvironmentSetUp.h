@@ -37,9 +37,12 @@ namespace StockAnalysisTest {
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
+      // _CrtMemCheckpoint(&state);
     }
     virtual ~TestEnvironment() {
+      // _CrtMemDumpAllObjectsSince(&state);
     }
+    _CrtMemState state;
 
     virtual void SetUp(void) override {
       ASSERT_TRUE(gl_fTestMode);
@@ -62,6 +65,10 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();
+      gl_pChinaStockMarket->ResetMarket();
+      gl_pWorldMarket->ResetMarket();
+
+      //_CrtMemCheckpoint(&state);
 
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
@@ -69,8 +76,10 @@ namespace StockAnalysisTest {
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 
-      gl_pChinaStockMarket->ResetMarket();
-      gl_pWorldMarket->ResetMarket();
+      gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
+      gl_pMockChinaMarket->ResetMarket();
+      gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
+      gl_pMockWorldMarket->ResetMarket();
 
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaStockMarket->GetStock(i);
@@ -94,6 +103,8 @@ namespace StockAnalysisTest {
       // 重置以下指针，以测试是否存在没有配对的Mock。
       gl_pMockChinaMarket = nullptr;
       gl_pMockWorldMarket = nullptr;
+
+      //_CrtMemDumpAllObjectsSince(&state);
 
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;

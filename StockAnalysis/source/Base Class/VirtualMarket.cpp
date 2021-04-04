@@ -92,21 +92,21 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
   m_lMarketLastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-bool CVirtualMarket::IsWorkingDay(void) noexcept {
+bool CVirtualMarket::IsWorkingDay(void) const noexcept {
   if ((m_tmMarket.tm_wday == 0) || (m_tmMarket.tm_wday == 6)) {
     return false;
   }
   else return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) noexcept {
+bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) const noexcept {
   if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
     return false;
   }
   else return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
+bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
   const long year = lDate / 10000;
   const long month = lDate / 100 - year * 100;
   const long day = lDate - year * 10000 - month * 100;
@@ -118,7 +118,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
   else return true;
 }
 
-bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) noexcept {
+bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept {
   CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
   const long year = lEarlyDate / 10000;
   const long month = lEarlyDate / 100 - year * 100;
@@ -129,7 +129,7 @@ bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSp
   return (lNewDate < lLatelyDate);
 }
 
-long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) noexcept {
+long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) const noexcept {
   CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
   const long year = lDate / 10000;
   const long month = lDate / 100 - year * 100;
@@ -140,7 +140,7 @@ long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) noexcept {
   return (lNewDate);
 }
 
-long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
+long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) const noexcept {
   CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
   const long year = lDate / 10000;
   const long month = lDate / 100 - year * 100;
@@ -151,7 +151,7 @@ long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
   return (lNewDate);
 }
 
-CString CVirtualMarket::GetStringOfLocalTime(void) {
+CString CVirtualMarket::GetStringOfLocalTime(void) const {
   char buffer[30];
   tm tmLocal;
 
@@ -162,7 +162,7 @@ CString CVirtualMarket::GetStringOfLocalTime(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfLocalDateTime(void) {
+CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
   char buffer[100];
   tm tmLocal;
 
@@ -173,7 +173,7 @@ CString CVirtualMarket::GetStringOfLocalDateTime(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfMarketTime(void) {
+CString CVirtualMarket::GetStringOfMarketTime(void) const {
   char buffer[30];
   tm tmMarket;
 
@@ -184,7 +184,7 @@ CString CVirtualMarket::GetStringOfMarketTime(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDateTime(void) {
+CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
   char buffer[100];
   tm tmMarket;
 
@@ -195,7 +195,7 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfDate(long lDate) {
+CString CVirtualMarket::GetStringOfDate(long lDate) const {
   char buffer[30];
   long year = lDate / 10000;
   long month = lDate / 100 - year * 100;
@@ -207,7 +207,7 @@ CString CVirtualMarket::GetStringOfDate(long lDate) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDate(void) {
+CString CVirtualMarket::GetStringOfMarketDate(void) const {
   return GetStringOfDate(m_lMarketDate);
 }
 

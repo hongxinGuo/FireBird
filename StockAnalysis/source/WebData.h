@@ -22,18 +22,18 @@ public:
   ~CWebData() {
   }
 
-  bool IsProcessedAllTheData(void) noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }
+  bool IsProcessedAllTheData(void) const noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }
 
   void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 
   void Resize(long lSize) { m_vDataBuffer.resize(lSize); m_lBufferLength = lSize; }
 
-  INT64 GetTime(void) noexcept { return m_lTime; }
+  INT64 GetTime(void) const noexcept { return m_lTime; }
   void SetTime(INT64 lTime) noexcept { m_lTime = lTime; }
-  long GetBufferLength(void) noexcept { return m_lBufferLength; }
+  long GetBufferLength(void) const noexcept { return m_lBufferLength; }
   void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
-  long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
+  long GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
   void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; }
 
   bool GetData(char* buffer, long lDataLength, long lStartPosition);
@@ -41,9 +41,9 @@ public:
   bool SetData(char* buffer, long lDataLength, long lStartPosition);
   bool SetData(char* buffer, long lDataLength); // 默认从m_lCurrenPos开始填充。
 
-  char GetData(long lIndex) { return m_vDataBuffer.at(lIndex); }
+  char GetData(long lIndex) const { return m_vDataBuffer.at(lIndex); }
   void SetData(long lIndex, char cValue) { m_vDataBuffer.at(lIndex) = cValue; }
-  char GetCurrentPosData(void) { return m_vDataBuffer.at(m_lCurrentPos); }
+  char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
   void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
 
   // 测试用函数

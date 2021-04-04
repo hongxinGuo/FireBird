@@ -26,7 +26,7 @@ public:
   virtual bool GetWebData(void);
 
   void Reset(void) noexcept;
-  virtual bool ReportStatus(long lNumberOfData);
+  virtual bool ReportStatus(long lNumberOfData) const;
 
   // 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
   virtual bool PrepareNextInquiringStr(void) { ASSERT(0); return true; }
@@ -35,42 +35,42 @@ public:
 
   // 以下为实现函数
   void CreateTotalInquiringString(CString strMIddle);
-  CString GetInquiringString(void) { return m_strInquire; }
+  CString GetInquiringString(void) const { return m_strInquire; }
   void SetInquiringString(CString str) { m_strInquire = str; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
 
-  char GetData(long lIndex) { return m_vBuffer.at(lIndex); }
+  char GetData(long lIndex) const { return m_vBuffer.at(lIndex); }
   void SetData(long lIndex, char value) { m_vBuffer.at(lIndex) = value; }
 
-  long GetByteReaded(void)noexcept { return m_lByteRead; }
-  void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
-  void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
+  long GetByteReaded(void) const noexcept { return m_lByteRead; }
+  void SetByteReaded(long lValue) noexcept { m_lByteRead = lValue; }
+  void AddByteReaded(long lValue) noexcept { m_lByteRead += lValue; }
 
-  CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
+  CString GetInquiringStringPrefix(void) const { return m_strWebDataInquirePrefix; }
   void SetInquiryingStringPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
-  CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
+  CString GetInquiringStringSuffix(void) const { return m_strWebDataInquireSuffix; }
   void SetInquiryingStringSuffix(CString strSuffix) { m_strWebDataInquireSuffix = strSuffix; }
-  CString GetInquiringStringMiddle(void) { return m_strWebDataInquireMiddle; }
+  CString GetInquiringStringMiddle(void) const { return m_strWebDataInquireMiddle; }
   void SetInquiryingStringMiddle(CString strSuffix) { m_strWebDataInquireMiddle = strSuffix; }
 
-  bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
+  bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-  bool IsWebError(void) noexcept { return m_fWebError; }
+  bool IsWebError(void) const noexcept { return m_fWebError; }
   void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
 
-  bool IsReportStatus(void) noexcept { return m_fReportStatus; }
+  bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
 
-  CString GetConnectionName(void) { return m_strConnectionName; }
+  CString GetConnectionName(void) const { return m_strConnectionName; }
 
-  long GetInquiringNumber(void) noexcept { return m_lInquiringNumber; }
+  long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
   void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
 
-  long GetTotalByteReaded(void) noexcept { return m_lTotalByteReaded; }
+  long GetTotalByteReaded(void) const noexcept { return m_lTotalByteReaded; }
   void SetTotalByteReaded(long lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
   void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
 
-  time_t GetCurrentInquiryTime(void) noexcept { return m_tCurrentInquiryTime; }
+  time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
 
 public:
   // 以下为测试用函数

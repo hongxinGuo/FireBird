@@ -18,7 +18,7 @@ public:
   CWorldStock();
   ~CWorldStock();
   virtual void Reset(void) override;
-  virtual int GetRatio(void) override { return s_iRatio; }
+  virtual int GetRatio(void) const noexcept override { return s_iRatio; }
 
 public:
   void Load(CSetWorldStock& setWorldStock);
@@ -36,100 +36,100 @@ public:
   void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
 
   void UpdateDayLineStartEndDate(void);
-  long GetDayLineSize(void) noexcept { return static_cast<long>(m_vDayLine.size()); }
-  CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
+  long GetDayLineSize(void) const noexcept { return static_cast<long>(m_vDayLine.size()); }
+  CDayLinePtr GetDayLine(long lIndex) const { return m_vDayLine.at(lIndex); }
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
 
   bool HaveNewDayLineData(void);
 
-  bool IsProfileUpdated(void) noexcept { return m_fProfileUpdated; }
+  bool IsProfileUpdated(void) const noexcept { return m_fProfileUpdated; }
   void SetProfileUpdated(bool fFlag) noexcept { m_fProfileUpdated = fFlag; }
 
-  bool IsEPSSurpriseUpdated(void) noexcept { return m_fEPSSurpriseUpdated; }
+  bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
   void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
   bool CheckEPSSurpriseStatus(long lCurrentDate);
-  bool IsEPSSurpriseNeedSave(void) noexcept { return m_fEPSSurpriseNeedSave; }
+  bool IsEPSSurpriseNeedSave(void) const noexcept { return m_fEPSSurpriseNeedSave; }
   void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
   bool IsEPSSurpriseNeedSaveAndClearFlag(void);
 
-  bool IsPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
+  bool IsPeerUpdated(void) const noexcept { return m_fFinnhubPeerUpdated; }
   void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
   bool CheckPeerStatus(long lCurrentDate);
 
-  CString GetDescription(void) { return m_strDescription; }
+  CString GetDescription(void) const { return m_strDescription; }
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
-  CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
+  CString GetDisplaySymbol(void) const { return m_strDisplaySymbol; }
   void SetDisplaySymbol(CString strDisplaySymbol) { m_strDisplaySymbol = strDisplaySymbol; }
-  CString GetType(void) { return m_strType; }
+  CString GetType(void) const { return m_strType; }
   void SetType(CString strType) { m_strType = strType; }
-  CString GetMic(void) { return m_strMic; }
+  CString GetMic(void) const { return m_strMic; }
   void SetMic(CString strMic) { m_strMic = strMic; }
-  CString GetFigi(void) { return m_strFigi; }
+  CString GetFigi(void) const { return m_strFigi; }
   void SetFigi(CString strFigi) { m_strFigi = strFigi; }
-  CString GetCurrency(void) { return m_strCurrency; }
+  CString GetCurrency(void) const { return m_strCurrency; }
   void SetCurrency(CString strCurrency) { m_strCurrency = strCurrency; }
 
-  CString GetAddress(void) { return m_strAddress; }
+  CString GetAddress(void) const { return m_strAddress; }
   void SetAddress(CString strAddress) { m_strAddress = strAddress; }
-  CString GetCity(void) { return m_strCity; }
+  CString GetCity(void) const { return m_strCity; }
   void SetCity(CString strCity) { m_strCity = strCity; }
-  CString GetCountry(void) { return m_strCountry; }
+  CString GetCountry(void) const { return m_strCountry; }
   void SetCountry(CString strCountry) { m_strCountry = strCountry; }
-  CString GetCusip(void) { return m_strCusip; }
+  CString GetCusip(void) const { return m_strCusip; }
   void SetCusip(CString strCusip) { m_strCusip = strCusip; }
-  CString GetSedol(void) { return m_strSedol; }
+  CString GetSedol(void) const { return m_strSedol; }
   void SetSedol(CString strSedol) { m_strSedol = strSedol; }
-  long GetEmployeeTotal(void) noexcept { return m_lEmployeeTotal; }
+  long GetEmployeeTotal(void) const noexcept { return m_lEmployeeTotal; }
   void SetEmployeeTotal(long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
-  CString GetListedExchange(void) { return m_strListedExchange; }
+  CString GetListedExchange(void) const { return m_strListedExchange; }
   void SetListedExchange(CString strListedExchange) { m_strListedExchange = strListedExchange; }
-  CString GetGgroup(void) { return m_strGgroup; }
+  CString GetGgroup(void) const { return m_strGgroup; }
   void SetGgroup(CString strGgroup) { m_strGgroup = strGgroup; }
-  CString GetGind(void) { return m_strGind; }
+  CString GetGind(void) const { return m_strGind; }
   void SetGind(CString strGind) { m_strGind = strGind; }
-  CString GetGsector(void) { return m_strGsector; }
+  CString GetGsector(void) const { return m_strGsector; }
   void SetGsector(CString strGsector) { m_strGsector = strGsector; }
-  CString GetGsubind(void) { return m_strGsubind; }
+  CString GetGsubind(void) const { return m_strGsubind; }
   void SetGsubind(CString strGsubind) { m_strGsubind = strGsubind; }
-  CString GetIPODate(void) { return m_strIPODate; }
+  CString GetIPODate(void) const { return m_strIPODate; }
   void SetIPODate(CString strIPODate) { m_strIPODate = strIPODate; }
-  CString GetIsin(void) { return m_strIsin; }
+  CString GetIsin(void) const { return m_strIsin; }
   void SetIsin(CString strIsin) { m_strIsin = strIsin; }
-  double GetMarketCapitalization(void) noexcept { return m_dMarketCapitalization; }
+  double GetMarketCapitalization(void) const noexcept { return m_dMarketCapitalization; }
   void SetMarketCapitalization(double dMarketCapitalization) noexcept { m_dMarketCapitalization = dMarketCapitalization; }
-  CString GetNaics(void) { return m_strNaics; }
+  CString GetNaics(void) const { return m_strNaics; }
   void SetNaics(CString strNaics) { m_strNaics = strNaics; }
-  CString GetNaicsNationalIndustry(void) { return m_strNaicsNationalIndustry; }
+  CString GetNaicsNationalIndustry(void) const { return m_strNaicsNationalIndustry; }
   void SetNaicsNationalIndustry(CString strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
-  CString GetNaicsSector(void) { return m_strNaicsSector; }
+  CString GetNaicsSector(void) const { return m_strNaicsSector; }
   void SetNaicsSector(CString strNaicsSector) { m_strNaicsSector = strNaicsSector; }
-  CString GetNaicsSubsector(void) { return m_strNaicsSubsector; }
+  CString GetNaicsSubsector(void) const { return m_strNaicsSubsector; }
   void SetNaicsSubsector(CString strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
-  CString GetName(void) { return m_strName; }
+  CString GetName(void) const { return m_strName; }
   void SetName(CString strName) { m_strName = strName; }
-  CString GetPhone(void) { return m_strPhone; }
+  CString GetPhone(void) const { return m_strPhone; }
   void SetPhone(CString strPhone) { m_strPhone = strPhone; }
-  double GetShareOutstanding(void) noexcept { return m_dShareOutstanding; }
+  double GetShareOutstanding(void) const noexcept { return m_dShareOutstanding; }
   void SetShareOutstanding(double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
-  CString GetState(void) { return m_strState; }
+  CString GetState(void) const { return m_strState; }
   void SetState(CString strState) { m_strState = strState; }
-  CString GetTicker(void) { return m_strTicker; }
+  CString GetTicker(void) const { return m_strTicker; }
   void SetTicker(CString strTicker) { m_strTicker = strTicker; }
-  CString GetWebURL(void) { return m_strWebURL; }
+  CString GetWebURL(void) const { return m_strWebURL; }
   void SetWebURL(CString strWebURL) { m_strWebURL = strWebURL; }
-  CString GetLogo(void) { return m_strLogo; }
+  CString GetLogo(void) const { return m_strLogo; }
   void SetLogo(CString strLogo) { m_strLogo = strLogo; }
-  CString GetFinnhubIndustry(void) { return m_strFinnhubIndustry; }
+  CString GetFinnhubIndustry(void) const { return m_strFinnhubIndustry; }
   void SetFinnhubIndustry(CString strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
-  CString GetPeer(void) { return m_strPeer; }
+  CString GetPeer(void) const { return m_strPeer; }
   void SetPeer(CString strPeer) { m_strPeer = strPeer; }
-  long GetProfileUpdateDate(void) noexcept { return m_lProfileUpdateDate; }
+  long GetProfileUpdateDate(void) const noexcept { return m_lProfileUpdateDate; }
   void SetProfileUpdateDate(long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
-  long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
+  long GetLastRTDataUpdateDate(void) const noexcept { return m_lLastRTDataUpdateDate; }
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
-  long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
+  long GetPeerUpdateDate(void) const noexcept { return m_lPeerUpdateDate; }
   void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
-  long GetLastEPSSurpriseUpdateDate(void) noexcept { return m_lLastEPSSurpriseUpdateDate; }
+  long GetLastEPSSurpriseUpdateDate(void) const noexcept { return m_lLastEPSSurpriseUpdateDate; }
   void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
 
   CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);

@@ -35,21 +35,21 @@ public:
   bool LoadForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);
 
   bool ProcessNeteaseData(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos);
-  bool IsActive(void);
+  bool IsActive(void) const;
 
 public:
   void Set3DaysRS(double dValue) noexcept { Set3RS(dValue); }
-  double Get3DaysRS(void) noexcept { return Get3RS(); }
+  double Get3DaysRS(void) const noexcept { return Get3RS(); }
   void Set5DaysRS(double dValue) noexcept { Set5RS(dValue); }
-  double Get5DaysRS(void) noexcept { return Get5RS(); }
+  double Get5DaysRS(void) const noexcept { return Get5RS(); }
   void Set10DaysRS(double dValue) noexcept { Set10RS(dValue); }
-  double Get10DaysRS(void) noexcept { return Get10RS(); }
+  double Get10DaysRS(void) const noexcept { return Get10RS(); }
   void Set30DaysRS(double dValue) noexcept { Set30RS(dValue); }
-  double Get30DaysRS(void) noexcept { return Get30RS(); }
+  double Get30DaysRS(void) const noexcept { return Get30RS(); }
   void Set60DaysRS(double dValue) noexcept { Set60RS(dValue); }
-  double Get60DaysRS(void) noexcept { return Get60RS(); }
+  double Get60DaysRS(void) const noexcept { return Get60RS(); }
   void Set120DaysRS(double dValue) noexcept { Set120RS(dValue); }
-  double Get120DaysRS(void) noexcept { return Get120RS(); }
+  double Get120DaysRS(void) const noexcept { return Get120RS(); }
 
 private:
 };

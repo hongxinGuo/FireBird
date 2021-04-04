@@ -38,7 +38,7 @@ void CTengxunRTWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
-bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) {
+bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
   return true;
 }

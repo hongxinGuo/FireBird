@@ -204,7 +204,7 @@ bool CVirtualWebInquiry::GetWebData(void) {
   else return false;
 }
 
-bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) {
+bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个实时数据\n", lNumberOfData);
   return true;
 }

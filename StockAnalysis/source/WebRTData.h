@@ -171,56 +171,56 @@ public:
 
 public:
   void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
-  long GetDataSource(void) noexcept { return m_lDataSource; }
-  time_t GetTransactionTime(void) noexcept { return m_time; }
+  long GetDataSource(void) const noexcept { return m_lDataSource; }
+  time_t GetTransactionTime(void) const noexcept { return m_time; }
   void SetTransactionTime(time_t time) noexcept { m_time = time; }
-  CString GetSymbol(void) { return m_strSymbol; }
+  CString GetSymbol(void) const { return m_strSymbol; }
   void SetSymbol(CString str) { m_strSymbol = str; }
-  CString GetStockName(void) { return m_strStockName; }
+  CString GetStockName(void) const { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
-  long GetLastClose(void) noexcept { return m_lLastClose; }
+  long GetLastClose(void) const noexcept { return m_lLastClose; }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) noexcept { return m_lOpen; }
+  long GetOpen(void) const noexcept { return m_lOpen; }
   void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) noexcept { return m_lHigh; }
+  long GetHigh(void) const noexcept { return m_lHigh; }
   void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) noexcept { return m_lLow; }
+  long GetLow(void) const noexcept { return m_lLow; }
   void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) noexcept { return m_lNew; }
+  long GetNew(void) const noexcept { return m_lNew; }
   void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  INT64 GetAmount(void) const noexcept { return m_llAmount; }
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  INT64 GetVolume(void) const noexcept { return m_llVolume; }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void)  noexcept { return m_llCurrentValue; }
-  long GetBuy(void) noexcept { return m_lBuy; }
+  INT64 GetCurrentValue(void) const  noexcept { return m_llCurrentValue; }
+  long GetBuy(void) const noexcept { return m_lBuy; }
   void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
-  long GetSell(void) noexcept { return m_lSell; }
+  long GetSell(void) const noexcept { return m_lSell; }
   void SetSell(long lValue) noexcept { m_lSell = lValue; }
-  long GetHighLimit(void) noexcept { return m_lHighLimit; }
+  long GetHighLimit(void) const noexcept { return m_lHighLimit; }
   void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
-  long GetLowLimit(void) noexcept { return m_lLowLimit; }
+  long GetLowLimit(void) const noexcept { return m_lLowLimit; }
   void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
-  long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
+  long GetPBuy(int iIndex) const { return m_lPBuy.at(iIndex); }
   void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
-  long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
+  long GetVBuy(int iIndex) const { return m_lVBuy.at(iIndex); }
   void SetVBuy(int iIndex, long lValue) { m_lVBuy.at(iIndex) = lValue; }
-  long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
+  long GetPSell(int iIndex) const { return m_lPSell.at(iIndex); }
   void SetPSell(int iIndex, long lValue) { m_lPSell.at(iIndex) = lValue; }
-  long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
+  long GetVSell(int iIndex) const { return m_lVSell.at(iIndex); }
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
-  bool IsActive(void) noexcept { return m_fActive; }
+  bool IsActive(void) const noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool CheckNeteaseRTDataActive(void);
   bool CheckSinaRTDataActive(void);
   bool CheckTengxunRTDataActive(void);
-  bool IsValidTime(long lDays);
+  bool IsValidTime(long lDays) const;
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
-  bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
+  bool IsValidDataSource(void) const noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

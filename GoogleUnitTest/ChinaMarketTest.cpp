@@ -818,7 +818,7 @@ namespace StockAnalysisTest {
     // 股票代码数据库在全局环境设置时即已装入测试系统，故而直接测试即可。
     CChinaStockPtr pStock = nullptr;
     pStock = gl_pChinaStockMarket->GetStock(0);
-    EXPECT_TRUE(pStock->IsIPOed());
+    EXPECT_FALSE(pStock->IsIPOed());
     EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
     EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
     EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
@@ -1356,7 +1356,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {
-    EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
+    EXPECT_FALSE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     gl_pChinaStockMarket->SetStockDayLineNeedUpdate(1000);
     EXPECT_FALSE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     gl_pChinaStockMarket->SetStockDayLineNeedUpdate(1001);

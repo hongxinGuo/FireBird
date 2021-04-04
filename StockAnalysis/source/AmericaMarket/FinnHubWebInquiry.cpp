@@ -15,6 +15,7 @@ using namespace std;
 //m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 密钥放在最后
 //m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 
+//m_strWebDataInquireSuffix = _T("&token=c1i57rv48v6vit20lrc0"); // hxguo111@hotmail.com
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
@@ -22,11 +23,11 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   // 有可能一个网址只允许一个账户运行，则这种两个账户的方法也不起作用。
   if (m_strWebDataInquireSuffix.GetLength() < 5) {
 #ifdef DEBUG
-    m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
+    m_strWebDataInquireSuffix = _T("&token=c1i57rv48v6vit20lrc0"); // 调试版使用hxguo111@hotmail.com账户
     //m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 #else
     //m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
-    m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 发行版使用hotmail账户
+    m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 发行版使用hxguo1111@hotmail.com账户
   //m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 #endif // DEBUG
   }
@@ -81,7 +82,7 @@ void CFinnhubWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
-bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) {
+bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }

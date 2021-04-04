@@ -35,11 +35,11 @@ public:
 
   time_t GetFormatedMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t time) noexcept { m_time = time; }
-  long GetType(void) noexcept { return m_lType; }
+  long GetType(void) const noexcept { return m_lType; }
   void SetType(long lType) noexcept { m_lType = lType; }
-  long GetPrice(void) noexcept { return m_lPrice; }
+  long GetPrice(void) const noexcept { return m_lPrice; }
   void SetPrice(long lPrice) noexcept { m_lPrice = lPrice; }
-  long GetVolume(void) noexcept { return m_lVolume; }
+  long GetVolume(void) const noexcept { return m_lVolume; }
   void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
 
 protected:

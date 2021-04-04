@@ -11,14 +11,15 @@ using namespace std;
 //https://api.tiingo.com/api/
 //m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 密钥放在最后
 //m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 密钥放在最后
+//m_strWebDataInquireSuffix = _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"); // hxguo111@hotmail.com
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
   if (m_strWebDataInquireSuffix.GetLength() < 5) {
 #ifdef DEBUG
-    m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 调试版使用ymail账户
+    m_strWebDataInquireSuffix = _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"); // 调试版使用hxguo111@hotmail.com账户
 #else
-    m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 发行版使用hotmail账户
+    m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 发行版使用hxguo1111@hotmail.com账户
 #endif // DEBUG
   }
   m_strConnectionName = _T("Tiingo");
@@ -61,7 +62,7 @@ void CTiingoWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
-bool CTiingoWebInquiry::ReportStatus(long lNumberOfData) {
+bool CTiingoWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个Tiingo数据\n", lNumberOfData);
   return true;
 }

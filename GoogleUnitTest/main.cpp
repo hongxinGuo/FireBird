@@ -5,6 +5,26 @@
 // 主要增加一项AddGlobalTestEnvironment()函数调用，用于设定全局环境。此函数可以多次使用。
 //
 /////////////////////////////////////////////////////////////////////////////////////
+
+// GoogleMock使用方法：
+//
+//   ON_CALL(mock_object, Method(...))
+//     .With(...) ?
+//     .WillByDefault(...);
+//
+// where With() is optional and WillByDefault() must appear exactly
+// once.
+//
+//   EXPECT_CALL(mock_object, Method(...))
+//     .With(...) ?
+//     .Times(...) ?
+//     .InSequence(...) *
+//     .WillOnce(...) *
+//     .WillRepeatedly(...) ?
+//     .RetiresOnSaturation() ? ;
+//
+// where all clauses are optional and WillOnce() can be repeated.
+
 #include"pch.h"
 
 #ifndef _MBCS
@@ -163,11 +183,6 @@ ExcludeFromCodeCoverage(CWorldMarket11, L"CWorldMarket::RunningThreadUpdateNaics
 
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
-
-//ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::GetNextInquiringMiddleStr");
-//ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextInquiringStr");
-//ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFileOneTime");
-//ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CRTData1, L"CWebRTData::AssertValid");
 ExcludeFromCodeCoverage(CRTData2, L"CWebRTData::Dump");

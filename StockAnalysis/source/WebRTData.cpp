@@ -1446,7 +1446,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 // 故而十四天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::IsValidTime(long lDays) {
+bool CWebRTData::IsValidTime(long lDays) const {
   if (m_time < (gl_pChinaStockMarket->GetMarketTime() - lDays * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }

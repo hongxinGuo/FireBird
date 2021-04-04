@@ -12,7 +12,7 @@ public:
   void Load(CSetTiingoIndustry& setTiingoIndustry);
 
   void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
-  bool IsUpdated(void) noexcept { return m_fUpdated; }
+  bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:
   CString m_strIndustry;

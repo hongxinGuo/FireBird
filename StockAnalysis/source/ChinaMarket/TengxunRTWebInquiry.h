@@ -10,7 +10,7 @@ public:
   virtual bool PrepareNextInquiringStr(void) override;
   virtual CString GetNextInquiringMiddleStr(long lTotalNubmer = 900, bool fCheckActiveStock = false) override;
   virtual void StartReadingThread(void) override;
-  virtual bool ReportStatus(long lNumberOfData) override;
+  virtual bool ReportStatus(long lNumberOfData) const override;
 };
 
 typedef shared_ptr<CTengxunRTWebInquiry> CTengxunRTWebInquiryPtr;

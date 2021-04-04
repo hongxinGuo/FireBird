@@ -37,7 +37,7 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
-bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
+bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
 }

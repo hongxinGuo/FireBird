@@ -115,6 +115,9 @@
     <Filter Include="GoogleTest源文件">
       <UniqueIdentifier>{90714063-2043-40d6-9f23-a2d20d3dc6e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\GoogleTest">
+      <UniqueIdentifier>{26971ba5-2a47-4253-9f68-d5022bc78795}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -297,8 +300,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="WeekLineTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>

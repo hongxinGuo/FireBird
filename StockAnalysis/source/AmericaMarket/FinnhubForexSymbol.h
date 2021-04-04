@@ -14,7 +14,7 @@ class CFinnhubForexSymbol : public CVirtualStock {
 public:
   CFinnhubForexSymbol();
   virtual void Reset(void);
-  virtual int GetRatio(void) override { return s_iRatio; }// 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
+  virtual int GetRatio(void) const override { return s_iRatio; }// 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
 
   void Load(CSetFinnhubForexSymbol& setForexSymbol);
   void Append(CSetFinnhubForexSymbol& setForexSymbol);
@@ -23,9 +23,9 @@ public:
 
   bool SaveDayLine(void);
 
-  CString GetDescription(void) { return m_strDescription; }
+  CString GetDescription(void) const { return m_strDescription; }
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
-  CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
+  CString GetDisplaySymbol(void) const { return m_strDisplaySymbol; }
   void SetDisplaySymbol(CString strSymbol) { m_strDisplaySymbol = strSymbol; }
 
   void SetCheckingDayLineStatus(void);
@@ -34,7 +34,7 @@ public:
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
-  size_t GetDayLineSize(void) { return m_vDayLine.size(); }
+  size_t GetDayLineSize(void) const noexcept { return m_vDayLine.size(); }
   void UpdateDayLineStartEndDate(void);
   bool HaveNewDayLineData(void);
 

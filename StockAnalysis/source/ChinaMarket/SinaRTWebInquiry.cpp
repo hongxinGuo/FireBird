@@ -48,7 +48,7 @@ void CSinaRTWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
-bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) {
+bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }

@@ -915,7 +915,7 @@ namespace StockAnalysisTest {
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-    EXPECT_EQ(stock.GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_EQ(stock.GetIPOStatus(), __STOCK_DELISTED__);
     stock.SetIPOStatus(__STOCK_NULL__);
     stock.UpdateStockCodeDB(setStockCode);
     setStockCode.Close();
@@ -923,7 +923,7 @@ namespace StockAnalysisTest {
     setStockCode.Open();
     EXPECT_EQ(setStockCode.m_IPOStatus, __STOCK_NULL__) << "此时状态已变为NULL";
     setStockCode.Edit();
-    setStockCode.m_IPOStatus = __STOCK_IPOED__;
+    setStockCode.m_IPOStatus = __STOCK_DELISTED__;
     setStockCode.Update();
     setStockCode.Close();
   }

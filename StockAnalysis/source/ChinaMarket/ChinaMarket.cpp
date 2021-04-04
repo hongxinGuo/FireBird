@@ -526,7 +526,7 @@ long CChinaMarket::GetMinLineOffset(time_t Time) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
+bool CChinaMarket::IsAStock(CChinaStockPtr pStock) const {
   ASSERT(pStock != nullptr);
 
   return(IsAStock(pStock->GetSymbol()));
@@ -540,7 +540,7 @@ bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsAStock(CString strStockCode) {
+bool CChinaMarket::IsAStock(CString strStockCode) const {
   CString strSymbol = GetStockSymbol(strStockCode);
   if (IsShanghaiExchange(strStockCode)) {
     if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
@@ -566,7 +566,7 @@ bool CChinaMarket::IsAStock(CString strStockCode) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsStock(CString strStockCode) {
+bool CChinaMarket::IsStock(CString strStockCode) const {
   if (m_mapChinaMarketStock.find(strStockCode) == m_mapChinaMarketStock.end()) {
     return(false);
   }
@@ -2322,21 +2322,21 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   return true;
 }
 
-bool CChinaMarket::IsDayLineNeedUpdate(void) noexcept {
+bool CChinaMarket::IsDayLineNeedUpdate(void) const noexcept {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedUpdate()) return true;
   }
   return false;
 }
 
-bool CChinaMarket::IsDayLineNeedProcess(void) noexcept {
+bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedProcess()) return true;
   }
   return false;
 }
 
-bool CChinaMarket::IsDayLineNeedSaving(void) {
+bool CChinaMarket::IsDayLineNeedSaving(void) const {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedSaving()) {
       return true;
@@ -2570,7 +2570,7 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
   CString str;
   str = _T("开始处理");
   str += GetStringOfDate(lCurrentTradeDay);
-  str += _T("日的实时数据");
+  str += _T("的实时数据");
   gl_systemMessage.PushInformationMessage(str);
 
   DeleteDayLineBasicInfo(lCurrentTradeDay);
@@ -2613,7 +2613,7 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
   setDayLineExtendInfo.Close();
 
   str = GetStringOfDate(lCurrentTradeDay);
-  str += _T("日实时数据处理完毕");
+  str += _T("的实时数据处理完毕");
   gl_systemMessage.PushInformationMessage(str);
 
   sprintf_s(buffer, _T("%d"), iCount);

@@ -21,44 +21,44 @@ public:
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
 
-  long GetMarketTimeZone(void) noexcept { return m_lMarketTimeZone; }
-  CString GetMarketID(void) { return m_strMarketId; }
-  time_t GetLocalTime(void) noexcept { return sm_tLocal; }
-  time_t GetMarketTime(void) noexcept { return m_tMarket; }
-  long GetFormatedMarketTime(void) noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
-  long GetFormatedMarketDate(void) noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
-  long GetDayOfWeek(void) noexcept { return m_tmMarket.tm_wday; }
-  long GetMonthOfYear(void) noexcept { return m_tmMarket.tm_mon + 1; }
-  long GetDateOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
-  long GetYear(void) noexcept { return m_tmMarket.tm_year + 1900; }
+  long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
+  CString GetMarketID(void) const { return m_strMarketId; }
+  time_t GetLocalTime(void) const noexcept { return sm_tLocal; }
+  time_t GetMarketTime(void) const noexcept { return m_tMarket; }
+  long GetFormatedMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+  long GetFormatedMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
+  long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; }
+  long GetMonthOfYear(void) const noexcept { return m_tmMarket.tm_mon + 1; }
+  long GetDateOfMonth(void) const noexcept { return m_tmMarket.tm_mday; }
+  long GetYear(void) const noexcept { return m_tmMarket.tm_year + 1900; }
   long GetLastTradeDate(void) noexcept { CalculateLastTradeDate(); return m_lMarketLastTradeDate; }
-  bool IsWorkingDay(void) noexcept;
-  bool IsWorkingDay(CTime timeCurrent) noexcept;
-  bool IsWorkingDay(long lDate) noexcept;
+  bool IsWorkingDay(void) const noexcept;
+  bool IsWorkingDay(CTime timeCurrent) const noexcept;
+  bool IsWorkingDay(long lDate) const noexcept;
 
-  bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) noexcept;
-  long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
-  long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
+  bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;
+  long GetNextDay(long lDate, long lTimeSpanDays = 1) const noexcept;
+  long GetPrevDay(long lDate, long lTimeSpanDays = 1) const noexcept;
 
-  CString GetStringOfLocalTime(void); // 得到本地时间的字符串
-  CString GetStringOfLocalDateTime(void);
-  CString GetStringOfMarketTime(void); // 得到本市场时间的字符串
-  CString GetStringOfMarketDateTime(void);
-  CString GetStringOfDate(long lDate);
-  CString GetStringOfMarketDate(void);
+  CString GetStringOfLocalTime(void) const; // 得到本地时间的字符串
+  CString GetStringOfLocalDateTime(void) const;
+  CString GetStringOfMarketTime(void) const; // 得到本市场时间的字符串
+  CString GetStringOfMarketDateTime(void) const;
+  CString GetStringOfDate(long lDate) const;
+  CString GetStringOfMarketDate(void) const;
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
   void CalculateLastTradeDate(void) noexcept;
   void TaskResetMarketFlagAtMidnight(long lCurrentTime);
 
-  bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }
+  bool IsReadyToRun(void) const noexcept { return m_fReadyToRun; }
   void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
-  bool IsPermitResetMarket(void) noexcept { return m_fPermitResetMarket; }
+  bool IsPermitResetMarket(void) const noexcept { return m_fPermitResetMarket; }
   void SetPermitResetMarket(bool fFlag) noexcept { m_fPermitResetMarket = fFlag; } // 此函数只用于测试时使用
-  bool IsResetMarket(void) noexcept { return m_fResetMarket; }
+  bool IsResetMarket(void) const noexcept { return m_fResetMarket; }
   void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
-  virtual bool IsSystemReady(void) noexcept { return m_fSystemReady; }
+  virtual bool IsSystemReady(void) const noexcept { return m_fSystemReady; }
   virtual void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
 public:

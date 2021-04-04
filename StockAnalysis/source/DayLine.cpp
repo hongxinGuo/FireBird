@@ -353,7 +353,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, vector<char>& pBuffer, I
   return true;
 }
 
-bool CDayLine::IsActive(void) {
+bool CDayLine::IsActive(void) const {
   if ((GetClose() != 0) && (GetLastClose() != 0)) {
     return true;
   }

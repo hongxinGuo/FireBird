@@ -12,7 +12,7 @@ public:
   void Load(CSetSICIndustry& setSICIndustry);
 
   void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
-  bool IsUpdated(void) noexcept { return m_fUpdated; }
+  bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:
   long m_lCode;

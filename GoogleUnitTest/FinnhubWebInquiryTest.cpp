@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
   TEST_F(CFinnhubWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringPrefix(), _T(""));
 #ifdef  DEBUG
-    EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=bv4ac1n48v6tcp17l5cg"));
+    EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
 #else
     EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
 #endif //  DEBUG
@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
       if (m_FinnhubWebInquiry.PrepareNextInquiringStr()) {
         str = m_FinnhubWebInquiry.GetInquiringString();
 #ifdef  DEBUG
-        EXPECT_STREQ(str.Right(27), _T("&token=bv4ac1n48v6tcp17l5cg"));
+        EXPECT_STREQ(str.Right(27), _T("&token=c1i57rv48v6vit20lrc0"));
 #else
         EXPECT_STREQ(str.Right(27), _T("&token=bv985d748v6ujthqfke0"));
 #endif //  DEBUG

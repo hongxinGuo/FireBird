@@ -1644,7 +1644,7 @@ bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
 // 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::IsTodayDataActive(void) {
+bool CChinaStock::IsTodayDataActive(void) const {
   if (!m_fActive) return false;
   else {
     return IsTodayDataChanged();
@@ -1657,7 +1657,7 @@ bool CChinaStock::IsTodayDataActive(void) {
 // 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::IsTodayDataChanged(void) {
+bool CChinaStock::IsTodayDataChanged(void) const {
   if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
     return true;
   }

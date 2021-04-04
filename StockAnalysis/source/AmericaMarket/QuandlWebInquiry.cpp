@@ -76,7 +76,7 @@ void CQuandlWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
-bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) {
+bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }

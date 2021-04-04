@@ -11,7 +11,7 @@ public:
   virtual bool PrepareNextInquiringStr(void) override;
   virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
-  virtual bool ReportStatus(long lNumberOfData) override;
+  virtual bool ReportStatus(long lNumberOfData) const override;
 };
 
 typedef shared_ptr<CTiingoWebInquiry> CTiingoWebInquiryPtr;
