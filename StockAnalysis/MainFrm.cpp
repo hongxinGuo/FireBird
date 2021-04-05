@@ -26,8 +26,6 @@ using namespace std;
 #include<string>
 #include<thread>
 
-constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -142,7 +140,7 @@ CMainFrame::~CMainFrame() {
     gl_pChinaMarket->UpdateOptionDB();
   }
 
-  gl_pChinaMarket->UpdateOptionChinaStockMarketDB();
+  gl_pChinaMarket->UpdateOptionChinaMarketDB();
 
   if (gl_pChinaMarket->IsUpdateChoicedStockDB()) {
     gl_pChinaMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
@@ -349,13 +347,6 @@ bool CMainFrame::ResetMarket(void) {
   return true;
 }
 
-bool CMainFrame::IsNeedResetMarket(void) {
-  for (auto& pMarket : gl_vMarketPtr) {
-    if (pMarket->IsResetMarket()) return true;
-  }
-  return false;
-}
-
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
   if (!CMDIFrameWndEx::PreCreateWindow(cs))
     return FALSE;
@@ -473,9 +464,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   // 重启系统在此处执行，容易调用各重置函数
-  if (IsNeedResetMarket()) {
-    ResetMarket();
-  }
+  ResetMarket();
 
   // 调用主调度函数,由各市场调度函数执行具体任务
   SchedulingTask();

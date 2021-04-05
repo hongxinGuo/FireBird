@@ -3309,7 +3309,7 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
   }
 }
 
-bool CChinaMarket::UpdateOptionChinaStockMarketDB(void) {
+bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
   CSetOptionChinaStockMarket setOptionChinaStockMarket;
 
   setOptionChinaStockMarket.Open();

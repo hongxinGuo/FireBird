@@ -70,16 +70,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_vMarketPtr.size(), 4);
   }
 
-  TEST_F(CMockMainFrameTest, TestIsNeedResetMarket) {
-    gl_pWorldMarket->SetResetMarket(false);
-    gl_pChinaMarket->SetResetMarket(false);
-    gl_pPotenDailyBriefingMarket->SetResetMarket(false);
-    gl_pCrweberIndexMarket->SetResetMarket(false);
-    EXPECT_FALSE(gl_pMockMainFrame->IsNeedResetMarket());
-    gl_pChinaMarket->SetResetMarket(true);
-    EXPECT_TRUE(gl_pMockMainFrame->IsNeedResetMarket());
-  }
-
   TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
     InSequence seq;
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
@@ -196,17 +186,20 @@ namespace StockAnalysisTest {
     gl_pChinaMarket->SetSystemReady(false);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaMarket->SetSystemReady(false);
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
@@ -491,11 +484,13 @@ namespace StockAnalysisTest {
     CCmdUI cmdUI;
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
   }
 
@@ -555,16 +550,150 @@ namespace StockAnalysisTest {
     long lTime = gl_pChinaMarket->GetFormatedMarketTime();
     gl_pChinaMarket->__TEST_SetFormatedMarketTime(150959);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
     gl_pChinaMarket->__TEST_SetFormatedMarketTime(151000);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
     gl_pChinaMarket->__TEST_SetFormatedMarketTime(151001);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
-      .Times(1);
+      .Times(1)
+      .RetiresOnSaturation();
     gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
     gl_pChinaMarket->__TEST_SetFormatedMarketTime(lTime);
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {
+    CCmdUI cmdUI;
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    auto pStock = gl_pChinaMarket->GetStock(1);
+    pStock->SetDayLineDBUpdated(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    pStock->SetDayLineDBUpdated(false);
+    pStock->SetDayLineNeedSaving(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS1) {
+    CCmdUI cmdUI;
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    auto pStock = gl_pChinaMarket->GetStock(1);
+    pStock->SetDayLineDBUpdated(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    pStock->SetDayLineDBUpdated(false);
+    pStock->SetDayLineNeedSaving(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
+    CCmdUI cmdUI;
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
+    EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    auto pStock = gl_pChinaMarket->GetStock(1);
+    pStock->SetDayLineDBUpdated(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    pStock->SetDayLineDBUpdated(false);
+    pStock->SetDayLineNeedSaving(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1)
+      .RetiresOnSaturation();
+    gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnTimer) {
+    EXPECT_CALL(*gl_pMockMainFrame, ResetMarket())
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask())
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(__STOCK_ANALYSIS_TIMER__))
+      .Times(1);
+
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(5, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(6, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
+      .Times(1);
+
+    InSequence seq;
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
+      .Times(1);
+
+    gl_pMockMainFrame->OnTimer(__STOCK_ANALYSIS_TIMER__);
   }
 }

@@ -148,6 +148,9 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
       gl_vMarketPtr.clear();
+
+      ASSERT_FALSE(gl_fNormalMode);
+      ASSERT_TRUE(gl_fTestMode);
     }
   };
 }

@@ -82,6 +82,8 @@ ExcludeFromCodeCoverage(CMainFrame19, L"CMainFrame::SysCallOnTimer");
 ExcludeFromCodeCoverage(CMainFrame20, L"CMainFrame::SysCallPreTranslateMessage");
 ExcludeFromCodeCoverage(CMainFrame21, L"CMainFrame::SysCallSendMessage");
 ExcludeFromCodeCoverage(CMainFrame22, L"CMainFrame::SysCallSetPaneText");
+ExcludeFromCodeCoverage(CMainFrame23, L"CMainFrame::SetDockingWindowIcons");
+ExcludeFromCodeCoverage(CMainFrame26, L"CMainFrame::CreateDockingWindows");
 
 ExcludeFromCodeCoverage(CStockAnalysisView1, L"CStockAnalysisView::AssertValid");
 ExcludeFromCodeCoverage(CStockAnalysisView2, L"CStockAnalysisView::CreateObject");
@@ -229,8 +231,8 @@ int main(int argc, char* argv[]) {
   // gtest takes ownership of the TestEnvironment ptr - we don't delete it.
   ::testing::AddGlobalTestEnvironment(new TestEnvironment);
 
-  EXPECT_FALSE(gl_fNormalMode);
-  EXPECT_TRUE(gl_fTestMode);
+  ASSERT_FALSE(gl_fNormalMode);
+  ASSERT_TRUE(gl_fTestMode);
 
   return RUN_ALL_TESTS();
 }

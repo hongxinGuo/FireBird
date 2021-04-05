@@ -188,7 +188,7 @@ public:
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
   void LoadOptionChinaStockMarketDB(void);
-  virtual bool UpdateOptionChinaStockMarketDB(void);
+  virtual bool UpdateOptionChinaMarketDB(void);
   bool UpdateChoicedStockDB(void);
   virtual bool AppendChoicedStockDB(void);
   void LoadChoicedStockDB(void);

@@ -3,6 +3,8 @@
 #pragma once
 #include "OutputWnd.h"
 
+constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
+
 class CMainFrame : public CMDIFrameWndEx
 {
   DECLARE_DYNAMIC(CMainFrame)
@@ -17,7 +19,7 @@ public:
 
   // 操作
 public:
-  bool SchedulingTask(void);
+  virtual bool SchedulingTask(void);
   void UpdateStatus(void);
   void UpdateInnerSystemStatus(void);
   bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
@@ -40,8 +42,7 @@ public:
 
 public:
   // 重置系统（恢复系统的初始态，准备第二天继续工作。
-  bool ResetMarket(void);
-  bool IsNeedResetMarket(void);
+  virtual bool ResetMarket(void);
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
 
