@@ -117,6 +117,10 @@ namespace StockAnalysisTest {
 
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaMarket->GetStock(i);
+        if (pStock->IsUpdateProfileDB()) {
+          int i = 0;
+          i++;
+        }
         pStock->SetUpdateProfileDB(false); // gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止结构gl_pMockMainFrame时更新数据库。
       }
       delete gl_pMockMainFrame;

@@ -32,6 +32,7 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(17) == 0);
       EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(18) > 0);
       EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(19) > 0);
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
@@ -53,6 +54,7 @@ namespace StockAnalysisTest {
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
       }
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -68,6 +70,7 @@ namespace StockAnalysisTest {
       gl_pChinaMarket->SetPermitResetMarket(true);
       EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
       EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -92,6 +95,7 @@ namespace StockAnalysisTest {
       gl_pChinaMarket->SetUpdateOptionDB(false);
       gl_pChinaMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
       EXPECT_TRUE(gl_pChinaMarket->IsCheckActiveStock());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();

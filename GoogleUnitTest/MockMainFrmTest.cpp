@@ -18,6 +18,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_vMarketPtr.size(), 4);
       EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
 
     static void TearDownTestSuite(void) {
@@ -35,14 +36,17 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 4);
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
 
     virtual void SetUp(void) override {
       gl_fExitingSystem = false;
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
 
     virtual void TearDown(void) override {
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
       gl_pChinaMarket->ResetCurrentStock();
       gl_pChinaMarket->SetCurrentStockChanged(false);
       gl_pChinaMarket->ClearChoiceStockContainer();
@@ -654,6 +658,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockMainFrameTest, TestOnTimer) {
+    gl_pChinaMarket->SetCurrentStockChanged(false);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+
     EXPECT_CALL(*gl_pMockMainFrame, ResetMarket())
       .Times(1);
     EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask())

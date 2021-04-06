@@ -1725,6 +1725,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__ + 9 * 100000 + 2) << "日线最新日期已更新";
     EXPECT_EQ(pStock->GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__ + 2) << "日线最初日期已更新";
     EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
+    EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "更新日线起止日期后，此标识也被设置";
+
+    pStock->SetUpdateProfileDB(false);
   }
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate3) {
@@ -1761,6 +1764,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << _T("当起始日期为19900101时，需要更新之");
     EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
+    EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "此标识也被设置";
+
+    pStock->SetUpdateProfileDB(false);
   }
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
@@ -1797,6 +1803,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDate(), 19900102);
     EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
+    EXPECT_FALSE(pStock->IsUpdateProfileDB()) << "未更新日线起止日期的话，此标识也未被设置";
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {
