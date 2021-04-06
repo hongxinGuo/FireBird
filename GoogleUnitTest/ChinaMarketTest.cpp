@@ -550,7 +550,23 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaMarket->IsUpdateChoicedStockDB());
   }
 
-  TEST_F(CChinaMarketTest, TestSetRTDataSetCleared) {
+  TEST_F(CChinaMarketTest, TestIsSaveDayLine) {
+    EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine());
+    gl_pChinaMarket->SetSaveDayLine(true);
+    EXPECT_TRUE(gl_pChinaMarket->IsSaveDayLine());
+    gl_pChinaMarket->SetSaveDayLine(false);
+    EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine());
+  }
+
+  TEST_F(CChinaMarketTest, TestIsUpdateStockSection) {
+    EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockSection());
+    gl_pChinaMarket->SetUpdateStockSection(true);
+    EXPECT_TRUE(gl_pChinaMarket->IsUpdateStockSection());
+    gl_pChinaMarket->SetUpdateStockSection(false);
+    EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockSection());
+  }
+
+  TEST_F(CChinaMarketTest, TestIsRTDataSetCleared) {
     EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
     gl_pChinaMarket->SetRTDataSetCleared(true);
     EXPECT_TRUE(gl_pChinaMarket->IsRTDataSetCleared());
@@ -558,7 +574,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
   }
 
-  TEST_F(CChinaMarketTest, TestSetSavingTempData) {
+  TEST_F(CChinaMarketTest, TestIsSavingTempData) {
     EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
     gl_pChinaMarket->SetSavingTempData(false);
     EXPECT_FALSE(gl_pChinaMarket->IsSavingTempData());
@@ -566,7 +582,15 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
   }
 
-  TEST_F(CChinaMarketTest, TestTaskResetMarket) {
+  TEST_F(CChinaMarketTest, TestIsUpdateStockCodeDB) {
+    EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+    gl_pChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
+    EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsTrue());
+
+    gl_pChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskResetMarket1) {
     tm tm_;
     tm_.tm_wday = 1; // 星期一
     gl_pChinaMarket->__TEST_SetMarketTM(tm_);
@@ -594,7 +618,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
     tm tm_;
-    tm_.tm_wday = 0; // 星期日
+    tm_.tm_wday = 0; // 星期日, 休息日
     gl_pChinaMarket->__TEST_SetMarketTM(tm_);
     EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
     gl_pChinaMarket->SetSystemReady(true);
@@ -629,6 +653,32 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
     // 恢复系统原态
+    gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskResetMarket4) {
+    tm tm_;
+    tm_.tm_wday = 1; // 星期一
+    gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+    gl_pChinaMarket->SetSystemReady(true);
+    EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
+    EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
+
+    gl_pChinaMarket->SetStockDayLineNeedUpdate(999);
+    gl_pChinaMarket->SetResetMarket(false);
+    gl_pChinaMarket->TaskResetMarket(91259);
+    EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
+    gl_pChinaMarket->TaskResetMarket(91400);
+    EXPECT_FALSE(gl_pChinaMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
+    gl_pChinaMarket->SetSystemReady(true);
+    gl_pChinaMarket->TaskResetMarket(91300);
+    EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
+    EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
+
+    // 恢复系统原态
+    gl_pChinaMarket->SetStockDayLineNeedUpdate(4800);
     gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
   }
 

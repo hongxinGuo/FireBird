@@ -206,6 +206,17 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskUpdateStockCodeDB) {
+    EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadUpdateStockCodeDB())
+      .Times(0);
+    EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
+
+    gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadUpdateStockCodeDB())
+      .Times(1);
+    EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
+
+    gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskUpdateOptionDB) {
@@ -351,6 +362,20 @@ namespace StockAnalysisTest {
     gl_pMockChinaMarket->SetChoiced10RSStrongStockSet(false);
     EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
     EXPECT_FALSE(gl_pMockChinaMarket->IsChoiced10RSStrongStockSet()) << _T("休息日不处理");
+  }
+
+  TEST_F(CMockChinaMarketTest, TestTaskGetNeteaseDayLineFromWeb) {
+    EXPECT_TRUE(gl_pMockChinaMarket->IsDayLineNeedUpdate());
+    gl_pMockChinaMarket->SetSystemReady(true);
+    gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92559);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(0);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(0);
+    EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
+
+    gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92600);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
+    EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
   }
 
   TEST_F(CMockChinaMarketTest, TestProcessTodayStock) {

@@ -144,6 +144,19 @@ ExcludeFromCodeCoverage(CChinaMarket15, L"CChinaMarket::RunningThreadUpdateStock
 ExcludeFromCodeCoverage(CChinaMarket16, L"CChinaMarket::RunningThreadCalculate10RSStrongStock");
 ExcludeFromCodeCoverage(CChinaMarket17, L"CChinaMarket::RunningThreadCalculate10RSStrong1Stock");
 ExcludeFromCodeCoverage(CChinaMarket18, L"CChinaMarket::RunningThreadCalculate10RSStrong2Stock");
+ExcludeFromCodeCoverage(CChinaMarket19, L"CChinaMarket::RunningThreadBuildDayLineRS");
+ExcludeFromCodeCoverage(CChinaMarket20, L"CChinaMarket::RunningThreadBuildDayLineRSOfDate");
+ExcludeFromCodeCoverage(CChinaMarket21, L"CChinaMarket::RunningThreadBuildWeekLine");
+ExcludeFromCodeCoverage(CChinaMarket22, L"CChinaMarket::RunningThreadBuildWeekLineOfStock");
+ExcludeFromCodeCoverage(CChinaMarket23, L"CChinaMarket::RunningThreadBuildWeekLineRS");
+ExcludeFromCodeCoverage(CChinaMarket24, L"CChinaMarket::RunningThreadBuildWeekLineRSOfDate");
+ExcludeFromCodeCoverage(CChinaMarket25, L"CChinaMarket::RunningThreadBuildWeekLineOfCurrentWeek");
+ExcludeFromCodeCoverage(CChinaMarket26, L"CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable");
+ExcludeFromCodeCoverage(CChinaMarket27, L"CChinaMarket::RunningThreadLoadWeekLine");
+ExcludeFromCodeCoverage(CChinaMarket28, L"CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock");
+ExcludeFromCodeCoverage(CChinaMarket29, L"CChinaMarket::RunningThreadSaveStockSection");
+ExcludeFromCodeCoverage(CChinaMarket30, L"CChinaMarket::RunningThreadUpdateStockCodeDB");
+ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::RunningThreadUpdateOptionDB");
 
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");
@@ -231,8 +244,8 @@ int main(int argc, char* argv[]) {
   // gtest takes ownership of the TestEnvironment ptr - we don't delete it.
   ::testing::AddGlobalTestEnvironment(new TestEnvironment);
 
-  ASSERT_FALSE(gl_fNormalMode);
-  ASSERT_TRUE(gl_fTestMode);
+  ASSERT(!gl_fNormalMode);
+  ASSERT(gl_fTestMode);
 
   return RUN_ALL_TESTS();
 }
