@@ -376,6 +376,9 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
     EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
+
+    gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
+    gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
   }
 
   TEST_F(CMockChinaMarketTest, TestProcessTodayStock) {

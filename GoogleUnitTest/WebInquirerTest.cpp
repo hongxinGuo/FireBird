@@ -101,6 +101,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CWebInquirerTest, TestGetNeteaseDayLineData) {
     int iSaved = gl_iMaxSavingOneDayLineThreads;
+    EXPECT_FALSE(gl_pNeteaseDayLineWebInquiry2->IsReadingWebData());
+    EXPECT_FALSE(gl_pNeteaseDayLineWebInquiry->IsReadingWebData());
 
     for (gl_iMaxSavingOneDayLineThreads = 2; gl_iMaxSavingOneDayLineThreads < 7; gl_iMaxSavingOneDayLineThreads++) {
       EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread)
@@ -110,6 +112,7 @@ namespace StockAnalysisTest {
         .Times(1)
         .RetiresOnSaturation();
       EXPECT_TRUE(gl_WebInquirer.GetNeteaseDayLineData());
+      EXPECT_TRUE(gl_pNeteaseDayLineWebInquiry2->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
       EXPECT_TRUE(gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
       gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
       gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
@@ -132,8 +135,9 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_WebInquirer.GetNeteaseDayLineData());
     EXPECT_TRUE(gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
-    gl_iMaxSavingOneDayLineThreads = 1;
 
+    gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
+    gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
     gl_iMaxSavingOneDayLineThreads = iSaved;
   }
 }

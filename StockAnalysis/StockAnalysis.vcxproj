@@ -257,13 +257,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -271,13 +271,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -285,13 +285,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -299,13 +299,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -322,9 +322,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -332,8 +332,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -341,9 +341,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\数据库类;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\packages\gmock.1.10.0\lib\native\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
-    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -874,6 +874,21 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetCountry.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetEconomicCalendar.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetEPSSurprise.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubExchange.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetForexDayLine.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetNaicsIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetSICIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetTiingoStock.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldChoicedStock.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldMarketOption.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStock.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
     <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="source\AmericaMarket\SICIndustry.h" />
@@ -888,21 +903,6 @@
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\TiingoStock.h" />
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetCountry.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetEconomicCalendar.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetEPSSurprise.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubExchange.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubForexExchange.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetFinnhubForexSymbol.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetForexDayLine.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetNaicsIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetSICIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetTiingoIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetTiingoStock.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldChoicedStock.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldMarketOption.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStock.h" />
-    <ClInclude Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.h" />
     <ClInclude Include="source\Base Class\VirtualHistoryData.h" />
     <ClInclude Include="source\Base Class\VirtualMarket.h" />
     <ClInclude Include="source\Base Class\VirtualStock.h" />
@@ -969,6 +969,21 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetCountry.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubExchange.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetNaicsIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetTiingoStock.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldMarketOption.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStock.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp" />
     <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
@@ -999,21 +1014,6 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoStock.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetCountry.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetEconimicCalendar.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetEPSSurprise.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubExchange.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubForexExchange.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetFinnhubForexSymbol.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetForexDayLine.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetNaicsIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetSICIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetTiingoIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetTiingoStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldChoicedStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldMarketOption.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\数据库类\SetWorldStockDayLine.cpp" />
     <ClCompile Include="source\Base Class\VirtualHistoryData.cpp" />
     <ClCompile Include="source\Base Class\VirtualMarket.cpp" />
     <ClCompile Include="source\Base Class\VirtualStock.cpp" />
@@ -1130,12 +1130,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.72.0.0\build\boost.targets')" />
+    <Import Project="..\packages\boost.1.74.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.74.0.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.72.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.74.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.74.0.0\build\boost.targets'))" />
   </Target>
 </Project>
