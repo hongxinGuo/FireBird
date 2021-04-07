@@ -5,6 +5,8 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   struct SinaRTData {
     SinaRTData(int count, CString Symbol, int iType, bool fActive, time_t tt) {

@@ -393,13 +393,15 @@ public:
 
   void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
   bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
+
+  bool AddStock(CChinaStockPtr pStock);
   bool DeleteStock(CChinaStockPtr pStock);
+  bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
 
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
   void CreateStockSection(CString strFirstStockCode, bool fProcessRTData);
-  bool CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData);
   bool UpdateStockSection(CString strStockCode);
   bool UpdateStockSection(long lIndex);
 

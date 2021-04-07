@@ -120,6 +120,11 @@ namespace StockAnalysisTest {
     gl_pMockWorldMarket->GetStock(1)->SetEPSSurpriseNeedSave(false);
   }
 
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateTiingoStockDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateTiingoStockDB).Times(1);
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateTiingoStockDB());
+  }
+
   TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {
     EXPECT_CALL(*gl_pMockWorldMarket, UpdateCountryListDB)
       .Times(1);

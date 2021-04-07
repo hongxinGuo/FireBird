@@ -1104,4 +1104,16 @@ namespace StockAnalysisTest {
     }
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockProfileUpdated());
   }
+
+  TEST_F(CWorldMarketTest, TestUpdateTiingoIndustry) {
+    EXPECT_THAT(gl_pWorldMarket->UpdateTiingoIndustry(), IsFalse());
+  }
+
+  TEST_F(CWorldMarketTest, TestUpdateSICIndustry) {
+    EXPECT_THAT(gl_pWorldMarket->UpdateSICIndustry(), IsFalse());
+  }
+
+  TEST_F(CWorldMarketTest, TestUpdateNaicsIndustry) {
+    EXPECT_THAT(gl_pWorldMarket->UpdateNaicsIndustry(), IsFalse());
+  }
 }

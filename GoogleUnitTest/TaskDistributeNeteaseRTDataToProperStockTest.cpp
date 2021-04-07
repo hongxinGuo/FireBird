@@ -6,6 +6,7 @@
 #include"ChinaMarket.h"
 
 using namespace std;
+using namespace testing;
 
 namespace StockAnalysisTest {
   struct NeteaseData {

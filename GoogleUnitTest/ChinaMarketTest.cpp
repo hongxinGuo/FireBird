@@ -1586,4 +1586,75 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(setStockCode.find(_T("600004.SS")) != setStockCode.end());
     EXPECT_FALSE(setStockCode.find(_T("600001.SS")) != setStockCode.end());
   }
+
+  TEST_F(CChinaMarketTest, TestUpdateStockCodeDB) {
+    CChinaStockPtr pStock = make_shared<CChinaStock>();
+    pStock->SetSymbol(_T("SS.SS.SS"));
+    pStock->SetTodayNewStock(true);
+    pStock->SetUpdateProfileDB(true);
+    EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol())); // 确保是一个新股票代码
+    gl_pChinaMarket->AddStock(pStock);
+    pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
+    EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+    pStock->SetUpdateProfileDB(true);
+    pStock->SetIPOStatus(__STOCK_DELISTED__);
+    gl_pChinaMarket->UpdateStockCodeDB();
+
+    CSetStockCode setChinaStock;
+    setChinaStock.m_strFilter = _T("[Symbol] = '000001.SS'");
+    setChinaStock.Open();
+    EXPECT_EQ(setChinaStock.m_IPOStatus, __STOCK_DELISTED__);
+    setChinaStock.m_pDatabase->BeginTrans();
+    setChinaStock.Edit();
+    setChinaStock.m_IPOStatus = __STOCK_IPOED__;
+    setChinaStock.Update();
+    setChinaStock.m_pDatabase->CommitTrans();
+    setChinaStock.Close();
+
+    setChinaStock.m_strFilter = _T("[Symbol] = 'SS.SS.SS'");
+    setChinaStock.Open();
+    EXPECT_FALSE(setChinaStock.IsEOF());
+    setChinaStock.m_pDatabase->BeginTrans();
+    while (!setChinaStock.IsEOF()) {
+      setChinaStock.Delete();
+      setChinaStock.MoveNext();
+    }
+    setChinaStock.m_pDatabase->CommitTrans();
+    setChinaStock.Close();
+
+    pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
+    pStock->SetIPOStatus(__STOCK_IPOED__); // 恢复原状
+    pStock = gl_pChinaMarket->GetStock(_T("SS.SS.SS"));
+    EXPECT_TRUE(pStock != nullptr);
+    gl_pChinaMarket->DeleteStock(pStock); // 恢复原状
+  }
+
+  TEST_F(CChinaMarketTest, TestAddStock) {
+    CChinaStockPtr pStock = nullptr;
+    EXPECT_FALSE(gl_pChinaMarket->AddStock(pStock));
+
+    pStock = gl_pChinaMarket->GetStock(1);
+    EXPECT_FALSE(gl_pChinaMarket->AddStock(pStock));
+
+    pStock = make_shared<CChinaStock>();
+    pStock->SetSymbol(_T("SS.SS.SS"));
+    long lTotal = gl_pChinaMarket->GetTotalStock();
+    EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol()));
+    EXPECT_TRUE(gl_pChinaMarket->AddStock(pStock));
+    EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), lTotal + 1);
+
+    gl_pChinaMarket->DeleteStock(pStock);
+  }
+
+  TEST_F(CChinaMarketTest, TestDeleteStock) {
+    CChinaStockPtr pStock = nullptr;
+    EXPECT_FALSE(gl_pChinaMarket->DeleteStock(pStock));
+
+    pStock = make_shared<CChinaStock>();
+    pStock->SetSymbol(_T("SS.SS.SS"));
+    EXPECT_FALSE(gl_pChinaMarket->DeleteStock(pStock));
+
+    gl_pChinaMarket->AddStock(pStock);
+    EXPECT_TRUE(gl_pChinaMarket->DeleteStock(pStock));
+  }
 }

@@ -373,7 +373,7 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
   m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 
-bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
+bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
   CChinaStockPtr pStock;
   CString str;
 
@@ -389,12 +389,21 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetDayLineStartDate(19900101);
   pStock->SetUpdateProfileDB(true);
   pStock->SetNeedProcessRTData(fProcessRTData);
-  m_mapChinaMarketStock[pStock->GetSymbol()] = m_vChinaMarketStock.size(); // 使用下标生成新的映射
-  m_vChinaMarketStock.push_back(pStock);
+  AddStock(pStock);
   ASSERT(pStock->IsDayLineNeedUpdate());
   str = _T("china Market生成新代码") + pStock->GetSymbol();
   gl_systemMessage.PushInnerSystemInformationMessage(str);
   ASSERT(m_vChinaMarketStock.size() == m_mapChinaMarketStock.size());
+  return true;
+}
+
+bool CChinaMarket::AddStock(CChinaStockPtr pStock) {
+  if (pStock == nullptr) return false;
+  if (IsStock(pStock->GetSymbol())) return false;
+
+  m_mapChinaMarketStock[pStock->GetSymbol()] = m_vChinaMarketStock.size(); // 使用下标生成新的映射
+  m_vChinaMarketStock.push_back(pStock);
+
   return true;
 }
 
@@ -667,7 +676,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       }
       if (IsCheckActiveStock()) {
         if (!IsStock(pRTData->GetSymbol())) {
-          CreateNewStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
+          CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
         }
       }
@@ -723,7 +732,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       }
       if (IsCheckActiveStock()) {
         if (!IsStock(pRTData->GetSymbol())) {
-          CreateNewStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
+          CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
         }
       }

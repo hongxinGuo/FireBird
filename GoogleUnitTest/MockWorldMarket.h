@@ -17,6 +17,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateTiingoIndustry, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateSICIndustry, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateNaicsIndustry, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateTiingoStockDB, (), (override));
 
     MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
