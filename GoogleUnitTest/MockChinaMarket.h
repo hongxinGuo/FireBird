@@ -43,6 +43,11 @@ namespace testing {
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDate, (long lDate), (override));
     MOCK_METHOD(bool, SaveStockSection, (), (override));
+
+    MOCK_METHOD(bool, DeleteCurrentWeekWeekLine, (), (override));
+    MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));
+    MOCK_METHOD(bool, DeleteWeekLine, (), (override));
+    MOCK_METHOD(bool, DeleteWeekLine, (long lMonday), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

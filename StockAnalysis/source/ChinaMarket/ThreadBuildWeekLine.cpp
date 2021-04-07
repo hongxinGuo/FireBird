@@ -5,9 +5,6 @@
 
 #include"ChinaMarket.h"
 
-using namespace std;
-#include<thread>
-
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
   gl_ThreadStatus.IncreaseSavingThread();
   gl_ThreadStatus.SetCreatingWeekLine(true);

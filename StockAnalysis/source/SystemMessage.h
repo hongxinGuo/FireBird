@@ -9,7 +9,7 @@ using namespace std;
 class CSystemDeque {
 public:
   CSystemDeque();
-  ~CSystemDeque();
+  virtual ~CSystemDeque();
 
   void PushMessage(CString str);
   CString PopMessage(void);

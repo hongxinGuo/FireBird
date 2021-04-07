@@ -9,6 +9,9 @@
 
 class CWeekLineContainer : public CChinaStockHistoryDataContainer {
 public:
+  CWeekLineContainer();
+  virtual ~CWeekLineContainer();
+
   virtual bool LoadData(CString strStockSymbol) override;
   virtual bool SaveData(CString strStockSymbol) override;
 

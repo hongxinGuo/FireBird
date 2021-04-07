@@ -543,4 +543,58 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_EQ(ThreadSaveStockSection(gl_pMockChinaMarket.get()), (UINT)35);
   }
+
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
+    long lPrevMonday = GetPrevMonday(20200101);
+    gl_fExitingSystem = true;
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(_)).Times(0);
+    EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
+
+    gl_fExitingSystem = false;
+    gl_fExitingCalculatingRS = true;
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(_)).Times(0);
+    EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
+
+    gl_fExitingCalculatingRS = false;
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(lPrevMonday)).Times(1);
+    EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
+  }
+
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRS) {
+    long lPrevMonday, lPrevMonday1, lPrevMonday2, lPrevMonday3, lPrevMonday4 = 0;
+
+    gl_pMockChinaMarket->CalculateTime();
+    lPrevMonday4 = GetPrevMonday(gl_pMockChinaMarket->GetFormatedMarketDate());
+    lPrevMonday3 = GetPrevMonday(lPrevMonday4);
+    lPrevMonday2 = GetPrevMonday(lPrevMonday3);
+    lPrevMonday1 = GetPrevMonday(lPrevMonday2);
+    lPrevMonday = GetPrevMonday(lPrevMonday1);
+    InSequence seq;
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday1)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday2)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday3)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday4)).Times(1);
+    EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), (UINT)30);
+  }
+
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine) {
+    gl_ThreadStatus.SetCreatingWeekLine(true);
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
+    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), 25);
+    EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
+
+    gl_ThreadStatus.SetCreatingWeekLine(true);
+    gl_pMockChinaMarket->CalculateTime();
+    long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetFormatedMarketDate());
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine(lCurrentMonday)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
+    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), 25);
+    EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
+  }
 }

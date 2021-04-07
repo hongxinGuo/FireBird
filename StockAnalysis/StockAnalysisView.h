@@ -14,11 +14,12 @@ enum {
 class CStockAnalysisView : public CView
 {
 protected: // 仅从序列化创建
-  CStockAnalysisView();
   DECLARE_DYNCREATE(CStockAnalysisView)
+  CStockAnalysisView();
 
   // 特性
 public:
+  virtual ~CStockAnalysisView(void);
   CStockAnalysisDoc* GetDocument() const;
 
   CRect GetClientSize(void) noexcept { return m_rectClient; }
@@ -84,7 +85,7 @@ protected:
 
   // 实现
 public:
-  virtual ~CStockAnalysisView();
+
 #ifdef _DEBUG
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;

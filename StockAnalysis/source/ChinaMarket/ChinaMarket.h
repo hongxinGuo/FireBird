@@ -203,10 +203,10 @@ public:
 
   bool ChangeDayLineStockCodeToStandred(void);
 
-  bool DeleteWeekLine(void);
+  virtual bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
   bool DeleteWeekLineExtendInfo(void);
-  bool DeleteWeekLine(long lMonday);
+  virtual bool DeleteWeekLine(long lMonday);
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
 
@@ -216,7 +216,7 @@ public:
 
   bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
-  bool DeleteCurrentWeekWeekLine(void);
+  virtual bool DeleteCurrentWeekWeekLine(void);
   bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 
   bool Load10DaysRSStrong1StockSet(void);
@@ -230,7 +230,7 @@ public:
 
   bool UnloadDayLine(void) noexcept;
 
-  bool BuildWeekLine(long lStartDate);
+  virtual bool BuildWeekLine(long lStartDate);
   virtual bool BuildWeekLineOfCurrentWeek(void);
   bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryDataPtr>*> pvData);
   virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表

@@ -7,6 +7,12 @@
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 
+CWeekLineContainer::CWeekLineContainer() {
+}
+
+CWeekLineContainer::~CWeekLineContainer() {
+}
+
 bool CWeekLineContainer::LoadData(CString strStockSymbol) {
   LoadWeekLine(strStockSymbol);
 

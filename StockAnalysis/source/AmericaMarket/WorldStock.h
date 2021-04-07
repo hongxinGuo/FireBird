@@ -16,7 +16,7 @@ using namespace std;
 class CWorldStock : public CVirtualStock {
 public:
   CWorldStock();
-  ~CWorldStock();
+  virtual ~CWorldStock();
   virtual void Reset(void) override;
   virtual int GetRatio(void) const noexcept override { return s_iRatio; }
 

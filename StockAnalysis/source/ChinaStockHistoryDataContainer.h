@@ -17,7 +17,7 @@ using namespace std;
 class CChinaStockHistoryDataContainer : public CObject {
 public:
   CChinaStockHistoryDataContainer();
-  ~CChinaStockHistoryDataContainer();
+  virtual ~CChinaStockHistoryDataContainer();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
   virtual bool SaveData(CString strStockSymbol) { TRACE(_T("调用了基类SaveData\n")); return false; }

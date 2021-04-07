@@ -10,6 +10,7 @@ namespace testing {
     MOCK_METHOD(bool, LoadDayLine, (CString strStockCode), (override));
     MOCK_METHOD(bool, SaveWeekLine, (), (override));
     MOCK_METHOD(bool, LoadWeekLine, (), (override));
+    MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));
   };
 
   typedef shared_ptr<CMockChinaStock> CMockChinaStockPtr;

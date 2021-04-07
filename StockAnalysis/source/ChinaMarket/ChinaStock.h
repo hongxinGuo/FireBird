@@ -292,7 +292,7 @@ public:
   bool SaveWeekLineExtendInfo();
   bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
-  bool BuildWeekLine(long lStartDate = 19900101);
+  virtual bool BuildWeekLine(long lStartDate = 19900101);
 
   // ¹Òµ¥Çé¿ö
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }

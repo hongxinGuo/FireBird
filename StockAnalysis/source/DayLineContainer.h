@@ -12,7 +12,7 @@ using namespace std;
 class CDayLineContainer : public CChinaStockHistoryDataContainer {
 public:
   CDayLineContainer();
-  ~CDayLineContainer();
+  virtual ~CDayLineContainer();
 public:
   virtual bool SaveData(CString strStockSymbol) override;
   virtual bool LoadData(CString strStockSymbol) override;
