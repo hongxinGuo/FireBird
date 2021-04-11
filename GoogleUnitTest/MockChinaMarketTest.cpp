@@ -533,8 +533,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadBuildCurrentWeekWeekLineTable) {
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable)
-      .Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable).Times(1);
     EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(gl_pMockChinaMarket.get()), (UINT)33);
   }
 
@@ -578,15 +578,17 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), (UINT)30);
   }
 
-  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine) {
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {
     gl_ThreadStatus.SetCreatingWeekLine(true);
-    EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1);
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1).RetiresOnSaturation();
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1).RetiresOnSaturation();
     EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
-    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), 25);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1).RetiresOnSaturation();
+    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), (UINT)25);
     EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
+  }
 
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine2) {
     gl_ThreadStatus.SetCreatingWeekLine(true);
     gl_pMockChinaMarket->CalculateTime();
     long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetFormatedMarketDate());
@@ -594,7 +596,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
     EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
     EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
-    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), 25);
+    EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), (UINT)25);
     EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
   }
 }

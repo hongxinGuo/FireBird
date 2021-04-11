@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
   // 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
   CMockWorldMarketPtr gl_pMockWorldMarket;
   CMockChinaMarketPtr gl_pMockChinaMarket;
-  CMockMainFrame* gl_pMockMainFrame;
+  CMockMainFrame* gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
@@ -70,8 +70,6 @@ namespace StockAnalysisTest {
       gl_pWorldMarket = make_shared<CWorldMarket>();
       gl_pChinaMarket->ResetMarket();
       gl_pWorldMarket->ResetMarket();
-
-      //_CrtMemCheckpoint(&state);
 
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
@@ -123,8 +121,6 @@ namespace StockAnalysisTest {
       delete gl_pMockMainFrame;
       EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
       gl_fExitingSystem = false;
-
-      //_CrtMemDumpAllObjectsSince(&state);
 
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;

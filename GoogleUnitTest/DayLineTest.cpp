@@ -744,4 +744,23 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Delete();
     setDayLineBasicInfo.Close();
   }
+
+  TEST_F(CStockDayLineTest, TestLoadForexDayLine) {
+    CSetForexDayLine setForexDayLine;
+    CDayLine dayLine;
+
+    setForexDayLine.m_strFilter = _T("[ID] = 1");
+    setForexDayLine.Open();
+    EXPECT_TRUE(dayLine.LoadForexDayLine(&setForexDayLine));
+    setForexDayLine.Close();
+
+    EXPECT_EQ(dayLine.GetFormatedMarketDate(), 20200406);
+    EXPECT_STREQ(dayLine.GetExchange(), _T("oanda"));
+    EXPECT_STREQ(dayLine.GetStockSymbol(), _T("OANDA:AUD_SGD"));
+    EXPECT_EQ(dayLine.GetLastClose(), 0);
+    EXPECT_EQ(dayLine.GetOpen(), 863);
+    EXPECT_EQ(dayLine.GetHigh(), 874);
+    EXPECT_EQ(dayLine.GetLow(), 861);
+    EXPECT_EQ(dayLine.GetClose(), 871);
+  }
 }

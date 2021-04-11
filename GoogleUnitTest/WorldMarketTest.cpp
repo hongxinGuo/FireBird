@@ -336,14 +336,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CWorldMarketTest, TestLoadOption) {
-    EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv4ac1n48v6tcp17l5cg"));
+    EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
 
     gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
     gl_pTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
     gl_pQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
     gl_pWorldMarket->LoadOption();
-    EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv4ac1n48v6tcp17l5cg"));
-    EXPECT_STREQ(gl_pTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
+    EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
+    EXPECT_STREQ(gl_pTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"));
     EXPECT_STREQ(gl_pQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 
     gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T("&token=bv4ac1n48v6tcp17l5cg"));
@@ -380,7 +380,7 @@ namespace StockAnalysisTest {
     setCountry.Close();
   }
 
-  TEST_F(CWorldMarketTest, TestUpdateStockDB) {
+  TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
     CWorldStockPtr pStock = make_shared<CWorldStock>();
     pStock->SetSymbol(_T("SS.SS.US"));
     EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
@@ -415,6 +415,42 @@ namespace StockAnalysisTest {
 
     pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
     gl_pWorldMarket->DeleteStock(pStock); // 恢复原状
+  }
+
+  TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
+    CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+    pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
+    gl_pWorldMarket->AddForexSymbol(pForexSymbol);
+    pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
+    EXPECT_EQ(pForexSymbol->GetIPOStatus(), __STOCK_IPOED__);
+    pForexSymbol->SetUpdateProfileDB(true);
+    pForexSymbol->SetIPOStatus(__STOCK_DELISTED__);
+    gl_pWorldMarket->UpdateForexSymbolDB();
+
+    CSetFinnhubForexSymbol setWorldStock;
+    setWorldStock.m_strFilter = _T("[Symbol] = 'OANDA:GBP_ZAR'");
+    setWorldStock.Open();
+    EXPECT_EQ(setWorldStock.m_IPOStatus, __STOCK_DELISTED__);
+    setWorldStock.m_pDatabase->BeginTrans();
+    setWorldStock.Edit();
+    setWorldStock.m_IPOStatus = __STOCK_IPOED__;
+    setWorldStock.Update();
+    setWorldStock.m_pDatabase->CommitTrans();
+    setWorldStock.Close();
+
+    setWorldStock.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+    setWorldStock.Open();
+    EXPECT_FALSE(setWorldStock.IsEOF()) << "存入了新符号";
+    setWorldStock.m_pDatabase->BeginTrans();
+    while (!setWorldStock.IsEOF()) {
+      setWorldStock.Delete();
+      setWorldStock.MoveNext();
+    }
+    setWorldStock.m_pDatabase->CommitTrans();
+    setWorldStock.Close();
+
+    pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("SS.SS.US"));
+    gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // 恢复原状
   }
 
   TEST_F(CWorldMarketTest, TaskUpdateForexExchangeDB) {
@@ -592,7 +628,7 @@ namespace StockAnalysisTest {
     CFinnhubExchangePtr pExchange;
     WebInquiry inquiry;
 
-    EXPECT_EQ(gl_pWorldMarket->GetExchangeSize(), 68);
+    EXPECT_EQ(gl_pWorldMarket->GetExchangeSize(), 70);
     for (int i = 0; i < gl_pWorldMarket->GetExchangeSize(); i++) {
       pExchange = gl_pWorldMarket->GetExchange(i);
       pExchange->m_fUpdated = true;

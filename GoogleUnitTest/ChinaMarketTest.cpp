@@ -513,6 +513,15 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
+    EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
+
+    gl_pChinaMarket->GetStock(1)->SetDayLineNeedProcess(true);
+    EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
+
+    gl_pChinaMarket->GetStock(1)->SetDayLineNeedProcess(false);
+  }
+
   TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
     CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
     EXPECT_FALSE(pStock->IsDayLineNeedProcess());

@@ -725,7 +725,7 @@ namespace StockAnalysisTest {
     while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
     EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
     setDayLine.Delete();
-    setDayLine.MoveLast();
+    while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
     EXPECT_TRUE(setDayLine.m_Date = 20210123);
     EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
     setDayLine.Delete();

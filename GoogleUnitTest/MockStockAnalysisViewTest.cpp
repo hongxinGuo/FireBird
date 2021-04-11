@@ -319,14 +319,26 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRealTime) {
     CCmdUI cmdUI;
-    s_pStockAnalysisView->SetCurrentShowType(1);
+    s_pStockAnalysisView->SetCurrentShowType(__SHOW_DAY_LINE_DATA__);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
-    s_pStockAnalysisView->SetCurrentShowType(2);
+    s_pStockAnalysisView->SetCurrentShowType(__SHOW_REAL_TIME_DATA__);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
+  }
+
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowWeekLine) {
+    CCmdUI cmdUI;
+    s_pStockAnalysisView->SetCurrentShowType(__SHOW_DAY_LINE_DATA__);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowWeekLine(&cmdUI);
+    s_pStockAnalysisView->SetCurrentShowType(__SHOW_WEEK_LINE_DATA__);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowWeekLine(&cmdUI);
   }
 
   TEST_F(CMockStockAnalysisViewTest, TestOnShow) {
