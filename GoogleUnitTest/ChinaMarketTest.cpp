@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
-        //EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
       }
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       ASSERT_FALSE(gl_fNormalMode);
@@ -51,14 +51,14 @@ namespace StockAnalysisTest {
       gl_pChinaMarket->SetCurrentStockChanged(false);
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
-        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
       }
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       gl_pChinaMarket->SetCurrentStockChanged(false);
       gl_pChinaMarket->CalculateTime();
@@ -296,11 +296,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("1000002"));
 
     gl_pChinaMarket->GetStock(2)->SetDayLineEndDate(lDate); // »Ö¸´Ô­×´¡£
-    // »Ö¸´Ô­×´
-    for (int i = 0; i < 5; i++) {
-      pStock = gl_pChinaMarket->GetStock(i);
-      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
-    }
   }
 
   TEST_F(CChinaMarketTest, TestGetMinLineOffset) {
@@ -1082,15 +1077,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {
-    /*
-    for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-      if (!gl_pChinaMarket->GetStock(i)->IsDayLineNeedUpdate()) gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
-    }
-    */
-    gl_pChinaMarket->ClearDayLineNeedUpdaeStatus();
+    gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
 
     for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
       EXPECT_FALSE(gl_pChinaMarket->GetStock(i)->IsDayLineNeedUpdate());
+    }
+
+    for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+      gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
     }
   }
 

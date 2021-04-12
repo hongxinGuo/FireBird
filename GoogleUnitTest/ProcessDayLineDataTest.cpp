@@ -61,6 +61,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       if (!m_pStock->IsNullStock()) { m_pStock->SetDayLineEndDate(lDate); }
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);

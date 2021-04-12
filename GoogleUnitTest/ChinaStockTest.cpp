@@ -28,6 +28,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
     }
     virtual void SetUp(void) override {
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
       ASSERT_FALSE(gl_fNormalMode);
       pStock = nullptr;
@@ -39,6 +40,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
       gl_pChinaMarket->CalculateTime();
       gl_pChinaMarket->SetUpdateOptionDB(false);

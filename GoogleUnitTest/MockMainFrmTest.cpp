@@ -12,6 +12,7 @@ namespace StockAnalysisTest {
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_THAT(gl_pMockMainFrame, NotNull());
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
@@ -22,6 +23,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite(void) {
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -40,12 +42,14 @@ namespace StockAnalysisTest {
     }
 
     virtual void SetUp(void) override {
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       gl_fExitingSystem = false;
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
       EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
 
     virtual void TearDown(void) override {
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
       gl_pChinaMarket->ResetCurrentStock();
       gl_pChinaMarket->SetCurrentStockChanged(false);

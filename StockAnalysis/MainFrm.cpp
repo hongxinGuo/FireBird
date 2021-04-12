@@ -865,7 +865,7 @@ void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnStopUpdateDayLine() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->ClearDayLineNeedUpdaeStatus();
+  gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
 }
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {

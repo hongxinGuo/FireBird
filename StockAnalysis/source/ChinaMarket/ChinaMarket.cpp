@@ -1381,9 +1381,9 @@ bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
   }
 }
 
-void CChinaMarket::ClearDayLineNeedUpdaeStatus(void) {
+void CChinaMarket::ClearDayLineNeedUpdateStatus(void) {
   for (auto& pStock : m_vChinaMarketStock) {
-    if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false);
+    pStock->SetDayLineNeedUpdate(false);
   }
 }
 

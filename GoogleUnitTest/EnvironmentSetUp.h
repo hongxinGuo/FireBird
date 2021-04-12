@@ -81,6 +81,8 @@ namespace StockAnalysisTest {
       gl_pMockChinaMarket->ResetMarket();
       gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
       gl_pMockWorldMarket->ResetMarket();
+      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
       EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
       gl_pMockMainFrame = new CMockMainFrame;
@@ -92,7 +94,6 @@ namespace StockAnalysisTest {
       }
       EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
       EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
-      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       gl_pChinaMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
@@ -105,6 +106,11 @@ namespace StockAnalysisTest {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+
+      for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+        auto pStock = gl_pChinaMarket->GetStock(i);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
+      }
       // 重置以下指针，以测试是否存在没有配对的Mock。
       gl_pMockChinaMarket = nullptr;
       gl_pMockWorldMarket = nullptr;

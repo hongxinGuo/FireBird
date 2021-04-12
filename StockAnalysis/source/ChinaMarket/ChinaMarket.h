@@ -365,7 +365,7 @@ public:
   long GetNeteaseRTDataInquiringIndex(void) const noexcept { return m_lNeteaseRTDataInquiringIndex; }
   long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
 
-  void ClearDayLineNeedUpdaeStatus(void);
+  void ClearDayLineNeedUpdateStatus(void);
 
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) const noexcept { if (m_fSaveRTData) return true; else return false; }

@@ -40,6 +40,7 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
     static void TearDownTestSuite(void) {
+      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
@@ -61,6 +62,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       CChinaStockPtr pStock;
@@ -376,7 +378,11 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
     EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
+    EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
+    EXPECT_FALSE(gl_pChinaMarket->GetStock(1)->IsDayLineNeedUpdate());
 
+    gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
+    gl_pChinaMarket->GetStock(1)->SetDayLineNeedUpdate(true);
     gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
   }
@@ -575,6 +581,9 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday2)).Times(1);
     EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday3)).Times(1);
     EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(lPrevMonday4)).Times(1);
+    if (gl_pMockChinaMarket->GetDayOfWeek() == 1) { // 本日是星期一
+      EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket->GetFormatedMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
+    }
     EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), (UINT)30);
   }
 

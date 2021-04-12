@@ -15,18 +15,24 @@ namespace StockAnalysisTest {
 
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
 
     virtual void TearDown(void) override {
       // clearup
+      for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+        gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+      }
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_WebInquirer.GetPotenDailyBriefingDataSize() > 0) gl_WebInquirer.PopPotenDailyBriefingData();
       EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
   };
 
@@ -139,5 +145,7 @@ namespace StockAnalysisTest {
     gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
     gl_iMaxSavingOneDayLineThreads = iSaved;
+
+    EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
   }
 }
