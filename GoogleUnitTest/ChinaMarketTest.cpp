@@ -43,7 +43,11 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
+      EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5002) << "测试代码库中的股票代码总数为5002";
     }
+
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -55,6 +59,8 @@ namespace StockAnalysisTest {
       }
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -75,7 +81,8 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
-      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002);
+
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
     }
 
     virtual void TearDown(void) override {
@@ -113,6 +120,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
       EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5002));
       gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
+
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
     }
   };
 
@@ -147,6 +156,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaMarket->GetCountDownSlowReadingRTData(), 3);
     EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_pChinaMarket->GetTotalStockMapSize(), gl_pChinaMarket->GetTotalStock());
+    EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
     pStock = gl_pChinaMarket->GetStock(0);
     EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
     EXPECT_EQ(gl_pChinaMarket->GetStockOffset(_T("000001.SS")), 0);

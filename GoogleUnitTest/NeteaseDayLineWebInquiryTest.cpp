@@ -23,7 +23,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       gl_pChinaMarket->CalculateTime();
       gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
-      m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
+      m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
@@ -37,49 +37,53 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pChinaMarket->SetSystemReady(false);
       gl_pChinaMarket->SetCurrentStockChanged(false);
-      m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
+      m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
       }
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
-    CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
+    CMockNeteaseDayLineWebInquiry m_MockNeteaseDayLineWebInquiry; // 网易日线历史数据
+    CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry;
   };
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestInitialize) {
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetConnectionName(), _T("NeteaseDayLine"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetConnectionName(), _T("NeteaseDayLine"));
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {
     EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-    m_NeteaseDayLineWebInquiry.SetReadingWebData(true);
-    EXPECT_FALSE(m_NeteaseDayLineWebInquiry.GetWebData());
-    m_NeteaseDayLineWebInquiry.SetReadingWebData(false);
+    m_MockNeteaseDayLineWebInquiry.SetReadingWebData(true);
+    EXPECT_FALSE(m_MockNeteaseDayLineWebInquiry.GetWebData());
+    m_MockNeteaseDayLineWebInquiry.SetReadingWebData(false);
     gl_pChinaMarket->SetSystemReady(true);
-    EXPECT_CALL(m_NeteaseDayLineWebInquiry, StartReadingThread)
+    EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
+      .Times(1)
+      .WillOnce(Return(true))
+      .RetiresOnSaturation();
+    EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, StartReadingThread)
       .Times(1);
-    m_NeteaseDayLineWebInquiry.GetWebData();
-    EXPECT_TRUE(m_NeteaseDayLineWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-    EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock()) << "有一个股票的日线无需更新了";
-    EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate()) << "第一个股票(上证指数）的日线已更新";
+    m_MockNeteaseDayLineWebInquiry.GetWebData();
+    EXPECT_TRUE(m_MockNeteaseDayLineWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+    EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
     gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestReportStatus) {
-    EXPECT_TRUE(m_NeteaseDayLineWebInquiry.ReportStatus(1));
+    EXPECT_TRUE(m_MockNeteaseDayLineWebInquiry.ReportStatus(1));
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestSetDownLoadingStockCode) {
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T(""));
-    m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("1000001"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("1000001"));
-    m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("0600001"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("0600001"));
-    m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("2600001"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("2600001"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T(""));
+    m_MockNeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("1000001"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("1000001"));
+    m_MockNeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("0600001"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("0600001"));
+    m_MockNeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("2600001"));
+    EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("2600001"));
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestPrepareNextInquiringStr) {
@@ -98,7 +102,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
 
     // 恢复原态
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
       gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
     }
   }

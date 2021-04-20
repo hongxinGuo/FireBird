@@ -52,6 +52,7 @@ namespace StockAnalysisTest {
       //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       EXPECT_FALSE(gl_fExitingSystem);
+      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 
       gl_pMockChinaMarket->SetTodayStockProcessed(false);
       gl_pMockChinaMarket->SetRSEndDate(19900101);
@@ -375,14 +376,22 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 
     gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92600);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
+      .Times(1)
+      .WillOnce(Return(true))
+      .RetiresOnSaturation();
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, PrepareNextInquiringStr())
+      .Times(1)
+      .WillOnce(Return(true))
+      .RetiresOnSaturation();
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
     EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
-    EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
-    EXPECT_FALSE(gl_pChinaMarket->GetStock(1)->IsDayLineNeedUpdate());
+    EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
-    gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
-    gl_pChinaMarket->GetStock(1)->SetDayLineNeedUpdate(true);
+    for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+      gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+    }
     gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
   }

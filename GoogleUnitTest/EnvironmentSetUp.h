@@ -81,8 +81,8 @@ namespace StockAnalysisTest {
       gl_pMockChinaMarket->ResetMarket();
       gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
       gl_pMockWorldMarket->ResetMarket();
-      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
-      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      EXPECT_LE(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
+      EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
       EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
       gl_pMockMainFrame = new CMockMainFrame;
@@ -90,8 +90,14 @@ namespace StockAnalysisTest {
 
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaMarket->GetStock(i);
-        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+        pStock->SetDayLineNeedUpdate(true);
       }
+      for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
+        auto pStock = gl_pMockChinaMarket->GetStock(i);
+        pStock->SetDayLineNeedUpdate(true);
+      }
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
       EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
       EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
       gl_pChinaMarket->SetSystemReady(true);

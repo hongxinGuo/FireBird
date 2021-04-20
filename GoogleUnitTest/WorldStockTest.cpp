@@ -586,42 +586,46 @@ namespace StockAnalysisTest {
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
     stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetFormatedMarketDate(), 100));
-    EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), 20210108, 0, 1));
+    EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), gl_pWorldMarket->GetFormatedMarketDate(), 0, 1));
     stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(stock.GetDayLineEndDate()));
-    EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), 20210108, 0, 1)) << "早于100天的股票不再更新日线";
+    EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), gl_pWorldMarket->GetFormatedMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
   }
 
   TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus5) {
     CWorldStock stock;
+    long lCurrentDay = gl_pWorldMarket->GetFormatedMarketDate();
+    long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
     stock.SetDayLineNeedUpdate(true);
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
-    stock.SetDayLineEndDate(20210108); // 本日交易日日线已接收
+    stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
     for (int i = 1; i < 6; i++) {
-      EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20210108, 20210107, 170001, i)) << "时间晚于17时后，检查当天日线";
+      EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
       stock.SetDayLineNeedUpdate(true); // 重置状态
     }
-    stock.SetDayLineEndDate(20210107); // 本日交易日日线尚未接收
+    stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
     for (int i = 1; i < 6; i++) {
-      EXPECT_TRUE(stock.CheckDayLineUpdateStatus(20210108, 20210107, 170001, i)) << "时间晚于17时后，检查当天日线";
+      EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
     }
   }
 
   TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus6) {
     CWorldStock stock;
+    long lCurrentDay = gl_pWorldMarket->GetFormatedMarketDate();
+    long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
     stock.SetDayLineNeedUpdate(true);
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
-    stock.SetDayLineEndDate(20210107); // 上一交易日日线数据已接收
+    stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
     for (int i = 1; i < 6; i++) {
-      EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20210108, 20210107, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
+      EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
       stock.SetDayLineNeedUpdate(true); // 重置之
     }
-    stock.SetDayLineEndDate(20210106); // 上一交易日日线数据未接收
+    stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
     for (int i = 1; i < 6; i++) {
-      EXPECT_TRUE(stock.CheckDayLineUpdateStatus(20210108, 20210107, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
+      EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
     }
   }
 

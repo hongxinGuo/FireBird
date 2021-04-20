@@ -57,6 +57,7 @@ namespace StockAnalysisTest {
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
+      EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
     }
 
     virtual void TearDown(void) override {

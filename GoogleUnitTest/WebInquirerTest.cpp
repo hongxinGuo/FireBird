@@ -111,6 +111,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pNeteaseDayLineWebInquiry->IsReadingWebData());
 
     for (gl_iMaxSavingOneDayLineThreads = 2; gl_iMaxSavingOneDayLineThreads < 7; gl_iMaxSavingOneDayLineThreads++) {
+      EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
+        .Times(1)
+        .WillOnce(Return(true))
+        .RetiresOnSaturation();
+      EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, PrepareNextInquiringStr)
+        .Times(1)
+        .WillOnce(Return(true))
+        .RetiresOnSaturation();
       EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread)
         .Times(1)
         .RetiresOnSaturation();
@@ -125,6 +133,10 @@ namespace StockAnalysisTest {
     }
 
     gl_iMaxSavingOneDayLineThreads = 1;
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
+      .Times(1)
+      .WillOnce(Return(true))
+      .RetiresOnSaturation();
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1)
       .RetiresOnSaturation();
@@ -134,6 +146,10 @@ namespace StockAnalysisTest {
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
 
     gl_iMaxSavingOneDayLineThreads = 7;
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
+      .Times(1)
+      .WillOnce(Return(true))
+      .RetiresOnSaturation();
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1)
       .RetiresOnSaturation();
@@ -142,10 +158,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
 
+    EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock()) << "采用Mock类，没有真正修改";
+
+    // 恢复原态
     gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
     gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
     gl_iMaxSavingOneDayLineThreads = iSaved;
-
-    EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
   }
 }
