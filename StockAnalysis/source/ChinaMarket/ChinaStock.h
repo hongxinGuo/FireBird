@@ -284,7 +284,7 @@ public:
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   void UpdateStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(const CSetStockCode& setStockCode);
-  void SetCheckingDayLineStatus(void);
+  bool CheckDayLineStatus(void);
   //周线历史数据存取
   virtual bool LoadWeekLine();
   virtual bool SaveWeekLine();

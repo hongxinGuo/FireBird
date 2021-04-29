@@ -62,6 +62,7 @@ namespace StockAnalysisTest {
 
       EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
     }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());

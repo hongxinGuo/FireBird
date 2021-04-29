@@ -47,7 +47,7 @@ ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\Stock
 
 ExcludeSourceFromCodeCoverage(Exclude6, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Poten Daily\\*.*"); // 排除PotenDaily Market.此市场不再使用
 ExcludeSourceFromCodeCoverage(Exclude7, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Crweber\\*.*"); // 排除Crweber.com.此市场不再使用
-ExcludeSourceFromCodeCoverage(Exclude8, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\AmericaMarket\\数据库类\\*.*"); // 排除数据库类
+ExcludeSourceFromCodeCoverage(Exclude8, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\AmericaMarket\\DataBase\\*.*"); // 排除WorldMarket的数据库类
 
 // 排除无需测试的单个文件
 ExcludeSourceFromCodeCoverage(Exclude101, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");

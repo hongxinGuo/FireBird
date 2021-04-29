@@ -153,34 +153,43 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
-    if (!m_fIsActive) SetDayLineNeedUpdate(false);
+    if (!m_fIsActive) {
+      SetDayLineNeedUpdate(false);
+      return m_fDayLineNeedUpdate;
+    }
   }
   if (IsNullStock()) {
     SetDayLineNeedUpdate(false);
+    return m_fDayLineNeedUpdate;
   }
   else if (IsDelisted()) { // 摘牌股票?
     if (lDayOfWeek != 6) { // 每星期六检查一次
       SetDayLineNeedUpdate(false);
+      return m_fDayLineNeedUpdate;
     }
   }
   else if ((!IsNotChecked()) && (gl_pWorldMarket->IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetFormatedMarketDate(), 100))) {
     SetDayLineNeedUpdate(false);
+    return m_fDayLineNeedUpdate;
   }
   else {
     if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) { // 周一至周五
       if (lTime > 170000) {
         if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
           SetDayLineNeedUpdate(false); // 日线数据不需要更新
+          return m_fDayLineNeedUpdate;
         }
       }
       else {
         if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
           SetDayLineNeedUpdate(false); // 日线数据不需要更新
+          return m_fDayLineNeedUpdate;
         }
       }
     }
     else if (lLastTradeDate <= GetDayLineEndDate()) { // 周六周日时， 最新日线数据为上一个交易日的数据
       SetDayLineNeedUpdate(false); // 日线数据不需要更新
+      return m_fDayLineNeedUpdate;
     }
   }
   return m_fDayLineNeedUpdate;

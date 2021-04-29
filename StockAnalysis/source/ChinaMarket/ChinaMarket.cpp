@@ -2642,7 +2642,7 @@ bool CChinaMarket::DeleteDayLine(long lDate) {
 }
 
 bool CChinaMarket::DeleteDayLineBasicInfo(long lDate) {
-  char buffer[20];
+  char buffer[20]{ 0x000 };
   CString strDate;
   CSetDayLineBasicInfo setDayLineBasicInfo;
 
@@ -2663,7 +2663,7 @@ bool CChinaMarket::DeleteDayLineBasicInfo(long lDate) {
 }
 
 bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
-  char buffer[20];
+  char buffer[20]{ 0x000 };
   CString strDate;
   CSetDayLineExtendInfo setDayLineExtendInfo;
 

@@ -6,9 +6,7 @@
 
 using namespace std;
 #include<memory>
-#include<atomic>
 #include<vector>
-#include <boost/iterator/detail/config_def.hpp>
 
 class CFinnhubForexSymbol : public CVirtualStock {
 public:
@@ -39,7 +37,6 @@ public:
   bool HaveNewDayLineData(void);
 
 public:
-
   vector<CDayLinePtr> m_vDayLine;
 
 protected:

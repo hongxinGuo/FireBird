@@ -984,20 +984,20 @@ namespace StockAnalysisTest {
     CChinaStock stock;
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
-    stock.SetCheckingDayLineStatus();
+    EXPECT_FALSE(stock.CheckDayLineStatus());
     EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDate() << gl_pChinaMarket->GetFormatedMarketDate();
     stock.SetDayLineNeedUpdate(true);
     stock.SetDayLineEndDate(gl_pChinaMarket->GetLastTradeDate());
-    stock.SetCheckingDayLineStatus();
+    EXPECT_FALSE(stock.CheckDayLineStatus());
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(true);
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
-    stock.SetCheckingDayLineStatus();
+    EXPECT_TRUE(stock.CheckDayLineStatus());
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__ + 1);
-    stock.SetCheckingDayLineStatus();
+    stock.CheckDayLineStatus();
     if (gl_pChinaMarket->GetDayOfWeek() == 1) EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     else EXPECT_FALSE(stock.IsDayLineNeedUpdate());
   }

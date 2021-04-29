@@ -372,9 +372,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -748,6 +745,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="DayLineContainerTest.cpp">
+      <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

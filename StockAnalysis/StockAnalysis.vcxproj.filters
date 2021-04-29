@@ -527,7 +527,7 @@
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp">
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
