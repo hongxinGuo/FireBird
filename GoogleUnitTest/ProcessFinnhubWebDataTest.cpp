@@ -47,9 +47,15 @@ namespace StockAnalysisTest {
       m_pStock->SetProfileUpdateDate(19700101);
       m_pStock->SetCity(_T(""));
       m_pWebData = pData->m_pData;
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
+      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
     }
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
       m_pStock->SetUpdateProfileDB(false);
     }
 

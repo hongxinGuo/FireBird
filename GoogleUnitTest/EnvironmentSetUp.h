@@ -69,6 +69,7 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();
       gl_pChinaMarket->ResetMarket();
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pWorldMarket->ResetMarket();
 
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
@@ -79,6 +80,7 @@ namespace StockAnalysisTest {
 
       gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
       gl_pMockChinaMarket->ResetMarket();
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
       gl_pMockWorldMarket->ResetMarket();
       EXPECT_LE(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
@@ -104,12 +106,18 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
     }
 
     virtual void TearDown(void) override {
-      // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+      // 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
+      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 

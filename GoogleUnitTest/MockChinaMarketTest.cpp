@@ -35,10 +35,11 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
 
-      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
     }
+
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_fExitingSystem);
@@ -47,7 +48,9 @@ namespace StockAnalysisTest {
 
       EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
+
     virtual void SetUp(void) override {
       //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
@@ -56,9 +59,6 @@ namespace StockAnalysisTest {
 
       gl_pMockChinaMarket->SetTodayStockProcessed(false);
       gl_pMockChinaMarket->SetRSEndDate(19900101);
-      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {

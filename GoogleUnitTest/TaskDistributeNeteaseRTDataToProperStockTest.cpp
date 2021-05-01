@@ -76,6 +76,8 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
       gl_ThreadStatus.SetRTDataNeedCalculate(false);
       pStock->ClearRTDataDeque();

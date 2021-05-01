@@ -56,6 +56,8 @@ namespace StockAnalysisTest {
       gl_pChinaMarket->ClearChoiceStockContainer();
       gl_ThreadStatus.SetCalculatingDayLineRS(false);
       gl_fExitingSystem = false;
+
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
 

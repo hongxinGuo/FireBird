@@ -37,8 +37,11 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
       gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
       gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
+
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
     }
     static void TearDownTestSuite(void) {
+      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
     }
     virtual void SetUp(void) override {
     }

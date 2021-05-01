@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
     pDayLine->SetHigh(10010);
     pDayLine->SetLow(9910);
     pDayLine->SetClose(10001);
-    pDayLine->SetLastClose(10000);
+    pDayLine->SetLastClose(10000); // 第一个数据为0
     pDayLine->SetVolume(10000);
     vDayLine.push_back(pDayLine);
 

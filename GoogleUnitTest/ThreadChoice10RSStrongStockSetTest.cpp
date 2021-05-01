@@ -21,7 +21,9 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
+
     CMockChinaMarket market;
   };
 
@@ -32,6 +34,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadChoice10RSStrong1StockSet(&market), (UINT)101);
     EXPECT_TRUE(market.IsUpdateOptionDB());
     EXPECT_EQ(market.GetUpdatedDateFor10DaysRS1(), market.GetFormatedMarketDate());
+
+    EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), Gt(0));
   }
 
   class CThreadChoice10RSStrong2StockSet : public ::testing::Test
@@ -47,7 +51,10 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      EXPECT_TRUE(gl_systemMessage.GetInformationDequeSize() > 0);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
+
     CMockChinaMarket market;
   };
 
@@ -58,6 +65,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadChoice10RSStrong2StockSet(&market), (UINT)102);
     EXPECT_TRUE(market.IsUpdateOptionDB());
     EXPECT_EQ(market.GetUpdatedDateFor10DaysRS2(), market.GetFormatedMarketDate());
+
+    EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), Gt(0));
   }
 
   class CThreadChoice10RSStrongStockSet : public ::testing::Test
@@ -73,17 +82,21 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      EXPECT_TRUE(gl_systemMessage.GetInformationDequeSize() > 0);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
+
     CMockChinaMarket market;
     CRSReference RSReference;
   };
 
   TEST_F(CThreadChoice10RSStrongStockSet, TestThreadChoice10RSStrongStockSet) {
-    size_t lInformationSize = gl_systemMessage.GetInformationDequeSize();
+    EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
+
     EXPECT_CALL(market, Choice10RSStrongStockSet(&RSReference, 2))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_EQ(ThreadChoice10RSStrongStockSet(&market, &RSReference, 2), (UINT)103);
-    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), lInformationSize + 2);
+    EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 2);
   }
 }
