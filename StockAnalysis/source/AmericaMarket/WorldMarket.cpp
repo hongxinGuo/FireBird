@@ -18,6 +18,7 @@ Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 
 CWorldMarket::CWorldMarket() {
   static int siInstance = 0;
+
   if (++siInstance > 1) {
     TRACE("CWorldMarket市场变量只允许存在一个实例\n");
   }

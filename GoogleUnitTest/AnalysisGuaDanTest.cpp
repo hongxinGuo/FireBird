@@ -7,6 +7,12 @@
 using namespace std;
 #include<memory>
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 namespace StockAnalysisTest {
   struct GuadanData { // 共四十三个数据，一个序列号，二十个当前实时数据（挂单价位和数量），二十个上次实时数据（挂单价位和数量），一个成交类型，一个成交价格
     GuadanData(int count, int type, long price,

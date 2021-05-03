@@ -365,6 +365,7 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
+    <ClCompile Include="MockVirtualWebInquiryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
     <ClCompile Include="NaicsIndustryTest.cpp" />
@@ -739,7 +740,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <Profile>false</Profile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>

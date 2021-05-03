@@ -24,12 +24,21 @@
 #include"MockTiingoWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockChinaMarket.h"
+#include"MockCrweberIndexMarket.h"
+
 using namespace testing;
+// using testing::GTEST_FLAG(brief); // 此标识已实现，但在1.10.0中尚未允许使用。
 
 #include"WebInquirer.h"
 
 using namespace std;
 #include<memory>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 namespace StockAnalysisTest {
   // 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
@@ -37,15 +46,14 @@ namespace StockAnalysisTest {
   CMockChinaMarketPtr gl_pMockChinaMarket;
   CMockMainFrame* gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
+  CMockCrweberIndexMarketPtr gl_pMockCrweberIndexMarket;
+
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
-      // _CrtMemCheckpoint(&state);
     }
     virtual ~TestEnvironment() {
-      // _CrtMemDumpAllObjectsSince(&state);
     }
-    _CrtMemState state;
 
     virtual void SetUp(void) override {
       ASSERT_TRUE(gl_fTestMode);
@@ -62,6 +70,8 @@ namespace StockAnalysisTest {
       gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
       gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
       gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
+
+      gl_pMockCrweberIndexMarket = make_shared<CMockCrweberIndexMarket>();
 
       // 下列全局智能指针为实际类
       gl_pChinaMarket = make_shared<CChinaMarket>();
@@ -93,11 +103,14 @@ namespace StockAnalysisTest {
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaMarket->GetStock(i);
         pStock->SetDayLineNeedUpdate(true);
+        if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
       }
       for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pMockChinaMarket->GetStock(i);
         pStock->SetDayLineNeedUpdate(true);
+        if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
       }
+
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
       EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
@@ -110,6 +123,9 @@ namespace StockAnalysisTest {
       EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
       EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
       EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+
+      //_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF);
+      //_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
     }
 
     virtual void TearDown(void) override {
@@ -165,6 +181,8 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
       gl_vMarketPtr.clear();
+
+      gl_pMockCrweberIndexMarket = nullptr;
 
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);

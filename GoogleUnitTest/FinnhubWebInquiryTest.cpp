@@ -7,6 +7,12 @@
 using namespace std;
 using namespace testing;
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 namespace StockAnalysisTest {
   class CFinnhubWebInquiryTest : public ::testing::Test
   {
@@ -39,7 +45,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
 #endif //  DEBUG
     EXPECT_STREQ(m_FinnhubWebInquiry.GetConnectionName(), _T("Finnhub"));
-  }
+}
 
   TEST_F(CFinnhubWebInquiryTest, TestGetWebData) {
     m_FinnhubWebInquiry.SetReadingWebData(true);
@@ -67,7 +73,7 @@ namespace StockAnalysisTest {
 #else
         EXPECT_STREQ(str.Right(27), _T("&token=bv985d748v6ujthqfke0"));
 #endif //  DEBUG
-      }
+  }
       else EXPECT_EQ(str.GetLength(), 0);
     }
     gl_pWorldMarket->SetSystemReady(false);

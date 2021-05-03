@@ -4,10 +4,15 @@
 
 #include"globedef.h"
 
-#include"MockVirtualWebInquiry.h"
+#include"VirtualWebInquiry.h"
+
 using namespace testing;
 
-//#include"VirtualWebInquiry.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 namespace StockAnalysisTest {
   class CVirtualWebInquiryTest : public ::testing::Test {
@@ -37,7 +42,7 @@ namespace StockAnalysisTest {
       m_VirtualWebInquiry.SetReadingWebData(false);
     }
   public:
-    CMockVirtualWebInquiry m_VirtualWebInquiry;
+    CVirtualWebInquiry m_VirtualWebInquiry;
   };
 
   TEST_F(CVirtualWebInquiryTest, TestInitialize) {
@@ -75,66 +80,6 @@ namespace StockAnalysisTest {
     m_VirtualWebInquiry.SetInquiryingStringSuffix(_T(""));
   }
 
-  TEST_F(CVirtualWebInquiryTest, TestReadWebData) {
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
-      .Times(6)
-      .WillOnce(Return(1024)) //第一次返回值为0
-      .WillOnce(Return(1024))
-      .WillOnce(Return(1024)) //第三次返回值为非零
-      .WillOnce(Return(1024))
-      .WillOnce(Return(10))
-      .WillOnce(Return(0)); // 随后为零，函数顺利返回
-    m_VirtualWebInquiry.SetReadingWebData(true);
-    m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData());
-    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
-    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestReadWebDataTimeLimit) {
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
-      .Times(8)
-      .WillOnce(Return(0)) //第一次返回值为0
-      .WillOnce(Return(0))
-      .WillOnce(Return(1024)) //第三次返回值为非零
-      .WillOnce(Return(0))
-      .WillOnce(Return(1024))
-      .WillRepeatedly(Return(0)); // 随后的三次皆为零，函数顺利返回
-    m_VirtualWebInquiry.SetReadingWebData(true);
-    m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
-    //m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebDataTimeLimit(100, 30, 20));
-    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
-    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestGetWebData) {
-    m_VirtualWebInquiry.SetReadingWebData(true);
-    EXPECT_FALSE(m_VirtualWebInquiry.GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");
-
-    m_VirtualWebInquiry.SetReadingWebData(false);
-    EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
-      .WillOnce(Return(false));
-    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
-      .Times(0);
-    EXPECT_FALSE(m_VirtualWebInquiry.GetWebData());
-
-    m_VirtualWebInquiry.SetReadingWebData(false);
-    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
-    EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
-      .WillOnce(Return(true));
-    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
-      .Times(1);
-    EXPECT_TRUE(m_VirtualWebInquiry.GetWebData());
-    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestStartReadingThread) {
-    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
-      .Times(1);
-    m_VirtualWebInquiry.StartReadingThread();
-  }
-
   TEST_F(CVirtualWebInquiryTest, TestTransferWebDataToQueueData) {
     CString str = _T("abcdefghijklmnop");
     m_VirtualWebInquiry.__TESTSetBuffer(str);
@@ -162,10 +107,6 @@ namespace StockAnalysisTest {
     CString str = _T("abcdef");
     m_VirtualWebInquiry.CreateTotalInquiringString(str);
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), str);
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestInquireNextWebData) {
-    //EXPECT_NO_FATAL_FAILURE(m_VirtualWebInquiry.InquireNextWebData());
   }
 
   TEST_F(CVirtualWebInquiryTest, TestIsReadingWebData) {

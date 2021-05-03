@@ -8,4 +8,5 @@ namespace testing {
     MOCK_METHOD(bool, SaveDatabase, (), (override));
     MOCK_METHOD(bool, SaveCrweberIndexData, (CCrweberIndexPtr pCrweberIndex));
   };
+  typedef shared_ptr<CMockCrweberIndexMarket> CMockCrweberIndexMarketPtr;
 }

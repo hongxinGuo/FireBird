@@ -9,6 +9,12 @@
 
 using namespace testing;
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 namespace StockAnalysisTest {
   static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
   static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集

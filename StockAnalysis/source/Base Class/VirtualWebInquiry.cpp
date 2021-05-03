@@ -11,6 +11,7 @@
 atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
+  m_pSession = new CInternetSession{ _T("如果此项为空，则测试时会出现断言错误。但不影响测试结果") };
   m_pFile = nullptr;
   m_lByteRead = 0;
   m_fWebError = false;
@@ -32,6 +33,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
+  delete m_pSession;
 }
 
 void CVirtualWebInquiry::Reset(void) noexcept {
@@ -40,39 +42,22 @@ void CVirtualWebInquiry::Reset(void) noexcept {
   m_fWebError = false;
 }
 
-///////////////////////////////////////////////////////////////////////////
-//
-// 从网络读取数据。每次读1KB，直到读不到为止。
-//
-//
-///////////////////////////////////////////////////////////////////////////
-bool CVirtualWebInquiry::ReadWebData(void) {
-  CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
-  m_pFile = nullptr;
+bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
   bool fStatus = true;
   CString str1, strLeft;
-  time_t tt = 0;
-  long lCurrentByteReaded = 0;
 
-  ASSERT(IsReadingWebData());
+  ASSERT(m_pSession != nullptr);
   ASSERT(m_pFile == nullptr);
-  gl_ThreadStatus.IncreaseWebInquiringThread();
-  SetWebError(false);
-  SetByteReaded(0);
-  tt = GetTickCount64();
   try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
-    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    do {
-      lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-    } while (lCurrentByteReaded > 0);
-    ASSERT(m_vBuffer.size() > m_lByteRead);
-    m_lTotalByteReaded += m_lByteRead;
-    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
-    m_pFile->Close();
+    m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
   }
   catch (CInternetException* exception) {
     SetWebError(true);
-    if (m_pFile != nullptr) m_pFile->Close();
+    if (m_pFile != nullptr) {
+      m_pFile->Close();
+      delete m_pFile;
+      m_pFile = nullptr;
+    }
     m_dwWebErrorCode = exception->m_dwError;
     str1 = GetInquiringString();
     strLeft = str1.Left(120);
@@ -82,10 +67,43 @@ bool CVirtualWebInquiry::ReadWebData(void) {
     fStatus = false;
     exception->Delete();
   }
-  if (m_pFile != nullptr) {
-    delete m_pFile;
-    m_pFile = nullptr;
+
+  return fStatus;
+}
+
+///////////////////////////////////////////////////////////////////////////
+//
+// 从网络读取数据。每次读1KB，直到读不到为止。
+//
+//
+///////////////////////////////////////////////////////////////////////////
+bool CVirtualWebInquiry::ReadWebData(void) {
+  m_pFile = nullptr;
+  bool fStatus = true;
+  time_t tt = 0;
+  long lCurrentByteReaded = 0;
+
+  ASSERT(IsReadingWebData());
+  ASSERT(m_pFile == nullptr);
+  gl_ThreadStatus.IncreaseWebInquiringThread();
+  SetWebError(false);
+  SetByteReaded(0);
+  tt = GetTickCount64();
+  if (OpenFile(GetInquiringString())) {
+    do {
+      lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+    } while (lCurrentByteReaded > 0);
+    ASSERT(m_vBuffer.size() > m_lByteRead);
+    m_lTotalByteReaded += m_lByteRead;
+    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
+    if (m_pFile != nullptr) {
+      m_pFile->Close();
+      delete m_pFile;
+      m_pFile = nullptr;
+    }
   }
+  else fStatus = false;
+
   m_tCurrentInquiryTime = GetTickCount64() - tt;
   gl_ThreadStatus.DecreaseWebInquiringThread();
   ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
@@ -100,11 +118,9 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 ///////////////////////////////////////////////////////////////////////////
 
 bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
-  CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
   bool fDone = false;
   bool fStatus = true;
-  CString str1, strLeft;
   time_t tt = 0;
 
   ASSERT(IsReadingWebData());
@@ -116,9 +132,7 @@ bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecond
   SetWebError(false);
   SetByteReaded(0);
   tt = GetTickCount64();
-  try {
-    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+  if (OpenFile(GetInquiringString())) {
     Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
       do {
@@ -134,25 +148,15 @@ bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecond
     }
     ASSERT(m_vBuffer.size() > m_lByteRead);
     m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
-    m_pFile->Close();
+    if (m_pFile != nullptr) {
+      m_pFile->Close();
+      delete m_pFile;
+      m_pFile = nullptr;
+    }
     m_lTotalByteReaded += m_lByteRead; //
   }
-  catch (CInternetException* exception) {
-    SetWebError(true);
-    if (m_pFile != nullptr) m_pFile->Close();
-    m_dwWebErrorCode = exception->m_dwError;
-    str1 = GetInquiringString();
-    strLeft = str1.Left(120);
-    TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
-    str1 = _T("Error Web : ") + strLeft + _T("\n");
-    gl_systemMessage.PushInnerSystemInformationMessage(str1);
-    fStatus = false;
-    exception->Delete();
-  }
-  if (m_pFile != nullptr) {
-    delete m_pFile;
-    m_pFile = nullptr;
-  }
+  else fStatus = false;
+
   m_tCurrentInquiryTime = GetTickCount64() - tt;
   gl_ThreadStatus.DecreaseWebInquiringThread();
   ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);

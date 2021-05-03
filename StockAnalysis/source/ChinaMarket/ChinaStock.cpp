@@ -22,7 +22,7 @@ static char THIS_FILE[] = __FILE__;
 
 int CChinaStock::s_iRatio = 1000; // 中国股票的实时价格放大了1000倍。
 
-CChinaStock::CChinaStock() : CVirtualStock() {
+CChinaStock::CChinaStock() {
   Reset();
 }
 

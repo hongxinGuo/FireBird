@@ -5,6 +5,12 @@
 #include"PotenDailyBriefingMarket.h"
 #include"WebInquirer.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。
 namespace StockAnalysisTest {
   class CPotenDailyBriefingMarketTest : public ::testing::Test
