@@ -313,9 +313,9 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 8);
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('S', 1, 1))
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('s', 1, 1))
       .Times(1);
-    gl_pMockMainFrame->OnChar('S', 1, 1);
+    gl_pMockMainFrame->OnChar('s', 1, 1); // 小写s
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 9);
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
@@ -326,10 +326,83 @@ namespace StockAnalysisTest {
     gl_pMockMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("601872.SS"));
+    EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("601872.SS")) << "小写的s转换为大写";
   }
 
   TEST_F(CMockMainFrameTest, TestOnChar2) {
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar(0x008, 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar(0x008, 1, 1);
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
+    EXPECT_FALSE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('0', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('0', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 2);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('0', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 3);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('0', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 4);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('0', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 5);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('1', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('1', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 6);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('.', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('.', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 7);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('S', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('S', 1, 1); // 小写s
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 8);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('z', 1, 1))
+      .Times(1);
+    gl_pMockMainFrame->OnChar('z', 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 9);
+    gl_pChinaMarket->SetCurrentEditStockChanged(false);
+    gl_pChinaMarket->SetCurrentStock(_T("600604.SS"));
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar(0x00d, 1, 1))
+      .Times(1);
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallInvalidate())
+      .Times(1);
+    gl_pMockMainFrame->OnChar(0x00d, 1, 1);
+    EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
+    EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("000001.SZ")) << "小写的z转换为大写";
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnChar3) {
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar(0x008, 1, 1))
@@ -381,13 +454,13 @@ namespace StockAnalysisTest {
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('S', 1, 1))
       .Times(1);
-    gl_pMockMainFrame->OnChar('S', 1, 1);
+    gl_pMockMainFrame->OnChar('S', 1, 1); // 小写s
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 8);
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('Z', 1, 1))
+    EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar('z', 1, 1))
       .Times(1);
-    gl_pMockMainFrame->OnChar('Z', 1, 1);
+    gl_pMockMainFrame->OnChar('z', 1, 1);
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 9);
     gl_pChinaMarket->SetCurrentEditStockChanged(false);
@@ -395,11 +468,11 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockMainFrame, SysCallOnChar(0x00d, 1, 1))
       .Times(1);
     EXPECT_CALL(*gl_pMockMainFrame, SysCallInvalidate())
-      .Times(0);
+      .Times(0); // 没有更新
     gl_pMockMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(gl_pMockMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("600604.SS"));
+    EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("600604.SS")) << "000289.SZ为无效股票代码，故而没有设置新代码";
   }
 
   TEST_F(CMockMainFrameTest, TestOnKeyUp) {

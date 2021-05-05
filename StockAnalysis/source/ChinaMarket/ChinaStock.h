@@ -56,7 +56,7 @@ public:
   CChinaStock(void);
   virtual ~CChinaStock(void);
   virtual void Reset(void) override;
-  virtual int GetRatio(void) const override { return s_iRatio; }
+  virtual int GetRatio(void) noexcept const override { return s_iRatio; }
 
 public:
   void UpdateStatus(CWebRTDataPtr pRTData);

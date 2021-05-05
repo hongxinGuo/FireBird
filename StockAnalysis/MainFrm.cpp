@@ -673,10 +673,12 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case '8':
   case '9':
   case 'S':
+  case 's':
   case 'Z':
+  case 'z':
   case '.':
   if (m_lCurrentPos < 10) {
-    m_aStockCodeTemp[m_lCurrentPos] = nChar;
+    m_aStockCodeTemp[m_lCurrentPos] = toupper(nChar);
     m_lCurrentPos++;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;
   }
