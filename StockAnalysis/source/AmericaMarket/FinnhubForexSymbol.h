@@ -12,7 +12,7 @@ class CFinnhubForexSymbol : public CVirtualStock {
 public:
   CFinnhubForexSymbol();
   virtual void Reset(void);
-  virtual int GetRatio(void) noexcept const override { return s_iRatio; }//
+  virtual int GetRatio(void) const override { return s_iRatio; }
 
   void Load(CSetFinnhubForexSymbol& setForexSymbol);
   void Append(CSetFinnhubForexSymbol& setForexSymbol);

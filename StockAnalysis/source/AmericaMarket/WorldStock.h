@@ -18,7 +18,7 @@ public:
   CWorldStock();
   virtual ~CWorldStock();
   virtual void Reset(void) override;
-  virtual int GetRatio(void) noexcept const override { return s_iRatio; }
+  virtual int GetRatio(void) const override { return s_iRatio; }
 
 public:
   void Load(CSetWorldStock& setWorldStock);
