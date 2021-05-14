@@ -56,6 +56,10 @@ public:
   void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
   bool CheckPeerStatus(long lCurrentDate);
 
+  bool IsInsiderTransactionUpdated(void) const noexcept { return m_fFinnhubInsiderTransactionUpdated; }
+  void SetInsiderTransactionUpdated(bool fFlag) noexcept { m_fFinnhubInsiderTransactionUpdated = fFlag; }
+  bool CheckInsiderTransactionStatus(long lCurrentDate);
+
   CString GetDescription(void) const { return m_strDescription; }
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
   CString GetDisplaySymbol(void) const { return m_strDisplaySymbol; }
@@ -129,6 +133,8 @@ public:
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
   long GetPeerUpdateDate(void) const noexcept { return m_lPeerUpdateDate; }
   void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
+  long GetInsiderTransactionUpdateDate(void) const noexcept { return m_lInsiderTransactionUpdateDate; }
+  void SetInsiderTransactionUpdateDate(long lDate) noexcept { m_lInsiderTransactionUpdateDate = lDate; }
   long GetLastEPSSurpriseUpdateDate(void) const noexcept { return m_lLastEPSSurpriseUpdateDate; }
   void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
 
@@ -197,12 +203,14 @@ protected:
   CString m_strPeer;
   long m_lProfileUpdateDate; // 最新简介更新日期
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
-  long m_lPeerUpdateDate; // 最新实时数据更新日期
+  long m_lPeerUpdateDate; // 最新竞争对手数据更新日期
+  long m_lInsiderTransactionUpdateDate; // 最新内部人员交易数据更新日期
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
 
   // 无需存储数据区
   bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
+  bool m_fFinnhubInsiderTransactionUpdated; // 同业公司数据已更新
 
 private:
   static int s_iRatio;

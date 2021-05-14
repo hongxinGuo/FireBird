@@ -51,6 +51,7 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
   m_vFinnhubInquiringStr.at(__NEWS_SENTIMENT__) = _T("https://finnhub.io/api/v1/news-sentiment?symbol=");
   m_vFinnhubInquiringStr.at(__PEERS__) = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
   m_vFinnhubInquiringStr.at(__BASIC_FINANCIALS__) = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
+  m_vFinnhubInquiringStr.at(__INSIDER_TRANSACTION__) = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
   m_vFinnhubInquiringStr.at(__SEC_FILINGS__) = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
 
   m_vFinnhubInquiringStr.at(__STOCK_EPS_SURPRISE__) = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
@@ -129,7 +130,9 @@ void CWorldMarket::ResetFinnhub(void) {
   m_fFinnhubEconomicCalendarUpdated = false;
 
   m_fFinnhubPeerUpdated = false;
+  m_fFinnhubInsiderTransactionUpdated = false;
   m_lCurrentUpdatePeerPos = 0;
+  m_lCurrentUpdateInsiderTransactionPos = 0;
 
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
@@ -242,6 +245,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       case __COMPANY_PROFILE_CONCISE__:
       case __PEERS__:
+      case __INSIDER_TRANSACTION__:
       case __STOCK_EPS_SURPRISE__:
       case __STOCK_QUOTE__:
       case __STOCK_CANDLES__:
@@ -281,6 +285,11 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       pStock->SetPeerUpdated(true);
       break;
       case __BASIC_FINANCIALS__:
+      break;
+      case __INSIDER_TRANSACTION__:
+      ASSERT(pStock != nullptr);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
+      pStock->SetInsiderTransactionUpdated(true);
       break;
       case __OWNERSHIP__: // Premium
       break;
@@ -405,6 +414,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       case __COMPANY_PROFILE_CONCISE__:
       case __PEERS__:
+      case __INSIDER_TRANSACTION__:
       case __STOCK_EPS_SURPRISE__:
       case __STOCK_QUOTE__:
       case __STOCK_CANDLES__:
@@ -468,6 +478,12 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case __BASIC_FINANCIALS__:
+      break;
+      case __INSIDER_TRANSACTION__:
+      if (ProcessFinnhubStockInsiderTransaction(pWebData, pStock)) {
+        pStock->SetInsiderTransactionUpdateDate(GetFormatedMarketDate());
+        pStock->SetUpdateProfileDB(true);
+      }
       break;
       case __STOCK_EPS_SURPRISE__:
       ASSERT(pStock != nullptr);
@@ -597,6 +613,8 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
       case __PEERS__:
       break;
       case __BASIC_FINANCIALS__:
+      break;
+      case __INSIDER_TRANSACTION__:
       break;
       case __OWNERSHIP__: // Premium
       break;
@@ -735,6 +753,8 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       case __PEERS__:
       break;
       case __BASIC_FINANCIALS__:
+      break;
+      case __INSIDER_TRANSACTION__:
       break;
       case __STOCK_EPS_SURPRISE__:
       break;
@@ -1059,6 +1079,43 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
       SetFinnhubPeerUpdated(true);
       TRACE("Finnhub Peers更新完毕\n");
       str = _T("Finnhub Peer Updated");
+      gl_systemMessage.PushInformationMessage(str);
+    }
+  }
+  return fHaveInquiry;
+}
+
+bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
+  bool fFound = false;
+  WebInquiry inquiry{ 0, 0, 0 };
+  CWorldStockPtr pStock;
+  CString str = _T("");
+  long lStockSetSize = m_vWorldStock.size();
+  bool fHaveInquiry = false;
+
+  ASSERT(IsSystemReady());
+  if (!IsFinnhubInsiderTransactionUpdated() && !IsFinnhubInquiring()) {
+    for (m_lCurrentUpdateInsiderTransactionPos = 0; m_lCurrentUpdateInsiderTransactionPos < lStockSetSize; m_lCurrentUpdateInsiderTransactionPos++) {
+      if (!m_vWorldStock.at(m_lCurrentUpdateInsiderTransactionPos)->IsInsiderTransactionUpdated()) {
+        pStock = m_vWorldStock.at(m_lCurrentUpdateInsiderTransactionPos);
+        fFound = true;
+        break;
+      }
+    }
+    if (fFound) {
+      fHaveInquiry = true;
+      inquiry.m_lInquiryIndex = __INSIDER_TRANSACTION__;
+      inquiry.m_lStockIndex = m_lCurrentUpdateInsiderTransactionPos;
+      inquiry.m_iPriority = 10;
+      m_qFinnhubWebInquiry.push(inquiry);
+      SetFinnhubInquiring(true);
+      //TRACE("申请%s Insider Transaction数据\n", m_vWorldStock.at(m_lCurrentUpdateInsiderTransactionPos)->GetSymbol().GetBuffer());
+    }
+    else {
+      fHaveInquiry = false;
+      SetFinnhubInsiderTransactionUpdated(true);
+      TRACE("Finnhub Insider Transaction更新完毕\n");
+      str = _T("Finnhub Insider Transaction Updated");
       gl_systemMessage.PushInformationMessage(str);
     }
   }

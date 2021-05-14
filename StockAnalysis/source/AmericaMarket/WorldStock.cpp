@@ -53,6 +53,7 @@ void CWorldStock::Reset(void) {
   m_lDayLineEndDate = 19800101;
   m_lLastRTDataUpdateDate = 19800101;
   m_lPeerUpdateDate = 19800101;
+  m_lInsiderTransactionUpdateDate = 19800101;
   m_lLastEPSSurpriseUpdateDate = 19800101;
 
   // Tiingo Symbol数据
@@ -200,6 +201,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   ASSERT(m_lDayLineStartDate >= 19700101);
   ASSERT(m_lDayLineEndDate >= 19700101);
   ASSERT(m_lPeerUpdateDate >= 19700101);
+  ASSERT(m_lInsiderTransactionUpdateDate >= 19700101);
   ASSERT(m_lLastRTDataUpdateDate >= 19700101);
   ASSERT(m_lLastEPSSurpriseUpdateDate >= 19700101);
   ASSERT(m_lLastRTDataUpdateDate >= 19700101);
@@ -485,6 +487,19 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
     m_fFinnhubPeerUpdated = false;
   }
   return m_fFinnhubPeerUpdated;
+}
+
+bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
+  if (IsNullStock() || IsDelisted()) {
+    m_fFinnhubInsiderTransactionUpdated = true;
+  }
+  else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 90)) { // 有不早于90天的数据？
+    m_fFinnhubInsiderTransactionUpdated = true;
+  }
+  else {
+    m_fFinnhubInsiderTransactionUpdated = false;
+  }
+  return m_fFinnhubInsiderTransactionUpdated;
 }
 
 CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {

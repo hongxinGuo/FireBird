@@ -285,6 +285,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetPeerUpdateDate(), 10101010);
   }
 
+  TEST_F(CWorldStockTest, TestInsiderTransactionUpdateDate) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
+    stock.SetInsiderTransactionUpdateDate(10101010);
+    EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101010);
+  }
+
   TEST_F(CWorldStockTest, TestLastEPSSurpriseUpdateDate) {
     CWorldStock stock;
     EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
@@ -1046,6 +1053,26 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsPeerUpdated()) << "九十天内无需更新";
     stock.CheckPeerStatus(20200401); // 91天
     EXPECT_TRUE(stock.IsPeerUpdated()) << "摘牌股票无需更新Peer";
+  }
+
+  TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsInsiderTransactionUpdated());
+
+    stock.SetInsiderTransactionUpdated(true);
+    stock.SetInsiderTransactionUpdateDate(20200101);
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.CheckInsiderTransactionStatus(20200401); // 91天
+    EXPECT_FALSE(stock.IsInsiderTransactionUpdated()) << "九十一天需更新";
+    stock.CheckInsiderTransactionStatus(20200331); // 90天
+    EXPECT_TRUE(stock.IsInsiderTransactionUpdated());
+
+    stock.SetInsiderTransactionUpdated(false);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
+    stock.CheckInsiderTransactionStatus(20200331); // 90天
+    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "九十天内无需更新";
+    stock.CheckInsiderTransactionStatus(20200401); // 91天
+    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "摘牌股票无需更新InsiderTransaction";
   }
 
   TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryString) {

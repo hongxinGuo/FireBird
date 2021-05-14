@@ -44,6 +44,7 @@ enum {
   __SIMILARITY_INDEX__ = 117, //Premium
   __IPO_CALENDAR__ = 118,
   __DIVIDENDS__ = 119, //Premium
+  __INSIDER_TRANSACTION__ = 120,
 
   __STOCK_RECOMMENDATION_TRENDS__ = 200,
   __STOCK_PRICE_TARGET__ = 201,
@@ -139,6 +140,7 @@ public:
   virtual bool TaskInquiryFinnhubDayLine(void);
   virtual bool TaskInquiryFinnhubRTQuote(void);
   virtual bool TaskInquiryFinnhubPeer(void);
+  virtual bool TaskInquiryFinnhubInsiderTransaction(void);
   virtual bool TaskInquiryFinnhubEconomicCalendar(void);
   virtual bool TaskInquiryFinnhubEPSSurprise(void);
   virtual bool TaskInquiryFinnhubForexExchange(void);
@@ -164,6 +166,7 @@ public:
   virtual bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
   virtual bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
   virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, CWorldStockPtr& pStock);
   virtual bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
   virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
@@ -278,6 +281,8 @@ public:
   void SetFinnhubForexDayLineUpdated(bool fFlag) noexcept { m_fFinnhubForexDayLineUpdated = fFlag; }
   bool IsFinnhubPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
   void SetFinnhubPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
+  bool IsFinnhubInsiderTransactionUpdated(void) noexcept { return m_fFinnhubInsiderTransactionUpdated; }
+  void SetFinnhubInsiderTransactionUpdated(bool fFlag) noexcept { m_fFinnhubInsiderTransactionUpdated = fFlag; }
   bool IsFinnhubEconomicCalendarUpdated(void) noexcept { return m_fFinnhubEconomicCalendarUpdated; }
   void SetFinnhubEconomicCalendarUpdated(bool fFlag) noexcept { m_fFinnhubEconomicCalendarUpdated = fFlag; }
   bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
@@ -334,6 +339,7 @@ protected:
   long m_lCurrentForexExchangePos;
   long m_lCurrentForexSymbolPos;
   long m_lCurrentUpdatePeerPos;
+  long m_lCurrentUpdateInsiderTransactionPos;
   long m_lCurrentUpdateEPSSurprisePos;
   WebInquiry m_CurrentFinnhubInquiry;
   WebInquiry m_CurrentTiingoInquiry;
@@ -386,6 +392,7 @@ protected:
   bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
   bool m_fFinnhubForexDayLineUpdated; // 每日更新Forex日线数据
   bool m_fFinnhubPeerUpdated; // 每月更新Peers数据
+  bool m_fFinnhubInsiderTransactionUpdated; // 每月更新Peers数据
   bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
   bool m_fFinnhubEPSSurpriseUpdated;
 

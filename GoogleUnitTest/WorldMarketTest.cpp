@@ -573,12 +573,21 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexDayLineUpdated());
   }
+
   TEST_F(CWorldMarketTest, TestIsFinnhubPeerUpdated) {
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubPeerUpdated());
     gl_pWorldMarket->SetFinnhubPeerUpdated(true);
     EXPECT_TRUE(gl_pWorldMarket->IsFinnhubPeerUpdated());
     gl_pWorldMarket->SetFinnhubPeerUpdated(false);
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubPeerUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubInsiderTransactionUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated());
+    gl_pWorldMarket->SetFinnhubInsiderTransactionUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated());
+    gl_pWorldMarket->SetFinnhubInsiderTransactionUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated());
   }
 
   TEST_F(CWorldMarketTest, TestIsFinnhubEconomicCalendarUpdated) {

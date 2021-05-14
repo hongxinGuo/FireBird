@@ -593,6 +593,15 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
   return true;
 }
 
+bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+  char buffer[1000]{};
+  int i = 0;
+  ptree pt;
+  string sError;
+
+  return true;
+}
+
 bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
   CEconomicCalendarPtr pEconomicCalendar = nullptr;
   ptree pt, pt1, pt2;
