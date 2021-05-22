@@ -770,12 +770,17 @@ namespace StockAnalysisTest {
     pInsiderTransaction = make_shared<CInsiderTransaction>();
     pInsiderTransaction->m_strSymbol = _T("A");
     pInsiderTransaction->m_strPersonName = _T("a b c");
-    pInsiderTransaction->m_lTransactionDate = 20210107; // 这个数据库中有，无需添加
+    pInsiderTransaction->m_lTransactionDate = 20210107;
+    pInsiderTransaction->m_strTransactionCode = _T("M"); // 这个数据库中有，无需添加
     vInsiderTransaction.push_back(pInsiderTransaction);
     pInsiderTransaction = make_shared<CInsiderTransaction>();
     pInsiderTransaction->m_strSymbol = _T("A");
     pInsiderTransaction->m_strPersonName = _T("a b c");
     pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
+    vInsiderTransaction.push_back(pInsiderTransaction);
+    pInsiderTransaction->m_strSymbol = _T("A");
+    pInsiderTransaction->m_strPersonName = _T("a b c");
+    pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个日期不符，需要添加进数据库
     vInsiderTransaction.push_back(pInsiderTransaction);
 
     stock.SetSymbol(_T("A"));
@@ -801,6 +806,14 @@ namespace StockAnalysisTest {
     setInsiderTransaction.Close();
 
     setInsiderTransaction.m_strFilter = _T("[TransactionDate] = '20210124'");
+    setInsiderTransaction.Open();
+    setInsiderTransaction.m_pDatabase->BeginTrans();
+    EXPECT_FALSE(setInsiderTransaction.IsEOF());
+    setInsiderTransaction.Delete();
+    setInsiderTransaction.m_pDatabase->CommitTrans();
+    setInsiderTransaction.Close();
+
+    setInsiderTransaction.m_strFilter = _T("[TransactionCode] = 'S'");
     setInsiderTransaction.Open();
     setInsiderTransaction.m_pDatabase->BeginTrans();
     EXPECT_FALSE(setInsiderTransaction.IsEOF());

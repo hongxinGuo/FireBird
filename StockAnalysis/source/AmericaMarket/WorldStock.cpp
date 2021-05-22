@@ -410,8 +410,9 @@ void CWorldStock::SaveInsiderTransaction(void) {
                 [pInsiderTransaction](CInsiderTransactionPtr& p) {
                   return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
                           && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-                          && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0)); // 内部交易人员
-                }) == vInsiderTransaction.end()) { // 如果股票代码、人名或者交易日期为新的数据，则存储该数据
+                          && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+                          && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+                }) == vInsiderTransaction.end()) { // 如果股票代码、人名交易日期或者交易细节为新的数据，则存储该数据
       pInsiderTransaction->Append(setSaveInsiderTransaction);
     }
   }
