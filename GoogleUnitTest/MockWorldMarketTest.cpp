@@ -108,6 +108,12 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCountryListDB());
   }
 
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateInsiderTransactionDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateInsiderTransactionDB)
+      .Times(1);
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateInsiderTransactionDB());
+  }
+
   TEST_F(CMockWorldMarketTest, TestTaskUpdateEPSSurpriseDB) {
     CWorldStockPtr pStock = nullptr;
     for (long l = 0; l < gl_pMockWorldMarket->GetTotalStock(); l++) {
@@ -155,6 +161,12 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexSymbolDB)
       .Times(1);
     EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), 39);
+  }
+
+  TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderTransactionDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), 48);
   }
 
   TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoStockDB) {
@@ -663,7 +675,7 @@ namespace StockAnalysisTest {
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionUpdated(false);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
-    EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockInsiderTransaction(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+    EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockInsiderTransaction(pWebData, _))
       .WillOnce(Return(true));
     EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
     EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetInsiderTransactionUpdateDate(), gl_pMockWorldMarket->GetFormatedMarketDate());
@@ -916,6 +928,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(0);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
@@ -934,6 +947,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0); //"目前未使用"
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0); //"目前未使用"
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubDayLine).Times(1);
@@ -953,6 +967,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
+    EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);
     EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubDayLine).Times(1);

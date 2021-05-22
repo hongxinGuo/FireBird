@@ -251,6 +251,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
@@ -264,6 +265,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
@@ -278,6 +280,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
@@ -366,6 +369,7 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
+    <ClCompile Include="InsiderTransactionTest.cpp" />
     <ClCompile Include="MockVirtualWebInquiryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
@@ -421,6 +425,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
@@ -429,6 +434,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h" />

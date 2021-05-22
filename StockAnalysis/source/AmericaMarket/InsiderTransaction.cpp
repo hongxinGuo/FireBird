@@ -1,0 +1,37 @@
+#include"pch.h"
+#include"InsiderTransaction.h"
+
+CInsiderTransaction::CInsiderTransaction() : CObject() {
+  m_strSymbol = _T(" ");
+  m_strPersonName = _T(" ");
+  m_lShare = 0;
+  m_lChange = 0;
+  m_lFilingDate = 19800101;
+  m_lTransactionDate = 19800101;
+  m_strTransactionCode = _T(" ");
+  m_dTransactionPrice = 0.0;
+}
+
+void CInsiderTransaction::Append(CSetInsiderTransaction& setInsiderTransaction) {
+  setInsiderTransaction.AddNew();
+  setInsiderTransaction.m_Symbol = m_strSymbol;
+  setInsiderTransaction.m_PersonName = m_strPersonName;
+  setInsiderTransaction.m_Share = m_lShare;
+  setInsiderTransaction.m_Change = m_lChange;
+  setInsiderTransaction.m_FilingDate = m_lFilingDate;
+  setInsiderTransaction.m_TransactionDate = m_lTransactionDate;
+  setInsiderTransaction.m_TransactionCode = m_strTransactionCode;
+  setInsiderTransaction.m_TransactionPrice = m_dTransactionPrice;
+  setInsiderTransaction.Update();
+}
+
+void CInsiderTransaction::Load(CSetInsiderTransaction& setInsiderTransaction) {
+  m_strSymbol = setInsiderTransaction.m_Symbol;
+  m_strPersonName = setInsiderTransaction.m_PersonName;
+  m_lShare = setInsiderTransaction.m_Share;
+  m_lChange = setInsiderTransaction.m_Change;
+  m_lFilingDate = setInsiderTransaction.m_FilingDate;
+  m_lTransactionDate = setInsiderTransaction.m_TransactionDate;
+  m_strTransactionCode = setInsiderTransaction.m_TransactionCode;
+  m_dTransactionPrice = setInsiderTransaction.m_TransactionPrice;
+}

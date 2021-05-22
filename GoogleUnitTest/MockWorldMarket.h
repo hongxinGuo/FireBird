@@ -18,6 +18,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateSICIndustry, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateNaicsIndustry, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateTiingoStockDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateInsiderTransactionDB, (), (override));
 
     MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
@@ -25,6 +26,7 @@ namespace testing {
     MOCK_METHOD(bool, TaskInquiryFinnhubDayLine, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubRTQuote, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubPeer, (), (override));
+    MOCK_METHOD(bool, TaskInquiryFinnhubInsiderTransaction, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubEconomicCalendar, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubEPSSurprise, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubForexExchange, (), (override));
@@ -44,7 +46,7 @@ namespace testing {
     MOCK_METHOD(bool, ProcessFinnhubForexCandle, (CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol), (override));
     MOCK_METHOD(bool, ProcessFinnhubCountryList, (CWebDataPtr pWebData, vector<CCountryPtr>& vCountry), (override));
     MOCK_METHOD(bool, ProcessFinnhubStockPeer, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
-    MOCK_METHOD(bool, ProcessFinnhubStockInsiderTransaction, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
+    MOCK_METHOD(bool, ProcessFinnhubStockInsiderTransaction, (CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction), (override));
     MOCK_METHOD(bool, ProcessFinnhubEconomicCalendar, (CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar), (override));
     MOCK_METHOD(bool, ProcessFinnhubEPSSurprise, (CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise), (override));
 
@@ -54,6 +56,7 @@ namespace testing {
     MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
+    MOCK_METHOD(bool, UpdateInsiderTransactionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));
     MOCK_METHOD(bool, UpdateTiingoStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));

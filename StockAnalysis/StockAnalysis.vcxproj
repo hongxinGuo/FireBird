@@ -881,6 +881,7 @@
     <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetForexDayLine.h" />
+    <ClInclude Include="source\AmericaMarket\DataBase\SetInsiderTransaction.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetNaicsIndustry.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetSICIndustry.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
@@ -890,6 +891,7 @@
     <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStock.h" />
     <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
     <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h" />
+    <ClInclude Include="source\AmericaMarket\InsiderTransaction.h" />
     <ClInclude Include="source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="source\AmericaMarket\SICIndustry.h" />
     <ClInclude Include="source\AmericaMarket\TiingoIndustry.h" />
@@ -976,6 +978,7 @@
     <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\DataBase\SetInsiderTransaction.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetNaicsIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
@@ -985,9 +988,11 @@
     <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStock.cpp" />
     <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="source\AmericaMarket\InsiderTransaction.cpp" />
     <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />

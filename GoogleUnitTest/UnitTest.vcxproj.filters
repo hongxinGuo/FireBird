@@ -755,6 +755,18 @@
     <ClCompile Include="MockVirtualWebInquiryTest.cpp">
       <Filter>Test源文件\Base Class</Filter>
     </ClCompile>
+    <ClCompile Include="InsiderTransactionTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -1103,6 +1115,12 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

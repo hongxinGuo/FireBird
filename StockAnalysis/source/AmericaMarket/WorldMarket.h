@@ -8,6 +8,8 @@
 #include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
+#include"InsiderTransaction.h"
+
 #include"TiingoStock.h"
 
 #include"TiingoIndustry.h"
@@ -166,7 +168,7 @@ public:
   virtual bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
   virtual bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
   virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-  virtual bool ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
   virtual bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
   virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
@@ -182,6 +184,7 @@ public:
   bool TaskUpdateCountryListDB(void);
   bool TaskUpdateEPSSurpriseDB(void);
   bool TaskUpdateEconomicCalendarDB(void);
+  bool TaskUpdateInsiderTransactionDB(void);
   bool TaskUpdateTiingoStockDB(void);
 
   bool TaskCheckSystemReady(void);
@@ -190,12 +193,13 @@ public:
 
   // 各工作线程调用包裹函数
   virtual bool RunningthreadUpdateDayLneStartEndDate(void);
-  virtual bool RunningThreadUpdateDayLineDB();
+  virtual bool RunningThreadUpdateDayLineDB(void);
   virtual bool RunningThreadUpdateStockProfileDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
+  virtual bool RunningThreadUpdateInsiderTransactionDB(void);
   virtual bool RunningThreadUpdateTiingoStockDB(void);
   virtual bool RunningThreadUpdateTiingoIndustry(void);
   virtual bool RunningThreadUpdateSICIndustry(void);
@@ -305,6 +309,7 @@ public:
   virtual bool UpdateCountryListDB(void);
   virtual bool UpdateStockProfileDB(void);
   virtual bool UpdateForexSymbolDB(void);
+  virtual bool UpdateInsiderTransactionDB(void);
   bool UpdateEconomicCalendarDB(void);
   virtual bool UpdateTiingoStockDB(void);
   virtual bool UpdateTiingoIndustry(void);

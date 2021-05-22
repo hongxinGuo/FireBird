@@ -15,6 +15,7 @@ using namespace boost::property_tree;
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
 bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; }
+bool CompareInsiderTransaction(CInsiderTransactionPtr& p1, CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; }
 
 /// <summary>
 /// 高级版的公司简介，需要申请付费账号
@@ -593,11 +594,50 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
   return true;
 }
 
-bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
   char buffer[1000]{};
   int i = 0;
-  ptree pt;
+  ptree pt, pt1, pt2;
   string sError;
+  string s;
+  string stockSymbol;
+  long year, month, day;
+  CInsiderTransactionPtr pInsiderTransaction = nullptr;
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+
+  try {
+    pt1 = pt.get_child(_T("data"));
+    stockSymbol = pt.get<string>(_T("symbol"));
+  }
+  catch (ptree_error&) {
+    return false;
+  }
+  for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
+    pt2 = it->second;
+    try {
+      s = pt2.get<string>(_T("name"));
+      if (s.size() > 0) pInsiderTransaction->m_strPersonName = s.c_str();
+      pInsiderTransaction->m_lShare = pt2.get<long>(_T("share"));
+      pInsiderTransaction->m_lChange = pt2.get<long>(_T("change"));
+      s = pt2.get<string>(_T("filingDate"));
+      sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
+      pInsiderTransaction->m_lFilingDate = year * 10000 + month * 100 + day;
+      s = pt2.get<string>(_T("transactionDate"));
+      sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
+      pInsiderTransaction->m_lTransactionDate = year * 10000 + month * 100 + day;
+      s = pt2.get<string>(_T("transactionCode"));
+      pInsiderTransaction->m_strTransactionCode = s.c_str();
+      pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
+    }
+    catch (ptree_error&) {
+      return false;
+    }
+    vInsiderTransaction.push_back(pInsiderTransaction);
+  }
+  sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);
 
   return true;
 }

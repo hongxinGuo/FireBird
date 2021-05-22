@@ -50,8 +50,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
-      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
-      EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5002) << "测试代码库中的股票代码总数为5002";
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
+      EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5040) << "测试代码库中的股票代码总数为5040";
     }
 
     static void TearDownTestSuite(void) {
@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
       EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
-      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5002) << "测试数据库中的股票代码总数为5002";
+      EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
     }
 
     virtual void SetUp(void) override {

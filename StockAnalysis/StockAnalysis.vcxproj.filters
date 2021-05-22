@@ -402,6 +402,12 @@
     <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\InsiderTransaction.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\DataBase\SetInsiderTransaction.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -781,6 +787,15 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp">
       <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\DataBase\SetInsiderTransaction.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\InsiderTransaction.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

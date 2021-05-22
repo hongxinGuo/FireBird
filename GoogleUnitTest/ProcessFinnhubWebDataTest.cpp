@@ -1030,4 +1030,53 @@ namespace StockAnalysisTest {
     break;
     }
   }
+
+  FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+
+  class ProcessFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+      EXPECT_TRUE(m_pStock != nullptr);
+      m_pWebData = pData->m_pData;
+      m_vInsiderTransaction.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+      m_pStock->SetUpdateProfileDB(false);
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+    vector<CInsiderTransactionPtr> m_vInsiderTransaction;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
+                           testing::Values(&finnhubWebData132));
+
+  TEST_P(ProcessFinnhubInsiderTransactionTest, TestProcessFinnhubInsiderTransaction0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubStockInsiderTransaction(m_pWebData, m_vInsiderTransaction);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_EQ(m_vInsiderTransaction.size(), 2);
+    EXPECT_STREQ(m_vInsiderTransaction.at(0)->m_strPersonName, _T("Long Brady K"));
+    EXPECT_STREQ(m_vInsiderTransaction.at(0)->m_strSymbol, _T("RIG"));
+    EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lShare, 269036);
+    EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lChange, -14236);
+    EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lFilingDate, 20210303);
+    EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lTransactionDate, 20210302);
+    EXPECT_DOUBLE_EQ(m_vInsiderTransaction.at(0)->m_dTransactionPrice, 3.68);
+    EXPECT_TRUE(m_vInsiderTransaction.at(0)->m_lTransactionDate <= m_vInsiderTransaction.at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
+    break;
+    default:
+    break;
+    }
+  }
 }

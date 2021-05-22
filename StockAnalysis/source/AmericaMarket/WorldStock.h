@@ -5,6 +5,7 @@
 
 #include"DayLine.h"
 #include"EPSSurprise.h"
+#include"InsiderTransaction.h"
 #include"TiingoStock.h"
 #include"SetWorldStock.h"
 
@@ -28,6 +29,7 @@ public:
   void Update(CSetWorldStock& setWorldStock);
   void Append(CSetWorldStock& setWorldStock);
   void SaveDayLine(void);
+  void SaveInsiderTransaction(void);
   virtual bool UpdateEPSSurpriseDB(void);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
@@ -56,6 +58,9 @@ public:
   void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
   bool CheckPeerStatus(long lCurrentDate);
 
+  bool HaveInsiderTransaction(void) { if (m_vInsiderTransaction.size() > 0) return true; else return false; }
+  void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
+  void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
   bool IsInsiderTransactionUpdated(void) const noexcept { return m_fFinnhubInsiderTransactionUpdated; }
   void SetInsiderTransactionUpdated(bool fFlag) noexcept { m_fFinnhubInsiderTransactionUpdated = fFlag; }
   bool CheckInsiderTransactionStatus(long lCurrentDate);
@@ -164,6 +169,9 @@ public:
   bool m_fEPSSurpriseUpdated;
   atomic_bool m_fEPSSurpriseNeedSave;
 
+  vector<CInsiderTransactionPtr> m_vInsiderTransaction;
+  long m_lInsiderTransactionStartDate;
+
 protected:
   // Finnhub symbol信息
   CString m_strDescription;
@@ -210,7 +218,7 @@ protected:
   // 无需存储数据区
   bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
-  bool m_fFinnhubInsiderTransactionUpdated; // 同业公司数据已更新
+  bool m_fFinnhubInsiderTransactionUpdated; // 公司内部交易数据已更新
 
 private:
   static int s_iRatio;

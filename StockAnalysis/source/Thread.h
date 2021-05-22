@@ -116,6 +116,8 @@ UINT ThreadUpdateTiingoIndustry(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·
 UINT ThreadUpdateSICIndustry(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª46
 // ¸üĞÂNaics¹¤Òµ·ÖÀà¡£
 UINT ThreadUpdateNaicsIndustry(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª47
+// ¸üĞÂInsiderTransaction
+UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª48
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

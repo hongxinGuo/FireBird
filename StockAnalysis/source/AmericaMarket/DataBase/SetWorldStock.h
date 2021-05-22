@@ -61,7 +61,8 @@ public:
   long m_DayLineStartDate;
   long m_DayLineEndDate;
   long m_LastRTDataUpdateDate; // 最新实时数据更新日期
-  long m_PeerUpdateDate; // 竞争对手信息更新时间
+  long m_PeerUpdateDate; // 竞争对手信息更新日期
+  long m_InsiderTransactionUpdateDate; // 内部交易更新日期
   long m_LastEPSSurpriseUpdateDate;
   long m_IPOStatus;
 

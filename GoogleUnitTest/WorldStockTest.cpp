@@ -750,6 +750,65 @@ namespace StockAnalysisTest {
     setDayLine.Close();
   }
 
+  TEST_F(CWorldStockTest, TestSaveInsiderTransaction) {
+    //  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
+    CWorldStock stock;
+    vector<CInsiderTransactionPtr> vInsiderTransaction;
+    CInsiderTransactionPtr pInsiderTransaction;
+    CSetInsiderTransaction setInsiderTransaction;
+
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->m_strSymbol = _T("B");
+    pInsiderTransaction->m_strPersonName = _T("a b c");
+    pInsiderTransaction->m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
+    vInsiderTransaction.push_back(pInsiderTransaction);
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->m_strSymbol = _T("A");
+    pInsiderTransaction->m_strPersonName = _T("a b c d");
+    pInsiderTransaction->m_lTransactionDate = 20210101; // 这个内部交易人员名称不符，需要添加进数据库
+    vInsiderTransaction.push_back(pInsiderTransaction);
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->m_strSymbol = _T("A");
+    pInsiderTransaction->m_strPersonName = _T("a b c");
+    pInsiderTransaction->m_lTransactionDate = 20210107; // 这个数据库中有，无需添加
+    vInsiderTransaction.push_back(pInsiderTransaction);
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->m_strSymbol = _T("A");
+    pInsiderTransaction->m_strPersonName = _T("a b c");
+    pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
+    vInsiderTransaction.push_back(pInsiderTransaction);
+
+    stock.SetSymbol(_T("A"));
+    stock.SetInsiderTransactionUpdateDate(20210123);
+    stock.UpdateInsiderTransaction(vInsiderTransaction);
+
+    stock.SaveInsiderTransaction();
+
+    setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
+    setInsiderTransaction.Open();
+    setInsiderTransaction.m_pDatabase->BeginTrans();
+    EXPECT_FALSE(setInsiderTransaction.IsEOF());
+    setInsiderTransaction.Delete();
+    setInsiderTransaction.m_pDatabase->CommitTrans();
+    setInsiderTransaction.Close();
+
+    setInsiderTransaction.m_strFilter = _T("[PersonName] = 'a b c d'");
+    setInsiderTransaction.Open();
+    setInsiderTransaction.m_pDatabase->BeginTrans();
+    EXPECT_FALSE(setInsiderTransaction.IsEOF());
+    setInsiderTransaction.Delete();
+    setInsiderTransaction.m_pDatabase->CommitTrans();
+    setInsiderTransaction.Close();
+
+    setInsiderTransaction.m_strFilter = _T("[TransactionDate] = '20210124'");
+    setInsiderTransaction.Open();
+    setInsiderTransaction.m_pDatabase->BeginTrans();
+    EXPECT_FALSE(setInsiderTransaction.IsEOF());
+    setInsiderTransaction.Delete();
+    setInsiderTransaction.m_pDatabase->CommitTrans();
+    setInsiderTransaction.Close();
+  }
+
   TEST_F(CWorldStockTest, TestUpdateDayLine) {
     CWorldStock stock;
     vector<CDayLinePtr> vDayLine;
@@ -1055,6 +1114,17 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsPeerUpdated()) << "摘牌股票无需更新Peer";
   }
 
+  TEST_F(CWorldStockTest, TestHaveInsiderTransaction) {
+    CWorldStock stock;
+    CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
+
+    EXPECT_FALSE(stock.HaveInsiderTransaction());
+    stock.m_vInsiderTransaction.push_back(pInsiderTransaction);
+    EXPECT_TRUE(stock.HaveInsiderTransaction());
+    stock.UnloadInsiderTransaction();
+    EXPECT_FALSE(stock.HaveInsiderTransaction());
+  }
+
   TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
     CWorldStock stock;
     EXPECT_FALSE(stock.IsInsiderTransactionUpdated());
@@ -1062,16 +1132,16 @@ namespace StockAnalysisTest {
     stock.SetInsiderTransactionUpdated(true);
     stock.SetInsiderTransactionUpdateDate(20200101);
     stock.SetIPOStatus(__STOCK_IPOED__);
-    stock.CheckInsiderTransactionStatus(20200401); // 91天
-    EXPECT_FALSE(stock.IsInsiderTransactionUpdated()) << "九十一天需更新";
-    stock.CheckInsiderTransactionStatus(20200331); // 90天
+    stock.CheckInsiderTransactionStatus(20200201); // 31天
+    EXPECT_FALSE(stock.IsInsiderTransactionUpdated()) << "三十一天需更新";
+    stock.CheckInsiderTransactionStatus(20200131); // 30天
     EXPECT_TRUE(stock.IsInsiderTransactionUpdated());
 
     stock.SetInsiderTransactionUpdated(false);
     stock.SetIPOStatus(__STOCK_DELISTED__);
-    stock.CheckInsiderTransactionStatus(20200331); // 90天
-    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "九十天内无需更新";
-    stock.CheckInsiderTransactionStatus(20200401); // 91天
+    stock.CheckInsiderTransactionStatus(20200131); // 30天
+    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "三十天内无需更新";
+    stock.CheckInsiderTransactionStatus(20200201); // 31天
     EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "摘牌股票无需更新InsiderTransaction";
   }
 
@@ -1168,6 +1238,13 @@ namespace StockAnalysisTest {
     stock.m_strCompanyWebSite = _T("ijk");
     stock.m_strSECFilingWebSite = _T("https://def.com");
 
+    stock.SetProfileUpdateDate(20000102);
+    stock.SetLastRTDataUpdateDate(20000103);
+    stock.SetLastEPSSurpriseUpdateDate(20000104);
+    stock.SetDayLineStartDate(19700101);
+    stock.SetDayLineEndDate(19700102);
+    stock.SetPeerUpdateDate(20010101);
+    stock.SetInsiderTransactionUpdateDate(20000101);
     stock.m_lDailyDataUpdateDate = 20202020;
     stock.m_lStatementUpdateDate = 10101010;
 
@@ -1228,6 +1305,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.m_strSICSector, stock2.m_strSICSector);
     EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
     EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
+    EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
+    EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
+    EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
+    EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());
+    EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
+    EXPECT_EQ(stock.GetPeerUpdateDate(), stock2.GetPeerUpdateDate());
+    EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), stock2.GetInsiderTransactionUpdateDate());
     EXPECT_EQ(stock.m_lDailyDataUpdateDate, stock2.m_lDailyDataUpdateDate);
     EXPECT_EQ(stock.m_lStatementUpdateDate, stock2.m_lStatementUpdateDate);
   }

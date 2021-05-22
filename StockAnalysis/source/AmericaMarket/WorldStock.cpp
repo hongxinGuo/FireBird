@@ -123,6 +123,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
   m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
   m_lLastRTDataUpdateDate = setWorldStock.m_LastRTDataUpdateDate;
   m_lPeerUpdateDate = setWorldStock.m_PeerUpdateDate;
+  m_lInsiderTransactionUpdateDate = setWorldStock.m_InsiderTransactionUpdateDate;
   m_lLastEPSSurpriseUpdateDate = setWorldStock.m_LastEPSSurpriseUpdateDate;
   m_lIPOStatus = setWorldStock.m_IPOStatus;
 
@@ -286,6 +287,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
   setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
   setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
   setWorldStock.m_PeerUpdateDate = m_lPeerUpdateDate;
+  setWorldStock.m_InsiderTransactionUpdateDate = m_lInsiderTransactionUpdateDate;
   setWorldStock.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setWorldStock.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setWorldStock.m_IPOStatus = m_lIPOStatus;
@@ -368,6 +370,53 @@ void CWorldStock::SaveDayLine(void) {
   }
   setSaveWorldStockDayLine.m_pDatabase->CommitTrans();
   setSaveWorldStockDayLine.Close();
+}
+
+void CWorldStock::SaveInsiderTransaction(void) {
+  CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
+
+  vector<CInsiderTransactionPtr> vInsiderTransaction;
+  CInsiderTransactionPtr pInsiderTransaction = nullptr;
+  long lCurrentPos = 0, lSizeOfOldInsiderTransaction = 0;
+
+  ASSERT(m_vInsiderTransaction.size() > 0);
+
+  setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
+  setInsiderTransaction.m_strFilter += m_strSymbol + _T("'");
+  setInsiderTransaction.m_strSort = _T("[TransactionDate]");
+
+  setInsiderTransaction.Open();
+  while (!setInsiderTransaction.IsEOF()) {
+    pInsiderTransaction = make_shared<CInsiderTransaction>();
+    pInsiderTransaction->Load(setInsiderTransaction);
+    vInsiderTransaction.push_back(pInsiderTransaction);
+    lSizeOfOldInsiderTransaction++;
+    setInsiderTransaction.MoveNext();
+  }
+  if (lSizeOfOldInsiderTransaction > 0) {
+    if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) {
+      m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate;
+    }
+  }
+  setInsiderTransaction.Close();
+
+  setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
+  setSaveInsiderTransaction.Open();
+  setSaveInsiderTransaction.m_pDatabase->BeginTrans();
+  lCurrentPos = 0;
+  for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
+    pInsiderTransaction = m_vInsiderTransaction.at(i);
+    if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
+                [pInsiderTransaction](CInsiderTransactionPtr& p) {
+                  return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+                          && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+                          && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0)); // 内部交易人员
+                }) == vInsiderTransaction.end()) { // 如果股票代码、人名或者交易日期为新的数据，则存储该数据
+      pInsiderTransaction->Append(setSaveInsiderTransaction);
+    }
+  }
+  setSaveInsiderTransaction.m_pDatabase->CommitTrans();
+  setSaveInsiderTransaction.Close();
 }
 
 bool CWorldStock::UpdateEPSSurpriseDB(void) {
@@ -489,11 +538,19 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
   return m_fFinnhubPeerUpdated;
 }
 
+void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction) {
+  m_vInsiderTransaction.resize(0);
+
+  for (auto pInsiderTransacton : vInsiderTransaction) {
+    m_vInsiderTransaction.push_back(pInsiderTransacton);
+  }
+}
+
 bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
   if (IsNullStock() || IsDelisted()) {
     m_fFinnhubInsiderTransactionUpdated = true;
   }
-  else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 90)) { // 有不早于90天的数据？
+  else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 30)) { // 有不早于30天的数据？
     m_fFinnhubInsiderTransactionUpdated = true;
   }
   else {
