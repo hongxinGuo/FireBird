@@ -80,6 +80,7 @@ void CWorldStock::Reset(void) {
   m_fFinnhubPeerUpdated = false;
 
   m_fFinnhubInsiderTransactionNeedUpdate = true;
+  m_fFinnhubInsiderTransactionNeedSave = false;
 
   m_vDayLine.resize(0);
 }
@@ -551,6 +552,9 @@ void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsi
 
 bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
   if (!IsUSMarket()) {
+    m_fFinnhubInsiderTransactionNeedUpdate = false;
+  }
+  else if (IsNullStock() || IsDelisted()) {
     m_fFinnhubInsiderTransactionNeedUpdate = false;
   }
   else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 30)) { // 有不早于30天的数据？

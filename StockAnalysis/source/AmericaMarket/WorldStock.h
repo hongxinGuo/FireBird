@@ -58,12 +58,15 @@ public:
   void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
   bool CheckPeerStatus(long lCurrentDate);
 
-  bool HaveInsiderTransaction(void) { if (m_vInsiderTransaction.size() > 0) return true; else return false; }
+  bool HaveInsiderTransaction(void) noexcept { if (m_vInsiderTransaction.size() > 0) return true; else return false; }
   void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
   void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
   bool IsInsiderTransactionNeedUpdate(void) const noexcept { return m_fFinnhubInsiderTransactionNeedUpdate; }
-  void SetInsiderTransactionUpdate(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
+  void SetInsiderTransactionNeedUpdate(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
   bool CheckInsiderTransactionStatus(long lCurrentDate);
+  bool IsInsiderTransactionNeedSave(void) const noexcept { return m_fFinnhubInsiderTransactionNeedSave; }
+  void SetInsiderTransactionNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
+  bool IsInsiderTransactionNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false); return fNeedSave; }
 
   CString GetDescription(void) const { return m_strDescription; }
   void SetDescription(CString strDescription) { m_strDescription = strDescription; }
@@ -219,6 +222,7 @@ protected:
   bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
   bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
+  atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储
 
 private:
   static int s_iRatio;

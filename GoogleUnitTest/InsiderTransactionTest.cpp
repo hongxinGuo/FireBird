@@ -89,7 +89,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(insiderTransaction.m_lShare, 0);
     EXPECT_EQ(insiderTransaction.m_lChange, 0);
     EXPECT_EQ(insiderTransaction.m_lFilingDate, 19800101);
-    EXPECT_EQ(insiderTransaction.m_lTransactionDate, 20200101);
+    EXPECT_EQ(insiderTransaction.m_lTransactionDate, 20210101);
     EXPECT_DOUBLE_EQ(insiderTransaction.m_dTransactionPrice, 0.0);
     setInsiderTransaction.Close();
   }

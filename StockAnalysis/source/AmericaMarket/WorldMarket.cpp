@@ -289,7 +289,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __INSIDER_TRANSACTION__:
       ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
-      pStock->SetInsiderTransactionUpdate(false);
+      pStock->SetInsiderTransactionNeedUpdate(false);
       break;
       case __OWNERSHIP__: // Premium
       break;
@@ -484,6 +484,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       if (ProcessFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
         pStock->UpdateInsiderTransaction(vInsiderTransaction);
         pStock->SetInsiderTransactionUpdateDate(GetFormatedMarketDate());
+        pStock->SetInsiderTransactionNeedSave(true);
         pStock->SetUpdateProfileDB(true);
       }
       break;
@@ -1909,12 +1910,11 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 
   for (long i = 0; i < GetTotalStock(); i++) {
     pStock = GetStock(i);
-    if (pStock->HaveInsiderTransaction() > 0) {
+    if (pStock->IsInsiderTransactionNeedSaveAndClearFlag()) {
       pStock->SaveInsiderTransaction();
       str = pStock->GetSymbol() + _T("内部交易资料更新完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
       TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
-      pStock->UnloadInsiderTransaction();
     }
     if (gl_fExitingSystem) {
       break; // 如果程序正在退出，则停止存储。

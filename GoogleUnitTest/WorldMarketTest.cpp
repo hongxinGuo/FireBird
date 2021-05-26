@@ -522,20 +522,19 @@ namespace StockAnalysisTest {
     vInsiderTransaction.push_back(pInsiderTransaction);
 
     pStock = gl_pWorldMarket->GetStock(_T("A"));
+    EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
+
+    pStock->SetInsiderTransactionNeedSave(true);
     pStock->SetInsiderTransactionUpdateDate(20210123);
     pStock->UpdateInsiderTransaction(vInsiderTransaction);
 
-    pStock->SetInsiderTransactionUpdate(false); // 设置已更新标识
-    EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << "由于更新标识已设置，故而没有执行更新， 所以没有生成系统消息";
-
-    pStock->SetInsiderTransactionUpdate(true);
     EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
 
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
     EXPECT_STREQ(str, _T("A内部交易资料更新完成"));
-    EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderTransactionNeedUpdate());
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderTransactionNeedSave());
+    EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
 
     // 验证并恢复原状
     setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
@@ -931,10 +930,10 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->SetSystemReady(true);
     for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
       pStock = gl_pWorldMarket->GetStock(i);
-      pStock->SetInsiderTransactionUpdate(false);
+      pStock->SetInsiderTransactionNeedUpdate(false);
     }
-    gl_pWorldMarket->GetStock(1)->SetInsiderTransactionUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-    gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionUpdate(true); // 这个是美国股票
+    gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+    gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionNeedUpdate(true); // 这个是美国股票
     gl_pWorldMarket->SetFinnhubInsiderTransactionUpdated(true);
     EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubInsiderTransaction()) << "InsiderTransactions Updated";
 
@@ -950,8 +949,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(inquiry.m_lStockIndex, 2500) << "第一个待查询股票为中国股票，故而无需查询；第二个待查询股票为美国股票";
     EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票为中国股票，没有复原";
     EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
-    gl_pWorldMarket->GetStock(1)->SetInsiderTransactionUpdate(false);
-    gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionUpdate(false);
+    gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(false);
+    gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionNeedUpdate(false);
 
     gl_pWorldMarket->SetFinnhubInquiring(false);
     EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubInsiderTransaction()) << "第二次查询时没有找到待查询的股票";

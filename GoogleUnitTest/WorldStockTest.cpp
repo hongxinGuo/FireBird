@@ -322,6 +322,24 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsEPSSurpriseNeedSave());
   }
 
+  TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedUpdate) {
+    CWorldStock stock;
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
+    stock.SetInsiderTransactionNeedUpdate(false);
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
+    stock.SetInsiderTransactionNeedUpdate(true);
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
+  }
+
+  TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedSave) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedSave());
+    stock.SetInsiderTransactionNeedSave(true);
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedSave());
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedSaveAndClearFlag());
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedSave());
+  }
+
   TEST_F(CWorldStockTest, TestGetDescription) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetDescription(), _T(" "));
@@ -1142,7 +1160,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
     EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
 
-    stock.SetInsiderTransactionUpdate(false);
+    stock.SetInsiderTransactionNeedUpdate(false);
     stock.SetInsiderTransactionUpdateDate(20200101);
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.CheckInsiderTransactionStatus(20200201); // 31天
@@ -1150,7 +1168,7 @@ namespace StockAnalysisTest {
     stock.CheckInsiderTransactionStatus(20200131); // 30天
     EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
 
-    stock.SetInsiderTransactionUpdate(true);
+    stock.SetInsiderTransactionNeedUpdate(true);
     stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.CheckInsiderTransactionStatus(20200131); // 30天
     EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "三十天内无需更新";

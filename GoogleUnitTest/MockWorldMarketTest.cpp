@@ -685,7 +685,7 @@ namespace StockAnalysisTest {
     if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
       gl_WebInquirer.PushFinnhubData(pWebData);
     }
-    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionUpdate(true);
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionNeedUpdate(true);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
     EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockInsiderTransaction(pWebData, _))

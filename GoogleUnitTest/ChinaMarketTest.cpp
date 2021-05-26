@@ -133,6 +133,8 @@ namespace StockAnalysisTest {
       gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
 
       EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
+
+      gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
     }
   };
 
