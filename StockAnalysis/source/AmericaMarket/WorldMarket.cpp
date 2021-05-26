@@ -289,7 +289,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __INSIDER_TRANSACTION__:
       ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
-      pStock->SetInsiderTransactionUpdated(true);
+      pStock->SetInsiderTransactionUpdate(false);
       break;
       case __OWNERSHIP__: // Premium
       break;
@@ -1046,9 +1046,11 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
   if (!IsFinnhubInsiderTransactionUpdated() && !IsFinnhubInquiring()) {
     for (m_lCurrentUpdateInsiderTransactionPos = 0; m_lCurrentUpdateInsiderTransactionPos < lStockSetSize; m_lCurrentUpdateInsiderTransactionPos++) {
       pStock = m_vWorldStock.at(m_lCurrentUpdateInsiderTransactionPos);
-      if (pStock->IsUSMarket() && !pStock->IsInsiderTransactionUpdated()) { // 目前免费账户只能下载美国市场的股票日线。
-        fFound = true;
-        break;
+      if (pStock->IsUSMarket()) {
+        if (pStock->IsInsiderTransactionNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
+          fFound = true;
+          break;
+        }
       }
     }
     if (fFound) {
@@ -1058,7 +1060,6 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       SetFinnhubInquiring(true);
-      pStock->SetInsiderTransactionUpdated(true);
       TRACE("申请%s 内部交易数据\n", pStock->GetSymbol().GetBuffer());
     }
     else {
@@ -1341,6 +1342,12 @@ bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
 }
 
 bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
+  RunningThreadUpdateForexExchangeDB();
+
+  return true;
+}
+
+bool CWorldMarket::UpdateForexExchangeDB(void) {
   CSetFinnhubForexExchange setForexExchange;
 
   if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
@@ -1546,6 +1553,12 @@ bool CWorldMarket::RunningThreadUpdateSICIndustry(void) {
 
 bool CWorldMarket::RunningThreadUpdateNaicsIndustry(void) {
   thread thread1(ThreadUpdateNaicsIndustry, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CWorldMarket::RunningThreadUpdateForexExchangeDB(void) {
+  thread thread1(ThreadUpdateForexExchangeDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

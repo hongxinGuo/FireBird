@@ -118,6 +118,8 @@ UINT ThreadUpdateSICIndustry(not_null<CWorldMarket*> pMarket); // 此工作线程返回
 UINT ThreadUpdateNaicsIndustry(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为47
 // 更新InsiderTransaction
 UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为48
+// 更新Forex Exchange
+UINT ThreadUpdateForexExchangeDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为49
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

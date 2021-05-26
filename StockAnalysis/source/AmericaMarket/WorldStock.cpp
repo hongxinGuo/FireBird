@@ -79,6 +79,8 @@ void CWorldStock::Reset(void) {
   m_fEPSSurpriseNeedSave = false;
   m_fFinnhubPeerUpdated = false;
 
+  m_fFinnhubInsiderTransactionNeedUpdate = true;
+
   m_vDayLine.resize(0);
 }
 
@@ -548,16 +550,16 @@ void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsi
 }
 
 bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
-  if (IsNullStock() || IsDelisted()) {
-    m_fFinnhubInsiderTransactionUpdated = true;
+  if (!IsUSMarket()) {
+    m_fFinnhubInsiderTransactionNeedUpdate = false;
   }
   else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 30)) { // 有不早于30天的数据？
-    m_fFinnhubInsiderTransactionUpdated = true;
+    m_fFinnhubInsiderTransactionNeedUpdate = false;
   }
   else {
-    m_fFinnhubInsiderTransactionUpdated = false;
+    m_fFinnhubInsiderTransactionNeedUpdate = true;
   }
-  return m_fFinnhubInsiderTransactionUpdated;
+  return m_fFinnhubInsiderTransactionNeedUpdate;
 }
 
 CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {

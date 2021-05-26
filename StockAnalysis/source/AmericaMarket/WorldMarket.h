@@ -204,6 +204,7 @@ public:
   virtual bool RunningThreadUpdateTiingoIndustry(void);
   virtual bool RunningThreadUpdateSICIndustry(void);
   virtual bool RunningThreadUpdateNaicsIndustry(void);
+  virtual bool RunningThreadUpdateForexExchangeDB(void);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -309,8 +310,9 @@ public:
   virtual bool UpdateCountryListDB(void);
   virtual bool UpdateStockProfileDB(void);
   virtual bool UpdateForexSymbolDB(void);
+  virtual bool UpdateForexExchangeDB(void);
   virtual bool UpdateInsiderTransactionDB(void);
-  bool UpdateEconomicCalendarDB(void);
+  virtual bool UpdateEconomicCalendarDB(void);
   virtual bool UpdateTiingoStockDB(void);
   virtual bool UpdateTiingoIndustry(void);
   virtual bool UpdateSICIndustry(void);

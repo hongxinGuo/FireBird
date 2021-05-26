@@ -12,6 +12,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexSymbolDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateForexExchangeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateTiingoIndustry, (), (override));
@@ -56,6 +57,7 @@ namespace testing {
     MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
+    MOCK_METHOD(bool, UpdateForexExchangeDB, (), (override));
     MOCK_METHOD(bool, UpdateInsiderTransactionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));
     MOCK_METHOD(bool, UpdateTiingoStockDB, (), (override));

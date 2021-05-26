@@ -61,8 +61,8 @@ public:
   bool HaveInsiderTransaction(void) { if (m_vInsiderTransaction.size() > 0) return true; else return false; }
   void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
   void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
-  bool IsInsiderTransactionUpdated(void) const noexcept { return m_fFinnhubInsiderTransactionUpdated; }
-  void SetInsiderTransactionUpdated(bool fFlag) noexcept { m_fFinnhubInsiderTransactionUpdated = fFlag; }
+  bool IsInsiderTransactionNeedUpdate(void) const noexcept { return m_fFinnhubInsiderTransactionNeedUpdate; }
+  void SetInsiderTransactionUpdate(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
   bool CheckInsiderTransactionStatus(long lCurrentDate);
 
   CString GetDescription(void) const { return m_strDescription; }
@@ -218,7 +218,7 @@ protected:
   // 无需存储数据区
   bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
-  bool m_fFinnhubInsiderTransactionUpdated; // 公司内部交易数据已更新
+  bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
 
 private:
   static int s_iRatio;

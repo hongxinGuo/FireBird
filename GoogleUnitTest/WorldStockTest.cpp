@@ -780,7 +780,7 @@ namespace StockAnalysisTest {
     vInsiderTransaction.push_back(pInsiderTransaction);
     pInsiderTransaction->m_strSymbol = _T("A");
     pInsiderTransaction->m_strPersonName = _T("a b c");
-    pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个日期不符，需要添加进数据库
+    pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个交易类型不符，需要添加进数据库
     vInsiderTransaction.push_back(pInsiderTransaction);
 
     stock.SetSymbol(_T("A"));
@@ -1140,22 +1140,22 @@ namespace StockAnalysisTest {
 
   TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
     CWorldStock stock;
-    EXPECT_FALSE(stock.IsInsiderTransactionUpdated());
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
 
-    stock.SetInsiderTransactionUpdated(true);
+    stock.SetInsiderTransactionUpdate(false);
     stock.SetInsiderTransactionUpdateDate(20200101);
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.CheckInsiderTransactionStatus(20200201); // 31天
-    EXPECT_FALSE(stock.IsInsiderTransactionUpdated()) << "三十一天需更新";
+    EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate()) << "三十一天需更新";
     stock.CheckInsiderTransactionStatus(20200131); // 30天
-    EXPECT_TRUE(stock.IsInsiderTransactionUpdated());
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
 
-    stock.SetInsiderTransactionUpdated(false);
+    stock.SetInsiderTransactionUpdate(true);
     stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.CheckInsiderTransactionStatus(20200131); // 30天
-    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "三十天内无需更新";
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "三十天内无需更新";
     stock.CheckInsiderTransactionStatus(20200201); // 31天
-    EXPECT_TRUE(stock.IsInsiderTransactionUpdated()) << "摘牌股票无需更新InsiderTransaction";
+    EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "摘牌股票无需更新InsiderTransaction";
   }
 
   TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryString) {

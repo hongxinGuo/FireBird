@@ -797,6 +797,9 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

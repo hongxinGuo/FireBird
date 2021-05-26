@@ -195,6 +195,8 @@ ExcludeFromCodeCoverage(CWorldMarket8, L"CWorldMarket::RunningThreadUpdateTiingo
 ExcludeFromCodeCoverage(CWorldMarket9, L"CWorldMarket::RunningThreadUpdateTiingoIndustry");
 ExcludeFromCodeCoverage(CWorldMarket10, L"CWorldMarket::RunningThreadUpdateSICIndustry");
 ExcludeFromCodeCoverage(CWorldMarket11, L"CWorldMarket::RunningThreadUpdateNaicsIndustry");
+ExcludeFromCodeCoverage(CWorldMarket12, L"CWorldMarket::RunningThreadUpdateInsiderTransactionDB");
+ExcludeFromCodeCoverage(CWorldMarket13, L"CWorldMarket::RunningThreadUpdateForexExchangeDB");
 
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");

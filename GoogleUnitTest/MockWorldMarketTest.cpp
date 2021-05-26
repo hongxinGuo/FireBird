@@ -163,6 +163,12 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), 39);
   }
 
+  TEST_F(CMockWorldMarketTest, TestThreadUpdateForexExchangedDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexExchangeDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), 49);
+  }
+
   TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {
     EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderTransactionDB)
       .Times(1);
@@ -233,6 +239,13 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateNaicsIndustry)
       .Times(1);
     EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateNaicsIndustry());
+  }
+
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateForexExchangeDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateForexExchangeDB)
+      .Times(1);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexExchangeDB());
   }
 
   TEST_F(CMockWorldMarketTest, TestTaskUpdateForexDayLineDB1) {
@@ -672,14 +685,14 @@ namespace StockAnalysisTest {
     if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
       gl_WebInquirer.PushFinnhubData(pWebData);
     }
-    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionUpdated(false);
+    gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionUpdate(true);
     gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
     EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockInsiderTransaction(pWebData, _))
       .WillOnce(Return(true));
     EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
     EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetInsiderTransactionUpdateDate(), gl_pMockWorldMarket->GetFormatedMarketDate());
-    EXPECT_FALSE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsInsiderTransactionUpdated()) << "此标识在申请数据时就预先设置了";
+    EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsInsiderTransactionNeedUpdate()) << "此标识在申请数据时就预先设置了";
     EXPECT_TRUE(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->IsUpdateProfileDB());
     EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
   }
