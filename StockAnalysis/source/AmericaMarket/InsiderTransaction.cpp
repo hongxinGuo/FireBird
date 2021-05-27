@@ -15,12 +15,12 @@ CInsiderTransaction::CInsiderTransaction() : CObject() {
 void CInsiderTransaction::Append(CSetInsiderTransaction& setInsiderTransaction) {
   setInsiderTransaction.AddNew();
   setInsiderTransaction.m_Symbol = m_strSymbol;
-  setInsiderTransaction.m_PersonName = m_strPersonName;
+  setInsiderTransaction.m_PersonName = m_strPersonName.Left(100); // 人名最多100个字符
   setInsiderTransaction.m_Share = m_lShare;
   setInsiderTransaction.m_Change = m_lChange;
   setInsiderTransaction.m_FilingDate = m_lFilingDate;
   setInsiderTransaction.m_TransactionDate = m_lTransactionDate;
-  setInsiderTransaction.m_TransactionCode = m_strTransactionCode;
+  setInsiderTransaction.m_TransactionCode = m_strTransactionCode.Left(4); // 交易代码最多4个字符
   setInsiderTransaction.m_TransactionPrice = m_dTransactionPrice;
   setInsiderTransaction.Update();
 }
