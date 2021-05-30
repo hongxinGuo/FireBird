@@ -10,7 +10,9 @@ public:
   CInsiderTransaction();
 
   void Append(CSetInsiderTransaction& setInsiderTransaction);
+  void Update(CSetInsiderTransaction& setInsiderTransaction);
 
+  void Save(CSetInsiderTransaction& setInsiderTransaction);
   void Load(CSetInsiderTransaction& setInsiderTransaction);
 
 public:
