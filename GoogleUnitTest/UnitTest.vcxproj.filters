@@ -770,6 +770,12 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="StockSectionTest.cpp">
+      <Filter>Test源文件\China Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

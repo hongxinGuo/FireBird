@@ -205,6 +205,7 @@ public:
   virtual bool RunningThreadUpdateSICIndustry(void);
   virtual bool RunningThreadUpdateNaicsIndustry(void);
   virtual bool RunningThreadUpdateForexExchangeDB(void);
+  virtual bool RunningThreadUpdateEconomicCalendarDB(void);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -235,6 +236,9 @@ public:
   void AddStock(CWorldStockPtr pStock);
   bool DeleteStock(CWorldStockPtr pStock);
   size_t GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
+  void AddTiingoStock(CTiingoStockPtr pTiingoStock);
+  bool DeleteTiingoStock(CTiingoStockPtr pStock);
+  size_t GetTotalTiingoStock(void) noexcept { return m_vTiingoStock.size(); }
   bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
   bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
   CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
@@ -245,6 +249,9 @@ public:
 
   bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStock.find(strSymbol) == m_mapTiingoStock.end()) return false; else return true; }
   bool IsTiingoStock(CWorldStockPtr pStock) { return IsTiingoStock(pStock->GetSymbol()); }
+  bool IsTiingoStock(CTiingoStockPtr pTiingoStock) { return IsTiingoStock(pTiingoStock->m_strTicker); }
+  CTiingoStockPtr GetTiingoStock(long lIndex) { return m_vTiingoStock.at(lIndex); }
+  CTiingoStockPtr GetTiingoStock(CString strTicker) { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);

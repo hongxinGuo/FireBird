@@ -197,6 +197,7 @@ ExcludeFromCodeCoverage(CWorldMarket10, L"CWorldMarket::RunningThreadUpdateSICIn
 ExcludeFromCodeCoverage(CWorldMarket11, L"CWorldMarket::RunningThreadUpdateNaicsIndustry");
 ExcludeFromCodeCoverage(CWorldMarket12, L"CWorldMarket::RunningThreadUpdateInsiderTransactionDB");
 ExcludeFromCodeCoverage(CWorldMarket13, L"CWorldMarket::RunningThreadUpdateForexExchangeDB");
+ExcludeFromCodeCoverage(CWorldMarket14, L"CWorldMarket::RunningThreadUpdateEconomicCalendarDB");
 
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
@@ -234,6 +235,8 @@ ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingT
 ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CFinnhubWebInquiry1, L"CFinnhubWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CQuandlWebInquiry1, L"CQuandlWebInquiry::StartReadingThread");
+
+ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CChinaStockHistoryDataContainer::ShowData");
 
 #pragma managed(pop)
 

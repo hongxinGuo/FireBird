@@ -1614,6 +1614,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestUpdateStockCodeDB) {
+    ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
+
     CChinaStockPtr pStock = make_shared<CChinaStock>();
     pStock->SetSymbol(_T("SS.SS.SS"));
     pStock->SetTodayNewStock(true);
@@ -1653,6 +1655,13 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaMarket->GetStock(_T("SS.SS.SS"));
     EXPECT_TRUE(pStock != nullptr);
     gl_pChinaMarket->DeleteStock(pStock); // 恢复原状
+
+    EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+
+    for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+      pStock = gl_pChinaMarket->GetStock(i);
+      pStock->SetUpdateProfileDB(false);
+    }
   }
 
   TEST_F(CChinaMarketTest, TestAddStock) {

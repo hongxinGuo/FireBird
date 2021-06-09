@@ -1441,20 +1441,8 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
-  CSetEconomicCalendar setEconomicCalendar;
-  CEconomicCalendarPtr pCalendar = nullptr;
+  RunningThreadUpdateEconomicCalendarDB();
 
-  if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
-    setEconomicCalendar.Open();
-    setEconomicCalendar.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-      pCalendar = m_vEconomicCalendar.at(l);
-      pCalendar->Append(setEconomicCalendar);
-    }
-    setEconomicCalendar.m_pDatabase->CommitTrans();
-    setEconomicCalendar.Close();
-    m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-  }
   return true;
 }
 
@@ -1566,6 +1554,13 @@ bool CWorldMarket::RunningThreadUpdateForexExchangeDB(void) {
   return true;
 }
 
+bool CWorldMarket::RunningThreadUpdateEconomicCalendarDB(void) {
+  thread thread1(ThreadUpdateEconomicCalendarDB, this);
+  thread1.detach();
+
+  return true;
+}
+
 bool CWorldMarket::IsStockProfileNeedUpdate(void) {
   const int iTotal = m_vWorldStock.size();
   for (int i = 0; i < iTotal; i++) {
@@ -1588,6 +1583,22 @@ bool CWorldMarket::DeleteStock(CWorldStockPtr pStock) {
   m_mapWorldStock.erase(pStock->GetSymbol());
   auto it = find(m_vWorldStock.begin(), m_vWorldStock.end(), pStock);
   m_vWorldStock.erase(it);
+
+  return true;
+}
+
+void CWorldMarket::AddTiingoStock(CTiingoStockPtr pTiingoStock) {
+  m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
+  m_vTiingoStock.push_back(pTiingoStock);
+}
+
+bool CWorldMarket::DeleteTiingoStock(CTiingoStockPtr pStock) {
+  if (pStock == nullptr) return false;
+  if (!IsTiingoStock(pStock->m_strTicker)) return false;
+
+  m_mapTiingoStock.erase(pStock->m_strTicker);
+  auto it = find(m_vTiingoStock.begin(), m_vTiingoStock.end(), pStock);
+  m_vTiingoStock.erase(it);
 
   return true;
 }

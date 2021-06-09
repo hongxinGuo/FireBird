@@ -20,6 +20,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateNaicsIndustry, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateTiingoStockDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateInsiderTransactionDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateEconomicCalendarDB, (), (override));
 
     MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
     MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));

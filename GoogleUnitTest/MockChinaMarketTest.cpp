@@ -53,6 +53,7 @@ namespace StockAnalysisTest {
 
     virtual void SetUp(void) override {
       //EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+      EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
       EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
@@ -509,6 +510,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateStockCodeDB) {
+    ASSERT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
+
     EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
       .Times(1);
     gl_pMockChinaMarket->SetSystemReady(true);

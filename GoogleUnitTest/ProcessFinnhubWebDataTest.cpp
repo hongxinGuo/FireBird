@@ -821,6 +821,8 @@ namespace StockAnalysisTest {
   FinnhubWebData finnhubWebData103(3, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
   // 格式不对
   FinnhubWebData finnhubWebData104(4, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+  // 正确的数据,但超过200个字符
+  FinnhubWebData finnhubWebData105(5, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]"));
   // 正确的数据
   FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 
@@ -848,7 +850,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer1, ProcessFinnhubStockPeerTest,
-                           testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104,
+                           testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
                                            &finnhubWebData110));
 
   TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer0) {
@@ -866,6 +868,10 @@ namespace StockAnalysisTest {
     case 4: // 第二个数据缺Code2
     EXPECT_FALSE(fSucceed);
     EXPECT_STREQ(m_pStock->GetPeer(), _T("")) << "没有改变";
+    break;
+    case 5: // 正确的数据，但超过200个字符
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_pStock->GetPeer().GetLength(), 200) << "多余200个字符时截断";
     break;
     case 10:
     EXPECT_TRUE(fSucceed);

@@ -924,7 +924,13 @@ namespace StockAnalysisTest {
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-    EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_IPOED__));
+    if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
+      EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
+      EXPECT_TRUE(stock.IsUpdateProfileDB());
+    }
+    else {
+      EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_IPOED__));
+    }
     stock.SetIPOStatus(__STOCK_NULL__);
     stock.UpdateStockCodeDB(setStockCode);
     setStockCode.Close();
@@ -945,7 +951,13 @@ namespace StockAnalysisTest {
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-    EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
+    if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
+      EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
+      EXPECT_TRUE(stock.IsUpdateProfileDB());
+    }
+    else {
+      EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
+    }
     EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stock.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
     setStockCode.Close();

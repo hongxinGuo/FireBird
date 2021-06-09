@@ -896,8 +896,7 @@ CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(CSt
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskProcessRTData(void) {
-  ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
-  ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个线程互斥
+  ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate() && !gl_ThreadStatus.IsSavingTempData());// 此两个线程互斥
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsActive()) {
       pStock->ProcessRTData();

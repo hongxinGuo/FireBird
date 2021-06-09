@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CInsiderTransactionTest, TestAppend) {
     CSetInsiderTransaction setInsiderTransaction, setInsiderTransaction2;
-    CInsiderTransaction insiderTransaction;
+    CInsiderTransaction insiderTransaction, insiderTransaction2;
 
     insiderTransaction.m_strSymbol = _T("AA.US");
 
@@ -54,8 +54,10 @@ namespace StockAnalysisTest {
     setInsiderTransaction.m_pDatabase->CommitTrans();
     setInsiderTransaction.Close();
 
+    insiderTransaction2.m_strSymbol = _T("AA.US2");
     setInsiderTransaction.m_strFilter = _T("[Symbol] = 'AA.US'");
     setInsiderTransaction.Open();
+    setInsiderTransaction.m_pDatabase->BeginTrans();
     insiderTransaction.Load(setInsiderTransaction); // 装入第一个Insider Transaction信息：AA.US
     EXPECT_STREQ(insiderTransaction.m_strSymbol, _T("AA.US"));
     EXPECT_STREQ(insiderTransaction.m_strPersonName, _T(" "));
@@ -64,13 +66,17 @@ namespace StockAnalysisTest {
     EXPECT_EQ(insiderTransaction.m_lFilingDate, 19800101);
     EXPECT_EQ(insiderTransaction.m_lTransactionDate, 19800101);
     EXPECT_DOUBLE_EQ(insiderTransaction.m_dTransactionPrice, 0.0);
+
+    insiderTransaction2.Update(setInsiderTransaction); // 更新此数据，将Symbol名称改为AA.US2
+    setInsiderTransaction.m_pDatabase->CommitTrans();
     setInsiderTransaction.Close();
 
-    setInsiderTransaction2.m_strFilter = _T("[Symbol] = 'AA.US'");
+    // 恢复原状
+    setInsiderTransaction2.m_strFilter = _T("[Symbol] = 'AA.US2'");
     setInsiderTransaction2.Open();
     setInsiderTransaction2.m_pDatabase->BeginTrans();
     while (!setInsiderTransaction2.IsEOF()) {
-      EXPECT_TRUE(!setInsiderTransaction2.IsEOF()) << "此时已经存入了AA.US";
+      EXPECT_TRUE(!setInsiderTransaction2.IsEOF()) << "此时已经存入了AA.US2";
       setInsiderTransaction2.Delete();
       setInsiderTransaction2.MoveNext();
     }

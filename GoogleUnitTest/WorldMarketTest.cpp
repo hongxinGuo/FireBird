@@ -193,6 +193,26 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
     pStock->SetSymbol(_T("000001.SZ"));
     EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+
+    CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+    pTiingoStock->m_strTicker = _T("000000.SS");
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+    pTiingoStock->m_strTicker = _T("AA");
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+    pTiingoStock->m_strTicker = _T("600601.SS");
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+    pTiingoStock->m_strTicker = _T("A");
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+    pTiingoStock->m_strTicker = _T("000001.SZ");
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+  }
+
+  TEST_F(CWorldMarketTest, TestGetTiingoStock) {
+    CTiingoStockPtr pStock = gl_pWorldMarket->GetTiingoStock(0); // A
+    EXPECT_STREQ(pStock->m_strTicker, _T("A")) << "第一个股票代码为A";
+    pStock = gl_pWorldMarket->GetTiingoStock(_T("A"));
+    EXPECT_FALSE(pStock == nullptr);
+    EXPECT_STREQ(pStock->m_strName, _T("Agilent Technologies Inc"));
   }
 
   TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
@@ -241,6 +261,31 @@ namespace StockAnalysisTest {
     pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
     EXPECT_FALSE(pStock == nullptr);
     EXPECT_STREQ(pStock->GetDescription(), _T("SSE Composite Index"));
+  }
+
+  TEST_F(CWorldMarketTest, TestAddTiingoStock) {
+    CTiingoStockPtr pStock = make_shared<CTiingoStock>();
+    long lTotalStock = gl_pWorldMarket->GetTotalTiingoStock();
+    pStock->m_strTicker = _T("ABCDEF");
+
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+    gl_pWorldMarket->AddTiingoStock(pStock);
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalTiingoStock(), lTotalStock + 1);
+    gl_pWorldMarket->DeleteTiingoStock(pStock);
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalTiingoStock(), lTotalStock);
+  }
+
+  TEST_F(CWorldMarketTest, TestDeleteTiingoStock) {
+    // do nothing. 已经在TestAddStock中测试了DeleteStock函数
+    CTiingoStockPtr pStock = nullptr;
+
+    EXPECT_FALSE(gl_pWorldMarket->DeleteTiingoStock(pStock)) << "空指针";
+
+    pStock = make_shared<CTiingoStock>();
+    pStock->m_strTicker = _T("ABCDEF");
+    EXPECT_FALSE(gl_pWorldMarket->DeleteTiingoStock(pStock)) << "此股票代码不存在于代码集中";
   }
 
   TEST_F(CWorldMarketTest, TestIsForexExchange) {
@@ -462,6 +507,46 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // 恢复原状
   }
 
+  TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
+    CSetTiingoStock setTiingoStock;
+
+    CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+    pTiingoStock->m_fIsActive = true;
+    pTiingoStock->m_fIsADR = false;
+    pTiingoStock->m_iSICCode = 1002;
+    pTiingoStock->m_lDailyDataUpdateDate = 20200101;
+    pTiingoStock->m_lStatementUpdateDate = 20210101;
+    pTiingoStock->m_strCompanyWebSite = _T("www.abc.com");
+    pTiingoStock->m_strLocation = _T("Irvine CA USA");
+    pTiingoStock->m_strName = _T("ABCDEF"); // 新代码
+    pTiingoStock->m_strReportingCurrency = _T("US Doller");
+    pTiingoStock->m_strSECFilingWebSite = _T("abc");
+    pTiingoStock->m_strSICIndustry = _T("Computer Science");
+    pTiingoStock->m_strSICSector = _T("Communication");
+    pTiingoStock->m_strTicker = _T("ABCDEF"); // 新代码
+    pTiingoStock->m_strTiingoIndustry = _T("Computer");
+    pTiingoStock->m_strTiingoPermaTicker = _T("abcdefg");
+    pTiingoStock->m_strTiingoSector = _T("gfedcba");
+
+    gl_pWorldMarket->AddTiingoStock(pTiingoStock);
+
+    gl_pWorldMarket->UpdateTiingoStockDB(); // 更新代码集
+
+    // 恢复原状
+    setTiingoStock.m_strFilter = _T("[Ticker] = 'ABCDEF'");
+    setTiingoStock.Open();
+    EXPECT_FALSE(setTiingoStock.IsEOF()) << "存入了ABCDEF股票代码";
+    setTiingoStock.m_pDatabase->BeginTrans();
+    while (!setTiingoStock.IsEOF()) {
+      setTiingoStock.Delete();
+      setTiingoStock.MoveNext();
+    }
+    setTiingoStock.m_pDatabase->CommitTrans();
+    setTiingoStock.Close();
+
+    gl_pWorldMarket->DeleteTiingoStock(pTiingoStock);
+  }
+
   TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
     CString strSymbol = _T("US.US.US");
 
@@ -568,6 +653,35 @@ namespace StockAnalysisTest {
     setInsiderTransaction.Delete();
     setInsiderTransaction.m_pDatabase->CommitTrans();
     setInsiderTransaction.Close();
+  }
+
+  TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
+    CSetEconomicCalendar setEconomicCalendar;
+    CEconomicCalendar economicCalendar;
+
+    economicCalendar.m_strCountry = _T("USA");
+    economicCalendar.m_strTime = _T("20200101");
+    economicCalendar.m_strEvent = _T("abc");
+
+    setEconomicCalendar.Open();
+    setEconomicCalendar.m_pDatabase->BeginTrans();
+    economicCalendar.Append(setEconomicCalendar);
+    setEconomicCalendar.m_pDatabase->CommitTrans();
+    setEconomicCalendar.Close();
+
+    // 测试并恢复原状
+    setEconomicCalendar.Open();
+    EXPECT_FALSE(setEconomicCalendar.IsEOF());
+    EXPECT_STREQ(setEconomicCalendar.m_Country, _T("USA"));
+    EXPECT_STREQ(setEconomicCalendar.m_Time, _T("20200101"));
+    EXPECT_STREQ(setEconomicCalendar.m_Event, _T("abc"));
+    setEconomicCalendar.m_pDatabase->BeginTrans();
+    while (!setEconomicCalendar.IsEOF()) {
+      setEconomicCalendar.Delete();
+      setEconomicCalendar.MoveNext();
+    }
+    setEconomicCalendar.m_pDatabase->CommitTrans();
+    setEconomicCalendar.Close();
   }
 
   TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {

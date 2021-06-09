@@ -27,7 +27,7 @@ public:
   time_t GetMarketTime(void) const noexcept { return m_tMarket; }
   long GetFormatedMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
   long GetFormatedMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
-  long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; }
+  long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
   long GetMonthOfYear(void) const noexcept { return m_tmMarket.tm_mon + 1; }
   long GetDateOfMonth(void) const noexcept { return m_tmMarket.tm_mday; }
   long GetYear(void) const noexcept { return m_tmMarket.tm_year + 1900; }

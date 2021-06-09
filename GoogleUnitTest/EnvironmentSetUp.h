@@ -104,11 +104,43 @@ namespace StockAnalysisTest {
         auto pStock = gl_pChinaMarket->GetStock(i);
         pStock->SetDayLineNeedUpdate(true);
         if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+
+        if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
+          if (pStock->GetDayLineEndDate() == 20210430) {
+            EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+            pStock->SetUpdateProfileDB(false);
+          }
+        }
       }
+
       for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pMockChinaMarket->GetStock(i);
         pStock->SetDayLineNeedUpdate(true);
         if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+
+        if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pMockChinaMarket->GetFormatedMarketDate(), 30)) {
+          if (pStock->GetDayLineEndDate() == 20210430) {
+            EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+            pStock->SetUpdateProfileDB(false);
+          }
+        }
+      }
+
+      if (gl_pChinaMarket->GetFormatedMarketDate() >= 20210531) { // 目前测试数据库的日线结束日期为20210430
+        if (gl_pChinaMarket->GetDayOfWeek() == 1) { // 如果是星期一
+          EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
+          EXPECT_TRUE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
+        }
+        else {
+          EXPECT_FALSE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) << "所有的活跃股票都被视为摘牌了";
+          EXPECT_FALSE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate()) << "所有的活跃股票都被视为摘牌了";
+        }
+        gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock()); // 伪装此标识
+        gl_pMockChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock()); // 伪装此标识
+      }
+      else {
+        EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
+        EXPECT_TRUE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate());
       }
 
       EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -124,8 +156,8 @@ namespace StockAnalysisTest {
       EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
       EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
 
-      //_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF);
-      //_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
+      EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+      EXPECT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse());
     }
 
     virtual void TearDown(void) override {
@@ -152,8 +184,10 @@ namespace StockAnalysisTest {
       for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
         auto pStock = gl_pChinaMarket->GetStock(i);
         EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
-        pStock->SetUpdateProfileDB(false); // gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止结构gl_pMockMainFrame时更新数据库。
+        pStock->SetUpdateProfileDB(false); // gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
       }
+      ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
+
       delete gl_pMockMainFrame;
       EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
       gl_fExitingSystem = false;

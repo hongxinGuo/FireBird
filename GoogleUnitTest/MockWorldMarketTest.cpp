@@ -248,6 +248,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexExchangeDB());
   }
 
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateEconomicCalendarDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateEconomicCalendarDB)
+      .Times(1);
+
+    EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateEconomicCalendarDB());
+  }
+
   TEST_F(CMockWorldMarketTest, TestTaskUpdateForexDayLineDB1) {
     EXPECT_CALL(*gl_pMockWorldMarket, RunningThreadUpdateForexDayLineDB(_))
       .Times(0);
