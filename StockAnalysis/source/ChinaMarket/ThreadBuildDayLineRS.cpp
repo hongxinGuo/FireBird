@@ -73,7 +73,7 @@ UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildDayLineRSOfDate(lDate);  // 调用实际执行函数
+    pMarket->BuildDayLineRS(lDate);  // 调用实际执行函数
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

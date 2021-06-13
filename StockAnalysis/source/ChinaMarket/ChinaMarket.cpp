@@ -2145,54 +2145,54 @@ bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //
-// 装载当前周周线表中的所有数据（使用CSetWeekLineInfo表）。
+// 装载当前周周线表中的所有数据（使用CCurrentWeekLineInfo表）。
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
-  CSetWeekLineInfo setWeekLineInfo;
+  CCurrentWeekLineInfo setCurrentWeekLineInfo;
 
-  setWeekLineInfo.Open();
-  setWeekLineInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineInfo.IsEOF()) {
+  setCurrentWeekLineInfo.Open();
+  setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setCurrentWeekLineInfo.IsEOF()) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-    pWeekLine->LoadData(&setWeekLineInfo);
+    pWeekLine->LoadCurrentWeekData(&setCurrentWeekLineInfo);
     weekLineContainer.StoreData(pWeekLine);
-    setWeekLineInfo.MoveNext();
+    setCurrentWeekLineInfo.MoveNext();
   }
-  setWeekLineInfo.m_pDatabase->CommitTrans();
-  setWeekLineInfo.Close();
+  setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+  setCurrentWeekLineInfo.Close();
 
   return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
-  CSetWeekLineInfo setWeekLineInfo;
+  CCurrentWeekLineInfo setCurrentWeekLineInfo;
 
-  setWeekLineInfo.Open();
-  setWeekLineInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineInfo.IsEOF()) {
-    setWeekLineInfo.Delete();
-    setWeekLineInfo.MoveNext();
+  setCurrentWeekLineInfo.Open();
+  setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setCurrentWeekLineInfo.IsEOF()) {
+    setCurrentWeekLineInfo.Delete();
+    setCurrentWeekLineInfo.MoveNext();
   }
-  setWeekLineInfo.m_pDatabase->CommitTrans();
-  setWeekLineInfo.Close();
+  setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+  setCurrentWeekLineInfo.Close();
 
   return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
-  CSetWeekLineInfo setWeekLineInfo;
+  CCurrentWeekLineInfo setCurrentWeekLineInfo;
 
-  setWeekLineInfo.Open();
-  setWeekLineInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineInfo.IsEOF()) {
-    if (setWeekLineInfo.m_Date < lCutOffDate) {
-      setWeekLineInfo.Delete();
+  setCurrentWeekLineInfo.Open();
+  setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setCurrentWeekLineInfo.IsEOF()) {
+    if (setCurrentWeekLineInfo.m_Date < lCutOffDate) {
+      setCurrentWeekLineInfo.Delete();
     }
-    setWeekLineInfo.MoveNext();
+    setCurrentWeekLineInfo.MoveNext();
   }
-  setWeekLineInfo.m_pDatabase->CommitTrans();
-  setWeekLineInfo.Close();
+  setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+  setCurrentWeekLineInfo.Close();
 
   return true;
 }
@@ -2568,7 +2568,7 @@ bool CChinaMarket::RunningThreadSaveStockSection(void) {
 // long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
+long CChinaMarket::BuildDayLine(long lCurrentTradeDay) {
   char buffer[20]{ 0 };
   CString strDate;
   CSetDayLineBasicInfo setDayLineBasicInfo;
@@ -2896,7 +2896,7 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 // m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildDayLineRSOfDate(long lDate) {
+bool CChinaMarket::BuildDayLineRS(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRS;
@@ -3015,7 +3015,7 @@ bool CChinaMarket::BuildDayLineRSOfDate(long lDate) {
 // m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildWeekLineRSOfDate(long lDate) {
+bool CChinaMarket::BuildWeekLineRS(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRS;

@@ -50,7 +50,10 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLineContainer.GetDataSize(), 0);
     weekLineContainer.StoreData(pWeekLine2);
     EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
+    EXPECT_FALSE(weekLineContainer.IsDataLoaded());
+
     weekLineContainer.UpdateData(vWeekLine);
+
     EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
     pWeekLine2 = weekLineContainer.GetData(0);
     EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200101);
@@ -99,10 +102,13 @@ namespace StockAnalysisTest {
     vector<CWeekLinePtr> vWeekLine;
 
     vWeekLine.push_back(pWeekLine);
+    EXPECT_FALSE(weekLineContainer.IsDataLoaded());
     EXPECT_EQ(weekLineContainer.GetDataSize(), 0);
     weekLineContainer.StoreData(pWeekLine2);
     EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
+
     weekLineContainer.StoreData(vWeekLine);
+
     EXPECT_EQ(weekLineContainer.GetDataSize(), 2);
     pWeekLine2 = weekLineContainer.GetData(0);
     EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200201);

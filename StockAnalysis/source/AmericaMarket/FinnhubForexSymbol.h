@@ -19,6 +19,7 @@ public:
   void Update(CSetFinnhubForexSymbol& setForexSymbol);
   void Save(CSetFinnhubForexSymbol& setForexSymbol);
 
+  bool UpdateDayLineDB(void);
   bool SaveDayLine(void);
 
   CString GetDescription(void) const { return m_strDescription; }

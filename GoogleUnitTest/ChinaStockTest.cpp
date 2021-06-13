@@ -193,6 +193,10 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsUpdateProfileDB());
     stock.SetUpdateProfileDB(true);
     EXPECT_TRUE(stock.IsUpdateProfileDB());
+    EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
     stock.SetUpdateProfileDB(false);
     EXPECT_FALSE(stock.IsUpdateProfileDB());
   }
@@ -205,6 +209,20 @@ namespace StockAnalysisTest {
     stock.SetUpdateProfileDB(true);
     EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
     EXPECT_FALSE(stock.IsUpdateProfileDB());
+  }
+
+  TEST_F(CChinaStockTest, TestIsClearDayLineVector) {
+    CChinaStock stock;
+
+    EXPECT_FALSE(stock.IsClearDayLineVector());
+    stock.SetClearDayLineVector(true);
+    EXPECT_TRUE(stock.IsClearDayLineVector());
+    EXPECT_TRUE(stock.IsClearDayLineVectorAndClearFlag());
+    EXPECT_FALSE(stock.IsClearDayLineVector());
+    stock.SetClearDayLineVector(true);
+    EXPECT_TRUE(stock.IsClearDayLineVector());
+    stock.SetClearDayLineVector(false);
+    EXPECT_FALSE(stock.IsClearDayLineVector());
   }
 
   TEST_F(CChinaStockTest, TestIsActive) {

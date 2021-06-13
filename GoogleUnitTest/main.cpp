@@ -84,6 +84,8 @@ ExcludeFromCodeCoverage(CMainFrame21, L"CMainFrame::SysCallSendMessage");
 ExcludeFromCodeCoverage(CMainFrame22, L"CMainFrame::SysCallSetPaneText");
 ExcludeFromCodeCoverage(CMainFrame23, L"CMainFrame::SetDockingWindowIcons");
 ExcludeFromCodeCoverage(CMainFrame26, L"CMainFrame::CreateDockingWindows");
+ExcludeFromCodeCoverage(CMainFrame27, L"CMainFrame::SysCallSetInnerSystemPaneText");
+ExcludeFromCodeCoverage(CMainFrame28, L"CMainFrame::SysCallOnSysCommand");
 
 ExcludeFromCodeCoverage(CStockAnalysisView1, L"CStockAnalysisView::AssertValid");
 ExcludeFromCodeCoverage(CStockAnalysisView2, L"CStockAnalysisView::CreateObject");

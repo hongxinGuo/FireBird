@@ -1521,7 +1521,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
-    CSetWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
+    CCurrentWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 
     pWeekLine->SetStockSymbol(_T("600000.SS"));
@@ -1529,7 +1529,7 @@ namespace StockAnalysisTest {
     setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
     setCurrentWeekLine.Open();
     setCurrentWeekLine.m_pDatabase->BeginTrans();
-    pWeekLine->AppendData(&setCurrentWeekLine);
+    pWeekLine->AppendCurrentWeekData(&setCurrentWeekLine);
     setCurrentWeekLine.m_pDatabase->CommitTrans();
     setCurrentWeekLine.Close();
 
@@ -1546,7 +1546,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestSaveLoadCurrentWeekLine) {
-    CSetWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
+    CCurrentWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     CWeekLineContainer weekLineContainer, weekLineContainer2;
 

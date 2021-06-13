@@ -1,6 +1,6 @@
-// SetWeekLineInfo.h : CSetWeekLineInfo 类的实现
+// SetWeekLineInfo.h : CCurrentWeekLineInfo 类的实现
 
-// CSetWeekLineInfo 实现
+// CCurrentWeekLineInfo 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -10,9 +10,9 @@
 #include"accessory.h"
 
 #include "SetWeekLineInfo.h"
-IMPLEMENT_DYNAMIC(CSetWeekLineInfo, CRecordset)
+IMPLEMENT_DYNAMIC(CCurrentWeekLineInfo, CRecordset)
 
-CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
+CCurrentWeekLineInfo::CCurrentWeekLineInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
@@ -107,15 +107,15 @@ CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
   m_nFields = 81;
 }
 
-CString CSetWeekLineInfo::GetDefaultConnect() {
+CString CCurrentWeekLineInfo::GetDefaultConnect() {
   return GetChinaMarketSchemaConnect();
 }
 
-CString CSetWeekLineInfo::GetDefaultSQL() {
+CString CCurrentWeekLineInfo::GetDefaultSQL() {
   return _T("[CurrentWeekLine]");
 }
 
-void CSetWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
+void CCurrentWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -204,14 +204,14 @@ void CSetWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetWeekLineInfo 诊断
+// CCurrentWeekLineInfo 诊断
 
 #ifdef _DEBUG
-void CSetWeekLineInfo::AssertValid() const {
+void CCurrentWeekLineInfo::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetWeekLineInfo::Dump(CDumpContext& dc) const {
+void CCurrentWeekLineInfo::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

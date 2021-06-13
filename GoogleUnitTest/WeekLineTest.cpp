@@ -656,14 +656,14 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(&setWeekLineBasicInfo);
+    id.AppendBasicData(&setWeekLineBasicInfo);
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
     setWeekLineExtendInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineExtendInfo.Open();
     setWeekLineExtendInfo.m_pDatabase->BeginTrans();
-    id.AppendData(&setWeekLineExtendInfo);
+    id.AppendExtendData(&setWeekLineExtendInfo);
     setWeekLineExtendInfo.m_pDatabase->CommitTrans();
     setWeekLineExtendInfo.Close();
 
@@ -825,7 +825,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(&setWeekLineBasicInfo);
+    id.AppendBasicData(&setWeekLineBasicInfo);
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
@@ -878,7 +878,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.AddNew();
-    id.SaveData(&setWeekLineBasicInfo);
+    id.SaveBasicData(&setWeekLineBasicInfo);
     setWeekLineBasicInfo.Update();
     setWeekLineBasicInfo.Close();
 

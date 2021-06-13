@@ -65,6 +65,7 @@ namespace testing {
     MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
     MOCK_METHOD(bool, UpdateSICIndustry, (), (override));
     MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
+    MOCK_METHOD(bool, UpdateEconomicCalendarDB, (), (override));
   };
   typedef shared_ptr<CMockWorldMarket> CMockWorldMarketPtr;
 }

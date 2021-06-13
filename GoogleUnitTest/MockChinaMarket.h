@@ -34,14 +34,14 @@ namespace testing {
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));
-    MOCK_METHOD(long, BuildDayLineOfDate, (long lCurrentTradeDate), (override));
+    MOCK_METHOD(long, BuildDayLine, (long lCurrentTradeDate), (override));
     MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
-    MOCK_METHOD(bool, BuildDayLineRSOfDate, (long lDate), (override));
+    MOCK_METHOD(bool, BuildDayLineRS, (long lDate), (override));
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
-    MOCK_METHOD(bool, BuildWeekLineRSOfDate, (long lDate), (override));
+    MOCK_METHOD(bool, BuildWeekLineRS, (long lDate), (override));
     MOCK_METHOD(bool, SaveStockSection, (), (override));
 
     MOCK_METHOD(bool, DeleteCurrentWeekWeekLine, (), (override));

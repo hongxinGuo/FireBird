@@ -657,17 +657,22 @@ namespace StockAnalysisTest {
 
   TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
     CSetEconomicCalendar setEconomicCalendar;
-    CEconomicCalendar economicCalendar;
+    CEconomicCalendarPtr pEconomicCalendar = make_shared<CEconomicCalendar>();
+    vector<CEconomicCalendarPtr> vEconomicCalendar;
 
-    economicCalendar.m_strCountry = _T("USA");
-    economicCalendar.m_strTime = _T("20200101");
-    economicCalendar.m_strEvent = _T("abc");
+    pEconomicCalendar->m_strCountry = _T("USA");
+    pEconomicCalendar->m_strTime = _T("20200101");
+    pEconomicCalendar->m_strEvent = _T("abc");
+    pEconomicCalendar->m_dActual = 1.0;
+    pEconomicCalendar->m_dEstimate = 2.0;
+    pEconomicCalendar->m_dPrev = 3.0;
+    pEconomicCalendar->m_strImpact = _T("s");
+    pEconomicCalendar->m_strUnit = _T("USD");
 
-    setEconomicCalendar.Open();
-    setEconomicCalendar.m_pDatabase->BeginTrans();
-    economicCalendar.Append(setEconomicCalendar);
-    setEconomicCalendar.m_pDatabase->CommitTrans();
-    setEconomicCalendar.Close();
+    vEconomicCalendar.push_back(pEconomicCalendar);
+
+    EXPECT_TRUE(gl_pWorldMarket->UpdateEconomicCalendar(vEconomicCalendar));
+    EXPECT_TRUE(gl_pWorldMarket->UpdateEconomicCalendarDB());
 
     // ²âÊÔ²¢»Ö¸´Ô­×´
     setEconomicCalendar.Open();
@@ -675,6 +680,11 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(setEconomicCalendar.m_Country, _T("USA"));
     EXPECT_STREQ(setEconomicCalendar.m_Time, _T("20200101"));
     EXPECT_STREQ(setEconomicCalendar.m_Event, _T("abc"));
+    EXPECT_DOUBLE_EQ(atof(setEconomicCalendar.m_Actual), 1.0);
+    EXPECT_DOUBLE_EQ(atof(setEconomicCalendar.m_Estimate), 2.0);
+    EXPECT_DOUBLE_EQ(atof(setEconomicCalendar.m_Prev), 3.0);
+    EXPECT_STREQ(setEconomicCalendar.m_Impact, _T("s"));
+    EXPECT_STREQ(setEconomicCalendar.m_Unit, _T("USD"));
     setEconomicCalendar.m_pDatabase->BeginTrans();
     while (!setEconomicCalendar.IsEOF()) {
       setEconomicCalendar.Delete();

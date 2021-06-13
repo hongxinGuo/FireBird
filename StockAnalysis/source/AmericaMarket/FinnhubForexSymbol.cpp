@@ -51,6 +51,14 @@ void CFinnhubForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.m_IPOStatus = m_lIPOStatus;
 }
 
+bool CFinnhubForexSymbol::UpdateDayLineDB(void) {
+  SaveDayLine();
+  UpdateDayLineStartEndDate();
+  SetUpdateProfileDB(true);
+
+  return true;
+}
+
 bool CFinnhubForexSymbol::SaveDayLine() {
   CSetForexDayLine setForexDayLine;
   size_t lSize = 0;

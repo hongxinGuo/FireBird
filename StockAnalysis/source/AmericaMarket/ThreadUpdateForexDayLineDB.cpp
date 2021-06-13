@@ -19,14 +19,10 @@ UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
 
   gl_ThreadStatus.IncreaseSavingThread();
   gl_UpdateWorldMarketDB.Wait();
-  if (!gl_fExitingSystem) {
-    pSymbol->SaveDayLine();
-    pSymbol->UpdateDayLineStartEndDate();
-    pSymbol->SetUpdateProfileDB(true);
-    pSymbol->UnloadDayLine();
-    str = pSymbol->GetSymbol() + _T("日线资料存储完成");
-    gl_systemMessage.PushDayLineInfoMessage(str);
-  }
+  pSymbol->UpdateDayLineDB();
+  pSymbol->UnloadDayLine();
+  str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+  gl_systemMessage.PushDayLineInfoMessage(str);
   gl_UpdateWorldMarketDB.Signal();
   gl_ThreadStatus.DecreaseSavingThread();
 

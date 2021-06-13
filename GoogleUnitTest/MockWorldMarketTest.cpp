@@ -1011,4 +1011,10 @@ namespace StockAnalysisTest {
 
     EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());
   }
+
+  TEST_F(CMockWorldMarketTest, TestThreadUpdateEconmicCalendarDB) {
+    EXPECT_CALL(*gl_pMockWorldMarket, UpdateEconomicCalendarDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateEconomicCalendarDB(gl_pMockWorldMarket.get()), (UINT)50);
+  }
 }

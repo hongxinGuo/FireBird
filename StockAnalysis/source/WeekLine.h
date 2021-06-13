@@ -11,12 +11,12 @@ public:
   CWeekLine();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool AppendData(CSetWeekLineInfo* psetWeekLineInfo);
-  bool SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-  bool SaveData(CSetWeekLineExtendInfo* psetWeekLineBasicInfo);
-  bool AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-  bool AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
-  bool LoadData(CSetWeekLineInfo* psetWeekLineInfo);
+  bool AppendCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInfo);
+  bool SaveBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool SaveExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+  bool AppendBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool AppendExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+  bool LoadCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInfo);
   bool LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 

@@ -432,15 +432,15 @@ namespace StockAnalysisTest {
     gl_pMockChinaMarket->SetNewestTransactionTime(gl_pMockChinaMarket->GetLocalTime());
     long lDate = FormatToDate(gl_pMockChinaMarket->GetNewestTransactionTime());
     gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineOfDate(lDate))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineRSOfDate(lDate))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineRS(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(GetCurrentMonday(lDate)))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     gl_pMockChinaMarket->SetSystemReady(true);
@@ -452,15 +452,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pMockChinaMarket->IsTodayStockProcessed());
 
     gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineOfDate(lDate))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineRSOfDate(lDate))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLineRS(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(GetCurrentMonday(lDate)))
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     gl_pMockChinaMarket->SetSystemReady(true);
@@ -565,16 +565,16 @@ namespace StockAnalysisTest {
   TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
     long lPrevMonday = GetPrevMonday(20200101);
     gl_fExitingSystem = true;
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(_)).Times(0);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
     EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
 
     gl_fExitingSystem = false;
     gl_fExitingCalculatingRS = true;
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(_)).Times(0);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
     EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
 
     gl_fExitingCalculatingRS = false;
-    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRSOfDate(lPrevMonday)).Times(1);
+    EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(lPrevMonday)).Times(1);
     EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), (UINT)31);
   }
 

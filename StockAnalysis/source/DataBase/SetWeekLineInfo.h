@@ -6,11 +6,11 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-class CSetWeekLineInfo : public CRecordset
+class CCurrentWeekLineInfo : public CRecordset
 {
 public:
-  CSetWeekLineInfo(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetWeekLineInfo)
+  CCurrentWeekLineInfo(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CCurrentWeekLineInfo)
 
   // 字段/参数数据
 

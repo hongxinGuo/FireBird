@@ -33,19 +33,19 @@ bool CWeekLineContainer::SaveWeekLine(void) {
 }
 
 bool CWeekLineContainer::SaveCurrentWeekLine(void) {
-  CSetWeekLineInfo setWeekLineInfo;
+  CCurrentWeekLineInfo setCurrentWeekLineInfo;
   CWeekLinePtr pWeekLine = nullptr;
 
   ASSERT(m_vHistoryData.size() > 0);
 
-  setWeekLineInfo.m_strFilter = _T("[ID] = 1");
-  setWeekLineInfo.Open();
-  setWeekLineInfo.m_pDatabase->BeginTrans();
+  setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
+  setCurrentWeekLineInfo.Open();
+  setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
   for (auto pData : m_vHistoryData) {
-    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineInfo);
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendCurrentWeekData(&setCurrentWeekLineInfo);
   }
-  setWeekLineInfo.m_pDatabase->CommitTrans();
-  setWeekLineInfo.Close();
+  setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+  setCurrentWeekLineInfo.Close();
   TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
 
   return true;
@@ -61,7 +61,7 @@ bool CWeekLineContainer::SaveBasicInfo(void) {
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
   for (auto pData : m_vHistoryData) {
-    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineBasicInfo);
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendBasicData(&setWeekLineBasicInfo);
   }
   setWeekLineBasicInfo.m_pDatabase->CommitTrans();
   setWeekLineBasicInfo.Close();
@@ -85,7 +85,7 @@ bool CWeekLineContainer::SaveExtendInfo(void) {
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
   for (auto pData : m_vHistoryData) {
-    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineExtendInfo);
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendExtendData(&setWeekLineExtendInfo);
   }
   setWeekLineExtendInfo.m_pDatabase->CommitTrans();
   setWeekLineExtendInfo.Close();

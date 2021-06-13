@@ -249,9 +249,9 @@ public:
   long GetDayLineNeedProcessNumber(void);
   long GetDayLineNeedSaveNumber(void);
 
-  virtual long BuildDayLineOfDate(long lCurrentTradeDay);
-  virtual bool BuildDayLineRSOfDate(long lDate);
-  virtual bool BuildWeekLineRSOfDate(long lDate);
+  virtual long BuildDayLine(long lCurrentTradeDay);
+  virtual bool BuildDayLineRS(long lDate);
+  virtual bool BuildWeekLineRS(long lDate);
   double GetUpDownRate(CString strClose, CString StrLastClose) noexcept;
 
   bool IsLoadSelectedStock(void) const noexcept { return m_fLoadedSelectedStock; }

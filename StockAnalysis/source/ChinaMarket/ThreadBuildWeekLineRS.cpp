@@ -78,7 +78,7 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
   ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildWeekLineRSOfDate(lDate);
+    pMarket->BuildWeekLineRS(lDate);
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

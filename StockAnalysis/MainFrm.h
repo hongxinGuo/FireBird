@@ -37,6 +37,7 @@ public:
   virtual void SysCallInvalidate(void) { Invalidate(); }
   virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
   virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
+
   virtual void CalculateTodayRS(void);
   virtual void ProcessTodayStock(void);
 
