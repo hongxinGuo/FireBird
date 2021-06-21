@@ -40,4 +40,7 @@ namespace StockAnalysisTest {
 	INSTANTIATE_TEST_SUITE_P(TestUpdateWeekLine, UpdateWeekLineDataStrTest,
 		testing::Values(&Data1
 		));
+
+	TEST_P(UpdateWeekLineDataStrTest, TestUpdateWeekLine) {
+	}
 }

@@ -645,8 +645,6 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -776,10 +774,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\googletest\googlemock\src\gmock-all.cc">
+    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc">
       <Filter>Test源文件\GoogleTest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\googletest\googletest\src\gtest-all.cc">
+    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc">
       <Filter>Test源文件\GoogleTest</Filter>
     </ClCompile>
   </ItemGroup>
