@@ -776,6 +776,12 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\googletest\googlemock\src\gmock-all.cc">
+      <Filter>Test源文件\GoogleTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\googletest\googletest\src\gtest-all.cc">
+      <Filter>Test源文件\GoogleTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
