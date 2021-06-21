@@ -9,35 +9,35 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-  struct UpdateWeekLineDataStr {
-    UpdateWeekLineDataStr() {
-    }
-  public:
-    int m_iCount;
-    CString m_strData;
-  };
+	struct UpdateWeekLineDataStr {
+		UpdateWeekLineDataStr() {
+		}
+	public:
+		int m_iCount;
+		CString m_strData;
+	};
 
-  UpdateWeekLineDataStr Data1;
+	UpdateWeekLineDataStr Data1;
 
-  class UpdateWeekLineDataStrTest : public::testing::TestWithParam<UpdateWeekLineDataStr*> {
-  protected:
-    virtual void SetUp(void) override {
-      ASSERT_FALSE(gl_fNormalMode);
-      UpdateWeekLineDataStr* pData = GetParam();
-      m_iCount = pData->m_iCount;
-      m_strCode = pData->m_strData;
-    }
+	class UpdateWeekLineDataStrTest : public::testing::TestWithParam<UpdateWeekLineDataStr*> {
+	protected:
+		virtual void SetUp(void) override {
+			ASSERT_FALSE(gl_fNormalMode);
+			UpdateWeekLineDataStr* pData = GetParam();
+			m_iCount = pData->m_iCount;
+			m_strCode = pData->m_strData;
+		}
 
-    virtual void TearDown(void) override {
-      // clearup
-    }
+		virtual void TearDown(void) override {
+			// clearup
+		}
 
-  public:
-    int m_iCount;
-    CString m_strCode;
-  };
+	public:
+		int m_iCount;
+		CString m_strCode;
+	};
 
-  INSTANTIATE_TEST_SUITE_P(TestUpdateWeekLine, UpdateWeekLineDataStrTest,
-                           testing::Values(&Data1
-                           ));
+	INSTANTIATE_TEST_SUITE_P(TestUpdateWeekLine, UpdateWeekLineDataStrTest,
+		testing::Values(&Data1
+		));
 }
