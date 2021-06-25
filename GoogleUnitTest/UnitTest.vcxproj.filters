@@ -357,9 +357,6 @@
     <ClCompile Include="CalculateHighLowTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="UpdateWeekLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
-    </ClCompile>
     <ClCompile Include="WeekLineContainerTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
@@ -780,6 +777,9 @@
     <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc">
       <Filter>Test源文件\GoogleTest</Filter>
     </ClCompile>
+    <ClCompile Include="MockFinnhubForexSymbolTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -1135,6 +1135,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockFinnhubForexSymbol.h">
+      <Filter>Mock类\World Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

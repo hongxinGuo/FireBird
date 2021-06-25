@@ -38,16 +38,17 @@
 // 排除外部代码
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
-ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleTest
+ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleUnitTest
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\Packages\\*.*"); // 排除扩展程序包
 ExcludeSourceFromCodeCoverage(Exclude3, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
 //ExcludeSourceFromCodeCoverage(Exclude4, L"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\*.*"); // 排除VS系统库
 ExcludeSourceFromCodeCoverage(Exclude4, L"C:\\Program Files (x86)\\*.*"); // 排除VS系统库
-ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
+ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
+ExcludeSourceFromCodeCoverage(Exclude6, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleTest\\*.*"); // 排除GoogleTest
 
-ExcludeSourceFromCodeCoverage(Exclude6, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Poten Daily\\*.*"); // 排除PotenDaily Market.此市场不再使用
-ExcludeSourceFromCodeCoverage(Exclude7, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Crweber\\*.*"); // 排除Crweber.com.此市场不再使用
-ExcludeSourceFromCodeCoverage(Exclude8, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\AmericaMarket\\DataBase\\*.*"); // 排除WorldMarket的数据库类
+ExcludeSourceFromCodeCoverage(Exclude7, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Poten Daily\\*.*"); // 排除PotenDaily Market.此市场不再使用
+ExcludeSourceFromCodeCoverage(Exclude8, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Crweber\\*.*"); // 排除Crweber.com.此市场不再使用
+ExcludeSourceFromCodeCoverage(Exclude9, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\AmericaMarket\\DataBase\\*.*"); // 排除WorldMarket的数据库类
 
 // 排除无需测试的单个文件
 ExcludeSourceFromCodeCoverage(Exclude101, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");

@@ -381,6 +381,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
+    <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
     <ClCompile Include="MockVirtualWebInquiryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
@@ -473,6 +474,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
+    <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
@@ -511,7 +513,6 @@
     <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
     <ClCompile Include="TiingoWebInquiryTest.cpp" />
-    <ClCompile Include="UpdateWeekLineTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />

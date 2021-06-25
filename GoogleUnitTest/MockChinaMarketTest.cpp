@@ -620,4 +620,10 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), (UINT)25);
 		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
 	}
+
+	TEST_F(CMockChinaMarketTest, TestTaskSaveStockSection) {
+		EXPECT_CALL(*gl_pMockChinaMarket, RunningThreadSaveStockSection).Times(1);
+
+		EXPECT_TRUE(gl_pMockChinaMarket->TaskSaveStockSection());
+	}
 }

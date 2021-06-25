@@ -1153,11 +1153,11 @@ namespace StockAnalysisTest {
 		pDayLine2->SetStockSymbol(_T("600000.SS")); // 与第一个数据pDayLine1不同。
 		pDayLine2->SetStockName(_T("浦发银行"));// 与第一个数据pDayLine1不同。
 
-		pDayLine2->SetOpen(1010);
-		pDayLine2->SetClose(2020);
-		pDayLine2->SetHigh(3030);
-		pDayLine2->SetLow(4040);
-		pDayLine2->SetLastClose(5050);
+		pDayLine2->SetOpen(10100);
+		pDayLine2->SetClose(20200);
+		pDayLine2->SetHigh(30300);
+		pDayLine2->SetLow(40400);
+		pDayLine2->SetLastClose(50600);
 		pDayLine2->SetUpDown((double)(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / pDayLine2->GetRatio());
 
 		pDayLine2->SetVolume(1010101010101010);
@@ -1244,15 +1244,21 @@ namespace StockAnalysisTest {
 		weekLine.UpdateWeekLine(pDayLine2);
 
 		EXPECT_EQ(weekLine.GetFormatedMarketDate(), pDayLine1->GetFormatedMarketDate()) << "使用第一个数据的日期";
+		EXPECT_NE(weekLine.GetFormatedMarketDate(), pDayLine2->GetFormatedMarketDate()) << "使用第一个数据的日期";
 		EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime()) << "使用第一个数据的时间";
+		EXPECT_NE(weekLine.GetFormatedMarketTime(), pDayLine2->GetFormatedMarketTime()) << "使用第一个数据的时间";
 		EXPECT_STREQ(weekLine.GetStockSymbol(), pDayLine1->GetStockSymbol()) << "股票代码不为空时，不更改";
 		EXPECT_STREQ(weekLine.GetStockName(), pDayLine1->GetStockName()) << "股票名称不为空时，不更改";
+		EXPECT_STRNE(weekLine.GetStockSymbol(), pDayLine2->GetStockSymbol()) << "股票代码不为空时，不更改";
+		EXPECT_STRNE(weekLine.GetStockName(), pDayLine2->GetStockName()) << "股票名称不为空时，不更改";
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
+		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), pDayLine2->GetClose());
 		EXPECT_EQ(weekLine.GetHigh(), pDayLine1->GetHigh() > pDayLine2->GetHigh() ? pDayLine1->GetHigh() : pDayLine2->GetHigh());
 		EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
 		EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
+		EXPECT_NE(weekLine.GetLastClose(), pDayLine2->GetLastClose());
 		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), (double)(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / pDayLine2->GetRatio());
 
 		EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
