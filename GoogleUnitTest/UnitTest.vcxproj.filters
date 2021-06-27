@@ -705,7 +705,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp">
@@ -1094,9 +1094,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -1138,6 +1135,9 @@
     </ClInclude>
     <ClInclude Include="MockFinnhubForexSymbol.h">
       <Filter>Mock类\World Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.h">
+      <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

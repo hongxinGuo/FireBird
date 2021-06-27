@@ -936,7 +936,7 @@
     <ClInclude Include="source\DataBase\SetDayLineExtendInfo.h" />
     <ClInclude Include="source\DataBase\SetDayLineToday.h" />
     <ClInclude Include="source\DataBase\SetOption.h" />
-    <ClInclude Include="source\DataBase\SetOptionChinaStockMarket.h" />
+    <ClInclude Include="source\DataBase\SetChinaMarketOption.h" />
     <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h" />
     <ClInclude Include="source\DataBase\SetRealTimeData.h" />
     <ClInclude Include="source\DataBase\SetRSOption.h" />
@@ -1065,13 +1065,13 @@
     <ClCompile Include="source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="source\Crweber\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="source\DataBase\SetChinaMarketOption.cpp" />
     <ClCompile Include="source\DataBase\SetChoicedStock.cpp" />
     <ClCompile Include="source\DataBase\SetCrweberIndex.cpp" />
     <ClCompile Include="source\DataBase\SetDayLineBasicInfo.cpp" />
     <ClCompile Include="source\DataBase\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="source\DataBase\SetDayLineToday.cpp" />
     <ClCompile Include="source\DataBase\SetOption.cpp" />
-    <ClCompile Include="source\DataBase\SetOptionChinaStockMarket.cpp" />
     <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="source\DataBase\SetRealTimeData.cpp" />
     <ClCompile Include="source\DataBase\SetRSOption.cpp" />

@@ -12,7 +12,7 @@
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetOption.h"
-#include"SetOptionChinaStockMarket.h"
+#include"SetChinaMarketOption.h"
 #include"SetCrweberIndex.h"
 #include"SetChoicedStock.h"
 #include"SetRSStrong2Stock.h"
@@ -336,13 +336,13 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
 	ASSERT(GetTotalStock() == 0);
 
 	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
-		CreateStockSection(m_vCurrentSectionStockCode.at(i), true);
+		CreateStockSection(m_vCurrentSectionStockCode.at(i));
 	}
 	ASSERT(m_mapChinaMarketStock.size() == m_vChinaMarketStock.size());
 	return true;
 }
 
-void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRTData) {
+void CChinaMarket::CreateStockSection(CString strFirstStockCode) {
 	CString strCode = GetStockSymbol(strFirstStockCode);
 	CString strStockCode, strStockSymbol, strExchange;
 	CString str = _T("");
@@ -420,6 +420,8 @@ bool CChinaMarket::DeleteStock(CChinaStockPtr pStock) {
 }
 
 bool CChinaMarket::UpdateStockSection(CString strStockCode) {
+	if (!IsStock(strStockCode)) return false;
+
 	CString strCode = GetStockSymbol(strStockCode);
 	int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
@@ -957,7 +959,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 			while (!((pWebDataReceived->GetCurrentPosData() == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
-					ValidateNeteaseRTData(*pRTData);
+					CheckNeteaseRTDataValidation(*pRTData);
 					iCount++;
 					m_llRTDataReceived++;
 					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -1003,7 +1005,7 @@ bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebData& WebDataReceived) {
 	}
 }
 
-bool CChinaMarket::ValidateNeteaseRTData(CWebRTData& RTData) {
+bool CChinaMarket::CheckNeteaseRTDataValidation(CWebRTData& RTData) {
 	// 检测一下
 	CString str;
 
@@ -1091,7 +1093,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 			while (!pWebDataReceived->IsProcessedAllTheData()) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				if (pRTData->ReadTengxunData(pWebDataReceived)) {
-					CheckTengxunRTData(*pRTData); // 检测一下
+					CheckTengxunRTDataValidation(*pRTData); // 检测一下
 					j++;
 					gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
 				}
@@ -1124,7 +1126,7 @@ bool CChinaMarket::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
 	else return false;
 }
 
-bool CChinaMarket::CheckTengxunRTData(CWebRTData& RTData) {
+bool CChinaMarket::CheckTengxunRTDataValidation(CWebRTData& RTData) {
 	CString str;
 	ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
 	if (RTData.IsActive()) {
@@ -3308,7 +3310,7 @@ void CChinaMarket::LoadOptionDB(void) {
 }
 
 void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
-	CSetOptionChinaStockMarket setOptionChinaStockMarket;
+	SetChinaMarketOption setOptionChinaStockMarket;
 
 	setOptionChinaStockMarket.Open();
 	if (!setOptionChinaStockMarket.IsEOF()) {
@@ -3322,7 +3324,7 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
 }
 
 bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
-	CSetOptionChinaStockMarket setOptionChinaStockMarket;
+	SetChinaMarketOption setOptionChinaStockMarket;
 
 	setOptionChinaStockMarket.Open();
 	setOptionChinaStockMarket.m_pDatabase->BeginTrans();

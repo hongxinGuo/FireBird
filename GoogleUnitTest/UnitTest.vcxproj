@@ -343,7 +343,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineToday.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSOption.cpp" />
@@ -456,13 +456,13 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineToday.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOptionChinaStockMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRealTimeData.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSOption.h" />

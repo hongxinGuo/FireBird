@@ -597,6 +597,14 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockSection());
 	}
 
+	TEST_F(CChinaMarketTest, TestIsStockSectionActive) {
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(0));
+		gl_pChinaMarket->SetStockSectionActiveFlag(0, true);
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(0));
+		gl_pChinaMarket->SetStockSectionActiveFlag(0, false);
+		EXPECT_FALSE(gl_pChinaMarket->IsStockSectionActive(0));
+	}
+
 	TEST_F(CChinaMarketTest, TestIsRTDataSetCleared) {
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
 		gl_pChinaMarket->SetRTDataSetCleared(true);
@@ -1006,20 +1014,20 @@ namespace StockAnalysisTest {
 		webRTData.SetActive(false);
 		webRTData.SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pChinaMarket->ValidateNeteaseRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckNeteaseRTDataValidation(webRTData));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(true);
 		webRTData.SetActive(true);
-		EXPECT_TRUE(gl_pChinaMarket->ValidateNeteaseRTData(webRTData));
+		EXPECT_TRUE(gl_pChinaMarket->CheckNeteaseRTDataValidation(webRTData));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(false);
-		EXPECT_FALSE(gl_pChinaMarket->ValidateNeteaseRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckNeteaseRTDataValidation(webRTData));
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("000001.SZ 网易实时检测到不处于活跃状态"));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(true);
 
 		webRTData.SetSymbol(_T("60601.SZ")); // 没有这个股票
-		EXPECT_FALSE(gl_pChinaMarket->ValidateNeteaseRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckNeteaseRTDataValidation(webRTData));
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("60601.SZ 无效股票代码（网易实时数据）"));
 
 		gl_pChinaMarket->GetStock(_T("000001.SZ"))->SetActive(true);
@@ -1052,20 +1060,20 @@ namespace StockAnalysisTest {
 		webRTData.SetActive(false);
 		webRTData.SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTDataValidation(webRTData));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(true);
 		webRTData.SetActive(true);
-		EXPECT_TRUE(gl_pChinaMarket->CheckTengxunRTData(webRTData));
+		EXPECT_TRUE(gl_pChinaMarket->CheckTengxunRTDataValidation(webRTData));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(false);
-		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTDataValidation(webRTData));
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("000001.SZ腾讯实时检测到不处于活跃状态"));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(true);
 
 		webRTData.SetSymbol(_T("60601.SZ")); // 没有这个股票
-		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTData(webRTData));
+		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTDataValidation(webRTData));
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("60601.SZ无效股票代码（腾讯实时数据）"));
 
 		gl_pChinaMarket->GetStock(_T("000001.SZ"))->SetActive(true);
@@ -1845,5 +1853,36 @@ namespace StockAnalysisTest {
 			auto pstock = gl_pChinaMarket->GetStock(i);
 			pstock->SetDayLineNeedUpdate(true);
 		}
+	}
+
+	TEST_F(CChinaMarketTest, TestUpdateStockSection1) {
+		EXPECT_FALSE(gl_pChinaMarket->IsStockSectionActive(1));
+		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(1));
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(1));
+		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(1));
+
+		gl_pChinaMarket->SetStockSectionActiveFlag(1, false);
+	}
+
+	TEST_F(CChinaMarketTest, TestUpdateStockSection2) {
+		CString strShanghaiStock = _T("600601.SS");
+		CString strShenzhenStock = _T("000001.SZ");
+		long lIndex = 600;
+		long lIndex2 = 1000;
+
+		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(_T("60061.SS"))); // 无效股票代码
+		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(_T("00001.SZ"))); // 无效股票代码
+
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
+		gl_pChinaMarket->SetStockSectionActiveFlag(lIndex, false);
+		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(strShanghaiStock));
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex));
+		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(strShanghaiStock));
+
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex2)) << "装载预设数据库后如此";
+		gl_pChinaMarket->SetStockSectionActiveFlag(lIndex2, false);
+		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
+		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex2));
+		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
 	}
 }

@@ -297,11 +297,11 @@ public:
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
 	bool TaskProcessWebRTDataGetFromTengxunServer(void);
 	bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
-	bool CheckTengxunRTData(CWebRTData& RTData);
+	bool CheckTengxunRTDataValidation(CWebRTData& RTData);
 	bool TaskProcessWebRTDataGetFromNeteaseServer(void);
 	bool IsInvalidNeteaseRTData(CWebData& WebDataReceived);
 	bool IsValidNeteaseRTDataPrefix(CWebData& pWebDataReceived);
-	bool ValidateNeteaseRTData(CWebRTData& RTData);
+	bool CheckNeteaseRTDataValidation(CWebRTData& RTData);
 
 	bool TaskDiscardNeteaseRTData(void);
 	bool TaskDiscardSinaRTData(void);
@@ -394,16 +394,20 @@ public:
 	void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
 
+	void SetStockSectionActiveFlag(long lIndex, bool fFlag) noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
+	bool IsStockSectionActive(long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
+
 	bool AddStock(CChinaStockPtr pStock);
 	bool DeleteStock(CChinaStockPtr pStock);
 	bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
 
+	void CreateStockSection(CString strFirstStockCode);
+	bool UpdateStockSection(CString strStockCode);
+	bool UpdateStockSection(long lIndex);
+
 protected:
 	// 初始化
 	bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
-	void CreateStockSection(CString strFirstStockCode, bool fProcessRTData);
-	bool UpdateStockSection(CString strStockCode);
-	bool UpdateStockSection(long lIndex);
 
 public:
 	// 测试专用函数

@@ -192,7 +192,7 @@
     <ClInclude Include="source\DataBase\SetOption.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataBase\SetOptionChinaStockMarket.h">
+    <ClInclude Include="source\DataBase\SetChinaMarketOption.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRealTimeData.h">
@@ -471,9 +471,6 @@
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\DataBase\SetOption.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DataBase\SetOptionChinaStockMarket.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\DataBase\SetRealTimeData.cpp">
@@ -802,6 +799,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetChinaMarketOption.cpp">
+      <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
