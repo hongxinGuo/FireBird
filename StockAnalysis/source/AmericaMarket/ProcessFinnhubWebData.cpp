@@ -24,82 +24,82 @@ bool CompareInsiderTransaction(CInsiderTransactionPtr& p1, CInsiderTransactionPt
 /// <param name="pStock"></param>
 /// <returns></returns>
 bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
-  ptree pt;
-  string s;
+	ptree pt;
+	string s;
 
-  if (pWebData->GetBufferLength() < 20) {
-    pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-    pStock->SetUpdateProfileDB(true);
-    return false; // 没有公司简介
-  }
-  if (!ConvertToJSon(pt, pWebData)) return false;
-  try {
-    s = pt.get<string>(_T("address"));
-    pStock->SetAddress(s.c_str());
-  }
-  catch (ptree_error&) {
-    pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-    pStock->SetUpdateProfileDB(true);
-    return false; // 没有公司简介
-  }
-  s = pt.get<string>(_T("city"));
-  pStock->SetCity(s.c_str());
-  s = pt.get<string>(_T("country"));
-  if (s.size() > 0) pStock->SetCountry(s.c_str());
-  s = pt.get<string>(_T("currency"));
-  if (s.size() > 0) pStock->SetCurrency(s.c_str());
-  s = pt.get<string>(_T("cusip"));
-  if (s.size() > 0) pStock->SetCusip(s.c_str());
-  s = pt.get<string>(_T("sedol"));
-  if (s.size() > 0) pStock->SetSedol(s.c_str());
-  s = pt.get<string>(_T("description"));
-  if (s.size() > 0) pStock->SetDescription(s.c_str());
-  s = pt.get<string>(_T("exchange"));
-  if (s.size() > 0) pStock->SetListedExchange(s.c_str());
-  s = pt.get<string>(_T("ggroup"));
-  if (s.size() > 0) pStock->SetGgroup(s.c_str());
-  s = pt.get<string>(_T("gind"));
-  if (s.size() > 0) pStock->SetGind(s.c_str());
-  s = pt.get<string>(_T("gsector"));
-  if (s.size() > 0) pStock->SetGsector(s.c_str());
-  s = pt.get<string>(_T("gsubind"));
-  if (s.size() > 0) pStock->SetGsubind(s.c_str());
-  s = pt.get<string>(_T("ipo"));
-  if (s.size() > 0) pStock->SetIPODate(s.c_str());
-  s = pt.get<string>(_T("isin"));
-  if (s.size() > 0) pStock->SetIsin(s.c_str());
-  s = pt.get<string>(_T("marketCapitalization"));
-  if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
+	if (pWebData->GetBufferLength() < 20) {
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+		pStock->SetUpdateProfileDB(true);
+		return false; // 没有公司简介
+	}
+	if (!ConvertToJSon(pt, pWebData)) return false;
+	try {
+		s = pt.get<string>(_T("address"));
+		pStock->SetAddress(s.c_str());
+	}
+	catch (ptree_error&) {
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+		pStock->SetUpdateProfileDB(true);
+		return false; // 没有公司简介
+	}
+	s = pt.get<string>(_T("city"));
+	pStock->SetCity(s.c_str());
+	s = pt.get<string>(_T("country"));
+	if (s.size() > 0) pStock->SetCountry(s.c_str());
+	s = pt.get<string>(_T("currency"));
+	if (s.size() > 0) pStock->SetCurrency(s.c_str());
+	s = pt.get<string>(_T("cusip"));
+	if (s.size() > 0) pStock->SetCusip(s.c_str());
+	s = pt.get<string>(_T("sedol"));
+	if (s.size() > 0) pStock->SetSedol(s.c_str());
+	s = pt.get<string>(_T("description"));
+	if (s.size() > 0) pStock->SetDescription(s.c_str());
+	s = pt.get<string>(_T("exchange"));
+	if (s.size() > 0) pStock->SetListedExchange(s.c_str());
+	s = pt.get<string>(_T("ggroup"));
+	if (s.size() > 0) pStock->SetGgroup(s.c_str());
+	s = pt.get<string>(_T("gind"));
+	if (s.size() > 0) pStock->SetGind(s.c_str());
+	s = pt.get<string>(_T("gsector"));
+	if (s.size() > 0) pStock->SetGsector(s.c_str());
+	s = pt.get<string>(_T("gsubind"));
+	if (s.size() > 0) pStock->SetGsubind(s.c_str());
+	s = pt.get<string>(_T("ipo"));
+	if (s.size() > 0) pStock->SetIPODate(s.c_str());
+	s = pt.get<string>(_T("isin"));
+	if (s.size() > 0) pStock->SetIsin(s.c_str());
+	s = pt.get<string>(_T("marketCapitalization"));
+	if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
 
-  s = pt.get<string>(_T("naics"));
-  if (s.size() > 0) pStock->SetNaics(s.c_str());
-  s = pt.get<string>(_T("naicsNationalIndustry"));
-  if (s.size() > 0) pStock->SetNaicsNationalIndustry(s.c_str());
-  s = pt.get<string>(_T("naicsSector"));
-  if (s.size() > 0) pStock->SetNaicsSector(s.c_str());
-  s = pt.get<string>(_T("naicsSubsector"));
-  if (s.size() > 0) pStock->SetNaicsSubsector(s.c_str());
-  s = pt.get<string>(_T("name"));
-  if (s.size() > 0) pStock->SetName(s.c_str());
-  s = pt.get<string>(_T("phone"));
-  if (s.size() > 0) pStock->SetPhone(s.c_str());
+	s = pt.get<string>(_T("naics"));
+	if (s.size() > 0) pStock->SetNaics(s.c_str());
+	s = pt.get<string>(_T("naicsNationalIndustry"));
+	if (s.size() > 0) pStock->SetNaicsNationalIndustry(s.c_str());
+	s = pt.get<string>(_T("naicsSector"));
+	if (s.size() > 0) pStock->SetNaicsSector(s.c_str());
+	s = pt.get<string>(_T("naicsSubsector"));
+	if (s.size() > 0) pStock->SetNaicsSubsector(s.c_str());
+	s = pt.get<string>(_T("name"));
+	if (s.size() > 0) pStock->SetName(s.c_str());
+	s = pt.get<string>(_T("phone"));
+	if (s.size() > 0) pStock->SetPhone(s.c_str());
 
-  s = pt.get<string>(_T("shareOutstanding"));
-  if (s.size() > 0) pStock->SetShareOutstanding(atof(s.c_str()));
-  s = pt.get<string>(_T("state"));
-  if (s.size() > 0) pStock->SetState(s.c_str());
-  s = pt.get<string>(_T("ticker"));
-  if (s.size() > 0) pStock->SetTicker(s.c_str());
-  s = pt.get<string>(_T("weburl"));
-  if (s.size() > 0) pStock->SetWebURL(s.c_str());
+	s = pt.get<string>(_T("shareOutstanding"));
+	if (s.size() > 0) pStock->SetShareOutstanding(atof(s.c_str()));
+	s = pt.get<string>(_T("state"));
+	if (s.size() > 0) pStock->SetState(s.c_str());
+	s = pt.get<string>(_T("ticker"));
+	if (s.size() > 0) pStock->SetTicker(s.c_str());
+	s = pt.get<string>(_T("weburl"));
+	if (s.size() > 0) pStock->SetWebURL(s.c_str());
 
-  s = pt.get<string>(_T("logo"));
-  if (s.size() > 0) pStock->SetLogo(s.c_str());
-  s = pt.get<string>(_T("finnhubIndustry"));
-  if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-  pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-  pStock->SetUpdateProfileDB(true);
-  return true;
+	s = pt.get<string>(_T("logo"));
+	if (s.size() > 0) pStock->SetLogo(s.c_str());
+	s = pt.get<string>(_T("finnhubIndustry"));
+	if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
+	pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+	pStock->SetUpdateProfileDB(true);
+	return true;
 }
 
 /// <summary>
@@ -122,594 +122,593 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 /// <param name="pStock"></param>
 /// <returns></returns>
 bool CWorldMarket::ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
-  ptree pt;
-  string s;
-  string sError;
+	ptree pt;
+	string s;
+	string sError;
 
-  if (pWebData->GetBufferLength() < 30) {
-    TRACE("%s无公司简介, 字符串长度为：%d\n", pStock->GetSymbol().GetBuffer(), pWebData->GetBufferLength());
-    //正常的长度大致为300左右, 小于100则为无效信息。
-    return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
-  }
-  if (!ConvertToJSon(pt, pWebData)) return false;
-  try {
-    s = pt.get<string>(_T("ticker"));
-    if (s.size() > 0) pStock->SetTicker(s.c_str());
-    s = pt.get<string>(_T("country"));
-    if (s.size() > 0) pStock->SetCountry(s.c_str());
-    s = pt.get<string>(_T("currency"));
-    if (s.size() > 0) pStock->SetCurrency(s.c_str());
-    s = pt.get<string>(_T("exchange"));
-    if (s.size() > 0) pStock->SetListedExchange(s.c_str());
-    s = pt.get<string>(_T("name"));
-    if (s.size() > 0) pStock->SetName(s.c_str());
-    s = pt.get<string>(_T("finnhubIndustry"));
-    if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-    s = pt.get<string>(_T("logo"));
-    if (s.size() > 0) pStock->SetLogo(s.c_str());
-    s = pt.get<string>(_T("marketCapitalization"));
-    if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
-    s = pt.get<string>(_T("phone"));
-    if (s.size() > 0) pStock->SetPhone(s.c_str());
-    if (s.size() > 0) pStock->SetShareOutstanding(pt.get<double>(_T("shareOutstanding")));
-    s = pt.get<string>(_T("weburl"));
-    if (s.size() > 0) pStock->SetWebURL(s.c_str());
-    s = pt.get<string>(_T("ipo"));
-    if (s.size() > 0) pStock->SetIPODate(s.c_str());
-  }
-  catch (ptree_error&) {
-    return false; // 出现错误则返回任务失败
-  }
-  return true;
+	if (pWebData->GetBufferLength() < 30) {
+		TRACE("%s无公司简介, 字符串长度为：%d\n", pStock->GetSymbol().GetBuffer(), pWebData->GetBufferLength());
+		//正常的长度大致为300左右, 小于100则为无效信息。
+		return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
+	}
+	if (!ConvertToJSon(pt, pWebData)) return false;
+	try {
+		s = pt.get<string>(_T("ticker"));
+		if (s.size() > 0) pStock->SetTicker(s.c_str());
+		s = pt.get<string>(_T("country"));
+		if (s.size() > 0) pStock->SetCountry(s.c_str());
+		s = pt.get<string>(_T("currency"));
+		if (s.size() > 0) pStock->SetCurrency(s.c_str());
+		s = pt.get<string>(_T("exchange"));
+		if (s.size() > 0) pStock->SetListedExchange(s.c_str());
+		s = pt.get<string>(_T("name"));
+		if (s.size() > 0) pStock->SetName(s.c_str());
+		s = pt.get<string>(_T("finnhubIndustry"));
+		if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
+		s = pt.get<string>(_T("logo"));
+		if (s.size() > 0) pStock->SetLogo(s.c_str());
+		s = pt.get<string>(_T("marketCapitalization"));
+		if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
+		s = pt.get<string>(_T("phone"));
+		if (s.size() > 0) pStock->SetPhone(s.c_str());
+		if (s.size() > 0) pStock->SetShareOutstanding(pt.get<double>(_T("shareOutstanding")));
+		s = pt.get<string>(_T("weburl"));
+		if (s.size() > 0) pStock->SetWebURL(s.c_str());
+		s = pt.get<string>(_T("ipo"));
+		if (s.size() > 0) pStock->SetIPODate(s.c_str());
+	}
+	catch (ptree_error&) {
+		return false; // 出现错误则返回任务失败
+	}
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
-  CWorldStockPtr pStock = make_shared<CWorldStock>();
-  ptree pt, pt2;
-  string s, sError;
+	CWorldStockPtr pStock = make_shared<CWorldStock>();
+	ptree pt, pt2;
+	string s, sError;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pStock = make_shared<CWorldStock>();
-    try {
-      pt2 = it->second;
-      s = pt2.get<string>(_T("currency"));
-      if (s.size() > 0) pStock->SetCurrency(s.c_str());
-      s = pt2.get<string>(_T("description"));
-      if (s.size() > 0) pStock->SetDescription(s.c_str());
-      s = pt2.get<string>(_T("displaySymbol"));
-      pStock->SetDisplaySymbol(s.c_str());
-      s = pt2.get<string>(_T("figi"));
-      if (s.size() > 0) pStock->SetFigi(s.c_str());
-      s = pt2.get<string>(_T("mic"));
-      if (s.size() > 0) pStock->SetMic(s.c_str());
-      s = pt2.get<string>(_T("symbol"));
-      pStock->SetSymbol(s.c_str());
-      s = pt2.get<string>(_T("type"));
-      if (s.size() > 0) pStock->SetType(s.c_str());
-      vStock.push_back(pStock);
-    }
-    catch (ptree_error&) {
-      TRACE("下载Finnhub Symbol有误\n");
-      return false;
-    }
-  }
-  return true;
+	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		pStock = make_shared<CWorldStock>();
+		try {
+			pt2 = it->second;
+			s = pt2.get<string>(_T("currency"));
+			if (s.size() > 0) pStock->SetCurrency(s.c_str());
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pStock->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pStock->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("figi"));
+			if (s.size() > 0) pStock->SetFigi(s.c_str());
+			s = pt2.get<string>(_T("mic"));
+			if (s.size() > 0) pStock->SetMic(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pStock->SetSymbol(s.c_str());
+			s = pt2.get<string>(_T("type"));
+			if (s.size() > 0) pStock->SetType(s.c_str());
+			vStock.push_back(pStock);
+		}
+		catch (ptree_error&) {
+			TRACE("下载Finnhub Symbol有误\n");
+			return false;
+		}
+	}
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
-  vector<CDayLinePtr> vDayLine;
-  ptree pt, pt2, pt3;
-  string s;
-  double dTemp = 0;
-  long lTemp = 0;
-  INT64 llTemp = 0;
-  time_t tTemp = 0;
-  CDayLinePtr pDayLine = nullptr;
-  int i = 0;
-  CString str;
-  string sError;
+	vector<CDayLinePtr> vDayLine;
+	ptree pt, pt2, pt3;
+	string s;
+	double dTemp = 0;
+	long lTemp = 0;
+	INT64 llTemp = 0;
+	time_t tTemp = 0;
+	CDayLinePtr pDayLine = nullptr;
+	int i = 0;
+	CString str;
+	string sError;
 
-  if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
-    str = _T("下载");
-    str += pStock->GetSymbol();
-    str += _T("日线故障\n");
-    TRACE("%s", str.GetBuffer());
-    gl_systemMessage.PushInnerSystemInformationMessage(str);
-    return false;
-  }
+	if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+		str = _T("下载");
+		str += pStock->GetSymbol();
+		str += _T("日线故障\n");
+		TRACE("%s", str.GetBuffer());
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		return false;
+	}
 
-  try {
-    s = pt.get<string>(_T("s"));
-    if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pStock->SetUpdateProfileDB(true);
-      return true;
-    }
-    if (s.compare(_T("ok")) != 0) {
-      str = _T("下载");
-      str += pStock->GetSymbol();
-      str += _T("日线返回值不为ok\n");
-      TRACE("%s", str.GetBuffer());
-      gl_systemMessage.PushInformationMessage(str);
-      gl_systemMessage.PushInnerSystemInformationMessage(str);
-      return false;
-    }
-  }
-  catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pStock->SetUpdateProfileDB(true);
-    return false;
-  }
-  try {
-    pt2 = pt.get_child(_T("t"));
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      tTemp = pt3.get_value<time_t>();
-      pDayLine = make_shared<CDayLine>();
-      pDayLine->SetExchange(pStock->GetListedExchange());
-      pDayLine->SetStockSymbol(pStock->GetSymbol());
-      pDayLine->SetStockName(pStock->GetTicker());
-      pDayLine->SetTime(tTemp);
-      lTemp = FormatToDate(tTemp);
-      pDayLine->SetDate(lTemp);
-      vDayLine.push_back(pDayLine);
-    }
-  }
-  catch (ptree_error&) {
-    return false;
-  }
-  try {
-    pt2 = pt.get_child(_T("c"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetClose(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("o"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetOpen(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("h"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetHigh(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("l"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetLow(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("v"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      llTemp = pt3.get_value<INT64>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetVolume(llTemp);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
-  pStock->UpdateDayLine(vDayLine);
-  pStock->SetDayLineNeedUpdate(false);
-  pStock->SetDayLineNeedSaving(true);
-  pStock->SetUpdateProfileDB(true);
-  return true;
+	try {
+		s = pt.get<string>(_T("s"));
+		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+			pStock->SetUpdateProfileDB(true);
+			return true;
+		}
+		if (s.compare(_T("ok")) != 0) {
+			str = _T("下载");
+			str += pStock->GetSymbol();
+			str += _T("日线返回值不为ok\n");
+			TRACE("%s", str.GetBuffer());
+			gl_systemMessage.PushInformationMessage(str);
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			return false;
+		}
+	}
+	catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+		pStock->SetUpdateProfileDB(true);
+		return false;
+	}
+	try {
+		pt2 = pt.get_child(_T("t"));
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			tTemp = pt3.get_value<time_t>();
+			pDayLine = make_shared<CDayLine>();
+			pDayLine->SetExchange(pStock->GetListedExchange());
+			pDayLine->SetStockSymbol(pStock->GetSymbol());
+			pDayLine->SetStockName(pStock->GetTicker());
+			pDayLine->SetTime(tTemp);
+			lTemp = FormatToDate(tTemp);
+			pDayLine->SetDate(lTemp);
+			vDayLine.push_back(pDayLine);
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+	try {
+		pt2 = pt.get_child(_T("c"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetClose(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("o"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetOpen(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("h"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetHigh(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("l"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetLow(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("v"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			llTemp = pt3.get_value<INT64>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetVolume(llTemp);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	pStock->UpdateDayLine(vDayLine);
+	pStock->SetDayLineNeedUpdate(false);
+	pStock->SetDayLineNeedSaving(true);
+	pStock->SetUpdateProfileDB(true);
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
-  string s;
-  ptree pt;
-  double dTemp = 0;
-  time_t tt = 0;
+	string s;
+	ptree pt;
+	double dTemp = 0;
+	time_t tt = 0;
 
-  if (!ConvertToJSon(pt, pWebData)) {
-    return false;
-  }
-  try {
-    dTemp = pt.get<double>(_T("c"));
-    pStock->SetNew(dTemp * 1000);
-    dTemp = pt.get<double>(_T("h"));
-    pStock->SetHigh(dTemp * 1000);
-    dTemp = pt.get<double>(_T("l"));
-    pStock->SetLow(dTemp * 1000);
-    dTemp = pt.get<double>(_T("o"));
-    pStock->SetOpen(dTemp * 1000);
-    dTemp = pt.get<double>(_T("pc"));
-    pStock->SetLastClose(dTemp * 1000);
-    tt = pt.get<time_t>(_T("t"));
-    pStock->SetTransactionTime(tt);
-  }
-  catch (ptree_error&) { // 数据格式不对，跳过。
-    return false;
-  }
+	if (!ConvertToJSon(pt, pWebData)) {
+		return false;
+	}
+	try {
+		dTemp = pt.get<double>(_T("c"));
+		pStock->SetNew(dTemp * 1000);
+		dTemp = pt.get<double>(_T("h"));
+		pStock->SetHigh(dTemp * 1000);
+		dTemp = pt.get<double>(_T("l"));
+		pStock->SetLow(dTemp * 1000);
+		dTemp = pt.get<double>(_T("o"));
+		pStock->SetOpen(dTemp * 1000);
+		dTemp = pt.get<double>(_T("pc"));
+		pStock->SetLastClose(dTemp * 1000);
+		tt = pt.get<time_t>(_T("t"));
+		pStock->SetTransactionTime(tt);
+	}
+	catch (ptree_error&) { // 数据格式不对，跳过。
+		return false;
+	}
 
-  return true;
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
-  ptree pt, pt2;
-  string s;
-  CString str = _T("");
-  string sError;
+	ptree pt, pt2;
+	string s;
+	CString str = _T("");
+	string sError;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pt2 = it->second;
-    s = pt2.get_value<string>();
-    str = s.c_str();
-    vExchange.push_back(str);
-  }
+	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		pt2 = it->second;
+		s = pt2.get_value<string>();
+		str = s.c_str();
+		vExchange.push_back(str);
+	}
 
-  return true;
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
-  CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
-  ptree pt, pt2;
-  string s;
-  string sError;
+	CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
+	ptree pt, pt2;
+	string s;
+	string sError;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pSymbol = make_shared<CFinnhubForexSymbol>();
-    try {
-      pt2 = it->second;
-      s = pt2.get<string>(_T("description"));
-      if (s.size() > 0) pSymbol->SetDescription(s.c_str());
-      s = pt2.get<string>(_T("displaySymbol"));
-      pSymbol->SetDisplaySymbol(s.c_str());
-      s = pt2.get<string>(_T("symbol"));
-      pSymbol->SetSymbol(s.c_str());
-      vForexSymbol.push_back(pSymbol);
-    }
-    catch (ptree_error&) {
-      TRACE("Finnhub Forex Symbol Error\n");
-      return false;
-    }
-  }
+	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		pSymbol = make_shared<CFinnhubForexSymbol>();
+		try {
+			pt2 = it->second;
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pSymbol->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pSymbol->SetSymbol(s.c_str());
+			vForexSymbol.push_back(pSymbol);
+		}
+		catch (ptree_error&) {
+			TRACE("Finnhub Forex Symbol Error\n");
+			return false;
+		}
+	}
 
-  return true;
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
-  vector<CDayLinePtr> vDayLine;
-  ptree pt, pt2, pt3;
-  string s;
-  double dTemp = 0;
-  long lTemp = 0;
-  INT64 llTemp = 0;
-  time_t tTemp = 0;
-  CDayLinePtr pDayLine = nullptr;
-  int i = 0;
-  CString str;
-  string sError;
+	vector<CDayLinePtr> vDayLine;
+	ptree pt, pt2, pt3;
+	string s;
+	double dTemp = 0;
+	long lTemp = 0;
+	INT64 llTemp = 0;
+	time_t tTemp = 0;
+	CDayLinePtr pDayLine = nullptr;
+	int i = 0;
+	CString str;
+	string sError;
 
-  if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
-    str = _T("下载");
-    str += pForexSymbol->GetSymbol();
-    str += _T("日线故障\n");
-    TRACE("%s", str.GetBuffer());
-    gl_systemMessage.PushInnerSystemInformationMessage(str);
-    return false;
-  }
+	if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+		str = _T("下载");
+		str += pForexSymbol->GetSymbol();
+		str += _T("日线故障\n");
+		TRACE("%s", str.GetBuffer());
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		return false;
+	}
 
-  try {
-    s = pt.get<string>(_T("s"));
-    if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pForexSymbol->SetIPOStatus(__STOCK_NULL__);
-      pForexSymbol->SetUpdateProfileDB(true);
-      return true;
-    }
-    if (s.compare(_T("ok")) != 0) {
-      str = _T("下载");
-      str += pForexSymbol->GetSymbol();
-      str += _T("日线返回值不为ok\n");
-      TRACE("%s", str.GetBuffer());
-      gl_systemMessage.PushInformationMessage(str);
-      gl_systemMessage.PushInnerSystemInformationMessage(str);
-      return false;
-    }
-  }
-  catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pForexSymbol->SetIPOStatus(__STOCK_NULL__);
-    pForexSymbol->SetUpdateProfileDB(true);
-    return true;
-  }
-  try {
-    pt2 = pt.get_child(_T("t"));
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      tTemp = pt3.get_value<time_t>();
-      pDayLine = make_shared<CDayLine>();
-      pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
-      pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-      pDayLine->SetTime(tTemp);
-      lTemp = FormatToDate(tTemp);
-      pDayLine->SetDate(lTemp);
-      vDayLine.push_back(pDayLine);
-    }
-  }
-  catch (ptree_error&) {
-    return false;
-  }
-  try {
-    pt2 = pt.get_child(_T("c"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetClose(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("h"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetHigh(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("l"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetLow(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("o"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetOpen(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
-    pt2 = pt.get_child(_T("v"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      llTemp = pt3.get_value<INT64>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetVolume(llTemp);
-    }
-  }
-  catch (ptree_error&) {
-    // 有些外汇交易不提供成交量，忽略就可以了
-  }
-  pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
-  sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
-  pForexSymbol->UpdateDayLine(vDayLine);
-  pForexSymbol->SetDayLineNeedUpdate(false);
-  pForexSymbol->SetDayLineNeedSaving(true);
-  pForexSymbol->SetUpdateProfileDB(true);
-  return true;
+	try {
+		s = pt.get<string>(_T("s"));
+		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+			pForexSymbol->SetIPOStatus(__STOCK_NULL__);
+			pForexSymbol->SetUpdateProfileDB(true);
+			return true;
+		}
+		if (s.compare(_T("ok")) != 0) {
+			str = _T("下载");
+			str += pForexSymbol->GetSymbol();
+			str += _T("日线返回值不为ok\n");
+			TRACE("%s", str.GetBuffer());
+			gl_systemMessage.PushInformationMessage(str);
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			return false;
+		}
+	}
+	catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+		pForexSymbol->SetIPOStatus(__STOCK_NULL__);
+		pForexSymbol->SetUpdateProfileDB(true);
+		return true;
+	}
+	try {
+		pt2 = pt.get_child(_T("t"));
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			tTemp = pt3.get_value<time_t>();
+			pDayLine = make_shared<CDayLine>();
+			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
+			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
+			pDayLine->SetTime(tTemp);
+			lTemp = FormatToDate(tTemp);
+			pDayLine->SetDate(lTemp);
+			vDayLine.push_back(pDayLine);
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+	try {
+		pt2 = pt.get_child(_T("c"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetClose(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("h"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetHigh(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("l"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetLow(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("o"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetOpen(dTemp * 1000);
+		}
+	}
+	catch (ptree_error&) {
+	}
+	try {
+		pt2 = pt.get_child(_T("v"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			llTemp = pt3.get_value<INT64>();
+			pDayLine = vDayLine.at(i++);
+			pDayLine->SetVolume(llTemp);
+		}
+	}
+	catch (ptree_error&) {
+		// 有些外汇交易不提供成交量，忽略就可以了
+	}
+	pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
+	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
+	pForexSymbol->UpdateDayLine(vDayLine);
+	pForexSymbol->SetDayLineNeedUpdate(false);
+	pForexSymbol->SetDayLineNeedSaving(true);
+	pForexSymbol->SetUpdateProfileDB(true);
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
-  CCountryPtr pCountry = nullptr;
-  ptree pt, pt2;
-  string s;
+	CCountryPtr pCountry = nullptr;
+	ptree pt, pt2;
+	string s;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pCountry = make_shared<CCountry>();
-    pt2 = it->second;
-    try {
-      s = pt2.get<string>(_T("code2"));
-      if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
-      s = pt2.get<string>(_T("code3"));
-      pCountry->m_strCode3 = s.c_str();
-      s = pt2.get<string>(_T("codeNo"));
-      pCountry->m_strCodeNo = s.c_str();
-      s = pt2.get<string>(_T("country"));
-      pCountry->m_strCountry = s.c_str();
-      s = pt2.get<string>(_T("currency"));
-      pCountry->m_strCurrency = s.c_str();
-      s = pt2.get<string>(_T("currencyCode"));
-      pCountry->m_strCurrencyCode = s.c_str();
-    }
-    catch (ptree_error&) {
-      return false;
-    }
-    vCountry.push_back(pCountry);
-  }
-  sort(vCountry.begin(), vCountry.end(), CompareCountryList);
-  return true;
+	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		pCountry = make_shared<CCountry>();
+		pt2 = it->second;
+		try {
+			s = pt2.get<string>(_T("code2"));
+			if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
+			s = pt2.get<string>(_T("code3"));
+			pCountry->m_strCode3 = s.c_str();
+			s = pt2.get<string>(_T("codeNo"));
+			pCountry->m_strCodeNo = s.c_str();
+			s = pt2.get<string>(_T("country"));
+			pCountry->m_strCountry = s.c_str();
+			s = pt2.get<string>(_T("currency"));
+			pCountry->m_strCurrency = s.c_str();
+			s = pt2.get<string>(_T("currencyCode"));
+			pCountry->m_strCurrencyCode = s.c_str();
+		}
+		catch (ptree_error&) {
+			return false;
+		}
+		vCountry.push_back(pCountry);
+	}
+	sort(vCountry.begin(), vCountry.end(), CompareCountryList);
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
-  char buffer[1000]{};
-  int i = 0;
-  ptree pt;
-  string sError;
+	char buffer[1000]{};
+	int i = 0;
+	ptree pt;
+	string sError;
 
-  if (pWebData->GetBufferLength() <= 3) {
-    pStock->SetPeer(_T(" ")); // 清空
-    return true; // 没有有效的同业竞争对手
-  }
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (pWebData->GetBufferLength() <= 3) {
+		pStock->SetPeer(_T(" ")); // 清空
+		return true; // 没有有效的同业竞争对手
+	}
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  ASSERT(pWebData->GetBufferLength() < 1000);
-  for (i = 0; i < pWebData->GetBufferLength(); i++) {
-    buffer[i] = pWebData->GetData(i);
-  }
-  if (i > 200) {
-    buffer[200] = 0x000;
-  }
-  else {
-    buffer[pWebData->GetBufferLength()] = 0x000;
-  }
-  pStock->SetPeer(buffer);
+	ASSERT(pWebData->GetBufferLength() < 1000);
+	for (i = 0; i < pWebData->GetBufferLength(); i++) {
+		buffer[i] = pWebData->GetData(i);
+	}
+	if (i > 200) {
+		buffer[200] = 0x000;
+	}
+	else {
+		buffer[pWebData->GetBufferLength()] = 0x000;
+	}
+	pStock->SetPeer(buffer);
 
-  return true;
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
-  char buffer[1000]{};
-  int i = 0;
-  ptree pt, pt1, pt2;
-  string sError;
-  string s;
-  string stockSymbol;
-  long year, month, day;
-  CInsiderTransactionPtr pInsiderTransaction = nullptr;
+	char buffer[1000]{};
+	int i = 0;
+	ptree pt, pt1, pt2;
+	string sError;
+	string s;
+	string stockSymbol;
+	long year, month, day;
+	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  try {
-    pt1 = pt.get_child(_T("data"));
-    stockSymbol = pt.get<string>(_T("symbol"));
-  }
-  catch (ptree_error&) {
-    return false;
-  }
-  for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-    pInsiderTransaction = make_shared<CInsiderTransaction>();
-    pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
-    pt2 = it->second;
-    try {
-      s = pt2.get<string>(_T("name"));
-      if (s.size() > 0) pInsiderTransaction->m_strPersonName = s.c_str();
-      pInsiderTransaction->m_lShare = pt2.get<long>(_T("share"));
-      pInsiderTransaction->m_lChange = pt2.get<long>(_T("change"));
-      s = pt2.get<string>(_T("filingDate"));
-      sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-      pInsiderTransaction->m_lFilingDate = year * 10000 + month * 100 + day;
-      s = pt2.get<string>(_T("transactionDate"));
-      sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-      pInsiderTransaction->m_lTransactionDate = year * 10000 + month * 100 + day;
-      s = pt2.get<string>(_T("transactionCode"));
-      pInsiderTransaction->m_strTransactionCode = s.c_str();
-      pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
-    }
-    catch (ptree_error&) {
-      return false;
-    }
-    vInsiderTransaction.push_back(pInsiderTransaction);
-  }
-  sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);
+	try {
+		pt1 = pt.get_child(_T("data"));
+		stockSymbol = pt.get<string>(_T("symbol"));
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+	for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+		pInsiderTransaction = make_shared<CInsiderTransaction>();
+		pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
+		pt2 = it->second;
+		try {
+			s = pt2.get<string>(_T("name"));
+			if (s.size() > 0) pInsiderTransaction->m_strPersonName = s.c_str();
+			pInsiderTransaction->m_lShare = pt2.get<long>(_T("share"));
+			pInsiderTransaction->m_lChange = pt2.get<long>(_T("change"));
+			s = pt2.get<string>(_T("filingDate"));
+			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
+			pInsiderTransaction->m_lFilingDate = year * 10000 + month * 100 + day;
+			s = pt2.get<string>(_T("transactionDate"));
+			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
+			pInsiderTransaction->m_lTransactionDate = year * 10000 + month * 100 + day;
+			s = pt2.get<string>(_T("transactionCode"));
+			pInsiderTransaction->m_strTransactionCode = s.c_str();
+			pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
+		}
+		catch (ptree_error&) {
+			return false;
+		}
+		vInsiderTransaction.push_back(pInsiderTransaction);
+	}
+	sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);
 
-  return true;
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
-  CEconomicCalendarPtr pEconomicCalendar = nullptr;
-  ptree pt, pt1, pt2;
-  string s;
+	CEconomicCalendarPtr pEconomicCalendar = nullptr;
+	ptree pt, pt1, pt2;
+	string s;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  try {
-    pt1 = pt.get_child(_T("economicCalendar"));
-  }
-  catch (ptree_error&) {
-    return false;
-  }
-  for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-    pEconomicCalendar = make_shared<CEconomicCalendar>();
-    pt2 = it->second;
-    try {
-      s = pt2.get<string>(_T("country"));
-      if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
-      s = pt2.get<string>(_T("event"));
-      pEconomicCalendar->m_strEvent = s.c_str();
-      s = pt2.get<string>(_T("impact"));
-      pEconomicCalendar->m_strImpact = s.c_str();
-      pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
-      pEconomicCalendar->m_dActual = pt2.get<double>(_T("actual"));
-      pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
-      s = pt2.get<string>(_T("time"));
-      pEconomicCalendar->m_strTime = s.c_str();
-      s = pt2.get<string>(_T("unit"));
-      pEconomicCalendar->m_strUnit = s.c_str();
-    }
-    catch (ptree_error&) {
-      return false;
-    }
-    vEconomicCalendar.push_back(pEconomicCalendar);
-  }
-  return true;
+	try {
+		pt1 = pt.get_child(_T("economicCalendar"));
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+	for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+		pEconomicCalendar = make_shared<CEconomicCalendar>();
+		pt2 = it->second;
+		try {
+			s = pt2.get<string>(_T("country"));
+			if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
+			s = pt2.get<string>(_T("event"));
+			pEconomicCalendar->m_strEvent = s.c_str();
+			s = pt2.get<string>(_T("impact"));
+			pEconomicCalendar->m_strImpact = s.c_str();
+			pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
+			pEconomicCalendar->m_dActual = pt2.get<double>(_T("actual"));
+			pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
+			s = pt2.get<string>(_T("time"));
+			pEconomicCalendar->m_strTime = s.c_str();
+			s = pt2.get<string>(_T("unit"));
+			pEconomicCalendar->m_strUnit = s.c_str();
+		}
+		catch (ptree_error&) {
+			return false;
+		}
+		vEconomicCalendar.push_back(pEconomicCalendar);
+	}
+	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
-  ptree pt, pt2;
-  string s;
-  CTime time;
-  CEPSSurprisePtr pEPSSurprise = nullptr;
-  long year, month, day;
-  CString str;
-  string sError;
+	ptree pt, pt2;
+	string s;
+	CEPSSurprisePtr pEPSSurprise = nullptr;
+	long year = 0, month = 0, day = 0;
+	CString str;
+	string sError;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSon(pt, pWebData)) return false;
 
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pEPSSurprise = make_shared<CEPSSurprise>();
-    pt2 = it->second;
-    try {
-      s = pt2.get<string>(_T("symbol"));
-      pEPSSurprise->m_strSymbol = s.c_str();
-      s = pt2.get<string>(_T("period"));
-      str = s.c_str();
-      sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-      pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
-      pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
-      pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
-    }
-    catch (ptree_error&) {
-      return false;
-    }
-    vEPSSurprise.push_back(pEPSSurprise);
-  }
-  sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
-  return true;
+	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		pEPSSurprise = make_shared<CEPSSurprise>();
+		pt2 = it->second;
+		try {
+			s = pt2.get<string>(_T("symbol"));
+			pEPSSurprise->m_strSymbol = s.c_str();
+			s = pt2.get<string>(_T("period"));
+			str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
+			pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
+			pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
+		}
+		catch (ptree_error&) {
+			return false;
+		}
+		vEPSSurprise.push_back(pEPSSurprise);
+	}
+	sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+	return true;
 }
