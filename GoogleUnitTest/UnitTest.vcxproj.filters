@@ -579,9 +579,6 @@
     <ClCompile Include="MockWorldStockTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Test源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -780,6 +777,9 @@
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Test源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -814,9 +814,6 @@
     </ClInclude>
     <ClInclude Include="MockStockAnalysisView.h">
       <Filter>Mock类\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Accessory.h">
-      <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DayLine.h">
       <Filter>dependency</Filter>
@@ -1137,6 +1134,9 @@
       <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Accessory.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

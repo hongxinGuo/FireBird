@@ -1,4 +1,5 @@
 #pragma once
+
 #include"WebData.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ long FormatToDate(time_t tt) noexcept;// 将时间转变为整型(YYYYMMDD)形式
 long FormatToTime(time_t tt) noexcept; // 将时间转变为整数（HHMMSS)形式
 INT64 FormatToDateTime(time_t tt) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式
 long FormatToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
-long FormatToTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
+long FormatToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 INT64 FormatToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 
@@ -59,10 +60,10 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 
 class CRSReference {
 public:
-  bool m_fActive{ false };
-  long m_lDayLength[4]{ 0, 0, 0, 0 }; // 日期长度
-  long m_lStrongDayLength[4]{ 0, 0, 0, 0 }; // 满足条件的天数
-  double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
+	bool m_fActive{ false };
+	long m_lDayLength[4]{ 0, 0, 0, 0 }; // 日期长度
+	long m_lStrongDayLength[4]{ 0, 0, 0, 0 }; // 满足条件的天数
+	double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
 };
 
 bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData);

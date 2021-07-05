@@ -2761,7 +2761,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 	// 读取今日生成的数据于DayLineToday表中。
 	setDayLineToday.Open();
 	if (!setDayLineToday.IsEOF()) {
-		if (setDayLineToday.m_Date == GetFormatedMarketDate()) { // 如果是当天的行情，则载入，否则放弃
+		if (setDayLineToday.m_Date == GetFormatedMarketDate()) { // 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
 			while (!setDayLineToday.IsEOF()) {
 				if ((pStock = GetStock(setDayLineToday.m_Symbol)) != nullptr) {
 					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
@@ -3379,6 +3379,7 @@ bool CChinaMarket::AppendChoicedStockDB(void) {
 		ASSERT(pStock->IsChoiced());
 		if (!pStock->IsSaveToChoicedStockDB()) {
 			setChoicedStock.AddNew();
+			setChoicedStock.m_Symbol = pStock->GetSymbol();
 			setChoicedStock.Update();
 			pStock->SetSaveToChoicedStockDB(true);
 		}

@@ -15,32 +15,13 @@
 #include"WorldStock.h"
 
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
-  CString str;
-  CWorldStockPtr pStock = nullptr;
+	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateWorldMarketDB.Wait();
 
-  gl_ThreadStatus.IncreaseSavingThread();
-  gl_UpdateWorldMarketDB.Wait();
-  for (long i = 0; i < pMarket->GetTotalStock(); i++) {
-    pStock = pMarket->GetStock(i);
-    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      if (pStock->GetDayLineSize() > 0) {
-        if (pStock->HaveNewDayLineData()) {
-          pStock->SaveDayLine();
-          pStock->UpdateDayLineStartEndDate();
-          pStock->SetUpdateProfileDB(true);
-          str = pStock->GetSymbol() + _T("日线资料存储完成");
-          gl_systemMessage.PushDayLineInfoMessage(str);
-          TRACE("更新%s日线数据\n", pStock->GetSymbol().GetBuffer());
-        }
-        pStock->UnloadDayLine();
-      }
-    }
-    if (gl_fExitingSystem) {
-      break; // 如果程序正在退出，则停止存储。
-    }
-  }
-  gl_UpdateWorldMarketDB.Signal();
-  gl_ThreadStatus.DecreaseSavingThread();
+	pMarket->UpdateStockDayLineDB();
 
-  return 42;
+	gl_UpdateWorldMarketDB.Signal();
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 42;
 }

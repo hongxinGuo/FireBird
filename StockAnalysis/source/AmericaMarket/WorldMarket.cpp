@@ -455,13 +455,9 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					for (auto& pStock2 : vStock) {
 						if (!IsStock(pStock2->GetSymbol())) {
 							AddStock(pStock2);
-							fFoundNewStock = true;
-							TRACE("发现新代码：%s\n", pStock2->GetSymbol().GetBuffer());
+							str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
+							gl_systemMessage.PushInnerSystemInformationMessage(str);
 						}
-					}
-					if (fFoundNewStock) {
-						SortStockVector(); // 这个行为很危险。目前WorldMarket的并行线程不多，尚可以使用。今后还是去除为佳。
-						gl_systemMessage.PushInnerSystemInformationMessage("Finnhub发现新代码，更新代码集");
 					}
 				}
 				break;
@@ -1870,6 +1866,16 @@ bool CWorldMarket::UpdateStockProfileDB(void) {
 	ASSERT(iCount == iUpdatedStock);
 	sm_fInProcess = false;
 	tt = GetTickCount64() - tt;
+	return true;
+}
+
+bool CWorldMarket::UpdateStockDayLineDB(void) {
+	for (long i = 0; i < GetTotalStock(); i++) {
+		GetStock(i)->UpdateDayLineDB();
+		if (gl_fExitingSystem) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+	}
 	return true;
 }
 

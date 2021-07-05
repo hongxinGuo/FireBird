@@ -160,6 +160,15 @@ ExcludeFromCodeCoverage(CChinaMarket28, L"CChinaMarket::RunningThreadSaveDayLine
 ExcludeFromCodeCoverage(CChinaMarket29, L"CChinaMarket::RunningThreadSaveStockSection");
 ExcludeFromCodeCoverage(CChinaMarket30, L"CChinaMarket::RunningThreadUpdateStockCodeDB");
 ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::RunningThreadUpdateOptionDB");
+ExcludeFromCodeCoverage(CChinaMarket41, L"CChinaMarket::DeleteTodayTempDB");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
+//ExcludeFromCodeCoverage(CChinaMarket31, L"CChinaMarket::");
 
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");

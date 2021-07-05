@@ -410,9 +410,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\DayLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
@@ -802,6 +799,9 @@
     </ClCompile>
     <ClCompile Include="source\DataBase\SetChinaMarketOption.cpp">
       <Filter>源文件\China Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

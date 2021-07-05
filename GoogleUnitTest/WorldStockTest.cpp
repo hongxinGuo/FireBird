@@ -788,6 +788,97 @@ namespace StockAnalysisTest {
 		setDayLine.Close();
 	}
 
+	TEST_F(CWorldStockTest, TestUpdateDayLineDB1) {
+		CWorldStock stock;
+
+		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+
+		EXPECT_FALSE(stock.UpdateDayLineDB()) << "更新日线标识为假时，无需执行实际操作";
+	}
+
+	TEST_F(CWorldStockTest, TestUpdateDayLineDB2) {
+		CWorldStock stock;
+
+		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+		stock.SetDayLineNeedSaving(true); // 需要更新
+		EXPECT_EQ(stock.GetDayLineSize(), 0);
+
+		EXPECT_FALSE(stock.UpdateDayLineDB()) << "日线数据为零时，无需执行实际操作";
+		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+	}
+
+	TEST_F(CWorldStockTest, TestUpdateDayLineDB3) {
+		CWorldStock stock;
+		vector<CDayLinePtr> vDayLine;
+		CDayLinePtr pDayLine;
+		CSetWorldStockDayLine setDayLine;
+
+		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+		stock.SetDayLineNeedSaving(true); // 需要更新
+		EXPECT_EQ(stock.GetDayLineSize(), 0);
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetDate(20200101); // 这个需要添加进数据库
+		pDayLine->SetClose(10010);
+		vDayLine.push_back(pDayLine);
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetDate(20210101); // 这个需要添加进数据库
+		pDayLine->SetClose(12345);
+		vDayLine.push_back(pDayLine);
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
+		pDayLine->SetClose(10020);
+		vDayLine.push_back(pDayLine);
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetStockSymbol(_T("A"));
+		pDayLine->SetDate(20210123); // 这个需要添加进数据库
+		pDayLine->SetClose(10030);
+		vDayLine.push_back(pDayLine);
+
+		stock.SetSymbol(_T("A"));
+		stock.SetDayLineStartDate(20200101); // 日线开始日期不晚于当前日线数据日期
+		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
+		stock.UpdateDayLine(vDayLine);
+
+		EXPECT_FALSE(stock.UpdateDayLineDB()) << "无需执行实际操作";
+		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+		EXPECT_EQ(stock.GetDayLineSize(), 0) << "已清除日线数据";
+
+		stock.SetDayLineNeedSaving(true); // 需要更新
+		stock.SetDayLineStartDate(20200102); // 日线开始日期晚于当前日线数据日期
+		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
+		stock.UpdateDayLine(vDayLine);
+
+		EXPECT_TRUE(stock.UpdateDayLineDB()) << "执行实际操作";
+		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+		EXPECT_EQ(stock.GetDayLineSize(), 0);
+		EXPECT_THAT(stock.GetDayLineStartDate(), Eq(20200101)) << "日线开始日期已更新为较早日期";
+		EXPECT_TRUE(stock.IsUpdateProfileDB());
+		ASSERT_GE(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopDayLineInfoMessage(), _T("A日线资料存储完成"));
+
+		// 清除添加的数据，恢复原状
+		setDayLine.m_strFilter = _T("[Symbol] = 'A'");
+		setDayLine.m_strSort = _T("[Date]");
+		setDayLine.Open();
+		setDayLine.m_pDatabase->BeginTrans();
+		EXPECT_TRUE(setDayLine.m_Date == 20200101);
+		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
+		setDayLine.Delete();
+		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
+		EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
+		setDayLine.Delete();
+		while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
+		EXPECT_TRUE(setDayLine.m_Date = 20210123);
+		EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
+		setDayLine.Delete();
+		setDayLine.m_pDatabase->CommitTrans();
+		setDayLine.Close();
+	}
+
 	TEST_F(CWorldStockTest, TestSaveInsiderTransaction) {
 		//  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
 		CWorldStock stock;

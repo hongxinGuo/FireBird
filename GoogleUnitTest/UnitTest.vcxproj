@@ -431,6 +431,7 @@
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
     <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.h" />
@@ -535,7 +536,6 @@
     <ClInclude Include="..\StockAnalysis\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
-    <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />

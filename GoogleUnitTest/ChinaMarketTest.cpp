@@ -7,6 +7,7 @@
 
 #include"SetOption.h"
 #include"SetWeekLineInfo.h"
+#include"SetChoicedStock.h"
 
 #include"WebInquirer.h"
 
@@ -1884,5 +1885,61 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
 		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex2));
 		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
+	}
+
+	TEST_F(CChinaMarketTest, TestAppendChoicedStock) { // Ò²²âÊÔUpdateChoicedStockºÍLoadChoicedStock
+		CChinaStockPtr pStock = nullptr;
+
+		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
+		pStock->SetChoiced(true);
+		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
+		pStock->SetChoiced(true);
+		gl_pChinaMarket->AddChoicedStock(pStock);
+
+		gl_pChinaMarket->AppendChoicedStockDB();
+
+		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChoiced());
+		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChoiced());
+
+		gl_pChinaMarket->LoadChoicedStockDB();
+		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChoiced());
+		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChoiced());
+
+		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+
+		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
+		pStock->SetChoiced(true);
+		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
+		pStock->SetChoiced(true);
+		gl_pChinaMarket->AddChoicedStock(pStock);
+
+		gl_pChinaMarket->UpdateChoicedStockDB();
+
+		// »Ö¸´Ô­×´
+		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
+		gl_pChinaMarket->DeleteChoicedStock(pStock);
+
+		CSetChoicedStock setChoicedStock;
+		setChoicedStock.Open();
+		setChoicedStock.m_pDatabase->BeginTrans();
+		setChoicedStock.MoveLast();
+		EXPECT_STREQ(setChoicedStock.m_Symbol, _T("600000.SS"));
+		setChoicedStock.Delete();
+		setChoicedStock.MovePrev();
+		EXPECT_STREQ(setChoicedStock.m_Symbol, _T("000002.SZ"));
+		setChoicedStock.Delete();
+		setChoicedStock.m_pDatabase->CommitTrans();
+		setChoicedStock.Close();
 	}
 }
