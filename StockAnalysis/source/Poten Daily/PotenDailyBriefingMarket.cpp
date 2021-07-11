@@ -128,7 +128,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
             ASSERT(m_pDataToSaved == nullptr);
             if (m_lCurrentInquiringDate == m_lToday) m_fTodayDataUpdated = true;
             m_pDataToSaved = pPotenDailyBriefing;
-            RunningThreadSavePotenData();
+            CreatingThreadSavePotenData();
             TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetFormatedMarketDate());
             gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
             m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate()) = true;
@@ -148,7 +148,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
   return true;
 }
 
-bool CPotenDailyBriefingMarket::RunningThreadSavePotenData(void) {
+bool CPotenDailyBriefingMarket::CreatingThreadSavePotenData(void) {
   thread threadSaveData(ThreadSavePotenData, this);
   threadSaveData.detach();
   return true;

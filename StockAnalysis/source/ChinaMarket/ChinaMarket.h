@@ -93,30 +93,30 @@ public:
 	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 各工作线程调用包裹函数
-	virtual bool RunningThreadAppendChoicedStockDB(void);
-	virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
-	virtual bool RunningThreadBuildDayLineRSOfDate(long lThisDay);
-	virtual bool RunningThreadBuildWeekLine(long lStartDate);
-	virtual bool RunningThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
-	virtual bool RunningThreadBuildWeekLineRS(void);
-	virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
-	virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
-	virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
-	virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
-	virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
-	virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
-	virtual bool RunningThreadChoice10RSStrong1StockSet(void);
-	virtual bool RunningThreadChoice10RSStrongStockSet(void);
-	virtual bool RunningThreadChoice10RSStrong2StockSet(void);
-	virtual bool RunningThreadLoadDayLine(CChinaStock* pCurrentStock);
-	virtual bool RunningThreadLoadWeekLine(CChinaStock* pCurrentStock);
-	virtual bool RunningThreadProcessTodayStock(void);
-	virtual bool RunningThreadSaveChoicedRTData(void);
-	virtual bool RunningThreadSaveTempRTData(void);
-	virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStock);
-	virtual bool RunningThreadSaveStockSection(void);
-	virtual bool RunningThreadUpdateStockCodeDB(void);
-	virtual bool RunningThreadUpdateOptionDB(void);
+	virtual bool CreatingThreadAppendChoicedStockDB(void);
+	virtual bool CreatingThreadBuildDayLineRS(long lStartCalculatingDay);
+	virtual bool CreatingThreadBuildDayLineRSOfDate(long lThisDay);
+	virtual bool CreatingThreadBuildWeekLine(long lStartDate);
+	virtual bool CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
+	virtual bool CreatingThreadBuildWeekLineRS(void);
+	virtual bool CreatingThreadBuildWeekLineRSOfDate(long lThisDay);
+	virtual bool CreatingThreadBuildWeekLineOfCurrentWeek(void);
+	virtual bool CreatingThreadBuildCurrentWeekWeekLineTable(void);
+	virtual bool CreatingThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
+	virtual bool CreatingThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+	virtual bool CreatingThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+	virtual bool CreatingThreadChoice10RSStrong1StockSet(void);
+	virtual bool CreatingThreadChoice10RSStrongStockSet(void);
+	virtual bool CreatingThreadChoice10RSStrong2StockSet(void);
+	virtual bool CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
+	virtual bool CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
+	virtual bool CreatingThreadProcessTodayStock(void);
+	virtual bool CreatingThreadSaveChoicedRTData(void);
+	virtual bool CreatingThreadSaveTempRTData(void);
+	virtual bool CreatingThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStock);
+	virtual bool CreatingThreadSaveStockSection(void);
+	virtual bool CreatingThreadUpdateStockCodeDB(void);
+	virtual bool CreatingThreadUpdateOptionDB(void);
 	// interface function
 
 public:

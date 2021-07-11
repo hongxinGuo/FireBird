@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+    int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
     gl_pWorldMarket->SetTiingoDataReceived(false);
     EXPECT_CALL(TiingoWebInquiry, ReadWebData())
@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(false));
     TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadTiingoData(&TiingoWebInquiry), (UINT)8);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 0);
 
     gl_pWorldMarket->SetTiingoDataReceived(false);
@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadTiingoData(&TiingoWebInquiry), (UINT)8);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopTiingoData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);

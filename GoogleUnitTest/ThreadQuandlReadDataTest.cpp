@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadReadQuandlDataTest, TestThreadReadQuandlData) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+    int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
     gl_pWorldMarket->SetQuandlDataReceived(false);
     EXPECT_CALL(QuandlWebInquiry, ReadWebData())
@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(false));
     QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 0);
 
     gl_pWorldMarket->SetQuandlDataReceived(false);
@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8) << "testData×Ö·û´®³¤¶ÈÎª8";

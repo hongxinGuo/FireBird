@@ -8,19 +8,19 @@ namespace testing {
 	class CMockWorldMarket : public CWorldMarket {
 	public:
 		MOCK_METHOD(bool, RunningthreadUpdateDayLneStartEndDate, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateDayLineDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateStockProfileDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateForexSymbolDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateForexExchangeDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateTiingoIndustry, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateSICIndustry, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateNaicsIndustry, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateTiingoStockDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateInsiderTransactionDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateEconomicCalendarDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateDayLineDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateStockProfileDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateForexSymbolDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateForexExchangeDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateCountryListDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateTiingoIndustry, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateSICIndustry, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateNaicsIndustry, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateTiingoStockDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateInsiderTransactionDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateEconomicCalendarDB, (), (override));
 
 		MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));

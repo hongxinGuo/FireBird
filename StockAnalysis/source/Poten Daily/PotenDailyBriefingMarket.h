@@ -28,7 +28,7 @@ public:
   bool TaskLoadDataBase(void);
 
   // 工作线程包裹函数
-  bool RunningThreadSavePotenData(void);
+  bool CreatingThreadSavePotenData(void);
 
   bool LoadDatabase(void);
   virtual bool SaveCurrentData(void);

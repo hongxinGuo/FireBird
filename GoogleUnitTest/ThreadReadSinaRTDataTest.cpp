@@ -32,13 +32,13 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+    int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
     EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
 
     EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopSinaRTData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);

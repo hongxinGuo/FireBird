@@ -5,29 +5,29 @@
 namespace testing {
 	class CMockChinaMarket : public CChinaMarket {
 	public:
-		MOCK_METHOD(bool, RunningThreadSaveChoicedRTData, (), (override));
-		MOCK_METHOD(bool, RunningThreadProcessTodayStock, (), (override));
-		MOCK_METHOD(bool, RunningThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
-		MOCK_METHOD(bool, RunningThreadBuildDayLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(bool, RunningThreadSaveTempRTData, (), (override));
-		MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStock* pStock), (override));
-		MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
-		MOCK_METHOD(bool, RunningThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
-		MOCK_METHOD(bool, RunningThreadChoice10RSStrong2StockSet, (), (override));
-		MOCK_METHOD(bool, RunningThreadChoice10RSStrong1StockSet, (), (override));
-		MOCK_METHOD(bool, RunningThreadChoice10RSStrongStockSet, (), (override));
-		MOCK_METHOD(bool, RunningThreadCalculate10RSStrongStock, (vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock), (override));
-		MOCK_METHOD(bool, RunningThreadCalculate10RSStrong1Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
-		MOCK_METHOD(bool, RunningThreadCalculate10RSStrong2Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
-		MOCK_METHOD(bool, RunningThreadBuildWeekLine, (long lStartDate), (override));
-		MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStock* pStock, long lStartDate), (override));
-		MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
-		MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));
-		MOCK_METHOD(bool, RunningThreadSaveStockSection, (), (override));
+		MOCK_METHOD(bool, CreatingThreadSaveChoicedRTData, (), (override));
+		MOCK_METHOD(bool, CreatingThreadProcessTodayStock, (), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildDayLineRSOfDate, (long lThisDate), (override));
+		MOCK_METHOD(bool, CreatingThreadSaveTempRTData, (), (override));
+		MOCK_METHOD(bool, CreatingThreadSaveDayLineBasicInfoOfStock, (CChinaStock* pStock), (override));
+		MOCK_METHOD(bool, CreatingThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
+		MOCK_METHOD(bool, CreatingThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateStockCodeDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateOptionDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadAppendChoicedStockDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong2StockSet, (), (override));
+		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong1StockSet, (), (override));
+		MOCK_METHOD(bool, CreatingThreadChoice10RSStrongStockSet, (), (override));
+		MOCK_METHOD(bool, CreatingThreadCalculate10RSStrongStock, (vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock), (override));
+		MOCK_METHOD(bool, CreatingThreadCalculate10RSStrong1Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
+		MOCK_METHOD(bool, CreatingThreadCalculate10RSStrong2Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildWeekLine, (long lStartDate), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildWeekLineOfStock, (CChinaStock* pStock, long lStartDate), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRS, (), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
+		MOCK_METHOD(bool, CreatingThreadBuildWeekLineOfCurrentWeek, (), (override));
+		MOCK_METHOD(bool, CreatingThreadSaveStockSection, (), (override));
 
 		MOCK_METHOD(bool, UpdateOptionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));

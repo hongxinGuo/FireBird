@@ -604,7 +604,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS(void) {
-  gl_pChinaMarket->RunningThreadBuildDayLineRS(gl_pChinaMarket->GetFormatedMarketDate());
+  gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -615,7 +615,7 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessTodayStock() {
-  gl_pChinaMarket->RunningThreadProcessTodayStock();
+  gl_pChinaMarket->CreatingThreadProcessTodayStock();
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -771,7 +771,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDayLineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DATE__);
+  gl_pChinaMarket->CreatingThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DATE__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -825,19 +825,19 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnCalculate10dayRS1() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadChoice10RSStrong1StockSet();
+  gl_pChinaMarket->CreatingThreadChoice10RSStrong1StockSet();
   gl_pChinaMarket->SetChoiced10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadChoice10RSStrong2StockSet();
+  gl_pChinaMarket->CreatingThreadChoice10RSStrong2StockSet();
   gl_pChinaMarket->SetChoiced10RSStrong2StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadChoice10RSStrongStockSet();
+  gl_pChinaMarket->CreatingThreadChoice10RSStrongStockSet();
   gl_pChinaMarket->SetChoiced10RSStrongStockSet(true);
 }
 
@@ -902,7 +902,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCreateWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildWeekLine(19900101);
+  gl_pChinaMarket->CreatingThreadBuildWeekLine(19900101);
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
@@ -911,7 +911,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnRebuildWeekLineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildWeekLineRS();
+  gl_pChinaMarket->CreatingThreadBuildWeekLineRS();
 }
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
@@ -920,7 +920,7 @@ void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCurrentWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildWeekLineOfCurrentWeek();
+  gl_pChinaMarket->CreatingThreadBuildWeekLineOfCurrentWeek();
 }
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -937,7 +937,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildWeekLine(gl_pChinaMarket->GetFormatedMarketDate());
+  gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -946,7 +946,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadBuildCurrentWeekWeekLineTable();
+  gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable();
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
@@ -961,7 +961,7 @@ void CMainFrame::OnUpdateStockSection() {
 
 void CMainFrame::OnUpdateStockCode() {
   // TODO: Add your command handler code here
-  gl_pChinaMarket->RunningThreadUpdateStockCodeDB();
+  gl_pChinaMarket->CreatingThreadUpdateStockCodeDB();
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {

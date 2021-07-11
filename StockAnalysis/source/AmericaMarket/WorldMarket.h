@@ -135,7 +135,7 @@ public:
 	bool SchedulingTaskPerHour(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
 
-	bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
+	bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有查询Finnhub的任务皆位于此函数内。
 	virtual bool TaskInquiryFinnhubCountryList(void);
 	virtual bool TaskInquiryFinnhubCompanySymbol(void);
 	virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
@@ -149,7 +149,7 @@ public:
 	virtual bool TaskInquiryFinnhubForexSymbol(void);
 	virtual bool TaskInquiryFinnhubForexDayLine(void);
 
-	bool TaskInquiryTiingo(void);
+	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
 	virtual bool TaskInquiryTiingoCompanySymbol(void);
 	virtual bool TaskInquiryTiingoDayLine(void);
 
@@ -193,19 +193,19 @@ public:
 
 	// 各工作线程调用包裹函数
 	virtual bool RunningthreadUpdateDayLneStartEndDate(void);
-	virtual bool RunningThreadUpdateDayLineDB(void);
-	virtual bool RunningThreadUpdateStockProfileDB(void);
-	virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
-	virtual bool RunningThreadUpdateForexSymbolDB(void);
-	virtual bool RunningThreadUpdateCountryListDB(void);
-	virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
-	virtual bool RunningThreadUpdateInsiderTransactionDB(void);
-	virtual bool RunningThreadUpdateTiingoStockDB(void);
-	virtual bool RunningThreadUpdateTiingoIndustry(void);
-	virtual bool RunningThreadUpdateSICIndustry(void);
-	virtual bool RunningThreadUpdateNaicsIndustry(void);
-	virtual bool RunningThreadUpdateForexExchangeDB(void);
-	virtual bool RunningThreadUpdateEconomicCalendarDB(void);
+	virtual bool CreatingThreadUpdateDayLineDB(void);
+	virtual bool CreatingThreadUpdateStockProfileDB(void);
+	virtual bool CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
+	virtual bool CreatingThreadUpdateForexSymbolDB(void);
+	virtual bool CreatingThreadUpdateCountryListDB(void);
+	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
+	virtual bool CreatingThreadUpdateInsiderTransactionDB(void);
+	virtual bool CreatingThreadUpdateTiingoStockDB(void);
+	virtual bool CreatingThreadUpdateTiingoIndustry(void);
+	virtual bool CreatingThreadUpdateSICIndustry(void);
+	virtual bool CreatingThreadUpdateNaicsIndustry(void);
+	virtual bool CreatingThreadUpdateForexExchangeDB(void);
+	virtual bool CreatingThreadUpdateEconomicCalendarDB(void);
 
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 

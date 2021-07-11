@@ -32,13 +32,13 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadCrweberIndexTest, TestThreadCrweberIndex) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfSavingThread();
+    int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
     EXPECT_CALL(crweberIndexInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), (UINT)5);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
     EXPECT_CALL(crweberIndexInquiry, ReadWebData())
@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), (UINT)5);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
     EXPECT_EQ(gl_WebInquirer.GetCrweberDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopCrweberData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);

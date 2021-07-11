@@ -27,7 +27,7 @@ CWorldMarket::CWorldMarket() {
 	m_fFinnhubEPSSurpriseUpdated = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;
 
-	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有十万之多，无法在一天之内更新完，故不再重置此索引。
+	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
 	m_strMarketId = _T("美国市场");
 	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
@@ -955,7 +955,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 }
 
 bool CWorldMarket::TaskUpdateForexSymbolDB(void) {
-	RunningThreadUpdateForexSymbolDB();
+	CreatingThreadUpdateForexSymbolDB();
 	return true;
 }
 
@@ -1318,7 +1318,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 
 bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 	if (IsFinnhubStockProfileUpdated()) {
-		RunningThreadUpdateTiingoIndustry();
+		CreatingThreadUpdateTiingoIndustry();
 		return true;
 	}
 	return false;
@@ -1326,7 +1326,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 
 bool CWorldMarket::TaskUpdateSICIndustry(void) {
 	if (IsFinnhubStockProfileUpdated()) {
-		RunningThreadUpdateSICIndustry();
+		CreatingThreadUpdateSICIndustry();
 		return true;
 	}
 	return false;
@@ -1334,14 +1334,14 @@ bool CWorldMarket::TaskUpdateSICIndustry(void) {
 
 bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
 	if (IsFinnhubStockProfileUpdated()) {
-		RunningThreadUpdateNaicsIndustry();
+		CreatingThreadUpdateNaicsIndustry();
 		return true;
 	}
 	return false;
 }
 
 bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
-	RunningThreadUpdateForexExchangeDB();
+	CreatingThreadUpdateForexExchangeDB();
 
 	return true;
 }
@@ -1366,12 +1366,12 @@ bool CWorldMarket::UpdateForexExchangeDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateStockProfileDB(void) {
-	RunningThreadUpdateStockProfileDB();
+	CreatingThreadUpdateStockProfileDB();
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateDayLineDB(void) {
-	RunningThreadUpdateDayLineDB();
+	CreatingThreadUpdateDayLineDB();
 
 	return true;
 }
@@ -1398,7 +1398,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					RunningThreadUpdateForexDayLineDB(pSymbol.get());
+					CreatingThreadUpdateForexDayLineDB(pSymbol.get());
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -1416,7 +1416,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateCountryListDB(void) {
-	RunningThreadUpdateCountryListDB();
+	CreatingThreadUpdateCountryListDB();
 	return true;
 }
 
@@ -1425,7 +1425,7 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 
 	for (auto& pStock : m_vWorldStock) {
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			RunningThreadUpdateEPSSurpriseDB(pStock.get());
+			CreatingThreadUpdateEPSSurpriseDB(pStock.get());
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_fExitingSystem) {
@@ -1437,18 +1437,18 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
-	RunningThreadUpdateEconomicCalendarDB();
+	CreatingThreadUpdateEconomicCalendarDB();
 
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateInsiderTransactionDB(void) {
-	RunningThreadUpdateInsiderTransactionDB();
+	CreatingThreadUpdateInsiderTransactionDB();
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateTiingoStockDB(void) {
-	RunningThreadUpdateTiingoStockDB();
+	CreatingThreadUpdateTiingoStockDB();
 	return true;
 }
 
@@ -1478,79 +1478,79 @@ bool CWorldMarket::RunningthreadUpdateDayLneStartEndDate(void) {
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateDayLineDB() {
+bool CWorldMarket::CreatingThreadUpdateDayLineDB() {
 	thread thread1(ThreadUpdateWorldStockDayLineDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateStockProfileDB(void) {
+bool CWorldMarket::CreatingThreadUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateStockProfileDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol) {
+bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol) {
 	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateForexSymbolDB() {
+bool CWorldMarket::CreatingThreadUpdateForexSymbolDB() {
 	thread thread1(ThreadUpdateForexSymbolDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateCountryListDB(void) {
+bool CWorldMarket::CreatingThreadUpdateCountryListDB(void) {
 	thread thread1(ThreadUpdateCountryListDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
+bool CWorldMarket::CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
 	thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateInsiderTransactionDB(void) {
+bool CWorldMarket::CreatingThreadUpdateInsiderTransactionDB(void) {
 	thread thread1(ThreadUpdateInsiderTransactionDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateTiingoStockDB(void) {
+bool CWorldMarket::CreatingThreadUpdateTiingoStockDB(void) {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateTiingoIndustry(void) {
+bool CWorldMarket::CreatingThreadUpdateTiingoIndustry(void) {
 	thread thread1(ThreadUpdateTiingoIndustry, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateSICIndustry(void) {
+bool CWorldMarket::CreatingThreadUpdateSICIndustry(void) {
 	thread thread1(ThreadUpdateSICIndustry, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateNaicsIndustry(void) {
+bool CWorldMarket::CreatingThreadUpdateNaicsIndustry(void) {
 	thread thread1(ThreadUpdateNaicsIndustry, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateForexExchangeDB(void) {
+bool CWorldMarket::CreatingThreadUpdateForexExchangeDB(void) {
 	thread thread1(ThreadUpdateForexExchangeDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateEconomicCalendarDB(void) {
+bool CWorldMarket::CreatingThreadUpdateEconomicCalendarDB(void) {
 	thread thread1(ThreadUpdateEconomicCalendarDB, this);
 	thread1.detach();
 

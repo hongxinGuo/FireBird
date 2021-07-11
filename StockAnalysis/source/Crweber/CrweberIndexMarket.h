@@ -20,8 +20,8 @@ public:
   bool TaskResetMarket(long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
-  virtual bool RunningThreadMaintainDB(void);
-  virtual bool RunningThreadSaveCrweberDB(CCrweberIndexPtr pCrweberIndex);
+  virtual bool CreatingThreadMaintainDB(void);
+  virtual bool CreatingThreadSaveCrweberDB(CCrweberIndexPtr pCrweberIndex);
 
   virtual bool LoadDatabase(void);
   virtual bool SaveDatabase(void);
