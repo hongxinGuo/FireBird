@@ -246,8 +246,6 @@
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc" />
-    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\StockAnalysis\ChildFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
@@ -608,6 +606,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

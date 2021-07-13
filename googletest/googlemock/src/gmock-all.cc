@@ -36,7 +36,6 @@
 
 // This line ensures that gmock.h can be compiled on its own, even
 // when it's fused.
-#include"pch.h"
 #include "gmock/gmock.h"
 
 // The following lines pull in the real gmock *.cc files.

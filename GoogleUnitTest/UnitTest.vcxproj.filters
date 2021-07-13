@@ -109,9 +109,6 @@
     <Filter Include="GoogleTest源文件">
       <UniqueIdentifier>{90714063-2043-40d6-9f23-a2d20d3dc6e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\GoogleTest">
-      <UniqueIdentifier>{26971ba5-2a47-4253-9f68-d5022bc78795}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\Base Class">
       <UniqueIdentifier>{eb36a23a-1556-486c-91ef-c7a08d65a00b}</UniqueIdentifier>
     </Filter>
@@ -767,12 +764,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc">
-      <Filter>Test源文件\GoogleTest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc">
-      <Filter>Test源文件\GoogleTest</Filter>
     </ClCompile>
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>

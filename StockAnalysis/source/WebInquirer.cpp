@@ -61,7 +61,7 @@ CWebInquirer::~CWebInquirer(void) {
 }
 
 void CWebInquirer::Initialize(void) {
-#ifdef __GOOGLEMOCK__ // 测试时建立Mock类
+#ifdef __GOOGLEMOCK__  // 测试时建立Mock类
 	gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
 	gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
 	gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
@@ -74,7 +74,6 @@ void CWebInquirer::Initialize(void) {
 	gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
-
 #else // 实际运行时建立实体类
 	gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
 	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();

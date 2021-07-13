@@ -35,7 +35,6 @@
 
 // This line ensures that gtest.h can be compiled on its own, even
 // when it's fused.
-#include"pch.h"
 #include "gtest/gtest.h"
 
 // The following lines pull in the real gtest *.cc files.
