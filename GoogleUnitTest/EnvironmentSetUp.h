@@ -20,6 +20,7 @@
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
+#include"MockCrweberIndexWebInquiry.h"
 #include"MockFinnhubWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
@@ -59,6 +60,18 @@ namespace StockAnalysisTest {
 			ASSERT_TRUE(gl_fTestMode);
 			ASSERT_FALSE(gl_fNormalMode);
 
+			gl_pSinaRTWebInquiry = nullptr;
+			gl_pTengxunRTWebInquiry = nullptr;
+			gl_pNeteaseRTWebInquiry = nullptr;
+			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
+			gl_pFinnhubWebInquiry = nullptr;
+			gl_pPotenDailyBriefingWebInquiry = nullptr;
+			gl_pCrweberIndexWebInquiry = nullptr;
+			gl_pFinnhubWebInquiry = nullptr;
+			gl_pTiingoWebInquiry = nullptr;
+			gl_pQuandlWebInquiry = nullptr;
+
 			// 下列网络提取器皆使用Mock类，以防止出现实际的网络读取动作。
 			gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
 			gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
@@ -67,11 +80,12 @@ namespace StockAnalysisTest {
 			gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 			gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
 			gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
-			gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
-			gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
 			gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
+
+			CCrweberIndexWebInquiryPtr pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
+			CMockCrweberIndexWebInquiryPtr pMockCrweberIndexWebInquiry = static_pointer_cast<CMockCrweberIndexWebInquiry>(pCrweberIndexWebInquiry);
 
 			gl_pMockCrweberIndexMarket = make_shared<CMockCrweberIndexMarket>();
 
@@ -199,8 +213,6 @@ namespace StockAnalysisTest {
 			gl_pNeteaseRTWebInquiry = nullptr;
 			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
-			gl_pNeteaseDayLineWebInquiry3 = nullptr; // 网易日线历史数据
-			gl_pNeteaseDayLineWebInquiry4 = nullptr; // 网易日线历史数据
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pPotenDailyBriefingWebInquiry = nullptr;
 			gl_pCrweberIndexWebInquiry = nullptr;

@@ -6,6 +6,9 @@
 #include"WorldMarket.h"
 
 #include"SetFinnhubForexExchange.h"
+#include"MockFinnhubWebInquiry.h"
+#include"MockQuandlWebInquiry.h"
+#include"MockTiingoWebInquiry.h"
 
 using namespace testing;
 
@@ -28,6 +31,10 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(inquiry3.m_iPriority, 20) << "按优先级排列";
 	}
 
+	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;
+	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
+	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
+
 	class CWorldMarketTest : public ::testing::Test
 	{
 	protected:
@@ -45,10 +52,21 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
 
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
+
+			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
+			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
+			ASSERT_THAT(gl_pQuandlWebInquiry, NotNull());
+			s_pMockQuandlWebInquiry = static_pointer_cast<CMockQuandlWebInquiry>(gl_pQuandlWebInquiry);
+			ASSERT_THAT(gl_pTiingoWebInquiry, NotNull());
+			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
 		}
 		static void TearDownTestSuite(void) {
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
+			s_pMockFinnhubWebInquiry = nullptr;
+			s_pMockQuandlWebInquiry = nullptr;
+			s_pMockTiingoWebInquiry = nullptr;
 		}
+
 		virtual void SetUp(void) override {
 		}
 
@@ -390,19 +408,19 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadOption) {
-		EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
 
-		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
-		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
-		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
+		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
+		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
+		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
 		gl_pWorldMarket->LoadOption();
-		EXPECT_STREQ(gl_pFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
-		EXPECT_STREQ(gl_pTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"));
-		EXPECT_STREQ(gl_pQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
+		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=fad87279362b9e580e4fb364a263cda3c67336c8"));
+		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 
-		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T("&token=bv4ac1n48v6tcp17l5cg"));
-		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(_T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
-		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(_T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T("&token=bv4ac1n48v6tcp17l5cg"));
+		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
+		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {

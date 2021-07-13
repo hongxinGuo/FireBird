@@ -22,6 +22,9 @@ using namespace testing;
 
 namespace StockAnalysisTest {
 	extern CMockChinaMarketPtr gl_pMockChinaMarket;
+
+	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
+	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry2;
 	class CMockChinaMarketTest : public ::testing::Test
 	{
 	protected:
@@ -38,6 +41,11 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+
+			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
+			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
+			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry2, NotNull());
+			s_pMockNeteaseDayLineWebInquiry2 = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry2);
 		}
 
 		static void TearDownTestSuite(void) {
@@ -49,6 +57,9 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+
+			s_pMockNeteaseDayLineWebInquiry = nullptr;
+			s_pMockNeteaseDayLineWebInquiry2 = nullptr;
 		}
 
 		virtual void SetUp(void) override {
@@ -372,29 +383,29 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsDayLineNeedUpdate());
 		gl_pMockChinaMarket->SetSystemReady(true);
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92559);
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(0);
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(0);
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(0);
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, StartReadingThread()).Times(0);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92600);
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, PrepareNextInquiringStr())
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, PrepareNextInquiringStr())
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
-		EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 		}
-		gl_pNeteaseDayLineWebInquiry2->SetReadingWebData(false);
-		gl_pNeteaseDayLineWebInquiry->SetReadingWebData(false);
+		s_pMockNeteaseDayLineWebInquiry2->SetReadingWebData(false);
+		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessTodayStock) {

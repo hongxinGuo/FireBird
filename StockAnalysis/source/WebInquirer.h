@@ -13,53 +13,32 @@
 extern int gl_iMaxSavingOneDayLineThreads;
 
 #ifdef __GOOGLEMOCK__ // 测试时使用Mock类
-#include"MockSinaRTWebInquiry.h"
-#include"MockTengxunRTWebInquiry.h"
-#include"MockNeteaseRTWebInquiry.h"
-#include"MockNeteaseDayLineWebInquiry.h"
-#include"MockPotenDailyBriefingWebInquiry.h"
-#include"MockCrweberIndexWebInquiry.h"
-#include"MockFinnhubWebInquiry.h"
-#include"MockTiingoWebInquiry.h"
-#include"MockQuandlWebInquiry.h"
 using namespace testing;
 
-extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
-extern CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
-extern CMockNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
-extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
-extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
-extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
-extern CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry; // Tiingo.com证券信息
-extern CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry; // Quandl.com证券信息
 #else // 实际运行时使用实体类
+
+#endif
+
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
-#include"NeteaseDayLineWebInquiry.h"
-#include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
+#include"PotenDailyBriefingWebInquiry.h"
+#include"NeteaseDayLineWebInquiry.h"
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 
-extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
+extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
+extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
-extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2; // 网易日线历史数据
 extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
 extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
-#endif
 
 class CWebInquirer : public CObject {
 public:
