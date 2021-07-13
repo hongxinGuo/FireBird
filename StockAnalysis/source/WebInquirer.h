@@ -12,13 +12,6 @@
 
 extern int gl_iMaxSavingOneDayLineThreads;
 
-#ifdef __GOOGLEMOCK__ // 测试时使用Mock类
-using namespace testing;
-
-#else // 实际运行时使用实体类
-
-#endif
-
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
