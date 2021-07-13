@@ -62,56 +62,56 @@ CWebInquirer::~CWebInquirer(void) {
 
 void CWebInquirer::Initialize(void) {
 #ifdef __GOOGLEMOCK__ // 测试时建立Mock类
-  gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
-  gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
-  gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
-  gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
-  gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
-  gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
-  gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
+	gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
+	gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
+	gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
+	gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
+	gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
+	gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
+	gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
+	gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
 #else // 实际运行时建立实体类
-  gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
-  gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
-  gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
-  gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
-  gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
-  gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
-  gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
+	gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
+	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
+	gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
+	gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
+	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
+	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
+	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 #endif
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {
-  // 抓取日线数据.
-  // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。目前使用两个。
-  ASSERT((gl_iMaxSavingOneDayLineThreads <= 32) && (gl_iMaxSavingOneDayLineThreads > 0));
-  switch (gl_iMaxSavingOneDayLineThreads) {
-  case 6:
-  case 5:
-  case 4:
-  case 3:
-  case 2:
-  if (!gl_pNeteaseDayLineWebInquiry2->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiry2->GetWebData();
-  }
-  case 1:
-  if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiry->GetWebData();
-  }
-  break;
-  default:
-  if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiry->GetWebData();
-  }
-  break;
-  }
-  return true;
+	// 抓取日线数据.
+	// 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。目前使用两个。
+	ASSERT((gl_iMaxSavingOneDayLineThreads <= 32) && (gl_iMaxSavingOneDayLineThreads > 0));
+	switch (gl_iMaxSavingOneDayLineThreads) {
+	case 6:
+	case 5:
+	case 4:
+	case 3:
+	case 2:
+		if (!gl_pNeteaseDayLineWebInquiry2->IsReadingWebData()) {
+			gl_pNeteaseDayLineWebInquiry2->GetWebData();
+		}
+	case 1:
+		if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
+			gl_pNeteaseDayLineWebInquiry->GetWebData();
+		}
+		break;
+	default:
+		if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
+			gl_pNeteaseDayLineWebInquiry->GetWebData();
+		}
+		break;
+	}
+	return true;
 }
