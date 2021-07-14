@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"ctype.h"
+
 #include"globedef.h"
 #include"accessory.h"
 #include"WorldMarket.h"
@@ -44,10 +46,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 			s = pt2.get<string>(_T("permaTicker"));
 			if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
 			s = pt2.get<string>(_T("ticker"));
-			//std::transform(s.begin(), s.end(), s.begin(), toupper); // 不知为什么，当生成库时，此处编译时报错，说没有找到合适的。故而先使用下面的实现
-			for (int i = 0; i < s.size(); i++) {
-				s.at(i) = toupper(s.at(i));
-			}
+			transform(s.begin(), s.end(), s.begin(), _toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。
 			pStock->m_strTicker = s.c_str();
 			s = pt2.get<string>(_T("name"));
 			if (s.size() > 0) pStock->m_strName = s.c_str();
