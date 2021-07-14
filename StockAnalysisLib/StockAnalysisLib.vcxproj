@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\StockAnalysis\ChildFrm.h" />
+    <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h" />
+    <ClInclude Include="..\StockAnalysis\MainFrm.h" />
+    <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
+    <ClInclude Include="..\StockAnalysis\resource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconomicCalendar.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetNaicsIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineToday.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRealTimeData.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\globedef.h" />
+    <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
+    <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
+    <ClInclude Include="..\StockAnalysis\source\Thread.h" />
+    <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\stdafx.h" />
+    <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
+    <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
+    <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
+    <ClInclude Include="..\StockAnalysis\targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\StockAnalysis\ChildFrm.cpp" />
+    <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
+    <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetNaicsIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineToday.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRealTimeData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
+    <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
+    <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{4dac4767-5d5b-4f93-9677-f27227996e69}</ProjectGuid>
+    <RootNamespace>StockAnalysisLib</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <VCToolsVersion>
+    </VCToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <VCToolsVersion>
+    </VCToolsVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DiagnosticsFormat>Classic</DiagnosticsFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAsManaged>false</CompileAsManaged>
+      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.76.0.0\build\boost.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.76.0.0\build\boost.targets'))" />
+  </Target>
+</Project>

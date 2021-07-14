@@ -611,6 +611,9 @@
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
       <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\StockAnalysisLib\StockAnalysisLib.vcxproj">
+      <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

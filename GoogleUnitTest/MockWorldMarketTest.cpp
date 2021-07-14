@@ -168,67 +168,67 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateCountryListDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateCountryListDB(gl_pMockWorldMarket.get()), 40);
+		EXPECT_EQ(ThreadUpdateCountryListDB(gl_pMockWorldMarket.get()), (UINT)40);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockProfileDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockProfileDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateStockProfileDB(gl_pMockWorldMarket.get()), 37);
+		EXPECT_EQ(ThreadUpdateStockProfileDB(gl_pMockWorldMarket.get()), (UINT)37);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockDayLineDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(gl_pMockWorldMarket.get()), 42);
+		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(gl_pMockWorldMarket.get()), (UINT)42);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateForexSymbolDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexSymbolDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), 39);
+		EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), (UINT)39);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateForexExchangedDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexExchangeDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), 49);
+		EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), (UINT)49);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderTransactionDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), 48);
+		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), (UINT)48);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoStockDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoStockDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoStockDB(gl_pMockWorldMarket.get()), 44);
+		EXPECT_EQ(ThreadUpdateTiingoStockDB(gl_pMockWorldMarket.get()), (UINT)44);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoIndustry(gl_pMockWorldMarket.get()), 45);
+		EXPECT_EQ(ThreadUpdateTiingoIndustry(gl_pMockWorldMarket.get()), (UINT)45);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateSICIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateSICIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateSICIndustry(gl_pMockWorldMarket.get()), 46);
+		EXPECT_EQ(ThreadUpdateSICIndustry(gl_pMockWorldMarket.get()), (UINT)46);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateNaicsIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateNaicsIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateNaicsIndustry(gl_pMockWorldMarket.get()), 47);
+		EXPECT_EQ(ThreadUpdateNaicsIndustry(gl_pMockWorldMarket.get()), (UINT)47);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateDayLineStartEndDate) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineStartEndDate)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), 43);
+		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), (UINT)43);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateTiingoIndustry) {
