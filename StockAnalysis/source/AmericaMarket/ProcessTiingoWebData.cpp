@@ -44,7 +44,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 			s = pt2.get<string>(_T("permaTicker"));
 			if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
 			s = pt2.get<string>(_T("ticker"));
-			//transform(s.begin(), s.end(), s.begin(), toupper); // 不知为什么，当生成库时，此处编译时报错，说没有找到合适的。故而先使用下面的实现
+			//std::transform(s.begin(), s.end(), s.begin(), toupper); // 不知为什么，当生成库时，此处编译时报错，说没有找到合适的。故而先使用下面的实现
 			for (int i = 0; i < s.size(); i++) {
 				s.at(i) = toupper(s.at(i));
 			}

@@ -162,9 +162,6 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
@@ -405,6 +402,9 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -444,9 +444,6 @@
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp">
@@ -799,6 +796,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp">
       <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
+      <Filter>源文件\windows界面</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

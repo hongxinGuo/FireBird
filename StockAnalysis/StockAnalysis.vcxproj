@@ -877,248 +877,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="GlobeSymbolDef.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="OutputWnd.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="source\Accessory.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetCountry.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetEconomicCalendar.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetEPSSurprise.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubExchange.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetForexDayLine.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetInsiderTransaction.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetNaicsIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetSICIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetTiingoStock.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldChoicedStock.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldMarketOption.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStock.h" />
-    <ClInclude Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
-    <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h" />
-    <ClInclude Include="source\AmericaMarket\InsiderTransaction.h" />
-    <ClInclude Include="source\AmericaMarket\NaicsIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\SICIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\TiingoIndustry.h" />
-    <ClInclude Include="source\AmericaMarket\WorldMarket.h" />
-    <ClInclude Include="source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="source\AmericaMarket\Country.h" />
-    <ClInclude Include="source\AmericaMarket\EconomicCalendar.h" />
-    <ClInclude Include="source\AmericaMarket\EPSSurprise.h" />
-    <ClInclude Include="source\AmericaMarket\FinnhubExchange.h" />
-    <ClInclude Include="source\AmericaMarket\FinnhubForexSymbol.h" />
-    <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
-    <ClInclude Include="source\AmericaMarket\TiingoStock.h" />
-    <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h" />
-    <ClInclude Include="source\Base Class\VirtualHistoryData.h" />
-    <ClInclude Include="source\Base Class\VirtualMarket.h" />
-    <ClInclude Include="source\Base Class\VirtualStock.h" />
-    <ClInclude Include="source\Base Class\VirtualWebInquiry.h" />
-    <ClInclude Include="source\ChinaMarket\ChinaMarket.h" />
-    <ClInclude Include="source\ChinaMarket\ChinaStock.h" />
-    <ClInclude Include="source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
-    <ClInclude Include="source\ChinaMarket\NeteaseRTWebInquiry.h" />
-    <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h" />
-    <ClInclude Include="source\ChinaMarket\StockSection.h" />
-    <ClInclude Include="source\ChinaMarket\TengxunRTWebInquiry.h" />
-    <ClInclude Include="source\ChinaStockHistoryData.h" />
-    <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
-    <ClInclude Include="source\Crweber\CrweberIndex.h" />
-    <ClInclude Include="source\Crweber\CrweberIndexMarket.h" />
-    <ClInclude Include="source\Crweber\CrweberIndexWebInquiry.h" />
-    <ClInclude Include="source\DataBase\SetChoicedStock.h" />
-    <ClInclude Include="source\DataBase\SetCrweberIndex.h" />
-    <ClInclude Include="source\DataBase\SetDayLineBasicInfo.h" />
-    <ClInclude Include="source\DataBase\SetDayLineExtendInfo.h" />
-    <ClInclude Include="source\DataBase\SetDayLineToday.h" />
-    <ClInclude Include="source\DataBase\SetOption.h" />
-    <ClInclude Include="source\DataBase\SetChinaMarketOption.h" />
-    <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h" />
-    <ClInclude Include="source\DataBase\SetRealTimeData.h" />
-    <ClInclude Include="source\DataBase\SetRSOption.h" />
-    <ClInclude Include="source\DataBase\SetRSStrong1Stock.h" />
-    <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
-    <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
-    <ClInclude Include="source\DataBase\SetStockSection.h" />
-    <ClInclude Include="source\DataBase\SetStockCode.h" />
-    <ClInclude Include="source\DataBase\SetWeekLineInfo.h" />
-    <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h" />
-    <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h" />
-    <ClInclude Include="source\DayLineContainer.h" />
-    <ClInclude Include="source\Guadan.h" />
-    <ClInclude Include="source\Poten Daily\PotenDailyBriefing.h" />
-    <ClInclude Include="source\Poten Daily\PotenDailyBriefingMarket.h" />
-    <ClInclude Include="source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
-    <ClInclude Include="source\WebRTDataContainer.h" />
-    <ClInclude Include="source\PriorityQueueWebRTData.h" />
-    <ClInclude Include="source\QueueWebRTData.h" />
-    <ClInclude Include="source\QueueWebData.h" />
-    <ClInclude Include="source\WebInquirer.h" />
-    <ClInclude Include="source\WebData.h" />
-    <ClInclude Include="source\Semaphore.h" />
-    <ClInclude Include="source\Thread.h" />
-    <ClInclude Include="source\DayLine.h" />
-    <ClInclude Include="source\globedef.h" />
-    <ClInclude Include="source\OneDeal.h" />
-    <ClInclude Include="source\WebRTData.h" />
-    <ClInclude Include="source\SystemMessage.h" />
-    <ClInclude Include="source\ThreadStatus.h" />
-    <ClInclude Include="source\WeekLine.h" />
-    <ClInclude Include="source\WeekLineContainer.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="StockAnalysis.h" />
-    <ClInclude Include="StockAnalysisDoc.h" />
-    <ClInclude Include="StockAnalysisView.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ChildFrm.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="OutputWnd.cpp" />
-    <ClCompile Include="source\Accessory.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetCountry.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubExchange.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetInsiderTransaction.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetNaicsIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetTiingoStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldMarketOption.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
-    <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp" />
-    <ClCompile Include="source\AmericaMarket\InsiderTransaction.cpp" />
-    <ClCompile Include="source\AmericaMarket\NaicesIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\SICIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\TiingoIndustry.cpp" />
-    <ClCompile Include="source\AmericaMarket\WorldMarket.cpp" />
-    <ClCompile Include="source\AmericaMarket\WorldStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\Country.cpp" />
-    <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp" />
-    <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp" />
-    <ClCompile Include="source\AmericaMarket\FinnhubExchange.cpp" />
-    <ClCompile Include="source\AmericaMarket\FinnhubForexSymbol.cpp" />
-    <ClCompile Include="source\AmericaMarket\ProcessFinnhubWebData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp" />
-    <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\TiingoStock.cpp" />
-    <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
-    <ClCompile Include="source\Base Class\VirtualHistoryData.cpp" />
-    <ClCompile Include="source\Base Class\VirtualMarket.cpp" />
-    <ClCompile Include="source\Base Class\VirtualStock.cpp" />
-    <ClCompile Include="source\Base Class\VirtualWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp" />
-    <ClCompile Include="source\ChinaMarket\ChinaStock.cpp" />
-    <ClCompile Include="source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\StockSection.cpp" />
-    <ClCompile Include="source\ChinaMarket\TengxunRTWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLine.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadLoadDayLine.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadLoadWeekLine.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadSaveDayLine.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadSaveRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadSaveTempRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="source\ChinaStockHistoryData.cpp" />
-    <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
-    <ClCompile Include="source\Crweber\CrweberIndex.cpp" />
-    <ClCompile Include="source\Crweber\CrweberIndexMarket.cpp" />
-    <ClCompile Include="source\Crweber\CrweberIndexWebInquiry.cpp" />
-    <ClCompile Include="source\Crweber\ThreadReadCrweberIndex.cpp" />
-    <ClCompile Include="source\Crweber\ThreadSaveCrweberDB.cpp" />
-    <ClCompile Include="source\DataBase\SetChinaMarketOption.cpp" />
-    <ClCompile Include="source\DataBase\SetChoicedStock.cpp" />
-    <ClCompile Include="source\DataBase\SetCrweberIndex.cpp" />
-    <ClCompile Include="source\DataBase\SetDayLineBasicInfo.cpp" />
-    <ClCompile Include="source\DataBase\SetDayLineExtendInfo.cpp" />
-    <ClCompile Include="source\DataBase\SetDayLineToday.cpp" />
-    <ClCompile Include="source\DataBase\SetOption.cpp" />
-    <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp" />
-    <ClCompile Include="source\DataBase\SetRealTimeData.cpp" />
-    <ClCompile Include="source\DataBase\SetRSOption.cpp" />
-    <ClCompile Include="source\DataBase\SetRSStrong1Stock.cpp" />
-    <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
-    <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
-    <ClCompile Include="source\DataBase\SetStockSection.cpp" />
-    <ClCompile Include="source\DataBase\SetStockCode.cpp" />
-    <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp" />
-    <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp" />
-    <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp" />
-    <ClCompile Include="source\DayLineContainer.cpp" />
-    <ClCompile Include="source\Guadan.cpp" />
-    <ClCompile Include="source\Poten Daily\PotenDailyBriefing.cpp" />
-    <ClCompile Include="source\Poten Daily\PotenDailyBriefingMarket.cpp" />
-    <ClCompile Include="source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
-    <ClCompile Include="source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
-    <ClCompile Include="source\PriorityQueueWebRTData.cpp" />
-    <ClCompile Include="source\QueueWebRTData.cpp" />
-    <ClCompile Include="source\QueueWebData.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="source\WebData.cpp" />
-    <ClCompile Include="source\WebRTDataContainer.cpp" />
-    <ClCompile Include="source\DayLine.cpp" />
-    <ClCompile Include="source\globedef.cpp" />
-    <ClCompile Include="source\OneDeal.cpp" />
-    <ClCompile Include="source\WebRTData.cpp" />
-    <ClCompile Include="source\SystemMessage.cpp" />
-    <ClCompile Include="source\ThreadStatus.cpp" />
-    <ClCompile Include="source\WebInquirer.cpp" />
-    <ClCompile Include="source\WeekLine.cpp" />
-    <ClCompile Include="source\WeekLineContainer.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="StockAnalysis.cpp" />
-    <ClCompile Include="StockAnalysisDoc.cpp" />
-    <ClCompile Include="StockAnalysisView.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -1136,6 +894,32 @@
     <None Include="..\readme.md" />
     <None Include="packages.config" />
     <None Include="res\StockAnalysis.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StockAnalysisLib\StockAnalysisLib.vcxproj">
+      <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StockAnalysis.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StockAnalysis.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
