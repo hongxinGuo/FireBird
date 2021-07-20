@@ -1,44 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="ADebug|Win32">
-      <Configuration>ADebug</Configuration>
+    <ProjectConfiguration Include="ARelease|Win32">
+      <Configuration>ARelease</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ADebug|x64">
-      <Configuration>ADebug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Asan2|Win32">
-      <Configuration>Asan2</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Asan2|x64">
-      <Configuration>Asan2</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ASANDebug|Win32">
-      <Configuration>ASANDebug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ASANDebug|x64">
-      <Configuration>ASANDebug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ASANRelease|Win32">
-      <Configuration>ASANRelease</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ASANRelease|x64">
-      <Configuration>ASANRelease</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Asan|Win32">
-      <Configuration>Asan</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Asan|x64">
-      <Configuration>Asan</Configuration>
+    <ProjectConfiguration Include="ARelease|x64">
+      <Configuration>ARelease</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
@@ -61,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{b59e4fff-9041-490e-96bf-e492c1dd7c23}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -77,51 +45,6 @@
     <VCToolsVersion>
     </VCToolsVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion>
-    </VCToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion>
-    </VCToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion>
-    </VCToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion>
-    </VCToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion>
-    </VCToolsVersion>
-  </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
     <EnableASAN>false</EnableASAN>
@@ -129,22 +52,13 @@
     <VCToolsVersion>
     </VCToolsVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'" Label="Configuration">
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <EnableASAN>true</EnableASAN>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <VCToolsVersion />
+  </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|Win32'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|Win32'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|Win32'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|Win32'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -165,84 +79,17 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <SourcePath>C:\Users\hxguo\source\repos\googletest\googletest;C:\Users\hxguo\source\repos\googletest\googlemock;$(SourcePath)</SourcePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock</IncludePath>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|Win32'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|Win32'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|Win32'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|Win32'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
@@ -256,17 +103,14 @@
     <ClCompile Include="NaicsIndustryTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />
+    <ClCompile Include="ThreadCalculateRSTest.cpp" />
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
@@ -318,12 +162,8 @@
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MockSystemMessageTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
@@ -350,6 +190,7 @@
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="VirtualWebInquiryTest.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="WebInquirerTest.cpp" />
     <ClCompile Include="WeekLineContainerTest.cpp" />
@@ -395,101 +236,6 @@
     <Import Project="..\packages\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.76.0.0\build\boost.targets')" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>true</Profile>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>true</Profile>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>true</Profile>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>true</Profile>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>true</Profile>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -561,271 +307,6 @@
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -842,7 +323,46 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+      <StackCommitSize>40971520</StackCommitSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

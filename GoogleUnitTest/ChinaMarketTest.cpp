@@ -1961,4 +1961,18 @@ namespace StockAnalysisTest {
 		setChoicedStock.m_pDatabase->CommitTrans();
 		setChoicedStock.Close();
 	}
+
+	TEST_F(CChinaMarketTest, TestLoadTodayTempDB) {
+		CSetDayLineTemp setDayLineTemp;
+		CChinaStockPtr pStock;
+
+		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
+		pStock->SetUnknownVolume(0);
+		pStock->SetTransactionNumber(0);
+
+		gl_pChinaMarket->LoadTodayTempDB(20210715); // 测试库today表中的日期为20210715。
+
+		EXPECT_EQ(pStock->GetUnknownVolume(), 10517770);
+		EXPECT_EQ(pStock->GetTransactionNumber(), 2183);
+	}
 }

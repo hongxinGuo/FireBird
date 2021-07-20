@@ -10,7 +10,7 @@
 #include"ChinaMarket.h"
 
 #include"SetDayLineExtendInfo.h"
-#include"SetDayLineToday.h"
+#include"SetDayLineTemp.h"
 #include"SetOption.h"
 #include"SetChinaMarketOption.h"
 #include"SetCrweberIndex.h"
@@ -1200,7 +1200,7 @@ bool CChinaMarket::SchedulingTask(void) {
 	// 系统准备好了之后需要完成的各项工作
 	if (IsSystemReady()) {
 		if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
-			LoadTodayTempDB();
+			LoadTodayTempDB(GetFormatedMarketDate());
 			m_fTodayTempDataLoaded = true;
 		}
 		TaskProcessWebRTDataGetFromTengxunServer();
@@ -2697,15 +2697,15 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::UpdateTodayTempDB(void) {
-	CSetDayLineToday setDayLineToday;
+	CSetDayLineTemp setDayLineTemp;
 	CString str;
 
 	DeleteTodayTempDB();
 
 	// 存储今日生成的数据于DayLineToday表中。
-	setDayLineToday.m_strFilter = _T("[ID] = 1");
-	setDayLineToday.Open();
-	setDayLineToday.m_pDatabase->BeginTrans();
+	setDayLineTemp.m_strFilter = _T("[ID] = 1");
+	setDayLineTemp.Open();
+	setDayLineTemp.m_pDatabase->BeginTrans();
 	for (auto& pStock : m_vChinaMarketStock) {
 		if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
 			continue;
@@ -2715,12 +2715,12 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 			str += _T(" 股数不正确");
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
-		setDayLineToday.AddNew();
-		pStock->SaveTempInfo(setDayLineToday);
-		setDayLineToday.Update();
+		setDayLineTemp.AddNew();
+		pStock->SaveTempInfo(setDayLineTemp);
+		setDayLineTemp.Update();
 	}
-	setDayLineToday.m_pDatabase->CommitTrans();
-	setDayLineToday.Close();
+	setDayLineTemp.m_pDatabase->CommitTrans();
+	setDayLineTemp.Close();
 
 	return true;
 }
@@ -2744,34 +2744,34 @@ bool CChinaMarket::DeleteTodayTempDB(void) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 读入暂存的今日当前数据状态，重置分析的初始态。这样当在开市时系统退出时，不至于损失掉所有已分析的数据
+// 读入暂存的当前数据，重置分析的初始态。这样当在开市时系统退出时，不至于损失掉所有已分析的数据
 //
 // 在设置m_lUnknownVolume为记录集中的m_UnknownVolume - m_Volume，这是因为第一次计算时只是初始化系统。
-// 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
+// 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineTemp.m_Volume + setDayLineTemp.m_UnknownVolume
 // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
 // 故而此处这样计算。
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::LoadTodayTempDB(void) {
+bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	CChinaStockPtr pStock = nullptr;
-	CSetDayLineToday setDayLineToday;
+	CSetDayLineTemp setDayLineTemp;
 	CWebRTDataPtr pRTData;
 
 	ASSERT(!m_fTodayTempDataLoaded);
 	ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
 	// 读取今日生成的数据于DayLineToday表中。
-	setDayLineToday.Open();
-	if (!setDayLineToday.IsEOF()) {
-		if (setDayLineToday.m_Date == GetFormatedMarketDate()) { // 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
-			while (!setDayLineToday.IsEOF()) {
-				if ((pStock = GetStock(setDayLineToday.m_Symbol)) != nullptr) {
+	setDayLineTemp.Open();
+	if (!setDayLineTemp.IsEOF()) {
+		if (setDayLineTemp.m_Date == lTheDay) { // 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
+			while (!setDayLineTemp.IsEOF()) {
+				if ((pStock = GetStock(setDayLineTemp.m_Symbol)) != nullptr) {
 					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-					pStock->LoadTempInfo(setDayLineToday);
+					pStock->LoadTempInfo(setDayLineTemp);
 				}
-				setDayLineToday.MoveNext();
+				setDayLineTemp.MoveNext();
 			}
 		}
 	}
-	setDayLineToday.Close();
+	setDayLineTemp.Close();
 
 	return true;
 }

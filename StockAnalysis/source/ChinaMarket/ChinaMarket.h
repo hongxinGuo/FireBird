@@ -195,7 +195,7 @@ public:
 	bool UpdateTempRTData(void);
 	virtual bool UpdateTodayTempDB(void);
 	bool DeleteTodayTempDB(void);
-	bool LoadTodayTempDB(void);
+	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
 	bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
 	bool SaveWeekLine(CWeekLineContainer& weekLineContainer);

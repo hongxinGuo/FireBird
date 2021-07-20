@@ -8,20 +8,21 @@
 
 // GoogleMock使用方法：
 //
-//   ON_CALL(mock_object, Method(...))
-//     .With(...) ?
-//     .WillByDefault(...);
+//   ON_CALL(mock_object, method_name(matchers...))
+//     .With(multi_argument_matcher)  // Can be used at most once
+//     .WillByDefault(action);        // Required
 //
 // where With() is optional and WillByDefault() must appear exactly
 // once.
 //
-//   EXPECT_CALL(mock_object, Method(...))
-//     .With(...) ?
-//     .Times(...) ?
-//     .InSequence(...) *
-//     .WillOnce(...) *
-//     .WillRepeatedly(...) ?
-//     .RetiresOnSaturation() ? ;
+// EXPECT_CALL(mock_object, method_name(matchers...))
+//   .With(multi_argument_matcher)  // Can be used at most once
+//   .Times(cardinality)            // Can be used at most once
+//   .InSequence(sequences...)      // Can be used any number of times
+//   .After(expectations...)        // Can be used any number of times
+//   .WillOnce(action)              // Can be used any number of times
+//   .WillRepeatedly(action)        // Can be used at most once
+//   .RetiresOnSaturation();        // Can be used at most once
 //
 // where all clauses are optional and WillOnce() can be repeated.
 
@@ -124,6 +125,8 @@ ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDay
 ExcludeFromCodeCoverage(CStockAnalysisView34, L"CStockAnalysisView::OnDraw");
 ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp");
 ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
+ExcludeFromCodeCoverage(CStockAnalysisView37, L"CStockAnalysisView::SysCallBitBlt");
+ExcludeFromCodeCoverage(CStockAnalysisView38, L"CStockAnalysisView::ShowStockHistoryDayLine");
 
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");

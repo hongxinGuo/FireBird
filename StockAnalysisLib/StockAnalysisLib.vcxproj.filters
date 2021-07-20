@@ -309,7 +309,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineToday.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineTemp.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h">
@@ -518,7 +518,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineToday.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineTemp.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp">
