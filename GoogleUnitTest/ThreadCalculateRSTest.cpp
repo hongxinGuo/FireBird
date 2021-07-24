@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 		CRSReference ref;
 	};
 
-	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock) {
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock1) {
 		gl_fExitingCalculatingRS = false;
 		gl_fExitingSystem = false;
 		pMockStock->SetSymbol(_T("600602.SS"));
@@ -58,10 +58,85 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "与当前所选股票不一致时，则卸载已加载的日线数据";
 	}
 
-	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock) {
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock2) {
 		gl_fExitingCalculatingRS = false;
 		gl_fExitingSystem = false;
-		pMockStock->SetSymbol(_T("600601.SS"));
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(vStock.size(), 1);
+		EXPECT_TRUE(pMockStock->IsDayLineLoaded()) << "与当前所选股票一致时，则不卸载已加载的日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock3) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = true;
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock4) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetActive(false);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock5) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock6) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600001.SS"));
+		pMockStock->SetActive(true);
+		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
+		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock1) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600666.SS"));
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 			.Times(1)
@@ -72,6 +147,81 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "与当前所选股票不一致时，则卸载已加载的日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock2) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(vStock.size(), 1);
+		EXPECT_TRUE(pMockStock->IsDayLineLoaded()) << "与当前所选股票一致时，则不卸载已加载的日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock3) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = true;
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock4) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
+		pMockStock->SetActive(false);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock5) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock6) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600001.SS"));
+		pMockStock->SetActive(true);
+		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock1) {
@@ -109,7 +259,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock3) {
 		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = true;
+		gl_fExitingSystem = true; // 退出系统标识为真
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -133,5 +283,35 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock5) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
+		pMockStock->SetActive(true);
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
+			.Times(0);
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(vStock.size(), 0);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
+	}
+
+	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock6) {
+		gl_fExitingCalculatingRS = false;
+		gl_fExitingSystem = false;
+		pMockStock->SetSymbol(_T("600001.SS"));
+		pMockStock->SetActive(true);
+		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
+		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
+			.Times(1)
+			.WillOnce(Return(true));
+		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+			.Times(0);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(vStock.size(), 1);
+		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
 	}
 }
