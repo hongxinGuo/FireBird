@@ -1733,6 +1733,7 @@ bool CWorldMarket::LoadStockDB(void) {
 	CSetWorldStock setWorldStock;
 	CWorldStockPtr pWorldStock = nullptr;
 	CString str;
+	long lSymbolLength = 0;
 
 	setWorldStock.m_strSort = _T("[Symbol]");
 	setWorldStock.Open();
@@ -1748,6 +1749,9 @@ bool CWorldMarket::LoadStockDB(void) {
 			pWorldStock->CheckInsiderTransactionStatus(GetFormatedMarketDate());
 			m_mapWorldStock[setWorldStock.m_Symbol] = m_lLastTotalWorldStock++;
 			m_vWorldStock.push_back(pWorldStock);
+			if (pWorldStock->GetCurrency().GetLength() > lSymbolLength) {
+				lSymbolLength = pWorldStock->GetCurrency().GetLength();
+			}
 		}
 		else {
 			str = _T("发现重复代码：");
@@ -1762,6 +1766,13 @@ bool CWorldMarket::LoadStockDB(void) {
 	SortStockVector();
 	m_lLastTotalWorldStock = m_vWorldStock.size();
 	TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalWorldStock);
+
+	char buffer[100];
+	sprintf_s(buffer, _T("%d"), lSymbolLength);
+	str = _T("最长长度为");
+	str += buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
+
 	return true;
 }
 

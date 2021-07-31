@@ -211,18 +211,18 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	ASSERT(m_lLastRTDataUpdateDate >= 19700101);
 
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
-	setWorldStock.m_Symbol = m_strSymbol.Left(45);
-	setWorldStock.m_ExchangeCode = m_strExchangeCode.Left(45);
+	setWorldStock.m_Symbol = m_strSymbol.Left(20);
+	setWorldStock.m_ExchangeCode = m_strExchangeCode.Left(3);
 	setWorldStock.m_Description = m_strDescription.Left(200);
-	setWorldStock.m_DisplaySymbol = m_strDisplaySymbol.Left(45);
-	setWorldStock.m_Type = m_strType.Left(45);
-	setWorldStock.m_Mic = m_strMic.Left(45);
-	setWorldStock.m_Figi = m_strFigi.Left(45);
-	setWorldStock.m_Currency = m_strCurrency.Left(45);
+	setWorldStock.m_DisplaySymbol = m_strDisplaySymbol.Left(20);
+	setWorldStock.m_Type = m_strType.Left(25);
+	setWorldStock.m_Mic = m_strMic.Left(20);
+	setWorldStock.m_Figi = m_strFigi.Left(20);
+	setWorldStock.m_Currency = m_strCurrency.Left(20);
 	setWorldStock.m_Address = m_strAddress.Left(100);
-	setWorldStock.m_City = m_strCity.Left(45);
-	setWorldStock.m_Country = m_strCountry.Left(45);
-	setWorldStock.m_Cusip = m_strCusip.Left(45);
+	setWorldStock.m_City = m_strCity.Left(20);
+	setWorldStock.m_Country = m_strCountry.Left(20);
+	setWorldStock.m_Cusip = m_strCusip.Left(20);
 	setWorldStock.m_Sedol = m_strSedol.Left(45);
 	setWorldStock.m_EmployeeTotal = m_lEmployeeTotal;
 	setWorldStock.m_ListedExchange = m_strListedExchange.Left(100);

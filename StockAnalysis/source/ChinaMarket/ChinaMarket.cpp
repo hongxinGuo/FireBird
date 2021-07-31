@@ -1709,7 +1709,7 @@ CString CChinaMarket::GetStockName(CString strStockCode) {
 		return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode))->GetStockName());
 	}
 	catch (exception&) {
-		TRACE("GetStockName函数异常\n");
+		TRACE("GetStockName函数 %s 异常\n", strStockCode);
 		return _T("");
 	}
 }

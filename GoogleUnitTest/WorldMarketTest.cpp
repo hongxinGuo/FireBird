@@ -467,6 +467,7 @@ namespace StockAnalysisTest {
 		CSetWorldStock setWorldStock;
 		setWorldStock.m_strFilter = _T("[Symbol] = '000001.SS'");
 		setWorldStock.Open();
+		EXPECT_FALSE(setWorldStock.IsEOF());
 		EXPECT_STREQ(setWorldStock.m_Currency, _T("No Currency")) << "此条目已更新";
 		setWorldStock.m_pDatabase->BeginTrans();
 		setWorldStock.Edit();
@@ -486,8 +487,12 @@ namespace StockAnalysisTest {
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
+		// 恢复原状
 		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
-		gl_pWorldMarket->DeleteStock(pStock); // 恢复原状
+		gl_pWorldMarket->DeleteStock(pStock);
+		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		EXPECT_STREQ(pStock->GetCurrency(), _T("No Currency"));
+		pStock->SetCurrency(_T(""));
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {

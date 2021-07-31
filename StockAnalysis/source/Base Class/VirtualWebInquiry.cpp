@@ -11,64 +11,64 @@
 atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
-  m_pSession = new CInternetSession{ _T("如果此项为空，则测试时会出现断言错误。但不影响测试结果") };
-  m_pFile = nullptr;
-  m_lByteRead = 0;
-  m_fWebError = false;
-  m_dwWebErrorCode = 0;
-  m_strInquire = _T("");
-  m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
-  m_fReadingWebData = false; // 接收实时数据线程是否执行标识
-  m_vBuffer.resize(2 * 1024 * 1024);
+	m_pSession = new CInternetSession{ _T("如果此项为空，则测试时会出现断言错误。但不影响测试结果") };
+	m_pFile = nullptr;
+	m_lByteRead = 0;
+	m_fWebError = false;
+	m_dwWebErrorCode = 0;
+	m_strInquire = _T("");
+	m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
+	m_vBuffer.resize(2 * 1024 * 1024);
 
-  m_lInquiringNumber = 500; // 每次查询数量默认值为500
+	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 
-  m_tCurrentInquiryTime = 0;
+	m_tCurrentInquiryTime = 0;
 
 #ifdef DEBUG
-  m_fReportStatus = false;
+	m_fReportStatus = false;
 #else
-  m_fReportStatus = false;
+	m_fReportStatus = false;
 #endif
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
-  delete m_pSession;
+	delete m_pSession;
 }
 
 void CVirtualWebInquiry::Reset(void) noexcept {
-  m_lByteRead = 0;
-  m_dwWebErrorCode = 0;
-  m_fWebError = false;
+	m_lByteRead = 0;
+	m_dwWebErrorCode = 0;
+	m_fWebError = false;
 }
 
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
-  bool fStatus = true;
-  CString str1, strLeft;
+	bool fStatus = true;
+	CString str1, strLeft;
 
-  ASSERT(m_pSession != nullptr);
-  ASSERT(m_pFile == nullptr);
-  try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
-    m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
-  }
-  catch (CInternetException* exception) {
-    SetWebError(true);
-    if (m_pFile != nullptr) {
-      m_pFile->Close();
-      delete m_pFile;
-      m_pFile = nullptr;
-    }
-    m_dwWebErrorCode = exception->m_dwError;
-    str1 = GetInquiringString();
-    strLeft = str1.Left(120);
-    TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
-    str1 = _T("Error Web : ") + strLeft + _T("\n");
-    gl_systemMessage.PushInnerSystemInformationMessage(str1);
-    fStatus = false;
-    exception->Delete();
-  }
+	ASSERT(m_pSession != nullptr);
+	ASSERT(m_pFile == nullptr);
+	try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+	}
+	catch (CInternetException* exception) {
+		SetWebError(true);
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
+		m_dwWebErrorCode = exception->m_dwError;
+		str1 = GetInquiringString();
+		strLeft = str1.Left(120);
+		TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
+		str1 = _T("Error Web : ") + strLeft + _T("\n");
+		gl_systemMessage.PushInnerSystemInformationMessage(str1);
+		fStatus = false;
+		exception->Delete();
+	}
 
-  return fStatus;
+	return fStatus;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -78,36 +78,35 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
-  m_pFile = nullptr;
-  bool fStatus = true;
-  time_t tt = 0;
-  long lCurrentByteReaded = 0;
+	m_pFile = nullptr;
+	bool fStatus = true;
+	time_t tt = 0;
+	long lCurrentByteReaded = 0;
 
-  ASSERT(IsReadingWebData());
-  ASSERT(m_pFile == nullptr);
-  gl_ThreadStatus.IncreaseWebInquiringThread();
-  SetWebError(false);
-  SetByteReaded(0);
-  tt = GetTickCount64();
-  if (OpenFile(GetInquiringString())) {
-    do {
-      lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-    } while (lCurrentByteReaded > 0);
-    ASSERT(m_vBuffer.size() > m_lByteRead);
-    m_lTotalByteReaded += m_lByteRead;
-    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
-    if (m_pFile != nullptr) {
-      m_pFile->Close();
-      delete m_pFile;
-      m_pFile = nullptr;
-    }
-  }
-  else fStatus = false;
+	ASSERT(IsReadingWebData());
+	gl_ThreadStatus.IncreaseWebInquiringThread();
+	SetWebError(false);
+	SetByteReaded(0);
+	tt = GetTickCount64();
+	if (OpenFile(GetInquiringString())) {
+		do {
+			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+		} while (lCurrentByteReaded > 0);
+		ASSERT(m_vBuffer.size() > m_lByteRead);
+		m_lTotalByteReaded += m_lByteRead;
+		m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
+	}
+	else fStatus = false;
 
-  m_tCurrentInquiryTime = GetTickCount64() - tt;
-  gl_ThreadStatus.DecreaseWebInquiringThread();
-  ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
-  return fStatus;
+	m_tCurrentInquiryTime = GetTickCount64() - tt;
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
+	return fStatus;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -118,49 +117,48 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 ///////////////////////////////////////////////////////////////////////////
 
 bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
-  m_pFile = nullptr;
-  bool fDone = false;
-  bool fStatus = true;
-  time_t tt = 0;
+	m_pFile = nullptr;
+	bool fDone = false;
+	bool fStatus = true;
+	time_t tt = 0;
 
-  ASSERT(IsReadingWebData());
-  ASSERT(m_pFile == nullptr);
+	ASSERT(IsReadingWebData());
 
-  gl_ThreadStatus.IncreaseWebInquiringThread();
+	gl_ThreadStatus.IncreaseWebInquiringThread();
 
-  long lCurrentByteReaded = 0;
-  SetWebError(false);
-  SetByteReaded(0);
-  tt = GetTickCount64();
-  if (OpenFile(GetInquiringString())) {
-    Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
-    while (!fDone) {
-      do {
-        lCurrentByteReaded = ReadWebFileOneTime();
-      } while (lCurrentByteReaded > 0);
-      Sleep(lSecondDelayTime); // 等待lSecondDelayTime毫秒后再读一次，确认没有新数据后才返回。
-      if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
-        Sleep(lThirdDelayTime); // 等待lThirdDelayTime毫秒后读第三次，确认没有新数据后才返回，否则继续读。
-        if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
-          fDone = true;
-        }
-      }
-    }
-    ASSERT(m_vBuffer.size() > m_lByteRead);
-    m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
-    if (m_pFile != nullptr) {
-      m_pFile->Close();
-      delete m_pFile;
-      m_pFile = nullptr;
-    }
-    m_lTotalByteReaded += m_lByteRead; //
-  }
-  else fStatus = false;
+	long lCurrentByteReaded = 0;
+	SetWebError(false);
+	SetByteReaded(0);
+	tt = GetTickCount64();
+	if (OpenFile(GetInquiringString())) {
+		Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
+		while (!fDone) {
+			do {
+				lCurrentByteReaded = ReadWebFileOneTime();
+			} while (lCurrentByteReaded > 0);
+			Sleep(lSecondDelayTime); // 等待lSecondDelayTime毫秒后再读一次，确认没有新数据后才返回。
+			if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
+				Sleep(lThirdDelayTime); // 等待lThirdDelayTime毫秒后读第三次，确认没有新数据后才返回，否则继续读。
+				if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
+					fDone = true;
+				}
+			}
+		}
+		ASSERT(m_vBuffer.size() > m_lByteRead);
+		m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
+		m_lTotalByteReaded += m_lByteRead; //
+	}
+	else fStatus = false;
 
-  m_tCurrentInquiryTime = GetTickCount64() - tt;
-  gl_ThreadStatus.DecreaseWebInquiringThread();
-  ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
-  return fStatus;
+	m_tCurrentInquiryTime = GetTickCount64() - tt;
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
+	return fStatus;
 }
 
 /// <summary>
@@ -169,26 +167,26 @@ bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecond
 /// <param name=""></param>
 /// <returns></returns>
 UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
-  char buffer[1024];
-  const UINT uByteRead = m_pFile->Read(buffer, 1024);
-  for (int i = 0; i < uByteRead; i++) {
-    m_vBuffer.at(m_lByteRead++) = buffer[i];
-  }
-  if (m_vBuffer.size() < (m_lByteRead + 1024 * 1024)) { // 相差不到1M时
-    m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大数据范围
-  }
-  return uByteRead;
+	char buffer[1024];
+	const UINT uByteRead = m_pFile->Read(buffer, 1024);
+	for (int i = 0; i < uByteRead; i++) {
+		m_vBuffer.at(m_lByteRead++) = buffer[i];
+	}
+	if (m_vBuffer.size() < (m_lByteRead + 1024 * 1024)) { // 相差不到1M时
+		m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大数据范围
+	}
+	return uByteRead;
 }
 
 CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
-  CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-  pWebDataReceived->Resize(GetByteReaded() + 1);
-  for (int i = 0; i < GetByteReaded() + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
-    pWebDataReceived->SetData(i, m_vBuffer.at(i));
-  }
-  pWebDataReceived->SetBufferLength(GetByteReaded());
-  pWebDataReceived->ResetCurrentPos();
-  return pWebDataReceived;
+	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
+	pWebDataReceived->Resize(GetByteReaded() + 1);
+	for (int i = 0; i < GetByteReaded() + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
+		pWebDataReceived->SetData(i, m_vBuffer.at(i));
+	}
+	pWebDataReceived->SetBufferLength(GetByteReaded());
+	pWebDataReceived->ResetCurrentPos();
+	return pWebDataReceived;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -197,46 +195,46 @@ CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
 //
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    if (PrepareNextInquiringStr()) {
-      SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-      StartReadingThread();
-      return true;
-    }
-    else return false;
-  }
-  else return false;
+	if (!IsReadingWebData()) {
+		if (PrepareNextInquiringStr()) {
+			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+			StartReadingThread();
+			return true;
+		}
+		else return false;
+	}
+	else return false;
 }
 
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
-  TRACE("读入%d个实时数据\n", lNumberOfData);
-  return true;
+	TRACE("读入%d个实时数据\n", lNumberOfData);
+	return true;
 }
 
 void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
-  m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
+	m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
-  if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
-    m_vBuffer.resize(lTotalNumber + 1024 * 1024);
-  }
-  for (long i = 0; i < lTotalNumber; i++) {
-    m_vBuffer.at(i) = buffer[i];
-  }
-  m_vBuffer.at(lTotalNumber) = 0x000;
-  m_lByteRead = lTotalNumber;
+	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
+		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
+	}
+	for (long i = 0; i < lTotalNumber; i++) {
+		m_vBuffer.at(i) = buffer[i];
+	}
+	m_vBuffer.at(lTotalNumber) = 0x000;
+	m_lByteRead = lTotalNumber;
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
-  long lTotalNumber = str.GetLength();
-  char* buffer = str.GetBuffer();
-  if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
-    m_vBuffer.resize(lTotalNumber + 1024 * 1024);
-  }
-  for (long i = 0; i < lTotalNumber; i++) {
-    m_vBuffer.at(i) = buffer[i];
-  }
-  m_vBuffer.at(lTotalNumber) = 0x000;
-  m_lByteRead = lTotalNumber;
+	long lTotalNumber = str.GetLength();
+	char* buffer = str.GetBuffer();
+	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
+		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
+	}
+	for (long i = 0; i < lTotalNumber; i++) {
+		m_vBuffer.at(i) = buffer[i];
+	}
+	m_vBuffer.at(lTotalNumber) = 0x000;
+	m_lByteRead = lTotalNumber;
 }

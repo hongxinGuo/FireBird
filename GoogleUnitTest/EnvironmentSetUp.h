@@ -112,6 +112,8 @@ namespace StockAnalysisTest {
 			EXPECT_LE(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
+			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
 			gl_pMockMainFrame = new CMockMainFrame;
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
