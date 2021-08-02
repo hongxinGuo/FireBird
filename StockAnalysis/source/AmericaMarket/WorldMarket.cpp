@@ -14,9 +14,11 @@
 #include"SetEPSSurprise.h"
 #include"SetTiingoStock.h"
 
-#include<cstdlib>
-#include<iostream>
-#include<string>
+#include <ixwebsocket/IXNetSystem.h>
+#include <ixwebsocket/IXWebSocket.h>
+#include <ixwebsocket/IXUserAgent.h>
+
+#include <iostream>
 
 using namespace std;
 #include<algorithm>
@@ -827,7 +829,13 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	CreateFinnhubWebSocket();
+	static bool sm_fCreate = false;
+
+	if (!sm_fCreate) {
+		sm_fCreate = true;
+		CreateFinnhubWebSocket();
+	}
+
 	return true;
 }
 
@@ -2186,7 +2194,63 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 
 	return true;
 }
+string strMessage;
 
 bool CWorldMarket::CreateFinnhubWebSocket(void) {
+	ix::initNetSystem();
+
+	// Connect to a server with encryption
+	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
+	std::string url("wss://ws.finnhub.io?token=c1i57rv48v6vit20lrc0");
+	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
+	strToken = strToken.Right(strToken.GetLength() - 1);
+	//url += strToken.GetBuffer();
+
+	m_webSocket.setUrl(url);
+
+	// Optional heart beat, sent every 45 seconds when there is not any traffic
+// to make sure that load balancers do not kill an idle connection.
+	m_webSocket.setPingInterval(45);
+
+	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+	m_webSocket.disablePerMessageDeflate();
+
+	ix::SocketTLSOptions TLSOption;
+	//TLSOption.certFile = "path/to/cert/file.pem",
+	//	TLSOption.keyFile = "path/to/key/file.pem",
+	//	TLSOption.caFile = "path/to/trust/bundle/file.pem", // as a file, or in memory buffer in PEM format
+	TLSOption.tls = true;
+	m_webSocket.setTLSOptions(TLSOption);
+
+	// Setup a callback to be fired when a message or an event (open, close, error) is received
+	m_webSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+		{
+			switch (msg->type) {
+			case ix::WebSocketMessageType::Message:
+				strMessage = msg->str;
+				break;
+			case ix::WebSocketMessageType::Error:
+				strMessage.clear();
+				break;
+			default:
+				strMessage = _T("a");
+				break;
+			}
+		}
+	);
+
+	// Now that our callback is setup, we can start our background thread and receive messages
+	m_webSocket.start();
+
+	Sleep(1000);
+	ix::WebSocketSendInfo info;
+	// Send a message to the server (default to TEXT mode)
+	//info = m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");
+	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}");
+	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
+	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS : 1\"}");
+
+	//m_webSocket.stop();
+
 	return true;
 }

@@ -19,6 +19,8 @@
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
 
+#include <ixwebsocket/IXWebSocket.h>
+
 using namespace MyLib;
 
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
@@ -427,6 +429,9 @@ protected:
 	vector<CNaicsIndustryPtr> m_vNaicsIndustry;
 	map<CString, long> m_mapNaicsIndustry;
 	long m_lLastTotalNaicsIndustry;
+
+	ix::WebSocket m_webSocket;
+	string m_strMessage;
 
 	//
 	bool m_fRebulidDayLine;
