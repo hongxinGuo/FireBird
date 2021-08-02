@@ -340,6 +340,8 @@ public:
 
 	bool SortStockVector(void);
 
+	bool CreateFinnhubWebSocket(void);
+
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
 	map<CString, long> m_mapFinnhubExchange;
@@ -427,7 +429,8 @@ protected:
 	long m_lLastTotalNaicsIndustry;
 
 	//
-	bool m_fRebulidDayLine; // 重建日线历史数据。
+	bool m_fRebulidDayLine;
+	// 重建日线历史数据。
 };
 
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;

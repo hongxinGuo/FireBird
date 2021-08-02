@@ -14,6 +14,10 @@
 #include"SetEPSSurprise.h"
 #include"SetTiingoStock.h"
 
+#include<cstdlib>
+#include<iostream>
+#include<string>
+
 using namespace std;
 #include<algorithm>
 
@@ -823,6 +827,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
+	CreateFinnhubWebSocket();
 	return true;
 }
 
@@ -2179,5 +2184,9 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 		setWorldStockDayLine.Close();
 	}
 
+	return true;
+}
+
+bool CWorldMarket::CreateFinnhubWebSocket(void) {
 	return true;
 }

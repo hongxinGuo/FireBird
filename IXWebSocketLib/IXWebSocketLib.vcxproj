@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{b467f394-de2a-47f9-a2c2-4be78225b908}</ProjectGuid>
+    <RootNamespace>IXWebSocketLib</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ixwebsocket\IXBench.h" />
+    <ClInclude Include="..\ixwebsocket\IXCancellationRequest.h" />
+    <ClInclude Include="..\ixwebsocket\IXConnectionState.h" />
+    <ClInclude Include="..\ixwebsocket\IXDNSLookup.h" />
+    <ClInclude Include="..\ixwebsocket\IXExponentialBackoff.h" />
+    <ClInclude Include="..\ixwebsocket\IXGetFreePort.h" />
+    <ClInclude Include="..\ixwebsocket\IXGzipCodec.h" />
+    <ClInclude Include="..\ixwebsocket\IXHttp.h" />
+    <ClInclude Include="..\ixwebsocket\IXHttpClient.h" />
+    <ClInclude Include="..\ixwebsocket\IXHttpServer.h" />
+    <ClInclude Include="..\ixwebsocket\IXNetSystem.h" />
+    <ClInclude Include="..\ixwebsocket\IXProgressCallback.h" />
+    <ClInclude Include="..\ixwebsocket\IXSelectInterrupt.h" />
+    <ClInclude Include="..\ixwebsocket\IXSelectInterruptFactory.h" />
+    <ClInclude Include="..\ixwebsocket\IXSelectInterruptPipe.h" />
+    <ClInclude Include="..\ixwebsocket\IXSetThreadName.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocket.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketAppleSSL.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketConnect.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketFactory.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketMbedTLS.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketOpenSSL.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketServer.h" />
+    <ClInclude Include="..\ixwebsocket\IXSocketTLSOptions.h" />
+    <ClInclude Include="..\ixwebsocket\IXStrCaseCompare.h" />
+    <ClInclude Include="..\ixwebsocket\IXUdpSocket.h" />
+    <ClInclude Include="..\ixwebsocket\IXUniquePtr.h" />
+    <ClInclude Include="..\ixwebsocket\IXUrlParser.h" />
+    <ClInclude Include="..\ixwebsocket\IXUserAgent.h" />
+    <ClInclude Include="..\ixwebsocket\IXUtf8Validator.h" />
+    <ClInclude Include="..\ixwebsocket\IXUuid.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocket.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketCloseConstants.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketCloseInfo.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketErrorInfo.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketHandshake.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketHandshakeKeyGen.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketHttpHeaders.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketInitResult.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketMessage.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketMessageType.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketOpenInfo.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketPerMessageDeflate.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketPerMessageDeflateCodec.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketPerMessageDeflateOptions.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketProxyServer.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketSendInfo.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketServer.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketTransport.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketVersion.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ixwebsocket\IXBench.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXCancellationRequest.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXConnectionState.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXDNSLookup.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXExponentialBackoff.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXGetFreePort.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXGzipCodec.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXHttp.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXHttpClient.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXHttpServer.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXNetSystem.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSelectInterrupt.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSelectInterruptFactory.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSelectInterruptPipe.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSetThreadName.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocket.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketAppleSSL.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketConnect.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketFactory.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketMbedTLS.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketOpenSSL.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketServer.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSocketTLSOptions.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXStrCaseCompare.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXUdpSocket.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXUrlParser.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXUserAgent.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXUuid.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocket.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketCloseConstants.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketHandshake.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketHttpHeaders.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketPerMessageDeflate.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketPerMessageDeflateCodec.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketPerMessageDeflateOptions.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketProxyServer.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketServer.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXWebSocketTransport.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
