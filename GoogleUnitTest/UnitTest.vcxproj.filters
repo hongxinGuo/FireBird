@@ -384,6 +384,9 @@
     <ClCompile Include="ThreadCalculateRSTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="QueueStringTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

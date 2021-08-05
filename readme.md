@@ -24,17 +24,13 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 1.安装MySQL社区版。设置两个默认用户hxguo和Test，默认密码分别为hxguo和test。
 将Database目录中的DataStructure.sql导入数据库。
 
-2.在Windows管理工具中添加两个ODBC64位驱动：分别对应hxguo和Test。如下图所示：
+2.如果您的系统中没有Visual Studio环境的话，需要下载VS2019再发行包(https://visualstudio.microsoft.com/zh-hans/downloads/?rr=https%3A%2F%2Fsupport.microsoft.com%2Fen-us%2Fhelp%2F2977003%2Fthe-latest-supported-visual-c-downloads )，本系统默认编译为64位系统。
 
-![Image Text](Img/Microsoft%20ODBC.png)
+3.将bin目录中的StockAnalysis.exe放入工作目录中。
 
-![Image Text](Img/Microsoft%20ODBC%20Option1.png)
-
-![Image Text](Img/Microsoft%20ODBC%20Option2.png)
-
-3.如果您的系统中没有Visual Studio环境的话，需要下载VS2019再发行包(https://visualstudio.microsoft.com/zh-hans/downloads/?rr=https%3A%2F%2Fsupport.microsoft.com%2Fen-us%2Fhelp%2F2977003%2Fthe-latest-supported-visual-c-downloads )，本系统默认编译为64位系统。
-
-4.将bin目录中的StockAnalysis.exe放入工作目录中。
+### 致谢
+1.ixWebSocket库（https://github.com/machinezone/IXWebSocket）。
+2. OpenSSL库（https://www.openssl.org/）。
 
 
 

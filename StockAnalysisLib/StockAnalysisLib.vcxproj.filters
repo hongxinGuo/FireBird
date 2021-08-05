@@ -405,24 +405,21 @@
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\QueueString.h">
+      <Filter>头文件\网络数据提取器</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\stdafx.cpp">
+    <ClCompile Include="..\StockAnalysis\pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
@@ -799,6 +796,15 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\QueueString.cpp">
+      <Filter>源文件\网络数据提取器</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
+      <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,6 +22,8 @@ extern int gl_iMaxSavingOneDayLineThreads;
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 
+#include"QueueString.h"
+
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
@@ -81,6 +83,16 @@ public:
 	void PushTiingoData(CWebDataPtr pData) { m_qTiingoData.PushData(pData); }
 	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
 
+	size_t GetFinnhubWebSocketDataSize(void) { return m_qFinnhubWebSocketData.GetDataSize(); }
+	void PushFinnhubWebSocketData(shared_ptr<string> pData) { m_qFinnhubWebSocketData.PushData(pData); }
+	void pushFinnhubWebSocketData(string data) { auto pData = make_shared<string>(data); m_qFinnhubWebSocketData.PushData(pData); }
+	shared_ptr<string> PopFinnhubWebSocketData(void) { return m_qFinnhubWebSocketData.PopData(); }
+
+	size_t GetTiingoWebSocketDataSize(void) { return m_qTiingoWebSocketData.GetDataSize(); }
+	void PushTiingoWebSocketData(shared_ptr<string> pData) { m_qTiingoWebSocketData.PushData(pData); }
+	void pushTiingoWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoWebSocketData.PushData(pData); }
+	shared_ptr<string> PopTiingoWebSocketData(void) { return m_qTiingoWebSocketData.PopData(); }
+
 protected:
 	CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
 	CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列
@@ -90,6 +102,9 @@ protected:
 	CQueueWebData m_qFinnhubData; // Finnhub.io网络数据暂存队列
 	CQueueWebData m_qQuandlData; // Quandl.com网络数据暂存队列
 	CQueueWebData m_qTiingoData; // Tiingo.com网络数据暂存队列
+
+	CQueueString m_qFinnhubWebSocketData; // finnhub的WebSocket数据
+	CQueueString m_qTiingoWebSocketData; // tiingo的WebSocket数据
 };
 
 extern CWebInquirer gl_WebInquirer; //

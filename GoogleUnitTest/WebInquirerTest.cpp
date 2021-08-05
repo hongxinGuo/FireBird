@@ -185,4 +185,22 @@ namespace StockAnalysisTest {
 		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
 		gl_iMaxSavingOneDayLineThreads = iSaved;
 	}
+
+	TEST_F(CWebInquirerTest, TestPushPopFinnhubWebSocketData) {
+		shared_ptr<string> pData = make_shared<string>(_T("abc"));
+		shared_ptr<string> pData2;
+		gl_WebInquirer.PushFinnhubWebSocketData(pData);
+		EXPECT_EQ(gl_WebInquirer.GetFinnhubWebSocketDataSize(), 1);
+		pData2 = gl_WebInquirer.PopFinnhubWebSocketData();
+		EXPECT_STREQ(pData2->c_str(), _T("abc"));
+	}
+
+	TEST_F(CWebInquirerTest, TestPushPopTiingoWebSocketData) {
+		shared_ptr<string> pData = make_shared<string>(_T("abc"));
+		shared_ptr<string> pData2;
+		gl_WebInquirer.PushTiingoWebSocketData(pData);
+		EXPECT_EQ(gl_WebInquirer.GetTiingoWebSocketDataSize(), 1);
+		pData2 = gl_WebInquirer.PopTiingoWebSocketData();
+		EXPECT_STREQ(pData2->c_str(), _T("abc"));
+	}
 }

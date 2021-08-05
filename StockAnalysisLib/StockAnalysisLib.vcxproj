@@ -110,6 +110,7 @@
     <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\QueueString.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
@@ -256,7 +258,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\stdafx.cpp">
+    <ClCompile Include="..\StockAnalysis\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

@@ -11,13 +11,13 @@
 #include "StockAnalysisDoc.h"
 #include "StockAnalysisView.h"
 
-//#pragma comment(lib, "libcrypto64MD.lib")
-//#pragma comment(lib, "libcrypto64MDd.lib")
-//#pragma comment(lib, "libcrypto64MT.lib")
-//#pragma comment(lib, "libcrypto64MTd.lib")
-
-#pragma comment(lib, "libcrypto_static.lib")
-#pragma comment(lib, "libssl_static.lib")
+#ifdef _DEBUG
+//#pragma comment(lib, "/vc/static/libcrypto64MTd.lib")
+//#pragma comment(lib, "/vc/static/libssl64MTd.lib")
+#else
+//#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
+//#pragma comment(lib, "/vc/static/libssl64MT.lib")
+#endif
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
@@ -26,6 +26,10 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 
 // CStockAnalysisApp
 

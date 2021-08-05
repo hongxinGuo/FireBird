@@ -1,4 +1,5 @@
 #include"pch.h"
+
 #include "WorldMarket.h"
 #include"thread.h"
 
@@ -18,10 +19,12 @@
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
 
-#include <iostream>
-
 using namespace std;
 #include<algorithm>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 
@@ -94,6 +97,26 @@ CWorldMarket::~CWorldMarket() {
 	m_vForexSymbol.resize(0);
 	m_vWorldStock.resize(0);
 	m_vWorldChoicedStock.resize(0);
+
+	if (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_FinnhubWebSocket.stop();
+	}
+	while (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoIEXWebSocket.stop();
+	}
+	while (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoCryptoWebSocket.stop();
+	}
+	while (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoForexWebSocket.stop();
+	}
+	while (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
 }
 
 void CWorldMarket::Reset(void) {
@@ -825,17 +848,76 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
+	static bool sm_fConnectedFinnhubWebSocket = false;
+	static bool sm_fSendFinnhubWebStocketMessage = false;
+
+	static bool sm_fConnectedTiingoIEXWebSocket = false;
+	static bool sm_fSendTiingoIEXWebStocketMessage = false;
+	static bool sm_fConnectedTiingoCryptoWebSocket = false;
+	static bool sm_fSendTiingoCryptoWebStocketMessage = false;
+	static bool sm_fConnectedTiingoForexWebSocket = false;
+	static bool sm_fSendTiingoForexWebStocketMessage = false;
+
+	if (!sm_fConnectedFinnhubWebSocket) {
+		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			sm_fConnectedFinnhubWebSocket = true;
+			ConnectFinnhubWebSocket();
+		}
+	}
+
+	if (!sm_fSendFinnhubWebStocketMessage) {
+		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
+			sm_fSendFinnhubWebStocketMessage = true;
+			SendFinnhubWebSocketMessage();
+		}
+	}
+
+	if (!sm_fConnectedTiingoIEXWebSocket) {
+		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			sm_fConnectedTiingoIEXWebSocket = true;
+			ConnectTiingoIEXWebSocket();
+		}
+	}
+
+	if (!sm_fSendTiingoIEXWebStocketMessage) {
+		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
+			sm_fSendTiingoIEXWebStocketMessage = true;
+			SendTiingoIEXWebSocketMessage();
+		}
+	}
+
+	if (!sm_fConnectedTiingoCryptoWebSocket) {
+		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			sm_fConnectedTiingoCryptoWebSocket = true;
+			ConnectTiingoCryptoWebSocket();
+		}
+	}
+
+	if (!sm_fSendTiingoCryptoWebStocketMessage) {
+		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
+			sm_fSendTiingoCryptoWebStocketMessage = true;
+			SendTiingoCryptoWebSocketMessage();
+		}
+	}
+
+	if (!sm_fConnectedTiingoForexWebSocket) {
+		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			sm_fConnectedTiingoForexWebSocket = true;
+			ConnectTiingoForexWebSocket();
+		}
+	}
+
+	if (!sm_fSendTiingoForexWebStocketMessage) {
+		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
+			sm_fSendTiingoForexWebStocketMessage = true;
+			SendTiingoForexWebSocketMessage();
+		}
+	}
+
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	static bool sm_fCreate = false;
-
-	if (!sm_fCreate) {
-		sm_fCreate = true;
-		CreateFinnhubWebSocket();
-	}
-
 	return true;
 }
 
@@ -2194,63 +2276,319 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 
 	return true;
 }
+
 string strMessage;
 
-bool CWorldMarket::CreateFinnhubWebSocket(void) {
-	ix::initNetSystem();
-
+/// <summary>
+/// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 	// Connect to a server with encryption
 	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
-	std::string url("wss://ws.finnhub.io?token=c1i57rv48v6vit20lrc0");
+	std::string url("wss://ws.finnhub.io");
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
-	strToken = strToken.Right(strToken.GetLength() - 1);
-	//url += strToken.GetBuffer();
-
-	m_webSocket.setUrl(url);
-
-	// Optional heart beat, sent every 45 seconds when there is not any traffic
-// to make sure that load balancers do not kill an idle connection.
-	m_webSocket.setPingInterval(45);
-
-	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	m_webSocket.disablePerMessageDeflate();
+	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
+	url += strToken.GetBuffer();
 
 	ix::SocketTLSOptions TLSOption;
-	//TLSOption.certFile = "path/to/cert/file.pem",
-	//	TLSOption.keyFile = "path/to/key/file.pem",
-	//	TLSOption.caFile = "path/to/trust/bundle/file.pem", // as a file, or in memory buffer in PEM format
 	TLSOption.tls = true;
-	m_webSocket.setTLSOptions(TLSOption);
+	m_FinnhubWebSocket.setTLSOptions(TLSOption);
+
+	m_FinnhubWebSocket.setUrl(url);
+
+	// Optional heart beat, sent every 45 seconds when there is not any traffic
+	// to make sure that load balancers do not kill an idle connection.
+	m_FinnhubWebSocket.setPingInterval(45);
+
+	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+	m_FinnhubWebSocket.disablePerMessageDeflate();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_webSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+	m_FinnhubWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				strMessage = msg->str;
+				//gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
-				strMessage.clear();
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
 				break;
-			default:
-				strMessage = _T("a");
+			case ix::WebSocketMessageType::Open:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket已连接"));
+				break;
+			case ix::WebSocketMessageType::Close:
+				break;
+			case ix::WebSocketMessageType::Fragment:
+				break;
+			case ix::WebSocketMessageType::Ping:
+				break;
+			case ix::WebSocketMessageType::Pong:
+				break;
+			default: // error
 				break;
 			}
 		}
 	);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
-	m_webSocket.start();
-
-	Sleep(1000);
-	ix::WebSocketSendInfo info;
-	// Send a message to the server (default to TEXT mode)
-	//info = m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");
-	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}");
-	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
-	//m_webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS : 1\"}");
-
-	//m_webSocket.stop();
+	m_FinnhubWebSocket.start();
 
 	return true;
+}
+
+bool CWorldMarket::SendFinnhubWebSocketMessage(void)
+{
+	ix::WebSocketSendInfo info;
+
+	ASSERT(m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open);
+
+	// Send a message to the server (default to TEXT mode)
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}"));
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS : 1\"}");
+
+	return false;
+}
+
+/// <summary>
+/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
+	// Connect to a server with encryption
+	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
+	std::string url("wss://api.tiingo.com/iex");
+
+	ix::SocketTLSOptions TLSOption;
+	TLSOption.tls = true;
+	m_TiingoIEXWebSocket.setTLSOptions(TLSOption);
+
+	m_TiingoIEXWebSocket.setUrl(url);
+
+	// Optional heart beat, sent every 30 seconds when there is not any traffic
+	// to make sure that load balancers do not kill an idle connection.
+	m_TiingoIEXWebSocket.setPingInterval(30);
+
+	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+	m_TiingoIEXWebSocket.disablePerMessageDeflate();
+
+	// Setup a callback to be fired when a message or an event (open, close, error) is received
+	m_TiingoIEXWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+		{
+			switch (msg->type) {
+			case ix::WebSocketMessageType::Message:
+				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				break;
+			case ix::WebSocketMessageType::Error:
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+				break;
+			case ix::WebSocketMessageType::Open:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket已连接"));
+				break;
+			case ix::WebSocketMessageType::Close:
+				break;
+			case ix::WebSocketMessageType::Fragment:
+				break;
+			case ix::WebSocketMessageType::Ping:
+				break;
+			case ix::WebSocketMessageType::Pong:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
+				break;
+			default: // error
+				break;
+			}
+		}
+	);
+
+	// Now that our callback is setup, we can start our background thread and receive messages
+	m_TiingoIEXWebSocket.start();
+
+	return true;
+}
+
+/// <summary>
+/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
+	// Connect to a server with encryption
+	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
+	std::string url("wss://api.tiingo.com/crypto");
+
+	ix::SocketTLSOptions TLSOption;
+	TLSOption.tls = true;
+	m_TiingoCryptoWebSocket.setTLSOptions(TLSOption);
+
+	m_TiingoCryptoWebSocket.setUrl(url);
+
+	// Optional heart beat, sent every 30 seconds when there is not any traffic
+	// to make sure that load balancers do not kill an idle connection.
+	m_TiingoCryptoWebSocket.setPingInterval(30);
+
+	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+	m_TiingoCryptoWebSocket.disablePerMessageDeflate();
+
+	// Setup a callback to be fired when a message or an event (open, close, error) is received
+	m_TiingoCryptoWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+		{
+			switch (msg->type) {
+			case ix::WebSocketMessageType::Message:
+				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				break;
+			case ix::WebSocketMessageType::Error:
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+				break;
+			case ix::WebSocketMessageType::Open:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket已连接"));
+				break;
+			case ix::WebSocketMessageType::Close:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto Close"));
+				break;
+			case ix::WebSocketMessageType::Fragment:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto Fragment"));
+				break;
+			case ix::WebSocketMessageType::Ping:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto ping"));
+				break;
+			case ix::WebSocketMessageType::Pong:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
+				break;
+			default: // error
+				break;
+			}
+		}
+	);
+
+	// Now that our callback is setup, we can start our background thread and receive messages
+	m_TiingoCryptoWebSocket.start();
+
+	return true;
+}
+
+/// <summary>
+/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
+	// Connect to a server with encryption
+	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
+	std::string url("wss://api.tiingo.com/fx");
+
+	ix::SocketTLSOptions TLSOption;
+	TLSOption.tls = true;
+	m_TiingoForexWebSocket.setTLSOptions(TLSOption);
+
+	m_TiingoForexWebSocket.setUrl(url);
+
+	// Optional heart beat, sent every 30 seconds when there is not any traffic
+	// to make sure that load balancers do not kill an idle connection.
+	m_TiingoForexWebSocket.setPingInterval(30);
+
+	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
+	m_TiingoForexWebSocket.disablePerMessageDeflate();
+
+	// Setup a callback to be fired when a message or an event (open, close, error) is received
+	m_TiingoForexWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+		{
+			switch (msg->type) {
+			case ix::WebSocketMessageType::Message:
+				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				break;
+			case ix::WebSocketMessageType::Error:
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+				break;
+			case ix::WebSocketMessageType::Open:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket已连接"));
+				break;
+			case ix::WebSocketMessageType::Close:
+				break;
+			case ix::WebSocketMessageType::Fragment:
+				break;
+			case ix::WebSocketMessageType::Ping:
+				break;
+			case ix::WebSocketMessageType::Pong:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
+				break;
+			default: // error
+				break;
+			}
+		}
+	);
+
+	// Now that our callback is setup, we can start our background thread and receive messages
+	m_TiingoForexWebSocket.start();
+
+	return true;
+}
+
+bool CWorldMarket::SendTiingoIEXWebSocketMessage(void)
+{
+	static bool sm_fSendAuth = true;
+	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+	str += strAuth + strSuffix;
+
+	string messageAuth(str);
+	ix::WebSocketSendInfo info;
+
+	ASSERT(m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open);
+
+	if (sm_fSendAuth) {
+		info = m_TiingoIEXWebSocket.send(messageAuth);
+	}
+	return false;
+}
+
+bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void)
+{
+	static bool sm_fSendAuth = true;
+	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+	str += strAuth + strSuffix;
+
+	string messageAuth(str);
+	ix::WebSocketSendInfo info;
+
+	ASSERT(m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open);
+
+	if (sm_fSendAuth) {
+		info = m_TiingoCryptoWebSocket.send(messageAuth);
+	}
+
+	return false;
+}
+
+bool CWorldMarket::SendTiingoForexWebSocketMessage(void)
+{
+	static bool sm_fSendAuth = true;
+	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+	str += strAuth + strSuffix;
+
+	string messageAuth(str);
+	ix::WebSocketSendInfo info;
+
+	ASSERT(m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open);
+
+	if (sm_fSendAuth) {
+		info = m_TiingoForexWebSocket.send(messageAuth);
+	}
+
+	return false;
 }

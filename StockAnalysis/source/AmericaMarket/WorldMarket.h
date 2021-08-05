@@ -342,7 +342,16 @@ public:
 
 	bool SortStockVector(void);
 
-	bool CreateFinnhubWebSocket(void);
+	bool ConnectFinnhubWebSocket(void);
+	bool SendFinnhubWebSocketMessage(void);
+
+	bool ConnectTiingoIEXWebSocket(void);
+	bool ConnectTiingoCryptoWebSocket(void);
+	bool ConnectTiingoForexWebSocket(void);
+
+	bool SendTiingoIEXWebSocketMessage(void);
+	bool SendTiingoCryptoWebSocketMessage(void);
+	bool SendTiingoForexWebSocketMessage(void);
 
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
@@ -430,7 +439,11 @@ protected:
 	map<CString, long> m_mapNaicsIndustry;
 	long m_lLastTotalNaicsIndustry;
 
-	ix::WebSocket m_webSocket;
+	ix::WebSocket m_FinnhubWebSocket;
+	ix::WebSocket m_TiingoIEXWebSocket;
+	ix::WebSocket m_TiingoCryptoWebSocket;
+	ix::WebSocket m_TiingoForexWebSocket;
+
 	string m_strMessage;
 
 	//
