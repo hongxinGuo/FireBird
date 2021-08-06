@@ -353,6 +353,16 @@ public:
 	bool SendTiingoCryptoWebSocketMessage(void);
 	bool SendTiingoForexWebSocketMessage(void);
 
+	bool TaskProcessWebSocketData(void);
+	bool ProcessFinnhubWebSocketData();
+	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> pData);
+	bool ProcessTiingoIEXWebSocketData();
+	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData);
+	bool ProcessTiingoCryptoWebSocketData();
+	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData);
+	bool ProcessTiingoForexWebSocketData();
+	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData);
+
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
 	map<CString, long> m_mapFinnhubExchange;

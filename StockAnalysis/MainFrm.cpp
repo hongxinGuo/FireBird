@@ -128,7 +128,7 @@ CMainFrame::CMainFrame() {
 
 	if (!sm_fInitIxWebSocket) {
 		sm_fInitIxWebSocket = true;// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
-		ix::initNetSystem();
+		//ix::initNetSystem();
 	}
 
 	m_uIdTimer = 0;
@@ -148,7 +148,7 @@ CMainFrame::~CMainFrame() {
 
 	if (sm_fInitIxWebSocket) {
 		sm_fInitIxWebSocket = false; // 退出系统时，析构IXWebSocket库，且只能析构一次。
-		ix::uninitNetSystem();
+		//ix::uninitNetSystem();
 	}
 
 	if (gl_pChinaMarket->IsUpdateOptionDB()) {

@@ -35,7 +35,7 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 		pStock->SetUpdateProfileDB(true);
 		return false; // 没有公司简介
 	}
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 	try {
 		s = pt.get<string>(_T("address"));
 		pStock->SetAddress(s.c_str());
@@ -134,7 +134,7 @@ bool CWorldMarket::ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorl
 		//正常的长度大致为300左右, 小于100则为无效信息。
 		return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
 	}
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 	try {
 		s = pt.get<string>(_T("ticker"));
 		if (s.size() > 0) pStock->SetTicker(s.c_str());
@@ -171,7 +171,7 @@ bool CWorldMarket::ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorld
 	ptree pt, pt2;
 	string s, sError;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pStock = make_shared<CWorldStock>();
@@ -214,7 +214,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 	CString str;
 	string sError;
 
-	if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
 		str = _T("下载");
 		str += pStock->GetSymbol();
 		str += _T("日线故障\n");
@@ -335,7 +335,7 @@ bool CWorldMarket::ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr
 	double dTemp = 0;
 	time_t tt = 0;
 
-	if (!ConvertToJSon(pt, pWebData)) {
+	if (!ConvertToJSON(pt, pWebData)) {
 		return false;
 	}
 	try {
@@ -365,7 +365,7 @@ bool CWorldMarket::ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CStr
 	CString str = _T("");
 	string sError;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pt2 = it->second;
@@ -383,7 +383,7 @@ bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForex
 	string s;
 	string sError;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pSymbol = make_shared<CFinnhubForexSymbol>();
@@ -419,7 +419,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 	CString str;
 	string sError;
 
-	if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
 		str = _T("下载");
 		str += pForexSymbol->GetSymbol();
 		str += _T("日线故障\n");
@@ -542,7 +542,7 @@ bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCount
 	ptree pt, pt2;
 	string s;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pCountry = make_shared<CCountry>();
@@ -580,7 +580,7 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
 		pStock->SetPeer(_T(" ")); // 清空
 		return true; // 没有有效的同业竞争对手
 	}
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	ASSERT(pWebData->GetBufferLength() < 1000);
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {
@@ -599,7 +599,6 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
 
 bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
 	char buffer[1000]{};
-	int i = 0;
 	ptree pt, pt1, pt2;
 	string sError;
 	string s;
@@ -607,7 +606,7 @@ bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, v
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	try {
 		pt1 = pt.get_child(_T("data"));
@@ -650,7 +649,7 @@ bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<C
 	ptree pt, pt1, pt2;
 	string s;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	try {
 		pt1 = pt.get_child(_T("economicCalendar"));
@@ -692,7 +691,7 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 	CString str;
 	string sError;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pEPSSurprise = make_shared<CEPSSurprise>();
@@ -713,5 +712,40 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 		vEPSSurprise.push_back(pEPSSurprise);
 	}
 	sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+	return true;
+}
+
+bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
+	ptree pt, pt2, pt3;
+	string sType, sSymbol;
+	double price = 0;
+	double volume = 0;
+	time_t time = 0;
+	try {
+		if (ConvertToJSON(pt, *pData)) {
+			sType = pt.get<string>(_T("type"));
+			if (sType.compare(_T("trade")) == 0) { // 交易数据
+				pt2 = pt.get_child(_T("data"));
+				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+					pt3 = it->second;
+					sSymbol = pt3.get<string>(_T("s"));
+					if (IsStock(sSymbol.c_str())) {
+						price = pt3.get<double>(_T("p"));
+						volume = pt3.get<double>(_T("v"));
+						time = pt3.get<time_t>(_T("t"));
+					}
+				}
+			}
+			else {
+				// ERROR
+				int i = 0;
+				i++;
+			}
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+
 	return true;
 }

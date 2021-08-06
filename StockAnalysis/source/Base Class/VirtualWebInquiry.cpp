@@ -180,11 +180,12 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 
 CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-	pWebDataReceived->Resize(GetByteReaded() + 1);
-	for (int i = 0; i < GetByteReaded() + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
+	auto byteReaded = GetByteReaded();
+	pWebDataReceived->Resize(byteReaded + 1);
+	for (int i = 0; i < byteReaded + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
 		pWebDataReceived->SetData(i, m_vBuffer.at(i));
 	}
-	pWebDataReceived->SetBufferLength(GetByteReaded());
+	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();
 	return pWebDataReceived;
 }

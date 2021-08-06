@@ -22,6 +22,10 @@
 using namespace std;
 #include<algorithm>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -848,6 +852,8 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
+	TaskProcessWebSocketData();
+
 	static bool sm_fConnectedFinnhubWebSocket = false;
 	static bool sm_fSendFinnhubWebStocketMessage = false;
 
@@ -861,56 +867,56 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	if (!sm_fConnectedFinnhubWebSocket) {
 		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedFinnhubWebSocket = true;
-			ConnectFinnhubWebSocket();
+			//ConnectFinnhubWebSocket();
 		}
 	}
 
 	if (!sm_fSendFinnhubWebStocketMessage) {
 		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendFinnhubWebStocketMessage = true;
-			SendFinnhubWebSocketMessage();
+			//SendFinnhubWebSocketMessage();
 		}
 	}
 
 	if (!sm_fConnectedTiingoIEXWebSocket) {
 		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoIEXWebSocket = true;
-			ConnectTiingoIEXWebSocket();
+			//ConnectTiingoIEXWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoIEXWebStocketMessage) {
 		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoIEXWebStocketMessage = true;
-			SendTiingoIEXWebSocketMessage();
+			//SendTiingoIEXWebSocketMessage();
 		}
 	}
 
 	if (!sm_fConnectedTiingoCryptoWebSocket) {
 		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoCryptoWebSocket = true;
-			ConnectTiingoCryptoWebSocket();
+			//ConnectTiingoCryptoWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoCryptoWebStocketMessage) {
 		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoCryptoWebStocketMessage = true;
-			SendTiingoCryptoWebSocketMessage();
+			//SendTiingoCryptoWebSocketMessage();
 		}
 	}
 
 	if (!sm_fConnectedTiingoForexWebSocket) {
 		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoForexWebSocket = true;
-			ConnectTiingoForexWebSocket();
+			//ConnectTiingoForexWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoForexWebStocketMessage) {
 		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoForexWebStocketMessage = true;
-			SendTiingoForexWebSocketMessage();
+			//SendTiingoForexWebSocketMessage();
 		}
 	}
 
@@ -2296,7 +2302,7 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 	TLSOption.tls = true;
 	m_FinnhubWebSocket.setTLSOptions(TLSOption);
 
-	m_FinnhubWebSocket.setUrl(url);
+	m_FinnhubWebSocket.setUrl(url); // wss://ws.finnhub.io/?c1i57rv48v6vit20lrc0
 
 	// Optional heart beat, sent every 45 seconds when there is not any traffic
 	// to make sure that load balancers do not kill an idle connection.
@@ -2311,7 +2317,6 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
 				//gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2346,16 +2351,19 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void)
 	ASSERT(m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open);
 
 	// Send a message to the server (default to TEXT mode)
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}")); // {"type":"subscribe","symbol":"AAPL"}
 	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}"));
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS : 1\"}");
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
+	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
 	return false;
 }
 
 /// <summary>
-/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// Tiingo IEX的数据源格式：wss://api.tiingo.com/iex，其密钥是随后发送的。
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
@@ -2382,8 +2390,8 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				gl_WebInquirer.pushTiingoIEXWebSocketData(msg->str);
+				//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2413,7 +2421,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 }
 
 /// <summary>
-/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// Tiingo Crypto的数据源格式：wss://api.tiingo.com/crypto，其密钥是随后发送的。
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
@@ -2474,7 +2482,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 }
 
 /// <summary>
-/// Tiingo的数据源格式：wss://api.tiingo.com，其密钥是随后发送的。
+/// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
@@ -2501,7 +2509,7 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
+				gl_WebInquirer.pushTiingoIEXWebSocketData(msg->str);
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
@@ -2535,7 +2543,8 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void)
 {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2591,4 +2600,53 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void)
 	}
 
 	return false;
+}
+
+bool CWorldMarket::TaskProcessWebSocketData(void) {
+	ProcessFinnhubWebSocketData();
+	ProcessTiingoIEXWebSocketData();
+	ProcessTiingoCryptoWebSocketData();
+	ProcessTiingoForexWebSocketData();
+
+	return true;
+}
+
+bool CWorldMarket::ProcessFinnhubWebSocketData() {
+	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
+
+	for (auto i = 0; i < total; i++) {
+		auto pData = gl_WebInquirer.PopFinnhubWebSocketData();
+		ProcessOneFinnhubWebSocketData(pData);
+	}
+	return true;
+}
+
+bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
+	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
+
+	for (auto i = 0; i < total; i++) {
+		auto pData = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		ProcessOneTiingoIEXWebSocketData(pData);
+	}
+	return true;
+}
+
+bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
+	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
+
+	for (auto i = 0; i < total; i++) {
+		auto pData = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+		ProcessOneTiingoCryptoWebSocketData(pData);
+	}
+	return true;
+}
+
+bool CWorldMarket::ProcessTiingoForexWebSocketData() {
+	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
+
+	for (auto i = 0; i < total; i++) {
+		auto pData = gl_WebInquirer.PopTiingoForexWebSocketData();
+		ProcessOneTiingoForexWebSocketData(pData);
+	}
+	return true;
 }

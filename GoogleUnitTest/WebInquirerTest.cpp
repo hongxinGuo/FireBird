@@ -195,12 +195,30 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(pData2->c_str(), _T("abc"));
 	}
 
-	TEST_F(CWebInquirerTest, TestPushPopTiingoWebSocketData) {
+	TEST_F(CWebInquirerTest, TestPushPopTiingoIEXWebSocketData) {
 		shared_ptr<string> pData = make_shared<string>(_T("abc"));
 		shared_ptr<string> pData2;
-		gl_WebInquirer.PushTiingoWebSocketData(pData);
-		EXPECT_EQ(gl_WebInquirer.GetTiingoWebSocketDataSize(), 1);
-		pData2 = gl_WebInquirer.PopTiingoWebSocketData();
+		gl_WebInquirer.PushTiingoIEXWebSocketData(pData);
+		EXPECT_EQ(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 1);
+		pData2 = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		EXPECT_STREQ(pData2->c_str(), _T("abc"));
+	}
+
+	TEST_F(CWebInquirerTest, TestPushPopTiingoCryptoWebSocketData) {
+		shared_ptr<string> pData = make_shared<string>(_T("abc"));
+		shared_ptr<string> pData2;
+		gl_WebInquirer.PushTiingoCryptoWebSocketData(pData);
+		EXPECT_EQ(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 1);
+		pData2 = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+		EXPECT_STREQ(pData2->c_str(), _T("abc"));
+	}
+
+	TEST_F(CWebInquirerTest, TestPushPopTiingoForexWebSocketData) {
+		shared_ptr<string> pData = make_shared<string>(_T("abc"));
+		shared_ptr<string> pData2;
+		gl_WebInquirer.PushTiingoForexWebSocketData(pData);
+		EXPECT_EQ(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 1);
+		pData2 = gl_WebInquirer.PopTiingoForexWebSocketData();
 		EXPECT_STREQ(pData2->c_str(), _T("abc"));
 	}
 }

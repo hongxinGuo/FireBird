@@ -88,10 +88,20 @@ public:
 	void pushFinnhubWebSocketData(string data) { auto pData = make_shared<string>(data); m_qFinnhubWebSocketData.PushData(pData); }
 	shared_ptr<string> PopFinnhubWebSocketData(void) { return m_qFinnhubWebSocketData.PopData(); }
 
-	size_t GetTiingoWebSocketDataSize(void) { return m_qTiingoWebSocketData.GetDataSize(); }
-	void PushTiingoWebSocketData(shared_ptr<string> pData) { m_qTiingoWebSocketData.PushData(pData); }
-	void pushTiingoWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoWebSocketData.PushData(pData); }
-	shared_ptr<string> PopTiingoWebSocketData(void) { return m_qTiingoWebSocketData.PopData(); }
+	size_t GetTiingoIEXWebSocketDataSize(void) { return m_qTiingoIEXWebSocketData.GetDataSize(); }
+	void PushTiingoIEXWebSocketData(shared_ptr<string> pData) { m_qTiingoIEXWebSocketData.PushData(pData); }
+	void pushTiingoIEXWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoIEXWebSocketData.PushData(pData); }
+	shared_ptr<string> PopTiingoIEXWebSocketData(void) { return m_qTiingoIEXWebSocketData.PopData(); }
+
+	size_t GetTiingoCryptoWebSocketDataSize(void) { return m_qTiingoCryptoWebSocketData.GetDataSize(); }
+	void PushTiingoCryptoWebSocketData(shared_ptr<string> pData) { m_qTiingoCryptoWebSocketData.PushData(pData); }
+	void pushTiingoCryptoWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoCryptoWebSocketData.PushData(pData); }
+	shared_ptr<string> PopTiingoCryptoWebSocketData(void) { return m_qTiingoCryptoWebSocketData.PopData(); }
+
+	size_t GetTiingoForexWebSocketDataSize(void) { return m_qTiingoForexWebSocketData.GetDataSize(); }
+	void PushTiingoForexWebSocketData(shared_ptr<string> pData) { m_qTiingoForexWebSocketData.PushData(pData); }
+	void pushTiingoForexWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoForexWebSocketData.PushData(pData); }
+	shared_ptr<string> PopTiingoForexWebSocketData(void) { return m_qTiingoForexWebSocketData.PopData(); }
 
 protected:
 	CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
@@ -104,7 +114,9 @@ protected:
 	CQueueWebData m_qTiingoData; // Tiingo.com网络数据暂存队列
 
 	CQueueString m_qFinnhubWebSocketData; // finnhub的WebSocket数据
-	CQueueString m_qTiingoWebSocketData; // tiingo的WebSocket数据
+	CQueueString m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
+	CQueueString m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
+	CQueueString m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
 };
 
 extern CWebInquirer gl_WebInquirer; //

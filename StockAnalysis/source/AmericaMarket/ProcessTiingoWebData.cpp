@@ -38,7 +38,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 	long year, month, day;
 	bool fSucceed = true;
 
-	if (!ConvertToJSon(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return false;
 	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 		pStock = make_shared<CTiingoStock>();
 		try {
@@ -133,7 +133,7 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	CString str;
 	long year, month, day;
 
-	if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
 		str = _T("Tiingo下载");
 		str += pStock->GetSymbol();
 		str += _T("日线故障\n");
@@ -177,5 +177,107 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	pStock->SetDayLineNeedUpdate(false);
 	pStock->SetDayLineNeedSaving(true);
 	pStock->SetUpdateProfileDB(true);
+	return true;
+}
+
+bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
+	ptree pt, pt2, pt3;
+	string sType, sSymbol;
+	double price = 0;
+	double volume = 0;
+	time_t time = 0;
+	try {
+		if (ConvertToJSON(pt, *pData)) {
+			sType = pt.get<string>(_T("type"));
+			if (sType.compare(_T("trade")) == 0) { // 交易数据
+				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+					pt3 = it->second;
+					sSymbol = pt3.get<string>(_T("s"));
+					if (IsStock(sSymbol.c_str())) {
+						price = pt3.get<double>(_T("p"));
+						volume = pt3.get<double>(_T("v"));
+						time = pt3.get<time_t>(_T("t"));
+					}
+				}
+			}
+			else {
+				// ERROR
+				int i = 0;
+				i++;
+			}
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+
+	return true;
+}
+
+bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData) {
+	ptree pt, pt2, pt3;
+	string sType, sSymbol;
+	double price = 0;
+	double volume = 0;
+	time_t time = 0;
+	try {
+		if (ConvertToJSON(pt, *pData)) {
+			sType = pt.get<string>(_T("type"));
+			if (sType.compare(_T("trade")) == 0) { // 交易数据
+				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+					pt3 = it->second;
+					sSymbol = pt3.get<string>(_T("s"));
+					if (IsStock(sSymbol.c_str())) {
+						price = pt3.get<double>(_T("p"));
+						volume = pt3.get<double>(_T("v"));
+						time = pt3.get<time_t>(_T("t"));
+					}
+				}
+			}
+			else {
+				// ERROR
+				int i = 0;
+				i++;
+			}
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+
+	return true;
+}
+
+bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
+	ptree pt, pt2, pt3;
+	string sType, sSymbol;
+	double price = 0;
+	double volume = 0;
+	time_t time = 0;
+	try {
+		if (ConvertToJSON(pt, *pData)) {
+			sType = pt.get<string>(_T("type"));
+			if (sType.compare(_T("trade")) == 0) { // 交易数据
+				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+					pt3 = it->second;
+					sSymbol = pt3.get<string>(_T("s"));
+					if (IsStock(sSymbol.c_str())) {
+						price = pt3.get<double>(_T("p"));
+						volume = pt3.get<double>(_T("v"));
+						time = pt3.get<time_t>(_T("t"));
+					}
+				}
+			}
+			else {
+				// ERROR
+				int i = 0;
+				i++;
+			}
+		}
+	}
+	catch (ptree_error&) {
+		return false;
+	}
+
 	return true;
 }
