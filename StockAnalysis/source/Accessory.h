@@ -66,5 +66,6 @@ public:
 	double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
 };
 
-bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData);
+bool ConvertToJSON(ptree& pt, CWebDataPtr pWebData);
+bool ConvertToJSON(ptree& pt, string s);
 bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告
