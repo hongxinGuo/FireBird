@@ -1,5 +1,6 @@
 ﻿// StockAnalysis.cpp: 定义应用程序的类行为。
 //
+//#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 #include"globedef.h"

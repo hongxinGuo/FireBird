@@ -460,6 +460,8 @@ bool ConvertToJSON(ptree& pt, CWebDataPtr pWebData) {
 	pbuffer[pWebData->GetBufferLength()] = 0x000;
 	string strTemp = pbuffer;
 
+	delete pbuffer;
+
 	return (ConvertToJSON(pt, strTemp));
 }
 

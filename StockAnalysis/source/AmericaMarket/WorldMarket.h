@@ -355,13 +355,13 @@ public:
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
-	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> pData);
+	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> data);
 	bool ProcessTiingoIEXWebSocketData();
-	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData);
+	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> data);
 	bool ProcessTiingoCryptoWebSocketData();
-	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData);
+	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> data);
 	bool ProcessTiingoForexWebSocketData();
-	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData);
+	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> data);
 
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;

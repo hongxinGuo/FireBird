@@ -217,28 +217,30 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
+	char chType;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
+	int i = 0;
+
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("type"));
-			if (sType.compare(_T("trade")) == 0) { // 交易数据
-				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-					pt3 = it->second;
-					sSymbol = pt3.get<string>(_T("s"));
-					if (IsStock(sSymbol.c_str())) {
-						price = pt3.get<double>(_T("p"));
-						volume = pt3.get<double>(_T("v"));
-						time = pt3.get<time_t>(_T("t"));
-					}
-				}
-			}
-			else {
-				// ERROR
-				int i = 0;
+			sType = pt.get<string>(_T("messageType"));
+			chType = sType.at(0);
+			switch (chType) {
+			case 'I': // 注册成功
+				break;
+			case 'H': // heart beat
+				break;
+			case 'A': // new data
+				break;
+			default: //
 				i++;
+				break;
 			}
+		}
+		else {
+			return false;
 		}
 	}
 	catch (ptree_error&) {
@@ -251,28 +253,27 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
+	char chType;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("type"));
-			if (sType.compare(_T("trade")) == 0) { // 交易数据
-				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-					pt3 = it->second;
-					sSymbol = pt3.get<string>(_T("s"));
-					if (IsStock(sSymbol.c_str())) {
-						price = pt3.get<double>(_T("p"));
-						volume = pt3.get<double>(_T("v"));
-						time = pt3.get<time_t>(_T("t"));
-					}
-				}
+			sType = pt.get<string>(_T("messageType"));
+			chType = sType.at(0);
+			switch (chType) { // 交易数据
+			case 'A':
+				break;
+			case 'I':
+				break;
+			default:
+				break;
 			}
-			else {
-				// ERROR
-				int i = 0;
-				i++;
-			}
+		}
+		else {
+			// ERROR
+			int i = 0;
+			i++;
 		}
 	}
 	catch (ptree_error&) {

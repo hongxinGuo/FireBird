@@ -84,23 +84,23 @@ public:
 	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
 
 	size_t GetFinnhubWebSocketDataSize(void) { return m_qFinnhubWebSocketData.GetDataSize(); }
+	void pushFinnhubWebSocketData(string data) { m_qFinnhubWebSocketData.PushData(data); }
 	void PushFinnhubWebSocketData(shared_ptr<string> pData) { m_qFinnhubWebSocketData.PushData(pData); }
-	void pushFinnhubWebSocketData(string data) { auto pData = make_shared<string>(data); m_qFinnhubWebSocketData.PushData(pData); }
 	shared_ptr<string> PopFinnhubWebSocketData(void) { return m_qFinnhubWebSocketData.PopData(); }
 
 	size_t GetTiingoIEXWebSocketDataSize(void) { return m_qTiingoIEXWebSocketData.GetDataSize(); }
+	void PushTiingoIEXWebSocketData(string data) { m_qTiingoIEXWebSocketData.PushData(data); }
 	void PushTiingoIEXWebSocketData(shared_ptr<string> pData) { m_qTiingoIEXWebSocketData.PushData(pData); }
-	void pushTiingoIEXWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoIEXWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoIEXWebSocketData(void) { return m_qTiingoIEXWebSocketData.PopData(); }
 
 	size_t GetTiingoCryptoWebSocketDataSize(void) { return m_qTiingoCryptoWebSocketData.GetDataSize(); }
+	void PushTiingoCryptoWebSocketData(string data) { m_qTiingoCryptoWebSocketData.PushData(data); }
 	void PushTiingoCryptoWebSocketData(shared_ptr<string> pData) { m_qTiingoCryptoWebSocketData.PushData(pData); }
-	void pushTiingoCryptoWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoCryptoWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoCryptoWebSocketData(void) { return m_qTiingoCryptoWebSocketData.PopData(); }
 
 	size_t GetTiingoForexWebSocketDataSize(void) { return m_qTiingoForexWebSocketData.GetDataSize(); }
+	void PushTiingoForexWebSocketData(string data) { m_qTiingoForexWebSocketData.PushData(data); }
 	void PushTiingoForexWebSocketData(shared_ptr<string> pData) { m_qTiingoForexWebSocketData.PushData(pData); }
-	void pushTiingoForexWebSocketData(string data) { auto pData = make_shared<string>(data); m_qTiingoForexWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoForexWebSocketData(void) { return m_qTiingoForexWebSocketData.PopData(); }
 
 protected:

@@ -31,6 +31,7 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 ### 致谢
 1.ixWebSocket库（https://github.com/machinezone/IXWebSocket）。
 2. OpenSSL库（https://www.openssl.org/）。
+3. Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1).
 
 
 

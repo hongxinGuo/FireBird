@@ -21,11 +21,13 @@ public:
 	void Reset(void);
 
 	// 通用接口函数
+	void PushData(string data);
 	void PushData(shared_ptr<string> pData);
 	shared_ptr<string> PopData(void);
 	size_t GetDataSize(void);
 
 protected:
 	queue<shared_ptr<string>> m_qData;
+	long m_lCounter;
 	mutex m_MutexAccessData;
 };

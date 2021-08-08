@@ -10,5 +10,5 @@
 
 namespace ix
 {
-	std::string userAgent();
+    std::string userAgent();
 } // namespace ix

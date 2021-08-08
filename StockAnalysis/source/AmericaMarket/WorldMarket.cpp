@@ -867,28 +867,28 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	if (!sm_fConnectedFinnhubWebSocket) {
 		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedFinnhubWebSocket = true;
-			//ConnectFinnhubWebSocket();
+			ConnectFinnhubWebSocket();
 		}
 	}
 
 	if (!sm_fSendFinnhubWebStocketMessage) {
 		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendFinnhubWebStocketMessage = true;
-			//SendFinnhubWebSocketMessage();
+			SendFinnhubWebSocketMessage();
 		}
 	}
 
 	if (!sm_fConnectedTiingoIEXWebSocket) {
 		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoIEXWebSocket = true;
-			//ConnectTiingoIEXWebSocket();
+			ConnectTiingoIEXWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoIEXWebStocketMessage) {
 		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoIEXWebStocketMessage = true;
-			//SendTiingoIEXWebSocketMessage();
+			SendTiingoIEXWebSocketMessage();
 		}
 	}
 
@@ -909,14 +909,14 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	if (!sm_fConnectedTiingoForexWebSocket) {
 		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoForexWebSocket = true;
-			//ConnectTiingoForexWebSocket();
+			ConnectTiingoForexWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoForexWebStocketMessage) {
 		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoForexWebStocketMessage = true;
-			//SendTiingoForexWebSocketMessage();
+			SendTiingoForexWebSocketMessage();
 		}
 	}
 
@@ -2380,7 +2380,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 
 	// Optional heart beat, sent every 30 seconds when there is not any traffic
 	// to make sure that load balancers do not kill an idle connection.
-	m_TiingoIEXWebSocket.setPingInterval(30);
+	//m_TiingoIEXWebSocket.setPingInterval(30);
 
 	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
 	m_TiingoIEXWebSocket.disablePerMessageDeflate();
@@ -2390,8 +2390,8 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				gl_WebInquirer.pushTiingoIEXWebSocketData(msg->str);
-				//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
+				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2438,7 +2438,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 
 	// Optional heart beat, sent every 30 seconds when there is not any traffic
 	// to make sure that load balancers do not kill an idle connection.
-	m_TiingoCryptoWebSocket.setPingInterval(30);
+	//m_TiingoCryptoWebSocket.setPingInterval(30);
 
 	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
 	m_TiingoCryptoWebSocket.disablePerMessageDeflate();
@@ -2448,8 +2448,8 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				//gl_WebInquirer.pushTiingoWebSocketData(msg->str);
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
+				//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2458,13 +2458,10 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket已连接"));
 				break;
 			case ix::WebSocketMessageType::Close:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto Close"));
 				break;
 			case ix::WebSocketMessageType::Fragment:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto Fragment"));
 				break;
 			case ix::WebSocketMessageType::Ping:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto ping"));
 				break;
 			case ix::WebSocketMessageType::Pong:
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
@@ -2509,7 +2506,7 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				gl_WebInquirer.pushTiingoIEXWebSocketData(msg->str);
+				gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				break;
 			case ix::WebSocketMessageType::Error:
@@ -2564,7 +2561,7 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void)
 {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"jstusdt\",\"egldbtc\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2615,8 +2612,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
 
 	for (auto i = 0; i < total; i++) {
-		auto pData = gl_WebInquirer.PopFinnhubWebSocketData();
-		ProcessOneFinnhubWebSocketData(pData);
+		ProcessOneFinnhubWebSocketData(gl_WebInquirer.PopFinnhubWebSocketData());
 	}
 	return true;
 }
@@ -2625,8 +2621,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
 
 	for (auto i = 0; i < total; i++) {
-		auto pData = gl_WebInquirer.PopTiingoIEXWebSocketData();
-		ProcessOneTiingoIEXWebSocketData(pData);
+		ProcessOneTiingoIEXWebSocketData(gl_WebInquirer.PopTiingoIEXWebSocketData());
 	}
 	return true;
 }
@@ -2635,8 +2630,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
 
 	for (auto i = 0; i < total; i++) {
-		auto pData = gl_WebInquirer.PopTiingoCryptoWebSocketData();
-		ProcessOneTiingoCryptoWebSocketData(pData);
+		ProcessOneTiingoCryptoWebSocketData(gl_WebInquirer.PopTiingoCryptoWebSocketData());
 	}
 	return true;
 }
@@ -2645,8 +2639,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
 
 	for (auto i = 0; i < total; i++) {
-		auto pData = gl_WebInquirer.PopTiingoForexWebSocketData();
-		ProcessOneTiingoForexWebSocketData(pData);
+		ProcessOneTiingoForexWebSocketData(gl_WebInquirer.PopTiingoForexWebSocketData());
 	}
 	return true;
 }

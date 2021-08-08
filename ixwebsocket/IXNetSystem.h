@@ -24,7 +24,7 @@
 #undef EBADF
 #undef EINVAL
 
- // map to WSA error codes
+// map to WSA error codes
 #define EWOULDBLOCK WSAEWOULDBLOCK
 #define EAGAIN WSATRY_AGAIN
 #define EINPROGRESS WSAEINPROGRESS
@@ -38,9 +38,9 @@ typedef unsigned long int nfds_t;
 #if defined(__GNUC__)
 struct pollfd
 {
-	int fd;        /* file descriptor */
-	short events;  /* requested events */
-	short revents; /* returned events */
+    int fd;        /* file descriptor */
+    short events;  /* requested events */
+    short revents; /* returned events */
 };
 
 #define POLLIN 0x001   /* There is data to read.  */
@@ -69,16 +69,16 @@ struct pollfd
 namespace ix
 {
 #ifdef _WIN32
-	typedef SOCKET socket_t;
+    typedef SOCKET socket_t;
 #else
-	typedef int socket_t;
+    typedef int socket_t;
 #endif
 
-	bool initNetSystem();
-	bool uninitNetSystem();
+    bool initNetSystem();
+    bool uninitNetSystem();
 
-	int poll(struct pollfd* fds, nfds_t nfds, int timeout);
+    int poll(struct pollfd* fds, nfds_t nfds, int timeout);
 
-	const char* inet_ntop(int af, const void* src, char* dst, socklen_t size);
-	int inet_pton(int af, const char* src, void* dst);
+    const char* inet_ntop(int af, const void* src, char* dst, socklen_t size);
+    int inet_pton(int af, const char* src, void* dst);
 } // namespace ix
