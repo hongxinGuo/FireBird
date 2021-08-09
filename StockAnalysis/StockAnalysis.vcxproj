@@ -226,7 +226,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
       <AdditionalLibraryDirectories>C:\Program Files\OpenSSL-Win64\lib;C:\Program Files\OpenSSL-Win64\lib\VC;C:\Program Files\OpenSSL-Win64\lib\VC\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

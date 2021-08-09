@@ -1,6 +1,5 @@
 ﻿// StockAnalysis.cpp: 定义应用程序的类行为。
 //
-//#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 #include"globedef.h"
@@ -13,11 +12,21 @@
 #include "StockAnalysisView.h"
 
 #ifdef _DEBUG
+#ifdef _OPENSSL_USE_DLL
+//#pragma comment(lib, "/vc/libcrypto64MTd.lib")
+//#pragma comment(lib, "/vc/libssl64MTd.lib")
+#else
 //#pragma comment(lib, "/vc/static/libcrypto64MTd.lib")
 //#pragma comment(lib, "/vc/static/libssl64MTd.lib")
+#endif
+#else
+#ifdef _OPENSSL_USE_DLL
+//#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
+//#pragma comment(lib, "/vc/static/libssl64MT.lib")
 #else
 //#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
 //#pragma comment(lib, "/vc/static/libssl64MT.lib")
+#endif
 #endif
 
 #ifndef _MBCS
@@ -66,7 +75,6 @@ CStockAnalysisApp::CStockAnalysisApp() {
 }
 
 // 唯一的 CStockAnalysisApp 对象
-
 CStockAnalysisApp theApp;
 
 // CStockAnalysisApp 初始化

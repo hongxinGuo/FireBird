@@ -54,7 +54,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
-    <EnableASAN>true</EnableASAN>
+    <EnableASAN>false</EnableASAN>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <VCToolsVersion />
   </PropertyGroup>
@@ -396,7 +396,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalDependencies>\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalDependencies>\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

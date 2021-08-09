@@ -39,7 +39,6 @@ Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大为8
 
 CWebRTDataContainer gl_WebRTDataContainer;
-CWebInquirer gl_WebInquirer;
 
 bool CompareChinaMarketStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
 

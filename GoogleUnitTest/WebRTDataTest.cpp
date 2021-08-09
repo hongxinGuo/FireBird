@@ -289,8 +289,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turnvoer")), 0); // ´íÎóµÄ·ûºÅ·µ»ØÖµ½ÔÎªÁã
 	}
 
-	struct NeteaseRTData3 {
-		NeteaseRTData3(long lCount, CString strIndex, long lIndex, CString strValue) {
+	struct NeteaseRTSymbolIndex {
+		NeteaseRTSymbolIndex(long lCount, CString strIndex, long lIndex, CString strValue) {
 			m_lCount = lCount;
 			m_lIndex = lIndex;
 			m_strIndex = strIndex;
@@ -303,50 +303,50 @@ namespace StockAnalysisTest {
 		CString m_strValue;
 	};
 
-	NeteaseRTData3 neteaseData1(1, _T("time"), 1, _T("2019/01/01 12:20:30"));
-	NeteaseRTData3 neteaseData2(2, _T("code"), 2, _T("0601872"));
-	NeteaseRTData3 neteaseData3(3, _T("name"), 3, _T("ÕÐÉÌÂÖ´¬"));
-	NeteaseRTData3 neteaseData4(4, _T("type"), 4, _T("SH"));
-	NeteaseRTData3 neteaseData5(5, _T("symbol"), 5, _T("601872"));
-	NeteaseRTData3 neteaseData6(6, _T("status"), 6, _T("0"));
-	NeteaseRTData3 neteaseData7(7, _T("update"), 7, _T("2019/10/11 01:10:02"));
-	NeteaseRTData3 neteaseData10(10, _T("open"), 10, _T("5.7"));
-	NeteaseRTData3 neteaseData11(11, _T("yestclose"), 11, _T("5.86"));
-	NeteaseRTData3 neteaseData12(12, _T("high"), 12, _T("5.90"));
-	NeteaseRTData3 neteaseData13(13, _T("low"), 13, _T("5.45"));
-	NeteaseRTData3 neteaseData14(14, _T("price"), 14, _T("5.55"));
-	NeteaseRTData3 neteaseData15(15, _T("volume"), 15, _T("10101010"));
-	NeteaseRTData3 neteaseData16(16, _T("precloseioev"), 16, _T("10.123"));
-	NeteaseRTData3 neteaseData20(20, _T("bid1"), 20, _T("5.54"));
-	NeteaseRTData3 neteaseData21(21, _T("bid2"), 21, _T("5.53"));
-	NeteaseRTData3 neteaseData22(22, _T("bid3"), 22, _T("5.52"));
-	NeteaseRTData3 neteaseData23(23, _T("bid4"), 23, _T("5.51"));
-	NeteaseRTData3 neteaseData24(24, _T("bid5"), 24, _T("5.50"));
-	NeteaseRTData3 neteaseData30(30, _T("bidvol1"), 30, _T("10101"));
-	NeteaseRTData3 neteaseData31(31, _T("bidvol2"), 31, _T("20202"));
-	NeteaseRTData3 neteaseData32(32, _T("bidvol3"), 32, _T("30303"));
-	NeteaseRTData3 neteaseData33(33, _T("bidvol4"), 33, _T("40404"));
-	NeteaseRTData3 neteaseData34(34, _T("bidvol5"), 34, _T("50505"));
-	NeteaseRTData3 neteaseData40(40, _T("ask1"), 40, _T("5.55"));
-	NeteaseRTData3 neteaseData41(41, _T("ask2"), 41, _T("5.56"));
-	NeteaseRTData3 neteaseData42(42, _T("ask3"), 42, _T("5.57"));
-	NeteaseRTData3 neteaseData43(43, _T("ask4"), 43, _T("5.58"));
-	NeteaseRTData3 neteaseData44(44, _T("ask5"), 44, _T("5.59"));
-	NeteaseRTData3 neteaseData50(50, _T("askvol1"), 50, _T("101010"));
-	NeteaseRTData3 neteaseData51(51, _T("askvol2"), 51, _T("202020"));
-	NeteaseRTData3 neteaseData52(52, _T("askvol3"), 52, _T("303030"));
-	NeteaseRTData3 neteaseData53(53, _T("askvol4"), 53, _T("404040"));
-	NeteaseRTData3 neteaseData54(54, _T("askvol5"), 54, _T("505050"));
-	NeteaseRTData3 neteaseData60(60, _T("percent"), 60, _T("0.02345"));
-	NeteaseRTData3 neteaseData61(61, _T("updown"), 61, _T("0.21"));
-	NeteaseRTData3 neteaseData62(62, _T("arrow"), 62, _T("2191"));
-	NeteaseRTData3 neteaseData63(63, _T("turnover"), 63, _T("4433221100"));
+	NeteaseRTSymbolIndex neteaseData1(1, _T("time"), 1, _T("2019/01/01 12:20:30"));
+	NeteaseRTSymbolIndex neteaseData2(2, _T("code"), 2, _T("0601872"));
+	NeteaseRTSymbolIndex neteaseData3(3, _T("name"), 3, _T("ÕÐÉÌÂÖ´¬"));
+	NeteaseRTSymbolIndex neteaseData4(4, _T("type"), 4, _T("SH"));
+	NeteaseRTSymbolIndex neteaseData5(5, _T("symbol"), 5, _T("601872"));
+	NeteaseRTSymbolIndex neteaseData6(6, _T("status"), 6, _T("0"));
+	NeteaseRTSymbolIndex neteaseData7(7, _T("update"), 7, _T("2019/10/11 01:10:02"));
+	NeteaseRTSymbolIndex neteaseData10(10, _T("open"), 10, _T("5.7"));
+	NeteaseRTSymbolIndex neteaseData11(11, _T("yestclose"), 11, _T("5.86"));
+	NeteaseRTSymbolIndex neteaseData12(12, _T("high"), 12, _T("5.90"));
+	NeteaseRTSymbolIndex neteaseData13(13, _T("low"), 13, _T("5.45"));
+	NeteaseRTSymbolIndex neteaseData14(14, _T("price"), 14, _T("5.55"));
+	NeteaseRTSymbolIndex neteaseData15(15, _T("volume"), 15, _T("10101010"));
+	NeteaseRTSymbolIndex neteaseData16(16, _T("precloseioev"), 16, _T("10.123"));
+	NeteaseRTSymbolIndex neteaseData20(20, _T("bid1"), 20, _T("5.54"));
+	NeteaseRTSymbolIndex neteaseData21(21, _T("bid2"), 21, _T("5.53"));
+	NeteaseRTSymbolIndex neteaseData22(22, _T("bid3"), 22, _T("5.52"));
+	NeteaseRTSymbolIndex neteaseData23(23, _T("bid4"), 23, _T("5.51"));
+	NeteaseRTSymbolIndex neteaseData24(24, _T("bid5"), 24, _T("5.50"));
+	NeteaseRTSymbolIndex neteaseData30(30, _T("bidvol1"), 30, _T("10101"));
+	NeteaseRTSymbolIndex neteaseData31(31, _T("bidvol2"), 31, _T("20202"));
+	NeteaseRTSymbolIndex neteaseData32(32, _T("bidvol3"), 32, _T("30303"));
+	NeteaseRTSymbolIndex neteaseData33(33, _T("bidvol4"), 33, _T("40404"));
+	NeteaseRTSymbolIndex neteaseData34(34, _T("bidvol5"), 34, _T("50505"));
+	NeteaseRTSymbolIndex neteaseData40(40, _T("ask1"), 40, _T("5.55"));
+	NeteaseRTSymbolIndex neteaseData41(41, _T("ask2"), 41, _T("5.56"));
+	NeteaseRTSymbolIndex neteaseData42(42, _T("ask3"), 42, _T("5.57"));
+	NeteaseRTSymbolIndex neteaseData43(43, _T("ask4"), 43, _T("5.58"));
+	NeteaseRTSymbolIndex neteaseData44(44, _T("ask5"), 44, _T("5.59"));
+	NeteaseRTSymbolIndex neteaseData50(50, _T("askvol1"), 50, _T("101010"));
+	NeteaseRTSymbolIndex neteaseData51(51, _T("askvol2"), 51, _T("202020"));
+	NeteaseRTSymbolIndex neteaseData52(52, _T("askvol3"), 52, _T("303030"));
+	NeteaseRTSymbolIndex neteaseData53(53, _T("askvol4"), 53, _T("404040"));
+	NeteaseRTSymbolIndex neteaseData54(54, _T("askvol5"), 54, _T("505050"));
+	NeteaseRTSymbolIndex neteaseData60(60, _T("percent"), 60, _T("0.02345"));
+	NeteaseRTSymbolIndex neteaseData61(61, _T("updown"), 61, _T("0.21"));
+	NeteaseRTSymbolIndex neteaseData62(62, _T("arrow"), 62, _T("2191"));
+	NeteaseRTSymbolIndex neteaseData63(63, _T("turnover"), 63, _T("4433221100"));
 
-	class NeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData3*> {
+	class NeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTSymbolIndex*> {
 	protected:
 		virtual void SetUp(void) override {
 			ASSERT_FALSE(gl_fNormalMode);
-			NeteaseRTData3* pData = GetParam();
+			NeteaseRTSymbolIndex* pData = GetParam();
 			m_iCount = pData->m_lCount;
 			m_strSymbol = pData->m_strIndex;
 			m_lIndex = pData->m_lIndex;

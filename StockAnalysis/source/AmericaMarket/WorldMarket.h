@@ -311,6 +311,8 @@ public:
 	void PushTiingoInquiry(WebInquiry inquiry) { m_qTiingoWebInquiry.push(inquiry); }
 	WebInquiry GetTiingoInquiry(void);
 
+	void StopReceivingWebSocket(void);
+
 	// 数据库操作
 	bool LoadOption(void);
 	bool LoadWorldExchangeDB(void); // 装入世界交易所信息

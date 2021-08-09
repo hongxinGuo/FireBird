@@ -12,6 +12,7 @@ CQueueString::~CQueueString() {
 	m_MutexAccessData.lock();
 	ASSERT(m_lCounter == m_qData.size());
 	m_qData.empty();
+	m_lCounter = 0;
 	m_MutexAccessData.unlock();
 }
 

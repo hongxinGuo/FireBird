@@ -1,6 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
 
+#include"WebInquirer.h"
 #include "ChinaMarket.h"
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
@@ -23,3 +24,4 @@ CWorldMarketPtr gl_pWorldMarket = nullptr;
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
+CWebInquirer gl_WebInquirer;

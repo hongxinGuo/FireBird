@@ -18,6 +18,7 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
+#include<ixwebsocket/IXWebSocketMessage.h>
 
 using namespace std;
 #include<algorithm>
@@ -94,6 +95,8 @@ void CWorldMarket::InitialTiingoInquiryStr(void) {
 }
 
 CWorldMarket::~CWorldMarket() {
+	StopReceivingWebSocket();
+
 	m_vCountry.resize(0);
 	m_vEconomicCalendar.resize(0);
 	m_vFinnhubExchange.resize(0);
@@ -101,26 +104,6 @@ CWorldMarket::~CWorldMarket() {
 	m_vForexSymbol.resize(0);
 	m_vWorldStock.resize(0);
 	m_vWorldChoicedStock.resize(0);
-
-	if (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_FinnhubWebSocket.stop();
-	}
-	while (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoIEXWebSocket.stop();
-	}
-	while (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoCryptoWebSocket.stop();
-	}
-	while (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoForexWebSocket.stop();
-	}
-	while (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
 }
 
 void CWorldMarket::Reset(void) {
@@ -1792,6 +1775,28 @@ WebInquiry CWorldMarket::GetTiingoInquiry(void) {
 	return inquiry;
 }
 
+void CWorldMarket::StopReceivingWebSocket(void) {
+	if (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_FinnhubWebSocket.stop();
+	}
+	while (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoIEXWebSocket.stop();
+	}
+	while (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoCryptoWebSocket.stop();
+	}
+	while (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+
+	if (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_TiingoForexWebSocket.stop();
+	}
+	while (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+}
+
 bool CWorldMarket::LoadOption(void) {
 	CSetWorldMarketOption setOption;
 
@@ -2316,7 +2321,11 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				//gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
+				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+				if (!gl_fExitingSystem) {
+					gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
+				}
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2390,8 +2399,12 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+				if (!gl_fExitingSystem) {
+					gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
+					gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				}
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2448,8 +2461,12 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 		{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
-				gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
-				//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+				if (!gl_fExitingSystem) {
+					gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
+					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+				}
 				break;
 			case ix::WebSocketMessageType::Error:
 				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
@@ -2478,6 +2495,38 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 	return true;
 }
 
+void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
+	string string1;
+	switch (msg->type) {
+	case ix::WebSocketMessageType::Message:
+		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+		if (!gl_fExitingSystem) {
+			string1 = msg->str;
+			gl_WebInquirer.PushTiingoForexWebSocketData(string1);
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+		}
+		break;
+	case ix::WebSocketMessageType::Error:
+		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		break;
+	case ix::WebSocketMessageType::Open:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket已连接"));
+		break;
+	case ix::WebSocketMessageType::Close:
+		break;
+	case ix::WebSocketMessageType::Fragment:
+		break;
+	case ix::WebSocketMessageType::Ping:
+		break;
+	case ix::WebSocketMessageType::Pong:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
+		break;
+	default: // error
+		break;
+	}
+}
+
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
@@ -2502,8 +2551,10 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 	m_TiingoForexWebSocket.disablePerMessageDeflate();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoForexWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
-		{
+	m_TiingoForexWebSocket.setOnMessageCallback(FunctionProcessTiingoForexWebSocket);
+	/*
+		m_TiingoForexWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
+			{
 			switch (msg->type) {
 			case ix::WebSocketMessageType::Message:
 				gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
@@ -2529,6 +2580,7 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 			}
 		}
 	);
+	*/
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	m_TiingoForexWebSocket.start();
@@ -2603,43 +2655,55 @@ bool CWorldMarket::TaskProcessWebSocketData(void) {
 	ProcessFinnhubWebSocketData();
 	ProcessTiingoIEXWebSocketData();
 	ProcessTiingoCryptoWebSocketData();
-	ProcessTiingoForexWebSocketData();
+	//ProcessTiingoForexWebSocketData();
 
 	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
+	shared_ptr<string> pData = nullptr;
 
 	for (auto i = 0; i < total; i++) {
-		ProcessOneFinnhubWebSocketData(gl_WebInquirer.PopFinnhubWebSocketData());
+		pData = gl_WebInquirer.PopFinnhubWebSocketData();
+		ProcessOneFinnhubWebSocketData(pData);
+		pData = nullptr;
 	}
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
+	shared_ptr<string> pData = nullptr;
 
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoIEXWebSocketData(gl_WebInquirer.PopTiingoIEXWebSocketData());
+		pData = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		ProcessOneTiingoIEXWebSocketData(pData);
+		pData = nullptr;
 	}
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
+	shared_ptr<string> pData = nullptr;
 
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoCryptoWebSocketData(gl_WebInquirer.PopTiingoCryptoWebSocketData());
+		pData = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+		ProcessOneTiingoCryptoWebSocketData(pData);
+		pData = nullptr;
 	}
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
+	shared_ptr<string> pData = nullptr;
 
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoForexWebSocketData(gl_WebInquirer.PopTiingoForexWebSocketData());
+		pData = gl_WebInquirer.PopTiingoForexWebSocketData();
+		ProcessOneTiingoForexWebSocketData(pData);
+		pData = nullptr;
 	}
 	return true;
 }
