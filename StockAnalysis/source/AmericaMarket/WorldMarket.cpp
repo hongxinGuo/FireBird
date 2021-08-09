@@ -878,14 +878,14 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	if (!sm_fConnectedTiingoCryptoWebSocket) {
 		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
 			sm_fConnectedTiingoCryptoWebSocket = true;
-			//ConnectTiingoCryptoWebSocket();
+			ConnectTiingoCryptoWebSocket();
 		}
 	}
 
 	if (!sm_fSendTiingoCryptoWebStocketMessage) {
 		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
 			sm_fSendTiingoCryptoWebStocketMessage = true;
-			//SendTiingoCryptoWebSocketMessage();
+			SendTiingoCryptoWebSocketMessage();
 		}
 	}
 
