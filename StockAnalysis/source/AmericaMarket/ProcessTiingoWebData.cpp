@@ -20,9 +20,9 @@ using namespace std;
 using namespace std;
 #include<algorithm>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
+//#include<boost/property_tree/ptree.hpp>
+//#include<boost/property_tree/json_parser.hpp>
+//using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
@@ -252,21 +252,33 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 
 bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
-	string sType, sSymbol;
+	ptree::iterator it;
+	string sType, sSymbol, sService;
 	char chType;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
+
+	string sMessageType, sTickers;
+
 	try {
 		if (ConvertToJSON(pt, *pData)) {
+			sService = pt.get<string>(_T("service"));
+			if (sService.compare(_T("fx")) != 0) return false;
 			sType = pt.get<string>(_T("messageType"));
 			chType = sType.at(0);
 			switch (chType) { // 交易数据
-			case 'A':
-				break;
-			case 'I':
+			case 'A': // forex目前只有此项
+				pt2 = pt.get_child(_T("data"));
+				it = pt2.begin();
+				pt3 = it->second();
+				sMessageType = pt3.get<string>;
+				it++;
+				pt3 = it->second();
+				sTickers = pt3->get<string>;
 				break;
 			default:
+				// error
 				break;
 			}
 		}

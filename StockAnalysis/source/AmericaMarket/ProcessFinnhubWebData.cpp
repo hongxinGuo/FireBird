@@ -10,10 +10,10 @@
 using namespace std;
 #include<algorithm>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+//#include <boost/property_tree/ptree.hpp>
+//#include <boost/property_tree/json_parser.hpp>
 
-using namespace boost::property_tree;
+//using namespace boost::property_tree;
 
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
