@@ -95,7 +95,7 @@ void CWorldMarket::InitialTiingoInquiryStr(void) {
 }
 
 CWorldMarket::~CWorldMarket() {
-	StopReceivingWebSocket();
+	PreparingExitMarket();
 
 	m_vCountry.resize(0);
 	m_vEconomicCalendar.resize(0);
@@ -203,6 +203,13 @@ void CWorldMarket::ResetMarket(void) {
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
+}
+
+bool CWorldMarket::PreparingExitMarket(void)
+{
+	StopReceivingWebSocket();
+
+	return true;
 }
 
 bool CWorldMarket::SchedulingTask(void) {
@@ -2325,6 +2332,7 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 				if (!gl_fExitingSystem) {
 					gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
+					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				}
 				break;
 			case ix::WebSocketMessageType::Error:
@@ -2340,6 +2348,7 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 			case ix::WebSocketMessageType::Ping:
 				break;
 			case ix::WebSocketMessageType::Pong:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket heart beat"));
 				break;
 			default: // error
 				break;
@@ -2360,7 +2369,10 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 
 	// Send a message to the server (default to TEXT mode)
 	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}")); // {"type":"subscribe","symbol":"AAPL"}
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}"));
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}")); // {"type":"subscribe","symbol":"RIG"}
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"MSFT\"}")); // {"type":"subscribe","symbol":"MSFT"}
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"IBM\"}")); // {"type":"subscribe","symbol":"IBM"}
+	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"TNK\"}")); // {"type":"subscribe","symbol":"TNK"}
 	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
 	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
 	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
@@ -2388,7 +2400,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 
 	// Optional heart beat, sent every 30 seconds when there is not any traffic
 	// to make sure that load balancers do not kill an idle connection.
-	//m_TiingoIEXWebSocket.setPingInterval(30);
+	m_TiingoIEXWebSocket.setPingInterval(30);
 
 	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
 	m_TiingoIEXWebSocket.disablePerMessageDeflate();
@@ -2402,7 +2414,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 				if (!gl_fExitingSystem) {
 					gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
-					gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 				}
 				break;
 			case ix::WebSocketMessageType::Error:
@@ -2418,7 +2430,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 			case ix::WebSocketMessageType::Ping:
 				break;
 			case ix::WebSocketMessageType::Pong:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
+				//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
 				break;
 			default: // error
 				break;
@@ -2450,7 +2462,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 
 	// Optional heart beat, sent every 30 seconds when there is not any traffic
 	// to make sure that load balancers do not kill an idle connection.
-	//m_TiingoCryptoWebSocket.setPingInterval(30);
+	m_TiingoCryptoWebSocket.setPingInterval(30);
 
 	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
 	m_TiingoCryptoWebSocket.disablePerMessageDeflate();
@@ -2480,7 +2492,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 			case ix::WebSocketMessageType::Ping:
 				break;
 			case ix::WebSocketMessageType::Pong:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
+				//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
 				break;
 			default: // error
 				break;
@@ -2503,7 +2515,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		if (!gl_fExitingSystem) {
 			string1 = msg->str;
 			gl_WebInquirer.PushTiingoForexWebSocketData(string1);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+			gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
@@ -2519,7 +2531,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
+		//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
 		break;
 	default: // error
 		break;

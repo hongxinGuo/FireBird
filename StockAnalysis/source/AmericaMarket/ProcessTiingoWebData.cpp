@@ -181,30 +181,107 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 }
 
 bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
+	ptree::iterator it;
 	ptree pt, pt2, pt3;
-	string sType, sSymbol;
+	string sType, sSymbol, sService;
+	char chType;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
+
+	int iSubscriptionId = 0;
+	string sMessageType, sTicker, sExchange, sDatetime;
+	INT64 iSecond = 0;
+	double dBidSize = 0;
+	double dBidPrice = 0;
+	double dMidPrice = 0;
+	double dAskPrice = 0;
+	double dAskSize = 0;
+	double dLastSize = 0;
+	double dLastPrice = 0;
+	int iHalted = 0, iAfterHour = 0, iISO = 0, iOddlot = 0, iNMSRule611 = 0;
+	int i = 0;
+
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("type"));
-			if (sType.compare(_T("trade")) == 0) { // 交易数据
-				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			sType = pt.get<string>(_T("messageType"));
+			switch (sType.at(0)) {
+			case 'A': // 交易数据
+				sService = pt.get<string>(_T("service"));
+				if (sService.compare(_T("iex")) != 0) return false; // 此项必须为"iex"
+				pt2 = pt.get_child(_T("data"));
+				it = pt2.begin();
+				pt3 = it->second;
+				sMessageType = pt3.get_value<string>(); // message type, 'Q'、'T'或者'B'
+				chType = sMessageType.at(0);
+				switch (chType) {
+				case 'Q':// top-of-book update message
+					it++;
 					pt3 = it->second;
-					sSymbol = pt3.get<string>(_T("s"));
-					if (IsStock(sSymbol.c_str())) {
-						price = pt3.get<double>(_T("p"));
-						volume = pt3.get<double>(_T("v"));
-						time = pt3.get<time_t>(_T("t"));
-					}
+					sDatetime = pt3.get_value<string>();
+					it++;
+					pt3 = it->second;
+					iSecond = pt3.get_value<INT64>();
+					it++;
+					pt3 = it->second;
+					dBidSize = pt3.get_value<double>();
+					it++;
+					pt3 = it->second;
+					dBidPrice = pt3.get_value<double>();
+					it++;
+					pt3 = it->second;
+					dMidPrice = pt3.get_value<double>(); // MidPrice = (BidPrice + AskPrice) / 2
+					it++;
+					pt3 = it->second;
+					dAskPrice = pt3.get_value<double>();
+					it++;
+					pt3 = it->second;
+					dAskSize = pt3.get_value<double>();
+					it++;
+					pt3 = it->second;
+					dLastPrice = pt3.get_value<double>();
+					it++;
+					pt3 = it->second;
+					iHalted = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					iAfterHour = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					iISO = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					iOddlot = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					iNMSRule611 = pt3.get_value<int>();
+					break;
+				case 'T':// 'T' last trade message
+					i++;
+					break;
+				case 'B':// 'B'trade break messages
+					i++;
+					break;
+				default:
+					i++;
+					break;
 				}
-			}
-			else {
-				// ERROR
-				int i = 0;
+				break;
+			case 'I':// authenization  {\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}
+				pt2 = pt.get_child(_T("data"));
+				iSubscriptionId = pt2.get<int>(_T("subscriptionId"));
+				break;
+			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
+				// 无需处理
+				break;
+			default:
 				i++;
+				break;
 			}
+		}
+		else {
+			// ERROR
+			return false;
 		}
 	}
 	catch (ptree_error&) {
@@ -215,6 +292,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 }
 
 bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData) {
+	ptree::iterator it;
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
 	char chType;
@@ -223,16 +301,77 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 	time_t time = 0;
 	int i = 0;
 
+	int iSubscriptionId = 0;
+	string sMessageType, sTickers, sExchange, sDatetime, sService;
+	double dBidSize;
+	double dBidPrice;
+	double dMidPrice;
+	double dAskPrice;
+	double dAskSize;
+	double dLastSize;
+	double dLastPrice;
 	try {
 		if (ConvertToJSON(pt, *pData)) {
 			sType = pt.get<string>(_T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
-			case 'I': // 注册成功
+			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+				pt2 = pt.get_child(_T("data"));
+				iSubscriptionId = pt2.get<int>(_T("subscriptionId"));
 				break;
-			case 'H': // heart beat
+			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
+				// do nothing
 				break;
 			case 'A': // new data
+				sService = pt.get<string>(_T("service"));
+				if (sService.compare(_T("crypto_data")) != 0) return false; // 格式不符则退出
+				pt2 = pt.get_child(_T("data"));
+				it = pt2.begin();
+				pt3 = it->second;
+				sMessageType = pt3.get_value<string>(); // ‘Q’或者‘T’
+				if (sMessageType.at(0) == 'T') { //last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
+					it++;
+					pt3 = it->second;
+					sTickers = pt3.get_value<string>(); // 证券名称
+					it++;
+					pt3 = it->second;
+					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					it++;
+					pt3 = it->second;
+					sExchange = pt3.get_value<string>(); // 交易所
+					it++;
+					pt3 = it->second;
+					dLastSize = pt3.get_value<double>(); // 最新数量
+					it++;
+					pt3 = it->second;
+					dLastPrice = pt3.get_value<double>(); // 最新价格
+				}
+				else { // 'Q' top-of-book update message.
+					it++;
+					pt3 = it->second;
+					sTickers = pt3.get_value<string>(); // 证券名称
+					it++;
+					pt3 = it->second;
+					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					it++;
+					pt3 = it->second;
+					sExchange = pt3.get_value<string>(); // 交易所
+					it++;
+					pt3 = it->second;
+					dBidSize = pt3.get_value<double>(); // 买价数量
+					it++;
+					pt3 = it->second;
+					dBidPrice = pt3.get_value<double>(); // 买价
+					it++;
+					pt3 = it->second;
+					dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
+					it++;
+					pt3 = it->second;
+					dAskSize = pt3.get_value<double>(); // 卖价数量
+					it++;
+					pt3 = it->second;
+					dAskPrice = pt3.get_value<double>(); // 卖价
+				}
 				break;
 			default: //
 				i++;
@@ -250,6 +389,38 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// {
+//	"messageType":"A",
+//		"service" : "fx",
+//		"data" : [
+//			  "Q",
+//				"eurnok",
+//				"2019-07-05T15:49:15.157000+00:00",
+//				5000000.0,
+//				9.6764,
+//				9.678135,
+//				5000000.0,
+//				9.67987
+//		]
+// }
+// {
+//	"messageType":"A",
+//		"service" : "fx",
+//		"data" : [
+//			  "Q",
+//				"gbpaud",
+//				"2019-07-05T15:49:15.236000+00:00",
+//				1000000.0,
+//				1.79457,
+//				1.79477,
+//				5000000.0,
+//				1.79497
+//		]
+// }
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	ptree::iterator it;
@@ -259,7 +430,12 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 	double volume = 0;
 	time_t time = 0;
 
-	string sMessageType, sTickers;
+	string sMessageType, sTickers, sDatetime;
+	double dBidSize;
+	double dBidPrice;
+	double dMidPrice;
+	double dAskPrice;
+	double dAskSize;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
@@ -271,11 +447,29 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 			case 'A': // forex目前只有此项
 				pt2 = pt.get_child(_T("data"));
 				it = pt2.begin();
-				pt3 = it->second();
-				sMessageType = pt3.get<string>;
+				pt3 = it->second;
+				sMessageType = pt3.get_value<string>(); // 必须是‘Q’
 				it++;
-				pt3 = it->second();
-				sTickers = pt3->get<string>;
+				pt3 = it->second;
+				sTickers = pt3.get_value<string>(); // 证券名称
+				it++;
+				pt3 = it->second;
+				sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+				it++;
+				pt3 = it->second;
+				dBidSize = pt3.get_value<double>(); // 买价数量
+				it++;
+				pt3 = it->second;
+				dBidPrice = pt3.get_value<double>(); // 买价
+				it++;
+				pt3 = it->second;
+				dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
+				it++;
+				pt3 = it->second;
+				dAskPrice = pt3.get_value<double>(); // 卖价数量
+				it++;
+				pt3 = it->second;
+				dAskSize = pt3.get_value<double>(); // 卖价
 				break;
 			default:
 				// error
@@ -284,8 +478,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 		}
 		else {
 			// ERROR
-			int i = 0;
-			i++;
+			return false;
 		}
 	}
 	catch (ptree_error&) {

@@ -116,6 +116,9 @@ public:
 	CWorldMarket();
 	virtual ~CWorldMarket();
 	virtual void ResetMarket(void) override;
+
+	virtual bool PreparingExitMarket(void) override final;
+
 	void Reset(void);
 	void ResetFinnhub(void);
 	void ResetQuandl(void);

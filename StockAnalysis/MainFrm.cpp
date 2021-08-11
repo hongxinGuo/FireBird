@@ -607,7 +607,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 		gl_fExitingSystem = true; // 提示各工作线程中途退出
-		gl_pWorldMarket->StopReceivingWebSocket();
+		for (auto pMarket : gl_vMarketPtr) {
+			pMarket->PreparingExitMarket();
+		}
 	}
 
 	//CMDIFrameWndEx::OnSysCommand(nID, lParam);

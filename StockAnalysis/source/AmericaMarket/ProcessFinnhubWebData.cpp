@@ -715,12 +715,20 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 	return true;
 }
 
+/// <summary>
+/// ¸ñÊ½Îª£º{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+/// {"type":"ping"}
+/// </summary>
+/// <param name="pData"></param>
+/// <returns></returns>
 bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
+	string code;
+
 	try {
 		if (ConvertToJSON(pt, *pData)) {
 			sType = pt.get<string>(_T("type"));
@@ -730,16 +738,19 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 					pt3 = it->second;
 					sSymbol = pt3.get<string>(_T("s"));
 					if (IsStock(sSymbol.c_str())) {
+						code = pt3.get<string>(_T("c"));
 						price = pt3.get<double>(_T("p"));
 						volume = pt3.get<double>(_T("v"));
 						time = pt3.get<time_t>(_T("t"));
 					}
 				}
 			}
+			else if (sType.compare(_T("ping")) == 0) {
+				// do nothing
+			}
 			else {
 				// ERROR
-				int i = 0;
-				i++;
+				return false;
 			}
 		}
 	}

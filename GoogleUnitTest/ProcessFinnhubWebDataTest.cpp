@@ -1105,9 +1105,9 @@ namespace StockAnalysisTest {
 		}
 	}
 
-	FinnhubWebSocketData finnhubWebData141(1, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
+	FinnhubWebSocketData finnhubWebSocketData141(1, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
 
-	FinnhubWebSocketData finnhubWebData149(1, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"ping\"}"));
+	FinnhubWebSocketData finnhubWebSocketData142(2, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"ping\"}"));
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*>
 	{
@@ -1133,7 +1133,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneFinnhubWebSocketData1, ProcessOneFinnhubWebSocketDataTest,
-		testing::Values(&finnhubWebData141));
+		testing::Values(&finnhubWebSocketData141, &finnhubWebSocketData142));
 
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
@@ -1142,7 +1142,7 @@ namespace StockAnalysisTest {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(fSucceed);
 			break;
-		case 9: // ping
+		case 2: // ping
 			EXPECT_FALSE(fSucceed);
 			break;
 		default:
