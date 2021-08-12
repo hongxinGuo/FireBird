@@ -79,7 +79,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
 	m_pFile = nullptr;
-	bool fStatus = true;
+	bool fReadingSuccess = true;
 	time_t tt = 0;
 	long lCurrentByteReaded = 0;
 
@@ -90,6 +90,10 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	tt = GetTickCount64();
 	if (OpenFile(GetInquiringString())) {
 		do {
+			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程。
+				fReadingSuccess = false;
+				break;
+			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
 		} while (lCurrentByteReaded > 0);
 		ASSERT(m_vBuffer.size() > m_lByteRead);
@@ -101,12 +105,13 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 			m_pFile = nullptr;
 		}
 	}
-	else fStatus = false;
+	else fReadingSuccess = false;
 
 	m_tCurrentInquiryTime = GetTickCount64() - tt;
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
-	return fStatus;
+
+	return fReadingSuccess;
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -405,6 +405,9 @@
     <ClInclude Include="..\StockAnalysis\source\QueueString.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebSocketData.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">

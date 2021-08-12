@@ -53,6 +53,10 @@ CWorldMarket::CWorldMarket() {
 	InitialFinnhubInquiryStr();
 	InitialTiingoInquiryStr();
 
+	m_iTiingoIEXSubscriptionId = 0;
+	m_iTiingoCryptoSubscriptionId = 0;
+	m_iTiingoForexSubscriptionId = 0;
+
 	Reset();
 }
 
@@ -843,6 +847,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	}
 
 	TaskProcessWebSocketData();
+	TaskUpdateWorldStockFromWebSocketData();
 
 	static bool sm_fConnectedFinnhubWebSocket = false;
 	static bool sm_fSendFinnhubWebStocketMessage = false;
@@ -2430,7 +2435,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 			case ix::WebSocketMessageType::Ping:
 				break;
 			case ix::WebSocketMessageType::Pong:
-				//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
 				break;
 			default: // error
 				break;
@@ -2492,7 +2497,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 			case ix::WebSocketMessageType::Ping:
 				break;
 			case ix::WebSocketMessageType::Pong:
-				//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
 				break;
 			default: // error
 				break;
@@ -2515,7 +2520,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		if (!gl_fExitingSystem) {
 			string1 = msg->str;
 			gl_WebInquirer.PushTiingoForexWebSocketData(string1);
-			gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
@@ -2531,7 +2536,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
-		//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
 		break;
 	default: // error
 		break;
@@ -2672,5 +2677,75 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	for (auto i = 0; i < total; i++) {
 		ProcessOneTiingoForexWebSocketData(gl_WebInquirer.PopTiingoForexWebSocketData());
 	}
+	return true;
+}
+
+/// <summary>
+/// 更新证券的实时信息
+/// 目前只使用IEX和Finnhub的数据
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldMarket::TaskUpdateWorldStockFromWebSocketData(void) {
+	CTiingoIEXWebSocketDataPtr pIEXData;
+	CTiingoCryptoWebSocketDataPtr pCryptoData;
+	CTiingoForexWebSocketDataPtr pForexData;
+	CFinnhubWebSocketDataPtr pFinnhubData;
+	CWorldStockPtr pStock = nullptr;
+
+	auto total = m_qTiingoIEXWebSockerData.size();
+
+	for (auto i = 0; i < total; i++) {
+		pIEXData = m_qTiingoIEXWebSockerData.front();
+		m_qTiingoIEXWebSockerData.pop();
+		UpdateWorldStockFromTiingoIEXWebSocketData(pIEXData);
+	}
+
+	total = m_qTiingoCryptoWebSocketData.size();
+	for (auto i = 0; i < total; i++) {
+		pCryptoData = m_qTiingoCryptoWebSocketData.front();
+		m_qTiingoCryptoWebSocketData.pop();
+	}
+
+	total = m_qTiingoForexWebSocketData.size();
+	for (auto i = 0; i < total; i++) {
+		pForexData = m_qTiingoForexWebSocketData.front();
+		m_qTiingoForexWebSocketData.pop();
+	}
+
+	total = m_qFinnhubWebSocketData.size();
+	for (auto i = 0; i < total; i++) {
+		pFinnhubData = m_qFinnhubWebSocketData.front();
+		m_qFinnhubWebSocketData.pop();
+		UpdateWorldStockFromFinnhubWebSocketData(pFinnhubData);
+	}
+
+	return true;
+}
+
+bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData) {
+	CWorldStockPtr pStock = nullptr;
+
+	if ((pStock = GetStock(pTiingoIEXbData->m_strSymbol)) != nullptr) {
+		pStock->SetActive(true);
+		switch (pTiingoIEXbData->m_chMessageType) {
+		case 'T':
+			pStock->SetNew(pTiingoIEXbData->m_dLastPrice * 1000);
+			break;
+		case 'Q':
+			break;
+		}
+	}
+
+	return true;
+}
+bool CWorldMarket::UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData) {
+	CWorldStockPtr pStock = nullptr;
+
+	if ((pStock = GetStock(pFinnhubData->m_strSymbol)) != nullptr) {
+		pStock->SetActive(true);
+		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
+	}
+
 	return true;
 }

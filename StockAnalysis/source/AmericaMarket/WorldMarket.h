@@ -19,7 +19,10 @@
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
 
+#include"TiingoWebSocketData.h"
+
 #include <ixwebsocket/IXWebSocket.h>
+using namespace ix;
 
 using namespace MyLib;
 
@@ -368,6 +371,10 @@ public:
 	bool ProcessTiingoForexWebSocketData();
 	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> data);
 
+	bool TaskUpdateWorldStockFromWebSocketData(void);
+	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
+	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
+
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
 	map<CString, long> m_mapFinnhubExchange;
@@ -454,10 +461,20 @@ protected:
 	map<CString, long> m_mapNaicsIndustry;
 	long m_lLastTotalNaicsIndustry;
 
-	ix::WebSocket m_FinnhubWebSocket;
-	ix::WebSocket m_TiingoIEXWebSocket;
-	ix::WebSocket m_TiingoCryptoWebSocket;
-	ix::WebSocket m_TiingoForexWebSocket;
+	// WebSocketÊý¾Ý
+	WebSocket m_FinnhubWebSocket;
+	WebSocket m_TiingoIEXWebSocket;
+	WebSocket m_TiingoCryptoWebSocket;
+	WebSocket m_TiingoForexWebSocket;
+
+	int m_iTiingoIEXSubscriptionId;
+	int m_iTiingoCryptoSubscriptionId;
+	int m_iTiingoForexSubscriptionId;
+
+	queue<CFinnhubWebSocketDataPtr> m_qFinnhubWebSocketData;
+	queue<CTiingoCryptoWebSocketDataPtr> m_qTiingoCryptoWebSocketData;
+	queue<CTiingoForexWebSocketDataPtr> m_qTiingoForexWebSocketData;
+	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSockerData;
 
 	string m_strMessage;
 

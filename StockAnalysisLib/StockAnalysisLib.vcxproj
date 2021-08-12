@@ -59,6 +59,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebSocketData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
