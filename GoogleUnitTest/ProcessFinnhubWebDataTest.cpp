@@ -1107,7 +1107,7 @@ namespace StockAnalysisTest {
 
 	FinnhubWebSocketData finnhubWebSocketData141(1, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
 
-	FinnhubWebSocketData finnhubWebSocketData142(2, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"ping\"}"));
+	FinnhubWebSocketData finnhubWebSocketData142(2, _T("AAPL"), _T("{\"type\":\"ping\"}"));
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*>
 	{
@@ -1143,7 +1143,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // ping
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			break;
 		default:
 			break;

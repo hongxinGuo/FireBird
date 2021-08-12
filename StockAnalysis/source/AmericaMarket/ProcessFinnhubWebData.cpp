@@ -728,6 +728,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	double volume = 0;
 	time_t time = 0;
 	string code;
+	int i = 0;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {

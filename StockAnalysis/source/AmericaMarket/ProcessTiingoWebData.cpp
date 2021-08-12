@@ -190,7 +190,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	time_t time = 0;
 
 	int iSubscriptionId = 0;
-	string sMessageType, sTicker, sExchange, sDatetime;
+	string sMessageType, sTicker, sExchange, sDatetime, sValue;
 	INT64 iSecond = 0;
 	double dBidSize = 0;
 	double dBidPrice = 0;
@@ -227,19 +227,116 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dBidSize = pt3.get_value<double>();
+					sTicker = pt.get_value<string>();
+					pIEXData->m_strSymbol = sTicker.c_str();
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dBidPrice = pt3.get_value<double>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dBidSize = atof(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dMidPrice = pt3.get_value<double>(); // MidPrice = (BidPrice + AskPrice) / 2
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dBidPrice = atof(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dAskPrice = pt3.get_value<double>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dMidPrice = atof(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dAskSize = pt3.get_value<double>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dAskPrice = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dAskSize = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dLastPrice = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dLastSize = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					pIEXData->m_iHalted = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					pIEXData->m_iAfterHour = pt3.get_value<int>();
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iISO = atoi(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iOddlot = atoi(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iNMSRule611 = atoi(sValue.c_str());
+					}
+					break;
+				case 'T':// 'T' last trade message
+					it++;
+					pt3 = it->second;
+					sDatetime = pt3.get_value<string>();
+					it++;
+					pt3 = it->second;
+					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
+					it++;
+					pt3 = it->second;
+					sTicker = pt3.get_value<string>();
+					pIEXData->m_strSymbol = sTicker.c_str();
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dBidSize = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dBidPrice = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dMidPrice = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dAskPrice = atof(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dAskSize = atof(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
 					pIEXData->m_dLastPrice = pt3.get_value<double>();
@@ -248,7 +345,10 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					pIEXData->m_iHalted = pt3.get_value<int>();
 					it++;
 					pt3 = it->second;
-					pIEXData->m_iAfterHour = pt3.get_value<int>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dAskSize = atoi(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
 					pIEXData->m_iISO = pt3.get_value<int>();
@@ -258,9 +358,6 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					it++;
 					pt3 = it->second;
 					pIEXData->m_iNMSRule611 = pt3.get_value<int>();
-					break;
-				case 'T':// 'T' last trade message
-					i++;
 					break;
 				case 'B':// 'B'trade break messages
 					i++;

@@ -250,7 +250,14 @@ public:
 	bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
 	bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
-	CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
+	CWorldStockPtr GetStock(CString strSymbol) {
+		try {
+			return m_vWorldStock.at(m_mapWorldStock.at(strSymbol));
+		}
+		catch (exception& e) {
+			return nullptr;
+		}
+	}
 	long GetStockIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
