@@ -149,10 +149,12 @@
 #define ID_SHOW_FINNHUB_WEB             59159
 #define ID_SHOW_TIINGO_WEB              59160
 #define ID_SHOW_QUANDL_WEB              59161
+#define ID_SHOW_WEB_SOCKET_DATA_SIZE    59162
+#define ID_CURRENT_WEB_SOCKET_DATA_SIZE 59162
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
