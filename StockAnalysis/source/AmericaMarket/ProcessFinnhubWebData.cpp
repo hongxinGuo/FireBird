@@ -7,8 +7,11 @@
 
 #include"WorldMarket.h"
 
+#include"TiingoWebSocketData.h"
+
 using namespace std;
 #include<algorithm>
+#include<memory>
 
 //#include <boost/property_tree/ptree.hpp>
 //#include <boost/property_tree/json_parser.hpp>
@@ -729,6 +732,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	time_t time = 0;
 	string code;
 	int i = 0;
+	CFinnhubWebSocketDataPtr pFinnhubDataPtr = nullptr;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
@@ -737,13 +741,16 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 				pt2 = pt.get_child(_T("data"));
 				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 					pt3 = it->second;
+					pFinnhubDataPtr = make_shared<CFinnhubWebSocketData>();
 					sSymbol = pt3.get<string>(_T("s"));
-					if (IsStock(sSymbol.c_str())) {
-						code = pt3.get<string>(_T("c"));
-						price = pt3.get<double>(_T("p"));
-						volume = pt3.get<double>(_T("v"));
-						time = pt3.get<time_t>(_T("t"));
-					}
+					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
+					code = pt3.get<string>(_T("c"));
+					if (code.compare(_T("null")) == 0) code = _T("");
+					pFinnhubDataPtr->m_strCode = code.c_str();
+					pFinnhubDataPtr->m_dLastPrice = pt3.get<double>(_T("p"));
+					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
+					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
+					m_qFinnhubWebSocketData.push(pFinnhubDataPtr);
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) {
@@ -753,6 +760,9 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 				// ERROR
 				return false;
 			}
+		}
+		else {
+			return false;
 		}
 	}
 	catch (ptree_error&) {

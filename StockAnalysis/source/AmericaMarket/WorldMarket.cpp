@@ -2636,6 +2636,11 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
+	m_iWebSocketDataReceivedPerSecond = gl_WebInquirer.GetFinnhubWebSocketDataSize()
+		+ gl_WebInquirer.GetTiingoIEXWebSocketDataSize()
+		+ gl_WebInquirer.GetTiingoCryptoWebSocketDataSize()
+		+ gl_WebInquirer.GetTiingoForexWebSocketDataSize();
+
 	ProcessFinnhubWebSocketData();
 	ProcessTiingoIEXWebSocketData();
 	ProcessTiingoCryptoWebSocketData();

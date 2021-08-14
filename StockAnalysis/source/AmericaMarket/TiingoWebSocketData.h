@@ -85,6 +85,7 @@ public:
 typedef shared_ptr<CTiingoIEXWebSocketData> CTiingoIEXWebSocketDataPtr;
 
 class CFinnhubWebSocketData : public CObject {
+public:
 	CFinnhubWebSocketData() {
 		m_strSymbol = _T("");
 		m_dLastPrice = m_dLastVolume = 0;

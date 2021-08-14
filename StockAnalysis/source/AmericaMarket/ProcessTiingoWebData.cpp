@@ -13,12 +13,10 @@ using namespace std;
 #include<vector>
 #include<queue>
 #include<atomic>
+#include<memory>
 
 #include"WebData.h"
 #include"EconomicCalendar.h"
-
-using namespace std;
-#include<algorithm>
 
 //#include<boost/property_tree/ptree.hpp>
 //#include<boost/property_tree/json_parser.hpp>
@@ -362,8 +360,8 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				case 'B':// 'B'trade break messages
 					i++;
 					break;
-				default:
-					i++;
+				default: // 错误
+					return false;
 					break;
 				}
 				m_qTiingoIEXWebSockerData.push(pIEXData);
@@ -377,7 +375,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				// 无需处理
 				break;
 			default:
-				i++;
+				return false;
 				break;
 			}
 		}
@@ -486,8 +484,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 				}
 				m_qTiingoCryptoWebSocketData.push(pCryptoData);
 				break;
-			default: //
-				i++;
+			default: // 错误
+				return false;
 				break;
 			}
 		}
@@ -591,6 +589,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 				break;
 			default:
 				// error
+				return false;
 				break;
 			}
 		}

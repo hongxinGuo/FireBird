@@ -275,6 +275,16 @@ namespace StockAnalysisTest {
 
 	TiingoWebSocketData tiingoForexData1(1, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"eurnok\",\"2019-07-05T15:49:15.157000+00:00\",5000000.0,9.6764,9.678135,5000000.0,9.67987]}"));
 	TiingoWebSocketData tiingoForexData2(2, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData4(4, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	TiingoWebSocketData tiingoForexData5(5, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	// data名称错为'dta'
+	TiingoWebSocketData tiingoForexData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"fx\",\"dta\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	// data首项必须为‘fx'
+	TiingoWebSocketData tiingoForexData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"ifx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	// messageType错误
+	TiingoWebSocketData tiingoForexData8(8, _T(""), _T("{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	// jsong格式错误
+	TiingoWebSocketData tiingoForexData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
 
 	class ProcessOneTiingoForexWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -297,7 +307,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
-		testing::Values(&tiingoForexData1, &tiingoForexData2));
+		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData8, &tiingoForexData9));
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
@@ -309,7 +319,16 @@ namespace StockAnalysisTest {
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
 			break;
-		case 9: // ping
+		case 6: //
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 7: //
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 8: // messageType错误
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 9: // jsong格式错误
 			EXPECT_FALSE(fSucceed);
 			break;
 		default:
@@ -319,6 +338,16 @@ namespace StockAnalysisTest {
 
 	TiingoWebSocketData tiingoCryptoData1(1, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
 	TiingoWebSocketData tiingoCryptoData2(2, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
+	// heart beat
+	TiingoWebSocketData tiingoCryptoData3(3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+	// authenizition
+	TiingoWebSocketData tiingoCryptoData4(4, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	// messageType必须为'A' 'H' 或者'I'
+	TiingoWebSocketData tiingoCryptoData5(5, _T(""), _T("{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	// data错为'dta'
+	TiingoWebSocketData tiingoCryptoData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"dta\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	// json格式错误
+	TiingoWebSocketData tiingoCryptoData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -341,7 +370,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
-		testing::Values(&tiingoCryptoData1, &tiingoCryptoData2));
+		testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &tiingoCryptoData4, &tiingoCryptoData5, &tiingoCryptoData9));
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
@@ -353,7 +382,16 @@ namespace StockAnalysisTest {
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
 			break;
-		case 9: // ping
+		case 3: // 正确
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 4: // 正确
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 5: // messageType错误
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 9: // json格式错误
 			EXPECT_FALSE(fSucceed);
 			break;
 		default:
@@ -361,8 +399,21 @@ namespace StockAnalysisTest {
 		}
 	}
 
+	// 正确数据
 	TiingoWebSocketData tiingoIEXData1(1, _T(""), _T("{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	TiingoWebSocketData tiingoIEXData2(2, _T(""), _T("{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
+	// authenization
+	TiingoWebSocketData tiingoIEXData3(3, _T(""), _T("{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	// Heart beat
+	TiingoWebSocketData tiingoIEXData4(4, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+	// messageType只能为'A''I''H'
+	TiingoWebSocketData tiingoIEXData5(5, _T(""), _T("{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	// data的首项只能为‘Q’ ‘T’ 或者‘B’
+	TiingoWebSocketData tiingoIEXData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"C\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	// 错误。service的名称不为"iex",
+	TiingoWebSocketData tiingoIEXData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	// json格式错误
+	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T("\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -380,12 +431,11 @@ namespace StockAnalysisTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
-		testing::Values(&tiingoIEXData1, &tiingoIEXData2));
+		testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		bool fSucceed = false;
@@ -396,6 +446,24 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
+			break;
+		case 3: // authenization
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 4: // Heart beat
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 5: //
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 6: //
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 7: // service的名称必须为"iex"
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 8: // json格式错误
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 9: // ping
 			EXPECT_FALSE(fSucceed);

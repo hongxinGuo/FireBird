@@ -104,6 +104,7 @@ static UINT indicators[] =
 	ID_CURRENT_ACTIVE_STOCK,
 	ID_CURRENT_DAYLINE_READING_STOCK,
 	ID_CURRENT_RTDATA_SIZE,
+	ID_CURRENT_WEB_SOCKET_DATA_SIZE,
 	ID_CURRENT_RUNNING_THREAD,
 	ID_CURRENT_RUNNING_BACKGROUND_THREAD,
 	ID_CURRENT_TIME,
@@ -553,18 +554,22 @@ void CMainFrame::UpdateStatus(void) {
 		m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
 	}
 
+	sprintf_s(buffer, _T("%5d"), gl_pWorldMarket->GetWebSocketDataReceivedPerSecond());
+	str = buffer;
+	SysCallSetPaneText(10, (LPCTSTR)str);
+
 	// 更新当前工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
 	str = buffer;
-	SysCallSetPaneText(10, (LPCTSTR)str);
+	SysCallSetPaneText(11, (LPCTSTR)str);
 
 	// 更新当前后台工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	str = buffer;
-	SysCallSetPaneText(11, (LPCTSTR)str);
+	SysCallSetPaneText(12, (LPCTSTR)str);
 
 	//更新当地时间的显示
-	SysCallSetPaneText(12, (LPCTSTR)gl_pChinaMarket->GetStringOfLocalTime());
+	SysCallSetPaneText(13, (LPCTSTR)gl_pChinaMarket->GetStringOfLocalTime());
 }
 
 void CMainFrame::UpdateInnerSystemStatus(void) {

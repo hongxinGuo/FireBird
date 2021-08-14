@@ -254,7 +254,7 @@ public:
 		try {
 			return m_vWorldStock.at(m_mapWorldStock.at(strSymbol));
 		}
-		catch (exception& e) {
+		catch (exception&) {
 			return nullptr;
 		}
 	}
@@ -382,6 +382,9 @@ public:
 	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
 	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
 
+	int GetWebSocketDataReceivedPerSecond(void) { return m_iWebSocketDataReceivedPerSecond; }
+	void ClearWebSocketDataReceived(void) { m_iWebSocketDataReceivedPerSecond = 0; }
+
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
 	map<CString, long> m_mapFinnhubExchange;
@@ -483,6 +486,7 @@ protected:
 	queue<CTiingoForexWebSocketDataPtr> m_qTiingoForexWebSocketData;
 	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSockerData;
 
+	size_t m_iWebSocketDataReceivedPerSecond;
 	string m_strMessage;
 
 	//

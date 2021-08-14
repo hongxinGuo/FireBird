@@ -35,9 +35,8 @@ namespace StockAnalysisTest {
 	};
 
 	struct FinnhubWebSocketData {
-		FinnhubWebSocketData(long lIndex, CString strSymbol, CString strData) {
+		FinnhubWebSocketData(long lIndex, CString strData) {
 			m_lIndex = lIndex;
-			m_strSymbol = strSymbol;
 			m_pData = strData;
 		}
 
@@ -46,7 +45,6 @@ namespace StockAnalysisTest {
 
 	public:
 		long m_lIndex;
-		CString m_strSymbol;
 		string m_pData;
 	};
 
@@ -1105,9 +1103,16 @@ namespace StockAnalysisTest {
 		}
 	}
 
-	FinnhubWebSocketData finnhubWebSocketData141(1, _T("AAPL"), _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
-
-	FinnhubWebSocketData finnhubWebSocketData142(2, _T("AAPL"), _T("{\"type\":\"ping\"}"));
+	// 正确数据
+	FinnhubWebSocketData finnhubWebSocketData141(1, _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
+	// 正确的ping数据格式
+	FinnhubWebSocketData finnhubWebSocketData142(2, _T("{\"type\":\"ping\"}"));
+	// json格式错误， 返回错误
+	FinnhubWebSocketData finnhubWebSocketData143(3, _T("\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\",\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1},\"type\":\"trade\"}"));
+	// type只能是"trade"或者"ping"
+	FinnhubWebSocketData finnhubWebSocketData144(4, _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"message\"}"));
+	// "dta"非法数据
+	FinnhubWebSocketData finnhubWebSocketData145(5, _T("{\"dta\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*>
 	{
@@ -1116,24 +1121,20 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_fNormalMode);
 			FinnhubWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			m_pStock->SetUpdateProfileDB(false);
 		}
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneFinnhubWebSocketData1, ProcessOneFinnhubWebSocketDataTest,
-		testing::Values(&finnhubWebSocketData141, &finnhubWebSocketData142));
+		testing::Values(&finnhubWebSocketData141, &finnhubWebSocketData142, &finnhubWebSocketData143, &finnhubWebSocketData144, &finnhubWebSocketData145));
 
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
@@ -1144,6 +1145,15 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);
+			break;
+		case 3: // json格式错误
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 4: // type类型不存在
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 5: // data名不为"data"
+			EXPECT_FALSE(fSucceed);
 			break;
 		default:
 			break;
