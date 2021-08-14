@@ -49,7 +49,9 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
 	try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
-		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+		// 使用dynamic_cast时，Address Sanitizer在此处报错
+		//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+		m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
 	}
 	catch (CInternetException* exception) {
 		SetWebError(true);
