@@ -2592,7 +2592,8 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	if (sm_fSendAuth) {
 		info = m_TiingoIEXWebSocket.send(messageAuth);
 	}
-	return false;
+
+	return true;
 }
 
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
@@ -2612,7 +2613,7 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 		info = m_TiingoCryptoWebSocket.send(messageAuth);
 	}
 
-	return false;
+	return true;
 }
 
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
@@ -2632,7 +2633,7 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 		info = m_TiingoForexWebSocket.send(messageAuth);
 	}
 
-	return false;
+	return true;
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {

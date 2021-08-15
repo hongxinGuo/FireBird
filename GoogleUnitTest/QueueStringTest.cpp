@@ -38,11 +38,21 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_QueueString.GetDataSize(), 0);
 	}
 
-	TEST_F(CQueueStringTest, TestPushPopData) {
+	TEST_F(CQueueStringTest, TestPushPopData1) {
 		shared_ptr<string> pString = make_shared<string>(_T("abc"));
 		shared_ptr<string> pString2 = make_shared<string>(_T("def"));
 		gl_QueueString.PushData(pString);
 		gl_QueueString.PushData(pString2);
+		shared_ptr<string> pString3 = gl_QueueString.PopData();
+		CString str = pString3->c_str();
+		EXPECT_STREQ(str, _T("abc")) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
+	}
+
+	TEST_F(CQueueStringTest, TestPushPopData2) {
+		string String = _T("abc");
+		string String2 = _T("def");
+		gl_QueueString.PushData(String);
+		gl_QueueString.PushData(String2);
 		shared_ptr<string> pString3 = gl_QueueString.PopData();
 		CString str = pString3->c_str();
 		EXPECT_STREQ(str, _T("abc")) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";

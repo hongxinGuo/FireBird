@@ -307,7 +307,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
-		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData8, &tiingoForexData9));
+		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &tiingoForexData8, &tiingoForexData9));
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
@@ -412,8 +412,10 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoIEXData6(6, _T(""), _T("{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"C\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// 错误。service的名称不为"iex",
 	TiingoWebSocketData tiingoIEXData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	// service错为servi
+	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T("{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
 	// json格式错误
-	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T("\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	TiingoWebSocketData tiingoIEXData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -435,7 +437,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
-		testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8));
+		testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &tiingoIEXData5,
+			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		bool fSucceed = false;
@@ -462,10 +465,10 @@ namespace StockAnalysisTest {
 		case 7: // service的名称必须为"iex"
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 8: // json格式错误
+		case 8: // service错为serci
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 9: // ping
+		case 9: // jsong格式错误
 			EXPECT_FALSE(fSucceed);
 			break;
 		default:

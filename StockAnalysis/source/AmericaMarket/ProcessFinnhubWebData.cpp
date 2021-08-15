@@ -753,7 +753,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 					m_qFinnhubWebSocketData.push(pFinnhubDataPtr);
 				}
 			}
-			else if (sType.compare(_T("ping")) == 0) {
+			else if (sType.compare(_T("ping")) == 0) { // ping
 				// do nothing
 			}
 			else {
