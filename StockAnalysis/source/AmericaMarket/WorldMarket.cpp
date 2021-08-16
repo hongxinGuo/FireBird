@@ -8,6 +8,7 @@
 
 #include"SetWorldMarketOption.h"
 #include"SetFinnhubForexExchange.h"
+#include"SetFinnhubCryptoExchange.h"
 #include"SetWorldStock.h"
 #include"SetWorldChoicedStock.h"
 #include"SetCountry.h"
@@ -86,6 +87,10 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
 	m_vFinnhubInquiringStr.at(__FOREX_CANDLES__) = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 	m_vFinnhubInquiringStr.at(__FOREX_ALL_RATES__) = _T("https://finnhub.io/api/v1/forex/rates?base=USD");
 
+	m_vFinnhubInquiringStr.at(__CRYPTO_EXCHANGE__) = _T("https://finnhub.io/api/v1/crypto/exchange?");
+	m_vFinnhubInquiringStr.at(__CRYPTO_SYMBOLS__) = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
+	m_vFinnhubInquiringStr.at(__CRYPTO_CANDLES__) = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
+
 	m_vFinnhubInquiringStr.at(__ECONOMIC_COUNTRY_LIST__) = _T("https://finnhub.io/api/v1/country?");
 	m_vFinnhubInquiringStr.at(__ECONOMIC_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/economic?");
 }
@@ -121,6 +126,8 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_lCurrentRTDataQuotePos = 0;
 	m_lCurrentForexExchangePos = 0;
 	m_lCurrentForexSymbolPos = 0;
+	m_lCurrentCryptoExchangePos = 0;
+	m_lCurrentCryptoSymbolPos = 0;
 	m_lChoicedStockPos = 0;
 
 	m_CurrentFinnhubInquiry.Reset();
@@ -145,6 +152,13 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_vForexSymbol.resize(0);
 	m_mapForexSymbol.clear();
 	m_fFinnhubForexDayLineUpdated = false;
+	m_fFinnhubCryptoExchangeUpdated = false;
+	m_vCryptoExchange.resize(0);
+	m_mapCryptoExchange.clear();
+	m_fFinnhubCryptoSymbolUpdated = false;
+	m_vCryptoSymbol.resize(0);
+	m_mapCryptoSymbol.clear();
+	m_fFinnhubCryptoDayLineUpdated = false;
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
 	m_fCountryListUpdated = false;
@@ -166,6 +180,9 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_lLastTotalForexExchange = 0;
 	m_lLastTotalForexSymbol = 0;
 	m_lCurrentUpdateForexDayLinePos = 0;
+	m_lLastTotalCryptoExchange = 0;
+	m_lLastTotalCryptoSymbol = 0;
+	m_lCurrentUpdateCryptoDayLinePos = 0;
 
 	m_lLastTotalCountry = 0;
 	m_lLastTotalEconomicCalendar = 0;
@@ -201,6 +218,8 @@ void CWorldMarket::ResetMarket(void) {
 	LoadWorldChoicedStock();
 	LoadForexExchange();
 	LoadForexSymbol();
+	LoadCryptoExchange();
+	LoadCryptoSymbol();
 	LoadEconomicCalendarDB();
 	LoadTiingoStock();
 
@@ -262,7 +281,8 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	CString strTemp;
 	CWorldStockPtr pStock = nullptr;
-	CForexSymbolPtr pSymbol = nullptr;
+	CForexSymbolPtr pForexSymbol = nullptr;
+	CCryptoSymbolPtr pCryptoSymbol = nullptr;
 	bool fDone = false;
 
 	if (m_qFinnhubWebInquiry.size() > 0) { // 有申请等待？
@@ -382,12 +402,26 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				break;
 			case __FOREX_CANDLES__:
-				pSymbol = m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-				strMiddle = pSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
+				pForexSymbol = m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+				strMiddle = pForexSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-				pSymbol->SetDayLineNeedUpdate(false);
+				pForexSymbol->SetDayLineNeedUpdate(false);
 				break;
 			case __FOREX_ALL_RATES__:
+				break;
+			case __CRYPTO_EXCHANGE__:
+				// do nothing
+				break;
+			case __CRYPTO_SYMBOLS__:
+				strMiddle = m_vCryptoExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
+				break;
+				break;
+			case __CRYPTO_CANDLES__:
+				pCryptoSymbol = m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+				strMiddle = pCryptoSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
+				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
+				pCryptoSymbol->SetDayLineNeedUpdate(false);
 				break;
 			case __ECONOMIC_COUNTRY_LIST__:
 				// do nothing
@@ -422,8 +456,10 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
 	CWorldStockPtr pStock = nullptr;
 	CString str = _T("");
-	vector<CString> vExchange;
+	vector<CString> vForexExchange;
 	vector<CForexSymbolPtr> vForexSymbol;
+	vector<CString> vCryptoExchange;
+	vector<CCryptoSymbolPtr> vCryptoSymbol;
 	vector<CEconomicCalendarPtr> vEconomicCalendar;
 	vector<CEPSSurprisePtr> vEPSSurprise;
 	vector<CWorldStockPtr> vStock;
@@ -477,7 +513,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					sprintf_s(buffer, _T("%6d"), (int)vStock.size());
 					strNumber = buffer;
 					str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
-					gl_systemMessage.PushInnerSystemInformationMessage(str);
+					//gl_systemMessage.PushInnerSystemInformationMessage(str);
 					// 加上交易所代码。
 					for (auto& pStock3 : vStock) {
 						pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
@@ -559,10 +595,10 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __FOREX_EXCHANGE__:
-				if (ProcessFinnhubForexExchange(pWebData, vExchange)) {
-					for (int i = 0; i < vExchange.size(); i++) {
-						if (!IsForexExchange(vExchange.at(i))) {
-							AddForexExchange(vExchange.at(i));
+				if (ProcessFinnhubForexExchange(pWebData, vForexExchange)) {
+					for (int i = 0; i < vForexExchange.size(); i++) {
+						if (!IsForexExchange(vForexExchange.at(i))) {
+							AddForexExchange(vForexExchange.at(i));
 						}
 					}
 					SetFinnhubForexExchangeUpdated(true);
@@ -584,6 +620,31 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __FOREX_ALL_RATES__:
+				break;
+			case __CRYPTO_EXCHANGE__:
+				if (ProcessFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
+					for (int i = 0; i < vCryptoExchange.size(); i++) {
+						if (!IsCryptoExchange(vCryptoExchange.at(i))) {
+							AddCryptoExchange(vCryptoExchange.at(i));
+						}
+					}
+					SetFinnhubCryptoExchangeUpdated(true);
+				}
+				break;
+			case __CRYPTO_SYMBOLS__:
+				if (ProcessFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
+					for (auto& pSymbol : vCryptoSymbol) {
+						if (!IsCryptoSymbol(pSymbol->GetSymbol())) {
+							pSymbol->SetExchangeCode(m_vCryptoExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex));
+							AddCryptoSymbol(pSymbol);
+						}
+					}
+				}
+				break;
+			case __CRYPTO_CANDLES__:
+				if (ProcessFinnhubCryptoCandle(pWebData, m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+					TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
+				}
 				break;
 			case __ECONOMIC_COUNTRY_LIST__:
 				ProcessFinnhubCountryList(pWebData, vCountry);
@@ -704,6 +765,12 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __FOREX_ALL_RATES__:
 				break;
+			case __CRYPTO_EXCHANGE__:
+				break;
+			case __CRYPTO_SYMBOLS__:
+				break;
+			case __CRYPTO_CANDLES__:
+				break;
 			case __ECONOMIC_COUNTRY_LIST__:
 				// do nothing
 				break;
@@ -804,6 +871,12 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 				break;
 			case __FOREX_ALL_RATES__:
 				break;
+			case __CRYPTO_EXCHANGE__:
+				break;
+			case __CRYPTO_SYMBOLS__:
+				break;
+			case __CRYPTO_CANDLES__:
+				break;
 			case __ECONOMIC_COUNTRY_LIST__:
 				break;
 			case __ECONOMIC_CALENDAR__:
@@ -859,59 +932,61 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	static bool sm_fConnectedTiingoForexWebSocket = false;
 	static bool sm_fSendTiingoForexWebStocketMessage = false;
 
-	if (!sm_fConnectedFinnhubWebSocket) {
-		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
-			sm_fConnectedFinnhubWebSocket = true;
-			ConnectFinnhubWebSocket();
+	if (IsSystemReady()) {
+		if (!sm_fConnectedFinnhubWebSocket) {
+			if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
+				sm_fConnectedFinnhubWebSocket = true;
+				ConnectFinnhubWebSocket();
+			}
 		}
-	}
 
-	if (!sm_fSendFinnhubWebStocketMessage) {
-		if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
-			sm_fSendFinnhubWebStocketMessage = true;
-			SendFinnhubWebSocketMessage();
+		if (!sm_fSendFinnhubWebStocketMessage) {
+			if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
+				sm_fSendFinnhubWebStocketMessage = true;
+				SendFinnhubWebSocketMessage();
+			}
 		}
-	}
 
-	if (!sm_fConnectedTiingoIEXWebSocket) {
-		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
-			sm_fConnectedTiingoIEXWebSocket = true;
-			ConnectTiingoIEXWebSocket();
+		if (!sm_fConnectedTiingoIEXWebSocket) {
+			if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
+				sm_fConnectedTiingoIEXWebSocket = true;
+				ConnectTiingoIEXWebSocket();
+			}
 		}
-	}
 
-	if (!sm_fSendTiingoIEXWebStocketMessage) {
-		if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
-			sm_fSendTiingoIEXWebStocketMessage = true;
-			SendTiingoIEXWebSocketMessage();
+		if (!sm_fSendTiingoIEXWebStocketMessage) {
+			if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
+				sm_fSendTiingoIEXWebStocketMessage = true;
+				SendTiingoIEXWebSocketMessage();
+			}
 		}
-	}
 
-	if (!sm_fConnectedTiingoCryptoWebSocket) {
-		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
-			sm_fConnectedTiingoCryptoWebSocket = true;
-			ConnectTiingoCryptoWebSocket();
+		if (!sm_fConnectedTiingoCryptoWebSocket) {
+			if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
+				sm_fConnectedTiingoCryptoWebSocket = true;
+				ConnectTiingoCryptoWebSocket();
+			}
 		}
-	}
 
-	if (!sm_fSendTiingoCryptoWebStocketMessage) {
-		if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
-			sm_fSendTiingoCryptoWebStocketMessage = true;
-			SendTiingoCryptoWebSocketMessage();
+		if (!sm_fSendTiingoCryptoWebStocketMessage) {
+			if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
+				sm_fSendTiingoCryptoWebStocketMessage = true;
+				SendTiingoCryptoWebSocketMessage();
+			}
 		}
-	}
 
-	if (!sm_fConnectedTiingoForexWebSocket) {
-		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
-			sm_fConnectedTiingoForexWebSocket = true;
-			ConnectTiingoForexWebSocket();
+		if (!sm_fConnectedTiingoForexWebSocket) {
+			if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
+				sm_fConnectedTiingoForexWebSocket = true;
+				ConnectTiingoForexWebSocket();
+			}
 		}
-	}
 
-	if (!sm_fSendTiingoForexWebStocketMessage) {
-		if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
-			sm_fSendTiingoForexWebStocketMessage = true;
-			SendTiingoForexWebSocketMessage();
+		if (!sm_fSendTiingoForexWebStocketMessage) {
+			if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
+				sm_fSendTiingoForexWebStocketMessage = true;
+				SendTiingoForexWebSocketMessage();
+			}
 		}
 	}
 
@@ -931,8 +1006,11 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 	TaskUpdateForexExchangeDB();
 	TaskUpdateForexSymbolDB();
+	TaskUpdateCryptoExchangeDB();
+	TaskUpdateCryptoSymbolDB();
 	TaskUpdateInsiderTransactionDB();
 	TaskUpdateForexDayLineDB();
+	TaskUpdateCryptoDayLineDB();
 	TaskUpdateDayLineDB();
 	TaskUpdateEPSSurpriseDB();
 	TaskUpdateEconomicCalendarDB();
@@ -982,8 +1060,10 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 	if (((lCurrentTime < 165700) || (lCurrentTime > 170200))) { // 下午五时重启系统，故而此时不允许接收网络信息。
 		TaskInquiryFinnhubCountryList();
 		TaskInquiryFinnhubForexExchange();
+		TaskInquiryFinnhubCryptoExchange();
 		TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
 		TaskInquiryFinnhubForexSymbol();
+		TaskInquiryFinnhubCryptoSymbol();
 		//TaskInquiryFinnhubEconomicCalendar();
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
@@ -993,6 +1073,7 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 			TaskInquiryFinnhubInsiderTransaction();
 			//TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
 			TaskInquiryFinnhubForexDayLine();
+			TaskInquiryFinnhubCryptoDayLine();
 			TaskInquiryFinnhubDayLine();
 			if (!IsFinnhubDayLineUpdated()) {
 				//TaskInquiryFinnhubRTQuote();
@@ -1055,6 +1136,11 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 
 bool CWorldMarket::TaskUpdateForexSymbolDB(void) {
 	CreatingThreadUpdateForexSymbolDB();
+	return true;
+}
+
+bool CWorldMarket::TaskUpdateCryptoSymbolDB(void) {
+	CreatingThreadUpdateCryptoSymbolDB();
 	return true;
 }
 
@@ -1344,6 +1430,74 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 	return fHaveInquiry;
 }
 
+bool CWorldMarket::TaskInquiryFinnhubCryptoExchange(void) {
+	WebInquiry inquiry{ 0, 0, 0 };
+
+	if (!IsFinnhubCryptoExchangeUpdated() && !IsFinnhubInquiring()) {
+		inquiry.m_lInquiryIndex = __CRYPTO_EXCHANGE__;
+		inquiry.m_iPriority = 10;
+		m_qFinnhubWebInquiry.push(inquiry);
+		SetFinnhubInquiring(true);
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
+	WebInquiry inquiry{ 0, 0, 0 };
+
+	if (!IsFinnhubCryptoSymbolUpdated() && !IsFinnhubInquiring()) {
+		inquiry.m_lInquiryIndex = __CRYPTO_SYMBOLS__;
+		inquiry.m_lStockIndex = m_lCurrentCryptoExchangePos++;
+		inquiry.m_iPriority = 10;
+		m_qFinnhubWebInquiry.push(inquiry);
+		SetFinnhubInquiring(true);
+		if (m_lCurrentCryptoExchangePos >= m_vCryptoExchange.size()) {
+			SetFinnhubCryptoSymbolUpdated(true);
+			m_lCurrentCryptoExchangePos = 0;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
+	bool fFound = false;
+	WebInquiry inquiry{ 0, 0, 0 };
+	CCryptoSymbolPtr pCryptoSymbol;
+	CString str = _T("");
+	const long lStockSetSize = m_vCryptoSymbol.size();
+	bool fHaveInquiry = false;
+
+	ASSERT(IsSystemReady());
+	if (!IsFinnhubCryptoDayLineUpdated() && !IsFinnhubInquiring()) {
+		for (m_lCurrentUpdateCryptoDayLinePos = 0; m_lCurrentUpdateCryptoDayLinePos < lStockSetSize; m_lCurrentUpdateCryptoDayLinePos++) {
+			if (GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
+				pCryptoSymbol = GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos);
+				fFound = true;
+				break;
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			inquiry.m_lInquiryIndex = __CRYPTO_CANDLES__;
+			inquiry.m_lStockIndex = m_lCurrentUpdateCryptoDayLinePos;
+			inquiry.m_iPriority = 10;
+			m_qFinnhubWebInquiry.push(inquiry);
+			SetFinnhubInquiring(true);
+			pCryptoSymbol->SetDayLineNeedUpdate(false);
+			TRACE("申请Crypto%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+		}
+		else {
+			SetFinnhubCryptoDayLineUpdated(true);
+			TRACE("Finnhub Crypto日线更新完毕\n");
+			str = _T("Crypto DayLine Updated");
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
 bool CWorldMarket::TaskInquiryTiingo(void) {
 	if (IsSystemReady()) {
 		TaskInquiryTiingoCompanySymbol();
@@ -1445,6 +1599,12 @@ bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
 	return true;
 }
 
+bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
+	CreatingThreadUpdateCryptoExchangeDB();
+
+	return true;
+}
+
 bool CWorldMarket::UpdateForexExchangeDB(void) {
 	CSetFinnhubForexExchange setForexExchange;
 
@@ -1459,6 +1619,25 @@ bool CWorldMarket::UpdateForexExchangeDB(void) {
 		setForexExchange.m_pDatabase->CommitTrans();
 		setForexExchange.Close();
 		m_lLastTotalForexExchange = m_vForexExchange.size();
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::UpdateCryptoExchangeDB(void) {
+	CSetFinnhubCryptoExchange setCryptoExchange;
+
+	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
+		setCryptoExchange.Open();
+		setCryptoExchange.m_pDatabase->BeginTrans();
+		for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
+			setCryptoExchange.AddNew();
+			setCryptoExchange.m_Exchange = m_vCryptoExchange.at(l);
+			setCryptoExchange.Update();
+		}
+		setCryptoExchange.m_pDatabase->CommitTrans();
+		setCryptoExchange.Close();
+		m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
 		return true;
 	}
 	return false;
@@ -1498,6 +1677,45 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					CreatingThreadUpdateForexDayLineDB(pSymbol.get());
+					fUpdated = true;
+					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
+				}
+				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
+			}
+			else { // 此种情况为有股票代码，但此代码尚未上市
+				CString str1 = pSymbol->GetSymbol();
+				str1 += _T(" 为未上市股票代码");
+				gl_systemMessage.PushDayLineInfoMessage(str1);
+			}
+		}
+	}
+
+	return(fUpdated);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将Crypto日线数据存入数据库．
+//  此函数由工作线程ThreadCryptoDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
+//
+// 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
+// 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
+// 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
+	CString str;
+	bool fUpdated = false;
+
+	for (auto& pSymbol : m_vCryptoSymbol) {
+		if (gl_fExitingSystem) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+			if (pSymbol->GetDayLineSize() > 0) {
+				if (pSymbol->HaveNewDayLineData()) {
+					CreatingThreadUpdateCryptoDayLineDB(pSymbol.get());
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -1555,7 +1773,7 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 	CString str = _T("");
 
 	if (!IsSystemReady()) {
-		if (IsFinnhubSymbolUpdated() && IsFinnhubForexExchangeUpdated() && IsFinnhubForexSymbolUpdated()) {
+		if (IsFinnhubSymbolUpdated() && IsFinnhubForexExchangeUpdated() && IsFinnhubForexSymbolUpdated() && IsFinnhubCryptoExchangeUpdated() && IsFinnhubCryptoSymbolUpdated()) {
 			str = _T("世界市场初始化完毕");
 			gl_systemMessage.PushInformationMessage(str);
 			SetSystemReady(true);
@@ -1585,18 +1803,6 @@ bool CWorldMarket::CreatingThreadUpdateDayLineDB() {
 
 bool CWorldMarket::CreatingThreadUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateStockProfileDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
-}
-
-bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol) {
-	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
-}
-
-bool CWorldMarket::CreatingThreadUpdateForexSymbolDB() {
-	thread thread1(ThreadUpdateForexSymbolDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
@@ -1645,6 +1851,36 @@ bool CWorldMarket::CreatingThreadUpdateNaicsIndustry(void) {
 
 bool CWorldMarket::CreatingThreadUpdateForexExchangeDB(void) {
 	thread thread1(ThreadUpdateForexExchangeDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateForexSymbolDB() {
+	thread thread1(ThreadUpdateForexSymbolDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol) {
+	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateCryptoExchangeDB(void) {
+	thread thread1(ThreadUpdateCryptoExchangeDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateCryptoSymbolDB() {
+	thread thread1(ThreadUpdateCryptoSymbolDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol) {
+	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
@@ -1742,6 +1978,37 @@ bool CWorldMarket::DeleteForexSymbol(CForexSymbolPtr pForexSymbol) {
 	return true;
 }
 
+void CWorldMarket::AddCryptoExchange(CString strCryptoExchange) {
+	m_mapCryptoExchange[strCryptoExchange] = m_vCryptoExchange.size();
+	m_vCryptoExchange.push_back(strCryptoExchange);
+}
+
+bool CWorldMarket::DeleteCryptoExchange(CString strCryptoExchange) {
+	if (!IsCryptoExchange(strCryptoExchange)) return false;
+
+	auto it = find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), strCryptoExchange);
+	m_vCryptoExchange.erase(it);
+	m_mapCryptoExchange.erase(strCryptoExchange);
+
+	return true;
+}
+
+void CWorldMarket::AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) {
+	m_mapCryptoSymbol[pCryptoSymbol->GetSymbol()] = m_mapCryptoSymbol.size();
+	m_vCryptoSymbol.push_back(pCryptoSymbol);
+}
+
+bool CWorldMarket::DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) {
+	if (pCryptoSymbol == nullptr) return false;
+	if (!IsCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
+
+	m_mapCryptoSymbol.erase(pCryptoSymbol->GetSymbol());
+	auto it = find(m_vCryptoSymbol.begin(), m_vCryptoSymbol.end(), pCryptoSymbol);
+	m_vCryptoSymbol.erase(it);
+
+	return true;
+}
+
 bool CWorldMarket::IsCountry(CString strCountry) {
 	if (m_mapCountry.find(strCountry) == m_mapCountry.end()) {
 		return false;
@@ -1835,7 +2102,7 @@ bool CWorldMarket::LoadWorldExchangeDB(void) {
 		setExchange.m_strSort = _T("[Code]");
 		setExchange.Open();
 		while (!setExchange.IsEOF()) {
-			pExchange = make_shared<CFinnhubExchange>();
+			pExchange = make_shared<CFinnhubStockExchange>();
 			pExchange->Load(setExchange);
 			m_vFinnhubExchange.push_back(pExchange);
 			m_mapFinnhubExchange[pExchange->m_strCode] = m_vFinnhubExchange.size();
@@ -2055,6 +2322,50 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
 	return true;
 }
 
+bool CWorldMarket::UpdateCryptoSymbolDB(void) {
+	const long lTotalCryptoSymbol = m_vCryptoSymbol.size();
+	CCryptoSymbolPtr pSymbol = nullptr;
+	CSetFinnhubCryptoSymbol setCryptoSymbol;
+	bool fUpdateSymbol = false;
+
+	if (m_lLastTotalCryptoSymbol < lTotalCryptoSymbol) {
+		setCryptoSymbol.Open();
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		for (long l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
+			pSymbol = m_vCryptoSymbol.at(l);
+			pSymbol->Append(setCryptoSymbol);
+		}
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
+		m_lLastTotalCryptoSymbol = lTotalCryptoSymbol;
+	}
+
+	for (auto& pSymbol2 : m_vCryptoSymbol) {
+		if (pSymbol2->IsUpdateProfileDB()) {
+			fUpdateSymbol = true;
+			break;
+		}
+	}
+	if (fUpdateSymbol) {
+		setCryptoSymbol.Open();
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		while (!setCryptoSymbol.IsEOF()) {
+			if (m_mapCryptoSymbol.find(setCryptoSymbol.m_Symbol) != m_mapCryptoSymbol.end()) {
+				pSymbol = m_vCryptoSymbol.at(m_mapCryptoSymbol.at(setCryptoSymbol.m_Symbol));
+				if (pSymbol->IsUpdateProfileDB()) {
+					pSymbol->Update(setCryptoSymbol);
+					pSymbol->SetUpdateProfileDB(false);
+				}
+			}
+			setCryptoSymbol.MoveNext();
+		}
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
+	}
+
+	return true;
+}
+
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 	CString str;
 	CWorldStockPtr pStock = nullptr;
@@ -2198,6 +2509,42 @@ bool CWorldMarket::LoadForexSymbol(void) {
 	}
 	setForexSymbol.Close();
 	m_lLastTotalForexSymbol = m_vForexSymbol.size();
+
+	return true;
+}
+
+bool CWorldMarket::LoadCryptoExchange(void) {
+	CSetFinnhubCryptoExchange setCryptoExchange;
+	int i = 0;
+
+	setCryptoExchange.Open();
+	while (!setCryptoExchange.IsEOF()) {
+		m_vCryptoExchange.push_back(setCryptoExchange.m_Exchange);
+		m_mapCryptoExchange[setCryptoExchange.m_Exchange] = i++;
+		setCryptoExchange.MoveNext();
+	}
+	setCryptoExchange.Close();
+	m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
+
+	return true;
+}
+
+bool CWorldMarket::LoadCryptoSymbol(void) {
+	CSetFinnhubCryptoSymbol setCryptoSymbol;
+	CCryptoSymbolPtr pSymbol = nullptr;
+	int i = 0;
+
+	setCryptoSymbol.Open();
+	while (!setCryptoSymbol.IsEOF()) {
+		pSymbol = make_shared<CFinnhubCryptoSymbol>();
+		pSymbol->Load(setCryptoSymbol);
+		pSymbol->SetCheckingDayLineStatus();
+		m_vCryptoSymbol.push_back(pSymbol);
+		m_mapCryptoSymbol[pSymbol->GetSymbol()] = i++;
+		setCryptoSymbol.MoveNext();
+	}
+	setCryptoSymbol.Close();
+	m_lLastTotalCryptoSymbol = m_vCryptoSymbol.size();
 
 	return true;
 }
@@ -2367,8 +2714,14 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 	return true;
 }
 
+/// <summary>
+/// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
 bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	ix::WebSocketSendInfo info;
+	string string;
 
 	ASSERT(m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open);
 
@@ -2384,7 +2737,35 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
 	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
+	/*
+	int iLimit = 0;
+	for (auto pStock : m_vWorldStock) {
+		if ((pStock->GetExchangeCode().Compare(_T("US")) == 0) && (iLimit < 50)) {
+			string = CreateFinnhubWebSocketString(pStock->GetSymbol());
+			m_FinnhubWebSocket.send(string);
+			iLimit++;
+		}
+	}
+
+	for (auto pForex : m_vForexSymbol) {
+		string = CreateFinnhubWebSocketString(pForex->GetSymbol());
+		m_FinnhubWebSocket.send(string);
+	}
+
+	for (auto pCrypto : m_vCryptoSymbol) {
+		string = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
+		m_FinnhubWebSocket.send(string);
+	}
+	*/
 	return false;
+}
+
+string CWorldMarket::CreateFinnhubWebSocketString(CString strSymbol) {
+	string sPreffix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
+	string sSuffix = _T("\"}");
+	string sSymbol = strSymbol.GetBuffer();
+
+	return sPreffix + sSymbol + sSuffix;
 }
 
 /// <summary>

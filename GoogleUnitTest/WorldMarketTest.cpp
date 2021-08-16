@@ -1374,6 +1374,14 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pWorldMarket->SetFinnhubForexSymbolUpdated(true);
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+
+		gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(true);
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+
+		gl_pWorldMarket->SetFinnhubCryptoSymbolUpdated(true);
 		EXPECT_TRUE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		CString str = gl_systemMessage.PopInformationMessage();
@@ -1454,5 +1462,11 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateNaicsIndustry) {
 		EXPECT_THAT(gl_pWorldMarket->UpdateNaicsIndustry(), IsFalse());
+	}
+
+	TEST_F(CWorldMarketTest, TestCreateFinnhubWebSocketString) {
+		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("AAPL")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
+		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
+		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("IC MARKETS:1")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
 	}
 }

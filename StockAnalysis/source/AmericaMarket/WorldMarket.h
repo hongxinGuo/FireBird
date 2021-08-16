@@ -4,8 +4,9 @@
 #include"VirtualMarket.h"
 #include"WorldStock.h"
 #include"WebData.h"
-#include"FinnhubExchange.h"
+#include"FinnhubStockExchange.h"
 #include"FinnhubForexSymbol.h"
+#include"FinnhubCryptoSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
 #include"InsiderTransaction.h"
@@ -73,7 +74,7 @@ enum {
 	__FOREX_ALL_RATES__ = 504,
 
 	__CRYPTO_EXCHANGE__ = 601,
-	__CRYPTO_SYMBOL__ = 602,
+	__CRYPTO_SYMBOLS__ = 602,
 	__CRYPTO_CANDLES__ = 603,
 
 	__PATTERN_RECOGNITION__ = 701,
@@ -156,6 +157,9 @@ public:
 	virtual bool TaskInquiryFinnhubForexExchange(void);
 	virtual bool TaskInquiryFinnhubForexSymbol(void);
 	virtual bool TaskInquiryFinnhubForexDayLine(void);
+	virtual bool TaskInquiryFinnhubCryptoExchange(void);
+	virtual bool TaskInquiryFinnhubCryptoSymbol(void);
+	virtual bool TaskInquiryFinnhubCryptoDayLine(void);
 
 	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
 	virtual bool TaskInquiryTiingoCompanySymbol(void);
@@ -174,6 +178,9 @@ public:
 	virtual bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
 	virtual bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
 	virtual bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
+	virtual bool ProcessFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
+	virtual bool ProcessFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol);
+	virtual bool ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol);
 	virtual bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
 	virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 	virtual bool ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
@@ -189,6 +196,9 @@ public:
 	bool TaskUpdateForexExchangeDB(void);
 	bool TaskUpdateForexSymbolDB(void);
 	bool TaskUpdateForexDayLineDB(void);
+	bool TaskUpdateCryptoExchangeDB(void);
+	bool TaskUpdateCryptoSymbolDB(void);
+	bool TaskUpdateCryptoDayLineDB(void);
 	bool TaskUpdateCountryListDB(void);
 	bool TaskUpdateEPSSurpriseDB(void);
 	bool TaskUpdateEconomicCalendarDB(void);
@@ -203,8 +213,12 @@ public:
 	virtual bool RunningthreadUpdateDayLneStartEndDate(void);
 	virtual bool CreatingThreadUpdateDayLineDB(void);
 	virtual bool CreatingThreadUpdateStockProfileDB(void);
-	virtual bool CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
+	virtual bool CreatingThreadUpdateForexExchangeDB(void);
 	virtual bool CreatingThreadUpdateForexSymbolDB(void);
+	virtual bool CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
+	virtual bool CreatingThreadUpdateCryptoExchangeDB(void);
+	virtual bool CreatingThreadUpdateCryptoSymbolDB(void);
+	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
 	virtual bool CreatingThreadUpdateCountryListDB(void);
 	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
 	virtual bool CreatingThreadUpdateInsiderTransactionDB(void);
@@ -212,7 +226,6 @@ public:
 	virtual bool CreatingThreadUpdateTiingoIndustry(void);
 	virtual bool CreatingThreadUpdateSICIndustry(void);
 	virtual bool CreatingThreadUpdateNaicsIndustry(void);
-	virtual bool CreatingThreadUpdateForexExchangeDB(void);
 	virtual bool CreatingThreadUpdateEconomicCalendarDB(void);
 
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
@@ -282,6 +295,20 @@ public:
 	CForexSymbolPtr GetForexSymbol(CString strSymbol) { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
 	size_t GetForexSymbolSize(void) noexcept { return m_vForexSymbol.size(); }
 
+	bool IsCryptoExchange(CString strExchange) { if (m_mapCryptoExchange.find(strExchange) == m_mapCryptoExchange.end()) return false; else return true; }
+	void AddCryptoExchange(CString strCryptoExchange);
+	bool DeleteCryptoExchange(CString strCryptoExchange);
+	size_t GetCryptoExchangeSize(void) noexcept { return m_vCryptoExchange.size(); }
+	CString GetCryptoExchange(long lIndex) { return m_vCryptoExchange.at(lIndex); }
+
+	bool IsCryptoSymbol(CString strSymbol) { if (m_mapCryptoSymbol.find(strSymbol) == m_mapCryptoSymbol.end()) return false; else return true; }
+	bool IsCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) { return IsCryptoSymbol(pCryptoSymbol->GetSymbol()); }
+	void AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol);
+	bool DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSysbol);
+	CCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_vCryptoSymbol.at(lIndex); }
+	CCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
+	size_t GetCryptoSymbolSize(void) noexcept { return m_vCryptoSymbol.size(); }
+
 	size_t GetTotalCountry(void) noexcept { return m_vCountry.size(); }
 	bool IsCountry(CString strCountry);
 	bool IsCountry(CCountryPtr pCountry);
@@ -306,6 +333,12 @@ public:
 	void SetFinnhubForexSymbolUpdated(bool fFlag) noexcept { m_fFinnhubForexSymbolUpdated = fFlag; }
 	bool IsFinnhubForexDayLineUpdated(void) noexcept { return m_fFinnhubForexDayLineUpdated; }
 	void SetFinnhubForexDayLineUpdated(bool fFlag) noexcept { m_fFinnhubForexDayLineUpdated = fFlag; }
+	bool IsFinnhubCryptoExchangeUpdated(void) noexcept { return m_fFinnhubCryptoExchangeUpdated; }
+	void SetFinnhubCryptoExchangeUpdated(bool fFlag) noexcept { m_fFinnhubCryptoExchangeUpdated = fFlag; }
+	bool IsFinnhubCryptoSymbolUpdated(void) noexcept { return m_fFinnhubCryptoSymbolUpdated; }
+	void SetFinnhubCryptoSymbolUpdated(bool fFlag) noexcept { m_fFinnhubCryptoSymbolUpdated = fFlag; }
+	bool IsFinnhubCryptoDayLineUpdated(void) noexcept { return m_fFinnhubCryptoDayLineUpdated; }
+	void SetFinnhubCryptoDayLineUpdated(bool fFlag) noexcept { m_fFinnhubCryptoDayLineUpdated = fFlag; }
 	bool IsFinnhubPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
 	void SetFinnhubPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
 	bool IsFinnhubInsiderTransactionUpdated(void) noexcept { return m_fFinnhubInsiderTransactionUpdated; }
@@ -336,6 +369,8 @@ public:
 	virtual bool UpdateStockDayLineDB(void);
 	virtual bool UpdateForexSymbolDB(void);
 	virtual bool UpdateForexExchangeDB(void);
+	virtual bool UpdateCryptoSymbolDB(void);
+	virtual bool UpdateCryptoExchangeDB(void);
 	virtual bool UpdateInsiderTransactionDB(void);
 	virtual bool UpdateEconomicCalendarDB(void);
 	virtual bool UpdateTiingoStockDB(void);
@@ -345,6 +380,8 @@ public:
 
 	bool LoadForexExchange(void);
 	bool LoadForexSymbol(void);
+	bool LoadCryptoExchange(void);
+	bool LoadCryptoSymbol(void);
 	bool LoadCountryDB(void);
 	bool LoadEconomicCalendarDB(void);
 
@@ -359,6 +396,7 @@ public:
 
 	bool ConnectFinnhubWebSocket(void);
 	bool SendFinnhubWebSocketMessage(void);
+	string CreateFinnhubWebSocketString(CString strSymbol);
 
 	bool ConnectTiingoIEXWebSocket(void);
 	bool ConnectTiingoCryptoWebSocket(void);
@@ -398,6 +436,8 @@ protected:
 	long m_lCurrentRTDataQuotePos;
 	long m_lCurrentForexExchangePos;
 	long m_lCurrentForexSymbolPos;
+	long m_lCurrentCryptoExchangePos;
+	long m_lCurrentCryptoSymbolPos;
 	long m_lCurrentUpdatePeerPos;
 	long m_lCurrentUpdateInsiderTransactionPos;
 	long m_lCurrentUpdateEPSSurprisePos;
@@ -432,6 +472,15 @@ protected:
 	long m_lLastTotalForexSymbol;
 	long m_lCurrentUpdateForexDayLinePos;
 
+	vector<CString> m_vCryptoExchange;
+	map<CString, long> m_mapCryptoExchange;
+	long m_lLastTotalCryptoExchange;
+
+	vector<CCryptoSymbolPtr> m_vCryptoSymbol;
+	map<CString, long> m_mapCryptoSymbol;
+	long m_lLastTotalCryptoSymbol;
+	long m_lCurrentUpdateCryptoDayLinePos;
+
 	vector<CCountryPtr> m_vCountry;
 	map<CString, long> m_mapCountry;
 	bool m_fCountryListUpdated;
@@ -451,6 +500,9 @@ protected:
 	bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
 	bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
 	bool m_fFinnhubForexDayLineUpdated; // 每日更新Forex日线数据
+	bool m_fFinnhubCryptoExchangeUpdated; // 每日更新Crypto交易所
+	bool m_fFinnhubCryptoSymbolUpdated; // 每日更新Crypto交易所代码
+	bool m_fFinnhubCryptoDayLineUpdated; // 每日更新Crypto日线数据
 	bool m_fFinnhubPeerUpdated; // 每月更新Peers数据
 	bool m_fFinnhubInsiderTransactionUpdated; // 每月更新Peers数据
 	bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据

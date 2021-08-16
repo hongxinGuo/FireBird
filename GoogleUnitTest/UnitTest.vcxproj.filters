@@ -387,6 +387,9 @@
     <ClCompile Include="QueueStringTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubCryptoSymbolTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

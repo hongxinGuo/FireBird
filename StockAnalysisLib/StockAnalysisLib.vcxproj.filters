@@ -282,7 +282,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h">
       <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h">
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h">
       <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h">
@@ -407,6 +407,18 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebSocketData.h">
       <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.h">
+      <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -805,6 +817,27 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
       <Filter>源文件\网络数据提取器</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoExchangeDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoSymbolDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

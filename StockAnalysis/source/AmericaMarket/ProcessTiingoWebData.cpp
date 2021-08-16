@@ -116,7 +116,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 	sprintf_s(buffer, _T("%6d"), iCount);
 	strNumber = buffer;
 	str = _T("今日Tiingo Symbol总数为") + strNumber;
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
+	//gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return fSucceed;
 }

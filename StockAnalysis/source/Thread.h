@@ -122,6 +122,12 @@ UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×
 UINT ThreadUpdateForexExchangeDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª49
 // ¸üĞÂEconomic Calender
 UINT ThreadUpdateEconomicCalendarDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª50
+// ¸üĞÂCrypto Exchange
+UINT ThreadUpdateCryptoExchangeDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª51
+// ¸üĞÂCrypto´úÂë±í
+UINT ThreadUpdateCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª52
+// ¸üĞÂCryptoÈÕÏßÊı¾İ
+UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´53
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

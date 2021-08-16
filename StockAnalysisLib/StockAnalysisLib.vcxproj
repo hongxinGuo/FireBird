@@ -35,8 +35,11 @@
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
@@ -52,7 +55,8 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h" />
@@ -134,8 +138,11 @@
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
@@ -151,6 +158,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
@@ -165,6 +173,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoExchangeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoSymbolDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
