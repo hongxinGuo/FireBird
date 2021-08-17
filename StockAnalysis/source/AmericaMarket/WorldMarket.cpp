@@ -2,6 +2,7 @@
 
 #include "WorldMarket.h"
 #include"thread.h"
+#include"function.h"
 
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
@@ -2649,6 +2650,36 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 
 string strMessage;
 
+void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
+	switch (msg->type) {
+	case ix::WebSocketMessageType::Message:
+		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+		if (!gl_fExitingSystem) {
+			gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+		}
+		break;
+	case ix::WebSocketMessageType::Error:
+		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		break;
+	case ix::WebSocketMessageType::Open:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket已连接"));
+		break;
+	case ix::WebSocketMessageType::Close:
+		break;
+	case ix::WebSocketMessageType::Fragment:
+		break;
+	case ix::WebSocketMessageType::Ping:
+		break;
+	case ix::WebSocketMessageType::Pong:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket heart beat"));
+		break;
+	default: // error
+		break;
+	}
+}
+
 /// <summary>
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
@@ -2676,37 +2707,7 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 	m_FinnhubWebSocket.disablePerMessageDeflate();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_FinnhubWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
-		{
-			switch (msg->type) {
-			case ix::WebSocketMessageType::Message:
-				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-				if (!gl_fExitingSystem) {
-					gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
-					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-				}
-				break;
-			case ix::WebSocketMessageType::Error:
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-				break;
-			case ix::WebSocketMessageType::Open:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket已连接"));
-				break;
-			case ix::WebSocketMessageType::Close:
-				break;
-			case ix::WebSocketMessageType::Fragment:
-				break;
-			case ix::WebSocketMessageType::Ping:
-				break;
-			case ix::WebSocketMessageType::Pong:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket heart beat"));
-				break;
-			default: // error
-				break;
-			}
-		}
-	);
+	m_FinnhubWebSocket.setOnMessageCallback(FunctionProcessFinnhubWebSocket);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	m_FinnhubWebSocket.start();
@@ -2768,6 +2769,36 @@ string CWorldMarket::CreateFinnhubWebSocketString(CString strSymbol) {
 	return sPreffix + sSymbol + sSuffix;
 }
 
+void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
+	switch (msg->type) {
+	case ix::WebSocketMessageType::Message:
+		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+		if (!gl_fExitingSystem) {
+			gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+		}
+		break;
+	case ix::WebSocketMessageType::Error:
+		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		break;
+	case ix::WebSocketMessageType::Open:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket已连接"));
+		break;
+	case ix::WebSocketMessageType::Close:
+		break;
+	case ix::WebSocketMessageType::Fragment:
+		break;
+	case ix::WebSocketMessageType::Ping:
+		break;
+	case ix::WebSocketMessageType::Pong:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket heart beat"));
+		break;
+	default: // error
+		break;
+	}
+}
+
 /// <summary>
 /// Tiingo IEX的数据源格式：wss://api.tiingo.com/iex，其密钥是随后发送的。
 /// </summary>
@@ -2792,42 +2823,42 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 	m_TiingoIEXWebSocket.disablePerMessageDeflate();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoIEXWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
-		{
-			switch (msg->type) {
-			case ix::WebSocketMessageType::Message:
-				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-				if (!gl_fExitingSystem) {
-					gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
-					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-				}
-				break;
-			case ix::WebSocketMessageType::Error:
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-				break;
-			case ix::WebSocketMessageType::Open:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket已连接"));
-				break;
-			case ix::WebSocketMessageType::Close:
-				break;
-			case ix::WebSocketMessageType::Fragment:
-				break;
-			case ix::WebSocketMessageType::Ping:
-				break;
-			case ix::WebSocketMessageType::Pong:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX heartbeat"));
-				break;
-			default: // error
-				break;
-			}
-		}
-	);
+	m_TiingoIEXWebSocket.setOnMessageCallback(FunctionProcessTiingoIEXWebSocket);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	m_TiingoIEXWebSocket.start();
 
 	return true;
+}
+
+void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
+	switch (msg->type) {
+	case ix::WebSocketMessageType::Message:
+		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+		if (!gl_fExitingSystem) {
+			gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+		}
+		break;
+	case ix::WebSocketMessageType::Error:
+		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		break;
+	case ix::WebSocketMessageType::Open:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket已连接"));
+		break;
+	case ix::WebSocketMessageType::Close:
+		break;
+	case ix::WebSocketMessageType::Fragment:
+		break;
+	case ix::WebSocketMessageType::Ping:
+		break;
+	case ix::WebSocketMessageType::Pong:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket heart beat"));
+		break;
+	default: // error
+		break;
+	}
 }
 
 /// <summary>
@@ -2854,37 +2885,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 	m_TiingoCryptoWebSocket.disablePerMessageDeflate();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoCryptoWebSocket.setOnMessageCallback([](const ix::WebSocketMessagePtr& msg)
-		{
-			switch (msg->type) {
-			case ix::WebSocketMessageType::Message:
-				// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-				// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-				if (!gl_fExitingSystem) {
-					gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
-					//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-				}
-				break;
-			case ix::WebSocketMessageType::Error:
-				gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-				break;
-			case ix::WebSocketMessageType::Open:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket已连接"));
-				break;
-			case ix::WebSocketMessageType::Close:
-				break;
-			case ix::WebSocketMessageType::Fragment:
-				break;
-			case ix::WebSocketMessageType::Ping:
-				break;
-			case ix::WebSocketMessageType::Pong:
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto heartbeat"));
-				break;
-			default: // error
-				break;
-			}
-		}
-	);
+	m_TiingoCryptoWebSocket.setOnMessageCallback(FunctionProcessTiingoCryptoWebSocket);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	m_TiingoCryptoWebSocket.start();
@@ -2893,14 +2894,12 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 }
 
 void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
-	string string1;
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 		if (!gl_fExitingSystem) {
-			string1 = msg->str;
-			gl_WebInquirer.PushTiingoForexWebSocketData(string1);
+			gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
 			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 		}
 		break;
@@ -2917,7 +2916,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex heartbeat"));
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket heart beat"));
 		break;
 	default: // error
 		break;
@@ -2956,11 +2955,16 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 	return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -3000,7 +3004,8 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;

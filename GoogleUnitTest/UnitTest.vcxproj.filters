@@ -115,6 +115,9 @@
     <Filter Include="Test源文件\Base Class">
       <UniqueIdentifier>{b76a2824-01a9-4d35-9c1f-4f852315de8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\全局函数">
+      <UniqueIdentifier>{7bec1d02-ec36-408c-bc78-9ff482485a4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -390,6 +393,12 @@
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
+    <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="functionProcessWebSocketTest.cpp">
+      <Filter>Test源文件\全局函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -459,6 +468,9 @@
       <Filter>Mock类\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnhubForexSymbol.h">
+      <Filter>Mock类\World Market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockFinnhubCryptoSymbol.h">
       <Filter>Mock类\World Market</Filter>
     </ClInclude>
   </ItemGroup>

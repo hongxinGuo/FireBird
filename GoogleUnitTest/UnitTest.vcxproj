@@ -101,7 +101,9 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp" />
+    <ClCompile Include="functionProcessWebSocketTest.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
+    <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
     <ClCompile Include="MockVirtualWebInquiryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
     <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClInclude Include="MockFinnhubCryptoSymbol.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />

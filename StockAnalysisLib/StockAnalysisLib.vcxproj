@@ -105,6 +105,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\Function.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />

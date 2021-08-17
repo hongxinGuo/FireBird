@@ -28,6 +28,5 @@ public:
 
 protected:
 	queue<shared_ptr<string>> m_qData;
-	long m_lCounter;
 	mutex m_MutexAccessData;
 };

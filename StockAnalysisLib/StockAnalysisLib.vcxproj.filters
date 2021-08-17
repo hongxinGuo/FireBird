@@ -420,6 +420,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Function.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
