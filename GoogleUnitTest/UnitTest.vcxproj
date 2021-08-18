@@ -101,7 +101,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp" />
-    <ClCompile Include="functionProcessWebSocketTest.cpp" />
+    <ClCompile Include="CallalbFunctionTest.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />

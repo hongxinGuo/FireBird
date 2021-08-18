@@ -40,7 +40,7 @@ Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // ºóÌ¨¹
 
 CWebRTDataContainer gl_WebRTDataContainer;
 
-bool CompareChinaMarketStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
+bool CompareChinaStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1956,7 +1956,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 }
 
 bool CChinaMarket::SortStockVector(void) {
-	sort(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), CompareChinaMarketStock);
+	sort(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), CompareChinaStock);
 	m_mapChinaMarketStock.clear();
 	int j = 0;
 	for (auto& pStock : m_vChinaMarketStock) {

@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"WebInquirer.h"
 
-#include"function.h"
+#include"Callablefunction.h"
 
 #include <ixwebsocket/IXWebSocket.h>
 
@@ -354,5 +354,89 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
 			break;
 		}
+	}
+
+	TEST(CallableFunctionTest, TestCompareEPSSurprise) {
+		CEPSSurprisePtr p1 = make_shared<CEPSSurprise>();
+		CEPSSurprisePtr p2 = make_shared<CEPSSurprise>();
+		p1->m_lDate = 0;
+		p2->m_lDate = 1;
+		EXPECT_TRUE(CompareEPSSurprise(p1, p2));
+		p1->m_lDate = 1;
+		p2->m_lDate = 1;
+		EXPECT_FALSE(CompareEPSSurprise(p1, p2));
+		p1->m_lDate = 2;
+		p2->m_lDate = 1;
+		EXPECT_FALSE(CompareEPSSurprise(p1, p2));
+	}
+
+	TEST(CallableFunctionTest, TestCompareDayLine) {
+		CDayLinePtr p1 = make_shared<CDayLine>();
+		CDayLinePtr p2 = make_shared<CDayLine>();
+		p1->SetDate(0);
+		p2->SetDate(1);
+		EXPECT_TRUE(CompareDayLineDate(p1, p2));
+		p1->SetDate(1);
+		p2->SetDate(1);
+		EXPECT_FALSE(CompareDayLineDate(p1, p2));
+		p1->SetDate(2);
+		p2->SetDate(1);
+		EXPECT_FALSE(CompareDayLineDate(p1, p2));
+	}
+
+	TEST(CallableFunctionTest, TestCompareCountryList) {
+		CCountryPtr p1 = make_shared<CCountry>();
+		CCountryPtr p2 = make_shared<CCountry>();
+		p1->m_strCountry = _T("abc");
+		p2->m_strCountry = _T("abd");
+		EXPECT_TRUE(CompareCountryList(p1, p2));
+		p1->m_strCountry = _T("abd");
+		p2->m_strCountry = _T("abd");
+		EXPECT_FALSE(CompareCountryList(p1, p2));
+		p1->m_strCountry = _T("abe");
+		p2->m_strCountry = _T("abd");
+		EXPECT_FALSE(CompareCountryList(p1, p2));
+	}
+
+	TEST(CallableFunctionTest, TestCompareInsiderTransaction) {
+		CInsiderTransactionPtr p1 = make_shared<CInsiderTransaction>();
+		CInsiderTransactionPtr p2 = make_shared<CInsiderTransaction>();
+		p1->m_lTransactionDate = 0;
+		p2->m_lTransactionDate = 1;
+		EXPECT_TRUE(CompareInsiderTransaction(p1, p2));
+		p1->m_lTransactionDate = 1;
+		p2->m_lTransactionDate = 1;
+		EXPECT_FALSE(CompareInsiderTransaction(p1, p2));
+		p1->m_lTransactionDate = 2;
+		p2->m_lTransactionDate = 1;
+		EXPECT_FALSE(CompareInsiderTransaction(p1, p2));
+	}
+
+	TEST(CallableFunctionTest, TestCompareChinaStock) {
+		CChinaStockPtr p1 = make_shared<CChinaStock>();
+		CChinaStockPtr p2 = make_shared<CChinaStock>();
+		p1->SetSymbol(_T("abc"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_TRUE(CompareChinaStock(p1, p2));
+		p1->SetSymbol(_T("abd"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_FALSE(CompareChinaStock(p1, p2));
+		p1->SetSymbol(_T("abe"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_FALSE(CompareChinaStock(p1, p2));
+	}
+
+	TEST(CallableFunctionTest, TestCompareWorldStock) {
+		CWorldStockPtr p1 = make_shared<CWorldStock>();
+		CWorldStockPtr p2 = make_shared<CWorldStock>();
+		p1->SetSymbol(_T("abc"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_TRUE(CompareWorldStock(p1, p2));
+		p1->SetSymbol(_T("abd"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_FALSE(CompareWorldStock(p1, p2));
+		p1->SetSymbol(_T("abe"));
+		p2->SetSymbol(_T("abd"));
+		EXPECT_FALSE(CompareWorldStock(p1, p2));
 	}
 }

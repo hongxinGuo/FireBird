@@ -420,7 +420,10 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Function.h">
+    <ClInclude Include="..\StockAnalysis\source\CallableFunction.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\StockWebSocket.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
@@ -841,6 +844,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StockWebSocket.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

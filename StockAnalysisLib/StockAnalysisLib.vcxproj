@@ -105,7 +105,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\Function.h" />
+    <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
@@ -124,6 +124,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\StockWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\stdafx.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\StockWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">

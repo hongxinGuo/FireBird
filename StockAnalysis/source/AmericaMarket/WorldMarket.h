@@ -22,6 +22,8 @@
 
 #include"TiingoWebSocketData.h"
 
+#include"StockWebSocket.h"
+
 #include <ixwebsocket/IXWebSocket.h>
 using namespace ix;
 
@@ -524,14 +526,14 @@ protected:
 	long m_lLastTotalNaicsIndustry;
 
 	// WebSocketÊý¾Ý
-	WebSocket m_FinnhubWebSocket;
-	WebSocket m_TiingoIEXWebSocket;
-	WebSocket m_TiingoCryptoWebSocket;
-	WebSocket m_TiingoForexWebSocket;
+	CStockWebSocket m_FinnhubWebSocket;
+	CStockWebSocket m_TiingoIEXWebSocket;
+	CStockWebSocket m_TiingoCryptoWebSocket;
+	CStockWebSocket m_TiingoForexWebSocket;
 
-	int m_iTiingoIEXSubscriptionId;
-	int m_iTiingoCryptoSubscriptionId;
-	int m_iTiingoForexSubscriptionId;
+	//int m_iTiingoIEXSubscriptionId;
+	//int m_iTiingoCryptoSubscriptionId;
+	//int m_iTiingoForexSubscriptionId;
 
 	queue<CFinnhubWebSocketDataPtr> m_qFinnhubWebSocketData;
 	queue<CTiingoCryptoWebSocketDataPtr> m_qTiingoCryptoWebSocketData;

@@ -368,8 +368,8 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				break;
 			case 'I':// authenization  {\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(m_iTiingoIEXSubscriptionId == 0);
-				m_iTiingoIEXSubscriptionId = pt2.get<int>(_T("subscriptionId"));
+				ASSERT(m_TiingoIEXWebSocket.GetSubscriptionId() == 0);
+				m_TiingoIEXWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理
@@ -419,8 +419,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(m_iTiingoCryptoSubscriptionId == 0);
-				m_iTiingoCryptoSubscriptionId = pt2.get<int>(_T("subscriptionId"));
+				ASSERT(m_TiingoCryptoWebSocket.GetSubscriptionId() == 0);
+				m_TiingoCryptoWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// do nothing

@@ -2,7 +2,7 @@
 
 #include "WorldMarket.h"
 #include"thread.h"
-#include"function.h"
+#include"Callablefunction.h"
 
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
@@ -54,10 +54,6 @@ CWorldMarket::CWorldMarket() {
 
 	InitialFinnhubInquiryStr();
 	InitialTiingoInquiryStr();
-
-	m_iTiingoIEXSubscriptionId = 0;
-	m_iTiingoCryptoSubscriptionId = 0;
-	m_iTiingoForexSubscriptionId = 0;
 
 	Reset();
 }
@@ -935,56 +931,56 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 
 	if (IsSystemReady()) {
 		if (!sm_fConnectedFinnhubWebSocket) {
-			if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			if (m_FinnhubWebSocket.GetState() == ix::ReadyState::Closed) {
 				sm_fConnectedFinnhubWebSocket = true;
 				ConnectFinnhubWebSocket();
 			}
 		}
 
 		if (!sm_fSendFinnhubWebStocketMessage) {
-			if (m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open) {
+			if (m_FinnhubWebSocket.GetState() == ix::ReadyState::Open) {
 				sm_fSendFinnhubWebStocketMessage = true;
 				SendFinnhubWebSocketMessage();
 			}
 		}
 
 		if (!sm_fConnectedTiingoIEXWebSocket) {
-			if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			if (m_TiingoIEXWebSocket.GetState() == ix::ReadyState::Closed) {
 				sm_fConnectedTiingoIEXWebSocket = true;
 				ConnectTiingoIEXWebSocket();
 			}
 		}
 
 		if (!sm_fSendTiingoIEXWebStocketMessage) {
-			if (m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open) {
+			if (m_TiingoIEXWebSocket.GetState() == ix::ReadyState::Open) {
 				sm_fSendTiingoIEXWebStocketMessage = true;
 				SendTiingoIEXWebSocketMessage();
 			}
 		}
 
 		if (!sm_fConnectedTiingoCryptoWebSocket) {
-			if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			if (m_TiingoCryptoWebSocket.GetState() == ix::ReadyState::Closed) {
 				sm_fConnectedTiingoCryptoWebSocket = true;
 				ConnectTiingoCryptoWebSocket();
 			}
 		}
 
 		if (!sm_fSendTiingoCryptoWebStocketMessage) {
-			if (m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open) {
+			if (m_TiingoCryptoWebSocket.GetState() == ix::ReadyState::Open) {
 				sm_fSendTiingoCryptoWebStocketMessage = true;
 				SendTiingoCryptoWebSocketMessage();
 			}
 		}
 
 		if (!sm_fConnectedTiingoForexWebSocket) {
-			if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Closed) {
+			if (m_TiingoForexWebSocket.GetState() == ix::ReadyState::Closed) {
 				sm_fConnectedTiingoForexWebSocket = true;
 				ConnectTiingoForexWebSocket();
 			}
 		}
 
 		if (!sm_fSendTiingoForexWebStocketMessage) {
-			if (m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open) {
+			if (m_TiingoForexWebSocket.GetState() == ix::ReadyState::Open) {
 				sm_fSendTiingoForexWebStocketMessage = true;
 				SendTiingoForexWebSocketMessage();
 			}
@@ -2056,25 +2052,10 @@ WebInquiry CWorldMarket::GetTiingoInquiry(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
-	if (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_FinnhubWebSocket.stop();
-	}
-	while (m_FinnhubWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoIEXWebSocket.stop();
-	}
-	while (m_TiingoIEXWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoCryptoWebSocket.stop();
-	}
-	while (m_TiingoCryptoWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
-	if (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_TiingoForexWebSocket.stop();
-	}
-	while (m_TiingoForexWebSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
+	m_FinnhubWebSocket.Deconnecting();
+	m_TiingoIEXWebSocket.Deconnecting();
+	m_TiingoCryptoWebSocket.Deconnecting();
+	m_TiingoForexWebSocket.Deconnecting();
 }
 
 bool CWorldMarket::LoadOption(void) {
@@ -2686,31 +2667,12 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::ConnectFinnhubWebSocket(void) {
-	// Connect to a server with encryption
-	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
 	std::string url("wss://ws.finnhub.io");
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
 	url += strToken.GetBuffer();
 
-	ix::SocketTLSOptions TLSOption;
-	TLSOption.tls = true;
-	m_FinnhubWebSocket.setTLSOptions(TLSOption);
-
-	m_FinnhubWebSocket.setUrl(url); // wss://ws.finnhub.io/?c1i57rv48v6vit20lrc0
-
-	// Optional heart beat, sent every 45 seconds when there is not any traffic
-	// to make sure that load balancers do not kill an idle connection.
-	m_FinnhubWebSocket.setPingInterval(45);
-
-	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	m_FinnhubWebSocket.disablePerMessageDeflate();
-
-	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_FinnhubWebSocket.setOnMessageCallback(FunctionProcessFinnhubWebSocket);
-
-	// Now that our callback is setup, we can start our background thread and receive messages
-	m_FinnhubWebSocket.start();
+	m_FinnhubWebSocket.Connecting(url, FunctionProcessFinnhubWebSocket, 45);
 
 	return true;
 }
@@ -2724,40 +2686,20 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	ix::WebSocketSendInfo info;
 	string string;
 
-	ASSERT(m_FinnhubWebSocket.getReadyState() == ix::ReadyState::Open);
+	ASSERT(m_FinnhubWebSocket.GetState() == ix::ReadyState::Open);
 
 	// Send a message to the server (default to TEXT mode)
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}")); // {"type":"subscribe","symbol":"AAPL"}
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}")); // {"type":"subscribe","symbol":"RIG"}
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"MSFT\"}")); // {"type":"subscribe","symbol":"MSFT"}
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"IBM\"}")); // {"type":"subscribe","symbol":"IBM"}
-	info = m_FinnhubWebSocket.send(_T("{\"type\":\"subscribe\",\"symbol\":\"TNK\"}")); // {"type":"subscribe","symbol":"TNK"}
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
-	m_FinnhubWebSocket.send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
+	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}")); // {"type":"subscribe","symbol":"AAPL"}
+	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}")); // {"type":"subscribe","symbol":"RIG"}
+	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"MSFT\"}")); // {"type":"subscribe","symbol":"MSFT"}
+	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"IBM\"}")); // {"type":"subscribe","symbol":"IBM"}
+	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"TNK\"}")); // {"type":"subscribe","symbol":"TNK"}
+	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
+	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
+	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
+	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
+	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
-	/*
-	int iLimit = 0;
-	for (auto pStock : m_vWorldStock) {
-		if ((pStock->GetExchangeCode().Compare(_T("US")) == 0) && (iLimit < 50)) {
-			string = CreateFinnhubWebSocketString(pStock->GetSymbol());
-			m_FinnhubWebSocket.send(string);
-			iLimit++;
-		}
-	}
-
-	for (auto pForex : m_vForexSymbol) {
-		string = CreateFinnhubWebSocketString(pForex->GetSymbol());
-		m_FinnhubWebSocket.send(string);
-	}
-
-	for (auto pCrypto : m_vCryptoSymbol) {
-		string = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
-		m_FinnhubWebSocket.send(string);
-	}
-	*/
 	return false;
 }
 
@@ -2809,24 +2751,7 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
 	std::string url("wss://api.tiingo.com/iex");
 
-	ix::SocketTLSOptions TLSOption;
-	TLSOption.tls = true;
-	m_TiingoIEXWebSocket.setTLSOptions(TLSOption);
-
-	m_TiingoIEXWebSocket.setUrl(url);
-
-	// Optional heart beat, sent every 30 seconds when there is not any traffic
-	// to make sure that load balancers do not kill an idle connection.
-	m_TiingoIEXWebSocket.setPingInterval(30);
-
-	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	m_TiingoIEXWebSocket.disablePerMessageDeflate();
-
-	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoIEXWebSocket.setOnMessageCallback(FunctionProcessTiingoIEXWebSocket);
-
-	// Now that our callback is setup, we can start our background thread and receive messages
-	m_TiingoIEXWebSocket.start();
+	m_TiingoIEXWebSocket.Connecting(url, FunctionProcessTiingoIEXWebSocket);
 
 	return true;
 }
@@ -2871,24 +2796,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
 	std::string url("wss://api.tiingo.com/crypto");
 
-	ix::SocketTLSOptions TLSOption;
-	TLSOption.tls = true;
-	m_TiingoCryptoWebSocket.setTLSOptions(TLSOption);
-
-	m_TiingoCryptoWebSocket.setUrl(url);
-
-	// Optional heart beat, sent every 30 seconds when there is not any traffic
-	// to make sure that load balancers do not kill an idle connection.
-	m_TiingoCryptoWebSocket.setPingInterval(30);
-
-	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	m_TiingoCryptoWebSocket.disablePerMessageDeflate();
-
-	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoCryptoWebSocket.setOnMessageCallback(FunctionProcessTiingoCryptoWebSocket);
-
-	// Now that our callback is setup, we can start our background thread and receive messages
-	m_TiingoCryptoWebSocket.start();
+	m_TiingoCryptoWebSocket.Connecting(url, FunctionProcessTiingoCryptoWebSocket);
 
 	return true;
 }
@@ -2929,29 +2837,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
-	// Connect to a server with encryption
-	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
-	std::string url("wss://api.tiingo.com/fx");
-
-	ix::SocketTLSOptions TLSOption;
-	TLSOption.tls = true;
-	m_TiingoForexWebSocket.setTLSOptions(TLSOption);
-
-	m_TiingoForexWebSocket.setUrl(url);
-
-	// Optional heart beat, sent every 30 seconds when there is not any traffic
-	// to make sure that load balancers do not kill an idle connection.
-	m_TiingoForexWebSocket.setPingInterval(30);
-
-	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	m_TiingoForexWebSocket.disablePerMessageDeflate();
-
-	// Setup a callback to be fired when a message or an event (open, close, error) is received
-	m_TiingoForexWebSocket.setOnMessageCallback(FunctionProcessTiingoForexWebSocket);
-
-	// Now that our callback is setup, we can start our background thread and receive messages
-	m_TiingoForexWebSocket.start();
-
+	m_TiingoForexWebSocket.Connecting(_T("wss://api.tiingo.com/fx"), FunctionProcessTiingoForexWebSocket);
 	return true;
 }
 
@@ -2972,10 +2858,10 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
 
-	ASSERT(m_TiingoIEXWebSocket.getReadyState() == ix::ReadyState::Open);
+	ASSERT(m_TiingoIEXWebSocket.GetState() == ix::ReadyState::Open);
 
 	if (sm_fSendAuth) {
-		info = m_TiingoIEXWebSocket.send(messageAuth);
+		info = m_TiingoIEXWebSocket.Send(messageAuth);
 	}
 
 	return true;
@@ -2992,10 +2878,10 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
 
-	ASSERT(m_TiingoCryptoWebSocket.getReadyState() == ix::ReadyState::Open);
+	ASSERT(m_TiingoCryptoWebSocket.GetState() == ix::ReadyState::Open);
 
 	if (sm_fSendAuth) {
-		info = m_TiingoCryptoWebSocket.send(messageAuth);
+		info = m_TiingoCryptoWebSocket.Send(messageAuth);
 	}
 
 	return true;
@@ -3013,10 +2899,10 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
 
-	ASSERT(m_TiingoForexWebSocket.getReadyState() == ix::ReadyState::Open);
+	ASSERT(m_TiingoForexWebSocket.GetState() == ix::ReadyState::Open);
 
 	if (sm_fSendAuth) {
-		info = m_TiingoForexWebSocket.send(messageAuth);
+		info = m_TiingoForexWebSocket.Send(messageAuth);
 	}
 
 	return true;

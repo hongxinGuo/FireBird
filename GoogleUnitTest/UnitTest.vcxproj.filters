@@ -396,7 +396,7 @@
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="functionProcessWebSocketTest.cpp">
+    <ClCompile Include="CallalbFunctionTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
     </ClCompile>
   </ItemGroup>
