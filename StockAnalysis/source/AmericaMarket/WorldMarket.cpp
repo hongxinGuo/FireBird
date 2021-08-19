@@ -2700,6 +2700,26 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
 	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
+	/*
+	int iLimit = 0;
+	for (auto pStock : m_vWorldStock) {
+		if ((pStock->GetExchangeCode().Compare(_T("US")) == 0) && (iLimit < 50)) {
+			string = CreateFinnhubWebSocketString(pStock->GetSymbol());
+			m_FinnhubWebSocket.Send(string);
+			iLimit++;
+		}
+	}
+
+	for (auto pForex : m_vForexSymbol) {
+		string = CreateFinnhubWebSocketString(pForex->GetSymbol());
+		m_FinnhubWebSocket.send(string);
+	}
+
+	for (auto pCrypto : m_vCryptoSymbol) {
+		string = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
+		m_FinnhubWebSocket.send(string);
+	}
+	*/
 	return false;
 }
 

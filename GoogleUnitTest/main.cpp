@@ -26,6 +26,8 @@
 //
 // where all clauses are optional and WillOnce() can be repeated.
 
+//#include"vld.h" // 需要检测内存泄漏时包括此头文件
+
 #include"pch.h"
 
 #ifndef _MBCS

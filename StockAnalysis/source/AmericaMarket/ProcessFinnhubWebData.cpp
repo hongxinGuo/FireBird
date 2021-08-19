@@ -931,10 +931,10 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 					m_qFinnhubWebSocketData.push(pFinnhubDataPtr);
 				}
 			}
-			else if (sType.compare(_T("ping")) == 0) { // ping
+			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
 				// do nothing
 			}
-			else if (sType.compare(_T("error")) == 0) {
+			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				return false;
 			}
 			else {

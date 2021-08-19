@@ -1109,10 +1109,12 @@ namespace StockAnalysisTest {
 	FinnhubWebSocketData finnhubWebSocketData142(2, _T("{\"type\":\"ping\"}"));
 	// json格式错误， 返回错误
 	FinnhubWebSocketData finnhubWebSocketData143(3, _T("\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\",\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1},\"type\":\"trade\"}"));
-	// type只能是"trade"或者"ping"
+	// type只能是"trade","ping"或者"error"
 	FinnhubWebSocketData finnhubWebSocketData144(4, _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"message\"}"));
+	// 正确的error数据格式
+	FinnhubWebSocketData finnhubWebSocketData145(5, _T("{\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}"));
 	// "dta"非法数据
-	FinnhubWebSocketData finnhubWebSocketData145(5, _T("{\"dta\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
+	FinnhubWebSocketData finnhubWebSocketData149(9, _T("{\"dta\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*>
 	{
@@ -1134,7 +1136,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneFinnhubWebSocketData1, ProcessOneFinnhubWebSocketDataTest,
-		testing::Values(&finnhubWebSocketData141, &finnhubWebSocketData142, &finnhubWebSocketData143, &finnhubWebSocketData144, &finnhubWebSocketData145));
+		testing::Values(&finnhubWebSocketData141, &finnhubWebSocketData142, &finnhubWebSocketData143, &finnhubWebSocketData144,
+			&finnhubWebSocketData145, &finnhubWebSocketData149));
 
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
@@ -1152,7 +1155,10 @@ namespace StockAnalysisTest {
 		case 4: // type类型不存在
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 5: // data名不为"data"
+		case 5: // error message
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 9: // data名不为"data"
 			EXPECT_FALSE(fSucceed);
 			break;
 		default:
