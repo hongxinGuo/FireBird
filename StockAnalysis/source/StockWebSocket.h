@@ -24,17 +24,17 @@ public:
 
 	bool Send(string message);
 
-	ix::ReadyState GetState(void) noexcept { return m_webSocket.getReadyState(); }
+	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }
 
 	void SetSubscriptionStatus(bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
 	bool IsSubscriptable(void) noexcept { return m_fHaveSubscriptionId; }
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
 	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
-	void SetMessagePreffix(string preffix) noexcept { m_Preffix = preffix; }
-	string GetMessagePreffix(void) noexcept { return m_Preffix; }
-	void SetMessageSuffix(string preffix) noexcept { m_Suffix = preffix; }
-	string GetMessageSuffix(void) noexcept { return m_Suffix; }
+	void SetMessagePreffix(string preffix) { m_Preffix = preffix; }
+	string GetMessagePreffix(void) { return m_Preffix; }
+	void SetMessageSuffix(string preffix) { m_Suffix = preffix; }
+	string GetMessageSuffix(void) { return m_Suffix; }
 
 protected:
 	ix::WebSocket m_webSocket;

@@ -55,6 +55,8 @@ CWorldMarket::CWorldMarket() {
 	InitialFinnhubInquiryStr();
 	InitialTiingoInquiryStr();
 
+	m_FinnhubWebSocket.SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
+
 	Reset();
 }
 
@@ -2869,8 +2871,10 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	// 5：If a quote: sends updates where mid is not null AND there is a change in mid by at least $0.01 OR If a trade: send a trade if it differs from the last trade price.
+	// 0: All updates from IEX.Be careful with this as it is A LOT of data.
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}");
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。0：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2890,7 +2894,7 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"jstusdt\",\"egldbtc\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2910,8 +2914,8 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\"]}}"); // 5：最简略数据格式。1：最详细数据格式。
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。1：最详细数据格式。
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7}}"); // 7：A top-of-book update that is due to a change in either the bid/ask price or size.
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
