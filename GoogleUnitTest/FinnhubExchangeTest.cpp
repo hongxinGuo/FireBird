@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubExchangeTest, TestAppend) {
-		CSetFinnhubExchange setFinnhubExchange, setFinnhubExchange2;
+		CSetFinnhubStockExchange setFinnhubExchange, setFinnhubExchange2;
 		CFinnhubStockExchange FinnhubExchange, FinnhubExchange2;
 
 		FinnhubExchange.m_strCode = _T("AA");

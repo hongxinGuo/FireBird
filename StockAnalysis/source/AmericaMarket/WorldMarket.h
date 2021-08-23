@@ -265,14 +265,7 @@ public:
 	bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
 	bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
-	CWorldStockPtr GetStock(CString strSymbol) {
-		try {
-			return m_vWorldStock.at(m_mapWorldStock.at(strSymbol));
-		}
-		catch (exception&) {
-			return nullptr;
-		}
-	}
+	CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
 	long GetStockIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
@@ -384,6 +377,9 @@ public:
 	bool LoadForexSymbol(void);
 	bool LoadCryptoExchange(void);
 	bool LoadCryptoSymbol(void);
+	bool LoadWorldChoicedForex(void);
+	bool LoadWorldChoicedCrypto(void);
+
 	bool LoadCountryDB(void);
 	bool LoadEconomicCalendarDB(void);
 
@@ -422,8 +418,8 @@ public:
 	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
 	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
 
-	int GetWebSocketDataReceivedPerSecond(void) { return m_iWebSocketDataReceivedPerSecond; }
-	void ClearWebSocketDataReceived(void) { m_iWebSocketDataReceivedPerSecond = 0; }
+	int GetWebSocketReceivedNumberPerSecond(void) { return m_iWebSocketReceivedNumberPerSecond; }
+	void ClearWebSocketReceivedNumber(void) { m_iWebSocketReceivedNumberPerSecond = 0; }
 
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
@@ -446,9 +442,16 @@ protected:
 	WebInquiry m_CurrentFinnhubInquiry;
 	WebInquiry m_CurrentTiingoInquiry;
 	WebInquiry m_CurrentQuandlInquiry;
+
 	vector<CWorldStockPtr> m_vWorldChoicedStock;
 	map<CString, long> m_mapWorldChoicedStock;
 	long m_lChoicedStockPos;
+	vector<CForexSymbolPtr> m_vWorldChoicedForex;
+	map<CString, long> m_mapWorldChoicedForex;
+	long m_lChoicedForexPos;
+	vector<CCryptoSymbolPtr> m_vWorldChoicedCrypto;
+	map<CString, long> m_mapWorldChoicedCrypto;
+	long m_lChoicedCryptoPos;
 
 	vector<CString> m_vFinnhubInquiringStr;
 	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）
@@ -540,7 +543,8 @@ protected:
 	queue<CTiingoForexWebSocketDataPtr> m_qTiingoForexWebSocketData;
 	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSockerData;
 
-	size_t m_iWebSocketDataReceivedPerSecond;
+	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
+	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;
 
 	//

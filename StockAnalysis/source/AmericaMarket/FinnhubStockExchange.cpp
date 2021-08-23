@@ -14,7 +14,7 @@ CFinnhubStockExchange::CFinnhubStockExchange() : CObject() {
 	m_fUpdated = false;
 }
 
-void CFinnhubStockExchange::Append(CSetFinnhubExchange& setFinnhubExchange) {
+void CFinnhubStockExchange::Append(CSetFinnhubStockExchange& setFinnhubExchange) {
 	setFinnhubExchange.AddNew();
 	setFinnhubExchange.m_Code = m_strCode;
 	setFinnhubExchange.m_Name = m_strName;
@@ -27,7 +27,7 @@ void CFinnhubStockExchange::Append(CSetFinnhubExchange& setFinnhubExchange) {
 	setFinnhubExchange.Update();
 }
 
-void CFinnhubStockExchange::Load(CSetFinnhubExchange& setFinnhubExchange) {
+void CFinnhubStockExchange::Load(CSetFinnhubStockExchange& setFinnhubExchange) {
 	m_strCode = setFinnhubExchange.m_Code;
 	m_strName = setFinnhubExchange.m_Name;
 	m_strMic = setFinnhubExchange.m_Mic;

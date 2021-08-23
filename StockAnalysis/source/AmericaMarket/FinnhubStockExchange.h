@@ -1,5 +1,5 @@
 #pragma once
-#include"SetFinnhubExchange.h"
+#include"SetFinnhubStockExchange.h"
 
 using namespace std;
 #include<memory>
@@ -8,9 +8,9 @@ class CFinnhubStockExchange : public CObject {
 public:
 	CFinnhubStockExchange();
 
-	void Append(CSetFinnhubExchange& setFinnhubExchange);
+	void Append(CSetFinnhubStockExchange& setFinnhubExchange);
 
-	void Load(CSetFinnhubExchange& setFinnhubExchange);
+	void Load(CSetFinnhubStockExchange& setFinnhubExchange);
 
 	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated(void) const noexcept { return m_fUpdated; }

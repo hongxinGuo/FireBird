@@ -40,7 +40,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.h" />
@@ -49,6 +49,8 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.h" />
@@ -145,7 +147,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
@@ -154,6 +156,8 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.cpp" />
@@ -161,7 +165,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />

@@ -1,6 +1,6 @@
-// SetWorldChoicedStock.h : CSetWorldChoicedStock 类的实现
+// SetWorldChoicedCrypto.h : CSetWorldChoicedCrypto 类的实现
 
-// CSetWorldChoicedStock 实现
+// CSetWorldChoicedCrypto 实现
 
 // 代码生成在 2019年5月26日, 8:15
 
@@ -8,24 +8,25 @@
 #include"globedef.h"
 #include"Accessory.h"
 
-#include "SetWorldChoicedStock.h"
-IMPLEMENT_DYNAMIC(CSetWorldChoicedStock, CRecordset)
+#include "SetWorldChoicedCrypto.h"
 
-CSetWorldChoicedStock::CSetWorldChoicedStock(CDatabase* pdb) : CRecordset(pdb) {
+IMPLEMENT_DYNAMIC(CSetWorldChoicedCrypto, CRecordset)
+
+CSetWorldChoicedCrypto::CSetWorldChoicedCrypto(CDatabase* pdb) : CRecordset(pdb) {
 	m_ID = 0;
 	m_Symbol = _T("");
 	m_nFields = 2;
 }
 
-CString CSetWorldChoicedStock::GetDefaultConnect() {
+CString CSetWorldChoicedCrypto::GetDefaultConnect() {
 	return GetWorldMarketSchemaConnect();
 }
 
-CString CSetWorldChoicedStock::GetDefaultSQL() {
-	return _T("[choiced_stock]");
+CString CSetWorldChoicedCrypto::GetDefaultSQL() {
+	return _T("[choiced_crypto]");
 }
 
-void CSetWorldChoicedStock::DoFieldExchange(CFieldExchange* pFX) {
+void CSetWorldChoicedCrypto::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。
@@ -37,11 +38,11 @@ void CSetWorldChoicedStock::DoFieldExchange(CFieldExchange* pFX) {
 // CSetChoicedStock 诊断
 
 #ifdef _DEBUG
-void CSetWorldChoicedStock::AssertValid() const {
+void CSetWorldChoicedCrypto::AssertValid() const {
 	CRecordset::AssertValid();
 }
 
-void CSetWorldChoicedStock::Dump(CDumpContext& dc) const {
+void CSetWorldChoicedCrypto::Dump(CDumpContext& dc) const {
 	CRecordset::Dump(dc);
 }
 #endif //_DEBUG

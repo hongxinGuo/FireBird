@@ -4,6 +4,9 @@
 #include"thread.h"
 #include"Callablefunction.h"
 
+#include"FinnhubForexSymbol.h"
+#include"FinnhubCryptoSymbol.h"
+
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
 
@@ -12,6 +15,8 @@
 #include"SetFinnhubCryptoExchange.h"
 #include"SetWorldStock.h"
 #include"SetWorldChoicedStock.h"
+#include"SetWorldChoicedForex.h"
+#include"SetWorldChoicedCrypto.h"
 #include"SetCountry.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
@@ -2079,7 +2084,7 @@ bool CWorldMarket::LoadOption(void) {
 }
 
 bool CWorldMarket::LoadWorldExchangeDB(void) {
-	CSetFinnhubExchange setExchange;
+	CSetFinnhubStockExchange setExchange;
 	CFinnhubExchangePtr pExchange = nullptr;
 
 	if (m_vFinnhubExchange.size() == 0) {
@@ -2533,6 +2538,54 @@ bool CWorldMarket::LoadCryptoSymbol(void) {
 	return true;
 }
 
+bool CWorldMarket::LoadWorldChoicedForex(void)
+{
+	CSetWorldChoicedForex setWorldChoicedForex;
+	CForexSymbolPtr pForex = nullptr;
+
+	setWorldChoicedForex.Open();
+	setWorldChoicedForex.m_pDatabase->BeginTrans();
+	while (!setWorldChoicedForex.IsEOF()) {
+		if (IsForexSymbol(setWorldChoicedForex.m_Symbol)) {
+			pForex = GetForexSymbol(setWorldChoicedForex.m_Symbol);
+			m_mapWorldChoicedForex[setWorldChoicedForex.m_Symbol] = m_mapWorldChoicedForex.size();
+			m_vWorldChoicedForex.push_back(pForex);
+		}
+		else {
+			setWorldChoicedForex.Delete(); // 清除非法股票代码
+		}
+		setWorldChoicedForex.MoveNext();
+	}
+	setWorldChoicedForex.m_pDatabase->CommitTrans();
+	setWorldChoicedForex.Close();
+
+	return true;
+}
+
+bool CWorldMarket::LoadWorldChoicedCrypto(void)
+{
+	CSetWorldChoicedCrypto setWorldChoicedCrypto;
+	CCryptoSymbolPtr pCrypto = nullptr;
+
+	setWorldChoicedCrypto.Open();
+	setWorldChoicedCrypto.m_pDatabase->BeginTrans();
+	while (!setWorldChoicedCrypto.IsEOF()) {
+		if (IsCryptoSymbol(setWorldChoicedCrypto.m_Symbol)) {
+			pCrypto = GetCryptoSymbol(setWorldChoicedCrypto.m_Symbol);
+			m_mapWorldChoicedCrypto[setWorldChoicedCrypto.m_Symbol] = m_mapWorldChoicedCrypto.size();
+			m_vWorldChoicedCrypto.push_back(pCrypto);
+		}
+		else {
+			setWorldChoicedCrypto.Delete(); // 清除非法股票代码
+		}
+		setWorldChoicedCrypto.MoveNext();
+	}
+	setWorldChoicedCrypto.m_pDatabase->CommitTrans();
+	setWorldChoicedCrypto.Close();
+
+	return true;
+}
+
 bool CWorldMarket::LoadCountryDB(void) {
 	CSetCountry setCountry;
 	CCountryPtr pCountry = nullptr;
@@ -2631,8 +2684,6 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 	return true;
 }
 
-string strMessage;
-
 void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
@@ -2686,21 +2737,39 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 /// <returns></returns>
 bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	ix::WebSocketSendInfo info;
-	string string;
-
+	string preffix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
+	string suffix = _T("\"}");
+	string strSymbol, strMessage;
+	CString symbol;
 	ASSERT(m_FinnhubWebSocket.GetState() == ix::ReadyState::Open);
 
+	for (auto pStock : m_vWorldChoicedStock) {
+		symbol = pStock->GetSymbol();
+		strSymbol = symbol.GetBuffer();
+		strMessage = preffix + strSymbol + suffix;
+		m_FinnhubWebSocket.Send(strMessage);
+	}
+
+	for (auto pCrypto : m_vWorldChoicedCrypto) {
+		symbol = pCrypto->GetSymbol();
+		strSymbol = symbol.GetBuffer();
+		strMessage = preffix + strSymbol + suffix;
+		m_FinnhubWebSocket.Send(strMessage);
+	}
+
+	for (auto pForex : m_vWorldChoicedForex) {
+		symbol = pForex->GetSymbol();
+		strSymbol = symbol.GetBuffer();
+		strMessage = preffix + strSymbol + suffix;
+		m_FinnhubWebSocket.Send(strMessage);
+	}
+
 	// Send a message to the server (default to TEXT mode)
-	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}")); // {"type":"subscribe","symbol":"AAPL"}
-	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"RIG\"}")); // {"type":"subscribe","symbol":"RIG"}
-	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"MSFT\"}")); // {"type":"subscribe","symbol":"MSFT"}
-	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"IBM\"}")); // {"type":"subscribe","symbol":"IBM"}
-	info = m_FinnhubWebSocket.Send(_T("{\"type\":\"subscribe\",\"symbol\":\"TNK\"}")); // {"type":"subscribe","symbol":"TNK"}
-	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
-	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
-	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
-	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
-	m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
+	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
+	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
+	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
+	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
+	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
 	/*
 	int iLimit = 0;
@@ -2933,7 +3002,7 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
-	m_iWebSocketDataReceivedPerSecond = gl_WebInquirer.GetFinnhubWebSocketDataSize()
+	m_iWebSocketReceivedNumberPerSecond = gl_WebInquirer.GetFinnhubWebSocketDataSize()
 		+ gl_WebInquirer.GetTiingoIEXWebSocketDataSize()
 		+ gl_WebInquirer.GetTiingoCryptoWebSocketDataSize()
 		+ gl_WebInquirer.GetTiingoForexWebSocketDataSize();

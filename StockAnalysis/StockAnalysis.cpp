@@ -1,5 +1,6 @@
 ﻿// StockAnalysis.cpp: 定义应用程序的类行为。
 //
+#include"pch.h"
 
 // 可以使用Virtual leak detector(vld)查找内存泄漏。
 // 由于vld官方支持只到vs2015，故而需要手工修改源代码，
@@ -8,7 +9,6 @@
 //
 //#include"vld.h" // 需要检测内存泄漏时包括此头文件。此头文件必须放在第一位
 
-#include"pch.h"
 #include"globedef.h"
 
 #include "StockAnalysis.h"

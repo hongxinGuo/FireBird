@@ -222,7 +222,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.h">
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.h">
@@ -425,6 +425,12 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StockWebSocket.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.h">
+      <Filter>头文件\World Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.h">
+      <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -731,7 +737,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubExchange.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp">
@@ -791,7 +797,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp">
@@ -847,6 +853,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\StockWebSocket.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,7 @@
 
 #include"WebInquirer.h"
 
-#include"SetFinnhubExchange.h"
+#include"SetFinnhubStockExchange.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 
@@ -554,7 +554,7 @@ void CMainFrame::UpdateStatus(void) {
 		m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
 	}
 
-	sprintf_s(buffer, _T("%5d"), gl_pWorldMarket->GetWebSocketDataReceivedPerSecond());
+	sprintf_s(buffer, _T("%5d"), gl_pWorldMarket->GetWebSocketReceivedNumberPerSecond());
 	str = buffer;
 	SysCallSetPaneText(10, (LPCTSTR)str);
 
