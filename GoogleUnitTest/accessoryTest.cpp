@@ -263,6 +263,18 @@ namespace StockAnalysisTest {
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
 		EXPECT_FALSE(ConvertToJSON(pt, s));
 	}
+
+	TEST_F(AccessoryTest, TestFormatToMK) {
+		CString str;
+		str = FormatToMK(123);
+		EXPECT_STREQ(str, _T(" 123"));
+		str = FormatToMK(12 * 1024);
+		EXPECT_STREQ(str, _T("  12K"));
+		str = FormatToMK(12 * 1024 * 1024);
+		EXPECT_STREQ(str, _T("  12M"));
+		str = FormatToMK((long long)12345 * 1024 * 1024);
+		EXPECT_STREQ(str, _T("12345M"));
+	}
 }
 
 namespace StockAnalysisTest {

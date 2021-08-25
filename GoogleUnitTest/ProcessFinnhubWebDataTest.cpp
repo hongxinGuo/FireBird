@@ -1104,7 +1104,7 @@ namespace StockAnalysisTest {
 	}
 
 	// 正确数据
-	FinnhubWebSocketData finnhubWebSocketData141(1, _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":1}],\"type\":\"trade\"}"));
+	FinnhubWebSocketData finnhubWebSocketData141(1, _T("{\"data\":[{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.76,\"s\":\"AAPL\",\"t\":1628238530221,\"v\":43},{\"c\":[\"1\",\"24\",\"12\"],\"p\":146.75,\"s\":\"A\",\"t\":1628238530220,\"v\":1}],\"type\":\"trade\"}"));
 	// 正确的ping数据格式
 	FinnhubWebSocketData finnhubWebSocketData142(2, _T("{\"type\":\"ping\"}"));
 	// json格式错误， 返回错误
@@ -1141,10 +1141,23 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
+		CFinnhubWebSocketDataPtr pFinnhubWebSocket;
 		fSucceed = gl_pWorldMarket->ProcessOneFinnhubWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
+			pFinnhubWebSocket = gl_pWorldMarket->PopFinnhubWebSocketData();
+			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("AAPL"));
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
+			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
+			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 43);
+			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530221);
+			pFinnhubWebSocket = gl_pWorldMarket->PopFinnhubWebSocketData();
+			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("A"));
+			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
+			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);
+			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 1);
+			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530220);
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);

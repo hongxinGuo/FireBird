@@ -2,7 +2,7 @@
 //
 // 尝试将ixWebSocket变量封装于此类中。
 // 牵涉太多，不容易封装。
-// 此类不负责初始化ixWebSocket。
+// 此类不负责ixWebSocket的初始化（初始化由程序负责）。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -14,12 +14,12 @@ using namespace std;
 
 #include <ixwebsocket/IXWebSocket.h>
 
-class CStockWebSocket : public CObject {
+class CWebSocket : public CObject {
 public:
-	CStockWebSocket(bool fHaveSubscriptionId = true);
-	virtual ~CStockWebSocket();
+	CWebSocket(bool fHaveSubscriptionId = true);
+	virtual ~CWebSocket();
 
-	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 30, bool fDeflate = true);
+	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	bool Deconnecting(void);
 
 	bool Send(string message);

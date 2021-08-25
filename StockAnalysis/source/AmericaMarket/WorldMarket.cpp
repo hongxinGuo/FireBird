@@ -195,6 +195,11 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_lLastTotalSICIndustry = 0;
 	m_lLastTotalNaicsIndustry = 0;
 
+	m_iFinnhubWebSocketDataSize = 0;
+	m_iTiingoIEXWebSocketDataSize = 0;
+	m_iTiingoCryptoWebSocketDataSize = 0;
+	m_iTiingoForexWebSocketDataSize = 0;
+
 	if (GetDayOfWeek() == 6) { // 每周的星期六更新一次EPSSurprise
 		m_lCurrentUpdateEPSSurprisePos = 0;
 		SetFinnhubEPSSurpriseUpdated(false);
@@ -2725,7 +2730,7 @@ bool CWorldMarket::ConnectFinnhubWebSocket(void) {
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
 	url += strToken.GetBuffer();
 
-	m_FinnhubWebSocket.Connecting(url, FunctionProcessFinnhubWebSocket, 45);
+	m_FinnhubWebSocket.Connecting(url, FunctionProcessFinnhubWebSocket);
 
 	return true;
 }
@@ -2936,6 +2941,9 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 //
 // Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
 //
+// 接收所有的IEX数据时，每秒数据量大致在20-50K附近。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
@@ -2960,10 +2968,16 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"BITFINEX:AVAX:USD\",\"neojpy\",\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2983,8 +2997,8 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7}}"); // 7：A top-of-book update that is due to a change in either the bid/ask price or size.
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\",\"FOREX:401484395\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7}}"); // 7：A top-of-book update that is due to a change in either the bid/ask price or size.
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -3017,37 +3031,56 @@ bool CWorldMarket::TaskProcessWebSocketData(void) {
 
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
-
+	shared_ptr<string> pString;
+	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		ProcessOneFinnhubWebSocketData(gl_WebInquirer.PopFinnhubWebSocketData());
+		pString = gl_WebInquirer.PopFinnhubWebSocketData();
+		iTotalDataSize += pString->size();
+		ProcessOneFinnhubWebSocketData(pString);
 	}
+	m_iFinnhubWebSocketDataSize = iTotalDataSize;
+
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
 
+	shared_ptr<string> pString;
+	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoIEXWebSocketData(gl_WebInquirer.PopTiingoIEXWebSocketData());
+		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		iTotalDataSize += pString->size();
+		ProcessOneTiingoIEXWebSocketData(pString);
 	}
+	m_iTiingoIEXWebSocketDataSize = iTotalDataSize;
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
 
+	shared_ptr<string> pString;
+	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoCryptoWebSocketData(gl_WebInquirer.PopTiingoCryptoWebSocketData());
+		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+		iTotalDataSize += pString->size();
+		ProcessOneTiingoCryptoWebSocketData(pString);
 	}
+	m_iTiingoCryptoWebSocketDataSize = iTotalDataSize;
 	return true;
 }
 
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
-
+	shared_ptr<string> pString;
+	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		ProcessOneTiingoForexWebSocketData(gl_WebInquirer.PopTiingoForexWebSocketData());
+		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
+		iTotalDataSize += pString->size();
+		ProcessOneTiingoForexWebSocketData(pString);
 	}
+	m_iTiingoForexWebSocketDataSize = iTotalDataSize;
 	return true;
 }
 
@@ -3064,11 +3097,11 @@ bool CWorldMarket::TaskUpdateWorldStockFromWebSocketData(void) {
 	CFinnhubWebSocketDataPtr pFinnhubData;
 	CWorldStockPtr pStock = nullptr;
 
-	auto total = m_qTiingoIEXWebSockerData.size();
+	auto total = m_qTiingoIEXWebSocketData.size();
 
 	for (auto i = 0; i < total; i++) {
-		pIEXData = m_qTiingoIEXWebSockerData.front();
-		m_qTiingoIEXWebSockerData.pop();
+		pIEXData = m_qTiingoIEXWebSocketData.front();
+		m_qTiingoIEXWebSocketData.pop();
 		UpdateWorldStockFromTiingoIEXWebSocketData(pIEXData);
 	}
 
@@ -3097,7 +3130,8 @@ bool CWorldMarket::TaskUpdateWorldStockFromWebSocketData(void) {
 bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData) {
 	CWorldStockPtr pStock = nullptr;
 
-	if ((pStock = GetStock(pTiingoIEXbData->m_strSymbol)) != nullptr) {
+	if (IsStock(pTiingoIEXbData->m_strSymbol)) {
+		pStock = GetStock(pTiingoIEXbData->m_strSymbol);
 		pStock->SetActive(true);
 		switch (pTiingoIEXbData->m_chMessageType) {
 		case 'T':
@@ -3113,10 +3147,37 @@ bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocke
 bool CWorldMarket::UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData) {
 	CWorldStockPtr pStock = nullptr;
 
-	if ((pStock = GetStock(pFinnhubData->m_strSymbol)) != nullptr) {
+	if (IsStock(pFinnhubData->m_strSymbol)) {
+		pStock = GetStock(pFinnhubData->m_strSymbol);
 		pStock->SetActive(true);
 		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
 	}
 
 	return true;
+}
+
+CFinnhubWebSocketDataPtr CWorldMarket::PopFinnhubWebSocketData(void) {
+	CFinnhubWebSocketDataPtr p = m_qFinnhubWebSocketData.front();
+	m_qFinnhubWebSocketData.pop();
+
+	return p;
+}
+
+CTiingoIEXWebSocketDataPtr CWorldMarket::PopTiingoIEXWebSocketData(void) {
+	CTiingoIEXWebSocketDataPtr p = m_qTiingoIEXWebSocketData.front();
+	m_qTiingoIEXWebSocketData.pop();
+
+	return p;
+}
+CTiingoCryptoWebSocketDataPtr CWorldMarket::PopTiingoCryptoWebSocketData(void) {
+	CTiingoCryptoWebSocketDataPtr p = m_qTiingoCryptoWebSocketData.front();
+	m_qTiingoCryptoWebSocketData.pop();
+
+	return p;
+}
+CTiingoForexWebSocketDataPtr CWorldMarket::PopTiingoForexWebSocketData(void) {
+	CTiingoForexWebSocketDataPtr p = m_qTiingoForexWebSocketData.front();
+	m_qTiingoForexWebSocketData.pop();
+
+	return p;
 }

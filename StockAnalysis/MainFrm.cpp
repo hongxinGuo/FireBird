@@ -120,6 +120,10 @@ static UINT innerSystemIndicators[] =
 	ID_SHOW_FINNHUB_WEB,
 	ID_SHOW_TIINGO_WEB,
 	ID_SHOW_QUANDL_WEB,
+	ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
+	ID_SHOW_TIINGO_IEX_WEBSOCKET_DATASIZE,
+	ID_SHOW_TIINGO_CRYPTO_WEBSOCKET_DATASIZE,
+	ID_SHOW_TIINGO_FOREX_WEBSOCKET_DATASIZE,
 };
 
 // CMainFrame 构造/析构
@@ -538,19 +542,9 @@ void CMainFrame::UpdateStatus(void) {
 
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetMarketTime() - m_timeLast) > 0) { // 每秒更新一次
-		const long lTotalByteReaded = gl_pSinaRTWebInquiry->GetTotalByteReaded();
-		if (lTotalByteReaded > 1024 * 1024) { // 1M以上的流量？
-			sprintf_s(buffer, _T("%4dM"), lTotalByteReaded / (1024 * 1024));
-		}
-		else if (lTotalByteReaded > 1024) { // 1K以上的流量？
-			sprintf_s(buffer, _T("%4dK"), lTotalByteReaded / 1024);
-		}
-		else {
-			sprintf_s(buffer, _T("%4d"), lTotalByteReaded);
-		}
+		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
 		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
 		m_timeLast = gl_pChinaMarket->GetMarketTime();
-		str = buffer;
 		m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
 	}
 
@@ -575,6 +569,7 @@ void CMainFrame::UpdateStatus(void) {
 void CMainFrame::UpdateInnerSystemStatus(void) {
 	char buffer[30];
 	CString str;
+	long lTotalByteReaded;
 	// 更新当前工作线程数
 	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
@@ -599,6 +594,14 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
+	str = FormatToMK(gl_pWorldMarket->GetFinnhubWebSocketDataSize());
+	SysCallSetInnerSystemPaneText(8, (LPCTSTR)str);
+	str = FormatToMK(gl_pWorldMarket->GetTiingoIEXWebSocketDataSize());
+	SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
+	str = FormatToMK(gl_pWorldMarket->GetTiingoCryptoWebSocketDataSize());
+	SysCallSetInnerSystemPaneText(10, (LPCTSTR)str);
+	str = FormatToMK(gl_pWorldMarket->GetTiingoForexWebSocketDataSize());
+	SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

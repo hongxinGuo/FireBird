@@ -679,8 +679,8 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 					fFoundNewStock = true;
 				}
 			}
+			ASSERT(IsStock(pRTData->GetSymbol()));
 			pStock = GetStock(pRTData->GetSymbol());
-			ASSERT(pStock != nullptr);
 			if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
 				if (pRTData->IsValidTime(14)) {
 					pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
@@ -735,8 +735,8 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
 					fFoundNewStock = true;
 				}
 			}
+			ASSERT(IsStock(pRTData->GetSymbol()));
 			pStock = GetStock(pRTData->GetSymbol());
-			ASSERT(pStock != nullptr);
 			if (!pStock->IsActive()) {
 				if (pRTData->IsValidTime(14)) {
 					pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
@@ -816,12 +816,15 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 
 	strNetease = str.Left(7);
 	strStockCode = XferNeteaseToStandred(strNetease);
-	CChinaStockPtr pStock = GetStock(strStockCode);
-	if (pStock == nullptr) {
+	CChinaStockPtr pStock = nullptr;
+	if (IsStock(strStockCode)) {
+		pStock = GetStock(strStockCode);
 		CString strReport = _T("网易日线查询股票代码错误：");
 		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.GetBuffer());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
+	}
+	else {
 		return false;
 	}
 	return true;
@@ -1011,7 +1014,8 @@ bool CChinaMarket::CheckNeteaseRTDataValidation(CWebRTData& RTData) {
 	ASSERT(RTData.GetDataSource() == __NETEASE_RT_WEB_DATA__);
 	if (RTData.IsActive()) {
 		CChinaStockPtr pStock = nullptr;
-		if ((pStock = GetStock(RTData.GetSymbol())) != nullptr) {
+		if (IsStock(RTData.GetSymbol())) {
+			pStock = GetStock(RTData.GetSymbol());
 			if (!pStock->IsActive()) {
 				str = pStock->GetSymbol();
 				str += _T(" 网易实时检测到不处于活跃状态");
@@ -1130,7 +1134,8 @@ bool CChinaMarket::CheckTengxunRTDataValidation(CWebRTData& RTData) {
 	ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
 	if (RTData.IsActive()) {
 		CChinaStockPtr pStock = nullptr;
-		if ((pStock = GetStock(RTData.GetSymbol())) != nullptr) {
+		if (IsStock(RTData.GetSymbol())) {
+			pStock = GetStock(RTData.GetSymbol());
 			if (!pStock->IsActive()) {
 				str = pStock->GetSymbol();
 				str += _T("腾讯实时检测到不处于活跃状态");
@@ -1156,6 +1161,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 	for (int i = 0; i < lTotalData; i++) {
 		pRTData = gl_WebRTDataContainer.PopTengxunData();
 		if (pRTData->IsActive()) {
+			ASSERT(IsStock(pRTData->GetSymbol()));
 			auto pStock = GetStock(pRTData->GetSymbol());
 			pStock->SetTotalValue(pRTData->GetTotalValue());
 			pStock->SetCurrentValue(pRTData->GetCurrentValue());
@@ -1708,7 +1714,7 @@ CString CChinaMarket::GetStockName(CString strStockCode) {
 		return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode))->GetStockName());
 	}
 	catch (exception&) {
-		TRACE("GetStockName函数 %s 异常\n", strStockCode);
+		TRACE("GetStockName函数 %s 异常\n", strStockCode.GetBuffer());
 		return _T("");
 	}
 }
@@ -1746,6 +1752,7 @@ CChinaStockPtr CChinaMarket::GetStock(long lIndex) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CString strStockCode) {
+	ASSERT(IsStock(strStockCode));
 	CChinaStockPtr pStock = GetStock(strStockCode);
 	SetCurrentStock(pStock);
 	ASSERT(m_pCurrentStock != nullptr);
@@ -2762,7 +2769,8 @@ bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	if (!setDayLineTemp.IsEOF()) {
 		if (setDayLineTemp.m_Date == lTheDay) { // 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
 			while (!setDayLineTemp.IsEOF()) {
-				if ((pStock = GetStock(setDayLineTemp.m_Symbol)) != nullptr) {
+				if (IsStock(setDayLineTemp.m_Symbol)) {
+					pStock = GetStock(setDayLineTemp.m_Symbol);
 					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
 					pStock->LoadTempInfo(setDayLineTemp);
 				}
@@ -2782,8 +2790,8 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
 	m_v10RSStrong1Stock.clear();
 	setRSStrong1.Open();
 	while (!setRSStrong1.IsEOF()) {
-		pStock = gl_pChinaMarket->GetStock(setRSStrong1.m_Symbol);
-		if (pStock != nullptr) {
+		if (IsStock(setRSStrong1.m_Symbol)) {
+			pStock = gl_pChinaMarket->GetStock(setRSStrong1.m_Symbol);
 			m_v10RSStrong1Stock.push_back(pStock);
 		}
 		setRSStrong1.MoveNext();
@@ -2800,8 +2808,8 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet(void) {
 	m_v10RSStrong2Stock.clear();
 	setRSStrong2.Open();
 	while (!setRSStrong2.IsEOF()) {
-		pStock = gl_pChinaMarket->GetStock(setRSStrong2.m_Symbol);
-		if (pStock != nullptr) {
+		if (IsStock(setRSStrong2.m_Symbol)) {
+			pStock = gl_pChinaMarket->GetStock(setRSStrong2.m_Symbol);
 			m_v10RSStrong2Stock.push_back(pStock);
 		}
 		setRSStrong2.MoveNext();
@@ -2885,8 +2893,10 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
 	setRSStrongStock.Open();
 	while (!setRSStrongStock.IsEOF()) {
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(setRSStrongStock.m_Symbol);
-		if (pStock != nullptr) m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10日RS股票集起始位置为第10个。
+		if (IsStock(setRSStrongStock.m_Symbol)) {
+			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(setRSStrongStock.m_Symbol);
+			m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10日RS股票集起始位置为第10个。
+		}
 		setRSStrongStock.MoveNext();
 	}
 	setRSStrongStock.Close();
@@ -3395,8 +3405,9 @@ void CChinaMarket::LoadChoicedStockDB(void) {
 	setChoicedStock.Open();
 	// 装入股票代码数据库
 	while (!setChoicedStock.IsEOF()) {
-		CChinaStockPtr pStock = GetStock(setChoicedStock.m_Symbol);
-		if (pStock != nullptr) {
+		CChinaStockPtr pStock = nullptr;
+		if (IsStock(setChoicedStock.m_Symbol)) {
+			pStock = GetStock(setChoicedStock.m_Symbol);
 			auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
 			if (it == m_avChoicedStock.at(0).end()) {
 				m_avChoicedStock.at(0).push_back(pStock);

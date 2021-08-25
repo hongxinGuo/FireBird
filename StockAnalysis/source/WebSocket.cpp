@@ -1,9 +1,9 @@
 #include"pch.h"
-#include"StockWebSocket.h"
+#include"WebSocket.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 
-CStockWebSocket::CStockWebSocket(bool fHaveSubscription) : CObject() {
+CWebSocket::CWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_iSubscriptionId = 0;
 	m_iPingPeriod = 0;
@@ -11,11 +11,11 @@ CStockWebSocket::CStockWebSocket(bool fHaveSubscription) : CObject() {
 	m_Preffix = m_Suffix = _T("");
 }
 
-CStockWebSocket::~CStockWebSocket() {
+CWebSocket::~CWebSocket() {
 	Deconnecting();
 }
 
-bool CStockWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
+bool CWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
 	ASSERT(m_webSocket.getReadyState() == ix::ReadyState::Closed);
@@ -43,7 +43,7 @@ bool CStockWebSocket::Connecting(string url, const ix::OnMessageCallback& callba
 	return true;
 }
 
-bool CStockWebSocket::Deconnecting(void) {
+bool CWebSocket::Deconnecting(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
@@ -52,7 +52,7 @@ bool CStockWebSocket::Deconnecting(void) {
 	return true;
 }
 
-bool CStockWebSocket::Send(string message)
+bool CWebSocket::Send(string message)
 {
 	m_webSocket.send(m_Preffix + message + m_Suffix);
 

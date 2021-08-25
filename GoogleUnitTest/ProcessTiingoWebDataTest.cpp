@@ -311,13 +311,23 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
+		CTiingoForexWebSocketDataPtr pForex;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
+			pForex = gl_pWorldMarket->PopTiingoForexWebSocketData();
+			EXPECT_EQ(pForex->m_chMessageType, 'Q');
+			EXPECT_STREQ(pForex->m_strSymbol, _T("eurnok"));
+			EXPECT_DOUBLE_EQ(pForex->m_dBidSize, 5000000);
+			EXPECT_DOUBLE_EQ(pForex->m_dBidPrice, 9.6764);
+			EXPECT_DOUBLE_EQ(pForex->m_dMidPrice, 9.678135);
+			EXPECT_DOUBLE_EQ(pForex->m_dAskSize, 5000000.0);
+			EXPECT_DOUBLE_EQ(pForex->m_dAskPrice, 9.67987);
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
+			pForex = gl_pWorldMarket->PopTiingoForexWebSocketData();
 			break;
 		case 6: //
 			EXPECT_FALSE(fSucceed);
@@ -361,6 +371,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			m_pWebData = nullptr;
 		}
 
 	public:
@@ -374,15 +385,38 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
+		CTiingoCryptoWebSocketDataPtr pCrypto;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
+			pCrypto = gl_pWorldMarket->PopTiingoCryptoWebSocketData();
+			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
+			EXPECT_STREQ(pCrypto->m_strExchange, _T("bitfinex"));
+			EXPECT_STREQ(pCrypto->m_strSymbol, _T("neojpy"));
+			EXPECT_DOUBLE_EQ(pCrypto->m_dBidSize, 38.11162867);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dBidPrice, 787.82);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dMidPrice, 787.83);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dAskPrice, 787.84);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dAskSize, 42.4153887);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dLastPrice, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dLastSize, 0);
 			break;
-		case 2: // 正确
+		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
+			pCrypto = gl_pWorldMarket->PopTiingoCryptoWebSocketData();
+			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
+			EXPECT_STREQ(pCrypto->m_strExchange, _T("binance"));
+			EXPECT_STREQ(pCrypto->m_strSymbol, _T("evxbtc"));
+			EXPECT_DOUBLE_EQ(pCrypto->m_dBidSize, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dBidPrice, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dMidPrice, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dAskPrice, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dAskSize, 0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dLastSize, 405.0);
+			EXPECT_DOUBLE_EQ(pCrypto->m_dLastPrice, 9.631e-05);
 			break;
-		case 3: // 正确
+		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 4: // 正确
@@ -441,14 +475,44 @@ namespace StockAnalysisTest {
 			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
+		CTiingoIEXWebSocketDataPtr pTiingoIEX;
 		bool fSucceed = false;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			break;
-		case 2: // 正确
+			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXWebSocketData();
+			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
+			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("vym"));
+			EXPECT_EQ(pTiingoIEX->m_dBidSize, 100);
+			EXPECT_EQ(pTiingoIEX->m_dBidPrice, 81.58);
+			EXPECT_EQ(pTiingoIEX->m_dMidPrice, 81.585);
+			EXPECT_EQ(pTiingoIEX->m_dAskPrice, 81.59);
+			EXPECT_EQ(pTiingoIEX->m_dAskSize, 100);
+			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 0);
+			EXPECT_EQ(pTiingoIEX->m_dLastSize, 0);
+			EXPECT_EQ(pTiingoIEX->m_iHalted, 0);
+			EXPECT_EQ(pTiingoIEX->m_iAfterHour, 0);
+			EXPECT_EQ(pTiingoIEX->m_iISO, 0);
+			EXPECT_EQ(pTiingoIEX->m_iOddlot, 0);
+			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0); break;
+		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
+			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXWebSocketData();
+			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225594808294);
+			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("wes"));
+			EXPECT_EQ(pTiingoIEX->m_dBidSize, 0);
+			EXPECT_EQ(pTiingoIEX->m_dBidPrice, 0);
+			EXPECT_EQ(pTiingoIEX->m_dMidPrice, 0);
+			EXPECT_EQ(pTiingoIEX->m_dAskPrice, 0);
+			EXPECT_EQ(pTiingoIEX->m_dAskSize, 0);
+			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 50.285);
+			EXPECT_EQ(pTiingoIEX->m_dLastSize, 200);
+			EXPECT_EQ(pTiingoIEX->m_iHalted, 0);
+			EXPECT_EQ(pTiingoIEX->m_iAfterHour, 0);
+			EXPECT_EQ(pTiingoIEX->m_iISO, 0);
+			EXPECT_EQ(pTiingoIEX->m_iOddlot, 0);
+			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0);
 			break;
 		case 3: // authenization
 			EXPECT_TRUE(fSucceed);

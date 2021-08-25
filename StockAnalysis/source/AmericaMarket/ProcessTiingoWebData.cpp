@@ -225,7 +225,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
 					it++;
 					pt3 = it->second;
-					sTicker = pt.get_value<string>();
+					sTicker = pt3.get_value<string>();
 					pIEXData->m_strSymbol = sTicker.c_str();
 					it++;
 					pt3 = it->second;
@@ -337,25 +337,40 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_dLastPrice = pt3.get_value<double>();
-					it++;
-					pt3 = it->second;
-					pIEXData->m_iHalted = pt3.get_value<int>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_dLastPrice = pt3.get_value<double>();
+					}
 					it++;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
-						pIEXData->m_dAskSize = atoi(sValue.c_str());
+						pIEXData->m_dLastSize = atoi(sValue.c_str());
 					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_iISO = pt3.get_value<int>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iHalted = atoi(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_iOddlot = pt3.get_value<int>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iISO = atoi(sValue.c_str());
+					}
 					it++;
 					pt3 = it->second;
-					pIEXData->m_iNMSRule611 = pt3.get_value<int>();
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iOddlot = atoi(sValue.c_str());
+					}
+					it++;
+					pt3 = it->second;
+					sValue = pt3.get_value<string>();
+					if (sValue.compare(_T("null")) != 0) {
+						pIEXData->m_iNMSRule611 = atoi(sValue.c_str());
+					}
 					break;
 				case 'B':// 'B'trade break messages
 					i++;
@@ -364,7 +379,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					return false;
 					break;
 				}
-				m_qTiingoIEXWebSockerData.push(pIEXData);
+				m_qTiingoIEXWebSocketData.push(pIEXData);
 				break;
 			case 'I':// authenization  {\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
@@ -453,7 +468,7 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 					pt3 = it->second;
 					pCryptoData->m_dLastPrice = pt3.get_value<double>(); // 最新价格
 				}
-				else { // 'Q' top-of-book update message.
+				else if (sMessageType.at(0) == 'Q') { // 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
 					it++;
 					pt3 = it->second;
@@ -481,6 +496,9 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 					it++;
 					pt3 = it->second;
 					pCryptoData->m_dAskPrice = pt3.get_value<double>(); // 卖价
+				}
+				else { // 格式不对
+					return false;
 				}
 				m_qTiingoCryptoWebSocketData.push(pCryptoData);
 				break;
@@ -581,10 +599,10 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 				pForexData->m_dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
 				it++;
 				pt3 = it->second;
-				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价数量
+				pForexData->m_dAskSize = pt3.get_value<double>(); // 卖价数量
 				it++;
 				pt3 = it->second;
-				pForexData->m_dAskSize = pt3.get_value<double>(); // 卖价
+				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价
 				m_qTiingoForexWebSocketData.push(pForexData);
 				break;
 			default:

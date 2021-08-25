@@ -297,9 +297,9 @@ namespace StockAnalysisTest {
 		CSetCryptoDayLine setCryptoDayLine;
 
 		pDayLine->SetDate(19800101);
-		pDayLine->SetStockSymbol(_T("BINANCE:USDTUAH"));
+		pDayLine->SetStockSymbol(_T("BINANCE:WINUSDC"));
 		vDayLine.push_back(pDayLine);
-		FinnhubCryptoSymbol.SetSymbol(_T("BINANCE:USDTUAH"));
+		FinnhubCryptoSymbol.SetSymbol(_T("BINANCE:WINUSDC"));
 		FinnhubCryptoSymbol.UpdateDayLine(vDayLine);
 
 		EXPECT_THAT(FinnhubCryptoSymbol.GetDayLineStartDate(), Eq(29900101));
@@ -308,7 +308,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_THAT(FinnhubCryptoSymbol.GetDayLineStartDate(), Eq(20200817)) << "这个是数据库中该股票日线数据的起始日期";
 
-		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
+		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'BINANCE:WINUSDC'");
 		setCryptoDayLine.m_strSort = _T("[Date]");
 		setCryptoDayLine.Open();
 		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101);
@@ -317,7 +317,6 @@ namespace StockAnalysisTest {
 		setCryptoDayLine.m_pDatabase->CommitTrans();
 		setCryptoDayLine.Close();
 	}
-
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();

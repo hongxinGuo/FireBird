@@ -22,7 +22,7 @@
 
 #include"TiingoWebSocketData.h"
 
-#include"StockWebSocket.h"
+#include"WebSocket.h"
 
 #include <ixwebsocket/IXWebSocket.h>
 using namespace ix;
@@ -418,8 +418,22 @@ public:
 	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
 	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
 
-	int GetWebSocketReceivedNumberPerSecond(void) { return m_iWebSocketReceivedNumberPerSecond; }
-	void ClearWebSocketReceivedNumber(void) { m_iWebSocketReceivedNumberPerSecond = 0; }
+	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return m_iWebSocketReceivedNumberPerSecond; }
+	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
+
+	CFinnhubWebSocketDataPtr PopFinnhubWebSocketData(void);
+	CTiingoIEXWebSocketDataPtr PopTiingoIEXWebSocketData(void);
+	CTiingoCryptoWebSocketDataPtr PopTiingoCryptoWebSocketData(void);
+	CTiingoForexWebSocketDataPtr PopTiingoForexWebSocketData(void);
+
+	int GetFinnhubWebSocketDataSize(void) noexcept { return m_iFinnhubWebSocketDataSize; }
+	void ClearFinnhubWebSocketDataSize(void) noexcept { m_iFinnhubWebSocketDataSize = 0; }
+	int GetTiingoIEXWebSocketDataSize(void) noexcept { return m_iTiingoIEXWebSocketDataSize; }
+	void ClearTiingoIEXWebSocketDataSize(void) noexcept { m_iTiingoIEXWebSocketDataSize = 0; }
+	int GetTiingoCryptoWebSocketDataSize(void) noexcept { return m_iTiingoCryptoWebSocketDataSize; }
+	void ClearTiingoCryptoWebSocketDataSize(void) noexcept { m_iTiingoCryptoWebSocketDataSize = 0; }
+	int GetTiingoForexWebSocketDataSize(void) noexcept { return m_iTiingoForexWebSocketDataSize; }
+	void ClearTiingoForexWebSocketDataSize(void) noexcept { m_iTiingoForexWebSocketDataSize = 0; }
 
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
@@ -529,19 +543,20 @@ protected:
 	long m_lLastTotalNaicsIndustry;
 
 	// WebSocket数据
-	CStockWebSocket m_FinnhubWebSocket;
-	CStockWebSocket m_TiingoIEXWebSocket;
-	CStockWebSocket m_TiingoCryptoWebSocket;
-	CStockWebSocket m_TiingoForexWebSocket;
-
-	//int m_iTiingoIEXSubscriptionId;
-	//int m_iTiingoCryptoSubscriptionId;
-	//int m_iTiingoForexSubscriptionId;
+	CWebSocket m_FinnhubWebSocket;
+	CWebSocket m_TiingoIEXWebSocket;
+	CWebSocket m_TiingoCryptoWebSocket;
+	CWebSocket m_TiingoForexWebSocket;
 
 	queue<CFinnhubWebSocketDataPtr> m_qFinnhubWebSocketData;
 	queue<CTiingoCryptoWebSocketDataPtr> m_qTiingoCryptoWebSocketData;
 	queue<CTiingoForexWebSocketDataPtr> m_qTiingoForexWebSocketData;
-	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSockerData;
+	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSocketData;
+
+	int m_iFinnhubWebSocketDataSize;
+	int m_iTiingoCryptoWebSocketDataSize;
+	int m_iTiingoForexWebSocketDataSize;
+	int m_iTiingoIEXWebSocketDataSize;
 
 	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量

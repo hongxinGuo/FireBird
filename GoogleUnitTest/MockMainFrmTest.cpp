@@ -159,6 +159,14 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
 			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(10, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(11, _))
+			.Times(1);
 		gl_pMockMainFrame->UpdateInnerSystemStatus();
 	}
 
@@ -790,6 +798,14 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(10, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(11, _))
 			.Times(1);
 
 		gl_pMockMainFrame->OnTimer(__STOCK_ANALYSIS_TIMER__);

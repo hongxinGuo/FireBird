@@ -69,3 +69,5 @@ public:
 bool ConvertToJSON(ptree& pt, CWebDataPtr pWebData);
 bool ConvertToJSON(ptree& pt, string s);
 bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告
+
+CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位

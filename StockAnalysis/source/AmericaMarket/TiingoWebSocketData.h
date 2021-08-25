@@ -9,7 +9,7 @@ public:
 		m_chMessageType = ' ';
 		m_strSymbol = _T("");
 		m_strExchange = _T("");
-		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
+		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
 	}
 
 public:
@@ -20,14 +20,10 @@ public:
 	double m_dBidSize;
 	double m_dBidPrice;
 	double m_dMidPrice;
-	union {
-		double m_dAskPrice;
-		double m_dLastPrice;
-	};
-	union {
-		double m_dAskSize;
-		double m_dLastSize;
-	};
+	double m_dAskPrice;
+	double m_dAskSize;
+	double m_dLastPrice;
+	double m_dLastSize;
 };
 
 typedef shared_ptr<CTiingoCryptoWebSocketData> CTiingoCryptoWebSocketDataPtr;
