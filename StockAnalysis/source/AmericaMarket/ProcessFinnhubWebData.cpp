@@ -6,6 +6,7 @@
 #include"EconomicCalendar.h"
 
 #include"WorldMarket.h"
+#include"CallableFunction.h"
 
 #include"TiingoWebSocketData.h"
 
@@ -17,11 +18,6 @@ using namespace std;
 //#include <boost/property_tree/json_parser.hpp>
 
 //using namespace boost::property_tree;
-
-bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
-bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
-bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; }
-bool CompareInsiderTransaction(CInsiderTransactionPtr& p1, CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; }
 
 /// <summary>
 /// 高级版的公司简介，需要申请付费账号

@@ -396,8 +396,11 @@
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="CallalbFunctionTest.cpp">
+    <ClCompile Include="CallableFunctionTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSocketTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

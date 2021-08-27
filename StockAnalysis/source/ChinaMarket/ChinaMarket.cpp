@@ -23,6 +23,8 @@
 
 #include"SetWeekLineInfo.h"
 
+#include"CallableFunction.h"
+
 using namespace std;
 #include<thread>
 #include<algorithm>
@@ -39,8 +41,6 @@ Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大为8
 
 CWebRTDataContainer gl_WebRTDataContainer;
-
-bool CompareChinaStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -816,17 +816,14 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 
 	strNetease = str.Left(7);
 	strStockCode = XferNeteaseToStandred(strNetease);
-	CChinaStockPtr pStock = nullptr;
-	if (IsStock(strStockCode)) {
-		pStock = GetStock(strStockCode);
+	if (!IsStock(strStockCode)) {
 		CString strReport = _T("网易日线查询股票代码错误：");
 		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.GetBuffer());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
-	}
-	else {
 		return false;
 	}
+
 	return true;
 }
 

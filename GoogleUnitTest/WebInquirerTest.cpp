@@ -33,6 +33,7 @@ namespace StockAnalysisTest {
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
 			s_pMockNeteaseDayLineWebInquiry2 = nullptr;

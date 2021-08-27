@@ -33,6 +33,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 		virtual void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());

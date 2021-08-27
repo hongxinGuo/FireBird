@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			ASSERT_FALSE(gl_fNormalMode);
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 		}
 

@@ -203,6 +203,7 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />

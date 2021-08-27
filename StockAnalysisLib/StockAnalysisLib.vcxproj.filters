@@ -860,6 +860,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

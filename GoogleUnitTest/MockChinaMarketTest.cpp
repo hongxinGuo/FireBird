@@ -58,6 +58,8 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
 			s_pMockNeteaseDayLineWebInquiry2 = nullptr;
 		}

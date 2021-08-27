@@ -451,8 +451,6 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 	return fDone;
 }
 
-bool CompareWorldStock(CWorldStockPtr p1, CWorldStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
-
 //////////////////////////////////////////////
 //
 // 处理工作线程接收到的Finnhub网络信息。
@@ -522,7 +520,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					sprintf_s(buffer, _T("%6d"), (int)vStock.size());
 					strNumber = buffer;
 					str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
-					//gl_systemMessage.PushInnerSystemInformationMessage(str);
+					gl_systemMessage.PushInnerSystemInformationMessage(str);
 					// 加上交易所代码。
 					for (auto& pStock3 : vStock) {
 						pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
@@ -1495,7 +1493,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			m_qFinnhubWebInquiry.push(inquiry);
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
-			TRACE("申请Crypto%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+			TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			SetFinnhubCryptoDayLineUpdated(true);
@@ -2689,36 +2687,6 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 	return true;
 }
 
-void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
-	switch (msg->type) {
-	case ix::WebSocketMessageType::Message:
-		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_fExitingSystem) {
-			gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-		}
-		break;
-	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-		break;
-	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket已连接"));
-		break;
-	case ix::WebSocketMessageType::Close:
-		break;
-	case ix::WebSocketMessageType::Fragment:
-		break;
-	case ix::WebSocketMessageType::Ping:
-		break;
-	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket heart beat"));
-		break;
-	default: // error
-		break;
-	}
-}
-
 /// <summary>
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
@@ -2776,26 +2744,6 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
 	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
-	/*
-	int iLimit = 0;
-	for (auto pStock : m_vWorldStock) {
-		if ((pStock->GetExchangeCode().Compare(_T("US")) == 0) && (iLimit < 50)) {
-			string = CreateFinnhubWebSocketString(pStock->GetSymbol());
-			m_FinnhubWebSocket.Send(string);
-			iLimit++;
-		}
-	}
-
-	for (auto pForex : m_vForexSymbol) {
-		string = CreateFinnhubWebSocketString(pForex->GetSymbol());
-		m_FinnhubWebSocket.send(string);
-	}
-
-	for (auto pCrypto : m_vCryptoSymbol) {
-		string = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
-		m_FinnhubWebSocket.send(string);
-	}
-	*/
 	return false;
 }
 
@@ -2805,36 +2753,6 @@ string CWorldMarket::CreateFinnhubWebSocketString(CString strSymbol) {
 	string sSymbol = strSymbol.GetBuffer();
 
 	return sPreffix + sSymbol + sSuffix;
-}
-
-void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
-	switch (msg->type) {
-	case ix::WebSocketMessageType::Message:
-		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_fExitingSystem) {
-			gl_WebInquirer.PushTiingoIEXWebSocketData(msg->str);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-		}
-		break;
-	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-		break;
-	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket已连接"));
-		break;
-	case ix::WebSocketMessageType::Close:
-		break;
-	case ix::WebSocketMessageType::Fragment:
-		break;
-	case ix::WebSocketMessageType::Ping:
-		break;
-	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket heart beat"));
-		break;
-	default: // error
-		break;
-	}
 }
 
 /// <summary>
@@ -2852,36 +2770,6 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 	return true;
 }
 
-void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
-	switch (msg->type) {
-	case ix::WebSocketMessageType::Message:
-		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_fExitingSystem) {
-			gl_WebInquirer.PushTiingoCryptoWebSocketData(msg->str);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-		}
-		break;
-	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-		break;
-	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket已连接"));
-		break;
-	case ix::WebSocketMessageType::Close:
-		break;
-	case ix::WebSocketMessageType::Fragment:
-		break;
-	case ix::WebSocketMessageType::Ping:
-		break;
-	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket heart beat"));
-		break;
-	default: // error
-		break;
-	}
-}
-
 /// <summary>
 /// Tiingo Crypto的数据源格式：wss://api.tiingo.com/crypto，其密钥是随后发送的。
 /// </summary>
@@ -2895,36 +2783,6 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 	m_TiingoCryptoWebSocket.Connecting(url, FunctionProcessTiingoCryptoWebSocket);
 
 	return true;
-}
-
-void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
-	switch (msg->type) {
-	case ix::WebSocketMessageType::Message:
-		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
-		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_fExitingSystem) {
-			gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
-		}
-		break;
-	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
-		break;
-	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket已连接"));
-		break;
-	case ix::WebSocketMessageType::Close:
-		break;
-	case ix::WebSocketMessageType::Fragment:
-		break;
-	case ix::WebSocketMessageType::Ping:
-		break;
-	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket heart beat"));
-		break;
-	default: // error
-		break;
-	}
 }
 
 /// <summary>
@@ -2941,16 +2799,16 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 //
 // Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
 //
-// 接收所有的IEX数据时，每秒数据量大致在20-50K附近。
+// thresholdlevel 0接收所有的IEX数据时，每秒数据量为1M-9M;thresholdlevel5接收所有IEX数据时，每秒数据量为10-50K。
 //
-//////////////////////////////////////////////////////////////////////////////////////////////
+// thresholdlevel 5：all Last Trade updates and only Quote updates that are deemed major updates by our system.
+// thresholdlevel 0: ALL Top-of-Book AND Last Trade updates.
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	// 5：If a quote: sends updates where mid is not null AND there is a change in mid by at least $0.01 OR If a trade: send a trade if it differs from the last trade price.
-	// 0: All updates from IEX.Be careful with this as it is A LOT of data.
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\"]}}");
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\",\"tnk\",\"tk\", \"msft\"]}}");
 	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。0：最详细数据格式。
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
@@ -2972,12 +2830,15 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 //
 // 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
 //
+// thresholdlevel 2: Top-of-Book AND Last Trade updates.
+// thresholdlevel 5: only Last Trade updates.
+//
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"BITFINEX:AVAX:USD\",\"neojpy\",\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"BITFINEX:AVAX:USD\",\"neojpy\",\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":2}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
@@ -2994,11 +2855,19 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 5状态下每秒接收100K左右。
+//
+// threshlodlevel 5: ALL Top-of-Book updates
+// thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\",\"FOREX:401484395\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":7}}"); // 7：A top-of-book update that is due to a change in either the bid/ask price or size.
+	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\",\"FOREX:401484395\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5: ALL Top-of-Book updates; 7：A top-of-book update that is due to a change in either the bid/ask price or size.
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;
