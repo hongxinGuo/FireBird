@@ -491,13 +491,13 @@ CString FormatToMK(long long iNumber) {
 	char buffer[100];
 	CString str;
 	if (iNumber > 1024 * 1024) { // 1M以上的流量？
-		sprintf_s(buffer, _T("%4dM"), iNumber / (1024 * 1024));
+		sprintf_s(buffer, _T("%4lldM"), iNumber / (1024 * 1024));
 	}
 	else if (iNumber > 1024) { // 1K以上的流量？
-		sprintf_s(buffer, _T("%4dK"), iNumber / 1024);
+		sprintf_s(buffer, _T("%4lldK"), iNumber / 1024);
 	}
 	else {
-		sprintf_s(buffer, _T("%4d"), iNumber);
+		sprintf_s(buffer, _T("%4lld"), iNumber);
 	}
 	str = buffer;
 

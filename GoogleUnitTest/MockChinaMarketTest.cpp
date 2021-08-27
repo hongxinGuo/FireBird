@@ -16,6 +16,9 @@
 
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
+
+#include"GeneralCheck.h"
+
 using namespace std;
 using namespace testing;
 #include<memory>
@@ -38,14 +41,12 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 			EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateStockCodeDB());
 
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
-
 			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
 			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
 			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry2, NotNull());
 			s_pMockNeteaseDayLineWebInquiry2 = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry2);
+
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -58,10 +59,10 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
 			s_pMockNeteaseDayLineWebInquiry2 = nullptr;
+
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
@@ -73,6 +74,8 @@ namespace StockAnalysisTest {
 
 			gl_pMockChinaMarket->SetTodayStockProcessed(false);
 			gl_pMockChinaMarket->SetRSEndDate(19900101);
+
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
@@ -94,9 +97,7 @@ namespace StockAnalysisTest {
 			gl_pMockChinaMarket->SetUpdateOptionDB(false);
 			gl_ThreadStatus.SetSavingTempData(false);
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 	};
 
@@ -122,6 +123,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 		pStock = gl_pMockChinaMarket->GetStock(_T("600668.SS"));
 		EXPECT_FALSE(pStock->IsDayLineNeedSaving()) << "无论执行与否皆清除此标识";
+
+		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+		gl_systemMessage.PopDayLineInfoMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
@@ -298,6 +302,11 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
 			.Times(1);
 		gl_pMockChinaMarket->TaskSaveTempDataIntoDB(150559);
+
+		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 4);
+		for (int i = 0; i < 4; i++) {
+			gl_systemMessage.PopDayLineInfoMessage();
+		}
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong2StockSet) {
@@ -514,6 +523,10 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), gl_pMockChinaMarket->GetFormatedMarketDate());
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+
+		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 2);
+		gl_systemMessage.PopInformationMessage();
+		gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateOptionDB) {
@@ -610,6 +623,9 @@ namespace StockAnalysisTest {
 			EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket->GetFormatedMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
 		}
 		EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), (UINT)30);
+
+		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {

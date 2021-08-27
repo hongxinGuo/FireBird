@@ -4,6 +4,9 @@
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
+
+#include"GeneralCheck.h"
+
 using namespace testing;
 using namespace ::testing;
 
@@ -45,6 +48,7 @@ namespace StockAnalysisTest {
 			ASSERT_TRUE(gl_fTestMode);
 			EXPECT_EQ(gl_vMarketPtr.size(), 4);
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
@@ -63,7 +67,7 @@ namespace StockAnalysisTest {
 			gl_ThreadStatus.SetCalculatingDayLineRS(false);
 			gl_fExitingSystem = false;
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 	};
 
@@ -809,5 +813,8 @@ namespace StockAnalysisTest {
 			.Times(1);
 
 		gl_pMockMainFrame->OnTimer(__STOCK_ANALYSIS_TIMER__);
+
+		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		gl_systemMessage.PopInformationMessage();
 	}
 }

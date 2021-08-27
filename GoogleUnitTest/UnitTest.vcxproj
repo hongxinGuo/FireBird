@@ -102,6 +102,7 @@
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="CallableFunctionTest.cpp" />
+    <ClCompile Include="GeneralCheck.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
     <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockFinnhubCryptoSymbol.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockWeekLineContainer.h" />

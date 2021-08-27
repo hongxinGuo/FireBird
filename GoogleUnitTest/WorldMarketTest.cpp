@@ -10,6 +10,8 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -87,9 +89,7 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->SetTiingoInquiring(false);
 			gl_pWorldMarket->SetTiingoDayLineUpdated(false);
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 	protected:

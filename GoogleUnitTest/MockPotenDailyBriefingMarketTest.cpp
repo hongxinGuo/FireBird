@@ -11,6 +11,9 @@
 #include"WebInquirer.h"
 
 #include"MockPotenDailyBriefingMarket.h"
+
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 using namespace std;
@@ -33,17 +36,13 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 		}
 		virtual void SetUp(void) override {
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 		CMockPotenDailyBriefingMarket potenDailyBreifingMarket;

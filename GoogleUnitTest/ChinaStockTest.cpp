@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"globedef.h"
 
+#include"GeneralCheck.h"
+
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
@@ -27,13 +29,16 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
+
+			GeneralCheck();
 		}
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+
+			GeneralCheck();
 		}
 		virtual void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -41,9 +46,8 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_fNormalMode);
 			pStock = nullptr;
 			gl_pChinaMarket->CalculateTime();
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
@@ -52,9 +56,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 			if (pStock != nullptr) {
 				pStock->SetDayLineDBUpdated(false);
 				if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
@@ -62,6 +63,8 @@ namespace StockAnalysisTest {
 				pStock = nullptr;
 			}
 			EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5040));
+
+			GeneralCheck();
 		}
 
 	protected:

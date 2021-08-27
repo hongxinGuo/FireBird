@@ -2838,7 +2838,7 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
 	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"BITFINEX:AVAX:USD\",\"neojpy\",\"jstusdt\",\"egldbtc\"]}}"); // 5£ºTrade Updates per-exchange.2£ºTop-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":2}}"); // 5£ºTrade Updates per-exchange.2£ºTop-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5£ºTrade Updates per-exchange.2£ºTop-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	str += strAuth + strSuffix;

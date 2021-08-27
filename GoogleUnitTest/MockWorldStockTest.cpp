@@ -10,10 +10,11 @@
 #include"Thread.h"
 
 #include"WorldStock.h"
-
 #include"WebInquirer.h"
-
 #include"MockWorldStock.h"
+
+#include"GeneralCheck.h"
+
 using namespace std;
 using namespace testing;
 #include<memory>
@@ -25,35 +26,31 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-  class CMockWorldStockTest : public ::testing::Test
-  {
-  protected:
-    static void SetUpTestSuite(void) {
-      ASSERT_FALSE(gl_fNormalMode);
-    }
+	class CMockWorldStockTest : public ::testing::Test
+	{
+	protected:
+		static void SetUpTestSuite(void) {
+			ASSERT_FALSE(gl_fNormalMode);
+		}
 
-    static void TearDownTestSuite(void) {
-    }
+		static void TearDownTestSuite(void) {
+		}
 
-    virtual void SetUp(void) override {
-      EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-      EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-      EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
-    }
+		virtual void SetUp(void) override {
+			GeneralCheck();
+		}
 
-    virtual void TearDown(void) override {
-      // clearup
+		virtual void TearDown(void) override {
+			// clearup
 
-      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
-    }
-  };
+			GeneralCheck();
+		}
+	};
 
-  TEST_F(CMockWorldStockTest, TestUpdateEPSSurpriseDB) {
-    CMockWorldStock stock;
-    EXPECT_CALL(stock, UpdateEPSSurpriseDB)
-      .Times(1);
-    EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), 41);
-  }
+	TEST_F(CMockWorldStockTest, TestUpdateEPSSurpriseDB) {
+		CMockWorldStock stock;
+		EXPECT_CALL(stock, UpdateEPSSurpriseDB)
+			.Times(1);
+		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), 41);
+	}
 }

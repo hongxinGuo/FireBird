@@ -6,6 +6,8 @@
 #include"WebInquirer.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -45,7 +47,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsReadyToRun()) << _T("Poten目前停止更新，故而暂缓提取其数据\n");
 			EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsResetMarket());
 			gl_pPotenDailyBriefingMarket->ClearDatabase();
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
@@ -59,7 +61,7 @@ namespace StockAnalysisTest {
 			gl_pPotenDailyBriefingMarket->ClearDatabase();
 			gl_pPotenDailyBriefingMarket->Reset();
 			gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 	};
 
@@ -115,6 +117,9 @@ namespace StockAnalysisTest {
 		gl_pPotenDailyBriefingMarket->SetCurrentInquiringDate(gl_pPotenDailyBriefingMarket->GetPrevDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDate()));
 		EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
 		EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
+
+		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CPotenDailyBriefingMarketTest, TestTaskLoadDatabase) {

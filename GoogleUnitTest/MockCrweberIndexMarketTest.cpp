@@ -6,6 +6,8 @@
 #include"WebInquirer.h"
 #include"Thread.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -45,7 +47,7 @@ namespace StockAnalysisTest {
 			gl_pMockCrweberIndexMarket->SetReadyToRun(true);
 			gl_pMockCrweberIndexMarket->SetResetMarket(true);
 			gl_pMockCrweberIndexMarket->SetNewestUpdateDate(0);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 	};
 

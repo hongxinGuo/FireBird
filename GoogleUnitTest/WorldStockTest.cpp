@@ -4,6 +4,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -18,8 +20,11 @@ namespace StockAnalysisTest {
 	protected:
 		static void SetUpTestSuite(void) {
 		}
+
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
 		}
+
 		virtual void SetUp(void) override {
 			pStock = nullptr;
 		}

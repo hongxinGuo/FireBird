@@ -7,6 +7,8 @@
 
 #include"MockCrweberIndexWebInquiry.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -42,9 +44,7 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_fNormalMode);
 			ASSERT_TRUE(gl_fTestMode);
 
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
@@ -54,7 +54,8 @@ namespace StockAnalysisTest {
 			gl_pCrweberIndexMarket->SetReadyToRun(true);
 			gl_pCrweberIndexMarket->SetResetMarket(true);
 			gl_pCrweberIndexMarket->SetNewestUpdateDate(0);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+
+			GeneralCheck();
 		}
 	};
 

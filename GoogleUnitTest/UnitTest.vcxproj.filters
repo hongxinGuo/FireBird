@@ -118,6 +118,12 @@
     <Filter Include="Test源文件\全局函数">
       <UniqueIdentifier>{7bec1d02-ec36-408c-bc78-9ff482485a4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{e95130e2-b771-4e91-b152-51fb6264d415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\辅助函数">
+      <UniqueIdentifier>{2655ee9b-65a4-47a2-99c9-ed331fd57b9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -402,6 +408,9 @@
     <ClCompile Include="WebSocketTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="GeneralCheck.cpp">
+      <Filter>Test源文件\辅助函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -475,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="MockFinnhubCryptoSymbol.h">
       <Filter>Mock类\World Market</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralCheck.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

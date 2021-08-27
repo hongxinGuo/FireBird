@@ -5,6 +5,8 @@
 #include"WebInquirer.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 
+#include"GeneralCheck.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -33,10 +35,11 @@ namespace StockAnalysisTest {
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
 			s_pMockNeteaseDayLineWebInquiry2 = nullptr;
+
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
@@ -50,10 +53,10 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 			}
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_WebInquirer.GetPotenDailyBriefingDataSize() > 0) gl_WebInquirer.PopPotenDailyBriefingData();
 			EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+
+			GeneralCheck();
 		}
 	};
 
