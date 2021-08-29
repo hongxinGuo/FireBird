@@ -2257,6 +2257,8 @@ bool CWorldMarket::UpdateStockProfileDB(void) {
 	ASSERT(iCount == iUpdatedStock);
 	sm_fInProcess = false;
 	tt = GetTickCount64() - tt;
+	TRACE("更新WorldMarket stock用时%lld毫秒\n", tt);
+
 	return true;
 }
 

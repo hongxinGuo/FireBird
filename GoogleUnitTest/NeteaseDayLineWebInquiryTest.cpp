@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
 
@@ -18,12 +19,13 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
@@ -37,11 +39,12 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
+
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pChinaMarket->SetSystemReady(false);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();

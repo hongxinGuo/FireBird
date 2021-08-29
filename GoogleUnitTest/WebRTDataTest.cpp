@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"accessory.h"
 
 #include"ChinaMarket.h"
@@ -19,24 +21,20 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 	};
 

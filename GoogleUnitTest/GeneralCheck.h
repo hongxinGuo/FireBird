@@ -1,6 +1,10 @@
 #pragma once
 
 namespace StockAnalysisTest {
-	void SystemMessageCheck(void);
 	void GeneralCheck(void);
+
+	void SystemMessageCheck(void);
+	void EnvironmentCheck(void);
+	void ChinaMarketCheck(void);
+	void WorldMarketCheck(void);
 }

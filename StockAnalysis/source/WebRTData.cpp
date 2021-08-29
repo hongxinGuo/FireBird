@@ -1107,7 +1107,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 		m_strSymbol = CreateStockCode(str1, strValue.Right(6));
 		break;
 	case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
-	//m_strStockName = buffer;
+		//m_strStockName = buffer;
 		break;
 	case 4: // type
 		if (strValue.Compare(_T("SH")) == 0) wMarket = __SHANGHAI_MARKET__;

@@ -4,6 +4,7 @@ using namespace testing;
 
 #include"globedef.h"
 #include"SystemMessage.h"
+#include "GeneralCheck.h"
 
 namespace StockAnalysisTest {
 	void SystemMessageCheck(void) {
@@ -16,7 +17,26 @@ namespace StockAnalysisTest {
 		while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
+	void EnvironmentCheck(void) {
+		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_TRUE(gl_fTestMode);
+
+		EXPECT_FALSE(gl_fExitingSystem);
+	}
+
+	void ChinaMarketCheck(void) {
+		if (gl_pChinaMarket != nullptr) {
+			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+		}
+	}
+
+	void WorldMarketCheck(void) {
+	}
+
 	void GeneralCheck(void) {
+		EnvironmentCheck();
 		SystemMessageCheck();
+		ChinaMarketCheck();
+		WorldMarketCheck();
 	}
 }

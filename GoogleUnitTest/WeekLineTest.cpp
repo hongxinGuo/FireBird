@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"WeekLine.h"
 
@@ -15,21 +16,20 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 	};
 

@@ -7,6 +7,8 @@
 
 #include"globedef.h"
 
+#include"GeneralCheck.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -57,8 +59,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_TRUE(gl_fTestMode);
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;
@@ -170,19 +171,13 @@ namespace StockAnalysisTest {
 
 			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
-
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 			EXPECT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 		}
 
 		virtual void TearDown(void) override {
 			// 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -233,9 +228,6 @@ namespace StockAnalysisTest {
 			gl_vMarketPtr.clear();
 
 			gl_pMockCrweberIndexMarket = nullptr;
-
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
 		}
 	};
 }

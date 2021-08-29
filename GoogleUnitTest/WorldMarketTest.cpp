@@ -41,6 +41,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			gl_pWorldMarket->SetFinnhubInquiring(false);
 			gl_pWorldMarket->SetCountryListUpdated(false);
 			gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
@@ -63,6 +65,8 @@ namespace StockAnalysisTest {
 			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
 		}
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
+
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
 			s_pMockFinnhubWebInquiry = nullptr;
 			s_pMockQuandlWebInquiry = nullptr;

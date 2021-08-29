@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -68,8 +69,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 			EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			SinaRTData* pData = GetParam();

@@ -106,9 +106,6 @@
     <Filter Include="Test源文件\MyLab">
       <UniqueIdentifier>{dad70c1a-48d9-49de-9471-f2161a6b9610}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GoogleTest源文件">
-      <UniqueIdentifier>{90714063-2043-40d6-9f23-a2d20d3dc6e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\Base Class">
       <UniqueIdentifier>{eb36a23a-1556-486c-91ef-c7a08d65a00b}</UniqueIdentifier>
     </Filter>
@@ -118,11 +115,11 @@
     <Filter Include="Test源文件\全局函数">
       <UniqueIdentifier>{7bec1d02-ec36-408c-bc78-9ff482485a4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{e95130e2-b771-4e91-b152-51fb6264d415}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\辅助函数">
+    <Filter Include="Test源文件\辅助检查函数">
       <UniqueIdentifier>{2655ee9b-65a4-47a2-99c9-ed331fd57b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test头文件">
+      <UniqueIdentifier>{e95130e2-b771-4e91-b152-51fb6264d415}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -409,7 +406,7 @@
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="GeneralCheck.cpp">
-      <Filter>Test源文件\辅助函数</Filter>
+      <Filter>Test源文件\辅助检查函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,7 +483,7 @@
       <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="GeneralCheck.h">
-      <Filter>头文件</Filter>
+      <Filter>Test头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

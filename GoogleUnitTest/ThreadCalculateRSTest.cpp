@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 #include"MockChinaStock.h"
 
 #include"thread.h"
@@ -18,13 +19,14 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		}
 
 		static void TearDownTestSuite(void) {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			EXPECT_FALSE(gl_fExitingSystem);
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {

@@ -24,6 +24,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			ASSERT_THAT(gl_pPotenDailyBriefingWebInquiry, NotNull());
 			s_pMockPotenDailyBriefingWebInquiry = static_pointer_cast<CMockPotenDailyBriefingWebInquiry>(gl_pPotenDailyBriefingWebInquiry);
 
@@ -31,6 +33,8 @@ namespace StockAnalysisTest {
 		}
 
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
+
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			EXPECT_FALSE(s_pMockPotenDailyBriefingWebInquiry->IsReadingWebData());
 
@@ -118,8 +122,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
 		EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
 
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
-		gl_systemMessage.PopInformationMessage();
+		while (gl_systemMessage.GetInformationDequeSize() > 0)	gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CPotenDailyBriefingMarketTest, TestTaskLoadDatabase) {

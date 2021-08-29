@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"DayLine.h"
 
@@ -14,27 +15,25 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CStockDayLineTest, TestGetDate) {
-		ASSERT_FALSE(gl_fNormalMode);
 		CDayLine dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
@@ -69,7 +68,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CStockDayLineTest, TestGetOpen) {
-		ASSERT_FALSE(gl_fNormalMode);
 		CDayLine dl;
 		EXPECT_EQ(dl.GetOpen(), 0);
 		dl.SetOpen(11100);
@@ -120,7 +118,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CStockDayLineTest, TestGetChangeHandRate) {
-		ASSERT_FALSE(gl_fNormalMode);
 		CDayLine dl;
 		EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
 		dl.SetChangeHandRate(30.30);

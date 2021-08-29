@@ -42,11 +42,11 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
+
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			EXPECT_TRUE(gl_pMockWorldMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
-			EXPECT_FALSE(gl_fExitingSystem);
 
 			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
 			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
@@ -54,13 +54,9 @@ namespace StockAnalysisTest {
 			s_pMockQuandlWebInquiry = static_pointer_cast<CMockQuandlWebInquiry>(gl_pQuandlWebInquiry);
 			ASSERT_THAT(gl_pTiingoWebInquiry, NotNull());
 			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
-
-			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
-			EXPECT_FALSE(gl_fExitingSystem);
-
 			GeneralCheck();
 
 			s_pMockFinnhubWebInquiry = nullptr;

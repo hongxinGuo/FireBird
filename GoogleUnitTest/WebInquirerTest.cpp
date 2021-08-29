@@ -23,6 +23,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 			EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
 
@@ -43,8 +44,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 

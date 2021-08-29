@@ -29,12 +29,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 		static void TearDownTestSuite(void) {
-			EXPECT_FALSE(gl_fExitingSystem);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			GeneralCheck();
 		}
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
 
@@ -46,6 +44,7 @@ namespace StockAnalysisTest {
 			gl_fExitingSystem = false;
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);
+
 			GeneralCheck();
 		}
 

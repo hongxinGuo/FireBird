@@ -28,8 +28,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 			gl_pVirtualMarket->SetPermitResetMarket(true);
 			gl_pVirtualMarket->SetReadyToRun(true);
 			gl_pVirtualMarket->SetResetMarket(true);

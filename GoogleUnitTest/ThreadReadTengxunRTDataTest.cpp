@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 #include"WebInquirer.h"
 #include"MockTengxunRTWebInquiry.h"
 
@@ -22,6 +23,7 @@ namespace StockAnalysisTest {
 		}
 
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
