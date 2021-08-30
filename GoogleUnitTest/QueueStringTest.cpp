@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"QueueString.h"
 
@@ -20,13 +21,13 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
 			gl_QueueString.Reset();
+			GeneralCheck();
 		}
 	};
 

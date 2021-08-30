@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
 #include"WebInquirer.h"
 
 #include"WorldStock.h"
@@ -9,8 +10,6 @@
 #include"MockFinnhubWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
-
-#include"GeneralCheck.h"
 
 using namespace testing;
 
@@ -55,8 +54,6 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
 			gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
 
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-
 			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
 			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
 			ASSERT_THAT(gl_pQuandlWebInquiry, NotNull());
@@ -65,15 +62,15 @@ namespace StockAnalysisTest {
 			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
 		}
 		static void TearDownTestSuite(void) {
-			GeneralCheck();
-
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
 			s_pMockFinnhubWebInquiry = nullptr;
 			s_pMockQuandlWebInquiry = nullptr;
 			s_pMockTiingoWebInquiry = nullptr;
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {

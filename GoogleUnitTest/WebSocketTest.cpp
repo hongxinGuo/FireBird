@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"WebSocket.h"
 
@@ -13,10 +14,11 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class CWebSocketTest : public ::testing::Test {
 		virtual void SetUp(void) override {
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 
 	public:

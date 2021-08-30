@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"ChinaMarket.h"
 
 #include"MockStockAnalysisView.h"
@@ -19,17 +21,15 @@ namespace StockAnalysisTest {
 	class CMockStockAnalysisViewTest : public ::testing::Test {
 	public:
 		static void SetUpTestSuite(void) {
-			EXPECT_FALSE(gl_fNormalMode);
-			EXPECT_TRUE(gl_fTestMode);
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
-			EXPECT_FALSE(gl_fNormalMode);
-			EXPECT_TRUE(gl_fTestMode);
-
 			GeneralCheck();
 		}
 		virtual void SetUp(void) override {
+			GeneralCheck();
+
 			s_pStockAnalysisView = new CMockStockAnalysisView;
 			EXPECT_EQ(s_pStockAnalysisView->GetClientSize().Height(), 0);
 			EXPECT_EQ(s_pStockAnalysisView->GetClientSize().Width(), 0);
@@ -47,6 +47,8 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			delete s_pStockAnalysisView;
+
+			GeneralCheck();
 		}
 	public:
 		CMockStockAnalysisView* s_pStockAnalysisView;

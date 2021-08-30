@@ -30,10 +30,10 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 		}
 		static void TearDownTestSuite(void) {
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
+			GeneralCheck();
 		}
 		virtual void SetUp(void) override {
 			GeneralCheck();

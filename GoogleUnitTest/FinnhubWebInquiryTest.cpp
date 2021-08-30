@@ -1,10 +1,9 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"MockFinnhubWebInquiry.h"
-
-#include"GeneralCheck.h"
 
 using namespace std;
 using namespace testing;
@@ -28,15 +27,15 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			gl_pWorldMarket->CalculateTime();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
 			gl_pWorldMarket->SetResetMarket(true);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pWorldMarket->SetSystemReady(false);
+			GeneralCheck();
 		}
 		CMockFinnhubWebInquiry m_FinnhubWebInquiry; // 网易日线历史数据
 	};

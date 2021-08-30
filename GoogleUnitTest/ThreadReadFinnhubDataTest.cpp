@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"WebInquirer.h"
 #include"MockFinnhubWebInquiry.h"
 
@@ -19,9 +21,11 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {

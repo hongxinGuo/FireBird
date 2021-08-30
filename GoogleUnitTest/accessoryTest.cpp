@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"accessory.h"
 
@@ -13,10 +14,13 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class AccessoryTest : public ::testing::Test {
 		virtual void SetUp(void) override {
+			GeneralCheck();
 		}
 		virtual void TearDown(void) override {
 			gl_fNormalMode = false;
 			gl_fTestMode = true;
+
+			GeneralCheck();
 		}
 	};
 

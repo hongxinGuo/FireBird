@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"FinnhubStockExchange.h"
 
@@ -14,15 +15,15 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {

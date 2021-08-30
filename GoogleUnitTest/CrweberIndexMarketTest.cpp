@@ -35,14 +35,11 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
 			gl_pCrweberIndexMarket->SetDatabaseLoaded(false);
 			gl_pCrweberIndexMarket->SetPermitResetMarket(true);
 			gl_pCrweberIndexMarket->SetReadyToRun(true);
 			gl_pCrweberIndexMarket->SetResetMarket(true);
 			gl_pCrweberIndexMarket->SetNewestUpdateDate(0);
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
 
 			GeneralCheck();
 		}

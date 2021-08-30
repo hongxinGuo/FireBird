@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"ThreadStatus.h"
 
 #include"WebInquirer.h"
@@ -17,10 +19,12 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 		}
 		virtual void SetUp(void) override {
 			EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {

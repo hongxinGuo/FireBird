@@ -6,6 +6,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"Thread.h"
 
@@ -18,8 +19,6 @@
 #include"MockFinnhubWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
-
-#include"GeneralCheck.h"
 
 using namespace std;
 using namespace testing;
@@ -57,15 +56,15 @@ namespace StockAnalysisTest {
 		}
 
 		static void TearDownTestSuite(void) {
-			GeneralCheck();
-
 			s_pMockFinnhubWebInquiry = nullptr;
 			s_pMockQuandlWebInquiry = nullptr;
 			s_pMockTiingoWebInquiry = nullptr;
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			GeneralCheck();
 			gl_fExitingSystem = false;
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);

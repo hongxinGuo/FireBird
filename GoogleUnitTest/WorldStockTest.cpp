@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"WorldStock.h"
 #include"WorldMarket.h"
@@ -19,6 +20,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -31,6 +33,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearu
+			GeneralCheck();
 		}
 
 	protected:

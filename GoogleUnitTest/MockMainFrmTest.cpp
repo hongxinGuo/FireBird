@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
@@ -21,10 +23,10 @@ namespace StockAnalysisTest {
 	class CMockMainFrameTest : public ::testing::Test {
 	public:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
 			EXPECT_EQ(gl_vMarketPtr.size(), 4);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -33,7 +35,6 @@ namespace StockAnalysisTest {
 
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_FALSE(gl_fExitingSystem);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -44,10 +45,9 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
 			EXPECT_EQ(gl_vMarketPtr.size(), 4);
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+
 			GeneralCheck();
 		}
 

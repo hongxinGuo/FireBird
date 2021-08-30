@@ -1,5 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"WebInquirer.h"
 
 #include"WorldStock.h"
@@ -61,7 +63,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -70,15 +72,10 @@ namespace StockAnalysisTest {
 			m_pStock->SetProfileUpdateDate(19700101);
 			m_pStock->SetCity(_T(""));
 			m_pWebData = pData->m_pData;
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -136,7 +133,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -146,6 +143,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -193,7 +191,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -204,6 +202,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -265,7 +264,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -273,10 +272,6 @@ namespace StockAnalysisTest {
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
-
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 
 		virtual void TearDown(void) override {
@@ -285,9 +280,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetDayLineNeedSaving(false);
 			m_pStock->SetUpdateProfileDB(false);
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -397,7 +390,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -419,6 +412,8 @@ namespace StockAnalysisTest {
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
 			m_pStock->SetUpdateProfileDB(false);
+
+			GeneralCheck();
 		}
 
 	public:
@@ -534,7 +529,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol));
@@ -546,16 +541,11 @@ namespace StockAnalysisTest {
 			m_pForexSymbol->SetDayLineNeedUpdate(true);
 			m_pForexSymbol->SetDayLineNeedSaving(false);
 			m_pForexSymbol->SetUpdateProfileDB(false);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 
 			//m_pForexSymbol->SetDayLineNeedUpdate(true);
 			// m_pForexSymbol->SetDayLineNeedSaving(false);
@@ -660,7 +650,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -668,6 +658,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:
@@ -715,7 +706,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -723,6 +714,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:
@@ -777,7 +769,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -785,6 +777,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:
@@ -847,7 +840,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -857,6 +850,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -914,7 +908,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -922,6 +916,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:
@@ -987,7 +982,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -997,6 +992,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -1060,7 +1056,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -1070,6 +1066,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 
@@ -1120,7 +1117,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			FinnhubWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -1128,6 +1125,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:

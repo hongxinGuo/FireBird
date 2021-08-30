@@ -6,14 +6,13 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"Thread.h"
 
 #include"WorldStock.h"
 #include"WebInquirer.h"
 #include"MockWorldStock.h"
-
-#include"GeneralCheck.h"
 
 using namespace std;
 using namespace testing;
@@ -30,10 +29,11 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {

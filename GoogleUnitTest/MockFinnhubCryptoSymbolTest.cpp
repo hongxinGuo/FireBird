@@ -6,6 +6,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 
 #include"Thread.h"
 
@@ -29,24 +30,20 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
+			GeneralCheck();
 		}
 
 		virtual void SetUp(void) override {
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 	};
 

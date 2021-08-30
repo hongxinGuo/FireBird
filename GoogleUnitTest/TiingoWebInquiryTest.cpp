@@ -32,14 +32,14 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			gl_pWorldMarket->CalculateTime();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
 			gl_pWorldMarket->SetResetMarket(true);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			GeneralCheck();
 		}
 		CMockTiingoWebInquiry m_TiingoWebInquiry; // 网易日线历史数据
 	};

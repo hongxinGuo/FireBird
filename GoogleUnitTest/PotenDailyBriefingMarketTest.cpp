@@ -42,8 +42,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			ASSERT_TRUE(gl_fTestMode);
 			EXPECT_FALSE(s_pMockPotenDailyBriefingWebInquiry->IsReadingWebData());
 			EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsDatabaseLoaded());
 			EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDate(), 20180411);

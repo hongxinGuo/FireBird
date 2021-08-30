@@ -1,5 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"WebInquirer.h"
 
 #include"WorldStock.h"
@@ -46,7 +48,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -54,7 +56,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -150,7 +152,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -160,10 +162,6 @@ namespace StockAnalysisTest {
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->UnloadDayLine();
 			m_pWebData = pData->m_pData;
-
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 
 		virtual void TearDown(void) override {
@@ -171,10 +169,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetDayLineNeedUpdate(true);
 			m_pStock->SetDayLineNeedSaving(false);
 			m_pStock->SetUpdateProfileDB(false);
-
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-			while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -290,7 +285,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -298,6 +293,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:
@@ -365,7 +361,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -373,6 +369,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 			m_pWebData = nullptr;
 		}
 
@@ -464,7 +461,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			GeneralCheck();
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -472,6 +469,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			GeneralCheck();
 		}
 
 	public:

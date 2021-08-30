@@ -1,5 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
+
 #include"WebInquirer.h"
 
 #include"Callablefunction.h"
@@ -48,10 +50,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
+
 			EXPECT_THAT(gl_WebInquirer.GetFinnhubWebSocketDataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
@@ -64,9 +64,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -128,10 +126,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
+
 			EXPECT_THAT(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
@@ -144,9 +140,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -208,10 +202,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
+
 			EXPECT_THAT(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
@@ -224,9 +216,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 	public:
@@ -288,10 +278,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+			GeneralCheck();
+
 			EXPECT_THAT(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
@@ -304,9 +292,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+			GeneralCheck();
 		}
 
 	public:
