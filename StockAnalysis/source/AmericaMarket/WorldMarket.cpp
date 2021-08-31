@@ -1622,7 +1622,7 @@ bool CWorldMarket::UpdateForexExchangeDB(void) {
 		setForexExchange.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
 			setForexExchange.AddNew();
-			setForexExchange.m_Exchange = m_vForexExchange.at(l);
+			setForexExchange.m_Code = m_vForexExchange.at(l);
 			setForexExchange.Update();
 		}
 		setForexExchange.m_pDatabase->CommitTrans();
@@ -1641,7 +1641,7 @@ bool CWorldMarket::UpdateCryptoExchangeDB(void) {
 		setCryptoExchange.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 			setCryptoExchange.AddNew();
-			setCryptoExchange.m_Exchange = m_vCryptoExchange.at(l);
+			setCryptoExchange.m_Code = m_vCryptoExchange.at(l);
 			setCryptoExchange.Update();
 		}
 		setCryptoExchange.m_pDatabase->CommitTrans();
@@ -2479,8 +2479,8 @@ bool CWorldMarket::LoadForexExchange(void) {
 
 	setForexExchange.Open();
 	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(setForexExchange.m_Exchange);
-		m_mapForexExchange[setForexExchange.m_Exchange] = i++;
+		m_vForexExchange.push_back(setForexExchange.m_Code);
+		m_mapForexExchange[setForexExchange.m_Code] = i++;
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();
@@ -2515,8 +2515,8 @@ bool CWorldMarket::LoadCryptoExchange(void) {
 
 	setCryptoExchange.Open();
 	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(setCryptoExchange.m_Exchange);
-		m_mapCryptoExchange[setCryptoExchange.m_Exchange] = i++;
+		m_vCryptoExchange.push_back(setCryptoExchange.m_Code);
+		m_mapCryptoExchange[setCryptoExchange.m_Code] = i++;
 		setCryptoExchange.MoveNext();
 	}
 	setCryptoExchange.Close();

@@ -1,18 +1,11 @@
-// VirtualSetExchange.h : CVirtualSetExchange 的声明
-//
-// 存储交易所数据的默认制式
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include"afxdb.h"
 
-// 代码生成在 2019年5月26日, 8:14
-
-class CVirtualSetExchange : public CRecordset
+class CVirtualSetChoicedStake : public CRecordset
 {
 public:
-	CVirtualSetExchange(CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetExchange)
+	CVirtualSetChoicedStake(CDatabase* pDatabase = nullptr);
+	DECLARE_DYNAMIC(CVirtualSetChoicedStake)
 
 	// 字段/参数数据
 
@@ -23,19 +16,13 @@ public:
 	// CString 类型，ODBC 驱动程序将执行所有必要的转换。
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
-
-	static CString sm_TableName; // 数据库中默认的表名称
+	static CString sm_TableName;
 
 	long m_ID;
-	CString m_Code;
-	CString m_Name;
-	CString m_Mic;
-	CString m_TimeZone;
-	CString m_Hour;
-	CString m_CloseDate;
-	CString m_Country;
-	CString m_Source;
+	CString	m_Symbol;
 
+	// 重写
+		// 向导生成的虚函数重写
 public:
 	virtual CString GetDefaultConnect();	// 默认连接字符串
 

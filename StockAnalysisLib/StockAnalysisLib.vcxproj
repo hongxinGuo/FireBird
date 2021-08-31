@@ -73,6 +73,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
@@ -142,14 +143,12 @@
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.cpp" />
@@ -157,9 +156,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetSICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp" />
@@ -202,6 +198,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />

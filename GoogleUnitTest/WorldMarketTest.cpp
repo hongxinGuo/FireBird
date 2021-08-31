@@ -696,7 +696,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateForexExchangeDB());
 
 		CSetFinnhubForexExchange setForexExchange;
-		setForexExchange.m_strFilter = _T("[Exchange] = 'US.US.US'");
+		setForexExchange.m_strFilter = _T("[Code] = 'US.US.US'");
 		setForexExchange.Open();
 		EXPECT_FALSE(setForexExchange.IsEOF());
 		setForexExchange.m_pDatabase->BeginTrans();
@@ -720,7 +720,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateCryptoExchangeDB());
 
 		CSetFinnhubCryptoExchange setCryptoExchange;
-		setCryptoExchange.m_strFilter = _T("[Exchange] = 'US.US.US'");
+		setCryptoExchange.m_strFilter = _T("[Code] = 'US.US.US'");
 		setCryptoExchange.Open();
 		EXPECT_FALSE(setCryptoExchange.IsEOF());
 		setCryptoExchange.m_pDatabase->BeginTrans();
@@ -1537,6 +1537,12 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("世界市场初始化完毕"));
+
+		// 恢复原状
+		gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(false);
+		gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
+		gl_pWorldMarket->SetFinnhubCryptoSymbolUpdated(false);
+		gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {

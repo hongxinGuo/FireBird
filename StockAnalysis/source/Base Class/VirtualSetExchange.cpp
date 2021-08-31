@@ -12,9 +12,15 @@ IMPLEMENT_DYNAMIC(CVirtualSetExchange, CRecordset)
 
 CVirtualSetExchange::CVirtualSetExchange(CDatabase* pdb)
 	: CRecordset(pdb) {
-	m_Exchange = _T(" ");
-
-	m_nFields = 2;
+	m_Code = _T("");
+	m_Name = _T("");
+	m_Mic = _T("");
+	m_TimeZone = _T("");
+	m_Hour = _T("");
+	m_CloseDate = _T("");
+	m_Country = _T("");
+	m_Source = _T("");
+	m_nFields = 9;
 }
 
 CString CVirtualSetExchange::GetDefaultConnect() {
@@ -31,7 +37,14 @@ void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
 	// 成员变量的类型，而不是数据库字段的类型。
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
-	RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
+	RFX_Text(pFX, _T("[Code]"), m_Code);
+	RFX_Text(pFX, _T("[Name]"), m_Name);
+	RFX_Text(pFX, _T("[Mic]"), m_Mic);
+	RFX_Text(pFX, _T("[TimeZone]"), m_TimeZone);
+	RFX_Text(pFX, _T("[Hour]"), m_Hour);
+	RFX_Text(pFX, _T("[CloseDate]"), m_CloseDate);
+	RFX_Text(pFX, _T("[Country]"), m_Country);
+	RFX_Text(pFX, _T("[Source]"), m_Source);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetWorldStock 诊断

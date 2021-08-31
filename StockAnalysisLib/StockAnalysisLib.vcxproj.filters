@@ -435,6 +435,9 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -740,12 +743,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEPSSurprise.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubStockExchange.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexExchange.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
@@ -765,9 +762,6 @@
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetTiingoStock.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedStock.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldMarketOption.cpp">
@@ -836,9 +830,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoExchange.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
@@ -857,16 +848,16 @@
     <ClCompile Include="..\StockAnalysis\source\WebSocket.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedCrypto.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetImplementationDeclare.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.cpp">
       <Filter>源文件\Base Class</Filter>
     </ClCompile>
   </ItemGroup>

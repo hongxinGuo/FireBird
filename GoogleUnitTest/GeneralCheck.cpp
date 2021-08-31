@@ -27,6 +27,12 @@ namespace StockAnalysisTest {
 	}
 
 	void WorldMarketCheck(void) {
+		if (gl_pWorldMarket != nullptr) {
+			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
+			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
+			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
+			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+		}
 	}
 
 	void GeneralCheck(void) {
