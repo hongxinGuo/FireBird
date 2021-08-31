@@ -112,6 +112,12 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexSymbolDB());
 	}
 
+	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoSymbolDB) {
+		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoSymbolDB)
+			.Times(1);
+		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCryptoSymbolDB());
+	}
+
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCountryListDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCountryListDB)
 			.Times(1);

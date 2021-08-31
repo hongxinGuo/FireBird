@@ -7,6 +7,7 @@
 #include"WorldMarket.h"
 
 #include"SetFinnhubForexExchange.h"
+#include"SetFinnhubCryptoExchange.h"
 #include"MockFinnhubWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
@@ -370,6 +371,71 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "此符号在符号集中不存在";
 	}
 
+	TEST_F(CWorldMarketTest, TestIsCryptoExchange) {
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(_T("ABC")));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(_T("BITFINEX")));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(_T("HUOBI")));
+	}
+
+	TEST_F(CWorldMarketTest, TestAddCryptoExchange) {
+		long lTotalCryptoExchange = gl_pWorldMarket->GetCryptoExchangeSize();
+		CString strCryptoExchange = _T("000001.SZ");
+
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
+		gl_pWorldMarket->AddCryptoExchange(strCryptoExchange);
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
+		EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), lTotalCryptoExchange + 1);
+		gl_pWorldMarket->DeleteCryptoExchange(strCryptoExchange);
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
+		EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), lTotalCryptoExchange);
+	}
+
+	TEST_F(CWorldMarketTest, TestDeleteCryptoExchange) {
+		// do nothing. 已经在TestAddCryptoExchange中测试了DeleteCryptoExchange函数
+		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoExchange(_T("US.US.US"))) << "此符号在符号集中不存在";
+	}
+
+	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(_T("ABC")));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("OANDA:XAU_SGD")));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("ICMTRADER:193")));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("FOREX:401484413")));
+
+		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		pCryptoSymbol->SetSymbol(_T("ABC"));
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		pCryptoSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		pCryptoSymbol->SetSymbol(_T("FOREX:401484413"));
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+	}
+
+	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
+		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		long lTotalCryptoSymbol = gl_pWorldMarket->GetCryptoSymbolSize();
+		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
+
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
+		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol + 1);
+
+		EXPECT_TRUE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol);
+	}
+
+	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
+		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
+		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+
+		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol)) << "空指针";
+
+		pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
+		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol)) << "此符号在符号集中不存在";
+	}
+
 	TEST_F(CWorldMarketTest, TestIsCountry) {
 		CCountryPtr pCountry = make_shared<CCountry>();
 
@@ -544,6 +610,42 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // 恢复原状
 	}
 
+	TEST_F(CWorldMarketTest, TestUpdateCryptoSymbolDB) {
+		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
+		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
+		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("OANDA:AUD_SGD")); // 第二个现存的符号
+		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
+		pCryptoSymbol->SetUpdateProfileDB(true);
+		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+		gl_pWorldMarket->UpdateCryptoSymbolDB();
+
+		CSetFinnhubCryptoSymbol setWorldStock;
+		setWorldStock.m_strFilter = _T("[Symbol] = 'OANDA:AUD_SGD'");
+		setWorldStock.Open();
+		EXPECT_EQ(setWorldStock.m_IPOStatus, __STOCK_DELISTED__) << "状态已被修改为摘牌";
+		setWorldStock.m_pDatabase->BeginTrans();
+		setWorldStock.Edit();
+		setWorldStock.m_IPOStatus = __STOCK_IPOED__;
+		setWorldStock.Update();
+		setWorldStock.m_pDatabase->CommitTrans();
+		setWorldStock.Close();
+
+		setWorldStock.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+		setWorldStock.Open();
+		EXPECT_FALSE(setWorldStock.IsEOF()) << "存入了新符号";
+		setWorldStock.m_pDatabase->BeginTrans();
+		while (!setWorldStock.IsEOF()) {
+			setWorldStock.Delete(); // 删除此新代码
+			setWorldStock.MoveNext();
+		}
+		setWorldStock.m_pDatabase->CommitTrans();
+		setWorldStock.Close();
+
+		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("SS.SS.US"));
+		gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol); // 恢复原状
+	}
+
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 
@@ -606,6 +708,30 @@ namespace StockAnalysisTest {
 		setForexExchange.Close();
 
 		gl_pWorldMarket->DeleteForexExchange(strSymbol); // 恢复原状
+	}
+
+	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
+		CString strSymbol = _T("US.US.US");
+
+		EXPECT_FALSE(gl_pWorldMarket->UpdateCryptoExchangeDB()) << "没有新Crypto Exchange";
+
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strSymbol)); // 确保是一个新Crypto代码
+		gl_pWorldMarket->AddCryptoExchange(strSymbol);
+		EXPECT_TRUE(gl_pWorldMarket->UpdateCryptoExchangeDB());
+
+		CSetFinnhubCryptoExchange setCryptoExchange;
+		setCryptoExchange.m_strFilter = _T("[Exchange] = 'US.US.US'");
+		setCryptoExchange.Open();
+		EXPECT_FALSE(setCryptoExchange.IsEOF());
+		setCryptoExchange.m_pDatabase->BeginTrans();
+		while (!setCryptoExchange.IsEOF()) {
+			setCryptoExchange.Delete(); // 删除新添加的这个代码
+			setCryptoExchange.MoveNext();
+		}
+		setCryptoExchange.m_pDatabase->CommitTrans();
+		setCryptoExchange.Close();
+
+		gl_pWorldMarket->DeleteCryptoExchange(strSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderTransactionDB) {
@@ -817,6 +943,30 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexDayLineUpdated());
 		gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexDayLineUpdated());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsFinnhubCryptoExhangeUpdated) {
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsFinnhubCryptoSymbolUpdated) {
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoSymbolUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoSymbolUpdated(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsFinnhubCryptoDayLineUpdated) {
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoDayLineUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoDayLineUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoDayLineUpdated());
+		gl_pWorldMarket->SetFinnhubCryptoDayLineUpdated(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoDayLineUpdated());
 	}
 
 	TEST_F(CWorldMarketTest, TestIsFinnhubPeerUpdated) {
@@ -1469,5 +1619,20 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("AAPL")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
 		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
 		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("IC MARKETS:1")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
+	}
+
+	TEST_F(CWorldMarketTest, TestCreateTiingoIEXWebSocketSymbolString) {
+		CString strSymbols = gl_pWorldMarket->CreateTiingoIEXWebSocketSymbolString();
+		EXPECT_STREQ(strSymbols, _T("\"A\",\"AA\",\"AAL\",\"AAPL\"")) << "默认自选股票就是这四个";
+	}
+
+	TEST_F(CWorldMarketTest, TestCreateTiingoCryptoWebSocketSymbolString) {
+		CString strSymbols = gl_pWorldMarket->CreateTiingoCryptoWebSocketSymbolString();
+		EXPECT_STREQ(strSymbols, _T("\"FOREX:401484413\",\"FXCM:USD/SEK\",\"OANDA:AUD_SGD\"")) << "默认自选Crypto就是这三个";
+	}
+
+	TEST_F(CWorldMarketTest, TestCreateTiingoForexWebSocketSymbolString) {
+		CString strSymbols = gl_pWorldMarket->CreateTiingoForexWebSocketSymbolString();
+		EXPECT_STREQ(strSymbols, _T("\"FXCM:USD/JPY\",\"IC MARKETS:1\",\"OANDA:AUD_SGD\"")) << "默认自选Forex就是这三个";
 	}
 }

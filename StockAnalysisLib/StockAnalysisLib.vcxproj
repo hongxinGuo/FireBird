@@ -73,6 +73,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />

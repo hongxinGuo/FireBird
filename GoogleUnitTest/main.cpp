@@ -218,6 +218,9 @@ ExcludeFromCodeCoverage(CWorldMarket11, L"CWorldMarket::CreatingThreadUpdateNaic
 ExcludeFromCodeCoverage(CWorldMarket12, L"CWorldMarket::CreatingThreadUpdateInsiderTransactionDB");
 ExcludeFromCodeCoverage(CWorldMarket13, L"CWorldMarket::CreatingThreadUpdateForexExchangeDB");
 ExcludeFromCodeCoverage(CWorldMarket14, L"CWorldMarket::CreatingThreadUpdateEconomicCalendarDB");
+ExcludeFromCodeCoverage(CWorldMarket15, L"CWorldMarket::CreatingThreadUpdateCryptoExchangeDB");
+ExcludeFromCodeCoverage(CWorldMarket16, L"CWorldMarket::CreatingThreadUpdateCryptoSymbolDB");
+ExcludeFromCodeCoverage(CWorldMarket17, L"CWorldMarket::CreatingThreadUpdateCryptoDayLineDB");
 
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");

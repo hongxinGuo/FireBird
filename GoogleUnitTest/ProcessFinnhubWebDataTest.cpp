@@ -1176,4 +1176,256 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	// 格式不对(缺开始的‘[’），无法顺利Parser
+	FinnhubWebData finnhubWebData202(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	// 格式不对
+	FinnhubWebData finnhubWebData203(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	// 正确的数据
+	FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+
+	class ProcessFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
+	{
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_vExchange.resize(0);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		vector<CString> m_vExchange;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
+		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+
+	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
+		bool fSucceed = false;
+		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoExchange(m_pWebData, m_vExchange);
+		switch (m_lIndex) {
+		case 2: // 格式不对
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 3: // 缺乏字符串
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(m_vExchange.at(0), _T("oanda"));
+			EXPECT_STREQ(m_vExchange.at(1), _T("fxcm"));
+			EXPECT_EQ(m_vExchange.size(), 9);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 格式不对(缺开始的‘[’），无法顺利Parser
+	FinnhubWebData finnhubWebData212(2, _T(""), _T("[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	// 数据缺乏description
+	FinnhubWebData finnhubWebData213(3, _T(""), _T("[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	// 数据缺乏displaySymbol
+	FinnhubWebData finnhubWebData214(4, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	// 数据缺乏symbol
+	FinnhubWebData finnhubWebData215(5, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	// 正确的数据
+	FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+
+	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
+	{
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_vCryptoSymbol.resize(0);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		vector<CCryptoSymbolPtr> m_vCryptoSymbol;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol1, ProcessFinnhubCryptoSymbolTest,
+		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+			&finnhubWebData85, &finnhubWebData90));
+
+	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol0) {
+		bool fSucceed = false;
+		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoSymbol(m_pWebData, m_vCryptoSymbol);
+		switch (m_lIndex) {
+		case 2: // 格式不对
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 3: // 缺乏字符串
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 4: // 缺乏字符串
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 5: // 缺乏字符串
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(m_vCryptoSymbol.at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
+			EXPECT_STREQ(m_vCryptoSymbol.at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_vCryptoSymbol.size(), 2);
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 格式不对(缺开始的‘{’），无法顺利Parser
+	FinnhubWebData finnhubWebData221(1, _T("OANDA:EUR_ZAR"), _T("\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 没有s项
+	FinnhubWebData finnhubWebData222_1(11, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// s项报告非ok
+	FinnhubWebData finnhubWebData222(2, _T("OANDA:EUR_ZAR"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// s项报告no data
+	FinnhubWebData finnhubWebData223(3, _T("OANDA:EUR_ZAR"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 数据缺乏t项
+	FinnhubWebData finnhubWebData224(4, _T("OANDA:EUR_ZAR"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 缺乏c项。不影响结果
+	FinnhubWebData finnhubWebData225(5, _T("OANDA:EUR_ZAR"), _T("{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 缺乏h项
+	FinnhubWebData finnhubWebData226(6, _T("OANDA:EUR_ZAR"), _T("{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 缺乏l项
+	FinnhubWebData finnhubWebData227(7, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 缺乏o项
+	FinnhubWebData finnhubWebData228(8, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	// 缺乏v项
+	FinnhubWebData finnhubWebData229(9, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}"));
+	// 正确的数据
+	FinnhubWebData finnhubWebData230(10, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+
+	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*>
+	{
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pData->m_strSymbol));
+			m_pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(pData->m_strSymbol);
+			EXPECT_TRUE(m_pCryptoSymbol != nullptr);
+			m_pCryptoSymbol->SetUpdateProfileDB(false);
+			m_pWebData = pData->m_pData;
+
+			m_pCryptoSymbol->SetDayLineNeedUpdate(true);
+			m_pCryptoSymbol->SetDayLineNeedSaving(false);
+			m_pCryptoSymbol->SetUpdateProfileDB(false);
+		}
+
+		virtual void TearDown(void) override {
+			// clearup
+			GeneralCheck();
+
+			//m_pCryptoSymbol->SetDayLineNeedUpdate(true);
+			// m_pCryptoSymbol->SetDayLineNeedSaving(false);
+			m_pCryptoSymbol->SetUpdateProfileDB(false);
+		}
+
+	public:
+		long m_lIndex;
+		CCryptoSymbolPtr m_pCryptoSymbol;
+		CWebDataPtr m_pWebData;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle1,
+		ProcessFinnhubCryptoCandleTest,
+		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+
+	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle0) {
+		bool fSucceed = false;
+		CString strMessage;
+
+		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoCandle(m_pWebData, m_pCryptoSymbol);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsUpdateProfileDB());
+			strMessage = _T("下载");
+			strMessage += m_pCryptoSymbol->GetSymbol();
+			strMessage += _T("日线故障\n");
+			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			break;
+		case 2: // s项报告not ok
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsUpdateProfileDB());
+			strMessage = _T("下载");
+			strMessage += m_pCryptoSymbol->GetSymbol();
+			strMessage += _T("日线返回值不为ok\n");
+			EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			break;
+		case 3: // s项报告 no data
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 4:
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 5:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 6:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 7:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 8:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 9:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			break;
+		case 11: // 没有s项
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_TRUE(m_pCryptoSymbol->IsNullStock());
+			break;
+		default:
+			break;
+		}
+	}
 }

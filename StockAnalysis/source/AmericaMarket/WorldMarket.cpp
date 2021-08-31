@@ -227,8 +227,10 @@ void CWorldMarket::ResetMarket(void) {
 	LoadWorldChoicedStock();
 	LoadForexExchange();
 	LoadForexSymbol();
+	LoadWorldChoicedForex();
 	LoadCryptoExchange();
 	LoadCryptoSymbol();
+	LoadWorldChoicedCrypto();
 	LoadEconomicCalendarDB();
 	LoadTiingoStock();
 
@@ -2719,23 +2721,17 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	ASSERT(m_FinnhubWebSocket.GetState() == ix::ReadyState::Open);
 
 	for (auto pStock : m_vWorldChoicedStock) {
-		symbol = pStock->GetSymbol();
-		strSymbol = symbol.GetBuffer();
-		strMessage = preffix + strSymbol + suffix;
+		strMessage = CreateFinnhubWebSocketString(pStock->GetSymbol());
 		m_FinnhubWebSocket.Send(strMessage);
 	}
 
 	for (auto pCrypto : m_vWorldChoicedCrypto) {
-		symbol = pCrypto->GetSymbol();
-		strSymbol = symbol.GetBuffer();
-		strMessage = preffix + strSymbol + suffix;
+		strMessage = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
 		m_FinnhubWebSocket.Send(strMessage);
 	}
 
 	for (auto pForex : m_vWorldChoicedForex) {
-		symbol = pForex->GetSymbol();
-		strSymbol = symbol.GetBuffer();
-		strMessage = preffix + strSymbol + suffix;
+		strMessage = CreateFinnhubWebSocketString(pForex->GetSymbol());
 		m_FinnhubWebSocket.Send(strMessage);
 	}
 
@@ -2809,12 +2805,17 @@ bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
-	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"aapl\",\"rig\",\"tnk\",\"tk\", \"msft\"]}}");
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：最简略数据格式。0：最详细数据格式。
+	CString str;
+	CString strSymbols;
+	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
+	CString strSuffix = _T("]}}");
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
-	str += strAuth + strSuffix;
+
+	strSymbols = CreateTiingoIEXWebSocketSymbolString(); // 去除最后多余的字符','
+
+	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
@@ -2828,6 +2829,19 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 	return true;
 }
 
+CString CWorldMarket::CreateTiingoIEXWebSocketSymbolString(void) {
+	CString strSymbols;
+	CString strSymbol;
+
+	for (auto pStock : m_vWorldChoicedStock) {
+		strSymbol = _T("\"") + pStock->GetSymbol() + _T("\"") + _T(",");
+		strSymbols += strSymbol;
+	}
+	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
+
+	return strSymbols;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
@@ -2838,12 +2852,15 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
-	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"BITFINEX:AVAX:USD\",\"neojpy\",\"jstusdt\",\"egldbtc\"]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	CString str;
+	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	CString strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
-	str += strAuth + strSuffix;
+	CString strSymbols = CreateTiingoCryptoWebSocketSymbolString();
+
+	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
@@ -2857,6 +2874,19 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 	return true;
 }
 
+CString CWorldMarket::CreateTiingoCryptoWebSocketSymbolString(void) {
+	CString strSymbols;
+	CString strSymbol;
+
+	for (auto pCrypto : m_vWorldChoicedCrypto) {
+		strSymbol = _T("\"") + pCrypto->GetSymbol() + _T("\"") + _T(",");
+		strSymbols += strSymbol;
+	}
+	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
+
+	return strSymbols;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 5状态下每秒接收100K左右。
@@ -2867,12 +2897,15 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	static bool sm_fSendAuth = true;
-	CString str = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"OANDA:AUD_SGD\",\"FXCM:USDOLLAR\",\"FOREX:401484395\"]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	//CString strSuffix = _T("\",\"eventData\":{\"thresholdLevel\":5}}"); // 5: ALL Top-of-Book updates; 7：A top-of-book update that is due to a change in either the bid/ask price or size.
+	CString str;
+	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	CString strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
-	str += strAuth + strSuffix;
+	CString strSymbols = CreateTiingoForexWebSocketSymbolString();
+
+	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	string messageAuth(str);
 	ix::WebSocketSendInfo info;
@@ -2884,6 +2917,19 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 	}
 
 	return true;
+}
+
+CString CWorldMarket::CreateTiingoForexWebSocketSymbolString(void) {
+	CString strSymbols;
+	CString strSymbol;
+
+	for (auto pForex : m_vWorldChoicedForex) {
+		strSymbol = _T("\"") + pForex->GetSymbol() + _T("\"") + _T(",");
+		strSymbols += strSymbol;
+	}
+	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
+
+	return strSymbols;
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {

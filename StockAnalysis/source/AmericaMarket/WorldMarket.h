@@ -401,8 +401,11 @@ public:
 	bool ConnectTiingoForexWebSocket(void);
 
 	bool SendTiingoIEXWebSocketMessage(void);
+	CString CreateTiingoIEXWebSocketSymbolString(void);
 	bool SendTiingoCryptoWebSocketMessage(void);
+	CString CreateTiingoCryptoWebSocketSymbolString(void);
 	bool SendTiingoForexWebSocketMessage(void);
+	CString CreateTiingoForexWebSocketSymbolString(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

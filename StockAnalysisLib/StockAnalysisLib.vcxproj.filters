@@ -432,6 +432,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldChoicedForex.h">
       <Filter>头文件\World Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -862,6 +865,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp">
+      <Filter>源文件\Base Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
