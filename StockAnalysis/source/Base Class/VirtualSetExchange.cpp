@@ -22,7 +22,7 @@ CString CVirtualSetExchange::GetDefaultConnect() {
 }
 
 CString CVirtualSetExchange::GetDefaultSQL() {
-	return sm_TableName;
+	return _T("[") + sm_TableName + _T("]");
 }
 
 void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
