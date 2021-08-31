@@ -384,6 +384,18 @@ CString GetWorldMarketSchemaConnect() {
 	}
 }
 
+CString GetSchemaConnect(CString strSchema)
+{
+	if (!gl_fNormalMode) {
+		gl_fTestMode = true;
+		return _T("DSN=") + strSchema + _T("Test;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作时DSN名称后要加上后缀Test
+	}
+	else {
+		gl_fTestMode = false;
+		return _T("DSN=") + strSchema + _T(";UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // 运行时的DSN使用原schema名称
+	}
+}
+
 CString ConvertValueToString(long lValue, int iDividend) {
 	char buffer[50]{ 0 };
 	const double d = (static_cast<double>(lValue)) / iDividend;

@@ -8,9 +8,8 @@
 class CSetFinnhubForexExchange : public CVirtualSetExchange
 {
 public:
-	CSetFinnhubForexExchange(CString strTableName = _T("finnhub_forex_exchange"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetExchange(pDatabase) {
-		sm_TableName = strTableName;
+	CSetFinnhubForexExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_forex_exchange"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
 	}
 	DECLARE_DYNAMIC(CSetFinnhubForexExchange)
 };

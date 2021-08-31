@@ -10,9 +10,8 @@
 class CSetFinnhubCryptoExchange : public CVirtualSetExchange
 {
 public:
-	CSetFinnhubCryptoExchange(CString strTableName = _T("finnhub_crypto_exchange"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetExchange(pDatabase) {
-		sm_TableName = strTableName;
+	CSetFinnhubCryptoExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_crypto_exchange"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
 	}
 	DECLARE_DYNAMIC(CSetFinnhubCryptoExchange)
 };

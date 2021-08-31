@@ -6,9 +6,8 @@
 class CSetWorldChoicedCrypto : public CVirtualSetChoicedStake
 {
 public:
-	CSetWorldChoicedCrypto(CString strTableName = _T("choiced_crypto"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetChoicedStake(m_pDatabase) {
-		sm_TableName = strTableName;
+	CSetWorldChoicedCrypto(CString strSchema = _T("WorldMarket"), CString strTable = _T("choiced_crypto"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetChoicedStake(strSchema, strTable, pDatabase) {
 	}
 	DECLARE_DYNAMIC(CSetWorldChoicedCrypto)
 };

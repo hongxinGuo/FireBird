@@ -8,22 +8,13 @@
 
 #include "VirtualSetChoicedStake.h"
 
-CString CVirtualSetChoicedStake::sm_TableName = _T("");
+IMPLEMENT_DYNAMIC(CVirtualSetChoicedStake, CVirtualRecordset)
 
-IMPLEMENT_DYNAMIC(CVirtualSetChoicedStake, CRecordset)
-
-CVirtualSetChoicedStake::CVirtualSetChoicedStake(CDatabase* pdb) : CRecordset(pdb) {
+CVirtualSetChoicedStake::CVirtualSetChoicedStake(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Symbol = _T("");
 	m_nFields = 2;
-}
-
-CString CVirtualSetChoicedStake::GetDefaultConnect() {
-	return GetWorldMarketSchemaConnect();
-}
-
-CString CVirtualSetChoicedStake::GetDefaultSQL() {
-	return _T("[") + sm_TableName + _T("]");
 }
 
 void CVirtualSetChoicedStake::DoFieldExchange(CFieldExchange* pFX) {
@@ -39,10 +30,10 @@ void CVirtualSetChoicedStake::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void CVirtualSetChoicedStake::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CVirtualSetChoicedStake::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -6,12 +6,10 @@
 
 #include "VirtualSetExchange.h"
 
-CString CVirtualSetExchange::sm_TableName = _T("");
+IMPLEMENT_DYNAMIC(CVirtualSetExchange, CVirtualRecordset)
 
-IMPLEMENT_DYNAMIC(CVirtualSetExchange, CRecordset)
-
-CVirtualSetExchange::CVirtualSetExchange(CDatabase* pdb)
-	: CRecordset(pdb) {
+CVirtualSetExchange::CVirtualSetExchange(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Code = _T("");
 	m_Name = _T("");
 	m_Mic = _T("");
@@ -21,14 +19,6 @@ CVirtualSetExchange::CVirtualSetExchange(CDatabase* pdb)
 	m_Country = _T("");
 	m_Source = _T("");
 	m_nFields = 9;
-}
-
-CString CVirtualSetExchange::GetDefaultConnect() {
-	return GetWorldMarketSchemaConnect();
-}
-
-CString CVirtualSetExchange::GetDefaultSQL() {
-	return _T("[") + sm_TableName + _T("]");
 }
 
 void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
@@ -51,10 +41,10 @@ void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void CVirtualSetExchange::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CVirtualSetExchange::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

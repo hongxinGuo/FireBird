@@ -47,6 +47,7 @@ CString XferStandredToTengxun(CString strStandred);
 
 CString GetChinaMarketSchemaConnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
 CString GetWorldMarketSchemaConnect();// 用于美国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用world_market_test驱动，正常模式时使用world_market驱动
+CString GetSchemaConnect(CString strSchema);// 用于数据集的GetDefaultConnect()，以保持一致性。参数strSchema为该市场的名称
 
 CString ConvertValueToString(long lValue, int iDividend = 1);
 CString ConvertValueToString(INT64 iValue, int iDividend = 1);

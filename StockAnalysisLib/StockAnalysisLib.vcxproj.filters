@@ -438,6 +438,9 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -854,11 +857,14 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp">
       <Filter>源文件\Base Class</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetImplementationDeclare.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.cpp">
       <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetImplementationDeclare.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

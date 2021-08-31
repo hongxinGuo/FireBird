@@ -6,9 +6,8 @@
 class CSetWorldChoicedStock : public CVirtualSetChoicedStake
 {
 public:
-	CSetWorldChoicedStock(CString strTableName = _T("choiced_stock"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetChoicedStake(m_pDatabase) {
-		sm_TableName = strTableName;
+	CSetWorldChoicedStock(CString strSchema = _T("WorldMarket"), CString strTable = _T("choiced_stock"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetChoicedStake(strSchema, strTable, pDatabase) {
 	}
 	DECLARE_DYNAMIC(CSetWorldChoicedStock)
 };

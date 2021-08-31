@@ -5,13 +5,14 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include"afxdb.h"
+#include"VirtualRecordset.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CVirtualSetExchange : public CRecordset
+class CVirtualSetExchange : public CVirtualRecordset
 {
 public:
-	CVirtualSetExchange(CDatabase* pDatabase = nullptr);
+	CVirtualSetExchange(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
 	DECLARE_DYNAMIC(CVirtualSetExchange)
 
 	// 字段/参数数据
@@ -24,8 +25,6 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	static CString sm_TableName; // 数据库中默认的表名称
-
 	long m_ID;
 	CString m_Code;
 	CString m_Name;
@@ -37,9 +36,6 @@ public:
 	CString m_Source;
 
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-
-	virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现

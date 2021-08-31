@@ -1,10 +1,10 @@
 #pragma once
-#include"afxdb.h"
+#include"VirtualRecordset.h"
 
-class CVirtualSetChoicedStake : public CRecordset
+class CVirtualSetChoicedStake : public CVirtualRecordset
 {
 public:
-	CVirtualSetChoicedStake(CDatabase* pDatabase = nullptr);
+	CVirtualSetChoicedStake(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
 	DECLARE_DYNAMIC(CVirtualSetChoicedStake)
 
 	// 字段/参数数据
@@ -16,7 +16,6 @@ public:
 	// CString 类型，ODBC 驱动程序将执行所有必要的转换。
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
-	static CString sm_TableName;
 
 	long m_ID;
 	CString	m_Symbol;
@@ -24,9 +23,6 @@ public:
 	// 重写
 		// 向导生成的虚函数重写
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-
-	virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现

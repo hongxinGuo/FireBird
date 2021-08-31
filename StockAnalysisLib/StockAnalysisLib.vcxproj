@@ -73,6 +73,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
@@ -143,7 +144,6 @@
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetEconimicCalendar.cpp" />
@@ -198,6 +198,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
@@ -265,6 +266,7 @@
     <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
