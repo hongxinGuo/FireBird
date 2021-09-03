@@ -6,8 +6,8 @@
 #include"ChinaStock.h"
 
 #include"SetOption.h"
-#include"SetWeekLineInfo.h"
-#include"SetChoicedStock.h"
+#include"SetCurrentWeekLineInfo.h"
+#include"SetChinaChoicedStock.h"
 
 #include"WebInquirer.h"
 
@@ -1946,17 +1946,17 @@ namespace StockAnalysisTest {
 		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
 		gl_pChinaMarket->DeleteChoicedStock(pStock);
 
-		CSetChoicedStock setChoicedStock;
-		setChoicedStock.Open();
-		setChoicedStock.m_pDatabase->BeginTrans();
-		setChoicedStock.MoveLast();
-		EXPECT_STREQ(setChoicedStock.m_Symbol, _T("600000.SS"));
-		setChoicedStock.Delete();
-		setChoicedStock.MovePrev();
-		EXPECT_STREQ(setChoicedStock.m_Symbol, _T("000002.SZ"));
-		setChoicedStock.Delete();
-		setChoicedStock.m_pDatabase->CommitTrans();
-		setChoicedStock.Close();
+		CSetChinaChoicedStock setChinaChoicedStock;
+		setChinaChoicedStock.Open();
+		setChinaChoicedStock.m_pDatabase->BeginTrans();
+		setChinaChoicedStock.MoveLast();
+		EXPECT_STREQ(setChinaChoicedStock.m_Symbol, _T("000002.SZ"));
+		setChinaChoicedStock.Delete();
+		setChinaChoicedStock.MovePrev();
+		EXPECT_STREQ(setChinaChoicedStock.m_Symbol, _T("600000.SS"));
+		setChinaChoicedStock.Delete();
+		setChinaChoicedStock.m_pDatabase->CommitTrans();
+		setChinaChoicedStock.Close();
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadTodayTempDB) {

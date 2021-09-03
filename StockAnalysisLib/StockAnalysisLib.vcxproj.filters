@@ -297,7 +297,7 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
       <Filter>头文件\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaChoicedStock.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h">
@@ -336,7 +336,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCurrentWeekLineInfo.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h">
@@ -441,6 +441,9 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -539,12 +542,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
@@ -573,12 +570,6 @@
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp">
@@ -749,9 +740,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubForexSymbol.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetForexDayLine.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetInsiderTransaction.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
@@ -771,9 +759,6 @@
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStock.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetWorldStockDayLine.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp">
@@ -836,9 +821,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetFinnhubCryptoSymbol.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\DataBase\SetCryptoDayLine.cpp">
-      <Filter>源文件\World Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoExchangeDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
@@ -865,6 +847,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SetImplementationDeclare.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCurrentWeekLineInfo.cpp">
+      <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

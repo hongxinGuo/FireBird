@@ -87,8 +87,9 @@ bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBa
 
 	ASSERT(GetFormatedMarketDate() >= 19700101);
 	psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
+	psetDayLineBasicInfo->m_Exchange = GetExchange();
 	psetDayLineBasicInfo->m_Symbol = GetStockSymbol();
-	psetDayLineBasicInfo->m_StockName = GetStockName();
+	psetDayLineBasicInfo->m_SymbolName = GetStockName();
 	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
 	psetDayLineBasicInfo->m_High = ConvertValueToString(GetHigh(), 1000);
 	psetDayLineBasicInfo->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -120,8 +121,9 @@ bool CDayLine::AppendChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLine
 bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 	m_lDate = psetDayLineBasicInfo->m_Date;
+	m_strExchange = psetDayLineBasicInfo->m_Exchange;
 	m_strStockSymbol = psetDayLineBasicInfo->m_Symbol;
-	m_strStockName = psetDayLineBasicInfo->m_StockName;
+	m_strStockName = psetDayLineBasicInfo->m_SymbolName;
 	m_lLastClose = atof(psetDayLineBasicInfo->m_LastClose) * 1000;
 	m_lOpen = atof(psetDayLineBasicInfo->m_Open) * 1000;
 	m_lHigh = atof(psetDayLineBasicInfo->m_High) * 1000;
@@ -145,9 +147,9 @@ bool CDayLine::SaveWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldSto
 	ASSERT(psetWorldStockDayLine->IsOpen());
 
 	psetWorldStockDayLine->m_Date = GetFormatedMarketDate();
-	psetWorldStockDayLine->m_Market = GetExchange();
+	psetWorldStockDayLine->m_Exchange = GetExchange();
 	psetWorldStockDayLine->m_Symbol = GetStockSymbol();
-	psetWorldStockDayLine->m_Ticker = GetStockName();
+	psetWorldStockDayLine->m_SymbolName = GetStockName();
 	psetWorldStockDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
 	psetWorldStockDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
 	psetWorldStockDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -179,9 +181,9 @@ bool CDayLine::AppendWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldS
 bool CDayLine::LoadWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldStockDayLine) {
 	ASSERT(psetWorldStockDayLine->IsOpen());
 	m_lDate = psetWorldStockDayLine->m_Date;
-	m_strExchange = psetWorldStockDayLine->m_Market;
+	m_strExchange = psetWorldStockDayLine->m_Exchange;
 	m_strStockSymbol = psetWorldStockDayLine->m_Symbol;
-	m_strStockName = psetWorldStockDayLine->m_Ticker;
+	m_strStockName = psetWorldStockDayLine->m_SymbolName;
 	m_lLastClose = atof(psetWorldStockDayLine->m_LastClose) * 1000;
 	m_lOpen = atof(psetWorldStockDayLine->m_Open) * 1000;
 	m_lHigh = atof(psetWorldStockDayLine->m_High) * 1000;

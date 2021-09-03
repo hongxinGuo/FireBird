@@ -278,8 +278,9 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 	psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
+	psetDayLineBasicInfo->m_Exchange = GetExchangeCode();
 	psetDayLineBasicInfo->m_Symbol = m_strSymbol;
-	psetDayLineBasicInfo->m_StockName = m_strStockName;
+	psetDayLineBasicInfo->m_SymbolName = m_strStockName;
 	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
 	psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
 	psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);

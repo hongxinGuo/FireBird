@@ -167,7 +167,7 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	}
 	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
 	for (auto& pDayLine2 : vDayLine) {
-		pDayLine2->SetExchange(pStock->GetListedExchange());
+		pDayLine2->SetExchange(pStock->GetExchangeCode());
 		pDayLine2->SetStockSymbol(pStock->GetSymbol());
 		pDayLine2->SetStockName(pStock->GetTicker());
 	}

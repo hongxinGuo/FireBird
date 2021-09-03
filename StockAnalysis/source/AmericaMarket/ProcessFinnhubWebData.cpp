@@ -248,7 +248,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pt3 = it->second;
 			tTemp = pt3.get_value<time_t>();
 			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetExchange(pStock->GetListedExchange());
+			pDayLine->SetExchange(pStock->GetExchangeCode());
 			pDayLine->SetStockSymbol(pStock->GetSymbol());
 			pDayLine->SetStockName(pStock->GetTicker());
 			pDayLine->SetTime(tTemp);

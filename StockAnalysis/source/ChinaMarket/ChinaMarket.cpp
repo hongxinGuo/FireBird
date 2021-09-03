@@ -14,14 +14,14 @@
 #include"SetOption.h"
 #include"SetChinaMarketOption.h"
 #include"SetCrweberIndex.h"
-#include"SetChoicedStock.h"
+#include"SetChinaChoicedStock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
 #include"SetStockSection.h"
 
-#include"SetWeekLineInfo.h"
+#include"SetCurrentWeekLineInfo.h"
 
 #include"CallableFunction.h"
 
@@ -3353,58 +3353,58 @@ bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
 }
 
 bool CChinaMarket::UpdateChoicedStockDB(void) {
-	CSetChoicedStock setChoicedStock;
+	CSetChinaChoicedStock setChinaChoicedStock;
 
-	setChoicedStock.Open();
-	setChoicedStock.m_pDatabase->BeginTrans();
-	while (!setChoicedStock.IsEOF()) {
-		setChoicedStock.Delete();
-		setChoicedStock.MoveNext();
+	setChinaChoicedStock.Open();
+	setChinaChoicedStock.m_pDatabase->BeginTrans();
+	while (!setChinaChoicedStock.IsEOF()) {
+		setChinaChoicedStock.Delete();
+		setChinaChoicedStock.MoveNext();
 	}
-	setChoicedStock.m_pDatabase->CommitTrans();
-	setChoicedStock.m_pDatabase->BeginTrans();
+	setChinaChoicedStock.m_pDatabase->CommitTrans();
+	setChinaChoicedStock.m_pDatabase->BeginTrans();
 	for (auto& pStock : m_avChoicedStock.at(0)) {
 		ASSERT(pStock->IsChoiced());
-		setChoicedStock.AddNew();
-		setChoicedStock.m_Symbol = pStock->GetSymbol();
-		setChoicedStock.Update();
+		setChinaChoicedStock.AddNew();
+		setChinaChoicedStock.m_Symbol = pStock->GetSymbol();
+		setChinaChoicedStock.Update();
 		pStock->SetSaveToChoicedStockDB(true);
 	}
-	setChoicedStock.m_pDatabase->CommitTrans();
-	setChoicedStock.Close();
+	setChinaChoicedStock.m_pDatabase->CommitTrans();
+	setChinaChoicedStock.Close();
 
 	return true;
 }
 
 bool CChinaMarket::AppendChoicedStockDB(void) {
-	CSetChoicedStock setChoicedStock;
+	CSetChinaChoicedStock setChinaChoicedStock;
 
-	setChoicedStock.Open();
-	setChoicedStock.m_pDatabase->BeginTrans();
+	setChinaChoicedStock.Open();
+	setChinaChoicedStock.m_pDatabase->BeginTrans();
 	for (auto& pStock : m_avChoicedStock.at(0)) {
 		ASSERT(pStock->IsChoiced());
 		if (!pStock->IsSaveToChoicedStockDB()) {
-			setChoicedStock.AddNew();
-			setChoicedStock.m_Symbol = pStock->GetSymbol();
-			setChoicedStock.Update();
+			setChinaChoicedStock.AddNew();
+			setChinaChoicedStock.m_Symbol = pStock->GetSymbol();
+			setChinaChoicedStock.Update();
 			pStock->SetSaveToChoicedStockDB(true);
 		}
 	}
-	setChoicedStock.m_pDatabase->CommitTrans();
-	setChoicedStock.Close();
+	setChinaChoicedStock.m_pDatabase->CommitTrans();
+	setChinaChoicedStock.Close();
 
 	return true;
 }
 
 void CChinaMarket::LoadChoicedStockDB(void) {
-	CSetChoicedStock setChoicedStock;
+	CSetChinaChoicedStock setChinaChoicedStock;
 
-	setChoicedStock.Open();
+	setChinaChoicedStock.Open();
 	// 装入股票代码数据库
-	while (!setChoicedStock.IsEOF()) {
+	while (!setChinaChoicedStock.IsEOF()) {
 		CChinaStockPtr pStock = nullptr;
-		if (IsStock(setChoicedStock.m_Symbol)) {
-			pStock = GetStock(setChoicedStock.m_Symbol);
+		if (IsStock(setChinaChoicedStock.m_Symbol)) {
+			pStock = GetStock(setChinaChoicedStock.m_Symbol);
 			auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
 			if (it == m_avChoicedStock.at(0).end()) {
 				m_avChoicedStock.at(0).push_back(pStock);
@@ -3412,9 +3412,9 @@ void CChinaMarket::LoadChoicedStockDB(void) {
 			pStock->SetChoiced(true);
 			pStock->SetSaveToChoicedStockDB(true);
 		}
-		setChoicedStock.MoveNext();
+		setChinaChoicedStock.MoveNext();
 	}
-	setChoicedStock.Close();
+	setChinaChoicedStock.Close();
 }
 
 bool CChinaMarket::UpdateTempRTData(void) {

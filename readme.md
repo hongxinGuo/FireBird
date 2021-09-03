@@ -2,9 +2,12 @@
 
 ### 声明
 Version 0.20:添加接收Finnhub和Tiingo的WebSocket数据的功能。
+
 Version 0.18:收集全球70个交易所的基本情况。
-Version 0.15.0已可用。增加美国股市股票信息。
-Version 0.14.0已可用。增加周线。
+
+Version 0.15.0:增加美国股市股票信息.
+
+Version 0.14.0:增加周线。
 
 ### 欢迎使用FireBird StockAnalysis
 FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库中。
@@ -30,9 +33,10 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 3.将bin目录中的StockAnalysis.exe放入工作目录中。
 
 ### 致谢
-1.ixWebSocket库（https://github.com/machinezone/IXWebSocket）。
+1.GoogleTest(https://github.com/google/googletest).
 2. OpenSSL库（https://www.openssl.org/）。
-3. Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1).
+3.ixWebSocket库（https://github.com/machinezone/IXWebSocket）。
+4. Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1).
 
 
 

@@ -9,10 +9,12 @@
 IMPLEMENT_DYNAMIC(CVirtualRecordset, CRecordset)
 
 CString CVirtualRecordset::GetDefaultConnect() {
+	ASSERT(m_Schema.GetLength() > 0);
 	return GetSchemaConnect(m_Schema);
 }
 
 CString CVirtualRecordset::GetDefaultSQL() {
+	ASSERT(m_Table.GetLength() > 0);
 	return _T("[") + m_Table + _T("]");
 }
 
