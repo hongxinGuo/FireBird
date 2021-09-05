@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include"afxdb.h"
-
 #include"VirtualSetExchange.h"
 
 class CSetFinnhubStockExchange : public CVirtualSetExchange

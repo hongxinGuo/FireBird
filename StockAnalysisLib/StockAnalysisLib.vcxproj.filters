@@ -109,6 +109,9 @@
     <Filter Include="源文件\Base Class">
       <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\数据库">
+      <UniqueIdentifier>{0343c1eb-ac99-422c-8fbf-7943dc87d072}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -182,12 +185,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h">
       <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h">
       <Filter>头文件\Poten Daily Briefing Market</Filter>
@@ -444,6 +441,12 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h">
+      <Filter>头文件\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.h">
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -502,12 +505,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
@@ -845,14 +842,20 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
       <Filter>源文件\Base Class</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SetImplementationDeclare.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.cpp">
       <Filter>源文件\Base Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetCurrentWeekLineInfo.cpp">
       <Filter>源文件\China Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

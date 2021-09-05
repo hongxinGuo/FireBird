@@ -91,14 +91,14 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChinaChoicedStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineTemp.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetOption.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRealTimeData.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h" />
@@ -234,12 +234,13 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetChinaMarketOption.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineTemp.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetOption.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp" />
@@ -262,7 +263,6 @@
     <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
@@ -392,16 +392,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;C:\Users\hxguo\source\repos\StockAnalysis\vld</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Crweber Index;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\WorldMarket;C:\Users\hxguo\source\repos\StockAnalysis\vld</IncludePath>
     <LibraryPath>C:\Users\hxguo\source\repos\StockAnalysis\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Crweber Index;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\WorldMarket</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Crweber Index;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\WorldMarket</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
