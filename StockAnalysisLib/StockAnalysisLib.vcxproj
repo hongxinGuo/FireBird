@@ -238,6 +238,9 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderTransaction.cpp" />

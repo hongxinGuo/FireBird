@@ -848,6 +848,15 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp">
       <Filter>源文件\World Market\数据库</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconimicCalendar.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.cpp">
+      <Filter>源文件\World Market\数据库</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
