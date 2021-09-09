@@ -121,6 +121,9 @@
     <Filter Include="Test头文件">
       <UniqueIdentifier>{e95130e2-b771-4e91-b152-51fb6264d415}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Base">
+      <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -407,6 +410,9 @@
     </ClCompile>
     <ClCompile Include="GeneralCheck.cpp">
       <Filter>Test源文件\辅助检查函数</Filter>
+    </ClCompile>
+    <ClCompile Include="SetInitializeTest.cpp">
+      <Filter>Test源文件\Data Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

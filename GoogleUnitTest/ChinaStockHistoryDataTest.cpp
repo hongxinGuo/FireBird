@@ -31,6 +31,15 @@ namespace StockAnalysisTest {
 		}
 	};
 
+	TEST_F(CChinaStockHistoryDataTest, TestGetRatio) {
+		CChinaStockHistoryData dl;
+
+		dl.SetRatio();
+		EXPECT_EQ(dl.GetRatio(), 1000) << "默认比率为1000";
+		dl.SetRatio(10000);
+		EXPECT_EQ(dl.GetRatio(), 10000);
+	}
+
 	TEST_F(CChinaStockHistoryDataTest, TestGetDate) {
 		ASSERT_FALSE(gl_fNormalMode);
 		CChinaStockHistoryData dl;

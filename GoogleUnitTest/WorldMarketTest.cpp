@@ -577,6 +577,7 @@ namespace StockAnalysisTest {
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
 		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
+		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
 		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
 		EXPECT_EQ(pForexSymbol->GetIPOStatus(), __STOCK_IPOED__);
@@ -607,12 +608,14 @@ namespace StockAnalysisTest {
 		setWorldStock.Close();
 
 		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("SS.SS.US"));
+		EXPECT_TRUE(pForexSymbol != nullptr);
 		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoSymbolDB) {
 		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
+		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
 		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("OANDA:AUD_SGD")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
@@ -643,6 +646,7 @@ namespace StockAnalysisTest {
 		setWorldStock.Close();
 
 		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("SS.SS.US"));
+		EXPECT_TRUE(pCryptoSymbol != nullptr);
 		gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol); // 恢复原状
 	}
 

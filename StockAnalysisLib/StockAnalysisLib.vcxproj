@@ -53,9 +53,6 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
@@ -88,6 +85,9 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconomicCalendar.h" />
@@ -185,9 +185,6 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetChoicedStake.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetHistoryCandle.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
@@ -238,6 +235,9 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp" />

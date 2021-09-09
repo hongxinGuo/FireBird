@@ -118,6 +118,7 @@
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
     <ClCompile Include="QueueStringTest.cpp" />
+    <ClCompile Include="SetInitializeTest.cpp" />
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />
     <ClCompile Include="ThreadCalculateRSTest.cpp" />

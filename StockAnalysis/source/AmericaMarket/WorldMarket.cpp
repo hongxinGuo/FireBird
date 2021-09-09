@@ -822,7 +822,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 			switch (m_CurrentTiingoInquiry.m_lInquiryIndex) {
 			case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
 				break;
-			case __COMPANY_PROFILE_CONCISE__:
+			case __COMPANY_PROFILE_CONCISE__: // 免费账户使用此项
 				break;
 			case  __COMPANY_SYMBOLS__:
 				if (ProcessTiingoStockSymbol(pWebData, vTiingoStock)) {
@@ -2759,8 +2759,6 @@ string CWorldMarket::CreateFinnhubWebSocketString(CString strSymbol) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
-	// Connect to a server with encryption
-	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
 	std::string url("wss://api.tiingo.com/iex");
 
 	m_TiingoIEXWebSocket.Connecting(url, FunctionProcessTiingoIEXWebSocket);
@@ -2774,8 +2772,6 @@ bool CWorldMarket::ConnectTiingoIEXWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
-	// Connect to a server with encryption
-	// See https://machinezone.github.io/IXWebSocket/usage/#tls-support-and-configuration
 	std::string url("wss://api.tiingo.com/crypto");
 
 	m_TiingoCryptoWebSocket.Connecting(url, FunctionProcessTiingoCryptoWebSocket);
@@ -3061,6 +3057,7 @@ bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocke
 
 	return true;
 }
+
 bool CWorldMarket::UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData) {
 	CWorldStockPtr pStock = nullptr;
 
