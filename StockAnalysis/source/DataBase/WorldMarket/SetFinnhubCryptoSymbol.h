@@ -1,14 +1,12 @@
 // SetFinnhubCryptoSymbol.h : CSetFinnhubCryptoSymbol 的声明
 
 #pragma once
-#include"afxdb.h"
+#include"VirtualRecordset.h"
 
-// 代码生成在 2019年5月26日, 8:14
-
-class CSetFinnhubCryptoSymbol : public CRecordset
+class CSetFinnhubCryptoSymbol : public CVirtualRecordset
 {
 public:
-	CSetFinnhubCryptoSymbol(CDatabase* pDatabase = nullptr);
+	CSetFinnhubCryptoSymbol(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_crypto_symbol"), CDatabase* pDatabase = nullptr);
 	DECLARE_DYNAMIC(CSetFinnhubCryptoSymbol)
 
 	// 字段/参数数据
@@ -31,9 +29,6 @@ public:
 	long m_IPOStatus;
 
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-
-	virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现

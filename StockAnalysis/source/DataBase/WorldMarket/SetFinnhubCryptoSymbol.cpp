@@ -4,14 +4,13 @@
 
 #include"pch.h"
 #include"globedef.h"
-#include"accessory.h"
 
 #include "SetFinnhubCryptoSymbol.h"
 
-IMPLEMENT_DYNAMIC(CSetFinnhubCryptoSymbol, CRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubCryptoSymbol, CVirtualRecordset)
 
-CSetFinnhubCryptoSymbol::CSetFinnhubCryptoSymbol(CDatabase* pdb)
-	: CRecordset(pdb) {
+CSetFinnhubCryptoSymbol::CSetFinnhubCryptoSymbol(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Description = _T(" ");
 	m_DisplaySymbol = _T(" ");
 	m_Exchange = _T(" ");
@@ -21,14 +20,6 @@ CSetFinnhubCryptoSymbol::CSetFinnhubCryptoSymbol(CDatabase* pdb)
 	m_IPOStatus = __STOCK_NOT_CHECKED__;
 
 	m_nFields = 8;
-}
-
-CString CSetFinnhubCryptoSymbol::GetDefaultConnect() {
-	return GetWorldMarketSchemaConnect();
-}
-
-CString CSetFinnhubCryptoSymbol::GetDefaultSQL() {
-	return _T("[finnhub_crypto_symbol]");
 }
 
 void CSetFinnhubCryptoSymbol::DoFieldExchange(CFieldExchange* pFX) {
@@ -50,10 +41,10 @@ void CSetFinnhubCryptoSymbol::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void CSetFinnhubCryptoSymbol::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CSetFinnhubCryptoSymbol::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

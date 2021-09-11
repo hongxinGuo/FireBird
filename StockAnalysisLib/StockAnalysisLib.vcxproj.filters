@@ -333,9 +333,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebSocket.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
-      <Filter>头文件\Base Class</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
@@ -460,6 +457,9 @@
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h">
+      <Filter>头文件\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
@@ -776,9 +776,6 @@
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
-      <Filter>源文件\Base Class</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
@@ -870,6 +867,9 @@
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp">
+      <Filter>源文件\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

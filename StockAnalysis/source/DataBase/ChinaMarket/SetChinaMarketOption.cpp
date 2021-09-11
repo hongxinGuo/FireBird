@@ -1,28 +1,15 @@
 #include"pch.h"
-#include"accessory.h"
 
 #include "SetChinaMarketOption.h"
-#include"globedef.h"
 
-IMPLEMENT_DYNAMIC(SetChinaMarketOption, CRecordset)
+IMPLEMENT_DYNAMIC(SetChinaMarketOption, CVirtualRecordset)
 
-SetChinaMarketOption::SetChinaMarketOption(CDatabase* pdb)
-	: CRecordset(pdb) {
+SetChinaMarketOption::SetChinaMarketOption(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_RTDataServerIndex = 0; // 默认使用新浪实时数据服务器
 	m_RTDataInquiryTime = 400; // 默认查询时间为400毫秒
 	m_nFields = 2;
-}
-// 此连接字符串中可能包含明文密码和/或其他重要
-// 信息。请在查看完此连接字符串并找到所有与安全
-// 有关的问题后移除 #error。可能需要将此密码存
-// 储为其他格式或使用其他的用户身份验证。
-CString SetChinaMarketOption::GetDefaultConnect() {
-	return GetChinaMarketSchemaConnect();
-}
-
-CString SetChinaMarketOption::GetDefaultSQL() {
-	return _T("[option_china_stockmarket]");
 }
 
 void SetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
@@ -38,10 +25,10 @@ void SetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void SetChinaMarketOption::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void SetChinaMarketOption::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -7,9 +7,6 @@
     <Filter Include="Test源文件">
       <UniqueIdentifier>{2ab98a78-c6ad-4adb-af4d-5d58250ca9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\数据库">
-      <UniqueIdentifier>{4de35834-a737-4d99-87e9-8b8bceb44dc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\辅助类和函数">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>

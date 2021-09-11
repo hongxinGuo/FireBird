@@ -1,10 +1,11 @@
 #pragma once
-#include"afxdb.h"
 
-class SetChinaMarketOption : public CRecordset
+#include"VirtualRecordset.h"
+
+class SetChinaMarketOption : public CVirtualRecordset
 {
 public:
-	SetChinaMarketOption(CDatabase* pDatabase = nullptr);
+	SetChinaMarketOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("option_china_stockmarket"), CDatabase* pDatabase = nullptr);
 	DECLARE_DYNAMIC(SetChinaMarketOption)
 
 	// 字段/参数数据
@@ -23,9 +24,6 @@ public:
 	// 重写
 		// 向导生成的虚函数重写
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-
-	virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现

@@ -1,19 +1,13 @@
-// SetWeekLineInfo.h : CCurrentWeekLineInfo 类的实现
-
-// CCurrentWeekLineInfo 实现
-
-// 代码生成在 2019年6月2日, 5:10
+// SetCurrentWeekLineInfo.h : CCurrentWeekLineInfo 类的实现
 
 #include"pch.h"
-#include"afxdb.h"
-#include"globedef.h"
-#include"accessory.h"
 
 #include "SetCurrentWeekLineInfo.h"
-IMPLEMENT_DYNAMIC(CCurrentWeekLineInfo, CRecordset)
 
-CCurrentWeekLineInfo::CCurrentWeekLineInfo(CDatabase* pdb)
-	: CRecordset(pdb) {
+IMPLEMENT_DYNAMIC(CCurrentWeekLineInfo, CVirtualRecordset)
+
+CCurrentWeekLineInfo::CCurrentWeekLineInfo(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Date = 0;
 	m_Exchange = _T("");
@@ -106,14 +100,6 @@ CCurrentWeekLineInfo::CCurrentWeekLineInfo(CDatabase* pdb)
 	m_CanceledSellVolumeAbove200000 = _T("");
 
 	m_nFields = 82;
-}
-
-CString CCurrentWeekLineInfo::GetDefaultConnect() {
-	return GetChinaMarketSchemaConnect();
-}
-
-CString CCurrentWeekLineInfo::GetDefaultSQL() {
-	return _T("[CurrentWeekLine]");
 }
 
 void CCurrentWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
@@ -210,10 +196,10 @@ void CCurrentWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void CCurrentWeekLineInfo::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CCurrentWeekLineInfo::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

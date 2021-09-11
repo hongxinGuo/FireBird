@@ -4,56 +4,47 @@
 
 #include"pch.h"
 #include"globedef.h"
-#include"accessory.h"
 
 #include "SetFinnhubForexSymbol.h"
 
-IMPLEMENT_DYNAMIC(CSetFinnhubForexSymbol, CRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubForexSymbol, CVirtualRecordset)
 
-CSetFinnhubForexSymbol::CSetFinnhubForexSymbol(CDatabase* pdb)
-  : CRecordset(pdb) {
-  m_Description = _T(" ");
-  m_DisplaySymbol = _T(" ");
-  m_Exchange = _T(" ");
-  m_Symbol = _T(" ");
-  m_DayLineStartDate = 29900101;
-  m_DayLineEndDate = 19800101;
-  m_IPOStatus = __STOCK_NOT_CHECKED__;
+CSetFinnhubForexSymbol::CSetFinnhubForexSymbol(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_Description = _T(" ");
+	m_DisplaySymbol = _T(" ");
+	m_Exchange = _T(" ");
+	m_Symbol = _T(" ");
+	m_DayLineStartDate = 29900101;
+	m_DayLineEndDate = 19800101;
+	m_IPOStatus = __STOCK_NOT_CHECKED__;
 
-  m_nFields = 8;
-}
-
-CString CSetFinnhubForexSymbol::GetDefaultConnect() {
-  return GetWorldMarketSchemaConnect();
-}
-
-CString CSetFinnhubForexSymbol::GetDefaultSQL() {
-  return _T("[finnhub_forex_symbol]");
+	m_nFields = 8;
 }
 
 void CSetFinnhubForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
-  pFX->SetFieldType(CFieldExchange::outputColumn);
-  // RFX_Text() 和 RFX_Int() 这类宏依赖的是
-  // 成员变量的类型，而不是数据库字段的类型。
-  // ODBC 尝试自动将列值转换为所请求的类型
-  RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Text(pFX, _T("[Description]"), m_Description);
-  RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
-  RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
-  RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
-  RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
-  RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
-  RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
+	pFX->SetFieldType(CFieldExchange::outputColumn);
+	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
+	// 成员变量的类型，而不是数据库字段的类型。
+	// ODBC 尝试自动将列值转换为所请求的类型
+	RFX_Long(pFX, _T("[ID]"), m_ID);
+	RFX_Text(pFX, _T("[Description]"), m_Description);
+	RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
+	RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
+	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
+	RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
+	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
+	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetWorldStock 诊断
 
 #ifdef _DEBUG
 void CSetFinnhubForexSymbol::AssertValid() const {
-  CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CSetFinnhubForexSymbol::Dump(CDumpContext& dc) const {
-  CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

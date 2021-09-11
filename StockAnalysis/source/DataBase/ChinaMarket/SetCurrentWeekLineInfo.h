@@ -2,14 +2,12 @@
 
 #pragma once
 
-#include"afxdb.h"
+#include"VirtualRecordset.h"
 
-// 代码生成在 2019年6月2日, 5:10
-
-class CCurrentWeekLineInfo : public CRecordset
+class CCurrentWeekLineInfo : public CVirtualRecordset
 {
 public:
-	CCurrentWeekLineInfo(CDatabase* pDatabase = nullptr);
+	CCurrentWeekLineInfo(CString strSchema = _T("ChinaMarket"), CString strTable = _T("CurrentWeekLine"), CDatabase* pDatabase = nullptr);
 	DECLARE_DYNAMIC(CCurrentWeekLineInfo)
 
 	// 字段/参数数据
@@ -109,9 +107,6 @@ public:
 	// 重写
 		// 向导生成的虚函数重写
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-
-	virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现

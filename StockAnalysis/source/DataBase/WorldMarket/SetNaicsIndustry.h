@@ -2,43 +2,38 @@
 
 #pragma once
 
-#include"afxdb.h"
+#include"VirtualRecordset.h"
 
-// 代码生成在 2019年6月2日, 5:10
-
-class CSetNaicsIndustry : public CRecordset
+class CSetNaicsIndustry : public CVirtualRecordset
 {
 public:
-  CSetNaicsIndustry(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetNaicsIndustry)
+	CSetNaicsIndustry(CString strSchema = _T("WorldMarket"), CString strTable = _T("naics_industry"), CDatabase* pDatabase = nullptr);
+	DECLARE_DYNAMIC(CSetNaicsIndustry)
 
-  // 字段/参数数据
+	// 字段/参数数据
 
-  // 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode
-  // 数据类型的 CStringW)的实际数据类型。
-  //  这是为防止 ODBC 驱动程序执行可能
-  // 不必要的转换。如果希望，可以将这些成员更改为
-  // CString 类型，ODBC 驱动程序将执行所有必要的转换。
-  // (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
-  // 以同时支持 Unicode 和这些转换)。
+	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode
+	// 数据类型的 CStringW)的实际数据类型。
+	//  这是为防止 ODBC 驱动程序执行可能
+	// 不必要的转换。如果希望，可以将这些成员更改为
+	// CString 类型，ODBC 驱动程序将执行所有必要的转换。
+	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
+	// 以同时支持 Unicode 和这些转换)。
 
-  long m_ID;  // 索引用，自动生成。
-  CString m_Naics;
-  CString m_NationalIndustry;
-  CString m_Sector;
-  CString m_SubSector;
+	long m_ID;  // 索引用，自动生成。
+	CString m_Naics;
+	CString m_NationalIndustry;
+	CString m_Sector;
+	CString m_SubSector;
 
-  // 重写
-    // 向导生成的虚函数重写
+	// 重写
+		// 向导生成的虚函数重写
 public:
-  virtual CString GetDefaultConnect();	// 默认连接字符串
-
-  virtual CString GetDefaultSQL(); 	// 记录集的默认 SQL
-  virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
+	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现
 #ifdef _DEBUG
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
 #endif
 };

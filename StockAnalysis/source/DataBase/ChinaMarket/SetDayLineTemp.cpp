@@ -1,20 +1,13 @@
 // SetDayLineToday.h : CSetDayLineTemp 类的实现
 
-// CSetDayLineTemp 实现
-
-// 代码生成在 2019年6月2日, 5:10
-
 #include"pch.h"
-#include"afxdb.h"
-#include"globedef.h"
-#include"accessory.h"
 
 #include "SetDayLineTemp.h"
 
-IMPLEMENT_DYNAMIC(CSetDayLineTemp, CRecordset)
+IMPLEMENT_DYNAMIC(CSetDayLineTemp, CVirtualRecordset)
 
-CSetDayLineTemp::CSetDayLineTemp(CDatabase* pdb)
-	: CRecordset(pdb) {
+CSetDayLineTemp::CSetDayLineTemp(CString strSchema, CString strTable, CDatabase* pdb)
+	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Date = 0;
 	m_Symbol = _T("");
@@ -112,14 +105,6 @@ CSetDayLineTemp::CSetDayLineTemp(CDatabase* pdb)
 	m_nFields = 79;
 }
 
-CString CSetDayLineTemp::GetDefaultConnect() {
-	return GetChinaMarketSchemaConnect();
-}
-
-CString CSetDayLineTemp::GetDefaultSQL() {
-	return _T("[today]");
-}
-
 void CSetDayLineTemp::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
@@ -211,10 +196,10 @@ void CSetDayLineTemp::DoFieldExchange(CFieldExchange* pFX) {
 
 #ifdef _DEBUG
 void CSetDayLineTemp::AssertValid() const {
-	CRecordset::AssertValid();
+	CVirtualRecordset::AssertValid();
 }
 
 void CSetDayLineTemp::Dump(CDumpContext& dc) const {
-	CRecordset::Dump(dc);
+	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG
