@@ -181,13 +181,13 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
 	}
 
-	TEST_F(CFinnhubForexSymbolTest, TestAppend) {
+	TEST_F(CFinnhubForexSymbolTest, TestAppendSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
 		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
+		FinnhubForexSymbol.SetSymbol(_T("AAABC"));
 		FinnhubForexSymbol.SetExchangeCode(_T("US"));
 		FinnhubForexSymbol.SetDayLineStartDate(20000101);
 		FinnhubForexSymbol.SetDayLineEndDate(10000101);
@@ -199,17 +199,17 @@ namespace StockAnalysisTest {
 		ASSERT(!gl_fNormalMode);
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
-		FinnhubForexSymbol.Append(setFinnhubForexSymbol);
+		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);
 		setFinnhubForexSymbol.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol.Close();
 
-		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAABC'");
 		setFinnhubForexSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubForexSymbol2.Load(setFinnhubForexSymbol2);
+		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AAABC";
+		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
 		EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T("abc"));
 		EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T("cba"));
-		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAAAA"));
+		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAABC"));
 		EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T("US"));
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 20000101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 10000101);
@@ -226,13 +226,13 @@ namespace StockAnalysisTest {
 		setFinnhubForexSymbol2.Close();
 	}
 
-	TEST_F(CFinnhubForexSymbolTest, TestUpdate) {
+	TEST_F(CFinnhubForexSymbolTest, TestUpdateSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2, setFinnhubForexSymbol3;
 		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
-		FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
+		FinnhubForexSymbol.SetSymbol(_T("AAABB"));
 		FinnhubForexSymbol.SetExchangeCode(_T("US"));
 		FinnhubForexSymbol.SetDayLineStartDate(20000101);
 		FinnhubForexSymbol.SetDayLineEndDate(10000101);
@@ -244,14 +244,14 @@ namespace StockAnalysisTest {
 		ASSERT(!gl_fNormalMode);
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
-		FinnhubForexSymbol.Append(setFinnhubForexSymbol);
+		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);
 		setFinnhubForexSymbol.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol.Close();
 
 		// 改成新值
 		FinnhubForexSymbol.SetDescription(_T("abc changed"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("changed"));
-		FinnhubForexSymbol.SetSymbol(_T("AAAAA"));
+		FinnhubForexSymbol.SetSymbol(_T("AAABB"));
 		FinnhubForexSymbol.SetExchangeCode(_T("US changed"));
 		FinnhubForexSymbol.SetDayLineStartDate(101);
 		FinnhubForexSymbol.SetDayLineEndDate(101);
@@ -260,20 +260,20 @@ namespace StockAnalysisTest {
 		FinnhubForexSymbol.SetDayLineNeedSaving(FALSE);
 		FinnhubForexSymbol.SetUpdateProfileDB(FALSE);
 
-		setFinnhubForexSymbol3.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubForexSymbol3.m_strFilter = _T("[Symbol] = 'AAABB'");
 		setFinnhubForexSymbol3.Open();
 		setFinnhubForexSymbol3.m_pDatabase->BeginTrans();
-		FinnhubForexSymbol.Update(setFinnhubForexSymbol3);
+		FinnhubForexSymbol.UpdateSymbol(setFinnhubForexSymbol3);
 		setFinnhubForexSymbol3.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol3.Close();
 
-		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
+		setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAABB'");
 		setFinnhubForexSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubForexSymbol2.Load(setFinnhubForexSymbol2);
+		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
 		EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T("abc changed"));
 		EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T("changed"));
-		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAAAA"));
+		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T("AAABB"));
 		EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T("US changed"));
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 101);

@@ -71,7 +71,7 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[LPG_VLGC44SPOTTCERATE]"), m_LPG_VLGC44SpotTCERate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetPotenDailyBriefing ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetPotenDailyBriefing::AssertValid() const {

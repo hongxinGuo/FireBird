@@ -25,7 +25,7 @@ enum {
 #include"SetWeekLineExtendInfo.h"
 #include"SetDayLineTemp.h"
 #include"SetRealTimeData.h"
-#include"SetStockCode.h"
+#include"SetChinaStockSymbol.h"
 
 #include"WebRTData.h"
 
@@ -62,9 +62,6 @@ public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
 
 	// 本股票各变量状态
-	CString GetStockName(void) const { return m_strStockName; }
-	void SetStockName(CString str) { m_strStockName = str; }
-
 	long GetOffset(void) const noexcept { return m_lOffsetInContainer; }
 	void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
@@ -280,10 +277,7 @@ public:
 	void SaveTempInfo(CSetDayLineTemp& setDayLineTemp); // 存储当日计算出的数据
 	void UpdateDayLineStartEndDate(void);
 	void LoadTempInfo(const CSetDayLineTemp& setDayLineTemp);
-	void SaveStockCodeDB(CSetStockCode& setStockCode);
-	void AppendStockCodeDB(CSetStockCode& setStockCode);
-	void UpdateStockCodeDB(CSetStockCode& setStockCode);
-	bool LoadStockCodeDB(const CSetStockCode& setStockCode);
+	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	bool CheckDayLineStatus(void);
 	//周线历史数据存取
 	virtual bool LoadWeekLine();
@@ -419,8 +413,6 @@ public:
 public:
 
 protected:
-	CString m_strStockName; // 股票名称
-	CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
 	long m_lOffsetInContainer;	// 在容器中的偏移量
 	short	m_nHand;	// 每手股数
 

@@ -30,7 +30,7 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS]"), m_UpdatedDateFor10DaysRS);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetOption ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetOption::AssertValid() const {

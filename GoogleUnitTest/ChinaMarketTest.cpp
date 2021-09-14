@@ -1709,7 +1709,7 @@ namespace StockAnalysisTest {
 		pStock->SetIPOStatus(__STOCK_DELISTED__);
 		gl_pChinaMarket->UpdateStockCodeDB();
 
-		CSetStockCode setChinaStock;
+		CSetChinaStockSymbol setChinaStock;
 		setChinaStock.m_strFilter = _T("[Symbol] = '000001.SS'");
 		setChinaStock.Open();
 		EXPECT_EQ(setChinaStock.m_IPOStatus, __STOCK_DELISTED__);

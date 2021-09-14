@@ -46,7 +46,7 @@ void CSetRSOption::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[RSStrongFourth]"), m_RSStrongFourth);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetRSOption ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetRSOption::AssertValid() const {

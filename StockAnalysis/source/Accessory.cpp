@@ -2,17 +2,6 @@
 #include"globedef.h"
 #include "Accessory.h"
 
-long GetFormatedDate(void) {
-	time_t tLocal;
-	tm tmLocal;
-	long lLocalDate;
-	time(&tLocal);
-	gmtime_s(&tmLocal, &tLocal);
-	lLocalDate = (tmLocal.tm_year + 1900) * 10000 + (tmLocal.tm_mon + 1) * 100 + tmLocal.tm_mday;
-
-	return lLocalDate;
-}
-
 time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
 	time_t tt{ 0 };
 	tm tm_;
@@ -242,7 +231,7 @@ bool IsShenzhenExchange(CString strStockCode) {
 
 /// <summary>
 /// 从一个完整的股票代码中分离出符号部分（去除表示交易所的部分）
-/// 目前使用的上海深圳格式为sh600000、sz000001，今后要改为600000.SS, 000001.SZ
+/// 目前使用的上海深圳格式为600000.SS, 000001.SZ
 /// </summary>
 /// <param name="strStockCode"></param>
 /// <returns></returns>
@@ -346,42 +335,6 @@ CString XferStandredToNetease(CString strStandred) {
 
 CString XferStandredToTengxun(CString strStandred) {
 	return XferStandredToSina(strStandred);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//
-// 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
-//
-// 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
-//
-/////////////////////////////////////////////////////////////////////////////////
-CString GetChinaMarketSchemaConnect() {
-	if (!gl_fNormalMode) {
-		gl_fTestMode = true;
-		return _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // ChinaMarketTest操作的是TestData Schema
-	}
-	else {
-		gl_fTestMode = false;
-		return _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // ChinaMarket操作的是Chinamarket Schema
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//
-// 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
-//
-// 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
-//
-/////////////////////////////////////////////////////////////////////////////////
-CString GetWorldMarketSchemaConnect() {
-	if (!gl_fNormalMode) {
-		gl_fTestMode = true;
-		return _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是world_market_test Schema
-	}
-	else {
-		gl_fTestMode = false;
-		return _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // WorldMarket操作的是world_market Schema
-	}
 }
 
 CString GetSchemaConnect(CString strSchema)

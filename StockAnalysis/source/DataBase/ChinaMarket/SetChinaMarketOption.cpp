@@ -21,7 +21,7 @@ void SetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[RealTimeDataInquiryTime]"), m_RTDataInquiryTime);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetChinaMarketOption ’Ô∂œ
 
 #ifdef _DEBUG
 void SetChinaMarketOption::AssertValid() const {

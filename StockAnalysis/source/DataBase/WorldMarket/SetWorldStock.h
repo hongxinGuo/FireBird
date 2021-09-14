@@ -1,4 +1,4 @@
-// SetSymbol.h : CSetStockCode 的声明
+// SetWorldStock.h : CSetWorldStock 的声明
 
 #pragma once
 #include"VirtualRecordset.h"

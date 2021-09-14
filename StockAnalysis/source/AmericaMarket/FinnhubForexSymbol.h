@@ -14,18 +14,8 @@ public:
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override { return s_iRatio; }
 
-	void Load(CSetFinnhubForexSymbol& setForexSymbol);
-	void Append(CSetFinnhubForexSymbol& setForexSymbol);
-	void Update(CSetFinnhubForexSymbol& setForexSymbol);
-	void Save(CSetFinnhubForexSymbol& setForexSymbol);
-
 	virtual bool UpdateDayLineDB(void);
 	bool SaveDayLine(void);
-
-	CString GetDescription(void) const { return m_strDescription; }
-	void SetDescription(CString strDescription) { m_strDescription = strDescription; }
-	CString GetDisplaySymbol(void) const { return m_strDisplaySymbol; }
-	void SetDisplaySymbol(CString strSymbol) { m_strDisplaySymbol = strSymbol; }
 
 	void SetCheckingDayLineStatus(void);
 
@@ -41,8 +31,6 @@ public:
 	vector<CDayLinePtr> m_vDayLine;
 
 protected:
-	CString m_strDescription;
-	CString m_strDisplaySymbol;
 
 private:
 	static int s_iRatio;

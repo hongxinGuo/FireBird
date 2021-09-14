@@ -21,6 +21,10 @@
 #include "SetCryptoDayLine.h"
 #include "SetForexDayLine.h"
 
+#include "SetFinnhubCryptoSymbol.h"
+#include "SetFinnhubForexSymbol.h"
+#include "SetChinaStockSymbol.h"
+
 IMPLEMENT_DYNAMIC(CSetFinnhubStockExchange, CVirtualSetExchange)
 IMPLEMENT_DYNAMIC(CSetFinnhubCryptoExchange, CVirtualSetExchange)
 IMPLEMENT_DYNAMIC(CSetFinnhubForexExchange, CVirtualSetExchange)
@@ -36,3 +40,7 @@ IMPLEMENT_DYNAMIC(CSetWeekLineBasicInfo, CVirtualSetHistoryCandle)
 IMPLEMENT_DYNAMIC(CSetWorldStockDayLine, CVirtualSetHistoryCandle)
 IMPLEMENT_DYNAMIC(CSetForexDayLine, CVirtualSetHistoryCandle)
 IMPLEMENT_DYNAMIC(CSetCryptoDayLine, CVirtualSetHistoryCandle)
+
+IMPLEMENT_DYNAMIC(CSetChinaStockSymbol, CVirtualSetStockSymbol)
+IMPLEMENT_DYNAMIC(CSetFinnhubCryptoSymbol, CVirtualSetStockSymbol)
+IMPLEMENT_DYNAMIC(CSetFinnhubForexSymbol, CVirtualSetStockSymbol)

@@ -9,8 +9,6 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
-long GetFormatedDate(void);
-
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间
 time_t ConvertBufferToTime(CString strFormat, const char* buffer);
 time_t ConvertStringToTime(CString strFormat, CString strTime);
@@ -45,8 +43,6 @@ CString XferStandredToSina(CString strStandred);
 CString XferStandredToNetease(CString strStandred);
 CString XferStandredToTengxun(CString strStandred);
 
-CString GetChinaMarketSchemaConnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
-CString GetWorldMarketSchemaConnect();// 用于美国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用world_market_test驱动，正常模式时使用world_market驱动
 CString GetSchemaConnect(CString strSchema);// 用于数据集的GetDefaultConnect()，以保持一致性。参数strSchema为该市场的名称
 
 CString ConvertValueToString(long lValue, int iDividend = 1);

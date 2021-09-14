@@ -19,38 +19,6 @@ void CFinnhubCryptoSymbol::Reset(void) {
 	m_lDayLineEndDate = 19800101;
 }
 
-void CFinnhubCryptoSymbol::Load(CSetFinnhubCryptoSymbol& setCryptoSymbol) {
-	m_strDescription = setCryptoSymbol.m_Description;
-	m_strDisplaySymbol = setCryptoSymbol.m_DisplaySymbol;
-	m_strExchangeCode = setCryptoSymbol.m_Exchange;
-	m_strSymbol = setCryptoSymbol.m_Symbol;
-	m_lDayLineStartDate = setCryptoSymbol.m_DayLineStartDate;
-	m_lDayLineEndDate = setCryptoSymbol.m_DayLineEndDate;
-	m_lIPOStatus = setCryptoSymbol.m_IPOStatus;
-}
-
-void CFinnhubCryptoSymbol::Append(CSetFinnhubCryptoSymbol& setCryptoSymbol) {
-	setCryptoSymbol.AddNew();
-	Save(setCryptoSymbol);
-	setCryptoSymbol.Update();
-}
-
-void CFinnhubCryptoSymbol::Update(CSetFinnhubCryptoSymbol& setCryptoSymbol) {
-	setCryptoSymbol.Edit();
-	Save(setCryptoSymbol);
-	setCryptoSymbol.Update();
-}
-
-void CFinnhubCryptoSymbol::Save(CSetFinnhubCryptoSymbol& setCryptoSymbol) {
-	setCryptoSymbol.m_Description = m_strDescription;
-	setCryptoSymbol.m_DisplaySymbol = m_strDisplaySymbol;
-	setCryptoSymbol.m_Exchange = m_strExchangeCode;
-	setCryptoSymbol.m_Symbol = m_strSymbol;
-	setCryptoSymbol.m_DayLineStartDate = m_lDayLineStartDate;
-	setCryptoSymbol.m_DayLineEndDate = m_lDayLineEndDate;
-	setCryptoSymbol.m_IPOStatus = m_lIPOStatus;
-}
-
 bool CFinnhubCryptoSymbol::UpdateDayLineDB(void) {
 	SaveDayLine();
 	UpdateDayLineStartEndDate();

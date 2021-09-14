@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubCryptoSymbol.h"
+#include"SetFinnhubCryptoSymbol.h"
 
 using namespace testing;
 
@@ -199,14 +200,14 @@ namespace StockAnalysisTest {
 		ASSERT(!gl_fNormalMode);
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.Append(setFinnhubCryptoSymbol);
+		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
 		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol.Close();
 
 		setFinnhubCryptoSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
 		setFinnhubCryptoSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubCryptoSymbol2.Load(setFinnhubCryptoSymbol2);
+		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDescription(), _T("abc"));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T("cba"));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetSymbol(), _T("AAAAA"));
@@ -244,7 +245,7 @@ namespace StockAnalysisTest {
 		ASSERT(!gl_fNormalMode);
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.Append(setFinnhubCryptoSymbol);
+		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
 		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol.Close();
 
@@ -263,14 +264,14 @@ namespace StockAnalysisTest {
 		setFinnhubCryptoSymbol3.m_strFilter = _T("[Symbol] = 'AAAAA'");
 		setFinnhubCryptoSymbol3.Open();
 		setFinnhubCryptoSymbol3.m_pDatabase->BeginTrans();
-		FinnhubCryptoSymbol.Update(setFinnhubCryptoSymbol3);
+		FinnhubCryptoSymbol.UpdateSymbol(setFinnhubCryptoSymbol3);
 		setFinnhubCryptoSymbol3.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol3.Close();
 
 		setFinnhubCryptoSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
 		setFinnhubCryptoSymbol2.Open();
 		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "此时已经存入了AA";
-		FinnhubCryptoSymbol2.Load(setFinnhubCryptoSymbol2);
+		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDescription(), _T("abc changed"));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T("changed"));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetSymbol(), _T("AAAAA"));

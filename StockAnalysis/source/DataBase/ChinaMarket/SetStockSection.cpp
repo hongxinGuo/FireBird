@@ -27,7 +27,7 @@ void CSetStockSection::DoFieldExchange(CFieldExchange* pFX) {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetStockSection ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetStockSection::AssertValid() const {

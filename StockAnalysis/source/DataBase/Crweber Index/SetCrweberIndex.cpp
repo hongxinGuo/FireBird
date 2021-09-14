@@ -59,7 +59,7 @@ void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[HANDY_TC_3YEAR]"), m_HANDY_TC_3YEAR);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode ’Ô∂œ
+// CSetCrweberIndex ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetCrweberIndex::AssertValid() const {

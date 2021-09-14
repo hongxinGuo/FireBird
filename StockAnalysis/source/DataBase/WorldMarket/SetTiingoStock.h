@@ -1,4 +1,4 @@
-// CSetTiingoStock.h : CSetStockCode 的声明
+// CSetTiingoStock.h : CSetTiingoStock 的声明
 
 #pragma once
 #include"VirtualRecordset.h"

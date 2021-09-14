@@ -138,9 +138,6 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -369,7 +366,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockCode.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaStockSymbol.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.h">
@@ -460,6 +457,12 @@
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
+      <Filter>头文件\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
@@ -806,9 +809,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockCode.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
@@ -828,12 +828,6 @@
       <Filter>源文件\DataBase\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp">
-      <Filter>源文件\DataBase\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubCryptoSymbol.cpp">
-      <Filter>源文件\DataBase\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubForexSymbol.cpp">
       <Filter>源文件\DataBase\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderTransaction.cpp">
@@ -870,6 +864,9 @@
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
+      <Filter>源文件\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

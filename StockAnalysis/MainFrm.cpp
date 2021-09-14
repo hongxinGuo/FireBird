@@ -516,7 +516,7 @@ void CMainFrame::UpdateStatus(void) {
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetSymbol());
-		SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
+		SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetDisplaySymbol());
 	}
 
 	// 显示当前选择的股票

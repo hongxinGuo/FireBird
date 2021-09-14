@@ -1,4 +1,4 @@
-// CSetTiingoStock.cpp : CSetStockCode 类的实现
+// CSetTiingoStock.cpp : CSetTiingoStock 类的实现
 
 #include"pch.h"
 

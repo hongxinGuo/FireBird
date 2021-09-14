@@ -381,7 +381,7 @@ bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool 
 	pStock->SetActive(false);
 	pStock->SetTodayNewStock(true);
 	pStock->SetSymbol(strStockCode);
-	pStock->SetStockName(strStockName);
+	pStock->SetDisplaySymbol(strStockName);
 	pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
 	pStock->SetOffset(GetTotalStock());
 	pStock->SetDayLineEndDate(19900101);
@@ -1708,7 +1708,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetStockName(CString strStockCode) {
 	try {
-		return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode))->GetStockName());
+		return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode))->GetDisplaySymbol());
 	}
 	catch (exception&) {
 		TRACE("GetStockName函数 %s 异常\n", strStockCode.GetBuffer());
@@ -3136,7 +3136,7 @@ double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) noexc
 
 bool CChinaMarket::UpdateStockCodeDB(void) {
 	CChinaStockPtr pStock = nullptr;
-	CSetStockCode setStockCode;
+	CSetChinaStockSymbol setChinaStockSymbol;
 	int iUpdatedStock = 0;
 	int iCount = 0;
 
@@ -3145,32 +3145,32 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
 		for (auto& pStock2 : m_vChinaMarketStock) {
 			if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
 		}
-		setStockCode.m_strSort = _T("[Symbol]");
-		setStockCode.Open();
-		setStockCode.m_pDatabase->BeginTrans();
+		setChinaStockSymbol.m_strSort = _T("[Symbol]");
+		setChinaStockSymbol.Open();
+		setChinaStockSymbol.m_pDatabase->BeginTrans();
 		while (iCount < iUpdatedStock) {
-			if (setStockCode.IsEOF()) break;
-			pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_Symbol));
+			if (setChinaStockSymbol.IsEOF()) break;
+			pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setChinaStockSymbol.m_Symbol));
 			if (pStock->IsUpdateProfileDBAndClearFlag()) {
 				//ASSERT(!pStock3->IsTodayNewStock());
 				iCount++;
-				pStock->UpdateStockCodeDB(setStockCode);
+				pStock->UpdateSymbol(setChinaStockSymbol);
 			}
-			setStockCode.MoveNext();
+			setChinaStockSymbol.MoveNext();
 		}
 		if (iCount < iUpdatedStock) {
 			for (auto& pStock3 : m_vChinaMarketStock) {
 				if (pStock3->IsUpdateProfileDBAndClearFlag()) {
 					ASSERT(pStock3->IsTodayNewStock());
 					iCount++;
-					pStock3->AppendStockCodeDB(setStockCode);
+					pStock3->AppendSymbol(setChinaStockSymbol);
 					pStock3->SetTodayNewStock(false);
 				}
 				if (iCount >= iUpdatedStock) break;
 			}
 		}
-		setStockCode.m_pDatabase->CommitTrans();
-		setStockCode.Close();
+		setChinaStockSymbol.m_pDatabase->CommitTrans();
+		setChinaStockSymbol.Close();
 		m_lLoadedStock = m_vChinaMarketStock.size();
 	}
 	ASSERT(iCount == iUpdatedStock);
@@ -3194,26 +3194,26 @@ void CChinaMarket::LoadStockSection(void) {
 }
 
 void CChinaMarket::LoadStockCodeDB(void) {
-	CSetStockCode setStockCode;
+	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{ 0, 0, 0 };
 	CString str;
 
-	setStockCode.m_strSort = _T("[Symbol]");
-	setStockCode.Open();
+	setChinaStockSymbol.m_strSort = _T("[Symbol]");
+	setChinaStockSymbol.Open();
 	// 装入股票代码数据库
-	while (!setStockCode.IsEOF()) {
+	while (!setChinaStockSymbol.IsEOF()) {
 		CChinaStockPtr pStock = make_shared<CChinaStock>();
-		if (!IsStock(setStockCode.m_Symbol)) {
-			pStock->LoadStockCodeDB(setStockCode);
+		if (!IsStock(setChinaStockSymbol.m_Symbol)) {
+			pStock->LoadStockCodeDB(setChinaStockSymbol);
 			m_vChinaMarketStock.push_back(pStock);
 		}
 		else {
 			str = _T("发现重复代码：");
-			str += setStockCode.m_Symbol;
+			str += setChinaStockSymbol.m_Symbol;
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			setStockCode.Delete(); // 删除此重复代码
+			setChinaStockSymbol.Delete(); // 删除此重复代码
 		}
-		setStockCode.MoveNext();
+		setChinaStockSymbol.MoveNext();
 	}
 	if (IsDayLineNeedUpdate()) {
 		const int i = GetDayLineNeedUpdateNumber();
@@ -3225,7 +3225,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
 		str += _T("个股票需要检查日线数据");
 		gl_systemMessage.PushInformationMessage(str);
 	}
-	setStockCode.Close();
+	setChinaStockSymbol.Close();
 	m_lLoadedStock = m_vChinaMarketStock.size();
 	SortStockVector();
 }

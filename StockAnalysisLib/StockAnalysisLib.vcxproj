@@ -31,6 +31,7 @@
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h" />
     <ClInclude Include="..\StockAnalysis\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
+    <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
@@ -79,11 +80,12 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong1Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.h" />
@@ -133,7 +135,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
-    <ClInclude Include="..\StockAnalysis\stdafx.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
@@ -229,7 +230,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
@@ -238,11 +238,10 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetSICIndustry.cpp" />

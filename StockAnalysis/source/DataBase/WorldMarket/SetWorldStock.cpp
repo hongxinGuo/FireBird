@@ -1,4 +1,4 @@
-// CSetWorldStock.cpp : CSetStockCode 类的实现
+// CSetWorldStock.cpp : CSetWorldStock 类的实现
 
 #include"pch.h"
 #include"globedef.h"

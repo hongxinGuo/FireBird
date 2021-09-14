@@ -2285,7 +2285,7 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
 		setForexSymbol.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalForexSymbol; l < lTotalForexSymbol; l++) {
 			pSymbol = m_vForexSymbol.at(l);
-			pSymbol->Append(setForexSymbol);
+			pSymbol->AppendSymbol(setForexSymbol);
 		}
 		setForexSymbol.m_pDatabase->CommitTrans();
 		setForexSymbol.Close();
@@ -2305,7 +2305,7 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
 			if (m_mapForexSymbol.find(setForexSymbol.m_Symbol) != m_mapForexSymbol.end()) {
 				pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
 				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->Update(setForexSymbol);
+					pSymbol->UpdateSymbol(setForexSymbol);
 					pSymbol->SetUpdateProfileDB(false);
 				}
 			}
@@ -2329,7 +2329,7 @@ bool CWorldMarket::UpdateCryptoSymbolDB(void) {
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
 			pSymbol = m_vCryptoSymbol.at(l);
-			pSymbol->Append(setCryptoSymbol);
+			pSymbol->AppendSymbol(setCryptoSymbol);
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
@@ -2349,7 +2349,7 @@ bool CWorldMarket::UpdateCryptoSymbolDB(void) {
 			if (m_mapCryptoSymbol.find(setCryptoSymbol.m_Symbol) != m_mapCryptoSymbol.end()) {
 				pSymbol = m_vCryptoSymbol.at(m_mapCryptoSymbol.at(setCryptoSymbol.m_Symbol));
 				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->Update(setCryptoSymbol);
+					pSymbol->UpdateSymbol(setCryptoSymbol);
 					pSymbol->SetUpdateProfileDB(false);
 				}
 			}
@@ -2497,7 +2497,7 @@ bool CWorldMarket::LoadForexSymbol(void) {
 	setForexSymbol.Open();
 	while (!setForexSymbol.IsEOF()) {
 		pSymbol = make_shared<CFinnhubForexSymbol>();
-		pSymbol->Load(setForexSymbol);
+		pSymbol->LoadSymbol(setForexSymbol);
 		pSymbol->SetCheckingDayLineStatus();
 		m_vForexSymbol.push_back(pSymbol);
 		m_mapForexSymbol[pSymbol->GetSymbol()] = i++;
@@ -2533,7 +2533,7 @@ bool CWorldMarket::LoadCryptoSymbol(void) {
 	setCryptoSymbol.Open();
 	while (!setCryptoSymbol.IsEOF()) {
 		pSymbol = make_shared<CFinnhubCryptoSymbol>();
-		pSymbol->Load(setCryptoSymbol);
+		pSymbol->LoadSymbol(setCryptoSymbol);
 		pSymbol->SetCheckingDayLineStatus();
 		m_vCryptoSymbol.push_back(pSymbol);
 		m_mapCryptoSymbol[pSymbol->GetSymbol()] = i++;

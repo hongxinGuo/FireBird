@@ -4,8 +4,6 @@
 
 #include"VirtualRecordset.h"
 
-// 代码生成在 2019年6月2日, 5:10
-
 class CSetCountry : public CVirtualRecordset
 {
 public:

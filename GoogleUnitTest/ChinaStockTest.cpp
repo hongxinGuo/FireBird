@@ -76,6 +76,13 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetRatio(), 1000) << "中国市场的股票价格，放大倍数为1000";
 	}
 
+	TEST_F(CChinaStockTest, TestGetDescription) {
+		CChinaStock stock;
+		EXPECT_STREQ(stock.GetDescription(), _T(""));
+		stock.SetDescription(_T("SSabcdefg"));
+		EXPECT_STREQ(stock.GetDescription(), _T("SSabcdefg"));
+	}
+
 	TEST_F(CChinaStockTest, TestGetExchangeCode) {
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetExchangeCode(), _T(""));
@@ -324,7 +331,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaStockTest, TestInitialize) {
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
@@ -349,27 +356,27 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetTotalValue(), 0);
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
 		stock.SetSymbol(_T("abcde"));
-		stock.SetStockName(_T("dcba"));
+		stock.SetDisplaySymbol(_T("dcba"));
 		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
-		EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
 		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		stock.Reset();
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
 	}
 
-	TEST_F(CChinaStockTest, TestGetStockName) {
+	TEST_F(CChinaStockTest, TestGetDisplaySymbol) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
-		stock.SetStockName(_T("浦发银行"));
-		EXPECT_STREQ(stock.GetStockName(), _T("浦发银行"));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
+		stock.SetDisplaySymbol(_T("浦发银行"));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("浦发银行"));
 	}
 	TEST_F(CChinaStockTest, TestGetOffset) {
 		CChinaStock stock;
@@ -455,17 +462,17 @@ namespace StockAnalysisTest {
 
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetSymbol(_T("abcde"));
-		stock.SetStockName(_T("dcba"));
+		stock.SetDisplaySymbol(_T("dcba"));
 		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
-		EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
 		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		pRTData->SetTransactionTime(12345);
@@ -488,7 +495,7 @@ namespace StockAnalysisTest {
 		stock.Reset();
 		EXPECT_TRUE(stock.IsNotChecked());
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -517,22 +524,22 @@ namespace StockAnalysisTest {
 		ASSERT_FALSE(gl_fNormalMode);
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetSymbol(_T("abcde"));
-		stock.SetStockName(_T("dcba"));
+		stock.SetDisplaySymbol(_T("dcba"));
 		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
-		EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
 		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		stock.Reset();
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -562,7 +569,7 @@ namespace StockAnalysisTest {
 		long lDateDest = FormatToDate(stock.GetTransactionTime());
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
-		EXPECT_STREQ(stock.GetStockName(), _T(""));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -612,7 +619,7 @@ namespace StockAnalysisTest {
 		CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));
-		stock.SetStockName("浦东发展");
+		stock.SetDisplaySymbol("浦东发展");
 		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDate()作比较
 		stock.SetLastClose(101010);
 		stock.SetOpen(202020);
@@ -918,33 +925,37 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
-		CSetStockCode setStockCode;
+		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock, stock2;
+		stock.SetDescription(_T("abcdefg"));
+		stock.SetExchangeCode(_T("SS"));
 		stock.SetSymbol(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
 		stock.SetOffset(13000);
-		stock.SetStockName(_T("未使用过"));
+		stock.SetDisplaySymbol(_T("未使用过"));
 		stock.SetIPOStatus(__STOCK_IPOED__);
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
 		stock.SetDayLineStartDate(19900101);
-		setStockCode.m_strFilter = _T("[ID] = 1");
-		setStockCode.Open();
-		stock.AppendStockCodeDB(setStockCode);
-		setStockCode.Close();
+		setChinaStockSymbol.m_strFilter = _T("[ID] = 1");
+		setChinaStockSymbol.Open();
+		stock.AppendSymbol(setChinaStockSymbol);
+		setChinaStockSymbol.Close();
 
-		setStockCode.m_strFilter = _T("[Symbol] = '400000.SS'");
-		setStockCode.Open();
-		EXPECT_EQ(setStockCode.m_IPOStatus, __STOCK_IPOED__);
-		EXPECT_EQ(setStockCode.m_Symbol, _T("400000.SS"));
-		setStockCode.Delete();
-		setStockCode.Close();
+		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '400000.SS'");
+		setChinaStockSymbol.Open();
+		EXPECT_STREQ(setChinaStockSymbol.m_Description, _T("abcdefg"));
+		EXPECT_STREQ(setChinaStockSymbol.m_Exchange, _T("SS"));
+		EXPECT_EQ(setChinaStockSymbol.m_IPOStatus, __STOCK_IPOED__);
+		EXPECT_EQ(setChinaStockSymbol.m_Symbol, _T("400000.SS"));
+		setChinaStockSymbol.Delete();
+		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestUpdateStockCodeDB) {
-		CSetStockCode setStockCode;
+		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 
-		setStockCode.Open();
-		stock.LoadStockCodeDB(setStockCode);
+		setChinaStockSymbol.Open();
+		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
 		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
@@ -954,56 +965,56 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_IPOED__));
 		}
 		stock.SetIPOStatus(__STOCK_NULL__);
-		stock.UpdateStockCodeDB(setStockCode);
-		setStockCode.Close();
+		stock.UpdateSymbol(setChinaStockSymbol);
+		setChinaStockSymbol.Close();
 
-		setStockCode.Open();
-		EXPECT_THAT(setStockCode.m_IPOStatus, Eq(__STOCK_NULL__)) << "此时状态已变为NULL";
-		setStockCode.Edit();
-		setStockCode.m_IPOStatus = __STOCK_DELISTED__;
-		setStockCode.Update();
-		setStockCode.Close();
+		setChinaStockSymbol.Open();
+		EXPECT_THAT(setChinaStockSymbol.m_IPOStatus, Eq(__STOCK_NULL__)) << "此时状态已变为NULL";
+		setChinaStockSymbol.Edit();
+		setChinaStockSymbol.m_IPOStatus = __STOCK_DELISTED__;
+		setChinaStockSymbol.Update();
+		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
-		CSetStockCode setStockCode;
+		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		setStockCode.m_strSort = _T("[ID]");
-		setStockCode.Open();
-		stock.LoadStockCodeDB(setStockCode);
+		setChinaStockSymbol.m_strSort = _T("[ID]");
+		setChinaStockSymbol.Open();
+		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
 		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
 		else {
-			EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
+			EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
 		}
-		EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
-		EXPECT_EQ(stock.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
-		setStockCode.Close();
+		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
+		EXPECT_EQ(stock.GetDayLineEndDate(), setChinaStockSymbol.m_DayLineEndDate);
+		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB2) {
-		CSetStockCode setStockCode;
+		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
 		long lCurrentDate = gl_pChinaMarket->GetFormatedMarketDate();
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		setStockCode.Open();
-		stock.LoadStockCodeDB(setStockCode);
+		setChinaStockSymbol.Open();
+		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-		EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
-		EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
+		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
+		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
 		EXPECT_EQ(stock.GetDayLineEndDate(), lCurrentDate);
-		setStockCode.Close();
+		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB3) {
-		CSetStockCode setStockCode;
+		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 
 		gl_pChinaMarket->CalculateTime();
@@ -1011,14 +1022,14 @@ namespace StockAnalysisTest {
 		stock.SetIPOStatus(__STOCK_IPOED__);
 		long lCurrentDate = gl_pChinaMarket->GetFormatedMarketDate();
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		setStockCode.m_strFilter = _T("[Symbol] = '000003.SZ'");
-		setStockCode.Open();
-		stock.LoadStockCodeDB(setStockCode);
+		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
+		setChinaStockSymbol.Open();
+		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000003.SZ"));
-		EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
-		EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
+		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
+		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
 		EXPECT_EQ(stock.GetDayLineEndDate(), gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetFormatedMarketDate(), 31));
-		setStockCode.Close();
+		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
@@ -1870,17 +1881,17 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaStockTest, TestSetTodayActive) {
 		pStock = gl_pChinaMarket->GetStock(_T("600001.SS")); // 这个股票退市了，故而可以作为测试对象
 		EXPECT_FALSE(pStock->IsActive());
-		CString strStockName = pStock->GetStockName();
+		CString strStockName = pStock->GetDisplaySymbol();
 		pStock->SetTodayActive(_T("600002.SZ"), _T("梨园"));
 		EXPECT_TRUE(pStock->IsActive());
 		EXPECT_FALSE(pStock->IsDayLineLoaded());
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600002.SZ"));
-		EXPECT_STREQ(pStock->GetStockName(), _T("梨园"));
+		EXPECT_STREQ(pStock->GetDisplaySymbol(), _T("梨园"));
 
 		// clearup
 		pStock->SetActive(false);
 		pStock->SetSymbol(_T("600001.SS"));
-		pStock->SetStockName(strStockName);
+		pStock->SetDisplaySymbol(strStockName);
 	}
 
 	TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {

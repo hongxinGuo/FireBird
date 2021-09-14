@@ -32,7 +32,6 @@ CChinaStock::~CChinaStock(void) {
 
 void CChinaStock::Reset(void) {
 	CVirtualStock::Reset();
-	m_strStockName = _T("");
 	m_lOffsetInContainer = -1;
 	m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
 	m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
@@ -257,7 +256,7 @@ void CChinaStock::SetTodayActive(CString strStockCode, CString strStockName) {
 	SetActive(true);
 	SetDayLineLoaded(false);
 	SetSymbol(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (strStockName != _T("")) SetDisplaySymbol(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +279,7 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
 	psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
 	psetDayLineBasicInfo->m_Exchange = GetExchangeCode();
 	psetDayLineBasicInfo->m_Symbol = m_strSymbol;
-	psetDayLineBasicInfo->m_SymbolName = m_strStockName;
+	psetDayLineBasicInfo->m_SymbolName = m_strDisplaySymbol;
 	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
 	psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
 	psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);
@@ -300,7 +299,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTemp& setDayLineTemp) {
 	ASSERT(setDayLineTemp.IsOpen());
 	setDayLineTemp.m_Date = FormatToDate(m_TransactionTime);
 	setDayLineTemp.m_Symbol = m_strSymbol;
-	setDayLineTemp.m_StockName = m_strStockName;
+	setDayLineTemp.m_StockName = m_strDisplaySymbol;
 	setDayLineTemp.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
 	setDayLineTemp.m_Open = ConvertValueToString(m_lOpen, 1000);
 	setDayLineTemp.m_High = ConvertValueToString(m_lHigh, 1000);
@@ -1477,41 +1476,12 @@ void CChinaStock::ReportGuadan(void) {
 	}
 }
 
-void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
-	CString str;
+bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
+	time_t tt = 0;
+	long lDayLineEndDate = m_lDayLineEndDate; // 保留目前的日线最后日期
 
-	ASSERT(m_lDayLineEndDate >= 19700101);
-	ASSERT(m_lDayLineStartDate >= 19700101);
+	LoadSymbol(setChinaStockSymbol);
 
-	setStockCode.m_Symbol = GetSymbol();
-	if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
-		setStockCode.m_StockName = GetStockName(); // 则存储新的名字
-	}
-	setStockCode.m_IPOStatus = GetIPOStatus();
-	setStockCode.m_DayLineStartDate = GetDayLineStartDate();
-	setStockCode.m_DayLineEndDate = GetDayLineEndDate();
-}
-
-void CChinaStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
-	setStockCode.AddNew();
-	SaveStockCodeDB(setStockCode);
-	setStockCode.Update();
-}
-
-void CChinaStock::UpdateStockCodeDB(CSetStockCode& setStockCode) {
-	setStockCode.Edit();
-	SaveStockCodeDB(setStockCode);
-	setStockCode.Update();
-}
-
-bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
-	SetSymbol(setStockCode.m_Symbol);
-	CString str;
-
-	str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-	SetStockName(str);
-	SetIPOStatus(setStockCode.m_IPOStatus);
-	m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {
 		if (GetSymbol().Left(6) <= _T("000999")) { //沪市指数？
@@ -1521,11 +1491,12 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 	else if ((GetSymbol().Left(6) >= _T("399000"))) { // 深市指数
 		SetNeedProcessRTData(false);
 	}
-	if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
-		SetDayLineEndDate(setStockCode.m_DayLineEndDate);
+	if (GetDayLineEndDate() < lDayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
+		SetDayLineEndDate(lDayLineEndDate);
 	}
 	if (!IsDelisted()) {
-		if (IsEarlyThen(GetDayLineEndDate(), GetFormatedDate(), 30)) {
+		time(&tt);
+		if (IsEarlyThen(GetDayLineEndDate(), FormatToDate(tt), 30)) {
 			SetIPOStatus(__STOCK_DELISTED__);
 			SetUpdateProfileDB(true);
 		}

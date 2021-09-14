@@ -4,10 +4,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include"afxdb.h"
 #include"VirtualRecordset.h"
-
-// 代码生成在 2019年5月26日, 8:14
 
 class CVirtualSetExchange : public CVirtualRecordset
 {
