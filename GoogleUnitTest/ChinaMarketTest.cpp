@@ -1545,7 +1545,7 @@ namespace StockAnalysisTest {
 		setDayLine.m_strFilter += strDate;
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
-		pDayLine->AppendChinaMarketData(&setDayLine);
+		pDayLine->AppendHistoryCandle(&setDayLine);
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 
@@ -1677,12 +1677,12 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
-		vector<CChinaStockHistoryDataPtr> vData;
-		CChinaStockHistoryDataPtr pData = make_shared<CChinaStockHistoryData>();
+		vector<CChinaStockHistoryCandlePtr> vData;
+		CChinaStockHistoryCandlePtr pData = make_shared<CChinaStockHistoryCandle>();
 		pData->SetStockSymbol(_T("600000.SS"));
 		vData.resize(2);
 		vData[0] = pData;
-		pData = make_shared<CChinaStockHistoryData>();
+		pData = make_shared<CChinaStockHistoryCandle>();
 		pData->SetStockSymbol(_T("600004.SS"));
 		vData[1] = pData;
 

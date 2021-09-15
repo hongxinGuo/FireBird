@@ -3,12 +3,12 @@
 #include"globedef.h"
 #include "WeekLine.h"
 
-CWeekLine::CWeekLine() : CChinaStockHistoryData() {
+CWeekLine::CWeekLine() : CChinaStockHistoryCandle() {
 	Reset();
 }
 
 void CWeekLine::Reset(void) {
-	CChinaStockHistoryData::Reset();
+	CChinaStockHistoryCandle::Reset();
 }
 
 bool CWeekLine::AppendCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInfo) {
@@ -100,41 +100,6 @@ bool CWeekLine::AppendCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineI
 	psetCurrentWeekLineInfo->m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
 	psetCurrentWeekLineInfo->m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 	psetCurrentWeekLineInfo->Update();
-
-	return true;
-}
-
-bool CWeekLine::SaveBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
-	ASSERT(psetWeekLineBasicInfo->IsOpen());
-
-	psetWeekLineBasicInfo->m_Date = GetFormatedMarketDate();
-	psetWeekLineBasicInfo->m_Exchange = GetExchange();
-	psetWeekLineBasicInfo->m_Symbol = GetStockSymbol();
-	psetWeekLineBasicInfo->m_DisplaySymbol = GetDisplaySymbol();
-	psetWeekLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
-	psetWeekLineBasicInfo->m_High = ConvertValueToString(GetHigh(), 1000);
-	psetWeekLineBasicInfo->m_Low = ConvertValueToString(GetLow(), 1000);
-	psetWeekLineBasicInfo->m_Open = ConvertValueToString(GetOpen(), 1000);
-	psetWeekLineBasicInfo->m_Close = ConvertValueToString(GetClose(), 1000);
-	psetWeekLineBasicInfo->m_Volume = ConvertValueToString(GetVolume());
-	psetWeekLineBasicInfo->m_Amount = ConvertValueToString(GetAmount());
-	psetWeekLineBasicInfo->m_UpAndDown = ConvertValueToString(GetUpDown());
-	psetWeekLineBasicInfo->m_UpDownRate = ConvertValueToString(GetUpDownRate());
-	psetWeekLineBasicInfo->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
-	psetWeekLineBasicInfo->m_TotalValue = ConvertValueToString(GetTotalValue());
-	psetWeekLineBasicInfo->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-	psetWeekLineBasicInfo->m_RS = ConvertValueToString(GetRS());
-	psetWeekLineBasicInfo->m_RSIndex = ConvertValueToString(GetRSIndex());
-	psetWeekLineBasicInfo->m_RSBackup = ConvertValueToString(GetRSBackup());
-
-	return true;
-}
-
-bool CWeekLine::AppendBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
-	ASSERT(psetWeekLineBasicInfo->IsOpen());
-	psetWeekLineBasicInfo->AddNew();
-	SaveBasicData(psetWeekLineBasicInfo);
-	psetWeekLineBasicInfo->Update();
 
 	return true;
 }
@@ -308,31 +273,6 @@ bool CWeekLine::LoadCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInf
 	m_lCanceledSellVolumeBelow200000 = atoll(psetCurrentWeekLineInfo->m_CanceledSellVolumeBelow200000);
 	m_lCanceledSellVolumeAbove200000 = atoll(psetCurrentWeekLineInfo->m_CanceledSellVolumeAbove200000);
 
-	CalculateRSLogarithm1(m_dRS);
-	return true;
-}
-
-bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
-	ASSERT(psetWeekLineBasicInfo->IsOpen());
-	m_lDate = psetWeekLineBasicInfo->m_Date;
-	m_strExchange = psetWeekLineBasicInfo->m_Exchange;
-	m_strStockSymbol = psetWeekLineBasicInfo->m_Symbol;
-	m_strDisplaySymbol = psetWeekLineBasicInfo->m_DisplaySymbol;
-	m_lLastClose = atof(psetWeekLineBasicInfo->m_LastClose) * 1000;
-	m_lOpen = atof(psetWeekLineBasicInfo->m_Open) * 1000;
-	m_lHigh = atof(psetWeekLineBasicInfo->m_High) * 1000;
-	m_lLow = atof(psetWeekLineBasicInfo->m_Low) * 1000;
-	m_lClose = atof(psetWeekLineBasicInfo->m_Close) * 1000;
-	m_dUpDown = atof(psetWeekLineBasicInfo->m_UpAndDown);
-	m_llVolume = atoll(psetWeekLineBasicInfo->m_Volume);
-	m_llAmount = atoll(psetWeekLineBasicInfo->m_Amount);
-	m_dUpDownRate = atof(psetWeekLineBasicInfo->m_UpDownRate);
-	m_dChangeHandRate = atof(psetWeekLineBasicInfo->m_ChangeHandRate);
-	m_llTotalValue = atoll(psetWeekLineBasicInfo->m_TotalValue);
-	m_llCurrentValue = atoll(psetWeekLineBasicInfo->m_CurrentValue);
-	m_dRS = atof(psetWeekLineBasicInfo->m_RS);
-	m_dRSIndex = atof(psetWeekLineBasicInfo->m_RSIndex);
-	m_dRSBackup = atof(psetWeekLineBasicInfo->m_RSBackup);
 	CalculateRSLogarithm1(m_dRS);
 	return true;
 }

@@ -517,53 +517,11 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(dl.GetOrdinarySellNumberAbove200000(), 10);
 	}
 
-	TEST_F(CStockDayLineTest, TestGet3DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get3DaysRS(), 0);
-		dl.Set3DaysRS(10);
-		EXPECT_EQ(dl.Get3DaysRS(), 10);
-	}
-
-	TEST_F(CStockDayLineTest, TestGet5DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get5DaysRS(), 0);
-		dl.Set5DaysRS(10);
-		EXPECT_EQ(dl.Get5DaysRS(), 10);
-	}
-
-	TEST_F(CStockDayLineTest, TestGet10DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get10DaysRS(), 0);
-		dl.Set10DaysRS(10);
-		EXPECT_EQ(dl.Get10DaysRS(), 10);
-	}
-
-	TEST_F(CStockDayLineTest, TestGet30DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get30DaysRS(), 0);
-		dl.Set30DaysRS(10);
-		EXPECT_EQ(dl.Get30DaysRS(), 10);
-	}
-
-	TEST_F(CStockDayLineTest, TestGet60DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get60DaysRS(), 0);
-		dl.Set60DaysRS(10);
-		EXPECT_EQ(dl.Get60DaysRS(), 10);
-	}
-
-	TEST_F(CStockDayLineTest, TestGet120DaysRS) {
-		CDayLine dl;
-		EXPECT_EQ(dl.Get120DaysRS(), 0);
-		dl.Set120DaysRS(10);
-		EXPECT_EQ(dl.Get120DaysRS(), 10);
-	}
-
 	TEST_F(CStockDayLineTest, TestSaveData) {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLine id, id2;
 
-		id.SetDate(21101101);
+		id.SetDate(21101201);
 		id.SetStockSymbol(_T("600008.SS"));
 		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
@@ -586,13 +544,13 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		id.AppendChinaMarketData(&setDayLineBasicInfo);
+		id.AppendHistoryCandle(&setDayLineBasicInfo);
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
 		setDayLineBasicInfo.Open();
-		id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
+		id2.LoadHistoryCandle(&setDayLineBasicInfo);
 		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
 		EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, id.GetStockSymbol());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
@@ -632,6 +590,7 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(id2.GetRSIndex(), id.GetRSIndex());
 		EXPECT_DOUBLE_EQ(id2.GetRSBackup(), id.GetRSBackup());
 
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -646,7 +605,7 @@ namespace StockAnalysisTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLine id, idLoaded;
 
-		id.SetDate(21101101);
+		id.SetDate(21101001);
 		id.SetStockSymbol(_T("600008.SS"));
 		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
@@ -669,13 +628,13 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		id.AppendChinaMarketData(&setDayLineBasicInfo);
+		id.AppendHistoryCandle(&setDayLineBasicInfo);
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101001");
 		setDayLineBasicInfo.Open();
-		idLoaded.LoadChinaMarketBasicData(&setDayLineBasicInfo);
+		idLoaded.LoadHistoryCandle(&setDayLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
 		EXPECT_STREQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
@@ -696,6 +655,7 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(idLoaded.GetRSBackup(), id.GetRSBackup());
 		setDayLineBasicInfo.Close();
 
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101001");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -733,14 +693,14 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.AddNew();
-		id.SaveChinaMarketData(&setDayLineBasicInfo);
+		id.SaveHistoryCandle(&setDayLineBasicInfo);
 		setDayLineBasicInfo.Update();
 		setDayLineBasicInfo.Close();
 
 		setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '600000.SS'");
 		setDayLineBasicInfo.m_strSort = _T("[Date]");
 		setDayLineBasicInfo.Open();
-		id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
+		id2.LoadHistoryCandle(&setDayLineBasicInfo);
 		EXPECT_EQ(id2.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
@@ -749,13 +709,13 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.Close();
 	}
 
-	TEST_F(CStockDayLineTest, TestLoadForexDayLine) {
+	TEST_F(CStockDayLineTest, TestLoadHistoryCandle) {
 		CSetForexDayLine setForexDayLine;
 		CDayLine dayLine;
 
 		setForexDayLine.m_strFilter = _T("[ID] = 1");
 		setForexDayLine.Open();
-		EXPECT_TRUE(dayLine.LoadForexDayLine(&setForexDayLine));
+		EXPECT_TRUE(dayLine.LoadHistoryCandle(&setForexDayLine));
 		setForexDayLine.Close();
 
 		EXPECT_EQ(dayLine.GetFormatedMarketDate(), 20200406);

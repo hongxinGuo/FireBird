@@ -51,7 +51,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
@@ -63,8 +63,8 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryCandle.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryCandleContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
@@ -183,7 +183,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />

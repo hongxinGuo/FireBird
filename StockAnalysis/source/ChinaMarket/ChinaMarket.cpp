@@ -1898,7 +1898,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryDataPtr>*> pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryCandlePtr>*> pvData) {
 	CString strStockSymbol;
 	vector<CString> vectorStockCode;
 
@@ -1936,7 +1936,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
+		pWeekLine->LoadHistoryCandle(&setWeekLineBasicInfo);
 		while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -2001,7 +2001,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadChinaMarketBasicData(&setDayLineBasicInfo);
+		pDayLine->LoadHistoryCandle(&setDayLineBasicInfo);
 		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
@@ -2035,7 +2035,7 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
+		pWeekLine->LoadHistoryCandle(&setWeekLineBasicInfo);
 		weekLineContainer.StoreData(pWeekLine);
 	}
 	setWeekLineBasicInfo.m_pDatabase->CommitTrans();

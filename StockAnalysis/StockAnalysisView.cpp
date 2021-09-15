@@ -67,7 +67,7 @@ CStockAnalysisView::CStockAnalysisView() {
 	// TODO: 在此处添加构造代码
 	m_iCurrentShowType = __SHOW_DAY_LINE_DATA__; // 显示日线数据
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentHistoryDataContainer = gl_pChinaMarket->GetCurrentStock()->GetDayLineContainer();
+		m_pCurrentHistoryCandleContainer = gl_pChinaMarket->GetCurrentStock()->GetDayLineContainer();
 	}
 	m_lCurrentPos = 0;
 	m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
@@ -81,7 +81,7 @@ CStockAnalysisView::CStockAnalysisView() {
 	m_fShow120DaysRS = false;
 	m_iShowRSOption = 0; // 默认值为指数相对强度
 	m_fShowTransactionGraph = false;
-	m_pCurrentHistoryDataContainer = nullptr;
+	m_pCurrentHistoryCandleContainer = nullptr;
 
 	m_uIdTimer = 0;
 
@@ -492,9 +492,9 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPoint ptCurrent;
 	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
-	if (m_vRSShow.size() != m_pCurrentHistoryDataContainer->GetDataSize()) m_vRSShow.resize(m_pCurrentHistoryDataContainer->GetDataSize());
+	if (m_vRSShow.size() != m_pCurrentHistoryCandleContainer->GetDataSize()) m_vRSShow.resize(m_pCurrentHistoryCandleContainer->GetDataSize());
 	if (pCurrentStock == nullptr) return;
-	if (!m_pCurrentHistoryDataContainer->IsDataLoaded()) return;
+	if (!m_pCurrentHistoryCandleContainer->IsDataLoaded()) return;
 
 	const long lXHigh = m_rectClient.bottom / 2;
 	const long lXLow = m_rectClient.bottom;
@@ -508,13 +508,13 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 		pDC->SelectObject(&penWhite1);
 		switch (m_iShowRSOption) {
 		case 0: // 显示相对指数的强度
-			m_pCurrentHistoryDataContainer->GetRSIndex1(m_vRSShow);
+			m_pCurrentHistoryCandleContainer->GetRSIndex1(m_vRSShow);
 			break;
 		case 1:
-			m_pCurrentHistoryDataContainer->GetRS1(m_vRSShow);
+			m_pCurrentHistoryCandleContainer->GetRS1(m_vRSShow);
 			break;
 		case 2:
-			m_pCurrentHistoryDataContainer->GetRSLogarithm1(m_vRSShow);
+			m_pCurrentHistoryCandleContainer->GetRSLogarithm1(m_vRSShow);
 			break;
 		default:
 			// 错误
@@ -525,47 +525,47 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 	// 画相对强度3日均线
 	if (m_fShow3DaysRS) {
 		pDC->SelectObject(&penYellow1);
-		m_pCurrentHistoryDataContainer->GetRS3(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS3(m_vRSShow);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度5日均线
 	if (m_fShow5DaysRS) {
 		pDC->SelectObject(&penGreen1);
-		m_pCurrentHistoryDataContainer->GetRS5(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS5(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 1.5);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度10日均线
 	if (m_fShow10DaysRS) {
 		pDC->SelectObject(&penRed1);
-		m_pCurrentHistoryDataContainer->GetRS10(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS10(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度30日均线
 	if (m_fShow30DaysRS) {
 		pDC->SelectObject(&penYellow1);
-		m_pCurrentHistoryDataContainer->GetRS30(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS30(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度60日均线
 	if (m_fShow60DaysRS) {
 		pDC->SelectObject(&penBlue1);
-		m_pCurrentHistoryDataContainer->GetRS60(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS60(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度120日均线
 	if (m_fShow120DaysRS) {
 		pDC->SelectObject(&penWhite1);
-		m_pCurrentHistoryDataContainer->GetRS120(m_vRSShow);
+		m_pCurrentHistoryCandleContainer->GetRS120(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	m_pCurrentHistoryDataContainer->ShowData(pDC, m_rectClient);
+	m_pCurrentHistoryCandleContainer->ShowData(pDC, m_rectClient);
 
 	pDC->SelectObject(ppen);
 }
@@ -593,13 +593,13 @@ bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
 	if (pStock != nullptr) {
 		switch (m_iCurrentShowType) {
 		case __SHOW_DAY_LINE_DATA__:
-			m_pCurrentHistoryDataContainer = pStock->GetDayLineContainer();
+			m_pCurrentHistoryCandleContainer = pStock->GetDayLineContainer();
 			break;
 		case __SHOW_WEEK_LINE_DATA__:
-			m_pCurrentHistoryDataContainer = pStock->GetWeekLineContainer();
+			m_pCurrentHistoryCandleContainer = pStock->GetWeekLineContainer();
 			break;
 		default:
-			m_pCurrentHistoryDataContainer = nullptr;
+			m_pCurrentHistoryCandleContainer = nullptr;
 			break;
 		}
 	}
@@ -919,7 +919,7 @@ void CStockAnalysisView::OnShowDayLine() {
 	// TODO: Add your command handler code here
 	m_iCurrentShowType = __SHOW_DAY_LINE_DATA__;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentHistoryDataContainer = gl_pChinaMarket->GetCurrentStock()->GetDayLineContainer();
+		m_pCurrentHistoryCandleContainer = gl_pChinaMarket->GetCurrentStock()->GetDayLineContainer();
 	}
 }
 
@@ -944,7 +944,7 @@ void CStockAnalysisView::OnShowWeekLine() {
 	// TODO: Add your command handler code here
 	m_iCurrentShowType = __SHOW_WEEK_LINE_DATA__;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentHistoryDataContainer = gl_pChinaMarket->GetCurrentStock()->GetWeekLineContainer();
+		m_pCurrentHistoryCandleContainer = gl_pChinaMarket->GetCurrentStock()->GetWeekLineContainer();
 	}
 }
 

@@ -398,8 +398,8 @@ public:
 	bool CalculateWeekLineRSLogarithm(void);
 
 	// 当前被处理历史数据容器
-	CChinaStockHistoryDataContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
-	CChinaStockHistoryDataContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
+	CChinaStockHistoryCandleContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
+	CChinaStockHistoryCandleContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;

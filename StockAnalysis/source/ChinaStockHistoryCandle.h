@@ -8,32 +8,21 @@
 
 #include"Accessory.h"
 
-#include"VirtualHistoryData.h"
+#include"VirtualHistoryCandle.h"
 
 using namespace std;
 #include<memory>
 
-class CChinaStockHistoryData;
-typedef shared_ptr<CChinaStockHistoryData> CChinaStockHistoryDataPtr;
+class CChinaStockHistoryCandle;
+typedef shared_ptr<CChinaStockHistoryCandle> CChinaStockHistoryCandlePtr;
 
-class CChinaStockHistoryData : public CVirtualHistoryData {
+class CChinaStockHistoryCandle : public CVirtualHistoryCandle {
 public:
-	CChinaStockHistoryData();
+	CChinaStockHistoryCandle();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
-	virtual int GetRatio(void) const override final { return s_iRatio; };
-	virtual void SetRatio(int iRatio = 1000) override final { s_iRatio = iRatio; };
-
-	void CalculateRSLogarithm1(double dRS);
+	virtual int GetRatio(void) const override final { return 1000; };
 
 public:
-	double GetRS(void) const noexcept { return m_dRS; }
-	void SetRS(double dValue) noexcept { m_dRS = dValue; }
-	double GetRSIndex(void) const noexcept { return m_dRSIndex; }
-	void SetRSIndex(double dValue) noexcept { m_dRSIndex = dValue; }
-	double GetRSBackup(void) const noexcept { return m_dRSBackup; }
-	void SetRSBackup(double dValue) noexcept { m_dRSBackup = dValue; }
-	double GetRSLogarithm(void) const noexcept { return m_dRSLogarithm; }
-	void SetRSLogarithm(double dValue) noexcept { m_dRSLogarithm = dValue; }
 	long GetTransactionNumber(void) const noexcept { return m_lTransactionNumber; }
 	void SetTransactionNumber(long lValue) noexcept { m_lTransactionNumber = lValue; }
 
@@ -164,19 +153,6 @@ public:
 	void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
 	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
 
-	void Set3RS(double dValue) noexcept { m_d3RS = dValue; }
-	double Get3RS(void) const noexcept { return m_d3RS; }
-	void Set5RS(double dValue) noexcept { m_d5RS = dValue; }
-	double Get5RS(void) const noexcept { return m_d5RS; }
-	void Set10RS(double dValue) noexcept { m_d10RS = dValue; }
-	double Get10RS(void) const noexcept { return m_d10RS; }
-	void Set30RS(double dValue) noexcept { m_d30RS = dValue; }
-	double Get30RS(void) const noexcept { return m_d30RS; }
-	void Set60RS(double dValue) noexcept { m_d60RS = dValue; }
-	double Get60RS(void) const noexcept { return m_d60RS; }
-	void Set120RS(double dValue) noexcept { m_d120RS = dValue; }
-	double Get120RS(void) const noexcept { return m_d120RS; }
-
 private:
 
 protected:
@@ -189,11 +165,6 @@ protected:
 	long m_lUnknownVolume;
 	long m_lCanceledBuyVolume; // 买单撤单量
 	long m_lCanceledSellVolume; // 卖单撤单量
-	double m_dRS; // 相对强弱（最小为0， 最大为100）
-	double m_dRSIndex; // 相对强弱（最小为-50， 最大为150）
-	double m_dRSBackup; // 相对强弱（最小为0， 最大为100）
-	double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
-													// 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
 	long m_lTransactionNumber;
 	long m_lTransactionNumberBelow5000;
 	long m_lTransactionNumberBelow50000;
@@ -251,15 +222,5 @@ protected:
 	INT64 m_lCanceledSellVolumeBelow200000; //
 	INT64 m_lCanceledSellVolumeAbove200000; //
 
-public:
-	// don't need to save
-	double m_d3RS;
-	double m_d5RS;
-	double m_d10RS;
-	double m_d30RS;
-	double m_d60RS;
-	double m_d120RS;
-
 private:
-	static int s_iRatio;
 };

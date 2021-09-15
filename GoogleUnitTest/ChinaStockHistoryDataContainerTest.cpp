@@ -2,8 +2,8 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"ChinaStockHistoryData.h"
-#include"ChinaStockHistoryDataContainer.h"
+#include"ChinaStockHistoryCandle.h"
+#include"ChinaStockHistoryCandleContainer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,18 +33,18 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CHistoryDataContainerTest, TestSaveData) {
-		CChinaStockHistoryDataContainer id;
+		CChinaStockHistoryCandleContainer id;
 		EXPECT_FALSE(id.SaveData(_T("600000.SS")));
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestLOadData) {
-		CChinaStockHistoryDataContainer id;
+		CChinaStockHistoryCandleContainer id;
 		EXPECT_FALSE(id.LoadData(_T("600000.SS")));
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetContainer) {
-		CChinaStockHistoryDataContainer id;
-		CChinaStockHistoryDataPtr pData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandleContainer id;
+		CChinaStockHistoryCandlePtr pData = make_shared<CChinaStockHistoryCandle>();
 		pData->SetStockSymbol(_T("600008.SS"));
 		pData->SetDate(20202020);
 		id.StoreData(pData);
@@ -54,16 +54,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS1) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -76,16 +76,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRSIndex) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -98,16 +98,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRSLogarithm) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSLogarithm(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSLogarithm(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -120,16 +120,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS3) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set3RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set3RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -142,16 +142,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS5) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set5RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set5RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -164,16 +164,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS10) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set10RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set10RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -186,16 +186,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS30) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set30RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set30RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -208,16 +208,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS60) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set60RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set60RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -230,16 +230,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS120) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set120RS(1.1);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set120RS(2.2);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
 		HistoryDataContainer.StoreData(pHistoryData);
 		HistoryDataContainer.StoreData(pHistoryData2);
 
@@ -252,19 +252,19 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestUpdateData1) {
-		CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetHigh(1000);
 		pHistoryData->SetLow(200);
-		CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
+		CChinaStockHistoryCandlePtr pHistoryData2 = make_shared<CChinaStockHistoryCandle>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetHigh(11000);
 		pHistoryData2->SetLow(1200);
 
-		CChinaStockHistoryDataContainer HistoryDataContainer;
-		vector<CChinaStockHistoryDataPtr> vHistoryData;
+		CChinaStockHistoryCandleContainer HistoryDataContainer;
+		vector<CChinaStockHistoryCandlePtr> vHistoryData;
 
 		vHistoryData.push_back(pHistoryData);
 		EXPECT_EQ(HistoryDataContainer.GetDataSize(), 0);

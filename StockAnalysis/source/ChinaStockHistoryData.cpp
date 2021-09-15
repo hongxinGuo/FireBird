@@ -1,28 +1,13 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"ChinaStockHistoryData.h"
+#include"ChinaStockHistoryCandle.h"
 
-int CChinaStockHistoryData::s_iRatio = 1000;
-
-CChinaStockHistoryData::CChinaStockHistoryData() : CVirtualHistoryData() {
+CChinaStockHistoryCandle::CChinaStockHistoryCandle() : CVirtualHistoryCandle() {
 	Reset();
 }
 
-void CChinaStockHistoryData::CalculateRSLogarithm1(double dRS) {
-	const double dLog50 = log10(50.0);
-	const double dLog100 = log10(100.0);
-	const double dLog = dLog100 - dLog50;
-	if ((dRS - 50) > 0) {
-		m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
-	}
-	else if ((dRS - 50) < 0) {
-		m_dRSLogarithm = 50 - (log10(100 - dRS) - dLog50) * 50 / dLog;
-	}
-	else m_dRSLogarithm = 50;
-}
-
-void CChinaStockHistoryData::Reset(void) {
+void CChinaStockHistoryCandle::Reset(void) {
 	m_lDate = 0;		// ÀàÐÍ
 	m_time = 0;
 	m_strExchange = _T("");
@@ -44,10 +29,8 @@ void CChinaStockHistoryData::Reset(void) {
 
 	m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
 	m_lUnknownVolume = m_lCanceledBuyVolume = m_lCanceledSellVolume = 0;
-	m_dRS = m_dRSLogarithm = m_dRSIndex = m_dRSBackup = 0.0;
 	m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
 	m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
-	m_d3RS = m_d5RS = m_d10RS = m_d30RS = m_d60RS = m_d120RS = 0.0;
 
 	m_lOrdinaryBuyVolumeBelow5000 = 0;
 	m_lOrdinaryBuyVolumeBelow10000 = 0;
