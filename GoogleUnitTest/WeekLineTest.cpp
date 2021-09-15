@@ -54,11 +54,11 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(dl.GetStockSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CWeekLineTest, TestGetStockName) {
+	TEST_F(CWeekLineTest, TestGetDisplaySymbol) {
 		CWeekLine dl;
-		EXPECT_STREQ(dl.GetStockName(), _T(""));
-		dl.SetStockName(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		dl.SetDisplaySymbol(_T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
 	}
 
 	TEST_F(CWeekLineTest, TestGetLastClose) {
@@ -569,7 +569,7 @@ namespace StockAnalysisTest {
 
 		id.SetDate(21101101);
 		id.SetStockSymbol(_T("600008.SS"));
-		id.SetStockName(_T("首创股份"));
+		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -804,7 +804,7 @@ namespace StockAnalysisTest {
 
 		id.SetDate(21101101);
 		id.SetStockSymbol(_T("600008.SS"));
-		id.SetStockName(_T("首创股份"));
+		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -867,7 +867,7 @@ namespace StockAnalysisTest {
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
 		id.SetStockSymbol(_T("600000.SS"));
-		id.SetStockName(_T("浦发银行"));
+		id.SetDisplaySymbol(_T("浦发银行"));
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);
@@ -899,7 +899,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetTime(100100100100);
 		pDayLine->SetDate(20200202);
 		pDayLine->SetStockSymbol(_T("600000.SS"));
-		pDayLine->SetStockName(_T("浦发银行"));
+		pDayLine->SetDisplaySymbol(_T("浦发银行"));
 
 		pDayLine->SetOpen(1010);
 		pDayLine->SetClose(2020);
@@ -985,7 +985,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(weekLine.GetFormatedMarketDate(), GetCurrentMonday(pDayLine->GetFormatedMarketDate())) << "周线日期总是当周的星期一";
 		EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
 		EXPECT_STREQ(weekLine.GetStockSymbol(), pDayLine->GetStockSymbol());
-		EXPECT_STREQ(weekLine.GetStockName(), pDayLine->GetStockName());
+		EXPECT_STREQ(weekLine.GetDisplaySymbol(), pDayLine->GetDisplaySymbol());
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
@@ -1059,7 +1059,7 @@ namespace StockAnalysisTest {
 		pDayLine1->SetTime(100100100100);
 		pDayLine1->SetDate(20200727);
 		pDayLine1->SetStockSymbol(_T("60000.SS"));
-		pDayLine1->SetStockName(_T("浦发银"));
+		pDayLine1->SetDisplaySymbol(_T("浦发银"));
 
 		pDayLine1->SetOpen(1010);
 		pDayLine1->SetClose(2020);
@@ -1151,7 +1151,7 @@ namespace StockAnalysisTest {
 		pDayLine2->SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
 		pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
 		pDayLine2->SetStockSymbol(_T("600000.SS")); // 与第一个数据pDayLine1不同。
-		pDayLine2->SetStockName(_T("浦发银行"));// 与第一个数据pDayLine1不同。
+		pDayLine2->SetDisplaySymbol(_T("浦发银行"));// 与第一个数据pDayLine1不同。
 
 		pDayLine2->SetOpen(10100);
 		pDayLine2->SetClose(20200);
@@ -1248,9 +1248,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime()) << "使用第一个数据的时间";
 		EXPECT_NE(weekLine.GetFormatedMarketTime(), pDayLine2->GetFormatedMarketTime()) << "使用第一个数据的时间";
 		EXPECT_STREQ(weekLine.GetStockSymbol(), pDayLine1->GetStockSymbol()) << "股票代码不为空时，不更改";
-		EXPECT_STREQ(weekLine.GetStockName(), pDayLine1->GetStockName()) << "股票名称不为空时，不更改";
+		EXPECT_STREQ(weekLine.GetDisplaySymbol(), pDayLine1->GetDisplaySymbol()) << "股票名称不为空时，不更改";
 		EXPECT_STRNE(weekLine.GetStockSymbol(), pDayLine2->GetStockSymbol()) << "股票代码不为空时，不更改";
-		EXPECT_STRNE(weekLine.GetStockName(), pDayLine2->GetStockName()) << "股票名称不为空时，不更改";
+		EXPECT_STRNE(weekLine.GetDisplaySymbol(), pDayLine2->GetDisplaySymbol()) << "股票名称不为空时，不更改";
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
 		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());

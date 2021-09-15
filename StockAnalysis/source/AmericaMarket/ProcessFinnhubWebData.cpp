@@ -250,7 +250,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine = make_shared<CDayLine>();
 			pDayLine->SetExchange(pStock->GetExchangeCode());
 			pDayLine->SetStockSymbol(pStock->GetSymbol());
-			pDayLine->SetStockName(pStock->GetTicker());
+			pDayLine->SetDisplaySymbol(pStock->GetTicker());
 			pDayLine->SetTime(tTemp);
 			lTemp = FormatToDate(tTemp);
 			pDayLine->SetDate(lTemp);

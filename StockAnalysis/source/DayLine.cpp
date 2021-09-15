@@ -89,7 +89,7 @@ bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBa
 	psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
 	psetDayLineBasicInfo->m_Exchange = GetExchange();
 	psetDayLineBasicInfo->m_Symbol = GetStockSymbol();
-	psetDayLineBasicInfo->m_SymbolName = GetStockName();
+	psetDayLineBasicInfo->m_DisplaySymbol = GetDisplaySymbol();
 	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
 	psetDayLineBasicInfo->m_High = ConvertValueToString(GetHigh(), 1000);
 	psetDayLineBasicInfo->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -123,7 +123,7 @@ bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayL
 	m_lDate = psetDayLineBasicInfo->m_Date;
 	m_strExchange = psetDayLineBasicInfo->m_Exchange;
 	m_strStockSymbol = psetDayLineBasicInfo->m_Symbol;
-	m_strStockName = psetDayLineBasicInfo->m_SymbolName;
+	m_strDisplaySymbol = psetDayLineBasicInfo->m_DisplaySymbol;
 	m_lLastClose = atof(psetDayLineBasicInfo->m_LastClose) * 1000;
 	m_lOpen = atof(psetDayLineBasicInfo->m_Open) * 1000;
 	m_lHigh = atof(psetDayLineBasicInfo->m_High) * 1000;
@@ -149,7 +149,7 @@ bool CDayLine::SaveWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldSto
 	psetWorldStockDayLine->m_Date = GetFormatedMarketDate();
 	psetWorldStockDayLine->m_Exchange = GetExchange();
 	psetWorldStockDayLine->m_Symbol = GetStockSymbol();
-	psetWorldStockDayLine->m_SymbolName = GetStockName();
+	psetWorldStockDayLine->m_DisplaySymbol = GetDisplaySymbol();
 	psetWorldStockDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
 	psetWorldStockDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
 	psetWorldStockDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -183,7 +183,7 @@ bool CDayLine::LoadWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldSto
 	m_lDate = psetWorldStockDayLine->m_Date;
 	m_strExchange = psetWorldStockDayLine->m_Exchange;
 	m_strStockSymbol = psetWorldStockDayLine->m_Symbol;
-	m_strStockName = psetWorldStockDayLine->m_SymbolName;
+	m_strDisplaySymbol = psetWorldStockDayLine->m_DisplaySymbol;
 	m_lLastClose = atof(psetWorldStockDayLine->m_LastClose) * 1000;
 	m_lOpen = atof(psetWorldStockDayLine->m_Open) * 1000;
 	m_lHigh = atof(psetWorldStockDayLine->m_High) * 1000;
@@ -327,7 +327,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, vector<char>& pBuffer, I
 	str = strStockCode.Left(2);
 	if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
 	str = buffer2;
-	SetStockName(str);
+	SetDisplaySymbol(str);
 
 	if (!ReadOneValueOfNeteaseDayLine(pBuffer, buffer2, lCurrentPos)) return false;
 	dTemp = atof(buffer2);

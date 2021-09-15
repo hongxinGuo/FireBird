@@ -169,7 +169,7 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	for (auto& pDayLine2 : vDayLine) {
 		pDayLine2->SetExchange(pStock->GetExchangeCode());
 		pDayLine2->SetStockSymbol(pStock->GetSymbol());
-		pDayLine2->SetStockName(pStock->GetTicker());
+		pDayLine2->SetDisplaySymbol(pStock->GetTicker());
 	}
 	pStock->UpdateDayLine(vDayLine);
 	pStock->SetDayLineNeedUpdate(false);

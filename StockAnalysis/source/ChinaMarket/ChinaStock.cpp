@@ -200,7 +200,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
 		}
 		if (!IsActive()) { // 新的股票代码？
 			// 生成新股票
-			SetTodayActive(pDayLine->GetStockSymbol(), pDayLine->GetStockName());
+			SetTodayActive(pDayLine->GetStockSymbol(), pDayLine->GetDisplaySymbol());
 			TRACE("下载日线函数生成新的活跃股票%s\n", GetSymbol().GetBuffer());
 		}
 		vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
@@ -279,7 +279,7 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
 	psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
 	psetDayLineBasicInfo->m_Exchange = GetExchangeCode();
 	psetDayLineBasicInfo->m_Symbol = m_strSymbol;
-	psetDayLineBasicInfo->m_SymbolName = m_strDisplaySymbol;
+	psetDayLineBasicInfo->m_DisplaySymbol = m_strDisplaySymbol;
 	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
 	psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
 	psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);

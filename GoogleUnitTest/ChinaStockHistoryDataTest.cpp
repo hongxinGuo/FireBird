@@ -61,11 +61,11 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(dl.GetStockSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CChinaStockHistoryDataTest, TestGetStockName) {
+	TEST_F(CChinaStockHistoryDataTest, TestGetDisplaySymbol) {
 		CChinaStockHistoryData dl;
-		EXPECT_STREQ(dl.GetStockName(), _T(""));
-		dl.SetStockName(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		dl.SetDisplaySymbol(_T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
 	}
 
 	TEST_F(CChinaStockHistoryDataTest, TestGetLastClose) {

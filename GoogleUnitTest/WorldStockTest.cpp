@@ -368,14 +368,14 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestGetDescription) {
 		CWorldStock stock;
-		EXPECT_STREQ(stock.GetDescription(), _T(" "));
+		EXPECT_STREQ(stock.GetDescription(), _T(""));
 		stock.SetDescription(_T("abcdef"));
 		EXPECT_STREQ(stock.GetDescription(), _T("abcdef"));
 	}
 
 	TEST_F(CWorldStockTest, TestGetDisplaySymbol) {
 		CWorldStock stock;
-		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(" "));
+		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		stock.SetDisplaySymbol(_T("abcdef"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("abcdef"));
 	}

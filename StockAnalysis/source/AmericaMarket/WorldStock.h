@@ -69,10 +69,6 @@ public:
 	void SetInsiderTransactionNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
 	bool IsInsiderTransactionNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false); return fNeedSave; }
 
-	CString GetDescription(void) const { return m_strDescription; }
-	void SetDescription(CString strDescription) { m_strDescription = strDescription; }
-	CString GetDisplaySymbol(void) const { return m_strDisplaySymbol; }
-	void SetDisplaySymbol(CString strDisplaySymbol) { m_strDisplaySymbol = strDisplaySymbol; }
 	CString GetType(void) const { return m_strType; }
 	void SetType(CString strType) { m_strType = strType; }
 	CString GetMic(void) const { return m_strMic; }
@@ -178,8 +174,6 @@ public:
 
 protected:
 	// Finnhub symbol–≈œ¢
-	CString m_strDescription;
-	CString m_strDisplaySymbol;
 	CString m_strType;
 	CString m_strMic;
 	CString m_strFigi;

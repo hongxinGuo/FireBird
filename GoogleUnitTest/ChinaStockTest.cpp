@@ -1416,7 +1416,7 @@ namespace StockAnalysisTest {
 		pid = make_shared<CDayLine>();
 		pid->SetDate(21900101);
 		pid->SetStockSymbol(_T("600011.SS"));
-		pid->SetStockName(_T("首创股份"));
+		pid->SetDisplaySymbol(_T("首创股份"));
 		pid->SetLastClose(34235345);
 		pid->SetOpen(1000000);
 		pid->SetHigh(45234543);
@@ -1638,7 +1638,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21101201);
 			pid->SetStockSymbol(_T("600016.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -1707,7 +1707,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21101201);
 			pid->SetStockSymbol(_T("600010.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -1773,7 +1773,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
 			pid->SetStockSymbol(_T("600004.SS"));
-			pid->SetStockName(_T("白云机场"));
+			pid->SetDisplaySymbol(_T("白云机场"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -1812,7 +1812,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
 			pid->SetStockSymbol(_T("600008.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -1851,7 +1851,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
 			pid->SetStockSymbol(_T("600008.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2137,7 +2137,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21101201);
 			pid->SetStockSymbol(_T("600016.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
@@ -2206,7 +2206,7 @@ namespace StockAnalysisTest {
 			pid = make_shared<CWeekLine>();
 			pid->SetDate(21101201);
 			pid->SetStockSymbol(_T("600010.SS"));
-			pid->SetStockName(_T("首创股份"));
+			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);

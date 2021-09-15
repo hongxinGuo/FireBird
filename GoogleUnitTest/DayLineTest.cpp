@@ -53,11 +53,11 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(dl.GetStockSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CStockDayLineTest, TestGetStockName) {
+	TEST_F(CStockDayLineTest, TestGetDisplaySymbol) {
 		CDayLine dl;
-		EXPECT_STREQ(dl.GetStockName(), _T(""));
-		dl.SetStockName(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		dl.SetDisplaySymbol(_T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
 	}
 
 	TEST_F(CStockDayLineTest, TestGetLastClose) {
@@ -565,7 +565,7 @@ namespace StockAnalysisTest {
 
 		id.SetDate(21101101);
 		id.SetStockSymbol(_T("600008.SS"));
-		id.SetStockName(_T("首创股份"));
+		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -648,7 +648,7 @@ namespace StockAnalysisTest {
 
 		id.SetDate(21101101);
 		id.SetStockSymbol(_T("600008.SS"));
-		id.SetStockName(_T("首创股份"));
+		id.SetDisplaySymbol(_T("首创股份"));
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -722,7 +722,7 @@ namespace StockAnalysisTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
 		id.SetStockSymbol(_T("600000.SS"));
-		id.SetStockName(_T("浦发银行"));
+		id.SetDisplaySymbol(_T("浦发银行"));
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);

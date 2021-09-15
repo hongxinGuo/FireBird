@@ -23,8 +23,6 @@ void CWorldStock::Reset(void) {
 	m_strMic = _T(" ");
 	m_strFigi = _T(" ");
 	m_strCountry = _T(" ");
-	m_strDescription = _T(" ");
-	m_strDisplaySymbol = _T(" ");
 	m_strListedExchange = _T(" ");
 	m_strFinnhubIndustry = _T(" ");
 	m_strPeer = _T(" ");

@@ -1,4 +1,4 @@
-// VirtualSetDayLine.h : CVirtualSetHistoryCandle 的声明
+// VirtualSetHistoryCandle.h : CVirtualSetHistoryCandle 的声明
 //
 // 所有的历史数据库，皆准备使用此类为基类，以简化存储过程。
 //
@@ -28,7 +28,7 @@ public:
 	long m_Date;	//成交时间，以日期表示，如20090222即2009年2月22日
 	CString m_Exchange; // 交易所名称（股票是交易所的两位代码，Forex和Crypto则是交易所名称）
 	CString m_Symbol;	//代码
-	CStringW m_SymbolName;	//股票名称，中国股票则是中文名称。   这里必须采用CStringW(Unicode)制式，否则有些中文无法显示，导致数据库无法存储
+	CStringW m_DisplaySymbol;	//股票名称，中国股票则是中文名称。   这里必须采用CStringW(Unicode)制式，否则有些中文无法显示，导致数据库无法存储
 	CString m_LastClose;	//昨天收盘价。单位：0.001元
 	CString m_Open;	//今天开盘价
 	CString m_High;	//今天最高价
