@@ -16,13 +16,12 @@ public:
 	virtual bool SaveData(CString strStockSymbol) override;
 
 	bool SaveWeekLine(void);
+	bool SaveCurrentWeekLine(void);
 	bool SaveBasicInfo(void);
 	bool SaveExtendInfo(void);
 	bool LoadWeekLine(CString strStockSymbol);
 	bool LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-	bool LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
-
-	bool SaveCurrentWeekLine(void);
+	bool LoadExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo);
 
 	void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);
 	bool UpdateData(CDayLinePtr pDayLine);

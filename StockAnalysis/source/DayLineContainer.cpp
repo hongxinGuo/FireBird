@@ -142,7 +142,7 @@ bool CDayLineContainer::LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> p
 			pDayLine = GetData(iPosition);
 		}
 		if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
-			pDayLine->LoadChinaMarketExtendData(psetDayLineExtendInfo);
+			pDayLine->LoadExtendData(psetDayLineExtendInfo);
 		}
 		if (GetDataSize() <= (iPosition + 1)) break;
 		psetDayLineExtendInfo->MoveNext();

@@ -3,8 +3,6 @@
 
 #include "FinnhubForexSymbol.h"
 
-int CFinnhubForexSymbol::s_iRatio = 1000;
-
 CFinnhubForexSymbol::CFinnhubForexSymbol() : CVirtualStock() {
 	Reset();
 }

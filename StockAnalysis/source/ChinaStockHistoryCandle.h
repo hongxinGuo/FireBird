@@ -6,9 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"Accessory.h"
-
 #include"VirtualHistoryCandle.h"
+#include"VirtualSetHistoryCandleExtend.h"
 
 using namespace std;
 #include<memory>
@@ -21,6 +20,10 @@ public:
 	CChinaStockHistoryCandle();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	virtual int GetRatio(void) const override final { return 1000; };
+
+	virtual bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
 public:
 	long GetTransactionNumber(void) const noexcept { return m_lTransactionNumber; }
@@ -151,9 +154,7 @@ public:
 	void SetCanceledSellVolumeBelow50000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow50000 = lValue; }
 	void SetCanceledSellVolumeBelow100000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow100000 = lValue; }
 	void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
-	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
-
-private:
+	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
 protected:
 	long m_lOrdinaryBuyVolume; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
@@ -221,6 +222,4 @@ protected:
 	INT64 m_lCanceledSellVolumeBelow100000; // 本交易周低于100000股的撤单股数
 	INT64 m_lCanceledSellVolumeBelow200000; //
 	INT64 m_lCanceledSellVolumeAbove200000; //
-
-private:
 };

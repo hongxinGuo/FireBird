@@ -2006,7 +2006,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 			setDayLineExtendInfo.MoveNext();
 		}
 		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
-			pDayLine->LoadChinaMarketExtendData(&setDayLineExtendInfo);
+			pDayLine->LoadExtendData(&setDayLineExtendInfo);
 		}
 		dayLineContainer.StoreData(pDayLine);
 		setDayLineBasicInfo.MoveNext();

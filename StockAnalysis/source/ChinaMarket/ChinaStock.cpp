@@ -21,8 +21,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-int CChinaStock::s_iRatio = 1000; // 中国股票的实时价格放大了1000倍。
-
 CChinaStock::CChinaStock() {
 	Reset();
 }
@@ -275,24 +273,12 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 }
 
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+	CDayLine dayLine;
+
 	ASSERT(psetDayLineBasicInfo->IsOpen());
-	psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
-	psetDayLineBasicInfo->m_Exchange = GetExchangeCode();
-	psetDayLineBasicInfo->m_Symbol = m_strSymbol;
-	psetDayLineBasicInfo->m_DisplaySymbol = m_strDisplaySymbol;
-	psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
-	psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
-	psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);
-	psetDayLineBasicInfo->m_Low = ConvertValueToString(m_lLow, 1000);
-	psetDayLineBasicInfo->m_Close = ConvertValueToString(m_lNew, 1000);
-	psetDayLineBasicInfo->m_Volume = ConvertValueToString(m_llVolume);
-	psetDayLineBasicInfo->m_Amount = ConvertValueToString(m_llAmount);
-	psetDayLineBasicInfo->m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
-	psetDayLineBasicInfo->m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-	if (m_llTotalValue != 0) psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(static_cast<double>(100) * m_llAmount / m_llTotalValue);
-	else psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(0);
-	psetDayLineBasicInfo->m_TotalValue = ConvertValueToString(m_llTotalValue);
-	psetDayLineBasicInfo->m_CurrentValue = ConvertValueToString(m_llCurrentValue);
+
+	UpdateCurrentHistoryCandle(&dayLine);
+	dayLine.SaveHistoryCandle(psetDayLineBasicInfo);
 }
 
 void CChinaStock::SaveTempInfo(CSetDayLineTemp& setDayLineTemp) {
@@ -376,6 +362,96 @@ void CChinaStock::SaveTempInfo(CSetDayLineTemp& setDayLineTemp) {
 	setDayLineTemp.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
+void CChinaStock::UpdateCurrentHistoryCandle(CChinaStockHistoryCandle* pChinaStockHistoryCandle) {
+	pChinaStockHistoryCandle->SetDate(FormatToDate(m_TransactionTime));
+	pChinaStockHistoryCandle->SetExchange(m_strExchangeCode);
+	pChinaStockHistoryCandle->SetStockSymbol(m_strSymbol);
+	pChinaStockHistoryCandle->SetDisplaySymbol(m_strDisplaySymbol);
+	pChinaStockHistoryCandle->SetLastClose(m_lLastClose);
+	pChinaStockHistoryCandle->SetOpen(m_lOpen);
+	pChinaStockHistoryCandle->SetHigh(m_lHigh);
+	pChinaStockHistoryCandle->SetLow(m_lLow);
+	pChinaStockHistoryCandle->SetClose(m_lNew);
+	pChinaStockHistoryCandle->SetVolume(m_llVolume);
+	pChinaStockHistoryCandle->SetAmount(m_llAmount);
+	pChinaStockHistoryCandle->SetUpDown(m_lUpDown);
+	pChinaStockHistoryCandle->SetUpDownRate(m_dUpDownRate);
+	if (m_llTotalValue != 0) {
+		pChinaStockHistoryCandle->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue);
+	}
+	else {
+		pChinaStockHistoryCandle->SetChangeHandRate(0.0);
+	}
+	pChinaStockHistoryCandle->SetTotalValue(m_llTotalValue);
+	pChinaStockHistoryCandle->SetCurrentValue(m_llCurrentValue);
+
+	pChinaStockHistoryCandle->SetTransactionNumber(m_lTransactionNumber);
+	pChinaStockHistoryCandle->SetTransactionNumberBelow5000(m_lTransactionNumberBelow5000);
+	pChinaStockHistoryCandle->SetTransactionNumberBelow50000(m_lTransactionNumberBelow50000);
+	pChinaStockHistoryCandle->SetTransactionNumberBelow200000(m_lTransactionNumberBelow200000);
+	pChinaStockHistoryCandle->SetTransactionNumberAbove200000(m_lTransactionNumberAbove200000);
+
+	pChinaStockHistoryCandle->SetCanceledBuyVolume(m_lCanceledBuyVolume);
+	pChinaStockHistoryCandle->SetCanceledSellVolume(m_lCanceledSellVolume);
+	pChinaStockHistoryCandle->SetAttackBuyVolume(m_lAttackBuyVolume);
+	pChinaStockHistoryCandle->SetAttackSellVolume(m_lAttackSellVolume);
+	pChinaStockHistoryCandle->SetStrongBuyVolume(m_lStrongBuyVolume);
+	pChinaStockHistoryCandle->SetStrongSellVolume(m_lStrongSellVolume);
+	pChinaStockHistoryCandle->SetUnknownVolume(m_lUnknownVolume);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolume(m_lOrdinaryBuyVolume);
+	pChinaStockHistoryCandle->SetOrdinarySellVolume(m_lOrdinarySellVolume);
+	pChinaStockHistoryCandle->SetAttackBuyBelow50000(m_lAttackBuyBelow50000);
+	pChinaStockHistoryCandle->SetAttackBuyBelow200000(m_lAttackBuyBelow200000);
+	pChinaStockHistoryCandle->SetAttackBuyAbove200000(m_lAttackBuyAbove200000);
+	pChinaStockHistoryCandle->SetAttackSellBelow50000(m_lAttackSellBelow50000);
+	pChinaStockHistoryCandle->SetAttackSellBelow200000(m_lAttackSellBelow200000);
+	pChinaStockHistoryCandle->SetAttackSellAbove200000(m_lAttackSellAbove200000);
+
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow5000(m_lOrdinaryBuyVolumeBelow5000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow10000(m_lOrdinaryBuyVolumeBelow10000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow20000(m_lOrdinaryBuyVolumeBelow20000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow50000(m_lOrdinaryBuyVolumeBelow50000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow100000(m_lOrdinaryBuyVolumeBelow100000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeBelow200000(m_lOrdinaryBuyVolumeBelow200000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyVolumeAbove200000(m_lOrdinaryBuyVolumeAbove200000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow5000(m_lOrdinarySellVolumeBelow5000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow10000(m_lOrdinarySellVolumeBelow10000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow20000(m_lOrdinarySellVolumeBelow20000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow50000(m_lOrdinarySellVolumeBelow50000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow100000(m_lOrdinarySellVolumeBelow100000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeBelow200000(m_lOrdinarySellVolumeBelow200000);
+	pChinaStockHistoryCandle->SetOrdinarySellVolumeAbove200000(m_lOrdinarySellVolumeAbove200000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow5000(m_lOrdinaryBuyNumberBelow5000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow10000(m_lOrdinaryBuyNumberBelow10000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow20000(m_lOrdinaryBuyNumberBelow20000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow50000(m_lOrdinaryBuyNumberBelow50000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow100000(m_lOrdinaryBuyNumberBelow100000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberBelow200000(m_lOrdinaryBuyNumberBelow200000);
+	pChinaStockHistoryCandle->SetOrdinaryBuyNumberAbove200000(m_lOrdinaryBuyNumberAbove200000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow5000(m_lOrdinarySellNumberBelow5000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow10000(m_lOrdinarySellNumberBelow10000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow20000(m_lOrdinarySellNumberBelow20000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow50000(m_lOrdinarySellNumberBelow50000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow100000(m_lOrdinarySellNumberBelow100000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberBelow200000(m_lOrdinarySellNumberBelow200000);
+	pChinaStockHistoryCandle->SetOrdinarySellNumberAbove200000(m_lOrdinarySellNumberAbove200000);
+
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow5000(m_lCanceledBuyVolumeBelow5000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow10000(m_lCanceledBuyVolumeBelow10000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow20000(m_lCanceledBuyVolumeBelow20000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow50000(m_lCanceledBuyVolumeBelow50000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow100000(m_lCanceledBuyVolumeBelow100000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeBelow200000(m_lCanceledBuyVolumeBelow200000);
+	pChinaStockHistoryCandle->SetCanceledBuyVolumeAbove200000(m_lCanceledBuyVolumeAbove200000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow5000(m_lCanceledSellVolumeBelow5000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow10000(m_lCanceledSellVolumeBelow10000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow20000(m_lCanceledSellVolumeBelow20000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow50000(m_lCanceledSellVolumeBelow50000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow100000(m_lCanceledSellVolumeBelow100000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeBelow200000(m_lCanceledSellVolumeBelow200000);
+	pChinaStockHistoryCandle->SetCanceledSellVolumeAbove200000(m_lCanceledSellVolumeAbove200000);
+}
+
 void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 	SetTransactionTime(pRTData->GetTransactionTime());
 	SetLastClose(pRTData->GetLastClose());
@@ -433,74 +509,11 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 }
 
 void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+	CDayLine dayLine;
+
 	ASSERT(psetDayLineExtendInfo->IsOpen());
-	psetDayLineExtendInfo->m_Date = FormatToDate(m_TransactionTime);
-	psetDayLineExtendInfo->m_Symbol = m_strSymbol;
-	psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-	psetDayLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-	psetDayLineExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-	psetDayLineExtendInfo->m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-	psetDayLineExtendInfo->m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
-
-	psetDayLineExtendInfo->m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
-	psetDayLineExtendInfo->m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
-	psetDayLineExtendInfo->m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-	psetDayLineExtendInfo->m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-	psetDayLineExtendInfo->m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-	psetDayLineExtendInfo->m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-	psetDayLineExtendInfo->m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-	psetDayLineExtendInfo->m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-	psetDayLineExtendInfo->m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-	psetDayLineExtendInfo->m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-	psetDayLineExtendInfo->m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-	psetDayLineExtendInfo->m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-	psetDayLineExtendInfo->m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-	psetDayLineExtendInfo->m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
-
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
-	psetDayLineExtendInfo->m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
-	psetDayLineExtendInfo->m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
-	psetDayLineExtendInfo->m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
-	psetDayLineExtendInfo->m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
-
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
-	psetDayLineExtendInfo->m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
-	psetDayLineExtendInfo->m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
+	UpdateCurrentHistoryCandle(&dayLine);
+	dayLine.SaveExtendData(psetDayLineExtendInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1572,7 +1585,7 @@ bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasic
 	return m_WeekLine.LoadBasicInfo(psetWeekLineBasicInfo);
 }
 
-bool CChinaStock::LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
+bool CChinaStock::LoadWeekLineExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo) {
 	return m_WeekLine.LoadExtendInfo(psetWeekLineExtendInfo);
 }
 

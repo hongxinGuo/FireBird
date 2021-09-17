@@ -5,8 +5,6 @@
 
 #include"SetWorldStockDayLine.h"
 
-int CWorldStock::s_iRatio = 1000;
-
 CWorldStock::CWorldStock() : CVirtualStock() {
 	Reset();
 }

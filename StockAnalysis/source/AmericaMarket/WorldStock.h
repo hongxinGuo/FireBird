@@ -19,7 +19,7 @@ public:
 	CWorldStock();
 	virtual ~CWorldStock();
 	virtual void Reset(void) override;
-	virtual int GetRatio(void) const override { return s_iRatio; }
+	virtual int GetRatio(void) const override final { return 1000; }
 
 public:
 	void Load(CSetWorldStock& setWorldStock);
@@ -218,9 +218,6 @@ protected:
 	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 	bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
 	atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储
-
-private:
-	static int s_iRatio;
 };
 
 typedef shared_ptr<CWorldStock> CWorldStockPtr;

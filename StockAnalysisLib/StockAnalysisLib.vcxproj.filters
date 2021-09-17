@@ -465,6 +465,9 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h">
+      <Filter>头文件\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -629,10 +632,10 @@
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandle.cpp">
       <Filter>源文件\China Market\基类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp">
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandleContainer.cpp">
       <Filter>源文件\China Market\基类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
@@ -785,9 +788,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLineInfo.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineExtendInfo.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTemp.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
@@ -810,9 +810,6 @@
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLinextendInfo.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp">
@@ -867,6 +864,9 @@
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.cpp">
+      <Filter>源文件\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

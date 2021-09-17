@@ -3,8 +3,6 @@
 
 #include "FinnhubCryptoSymbol.h"
 
-int CFinnhubCryptoSymbol::s_iRatio = 1000;
-
 CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() : CVirtualStock() {
 	Reset();
 }

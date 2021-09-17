@@ -85,7 +85,7 @@ bool CWeekLineContainer::SaveExtendInfo(void) {
 	setWeekLineExtendInfo.Open();
 	setWeekLineExtendInfo.m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		(dynamic_pointer_cast<CWeekLine>(pData))->AppendExtendData(&setWeekLineExtendInfo);
+		pData->AppendExtendData(&setWeekLineExtendInfo);
 	}
 	setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 	setWeekLineExtendInfo.Close();
@@ -141,7 +141,7 @@ bool CWeekLineContainer::LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicI
 	return true;
 }
 
-bool CWeekLineContainer::LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
+bool CWeekLineContainer::LoadExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo) {
 	CWeekLinePtr pWeekLine;
 	int iPosition = 0;
 

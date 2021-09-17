@@ -85,6 +85,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.h" />
@@ -213,8 +214,8 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandle.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandleContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
@@ -222,7 +223,6 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLineInfo.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTemp.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRealTimeData.cpp" />
@@ -231,13 +231,13 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEconimicCalendar.cpp" />

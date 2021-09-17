@@ -12,7 +12,7 @@ class CFinnhubCryptoSymbol : public CVirtualStock {
 public:
 	CFinnhubCryptoSymbol();
 	virtual void Reset(void);
-	virtual int GetRatio(void) const override { return s_iRatio; }
+	virtual int GetRatio(void) const override final { return 1000; } // ±ÈÀýÎª1000
 
 	virtual bool UpdateDayLineDB(void);
 	bool SaveDayLine(void);
@@ -31,9 +31,6 @@ public:
 	vector<CDayLinePtr> m_vDayLine;
 
 protected:
-
-private:
-	static int s_iRatio;
 };
 
 typedef shared_ptr<CFinnhubCryptoSymbol> CCryptoSymbolPtr;

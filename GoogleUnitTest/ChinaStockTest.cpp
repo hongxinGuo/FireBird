@@ -760,11 +760,334 @@ namespace StockAnalysisTest {
 		stock.SetCanceledBuyVolume(10101010);
 		EXPECT_EQ(stock.GetCanceledBuyVolume(), 10101010);
 	}
-	TEST_F(CChinaStockTest, TestGetCanceledSellVolume) {
+
+	TEST_F(CChinaStockTest, TestGetTransactionNumber) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetCanceledSellVolume(), 0);
-		stock.SetCanceledSellVolume(10101010);
-		EXPECT_EQ(stock.GetCanceledSellVolume(), 10101010);
+		EXPECT_EQ(stock.GetTransactionNumber(), 0);
+		stock.SetTransactionNumber(10101010);
+		EXPECT_EQ(stock.GetTransactionNumber(), 10101010);
+	}
+
+	TEST_F(CChinaStockTest, TestGetTransactionNumberBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetTransactionNumberBelow5000(), 0);
+		stock.SetTransactionNumberBelow5000(10101010);
+		EXPECT_EQ(stock.GetTransactionNumberBelow5000(), 10101010);
+	}
+
+	TEST_F(CChinaStockTest, TestGetTransactionNumberBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetTransactionNumberBelow50000(), 0);
+		stock.SetTransactionNumberBelow50000(10101010);
+		EXPECT_EQ(stock.GetTransactionNumberBelow50000(), 10101010);
+	}
+
+	TEST_F(CChinaStockTest, TestGetTransactionNumberBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetTransactionNumberBelow200000(), 0);
+		stock.SetTransactionNumberBelow200000(10101010);
+		EXPECT_EQ(stock.GetTransactionNumberBelow200000(), 10101010);
+	}
+
+	TEST_F(CChinaStockTest, TestGetTransactionNumberAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetTransactionNumberAbove200000(), 0);
+		stock.SetTransactionNumberAbove200000(10101010);
+		EXPECT_EQ(stock.GetTransactionNumberAbove200000(), 10101010);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledBuyVolumeBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow5000(), 0);
+		stock.SetCanceledBuyVolumeBelow5000(101010105);
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledBuyVolumeBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow50000(), 0);
+		stock.SetCanceledBuyVolumeBelow50000(101010104);
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledBuyVolumeBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow200000(), 0);
+		stock.SetCanceledBuyVolumeBelow200000(101010103);
+		EXPECT_EQ(stock.GetCanceledBuyVolumeBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledBuyVolumeAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledBuyVolumeAbove200000(), 0);
+		stock.SetCanceledBuyVolumeAbove200000(101010102);
+		EXPECT_EQ(stock.GetCanceledBuyVolumeAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledSellVolumeBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow5000(), 0);
+		stock.SetCanceledSellVolumeBelow5000(101010105);
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledSellVolumeBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow50000(), 0);
+		stock.SetCanceledSellVolumeBelow50000(101010104);
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledSellVolumeBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow200000(), 0);
+		stock.SetCanceledSellVolumeBelow200000(101010103);
+		EXPECT_EQ(stock.GetCanceledSellVolumeBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetCanceledSellVolumeAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetCanceledSellVolumeAbove200000(), 0);
+		stock.SetCanceledSellVolumeAbove200000(101010102);
+		EXPECT_EQ(stock.GetCanceledSellVolumeAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow5000(), 0);
+		stock.SetOrdinaryBuyNumberBelow5000(101010105);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow10000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow10000(), 0);
+		stock.SetOrdinaryBuyNumberBelow10000(101010104);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow10000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow20000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow20000(), 0);
+		stock.SetOrdinaryBuyNumberBelow20000(101010103);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow20000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow50000(), 0);
+		stock.SetOrdinaryBuyNumberBelow50000(101010104);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow100000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow100000(), 0);
+		stock.SetOrdinaryBuyNumberBelow100000(101010105);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow100000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow200000(), 0);
+		stock.SetOrdinaryBuyNumberBelow200000(101010103);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyNumberAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberAbove200000(), 0);
+		stock.SetOrdinaryBuyNumberAbove200000(101010102);
+		EXPECT_EQ(stock.GetOrdinaryBuyNumberAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow5000(), 0);
+		stock.SetOrdinarySellNumberBelow5000(101010105);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow10000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow10000(), 0);
+		stock.SetOrdinarySellNumberBelow10000(101010104);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow10000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow20000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow20000(), 0);
+		stock.SetOrdinarySellNumberBelow20000(101010103);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow20000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow50000(), 0);
+		stock.SetOrdinarySellNumberBelow50000(101010104);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow100000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow100000(), 0);
+		stock.SetOrdinarySellNumberBelow100000(101010105);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow100000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow200000(), 0);
+		stock.SetOrdinarySellNumberBelow200000(101010103);
+		EXPECT_EQ(stock.GetOrdinarySellNumberBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellNumberAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellNumberAbove200000(), 0);
+		stock.SetOrdinarySellNumberAbove200000(101010102);
+		EXPECT_EQ(stock.GetOrdinarySellNumberAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow5000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow5000(101010105);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow10000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow10000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow10000(101010104);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow10000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow20000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow20000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow20000(101010103);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow20000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow50000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow50000(101010104);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow100000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow100000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow100000(101010105);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow100000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow200000(), 0);
+		stock.SetOrdinaryBuyVolumeBelow200000(101010103);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolumeAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeAbove200000(), 0);
+		stock.SetOrdinaryBuyVolumeAbove200000(101010102);
+		EXPECT_EQ(stock.GetOrdinaryBuyVolumeAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow5000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow5000(), 0);
+		stock.SetOrdinarySellVolumeBelow5000(101010105);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow5000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow10000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow10000(), 0);
+		stock.SetOrdinarySellVolumeBelow10000(101010104);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow10000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow20000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow20000(), 0);
+		stock.SetOrdinarySellVolumeBelow20000(101010103);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow20000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow50000(), 0);
+		stock.SetOrdinarySellVolumeBelow50000(101010105);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow50000(), 101010105);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow100000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow100000(), 0);
+		stock.SetOrdinarySellVolumeBelow100000(101010104);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow100000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow200000(), 0);
+		stock.SetOrdinarySellVolumeBelow200000(101010103);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetOrdinarySellVolumeAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetOrdinarySellVolumeAbove200000(), 0);
+		stock.SetOrdinarySellVolumeAbove200000(101010102);
+		EXPECT_EQ(stock.GetOrdinarySellVolumeAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackBuyBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackBuyBelow50000(), 0);
+		stock.SetAttackBuyBelow50000(101010104);
+		EXPECT_EQ(stock.GetAttackBuyBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackBuyBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackBuyBelow200000(), 0);
+		stock.SetAttackBuyBelow200000(101010103);
+		EXPECT_EQ(stock.GetAttackBuyBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackBuyAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackBuyAbove200000(), 0);
+		stock.SetAttackBuyAbove200000(101010102);
+		EXPECT_EQ(stock.GetAttackBuyAbove200000(), 101010102);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackSellBelow50000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackSellBelow50000(), 0);
+		stock.SetAttackSellBelow50000(101010104);
+		EXPECT_EQ(stock.GetAttackSellBelow50000(), 101010104);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackSellBelow200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackSellBelow200000(), 0);
+		stock.SetAttackSellBelow200000(101010103);
+		EXPECT_EQ(stock.GetAttackSellBelow200000(), 101010103);
+	}
+
+	TEST_F(CChinaStockTest, TestGetAttackSellAbove200000) {
+		CChinaStock stock;
+		EXPECT_EQ(stock.GetAttackSellAbove200000(), 0);
+		stock.SetAttackSellAbove200000(101010102);
+		EXPECT_EQ(stock.GetAttackSellAbove200000(), 101010102);
 	}
 
 	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
@@ -1405,6 +1728,182 @@ namespace StockAnalysisTest {
 		setDayLineTemp.Close();
 	}
 
+	TEST_F(CChinaStockTest, TestUpdateHistoryCandle) {
+		CSetDayLineTemp setDayLineTemp;
+		pStock = make_shared<CChinaStock>();
+		CChinaStock stock;
+		CDayLine dayLine;
+
+		pStock->SetHavingFirstRTData(true);
+		pStock->SetTransactionTime(FormatToTTime(20191101));
+		pStock->SetExchangeCode(_T("SS"));
+		pStock->SetSymbol(_T("600000.SS"));
+		pStock->SetDisplaySymbol(_T("ÆÖ¶«ÒøÐÐ"));
+		pStock->SetLastClose(101010);
+		pStock->SetOpen(202020);
+		pStock->SetHigh(303030);
+		pStock->SetLow(404040);
+		pStock->SetNew(505050);
+		pStock->SetVolume(60606060606060);
+		pStock->SetAmount(707070707070707);
+		pStock->SetUpDown(pStock->GetOpen() - pStock->GetNew());
+		pStock->SetUpDownRate((double)pStock->GetUpDown() / pStock->GetLastClose() * 100);
+		pStock->SetCurrentValue(808080808080808);
+		pStock->SetTotalValue(909090909090909);
+
+		pStock->SetTransactionNumber(123435);
+		pStock->SetTransactionNumberBelow5000(45346456);
+		pStock->SetTransactionNumberBelow50000(5698);
+		pStock->SetTransactionNumberBelow200000(67687);
+		pStock->SetTransactionNumberAbove200000(6876);
+		pStock->SetOrdinaryBuyVolume(435);
+		pStock->SetOrdinarySellVolume(560985);
+		pStock->SetAttackBuyBelow50000(54509);
+		pStock->SetAttackBuyBelow200000(45049);
+		pStock->SetAttackBuyAbove200000(34508);
+		pStock->SetAttackSellBelow50000(45896);
+		pStock->SetAttackSellBelow200000(56457);
+		pStock->SetAttackSellAbove200000(8767);
+		pStock->SetAttackBuyAmount(123456654);
+		pStock->SetAttackBuyVolume(23423534);
+		pStock->SetAttackSellAmount(4353454);
+		pStock->SetAttackSellVolume(94589489);
+		pStock->SetCanceledBuyVolume(435245);
+		pStock->SetCanceledSellVolume(45648698);
+		pStock->SetUnknownVolume(4895747);
+		pStock->SetStrongBuyVolume(453456);
+		pStock->SetStrongSellVolume(98976);
+
+		pStock->SetOrdinaryBuyVolumeBelow5000(30);
+		pStock->SetOrdinaryBuyVolumeBelow10000(31);
+		pStock->SetOrdinaryBuyVolumeBelow20000(32);
+		pStock->SetOrdinaryBuyVolumeBelow50000(33);
+		pStock->SetOrdinaryBuyVolumeBelow100000(34);
+		pStock->SetOrdinaryBuyVolumeBelow200000(35);
+		pStock->SetOrdinaryBuyVolumeAbove200000(36);
+		pStock->SetOrdinarySellVolumeBelow5000(37);
+		pStock->SetOrdinarySellVolumeBelow10000(38);
+		pStock->SetOrdinarySellVolumeBelow20000(39);
+		pStock->SetOrdinarySellVolumeBelow50000(40);
+		pStock->SetOrdinarySellVolumeBelow100000(41);
+		pStock->SetOrdinarySellVolumeBelow200000(42);
+		pStock->SetOrdinarySellVolumeAbove200000(43);
+		pStock->SetOrdinaryBuyNumberBelow5000(44);
+		pStock->SetOrdinaryBuyNumberBelow10000(45);
+		pStock->SetOrdinaryBuyNumberBelow20000(46);
+		pStock->SetOrdinaryBuyNumberBelow50000(47);
+		pStock->SetOrdinaryBuyNumberBelow100000(48);
+		pStock->SetOrdinaryBuyNumberBelow200000(49);
+		pStock->SetOrdinaryBuyNumberAbove200000(50);
+		pStock->SetOrdinarySellNumberBelow5000(51);
+		pStock->SetOrdinarySellNumberBelow10000(52);
+		pStock->SetOrdinarySellNumberBelow20000(53);
+		pStock->SetOrdinarySellNumberBelow50000(54);
+		pStock->SetOrdinarySellNumberBelow100000(55);
+		pStock->SetOrdinarySellNumberBelow200000(56);
+		pStock->SetOrdinarySellNumberAbove200000(57);
+
+		pStock->SetCanceledBuyVolumeBelow5000(64);
+		pStock->SetCanceledBuyVolumeBelow10000(65);
+		pStock->SetCanceledBuyVolumeBelow20000(66);
+		pStock->SetCanceledBuyVolumeBelow50000(67);
+		pStock->SetCanceledBuyVolumeBelow100000(68);
+		pStock->SetCanceledBuyVolumeBelow200000(69);
+		pStock->SetCanceledBuyVolumeAbove200000(70);
+		pStock->SetCanceledSellVolumeBelow5000(71);
+		pStock->SetCanceledSellVolumeBelow10000(72);
+		pStock->SetCanceledSellVolumeBelow20000(73);
+		pStock->SetCanceledSellVolumeBelow50000(74);
+		pStock->SetCanceledSellVolumeBelow100000(75);
+		pStock->SetCanceledSellVolumeBelow200000(76);
+		pStock->SetCanceledSellVolumeAbove200000(77);
+
+		pStock->UpdateCurrentHistoryCandle(&dayLine);
+
+		EXPECT_EQ(dayLine.GetFormatedMarketDate(), FormatToDate(pStock->GetTransactionTime()));
+		EXPECT_STREQ(dayLine.GetExchange(), pStock->GetExchangeCode());
+		EXPECT_STREQ(dayLine.GetStockSymbol(), pStock->GetSymbol());
+		EXPECT_STREQ(dayLine.GetDisplaySymbol(), pStock->GetDisplaySymbol());
+		EXPECT_EQ(dayLine.GetLastClose(), pStock->GetLastClose());
+		EXPECT_EQ(dayLine.GetOpen(), pStock->GetOpen());
+		EXPECT_EQ(dayLine.GetHigh(), pStock->GetHigh());
+		EXPECT_EQ(dayLine.GetLow(), pStock->GetLow());
+		EXPECT_EQ(dayLine.GetClose(), pStock->GetNew());
+		EXPECT_EQ(dayLine.GetVolume(), pStock->GetVolume());
+		EXPECT_EQ(dayLine.GetAmount(), pStock->GetAmount());
+		EXPECT_EQ(dayLine.GetUpDown(), pStock->GetUpDown());
+		EXPECT_DOUBLE_EQ(dayLine.GetUpDownRate(), pStock->GetUpDownRate());
+		EXPECT_EQ(dayLine.GetCurrentValue(), pStock->GetCurrentValue());
+		EXPECT_EQ(dayLine.GetTotalValue(), pStock->GetTotalValue());
+
+		EXPECT_EQ(dayLine.GetAttackBuyAbove200000(), pStock->GetAttackBuyAbove200000());
+		EXPECT_EQ(dayLine.GetAttackBuyBelow200000(), pStock->GetAttackBuyBelow200000());
+		EXPECT_EQ(dayLine.GetAttackBuyBelow50000(), pStock->GetAttackBuyBelow50000());
+		EXPECT_EQ(dayLine.GetAttackBuyVolume(), pStock->GetAttackBuyVolume());
+		EXPECT_EQ(dayLine.GetAttackSellAbove200000(), pStock->GetAttackSellAbove200000());
+		EXPECT_EQ(dayLine.GetAttackSellBelow200000(), pStock->GetAttackSellBelow200000());
+		EXPECT_EQ(dayLine.GetAttackSellBelow50000(), pStock->GetAttackSellBelow50000());
+		EXPECT_EQ(dayLine.GetAttackSellVolume(), pStock->GetAttackSellVolume());
+
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolume(), pStock->GetOrdinaryBuyVolume());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolume(), pStock->GetOrdinarySellVolume());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolume(), pStock->GetCanceledBuyVolume());
+		EXPECT_EQ(dayLine.GetCanceledSellVolume(), pStock->GetCanceledSellVolume());
+		EXPECT_EQ(dayLine.GetStrongBuyVolume(), pStock->GetStrongBuyVolume());
+		EXPECT_EQ(dayLine.GetStrongSellVolume(), pStock->GetStrongSellVolume());
+		EXPECT_EQ(dayLine.GetUnknownVolume(), pStock->GetUnknownVolume());
+
+		EXPECT_EQ(dayLine.GetTransactionNumber(), pStock->GetTransactionNumber());
+		EXPECT_EQ(dayLine.GetTransactionNumberAbove200000(), pStock->GetTransactionNumberAbove200000());
+		EXPECT_EQ(dayLine.GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
+		EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
+		EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
+
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow5000(), pStock->GetOrdinaryBuyVolumeBelow5000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow10000(), pStock->GetOrdinaryBuyVolumeBelow10000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow20000(), pStock->GetOrdinaryBuyVolumeBelow20000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow50000(), pStock->GetOrdinaryBuyVolumeBelow50000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow100000(), pStock->GetOrdinaryBuyVolumeBelow100000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeBelow200000(), pStock->GetOrdinaryBuyVolumeBelow200000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyVolumeAbove200000(), pStock->GetOrdinaryBuyVolumeAbove200000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow5000(), pStock->GetOrdinarySellVolumeBelow5000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow10000(), pStock->GetOrdinarySellVolumeBelow10000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow20000(), pStock->GetOrdinarySellVolumeBelow20000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow50000(), pStock->GetOrdinarySellVolumeBelow50000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow100000(), pStock->GetOrdinarySellVolumeBelow100000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeBelow200000(), pStock->GetOrdinarySellVolumeBelow200000());
+		EXPECT_EQ(dayLine.GetOrdinarySellVolumeAbove200000(), pStock->GetOrdinarySellVolumeAbove200000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow5000(), pStock->GetOrdinaryBuyNumberBelow5000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow10000(), pStock->GetOrdinaryBuyNumberBelow10000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow20000(), pStock->GetOrdinaryBuyNumberBelow20000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow50000(), pStock->GetOrdinaryBuyNumberBelow50000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow100000(), pStock->GetOrdinaryBuyNumberBelow100000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberBelow200000(), pStock->GetOrdinaryBuyNumberBelow200000());
+		EXPECT_EQ(dayLine.GetOrdinaryBuyNumberAbove200000(), pStock->GetOrdinaryBuyNumberAbove200000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow5000(), pStock->GetOrdinarySellNumberBelow5000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow10000(), pStock->GetOrdinarySellNumberBelow10000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow20000(), pStock->GetOrdinarySellNumberBelow20000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow50000(), pStock->GetOrdinarySellNumberBelow50000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow100000(), pStock->GetOrdinarySellNumberBelow100000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberBelow200000(), pStock->GetOrdinarySellNumberBelow200000());
+		EXPECT_EQ(dayLine.GetOrdinarySellNumberAbove200000(), pStock->GetOrdinarySellNumberAbove200000());
+
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow5000(), pStock->GetCanceledBuyVolumeBelow5000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow10000(), pStock->GetCanceledBuyVolumeBelow10000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow20000(), pStock->GetCanceledBuyVolumeBelow20000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow50000(), pStock->GetCanceledBuyVolumeBelow50000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow100000(), pStock->GetCanceledBuyVolumeBelow100000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeBelow200000(), pStock->GetCanceledBuyVolumeBelow200000());
+		EXPECT_EQ(dayLine.GetCanceledBuyVolumeAbove200000(), pStock->GetCanceledBuyVolumeAbove200000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow5000(), pStock->GetCanceledSellVolumeBelow5000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow10000(), pStock->GetCanceledSellVolumeBelow10000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow20000(), pStock->GetCanceledSellVolumeBelow20000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow50000(), pStock->GetCanceledSellVolumeBelow50000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow100000(), pStock->GetCanceledSellVolumeBelow100000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
+		EXPECT_EQ(dayLine.GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
+	}
+
 	TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
@@ -2034,7 +2533,7 @@ namespace StockAnalysisTest {
 		CDayLine dayLine;
 		setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
 		setDayLineExtendInfo.Open();
-		dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
+		dayLine.LoadExtendData(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));

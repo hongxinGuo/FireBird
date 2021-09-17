@@ -1,11 +1,16 @@
-// SetWeekLineExtendInfo.h : CSetWeekLineBasicInfo 类的实现
+// VirtualSetHistoryCandleExtend.cpp : CVirtualSetHistoryCandleExtend 类的实现
+
+// CVirtualSetHistoryCandleExtend 实现
 
 #include"pch.h"
+#include"globedef.h"
+#include"accessory.h"
 
-#include "SetWeekLineExtendInfo.h"
-IMPLEMENT_DYNAMIC(CSetWeekLineExtendInfo, CVirtualRecordset)
+#include "VirtualSetHistoryCandleExtend.h"
 
-CSetWeekLineExtendInfo::CSetWeekLineExtendInfo(CString strSchema, CString strTable, CDatabase* pdb)
+IMPLEMENT_DYNAMIC(CVirtualSetHistoryCandleExtend, CVirtualRecordset)
+
+CVirtualSetHistoryCandleExtend::CVirtualSetHistoryCandleExtend(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Date = 0;
@@ -91,7 +96,7 @@ CSetWeekLineExtendInfo::CSetWeekLineExtendInfo(CString strSchema, CString strTab
 	m_nFields = 65;
 }
 
-void CSetWeekLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
+void CVirtualSetHistoryCandleExtend::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。
@@ -164,14 +169,14 @@ void CSetWeekLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetWeekLineBasicInfo 诊断
+// CVirtualSetHistoryCandleExtend 诊断
 
 #ifdef _DEBUG
-void CSetWeekLineExtendInfo::AssertValid() const {
+void CVirtualSetHistoryCandleExtend::AssertValid() const {
 	CVirtualRecordset::AssertValid();
 }
 
-void CSetWeekLineExtendInfo::Dump(CDumpContext& dc) const {
+void CVirtualSetHistoryCandleExtend::Dump(CDumpContext& dc) const {
 	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

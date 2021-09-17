@@ -56,7 +56,7 @@ public:
 	CChinaStock(void);
 	virtual ~CChinaStock(void);
 	virtual void Reset(void) override;
-	virtual int GetRatio(void) const override { return s_iRatio; }
+	virtual int GetRatio(void) const override final { return 1000; }
 
 public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
@@ -116,7 +116,7 @@ public:
 	void SetCanceledSellVolumeBelow50000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow50000 = lValue; }
 	void SetCanceledSellVolumeBelow100000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow100000 = lValue; }
 	void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
-	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
+	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
 	int  GetCurrentTransactionType(void) const noexcept { return m_nCurrentTransactionType; }
 	void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
@@ -275,6 +275,7 @@ public:
 	void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
 	void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
 	void SaveTempInfo(CSetDayLineTemp& setDayLineTemp); // 存储当日计算出的数据
+	void UpdateCurrentHistoryCandle(CChinaStockHistoryCandle* pChinaStockHistoryCandle);
 	void UpdateDayLineStartEndDate(void);
 	void LoadTempInfo(const CSetDayLineTemp& setDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
@@ -285,7 +286,7 @@ public:
 	bool SaveWeekLineBasicInfo();
 	bool SaveWeekLineExtendInfo();
 	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-	bool LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+	bool LoadWeekLineExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo);
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 挂单情况
@@ -559,7 +560,4 @@ protected:
 	INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
 
 	bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
-
-private:
-	static int s_iRatio;
 };

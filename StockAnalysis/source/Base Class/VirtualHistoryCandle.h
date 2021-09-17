@@ -135,9 +135,6 @@ public:
 	double m_d30RS;
 	double m_d60RS;
 	double m_d120RS;
-
-private:
-	// 此类的各继承类都需要有各自的Ratio，故而需要将此静态变量声明为private，不允许其继承类使用。
 };
 
 typedef shared_ptr<CVirtualHistoryCandle> CVirtualHistoryCandlePtr;
