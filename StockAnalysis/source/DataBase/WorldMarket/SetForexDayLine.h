@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include"VirtualSetHistoryCandle.h"
+#include"VirtualSetHistoryCandleBasic.h"
 
-class CSetForexDayLine : public CVirtualSetHistoryCandle
+class CSetForexDayLine : public CVirtualSetHistoryCandleBasic
 {
 public:
 	CSetForexDayLine(CString strSchema = _T("WorldMarket"), CString strTable = _T("forex_dayline"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandle(strSchema, strTable, pDatabase) {
+		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {
 	}
 	DECLARE_DYNAMIC(CSetForexDayLine)
 };

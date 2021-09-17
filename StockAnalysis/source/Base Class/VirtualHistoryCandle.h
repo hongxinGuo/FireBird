@@ -8,7 +8,7 @@
 #pragma once
 
 #include"Accessory.h"
-#include"VirtualSetHistoryCandle.h"
+#include"VirtualSetHistoryCandleBasic.h"
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -22,9 +22,9 @@ public:
 	~CVirtualHistoryCandle();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-	virtual bool SaveHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle);
-	virtual bool AppendHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle);
-	virtual bool LoadHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle);
+	virtual bool SaveHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
+	virtual bool AppendHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
+	virtual bool LoadHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
 
 	virtual int GetRatio(void) const = 0; // 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
 

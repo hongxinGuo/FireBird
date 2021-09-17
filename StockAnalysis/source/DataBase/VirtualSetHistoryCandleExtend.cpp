@@ -42,13 +42,6 @@ CVirtualSetHistoryCandleExtend::CVirtualSetHistoryCandleExtend(CString strSchema
 	m_OrdinaryBuyVolumeBelow100000 = _T("");
 	m_OrdinaryBuyVolumeBelow200000 = _T("");
 	m_OrdinaryBuyVolumeAbove200000 = _T("");
-	m_OrdinaryBuyVolumeBelow5000 = _T("");
-	m_OrdinaryBuyVolumeBelow10000 = _T("");
-	m_OrdinaryBuyVolumeBelow20000 = _T("");
-	m_OrdinaryBuyVolumeBelow50000 = _T("");
-	m_OrdinaryBuyVolumeBelow100000 = _T("");
-	m_OrdinaryBuyVolumeBelow200000 = _T("");
-	m_OrdinaryBuyVolumeAbove200000 = _T("");
 	m_OrdinarySellVolumeBelow5000 = _T("");
 	m_OrdinarySellVolumeBelow10000 = _T("");
 	m_OrdinarySellVolumeBelow20000 = _T("");
@@ -71,13 +64,6 @@ CVirtualSetHistoryCandleExtend::CVirtualSetHistoryCandleExtend(CString strSchema
 	m_OrdinarySellNumberBelow200000 = _T("");
 	m_OrdinarySellNumberAbove200000 = _T("");
 
-	m_CanceledBuyVolumeBelow5000 = _T("");
-	m_CanceledBuyVolumeBelow10000 = _T("");
-	m_CanceledBuyVolumeBelow20000 = _T("");
-	m_CanceledBuyVolumeBelow50000 = _T("");
-	m_CanceledBuyVolumeBelow100000 = _T("");
-	m_CanceledBuyVolumeBelow200000 = _T("");
-	m_CanceledBuyVolumeAbove200000 = _T("");
 	m_CanceledBuyVolumeBelow5000 = _T("");
 	m_CanceledBuyVolumeBelow10000 = _T("");
 	m_CanceledBuyVolumeBelow20000 = _T("");

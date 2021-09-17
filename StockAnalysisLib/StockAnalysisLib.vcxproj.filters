@@ -336,7 +336,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLineInfo.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineBasicInfo.h">
@@ -453,7 +453,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleBasic.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
@@ -466,6 +466,9 @@
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h">
+      <Filter>头文件\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
@@ -785,12 +788,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLineInfo.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTemp.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
@@ -857,7 +854,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleBasic.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp">
@@ -867,6 +864,9 @@
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.cpp">
+      <Filter>源文件\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp">
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

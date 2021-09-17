@@ -33,7 +33,7 @@ bool CWeekLineContainer::SaveWeekLine(void) {
 }
 
 bool CWeekLineContainer::SaveCurrentWeekLine(void) {
-	CCurrentWeekLineInfo setCurrentWeekLineInfo;
+	CSetCurrentWeekLine setCurrentWeekLineInfo;
 	CWeekLinePtr pWeekLine = nullptr;
 
 	ASSERT(m_vHistoryData.size() > 0);

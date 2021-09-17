@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 
 #include"SetOption.h"
-#include"SetCurrentWeekLineInfo.h"
+#include"SetCurrentWeekLine.h"
 #include"SetChinaChoicedStock.h"
 
 #include"WebInquirer.h"
@@ -1602,7 +1602,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
-		CCurrentWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
+		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
@@ -1627,7 +1627,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestSaveLoadCurrentWeekLine) {
-		CCurrentWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
+		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		CWeekLineContainer weekLineContainer, weekLineContainer2;
 

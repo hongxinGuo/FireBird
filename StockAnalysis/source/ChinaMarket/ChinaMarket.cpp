@@ -21,7 +21,7 @@
 #include"SetRSOption.h"
 #include"SetStockSection.h"
 
-#include"SetCurrentWeekLineInfo.h"
+#include"SetCurrentWeekLine.h"
 
 #include"CallableFunction.h"
 
@@ -2154,11 +2154,11 @@ bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //
-// 装载当前周周线表中的所有数据（使用CCurrentWeekLineInfo表）。
+// 装载当前周周线表中的所有数据（使用CSetCurrentWeekLine表）。
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
-	CCurrentWeekLineInfo setCurrentWeekLineInfo;
+	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
@@ -2175,7 +2175,7 @@ bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
-	CCurrentWeekLineInfo setCurrentWeekLineInfo;
+	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
@@ -2190,7 +2190,7 @@ bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
-	CCurrentWeekLineInfo setCurrentWeekLineInfo;
+	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();

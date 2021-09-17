@@ -38,7 +38,7 @@ void CVirtualHistoryCandle::CalculateRSLogarithm1(double dRS) {
 	else m_dRSLogarithm = 50;
 }
 
-bool CVirtualHistoryCandle::SaveHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle) {
+bool CVirtualHistoryCandle::SaveHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle) {
 	ASSERT(pSetHistoryCandle->IsOpen());
 
 	pSetHistoryCandle->m_Date = GetFormatedMarketDate();
@@ -64,7 +64,7 @@ bool CVirtualHistoryCandle::SaveHistoryCandle(not_null<CVirtualSetHistoryCandle*
 	return true;
 }
 
-bool CVirtualHistoryCandle::AppendHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle) {
+bool CVirtualHistoryCandle::AppendHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle) {
 	ASSERT(pSetHistoryCandle->IsOpen());
 	pSetHistoryCandle->AddNew();
 	SaveHistoryCandle(pSetHistoryCandle);
@@ -73,7 +73,7 @@ bool CVirtualHistoryCandle::AppendHistoryCandle(not_null<CVirtualSetHistoryCandl
 	return true;
 }
 
-bool CVirtualHistoryCandle::LoadHistoryCandle(not_null<CVirtualSetHistoryCandle*> pSetHistoryCandle) {
+bool CVirtualHistoryCandle::LoadHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle) {
 	ASSERT(pSetHistoryCandle->IsOpen());
 	m_lDate = pSetHistoryCandle->m_Date;
 	m_strExchange = pSetHistoryCandle->m_Exchange;

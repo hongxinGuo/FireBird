@@ -11,13 +11,13 @@ void CWeekLine::Reset(void) {
 	CChinaStockHistoryCandle::Reset();
 }
 
-bool CWeekLine::AppendCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInfo) {
+bool CWeekLine::AppendCurrentWeekData(CSetCurrentWeekLine* psetCurrentWeekLineInfo) {
 	ASSERT(psetCurrentWeekLineInfo->IsOpen());
 	psetCurrentWeekLineInfo->AddNew();
 	psetCurrentWeekLineInfo->m_Date = GetFormatedMarketDate();
 	psetCurrentWeekLineInfo->m_Exchange = GetExchange();
 	psetCurrentWeekLineInfo->m_Symbol = GetStockSymbol();
-	psetCurrentWeekLineInfo->m_SymbolName = GetDisplaySymbol();
+	psetCurrentWeekLineInfo->m_DisplaySymbol = GetDisplaySymbol();
 	psetCurrentWeekLineInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
 	psetCurrentWeekLineInfo->m_High = ConvertValueToString(GetHigh(), 1000);
 	psetCurrentWeekLineInfo->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -104,12 +104,12 @@ bool CWeekLine::AppendCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineI
 	return true;
 }
 
-bool CWeekLine::LoadCurrentWeekData(CCurrentWeekLineInfo* psetCurrentWeekLineInfo) {
+bool CWeekLine::LoadCurrentWeekData(CSetCurrentWeekLine* psetCurrentWeekLineInfo) {
 	ASSERT(psetCurrentWeekLineInfo->IsOpen());
 	m_lDate = psetCurrentWeekLineInfo->m_Date;
 	m_strExchange = psetCurrentWeekLineInfo->m_Exchange;
 	m_strStockSymbol = psetCurrentWeekLineInfo->m_Symbol;
-	m_strDisplaySymbol = psetCurrentWeekLineInfo->m_SymbolName;
+	m_strDisplaySymbol = psetCurrentWeekLineInfo->m_DisplaySymbol;
 	m_lLastClose = atof(psetCurrentWeekLineInfo->m_LastClose) * 1000;
 	m_lOpen = atof(psetCurrentWeekLineInfo->m_Open) * 1000;
 	m_lHigh = atof(psetCurrentWeekLineInfo->m_High) * 1000;

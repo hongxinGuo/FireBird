@@ -285,7 +285,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTemp& setDayLineTemp) {
 	ASSERT(setDayLineTemp.IsOpen());
 	setDayLineTemp.m_Date = FormatToDate(m_TransactionTime);
 	setDayLineTemp.m_Symbol = m_strSymbol;
-	setDayLineTemp.m_StockName = m_strDisplaySymbol;
+	setDayLineTemp.m_DisplaySymbol = m_strDisplaySymbol;
 	setDayLineTemp.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
 	setDayLineTemp.m_Open = ConvertValueToString(m_lOpen, 1000);
 	setDayLineTemp.m_High = ConvertValueToString(m_lHigh, 1000);
