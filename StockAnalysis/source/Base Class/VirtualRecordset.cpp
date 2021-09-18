@@ -1,7 +1,6 @@
 // CVirtualRecordset.cpp : CVirtualRecordset 类的实现
 
 #include"pch.h"
-#include"globedef.h"
 #include"accessory.h"
 
 #include "VirtualRecordset.h"

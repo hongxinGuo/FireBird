@@ -7,33 +7,33 @@
 #pragma once
 
 #include"Accessory.h"
-#include"ChinaStockHistoryCandle.h"
+#include"VirtualHistoryCandleExtend.h"
 
 using namespace std;
 #include<vector>
 #include<memory>
 #include<atomic>
 
-class CChinaStockHistoryCandleContainer : public CObject {
+class CVirtualHistoryCandleExtendContainer : public CObject {
 public:
-	CChinaStockHistoryCandleContainer();
-	virtual ~CChinaStockHistoryCandleContainer();
+	CVirtualHistoryCandleExtendContainer();
+	virtual ~CVirtualHistoryCandleExtendContainer();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	virtual bool SaveData(CString strStockSymbol) { TRACE(_T("调用了基类SaveData\n")); return false; }
 	virtual bool LoadData(CString strStockSymbol) { TRACE(_T("调用了基类LoadData\n")); return false; }
 
-	void UpdateData(vector<CChinaStockHistoryCandlePtr>& vTempLine);
+	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine);
 
 	void ShowData(CDC* pDC, CRect rectClient);
 
 public:
-	vector<CChinaStockHistoryCandlePtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
+	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
 	size_t GetDataSize(void) const noexcept { return m_vHistoryData.size(); }
-	CChinaStockHistoryCandlePtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
+	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
 	void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
-	bool StoreData(CChinaStockHistoryCandlePtr pData) { m_vHistoryData.push_back(pData); return true; }
+	bool StoreData(CVirtualHistoryCandleExtendPtr pData) { m_vHistoryData.push_back(pData); return true; }
 
 	bool IsDatabaseTodayUpdated(void) const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
@@ -58,7 +58,7 @@ public:
 	void GetRS120(vector<double>& vRS);
 
 protected:
-	vector<CChinaStockHistoryCandlePtr> m_vHistoryData;
+	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;
 
 	atomic_bool m_fDataLoaded; // 数据装载与否标识
 
@@ -68,4 +68,4 @@ protected:
 	bool m_fLoadDataFirst;
 };
 
-typedef shared_ptr<CChinaStockHistoryCandleContainer> CChinaStockHistoryCandleContainerPtr;
+typedef shared_ptr<CVirtualHistoryCandleExtendContainer> CVirtualHistoryCandleExtendContainerPtr;

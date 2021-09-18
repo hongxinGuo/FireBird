@@ -652,7 +652,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __CRYPTO_CANDLES__:
 				if (ProcessFinnhubCryptoCandle(pWebData, m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
-					TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
+					//TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
 				}
 				break;
 			case __ECONOMIC_COUNTRY_LIST__:
@@ -1495,7 +1495,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			m_qFinnhubWebInquiry.push(inquiry);
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
-			TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+			//TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			SetFinnhubCryptoDayLineUpdated(true);

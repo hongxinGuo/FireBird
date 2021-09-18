@@ -2,12 +2,12 @@
 
 #include"WeekLine.h"
 
-#include "ChinaStockHistoryCandleContainer.h"
+#include "VirtualHistoryCandleExtendContainer.h"
 
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 
-class CWeekLineContainer : public CChinaStockHistoryCandleContainer {
+class CWeekLineContainer : public CVirtualHistoryCandleExtendContainer {
 public:
 	CWeekLineContainer();
 	virtual ~CWeekLineContainer();
@@ -26,7 +26,7 @@ public:
 	void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);
 	bool UpdateData(CDayLinePtr pDayLine);
 
-	bool StoreData(CWeekLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryCandle>(pData)); return true; }
+	bool StoreData(CWeekLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CVirtualHistoryCandleExtend>(pData)); return true; }
 	CWeekLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CWeekLine>(m_vHistoryData.at(lIndex)); }
 
 public:

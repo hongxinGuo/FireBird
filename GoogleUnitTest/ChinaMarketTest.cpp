@@ -1677,12 +1677,12 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
-		vector<CChinaStockHistoryCandlePtr> vData;
-		CChinaStockHistoryCandlePtr pData = make_shared<CChinaStockHistoryCandle>();
+		vector<CVirtualHistoryCandleExtendPtr> vData;
+		CVirtualHistoryCandleExtendPtr pData = make_shared<CVirtualHistoryCandleExtend>();
 		pData->SetStockSymbol(_T("600000.SS"));
 		vData.resize(2);
 		vData[0] = pData;
-		pData = make_shared<CChinaStockHistoryCandle>();
+		pData = make_shared<CVirtualHistoryCandleExtend>();
 		pData->SetStockSymbol(_T("600004.SS"));
 		vData[1] = pData;
 

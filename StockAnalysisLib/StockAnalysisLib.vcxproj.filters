@@ -40,9 +40,6 @@
     <Filter Include="头文件\China Market\基础数据类">
       <UniqueIdentifier>{216e664f-2899-404d-a8e5-581d05a0883a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\China Market\基类">
-      <UniqueIdentifier>{a49ebde2-05ee-414e-bc64-d467cc5aa962}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Base Class">
       <UniqueIdentifier>{73ed0066-f487-40d1-a057-73d7bca5baea}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </Filter>
     <Filter Include="源文件\China Market\基础数据类">
       <UniqueIdentifier>{c5eb2e9c-3344-415a-8fd7-bb3cc7e85426}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\China Market\基类">
-      <UniqueIdentifier>{e57a5c4a-5291-4a18-a7d7-9aa946af7324}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\World Market">
       <UniqueIdentifier>{51cfe0a3-c9aa-4c41-bee2-bf50ca399d2a}</UniqueIdentifier>
@@ -294,12 +288,6 @@
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryCandle.h">
-      <Filter>头文件\China Market\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryCandleContainer.h">
-      <Filter>头文件\China Market\基类</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
@@ -471,6 +459,12 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -634,12 +628,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandle.cpp">
-      <Filter>源文件\China Market\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryCandleContainer.cpp">
-      <Filter>源文件\China Market\基类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
       <Filter>源文件\World Market</Filter>
@@ -868,6 +856,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp">
       <Filter>源文件\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp">
+      <Filter>源文件\Base Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

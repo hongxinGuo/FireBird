@@ -2,14 +2,14 @@
 
 #include"DayLine.h"
 #include"WeekLine.h"
-#include "ChinaStockHistoryCandleContainer.h"
+#include "VirtualHistoryCandleExtendContainer.h"
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 
 using namespace std;
 
-class CDayLineContainer : public CChinaStockHistoryCandleContainer {
+class CDayLineContainer : public CVirtualHistoryCandleExtendContainer {
 public:
 	CDayLineContainer();
 	virtual ~CDayLineContainer();
@@ -25,7 +25,7 @@ public:
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine);
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 
-	bool StoreData(CDayLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryCandle>(pData)); return true; }
+	bool StoreData(CDayLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CVirtualHistoryCandleExtend>(pData)); return true; }
 	CDayLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
 
 public:

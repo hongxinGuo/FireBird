@@ -1,13 +1,13 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"ChinaStockHistoryCandleContainer.h"
+#include"VirtualHistoryCandleExtendContainer.h"
 
-CChinaStockHistoryCandleContainer::CChinaStockHistoryCandleContainer() : CObject() {
+CVirtualHistoryCandleExtendContainer::CVirtualHistoryCandleExtendContainer() : CObject() {
 	Reset();
 }
 
-CChinaStockHistoryCandleContainer::~CChinaStockHistoryCandleContainer() {
+CVirtualHistoryCandleExtendContainer::~CVirtualHistoryCandleExtendContainer() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -15,8 +15,8 @@ CChinaStockHistoryCandleContainer::~CChinaStockHistoryCandleContainer() {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CChinaStockHistoryCandleContainer::UpdateData(vector<CChinaStockHistoryCandlePtr>& vTempData) {
-	CChinaStockHistoryCandlePtr pData = nullptr;
+void CVirtualHistoryCandleExtendContainer::UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData) {
+	CVirtualHistoryCandleExtendPtr pData = nullptr;
 	Unload(); // 清除已载入的数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (int i = 0; i < vTempData.size(); i++) {
@@ -26,12 +26,12 @@ void CChinaStockHistoryCandleContainer::UpdateData(vector<CChinaStockHistoryCand
 	SetDataLoaded(true);
 }
 
-void CChinaStockHistoryCandleContainer::ShowData(CDC* pDC, CRect rectClient) {
+void CVirtualHistoryCandleExtendContainer::ShowData(CDC* pDC, CRect rectClient) {
 	constexpr COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	long lHigh = 0;
 	long lDate{ 0 };
-	vector<CChinaStockHistoryCandlePtr>::iterator it = m_vHistoryData.end();
+	vector<CVirtualHistoryCandleExtendPtr>::iterator it = m_vHistoryData.end();
 	it--;
 	int i = 0, y = 0;
 	long lLow = (*it)->GetLow();
@@ -68,7 +68,7 @@ void CChinaStockHistoryCandleContainer::ShowData(CDC* pDC, CRect rectClient) {
 	}
 }
 
-void CChinaStockHistoryCandleContainer::Reset(void) {
+void CVirtualHistoryCandleExtendContainer::Reset(void) {
 	m_vHistoryData.clear();
 
 	m_fDataLoaded = false;
@@ -77,7 +77,7 @@ void CChinaStockHistoryCandleContainer::Reset(void) {
 	m_fLoadDataFirst = false;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRS0(void) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRS0(void) {
 	CalculateRS1(3);
 	CalculateRS1(5);
 	CalculateRS1(10);
@@ -87,7 +87,7 @@ bool CChinaStockHistoryCandleContainer::CalculateRS0(void) {
 	return true;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRSLogarithm0(void) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRSLogarithm0(void) {
 	CalculateRSLogarithm1(3);
 	CalculateRSLogarithm1(5);
 	CalculateRSLogarithm1(10);
@@ -97,7 +97,7 @@ bool CChinaStockHistoryCandleContainer::CalculateRSLogarithm0(void) {
 	return true;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRSIndex0(void) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRSIndex0(void) {
 	CalculateRSIndex1(3);
 	CalculateRSIndex1(5);
 	CalculateRSIndex1(10);
@@ -107,7 +107,7 @@ bool CChinaStockHistoryCandleContainer::CalculateRSIndex0(void) {
 	return true;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRSLogarithm1(INT64 lNumber) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRSLogarithm1(INT64 lNumber) {
 	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -141,7 +141,7 @@ bool CChinaStockHistoryCandleContainer::CalculateRSLogarithm1(INT64 lNumber) {
 	return true;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRS1(INT64 lNumber) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRS1(INT64 lNumber) {
 	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -175,7 +175,7 @@ bool CChinaStockHistoryCandleContainer::CalculateRS1(INT64 lNumber) {
 	return true;
 }
 
-bool CChinaStockHistoryCandleContainer::CalculateRSIndex1(INT64 lNumber) {
+bool CVirtualHistoryCandleExtendContainer::CalculateRSIndex1(INT64 lNumber) {
 	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -209,55 +209,55 @@ bool CChinaStockHistoryCandleContainer::CalculateRSIndex1(INT64 lNumber) {
 	return true;
 }
 
-void CChinaStockHistoryCandleContainer::GetRS1(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS1(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRSIndex1(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRSIndex1(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRSLogarithm1(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRSLogarithm1(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->GetRSLogarithm();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS3(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS3(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get3RS();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS5(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS5(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get5RS();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS10(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS10(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get10RS();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS30(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS30(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get30RS();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS60(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS60(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get60RS();
 	}
 }
 
-void CChinaStockHistoryCandleContainer::GetRS120(vector<double>& vRS) {
+void CVirtualHistoryCandleExtendContainer::GetRS120(vector<double>& vRS) {
 	for (int i = 0; i < m_vHistoryData.size(); i++) {
 		vRS[i] = m_vHistoryData.at(i)->Get120RS();
 	}

@@ -3,12 +3,12 @@
 #include"globedef.h"
 #include "DayLine.h"
 
-CDayLine::CDayLine() : CChinaStockHistoryCandle() {
+CDayLine::CDayLine() : CVirtualHistoryCandleExtend() {
 	Reset();
 }
 
 void CDayLine::Reset(void) {
-	CChinaStockHistoryCandle::Reset();
+	CVirtualHistoryCandleExtend::Reset();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1898,7 +1898,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryCandlePtr>*> pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData) {
 	CString strStockSymbol;
 	vector<CString> vectorStockCode;
 

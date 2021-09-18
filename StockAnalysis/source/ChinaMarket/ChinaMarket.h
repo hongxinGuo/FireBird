@@ -232,7 +232,7 @@ public:
 
 	virtual bool BuildWeekLine(long lStartDate);
 	virtual bool BuildWeekLineOfCurrentWeek(void);
-	bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryCandlePtr>*> pvData);
+	bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
 
 	bool SortStockVector(void);

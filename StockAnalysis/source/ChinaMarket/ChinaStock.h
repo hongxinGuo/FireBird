@@ -275,7 +275,7 @@ public:
 	void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
 	void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
 	void SaveTempInfo(CSetDayLineTemp& setDayLineTemp); // 存储当日计算出的数据
-	void UpdateCurrentHistoryCandle(CChinaStockHistoryCandle* pChinaStockHistoryCandle);
+	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtualHistoryCandleExtend);
 	void UpdateDayLineStartEndDate(void);
 	void LoadTempInfo(const CSetDayLineTemp& setDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
@@ -399,8 +399,8 @@ public:
 	bool CalculateWeekLineRSLogarithm(void);
 
 	// 当前被处理历史数据容器
-	CChinaStockHistoryCandleContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
-	CChinaStockHistoryCandleContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
+	CVirtualHistoryCandleExtendContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
+	CVirtualHistoryCandleExtendContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;

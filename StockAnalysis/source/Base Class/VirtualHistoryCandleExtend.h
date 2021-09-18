@@ -12,12 +12,12 @@
 using namespace std;
 #include<memory>
 
-class CChinaStockHistoryCandle;
-typedef shared_ptr<CChinaStockHistoryCandle> CChinaStockHistoryCandlePtr;
+class CVirtualHistoryCandleExtend;
+typedef shared_ptr<CVirtualHistoryCandleExtend> CVirtualHistoryCandleExtendPtr;
 
-class CChinaStockHistoryCandle : public CVirtualHistoryCandle {
+class CVirtualHistoryCandleExtend : public CVirtualHistoryCandle {
 public:
-	CChinaStockHistoryCandle();
+	CVirtualHistoryCandleExtend();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	virtual int GetRatio(void) const override final { return 1000; };
 

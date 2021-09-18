@@ -1,13 +1,13 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"ChinaStockHistoryCandle.h"
+#include"VirtualHistoryCandleExtend.h"
 
-CChinaStockHistoryCandle::CChinaStockHistoryCandle() : CVirtualHistoryCandle() {
+CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCandle() {
 	Reset();
 }
 
-void CChinaStockHistoryCandle::Reset(void) {
+void CVirtualHistoryCandleExtend::Reset(void) {
 	m_lDate = 0;		// ÀàÐÍ
 	m_time = 0;
 	m_strExchange = _T("");
@@ -77,7 +77,7 @@ void CChinaStockHistoryCandle::Reset(void) {
 	m_lCanceledSellVolumeAbove200000 = 0;
 }
 
-bool CChinaStockHistoryCandle::SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->m_Date = m_lDate;
 	pVirtualSetHistoryCandleExtend->m_Symbol = m_strStockSymbol;
@@ -150,7 +150,7 @@ bool CChinaStockHistoryCandle::SaveExtendData(CVirtualSetHistoryCandleExtend* pV
 	return true;
 }
 
-bool CChinaStockHistoryCandle::AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->AddNew();
 	SaveExtendData(pVirtualSetHistoryCandleExtend);
@@ -158,7 +158,7 @@ bool CChinaStockHistoryCandle::AppendExtendData(CVirtualSetHistoryCandleExtend* 
 	return true;
 }
 
-bool CChinaStockHistoryCandle::LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	m_lTransactionNumber = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumber);
 	m_lTransactionNumberBelow5000 = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumberBelow5000);

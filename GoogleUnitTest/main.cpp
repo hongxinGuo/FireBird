@@ -259,7 +259,7 @@ ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThr
 ExcludeFromCodeCoverage(CFinnhubWebInquiry1, L"CFinnhubWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CQuandlWebInquiry1, L"CQuandlWebInquiry::StartReadingThread");
 
-ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CChinaStockHistoryCandleContainer::ShowData");
+ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualHistoryCandleExtendContainer::ShowData");
 
 #pragma managed(pop)
 

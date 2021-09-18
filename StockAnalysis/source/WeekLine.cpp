@@ -3,12 +3,12 @@
 #include"globedef.h"
 #include "WeekLine.h"
 
-CWeekLine::CWeekLine() : CChinaStockHistoryCandle() {
+CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {
 	Reset();
 }
 
 void CWeekLine::Reset(void) {
-	CChinaStockHistoryCandle::Reset();
+	CVirtualHistoryCandleExtend::Reset();
 }
 
 bool CWeekLine::AppendCurrentWeekData(CSetCurrentWeekLine* psetCurrentWeekLineInfo) {

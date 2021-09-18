@@ -26,7 +26,7 @@ public:
 	CString m_Description;
 	CString m_Exchange;
 	CString m_Symbol;
-	CStringW m_DisplaySymbol; // 这个字段当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
+	CStringW m_DisplaySymbol; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
 	long m_DayLineStartDate;
 	long m_DayLineEndDate;
 	long m_IPOStatus;
