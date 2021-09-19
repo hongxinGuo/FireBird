@@ -51,7 +51,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
@@ -185,7 +185,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />

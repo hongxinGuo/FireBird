@@ -1936,7 +1936,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandle(&setWeekLineBasicInfo);
+		pWeekLine->LoadHistoryCandleBasic(&setWeekLineBasicInfo);
 		while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -1944,7 +1944,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 			setWeekLineExtendInfo.MoveFirst();
 		}
 		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
-			pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
+			pWeekLine->LoadHistoryCandleExtend(&setWeekLineExtendInfo);
 			weekLineContainer.StoreData(pWeekLine);
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -2001,12 +2001,12 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandle(&setDayLineBasicInfo);
+		pDayLine->LoadHistoryCandleBasic(&setDayLineBasicInfo);
 		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
 		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
-			pDayLine->LoadExtendData(&setDayLineExtendInfo);
+			pDayLine->LoadHistoryCandleExtend(&setDayLineExtendInfo);
 		}
 		dayLineContainer.StoreData(pDayLine);
 		setDayLineBasicInfo.MoveNext();
@@ -2035,7 +2035,7 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandle(&setWeekLineBasicInfo);
+		pWeekLine->LoadHistoryCandleBasic(&setWeekLineBasicInfo);
 		weekLineContainer.StoreData(pWeekLine);
 	}
 	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
@@ -2164,7 +2164,7 @@ bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadCurrentWeekData(&setCurrentWeekLineInfo);
+		pWeekLine->LoadHistoryCandle(&setCurrentWeekLineInfo);
 		weekLineContainer.StoreData(pWeekLine);
 		setCurrentWeekLineInfo.MoveNext();
 	}
@@ -2719,7 +2719,7 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
 		setDayLineTemp.AddNew();
-		pStock->SaveTempInfo(setDayLineTemp);
+		pStock->SaveTempInfo(&setDayLineTemp);
 		setDayLineTemp.Update();
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();

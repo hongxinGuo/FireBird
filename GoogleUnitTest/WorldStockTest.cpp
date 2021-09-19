@@ -5,6 +5,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"SetWorldStockDayLine.h"
+
 #include"GeneralCheck.h"
 
 using namespace testing;

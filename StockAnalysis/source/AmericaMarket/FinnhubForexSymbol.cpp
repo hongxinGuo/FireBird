@@ -43,7 +43,7 @@ bool CFinnhubForexSymbol::SaveDayLine() {
 	setForexDayLine.Open();
 	while (!setForexDayLine.IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandle(&setForexDayLine);
+		pDayLine->LoadHistoryCandleBasic(&setForexDayLine);
 		vDayLine.push_back(pDayLine);
 		lSizeOfOldDayLine++;
 		setForexDayLine.MoveNext();
@@ -64,12 +64,12 @@ bool CFinnhubForexSymbol::SaveDayLine() {
 		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
 			if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-				pDayLine->AppendHistoryCandle(&setForexDayLine);
+				pDayLine->AppendHistoryCandleBasic(&setForexDayLine);
 				fNeedUpdate = true;
 			}
 		}
 		else {
-			pDayLine->AppendHistoryCandle(&setForexDayLine);
+			pDayLine->AppendHistoryCandleBasic(&setForexDayLine);
 			fNeedUpdate = true;
 		}
 	}

@@ -17,6 +17,7 @@
 #include"SetWorldChoicedStock.h"
 #include"SetWorldChoicedForex.h"
 #include"SetWorldChoicedCrypto.h"
+#include"SetWorldStockDayLine.h"
 #include"SetCountry.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"

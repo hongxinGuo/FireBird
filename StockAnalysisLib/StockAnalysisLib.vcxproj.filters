@@ -288,7 +288,7 @@
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.h">
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
       <Filter>头文件\Base Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h">
@@ -731,7 +731,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandle.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp">
       <Filter>源文件\Base Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp">

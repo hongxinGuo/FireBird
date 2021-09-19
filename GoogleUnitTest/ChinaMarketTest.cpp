@@ -1545,7 +1545,7 @@ namespace StockAnalysisTest {
 		setDayLine.m_strFilter += strDate;
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
-		pDayLine->AppendHistoryCandle(&setDayLine);
+		pDayLine->AppendHistoryCandleBasic(&setDayLine);
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 
@@ -1610,7 +1610,7 @@ namespace StockAnalysisTest {
 		setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
 		setCurrentWeekLine.Open();
 		setCurrentWeekLine.m_pDatabase->BeginTrans();
-		pWeekLine->AppendCurrentWeekData(&setCurrentWeekLine);
+		pWeekLine->AppendHistoryCandle(&setCurrentWeekLine);
 		setCurrentWeekLine.m_pDatabase->CommitTrans();
 		setCurrentWeekLine.Close();
 

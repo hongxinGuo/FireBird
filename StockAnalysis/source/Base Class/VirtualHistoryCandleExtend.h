@@ -6,8 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualHistoryCandle.h"
+#include"VirtualHistoryCandleBasic.h"
 #include"VirtualSetHistoryCandleExtend.h"
+#include"VirtualSetHistoryCandle.h"
 
 using namespace std;
 #include<memory>
@@ -15,15 +16,20 @@ using namespace std;
 class CVirtualHistoryCandleExtend;
 typedef shared_ptr<CVirtualHistoryCandleExtend> CVirtualHistoryCandleExtendPtr;
 
-class CVirtualHistoryCandleExtend : public CVirtualHistoryCandle {
+class CVirtualHistoryCandleExtend : public CVirtualHistoryCandleBasic {
 public:
 	CVirtualHistoryCandleExtend();
+	~CVirtualHistoryCandleExtend();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	virtual int GetRatio(void) const override final { return 1000; };
 
-	virtual bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
-	virtual bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
-	virtual bool LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool SaveHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool AppendHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool LoadHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+
+	virtual bool SaveHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
+	virtual bool AppendHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
+	virtual bool LoadHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
 
 public:
 	long GetTransactionNumber(void) const noexcept { return m_lTransactionNumber; }

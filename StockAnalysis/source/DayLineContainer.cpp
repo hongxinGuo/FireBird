@@ -29,7 +29,7 @@ bool CDayLineContainer::LoadData(CString strStockSymbol) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockSymbol) {
-	CSetDayLineBasicInfo setDayLineBasicInfo, setDayLineBasicInfo2;
+	CSetDayLineBasicInfo setDayLineBasicInfo;
 	size_t lSize = 0;
 	vector<CDayLinePtr> vDayLine;
 	CDayLinePtr pDayLine = nullptr;
@@ -46,7 +46,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockSymbol) {
 	setDayLineBasicInfo.Open();
 	while (!setDayLineBasicInfo.IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandle(&setDayLineBasicInfo);
+		pDayLine->LoadHistoryCandleBasic(&setDayLineBasicInfo);
 		vDayLine.push_back(pDayLine);
 		lSizeOfOldDayLine++;
 		setDayLineBasicInfo.MoveNext();
@@ -54,25 +54,25 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockSymbol) {
 	setDayLineBasicInfo.Close();
 
 	lCurrentPos = 0;
-	setDayLineBasicInfo2.m_strFilter = _T("[ID] = 1");
-	setDayLineBasicInfo2.Open();
-	setDayLineBasicInfo2.m_pDatabase->BeginTrans();
+	setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
+	setDayLineBasicInfo.Open();
+	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
 		pDayLine = GetData(i);
 		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
 			if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-				pDayLine->AppendHistoryCandle(&setDayLineBasicInfo2);
+				pDayLine->AppendHistoryCandleBasic(&setDayLineBasicInfo);
 				fNeedUpdate = true;
 			}
 		}
 		else {
-			pDayLine->AppendHistoryCandle(&setDayLineBasicInfo2);
+			pDayLine->AppendHistoryCandleBasic(&setDayLineBasicInfo);
 			fNeedUpdate = true;
 		}
 	}
-	setDayLineBasicInfo2.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo2.Close();
+	setDayLineBasicInfo.m_pDatabase->CommitTrans();
+	setDayLineBasicInfo.Close();
 
 	return fNeedUpdate;
 }
@@ -114,7 +114,7 @@ bool CDayLineContainer::LoadDayLineBasicInfo(not_null<CSetDayLineBasicInfo*> pse
 	Unload();
 	while (!psetDayLineBasicInfo->IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandle(psetDayLineBasicInfo);
+		pDayLine->LoadHistoryCandleBasic(psetDayLineBasicInfo);
 		StoreData(pDayLine);
 		psetDayLineBasicInfo->MoveNext();
 	}
@@ -142,7 +142,7 @@ bool CDayLineContainer::LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> p
 			pDayLine = GetData(iPosition);
 		}
 		if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
-			pDayLine->LoadExtendData(psetDayLineExtendInfo);
+			pDayLine->LoadHistoryCandleExtend(psetDayLineExtendInfo);
 		}
 		if (GetDataSize() <= (iPosition + 1)) break;
 		psetDayLineExtendInfo->MoveNext();

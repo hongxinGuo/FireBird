@@ -2,12 +2,6 @@
 
 #include"Accessory.h"
 
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
-#include"SetWorldStockDayLine.h"
-#include"SetForexDayLine.h"
-#include"SetCryptoDayLine.h"
-
 #include"VirtualHistoryCandleExtend.h"
 
 #include<gsl/gsl>

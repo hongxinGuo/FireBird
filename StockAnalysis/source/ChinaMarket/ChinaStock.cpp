@@ -278,88 +278,16 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 
 	UpdateCurrentHistoryCandle(&dayLine);
-	dayLine.SaveHistoryCandle(psetDayLineBasicInfo);
+	dayLine.SaveHistoryCandleBasic(psetDayLineBasicInfo);
 }
 
-void CChinaStock::SaveTempInfo(CSetDayLineTemp& setDayLineTemp) {
-	ASSERT(setDayLineTemp.IsOpen());
-	setDayLineTemp.m_Date = FormatToDate(m_TransactionTime);
-	setDayLineTemp.m_Symbol = m_strSymbol;
-	setDayLineTemp.m_DisplaySymbol = m_strDisplaySymbol;
-	setDayLineTemp.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
-	setDayLineTemp.m_Open = ConvertValueToString(m_lOpen, 1000);
-	setDayLineTemp.m_High = ConvertValueToString(m_lHigh, 1000);
-	setDayLineTemp.m_Low = ConvertValueToString(m_lLow, 1000);
-	setDayLineTemp.m_Close = ConvertValueToString(m_lNew, 1000);
-	setDayLineTemp.m_Volume = ConvertValueToString(m_llVolume);
-	setDayLineTemp.m_Amount = ConvertValueToString(m_llAmount);
-	setDayLineTemp.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
-	setDayLineTemp.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-	setDayLineTemp.m_TotalValue = ConvertValueToString(m_llTotalValue);
-	setDayLineTemp.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
-	setDayLineTemp.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-	setDayLineTemp.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-	setDayLineTemp.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-	setDayLineTemp.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-	setDayLineTemp.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
-	setDayLineTemp.m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
-	setDayLineTemp.m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
-	setDayLineTemp.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-	setDayLineTemp.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-	setDayLineTemp.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-	setDayLineTemp.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-	setDayLineTemp.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-	setDayLineTemp.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-	setDayLineTemp.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-	setDayLineTemp.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-	setDayLineTemp.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-	setDayLineTemp.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-	setDayLineTemp.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-	setDayLineTemp.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-	setDayLineTemp.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
-	setDayLineTemp.m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
-	setDayLineTemp.m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
-	setDayLineTemp.m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
-	setDayLineTemp.m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
-	setDayLineTemp.m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
-	setDayLineTemp.m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
-	setDayLineTemp.m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
-	setDayLineTemp.m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
-	setDayLineTemp.m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
-	setDayLineTemp.m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
-	setDayLineTemp.m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
-	setDayLineTemp.m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
-	setDayLineTemp.m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
+void CChinaStock::SaveTempInfo(CSetDayLineTemp* psetDayLineTemp) {
+	CDayLine dayLine;
 
-	setDayLineTemp.m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
-	setDayLineTemp.m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
-	setDayLineTemp.m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
-	setDayLineTemp.m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
-	setDayLineTemp.m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
-	setDayLineTemp.m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
-	setDayLineTemp.m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
-	setDayLineTemp.m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
-	setDayLineTemp.m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
-	setDayLineTemp.m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
-	setDayLineTemp.m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
-	setDayLineTemp.m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
-	setDayLineTemp.m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
-	setDayLineTemp.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
+	ASSERT(psetDayLineTemp->IsOpen());
+
+	UpdateCurrentHistoryCandle(&dayLine);
+	dayLine.SaveHistoryCandle(psetDayLineTemp);
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtualHistoryCandleExtend) {
@@ -374,7 +302,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtu
 	pVirtualHistoryCandleExtend->SetClose(m_lNew);
 	pVirtualHistoryCandleExtend->SetVolume(m_llVolume);
 	pVirtualHistoryCandleExtend->SetAmount(m_llAmount);
-	pVirtualHistoryCandleExtend->SetUpDown(m_lUpDown);
+	pVirtualHistoryCandleExtend->SetUpDown((double)m_lUpDown / 1000);
 	pVirtualHistoryCandleExtend->SetUpDownRate(m_dUpDownRate);
 	if (m_llTotalValue != 0) {
 		pVirtualHistoryCandleExtend->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue);
@@ -513,7 +441,7 @@ void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendIn
 
 	ASSERT(psetDayLineExtendInfo->IsOpen());
 	UpdateCurrentHistoryCandle(&dayLine);
-	dayLine.SaveExtendData(psetDayLineExtendInfo);
+	dayLine.SaveHistoryCandleExtend(psetDayLineExtendInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////

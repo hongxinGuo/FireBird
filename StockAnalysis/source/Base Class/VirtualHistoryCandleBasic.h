@@ -16,15 +16,15 @@ using namespace gsl;
 using namespace std;
 #include<memory>
 
-class CVirtualHistoryCandle : public CObject {
+class CVirtualHistoryCandleBasic : public CObject {
 public:
-	CVirtualHistoryCandle();
-	~CVirtualHistoryCandle();
+	CVirtualHistoryCandleBasic();
+	~CVirtualHistoryCandleBasic();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-	virtual bool SaveHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
-	virtual bool AppendHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
-	virtual bool LoadHistoryCandle(not_null<CVirtualSetHistoryCandleBasic*> pSetHistoryCandle);
+	virtual bool SaveHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
+	virtual bool AppendHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
+	virtual bool LoadHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
 
 	virtual int GetRatio(void) const = 0; // 此函数应该声明为纯虚函数，但由于需要测试此基类，故而有执行体。感觉还是声明为纯虚函数为佳。
 
@@ -137,4 +137,4 @@ public:
 	double m_d120RS;
 };
 
-typedef shared_ptr<CVirtualHistoryCandle> CVirtualHistoryCandlePtr;
+typedef shared_ptr<CVirtualHistoryCandleBasic> CVirtualHistoryCandleBasicPtr;

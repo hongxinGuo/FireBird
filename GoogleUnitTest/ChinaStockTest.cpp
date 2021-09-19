@@ -1537,7 +1537,7 @@ namespace StockAnalysisTest {
 		setDayLineTemp.m_pDatabase->BeginTrans();
 		setDayLineTemp.AddNew();
 
-		pStock->SaveTempInfo(setDayLineTemp);
+		pStock->SaveTempInfo(&setDayLineTemp);
 		setDayLineTemp.Update();
 		setDayLineTemp.m_pDatabase->CommitTrans();
 		setDayLineTemp.Close();
@@ -1831,7 +1831,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(dayLine.GetClose(), pStock->GetNew());
 		EXPECT_EQ(dayLine.GetVolume(), pStock->GetVolume());
 		EXPECT_EQ(dayLine.GetAmount(), pStock->GetAmount());
-		EXPECT_EQ(dayLine.GetUpDown(), pStock->GetUpDown());
+		EXPECT_DOUBLE_EQ(dayLine.GetUpDown() * dayLine.GetRatio(), pStock->GetUpDown()) << "stock中的UpDown比实际值要放大1000倍";
 		EXPECT_DOUBLE_EQ(dayLine.GetUpDownRate(), pStock->GetUpDownRate());
 		EXPECT_EQ(dayLine.GetCurrentValue(), pStock->GetCurrentValue());
 		EXPECT_EQ(dayLine.GetTotalValue(), pStock->GetTotalValue());
@@ -2032,8 +2032,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pDayLine->GetClose(), pid->GetClose());
 		EXPECT_EQ(pDayLine->GetVolume(), pid->GetVolume());
 		EXPECT_EQ(pDayLine->GetAmount(), pid->GetAmount());
-		EXPECT_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
-		EXPECT_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
+		EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
+		EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
 		EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
 		EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
 		EXPECT_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
@@ -2162,7 +2162,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
-			dayLine.LoadHistoryCandle(&setDayLineBasicInfo);
+			dayLine.LoadHistoryCandleBasic(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
@@ -2533,7 +2533,7 @@ namespace StockAnalysisTest {
 		CDayLine dayLine;
 		setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
 		setDayLineExtendInfo.Open();
-		dayLine.LoadExtendData(&setDayLineExtendInfo);
+		dayLine.LoadHistoryCandleExtend(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
@@ -2660,7 +2660,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		for (int i = 0; i < 10; i++) {
-			stock.LoadHistoryCandle(&setWeekLineBasicInfo);
+			stock.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
 			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());

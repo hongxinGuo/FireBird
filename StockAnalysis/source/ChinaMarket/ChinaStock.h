@@ -274,7 +274,7 @@ public:
 	bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
 	void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
 	void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
-	void SaveTempInfo(CSetDayLineTemp& setDayLineTemp); // 存储当日计算出的数据
+	void SaveTempInfo(CSetDayLineTemp* psetDayLineTemp); // 存储当日计算出的数据
 	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtualHistoryCandleExtend);
 	void UpdateDayLineStartEndDate(void);
 	void LoadTempInfo(const CSetDayLineTemp& setDayLineTemp);

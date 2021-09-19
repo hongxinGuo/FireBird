@@ -20,7 +20,7 @@ public:
 	bool SaveDayLineBasicInfo(CString strStockSymbol);
 	bool LoadDayLine(CString strStockSymbol);
 	bool LoadDayLineBasicInfo(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
-	bool LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> psetDayLineBasicInfo);
+	bool LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo);
 
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine);
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);

@@ -6,6 +6,7 @@
 
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
+#include"SetCurrentWeekLine.h"
 
 CWeekLineContainer::CWeekLineContainer() {
 }
@@ -42,7 +43,7 @@ bool CWeekLineContainer::SaveCurrentWeekLine(void) {
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		(dynamic_pointer_cast<CWeekLine>(pData))->AppendCurrentWeekData(&setCurrentWeekLineInfo);
+		pData->AppendHistoryCandle(&setCurrentWeekLineInfo);
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
@@ -61,7 +62,7 @@ bool CWeekLineContainer::SaveBasicInfo(void) {
 	setWeekLineBasicInfo.Open();
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		pData->AppendHistoryCandle(&setWeekLineBasicInfo);
+		pData->AppendHistoryCandleBasic(&setWeekLineBasicInfo);
 	}
 	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 	setWeekLineBasicInfo.Close();
@@ -85,7 +86,7 @@ bool CWeekLineContainer::SaveExtendInfo(void) {
 	setWeekLineExtendInfo.Open();
 	setWeekLineExtendInfo.m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		pData->AppendExtendData(&setWeekLineExtendInfo);
+		pData->AppendHistoryCandleExtend(&setWeekLineExtendInfo);
 	}
 	setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 	setWeekLineExtendInfo.Close();
@@ -133,7 +134,7 @@ bool CWeekLineContainer::LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicI
 	m_vHistoryData.clear();
 	while (!psetWeekLineBasicInfo->IsEOF()) {
 		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandle(psetWeekLineBasicInfo);
+		pWeekLine->LoadHistoryCandleBasic(psetWeekLineBasicInfo);
 		StoreData(pWeekLine);
 		psetWeekLineBasicInfo->MoveNext();
 	}
@@ -155,7 +156,7 @@ bool CWeekLineContainer::LoadExtendInfo(CVirtualSetHistoryCandleExtend* psetWeek
 			pWeekLine = GetData(iPosition);
 		}
 		if (pWeekLine->GetFormatedMarketDate() == psetWeekLineExtendInfo->m_Date) {
-			pWeekLine->LoadExtendData(psetWeekLineExtendInfo);
+			pWeekLine->LoadHistoryCandleExtend(psetWeekLineExtendInfo);
 		}
 		if (m_vHistoryData.size() <= (iPosition + 1)) break;
 		psetWeekLineExtendInfo->MoveNext();
