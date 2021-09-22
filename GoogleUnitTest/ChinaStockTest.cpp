@@ -2135,7 +2135,7 @@ namespace StockAnalysisTest {
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CDayLine>();
-			pid->SetDate(21101201);
+			pid->SetDate(21111201);
 			pid->SetStockSymbol(_T("600016.SS"));
 			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
@@ -2159,7 +2159,7 @@ namespace StockAnalysisTest {
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
 			dayLine.LoadHistoryCandleBasic(&setDayLineBasicInfo);
@@ -2183,7 +2183,7 @@ namespace StockAnalysisTest {
 		}
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -2204,13 +2204,13 @@ namespace StockAnalysisTest {
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CDayLine>();
-			pid->SetDate(21101201);
+			pid->SetDate(21121201);
 			pid->SetStockSymbol(_T("600010.SS"));
 			pid->SetDisplaySymbol(_T("首创股份"));
 			pid->SetLastClose(34235345);
-			pid->SetOpen(1000000 + i);
+			pid->SetOpen(100000 + i);
 			pid->SetHigh(45234543);
-			pid->SetLow(3452345);
+			pid->SetLow(3452341);
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
@@ -2227,7 +2227,7 @@ namespace StockAnalysisTest {
 		ASSERT(!gl_fNormalMode);
 		pStock->SaveDayLineBasicInfo();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21121201");
 		setDayLineBasicInfo.Open();
 		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
 		for (int i = 0; i < 10; i++) {
@@ -2251,7 +2251,7 @@ namespace StockAnalysisTest {
 		}
 		setDayLineBasicInfo.Close();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21121201");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {
@@ -2664,11 +2664,11 @@ namespace StockAnalysisTest {
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
 			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, pid->GetOpen());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, pid->GetHigh());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * 1000, pid->GetLow());
-			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * 1000, pid->GetClose());
+			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
+			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
+			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
+			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * pid->GetRatio(), pid->GetLow());
+			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * pid->GetRatio(), pid->GetClose());
 			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Volume), pid->GetVolume());
 			EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Amount), pid->GetAmount());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpAndDown), pid->GetUpDown());
@@ -2709,7 +2709,7 @@ namespace StockAnalysisTest {
 			pid->SetLastClose(34235345);
 			pid->SetOpen(1000000 + i);
 			pid->SetHigh(45234543);
-			pid->SetLow(3452345);
+			pid->SetLow(3452342);
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);

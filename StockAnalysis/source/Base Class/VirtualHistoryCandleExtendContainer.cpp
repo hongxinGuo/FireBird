@@ -10,6 +10,125 @@ CVirtualHistoryCandleExtendContainer::CVirtualHistoryCandleExtendContainer() : C
 CVirtualHistoryCandleExtendContainer::~CVirtualHistoryCandleExtendContainer() {
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将日线历史数据存入数据库．默认数据库为空。
+//  此函数被工作线程调用，需要注意数据同步问题。
+// 当存在旧日线历史数据时，本函数只是更新。
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CVirtualHistoryCandleExtendContainer::SaveBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol) {
+	size_t lSize = 0;
+	vector<CVirtualHistoryCandleExtendPtr> vHistoryCandle;
+	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
+	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
+	bool fNeedUpdate = false;
+
+	ASSERT(GetDataSize() > 0);
+
+	lSize = GetDataSize();
+	if (strStockSymbol.GetLength() > 0) {
+		psetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
+		psetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
+		psetHistoryCandleBasic->m_strSort = _T("[Date]");
+
+		psetHistoryCandleBasic->Open();
+		while (!psetHistoryCandleBasic->IsEOF()) {
+			pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
+			pHistoryCandle->LoadHistoryCandleBasic(psetHistoryCandleBasic);
+			vHistoryCandle.push_back(pHistoryCandle);
+			lSizeOfOldDayLine++;
+			psetHistoryCandleBasic->MoveNext();
+		}
+		psetHistoryCandleBasic->Close();
+	}
+	lCurrentPos = 0;
+	psetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
+	psetHistoryCandleBasic->Open();
+	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
+	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+		pHistoryCandle = GetData(i);
+		while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetFormatedMarketDate() < pHistoryCandle->GetFormatedMarketDate())) lCurrentPos++;
+		if (lCurrentPos < lSizeOfOldDayLine) {
+			if (vHistoryCandle.at(lCurrentPos)->GetFormatedMarketDate() > pHistoryCandle->GetFormatedMarketDate()) {
+				pHistoryCandle->AppendHistoryCandleBasic(psetHistoryCandleBasic);
+				fNeedUpdate = true;
+			}
+		}
+		else {
+			pHistoryCandle->AppendHistoryCandleBasic(psetHistoryCandleBasic);
+			fNeedUpdate = true;
+		}
+	}
+	psetHistoryCandleBasic->m_pDatabase->CommitTrans();
+	psetHistoryCandleBasic->Close();
+
+	return fNeedUpdate;
+}
+
+bool CVirtualHistoryCandleExtendContainer::SaveExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend) {
+	ASSERT(m_vHistoryData.size() > 0);
+
+	psetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
+	psetHistoryCandleExtend->Open();
+	psetHistoryCandleExtend->m_pDatabase->BeginTrans();
+	for (auto pData : m_vHistoryData) {
+		pData->AppendHistoryCandleExtend(psetHistoryCandleExtend);
+	}
+	psetHistoryCandleExtend->m_pDatabase->CommitTrans();
+	psetHistoryCandleExtend->Close();
+
+	return true;
+}
+
+bool CVirtualHistoryCandleExtendContainer::LoadBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic) {
+	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
+
+	if (gl_fNormalMode) ASSERT(!m_fLoadDataFirst);
+	ASSERT(psetHistoryCandleBasic->IsOpen());
+
+	// 装入DayLine数据
+	Unload();
+	while (!psetHistoryCandleBasic->IsEOF()) {
+		pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
+		pHistoryCandle->LoadHistoryCandleBasic(psetHistoryCandleBasic);
+		StoreData(pHistoryCandle);
+		psetHistoryCandleBasic->MoveNext();
+	}
+	m_fLoadDataFirst = true;
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 装载ExtendData表必须在装载BasicData表之后。
+//
+//
+////////////////////////////////////////////////////////////////////////////
+bool CVirtualHistoryCandleExtendContainer::LoadExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend) {
+	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
+	int iPosition = 0;
+
+	if (gl_fNormalMode) ASSERT(m_fLoadDataFirst);
+	ASSERT(psetHistoryCandleExtend->IsOpen());
+
+	while (!psetHistoryCandleExtend->IsEOF()) {
+		pHistoryCandle = GetData(iPosition);
+		while ((pHistoryCandle->GetFormatedMarketDate() < psetHistoryCandleExtend->m_Date)
+			&& (GetDataSize() > (iPosition + 1))) {
+			iPosition++;
+			pHistoryCandle = GetData(iPosition);
+		}
+		if (pHistoryCandle->GetFormatedMarketDate() == psetHistoryCandleExtend->m_Date) {
+			pHistoryCandle->LoadHistoryCandleExtend(psetHistoryCandleExtend);
+		}
+		if (GetDataSize() <= (iPosition + 1)) break;
+		psetHistoryCandleExtend->MoveNext();
+	}
+	m_fLoadDataFirst = false;
+	return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // 更新日线容器。

@@ -527,7 +527,7 @@ namespace StockAnalysisTest {
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
-		id.SetLow(3452345);
+		id.SetLow(452345);
 		id.SetClose(452435);
 		id.SetVolume(34523454);
 		id.SetAmount(3245235345);
@@ -611,7 +611,7 @@ namespace StockAnalysisTest {
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
-		id.SetLow(3452345);
+		id.SetLow(3152345);
 		id.SetClose(452435);
 		id.SetVolume(34523454);
 		id.SetAmount(3245235345);

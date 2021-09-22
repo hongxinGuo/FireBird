@@ -357,8 +357,10 @@ public:
 	// 数据库操作
 	bool LoadOption(void);
 	bool LoadWorldExchangeDB(void); // 装入世界交易所信息
+
 	bool LoadStockDB(void);
 	bool LoadWorldChoicedStock(void);
+
 	virtual bool UpdateCountryListDB(void);
 	virtual bool UpdateStockProfileDB(void);
 	virtual bool UpdateStockDayLineDB(void);

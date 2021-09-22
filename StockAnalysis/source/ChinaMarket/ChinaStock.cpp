@@ -302,7 +302,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtu
 	pVirtualHistoryCandleExtend->SetClose(m_lNew);
 	pVirtualHistoryCandleExtend->SetVolume(m_llVolume);
 	pVirtualHistoryCandleExtend->SetAmount(m_llAmount);
-	pVirtualHistoryCandleExtend->SetUpDown((double)m_lUpDown / 1000);
+	pVirtualHistoryCandleExtend->SetUpDown((double)m_lUpDown / GetRatio());
 	pVirtualHistoryCandleExtend->SetUpDownRate(m_dUpDownRate);
 	if (m_llTotalValue != 0) {
 		pVirtualHistoryCandleExtend->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue);
@@ -413,7 +413,9 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveDayLineBasicInfo(void) {
-	return m_DayLine.SaveDayLineBasicInfo(GetSymbol());
+	CSetDayLineBasicInfo setDayLineBasic;
+
+	return m_DayLine.SaveBasicData(&setDayLineBasic, GetSymbol());
 }
 
 void CChinaStock::UpdateDayLineStartEndDate(void) {
@@ -525,17 +527,7 @@ bool CChinaStock::LoadDayLine(CString strStockCode) {
 }
 
 bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
-	return m_DayLine.LoadDayLineBasicInfo(psetDayLineBasicInfo);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// 装载DayLineInfo表必须在装载DayLine表之后。
-//
-//
-////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
-	return m_DayLine.LoadDayLineExtendInfo(psetDayLineExtendInfo);
+	return m_DayLine.LoadBasicData(psetDayLineBasicInfo);
 }
 
 bool CChinaStock::CalculateDayLineRS(void) {
@@ -1488,33 +1480,12 @@ bool CChinaStock::SaveWeekLine() {
 	return m_WeekLine.SaveData(GetSymbol());
 }
 
-bool CChinaStock::SaveWeekLineBasicInfo() {
-	m_WeekLine.SaveBasicInfo();
-
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 只存储有交易记录的扩展数据。对于没有信息的直接跨过。
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::SaveWeekLineExtendInfo() {
-	m_WeekLine.SaveExtendInfo();
-
-	return true;
-}
-
 bool CChinaStock::LoadWeekLine() {
 	return m_WeekLine.LoadData(GetSymbol());
 }
 
 bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
-	return m_WeekLine.LoadBasicInfo(psetWeekLineBasicInfo);
-}
-
-bool CChinaStock::LoadWeekLineExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo) {
-	return m_WeekLine.LoadExtendInfo(psetWeekLineExtendInfo);
+	return m_WeekLine.LoadBasicData(psetWeekLineBasicInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

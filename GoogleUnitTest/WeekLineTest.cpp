@@ -673,11 +673,11 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetFormatedMarketDate());
 		EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, id.GetLastClose());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, id.GetOpen());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, id.GetHigh());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * 1000, id.GetLow());
-		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * 1000, id.GetClose());
+		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
+		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * id.GetRatio(), id.GetOpen());
+		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * id.GetRatio(), id.GetHigh());
+		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * id.GetRatio(), id.GetLow());
+		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * id.GetRatio(), id.GetClose());
 		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Volume), id.GetVolume());
 		EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Amount), id.GetAmount());
 		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpAndDown), id.GetUpDown());
@@ -810,7 +810,7 @@ namespace StockAnalysisTest {
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
-		id.SetLow(3452345);
+		id.SetLow(3452343);
 		id.SetClose(452435);
 		id.SetVolume(34523454);
 		id.SetAmount(3245235345);

@@ -23,6 +23,12 @@ public:
 	virtual bool SaveData(CString strStockSymbol) { TRACE(_T("调用了基类SaveData\n")); return false; }
 	virtual bool LoadData(CString strStockSymbol) { TRACE(_T("调用了基类LoadData\n")); return false; }
 
+	bool SaveBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
+	bool SaveExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+
+	bool LoadBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
+	bool LoadExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+
 	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine);
 
 	void ShowData(CDC* pDC, CRect rectClient);
@@ -31,8 +37,8 @@ public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
 	size_t GetDataSize(void) const noexcept { return m_vHistoryData.size(); }
-	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
 	void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
+	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
 	bool StoreData(CVirtualHistoryCandleExtendPtr pData) { m_vHistoryData.push_back(pData); return true; }
 
 	bool IsDatabaseTodayUpdated(void) const noexcept { return (m_fDatabaseTodayUpdated); }

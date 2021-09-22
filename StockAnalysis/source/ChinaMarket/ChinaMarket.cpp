@@ -1867,7 +1867,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	CreateStockCodeSet(setDayLineStockCode, dayLineContainer.GetContainer());
 
 	DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
-	LoadCurrentWeekLine(weekLineContainer);
+	weekLineContainer.LoadCurrentWeekLine();
 	CreateStockCodeSet(setWeekLineStockCode, weekLineContainer.GetContainer());
 
 	CWeekLinePtr pWeekLine;
@@ -1875,23 +1875,23 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 		if (setWeekLineStockCode.find(pData->GetStockSymbol()) == setWeekLineStockCode.end()) { //周线数据容器中无此日线数据
 			 // 存储此日线数据至周线数据容器
 			pWeekLine = make_shared<CWeekLine>();
-			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(pData));
+			pWeekLine->UpdateWeekLine(pData);
 			weekLineContainer.StoreData(pWeekLine);
 		}
 		else {
 			// 更新周线数据容器
-			weekLineContainer.UpdateData(dynamic_pointer_cast<CDayLine>(pData));
+			weekLineContainer.UpdateData(pData);
 		}
 	}
 
 	// 清除之前的周线数据
 	DeleteWeekLine(lCurrentMonday);
 	// 存储周线数据值周线数据表
-	SaveWeekLine(weekLineContainer);
+	weekLineContainer.SaveData();
 	// 清除当前周的数据
 	DeleteCurrentWeekWeekLine();
 	// 存储当前周数据于当前周数据表
-	SaveCurrentWeekLine(weekLineContainer);
+	weekLineContainer.SaveCurrentWeekLine();
 
 	gl_systemMessage.PushDayLineInfoMessage(_T("生成今日周线任务完成"));
 
@@ -1954,7 +1954,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 		setWeekLineBasicInfo.MoveNext();
 	}
 
-	SaveCurrentWeekLine(weekLineContainer);
+	weekLineContainer.SaveCurrentWeekLine();
 
 	return true;
 }
@@ -2015,31 +2015,6 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
 	setDayLineExtendInfo.Close();
-
-	return true;
-}
-
-bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek) {
-	CString strSQL;
-	CString strDate;
-	char  pch[30];
-	//CTime ctTime;
-	CSetWeekLineBasicInfo setWeekLineBasicInfo;
-
-	sprintf_s(pch, _T("%08d"), lMondayOfWeek);
-	strDate = pch;
-	setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
-	setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-	setWeekLineBasicInfo.m_strFilter += strDate;
-	setWeekLineBasicInfo.Open();
-	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-	while (!setWeekLineBasicInfo.IsEOF()) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandleBasic(&setWeekLineBasicInfo);
-		weekLineContainer.StoreData(pWeekLine);
-	}
-	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-	setWeekLineBasicInfo.Close();
 
 	return true;
 }
@@ -2136,40 +2111,6 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
 	}
 	setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 	setWeekLineExtendInfo.Close();
-
-	return true;
-}
-
-bool CChinaMarket::SaveWeekLine(CWeekLineContainer& weekLineContainer) {
-	weekLineContainer.SaveWeekLine();// 此容器中为各股票的当周周线数据
-
-	return true;
-}
-
-bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
-	weekLineContainer.SaveCurrentWeekLine();
-
-	return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-//
-// 装载当前周周线表中的所有数据（使用CSetCurrentWeekLine表）。
-//
-///////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
-
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	while (!setCurrentWeekLineInfo.IsEOF()) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandle(&setCurrentWeekLineInfo);
-		weekLineContainer.StoreData(pWeekLine);
-		setCurrentWeekLineInfo.MoveNext();
-	}
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
 
 	return true;
 }

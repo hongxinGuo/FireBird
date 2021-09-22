@@ -197,8 +197,6 @@ public:
 	bool DeleteTodayTempDB(void);
 	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
-	bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
-	bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
 	virtual bool SaveStockSection(void);
 
 	bool ChangeDayLineStockCodeToStandred(void);
@@ -214,8 +212,6 @@ public:
 	bool DeleteDayLineBasicInfo(long lDate);
 	bool DeleteDayLineExtendInfo(long lDate);
 
-	bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
-	bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
 	virtual bool DeleteCurrentWeekWeekLine(void);
 	bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 

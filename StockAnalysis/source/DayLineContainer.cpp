@@ -10,74 +10,13 @@ CDayLineContainer::~CDayLineContainer() {
 }
 
 bool CDayLineContainer::SaveData(CString strStockSymbol) {
-	SaveDayLineBasicInfo(strStockSymbol);
+	CSetDayLineBasicInfo setDayLineBasic;
+	SaveBasicData(&setDayLineBasic, strStockSymbol);
 
 	return true;
 }
 
 bool CDayLineContainer::LoadData(CString strStockSymbol) {
-	LoadDayLine(strStockSymbol);
-
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//	将日线历史数据存入数据库．默认数据库为空。
-//  此函数被工作线程调用，需要注意数据同步问题。
-// 当存在旧日线历史数据时，本函数只是更新。
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockSymbol) {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
-	size_t lSize = 0;
-	vector<CDayLinePtr> vDayLine;
-	CDayLinePtr pDayLine = nullptr;
-	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-	bool fNeedUpdate = false;
-
-	ASSERT(GetDataSize() > 0);
-
-	lSize = GetDataSize();
-	setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasicInfo.m_strFilter += strStockSymbol + _T("'");
-	setDayLineBasicInfo.m_strSort = _T("[Date]");
-
-	setDayLineBasicInfo.Open();
-	while (!setDayLineBasicInfo.IsEOF()) {
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandleBasic(&setDayLineBasicInfo);
-		vDayLine.push_back(pDayLine);
-		lSizeOfOldDayLine++;
-		setDayLineBasicInfo.MoveNext();
-	}
-	setDayLineBasicInfo.Close();
-
-	lCurrentPos = 0;
-	setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
-	setDayLineBasicInfo.Open();
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-		pDayLine = GetData(i);
-		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
-		if (lCurrentPos < lSizeOfOldDayLine) {
-			if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-				pDayLine->AppendHistoryCandleBasic(&setDayLineBasicInfo);
-				fNeedUpdate = true;
-			}
-		}
-		else {
-			pDayLine->AppendHistoryCandleBasic(&setDayLineBasicInfo);
-			fNeedUpdate = true;
-		}
-	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
-
-	return fNeedUpdate;
-}
-
-bool CDayLineContainer::LoadDayLine(CString strStockCode) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -85,69 +24,25 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
 
 	// 装入DayLine数据
 	setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasicInfo.m_strFilter += strStockCode;
+	setDayLineBasicInfo.m_strFilter += strStockSymbol;
 	setDayLineBasicInfo.m_strFilter += _T("'");
 	setDayLineBasicInfo.m_strSort = _T("[Date]");
 	setDayLineBasicInfo.Open();
-	LoadDayLineBasicInfo(&setDayLineBasicInfo);
+	LoadBasicData(&setDayLineBasicInfo);
 	setDayLineBasicInfo.Close();
 
 	// 装入DayLineInfo数据
 	setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '");
-	setDayLineExtendInfo.m_strFilter += strStockCode;
+	setDayLineExtendInfo.m_strFilter += strStockSymbol;
 	setDayLineExtendInfo.m_strFilter += _T("'");
 	setDayLineExtendInfo.m_strSort = _T("[Date]");
 	setDayLineExtendInfo.Open();
-	LoadDayLineExtendInfo(&setDayLineExtendInfo);
+	LoadExtendData(&setDayLineExtendInfo);
 	setDayLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
 	ASSERT(!m_fLoadDataFirst);
-	return true;
-}
 
-bool CDayLineContainer::LoadDayLineBasicInfo(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
-	CDayLinePtr pDayLine;
-
-	if (gl_fNormalMode) ASSERT(!m_fLoadDataFirst);
-	// 装入DayLine数据
-	Unload();
-	while (!psetDayLineBasicInfo->IsEOF()) {
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandleBasic(psetDayLineBasicInfo);
-		StoreData(pDayLine);
-		psetDayLineBasicInfo->MoveNext();
-	}
-	m_fLoadDataFirst = true;
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// 装载DayLineInfo表必须在装载DayLine表之后。
-//
-//
-////////////////////////////////////////////////////////////////////////////
-bool CDayLineContainer::LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo) {
-	CDayLinePtr pDayLine;
-	int iPosition = 0;
-
-	if (gl_fNormalMode) ASSERT(m_fLoadDataFirst);
-
-	while (!psetDayLineExtendInfo->IsEOF()) {
-		pDayLine = GetData(iPosition);
-		while ((pDayLine->GetFormatedMarketDate() < psetDayLineExtendInfo->m_Date)
-			&& (GetDataSize() > (iPosition + 1))) {
-			iPosition++;
-			pDayLine = GetData(iPosition);
-		}
-		if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
-			pDayLine->LoadHistoryCandleExtend(psetDayLineExtendInfo);
-		}
-		if (GetDataSize() <= (iPosition + 1)) break;
-		psetDayLineExtendInfo->MoveNext();
-	}
-	m_fLoadDataFirst = false;
 	return true;
 }
 
@@ -194,12 +89,12 @@ CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) { // 中间数据
 		while (GetData(lCurrentDayLinePos)->GetFormatedMarketDate() < lNextMonday) {
-			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
+			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}
 	}
 	else { // 最后一组数据
 		while (lCurrentDayLinePos <= (GetDataSize() - 1)) {
-			pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
+			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}
 	}
 

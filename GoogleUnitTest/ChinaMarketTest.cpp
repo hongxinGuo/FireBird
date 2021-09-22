@@ -1626,26 +1626,6 @@ namespace StockAnalysisTest {
 		setCurrentWeekLine2.Close();
 	}
 
-	TEST_F(CChinaMarketTest, TestSaveLoadCurrentWeekLine) {
-		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		CWeekLineContainer weekLineContainer, weekLineContainer2;
-
-		pWeekLine->SetStockSymbol(_T("600000.SS"));
-		pWeekLine->SetDate(GetCurrentMonday(20200101));
-		weekLineContainer.StoreData(pWeekLine);
-
-		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
-		gl_pChinaMarket->SaveCurrentWeekLine(weekLineContainer);
-
-		gl_pChinaMarket->LoadCurrentWeekLine(weekLineContainer2);
-		pWeekLine = weekLineContainer2.GetData(0);
-		EXPECT_STREQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
-		EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), 20191230) << "20200101之前的星期一";
-
-		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
-	}
-
 	TEST_F(CChinaMarketTest, TestLoadDayLine) {
 		CDayLineContainer dayLineContainer;
 		long lDate = GetCurrentMonday(20200101);
@@ -1668,7 +1648,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter += strDate;
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
-			pDayLine = dayLineContainer.GetData(i++);
+			pDayLine = dynamic_pointer_cast<CDayLine>(dayLineContainer.GetData(i++));
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
 			setDayLineBasicInfo.MoveNext();
 		}

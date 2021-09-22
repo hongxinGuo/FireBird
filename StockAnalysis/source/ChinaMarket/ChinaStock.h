@@ -271,7 +271,6 @@ public:
 	virtual bool LoadDayLine(CString strStockCode); // 此函数加载
 	virtual bool SaveDayLineBasicInfo(void); // 存储日线历史数据
 	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-	bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
 	void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
 	void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
 	void SaveTempInfo(CSetDayLineTemp* psetDayLineTemp); // 存储当日计算出的数据
@@ -283,10 +282,7 @@ public:
 	//周线历史数据存取
 	virtual bool LoadWeekLine();
 	virtual bool SaveWeekLine();
-	bool SaveWeekLineBasicInfo();
-	bool SaveWeekLineExtendInfo();
 	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-	bool LoadWeekLineExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo);
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 挂单情况
@@ -352,7 +348,7 @@ public:
 	bool HaveNewDayLineData(void);
 	void UnloadDayLine(void) noexcept { m_DayLine.Unload(); }
 	bool StoreDayLine(CDayLinePtr pDayLine) { return m_DayLine.StoreData(pDayLine); }
-	CDayLinePtr GetDayLine(long lIndex) { return m_DayLine.GetData(lIndex); }
+	CDayLinePtr GetDayLine(long lIndex) { return static_pointer_cast<CDayLine>(m_DayLine.GetData(lIndex)); }
 	void ShowDayLine(CDC* pDC, CRect rectClient);
 	void ShowWeekLine(CDC* pDC, CRect rectClient);
 	void Get1DaysRS(vector<double>& vRS);
@@ -387,7 +383,7 @@ public:
 
 	// 周线相关函数
 	size_t GetWeekLineSize(void) noexcept { return m_WeekLine.GetDataSize(); }
-	CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
+	CWeekLinePtr GetWeekLine(long lIndex) { return static_pointer_cast<CWeekLine>(m_WeekLine.GetData(lIndex)); }
 	void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
 	bool StoreWeekLine(CWeekLinePtr pWeekLine) { return m_WeekLine.StoreData(pWeekLine); }

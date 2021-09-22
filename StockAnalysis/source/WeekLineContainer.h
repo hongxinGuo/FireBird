@@ -1,34 +1,22 @@
 #pragma once
 
-#include"WeekLine.h"
-
 #include "VirtualHistoryCandleExtendContainer.h"
-
-#include"SetWeekLineBasicInfo.h"
-#include"SetWeekLineExtendInfo.h"
+#include"WeekLine.h"
+#include"DayLine.h"
 
 class CWeekLineContainer : public CVirtualHistoryCandleExtendContainer {
 public:
 	CWeekLineContainer();
 	virtual ~CWeekLineContainer();
 
-	virtual bool LoadData(CString strStockSymbol) override;
-	virtual bool SaveData(CString strStockSymbol) override;
+	virtual bool LoadData(CString strStockSymbol = _T("")) override;
+	virtual bool SaveData(CString strStockSymbol = _T("")) override;
 
-	bool SaveWeekLine(void);
 	bool SaveCurrentWeekLine(void);
-	bool SaveBasicInfo(void);
-	bool SaveExtendInfo(void);
-	bool LoadWeekLine(CString strStockSymbol);
-	bool LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
-	bool LoadExtendInfo(CVirtualSetHistoryCandleExtend* psetWeekLineExtendInfo);
+	bool LoadCurrentWeekLine(void);
 
 	void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);
-	bool UpdateData(CDayLinePtr pDayLine);
+	bool UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend);
 
-	bool StoreData(CWeekLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CVirtualHistoryCandleExtend>(pData)); return true; }
-	CWeekLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CWeekLine>(m_vHistoryData.at(lIndex)); }
-
-public:
-	bool StoreData(vector<CWeekLinePtr>& vWeekLine);
+	bool StoreVectorData(vector<CWeekLinePtr>& vWeekLine);
 };

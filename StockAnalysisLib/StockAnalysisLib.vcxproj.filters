@@ -447,9 +447,6 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h">
       <Filter>头文件\DataBase</Filter>
     </ClInclude>

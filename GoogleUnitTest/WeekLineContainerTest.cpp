@@ -5,6 +5,8 @@
 
 #include"WeekLineContainer.h"
 
+#include"SetCurrentWeekLine.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -57,7 +59,7 @@ namespace StockAnalysisTest {
 		weekLineContainer.UpdateData(vWeekLine);
 
 		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
-		pWeekLine2 = weekLineContainer.GetData(0);
+		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
@@ -81,7 +83,7 @@ namespace StockAnalysisTest {
 
 		weekLineContainer.StoreData(pWeekLine);
 		weekLineContainer.UpdateData(pDayLine);
-		CWeekLinePtr pWeekLine2 = weekLineContainer.GetData(0);
+		CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
@@ -109,19 +111,40 @@ namespace StockAnalysisTest {
 		weekLineContainer.StoreData(pWeekLine2);
 		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
 
-		weekLineContainer.StoreData(vWeekLine);
+		weekLineContainer.StoreVectorData(vWeekLine);
 
 		EXPECT_EQ(weekLineContainer.GetDataSize(), 2);
-		pWeekLine2 = weekLineContainer.GetData(0);
+		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
 		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
 
-		pWeekLine2 = weekLineContainer.GetData(1);
+		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(1));
 		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
+	}
+
+	TEST_F(CStockWeekLineContainerTest, TestSaveLoadCurrentWeekLine) {
+		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
+		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		CWeekLineContainer weekLineContainer, weekLineContainer2;
+
+		pWeekLine->SetStockSymbol(_T("600000.SS"));
+		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
+		weekLineContainer.StoreData(pWeekLine);
+
+		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
+		weekLineContainer.SaveCurrentWeekLine();
+
+		weekLineContainer2.LoadCurrentWeekLine();
+		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
+		EXPECT_STREQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
+		EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), 20191230) << "20200101之前的星期一";
+
+		// 恢复原态
+		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
 	}
 }
