@@ -14,7 +14,7 @@ CString CVirtualRecordset::GetDefaultConnect() {
 
 CString CVirtualRecordset::GetDefaultSQL() {
 	ASSERT(m_Table.GetLength() > 0);
-	return _T("[") + m_Table + _T("]");
+	return _T("[") + m_Table + _T("]"); // SQL的制式为: [表名称]
 }
 
 /////////////////////////////////////////////////////////////////////////////

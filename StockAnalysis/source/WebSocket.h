@@ -2,7 +2,7 @@
 //
 // 尝试将ixWebSocket变量封装于此类中。
 // 牵涉太多，不容易封装。
-// 此类不负责ixWebSocket的初始化（初始化由程序负责）。
+// 此类负责ixWebSocket的初始化。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -37,6 +37,8 @@ public:
 	string GetMessageSuffix(void) noexcept { return m_Suffix; }
 
 protected:
+	static int sm_iInitIxWebSocket;
+
 	ix::WebSocket m_webSocket;
 
 	bool m_fHaveSubscriptionId;

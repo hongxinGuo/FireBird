@@ -66,8 +66,6 @@ protected:
 
 	char m_aStockCodeTemp[30];
 
-	static bool sm_fInitIxWebSocket;
-
 protected:  // 控件条嵌入成员
 	CMFCMenuBar m_wndMenuBar;
 	CMFCToolBar m_wndToolBar;

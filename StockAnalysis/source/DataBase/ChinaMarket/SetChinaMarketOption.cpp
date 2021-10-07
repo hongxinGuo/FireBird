@@ -2,9 +2,9 @@
 
 #include "SetChinaMarketOption.h"
 
-IMPLEMENT_DYNAMIC(SetChinaMarketOption, CVirtualRecordset)
+IMPLEMENT_DYNAMIC(CSetChinaMarketOption, CVirtualRecordset)
 
-SetChinaMarketOption::SetChinaMarketOption(CString strSchema, CString strTable, CDatabase* pdb)
+CSetChinaMarketOption::CSetChinaMarketOption(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_RTDataServerIndex = 0; // 默认使用新浪实时数据服务器
@@ -12,7 +12,7 @@ SetChinaMarketOption::SetChinaMarketOption(CString strSchema, CString strTable, 
 	m_nFields = 2;
 }
 
-void SetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
+void CSetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。
@@ -24,11 +24,11 @@ void SetChinaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
 // CSetChinaMarketOption 诊断
 
 #ifdef _DEBUG
-void SetChinaMarketOption::AssertValid() const {
+void CSetChinaMarketOption::AssertValid() const {
 	CVirtualRecordset::AssertValid();
 }
 
-void SetChinaMarketOption::Dump(CDumpContext& dc) const {
+void CSetChinaMarketOption::Dump(CDumpContext& dc) const {
 	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

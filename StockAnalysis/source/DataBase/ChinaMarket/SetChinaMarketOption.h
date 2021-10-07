@@ -2,11 +2,11 @@
 
 #include"VirtualRecordset.h"
 
-class SetChinaMarketOption : public CVirtualRecordset
+class CSetChinaMarketOption : public CVirtualRecordset
 {
 public:
-	SetChinaMarketOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("option_china_stockmarket"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(SetChinaMarketOption)
+	CSetChinaMarketOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("option_china_stockmarket"), CDatabase* pDatabase = nullptr);
+	DECLARE_DYNAMIC(CSetChinaMarketOption)
 
 	// 字段/参数数据
 

@@ -22,8 +22,6 @@
 
 #include"SetFinnhubStockExchange.h"
 
-#include <ixwebsocket/IXNetSystem.h>
-
 using namespace std;
 #include<string>
 #include<thread>
@@ -31,8 +29,6 @@ using namespace std;
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-bool CMainFrame::sm_fInitIxWebSocket = false;
 
 // CMainFrame
 
@@ -131,11 +127,6 @@ static UINT innerSystemIndicators[] =
 CMainFrame::CMainFrame() {
 	// TODO: 在此添加成员初始化代码
 
-	if (!sm_fInitIxWebSocket) {
-		sm_fInitIxWebSocket = true;// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
-		ix::initNetSystem();
-	}
-
 	m_uIdTimer = 0;
 	Reset();
 }
@@ -150,11 +141,6 @@ CMainFrame::~CMainFrame() {
 	if (gl_fTestMode) TRACE("使用了Test驱动\n");
 
 	gl_fExitingSystem = true;
-
-	if (sm_fInitIxWebSocket) {
-		sm_fInitIxWebSocket = false; // 退出系统时，析构IXWebSocket库，且只能析构一次。
-		ix::uninitNetSystem();
-	}
 
 	if (gl_pChinaMarket->IsUpdateOptionDB()) {
 		gl_pChinaMarket->UpdateOptionDB();

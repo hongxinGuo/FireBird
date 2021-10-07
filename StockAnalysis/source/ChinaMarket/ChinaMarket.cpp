@@ -3257,7 +3257,7 @@ void CChinaMarket::LoadOptionDB(void) {
 }
 
 void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
-	SetChinaMarketOption setOptionChinaStockMarket;
+	CSetChinaMarketOption setOptionChinaStockMarket;
 
 	setOptionChinaStockMarket.Open();
 	if (!setOptionChinaStockMarket.IsEOF()) {
@@ -3271,7 +3271,7 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
 }
 
 bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
-	SetChinaMarketOption setOptionChinaStockMarket;
+	CSetChinaMarketOption setOptionChinaStockMarket;
 
 	setOptionChinaStockMarket.Open();
 	setOptionChinaStockMarket.m_pDatabase->BeginTrans();

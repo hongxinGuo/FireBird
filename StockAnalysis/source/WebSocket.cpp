@@ -3,7 +3,12 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+int CWebSocket::sm_iInitIxWebSocket = 0;
+
 CWebSocket::CWebSocket(bool fHaveSubscription) : CObject() {
+	if (sm_iInitIxWebSocket++ == 0) { // 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
+		ix::initNetSystem();
+	}
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_iSubscriptionId = 0;
 	m_iPingPeriod = 0;
@@ -13,6 +18,9 @@ CWebSocket::CWebSocket(bool fHaveSubscription) : CObject() {
 
 CWebSocket::~CWebSocket() {
 	Deconnecting();
+	if (--sm_iInitIxWebSocket == 0) { // 退出系统时，析构IXWebSocket库，且只能析构一次。
+		ix::uninitNetSystem();
+	}
 }
 
 bool CWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {

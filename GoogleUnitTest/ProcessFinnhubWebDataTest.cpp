@@ -1168,6 +1168,8 @@ namespace StockAnalysisTest {
 			break;
 		case 5: // error message
 			EXPECT_FALSE(fSucceed);
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub WebSocket error message: Subscribing to too many symbols"));
 			break;
 		case 9: // dataÃû²»Îª"data"
 			EXPECT_FALSE(fSucceed);

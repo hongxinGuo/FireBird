@@ -894,18 +894,20 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 
 /// <summary>
 /// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-/// {"type":"ping"}
+///        {"type":"ping"}
+///        {"msg":"Subscribing to too many symbols","type":"error"}
+/// 目前就这三种。
 /// </summary>
 /// <param name="pData"></param>
 /// <returns></returns>
 bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
-	string sType, sSymbol;
+	string sType, sSymbol, sMessage;
+	CString strMessage;
 	double price = 0;
 	double volume = 0;
 	time_t time = 0;
 	string code;
-	int i = 0;
 	CFinnhubWebSocketDataPtr pFinnhubDataPtr = nullptr;
 
 	try {
@@ -931,6 +933,10 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 				// do nothing
 			}
 			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+				sMessage = pt.get<string>(_T("msg"));
+				strMessage = _T("Finnhub WebSocket error message: ");
+				strMessage += sMessage.c_str();
+				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 				return false;
 			}
 			else {
