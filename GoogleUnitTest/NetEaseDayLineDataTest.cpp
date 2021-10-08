@@ -47,110 +47,7 @@ namespace StockAnalysisTest {
 	// 中途遇到\r
 	NetEaseDayLineData Data14(14, _T("2019-07-23\r,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
 
-	/*
 	class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
-	protected:
-		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
-			NetEaseDayLineData* pData = GetParam();
-			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
-			m_pData = new char[lLength + 1];
-			for (int i = 0; i < lLength; i++) {
-				m_pData[i] = pData->m_strData.GetAt(i);
-			}
-			m_pCurrentPos = m_pData;
-			m_lCountPos = 0;
-
-			m_DayLine.SetAmount(-1);
-			m_DayLine.SetVolume(-1);
-			m_DayLine.SetOpen(-1);
-			m_DayLine.SetLastClose(-1);
-			m_DayLine.SetHigh(-1);
-			m_DayLine.SetLow(-1);
-
-			m_DayLinePtr = make_shared<CDayLine>();
-		}
-
-		virtual void TearDown(void) override {
-			// clearup
-			delete m_pData;
-		}
-
-	public:
-		int m_iCount;
-		char* m_pData;
-		char* m_pCurrentPos;
-		long m_lCountPos = 0;
-		CDayLine m_DayLine;
-		CDayLinePtr m_DayLinePtr;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
-													 testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-																					 &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-													 ));
-
-	TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
-		INT64 lCount = 0;
-		bool fSucceed;
-		if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pCurrentPos, lCount);
-		else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("600000.SS"), m_pCurrentPos, lCount);
-		switch (m_iCount) {
-		case 1:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
-		EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
-		EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
-		EXPECT_EQ(m_DayLinePtr->GetOpen(), 11430);
-		EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
-		break;
-		case 2:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 3:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 4:
-		case 5:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 6:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 7:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 8:
-		EXPECT_TRUE(fSucceed);
-		break;
-		case 9:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_STREQ(m_DayLinePtr->GetStockName(), _T("价值7030"));
-		EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
-		EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
-		EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
-		EXPECT_EQ(m_DayLinePtr->GetLow(), 0);
-		EXPECT_EQ(m_DayLinePtr->GetOpen(), 0);
-		EXPECT_EQ(m_DayLinePtr->GetVolume(), 0);
-		EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
-		break;
-		case 10: // 时间字符串超过30个
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 11: // 流通市值字符串超过30个
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 12:
-		EXPECT_FALSE(fSucceed);
-		break;
-		default:
-		break;
-		}
-	}
-	*/
-
-	class ProcessNeteaseDayLineTest2 : public::testing::TestWithParam<NetEaseDayLineData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -171,6 +68,9 @@ namespace StockAnalysisTest {
 			m_DayLine.SetLow(-1);
 
 			m_DayLinePtr = make_shared<CDayLine>();
+
+			pStock = make_shared<CChinaStock>();
+			pStock->SetSymbol(_T("600000.SS"));
 		}
 
 		virtual void TearDown(void) override {
@@ -184,20 +84,23 @@ namespace StockAnalysisTest {
 		INT64 m_lCountPos = 0;
 		CDayLine m_DayLine;
 		CDayLinePtr m_DayLinePtr;
+		CChinaStockPtr pStock;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest2,
+	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
 		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
 			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
 		));
 
-	TEST_P(ProcessNeteaseDayLineTest2, ProcessNeteaseDayLineData2) {
+	TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData2) {
 		bool fSucceed;
-		if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pData, m_lCountPos);
-		else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("600000.SS"), m_pData, m_lCountPos);
+		if (m_iCount == 2) fSucceed = pStock->ProcessOneNeteaseDayLineData(m_DayLinePtr, m_pData, m_lCountPos);
+		else fSucceed = pStock->ProcessOneNeteaseDayLineData(m_DayLinePtr, m_pData, m_lCountPos);
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
 			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);

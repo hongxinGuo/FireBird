@@ -37,8 +37,6 @@ public:
 	string GetMessageSuffix(void) noexcept { return m_Suffix; }
 
 protected:
-	static int sm_iInitIxWebSocket;
-
 	ix::WebSocket m_webSocket;
 
 	bool m_fHaveSubscriptionId;

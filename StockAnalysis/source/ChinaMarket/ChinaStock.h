@@ -373,7 +373,8 @@ public:
 
 	// 提取网易日线历史数据各函数
 	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
-	bool ProcessNeteaseDayLineData(void);
+	bool ProcessNeteaseDayLineData();
+	bool ProcessOneNeteaseDayLineData(CDayLinePtr& pDayLine, vector<char>& pBuffer, INT64& lCurrentPos);
 	void ResetTempDayLineDataBuffer(void);
 	INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
 	bool SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos);
