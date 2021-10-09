@@ -8,9 +8,6 @@ CQueueWebData::CQueueWebData() {
 }
 
 CQueueWebData::~CQueueWebData() {
-	m_MutexAccessData.lock();
-	m_qData.empty();
-	m_MutexAccessData.unlock();
 }
 
 void CQueueWebData::Reset(void) {

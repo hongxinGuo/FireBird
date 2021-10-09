@@ -141,9 +141,6 @@
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -751,9 +748,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\QueueString.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
       <Filter>源文件\网络数据提取器</Filter>

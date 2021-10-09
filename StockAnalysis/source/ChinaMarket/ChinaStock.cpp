@@ -93,8 +93,6 @@ void CChinaStock::Reset(void) {
 	m_lOrdinarySellVolumeBelow200000 = 0;
 	m_lOrdinarySellVolumeAbove200000 = 0;
 
-	m_lCanceledBuyVolumeBelow1000 = 0;
-	m_lCanceledBuyVolumeBelow2000 = 0;
 	m_lCanceledBuyVolumeBelow5000 = 0;
 	m_lCanceledBuyVolumeBelow10000 = 0;
 	m_lCanceledBuyVolumeBelow20000 = 0;
@@ -102,8 +100,6 @@ void CChinaStock::Reset(void) {
 	m_lCanceledBuyVolumeBelow100000 = 0;
 	m_lCanceledBuyVolumeBelow200000 = 0;
 	m_lCanceledBuyVolumeAbove200000 = 0;
-	m_lCanceledSellVolumeBelow1000 = 0;
-	m_lCanceledSellVolumeBelow2000 = 0;
 	m_lCanceledSellVolumeBelow5000 = 0;
 	m_lCanceledSellVolumeBelow10000 = 0;
 	m_lCanceledSellVolumeBelow20000 = 0;

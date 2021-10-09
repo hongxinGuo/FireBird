@@ -23,11 +23,11 @@ public:
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	virtual int GetRatio(void) const override final { return 1000; };
 
-	virtual bool SaveHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	virtual bool SaveHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend); // 存储扩展数据
 	virtual bool AppendHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 	virtual bool LoadHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
-	virtual bool SaveHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
+	virtual bool SaveHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle); // 存储所有的数据
 	virtual bool AppendHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
 	virtual bool LoadHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
 
@@ -163,6 +163,7 @@ public:
 	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
 protected:
+	// 需要存储的数据
 	long m_lOrdinaryBuyVolume; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
 	long m_lAttackBuyVolume; // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
 	long m_lStrongBuyVolume; // 向上强力买入,成交价超过之前的卖二报价。
@@ -228,4 +229,6 @@ protected:
 	INT64 m_lCanceledSellVolumeBelow100000; // 本交易周低于100000股的撤单股数
 	INT64 m_lCanceledSellVolumeBelow200000; //
 	INT64 m_lCanceledSellVolumeAbove200000; //
+
+	// 不需要存储的数据
 };

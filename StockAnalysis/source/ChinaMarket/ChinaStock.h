@@ -517,8 +517,6 @@ protected:
 	INT64 m_lCurrentCanceledSellVolume;
 	INT64 m_lCurrentCanceledBuyVolume;
 
-	INT64 m_lCanceledBuyVolumeBelow1000; // 本交易日低于1000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow2000; // 本交易日低于2000股的撤单股数
 	INT64 m_lCanceledBuyVolumeBelow5000; // 本交易日低于5000股的撤单股数
 	INT64 m_lCanceledBuyVolumeBelow10000; // 本交易日低于10000股的撤单股数
 	INT64 m_lCanceledBuyVolumeBelow20000; // 本交易日低于20000股的撤单股数
@@ -526,8 +524,6 @@ protected:
 	INT64 m_lCanceledBuyVolumeBelow100000; // 本交易日低于100000股的撤单股数
 	INT64 m_lCanceledBuyVolumeBelow200000; //
 	INT64 m_lCanceledBuyVolumeAbove200000; //
-	INT64 m_lCanceledSellVolumeBelow1000; // 本交易日低于1000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow2000; // 本交易日低于2000股的撤单股数
 	INT64 m_lCanceledSellVolumeBelow5000; // 本交易日低于5000股的撤单股数
 	INT64 m_lCanceledSellVolumeBelow10000; // 本交易日低于10000股的撤单股数
 	INT64 m_lCanceledSellVolumeBelow20000; // 本交易日低于20000股的撤单股数

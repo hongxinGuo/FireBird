@@ -8,9 +8,6 @@ CQueueString::CQueueString() {
 }
 
 CQueueString::~CQueueString() {
-	m_MutexAccessData.lock();
-	m_qData.empty();
-	m_MutexAccessData.unlock();
 }
 
 void CQueueString::Reset(void) {

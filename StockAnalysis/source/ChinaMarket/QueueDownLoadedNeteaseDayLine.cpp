@@ -8,9 +8,6 @@ CQueueDownLoadedNeteaseDayLine::CQueueDownLoadedNeteaseDayLine() {
 }
 
 CQueueDownLoadedNeteaseDayLine::~CQueueDownLoadedNeteaseDayLine() {
-	m_MutexAccessData.lock();
-	m_qData.empty();
-	m_MutexAccessData.unlock();
 }
 
 void CQueueDownLoadedNeteaseDayLine::Reset(void) {
