@@ -18,20 +18,22 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"WebInquirer.h"
 #include"ChinaMarket.h"
+#include"DownLoadedNeteaseDayLine.h"
 
 UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData) {
 	CChinaStockPtr pStock = nullptr;
+	CDownLoadedNeteaseDayLinePtr pData;
 
 	ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
 	// 网易的日线数据服务器似乎无法使用一次读完的功能，只能用这种等待定时方式，原因未知。
 	//if (pNeteaseDayLineWebData->ReadWebData()) { // 这种是采用一次读完的方式，但网易日线数据服务器可能不支持。
 	if (pNeteaseDayLineWebData->ReadWebDataTimeLimit(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
-		// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-		ASSERT(gl_pChinaMarket->IsStock(pNeteaseDayLineWebData->GetDownLoadingStockCode()));
-		pStock = gl_pChinaMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
-		pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
-		pStock->SetDayLineNeedProcess(true);
+		// 将读取的日线数据存入日线数据暂存区
+		pData = make_shared<CDownLoadedNeteaseDayLine>();
+		pData->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
+		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pData);
 	}
 	pNeteaseDayLineWebData->SetReadingWebData(false);
 

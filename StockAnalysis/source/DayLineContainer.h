@@ -17,7 +17,7 @@ public:
 	virtual bool SaveData(CString strStockSymbol) override;
 	virtual bool LoadData(CString strStockSymbol) override;
 
-	void UpdateData(vector<CDayLinePtr>& vTempDayLine);
+	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave);
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 
 public:

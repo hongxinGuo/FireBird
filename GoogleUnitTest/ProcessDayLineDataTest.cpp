@@ -5,6 +5,8 @@
 
 #include"ChinaStock.h"
 
+#include"DownLoadedNeteaseDayLine.h"
+
 using namespace std;
 #include<vector>
 
@@ -55,35 +57,27 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 
 			NeteaseDayLineData* pData = GetParam();
-			m_pStock = gl_pChinaMarket->GetStock(pData->m_strSymbol);
-			m_pStock->SetDayLineLoaded(false);
-			if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
-			if (!m_pStock->IsNullStock()) {
-				lDate = m_pStock->GetDayLineEndDate();
-				m_pStock->SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
+			CNeteaseDayLineWebInquiry DayLineWebInquiry;
+			DayLineWebInquiry.SetDownLoadingStockCode(pData->m_strSymbol);
+			DayLineWebInquiry.SetByteReaded(pData->m_strData.GetLength());
+			for (int i = 0; i < pData->m_strData.GetLength(); i++) {
+				DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i));
 			}
+			pDownLoadedDayLine = make_shared<CDownLoadedNeteaseDayLine>();
+			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();
-			m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			if (!m_pStock->IsNullStock()) { m_pStock->SetDayLineEndDate(lDate); }
-			if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
-			if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
-			if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);
-			if (m_pStock->IsDayLineLoaded()) m_pStock->SetDayLineLoaded(false);
-			m_pStock->SetIPOStatus(__STOCK_IPOED__);
 
 			GeneralCheck();
 		}
 
 	public:
 		int m_iCount;
-		CChinaStockPtr m_pStock;
+		CDownLoadedNeteaseDayLinePtr pDownLoadedDayLine;
 		long lDate;
 	};
 
@@ -93,64 +87,41 @@ namespace StockAnalysisTest {
 		));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
-		bool fSucceed = m_pStock->ProcessNeteaseDayLineData();
+		bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 4:
 		case 5:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 6:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 7:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
-			EXPECT_TRUE(m_pStock->IsDelisted());
 			break;
 		case 8: // 无效股票代码，只有报头
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineLoaded());
 			break;
 		case 9:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineLoaded());
 			break;
 		case 10: // 时间字符串超过30个
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineLoaded());
 			break;
 		case 11: // 流通市值字符串超过30个
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineLoaded());
 			break;
 		case 12:
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineLoaded());
 			break;
 		default:
 			break;

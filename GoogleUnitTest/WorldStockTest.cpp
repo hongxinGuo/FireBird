@@ -271,15 +271,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 	}
 
-	TEST_F(CWorldStockTest, TestIsDayLineNeedProcess) {
-		CWorldStock stock;
-		EXPECT_FALSE(stock.IsDayLineNeedProcess());
-		stock.SetDayLineNeedProcess(true);
-		EXPECT_TRUE(stock.IsDayLineNeedProcess());
-		stock.SetDayLineNeedProcess(false);
-		EXPECT_FALSE(stock.IsDayLineNeedProcess());
-	}
-
 	TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
 		CWorldStock stock;
 		EXPECT_FALSE(stock.IsDayLineNeedSaving());

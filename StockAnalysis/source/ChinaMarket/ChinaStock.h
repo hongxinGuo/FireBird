@@ -372,14 +372,9 @@ public:
 	void SetDayLineLoaded(bool fFlag) noexcept { m_DayLine.SetDataLoaded(fFlag); }
 
 	// 提取网易日线历史数据各函数
-	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
-	bool ProcessNeteaseDayLineData();
-	bool ProcessOneNeteaseDayLineData(CDayLinePtr& pDayLine, vector<char>& pBuffer, INT64& lCurrentPos);
-	void ResetTempDayLineDataBuffer(void);
-	INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
-	bool SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos);
+	void UpdateStatusByDownloadedDayLine(void);
 	void SetTodayActive(CString strStockCode, CString strStockName);
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
+	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false); // 使用新队列更新日线队列
 	void ReportDayLineDownLoaded(void);
 
 	// 周线相关函数
@@ -407,7 +402,6 @@ public:
 public:
 	// 测试专用函数
 	void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
-	void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
 public:
 
 protected:
@@ -551,10 +545,6 @@ protected:
 	CDayLineContainer m_DayLine; // 日线容器
 	// 周线相关数据
 	CWeekLineContainer m_WeekLine; // 周线容器
-
-	//网易日线接收处理相关数据
-	vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-	INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
 
 	bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 };

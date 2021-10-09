@@ -470,9 +470,6 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
 			// TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
 			IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
 		}
-		else if (pStock->IsDayLineNeedProcess()) { // 日线数据已下载但尚未处理（一般此情况不会出现）
-			IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
-		}
 		else {
 			fFound = true;
 		}
@@ -486,7 +483,6 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
 	// 找到了需申请日线历史数据的股票（siCounter为索引）
 	CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
 	ASSERT(!pStock->IsDayLineNeedSaving());
-	ASSERT(!pStock->IsDayLineNeedProcess());
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	pStock->SetDayLineNeedUpdate(false);
 	strReturn += XferStandredToNetease(pStock->GetSymbol());
@@ -2288,10 +2284,8 @@ bool CChinaMarket::IsDayLineNeedUpdate(void) const noexcept {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
-	for (auto& pStock : m_vChinaMarketStock) {
-		if (pStock->IsDayLineNeedProcess()) return true;
-	}
-	return false;
+	if (gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize() > 0) return true;
+	else return false;
 }
 
 bool CChinaMarket::IsDayLineNeedSaving(void) const {
@@ -2312,11 +2306,7 @@ long CChinaMarket::GetDayLineNeedUpdateNumber(void) {
 }
 
 long CChinaMarket::GetDayLineNeedProcessNumber(void) {
-	long l = 0;
-	for (auto& pStock : m_vChinaMarketStock) {
-		if (pStock->IsDayLineNeedProcess()) l++;
-	}
-	return l;
+	return gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize();
 }
 long CChinaMarket::GetDayLineNeedSaveNumber(void) {
 	long l = 0;
@@ -2327,11 +2317,19 @@ long CChinaMarket::GetDayLineNeedSaveNumber(void) {
 }
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
-	for (auto& pStock : m_vChinaMarketStock) {
-		if (pStock->IsDayLineNeedProcess()) {
-			pStock->ProcessNeteaseDayLineData();
-			pStock->ResetTempDayLineDataBuffer();
-		}
+	CDownLoadedNeteaseDayLinePtr pData;
+	CChinaStockPtr pStock = nullptr;
+
+	while (gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize() > 0) {
+		pData = gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
+		pData->ProcessNeteaseDayLineData();
+		ASSERT(gl_pChinaMarket->IsStock(pData->GetDownLoadedStockSymbol()));
+		pStock = gl_pChinaMarket->GetStock(pData->GetDownLoadedStockSymbol());
+		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。
+		pStock->UpdateStatusByDownloadedDayLine();
+
+		pStock->SetDayLineLoaded(true);
+		pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
 	}
 	return true;
 }

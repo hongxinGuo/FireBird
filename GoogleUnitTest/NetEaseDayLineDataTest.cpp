@@ -6,6 +6,7 @@
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
 
 #include"DayLine.h"
+#include"DownLoadedNeteaseDayLine.h"
 
 using namespace std;
 #include<vector>
@@ -58,6 +59,7 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < lLength; i++) {
 				m_pData.at(i) = pData->m_strData.GetAt(i);
 			}
+			m_pData.at(lLength) = 0x000;
 			m_lCountPos = 0;
 
 			m_DayLine.SetAmount(-1);
@@ -69,8 +71,11 @@ namespace StockAnalysisTest {
 
 			m_DayLinePtr = make_shared<CDayLine>();
 
-			pStock = make_shared<CChinaStock>();
-			pStock->SetSymbol(_T("600000.SS"));
+			WebInquiry.__TESTSetBuffer(pData->m_strData);
+			WebInquiry.SetByteReaded(pData->m_strData.GetLength());
+			WebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
+			pDownLoadedDayLine = make_shared<CDownLoadedNeteaseDayLine>();
+			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&WebInquiry);
 		}
 
 		virtual void TearDown(void) override {
@@ -84,7 +89,9 @@ namespace StockAnalysisTest {
 		INT64 m_lCountPos = 0;
 		CDayLine m_DayLine;
 		CDayLinePtr m_DayLinePtr;
-		CChinaStockPtr pStock;
+
+		CNeteaseDayLineWebInquiry WebInquiry;
+		CDownLoadedNeteaseDayLinePtr pDownLoadedDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
@@ -92,10 +99,12 @@ namespace StockAnalysisTest {
 			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
 		));
 
-	TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData2) {
+	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData) {
 		bool fSucceed;
-		if (m_iCount == 2) fSucceed = pStock->ProcessOneNeteaseDayLineData(m_DayLinePtr, m_pData, m_lCountPos);
-		else fSucceed = pStock->ProcessOneNeteaseDayLineData(m_DayLinePtr, m_pData, m_lCountPos);
+		fSucceed = pDownLoadedDayLine->ProcessOneNeteaseDayLineData();
+		if (fSucceed) {
+			m_DayLinePtr = pDownLoadedDayLine->GetCurrentProcessingDayLine();
+		}
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);

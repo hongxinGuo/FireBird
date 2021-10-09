@@ -6,6 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
+#include"DownLoadedNeteaseDayLine.h"
 
 #include"MockChinaStock.h"
 
@@ -58,7 +59,6 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 			if (pStock != nullptr) {
 				pStock->SetDayLineDBUpdated(false);
-				if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
 				if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
 				pStock = nullptr;
 			}
@@ -305,15 +305,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.IsDayLineNeedUpdate());
 		stock.SetDayLineNeedUpdate(true);
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-	}
-
-	TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
-		CChinaStock stock;
-		EXPECT_FALSE(stock.IsDayLineNeedProcess());
-		stock.SetDayLineNeedProcess(true);
-		EXPECT_TRUE(stock.IsDayLineNeedProcess());
-		stock.SetDayLineNeedProcess(false);
-		EXPECT_FALSE(stock.IsDayLineNeedProcess());
 	}
 
 	TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
@@ -1181,16 +1172,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.HaveNewDayLineData());
 		stock.UnloadDayLine();
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
-	}
-
-	TEST_F(CChinaStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
-		CString str = _T("abcedfg\r\n");
-		m_NeteaseDayLineWebInquiry.__TESTSetBuffer(str);
-		CChinaStock stock;
-		EXPECT_EQ(stock.GetDayLineBufferLength(), 0);
-		stock.TransferNeteaseDayLineWebDataToBuffer(&m_NeteaseDayLineWebInquiry);
-		EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 	}
 
 	TEST_F(CChinaStockTest, TestTodayDataIsActive) {
@@ -2393,25 +2374,6 @@ namespace StockAnalysisTest {
 		pStock->SetDisplaySymbol(strStockName);
 	}
 
-	TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {
-		CChinaStock stock;
-		INT64 lCurrentPos = 0;
-		CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
-		stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-		EXPECT_TRUE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
-		EXPECT_EQ(lCurrentPos, str.GetLength());
-		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\n"); // 缺少\r
-		stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-		lCurrentPos = 0;
-		EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
-		EXPECT_EQ(lCurrentPos, str.GetLength());
-		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r"); // 缺少\n
-		stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-		lCurrentPos = 0;
-		EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
-		EXPECT_EQ(lCurrentPos, str.GetLength());
-	}
-
 	TEST_F(CChinaStockTest, TestIsVolumeConsisitence) {
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsVolumeConsistence());
@@ -2444,6 +2406,27 @@ namespace StockAnalysisTest {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(vDayLine);
+		EXPECT_EQ(stock.GetDayLineSize(), 10);
+		for (int i = 0; i < 10; i++) {
+			EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDate(), 19900101 + i);
+		}
+		EXPECT_TRUE(stock.IsDayLineLoaded());
+	}
+
+	TEST_F(CChinaStockTest, TestStoreDayLine2) {
+		CDownLoadedNeteaseDayLine data;
+
+		CDayLinePtr pDayLine;
+		for (int i = 0; i < 10; i++) {
+			pDayLine = make_shared<CDayLine>();
+			pDayLine->SetDate(19900101 + i);
+			pDayLine->SetClose(10);
+			pDayLine->SetLastClose(10);
+			data.PushDayLine(pDayLine);
+		}
+		CChinaStock stock;
+		EXPECT_FALSE(stock.IsDayLineLoaded());
+		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
 		for (int i = 0; i < 10; i++) {
 			EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDate(), 19900101 + i);

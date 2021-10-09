@@ -129,6 +129,18 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pWebData2->GetTime(), 101010);
 	}
 
+	TEST_F(CWebInquirerTest, TestPushPopDownLoadedNeteaseDayLineata) {
+		CDownLoadedNeteaseDayLinePtr pWebData = make_shared<CDownLoadedNeteaseDayLine>();
+		CDownLoadedNeteaseDayLinePtr pWebData2;
+		pWebData->SetDownLoadStockSymbol(_T("abcdefg"));
+		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 0);
+		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pWebData);
+		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 1);
+		pWebData2 = gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
+		EXPECT_STREQ(pWebData2->GetDownLoadedStockSymbol(), _T("abcdefg"));
+		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
+	}
+
 	TEST_F(CWebInquirerTest, TestGetNeteaseDayLineData) {
 		int iSaved = gl_iMaxSavingOneDayLineThreads;
 		EXPECT_FALSE(s_pMockNeteaseDayLineWebInquiry2->IsReadingWebData());

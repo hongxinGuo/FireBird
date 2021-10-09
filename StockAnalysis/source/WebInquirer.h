@@ -23,6 +23,7 @@ extern int gl_iMaxSavingOneDayLineThreads;
 #include"QuandlWebInquiry.h"
 
 #include"QueueString.h"
+#include"QueueDownLoadedNeteaseDayLine.h"
 
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
@@ -83,6 +84,10 @@ public:
 	void PushTiingoData(CWebDataPtr pData) { m_qTiingoData.PushData(pData); }
 	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
 
+	size_t GetDownLoadedNeteaseDayLineDataSize(void) { return(m_qDownLoadedNeteaseDayLine.GetDataSize()); }
+	void PushDownLoadedNeteaseDayLineData(CDownLoadedNeteaseDayLinePtr pData) { m_qDownLoadedNeteaseDayLine.PushData(pData); }
+	CDownLoadedNeteaseDayLinePtr PopDownLoadedNeteaseDayLineData(void) { return m_qDownLoadedNeteaseDayLine.PopData(); }
+
 	size_t GetFinnhubWebSocketDataSize(void) { return m_qFinnhubWebSocketData.GetDataSize(); }
 	void pushFinnhubWebSocketData(string data) { m_qFinnhubWebSocketData.PushData(data); }
 	void PushFinnhubWebSocketData(shared_ptr<string> pData) { m_qFinnhubWebSocketData.PushData(pData); }
@@ -112,6 +117,8 @@ protected:
 	CQueueWebData m_qFinnhubData; // Finnhub.io网络数据暂存队列
 	CQueueWebData m_qQuandlData; // Quandl.com网络数据暂存队列
 	CQueueWebData m_qTiingoData; // Tiingo.com网络数据暂存队列
+
+	CQueueDownLoadedNeteaseDayLine m_qDownLoadedNeteaseDayLine; // 网易日线数据暂存队列
 
 	CQueueString m_qFinnhubWebSocketData; // finnhub的WebSocket数据
 	CQueueString m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据

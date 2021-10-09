@@ -33,7 +33,7 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CStockDayLineContainerTest, TestUpdateData) {
+	TEST_F(CStockDayLineContainerTest, TestUpdateData1) {
 		CDayLineContainer dayLineContainer;
 
 		vector<CDayLinePtr> vDayLine;
@@ -68,12 +68,55 @@ namespace StockAnalysisTest {
 
 		dayLineContainer.SetDataLoaded(false);
 
-		dayLineContainer.UpdateData(vDayLine);
+		dayLineContainer.UpdateData(vDayLine, false);
 
 		EXPECT_THAT(dayLineContainer.IsDataLoaded(), IsTrue());
 		EXPECT_THAT(dayLineContainer.GetDataSize(), 3);
-		EXPECT_THAT(dayLineContainer.GetData(0)->GetClose(), 10001);
-		EXPECT_THAT(dayLineContainer.GetData(2)->GetClose(), 10003);
+		EXPECT_THAT(dayLineContainer.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
+		EXPECT_THAT(dayLineContainer.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
+	}
+
+	TEST_F(CStockDayLineContainerTest, TestUpdateData2) {
+		CDayLineContainer dayLineContainer;
+
+		vector<CDayLinePtr> vDayLine;
+		CDayLinePtr pDayLine = nullptr;
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200101); // 星期三
+		pDayLine->SetHigh(10010);
+		pDayLine->SetLow(9910);
+		pDayLine->SetClose(10001);
+		pDayLine->SetLastClose(10005);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200102); // 星期四
+		pDayLine->SetHigh(10020);
+		pDayLine->SetLow(9920);
+		pDayLine->SetClose(10002);
+		pDayLine->SetLastClose(10001);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200103); // 星期五
+		pDayLine->SetHigh(10030);
+		pDayLine->SetLow(9930);
+		pDayLine->SetClose(10003);
+		pDayLine->SetLastClose(10002);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		dayLineContainer.SetDataLoaded(false);
+
+		dayLineContainer.UpdateData(vDayLine, true); // 逆序存储
+
+		EXPECT_THAT(dayLineContainer.IsDataLoaded(), IsTrue());
+		EXPECT_THAT(dayLineContainer.GetDataSize(), 3);
+		EXPECT_THAT(dayLineContainer.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
+		EXPECT_THAT(dayLineContainer.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
 	}
 
 	TEST_F(CStockDayLineContainerTest, TestCreateNewWeekLine) {
@@ -129,7 +172,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.UpdateData(vDayLine);
+		dayLineContainer.UpdateData(vDayLine, false);
 		pWeekLine = dayLineContainer.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
@@ -200,7 +243,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.UpdateData(vDayLine);
+		dayLineContainer.UpdateData(vDayLine, false);
 		dayLineContainer.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);

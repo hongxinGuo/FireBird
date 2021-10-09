@@ -4,6 +4,8 @@ using namespace testing;
 
 #include"globedef.h"
 #include"SystemMessage.h"
+#include"WebInquirer.h"
+
 #include "GeneralCheck.h"
 
 namespace StockAnalysisTest {
@@ -35,10 +37,17 @@ namespace StockAnalysisTest {
 		}
 	}
 
+	void WebInquirerCheck(void) {
+		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 0);
+		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
+	}
+
 	void GeneralCheck(void) {
 		EnvironmentCheck();
 		SystemMessageCheck();
 		ChinaMarketCheck();
 		WorldMarketCheck();
+		WebInquirerCheck();
 	}
 }

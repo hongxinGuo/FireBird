@@ -36,7 +36,6 @@ void CVirtualStock::Reset(void) {
 	m_lIPOStatus = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
 
 	m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
-	m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
 	m_fDayLineNeedSaving = false;
 }
 

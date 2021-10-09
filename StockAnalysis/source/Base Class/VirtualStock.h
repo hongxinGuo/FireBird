@@ -85,8 +85,6 @@ public:
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsDayLineNeedUpdate(void) const noexcept { return m_fDayLineNeedUpdate; }
 	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-	bool IsDayLineNeedProcess(void) const  noexcept { return m_fDayLineNeedProcess; }
-	void SetDayLineNeedProcess(bool fFlag) noexcept { m_fDayLineNeedProcess = fFlag; }
 	bool IsDayLineNeedSaving(void) const noexcept { return m_fDayLineNeedSaving; }
 	void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
 	bool IsDayLineNeedSavingAndClearFlag(void) noexcept { const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false); return fNeedSaving; }
@@ -122,7 +120,6 @@ protected:
 							 // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-	atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
 	atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 };
 

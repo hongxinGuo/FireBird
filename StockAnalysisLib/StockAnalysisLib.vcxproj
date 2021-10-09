@@ -59,8 +59,10 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\DownLoadedNeteaseDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
@@ -194,8 +196,10 @@
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\DownLoadedNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />

@@ -51,15 +51,26 @@ bool CDayLineContainer::LoadData(CString strStockSymbol) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine) {
+void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave) {
 	CDayLinePtr pDayLine = nullptr;
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (int i = 0; i < vTempDayLine.size(); i++) {
-		pDayLine = vTempDayLine.at(i);
-		if (pDayLine->IsActive()) {
-			// 清除掉不再交易（停牌或退市后出现的）的股票日线
-			StoreData(pDayLine);
+	if (fRevertSave) {
+		for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+			pDayLine = vTempDayLine.at(i);
+			if (pDayLine->IsActive()) {
+				// 清除掉不再交易（停牌或退市后出现的）的股票日线
+				StoreData(pDayLine);
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < vTempDayLine.size(); i++) {
+			pDayLine = vTempDayLine.at(i);
+			if (pDayLine->IsActive()) {
+				// 清除掉不再交易（停牌或退市后出现的）的股票日线
+				StoreData(pDayLine);
+			}
 		}
 	}
 	SetDataLoaded(true);
