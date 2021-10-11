@@ -72,8 +72,8 @@ namespace StockAnalysisTest {
 		tm tm_, tmLocal;
 		time(&ttime);
 		gl_pVirtualMarket->CalculateTime();
-		EXPECT_EQ(ttime, gl_pVirtualMarket->GetLocalTime());
-		EXPECT_EQ(ttime - gl_pVirtualMarket->GetMarketTimeZone(), gl_pVirtualMarket->GetMarketTime());
+		EXPECT_EQ(ttime, gl_pVirtualMarket->GetUTCTime());
+		EXPECT_EQ(ttime, gl_pVirtualMarket->GetUTCTime());
 		localtime_s(&tmLocal, &ttime);
 		ttime -= gl_pVirtualMarket->GetMarketTimeZone();
 		gmtime_s(&tm_, &ttime);
@@ -129,7 +129,7 @@ namespace StockAnalysisTest {
 			ttime += i * 60 * 60 * 24;
 			gmtime_s(&tm2, &ttime);
 			tm_ = tm2;
-			gl_pVirtualMarket->__TEST_SetMarketTime(ttime);
+			gl_pVirtualMarket->__TEST_SetUTCTime(ttime);
 			gl_pVirtualMarket->__TEST_SetMarketTM(tm2);
 
 			switch (tm_.tm_wday) {
@@ -216,12 +216,12 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tLocal = gl_pVirtualMarket->GetLocalTime();
+		time_t tUTC = gl_pVirtualMarket->GetUTCTime();
 		tm tmLocal;
 		char buffer[100];
 		CString str;
 
-		localtime_s(&tmLocal, &tLocal);
+		localtime_s(&tmLocal, &tUTC);
 		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfLocalDateTime(), str);
@@ -231,7 +231,7 @@ namespace StockAnalysisTest {
 		gl_pVirtualMarket->CalculateTime();
 
 		tm tmMarket;
-		time_t tMarket = gl_pVirtualMarket->GetMarketTime();
+		time_t tMarket = gl_pVirtualMarket->GetUTCTime() - gl_pVirtualMarket->GetMarketTimeZone();
 		gmtime_s(&tmMarket, &tMarket);
 		char buffer[30];
 		CString str;
@@ -244,10 +244,11 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tMarket = gl_pVirtualMarket->GetMarketTime();
+		time_t tt = gl_pVirtualMarket->GetUTCTime();
 		tm tmMarket;
 		char buffer[100];
 		CString str;
+		time_t tMarket = tt - gl_pVirtualMarket->GetMarketTimeZone();
 
 		gmtime_s(&tmMarket, &tMarket);
 		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);

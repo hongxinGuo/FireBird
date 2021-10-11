@@ -633,7 +633,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
-			gl_pMockWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetMarketTime()));
+			gl_pMockWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_CANDLES__);
@@ -684,7 +684,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
-			gl_pMockWorldMarket->GetForexSymbol(inquiry.m_lStockIndex)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetMarketTime()));
+			gl_pMockWorldMarket->GetForexSymbol(inquiry.m_lStockIndex)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __FOREX_CANDLES__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
@@ -734,7 +734,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
-			gl_pMockWorldMarket->GetCryptoSymbol(inquiry.m_lStockIndex)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetMarketTime()));
+			gl_pMockWorldMarket->GetCryptoSymbol(inquiry.m_lStockIndex)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __CRYPTO_CANDLES__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
@@ -888,7 +888,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetActive(false);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetIPOStatus(__STOCK_DELISTED__);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
-		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetTransactionTime(gl_pMockWorldMarket->GetMarketTime() - 3600 * 12 + 1);
+		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetTransactionTime(gl_pMockWorldMarket->GetUTCTime() - 3600 * 12 + 1);
 
 		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockQuote(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));

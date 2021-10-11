@@ -540,10 +540,10 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(8, (LPCTSTR)gl_pChinaMarket->GetStockCodeForInquiringNeteaseDayLine());
 
 	// 更新当前抓取的实时数据大小
-	if ((gl_pChinaMarket->GetMarketTime() - m_timeLast) > 0) { // 每秒更新一次
+	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) { // 每秒更新一次
 		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
 		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
-		m_timeLast = gl_pChinaMarket->GetMarketTime();
+		m_timeLast = gl_pChinaMarket->GetUTCTime();
 		m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
 	}
 

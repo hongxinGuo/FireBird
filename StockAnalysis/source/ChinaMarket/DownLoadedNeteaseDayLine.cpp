@@ -103,7 +103,7 @@ bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 	tm_.tm_min = 0;
 	tm_.tm_sec = 0;
 	tm_.tm_isdst = 0;
-	m_pCurrentProcessingDayLine->SetTime(mktime(&tm_));
+	m_pCurrentProcessingDayLine->SetTime(_mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone());
 	lDate = year * 10000 + month * 100 + day;
 	m_pCurrentProcessingDayLine->SetDate(lDate);
 	//TRACE("%d %d %d\n", year, month, day);

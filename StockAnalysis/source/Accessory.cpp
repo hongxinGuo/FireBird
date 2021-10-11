@@ -67,14 +67,14 @@ long FormatToDate(time_t const tt, time_t tTimeZoneOffset) noexcept {
 long FormatToTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
 	tm tm_;
 	time_t tt_ = tt - tTimeZoneOffset;
-	localtime_s(&tm_, &tt_);
+	gmtime_s(&tm_, &tt_);
 	return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
 INT64 FormatToDateTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
 	tm tm_;
 	time_t tt_ = tt - tTimeZoneOffset;
-	localtime_s(&tm_, &tt_);
+	gmtime_s(&tm_, &tt_);
 	return((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 + static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 

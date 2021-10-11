@@ -509,11 +509,12 @@ long CChinaMarket::GetMinLineOffset(time_t Time) {
 	time_t t = 0;
 	long lIndex = 0;
 
+	Time += GetMarketTimeZone(); // 转换成UTC时间
 	gmtime_s(&tmTemp, &Time);
 	tmTemp.tm_hour = 9;
 	tmTemp.tm_min = 30;
 	tmTemp.tm_sec = 0;
-	t = mktime(&tmTemp);
+	t = _mkgmtime(&tmTemp);
 	lIndex = (Time - t) / 60;
 	if (lIndex < 0) lIndex = 0;
 	if ((lIndex >= 120) && (lIndex < 209)) lIndex = 119;
@@ -1132,7 +1133,7 @@ bool CChinaMarket::CheckTengxunRTDataValidation(CWebRTData& RTData) {
 			if (!pStock->IsActive()) {
 				str = pStock->GetSymbol();
 				str += _T("腾讯实时检测到不处于活跃状态");
-				gl_systemMessage.PushInnerSystemInformationMessage(str);
+				//gl_systemMessage.PushInnerSystemInformationMessage(str);
 				return false;
 			}
 		}
@@ -1190,9 +1191,9 @@ bool CChinaMarket::SchedulingTask(void) {
 	m_iCountDownSlowReadingRTData--;
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetMarketTime() > s_timeLast) {
-		SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
-		s_timeLast = GetMarketTime();
+	if (GetUTCTime() > s_timeLast) {
+		SchedulingTaskPerSecond(GetUTCTime() - s_timeLast, lCurrentTime);
+		s_timeLast = GetUTCTime();
 	}
 
 	// 系统准备好了之后需要完成的各项工作

@@ -276,9 +276,9 @@ bool CWorldMarket::SchedulingTask(void) {
 	ProcessTiingoInquiringMessage(); // 然后再申请处理下一个
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetMarketTime() > s_timeLast) {
-		SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
-		s_timeLast = GetMarketTime();
+	if (GetUTCTime() > s_timeLast) {
+		SchedulingTaskPerSecond(GetUTCTime() - s_timeLast, lCurrentTime);
+		s_timeLast = GetUTCTime();
 	}
 
 	return true;
@@ -396,7 +396,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				break;
 			case __STOCK_CANDLES__:
 				ASSERT(pStock != nullptr);
-				strMiddle = pStock->GetFinnhubDayLineInquiryString(GetMarketTime());
+				strMiddle = pStock->GetFinnhubDayLineInquiryString(GetUTCTime());
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pStock->SetDayLineNeedUpdate(false);
 				break;
@@ -415,7 +415,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				break;
 			case __FOREX_CANDLES__:
 				pForexSymbol = m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-				strMiddle = pForexSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
+				strMiddle = pForexSymbol->GetFinnhubDayLineInquiryString(GetUTCTime());
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pForexSymbol->SetDayLineNeedUpdate(false);
 				break;
@@ -431,7 +431,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				break;
 			case __CRYPTO_CANDLES__:
 				pCryptoSymbol = m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-				strMiddle = pCryptoSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
+				strMiddle = pCryptoSymbol->GetFinnhubDayLineInquiryString(GetUTCTime());
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pCryptoSymbol->SetDayLineNeedUpdate(false);
 				break;
@@ -579,7 +579,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __STOCK_QUOTE__:
 				ASSERT(pStock != nullptr);
 				ProcessFinnhubStockQuote(pWebData, pStock);
-				if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
+				if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
 					pStock->SetActive(true);
 					if (!pStock->IsIPOed()) {
 						pStock->SetIPOStatus(__STOCK_IPOED__);

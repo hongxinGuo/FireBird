@@ -344,31 +344,31 @@ namespace StockAnalysisTest {
 		tmCurrent.tm_hour = 9;
 		tmCurrent.tm_min = 0;
 		tmCurrent.tm_sec = 0;
-		time_t tMarket = mktime(&tmCurrent);
+		time_t tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
 		long lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
 		EXPECT_EQ(lOffset, 0);
 		tmCurrent.tm_hour = 10;
 		tmCurrent.tm_min = 30;
 		tmCurrent.tm_sec = 59;
-		tMarket = mktime(&tmCurrent);
+		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
 		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
 		EXPECT_EQ(lOffset, 60);
 		tmCurrent.tm_hour = 12;
 		tmCurrent.tm_min = 30;
 		tmCurrent.tm_sec = 59;
-		tMarket = mktime(&tmCurrent);
+		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
 		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
 		EXPECT_EQ(lOffset, 119);
 		tmCurrent.tm_hour = 14;
 		tmCurrent.tm_min = 30;
 		tmCurrent.tm_sec = 59;
-		tMarket = mktime(&tmCurrent);
+		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
 		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
 		EXPECT_EQ(lOffset, 210);
 		tmCurrent.tm_hour = 15;
 		tmCurrent.tm_min = 30;
 		tmCurrent.tm_sec = 59;
-		tMarket = mktime(&tmCurrent);
+		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
 		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
 		EXPECT_EQ(lOffset, 239);
 	}
@@ -1088,7 +1088,7 @@ namespace StockAnalysisTest {
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(false);
 		EXPECT_FALSE(gl_pChinaMarket->CheckTengxunRTDataValidation(webRTData));
-		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("000001.SZ腾讯实时检测到不处于活跃状态"));
+		//EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("000001.SZ腾讯实时检测到不处于活跃状态"));
 
 		gl_pChinaMarket->GetStock(webRTData.GetSymbol())->SetActive(true);
 

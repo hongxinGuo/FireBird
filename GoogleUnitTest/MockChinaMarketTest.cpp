@@ -448,7 +448,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockChinaMarketTest, TestThreadProcessTodayStock) {
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		gl_pMockChinaMarket->CalculateTime();
-		gl_pMockChinaMarket->SetNewestTransactionTime(gl_pMockChinaMarket->GetLocalTime());
+		gl_pMockChinaMarket->SetNewestTransactionTime(gl_pMockChinaMarket->GetUTCTime());
 		long lDate = FormatToDate(gl_pMockChinaMarket->GetNewestTransactionTime());
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
@@ -492,7 +492,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockChinaMarketTest, TestThreadCalculateDayLineRS) {
 		gl_pMockChinaMarket->CalculateTime();
-		time_t tStart = gl_pMockChinaMarket->GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
+		time_t tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		tm _tm;
 		gmtime_s(&_tm, &tStart);
 		long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
@@ -509,7 +509,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_fExitingCalculatingRS);
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
-		tStart = gl_pMockChinaMarket->GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
+		tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		gmtime_s(&_tm, &tStart);
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_fExitingCalculatingRS = false;

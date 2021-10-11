@@ -211,8 +211,8 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = mktime(&tm_);
-		gl_pChinaMarket->__TEST_SetMarketTime(tt);
+		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.IsValidTime(14));
@@ -233,8 +233,8 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = mktime(&tm_);
-		gl_pChinaMarket->__TEST_SetMarketTime(tt);
+		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
@@ -412,7 +412,7 @@ namespace StockAnalysisTest {
 			tm_.tm_min = minute;
 			tm_.tm_sec = second;
 			tm_.tm_isdst = 0;
-			tt = mktime(&tm_);
+			tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
 			m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
 			tt2 = m_RTData.GetTransactionTime();
 			EXPECT_EQ(tt, tt2);
@@ -680,7 +680,7 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 15;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		ttime = mktime(&tm_);
+		ttime = _mkgmtime(&tm_) - 8 * 3600;
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // Ã»ÓÐ´íÎó

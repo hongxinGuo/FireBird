@@ -48,15 +48,15 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = mktime(&tm_);
+		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 7; // 2019年11月7日是星期三。
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt2 = mktime(&tm_);
-		gl_pChinaMarket->__TEST_SetMarketTime(tt);
+		time_t tt2 = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt2);
 		EXPECT_FALSE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";
@@ -228,10 +228,10 @@ namespace StockAnalysisTest {
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10 - 1;
 		tm_.tm_mday = 11;
-		tm_.tm_hour = 15;
+		tm_.tm_hour = 15; //
 		tm_.tm_min = 58;
 		tm_.tm_sec = 58;
-		ttime = mktime(&tm_);
+		ttime = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误

@@ -23,8 +23,7 @@ public:
 
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
-	time_t GetLocalTime(void) const noexcept { return sm_tLocal; }
-	time_t GetMarketTime(void) const noexcept { return m_tMarket; }
+	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
 	long GetFormatedMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetFormatedMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
@@ -65,8 +64,7 @@ public:
 
 public:
 	// 测试用函数
-	void __TEST_SetLocalTime(time_t Time) noexcept { sm_tLocal = Time; }
-	void __TEST_SetMarketTime(time_t Time) noexcept { m_tMarket = Time; }
+	void __TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
 	void __TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
 	void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
 	void __TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
@@ -86,10 +84,9 @@ protected:
 	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。
 	CString m_strMarketId; // 该市场标识字符串
 
-	static time_t sm_tLocal; // 软件运行时的当地时间。所有的市场都使用同一个当地时间，故而为静态数据。
+	static time_t sm_tUTC; // 软件运行时的UTC时间。所有的市场都使用同一个UTC时间，故而为静态数据。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
-	time_t m_tMarket; // 本市场的标准时间
 	long m_lMarketDate; //本市场的日期
 	long m_lMarketTime; // 本市场的时间
 	long m_lMarketLastTradeDate; // 本市场的上次交易日期
