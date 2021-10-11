@@ -30,6 +30,8 @@ CChinaStock::~CChinaStock(void) {
 
 void CChinaStock::Reset(void) {
 	CVirtualStock::Reset();
+	m_pCurrentDayLine = make_shared<CDayLine>(); // 抛弃掉之前的数据（如果有的话）
+
 	m_lOffsetInContainer = -1;
 	m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
 	m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
@@ -46,70 +48,69 @@ void CChinaStock::Reset(void) {
 
 	m_lAttackBuyAmount = 0;
 	m_lAttackSellAmount = 0;
-	m_lAttackBuyVolume = 0;
-	m_lCurrentAttackBuy = 0;
-	m_lAttackSellVolume = 0;
-	m_lCurrentAttackSell = 0;
-	m_lStrongBuyVolume = 0;
-	m_lCurrentStrongBuy = 0;
-	m_lStrongSellVolume = 0;
+	//m_lAttackBuyVolume = 0;
+	//m_lCurrentAttackBuy = 0;
+	//m_lAttackSellVolume = 0;
+	//m_lCurrentAttackSell = 0;
+	//m_lStrongBuyVolume = 0;
+	//m_lCurrentStrongBuy = 0;
+	//m_lStrongSellVolume = 0;
 	m_lCurrentStrongSell = 0;
-	m_lUnknownVolume = 0;
-	m_lCurrentUnknown = 0;
-	m_lCanceledBuyVolume = 0;
-	m_lCanceledSellVolume = 0;
-	m_lTransactionNumber = 0;
-	m_lTransactionNumberBelow5000 = 0;
-	m_lTransactionNumberBelow50000 = 0;
-	m_lTransactionNumberBelow200000 = 0;
-	m_lTransactionNumberAbove200000 = 0;
+	//m_lUnknownVolume = 0;
+	//m_lCanceledBuyVolume = 0;
+	//m_lCanceledSellVolume = 0;
+	//m_lTransactionNumber = 0;
+	//m_lTransactionNumberBelow5000 = 0;
+	//m_lTransactionNumberBelow50000 = 0;
+	//m_lTransactionNumberBelow200000 = 0;
+	//m_lTransactionNumberAbove200000 = 0;
 
-	m_lOrdinaryBuyNumberBelow5000 = 0;
-	m_lOrdinaryBuyNumberBelow10000 = 0;
-	m_lOrdinaryBuyNumberBelow20000 = 0;
-	m_lOrdinaryBuyNumberBelow50000 = 0;
-	m_lOrdinaryBuyNumberBelow100000 = 0;
-	m_lOrdinaryBuyNumberBelow200000 = 0;
-	m_lOrdinaryBuyNumberAbove200000 = 0;
-	m_lOrdinarySellNumberBelow5000 = 0;
-	m_lOrdinarySellNumberBelow10000 = 0;
-	m_lOrdinarySellNumberBelow20000 = 0;
-	m_lOrdinarySellNumberBelow50000 = 0;
-	m_lOrdinarySellNumberBelow100000 = 0;
-	m_lOrdinarySellNumberBelow200000 = 0;
-	m_lOrdinarySellNumberAbove200000 = 0;
-	m_lOrdinaryBuyVolumeBelow5000 = 0;
-	m_lOrdinaryBuyVolumeBelow10000 = 0;
-	m_lOrdinaryBuyVolumeBelow20000 = 0;
-	m_lOrdinaryBuyVolumeBelow50000 = 0;
-	m_lOrdinaryBuyVolumeBelow100000 = 0;
-	m_lOrdinaryBuyVolumeBelow200000 = 0;
-	m_lOrdinaryBuyVolumeAbove200000 = 0;
-	m_lOrdinarySellVolumeBelow5000 = 0;
-	m_lOrdinarySellVolumeBelow10000 = 0;
-	m_lOrdinarySellVolumeBelow20000 = 0;
-	m_lOrdinarySellVolumeBelow50000 = 0;
-	m_lOrdinarySellVolumeBelow100000 = 0;
-	m_lOrdinarySellVolumeBelow200000 = 0;
-	m_lOrdinarySellVolumeAbove200000 = 0;
+	//m_lOrdinaryBuyNumberBelow5000 = 0;
+	//m_lOrdinaryBuyNumberBelow10000 = 0;
+	//m_lOrdinaryBuyNumberBelow20000 = 0;
+	//m_lOrdinaryBuyNumberBelow50000 = 0;
+	//m_lOrdinaryBuyNumberBelow100000 = 0;
+	//m_lOrdinaryBuyNumberBelow200000 = 0;
+	//m_lOrdinaryBuyNumberAbove200000 = 0;
+	//m_lOrdinarySellNumberBelow5000 = 0;
+	//m_lOrdinarySellNumberBelow10000 = 0;
+	//m_lOrdinarySellNumberBelow20000 = 0;
+	//m_lOrdinarySellNumberBelow50000 = 0;
+	//m_lOrdinarySellNumberBelow100000 = 0;
+	//m_lOrdinarySellNumberBelow200000 = 0;
+	//m_lOrdinarySellNumberAbove200000 = 0;
+	//m_lOrdinaryBuyVolumeBelow5000 = 0;
+	//m_lOrdinaryBuyVolumeBelow10000 = 0;
+	//m_lOrdinaryBuyVolumeBelow20000 = 0;
+	//m_lOrdinaryBuyVolumeBelow50000 = 0;
+	//m_lOrdinaryBuyVolumeBelow100000 = 0;
+	//m_lOrdinaryBuyVolumeBelow200000 = 0;
+	//m_lOrdinaryBuyVolumeAbove200000 = 0;
+	//m_lOrdinarySellVolumeBelow5000 = 0;
+	//m_lOrdinarySellVolumeBelow10000 = 0;
+	//m_lOrdinarySellVolumeBelow20000 = 0;
+	//m_lOrdinarySellVolumeBelow50000 = 0;
+	//m_lOrdinarySellVolumeBelow100000 = 0;
+	//m_lOrdinarySellVolumeBelow200000 = 0;
+	//m_lOrdinarySellVolumeAbove200000 = 0;
 
-	m_lCanceledBuyVolumeBelow5000 = 0;
-	m_lCanceledBuyVolumeBelow10000 = 0;
-	m_lCanceledBuyVolumeBelow20000 = 0;
-	m_lCanceledBuyVolumeBelow50000 = 0;
-	m_lCanceledBuyVolumeBelow100000 = 0;
-	m_lCanceledBuyVolumeBelow200000 = 0;
-	m_lCanceledBuyVolumeAbove200000 = 0;
-	m_lCanceledSellVolumeBelow5000 = 0;
-	m_lCanceledSellVolumeBelow10000 = 0;
-	m_lCanceledSellVolumeBelow20000 = 0;
-	m_lCanceledSellVolumeBelow50000 = 0;
-	m_lCanceledSellVolumeBelow100000 = 0;
-	m_lCanceledSellVolumeBelow200000 = 0;
-	m_lCanceledSellVolumeAbove200000 = 0;
+	//m_lCanceledBuyVolumeBelow5000 = 0;
+	//m_lCanceledBuyVolumeBelow10000 = 0;
+	//m_lCanceledBuyVolumeBelow20000 = 0;
+	//m_lCanceledBuyVolumeBelow50000 = 0;
+	//m_lCanceledBuyVolumeBelow100000 = 0;
+	//m_lCanceledBuyVolumeBelow200000 = 0;
+	//m_lCanceledBuyVolumeAbove200000 = 0;
+	//m_lCanceledSellVolumeBelow5000 = 0;
+	//m_lCanceledSellVolumeBelow10000 = 0;
+	//m_lCanceledSellVolumeBelow20000 = 0;
+	//m_lCanceledSellVolumeBelow50000 = 0;
+	//m_lCanceledSellVolumeBelow100000 = 0;
+	//m_lCanceledSellVolumeBelow200000 = 0;
+	//m_lCanceledSellVolumeAbove200000 = 0;
 
-	m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
-	m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
+	//m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
+	//m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
 
 	m_llLastSavedVolume = 0;
 
@@ -178,24 +179,24 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 }
 
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
-	CDayLine dayLine;
+	CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 
-	UpdateCurrentHistoryCandle(&dayLine);
-	dayLine.SaveHistoryCandleBasic(psetDayLineBasicInfo);
+	UpdateCurrentHistoryCandle(pDayLine);
+	pDayLine->SaveHistoryCandleBasic(psetDayLineBasicInfo);
 }
 
-void CChinaStock::SaveTempInfo(CSetDayLineTemp* psetDayLineTemp) {
-	CDayLine dayLine;
+void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp) {
+	CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 	ASSERT(psetDayLineTemp->IsOpen());
 
-	UpdateCurrentHistoryCandle(&dayLine);
-	dayLine.SaveHistoryCandle(psetDayLineTemp);
+	UpdateCurrentHistoryCandle(pDayLine);
+	pDayLine->SaveHistoryCandle(psetDayLineTemp);
 }
 
-void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtualHistoryCandleExtend) {
+void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pVirtualHistoryCandleExtend) {
 	pVirtualHistoryCandleExtend->SetDate(FormatToDate(m_TransactionTime));
 	pVirtualHistoryCandleExtend->SetExchange(m_strExchangeCode);
 	pVirtualHistoryCandleExtend->SetStockSymbol(m_strSymbol);
@@ -218,71 +219,77 @@ void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtend* pVirtu
 	pVirtualHistoryCandleExtend->SetTotalValue(m_llTotalValue);
 	pVirtualHistoryCandleExtend->SetCurrentValue(m_llCurrentValue);
 
-	pVirtualHistoryCandleExtend->SetTransactionNumber(m_lTransactionNumber);
-	pVirtualHistoryCandleExtend->SetTransactionNumberBelow5000(m_lTransactionNumberBelow5000);
-	pVirtualHistoryCandleExtend->SetTransactionNumberBelow50000(m_lTransactionNumberBelow50000);
-	pVirtualHistoryCandleExtend->SetTransactionNumberBelow200000(m_lTransactionNumberBelow200000);
-	pVirtualHistoryCandleExtend->SetTransactionNumberAbove200000(m_lTransactionNumberAbove200000);
+	pVirtualHistoryCandleExtend->SetTransactionNumber(m_pCurrentDayLine->m_lTransactionNumber);
+	pVirtualHistoryCandleExtend->SetTransactionNumberBelow5000(m_pCurrentDayLine->m_lTransactionNumberBelow5000);
+	pVirtualHistoryCandleExtend->SetTransactionNumberBelow50000(m_pCurrentDayLine->m_lTransactionNumberBelow50000);
+	pVirtualHistoryCandleExtend->SetTransactionNumberBelow200000(m_pCurrentDayLine->m_lTransactionNumberBelow200000);
+	pVirtualHistoryCandleExtend->SetTransactionNumberAbove200000(m_pCurrentDayLine->m_lTransactionNumberAbove200000);
 
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolume(m_lCanceledBuyVolume);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolume(m_lCanceledSellVolume);
-	pVirtualHistoryCandleExtend->SetAttackBuyVolume(m_lAttackBuyVolume);
-	pVirtualHistoryCandleExtend->SetAttackSellVolume(m_lAttackSellVolume);
-	pVirtualHistoryCandleExtend->SetStrongBuyVolume(m_lStrongBuyVolume);
-	pVirtualHistoryCandleExtend->SetStrongSellVolume(m_lStrongSellVolume);
-	pVirtualHistoryCandleExtend->SetUnknownVolume(m_lUnknownVolume);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolume(m_lOrdinaryBuyVolume);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolume(m_lOrdinarySellVolume);
-	pVirtualHistoryCandleExtend->SetAttackBuyBelow50000(m_lAttackBuyBelow50000);
-	pVirtualHistoryCandleExtend->SetAttackBuyBelow200000(m_lAttackBuyBelow200000);
-	pVirtualHistoryCandleExtend->SetAttackBuyAbove200000(m_lAttackBuyAbove200000);
-	pVirtualHistoryCandleExtend->SetAttackSellBelow50000(m_lAttackSellBelow50000);
-	pVirtualHistoryCandleExtend->SetAttackSellBelow200000(m_lAttackSellBelow200000);
-	pVirtualHistoryCandleExtend->SetAttackSellAbove200000(m_lAttackSellAbove200000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolume(m_pCurrentDayLine->m_lCanceledBuyVolume);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolume(m_pCurrentDayLine->m_lCanceledSellVolume);
+	pVirtualHistoryCandleExtend->SetAttackBuyVolume(m_pCurrentDayLine->m_lAttackBuyVolume);
+	pVirtualHistoryCandleExtend->SetAttackSellVolume(m_pCurrentDayLine->m_lAttackSellVolume);
+	pVirtualHistoryCandleExtend->SetStrongBuyVolume(m_pCurrentDayLine->m_lStrongBuyVolume);
+	pVirtualHistoryCandleExtend->SetStrongSellVolume(m_pCurrentDayLine->m_lStrongSellVolume);
+	pVirtualHistoryCandleExtend->SetUnknownVolume(m_pCurrentDayLine->m_lUnknownVolume);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolume(m_pCurrentDayLine->m_lOrdinaryBuyVolume);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolume(m_pCurrentDayLine->m_lOrdinarySellVolume);
+	pVirtualHistoryCandleExtend->SetAttackBuyBelow50000(m_pCurrentDayLine->m_lAttackBuyBelow50000);
+	pVirtualHistoryCandleExtend->SetAttackBuyBelow200000(m_pCurrentDayLine->m_lAttackBuyBelow200000);
+	pVirtualHistoryCandleExtend->SetAttackBuyAbove200000(m_pCurrentDayLine->m_lAttackBuyAbove200000);
+	pVirtualHistoryCandleExtend->SetAttackSellBelow50000(m_pCurrentDayLine->m_lAttackSellBelow50000);
+	pVirtualHistoryCandleExtend->SetAttackSellBelow200000(m_pCurrentDayLine->m_lAttackSellBelow200000);
+	pVirtualHistoryCandleExtend->SetAttackSellAbove200000(m_pCurrentDayLine->m_lAttackSellAbove200000);
 
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow5000(m_lOrdinaryBuyVolumeBelow5000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow10000(m_lOrdinaryBuyVolumeBelow10000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow20000(m_lOrdinaryBuyVolumeBelow20000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow50000(m_lOrdinaryBuyVolumeBelow50000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow100000(m_lOrdinaryBuyVolumeBelow100000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow200000(m_lOrdinaryBuyVolumeBelow200000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeAbove200000(m_lOrdinaryBuyVolumeAbove200000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow5000(m_lOrdinarySellVolumeBelow5000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow10000(m_lOrdinarySellVolumeBelow10000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow20000(m_lOrdinarySellVolumeBelow20000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow50000(m_lOrdinarySellVolumeBelow50000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow100000(m_lOrdinarySellVolumeBelow100000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow200000(m_lOrdinarySellVolumeBelow200000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeAbove200000(m_lOrdinarySellVolumeAbove200000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow5000(m_lOrdinaryBuyNumberBelow5000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow10000(m_lOrdinaryBuyNumberBelow10000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow20000(m_lOrdinaryBuyNumberBelow20000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow50000(m_lOrdinaryBuyNumberBelow50000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow100000(m_lOrdinaryBuyNumberBelow100000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow200000(m_lOrdinaryBuyNumberBelow200000);
-	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberAbove200000(m_lOrdinaryBuyNumberAbove200000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow5000(m_lOrdinarySellNumberBelow5000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow10000(m_lOrdinarySellNumberBelow10000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow20000(m_lOrdinarySellNumberBelow20000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow50000(m_lOrdinarySellNumberBelow50000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow100000(m_lOrdinarySellNumberBelow100000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow200000(m_lOrdinarySellNumberBelow200000);
-	pVirtualHistoryCandleExtend->SetOrdinarySellNumberAbove200000(m_lOrdinarySellNumberAbove200000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow5000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow5000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow10000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow10000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow20000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow20000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow50000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow50000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow100000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow100000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeBelow200000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow200000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyVolumeAbove200000(m_pCurrentDayLine->m_lOrdinaryBuyVolumeAbove200000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow5000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow5000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow10000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow10000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow20000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow20000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow50000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow50000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow100000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow100000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeBelow200000(m_pCurrentDayLine->m_lOrdinarySellVolumeBelow200000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellVolumeAbove200000(m_pCurrentDayLine->m_lOrdinarySellVolumeAbove200000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow5000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow5000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow10000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow10000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow20000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow20000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow50000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow50000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow100000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow100000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberBelow200000(m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow200000);
+	pVirtualHistoryCandleExtend->SetOrdinaryBuyNumberAbove200000(m_pCurrentDayLine->m_lOrdinaryBuyNumberAbove200000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow5000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow5000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow10000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow10000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow20000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow20000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow50000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow50000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow100000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow100000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberBelow200000(m_pCurrentDayLine->m_lOrdinarySellNumberBelow200000);
+	pVirtualHistoryCandleExtend->SetOrdinarySellNumberAbove200000(m_pCurrentDayLine->m_lOrdinarySellNumberAbove200000);
 
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow5000(m_lCanceledBuyVolumeBelow5000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow10000(m_lCanceledBuyVolumeBelow10000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow20000(m_lCanceledBuyVolumeBelow20000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow50000(m_lCanceledBuyVolumeBelow50000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow100000(m_lCanceledBuyVolumeBelow100000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow200000(m_lCanceledBuyVolumeBelow200000);
-	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeAbove200000(m_lCanceledBuyVolumeAbove200000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow5000(m_lCanceledSellVolumeBelow5000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow10000(m_lCanceledSellVolumeBelow10000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow20000(m_lCanceledSellVolumeBelow20000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow50000(m_lCanceledSellVolumeBelow50000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow100000(m_lCanceledSellVolumeBelow100000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow200000(m_lCanceledSellVolumeBelow200000);
-	pVirtualHistoryCandleExtend->SetCanceledSellVolumeAbove200000(m_lCanceledSellVolumeAbove200000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow5000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow5000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow10000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow10000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow20000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow20000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow50000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow50000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow100000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow100000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeBelow200000(m_pCurrentDayLine->m_lCanceledBuyVolumeBelow200000);
+	pVirtualHistoryCandleExtend->SetCanceledBuyVolumeAbove200000(m_pCurrentDayLine->m_lCanceledBuyVolumeAbove200000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow5000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow5000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow10000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow10000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow20000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow20000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow50000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow50000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow100000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow100000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeBelow200000(m_pCurrentDayLine->m_lCanceledSellVolumeBelow200000);
+	pVirtualHistoryCandleExtend->SetCanceledSellVolumeAbove200000(m_pCurrentDayLine->m_lCanceledSellVolumeAbove200000);
+}
+
+void CChinaStock::UpdateCurrentDayLineSymbol(void) {
+	m_pCurrentDayLine->m_strDisplaySymbol = m_strDisplaySymbol;
+	m_pCurrentDayLine->m_strExchange = m_strExchangeCode;
+	m_pCurrentDayLine->m_strStockSymbol = m_strSymbol;
 }
 
 void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
@@ -344,11 +351,11 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 }
 
 void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
-	CDayLine dayLine;
+	CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 	ASSERT(psetDayLineExtendInfo->IsOpen());
-	UpdateCurrentHistoryCandle(&dayLine);
-	dayLine.SaveHistoryCandleExtend(psetDayLineExtendInfo);
+	UpdateCurrentHistoryCandle(pDayLine);
+	pDayLine->SaveHistoryCandleExtend(psetDayLineExtendInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -357,74 +364,77 @@ void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendIn
 // 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
-void CChinaStock::LoadTempInfo(const CSetDayLineTemp& setDayLineTemp) {
-	m_lUnknownVolume = atoll(setDayLineTemp.m_UnknownVolume);
+void CChinaStock::LoadTodaySavedInfo(CSetDayLineTodaySaved* pSetDayLineTemp) {
+	m_pCurrentDayLine->LoadHistoryCandle(pSetDayLineTemp);
+	m_llVolume = atoll(pSetDayLineTemp->m_Volume);
+	m_llLastSavedVolume = atoll(pSetDayLineTemp->m_Volume);
+	/*
+	m_pCurrentDayLine->m_lUnknownVolume = atoll(pSetDayLineTemp->m_UnknownVolume);
 
-	m_lTransactionNumber = atol(setDayLineTemp.m_TransactionNumber);
-	m_lTransactionNumberBelow5000 = atol(setDayLineTemp.m_TransactionNumberBelow5000);
-	m_lTransactionNumberBelow50000 = atol(setDayLineTemp.m_TransactionNumberBelow50000);
-	m_lTransactionNumberBelow200000 = atol(setDayLineTemp.m_TransactionNumberBelow200000);
-	m_lTransactionNumberAbove200000 = atol(setDayLineTemp.m_TransactionNumberAbove200000);
-	m_lCanceledBuyVolume = atoll(setDayLineTemp.m_CanceledBuyVolume);
-	m_lCanceledSellVolume = atoll(setDayLineTemp.m_CanceledSellVolume);
-	m_lAttackBuyVolume = atoll(setDayLineTemp.m_AttackBuyVolume);
-	m_lAttackSellVolume = atoll(setDayLineTemp.m_AttackSellVolume);
-	m_lStrongBuyVolume = atoll(setDayLineTemp.m_StrongBuyVolume);
-	m_lStrongSellVolume = atoll(setDayLineTemp.m_StrongSellVolume);
-	m_lOrdinaryBuyVolume = atoll(setDayLineTemp.m_OrdinaryBuyVolume);
-	m_lOrdinarySellVolume = atoll(setDayLineTemp.m_OrdinarySellVolume);
-	m_lAttackBuyBelow50000 = atoll(setDayLineTemp.m_AttackBuyBelow50000);
-	m_lAttackBuyBelow200000 = atoll(setDayLineTemp.m_AttackBuyBelow200000);
-	m_lAttackBuyAbove200000 = atoll(setDayLineTemp.m_AttackBuyAbove200000);
-	m_lAttackSellBelow50000 = atoll(setDayLineTemp.m_AttackSellBelow50000);
-	m_lAttackSellBelow200000 = atoll(setDayLineTemp.m_AttackSellBelow200000);
-	m_lAttackSellAbove200000 = atoll(setDayLineTemp.m_AttackSellAbove200000);
-	m_llVolume = atoll(setDayLineTemp.m_Volume);
-	m_llLastSavedVolume = atoll(setDayLineTemp.m_Volume);
+	m_pCurrentDayLine->m_lTransactionNumber = atol(pSetDayLineTemp->m_TransactionNumber);
+	m_pCurrentDayLine->m_lTransactionNumberBelow5000 = atol(pSetDayLineTemp->m_TransactionNumberBelow5000);
+	m_pCurrentDayLine->m_lTransactionNumberBelow50000 = atol(pSetDayLineTemp->m_TransactionNumberBelow50000);
+	m_pCurrentDayLine->m_lTransactionNumberBelow200000 = atol(pSetDayLineTemp->m_TransactionNumberBelow200000);
+	m_pCurrentDayLine->m_lTransactionNumberAbove200000 = atol(pSetDayLineTemp->m_TransactionNumberAbove200000);
+	m_pCurrentDayLine->m_lCanceledBuyVolume = atoll(pSetDayLineTemp->m_CanceledBuyVolume);
+	m_pCurrentDayLine->m_lCanceledSellVolume = atoll(pSetDayLineTemp->m_CanceledSellVolume);
+	m_pCurrentDayLine->m_lAttackBuyVolume = atoll(pSetDayLineTemp->m_AttackBuyVolume);
+	m_pCurrentDayLine->m_lAttackSellVolume = atoll(pSetDayLineTemp->m_AttackSellVolume);
+	m_pCurrentDayLine->m_lStrongBuyVolume = atoll(pSetDayLineTemp->m_StrongBuyVolume);
+	m_pCurrentDayLine->m_lStrongSellVolume = atoll(pSetDayLineTemp->m_StrongSellVolume);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolume = atoll(pSetDayLineTemp->m_OrdinaryBuyVolume);
+	m_pCurrentDayLine->m_lOrdinarySellVolume = atoll(pSetDayLineTemp->m_OrdinarySellVolume);
+	m_pCurrentDayLine->m_lAttackBuyBelow50000 = atoll(pSetDayLineTemp->m_AttackBuyBelow50000);
+	m_pCurrentDayLine->m_lAttackBuyBelow200000 = atoll(pSetDayLineTemp->m_AttackBuyBelow200000);
+	m_pCurrentDayLine->m_lAttackBuyAbove200000 = atoll(pSetDayLineTemp->m_AttackBuyAbove200000);
+	m_pCurrentDayLine->m_lAttackSellBelow50000 = atoll(pSetDayLineTemp->m_AttackSellBelow50000);
+	m_pCurrentDayLine->m_lAttackSellBelow200000 = atoll(pSetDayLineTemp->m_AttackSellBelow200000);
+	m_pCurrentDayLine->m_lAttackSellAbove200000 = atoll(pSetDayLineTemp->m_AttackSellAbove200000);
 
-	m_lOrdinaryBuyVolumeBelow5000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow5000);
-	m_lOrdinaryBuyVolumeBelow10000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow10000);
-	m_lOrdinaryBuyVolumeBelow20000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow20000);
-	m_lOrdinaryBuyVolumeBelow50000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow50000);
-	m_lOrdinaryBuyVolumeBelow100000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow100000);
-	m_lOrdinaryBuyVolumeBelow200000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeBelow200000);
-	m_lOrdinaryBuyVolumeAbove200000 = atoll(setDayLineTemp.m_OrdinaryBuyVolumeAbove200000);
-	m_lOrdinarySellVolumeBelow5000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow5000);
-	m_lOrdinarySellVolumeBelow10000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow10000);
-	m_lOrdinarySellVolumeBelow20000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow20000);
-	m_lOrdinarySellVolumeBelow50000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow50000);
-	m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow100000);
-	m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineTemp.m_OrdinarySellVolumeBelow200000);
-	m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineTemp.m_OrdinarySellVolumeAbove200000);
-	m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow5000);
-	m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow10000);
-	m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow20000);
-	m_lOrdinaryBuyNumberBelow50000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow50000);
-	m_lOrdinaryBuyNumberBelow100000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow100000);
-	m_lOrdinaryBuyNumberBelow200000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberBelow200000);
-	m_lOrdinaryBuyNumberAbove200000 = atoll(setDayLineTemp.m_OrdinaryBuyNumberAbove200000);
-	m_lOrdinarySellNumberBelow5000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow5000);
-	m_lOrdinarySellNumberBelow10000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow10000);
-	m_lOrdinarySellNumberBelow20000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow20000);
-	m_lOrdinarySellNumberBelow50000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow50000);
-	m_lOrdinarySellNumberBelow100000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow100000);
-	m_lOrdinarySellNumberBelow200000 = atoll(setDayLineTemp.m_OrdinarySellNumberBelow200000);
-	m_lOrdinarySellNumberAbove200000 = atoll(setDayLineTemp.m_OrdinarySellNumberAbove200000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow5000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow5000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow10000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow10000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow20000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow20000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow50000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow50000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow100000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow100000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeBelow200000);
+	m_pCurrentDayLine->m_lOrdinaryBuyVolumeAbove200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyVolumeAbove200000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow5000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow5000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow10000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow10000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow20000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow20000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow50000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow50000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow100000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow100000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeBelow200000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeBelow200000);
+	m_pCurrentDayLine->m_lOrdinarySellVolumeAbove200000 = atoll(pSetDayLineTemp->m_OrdinarySellVolumeAbove200000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow5000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow5000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow10000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow10000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow20000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow20000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow50000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow50000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow100000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow100000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberBelow200000);
+	m_pCurrentDayLine->m_lOrdinaryBuyNumberAbove200000 = atoll(pSetDayLineTemp->m_OrdinaryBuyNumberAbove200000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow5000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow5000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow10000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow10000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow20000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow20000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow50000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow50000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow100000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow100000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberBelow200000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberBelow200000);
+	m_pCurrentDayLine->m_lOrdinarySellNumberAbove200000 = atoll(pSetDayLineTemp->m_OrdinarySellNumberAbove200000);
 
-	m_lCanceledBuyVolumeBelow5000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow5000);
-	m_lCanceledBuyVolumeBelow10000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow10000);
-	m_lCanceledBuyVolumeBelow20000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow20000);
-	m_lCanceledBuyVolumeBelow50000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow50000);
-	m_lCanceledBuyVolumeBelow100000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow100000);
-	m_lCanceledBuyVolumeBelow200000 = atoll(setDayLineTemp.m_CanceledBuyVolumeBelow200000);
-	m_lCanceledBuyVolumeAbove200000 = atoll(setDayLineTemp.m_CanceledBuyVolumeAbove200000);
-	m_lCanceledSellVolumeBelow5000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow5000);
-	m_lCanceledSellVolumeBelow10000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow10000);
-	m_lCanceledSellVolumeBelow20000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow20000);
-	m_lCanceledSellVolumeBelow50000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow50000);
-	m_lCanceledSellVolumeBelow100000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow100000);
-	m_lCanceledSellVolumeBelow200000 = atoll(setDayLineTemp.m_CanceledSellVolumeBelow200000);
-	m_lCanceledSellVolumeAbove200000 = atoll(setDayLineTemp.m_CanceledSellVolumeAbove200000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow5000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow5000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow10000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow10000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow20000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow20000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow50000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow50000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow100000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow100000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeBelow200000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeBelow200000);
+	m_pCurrentDayLine->m_lCanceledBuyVolumeAbove200000 = atoll(pSetDayLineTemp->m_CanceledBuyVolumeAbove200000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow5000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow5000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow10000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow10000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow20000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow20000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow50000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow50000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow100000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow100000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeBelow200000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeBelow200000);
+	m_pCurrentDayLine->m_lCanceledSellVolumeAbove200000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeAbove200000);
+	*/
 }
 
 bool CChinaStock::LoadDayLine(CString strStockCode) {
@@ -825,7 +835,7 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
 		if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) { // 涨跌停板时，成交量属于未知成交量。
 			IncreaseTransactionNumber();
 			m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+			m_pCurrentDayLine->m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 		}
 		else {
 			CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice);
@@ -871,18 +881,18 @@ void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTr
 }
 
 void CChinaStock::IncreaseTransactionNumber(void) {
-	m_lTransactionNumber++; // 成交数加一。
+	m_pCurrentDayLine->m_lTransactionNumber++; // 成交数加一。
 	if (m_lCurrentGuadanTransactionVolume < 5000) {
-		m_lTransactionNumberBelow5000++;
+		m_pCurrentDayLine->m_lTransactionNumberBelow5000++;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lTransactionNumberBelow50000++;
+		m_pCurrentDayLine->m_lTransactionNumberBelow50000++;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lTransactionNumberBelow200000++;
+		m_pCurrentDayLine->m_lTransactionNumberBelow200000++;
 	}
 	else {
-		m_lTransactionNumberAbove200000++;
+		m_pCurrentDayLine->m_lTransactionNumberAbove200000++;
 	}
 	ASSERT(GetTransactionNumber() == (GetTransactionNumberAbove200000()
 		+ GetTransactionNumberBelow200000()
@@ -891,128 +901,128 @@ void CChinaStock::IncreaseTransactionNumber(void) {
 
 void CChinaStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
 	if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) { //一般性买入
-		m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
 		m_nCurrentTransactionType = __ORDINARY_BUY__;
 		CalculateOrdinaryBuyVolume();
 	}
 	else if ((lCurrentGuadanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
 		m_nCurrentTransactionType = __ORDINARY_SELL__;
-		m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
 		CalculateOrdinarySellVolume();
 	}
 	else { // 买卖混杂，不分析。
 		m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-		m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 	}
 }
 
 void CChinaStock::CalculateOrdinaryBuyVolume(void) {
 	if (m_lCurrentGuadanTransactionVolume < 5000) {
-		m_lOrdinaryBuyNumberBelow5000++;
-		m_lOrdinaryBuyVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow5000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 10000) {
-		m_lOrdinaryBuyNumberBelow10000++;
-		m_lOrdinaryBuyVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow10000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 20000) {
-		m_lOrdinaryBuyNumberBelow20000++;
-		m_lOrdinaryBuyVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow20000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lOrdinaryBuyNumberBelow50000++;
-		m_lOrdinaryBuyVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow50000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 100000) {
-		m_lOrdinaryBuyNumberBelow100000++;
-		m_lOrdinaryBuyVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow100000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lOrdinaryBuyNumberBelow200000++;
-		m_lOrdinaryBuyVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberBelow200000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume >= 200000) {
-		m_lOrdinaryBuyNumberAbove200000++;
-		m_lOrdinaryBuyVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinaryBuyNumberAbove200000++;
+		m_pCurrentDayLine->m_lOrdinaryBuyVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
 	}
 }
 
 void CChinaStock::CalculateOrdinarySellVolume(void) {
 	if (m_lCurrentGuadanTransactionVolume < 5000) {
-		m_lOrdinarySellNumberBelow5000++;
-		m_lOrdinarySellVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow5000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 10000) {
-		m_lOrdinarySellNumberBelow10000++;
-		m_lOrdinarySellVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow10000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 20000) {
-		m_lOrdinarySellNumberBelow20000++;
-		m_lOrdinarySellVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow20000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lOrdinarySellNumberBelow50000++;
-		m_lOrdinarySellVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow50000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 100000) {
-		m_lOrdinarySellNumberBelow100000++;
-		m_lOrdinarySellVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow100000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lOrdinarySellNumberBelow200000++;
-		m_lOrdinarySellVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberBelow200000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume >= 200000) {
-		m_lOrdinarySellNumberAbove200000++;
-		m_lOrdinarySellVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lOrdinarySellNumberAbove200000++;
+		m_pCurrentDayLine->m_lOrdinarySellVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
 	}
 }
 
 void CChinaStock::CalculateAttackBuy(void) {
 	m_nCurrentTransactionType = __ATTACK_BUY__;
-	m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
+	m_pCurrentDayLine->m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackBuyVolume();
 }
 
 void CChinaStock::CalculateStrongBuy(void) {
 	m_nCurrentTransactionType = __STRONG_BUY__;
-	m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
+	m_pCurrentDayLine->m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackBuyVolume();
 }
 
 void CChinaStock::CalculateAttackBuyVolume(void) {
 	if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else {
-		m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
 	}
 }
 
 void CChinaStock::CalculateAttackSell(void) {
 	m_nCurrentTransactionType = __ATTACK_SELL__;
-	m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+	m_pCurrentDayLine->m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackSellVolume();
 }
 
 void CChinaStock::CalculateStrongSell(void) {
 	m_nCurrentTransactionType = __STRONG_SELL__;
-	m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
+	m_pCurrentDayLine->m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackSellVolume();
 }
 
 void CChinaStock::CalculateAttackSellVolume(void) {
 	if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
 	}
 	else {
-		m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+		m_pCurrentDayLine->m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
 	}
 }
 
@@ -1022,7 +1032,6 @@ void CChinaStock::ResetCalculatingData(void) {
 	m_lCurrentGuadanTransactionVolume = 0;
 	m_lCurrentStrongBuy = 0;
 	m_lCurrentStrongSell = 0;
-	m_lCurrentUnknown = 0;
 	m_lCurrentAttackBuy = 0;
 	m_lCurrentAttackSell = 0;
 }
@@ -1134,35 +1143,35 @@ void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
 			iTemp = m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
 			m_lCurrentCanceledSellVolume += iTemp;
 			CalculateCanceledSellVolume(iTemp);
-			m_lCanceledSellVolume += iTemp;
+			m_pCurrentDayLine->m_lCanceledSellVolume += iTemp;
 		}
 	}
-	ASSERT(m_lCanceledSellVolume == (m_lCanceledSellVolumeAbove200000 + m_lCanceledSellVolumeBelow10000 + m_lCanceledSellVolumeBelow100000
-		+ m_lCanceledSellVolumeBelow20000 + m_lCanceledSellVolumeBelow200000 + m_lCanceledSellVolumeBelow5000
-		+ m_lCanceledSellVolumeBelow50000));
+	ASSERT(m_pCurrentDayLine->m_lCanceledSellVolume == (m_pCurrentDayLine->m_lCanceledSellVolumeAbove200000 + m_pCurrentDayLine->m_lCanceledSellVolumeBelow10000 + m_pCurrentDayLine->m_lCanceledSellVolumeBelow100000
+		+ m_pCurrentDayLine->m_lCanceledSellVolumeBelow20000 + m_pCurrentDayLine->m_lCanceledSellVolumeBelow200000 + m_pCurrentDayLine->m_lCanceledSellVolumeBelow5000
+		+ m_pCurrentDayLine->m_lCanceledSellVolumeBelow50000));
 }
 
 void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCancelSellVolume) {
 	if (lCurrentCancelSellVolume < 5000) {
-		m_lCanceledSellVolumeBelow5000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow5000 += lCurrentCancelSellVolume;
 	}
 	else if (lCurrentCancelSellVolume < 10000) {
-		m_lCanceledSellVolumeBelow10000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow10000 += lCurrentCancelSellVolume;
 	}
 	else if (lCurrentCancelSellVolume < 20000) {
-		m_lCanceledSellVolumeBelow20000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow20000 += lCurrentCancelSellVolume;
 	}
 	else if (lCurrentCancelSellVolume < 50000) {
-		m_lCanceledSellVolumeBelow50000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow50000 += lCurrentCancelSellVolume;
 	}
 	else if (lCurrentCancelSellVolume < 100000) {
-		m_lCanceledSellVolumeBelow100000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow100000 += lCurrentCancelSellVolume;
 	}
 	else if (lCurrentCancelSellVolume < 200000) {
-		m_lCanceledSellVolumeBelow200000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeBelow200000 += lCurrentCancelSellVolume;
 	}
 	else {
-		m_lCanceledSellVolumeAbove200000 += lCurrentCancelSellVolume;
+		m_pCurrentDayLine->m_lCanceledSellVolumeAbove200000 += lCurrentCancelSellVolume;
 	}
 }
 
@@ -1174,35 +1183,35 @@ void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
 			iTemp = m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
 			m_lCurrentCanceledBuyVolume += iTemp;
 			CalculateCanceledBuyVolume(iTemp);
-			m_lCanceledBuyVolume += iTemp;
+			m_pCurrentDayLine->m_lCanceledBuyVolume += iTemp;
 		}
 	}
-	ASSERT(m_lCanceledBuyVolume == (m_lCanceledBuyVolumeAbove200000 + m_lCanceledBuyVolumeBelow10000 + m_lCanceledBuyVolumeBelow100000
-		+ m_lCanceledBuyVolumeBelow20000 + m_lCanceledBuyVolumeBelow200000 + m_lCanceledBuyVolumeBelow5000
-		+ m_lCanceledBuyVolumeBelow50000));
+	ASSERT(m_pCurrentDayLine->m_lCanceledBuyVolume == (m_pCurrentDayLine->m_lCanceledBuyVolumeAbove200000 + m_pCurrentDayLine->m_lCanceledBuyVolumeBelow10000 + m_pCurrentDayLine->m_lCanceledBuyVolumeBelow100000
+		+ m_pCurrentDayLine->m_lCanceledBuyVolumeBelow20000 + m_pCurrentDayLine->m_lCanceledBuyVolumeBelow200000 + m_pCurrentDayLine->m_lCanceledBuyVolumeBelow5000
+		+ m_pCurrentDayLine->m_lCanceledBuyVolumeBelow50000));
 }
 
 void CChinaStock::CalculateCanceledBuyVolume(INT64 lCurrentCancelBuyVolume) {
 	if (lCurrentCancelBuyVolume < 5000) {
-		m_lCanceledBuyVolumeBelow5000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow5000 += lCurrentCancelBuyVolume;
 	}
 	else if (lCurrentCancelBuyVolume < 10000) {
-		m_lCanceledBuyVolumeBelow10000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow10000 += lCurrentCancelBuyVolume;
 	}
 	else if (lCurrentCancelBuyVolume < 20000) {
-		m_lCanceledBuyVolumeBelow20000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow20000 += lCurrentCancelBuyVolume;
 	}
 	else if (lCurrentCancelBuyVolume < 50000) {
-		m_lCanceledBuyVolumeBelow50000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow50000 += lCurrentCancelBuyVolume;
 	}
 	else if (lCurrentCancelBuyVolume < 100000) {
-		m_lCanceledBuyVolumeBelow100000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow100000 += lCurrentCancelBuyVolume;
 	}
 	else if (lCurrentCancelBuyVolume < 200000) {
-		m_lCanceledBuyVolumeBelow200000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeBelow200000 += lCurrentCancelBuyVolume;
 	}
 	else {
-		m_lCanceledBuyVolumeAbove200000 += lCurrentCancelBuyVolume;
+		m_pCurrentDayLine->m_lCanceledBuyVolumeAbove200000 += lCurrentCancelBuyVolume;
 	}
 }
 
@@ -1319,6 +1328,8 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 	long lDayLineEndDate = m_lDayLineEndDate; // 保留目前的日线最后日期
 
 	LoadSymbol(setChinaStockSymbol);
+
+	UpdateCurrentDayLineSymbol();
 
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {

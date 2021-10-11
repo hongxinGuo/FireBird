@@ -307,7 +307,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			}
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 		}
-		// 读入成交日期和时间
+		// 读入成交日期和时间。此时间为东八区（北京标准时间）。
 		if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
 			throw exception();
 		}
@@ -627,7 +627,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
 			return false;
 		}
-		// 成交日期和时间.格式为：yyyymmddhhmmss
+		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时东八区（北京标准时间）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 			return false;
 		}
@@ -1088,7 +1088,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 	WORD wMarket;
 
 	switch (lIndex) {
-	case 1: // time. 这个时间可能是实际的成交时间。需要与Update时间比较，采用较早的时间。
+	case 1: // time. 这个时间可能是实际的成交时间。需要与Update时间比较，采用较早的时间。此时间为东八区（北京标准时间）
 		if (m_time > 0) { // 设置过？
 			ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
 			if (m_time > ttTemp) m_time = ttTemp;
@@ -1117,7 +1117,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 		break;
 	case 6: // status
 		break;
-	case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间可能要晚。采用较早的时间。
+	case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间可能要晚。采用较早的时间。此时间为东八区（北京标准时间）
 		if (m_time > 0) { // 设置过？
 			ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
 			if (m_time > ttTemp) m_time = ttTemp;

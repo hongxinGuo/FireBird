@@ -1292,7 +1292,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 		long lDate = 20200101;
 
-		time_t tt = FormatToTTime(lDate);
+		time_t tt = FormatToTTime(lDate, gl_pWorldMarket->GetMarketTimeZone());
 		time_t ttOld = tt - (time_t)(365) * 24 * 3600;
 
 		char buffer[30];
@@ -1310,7 +1310,7 @@ namespace StockAnalysisTest {
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
-		ttOld = FormatToTTime(20190502); // 20190501的第二天
+		ttOld = FormatToTTime(20190502, gl_pWorldMarket->GetMarketTimeZone()); // 20190501的第二天
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");

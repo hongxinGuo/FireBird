@@ -330,7 +330,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineExtendInfo.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTemp.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTodaySaved.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.h">

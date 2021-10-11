@@ -28,7 +28,7 @@
 #include "SetDayLineExtendInfo.h"
 #include "SetWeekLineExtendInfo.h"
 
-#include "SetDayLineTemp.h"
+#include "SetDayLineTodaySaved.h"
 #include "SetCurrentWeekLine.h"
 
 IMPLEMENT_DYNAMIC(CSetFinnhubStockExchange, CVirtualSetExchange)
@@ -54,5 +54,5 @@ IMPLEMENT_DYNAMIC(CSetFinnhubForexSymbol, CVirtualSetStockSymbol)
 IMPLEMENT_DYNAMIC(CSetDayLineExtendInfo, CVirtualSetHistoryCandleExtend)
 IMPLEMENT_DYNAMIC(CSetWeekLineExtendInfo, CVirtualSetHistoryCandleExtend)
 
-IMPLEMENT_DYNAMIC(CSetDayLineTemp, CVirtualSetHistoryCandle)
+IMPLEMENT_DYNAMIC(CSetDayLineTodaySaved, CVirtualSetHistoryCandle)
 IMPLEMENT_DYNAMIC(CSetCurrentWeekLine, CVirtualSetHistoryCandle)

@@ -162,7 +162,7 @@ public:
 	void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
 	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
-protected:
+public:
 	// 需要存储的数据
 	long m_lOrdinaryBuyVolume; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
 	long m_lAttackBuyVolume; // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。

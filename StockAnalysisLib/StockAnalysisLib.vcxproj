@@ -74,7 +74,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineExtendInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTemp.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineTodaySaved.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRealTimeData.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSOption.h" />

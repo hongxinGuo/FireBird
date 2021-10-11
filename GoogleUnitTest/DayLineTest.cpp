@@ -705,7 +705,10 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
 
-		setDayLineBasicInfo.Delete();
+		while (!setDayLineBasicInfo.IsEOF()) {
+			setDayLineBasicInfo.Delete();
+			setDayLineBasicInfo.MoveNext();
+		}
 		setDayLineBasicInfo.Close();
 	}
 

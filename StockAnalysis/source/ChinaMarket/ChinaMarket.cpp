@@ -10,7 +10,7 @@
 #include"ChinaMarket.h"
 
 #include"SetDayLineExtendInfo.h"
-#include"SetDayLineTemp.h"
+#include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
 #include"SetChinaMarketOption.h"
 #include"SetCrweberIndex.h"
@@ -2639,7 +2639,7 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::UpdateTodayTempDB(void) {
-	CSetDayLineTemp setDayLineTemp;
+	CSetDayLineTodaySaved setDayLineTemp;
 	CString str;
 
 	DeleteTodayTempDB();
@@ -2695,7 +2695,7 @@ bool CChinaMarket::DeleteTodayTempDB(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	CChinaStockPtr pStock = nullptr;
-	CSetDayLineTemp setDayLineTemp;
+	CSetDayLineTodaySaved setDayLineTemp;
 	CWebRTDataPtr pRTData;
 
 	ASSERT(!m_fTodayTempDataLoaded);
@@ -2708,7 +2708,7 @@ bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 				if (IsStock(setDayLineTemp.m_Symbol)) {
 					pStock = GetStock(setDayLineTemp.m_Symbol);
 					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-					pStock->LoadTempInfo(setDayLineTemp);
+					pStock->LoadTodaySavedInfo(&setDayLineTemp);
 				}
 				setDayLineTemp.MoveNext();
 			}

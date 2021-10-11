@@ -5,7 +5,7 @@
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
 #include"SetDayLineExtendInfo.h"
-#include"SetDayLineTemp.h"
+#include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
 #include"SetRealTimeData.h"
 #include"SetRSOption.h"
@@ -93,7 +93,7 @@ TEST(SetInitializeTest, TestDayLineExtendInfoInitialize) {
 }
 
 TEST(SetInitializeTest, TestDayLineTempInitialize) {
-	CSetDayLineTemp setDayLineTemp;
+	CSetDayLineTodaySaved setDayLineTemp;
 
 	EXPECT_FALSE(gl_fNormalMode);
 	EXPECT_STREQ(setDayLineTemp.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));

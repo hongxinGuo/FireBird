@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
 		tm_.tm_mday = 5;
-		tm_.tm_hour = 0;
+		tm_.tm_hour = 20; // GMT时间为20时，东八区时间为次日4时
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		tm_2 = tm_;
@@ -62,10 +62,10 @@ namespace StockAnalysisTest {
 		tm_.tm_sec = 30;
 		tm_2 = tm_;
 		long lTime = FormatToTime(&tm_);
-		time_t tt = mktime(&tm_2);
-		long lTime2 = FormatToTime(tt);
+		time_t tt = _mkgmtime(&tm_2);
+		long lTime2 = FormatToTime(tt, 0); // UTC时间
 		EXPECT_EQ(lTime, 102030);
-		EXPECT_EQ(lTime2, 102030);
+		EXPECT_EQ(lTime2, 182030);
 	}
 
 	TEST_F(AccessoryTest, TestFormatToDateTime) {
@@ -78,10 +78,10 @@ namespace StockAnalysisTest {
 		tm_.tm_sec = 30;
 		tm_2 = tm_;
 		INT64 lDateTime = FormatToDateTime(&tm_);
-		time_t tt = mktime(&tm_2);
-		INT64 lDateTime2 = FormatToDateTime(tt);
+		time_t tt = _mkgmtime(&tm_2);
+		INT64 lDateTime2 = FormatToDateTime(tt, 0); // UTC时间
 		EXPECT_EQ(lDateTime, 20000105102030);
-		EXPECT_EQ(lDateTime2, 20000105102030);
+		EXPECT_EQ(lDateTime2, 20000105182030);
 	}
 
 	TEST_F(AccessoryTest, TestGetNextMonday) {
@@ -135,7 +135,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(20200713, GetCurrentMonday(20200719));
 	}
 
-	TEST_F(AccessoryTest, TestFormatToTTime) {
+	TEST_F(AccessoryTest, TestFormatTTTime) {
 		tm tm_;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
@@ -331,7 +331,10 @@ namespace StockAnalysisTest {
 		tm_.tm_min = minute;
 		tm_.tm_sec = second;
 		tm_.tm_isdst = 0;
-		tt2 = mktime(&tm_);
+		tt2 = _mkgmtime(&tm_);
+		if (tt2 > -1) {
+			tt2 -= 8 * 3600; // ConvertBufferToTime默认使用东八区标准时间
+		}
 		if (iTime < 19000101000000) tt2 = iTime;
 		EXPECT_EQ(tt, tt2);
 	}
@@ -353,7 +356,10 @@ namespace StockAnalysisTest {
 		tm_.tm_min = minute;
 		tm_.tm_sec = second;
 		tm_.tm_isdst = 0;
-		tt2 = mktime(&tm_);
+		tt2 = _mkgmtime(&tm_);
+		if (tt2 > -1) {
+			tt2 -= 8 * 3600; // ConvertStringToTime默认采用东八区标准时间
+		}
 		if (iTime < 19000101000000) tt2 = iTime;
 		EXPECT_EQ(tt, tt2);
 	}

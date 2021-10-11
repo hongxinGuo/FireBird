@@ -32,31 +32,32 @@ public:
 
 	// 基本实时数据，需要更新
 	time_t GetTransactionTime(void) const noexcept { return m_TransactionTime; }
-	void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
+	virtual void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
 	long GetLastClose(void) const noexcept { return m_lLastClose; }
-	void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+	virtual void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen(void) const noexcept { return m_lOpen; }
-	void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+	virtual void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
 	long GetHigh(void) const noexcept { return m_lHigh; }
-	void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+	virtual void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
 	long GetLow(void) const noexcept { return m_lLow; }
-	void SetLow(long lValue) noexcept { m_lLow = lValue; }
+	virtual void SetLow(long lValue) noexcept { m_lLow = lValue; }
 	long GetNew(void) const noexcept { return m_lNew; }
-	void SetNew(long lValue) noexcept { m_lNew = lValue; }
+	virtual void SetNew(long lValue) noexcept { m_lNew = lValue; }
 	INT64 GetAmount(void) const  noexcept { return m_llAmount; }
-	void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+	virtual void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
 	INT64 GetVolume(void) const noexcept { return m_llVolume; }
-	void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+	virtual void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+
 	long GetUpDown(void) const noexcept { return m_lUpDown; }
-	void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
+	virtual void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
 	double GetUpDownRate(void) const noexcept { return m_dUpDownRate; }
-	void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
+	virtual void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
 	double GetChangeHandRate(void) const noexcept { return m_dChangeHandRate; }
-	void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
-	void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+	virtual void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
 	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
-	void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+	virtual void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
 	INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
+	virtual void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
 
 	//
 	bool IsTodayNewStock(void) const noexcept { return m_fTodayNewStock; }

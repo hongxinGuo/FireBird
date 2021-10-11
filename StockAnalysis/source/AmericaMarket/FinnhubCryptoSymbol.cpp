@@ -99,7 +99,7 @@ CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = FormatToTTime(m_lDayLineEndDate);
+	tStartTime = FormatToTTime(m_lDayLineEndDate, gl_pWorldMarket->GetMarketTimeZone());
 	if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}

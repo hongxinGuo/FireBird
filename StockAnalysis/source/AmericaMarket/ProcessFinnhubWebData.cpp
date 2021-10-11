@@ -252,7 +252,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine->SetStockSymbol(pStock->GetSymbol());
 			pDayLine->SetDisplaySymbol(pStock->GetTicker());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp);
+			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}
@@ -458,7 +458,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp);
+			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}
@@ -636,7 +636,7 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp);
+			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}

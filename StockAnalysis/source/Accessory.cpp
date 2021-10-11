@@ -2,12 +2,12 @@
 #include"globedef.h"
 #include "Accessory.h"
 
-time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
+time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
 	tm tm_;
 	int year, month, day, hour, minute, second;
 
-	sscanf_s(buffer, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	sscanf_s(bufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
 	tm_.tm_year = year - 1900;
 	tm_.tm_mon = month - 1;
 	tm_.tm_mday = day;
@@ -15,17 +15,19 @@ time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
 	tm_.tm_min = minute;
 	tm_.tm_sec = second;
 	tm_.tm_isdst = 0;
-	tt = mktime(&tm_);
-
+	tt = _mkgmtime(&tm_);
+	if (tt > -1) {
+		tt += tTimeZoneOffset;
+	}
 	return tt;
 }
 
-time_t ConvertStringToTime(CString strFormat, CString strTime) {
+time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
 	tm tm_;
 	int year, month, day, hour, minute, second;
 
-	sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
 	tm_.tm_year = year - 1900;
 	tm_.tm_mon = month - 1;
 	tm_.tm_mday = day;
@@ -33,12 +35,14 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
 	tm_.tm_min = minute;
 	tm_.tm_sec = second;
 	tm_.tm_isdst = 0;
-	tt = mktime(&tm_);
-
+	tt = _mkgmtime(&tm_);
+	if (tt > -1) {
+		tt += tTimeZoneOffset; //
+	}
 	return tt;
 }
 
-time_t FormatToTTime(long lDate, long lTime) {
+time_t FormatToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
 	ASSERT(lDate > 19700000);
 	const long lYear = lDate / 10000;
 	const long lMonth = (lDate - lYear * 10000) / 100;
@@ -46,25 +50,31 @@ time_t FormatToTTime(long lDate, long lTime) {
 	const long lHour = lTime / 10000;
 	const long lMinute = (lTime - lHour * 10000) / 100;
 	const long lSecond = lTime - lHour * 10000 - lMinute * 100;
-	const CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
+	CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
+	CTimeSpan timeSpan(tTimeZoneOffset);
+
+	ct += timeSpan;
 	return (ct.GetTime());
 }
 
-long FormatToDate(time_t const tt) noexcept {
+long FormatToDate(time_t const tt, time_t tTimeZoneOffset) noexcept {
 	tm tm_;
-	localtime_s(&tm_, &tt);
+	time_t tt_ = tt - tTimeZoneOffset;
+	gmtime_s(&tm_, &tt_);
 	return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long FormatToTime(time_t const tt) noexcept {
+long FormatToTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
 	tm tm_;
-	localtime_s(&tm_, &tt);
+	time_t tt_ = tt - tTimeZoneOffset;
+	localtime_s(&tm_, &tt_);
 	return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 FormatToDateTime(time_t const tt) noexcept {
+INT64 FormatToDateTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
 	tm tm_;
-	localtime_s(&tm_, &tt);
+	time_t tt_ = tt - tTimeZoneOffset;
+	localtime_s(&tm_, &tt_);
 	return((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 + static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 

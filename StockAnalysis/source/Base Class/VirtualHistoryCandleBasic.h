@@ -98,7 +98,7 @@ public:
 	void Set120RS(double dValue) noexcept { m_d120RS = dValue; }
 	double Get120RS(void) const noexcept { return m_d120RS; }
 
-protected:
+public:
 	// need to save
 	long m_lDate; // ¿‡–Õ(YYYYMMDD)
 	time_t m_time;

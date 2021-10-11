@@ -1941,7 +1941,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadTodayTempDB) {
-		CSetDayLineTemp setDayLineTemp;
+		CSetDayLineTodaySaved setDayLineTemp;
 		CChinaStockPtr pStock;
 
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
