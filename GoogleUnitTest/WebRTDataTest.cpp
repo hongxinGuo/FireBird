@@ -211,7 +211,7 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
@@ -233,7 +233,7 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
@@ -412,7 +412,7 @@ namespace StockAnalysisTest {
 			tm_.tm_min = minute;
 			tm_.tm_sec = second;
 			tm_.tm_isdst = 0;
-			tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+			tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 			m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
 			tt2 = m_RTData.GetTransactionTime();
 			EXPECT_EQ(tt, tt2);
@@ -673,14 +673,14 @@ namespace StockAnalysisTest {
 	TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
 		bool fSucceed = m_RTData.ReadSinaData(m_pSinaWebRTData);
 		time_t ttime;
-		tm tm_;
+		tm tm_; // 该日期为：2019-07-16 15:00:00，就是数据中的时间。
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 7 - 1;
 		tm_.tm_mday = 16;
 		tm_.tm_hour = 15;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		ttime = _mkgmtime(&tm_) - 8 * 3600;
+		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误

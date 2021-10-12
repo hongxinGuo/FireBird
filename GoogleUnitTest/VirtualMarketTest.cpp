@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 		gl_pVirtualMarket->CalculateTime();
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		tm_ = gl_pVirtualMarket->GetMarketTimeStruct();
+		tm_ = gl_pVirtualMarket->TransferToMarketTimeStruct();
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour = tm2_.tm_hour - 16))) << "VirtualMarket默认为东八区";
 	}
 

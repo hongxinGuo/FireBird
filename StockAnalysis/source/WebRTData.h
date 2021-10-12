@@ -105,10 +105,10 @@
 #pragma once
 
 enum {
-  __INVALID_RT_WEB_DATA__ = 0,
-  __SINA_RT_WEB_DATA__ = 1,
-  __TENGXUN_RT_WEB_DATA__ = 2,
-  __NETEASE_RT_WEB_DATA__ = 3,
+	__INVALID_RT_WEB_DATA__ = 0,
+	__SINA_RT_WEB_DATA__ = 1,
+	__TENGXUN_RT_WEB_DATA__ = 2,
+	__NETEASE_RT_WEB_DATA__ = 3,
 };
 
 #include"afxinet.h"
@@ -131,127 +131,127 @@ typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 
 class CWebRTData final : public CObject {
 public:
-  // 初始化
-  CWebRTData(void);
+	// 初始化
+	CWebRTData(void);
 
-  void Reset(void);
+	void Reset(void);
 
-  // 数据库存储和读取
-  void SaveData(CSetRealTimeData& setRTData);
-  void AppendData(CSetRealTimeData& setRTData);
-  void LoadData(CSetRealTimeData& setRTData);
-
-public:
-  // 读取新浪实时数据函数
-  // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool ReadSinaData(CWebDataPtr pSinaWebRTData);
-  bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
-  bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
-  bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-  bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
-
-  // 读取腾讯实时数据函数
-  // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool ReadTengxunData(CWebDataPtr pSinaWebRTData);
-  bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
-  bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
-  bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-  bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
-
-  // 读取网易实时数据函数
-  // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-  bool ReadNeteaseData(CWebDataPtr pNeteaseWebRTData);
-  bool ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived);
-  long GetNeteaseSymbolIndex(CString strSymbol);
-  bool GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
-  bool SetNeteaseRTValue(long lIndex, CString strValue);
+	// 数据库存储和读取
+	void SaveData(CSetRealTimeData& setRTData);
+	void AppendData(CSetRealTimeData& setRTData);
+	void LoadData(CSetRealTimeData& setRTData);
 
 public:
-  void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
-  long GetDataSource(void) const noexcept { return m_lDataSource; }
-  time_t GetTransactionTime(void) const noexcept { return m_time; }
-  void SetTransactionTime(time_t time) noexcept { m_time = time; }
-  CString GetSymbol(void) const { return m_strSymbol; }
-  void SetSymbol(CString str) { m_strSymbol = str; }
-  CString GetStockName(void) const { return m_strStockName; }
-  void SetStockName(CString str) { m_strStockName = str; }
-  long GetLastClose(void) const noexcept { return m_lLastClose; }
-  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) const noexcept { return m_lOpen; }
-  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) const noexcept { return m_lHigh; }
-  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) const noexcept { return m_lLow; }
-  void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) const noexcept { return m_lNew; }
-  void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) const noexcept { return m_llAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) const noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) const  noexcept { return m_llCurrentValue; }
-  long GetBuy(void) const noexcept { return m_lBuy; }
-  void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
-  long GetSell(void) const noexcept { return m_lSell; }
-  void SetSell(long lValue) noexcept { m_lSell = lValue; }
-  long GetHighLimit(void) const noexcept { return m_lHighLimit; }
-  void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
-  long GetLowLimit(void) const noexcept { return m_lLowLimit; }
-  void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
-  long GetPBuy(int iIndex) const { return m_lPBuy.at(iIndex); }
-  void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
-  long GetVBuy(int iIndex) const { return m_lVBuy.at(iIndex); }
-  void SetVBuy(int iIndex, long lValue) { m_lVBuy.at(iIndex) = lValue; }
-  long GetPSell(int iIndex) const { return m_lPSell.at(iIndex); }
-  void SetPSell(int iIndex, long lValue) { m_lPSell.at(iIndex) = lValue; }
-  long GetVSell(int iIndex) const { return m_lVSell.at(iIndex); }
-  void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
+	// 读取新浪实时数据函数
+	// 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
+	bool ReadSinaData(CWebDataPtr pSinaWebRTData);
+	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
+	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
 
-  bool IsActive(void) const noexcept { return m_fActive; }
-  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
-  bool CheckNeteaseRTDataActive(void);
-  bool CheckSinaRTDataActive(void);
-  bool CheckTengxunRTDataActive(void);
-  bool IsValidTime(long lDays) const;
-  //void SetActive(bool fFlag)  { m_fActive = fFlag; }
-  bool IsValidDataSource(void) const noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
+	// 读取腾讯实时数据函数
+	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
+	bool ReadTengxunData(CWebDataPtr pSinaWebRTData);
+	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
+	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
+	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
+	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
+
+	// 读取网易实时数据函数
+	// 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
+	bool ReadNeteaseData(CWebDataPtr pNeteaseWebRTData);
+	bool ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived);
+	long GetNeteaseSymbolIndex(CString strSymbol);
+	bool GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
+	bool SetNeteaseRTValue(long lIndex, CString strValue);
+
+public:
+	void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
+	long GetDataSource(void) const noexcept { return m_lDataSource; }
+	time_t GetTransactionTime(void) const noexcept { return m_time; }
+	void SetTransactionTime(time_t time) noexcept { m_time = time; }
+	CString GetSymbol(void) const { return m_strSymbol; }
+	void SetSymbol(CString str) { m_strSymbol = str; }
+	CString GetStockName(void) const { return m_strStockName; }
+	void SetStockName(CString str) { m_strStockName = str; }
+	long GetLastClose(void) const noexcept { return m_lLastClose; }
+	void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+	long GetOpen(void) const noexcept { return m_lOpen; }
+	void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+	long GetHigh(void) const noexcept { return m_lHigh; }
+	void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+	long GetLow(void) const noexcept { return m_lLow; }
+	void SetLow(long lValue) noexcept { m_lLow = lValue; }
+	long GetNew(void) const noexcept { return m_lNew; }
+	void SetNew(long lValue) noexcept { m_lNew = lValue; }
+	INT64 GetAmount(void) const noexcept { return m_llAmount; }
+	void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+	INT64 GetVolume(void) const noexcept { return m_llVolume; }
+	void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+	void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
+	void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+	INT64 GetCurrentValue(void) const  noexcept { return m_llCurrentValue; }
+	long GetBuy(void) const noexcept { return m_lBuy; }
+	void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
+	long GetSell(void) const noexcept { return m_lSell; }
+	void SetSell(long lValue) noexcept { m_lSell = lValue; }
+	long GetHighLimit(void) const noexcept { return m_lHighLimit; }
+	void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
+	long GetLowLimit(void) const noexcept { return m_lLowLimit; }
+	void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
+	long GetPBuy(int iIndex) const { return m_lPBuy.at(iIndex); }
+	void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
+	long GetVBuy(int iIndex) const { return m_lVBuy.at(iIndex); }
+	void SetVBuy(int iIndex, long lValue) { m_lVBuy.at(iIndex) = lValue; }
+	long GetPSell(int iIndex) const { return m_lPSell.at(iIndex); }
+	void SetPSell(int iIndex, long lValue) { m_lPSell.at(iIndex) = lValue; }
+	long GetVSell(int iIndex) const { return m_lVSell.at(iIndex); }
+	void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
+
+	bool IsActive(void) const noexcept { return m_fActive; }
+	void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+	bool CheckNeteaseRTDataActive(void);
+	bool CheckSinaRTDataActive(void);
+	bool CheckTengxunRTDataActive(void);
+	bool IsValidTime(long lDays) const;
+	//void SetActive(bool fFlag)  { m_fActive = fFlag; }
+	bool IsValidDataSource(void) const noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
 #ifdef _DEBUG
-  virtual	void AssertValid() const;
-  virtual	void Dump(CDumpContext& dc) const;
+	virtual	void AssertValid() const;
+	virtual	void Dump(CDumpContext& dc) const;
 #endif
 
-  // 数据
+	// 数据
 public:
 
 protected:
-  long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
-  // Serialized data
-  time_t m_time;	// 交易发生时的时间
-  CString m_strSymbol;// 证券代码, 600001.SS，002389.SZ，
-  CString m_strStockName; // 证券名称
-  long m_lOpen;	// 今日开盘。单位：0.001元
-  long m_lLastClose;// 昨日收盘。单位：0.001元
-  long m_lNew; // 今日最新。单位：0.001元
-  long m_lHigh;	// 今日最高。单位：0.001元
-  long m_lLow; // 今日最低。单位：0.001元
-  long m_lBuy; // 竞买价。单位：0.001元
-  long m_lSell; // 竞卖价。单位：0.001元
-  long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-  long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-  INT64 m_llVolume; // 总成交量。单位：股
-  INT64 m_llAmount; // 总成交金额。单位：元
-  INT64 m_llTotalValue;	// 总市值。单位：万元
-  INT64 m_llCurrentValue;	// 流通市值。单位：万元
-  array<long, 5> m_lPBuy; // 买盘价1--5。单位：0.001元
-  array<long, 5> m_lVBuy;	// 买盘量1--5。单位：股
-  array<long, 5> m_lPSell;// 卖盘价1--5。单位：0.001元
-  array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
+	long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
+	// Serialized data
+	time_t m_time;	// 交易发生时的UTC时间
+	CString m_strSymbol;// 证券代码, 600001.SS，002389.SZ，
+	CString m_strStockName; // 证券名称
+	long m_lOpen;	// 今日开盘。单位：0.001元
+	long m_lLastClose;// 昨日收盘。单位：0.001元
+	long m_lNew; // 今日最新。单位：0.001元
+	long m_lHigh;	// 今日最高。单位：0.001元
+	long m_lLow; // 今日最低。单位：0.001元
+	long m_lBuy; // 竞买价。单位：0.001元
+	long m_lSell; // 竞卖价。单位：0.001元
+	long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	INT64 m_llVolume; // 总成交量。单位：股
+	INT64 m_llAmount; // 总成交金额。单位：元
+	INT64 m_llTotalValue;	// 总市值。单位：万元
+	INT64 m_llCurrentValue;	// 流通市值。单位：万元
+	array<long, 5> m_lPBuy; // 买盘价1--5。单位：0.001元
+	array<long, 5> m_lVBuy;	// 买盘量1--5。单位：股
+	array<long, 5> m_lPSell;// 卖盘价1--5。单位：0.001元
+	array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
 // 非存储数据
-  bool m_fActive; // 本股票是否存在有效实时数据
-  map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
+	bool m_fActive; // 本股票是否存在有效实时数据
+	map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
 };

@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt);
 		EXPECT_TRUE(id.IsValidTime(14));
@@ -143,11 +143,11 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 15;
 		tm_.tm_min = 59;
 		tm_.tm_sec = 50;
-		ttime = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_sec = 53;
-		ttime2 = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		ttime2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_sec = 55;
-		ttime3 = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		ttime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // Ã»ÓÐ´íÎó

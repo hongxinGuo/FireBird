@@ -48,14 +48,14 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 7; // 2019年11月7日是星期三。
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt2 = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		time_t tt2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->__TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt2);
 		EXPECT_FALSE(id.IsValidTime(14));
@@ -231,7 +231,7 @@ namespace StockAnalysisTest {
 		tm_.tm_hour = 15; //
 		tm_.tm_min = 58;
 		tm_.tm_sec = 58;
-		ttime = _mkgmtime(&tm_) + gl_pChinaMarket->GetMarketTimeZone();
+		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误

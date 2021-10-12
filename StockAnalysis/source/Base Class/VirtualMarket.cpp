@@ -62,7 +62,7 @@ bool CVirtualMarket::UpdateMarketInfo(void) {
 	return true;
 }
 
-tm CVirtualMarket::GetMarketTimeStruct(time_t tUTC) {
+tm CVirtualMarket::TransferToMarketTimeStruct(time_t tUTC) {
 	time_t tMarket;
 	tm tm_;
 	tMarket = tUTC - m_lMarketTimeZone;
@@ -70,10 +70,14 @@ tm CVirtualMarket::GetMarketTimeStruct(time_t tUTC) {
 	return tm_;
 }
 
+time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) {
+	return _mkgmtime(tmMarketTime) + m_lMarketTimeZone;
+}
+
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
 
-	m_tmMarket = GetMarketTimeStruct();
+	m_tmMarket = TransferToMarketTimeStruct();
 	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
 	m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
@@ -94,7 +98,7 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
 	default: // ÆäËû
 		tMarket = sm_tUTC - 24 * 3600; //
 	}
-	tm tm_ = GetMarketTimeStruct(tMarket);
+	tm tm_ = TransferToMarketTimeStruct(tMarket);
 	m_lMarketLastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 

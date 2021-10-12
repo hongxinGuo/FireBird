@@ -19,7 +19,8 @@ public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
 	virtual void ResetMarket(void);
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
-	tm GetMarketTimeStruct(time_t tUTC = sm_tUTC);
+	tm TransferToMarketTimeStruct(time_t tUTC = sm_tUTC); // 得到本市场的时间（从UTC时间）
+	time_t TransferToUTCTime(tm* tmMarketTime); // 将市场时间结构转化为UTC时间
 
 	bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
