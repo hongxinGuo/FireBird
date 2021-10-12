@@ -62,33 +62,39 @@ bool CVirtualMarket::UpdateMarketInfo(void) {
 	return true;
 }
 
+tm CVirtualMarket::GetMarketTimeStruct(time_t tUTC) {
+	time_t tMarket;
+	tm tm_;
+	tMarket = tUTC - m_lMarketTimeZone;
+	gmtime_s(&tm_, &tMarket);
+	return tm_;
+}
+
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
-	time_t tMarket = sm_tUTC - m_lMarketTimeZone;
 
-	gmtime_s(&m_tmMarket, &tMarket);
+	m_tmMarket = GetMarketTimeStruct();
 	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
 	m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
 
 void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
-	time_t ttime = 0;
+	time_t tMarket = 0;
 
 	switch (m_tmMarket.tm_wday) {
 	case 1: // 星期一
-		ttime = sm_tUTC - 3 * 24 * 3600; //
+		tMarket = sm_tUTC - 3 * 24 * 3600; //
 		break;
 	case 0: //星期日
-		ttime = sm_tUTC - 3 * 24 * 3600; //
+		tMarket = sm_tUTC - 3 * 24 * 3600; //
 		break;
 	case 6: // 星期六
-		ttime = sm_tUTC - 2 * 24 * 3600; //
+		tMarket = sm_tUTC - 2 * 24 * 3600; //
 		break;
 	default: // 其他
-		ttime = sm_tUTC - 24 * 3600; //
+		tMarket = sm_tUTC - 24 * 3600; //
 	}
-	tm tm_;
-	gmtime_s(&tm_, &ttime);
+	tm tm_ = GetMarketTimeStruct(tMarket);
 	m_lMarketLastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
@@ -173,25 +179,19 @@ CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
 	return(str);
 }
 
-CString CVirtualMarket::GetStringOfMarketTime(void) const {
+CString CVirtualMarket::GetStringOfMarketTime(void) {
 	char buffer[30];
-	tm tmMarket;
-	time_t tMarket = sm_tUTC - m_lMarketTimeZone;
 
-	gmtime_s(&tmMarket, &tMarket);
-	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+	sprintf_s(buffer, _T("%02d:%02d:%02d "), m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
 	CString str;
 	str = buffer;
 	return(str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
+CString CVirtualMarket::GetStringOfMarketDateTime(void) {
 	char buffer[100];
-	tm tmMarket;
-	time_t tMarket = sm_tUTC - m_lMarketTimeZone;
 
-	gmtime_s(&tmMarket, &tMarket);
-	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
 	CString str;
 	str = buffer;
 	return(str);

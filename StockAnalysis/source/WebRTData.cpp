@@ -318,7 +318,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			throw exception();
 		}
 		strTime += buffer3;
-		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
+		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer()); // 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 
 		// 后面的数据皆为无效数据，读至此数据的结尾处即可。
 		while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
@@ -627,11 +627,11 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
 			return false;
 		}
-		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时东八区（北京标准时间）
+		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 			return false;
 		}
-		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3);
+		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		// 涨跌
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
 			return false;

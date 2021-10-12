@@ -143,7 +143,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(20200713, GetCurrentMonday(20200719));
 	}
 
-	TEST_F(AccessoryTest, TestFormatTTTime) {
+	TEST_F(AccessoryTest, TestFormatToTTime) {
 		tm tm_;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
@@ -274,6 +274,29 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("  12M"));
 		str = FormatToMK((long long)12345 * 1024 * 1024);
 		EXPECT_STREQ(str, _T("12345M"));
+	}
+
+	TEST_F(AccessoryTest, TestGetUTCTimeStruct) {
+		tm tm_, tm2_;
+		time_t tUTC = 0;
+
+		GetUTCTimeStruct(&tm_, &tUTC);
+		EXPECT_EQ(tm_.tm_year, 70);
+		EXPECT_EQ(tm_.tm_mon, 0);
+		EXPECT_EQ(tm_.tm_yday, 0);
+		EXPECT_EQ(tm_.tm_hour, 0);
+		EXPECT_EQ(tm_.tm_min, 0);
+		EXPECT_EQ(tm_.tm_sec, 0);
+	}
+
+	TEST_F(AccessoryTest, TestGetMarketTimeStruct) {
+		tm tm_, tm2_;
+		time_t tt;
+
+		time(&tt);
+		gmtime_s(&tm2_, &tt);
+		GetMarketTimeStruct(&tm_, tt, -8 * 3600);
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour = tm2_.tm_hour - 16)));
 	}
 }
 

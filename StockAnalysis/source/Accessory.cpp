@@ -15,9 +15,9 @@ time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time
 	tm_.tm_min = minute;
 	tm_.tm_sec = second;
 	tm_.tm_isdst = 0;
-	tt = _mkgmtime(&tm_);
+	tt = _mkgmtime(&tm_); // 先变成GMT时间
 	if (tt > -1) {
-		tt += tTimeZoneOffset;
+		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
 	}
 	return tt;
 }
@@ -57,24 +57,21 @@ time_t FormatToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
 	return (ct.GetTime());
 }
 
-long FormatToDate(time_t const tt, time_t tTimeZoneOffset) noexcept {
+long FormatToDate(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
-	time_t tt_ = tt - tTimeZoneOffset;
-	gmtime_s(&tm_, &tt_);
+	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long FormatToTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
+long FormatToTime(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
-	time_t tt_ = tt - tTimeZoneOffset;
-	gmtime_s(&tm_, &tt_);
+	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 FormatToDateTime(time_t const tt, time_t tTimeZoneOffset) noexcept {
+INT64 FormatToDateTime(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
-	time_t tt_ = tt - tTimeZoneOffset;
-	gmtime_s(&tm_, &tt_);
+	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 + static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
@@ -477,4 +474,14 @@ CString FormatToMK(long long iNumber) {
 	str = buffer;
 
 	return str;
+}
+
+void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) {
+	gmtime_s(tm_, tUTC);
+}
+
+void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone) {
+	time_t tMarket;
+	tMarket = tUTC - tTimeZone;
+	gmtime_s(tm_, &tMarket);
 }

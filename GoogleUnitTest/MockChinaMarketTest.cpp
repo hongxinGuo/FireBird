@@ -494,7 +494,7 @@ namespace StockAnalysisTest {
 		gl_pMockChinaMarket->CalculateTime();
 		time_t tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		tm _tm;
-		gmtime_s(&_tm, &tStart);
+		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
 		long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_fExitingCalculatingRS = true; // 中间被打断
 		gl_ThreadStatus.SetCalculatingDayLineRS(true);
@@ -510,7 +510,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
 		tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
-		gmtime_s(&_tm, &tStart);
+		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_fExitingCalculatingRS = false;
 		gl_ThreadStatus.SetCalculatingDayLineRS(true);

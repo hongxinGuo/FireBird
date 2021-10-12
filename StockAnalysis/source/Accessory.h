@@ -1,5 +1,7 @@
 #pragma once
 
+#include<time.h>
+
 #include"WebData.h"
 
 using namespace std;
@@ -14,10 +16,10 @@ time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time
 time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
-time_t FormatToTTime(long lDate, time_t tTimeZoneOffset = -8 * 3600, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式，默认东八区，默认时间为15:00:00
-long FormatToDate(time_t tt, time_t tTimeZoneOffset = -8 * 3600) noexcept;// 将时间转变为整型(YYYYMMDD)形式, 默认东八区标准时间
-long FormatToTime(time_t tt, time_t tTimeZoneOffset = -8 * 3600) noexcept; // 将时间转变为整数（HHMMSS)形式, 默认东八区标准时间
-INT64 FormatToDateTime(time_t tt, time_t tTimeZoneOffset = -8 * 3600) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式, 默认东八区标准时间
+time_t FormatToTTime(long lDate, time_t tTimeZone = -8 * 3600, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式，默认东八区，默认时间为15:00:00
+long FormatToDate(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept;// 将时间转变为整型(YYYYMMDD)形式, 默认东八区标准时间
+long FormatToTime(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept; // 将时间转变为整数（HHMMSS)形式, 默认东八区标准时间
+INT64 FormatToDateTime(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式, 默认东八区标准时间
 long FormatToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 long FormatToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 INT64 FormatToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
@@ -68,3 +70,7 @@ bool ConvertToJSON(ptree& pt, string s);
 bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告
 
 CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
+
+// 时间支持函数
+void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);
+void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);

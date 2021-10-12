@@ -155,7 +155,7 @@ public:
 	bool IsCurrentStockChanged(void) const noexcept { return m_fCurrentStockChanged; }
 	void SetCurrentStockChanged(bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 
-	long GetMinLineOffset(time_t tMarket);
+	long GetMinLineOffset(time_t tUTC);
 
 	bool IsTodayStockNotProcessed(void) const noexcept { if (m_iTodayStockProcessed == 0) return true; else return false; }
 	bool IsProcessingTodayStock(void) const noexcept { if (m_iTodayStockProcessed == 1) return true; else return false; }

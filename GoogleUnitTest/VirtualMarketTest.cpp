@@ -68,16 +68,15 @@ namespace StockAnalysisTest {
 
 	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
 		ASSERT_FALSE(gl_fNormalMode);
-		time_t ttime;
+		time_t tUTC;
 		tm tm_, tmLocal;
-		time(&ttime);
+
+		time(&tUTC);
 		gl_pVirtualMarket->CalculateTime();
-		EXPECT_EQ(ttime, gl_pVirtualMarket->GetUTCTime());
-		EXPECT_EQ(ttime, gl_pVirtualMarket->GetUTCTime());
-		localtime_s(&tmLocal, &ttime);
-		ttime -= gl_pVirtualMarket->GetMarketTimeZone();
-		gmtime_s(&tm_, &ttime);
-		long lTimeZone;
+		EXPECT_EQ(tUTC, gl_pVirtualMarket->GetUTCTime());
+		localtime_s(&tmLocal, &tUTC);
+		GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
+		long lTimeZone = 0;
 		_get_timezone(&lTimeZone);
 		gl_pVirtualMarket->CalculateLastTradeDate();
 		long lTime = gl_pVirtualMarket->GetFormatedMarketTime();
@@ -104,48 +103,59 @@ namespace StockAnalysisTest {
 
 		switch (tm_.tm_wday) {
 		case 1: // 星期一
-			ttime -= 3 * 24 * 3600; //
+			tUTC -= 3 * 24 * 3600; //
 			break;
 		case 0: //星期日
-			ttime -= 3 * 24 * 3600; //
+			tUTC -= 3 * 24 * 3600; //
 			break;
 		case 6: // 星期六
-			ttime -= 2 * 24 * 3600; //
+			tUTC -= 2 * 24 * 3600; //
 			break;
 		default: // 其他
-			ttime -= 24 * 3600; //
+			tUTC -= 24 * 3600; //
 		}
-		gmtime_s(&tm_, &ttime);
+		GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 		long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 		EXPECT_EQ(gl_pVirtualMarket->GetLastTradeDate(), LastTradeDate);
 	}
 
+	TEST_F(CVirtualMarketTest, TestGetMarketTimeStruct) {
+		tm tm_, tm2_;
+		time_t tt;
+
+		gl_pVirtualMarket->CalculateTime();
+		time(&tt);
+		gmtime_s(&tm2_, &tt);
+		tm_ = gl_pVirtualMarket->GetMarketTimeStruct();
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour = tm2_.tm_hour - 16))) << "VirtualMarket默认为东八区";
+	}
+
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
-		time_t ttime;
+		time_t tUTC;
 		tm tm_, tm2;
 
 		for (int i = 0; i < 7; i++) {
-			time(&ttime);
-			ttime += i * 60 * 60 * 24;
-			gmtime_s(&tm2, &ttime);
+			time(&tUTC);
+			tUTC += i * 60 * 60 * 24;
+			GetMarketTimeStruct(&tm2, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 			tm_ = tm2;
-			gl_pVirtualMarket->__TEST_SetUTCTime(ttime);
+			gl_pVirtualMarket->__TEST_SetUTCTime(tUTC);
 			gl_pVirtualMarket->__TEST_SetMarketTM(tm2);
 
 			switch (tm_.tm_wday) {
 			case 1: // 星期一
-				ttime -= 3 * 24 * 3600; //
+				tUTC -= 3 * 24 * 3600; //
 				break;
 			case 0: //星期日
-				ttime -= 3 * 24 * 3600; //
+				tUTC -= 3 * 24 * 3600; //
 				break;
 			case 6: // 星期六
-				ttime -= 2 * 24 * 3600; //
+				tUTC -= 2 * 24 * 3600; //
 				break;
 			default: // 其他
-				ttime -= 24 * 3600; //
+				tUTC -= 24 * 3600; //
 			}
-			gmtime_s(&tm_, &ttime);
+			GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 			long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 			EXPECT_EQ(gl_pVirtualMarket->GetLastTradeDate(), LastTradeDate);
 		}
@@ -201,13 +211,13 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tLocal;
-		time(&tLocal);
+		time_t tUTC;
+		time(&tUTC);
 		tm tmLocal;
 		char buffer[30];
 		CString str;
 
-		localtime_s(&tmLocal, &tLocal);
+		localtime_s(&tmLocal, &tUTC);
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfLocalTime(), str);
@@ -231,8 +241,7 @@ namespace StockAnalysisTest {
 		gl_pVirtualMarket->CalculateTime();
 
 		tm tmMarket;
-		time_t tMarket = gl_pVirtualMarket->GetUTCTime() - gl_pVirtualMarket->GetMarketTimeZone();
-		gmtime_s(&tmMarket, &tMarket);
+		GetMarketTimeStruct(&tmMarket, gl_pVirtualMarket->GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		char buffer[30];
 		CString str;
 
@@ -244,13 +253,11 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tt = gl_pVirtualMarket->GetUTCTime();
 		tm tmMarket;
 		char buffer[100];
 		CString str;
-		time_t tMarket = tt - gl_pVirtualMarket->GetMarketTimeZone();
 
-		gmtime_s(&tmMarket, &tMarket);
+		GetMarketTimeStruct(&tmMarket, gl_pVirtualMarket->GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
 		str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketDateTime(), str);
@@ -274,11 +281,10 @@ namespace StockAnalysisTest {
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
 		ASSERT_FALSE(gl_fNormalMode);
-		time_t ttime;
+		time_t tUTC;
 		tm tm_;
-		time(&ttime);
-		ttime -= gl_pVirtualMarket->GetMarketTimeZone();
-		gmtime_s(&tm_, &ttime);
+		time(&tUTC);
+		GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 
 		gl_pVirtualMarket->CalculateTime();
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);

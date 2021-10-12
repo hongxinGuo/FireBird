@@ -1,5 +1,7 @@
 #pragma once
 
+#include"time.h"
+
 using namespace std;
 #include<memory>
 
@@ -17,10 +19,12 @@ public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
 	virtual void ResetMarket(void);
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
+	tm GetMarketTimeStruct(time_t tUTC = sm_tUTC);
 
 	bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
 
+	// 时间函数
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
 	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
@@ -41,8 +45,8 @@ public:
 
 	CString GetStringOfLocalTime(void) const; // 得到本地时间的字符串
 	CString GetStringOfLocalDateTime(void) const;
-	CString GetStringOfMarketTime(void) const; // 得到本市场时间的字符串
-	CString GetStringOfMarketDateTime(void) const;
+	CString GetStringOfMarketTime(void); // 得到本市场时间的字符串
+	CString GetStringOfMarketDateTime(void);
 	CString GetStringOfDate(long lDate) const;
 	CString GetStringOfMarketDate(void) const;
 
@@ -81,7 +85,7 @@ public:
 	CString m_strSource;
 
 protected:
-	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。
+	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 	CString m_strMarketId; // 该市场标识字符串
 
 	static time_t sm_tUTC; // 软件运行时的UTC时间。所有的市场都使用同一个UTC时间，故而为静态数据。
