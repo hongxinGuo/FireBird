@@ -19,13 +19,13 @@ public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
 	virtual void ResetMarket(void);
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
-	tm TransferToMarketTimeStruct(time_t tUTC = sm_tUTC); // 得到本市场的时间（从UTC时间）
-	time_t TransferToUTCTime(tm* tmMarketTime); // 将市场时间结构转化为UTC时间
 
 	bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
 
 	// 时间函数
+	tm TransferToMarketTime(time_t tUTC = sm_tUTC); // 得到本市场的时间（从UTC时间）
+	time_t TransferToUTCTime(tm* tmMarketTime); // 将市场时间结构转化为UTC时间
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
 	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
@@ -47,9 +47,9 @@ public:
 	CString GetStringOfLocalTime(void) const; // 得到本地时间的字符串
 	CString GetStringOfLocalDateTime(void) const;
 	CString GetStringOfMarketTime(void); // 得到本市场时间的字符串
+	CString GetStringOfMarketDate(void) const;
 	CString GetStringOfMarketDateTime(void);
 	CString GetStringOfDate(long lDate) const;
-	CString GetStringOfMarketDate(void) const;
 
 	void CalculateTime(void) noexcept;// 计算本市场的各时间
 	void CalculateLastTradeDate(void) noexcept;

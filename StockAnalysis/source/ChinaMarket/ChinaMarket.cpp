@@ -501,24 +501,20 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) 
 //
 //	得到分时线偏移量。09:30为0，15:00为240,步长为1分钟
 //
-//  使用GMT函数来计算，所以要将时间减去东八区提前的28800秒。
 //
 ////////////////////////////////////////////////////////////////////////
 long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 	ASSERT(tUTC >= 0);
-	tm tmTemp{};
-	time_t t = 0;
-	time_t tMarket;
+	tm tmMarketTime{};
+	time_t tUTC2 = 0;
 	long lIndex = 0;
 
-	tMarket = tUTC + GetMarketTimeZone();
-	gmtime_s(&tmTemp, &tMarket);
-	tmTemp.tm_hour = 9;
-	tmTemp.tm_min = 30;
-	tmTemp.tm_sec = 0;
-	t = _mkgmtime(&tmTemp);
-	t -= GetMarketTimeZone();
-	lIndex = (tUTC - t) / 60;
+	tmMarketTime = TransferToMarketTime(tUTC);
+	tmMarketTime.tm_hour = 9;
+	tmMarketTime.tm_min = 30;
+	tmMarketTime.tm_sec = 0;
+	tUTC2 = TransferToUTCTime(&tmMarketTime);
+	lIndex = (tUTC - tUTC2) / 60;
 	if (lIndex < 0) lIndex = 0;
 	if ((lIndex >= 120) && (lIndex < 209)) lIndex = 119;
 	if (lIndex >= 210) lIndex -= 90;

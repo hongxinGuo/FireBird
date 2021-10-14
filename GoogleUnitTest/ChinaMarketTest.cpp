@@ -337,39 +337,39 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetMinLineOffset) {
-		tm tmCurrent;
-		tmCurrent.tm_year = 2020 - 1900;
-		tmCurrent.tm_mon = 1;
-		tmCurrent.tm_mday = 1;
-		tmCurrent.tm_hour = 9;
-		tmCurrent.tm_min = 0;
-		tmCurrent.tm_sec = 0;
-		time_t tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
-		long lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
+		tm tmMarketTime;
+		tmMarketTime.tm_year = 2020 - 1900;
+		tmMarketTime.tm_mon = 1;
+		tmMarketTime.tm_mday = 1;
+		tmMarketTime.tm_hour = 9;
+		tmMarketTime.tm_min = 0;
+		tmMarketTime.tm_sec = 0;
+		time_t tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
+		long lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 0);
-		tmCurrent.tm_hour = 10;
-		tmCurrent.tm_min = 30;
-		tmCurrent.tm_sec = 59;
-		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
-		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
+		tmMarketTime.tm_hour = 10;
+		tmMarketTime.tm_min = 30;
+		tmMarketTime.tm_sec = 59;
+		tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
+		lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 60);
-		tmCurrent.tm_hour = 12;
-		tmCurrent.tm_min = 30;
-		tmCurrent.tm_sec = 59;
-		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
-		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
+		tmMarketTime.tm_hour = 12;
+		tmMarketTime.tm_min = 30;
+		tmMarketTime.tm_sec = 59;
+		tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
+		lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 119);
-		tmCurrent.tm_hour = 14;
-		tmCurrent.tm_min = 30;
-		tmCurrent.tm_sec = 59;
-		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
-		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
+		tmMarketTime.tm_hour = 14;
+		tmMarketTime.tm_min = 30;
+		tmMarketTime.tm_sec = 59;
+		tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
+		lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 210);
-		tmCurrent.tm_hour = 15;
-		tmCurrent.tm_min = 30;
-		tmCurrent.tm_sec = 59;
-		tMarket = _mkgmtime(&tmCurrent) - gl_pChinaMarket->GetMarketTimeZone();
-		lOffset = gl_pChinaMarket->GetMinLineOffset(tMarket);
+		tmMarketTime.tm_hour = 15;
+		tmMarketTime.tm_min = 30;
+		tmMarketTime.tm_sec = 59;
+		tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
+		lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 239);
 	}
 

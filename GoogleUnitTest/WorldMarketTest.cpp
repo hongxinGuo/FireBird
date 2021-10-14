@@ -119,15 +119,15 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetResetMarket(false);
 	}
 
-	TEST_F(CWorldMarketTest, TestTransferMarketTimeStruct) {
+	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
 		tm tm_, tm2_;
 		time_t tt;
 
 		gl_pWorldMarket->CalculateTime();
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		tm_ = gl_pWorldMarket->TransferToMarketTimeStruct();
-		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour = tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东标准时间)";
+		tm_ = gl_pWorldMarket->TransferToMarketTime();
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东标准时间)";
 	}
 
 	TEST_F(CWorldMarketTest, TestGetCurrentFinnhubInquiry) {
