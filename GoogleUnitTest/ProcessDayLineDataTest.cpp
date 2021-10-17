@@ -66,7 +66,6 @@ namespace StockAnalysisTest {
 			pDownLoadedDayLine = make_shared<CDownLoadedNeteaseDayLine>();
 			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
 		}
 
 		virtual void TearDown(void) override {

@@ -327,8 +327,6 @@ size_t CChinaMarket::GetCurrentStockSetSize(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::CreateTotalStockContainer(void) {
-	char buffer[10]{};
-
 	CChinaStockPtr pStock = nullptr;
 
 	// 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。

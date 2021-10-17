@@ -568,7 +568,7 @@ void CMainFrame::UpdateStatus(void) {
 void CMainFrame::UpdateInnerSystemStatus(void) {
 	char buffer[30];
 	CString str;
-	long lTotalByteReaded;
+
 	// 更新当前工作线程数
 	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
@@ -614,6 +614,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 		gl_fExitingSystem = true; // 提示各工作线程中途退出
+		TRACE("应用户申请，准备退出程序\n");
 		for (auto pMarket : gl_vMarketPtr) {
 			pMarket->PreparingExitMarket();
 		}

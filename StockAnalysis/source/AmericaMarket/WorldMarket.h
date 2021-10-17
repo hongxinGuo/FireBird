@@ -423,7 +423,7 @@ public:
 	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
 	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
 
-	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return m_iWebSocketReceivedNumberPerSecond; }
+	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return (int)m_iWebSocketReceivedNumberPerSecond; }
 	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
 
 	CFinnhubWebSocketDataPtr PopFinnhubWebSocketData(void);

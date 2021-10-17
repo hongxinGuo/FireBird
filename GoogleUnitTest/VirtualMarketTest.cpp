@@ -79,7 +79,6 @@ namespace StockAnalysisTest {
 		long lTimeZone = 0;
 		_get_timezone(&lTimeZone);
 		gl_pVirtualMarket->CalculateLastTradeDate();
-		long lTime = gl_pVirtualMarket->GetFormatedMarketTime();
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);
 
 		long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;

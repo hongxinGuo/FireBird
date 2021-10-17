@@ -183,21 +183,8 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol, sService;
 	char chType;
-	double price = 0;
-	double volume = 0;
-	time_t time = 0;
 
-	int iSubscriptionId = 0;
 	string sMessageType, sTicker, sExchange, sDatetime, sValue;
-	INT64 iSecond = 0;
-	double dBidSize = 0;
-	double dBidPrice = 0;
-	double dMidPrice = 0;
-	double dAskPrice = 0;
-	double dAskSize = 0;
-	double dLastSize = 0;
-	double dLastPrice = 0;
-	int iHalted = 0, iAfterHour = 0, iISO = 0, iOddlot = 0, iNMSRule611 = 0;
 	int i = 0;
 	CTiingoIEXWebSocketDataPtr pIEXData = nullptr;
 
@@ -411,20 +398,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
 	char chType;
-	double price = 0;
-	double volume = 0;
-	time_t time = 0;
-	int i = 0;
 
-	int iSubscriptionId = 0;
 	string sMessageType, sTickers, sExchange, sDatetime, sService;
-	double dBidSize;
-	double dBidPrice;
-	double dMidPrice;
-	double dAskPrice;
-	double dAskSize;
-	double dLastSize;
-	double dLastPrice;
 	CTiingoCryptoWebSocketDataPtr pCryptoData = nullptr;
 
 	try {
@@ -555,16 +530,8 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 	ptree::iterator it;
 	string sType, sSymbol, sService;
 	char chType;
-	double price = 0;
-	double volume = 0;
-	time_t time = 0;
 
 	string sMessageType, sTickers, sDatetime;
-	double dBidSize;
-	double dBidPrice;
-	double dMidPrice;
-	double dAskPrice;
-	double dAskSize;
 	CTiingoForexWebSocketDataPtr pForexData = nullptr;
 
 	try {

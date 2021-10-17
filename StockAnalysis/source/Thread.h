@@ -41,7 +41,7 @@ UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebD
 UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
 // 读取Finnhub.io网络数据线程。 网址：https://finnhub.io/api/v1/
 UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
-// 读取api.tiingo.com
+// 读取api.tiingo.com.网址：https://api.tiingo.com/
 UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pTiingoWebData); // 此工作线程的返回值为8
 // 读取quandl
 UINT ThreadReadQuandlData(not_null<CQuandlWebInquiry*> pQuandlWebData); // 此工作线程的返回值为9

@@ -277,7 +277,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(AccessoryTest, TestGetUTCTimeStruct) {
-		tm tm_, tm2_;
+		tm tm_;
 		time_t tUTC = 0;
 
 		GetUTCTimeStruct(&tm_, &tUTC);
@@ -296,7 +296,7 @@ namespace StockAnalysisTest {
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
 		GetMarketTimeStruct(&tm_, tt, -8 * 3600);
-		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour = tm2_.tm_hour - 16)));
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16)));
 	}
 }
 

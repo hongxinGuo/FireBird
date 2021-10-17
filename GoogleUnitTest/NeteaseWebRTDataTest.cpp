@@ -578,7 +578,6 @@ namespace StockAnalysisTest {
 
 	TEST_P(GetNeteaseIndexValueRTDataTest, TestReadNeteaseOneValue) {
 		CString strValue;
-		long lIndex = 0;
 		switch (m_iCount) {
 		case 1:
 			break;

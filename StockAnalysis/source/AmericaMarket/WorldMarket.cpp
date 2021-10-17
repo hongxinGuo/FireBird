@@ -476,7 +476,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 	vector<CDayLinePtr> vDayLine;
 	vector<CCountryPtr> vCountry;
 	vector<CInsiderTransactionPtr> vInsiderTransaction;
-	bool fFoundNewStock = false;
 	char buffer[30];
 	CString strNumber;
 	bool fDone = false;
@@ -682,6 +681,11 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 	return fDone;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理Tiingo各申请数据，使用线程读取Tiingo网络数据
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	CString strTemp;
@@ -693,7 +697,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 		ASSERT(IsTiingoInquiring());
 		if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
 			m_CurrentTiingoInquiry = GetTiingoInquiry();
-			gl_pTiingoWebInquiry->SetInquiryingStringPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); // 设置前缀
+			gl_pTiingoWebInquiry->SetInquiryingStringPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); //从m_vTiingoInquiringStr中提取前缀
 			switch (m_CurrentTiingoInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
 			case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
 				break;
@@ -754,7 +758,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __STOCK_QUOTE__:
 				break;
-			case __STOCK_CANDLES__:
+			case __STOCK_CANDLES__: // 日线
 				pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
 				strMiddle = pStock->GetTiingoDayLineInquiryString(GetFormatedMarketDate());
 				gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
@@ -792,7 +796,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			}
 			SetTiingoDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
-			gl_pTiingoWebInquiry->GetWebData();
+			gl_pTiingoWebInquiry->GetWebData(); // 调用读取网络数据的线程
 			fDone = true;
 		}
 	}
@@ -2961,7 +2965,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
 
 	shared_ptr<string> pString;
-	int iTotalDataSize = 0;
+	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
 		iTotalDataSize += pString->size();

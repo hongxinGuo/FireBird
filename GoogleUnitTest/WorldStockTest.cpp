@@ -1320,7 +1320,6 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString) {
 		CWorldStock stock;
-		long lDate = 20200101;
 		CString strMiddle;
 
 		stock.SetSymbol(_T("600601.SS"));

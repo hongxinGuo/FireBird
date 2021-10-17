@@ -775,7 +775,6 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
 }
 
 bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
-	char buffer[1000]{};
 	ptree pt, pt1, pt2;
 	string sError;
 	string s;
@@ -904,9 +903,6 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol, sMessage;
 	CString strMessage;
-	double price = 0;
-	double volume = 0;
-	time_t time = 0;
 	string code;
 	CFinnhubWebSocketDataPtr pFinnhubDataPtr = nullptr;
 

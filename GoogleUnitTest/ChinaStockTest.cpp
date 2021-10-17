@@ -1317,7 +1317,6 @@ namespace StockAnalysisTest {
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetFormatedMarketDate(), 31));
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		long lCurrentDate = gl_pChinaMarket->GetFormatedMarketDate();
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
 		setChinaStockSymbol.Open();
