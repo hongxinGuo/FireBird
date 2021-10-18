@@ -554,7 +554,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
 	lStartDate = gl_pWorldMarket->GetNextDay(m_lDayLineEndDate);
-	tStartTime = TransferToTTime(lStartDate, gl_pWorldMarket->GetMarketTimeZone());
+	tStartTime = gl_pWorldMarket->TransferToUTCTime(lStartDate);
 	if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}

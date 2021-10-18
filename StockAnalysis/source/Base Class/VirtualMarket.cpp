@@ -63,10 +63,10 @@ bool CVirtualMarket::UpdateMarketInfo(void) {
 }
 
 tm CVirtualMarket::TransferToMarketTime(time_t tUTC) {
-	time_t tMarket;
 	tm tm_;
-	tMarket = tUTC - m_lMarketTimeZone;
-	gmtime_s(&tm_, &tMarket);
+
+	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
+
 	return tm_;
 }
 
@@ -77,7 +77,7 @@ time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) {
 time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) {
 	tm tmMarket;
 
-	ASSERT(lMarketDate >= 19700001);
+	ASSERT(lMarketDate >= 19700101);
 	tmMarket.tm_year = lMarketDate / 10000 - 1900;
 	tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
 	tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;

@@ -42,19 +42,18 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTim
 	return tt;
 }
 
-time_t TransferToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
-	ASSERT(lDate > 19700000);
-	const long lYear = lDate / 10000;
-	const long lMonth = (lDate - lYear * 10000) / 100;
-	const long lD = (lDate - lYear * 10000 - lMonth * 100);
-	const long lHour = lTime / 10000;
-	const long lMinute = (lTime - lHour * 10000) / 100;
-	const long lSecond = lTime - lHour * 10000 - lMinute * 100;
-	CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
-	CTimeSpan timeSpan(tTimeZoneOffset);
+time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
+	tm tmMarket;
 
-	ct += timeSpan;
-	return (ct.GetTime());
+	ASSERT(lDate >= 19700101);
+	tmMarket.tm_year = lDate / 10000 - 1900;
+	tmMarket.tm_mon = lDate / 100 - (lDate / 10000) * 100 - 1;
+	tmMarket.tm_mday = lDate - (lDate / 100) * 100;
+	tmMarket.tm_hour = lTime / 10000;
+	tmMarket.tm_min = lTime / 100 - (lTime / 10000) * 100;
+	tmMarket.tm_sec = lTime - (lTime / 100) * 100;
+
+	return _mkgmtime(&tmMarket) + tTimeZone;
 }
 
 long TransferToDate(time_t const tUTC, time_t tTimeZone) noexcept {

@@ -1414,7 +1414,7 @@ namespace StockAnalysisTest {
 
 		pStock->SetHavingFirstRTData(true);
 		pStock->SetSymbol(_T("600000.SS"));
-		pStock->SetTransactionTime(TransferToTTime(20191101, gl_pChinaMarket->GetMarketTimeZone()));
+		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(20191101));
 		pStock->SetLastClose(101010);
 		pStock->SetOpen(202020);
 		pStock->SetHigh(303030);
@@ -1708,7 +1708,7 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 		pStock->SetHavingFirstRTData(true);
-		pStock->SetTransactionTime(TransferToTTime(20191101));
+		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(20191101));
 		pStock->SetExchangeCode(_T("SS"));
 		pStock->SetSymbol(_T("600000.SS"));
 		pStock->SetDisplaySymbol(_T("浦东银行"));
@@ -1910,7 +1910,7 @@ namespace StockAnalysisTest {
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-		pStock->SetTransactionTime(TransferToTTime(21900101));
+		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(21900101));
 		pStock->SetTransactionNumber(1);
 		pStock->SetTransactionNumberBelow5000(2);
 		pStock->SetTransactionNumberBelow50000(3);
@@ -2429,7 +2429,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaStockTest, TestSaveCalculatedInfo) {
 		CChinaStock stock;
 
-		stock.SetTransactionTime(TransferToTTime(19900101));
+		stock.SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(19900101));
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetTransactionNumber(1);
 		stock.SetTransactionNumberBelow5000(2);

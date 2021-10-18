@@ -77,9 +77,8 @@ bool CDownLoadedNeteaseDayLine::ProcessNeteaseDayLineData(void) {
 bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 	static char buffer2[200], buffer3[100];
 	long i = 0;
-	tm tm_;
+	long lMarketDate = 0;
 	int year = 0, month = 0, day = 0;
-	long lDate = 0;
 	CString str;
 	double dTemp = 0;
 
@@ -96,16 +95,9 @@ bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 	m_lCurrentPos++;
 	buffer3[i] = 0x00;
 	sscanf_s(buffer3, _T("%04d-%02d-%02d"), &year, &month, &day);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = 15;
-	tm_.tm_min = 0;
-	tm_.tm_sec = 0;
-	tm_.tm_isdst = 0;
-	m_pCurrentProcessingDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(&tm_));
-	lDate = year * 10000 + month * 100 + day;
-	m_pCurrentProcessingDayLine->SetDate(lDate);
+	lMarketDate = year * 10000 + month * 100 + day;
+	m_pCurrentProcessingDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
+	m_pCurrentProcessingDayLine->SetDate(lMarketDate);
 	//TRACE("%d %d %d\n", year, month, day);
 
 	if (m_vDayLineBuffer.at(m_lCurrentPos) != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入

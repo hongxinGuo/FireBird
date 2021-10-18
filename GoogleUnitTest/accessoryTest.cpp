@@ -143,6 +143,10 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(20200713, GetCurrentMonday(20200719));
 	}
 
+	TEST_F(AccessoryTest, TestTransferToTTime) {
+		EXPECT_EQ(315601200, TransferToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone())) << "美东标准时间的19800101150000，其UTC时间为315601200";
+	}
+
 	TEST_F(AccessoryTest, TestFormatToTTime) {
 		tm tm_;
 		tm_.tm_year = 2000 - 1900;

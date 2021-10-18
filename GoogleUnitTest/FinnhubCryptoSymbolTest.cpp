@@ -170,7 +170,7 @@ namespace StockAnalysisTest {
 
 		symbol.SetSymbol(_T("ABCDE"));
 		str = symbol.GetFinnhubDayLineInquiryString(123456789);
-		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315572400&to=123456789")) << "当前时间小于19800101，315572400就是美东标准时间的19800101";
+		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
