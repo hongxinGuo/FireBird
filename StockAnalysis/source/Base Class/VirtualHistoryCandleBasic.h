@@ -40,9 +40,9 @@ public:
 	double GetRSLogarithm(void) const noexcept { return m_dRSLogarithm; }
 	void SetRSLogarithm(double dValue) noexcept { m_dRSLogarithm = dValue; }
 
-	long GetFormatedMarketDate(void) const noexcept { return m_lDate; }
+	long GetMarketDate(void) const noexcept { return m_lDate; }
 	void SetDate(long lDate) noexcept { m_lDate = lDate; }
-	time_t GetFormatedMarketTime(void) const noexcept { return m_time; }
+	time_t GetMarketTime(void) const noexcept { return m_time; }
 	void SetTime(time_t t) noexcept { m_time = t; }
 	CString GetExchange(void) const { return m_strExchange; }
 	void SetExchange(CString strExchange) { m_strExchange = strExchange; }

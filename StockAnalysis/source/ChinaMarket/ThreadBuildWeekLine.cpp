@@ -18,12 +18,12 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
   long lCurrentMonday = lStartMonday;
 
   if (lStartDate > 19900101) { // 目前此种情况只用于重新生成本周周线
-    ASSERT(lStartMonday == GetCurrentMonday(pMarket->GetFormatedMarketDate()));
+    ASSERT(lStartMonday == GetCurrentMonday(pMarket->GetMarketDate()));
     do {
       pMarket->DeleteWeekLine(lCurrentMonday);
       ctCurrent += ts7Day;
       lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-    } while (lCurrentMonday <= pMarket->GetFormatedMarketDate());
+    } while (lCurrentMonday <= pMarket->GetMarketDate());
   }
   else {
     pMarket->DeleteWeekLine();

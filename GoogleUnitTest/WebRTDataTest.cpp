@@ -1680,7 +1680,7 @@ namespace StockAnalysisTest {
 	TEST_F(CStockWebRTDataTest, TestSaveData) {
 		CSetRealTimeData setRTData;
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-		time_t tt = FormatToTTime(21101123);
+		time_t tt = TransferToTTime(21101123);
 
 		pRTData->SetTransactionTime(tt);
 		pRTData->SetSymbol(_T("600000.SS"));
@@ -1740,7 +1740,7 @@ namespace StockAnalysisTest {
 		CSetRealTimeData setRTData;
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		CWebRTData id;
-		time_t tt = FormatToTTime(21101123);
+		time_t tt = TransferToTTime(21101123);
 
 		pRTData->SetTransactionTime(tt);
 		pRTData->SetSymbol(_T("600000.SS"));

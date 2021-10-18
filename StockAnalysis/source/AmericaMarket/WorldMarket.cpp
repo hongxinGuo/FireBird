@@ -253,7 +253,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	static time_t s_timeLast = 0;
 	static int s_iCountfinnhubLimit = 12; // Finnhub.io每1.5秒左右申请一次，以防止出现频率过高的情况。
 	static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
-	const long lCurrentTime = GetFormatedMarketTime();
+	const long lCurrentTime = GetMarketTime();
 
 	TaskCheckSystemReady();
 
@@ -503,7 +503,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
 				ASSERT(pStock != nullptr);
 				if (ProcessFinnhubStockProfile(pWebData, pStock)) {
-					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 					pStock->SetProfileUpdated(true);
 					pStock->SetUpdateProfileDB(true);
 				}
@@ -511,7 +511,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __COMPANY_PROFILE_CONCISE__:
 				ASSERT(pStock != nullptr);
 				if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
-					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 					pStock->SetProfileUpdated(true);
 					pStock->SetUpdateProfileDB(true);
 				}
@@ -545,7 +545,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __PEERS__:
 				ASSERT(pStock != nullptr);
 				if (ProcessFinnhubStockPeer(pWebData, pStock)) {
-					pStock->SetPeerUpdateDate(GetFormatedMarketDate());
+					pStock->SetPeerUpdateDate(GetMarketDate());
 					pStock->SetUpdateProfileDB(true);
 				}
 				break;
@@ -553,7 +553,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __INSIDER_TRANSACTION__:
 				if (ProcessFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
-					pStock->SetInsiderTransactionUpdateDate(GetFormatedMarketDate());
+					pStock->SetInsiderTransactionUpdateDate(GetMarketDate());
 					pStock->SetUpdateProfileDB(true);
 					if (vInsiderTransaction.size() > 0) {
 						pStock->UpdateInsiderTransaction(vInsiderTransaction);
@@ -594,7 +594,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 							pStock->SetIPOStatus(__STOCK_NULL__);
 						}
 					}
-					else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetFormatedMarketDate(), GetFormatedMarketDate(), 100)) {
+					else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetMarketDate(), GetMarketDate(), 100)) {
 						pStock->SetIPOStatus(__STOCK_DELISTED__);
 					}
 					else {
@@ -760,7 +760,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __STOCK_CANDLES__: // 日线
 				pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
-				strMiddle = pStock->GetTiingoDayLineInquiryString(GetFormatedMarketDate());
+				strMiddle = pStock->GetTiingoDayLineInquiryString(GetMarketDate());
 				gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pStock->SetDayLineNeedUpdate(false);
 				break;
@@ -2126,11 +2126,11 @@ bool CWorldMarket::LoadStockDB(void) {
 		pWorldStock = make_shared<CWorldStock>();
 		pWorldStock->Load(setWorldStock);
 		if (!IsStock(pWorldStock->GetSymbol())) {
-			pWorldStock->CheckProfileUpdateStatus(GetFormatedMarketDate());
-			pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
-			pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
-			pWorldStock->CheckPeerStatus(GetFormatedMarketDate());
-			pWorldStock->CheckInsiderTransactionStatus(GetFormatedMarketDate());
+			pWorldStock->CheckProfileUpdateStatus(GetMarketDate());
+			pWorldStock->CheckDayLineUpdateStatus(GetMarketDate(), GetLastTradeDate(), GetMarketTime(), GetDayOfWeek());
+			pWorldStock->CheckEPSSurpriseStatus(GetMarketDate());
+			pWorldStock->CheckPeerStatus(GetMarketDate());
+			pWorldStock->CheckInsiderTransactionStatus(GetMarketDate());
 			m_mapWorldStock[setWorldStock.m_Symbol] = m_lLastTotalWorldStock++;
 			m_vWorldStock.push_back(pWorldStock);
 			if (pWorldStock->GetCurrency().GetLength() > lSymbolLength) {

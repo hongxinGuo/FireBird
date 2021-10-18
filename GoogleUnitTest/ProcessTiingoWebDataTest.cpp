@@ -240,7 +240,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 2);
 			pDayLine = m_pStock->GetDayLine(0);
-			EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210311);
+			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
 			EXPECT_EQ(pDayLine->GetClose(), 121960);
 			EXPECT_EQ(pDayLine->GetHigh(), 123210);
 			EXPECT_EQ(pDayLine->GetLow(), 121260);

@@ -42,7 +42,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTim
 	return tt;
 }
 
-time_t FormatToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
+time_t TransferToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
 	ASSERT(lDate > 19700000);
 	const long lYear = lDate / 10000;
 	const long lMonth = (lDate - lYear * 10000) / 100;
@@ -57,33 +57,33 @@ time_t FormatToTTime(long lDate, time_t tTimeZoneOffset, long lTime) {
 	return (ct.GetTime());
 }
 
-long FormatToDate(time_t const tUTC, time_t tTimeZone) noexcept {
+long TransferToDate(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long FormatToTime(time_t const tUTC, time_t tTimeZone) noexcept {
+long TransferToTime(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 FormatToDateTime(time_t const tUTC, time_t tTimeZone) noexcept {
+INT64 TransferToDateTime(time_t const tUTC, time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 + static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long FormatToDate(const tm* ptm) noexcept {
+long TransferToDate(const tm* ptm) noexcept {
 	return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }
 
-long FormatToTime(const tm* ptm) noexcept {
+long TransferToTime(const tm* ptm) noexcept {
 	return(ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
-INT64 FormatToDateTime(const tm* ptm) noexcept {
+INT64 TransferToDateTime(const tm* ptm) noexcept {
 	return((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 + static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 

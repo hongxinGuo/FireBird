@@ -39,7 +39,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
 	static time_t s_timeLast = 0;
-	const long lCurrentTime = GetFormatedMarketTime();
+	const long lCurrentTime = GetMarketTime();
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_timeLast) {
@@ -81,7 +81,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
 	if (!gl_WebInquirer.IsReadingCrweberIndex()) {
 		TaskProcessWebRTDataGetFromCrweberdotcom();
 		if (m_fDataBaseLoaded) {
-			if (m_lNewestUPdateDate < GetFormatedMarketDate()) {
+			if (m_lNewestUPdateDate < GetMarketDate()) {
 				gl_WebInquirer.GetCrweberIndexData();
 			}
 		}

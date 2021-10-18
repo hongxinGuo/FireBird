@@ -630,7 +630,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS(void) {
-	gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetFormatedMarketDate());
+	gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -810,7 +810,7 @@ void CMainFrame::OnBuildResetMarket() {
 void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 	// 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-	if ((gl_pChinaMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaMarket->GetFormatedMarketTime() < 93000)) {
+	if ((gl_pChinaMarket->GetMarketTime() > 83000) && (gl_pChinaMarket->GetMarketTime() < 93000)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
 	else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
@@ -952,7 +952,7 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 //#ifndef _DEBUG
-	if ((gl_pChinaMarket->GetFormatedMarketTime() > 151000)) {
+	if ((gl_pChinaMarket->GetMarketTime() > 151000)) {
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
@@ -963,7 +963,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetFormatedMarketDate());
+	gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {

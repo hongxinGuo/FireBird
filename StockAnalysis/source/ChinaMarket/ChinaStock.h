@@ -63,7 +63,7 @@ public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
 
 	// 基本实时数据，需要更新
-	virtual void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time;  m_pCurrentDayLine->m_lDate = FormatToDate(time); }
+	virtual void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time;  m_pCurrentDayLine->m_lDate = TransferToDate(time); }
 	virtual void SetLastClose(long lValue) noexcept { m_lLastClose = m_pCurrentDayLine->m_lLastClose = lValue; }
 	virtual void SetOpen(long lValue) noexcept { m_lOpen = m_pCurrentDayLine->m_lOpen = lValue; }
 	virtual void SetHigh(long lValue) noexcept { m_lHigh = m_pCurrentDayLine->m_lHigh = lValue; }

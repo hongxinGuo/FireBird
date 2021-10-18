@@ -95,11 +95,11 @@ CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(GetDataSize() > 0);
 	ASSERT(lCurrentDayLinePos < GetDataSize());
 
-	long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDate());
-	long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDate();
+	long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetMarketDate());
+	long lNewestDay = GetData(GetDataSize() - 1)->GetMarketDate();
 	CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) { // 中间数据
-		while (GetData(lCurrentDayLinePos)->GetFormatedMarketDate() < lNextMonday) {
+		while (GetData(lCurrentDayLinePos)->GetMarketDate() < lNextMonday) {
 			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}
 	}

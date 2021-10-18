@@ -74,6 +74,20 @@ time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) {
 	return _mkgmtime(tmMarketTime) + m_lMarketTimeZone;
 }
 
+time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) {
+	tm tmMarket;
+
+	ASSERT(lMarketDate >= 19700001);
+	tmMarket.tm_year = lMarketDate / 10000 - 1900;
+	tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
+	tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;
+	tmMarket.tm_hour = lMarketTime / 10000;
+	tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
+	tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
+
+	return _mkgmtime(&tmMarket) + m_lMarketTimeZone;
+}
+
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
 
@@ -98,8 +112,8 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
 	default: // 其他
 		tMarket = sm_tUTC - 24 * 3600; //
 	}
-	tm tm_ = TransferToMarketTime(tMarket);
-	m_lMarketLastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+	tm tmMarketTime = TransferToMarketTime(tMarket);
+	m_lMarketLastTradeDate = (tmMarketTime.tm_year + 1900) * 10000 + (tmMarketTime.tm_mon + 1) * 100 + tmMarketTime.tm_mday;
 }
 
 bool CVirtualMarket::IsWorkingDay(void) const noexcept {
@@ -229,8 +243,8 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 }
 
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
-	const long lCurrentTime = GetFormatedMarketTime();
-	//long lCurrentTime2 = GetFormatedMarketTime();
+	const long lCurrentTime = GetMarketTime();
+	//long lCurrentTime2 = GetMarketTime();
 
 	// 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
 	SchedulingTaskPerMinute(lSecond, lCurrentTime);

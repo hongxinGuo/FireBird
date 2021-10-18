@@ -169,7 +169,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 			return m_fDayLineNeedUpdate;
 		}
 	}
-	else if ((!IsNotChecked()) && (gl_pWorldMarket->IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetFormatedMarketDate(), 100))) {
+	else if ((!IsNotChecked()) && (gl_pWorldMarket->IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
 		SetDayLineNeedUpdate(false);
 		return m_fDayLineNeedUpdate;
 	}
@@ -300,8 +300,8 @@ void CWorldStock::SaveDayLine(void) {
 		setWorldStockDayLine.MoveNext();
 	}
 	if (lSizeOfOldDayLine > 0) {
-		if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
-			m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+		if (vDayLine.at(0)->GetMarketDate() < m_lDayLineStartDate) {
+			m_lDayLineStartDate = vDayLine.at(0)->GetMarketDate();
 		}
 	}
 	setWorldStockDayLine.Close();
@@ -312,13 +312,13 @@ void CWorldStock::SaveDayLine(void) {
 	lCurrentPos = 0;
 	for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
 		pDayLine = m_vDayLine.at(i);
-		if (pDayLine->GetFormatedMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
+		if (pDayLine->GetMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
 			pDayLine->AppendHistoryCandleBasic(&setSaveWorldStockDayLine);
 		}
 		else {
-			while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+			while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
 			if (lCurrentPos < lSizeOfOldDayLine) {
-				if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
+				if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
 					pDayLine->AppendHistoryCandleBasic(&setSaveWorldStockDayLine);
 				}
 			}
@@ -462,12 +462,12 @@ void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
 
 void CWorldStock::UpdateDayLineStartEndDate(void) {
 	if (m_vDayLine.size() > 0) {
-		if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
-			SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
+		if (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate()) {
+			SetDayLineStartDate(m_vDayLine.at(0)->GetMarketDate());
 			SetUpdateProfileDB(true);
 		}
-		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
+		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > GetDayLineEndDate()) {
+			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate());
 			SetUpdateProfileDB(true);
 		}
 	}
@@ -475,8 +475,8 @@ void CWorldStock::UpdateDayLineStartEndDate(void) {
 
 bool CWorldStock::HaveNewDayLineData(void) {
 	if (m_vDayLine.size() == 0) return false;
-	if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate())
-		|| (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
+	if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > GetDayLineEndDate())
+		|| (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate())) {
 		return true;
 	}
 	else return false;
@@ -554,7 +554,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
 	lStartDate = gl_pWorldMarket->GetNextDay(m_lDayLineEndDate);
-	tStartTime = FormatToTTime(lStartDate, gl_pWorldMarket->GetMarketTimeZone());
+	tStartTime = TransferToTTime(lStartDate, gl_pWorldMarket->GetMarketTimeZone());
 	if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}

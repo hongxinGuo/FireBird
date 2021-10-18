@@ -176,7 +176,7 @@ namespace StockAnalysisTest {
 		pWeekLine = dayLineContainer.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
-		EXPECT_THAT(pWeekLine->GetFormatedMarketDate(), 20191230) << "本周一";
+		EXPECT_THAT(pWeekLine->GetMarketDate(), 20191230) << "本周一";
 		EXPECT_THAT(pWeekLine->GetClose(), 10003);
 		EXPECT_THAT(pWeekLine->GetLastClose(), 10000);
 		EXPECT_THAT(pWeekLine->GetHigh(), 10030);
@@ -185,7 +185,7 @@ namespace StockAnalysisTest {
 		pWeekLine = dayLineContainer.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 5);
-		EXPECT_THAT(pWeekLine->GetFormatedMarketDate(), 20200106) << "本周一";
+		EXPECT_THAT(pWeekLine->GetMarketDate(), 20200106) << "本周一";
 		EXPECT_THAT(pWeekLine->GetClose(), 10005);
 		EXPECT_THAT(pWeekLine->GetLastClose(), 10003);
 		EXPECT_THAT(pWeekLine->GetHigh(), 10050);
@@ -247,13 +247,13 @@ namespace StockAnalysisTest {
 		dayLineContainer.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
-		EXPECT_THAT(vWeekLine.at(0)->GetFormatedMarketDate(), 20191230) << "本周一";
+		EXPECT_THAT(vWeekLine.at(0)->GetMarketDate(), 20191230) << "本周一";
 		EXPECT_THAT(vWeekLine.at(0)->GetClose(), 10003);
 		EXPECT_THAT(vWeekLine.at(0)->GetLastClose(), 10000);
 		EXPECT_THAT(vWeekLine.at(0)->GetHigh(), 10030);
 		EXPECT_THAT(vWeekLine.at(0)->GetLow(), 9910);
 
-		EXPECT_THAT(vWeekLine.at(1)->GetFormatedMarketDate(), 20200106) << "本周一";
+		EXPECT_THAT(vWeekLine.at(1)->GetMarketDate(), 20200106) << "本周一";
 		EXPECT_THAT(vWeekLine.at(1)->GetClose(), 10005);
 		EXPECT_THAT(vWeekLine.at(1)->GetLastClose(), 10003);
 		EXPECT_THAT(vWeekLine.at(1)->GetHigh(), 10050);

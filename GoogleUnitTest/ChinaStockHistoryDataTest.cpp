@@ -41,14 +41,14 @@ namespace StockAnalysisTest {
 		ASSERT_FALSE(gl_fNormalMode);
 		CVirtualHistoryCandleExtend dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 	}
 
 	TEST_F(CChinaStockHistoryDataTest, TestGetTime) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
+		EXPECT_EQ(dl.GetMarketDate(), 0);
 		dl.SetTime(100100100);
-		EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
+		EXPECT_EQ(dl.GetMarketTime(), 100100100);
 	}
 
 	TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {

@@ -60,7 +60,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
 		weekLineContainer.StoreData(pWeekLine);
 		weekLineContainer.UpdateData(pDayLine);
 		CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), GetCurrentMonday(20200101));
+		EXPECT_EQ(pWeekLine2->GetMarketDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
 		EXPECT_EQ(pWeekLine2->GetTransactionNumber(), 102);
@@ -115,13 +115,13 @@ namespace StockAnalysisTest {
 
 		EXPECT_EQ(weekLineContainer.GetDataSize(), 2);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200201);
+		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
 		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
 
 		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(1));
-		EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
@@ -142,7 +142,7 @@ namespace StockAnalysisTest {
 		weekLineContainer2.LoadCurrentWeekLine();
 		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
 		EXPECT_STREQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
-		EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), 20191230) << "20200101之前的星期一";
+		EXPECT_EQ(pWeekLine->GetMarketDate(), 20191230) << "20200101之前的星期一";
 
 		// 恢复原态
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();

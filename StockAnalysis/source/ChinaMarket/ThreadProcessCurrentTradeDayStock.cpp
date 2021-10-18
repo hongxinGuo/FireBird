@@ -21,16 +21,16 @@ UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->SetProcessingTodayStock();
 
-	const long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
-	if (lDate == pMarket->GetFormatedMarketDate()) {
+	const long lDate = TransferToDate(pMarket->GetNewestTransactionTime());
+	if (lDate == pMarket->GetMarketDate()) {
 		pMarket->BuildDayLine(lDate);
 		// 计算本日日线相对强度
 		pMarket->BuildDayLineRS(lDate);
 		// 生成周线数据
 		pMarket->BuildWeekLineOfCurrentWeek();
 		pMarket->BuildWeekLineRS(GetCurrentMonday(lDate));
-		if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
-			pMarket->SetRSEndDate(gl_pChinaMarket->GetFormatedMarketDate());
+		if (pMarket->GetMarketTime() > 150400) {   // 如果中国股市闭市了
+			pMarket->SetRSEndDate(gl_pChinaMarket->GetMarketDate());
 			pMarket->SetUpdateOptionDB(true);   // 更新状态
 			pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
 		}

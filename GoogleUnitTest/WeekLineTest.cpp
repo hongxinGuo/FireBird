@@ -37,14 +37,14 @@ namespace StockAnalysisTest {
 		ASSERT_FALSE(gl_fNormalMode);
 		CWeekLine dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 	}
 
 	TEST_F(CWeekLineTest, TestGetTime) {
 		CWeekLine dl;
-		EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
+		EXPECT_EQ(dl.GetMarketDate(), 0);
 		dl.SetTime(100100100);
-		EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
+		EXPECT_EQ(dl.GetMarketTime(), 100100100);
 	}
 
 	TEST_F(CWeekLineTest, TestGetStockSymbol) {
@@ -670,7 +670,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100101");
 		setWeekLineBasicInfo.Open();
 		id2.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
-		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetFormatedMarketDate());
+		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetMarketDate());
 		EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
@@ -690,7 +690,7 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RSBackup), id.GetRSBackup());
 		setWeekLineBasicInfo.Close();
 
-		EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
+		EXPECT_EQ(id2.GetMarketDate(), id.GetMarketDate());
 		EXPECT_STREQ(id2.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
@@ -834,7 +834,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100901");
 		setWeekLineBasicInfo.Open();
 		idLoaded.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
-		EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
+		EXPECT_EQ(idLoaded.GetMarketDate(), id.GetMarketDate());
 		EXPECT_STREQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
@@ -888,7 +888,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 19900101");
 		setWeekLineBasicInfo.Open();
 		id2.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
-		EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
+		EXPECT_EQ(id.GetMarketDate(), id2.GetMarketDate());
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 
@@ -985,8 +985,8 @@ namespace StockAnalysisTest {
 
 		weekLine.UpdateWeekLine(pDayLine);
 
-		EXPECT_EQ(weekLine.GetFormatedMarketDate(), GetCurrentMonday(pDayLine->GetFormatedMarketDate())) << "周线日期总是当周的星期一";
-		EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
+		EXPECT_EQ(weekLine.GetMarketDate(), GetCurrentMonday(pDayLine->GetMarketDate())) << "周线日期总是当周的星期一";
+		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine->GetMarketTime());
 		EXPECT_STREQ(weekLine.GetStockSymbol(), pDayLine->GetStockSymbol());
 		EXPECT_STREQ(weekLine.GetDisplaySymbol(), pDayLine->GetDisplaySymbol());
 
@@ -1246,10 +1246,10 @@ namespace StockAnalysisTest {
 		weekLine.UpdateWeekLine(pDayLine1);
 		weekLine.UpdateWeekLine(pDayLine2);
 
-		EXPECT_EQ(weekLine.GetFormatedMarketDate(), pDayLine1->GetFormatedMarketDate()) << "使用第一个数据的日期";
-		EXPECT_NE(weekLine.GetFormatedMarketDate(), pDayLine2->GetFormatedMarketDate()) << "使用第一个数据的日期";
-		EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime()) << "使用第一个数据的时间";
-		EXPECT_NE(weekLine.GetFormatedMarketTime(), pDayLine2->GetFormatedMarketTime()) << "使用第一个数据的时间";
+		EXPECT_EQ(weekLine.GetMarketDate(), pDayLine1->GetMarketDate()) << "使用第一个数据的日期";
+		EXPECT_NE(weekLine.GetMarketDate(), pDayLine2->GetMarketDate()) << "使用第一个数据的日期";
+		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine1->GetMarketTime()) << "使用第一个数据的时间";
+		EXPECT_NE(weekLine.GetMarketTime(), pDayLine2->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_STREQ(weekLine.GetStockSymbol(), pDayLine1->GetStockSymbol()) << "股票代码不为空时，不更改";
 		EXPECT_STREQ(weekLine.GetDisplaySymbol(), pDayLine1->GetDisplaySymbol()) << "股票名称不为空时，不更改";
 		EXPECT_STRNE(weekLine.GetStockSymbol(), pDayLine2->GetStockSymbol()) << "股票代码不为空时，不更改";

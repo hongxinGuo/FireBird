@@ -36,14 +36,14 @@ namespace StockAnalysisTest {
 	TEST_F(CStockDayLineTest, TestGetDate) {
 		CDayLine dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetTime) {
 		CDayLine dl;
-		EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
+		EXPECT_EQ(dl.GetMarketDate(), 0);
 		dl.SetTime(100100100);
-		EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
+		EXPECT_EQ(dl.GetMarketTime(), 100100100);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetStockCode) {
@@ -551,7 +551,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21100201");
 		setDayLineBasicInfo.Open();
 		id2.LoadHistoryCandleBasic(&setDayLineBasicInfo);
-		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
+		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetMarketDate());
 		EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, id.GetStockSymbol());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
@@ -571,7 +571,7 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RSBackup), id.GetRSBackup());
 		setDayLineBasicInfo.Close();
 
-		EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
+		EXPECT_EQ(id2.GetMarketDate(), id.GetMarketDate());
 		EXPECT_STREQ(id2.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
@@ -635,7 +635,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101001");
 		setDayLineBasicInfo.Open();
 		idLoaded.LoadHistoryCandleBasic(&setDayLineBasicInfo);
-		EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
+		EXPECT_EQ(idLoaded.GetMarketDate(), id.GetMarketDate());
 		EXPECT_STREQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
@@ -701,7 +701,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strSort = _T("[Date]");
 		setDayLineBasicInfo.Open();
 		id2.LoadHistoryCandleBasic(&setDayLineBasicInfo);
-		EXPECT_EQ(id2.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(id2.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
 
@@ -721,7 +721,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(dayLine.LoadHistoryCandleBasic(&setForexDayLine));
 		setForexDayLine.Close();
 
-		EXPECT_EQ(dayLine.GetFormatedMarketDate(), 20200406);
+		EXPECT_EQ(dayLine.GetMarketDate(), 20200406);
 		EXPECT_STREQ(dayLine.GetExchange(), _T("oanda"));
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T("OANDA:AUD_SGD"));
 		EXPECT_EQ(dayLine.GetLastClose(), 0);

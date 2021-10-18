@@ -33,7 +33,7 @@ public:
   COneDeal();
   ~COneDeal();
 
-  time_t GetFormatedMarketTime(void) noexcept { return m_time; }
+  time_t GetMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t time) noexcept { m_time = time; }
   long GetType(void) const noexcept { return m_lType; }
   void SetType(long lType) noexcept { m_lType = lType; }

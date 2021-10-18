@@ -652,7 +652,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {
 		CCmdUI cmdUI;
-		long lTime = gl_pChinaMarket->GetFormatedMarketTime();
+		long lTime = gl_pChinaMarket->GetMarketTime();
 		gl_pChinaMarket->__TEST_SetFormatedMarketTime(150959);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)

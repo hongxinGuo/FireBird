@@ -13,14 +13,14 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebInquiry) {
-  if (pPotenDailyBriefingWebInquiry->ReadWebData()) {
-    CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebInquiry->TransferWebDataToQueueData();
-    if (pWebDataReceived != nullptr) {
-      pWebDataReceived->SetTime(static_cast<INT64>(pPotenDailyBriefingWebInquiry->GetInquiringDate()) * 1000000);
-      gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
-    }
-  }
-  pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
+	if (pPotenDailyBriefingWebInquiry->ReadWebData()) {
+		CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebInquiry->TransferWebDataToQueueData();
+		if (pWebDataReceived != nullptr) {
+			pWebDataReceived->SetTime(gl_pPotenDailyBriefingMarket->TransferToUTCTime(pPotenDailyBriefingWebInquiry->GetInquiringDate()));
+			gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
+		}
+	}
+	pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
 
-  return 6;
+	return 6;
 }

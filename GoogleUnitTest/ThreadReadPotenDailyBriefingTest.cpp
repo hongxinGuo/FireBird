@@ -37,12 +37,14 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CPotenDailyBriefingThreadTest, TestThreadReadPotenDailyBriefing) {
+		time_t tt = 0;
+
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData())
 			.Times(1)
 			.WillOnce(Return(false));
 		potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
-		potenDailyBriefingInquiry.SetInquiringDate(12345678);
+		potenDailyBriefingInquiry.SetInquiringDate(20100101);
 		EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
@@ -51,7 +53,8 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
-		potenDailyBriefingInquiry.SetInquiringDate(12345678);
+		potenDailyBriefingInquiry.SetInquiringDate(20100101);
+		tt = gl_pPotenDailyBriefingMarket->TransferToUTCTime(20100101);
 		EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);
@@ -66,7 +69,7 @@ namespace StockAnalysisTest {
 		buffer[i] = 0x000;
 		CString str = buffer;
 		EXPECT_STREQ(str, _T("testData"));
-		EXPECT_EQ(pWebData->GetTime(), 12345678000000);
+		EXPECT_EQ(pWebData->GetTime(), tt);
 		EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
 	}
 }

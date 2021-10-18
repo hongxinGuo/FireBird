@@ -95,7 +95,7 @@ namespace StockAnalysisTest {
 		case 1: // 少于20个字符
 			EXPECT_FALSE(fSucceed);
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetFormatedMarketDate());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -105,7 +105,7 @@ namespace StockAnalysisTest {
 		case 3: // 缺乏address项
 			EXPECT_FALSE(fSucceed);
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetFormatedMarketDate());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_STRNE(m_pStock->GetCity(), _T("slaughterer")) << "没有赋值此项";
 			break;
 		case 10:
@@ -113,7 +113,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_STREQ(m_pStock->GetCity(), _T("slaughterer"));
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetFormatedMarketDate());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		default:
 			break;

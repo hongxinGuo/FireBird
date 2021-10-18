@@ -234,7 +234,7 @@ bool CVirtualHistoryCandleExtend::LoadHistoryCandleExtend(CVirtualSetHistoryCand
 
 bool CVirtualHistoryCandleExtend::SaveHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle) {
 	ASSERT(pVirtualSetHistoryCandle->IsOpen());
-	pVirtualSetHistoryCandle->m_Date = GetFormatedMarketDate();
+	pVirtualSetHistoryCandle->m_Date = GetMarketDate();
 	pVirtualSetHistoryCandle->m_Exchange = GetExchange();
 	pVirtualSetHistoryCandle->m_Symbol = GetStockSymbol();
 	pVirtualSetHistoryCandle->m_DisplaySymbol = GetDisplaySymbol();

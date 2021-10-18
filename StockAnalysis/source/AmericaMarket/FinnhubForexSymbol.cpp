@@ -50,8 +50,8 @@ bool CFinnhubForexSymbol::SaveDayLine() {
 	}
 	setForexDayLine.Close();
 	if (lSizeOfOldDayLine > 0) {
-		if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
-			m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+		if (vDayLine.at(0)->GetMarketDate() < m_lDayLineStartDate) {
+			m_lDayLineStartDate = vDayLine.at(0)->GetMarketDate();
 		}
 	}
 
@@ -61,9 +61,9 @@ bool CFinnhubForexSymbol::SaveDayLine() {
 	setForexDayLine.m_pDatabase->BeginTrans();
 	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
 		pDayLine = m_vDayLine.at(i);
-		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
-			if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
+			if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
 				pDayLine->AppendHistoryCandleBasic(&setForexDayLine);
 				fNeedUpdate = true;
 			}
@@ -99,7 +99,7 @@ CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime)
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = FormatToTTime(m_lDayLineEndDate, gl_pWorldMarket->GetMarketTimeZone());
+	tStartTime = TransferToTTime(m_lDayLineEndDate, gl_pWorldMarket->GetMarketTimeZone());
 	if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}
@@ -127,12 +127,12 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 		SetDayLineEndDate(19800101);
 	}
 	else {
-		if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
-			SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
+		if (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate()) {
+			SetDayLineStartDate(m_vDayLine.at(0)->GetMarketDate());
 			m_fUpdateProfileDB = true;
 		}
-		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) {
-			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
+		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > m_lDayLineEndDate) {
+			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate());
 			m_fUpdateProfileDB = true;
 		}
 	}
@@ -140,6 +140,6 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 
 bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
 	if (m_vDayLine.size() <= 0) return false;
-	if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) return true;
+	if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	else return false;
 }

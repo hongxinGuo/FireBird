@@ -48,9 +48,9 @@ bool CVirtualHistoryCandleExtendContainer::SaveBasicData(CVirtualSetHistoryCandl
 	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
 	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
 		pHistoryCandle = GetData(i);
-		while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetFormatedMarketDate() < pHistoryCandle->GetFormatedMarketDate())) lCurrentPos++;
+		while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
-			if (vHistoryCandle.at(lCurrentPos)->GetFormatedMarketDate() > pHistoryCandle->GetFormatedMarketDate()) {
+			if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
 				pHistoryCandle->AppendHistoryCandleBasic(psetHistoryCandleBasic);
 				fNeedUpdate = true;
 			}
@@ -114,12 +114,12 @@ bool CVirtualHistoryCandleExtendContainer::LoadExtendData(CVirtualSetHistoryCand
 
 	while (!psetHistoryCandleExtend->IsEOF()) {
 		pHistoryCandle = GetData(iPosition);
-		while ((pHistoryCandle->GetFormatedMarketDate() < psetHistoryCandleExtend->m_Date)
+		while ((pHistoryCandle->GetMarketDate() < psetHistoryCandleExtend->m_Date)
 			&& (GetDataSize() > (iPosition + 1))) {
 			iPosition++;
 			pHistoryCandle = GetData(iPosition);
 		}
-		if (pHistoryCandle->GetFormatedMarketDate() == psetHistoryCandleExtend->m_Date) {
+		if (pHistoryCandle->GetMarketDate() == psetHistoryCandleExtend->m_Date) {
 			pHistoryCandle->LoadHistoryCandleExtend(psetHistoryCandleExtend);
 		}
 		if (GetDataSize() <= (iPosition + 1)) break;
@@ -180,7 +180,7 @@ void CVirtualHistoryCandleExtendContainer::ShowData(CDC* pDC, CRect rectClient) 
 			y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
 		}
 		pDC->LineTo(x, y);
-		lDate = (*it)->GetFormatedMarketDate();
+		lDate = (*it)->GetMarketDate();
 		i++;
 		if (3 * i > m_vHistoryData.size()) break;
 		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止

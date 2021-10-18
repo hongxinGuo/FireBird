@@ -18,7 +18,7 @@ public:
   }
 
   void SetTime(time_t t) noexcept { m_time = t; }
-  time_t GetFormatedMarketTime(void) const noexcept { return m_time; }
+  time_t GetMarketTime(void) const noexcept { return m_time; }
   void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
   long GetVolume(void) const noexcept { return m_lVolume; }
   void SetStatus(long lStatus) noexcept { m_lStatus = lStatus; }

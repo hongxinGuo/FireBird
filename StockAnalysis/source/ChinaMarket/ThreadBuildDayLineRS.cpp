@@ -35,12 +35,12 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
     }
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (lToday <= pMarket->GetFormatedMarketDate()); // 计算至当前日期（包括今日）
+  } while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
   while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
-    pMarket->SetRSEndDate(pMarket->GetFormatedMarketDate());
+    pMarket->SetRSEndDate(pMarket->GetMarketDate());
     pMarket->SetUpdateOptionDB(true); // 更新选项数据库
     // 显示花费的时间
     time(&tEnd);

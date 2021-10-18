@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
 			.WillOnce(Return(true));
 		EXPECT_EQ(ThreadChoice10RSStrong1StockSet(&market), (UINT)101);
 		EXPECT_TRUE(market.IsUpdateOptionDB());
-		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS1(), market.GetFormatedMarketDate());
+		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS1(), market.GetMarketDate());
 
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), Gt(0));
 		while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
 			.WillOnce(Return(true));
 		EXPECT_EQ(ThreadChoice10RSStrong2StockSet(&market), (UINT)102);
 		EXPECT_TRUE(market.IsUpdateOptionDB());
-		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS2(), market.GetFormatedMarketDate());
+		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS2(), market.GetMarketDate());
 
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), Gt(0));
 		while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();

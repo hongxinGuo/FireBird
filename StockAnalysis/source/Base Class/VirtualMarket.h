@@ -26,11 +26,12 @@ public:
 	// 时间函数
 	tm TransferToMarketTime(time_t tUTC = sm_tUTC); // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime); // 将市场时间结构转化为UTC时间
+	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000); // 将市场时间结构转化为UTC时间
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
 	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
-	long GetFormatedMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
-	long GetFormatedMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
+	long GetMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+	long GetMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
 	long GetMonthOfYear(void) const noexcept { return m_tmMarket.tm_mon + 1; }
 	long GetDateOfMonth(void) const noexcept { return m_tmMarket.tm_mday; }

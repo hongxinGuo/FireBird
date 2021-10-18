@@ -30,7 +30,7 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 	string s;
 
 	if (pWebData->GetBufferLength() < 20) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return false; // 没有公司简介
 	}
@@ -40,7 +40,7 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 		pStock->SetAddress(s.c_str());
 	}
 	catch (ptree_error&) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return false; // 没有公司简介
 	}
@@ -99,7 +99,7 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 	if (s.size() > 0) pStock->SetLogo(s.c_str());
 	s = pt.get<string>(_T("finnhubIndustry"));
 	if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-	pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+	pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
 	return true;
 }
@@ -252,7 +252,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine->SetStockSymbol(pStock->GetSymbol());
 			pDayLine->SetDisplaySymbol(pStock->GetTicker());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
+			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}
@@ -458,7 +458,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
+			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}
@@ -636,7 +636,7 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
-			lTemp = FormatToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
+			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			vDayLine.push_back(pDayLine);
 		}

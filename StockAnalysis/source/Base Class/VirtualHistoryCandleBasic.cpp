@@ -41,7 +41,7 @@ void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 bool CVirtualHistoryCandleBasic::SaveHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 
-	pVirtualSetHistoryCandleBasic->m_Date = GetFormatedMarketDate();
+	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol();
 	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol();

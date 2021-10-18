@@ -45,10 +45,10 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		tm_2 = tm_;
-		long lDate = FormatToDate(&tm_);
+		long lDate = TransferToDate(&tm_);
 		time_t tt = _mkgmtime(&tm_2);
-		long lDate2 = FormatToDate(tt, 0); // UTC时间
-		long lDate3 = FormatToDate(tt); // 默认东八区时间
+		long lDate2 = TransferToDate(tt, 0); // UTC时间
+		long lDate3 = TransferToDate(tt); // 默认东八区时间
 		EXPECT_EQ(lDate, 20000105);
 		EXPECT_EQ(lDate2, 20000105);
 		EXPECT_EQ(lDate3, 20000106) << "东八区时间比UTC时间早8小时，故而是6日了";
@@ -63,10 +63,10 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 20;
 		tm_.tm_sec = 30;
 		tm_2 = tm_;
-		long lTime = FormatToTime(&tm_);
+		long lTime = TransferToTime(&tm_);
 		time_t tt = _mkgmtime(&tm_2);
-		long lTime2 = FormatToTime(tt, 0); // UTC时间
-		long lTime3 = FormatToTime(tt); // 默认东八区时间
+		long lTime2 = TransferToTime(tt, 0); // UTC时间
+		long lTime3 = TransferToTime(tt); // 默认东八区时间
 		EXPECT_EQ(lTime, lTime2);
 		EXPECT_EQ(lTime, 102030);
 		EXPECT_EQ(lTime2, 102030);
@@ -82,10 +82,10 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 20;
 		tm_.tm_sec = 30;
 		tm_2 = tm_;
-		INT64 lDateTime = FormatToDateTime(&tm_);
+		INT64 lDateTime = TransferToDateTime(&tm_);
 		time_t tt = _mkgmtime(&tm_2);
-		INT64 lDateTime2 = FormatToDateTime(tt, 0); // UTC时间
-		INT64 lDateTime3 = FormatToDateTime(tt); // 默认东八区时间
+		INT64 lDateTime2 = TransferToDateTime(tt, 0); // UTC时间
+		INT64 lDateTime3 = TransferToDateTime(tt); // 默认东八区时间
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);
@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		time_t tt = _mkgmtime(&tm_);
-		long lDate = FormatToDate(tt, 0); // UTC时间
+		long lDate = TransferToDate(tt, 0); // UTC时间
 		EXPECT_EQ(lDate, 20000105);
 	}
 

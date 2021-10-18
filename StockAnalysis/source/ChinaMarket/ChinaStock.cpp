@@ -142,13 +142,13 @@ void CChinaStock::ClearRTDataDeque(void) {
 
 bool CChinaStock::HaveNewDayLineData(void) {
 	if (m_DayLine.GetDataSize() <= 0) return false;
-	if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
+	if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	else return false;
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine(void) {
 	if (m_DayLine.GetDataSize() == 0) return;
-	if (gl_pChinaMarket->IsEarlyThen(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+	if (gl_pChinaMarket->IsEarlyThen(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
 		SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
 	}
 	else {
@@ -197,7 +197,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp) {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pVirtualHistoryCandleExtend) {
-	pVirtualHistoryCandleExtend->SetDate(FormatToDate(m_TransactionTime));
+	pVirtualHistoryCandleExtend->SetDate(TransferToDate(m_TransactionTime));
 	pVirtualHistoryCandleExtend->SetExchange(m_strExchangeCode);
 	pVirtualHistoryCandleExtend->SetStockSymbol(m_strSymbol);
 	pVirtualHistoryCandleExtend->SetDisplaySymbol(m_strDisplaySymbol);
@@ -334,13 +334,13 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 	bool fUpdated = false;
 
 	if (m_DayLine.GetDataSize() > 0) {
-		if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
-			SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
+		if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate())) {
+			SetDayLineStartDate(m_DayLine.GetData(0)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
-		if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate());
+		if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) {
+			SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
@@ -1232,7 +1232,7 @@ bool CChinaStock::CheckCurrentRTData() {
 		if (GetAttackSellVolume() < 0) j += 8;
 		if (GetStrongBuyVolume() < 0) j += 16;
 		if (GetStrongSellVolume() < 0) j += 32;
-		TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaMarket->GetFormatedMarketTime(), GetSymbol().GetBuffer(), j);
+		TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaMarket->GetMarketTime(), GetSymbol().GetBuffer(), j);
 		return false;
 	}
 	return true;
@@ -1345,7 +1345,7 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 	}
 	if (!IsDelisted()) {
 		time(&tt);
-		if (IsEarlyThen(GetDayLineEndDate(), FormatToDate(tt), 30)) {
+		if (IsEarlyThen(GetDayLineEndDate(), TransferToDate(tt), 30)) {
 			SetIPOStatus(__STOCK_DELISTED__);
 			SetUpdateProfileDB(true);
 		}
@@ -1530,7 +1530,7 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), FormatToDateTime(m_TransactionTime), GetSymbol().GetBuffer(), GetVolume());
+		TRACE(_T("%14Id %s股数%d\n"), TransferToDateTime(m_TransactionTime), GetSymbol().GetBuffer(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 			GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;
@@ -1545,7 +1545,7 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	CWeekLinePtr pWeekLine = nullptr;
 
 	m_WeekLine.Unload();
-	while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetFormatedMarketDate() < lStartDate)) {
+	while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetMarketDate() < lStartDate)) {
 		i++;
 	}
 	if (i < m_DayLine.GetDataSize()) {

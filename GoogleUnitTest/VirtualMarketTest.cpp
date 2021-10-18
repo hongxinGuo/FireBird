@@ -82,13 +82,13 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);
 
 		long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-		EXPECT_EQ(gl_pVirtualMarket->GetFormatedMarketDate(), day);
+		EXPECT_EQ(gl_pVirtualMarket->GetMarketDate(), day);
 		EXPECT_EQ(gl_pVirtualMarket->GetMonthOfYear(), tm_.tm_mon + 1);
 		EXPECT_EQ(gl_pVirtualMarket->GetDateOfMonth(), tm_.tm_mday);
 		EXPECT_EQ(gl_pVirtualMarket->GetYear(), tm_.tm_year + 1900);
 
 		long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
-		EXPECT_EQ(gl_pVirtualMarket->GetFormatedMarketTime(), time);
+		EXPECT_EQ(gl_pVirtualMarket->GetMarketTime(), time);
 		char buffer[30];
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		CString str;
@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pVirtualMarket->GetLastTradeDate(), LastTradeDate);
 	}
 
-	TEST_F(CVirtualMarketTest, TestGetMarketTime) {
+	TEST_F(CVirtualMarketTest, TestTransferToMarketTime) {
 		tm tm_, tm2_;
 		time_t tt;
 
@@ -127,6 +127,47 @@ namespace StockAnalysisTest {
 		gmtime_s(&tm2_, &tt);
 		tm_ = gl_pVirtualMarket->TransferToMarketTime();
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "VirtualMarket默认为东八区";
+	}
+
+	TEST_F(CVirtualMarketTest, TestTransferToUTCTime1) {
+		tm tmMarket, tm2, tm3;
+		long lMarketDate = 20000301;
+		long lMarketTime = 122030;
+		time_t tTime = 0, tTime2 = 0;
+
+		tmMarket.tm_year = lMarketDate / 10000 - 1900;
+		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
+		tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;
+		tmMarket.tm_hour = lMarketTime / 10000;
+		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
+		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
+
+		tTime = gl_pVirtualMarket->TransferToUTCTime(&tmMarket); // 使用默认时间150000.
+		tm2 = gl_pVirtualMarket->TransferToMarketTime(tTime);
+		EXPECT_EQ(tm2.tm_year, 100);
+		EXPECT_EQ(tm2.tm_mon, 2);
+		EXPECT_EQ(tm2.tm_mday, 1);
+		EXPECT_EQ(tm2.tm_hour, 12);
+		EXPECT_EQ(tm2.tm_min, 20);
+		EXPECT_EQ(tm2.tm_sec, 30);
+
+		tTime = gl_pVirtualMarket->TransferToUTCTime(lMarketDate); // 使用默认时间150000.
+		tm2 = gl_pVirtualMarket->TransferToMarketTime(tTime);
+		EXPECT_EQ(tm2.tm_year, 100);
+		EXPECT_EQ(tm2.tm_mon, 2);
+		EXPECT_EQ(tm2.tm_mday, 1);
+		EXPECT_EQ(tm2.tm_hour, 15);
+		EXPECT_EQ(tm2.tm_min, 00);
+		EXPECT_EQ(tm2.tm_sec, 00);
+
+		tTime = gl_pVirtualMarket->TransferToUTCTime(lMarketDate, lMarketTime);
+		tm3 = gl_pVirtualMarket->TransferToMarketTime(tTime);
+		EXPECT_EQ(tm3.tm_year, 100);
+		EXPECT_EQ(tm3.tm_mon, 2);
+		EXPECT_EQ(tm3.tm_mday, 1);
+		EXPECT_EQ(tm3.tm_hour, 12);
+		EXPECT_EQ(tm3.tm_min, 20);
+		EXPECT_EQ(tm3.tm_sec, 30);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
@@ -269,7 +310,7 @@ namespace StockAnalysisTest {
 		str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfDate(20200202), str);
 
-		long lDate = gl_pVirtualMarket->GetFormatedMarketDate();
+		long lDate = gl_pVirtualMarket->GetMarketDate();
 		long year = lDate / 10000;
 		long month = lDate / 100 - year * 100;
 		long day = lDate - year * 10000 - month * 100;

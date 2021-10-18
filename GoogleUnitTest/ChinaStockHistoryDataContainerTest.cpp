@@ -50,7 +50,7 @@ namespace StockAnalysisTest {
 		id.StoreData(pData);
 
 		auto pContainer = id.GetContainer();
-		EXPECT_EQ((*pContainer)[0]->GetFormatedMarketDate(), 20202020);
+		EXPECT_EQ((*pContainer)[0]->GetMarketDate(), 20202020);
 	}
 
 	TEST_F(CHistoryDataContainerTest, TestGetRS1) {
@@ -273,7 +273,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.UpdateData(vHistoryData);
 		EXPECT_EQ(HistoryDataContainer.GetDataSize(), 1);
 		pHistoryData2 = HistoryDataContainer.GetData(0);
-		EXPECT_EQ(pHistoryData2->GetFormatedMarketDate(), 20200101);
+		EXPECT_EQ(pHistoryData2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pHistoryData2->GetHigh(), 1000);
 		EXPECT_EQ(pHistoryData2->GetLow(), 200);
 		EXPECT_TRUE(HistoryDataContainer.IsDataLoaded());

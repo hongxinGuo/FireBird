@@ -635,15 +635,15 @@ namespace StockAnalysisTest {
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_IPOED__);
 		stock.m_fIsActive = true;
-		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetFormatedMarketDate(), 100));
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), gl_pWorldMarket->GetFormatedMarketDate(), 0, 1));
+		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(stock.GetDayLineEndDate()));
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), gl_pWorldMarket->GetFormatedMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus5) {
 		CWorldStock stock;
-		long lCurrentDay = gl_pWorldMarket->GetFormatedMarketDate();
+		long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
 		stock.SetDayLineNeedUpdate(true);
@@ -662,7 +662,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus6) {
 		CWorldStock stock;
-		long lCurrentDay = gl_pWorldMarket->GetFormatedMarketDate();
+		long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
 		stock.SetDayLineNeedUpdate(true);
@@ -681,7 +681,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus7) {
 		CWorldStock stock;
-		long lCurrentDate = gl_pWorldMarket->GetFormatedMarketDate();
+		long lCurrentDate = gl_pWorldMarket->GetMarketDate();
 		long lPrevMonday = GetPrevMonday(lCurrentDate);
 
 		stock.SetDayLineNeedUpdate(true);
@@ -986,7 +986,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetMarketDate(), 20210102);
 
 		stock.SetUpdateProfileDB(false);
 		stock.SetDayLineStartDate(20210107);
@@ -1214,7 +1214,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetMarketDate(), 20210102);
 
 		stock.SetUpdateProfileDB(false);
 		stock.SetDayLineStartDate(20210107);
@@ -1292,7 +1292,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 		long lDate = 20200101;
 
-		time_t tt = FormatToTTime(lDate, gl_pWorldMarket->GetMarketTimeZone());
+		time_t tt = TransferToTTime(lDate, gl_pWorldMarket->GetMarketTimeZone());
 		time_t ttOld = tt - (time_t)(365) * 24 * 3600;
 
 		char buffer[30];
@@ -1310,7 +1310,7 @@ namespace StockAnalysisTest {
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
-		ttOld = FormatToTTime(20190502, gl_pWorldMarket->GetMarketTimeZone()); // 20190501的第二天
+		ttOld = TransferToTTime(20190502, gl_pWorldMarket->GetMarketTimeZone()); // 20190501的第二天
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");

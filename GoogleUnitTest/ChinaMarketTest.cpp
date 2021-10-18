@@ -323,7 +323,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate());
 		lDate = pStock->GetDayLineEndDate();
-		pStock->SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
+		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		fStatus = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaMarket->GetTotalStock());
 		EXPECT_TRUE(fStatus);
 		EXPECT_STREQ(str, _T("1000001"));
@@ -1454,7 +1454,7 @@ namespace StockAnalysisTest {
 
 		gl_pChinaMarket->SetRSStartDate(20200101);
 		gl_pChinaMarket->SetRSEndDate(20200202);
-		gl_pChinaMarket->SetLastLoginDate(gl_pChinaMarket->GetFormatedMarketDate());
+		gl_pChinaMarket->SetLastLoginDate(gl_pChinaMarket->GetMarketDate());
 		gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(19990101);
 		gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(19990202);
 
@@ -1470,7 +1470,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20200101);
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20200202);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetFormatedMarketDate());
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19990101);
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19990202);
@@ -1494,7 +1494,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20100101);
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20100202);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << _T("永远是当前日期\n");
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19980101);
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19980202);

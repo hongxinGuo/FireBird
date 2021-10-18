@@ -538,7 +538,7 @@ namespace StockAnalysisTest {
 		CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
 		time_t tt;
 		time(&tt);
-		long lDateSource = FormatToDate(tt);
+		long lDateSource = TransferToDate(tt);
 
 		pRTData->SetTransactionTime(tt);
 		pRTData->SetLastClose(10101010);
@@ -557,7 +557,7 @@ namespace StockAnalysisTest {
 			pRTData->SetVSell(i, i * 45678);
 		}
 		stock.UpdateStatus(pRTData);
-		long lDateDest = FormatToDate(stock.GetTransactionTime());
+		long lDateDest = TransferToDate(stock.GetTransactionTime());
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
@@ -606,12 +606,12 @@ namespace StockAnalysisTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CChinaStock stock;
 		long lDate = 21091101;
-		time_t tt = FormatToTTime(lDate);
+		time_t tt = TransferToTTime(lDate);
 		CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));
 		stock.SetDisplaySymbol("浦东发展");
-		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDate()作比较
+		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.TransferToDate()作比较
 		stock.SetLastClose(101010);
 		stock.SetOpen(202020);
 		stock.SetHigh(303030);
@@ -1230,7 +1230,7 @@ namespace StockAnalysisTest {
 		stock.SetOffset(13000);
 		stock.SetDisplaySymbol(_T("未使用过"));
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
+		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		stock.SetDayLineStartDate(19900101);
 		setChinaStockSymbol.m_strFilter = _T("[ID] = 1");
 		setChinaStockSymbol.Open();
@@ -1254,7 +1254,7 @@ namespace StockAnalysisTest {
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
+		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
@@ -1281,7 +1281,7 @@ namespace StockAnalysisTest {
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetFormatedMarketDate(), 30)) {
+		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(__STOCK_DELISTED__));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
@@ -1298,8 +1298,8 @@ namespace StockAnalysisTest {
 		CChinaStock stock;
 
 		gl_pChinaMarket->CalculateTime();
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
-		long lCurrentDate = gl_pChinaMarket->GetFormatedMarketDate();
+		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
+		long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
@@ -1315,7 +1315,7 @@ namespace StockAnalysisTest {
 		CChinaStock stock;
 
 		gl_pChinaMarket->CalculateTime();
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetFormatedMarketDate(), 31));
+		stock.SetDayLineEndDate(gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		stock.SetIPOStatus(__STOCK_IPOED__);
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
@@ -1324,16 +1324,16 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(stock.GetSymbol(), _T("000003.SZ"));
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
-		EXPECT_EQ(stock.GetDayLineEndDate(), gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetFormatedMarketDate(), 31));
+		EXPECT_EQ(stock.GetDayLineEndDate(), gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		setChinaStockSymbol.Close();
 	}
 
 	TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetFormatedMarketDate());
+		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		EXPECT_FALSE(stock.CheckDayLineStatus());
-		EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDate() << gl_pChinaMarket->GetFormatedMarketDate();
+		EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDate() << gl_pChinaMarket->GetMarketDate();
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetLastTradeDate());
 		EXPECT_FALSE(stock.CheckDayLineStatus());
@@ -1414,7 +1414,7 @@ namespace StockAnalysisTest {
 
 		pStock->SetHavingFirstRTData(true);
 		pStock->SetSymbol(_T("600000.SS"));
-		pStock->SetTransactionTime(FormatToTTime(20191101, gl_pChinaMarket->GetMarketTimeZone()));
+		pStock->SetTransactionTime(TransferToTTime(20191101, gl_pChinaMarket->GetMarketTimeZone()));
 		pStock->SetLastClose(101010);
 		pStock->SetOpen(202020);
 		pStock->SetHigh(303030);
@@ -1708,7 +1708,7 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 		pStock->SetHavingFirstRTData(true);
-		pStock->SetTransactionTime(FormatToTTime(20191101));
+		pStock->SetTransactionTime(TransferToTTime(20191101));
 		pStock->SetExchangeCode(_T("SS"));
 		pStock->SetSymbol(_T("600000.SS"));
 		pStock->SetDisplaySymbol(_T("浦东银行"));
@@ -1793,7 +1793,7 @@ namespace StockAnalysisTest {
 
 		pStock->UpdateCurrentHistoryCandle(pDayLine);
 
-		EXPECT_EQ(pDayLine->GetFormatedMarketDate(), FormatToDate(pStock->GetTransactionTime()));
+		EXPECT_EQ(pDayLine->GetMarketDate(), TransferToDate(pStock->GetTransactionTime()));
 		EXPECT_STREQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
 		EXPECT_STREQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
 		EXPECT_STREQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());
@@ -1910,7 +1910,7 @@ namespace StockAnalysisTest {
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-		pStock->SetTransactionTime(FormatToTTime(21900101));
+		pStock->SetTransactionTime(TransferToTTime(21900101));
 		pStock->SetTransactionNumber(1);
 		pStock->SetTransactionNumberBelow5000(2);
 		pStock->SetTransactionNumberBelow50000(3);
@@ -1996,7 +1996,7 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine;
 		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
-		EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
+		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
 		EXPECT_STREQ(pDayLine->GetStockSymbol(), _T("600011.SS"));
 		EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
@@ -2137,7 +2137,7 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < 10; i++) {
 			dayLine.LoadHistoryCandleBasic(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i);
-			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
+			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
@@ -2206,7 +2206,7 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < 10; i++) {
 			pid = stock.GetDayLine(i);
 			pDayLine = pStock->GetDayLine(i);
-			EXPECT_EQ(pDayLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
+			EXPECT_EQ(pDayLine->GetMarketDate(), pid->GetMarketDate());
 			EXPECT_STREQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
@@ -2400,7 +2400,7 @@ namespace StockAnalysisTest {
 		stock.UpdateDayLine(vDayLine);
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
 		for (int i = 0; i < 10; i++) {
-			EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDate(), 19900101 + i);
+			EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i);
 		}
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
@@ -2421,7 +2421,7 @@ namespace StockAnalysisTest {
 		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
 		for (int i = 0; i < 10; i++) {
-			EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDate(), 19900101 + i);
+			EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i);
 		}
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
@@ -2429,7 +2429,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaStockTest, TestSaveCalculatedInfo) {
 		CChinaStock stock;
 
-		stock.SetTransactionTime(FormatToTTime(19900101));
+		stock.SetTransactionTime(TransferToTTime(19900101));
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetTransactionNumber(1);
 		stock.SetTransactionNumberBelow5000(2);
@@ -2510,7 +2510,7 @@ namespace StockAnalysisTest {
 		setDayLineExtendInfo.Open();
 		dayLine.LoadHistoryCandleExtend(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
-		EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
+		EXPECT_EQ(dayLine.GetMarketTime(), 0);
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
 		EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
@@ -2637,7 +2637,7 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < 10; i++) {
 			stock.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
-			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
+			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
@@ -2707,7 +2707,7 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < 10; i++) {
 			pid = stock.GetWeekLine(i);
 			pWeekLine = pStock->GetWeekLine(i);
-			EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
+			EXPECT_EQ(pWeekLine->GetMarketDate(), pid->GetMarketDate());
 			EXPECT_STREQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());

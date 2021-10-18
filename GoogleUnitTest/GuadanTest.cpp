@@ -33,9 +33,9 @@ namespace StockAnalysisTest {
 
 	TEST_F(COneGuadanTest, TestSetTime) {
 		COneGuadan OneGuadan;
-		EXPECT_EQ(OneGuadan.GetFormatedMarketTime(), 0);
+		EXPECT_EQ(OneGuadan.GetMarketTime(), 0);
 		OneGuadan.SetTime(10101010);
-		EXPECT_EQ(OneGuadan.GetFormatedMarketTime(), 10101010);
+		EXPECT_EQ(OneGuadan.GetMarketTime(), 10101010);
 	}
 
 	TEST_F(COneGuadanTest, TestSetVolume) {
@@ -136,9 +136,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(Guadan.GetCurrentPos(), 1);
 		Guadan.AddGuadan(OneGuadan2);
 		EXPECT_EQ(Guadan.GetCurrentPos(), 2);
-		EXPECT_EQ(Guadan.GetGuadan().GetFormatedMarketTime(), 20202020);
-		EXPECT_EQ(Guadan.GetGuadan(0).GetFormatedMarketTime(), 10101010);
-		EXPECT_EQ(Guadan.GetGuadan(1).GetFormatedMarketTime(), 20202020);
+		EXPECT_EQ(Guadan.GetGuadan().GetMarketTime(), 20202020);
+		EXPECT_EQ(Guadan.GetGuadan(0).GetMarketTime(), 10101010);
+		EXPECT_EQ(Guadan.GetGuadan(1).GetMarketTime(), 20202020);
 	}
 
 	TEST_F(CGuadanTest, TestSetStatus) {
