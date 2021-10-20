@@ -133,7 +133,7 @@ namespace StockAnalysisTest {
 		tm tmMarket, tm2, tm3;
 		long lMarketDate = 20000301;
 		long lMarketTime = 122030;
-		time_t tTime = 0, tTime2 = 0;
+		time_t tTime = 0;
 
 		tmMarket.tm_year = lMarketDate / 10000 - 1900;
 		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
@@ -168,6 +168,25 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(tm3.tm_hour, 12);
 		EXPECT_EQ(tm3.tm_min, 20);
 		EXPECT_EQ(tm3.tm_sec, 30);
+	}
+
+	TEST_F(CVirtualMarketTest, TestTransferToMarketDate) {
+		tm tmMarket;
+		long lMarketDate = 20000301, lMarketDate2 = 0;
+		long lMarketTime = 002030;
+		time_t tTime = 0;
+
+		tmMarket.tm_year = lMarketDate / 10000 - 1900;
+		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
+		tmMarket.tm_mday = lMarketDate - (lMarketDate / 100) * 100;
+		tmMarket.tm_hour = lMarketTime / 10000;
+		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
+		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
+
+		tTime = gl_pVirtualMarket->TransferToUTCTime(&tmMarket);
+
+		lMarketDate2 = gl_pVirtualMarket->TransferToMarketDate(tTime);
+		EXPECT_EQ(lMarketDate2, lMarketDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {

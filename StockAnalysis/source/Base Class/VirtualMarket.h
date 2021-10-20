@@ -27,6 +27,8 @@ public:
 	tm TransferToMarketTime(time_t tUTC = sm_tUTC); // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime); // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000); // 将市场时间结构转化为UTC时间
+	long TransferToMarketDate(time_t tUTC = sm_tUTC); // 得到本市场的日期
+
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
 	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }

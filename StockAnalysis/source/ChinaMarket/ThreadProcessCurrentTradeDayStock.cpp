@@ -21,7 +21,7 @@ UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->SetProcessingTodayStock();
 
-	const long lDate = TransferToDate(pMarket->GetNewestTransactionTime());
+	const long lDate = pMarket->TransferToMarketDate(pMarket->GetNewestTransactionTime());
 	if (lDate == pMarket->GetMarketDate()) {
 		pMarket->BuildDayLine(lDate);
 		// 计算本日日线相对强度

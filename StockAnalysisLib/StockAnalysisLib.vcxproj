@@ -393,7 +393,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Base Class;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include;C:\Users\hxguo\source\repos\StockAnalysis\ixwebsocket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Crweber Index;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase\WorldMarket;C:\Users\hxguo\source\repos\StockAnalysis\vld</IncludePath>
-    <LibraryPath>C:\Users\hxguo\source\repos\StockAnalysis\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

@@ -78,6 +78,14 @@ time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) {
 	return ::TransferToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
 }
 
+long CVirtualMarket::TransferToMarketDate(time_t tUTC) {
+	tm tm_;
+
+	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
+
+	return (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+}
+
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
 

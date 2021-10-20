@@ -1324,7 +1324,6 @@ void CChinaStock::ReportGuadan(void) {
 }
 
 bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
-	time_t tt = 0;
 	long lDayLineEndDate = m_lDayLineEndDate; // 保留目前的日线最后日期
 
 	LoadSymbol(setChinaStockSymbol);
@@ -1344,8 +1343,7 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 		SetDayLineEndDate(lDayLineEndDate);
 	}
 	if (!IsDelisted()) {
-		time(&tt);
-		if (IsEarlyThen(GetDayLineEndDate(), TransferToDate(tt), 30)) {
+		if (IsEarlyThen(GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 			SetIPOStatus(__STOCK_DELISTED__);
 			SetUpdateProfileDB(true);
 		}
