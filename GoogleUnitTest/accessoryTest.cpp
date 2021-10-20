@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_fTestMode);
 	}
 
-	TEST_F(AccessoryTest, TestFormatToDate) {
+	TEST_F(AccessoryTest, TestTransferToDate) {
 		tm tm_, tm_2;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(lDate3, 20000106) << "东八区时间比UTC时间早8小时，故而是6日了";
 	}
 
-	TEST_F(AccessoryTest, TestFormatToTime) {
+	TEST_F(AccessoryTest, TestTransferToTime) {
 		tm tm_, tm_2;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(lTime3, 182030);
 	}
 
-	TEST_F(AccessoryTest, TestFormatToDateTime) {
+	TEST_F(AccessoryTest, TestTransferToDateTime) {
 		tm tm_, tm_2;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
@@ -144,10 +144,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(AccessoryTest, TestTransferToTTime) {
-		EXPECT_EQ(315601200, TransferToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone())) << "美东标准时间的19800101150000，其UTC时间为315601200";
+		EXPECT_EQ(315601200, TransferToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
+		EXPECT_EQ(315558000, TransferToTTime(19800101, gl_pChinaMarket->GetMarketTimeZone(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
 	}
 
-	TEST_F(AccessoryTest, TestFormatToTTime) {
+	TEST_F(AccessoryTest, TestTransferToDate2) {
 		tm tm_;
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;

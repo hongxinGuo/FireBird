@@ -606,7 +606,7 @@ namespace StockAnalysisTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CChinaStock stock;
 		long lDate = 21091101;
-		time_t tt = TransferToTTime(lDate);
+		time_t tt = TransferToTTime(lDate, -8 * 3600, 150000);
 		CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));

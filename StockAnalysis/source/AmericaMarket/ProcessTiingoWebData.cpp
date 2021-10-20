@@ -18,12 +18,35 @@ using namespace std;
 #include"WebData.h"
 #include"EconomicCalendar.h"
 
-//#include<boost/property_tree/ptree.hpp>
-//#include<boost/property_tree/json_parser.hpp>
-//using namespace boost::property_tree;
-
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// [
+// {
+//	"permaTicker":"US000000000133",
+//		"ticker" : "IBM",
+//		"name" : "International Business Machines Corp",
+//    "isADR" : false,
+//    "industry":"Information Technology Services",
+//    "sector":"Technology",
+//    "sicCode":3570,
+//    "sicIndustry":"Computer & Office Equipment",
+//    "sicSector":"Manufacturing",
+//		"reportingCurrency":"usd",
+//		"location":"New York, USA",
+//		"companyWebsite":"http://www.ibm.com",
+//		"secFillingWebsite":"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143",
+//		"isActive" : true,
+//		"statementLastUpdated" : "2019-12-22T22:08:11.534Z",
+//		"dailyLastUpdated" : "2019-12-22T22:08:17.530Z"
+// },
+// {
+// ...
+// }
+// ]
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
@@ -121,6 +144,42 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 	return fSucceed;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// [{
+//	"date":"2019-01-02T00:00:00.000Z",
+//		"close" : 157.92,
+//		"high" : 158.85,
+//		"low" : 154.23,
+//		"open" : 154.89,
+//		"volume" : 37039737,
+//		"adjClose" : 157.92,
+//		"adjHigh" : 158.85,
+//		"adjLow" : 154.23,
+//		"adjOpen" : 154.89,
+//		"adjVolume" : 37039737,
+//		"divCash" : 0.0,
+//		"splitFactor" : 1.0
+// },
+//	{
+//		"date":"2019-01-03T00:00:00.000Z",
+//		"close" : 142.19,
+//		"high" : 145.72,
+//		"low" : 142.0,
+//		"open" : 143.98,
+//		"volume" : 91312195,
+//		"adjClose" : 142.19,
+//		"adjHigh" : 145.72,
+//		"adjLow" : 142.0,
+//		"adjOpen" : 143.98,
+//		"adjVolume" : 91312195,
+//		"divCash" : 0.0,
+//		"splitFactor" : 1.0
+//	}
+// ]
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 	vector<CDayLinePtr> vDayLine;
 	ptree pt, pt2;
@@ -178,6 +237,14 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
+// {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
+// {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
 	ptree pt, pt2, pt3;
@@ -368,7 +435,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				}
 				m_qTiingoIEXWebSocketData.push(pIEXData);
 				break;
-			case 'I':// authenization  {\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}
+			case 'I':// authenization  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
 				ASSERT(m_TiingoIEXWebSocket.GetSubscriptionId() == 0);
 				m_TiingoIEXWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
@@ -393,6 +460,16 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	return true;
 }
 
+/// <summary>
+///
+/// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+/// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
+/// {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
+/// {"messageType":"A","service":"crypto_data","data":["T","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]}
+///
+/// </summary>
+/// <param name="pData"></param>
+/// <returns></returns>
 bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
 	ptree pt, pt2, pt3;
@@ -495,34 +572,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// {
-//	"messageType":"A",
-//		"service" : "fx",
-//		"data" : [
-//			  "Q",
-//				"eurnok",
-//				"2019-07-05T15:49:15.157000+00:00",
-//				5000000.0,
-//				9.6764,
-//				9.678135,
-//				5000000.0,
-//				9.67987
-//		]
-// }
-// {
-//	"messageType":"A",
-//		"service" : "fx",
-//		"data" : [
-//			  "Q",
-//				"gbpaud",
-//				"2019-07-05T15:49:15.236000+00:00",
-//				1000000.0,
-//				1.79457,
-//				1.79477,
-//				5000000.0,
-//				1.79497
-//		]
-// }
+// {"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]}
+// {"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
