@@ -27,9 +27,9 @@ public:
 	virtual bool AppendHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 	virtual bool LoadHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
-	virtual bool SaveHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle); // 存储所有的数据
-	virtual bool AppendHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
-	virtual bool LoadHistoryCandle(CVirtualSetHistoryCandle* pVirtualSetHistoryCandle);
+	virtual bool SaveHistoryCandle(CVirtualSetHistoryCandle* pSet); // 存储所有的数据
+	virtual bool AppendHistoryCandle(CVirtualSetHistoryCandle* pSet);
+	virtual bool LoadHistoryCandle(CVirtualSetHistoryCandle* pSet);
 
 public:
 	INT64 GetTransactionNumber(void) const noexcept { return m_lTransactionNumber; }
