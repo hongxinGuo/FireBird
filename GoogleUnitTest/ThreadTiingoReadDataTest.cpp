@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadTiingoData(&TiingoWebInquiry), (UINT)8);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 0);
 
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadTiingoData(&TiingoWebInquiry), (UINT)8);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopTiingoData();

@@ -518,9 +518,6 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
@@ -581,15 +578,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
@@ -641,9 +629,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp">
       <Filter>源文件\World Market\实现</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
@@ -663,12 +648,6 @@
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp">

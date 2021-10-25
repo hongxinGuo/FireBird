@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
+		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 0);
 
@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
+		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();

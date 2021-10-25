@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		TengxunRTWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadTengxunRTData(&TengxunRTWebInquiry), (UINT)2);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TengxunRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 0);
 
@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		TengxunRTWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadTengxunRTData(&TengxunRTWebInquiry), (UINT)2);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TengxunRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopTengxunRTData();

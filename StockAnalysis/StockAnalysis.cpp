@@ -1,11 +1,11 @@
 ﻿// StockAnalysis.cpp: 定义应用程序的类行为。
 //
 // 可以使用Virtual leak detector(vld)查找内存泄漏。
-// 由于vld官方支持只到vs2015，故而需要手工修改源代码，
+// 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2019编译。
 // 且dbghelp.dll需要使用目录C:\Program Files (x86)\Microsoft Visual Studio\Shared\Common\VSPerfCollectionTools\vs2019中的那个版本
-// 需要将文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
+// 需要将vld文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
 //
-//#include"vld.h" // 需要检测内存泄漏时包括此头文件。此头文件必须放在第一位
+//#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 
@@ -43,10 +43,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
 
 // CStockAnalysisApp
 
@@ -102,8 +98,6 @@ BOOL CStockAnalysisApp::InitInstance() {
 	gl_fNormalMode = true; // 实际系统，测试状态为假。
 	ASSERT(gl_fTestMode);
 	gl_fTestMode = false;
-
-	//_CrtSetBreakAlloc(78628);
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，

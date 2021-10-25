@@ -223,6 +223,11 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 	m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
+void CVirtualWebInquiry::StartReadingThread(void) {
+	thread thread1(ThreadReadVirtualWebData, this);
+	thread1.detach();
+}
+
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
 	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
 		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
@@ -245,4 +250,28 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	}
 	m_vBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 通用网络数据读取线程。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData) {
+	pVirtualWebData->PrepareBeforeReadingWebData();
+	if (pVirtualWebData->ReadWebData()) {
+		CWebDataPtr pWebDataReceived = pVirtualWebData->TransferWebDataToQueueData();
+		if (pWebDataReceived != nullptr) {
+			pVirtualWebData->StoreWebData(pWebDataReceived);
+		}
+	}
+	else { // error handling
+		pVirtualWebData->ProcessFailedReading();
+	}
+	pVirtualWebData->UpdateStatusAfterReceivingData();
+
+	pVirtualWebData->SetReadingWebData(false);
+
+	return 1;
 }

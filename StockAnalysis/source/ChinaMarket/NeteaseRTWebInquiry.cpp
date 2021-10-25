@@ -23,42 +23,48 @@
 #include"Thread.h"
 #include "NeteaseRTWebInquiry.h"
 
+#include"WebInquirer.h"
+
 using namespace std;
 #include<thread>
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
-  m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
-  m_strWebDataInquireSuffix = _T("");
-  m_strConnectionName = _T("NeteaseRT");
-  m_fReportStatus = false;
-  m_lInquiringNumber = 700; // 网易实时数据查询默认值
+	m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
+	m_strWebDataInquireSuffix = _T("");
+	m_strConnectionName = _T("NeteaseRT");
+	m_fReportStatus = false;
+	m_lInquiringNumber = 700; // 网易实时数据查询默认值
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
 bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
-  TRACE("读入%d个网易实时数据\n", lNumberOfData);
-  return true;
+	TRACE("读入%d个网易实时数据\n", lNumberOfData);
+	return true;
 }
 
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
-  CString strMiddle = _T("");
-  CString strNeteaseStockCode;
-  // 申请下一批次股票实时数据
-  strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsSystemReady()); // 目前还是使用全部股票池
-  strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，共七个字符
-  gl_pChinaMarket->SetStockCodeForInquiringRTData(XferNeteaseToStandred(strNeteaseStockCode));
-  CreateTotalInquiringString(strMiddle);
+	CString strMiddle = _T("");
+	CString strNeteaseStockCode;
+	// 申请下一批次股票实时数据
+	strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsSystemReady()); // 目前还是使用全部股票池
+	strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，共七个字符
+	gl_pChinaMarket->SetStockCodeForInquiringRTData(XferNeteaseToStandred(strNeteaseStockCode));
+	CreateTotalInquiringString(strMiddle);
 
-  return true;
+	return true;
 }
 
 CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
-  return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, gl_pChinaMarket->GetTotalStock(), fCheckActiveStock);
+	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, gl_pChinaMarket->GetTotalStock(), fCheckActiveStock);
 }
 
-void CNeteaseRTWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadNeteaseRTData, this);
-  thread1.detach();
+//void CNeteaseRTWebInquiry::StartReadingThread(void) {
+//  thread thread1(ThreadReadNeteaseRTData, this);
+//  thread1.detach();
+//}
+
+void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
+	gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
 }

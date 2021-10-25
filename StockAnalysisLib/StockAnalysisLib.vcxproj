@@ -160,9 +160,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp" />
@@ -211,9 +208,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
@@ -222,7 +216,6 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />

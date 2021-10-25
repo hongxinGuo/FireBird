@@ -25,7 +25,14 @@
 //   .RetiresOnSaturation();        // Can be used at most once
 //
 // where all clauses are optional and WillOnce() can be repeated.
-//#include"vld.h" // 需要检测内存泄漏时包括此头文件
+//
+
+// 可以使用Virtual leak detector(vld)查找内存泄漏。
+// 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2019编译。
+// 且dbghelp.dll需要使用目录C:\Program Files (x86)\Microsoft Visual Studio\Shared\Common\VSPerfCollectionTools\vs2019中的那个版本
+// 需要将vld文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
+//
+#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 

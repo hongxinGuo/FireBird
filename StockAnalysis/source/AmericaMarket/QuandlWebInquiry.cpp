@@ -4,6 +4,7 @@
 
 #include "QuandlWebInquiry.h"
 #include"WorldMarket.h"
+#include"WebInquirer.h"
 
 using namespace std;
 #include<thread>
@@ -26,7 +27,7 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 #endif // DEBUG
 	}
 	m_strConnectionName = _T("Quandl");
-	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
+	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 }
 
 CQuandlWebInquiry::~CQuandlWebInquiry() {
@@ -37,8 +38,8 @@ bool CQuandlWebInquiry::PrepareNextInquiringStr(void) {
 
 	CString strMiddle = _T("");
 
-	// 申请下一批次股票实时数据。 此网络数据提取器使用FinnhubMarket
-	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
+	// 申请下一批次股票实时数据。 此网络数据提取器使用QuandlMarket
+	// 由于Quandl提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
 
 	// 1 准备前缀字符串
 	// 2. 准备中间字符串
@@ -71,12 +72,24 @@ CString CQuandlWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSk
 	return str;
 }
 
-void CQuandlWebInquiry::StartReadingThread(void) {
-	thread thread1(ThreadReadQuandlData, this);
-	thread1.detach();
-}
-
 bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;
+}
+
+void CQuandlWebInquiry::PrepareBeforeReadingWebData(void) {
+	ASSERT(!gl_pWorldMarket->IsQuandlDataReceived());
+}
+
+void CQuandlWebInquiry::ProcessFailedReading(void) {
+	while (gl_WebInquirer.GetQuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
+	gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+}
+
+void CQuandlWebInquiry::UpdateStatusAfterReceivingData(void) {
+	gl_pWorldMarket->SetQuandlDataReceived(true); // 接收完网络数据后，清除状态。
+}
+
+void CQuandlWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
+	gl_WebInquirer.PushQuandlData(pWebDataReceived);
 }

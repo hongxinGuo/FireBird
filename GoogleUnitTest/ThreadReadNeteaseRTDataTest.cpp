@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadNeteaseRTData(&NeteaseRTWebInquiry), (UINT)3);
+		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
 
@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadNeteaseRTData(&NeteaseRTWebInquiry), (UINT)3);
+		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopNeteaseRTData();
