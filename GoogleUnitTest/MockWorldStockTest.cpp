@@ -51,6 +51,6 @@ namespace StockAnalysisTest {
 		CMockWorldStock stock;
 		EXPECT_CALL(stock, UpdateEPSSurpriseDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), 41);
+		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), (UINT)41);
 	}
 }

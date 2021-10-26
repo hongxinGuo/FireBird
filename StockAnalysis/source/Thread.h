@@ -1,14 +1,6 @@
 #pragma once
 
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"PotenDailyBriefingWebInquiry.h"
-#include"CrweberIndexWebInquiry.h"
-#include"FinnhubWebInquiry.h"
-#include"TiingoWebInquiry.h"
-#include"QuandlWebInquiry.h"
 
 #include"ChinaStock.h"
 class CChinaMarket;
@@ -40,7 +32,7 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
 // 读取crweber.com网站上的油运指数线程。网址：http://www.crweber.com
 //UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
 // 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
-UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
+//UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
 // 读取Finnhub.io网络数据线程。 网址：https://finnhub.io/api/v1/
 //UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
 // 读取api.tiingo.com.网址：https://api.tiingo.com/

@@ -228,6 +228,10 @@ void CVirtualWebInquiry::StartReadingThread(void) {
 	thread1.detach();
 }
 
+void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
+	pData->SetTime(gl_pChinaMarket->GetUTCTime());
+}
+
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
 	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
 		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
@@ -263,6 +267,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData) {
 	if (pVirtualWebData->ReadWebData()) {
 		CWebDataPtr pWebDataReceived = pVirtualWebData->TransferWebDataToQueueData();
 		if (pWebDataReceived != nullptr) {
+			pVirtualWebData->SetTime(pWebDataReceived);
 			pVirtualWebData->StoreWebData(pWebDataReceived);
 		}
 	}

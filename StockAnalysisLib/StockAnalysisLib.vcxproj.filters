@@ -530,9 +530,6 @@
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp">
       <Filter>源文件\China Market</Filter>
     </ClCompile>

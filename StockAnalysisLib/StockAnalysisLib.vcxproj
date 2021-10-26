@@ -252,7 +252,6 @@
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
