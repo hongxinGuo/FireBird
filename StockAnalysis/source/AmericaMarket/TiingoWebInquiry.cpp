@@ -70,6 +70,7 @@ void CTiingoWebInquiry::PrepareBeforeReadingWebData(void) {
 void CTiingoWebInquiry::ProcessFailedReading(void) {
 	while (gl_WebInquirer.GetTiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 	gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。
+	gl_systemMessage.PushErrorMessage(_T("Tiingo工作线程出错"));
 }
 
 void CTiingoWebInquiry::UpdateStatusAfterReceivingData(void) {

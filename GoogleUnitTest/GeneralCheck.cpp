@@ -38,7 +38,7 @@ namespace StockAnalysisTest {
 	}
 
 	void WebInquirerCheck(void) {
-		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 0);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
 	}

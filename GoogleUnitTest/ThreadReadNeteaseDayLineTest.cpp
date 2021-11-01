@@ -55,6 +55,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
+		gl_WebInquirer.PopNeteaseDayLineData();
 	}
 }

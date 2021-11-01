@@ -2282,7 +2282,7 @@ bool CChinaMarket::IsDayLineNeedUpdate(void) const noexcept {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
-	if (gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize() > 0) return true;
+	if (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) return true;
 	else return false;
 }
 
@@ -2304,7 +2304,7 @@ long CChinaMarket::GetDayLineNeedUpdateNumber(void) {
 }
 
 long CChinaMarket::GetDayLineNeedProcessNumber(void) {
-	return gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize();
+	return gl_WebInquirer.GetNeteaseDayLineDataSize();
 }
 long CChinaMarket::GetDayLineNeedSaveNumber(void) {
 	long l = 0;
@@ -2316,10 +2316,13 @@ long CChinaMarket::GetDayLineNeedSaveNumber(void) {
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CDownLoadedNeteaseDayLinePtr pData;
+	CWebDataPtr pWebData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
-	while (gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize() > 0) {
-		pData = gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
+	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
+		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
+		pData = make_shared<CDownLoadedNeteaseDayLine>();
+		pData->TransferWebDataToBuffer(pWebData);
 		pData->ProcessNeteaseDayLineData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetDownLoadedStockSymbol()));
 		pStock = gl_pChinaMarket->GetStock(pData->GetDownLoadedStockSymbol());

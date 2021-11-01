@@ -20,20 +20,22 @@
 #include"globedef.h"
 #include"WebInquirer.h"
 #include"ChinaMarket.h"
-#include"DownLoadedNeteaseDayLine.h"
 
 UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebInquiry) {
-	CChinaStockPtr pStock = nullptr;
-	CDownLoadedNeteaseDayLinePtr pData;
+	CWebDataPtr pWebDataReceived = nullptr;
 
-	ASSERT(pNeteaseDayLineWebInquiry->IsReadingWebData());
+	pNeteaseDayLineWebInquiry->PrepareBeforeReadingWebData();
 	// 网易的日线数据服务器似乎无法使用一次读完的功能，只能用这种等待定时方式，原因未知。
-	//if (pNeteaseDayLineWebInquiry->ReadWebData()) { // 这种是采用一次读完的方式，但网易日线数据服务器可能不支持。
-	if (pNeteaseDayLineWebInquiry->ReadWebDataTimeLimit(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
+	if (pNeteaseDayLineWebInquiry->ReadWebData()) { // 这种是采用一次读完的方式，但网易日线数据服务器可能不支持。
+	//if (pNeteaseDayLineWebInquiry->ReadWebDataTimeLimit(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
 		// 将读取的日线数据存入日线数据暂存区
-		pData = make_shared<CDownLoadedNeteaseDayLine>();
-		pData->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebInquiry);
-		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pData);
+		pWebDataReceived = pNeteaseDayLineWebInquiry->TransferWebDataToQueueData();
+		pNeteaseDayLineWebInquiry->SetTime(pWebDataReceived);
+		pNeteaseDayLineWebInquiry->UpdateStatusWhenSecceed(pWebDataReceived);
+		pNeteaseDayLineWebInquiry->StoreWebData(pWebDataReceived);
+	}
+	else {
+		pNeteaseDayLineWebInquiry->ProcessFailedReading();
 	}
 	pNeteaseDayLineWebInquiry->SetReadingWebData(false);
 

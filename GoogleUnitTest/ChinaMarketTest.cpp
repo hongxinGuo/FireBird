@@ -548,25 +548,27 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
-		CDownLoadedNeteaseDayLinePtr pData = make_shared<CDownLoadedNeteaseDayLine>();
-		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pData);
+		CWebDataPtr pData = make_shared<CWebData>();
+		gl_WebInquirer.PushNeteaseDayLineData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
+		gl_WebInquirer.PopNeteaseDayLineData();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
-		CDownLoadedNeteaseDayLinePtr pData = make_shared<CDownLoadedNeteaseDayLine>();
+		CWebDataPtr pData = make_shared<CWebData>();
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
+		CString strTest = _T("");
 
-		pData->SetDownLoadStockSymbol(_T("600666.SS"));
-		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pData);
+		pData->SetStockCode(_T("600666.SS"));
+		pData->__TEST_SetBuffer__(strTest);
+		gl_WebInquirer.PushNeteaseDayLineData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 0);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestIsLoadSelectedStock) {

@@ -60,11 +60,6 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, gl_pChinaMarket->GetTotalStock(), fCheckActiveStock);
 }
 
-//void CNeteaseRTWebInquiry::StartReadingThread(void) {
-//  thread thread1(ThreadReadNeteaseRTData, this);
-//  thread1.detach();
-//}
-
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
 	gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
 }

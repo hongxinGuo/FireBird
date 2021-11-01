@@ -28,6 +28,7 @@ public:
 	CString GetDownLoadedStockSymbol(void) { return m_strDownLoadStockSymbol; }
 
 	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
+	bool TransferWebDataToBuffer(CWebDataPtr pWebData);
 	bool ProcessNeteaseDayLineData();
 	bool ProcessOneNeteaseDayLineData(void);
 	INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }

@@ -34,11 +34,6 @@ CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 	return gl_pChinaMarket->GetTengxunInquiringStockStr(lTotalNumber, gl_pChinaMarket->GetTotalStock());
 }
 
-//void CTengxunRTWebInquiry::StartReadingThread(void) {
-//  thread thread1(ThreadReadTengxunRTData, this);
-//  thread1.detach();
-//}
-
 bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
 	return true;

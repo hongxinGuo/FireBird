@@ -12,33 +12,33 @@ CWebData::CWebData() : CObject() {
 CWebData::~CWebData() {
 }
 
-bool CWebData::GetData(char* buffer, long lDataLength, long lStartPosition) {
+bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (INT64 i = 0; i < lDataLength; i++) {
 		buffer[i] = m_vDataBuffer.at(i + lStartPosition);
 	}
 	return true;
 }
 
-bool CWebData::GetData(char* buffer, long lDataLength) {
+bool CWebData::GetData(char* buffer, INT64 lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (INT64 i = 0; i < lDataLength; i++) {
 		buffer[i] = m_vDataBuffer.at(i + m_lCurrentPos);
 	}
 	return true;
 }
 
-bool CWebData::SetData(char* buffer, long lDataLength, long lStartPosition) {
+bool CWebData::SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (INT64 i = 0; i < lDataLength; i++) {
 		m_vDataBuffer.at(i + lStartPosition) = buffer[i];
 	}
 	return true;
 }
 
-bool CWebData::SetData(char* buffer, long lDataLength) {
+bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (INT64 i = 0; i < lDataLength; i++) {
 		m_vDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
 	return true;

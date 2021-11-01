@@ -65,7 +65,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		strLeft = str1.Left(120);
 		TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
 		str1 = _T("Error Web : ") + strLeft + _T("\n");
-		gl_systemMessage.PushInnerSystemInformationMessage(str1);
+		gl_systemMessage.PushErrorMessage(str1);
 		fStatus = false;
 		exception->Delete();
 	}
@@ -263,6 +263,8 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
+	ASSERT(pVirtualWebInquiry->IsReadingWebData());
+
 	pVirtualWebInquiry->PrepareBeforeReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
 		CWebDataPtr pWebDataReceived = pVirtualWebInquiry->TransferWebDataToQueueData();

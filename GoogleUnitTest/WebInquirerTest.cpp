@@ -129,15 +129,18 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pWebData2->GetTime(), 101010);
 	}
 
-	TEST_F(CWebInquirerTest, TestPushPopDownLoadedNeteaseDayLineata) {
-		CDownLoadedNeteaseDayLinePtr pWebData = make_shared<CDownLoadedNeteaseDayLine>();
-		CDownLoadedNeteaseDayLinePtr pWebData2;
-		pWebData->SetDownLoadStockSymbol(_T("abcdefg"));
-		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 0);
-		gl_WebInquirer.PushDownLoadedNeteaseDayLineData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetDownLoadedNeteaseDayLineDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopDownLoadedNeteaseDayLineData();
-		EXPECT_STREQ(pWebData2->GetDownLoadedStockSymbol(), _T("abcdefg"));
+	TEST_F(CWebInquirerTest, TestPushPopNeteaseDayLineata) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWebDataPtr pWebData2;
+		CString strTest = _T("");
+		pWebData->SetStockCode(_T("abcdefg"));
+		pWebData->__TEST_SetBuffer__(strTest);
+
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
+		gl_WebInquirer.PushNeteaseDayLineData(pWebData);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 1);
+		pWebData2 = gl_WebInquirer.PopNeteaseDayLineData();
+		EXPECT_STREQ(pWebData2->GetStockCode(), _T("abcdefg"));
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 

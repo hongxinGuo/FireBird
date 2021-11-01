@@ -97,9 +97,9 @@ public:
 	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
 
 	// 网易日线数据
-	size_t GetDownLoadedNeteaseDayLineDataSize(void) { return(m_qDownLoadedNeteaseDayLine.GetDataSize()); }
-	void PushDownLoadedNeteaseDayLineData(CDownLoadedNeteaseDayLinePtr pData) { m_qDownLoadedNeteaseDayLine.PushData(pData); }
-	CDownLoadedNeteaseDayLinePtr PopDownLoadedNeteaseDayLineData(void) { return m_qDownLoadedNeteaseDayLine.PopData(); }
+	size_t GetNeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.GetDataSize()); }
+	void PushNeteaseDayLineData(CWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	CWebDataPtr PopNeteaseDayLineData(void) { return m_qNeteaseDayLine.PopData(); }
 
 	// Finnhub股票推送数据
 	size_t GetFinnhubWebSocketDataSize(void) { return m_qFinnhubWebSocketData.GetDataSize(); }
@@ -135,7 +135,7 @@ protected:
 	CQueueWebData m_qQuandlData; // Quandl.com网络数据暂存队列
 	CQueueWebData m_qTiingoData; // Tiingo.com网络数据暂存队列
 
-	CQueueDownLoadedNeteaseDayLine m_qDownLoadedNeteaseDayLine; // 网易日线数据暂存队列
+	CQueueWebData m_qNeteaseDayLine; // 网易日线数据暂存队列
 
 	CQueueString m_qFinnhubWebSocketData; // finnhub的WebSocket数据
 	CQueueString m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据

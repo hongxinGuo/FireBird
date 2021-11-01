@@ -27,6 +27,20 @@ bool CDownLoadedNeteaseDayLine::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDa
 	return true;
 }
 
+bool CDownLoadedNeteaseDayLine::TransferWebDataToBuffer(CWebDataPtr pWebData) {
+	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
+	ASSERT(pWebData->GetData(pWebData->GetBufferLength()) == 0x000);
+	m_vDayLineBuffer.resize(pWebData->GetBufferLength() + 1);
+	for (int i = 0; i < pWebData->GetBufferLength() + 1; i++) {
+		m_vDayLineBuffer.at(i) = pWebData->GetData(i);
+	}
+	m_lDayLineBufferLength = pWebData->GetBufferLength();
+	m_strDownLoadStockSymbol = pWebData->GetStockCode();
+	m_lCurrentPos = 0;
+
+	return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理从网易日线服务器上读取的股票日线数据。
@@ -40,6 +54,7 @@ bool CDownLoadedNeteaseDayLine::ProcessNeteaseDayLineData(void) {
 		return false;
 	}
 
+	char a = m_vDayLineBuffer.at(m_lDayLineBufferLength);
 	ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
 	if (!SkipNeteaseDayLineInformationHeader()) {
 		return false;

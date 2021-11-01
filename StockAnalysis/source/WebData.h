@@ -27,18 +27,18 @@ public:
 	void SetTime(time_t tTime) noexcept { m_tTime = tTime; }
 	CString GetStockCode(void) const noexcept { return m_strStockCode; }
 	void SetStockCode(CString strStockCode) noexcept { m_strStockCode = strStockCode; }
-	long GetBufferLength(void) const noexcept { return m_lBufferLength; }
-	void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
-	long GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; }
+	INT64 GetBufferLength(void) const noexcept { return m_lBufferLength; }
+	void SetBufferLength(INT64 lValue) noexcept { m_lBufferLength = lValue; }
+	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
+	void SetCurrentPos(INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
-	bool GetData(char* buffer, long lDataLength, long lStartPosition);
-	bool GetData(char* buffer, long lDataLength); // 默认从m_lCurrentPos开始拷贝
-	bool SetData(char* buffer, long lDataLength, long lStartPosition);
-	bool SetData(char* buffer, long lDataLength); // 默认从m_lCurrenPos开始填充。
+	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
+	bool GetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始拷贝
+	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
+	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrenPos开始填充。
 
-	char GetData(long lIndex) const { return m_vDataBuffer.at(lIndex); }
-	void SetData(long lIndex, char cValue) { m_vDataBuffer.at(lIndex) = cValue; }
+	char GetData(INT64 lIndex) const { return m_vDataBuffer.at(lIndex); }
+	void SetData(INT64 lIndex, char cValue) { m_vDataBuffer.at(lIndex) = cValue; }
 	char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
 
@@ -49,8 +49,8 @@ protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码
 	vector<char> m_vDataBuffer;
-	long m_lBufferLength;
-	long m_lCurrentPos;
+	INT64 m_lBufferLength;
+	INT64 m_lCurrentPos;
 };
 
 typedef shared_ptr<CWebData> CWebDataPtr;

@@ -4,14 +4,15 @@
 #include"ChinaMarket.h"
 
 #include "NeteaseDayLineWebInquiry.h"
+#include"WebInquirer.h"
 
 using namespace std;
 #include<thread>
 
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
-  m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
-  m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-  m_strConnectionName = _T("NeteaseDayLine");
+	m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
+	m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+	m_strConnectionName = _T("NeteaseDayLine");
 }
 
 CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
@@ -24,29 +25,48 @@ CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
-  CString strMiddle = _T("");
-  char buffer2[200];
-  CString strStockCode;
+	CString strMiddle = _T("");
+	char buffer2[200];
+	CString strStockCode;
 
-  // 准备网易日线数据申请格式
-  if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaMarket->GetTotalStock())) {
-    strStockCode = XferNeteaseToStandred(strMiddle);
-    SetDownLoadingStockCode(strStockCode);
-    gl_pChinaMarket->SetStockCodeForInquiringNeteaseDayLine(strStockCode);
-    strMiddle += _T("&start=19900101&end=");
-    sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
-    strMiddle += buffer2;
-    CreateTotalInquiringString(strMiddle);
-    gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
+	// 准备网易日线数据申请格式
+	if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaMarket->GetTotalStock())) {
+		strStockCode = XferNeteaseToStandred(strMiddle);
+		SetDownLoadingStockCode(strStockCode);
+		gl_pChinaMarket->SetStockCodeForInquiringNeteaseDayLine(strStockCode);
+		strMiddle += _T("&start=19900101&end=");
+		sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
+		strMiddle += buffer2;
+		CreateTotalInquiringString(strMiddle);
+		gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
 
-    return true;
-  }
-  return false;
+		return true;
+	}
+	return false;
 }
 
 void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadNeteaseDayLine, this);
-  thread1.detach();
+	thread thread1(ThreadReadNeteaseDayLine, this);
+	thread1.detach();
+}
+
+void CNeteaseDayLineWebInquiry::PrepareBeforeReadingWebData(void) {
+	ASSERT(IsReadingWebData());
+}
+
+void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
+	pData->SetStockCode(GetDownLoadingStockCode());
+}
+
+void CNeteaseDayLineWebInquiry::ProcessFailedReading(void) {
+	CString strErrorMessage;
+	strErrorMessage = GetDownLoadingStockCode();
+	strErrorMessage += _T(" 网易日线读取线程出错");
+	gl_systemMessage.PushErrorMessage(strErrorMessage);
+}
+
+void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebData) {
+	gl_WebInquirer.PushNeteaseDayLineData(pWebData);
 }
 
 /// <summary>
@@ -54,5 +74,5 @@ void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
 /// </summary>
 /// <param name="strStockCode"></param>
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
-  m_strDownLoadingStockCode = strStockCode;
+	m_strDownLoadingStockCode = strStockCode;
 }
