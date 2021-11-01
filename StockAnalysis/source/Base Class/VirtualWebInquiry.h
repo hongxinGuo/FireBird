@@ -35,6 +35,7 @@ public:
 	virtual CString GetNextInquiringMiddleStr(long, bool) { ASSERT(0); return _T(""); } // 申请下一个查询用字符串
 	virtual void PrepareBeforeReadingWebData(void) { /* do nothing in default*/ } // 在读取网络数据前的准备工作，默认无动作。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
+	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) { /* do nothing in default*/ } // 成功接收后更新系统状态。 默认无动作
 	virtual void ProcessFailedReading(void) { /* do nothing in default*/ } // 处理失败的接收过程
 	virtual void UpdateStatusAfterReceivingData(void) { /*default do nothing*/ } // 接收数据后更新系统状态。默认为不做任何事情。
 	virtual void SetTime(CWebDataPtr pData);

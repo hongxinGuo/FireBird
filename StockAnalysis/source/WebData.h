@@ -13,14 +13,8 @@ using namespace std;
 
 class CWebData : public CObject {
 public:
-	CWebData() : CObject() {
-		m_tTime = 0;
-		m_vDataBuffer.resize(1024 * 1024 * 16);
-		m_lBufferLength = 1024 * 1024 * 16;
-		m_lCurrentPos = 0;
-	}
-	~CWebData() {
-	}
+	CWebData();
+	~CWebData();
 
 	bool IsProcessedAllTheData(void) const noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }
 
@@ -31,6 +25,8 @@ public:
 
 	time_t GetTime(void) const noexcept { return m_tTime; }
 	void SetTime(time_t tTime) noexcept { m_tTime = tTime; }
+	CString GetStockCode(void) const noexcept { return m_strStockCode; }
+	void SetStockCode(CString strStockCode) noexcept { m_strStockCode = strStockCode; }
 	long GetBufferLength(void) const noexcept { return m_lBufferLength; }
 	void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
 	long GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
@@ -51,6 +47,7 @@ public:
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
+	CString m_strStockCode; // 此数据的相关证券代码
 	vector<char> m_vDataBuffer;
 	long m_lBufferLength;
 	long m_lCurrentPos;

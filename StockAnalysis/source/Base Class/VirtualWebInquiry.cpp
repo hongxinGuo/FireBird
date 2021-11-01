@@ -262,21 +262,22 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData) {
-	pVirtualWebData->PrepareBeforeReadingWebData();
-	if (pVirtualWebData->ReadWebData()) {
-		CWebDataPtr pWebDataReceived = pVirtualWebData->TransferWebDataToQueueData();
+UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
+	pVirtualWebInquiry->PrepareBeforeReadingWebData();
+	if (pVirtualWebInquiry->ReadWebData()) {
+		CWebDataPtr pWebDataReceived = pVirtualWebInquiry->TransferWebDataToQueueData();
 		if (pWebDataReceived != nullptr) {
-			pVirtualWebData->SetTime(pWebDataReceived);
-			pVirtualWebData->StoreWebData(pWebDataReceived);
+			pVirtualWebInquiry->SetTime(pWebDataReceived);
+			pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebDataReceived);
+			pVirtualWebInquiry->StoreWebData(pWebDataReceived);
 		}
 	}
 	else { // error handling
-		pVirtualWebData->ProcessFailedReading();
+		pVirtualWebInquiry->ProcessFailedReading();
 	}
-	pVirtualWebData->UpdateStatusAfterReceivingData();
+	pVirtualWebInquiry->UpdateStatusAfterReceivingData();
 
-	pVirtualWebData->SetReadingWebData(false);
+	pVirtualWebInquiry->SetReadingWebData(false);
 
 	return 1;
 }

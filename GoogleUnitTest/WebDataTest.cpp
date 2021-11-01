@@ -32,6 +32,18 @@ namespace StockAnalysisTest {
 		CWebData m_id;
 	};
 
+	TEST_F(CWebDataTest, TestGetTime) {
+		EXPECT_EQ(m_id.GetTime(), 0);
+		m_id.SetTime(101010101010);
+		EXPECT_EQ(m_id.GetTime(), 101010101010);
+	}
+
+	TEST_F(CWebDataTest, TestGetStockCode) {
+		EXPECT_STREQ(m_id.GetStockCode(), _T(""));
+		m_id.SetStockCode(_T("abcdefg"));
+		EXPECT_STREQ(m_id.GetStockCode(), _T("abcdefg"));
+	}
+
 	TEST_F(CWebDataTest, TestGetCurrentPos) {
 		EXPECT_EQ(m_id.GetCurrentPos(), 0);
 		m_id.IncreaseCurrentPos(5);
