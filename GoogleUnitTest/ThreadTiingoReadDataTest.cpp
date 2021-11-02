@@ -29,6 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			TiingoWebInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -44,6 +45,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
+		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 0);
@@ -53,6 +55,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		TiingoWebInquiry.__TESTSetBuffer(_T("testData"));
+		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 1);

@@ -28,6 +28,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			SinaRTWebInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -49,6 +50,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
+		SinaRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&SinaRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);

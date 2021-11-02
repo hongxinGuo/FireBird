@@ -27,6 +27,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			NeteaseRTWebInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -48,6 +49,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("testData"));
+		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 1);

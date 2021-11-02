@@ -2,36 +2,37 @@
 
 #include"pch.h"
 
+#include"WebData.h"
 #include"NeteaseDayLineWebInquiry.h"
 #include"DayLine.h"
 
 using namespace std;
 #include<vector>
 #include<memory>
-#include<queue>
-#include<deque>
-#include<map>
-#include<array>
-#include<mutex>
+//#include<queue>
+//#include<deque>
+//#include<map>
+//#include<array>
+//#include<mutex>
 
-class CDownLoadedNeteaseDayLine : public CObject {
+class CNeteaseDayLineWebData : public CObject {
 public:
-	CDownLoadedNeteaseDayLine();
-	~CDownLoadedNeteaseDayLine();
+	CNeteaseDayLineWebData();
+	~CNeteaseDayLineWebData();
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数
 	vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
 
-	void SetDownLoadStockSymbol(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) noexcept { SetDownLoadStockSymbol(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
-	void SetDownLoadStockSymbol(CString strSymbol) noexcept { m_strDownLoadStockSymbol = strSymbol; }
-	CString GetDownLoadedStockSymbol(void) { return m_strDownLoadStockSymbol; }
+	void SetStockCode(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
+	void SetStockCode(CString strSymbol) noexcept { m_strStockCode = strSymbol; }
+	CString GetStockCode(void) { return m_strStockCode; }
 
 	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
 	bool TransferWebDataToBuffer(CWebDataPtr pWebData);
 	bool ProcessNeteaseDayLineData();
 	bool ProcessOneNeteaseDayLineData(void);
-	INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
+	INT64 GetBufferLength(void) noexcept { return m_lBufferLength; }
 	INT64 GetCurrentPos(void) noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 	CDayLinePtr GetCurrentProcessingDayLine(void) { return m_pCurrentProcessingDayLine; }
@@ -45,13 +46,13 @@ protected:
 
 private:
 	//网易日线接收处理相关数据
-	CString m_strDownLoadStockSymbol;
-	vector<char> m_vDayLineBuffer; // 日线读取缓冲区
+	CString m_strStockCode;
+	vector<char> m_vDataBuffer; // 日线读取缓冲区
 	vector<CDayLinePtr> m_vTempDayLine; // 日线数据缓冲区
-	INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
+	INT64 m_lBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
 	INT64 m_lCurrentPos;
 
 	CDayLinePtr m_pCurrentProcessingDayLine;
 };
 
-typedef shared_ptr<CDownLoadedNeteaseDayLine> CDownLoadedNeteaseDayLinePtr;
+typedef shared_ptr<CNeteaseDayLineWebData> CNeteaseDayLineWebDataPtr;

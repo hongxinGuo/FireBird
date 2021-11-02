@@ -29,6 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			crweberIndexInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -50,6 +51,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
+		crweberIndexInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&crweberIndexInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetCrweberDataSize(), 1);

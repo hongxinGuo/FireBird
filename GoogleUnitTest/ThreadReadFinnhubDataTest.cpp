@@ -29,6 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -53,6 +54,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
+		FinnhubWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetFinnhubDataSize(), 1);

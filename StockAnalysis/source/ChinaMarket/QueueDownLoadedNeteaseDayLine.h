@@ -8,7 +8,7 @@
 
 #include"afxmt.h"
 
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
 using namespace std;
 #include<queue>
@@ -22,11 +22,11 @@ public:
 	void Reset(void);
 
 	// 通用接口函数
-	void PushData(CDownLoadedNeteaseDayLinePtr pData);
-	CDownLoadedNeteaseDayLinePtr PopData(void);
+	void PushData(CNeteaseDayLineWebDataPtr pData);
+	CNeteaseDayLineWebDataPtr PopData(void);
 	size_t GetDataSize(void);
 
 protected:
-	queue<CDownLoadedNeteaseDayLinePtr> m_qData;
+	queue<CNeteaseDayLineWebDataPtr> m_qData;
 	mutex m_MutexAccessData;
 };

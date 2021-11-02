@@ -44,32 +44,44 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	bool fStatus = true;
-	CString str1, strLeft;
+	bool fDone = false;
+	int iCountNumber = 0;
+	CString str1, strLeft, strErrorNo;
+	char buffer[30];
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
-	try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
-		// 使用dynamic_cast时，Address Sanitizer在此处报错
-		//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
-		m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
-	}
-	catch (CInternetException* exception) {
-		SetWebError(true);
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
+	do {
+		try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+			// 使用dynamic_cast时，Address Sanitizer在此处报错
+			//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+			fDone = true;
 		}
-		m_dwWebErrorCode = exception->m_dwError;
-		str1 = GetInquiringString();
-		strLeft = str1.Left(120);
-		TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
-		str1 = _T("Error Web : ") + strLeft + _T("\n");
-		gl_systemMessage.PushErrorMessage(str1);
-		fStatus = false;
-		exception->Delete();
-	}
-
+		catch (CInternetException* exception) {
+			if (m_pFile != nullptr) {
+				m_pFile->Close();
+				delete m_pFile;
+				m_pFile = nullptr;
+			}
+			gl_systemMessage.PushErrorMessage(_T("Net Warning"));
+			Sleep(5);
+			if (iCountNumber++ > 1) {
+				SetWebError(true);
+				m_dwWebErrorCode = exception->m_dwError;
+				str1 = GetInquiringString();
+				strLeft = str1.Left(80);
+				TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
+				sprintf_s(buffer, _T("%d"), exception->m_dwError);
+				strErrorNo = buffer;
+				str1 = _T("Error Web No ") + strErrorNo + _T(" : ") + strLeft + _T("\n");
+				gl_systemMessage.PushErrorMessage(str1);
+				fStatus = false;
+				fDone = true;
+			}
+			exception->Delete();
+		}
+	} while (!fDone);
 	return fStatus;
 }
 

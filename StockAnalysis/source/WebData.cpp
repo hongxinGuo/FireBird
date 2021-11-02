@@ -47,6 +47,6 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 void CWebData::__TEST_SetBuffer__(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
 	char* pBuffer = strBuffer.GetBuffer();
-	for (int i = 0; i < m_lBufferLength; i++) { m_vDataBuffer.at(i) = pBuffer[i]; }
+	for (INT64 i = 0; i < m_lBufferLength; i++) { m_vDataBuffer.at(i) = pBuffer[i]; }
 	m_vDataBuffer.at(m_lBufferLength) = 0x000;
 }

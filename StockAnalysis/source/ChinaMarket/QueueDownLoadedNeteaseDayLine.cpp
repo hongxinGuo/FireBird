@@ -19,14 +19,14 @@ void CQueueDownLoadedNeteaseDayLine::Reset(void) {
 	m_MutexAccessData.unlock();
 }
 
-void CQueueDownLoadedNeteaseDayLine::PushData(CDownLoadedNeteaseDayLinePtr pData) {
+void CQueueDownLoadedNeteaseDayLine::PushData(CNeteaseDayLineWebDataPtr pData) {
 	m_MutexAccessData.lock();
 	m_qData.push(pData);
 	m_MutexAccessData.unlock();
 }
 
-CDownLoadedNeteaseDayLinePtr CQueueDownLoadedNeteaseDayLine::PopData(void) {
-	CDownLoadedNeteaseDayLinePtr pData;
+CNeteaseDayLineWebDataPtr CQueueDownLoadedNeteaseDayLine::PopData(void) {
+	CNeteaseDayLineWebDataPtr pData;
 	m_MutexAccessData.lock();
 	pData = m_qData.front();
 	m_qData.pop();

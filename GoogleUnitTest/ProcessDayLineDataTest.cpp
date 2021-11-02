@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < pData->m_strData.GetLength(); i++) {
 				DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i));
 			}
-			pDownLoadedDayLine = make_shared<CDownLoadedNeteaseDayLine>();
+			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
 			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 			m_iCount = pData->m_iCount;
 		}
@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
 
 	public:
 		int m_iCount;
-		CDownLoadedNeteaseDayLinePtr pDownLoadedDayLine;
+		CNeteaseDayLineWebDataPtr pDownLoadedDayLine;
 		long lDate;
 	};
 

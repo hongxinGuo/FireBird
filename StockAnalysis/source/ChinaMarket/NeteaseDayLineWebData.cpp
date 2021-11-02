@@ -4,38 +4,38 @@
 
 #include"NeteaseDayLineWebInquiry.h"
 
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
-CDownLoadedNeteaseDayLine::CDownLoadedNeteaseDayLine() {
-	m_lDayLineBufferLength = 0;
+CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CObject() {
+	m_lBufferLength = 1024 * 1024 * 16;
 	m_lCurrentPos = 0;
 }
 
-CDownLoadedNeteaseDayLine::~CDownLoadedNeteaseDayLine() {
+CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 }
 
-bool CDownLoadedNeteaseDayLine::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
+bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	m_vDayLineBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
+	m_vDataBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
 	for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
-		m_vDayLineBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
+		m_vDataBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
 	}
-	m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
-	m_strDownLoadStockSymbol = pNeteaseWebDayLineData->GetDownLoadingStockCode();
+	m_lBufferLength = pNeteaseWebDayLineData->GetByteReaded();
+	m_strStockCode = pNeteaseWebDayLineData->GetDownLoadingStockCode();
 	m_lCurrentPos = 0;
 
 	return true;
 }
 
-bool CDownLoadedNeteaseDayLine::TransferWebDataToBuffer(CWebDataPtr pWebData) {
+bool CNeteaseDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
 	ASSERT(pWebData->GetData(pWebData->GetBufferLength()) == 0x000);
-	m_vDayLineBuffer.resize(pWebData->GetBufferLength() + 1);
+	m_vDataBuffer.resize(pWebData->GetBufferLength() + 1);
 	for (int i = 0; i < pWebData->GetBufferLength() + 1; i++) {
-		m_vDayLineBuffer.at(i) = pWebData->GetData(i);
+		m_vDataBuffer.at(i) = pWebData->GetData(i);
 	}
-	m_lDayLineBufferLength = pWebData->GetBufferLength();
-	m_strDownLoadStockSymbol = pWebData->GetStockCode();
+	m_lBufferLength = pWebData->GetBufferLength();
+	m_strStockCode = pWebData->GetStockCode();
 	m_lCurrentPos = 0;
 
 	return true;
@@ -47,28 +47,28 @@ bool CDownLoadedNeteaseDayLine::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDownLoadedNeteaseDayLine::ProcessNeteaseDayLineData(void) {
+bool CNeteaseDayLineWebData::ProcessNeteaseDayLineData(void) {
 	shared_ptr<CDayLine> pDayLine;
 
-	if (m_lDayLineBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+	if (m_lBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
 		return false;
 	}
 
-	char a = m_vDayLineBuffer.at(m_lDayLineBufferLength);
-	ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
+	char a = m_vDataBuffer.at(m_lBufferLength);
+	ASSERT(m_vDataBuffer.at(m_lBufferLength) == 0x000); // 最后字符为增加的0x000.
 	if (!SkipNeteaseDayLineInformationHeader()) {
 		return false;
 	}
 
-	if (m_lCurrentPos >= m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+	if (m_lCurrentPos >= m_lBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 		return false;
 	}
 
 	CString strTemp;
-	while (m_lCurrentPos < m_lDayLineBufferLength) {
+	while (m_lCurrentPos < m_lBufferLength) {
 		m_pCurrentProcessingDayLine = nullptr;
 		if (!ProcessOneNeteaseDayLineData()) { // 处理一条日线数据
-			TRACE(_T("%s日线数据出错\n"), m_strDownLoadStockSymbol.GetBuffer());
+			TRACE(_T("%s日线数据出错\n"), m_strStockCode.GetBuffer());
 			// 清除已暂存的日线数据
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
@@ -89,7 +89,7 @@ bool CDownLoadedNeteaseDayLine::ProcessNeteaseDayLineData(void) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
+bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	static char buffer2[200], buffer3[100];
 	long i = 0;
 	long lMarketDate = 0;
@@ -101,11 +101,11 @@ bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 	m_pCurrentProcessingDayLine = make_shared<CDayLine>();
 
 	i = 0;
-	while ((m_vDayLineBuffer.at(m_lCurrentPos) != 0x02c)) { // 读取日期，直到遇到逗号
-		if ((m_vDayLineBuffer.at(m_lCurrentPos) == 0x0d) || (m_vDayLineBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDayLineBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
+	while ((m_vDataBuffer.at(m_lCurrentPos) != 0x02c)) { // 读取日期，直到遇到逗号
+		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDataBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
 			return false; // 数据出错，放弃载入
 		}
-		buffer3[i++] = m_vDayLineBuffer.at(m_lCurrentPos++);
+		buffer3[i++] = m_vDataBuffer.at(m_lCurrentPos++);
 	}
 	m_lCurrentPos++;
 	buffer3[i] = 0x00;
@@ -115,37 +115,37 @@ bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 	m_pCurrentProcessingDayLine->SetDate(lMarketDate);
 	//TRACE("%d %d %d\n", year, month, day);
 
-	if (m_vDayLineBuffer.at(m_lCurrentPos) != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
+	if (m_vDataBuffer.at(m_lCurrentPos) != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
 	m_lCurrentPos++;
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
-	m_pCurrentProcessingDayLine->SetStockSymbol(m_strDownLoadStockSymbol); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
+	m_pCurrentProcessingDayLine->SetStockSymbol(m_strStockCode); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	str = buffer2;
 	m_pCurrentProcessingDayLine->SetDisplaySymbol(str);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetClose(dTemp * 1000);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetHigh(dTemp * 1000);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetLow(dTemp * 1000);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetOpen(dTemp * 1000);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetLastClose(dTemp * 1000);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	if (m_pCurrentProcessingDayLine->GetOpen() == 0) {
 		//ASSERT(strcmp(buffer2, _T("None") == 0);
 		m_pCurrentProcessingDayLine->SetUpDown(0.0);
@@ -160,56 +160,56 @@ bool CDownLoadedNeteaseDayLine::ProcessOneNeteaseDayLineData(void) {
 		m_pCurrentProcessingDayLine->SetUpDownRate(((double)(m_pCurrentProcessingDayLine->GetUpDown() * 100000.0)) / m_pCurrentProcessingDayLine->GetLastClose());
 	}
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetChangeHandRate(buffer2);
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetVolume(buffer2); // 读入的是股数
 
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetAmount(buffer2);
 
 	// 总市值的数据有两种形式，需要程序判定
-	if (!ReadOneValueOfNeteaseDayLine(m_vDayLineBuffer, buffer2, m_lCurrentPos)) return false;
+	if (!ReadOneValueOfNeteaseDayLine(m_vDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetTotalValue(buffer2); // 总市值的单位为：元
 
 	// 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数
 	// 流通市值的数据形式有两种，故而需要程序判定。
 	i = 0;
-	while (m_vDayLineBuffer.at(m_lCurrentPos) != 0x00d) {
-		if ((m_vDayLineBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDayLineBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) return false; // 数据出错，放弃载入
-		buffer2[i++] = m_vDayLineBuffer.at(m_lCurrentPos++);
+	while (m_vDataBuffer.at(m_lCurrentPos) != 0x00d) {
+		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDataBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) return false; // 数据出错，放弃载入
+		buffer2[i++] = m_vDataBuffer.at(m_lCurrentPos++);
 	}
 	m_lCurrentPos++;
 	buffer2[i] = 0x000;
 	m_pCurrentProcessingDayLine->SetCurrentValue(buffer2); // 流通市值的单位为：元。
 	// \r后面紧跟着应该是\n
-	if (m_vDayLineBuffer.at(m_lCurrentPos++) != 0x0a) return false; // 数据出错，放弃载入
+	if (m_vDataBuffer.at(m_lCurrentPos++) != 0x0a) return false; // 数据出错，放弃载入
 
 	return true;
 }
 
-bool CDownLoadedNeteaseDayLine::SkipNeteaseDayLineInformationHeader(void) {
+bool CNeteaseDayLineWebData::SkipNeteaseDayLineInformationHeader(void) {
 	ASSERT(m_lCurrentPos == 0);
-	while (m_vDayLineBuffer.at(m_lCurrentPos) != 0X0d) { // 寻找\r
-		if (m_vDayLineBuffer.at(m_lCurrentPos) == 0x0a) {// 遇到\n
+	while (m_vDataBuffer.at(m_lCurrentPos) != 0X0d) { // 寻找\r
+		if (m_vDataBuffer.at(m_lCurrentPos) == 0x0a) {// 遇到\n
 			m_lCurrentPos++; // 跨过此\n
 			return false;
 		}
-		else if (m_vDayLineBuffer.at(m_lCurrentPos) == 0x000) { // 遇到0x000
+		else if (m_vDataBuffer.at(m_lCurrentPos) == 0x000) { // 遇到0x000
 			return false;
 		}
 		m_lCurrentPos++;
 	}
 	m_lCurrentPos++;
-	if (m_vDayLineBuffer.at(m_lCurrentPos) != 0x0a) {
+	if (m_vDataBuffer.at(m_lCurrentPos) != 0x0a) {
 		return false;
 	}
 	m_lCurrentPos++;
 	return true;
 }
 
-void CDownLoadedNeteaseDayLine::ReportDayLineDownLoaded(void) {
+void CNeteaseDayLineWebData::ReportDayLineDownLoaded(void) {
 	//CString strTemp = GetSymbol();
 	//strTemp += _T("日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);

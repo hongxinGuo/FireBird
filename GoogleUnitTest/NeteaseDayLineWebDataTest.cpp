@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CDownLoadedNeteaseDayLineTest, TestSkipNeteaseDayLineFirstInformationLine) {
 		CNeteaseDayLineWebInquiry DayLineWebInquiry;
-		CDownLoadedNeteaseDayLine DayLine;
+		CNeteaseDayLineWebData DayLine;
 
 		CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
@@ -90,16 +90,16 @@ namespace StockAnalysisTest {
 
 	TEST_F(CDownLoadedNeteaseDayLineTest, TestTransferNeteaseDayLineWebDataToBuffer) {
 		CNeteaseDayLineWebInquiry DayLineWebInquiry;
-		CDownLoadedNeteaseDayLine DayLine;
+		CNeteaseDayLineWebData DayLine;
 		CString str = _T("abcedfg\r\n");
-		EXPECT_EQ(DayLine.GetDayLineBufferLength(), 0);
+		EXPECT_EQ(DayLine.GetBufferLength(), 16777216);
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
 		DayLineWebInquiry.SetByteReaded(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
-		EXPECT_EQ(DayLine.GetDayLineBufferLength(), str.GetLength());
+		EXPECT_EQ(DayLine.GetBufferLength(), str.GetLength());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 	}
 };

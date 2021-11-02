@@ -141,11 +141,9 @@ void COutputWnd::UpdateFonts() {
 COutputList::COutputList() {
 }
 
-void COutputList::TruncateList(long lMaxLimit, long lNumberOfTruncation) {
-	if (GetCount() > lMaxLimit) {
-		for (int i = 0; i < lNumberOfTruncation; i++) {
-			DeleteString(0);
-		}
+void COutputList::TruncateList(long lNumberOfTruncation) {
+	for (int i = 0; i < lNumberOfTruncation; i++) {
+		DeleteString(0);
 	}
 }
 
@@ -224,7 +222,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	CString strTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
 	// 如果显示列表超过10000个，则删除前面的1000个。
-	if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(10000);
+	if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
 	// 将输出信息拷贝到消息队列中。
 	if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputInformation.GetCurSel();
@@ -235,7 +233,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputDayLineInfo.GetCount() > 10000) m_wndOutputDayLineInfo.TruncateList(10000);
+	if (m_wndOutputDayLineInfo.GetCount() > 10000) m_wndOutputDayLineInfo.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
@@ -246,7 +244,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputTransaction.GetCount() > 10000) m_wndOutputTransaction.TruncateList(10000);
+	if (m_wndOutputTransaction.GetCount() > 10000) m_wndOutputTransaction.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetTransactionDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputTransaction.GetCurSel();
@@ -257,7 +255,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputCancelSell.GetCount() > 10000) m_wndOutputCancelSell.TruncateList(10000);
+	if (m_wndOutputCancelSell.GetCount() > 10000) m_wndOutputCancelSell.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetCancelSellDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputCancelSell.GetCurSel();
@@ -268,7 +266,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputCancelBuy.GetCount() > 10000) m_wndOutputCancelBuy.TruncateList(10000);
+	if (m_wndOutputCancelBuy.GetCount() > 10000) m_wndOutputCancelBuy.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetCancelBuyDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputCancelBuy.GetCurSel();
@@ -279,7 +277,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputTrace2.GetCount() > 10000) m_wndOutputTrace2.TruncateList(10000);
+	if (m_wndOutputTrace2.GetCount() > 10000) m_wndOutputTrace2.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
 		lCurrentPos = m_wndOutputTrace2.GetCurSel();
@@ -290,7 +288,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndOutputInnerSystemInformation.GetCount() > 10000) m_wndOutputInnerSystemInformation.TruncateList(10000);
+	if (m_wndOutputInnerSystemInformation.GetCount() > 10000) m_wndOutputInnerSystemInformation.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetInnerSystemInformationDequeSize()) > 0) {
 		lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
@@ -301,7 +299,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndErrorMessage.GetCount() > 10000) m_wndErrorMessage.TruncateList(10000);
+	if (m_wndErrorMessage.GetCount() > 10000) m_wndErrorMessage.TruncateList(1000);
 	fUpdate = false;
 	if ((lTotal = gl_systemMessage.GetErrorMessageDequeSize()) > 0) {
 		lCurrentPos = m_wndErrorMessage.GetCurSel();

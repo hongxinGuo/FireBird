@@ -29,6 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			potenDailyBriefingInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -55,6 +56,8 @@ namespace StockAnalysisTest {
 		potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
 		potenDailyBriefingInquiry.SetInquiringDate(20100101);
 		tt = gl_pPotenDailyBriefingMarket->TransferToUTCTime(20100101);
+		EXPECT_FALSE(potenDailyBriefingInquiry.IsReadingWebData());
+		potenDailyBriefingInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&potenDailyBriefingInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);

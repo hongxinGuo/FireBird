@@ -121,7 +121,7 @@
     <Filter Include="Test源文件\Data Base">
       <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\China Market\基础数据类\DownLoadedNeteaseDayLine">
+    <Filter Include="Test源文件\China Market\基础数据类\NeteaseDayLineWebData">
       <UniqueIdentifier>{1362f335-5cd6-45f2-90d7-9701ae2fadef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -402,14 +402,14 @@
     <ClCompile Include="SetInitializeTest.cpp">
       <Filter>Test源文件\Data Base</Filter>
     </ClCompile>
-    <ClCompile Include="DownLoadedNeteaseDayLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类\DownLoadedNeteaseDayLine</Filter>
+    <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
+      <Filter>Test源文件\China Market\基础数据类\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类\DownLoadedNeteaseDayLine</Filter>
+      <Filter>Test源文件\China Market\基础数据类\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="ProcessDayLineDataTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类\DownLoadedNeteaseDayLine</Filter>
+      <Filter>Test源文件\China Market\基础数据类\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="QueueWebDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>

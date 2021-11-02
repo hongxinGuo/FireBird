@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
 			WebInquiry.__TESTSetBuffer(pData->m_strData);
 			WebInquiry.SetByteReaded(pData->m_strData.GetLength());
 			WebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-			pDownLoadedDayLine = make_shared<CDownLoadedNeteaseDayLine>();
+			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
 			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&WebInquiry);
 		}
 
@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 		CDayLinePtr m_DayLinePtr;
 
 		CNeteaseDayLineWebInquiry WebInquiry;
-		CDownLoadedNeteaseDayLinePtr pDownLoadedDayLine;
+		CNeteaseDayLineWebDataPtr pDownLoadedDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,

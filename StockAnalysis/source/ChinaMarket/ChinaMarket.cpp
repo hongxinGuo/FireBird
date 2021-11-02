@@ -2315,17 +2315,17 @@ long CChinaMarket::GetDayLineNeedSaveNumber(void) {
 }
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
-	CDownLoadedNeteaseDayLinePtr pData;
+	CNeteaseDayLineWebDataPtr pData;
 	CWebDataPtr pWebData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
 	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
 		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
-		pData = make_shared<CDownLoadedNeteaseDayLine>();
+		pData = make_shared<CNeteaseDayLineWebData>();
 		pData->TransferWebDataToBuffer(pWebData);
 		pData->ProcessNeteaseDayLineData();
-		ASSERT(gl_pChinaMarket->IsStock(pData->GetDownLoadedStockSymbol()));
-		pStock = gl_pChinaMarket->GetStock(pData->GetDownLoadedStockSymbol());
+		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
+		pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。
 		pStock->UpdateStatusByDownloadedDayLine();
 

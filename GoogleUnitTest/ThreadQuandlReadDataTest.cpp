@@ -28,6 +28,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			QuandlWebInquiry.SetReadingWebData(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -52,6 +53,7 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
+		QuandlWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);

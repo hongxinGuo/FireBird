@@ -2406,7 +2406,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaStockTest, TestStoreDayLine2) {
-		CDownLoadedNeteaseDayLine data;
+		CNeteaseDayLineWebData data;
 
 		CDayLinePtr pDayLine;
 		for (int i = 0; i < 10; i++) {
