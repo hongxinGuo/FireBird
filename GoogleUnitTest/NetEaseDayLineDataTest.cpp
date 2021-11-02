@@ -6,7 +6,7 @@
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
 
 #include"DayLine.h"
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
 using namespace std;
 #include<vector>

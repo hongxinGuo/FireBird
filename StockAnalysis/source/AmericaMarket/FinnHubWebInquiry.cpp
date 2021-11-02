@@ -83,17 +83,17 @@ bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CFinnhubWebInquiry::PrepareBeforeReadingWebData(void) {
+void CFinnhubWebInquiry::PrepareReadingWebData(void) {
 	ASSERT(!gl_pWorldMarket->IsFinnhubDataReceived());
 }
 
-void CFinnhubWebInquiry::ProcessFailedReading(void) {
+void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
 	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("finnhub工作线程出错"));
 }
 
-void CFinnhubWebInquiry::UpdateStatusAfterReceivingData(void) {
+void CFinnhubWebInquiry::UpdateAfterReadingWebData(void) {
 	gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
 }
 

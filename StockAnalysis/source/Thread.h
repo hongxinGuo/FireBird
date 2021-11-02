@@ -28,7 +28,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData); //
 // 读取网易实时数据线程，网址：http://api.money.126.net/data/feed/
 //UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData); // 此线程返回值为3，参数为pNeteaseWebRTData
 // 读取网易日线历史数据线程, pParam为调用此线程的变量的指针。网址：http://quotes.money.163.com/service/chddata.html?code=
-UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
+//UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
 // 读取crweber.com网站上的油运指数线程。网址：http://www.crweber.com
 //UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
 // 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018

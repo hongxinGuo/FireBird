@@ -2,11 +2,11 @@
 #include"NeteaseDayLineWebInquiry.h"
 
 namespace testing {
-  class CMockNeteaseDayLineWebInquiry : public CNeteaseDayLineWebInquiry {
-  public:
-    MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));
-    MOCK_METHOD(void, StartReadingThread, (), (override));
-    MOCK_METHOD(bool, ReadWebDataTimeLimit, (long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime), (override));
-  };
-  typedef  shared_ptr<CMockNeteaseDayLineWebInquiry> CMockNeteaseDayLineWebInquiryPtr;
+	class CMockNeteaseDayLineWebInquiry : public CNeteaseDayLineWebInquiry {
+	public:
+		MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));
+		MOCK_METHOD(void, StartReadingThread, (), (override));
+		MOCK_METHOD(bool, ReadWebData, (), (override));
+	};
+	typedef  shared_ptr<CMockNeteaseDayLineWebInquiry> CMockNeteaseDayLineWebInquiryPtr;
 }

@@ -207,7 +207,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />

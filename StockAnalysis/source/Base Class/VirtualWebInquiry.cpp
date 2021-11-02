@@ -42,11 +42,17 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 	m_fWebError = false;
 }
 
+/// <summary>
+/// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之
+///
+/// </summary>
+/// <param name="strInquiring"></param>
+/// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	bool fStatus = true;
 	bool fDone = false;
 	int iCountNumber = 0;
-	CString str1, strLeft, strErrorNo;
+	CString strMessage, strLeft, strErrorNo;
 	char buffer[30];
 
 	ASSERT(m_pSession != nullptr);
@@ -64,18 +70,20 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				delete m_pFile;
 				m_pFile = nullptr;
 			}
-			gl_systemMessage.PushErrorMessage(_T("Net Warning"));
-			Sleep(5);
+			sprintf_s(buffer, _T("%d"), exception->m_dwError);
+			strErrorNo = buffer;
+			strLeft = GetInquiringString().Left(80);
+			strMessage = _T("Net Warning No ") + strErrorNo + _T(" : ") + strLeft;
+			gl_systemMessage.PushErrorMessage(strMessage);
+			Sleep(1);
 			if (iCountNumber++ > 1) {
 				SetWebError(true);
 				m_dwWebErrorCode = exception->m_dwError;
-				str1 = GetInquiringString();
-				strLeft = str1.Left(80);
-				TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
+				TRACE(_T("Net Error No %d,  %s\n"), exception->m_dwError, (LPCTSTR)strLeft);
 				sprintf_s(buffer, _T("%d"), exception->m_dwError);
 				strErrorNo = buffer;
-				str1 = _T("Error Web No ") + strErrorNo + _T(" : ") + strLeft + _T("\n");
-				gl_systemMessage.PushErrorMessage(str1);
+				strMessage = _T("Net Error No ") + strErrorNo + _T(" : ") + strLeft + _T("\n");
+				gl_systemMessage.PushErrorMessage(strMessage);
 				fStatus = false;
 				fDone = true;
 			}
@@ -88,7 +96,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 ///////////////////////////////////////////////////////////////////////////
 //
 // 从网络读取数据。每次读1KB，直到读不到为止。
-//
+// 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
@@ -277,7 +285,7 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
 	ASSERT(pVirtualWebInquiry->IsReadingWebData());
 
-	pVirtualWebInquiry->PrepareBeforeReadingWebData();
+	pVirtualWebInquiry->PrepareReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
 		CWebDataPtr pWebDataReceived = pVirtualWebInquiry->TransferWebDataToQueueData();
 		if (pWebDataReceived != nullptr) {
@@ -287,9 +295,9 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 		}
 	}
 	else { // error handling
-		pVirtualWebInquiry->ProcessFailedReading();
+		pVirtualWebInquiry->ClearUpIfReadingWebDataFailed();
 	}
-	pVirtualWebInquiry->UpdateStatusAfterReceivingData();
+	pVirtualWebInquiry->UpdateAfterReadingWebData();
 
 	pVirtualWebInquiry->SetReadingWebData(false);
 

@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
 #include"MockChinaStock.h"
 

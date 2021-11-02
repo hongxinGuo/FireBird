@@ -5,7 +5,7 @@
 
 #include"ChinaStock.h"
 
-#include"DownLoadedNeteaseDayLine.h"
+#include"NeteaseDayLineWebData.h"
 
 using namespace std;
 #include<vector>

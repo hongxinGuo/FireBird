@@ -45,20 +45,11 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 	return false;
 }
 
-void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-	thread thread1(ThreadReadNeteaseDayLine, this);
-	thread1.detach();
-}
-
-void CNeteaseDayLineWebInquiry::PrepareBeforeReadingWebData(void) {
-	ASSERT(IsReadingWebData());
-}
-
 void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 
-void CNeteaseDayLineWebInquiry::ProcessFailedReading(void) {
+void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	CString strErrorMessage;
 	strErrorMessage = GetDownLoadingStockCode();
 	strErrorMessage += _T(" 网易日线读取线程出错");
