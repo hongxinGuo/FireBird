@@ -11,7 +11,7 @@ public:
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual CString GetNextInquiringMiddleStr(long lTotalNumber = 600, bool fCheckActiveStock = false) override;
 	virtual void ClearUpIfReadingWebDataFailed(void) override final { TRACE("读取网易实时数据出错\n"); }
-	virtual void StoreWebData(CWebDataPtr pWebData) override final; // 将网络上读取到的数据存入本地
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final; // 将网络上读取到的数据存入本地
 };
 
 typedef shared_ptr<CNeteaseRTWebInquiry> CNeteaseRTWebInquiryPtr;

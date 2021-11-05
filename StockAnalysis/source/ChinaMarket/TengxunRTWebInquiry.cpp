@@ -39,6 +39,6 @@ bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_WebInquirer.PushTengxunRTData(pWebDataReceived);
+void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
 }

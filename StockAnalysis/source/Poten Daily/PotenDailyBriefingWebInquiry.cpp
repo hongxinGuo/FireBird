@@ -41,6 +41,6 @@ void CPotenDailyBriefingWebInquiry::SetTime(CWebDataPtr pDataTimeBeSet) {
 	pDataTimeBeSet->SetTime(gl_pPotenDailyBriefingMarket->TransferToUTCTime(GetInquiringDate()));
 }
 
-void CPotenDailyBriefingWebInquiry::StoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushPotenDailyBriefingData(pWebData);
+void CPotenDailyBriefingWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushPotenDailyBriefingData(pWebDataBeStored);
 }

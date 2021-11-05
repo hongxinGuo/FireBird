@@ -11,7 +11,7 @@ public:
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 900, bool fCheckActiveStock = false) override;
 	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void StoreWebData(CWebDataPtr pWebData) override final; // 将网络上读取到的数据存入本地
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final; // 将网络上读取到的数据存入本地
 };
 
 typedef shared_ptr<CSinaRTWebInquiry> CSinaRTWebInquiryPtr;

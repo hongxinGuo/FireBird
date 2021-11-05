@@ -27,6 +27,6 @@ bool CCrweberIndexWebInquiry::PrepareNextInquiringStr(void) {
 	return true;
 }
 
-void CCrweberIndexWebInquiry::StoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushCrweberData(pWebData);
+void CCrweberIndexWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushCrweberData(pWebDataBeStored);
 }

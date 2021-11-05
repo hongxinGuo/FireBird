@@ -97,6 +97,6 @@ void CFinnhubWebInquiry::UpdateAfterReadingWebData(void) {
 	gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
-void CFinnhubWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_WebInquirer.PushFinnhubData(pWebDataReceived);
+void CFinnhubWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushFinnhubData(pWebDataBeStored);
 }

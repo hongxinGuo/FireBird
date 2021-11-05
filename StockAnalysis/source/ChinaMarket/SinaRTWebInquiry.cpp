@@ -49,6 +49,6 @@ bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_WebInquirer.PushSinaRTData(pWebDataReceived);
+void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushSinaRTData(pWebDataBeStored);
 }

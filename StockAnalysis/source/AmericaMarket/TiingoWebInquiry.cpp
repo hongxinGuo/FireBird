@@ -77,6 +77,6 @@ void CTiingoWebInquiry::UpdateAfterReadingWebData(void) {
 	gl_pWorldMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
-void CTiingoWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_WebInquirer.PushTiingoData(pWebDataReceived);
+void CTiingoWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushTiingoData(pWebDataBeStored);
 }

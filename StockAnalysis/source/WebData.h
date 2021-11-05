@@ -47,7 +47,7 @@ public:
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
-	CString m_strStockCode; // 此数据的相关证券代码
+	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	vector<char> m_vDataBuffer;
 	INT64 m_lBufferLength;
 	INT64 m_lCurrentPos;

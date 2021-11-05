@@ -10,7 +10,7 @@ public:
 
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual void SetTime(CWebDataPtr pDataTimeBeSet) override final;
-	virtual void StoreWebData(CWebDataPtr pWebData) override final; // 将网络上读取到的数据存入本地
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final; // 将网络上读取到的数据存入本地
 
 	long GetInquiringDate(void) noexcept { return m_lInquiringDate; }
 	void SetInquiringDate(long lDate) noexcept { m_lInquiringDate = lDate; }

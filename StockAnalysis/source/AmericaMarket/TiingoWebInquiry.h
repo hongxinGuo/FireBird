@@ -14,7 +14,7 @@ public:
 	virtual void PrepareReadingWebData(void) override final;
 	virtual void ClearUpIfReadingWebDataFailed(void) override final; // 处理失败的接收过程
 	virtual void UpdateAfterReadingWebData(void) override final;
-	virtual void StoreWebData(CWebDataPtr pWebData) override final;
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final;
 };
 
 typedef shared_ptr<CTiingoWebInquiry> CTiingoWebInquiryPtr;

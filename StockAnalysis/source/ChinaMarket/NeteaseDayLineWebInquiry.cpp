@@ -56,8 +56,8 @@ void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	gl_systemMessage.PushErrorMessage(strErrorMessage);
 }
 
-void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushNeteaseDayLineData(pWebData);
+void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushNeteaseDayLineData(pWebDataBeStored);
 }
 
 /// <summary>

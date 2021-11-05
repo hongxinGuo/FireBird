@@ -8,7 +8,7 @@
 
 #include"VirtualWebInquiry.h"
 
-atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
+atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_pSession = new CInternetSession{ _T("如果此项为空，则测试时会出现断言错误。但不影响测试结果") };
@@ -75,8 +75,8 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			strLeft = GetInquiringString().Left(80);
 			strMessage = _T("Net Warning No ") + strErrorNo + _T(" : ") + strLeft;
 			gl_systemMessage.PushErrorMessage(strMessage);
-			Sleep(1);
-			if (iCountNumber++ > 1) {
+			Sleep(1); // 等待一毫秒。不等待其实也可以，
+			if (iCountNumber++ > 2) { // 重复读取三次皆失败后，则报错。
 				SetWebError(true);
 				m_dwWebErrorCode = exception->m_dwError;
 				TRACE(_T("Net Error No %d,  %s\n"), exception->m_dwError, (LPCTSTR)strLeft);
@@ -205,7 +205,7 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	return uByteRead;
 }
 
-CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
+CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
 	pWebDataReceived->Resize(byteReaded + 1);
@@ -252,11 +252,11 @@ void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
 	pData->SetTime(gl_pChinaMarket->GetUTCTime());
 }
 
-void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
+void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
 		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
 	}
-	for (long i = 0; i < lTotalNumber; i++) {
+	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_vBuffer.at(i) = buffer[i];
 	}
 	m_vBuffer.at(lTotalNumber) = 0x000;
@@ -264,12 +264,12 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
-	long lTotalNumber = str.GetLength();
+	INT64 lTotalNumber = str.GetLength();
 	char* buffer = str.GetBuffer();
 	if (m_vBuffer.size() < (lTotalNumber + 1024 * 1024)) {
 		m_vBuffer.resize(lTotalNumber + 1024 * 1024);
 	}
-	for (long i = 0; i < lTotalNumber; i++) {
+	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_vBuffer.at(i) = buffer[i];
 	}
 	m_vBuffer.at(lTotalNumber) = 0x000;
@@ -287,11 +287,11 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 
 	pVirtualWebInquiry->PrepareReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
-		CWebDataPtr pWebDataReceived = pVirtualWebInquiry->TransferWebDataToQueueData();
-		if (pWebDataReceived != nullptr) {
-			pVirtualWebInquiry->SetTime(pWebDataReceived);
-			pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebDataReceived);
-			pVirtualWebInquiry->StoreWebData(pWebDataReceived);
+		CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebData();
+		if (pWebData != nullptr) {
+			pVirtualWebInquiry->SetTime(pWebData);
+			pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
+			pVirtualWebInquiry->StoreWebData(pWebData);
 		}
 	}
 	else { // error handling

@@ -9,7 +9,7 @@ public:
 	virtual ~CCrweberIndexWebInquiry();
 
 	virtual bool PrepareNextInquiringStr(void) override;
-	virtual void StoreWebData(CWebDataPtr pWebData); // 将网络上读取到的数据存入本地
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored); // 将网络上读取到的数据存入本地
 };
 
 typedef shared_ptr<CCrweberIndexWebInquiry> CCrweberIndexWebInquiryPtr;

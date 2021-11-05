@@ -21,7 +21,7 @@ public:
 	virtual bool ReadWebData(void); // 网络实际读取函数
 	virtual bool ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);// 这种采用多次等待方式
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
-	CWebDataPtr TransferWebDataToQueueData(void);
+	CWebDataPtr TransferReceivedDataToWebData(void);
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
@@ -39,7 +39,7 @@ public:
 	virtual void ClearUpIfReadingWebDataFailed(void) { /* do nothing in default*/ } // 处理失败的接收过程
 	virtual void UpdateAfterReadingWebData(void) { /*default do nothing*/ } // 接收数据后更新系统状态。默认为不做任何事情。
 	virtual void SetTime(CWebDataPtr pData);
-	virtual void StoreWebData(CWebDataPtr pWebData) { ASSERT(0); } // 将网络上读取到的数据存入本地
+	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) { ASSERT(0); } // 将网络上读取到的数据存入本地
 
 	// 以下为实现函数
 	void CreateTotalInquiringString(CString strMIddle);
@@ -50,9 +50,9 @@ public:
 	char GetData(long lIndex) const { return m_vBuffer.at(lIndex); }
 	void SetData(long lIndex, char value) { m_vBuffer.at(lIndex) = value; }
 
-	long GetByteReaded(void) const noexcept { return m_lByteRead; }
-	void SetByteReaded(long lValue) noexcept { m_lByteRead = lValue; }
-	void AddByteReaded(long lValue) noexcept { m_lByteRead += lValue; }
+	INT64 GetByteReaded(void) const noexcept { return m_lByteRead; }
+	void SetByteReaded(INT64 lValue) noexcept { m_lByteRead = lValue; }
+	void AddByteReaded(INT64 lValue) noexcept { m_lByteRead += lValue; }
 
 	CString GetInquiringStringPrefix(void) const { return m_strWebDataInquirePrefix; }
 	void SetInquiryingStringPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
@@ -71,18 +71,18 @@ public:
 
 	CString GetConnectionName(void) const { return m_strConnectionName; }
 
-	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
-	void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
+	INT64 GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
+	void SetInquiringNumber(INT64 lValue) noexcept { m_lInquiringNumber = lValue; }
 
-	long GetTotalByteReaded(void) const noexcept { return m_lTotalByteReaded; }
-	void SetTotalByteReaded(long lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
+	INT64 GetTotalByteReaded(void) const noexcept { return m_lTotalByteReaded; }
+	void SetTotalByteReaded(INT64 lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
 	void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
 
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
 
 public:
 	// 以下为测试用函数
-	void __TESTSetBuffer(char* buffer, long lTotalNumber);
+	void __TESTSetBuffer(char* buffer, INT64 lTotalNumber);
 	void __TESTSetBuffer(CString str);
 
 protected:
@@ -91,7 +91,7 @@ protected:
 	DWORD m_dwWebErrorCode; //网络读取错误代码
 	CString m_strInquire;// 查询所需的字符串
 	vector<char> m_vBuffer; // 接收到数据的缓冲区，最多16M
-	long m_lByteRead; // 接收到的字符数
+	INT64 m_lByteRead; // 接收到的字符数
 
 	CString m_strWebDataInquireMiddle; // 查询字符串中间字段
 	CString m_strWebDataInquirePrefix; // 查询字符串前缀
@@ -102,11 +102,11 @@ protected:
 
 	bool m_fReportStatus; //
 
-	long m_lInquiringNumber; // 每次查询数量
+	INT64 m_lInquiringNumber; // 每次查询数量
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	CString m_strConnectionName; // 此网络读取器的名称
-	static atomic_long m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic_llong m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 };
 
 typedef shared_ptr<CVirtualWebInquiry> CVirtualWebInquiryPtr;
