@@ -2331,6 +2331,8 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 
 		pStock->SetDayLineLoaded(true);
 		pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
+
+		pData = nullptr;
 	}
 	return true;
 }

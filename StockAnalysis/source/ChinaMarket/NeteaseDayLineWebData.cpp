@@ -7,11 +7,20 @@
 #include"NeteaseDayLineWebData.h"
 
 CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CObject() {
-	m_lBufferLength = 1024 * 1024 * 16;
-	m_lCurrentPos = 0;
+	Reset();
 }
 
 CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
+}
+
+void CNeteaseDayLineWebData::Reset(void) {
+	m_strStockCode = _T("");
+	m_vDataBuffer.resize(0);
+	m_vTempDayLine.resize(0);
+	m_lBufferLength = 0;
+	m_lCurrentPos = 0;
+
+	m_pCurrentProcessingDayLine = nullptr;
 }
 
 bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
