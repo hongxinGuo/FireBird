@@ -91,7 +91,7 @@ protected:
 	DWORD m_dwWebErrorCode; //网络读取错误代码
 	CString m_strInquire;// 查询所需的字符串
 	vector<char> m_vBuffer; // 接收到数据的缓冲区
-	INT64 m_lByteRead; // 接收到的字符数
+	INT64 m_lByteRead; // 接收到的字符数.存储时需要加上一个字符0x000，故而实际字符数为m_lByteRead+1。
 
 	CString m_strWebDataInquireMiddle; // 查询字符串中间字段
 	CString m_strWebDataInquirePrefix; // 查询字符串前缀

@@ -238,15 +238,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateOptionDB) {
-		gl_pMockChinaMarket->SetUpdateOptionDB(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateOptionDB())
-			.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateOptionDB());
-		gl_pMockChinaMarket->SetUpdateOptionDB(true);
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateOptionDB())
 			.Times(1);
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateOptionDB());
-		EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateOptionDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateChoicedStockDB) {

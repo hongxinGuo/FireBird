@@ -20,6 +20,7 @@ public:
 	long m_RSEndDate;
 	long m_RSStartDate;
 	long m_LastLoginDate;
+	long m_LastLoginTime;
 	long m_UpdatedDateFor10DaysRS1;
 	long m_UpdatedDateFor10DaysRS2;
 	long m_UpdatedDateFor10DaysRS;

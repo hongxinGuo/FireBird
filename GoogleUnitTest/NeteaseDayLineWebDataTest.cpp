@@ -92,7 +92,7 @@ namespace StockAnalysisTest {
 		CNeteaseDayLineWebInquiry DayLineWebInquiry;
 		CNeteaseDayLineWebData DayLine;
 		CString str = _T("abcedfg\r\n");
-		EXPECT_EQ(DayLine.GetBufferLength(), 16777216);
+		EXPECT_EQ(DayLine.GetBufferLength(), 0);
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
 		DayLineWebInquiry.SetByteReaded(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {

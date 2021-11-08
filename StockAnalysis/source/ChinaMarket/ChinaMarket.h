@@ -266,8 +266,9 @@ public:
 	void SetRSStartDate(long lDate) noexcept { m_lRSStartDate = lDate; }
 	long GetRSEndDate(void) const noexcept { return m_lRSEndDate; }
 	void SetRSEndDate(long lDate) noexcept { m_lRSEndDate = lDate; }
-	long GetLastLoginDate(void) const noexcept { return m_lLastLoginDay; }
-	void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
+	long GetLastLoginDate(void) const noexcept { return m_lLastLoginDate; }
+	void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDate = lDate; }
+	void SetLastLoginTime(long lTime) noexcept { m_lLastLoginTime = lTime; }
 	long GetUpdatedDateFor10DaysRS1(void) const noexcept { return m_lUpdatedDateFor10DaysRS1; }
 	void SetUpdatedDateFor10DaysRS1(long lDate) noexcept { m_lUpdatedDateFor10DaysRS1 = lDate; }
 	long GetUpdatedDateFor10DaysRS2(void) const noexcept { return m_lUpdatedDateFor10DaysRS2; }
@@ -478,7 +479,8 @@ protected:
 	// Option各选项
 	long m_lRSStartDate;
 	long m_lRSEndDate;
-	long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+	long m_lLastLoginDate; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+	long m_lLastLoginTime;
 	long m_lUpdatedDateFor10DaysRS2;
 	long m_lUpdatedDateFor10DaysRS1;
 	long m_lUpdatedDateFor10DaysRS;

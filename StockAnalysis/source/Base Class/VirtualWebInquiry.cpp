@@ -58,7 +58,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
 	do {
-		try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+		try {
 			// 使用dynamic_cast时，Address Sanitizer在此处报错
 			//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
@@ -97,6 +97,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 //
 // 从网络读取数据。每次读1KB，直到读不到为止。
 // 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
+// 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
@@ -199,7 +200,7 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	for (int i = 0; i < uByteRead; i++) {
 		m_vBuffer.at(m_lByteRead++) = buffer[i];
 	}
-	if (m_vBuffer.size() < (m_lByteRead + 128 * 1024)) { // 相差不到1M时
+	if (m_vBuffer.size() < (m_lByteRead + 128 * 1024)) { // 相差不到128K时
 		m_vBuffer.resize(m_vBuffer.size() + 128 * 1024); // 扩大数据范围
 	}
 	return uByteRead;

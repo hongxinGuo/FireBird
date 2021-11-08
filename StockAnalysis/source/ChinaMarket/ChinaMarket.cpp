@@ -131,7 +131,8 @@ void CChinaMarket::Reset(void) {
 	}
 	else SetTodayStockProcessed(false);
 
-	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DATE__;
+	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = __CHINA_MARKET_BEGIN_DATE__;
+	m_lLastLoginTime = 0;
 	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = __CHINA_MARKET_BEGIN_DATE__;
 
 	m_fSaveDayLine = false;
@@ -1337,6 +1338,7 @@ bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
 bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 	// 计算每五分钟一次的任务。
 
+	TaskUpdateOptionDB();
 	TaskUpdateStockCodeDB();
 
 	if (IsSavingTempData()) {
@@ -1409,7 +1411,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 	TaskClearChoicedRTDataSet(lCurrentTime);
 
-	TaskUpdateOptionDB();
 	TaskUpdateChoicedStockDB();
 
 	TaskCheckDayLineDB();
@@ -1558,12 +1559,8 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 }
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
-	if (IsUpdateOptionDB()) {
-		CreatingThreadUpdateOptionDB();
-		SetUpdateOptionDB(false);
-		return true;
-	}
-	return false;
+	CreatingThreadUpdateOptionDB();
+	return true;
 }
 
 bool CChinaMarket::TaskUpdateChoicedStockDB(void) {
@@ -3189,6 +3186,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
 		setOption.m_RSEndDate = GetRSEndDate();
 		setOption.m_RSStartDate = GetRSStartDate();
 		setOption.m_LastLoginDate = GetMarketDate();
+		setOption.m_LastLoginTime = GetMarketTime();
 		setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
 		setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
 		setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
@@ -3199,6 +3197,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
 		setOption.m_RSEndDate = GetRSEndDate();
 		setOption.m_RSStartDate = GetRSStartDate();
 		setOption.m_LastLoginDate = GetMarketDate();
+		setOption.m_LastLoginTime = GetMarketTime();
 		setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
 		setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
 		setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
@@ -3244,6 +3243,7 @@ void CChinaMarket::LoadOptionDB(void) {
 		else {
 			SetLastLoginDate(setOption.m_LastLoginDate);
 		}
+		SetLastLoginTime(setOption.m_LastLoginTime);
 		SetUpdatedDateFor10DaysRS1(setOption.m_UpdatedDateFor10DaysRS1);
 		SetUpdatedDateFor10DaysRS2(setOption.m_UpdatedDateFor10DaysRS2);
 		SetUpdatedDateFor10DaysRS(setOption.m_UpdatedDateFor10DaysRS);
