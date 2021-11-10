@@ -140,24 +140,26 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	long lStockCode = 0;
 	double dTemp = 0;
 	char bufferTest[2000];
-	CString strTest;
 	CString strStockSymbol = _T("");
 	WORD wMarket;
 	CString strSinaStockCode;
+	bool fBadData = false;
 
 	int i = 0;
-	while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (i < 1900)) {
+	while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (!fBadData)) {
 		bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
 		i++;
+		if (i >= 1900) {
+			fBadData = true;
+		}
+		else if ((i + pSinaWebRTData->GetCurrentPos()) > pSinaWebRTData->GetBufferLength()) {
+			fBadData = true;
+		}
 	}
 	bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
 	i++;
 	bufferTest[i] = 0x000;
-	strTest = bufferTest;
-	if (i >= 1900) {
-		TRACE(_T("%s\n"), strTest.GetBuffer());
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
-		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+	if (fBadData) {
 		return false; // 整个数据出现错误，后面的皆抛掉
 	}
 

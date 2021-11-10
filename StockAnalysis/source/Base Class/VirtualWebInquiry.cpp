@@ -90,6 +90,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			exception->Delete();
 		}
 	} while (!fDone);
+
 	return fStatus;
 }
 
