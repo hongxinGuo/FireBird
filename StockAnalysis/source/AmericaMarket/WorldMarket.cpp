@@ -2270,8 +2270,11 @@ bool CWorldMarket::UpdateStockProfileDB(void) {
 }
 
 bool CWorldMarket::UpdateStockDayLineDB(void) {
+	CWorldStockPtr pStock = nullptr;
+
 	for (long i = 0; i < GetTotalStock(); i++) {
-		GetStock(i)->UpdateDayLineDB();
+		pStock = GetStock(i);
+		pStock->UpdateDayLineDB();
 		if (gl_fExitingSystem) {
 			break; // 如果程序正在退出，则停止存储。
 		}
