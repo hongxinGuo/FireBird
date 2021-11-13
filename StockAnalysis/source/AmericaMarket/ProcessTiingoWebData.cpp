@@ -7,13 +7,17 @@
 #include"WorldMarket.h"
 
 using namespace std;
-#include <algorithm>
+#include<algorithm>
 #include<string>
 #include<map>
 #include<vector>
 #include<queue>
 #include<atomic>
 #include<memory>
+
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
 
 #include"WebData.h"
 #include"EconomicCalendar.h"
@@ -50,19 +54,18 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
-	CTiingoStockPtr pStock = make_shared<CTiingoStock>();
+	CTiingoStockPtr pStock = nullptr;
 	ptree pt, pt2;
 	string s;
 	int iCount = 0;
 	CString str, strNumber;
 	char buffer[30];
 	long year, month, day;
-	bool fSucceed = true;
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pStock = make_shared<CTiingoStock>();
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pStock = make_shared<CTiingoStock>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("permaTicker"));
 			if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
@@ -126,13 +129,13 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 			if (s.size() > 0) str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
+			vTiingoStock.push_back(pStock);
+			iCount++;
 		}
-		catch (ptree_error&) {
-			fSucceed = false;
-			break;
-		}
-		vTiingoStock.push_back(pStock);
-		iCount++;
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e);
+		return false;
 	}
 
 	TRACE("今日Tiingo Symbol总数为%d\n", iCount);
@@ -141,7 +144,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 	str = _T("今日Tiingo Symbol总数为") + strNumber;
 	//gl_systemMessage.PushInnerSystemInformationMessage(str);
 
-	return fSucceed;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,13 +197,12 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 		str = _T("Tiingo下载");
 		str += pStock->GetSymbol();
 		str += _T("日线故障\n");
-		TRACE("%s", str.GetBuffer());
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pDayLine = make_shared<CDayLine>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("date"));
@@ -220,9 +222,10 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine->SetVolume(lTemp);
 			vDayLine.push_back(pDayLine);
 		}
-		catch (ptree_error&) {
-			return false; // 数据解析出错的话，则放弃。
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine "), e);
+		return false; // 数据解析出错的话，则放弃。
 	}
 	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
 	for (auto& pDayLine2 : vDayLine) {
@@ -453,7 +456,8 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 			return false;
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e);
 		return false;
 	}
 
@@ -563,7 +567,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 			return false;
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e);
 		return false;
 	}
 
@@ -634,7 +639,8 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 			return false;
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e);
 		return false;
 	}
 

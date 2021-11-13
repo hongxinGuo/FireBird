@@ -14,10 +14,9 @@ using namespace std;
 #include<algorithm>
 #include<memory>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-
-//using namespace boost::property_tree;
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
 
 /// <summary>
 /// 高级版的公司简介，需要申请付费账号
@@ -38,70 +37,71 @@ bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockP
 	try {
 		s = pt.get<string>(_T("address"));
 		pStock->SetAddress(s.c_str());
-	}
-	catch (ptree_error&) {
+		s = pt.get<string>(_T("city"));
+		pStock->SetCity(s.c_str());
+		s = pt.get<string>(_T("country"));
+		if (s.size() > 0) pStock->SetCountry(s.c_str());
+		s = pt.get<string>(_T("currency"));
+		if (s.size() > 0) pStock->SetCurrency(s.c_str());
+		s = pt.get<string>(_T("cusip"));
+		if (s.size() > 0) pStock->SetCusip(s.c_str());
+		s = pt.get<string>(_T("sedol"));
+		if (s.size() > 0) pStock->SetSedol(s.c_str());
+		s = pt.get<string>(_T("description"));
+		if (s.size() > 0) pStock->SetDescription(s.c_str());
+		s = pt.get<string>(_T("exchange"));
+		if (s.size() > 0) pStock->SetListedExchange(s.c_str());
+		s = pt.get<string>(_T("ggroup"));
+		if (s.size() > 0) pStock->SetGgroup(s.c_str());
+		s = pt.get<string>(_T("gind"));
+		if (s.size() > 0) pStock->SetGind(s.c_str());
+		s = pt.get<string>(_T("gsector"));
+		if (s.size() > 0) pStock->SetGsector(s.c_str());
+		s = pt.get<string>(_T("gsubind"));
+		if (s.size() > 0) pStock->SetGsubind(s.c_str());
+		s = pt.get<string>(_T("ipo"));
+		if (s.size() > 0) pStock->SetIPODate(s.c_str());
+		s = pt.get<string>(_T("isin"));
+		if (s.size() > 0) pStock->SetIsin(s.c_str());
+		s = pt.get<string>(_T("marketCapitalization"));
+		if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
+
+		s = pt.get<string>(_T("naics"));
+		if (s.size() > 0) pStock->SetNaics(s.c_str());
+		s = pt.get<string>(_T("naicsNationalIndustry"));
+		if (s.size() > 0) pStock->SetNaicsNationalIndustry(s.c_str());
+		s = pt.get<string>(_T("naicsSector"));
+		if (s.size() > 0) pStock->SetNaicsSector(s.c_str());
+		s = pt.get<string>(_T("naicsSubsector"));
+		if (s.size() > 0) pStock->SetNaicsSubsector(s.c_str());
+		s = pt.get<string>(_T("name"));
+		if (s.size() > 0) pStock->SetName(s.c_str());
+		s = pt.get<string>(_T("phone"));
+		if (s.size() > 0) pStock->SetPhone(s.c_str());
+
+		s = pt.get<string>(_T("shareOutstanding"));
+		if (s.size() > 0) pStock->SetShareOutstanding(atof(s.c_str()));
+		s = pt.get<string>(_T("state"));
+		if (s.size() > 0) pStock->SetState(s.c_str());
+		s = pt.get<string>(_T("ticker"));
+		if (s.size() > 0) pStock->SetTicker(s.c_str());
+		s = pt.get<string>(_T("weburl"));
+		if (s.size() > 0) pStock->SetWebURL(s.c_str());
+
+		s = pt.get<string>(_T("logo"));
+		if (s.size() > 0) pStock->SetLogo(s.c_str());
+		s = pt.get<string>(_T("finnhubIndustry"));
+		if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
 		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
+		return true;
+	}
+	catch (ptree_error& e) {
+		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
+		pStock->SetUpdateProfileDB(true);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile "), e);
 		return false; // 没有公司简介
 	}
-	s = pt.get<string>(_T("city"));
-	pStock->SetCity(s.c_str());
-	s = pt.get<string>(_T("country"));
-	if (s.size() > 0) pStock->SetCountry(s.c_str());
-	s = pt.get<string>(_T("currency"));
-	if (s.size() > 0) pStock->SetCurrency(s.c_str());
-	s = pt.get<string>(_T("cusip"));
-	if (s.size() > 0) pStock->SetCusip(s.c_str());
-	s = pt.get<string>(_T("sedol"));
-	if (s.size() > 0) pStock->SetSedol(s.c_str());
-	s = pt.get<string>(_T("description"));
-	if (s.size() > 0) pStock->SetDescription(s.c_str());
-	s = pt.get<string>(_T("exchange"));
-	if (s.size() > 0) pStock->SetListedExchange(s.c_str());
-	s = pt.get<string>(_T("ggroup"));
-	if (s.size() > 0) pStock->SetGgroup(s.c_str());
-	s = pt.get<string>(_T("gind"));
-	if (s.size() > 0) pStock->SetGind(s.c_str());
-	s = pt.get<string>(_T("gsector"));
-	if (s.size() > 0) pStock->SetGsector(s.c_str());
-	s = pt.get<string>(_T("gsubind"));
-	if (s.size() > 0) pStock->SetGsubind(s.c_str());
-	s = pt.get<string>(_T("ipo"));
-	if (s.size() > 0) pStock->SetIPODate(s.c_str());
-	s = pt.get<string>(_T("isin"));
-	if (s.size() > 0) pStock->SetIsin(s.c_str());
-	s = pt.get<string>(_T("marketCapitalization"));
-	if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
-
-	s = pt.get<string>(_T("naics"));
-	if (s.size() > 0) pStock->SetNaics(s.c_str());
-	s = pt.get<string>(_T("naicsNationalIndustry"));
-	if (s.size() > 0) pStock->SetNaicsNationalIndustry(s.c_str());
-	s = pt.get<string>(_T("naicsSector"));
-	if (s.size() > 0) pStock->SetNaicsSector(s.c_str());
-	s = pt.get<string>(_T("naicsSubsector"));
-	if (s.size() > 0) pStock->SetNaicsSubsector(s.c_str());
-	s = pt.get<string>(_T("name"));
-	if (s.size() > 0) pStock->SetName(s.c_str());
-	s = pt.get<string>(_T("phone"));
-	if (s.size() > 0) pStock->SetPhone(s.c_str());
-
-	s = pt.get<string>(_T("shareOutstanding"));
-	if (s.size() > 0) pStock->SetShareOutstanding(atof(s.c_str()));
-	s = pt.get<string>(_T("state"));
-	if (s.size() > 0) pStock->SetState(s.c_str());
-	s = pt.get<string>(_T("ticker"));
-	if (s.size() > 0) pStock->SetTicker(s.c_str());
-	s = pt.get<string>(_T("weburl"));
-	if (s.size() > 0) pStock->SetWebURL(s.c_str());
-
-	s = pt.get<string>(_T("logo"));
-	if (s.size() > 0) pStock->SetLogo(s.c_str());
-	s = pt.get<string>(_T("finnhubIndustry"));
-	if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-	pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pStock->SetUpdateProfileDB(true);
-	return true;
 }
 
 /// <summary>
@@ -159,22 +159,23 @@ bool CWorldMarket::ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorl
 		s = pt.get<string>(_T("ipo"));
 		if (s.size() > 0) pStock->SetIPODate(s.c_str());
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e);
 		return false; // 出现错误则返回任务失败
 	}
 	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
-	CWorldStockPtr pStock = make_shared<CWorldStock>();
+	CWorldStockPtr pStock = nullptr;
 	ptree pt, pt2;
 	string s, sError;
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pStock = make_shared<CWorldStock>();
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pStock = make_shared<CWorldStock>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("currency"));
 			if (s.size() > 0) pStock->SetCurrency(s.c_str());
@@ -192,10 +193,10 @@ bool CWorldMarket::ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorld
 			if (s.size() > 0) pStock->SetType(s.c_str());
 			vStock.push_back(pStock);
 		}
-		catch (ptree_error&) {
-			TRACE("下载Finnhub Symbol有误\n");
-			return false;
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
+		return false;
 	}
 	return true;
 }
@@ -238,10 +239,12 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			return false;
 		}
 	}
-	catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		pStock->SetUpdateProfileDB(true);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
 		return false;
 	}
+
 	try {
 		pt2 = pt.get_child(_T("t"));
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -257,7 +260,8 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			vDayLine.push_back(pDayLine);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
 		return false;
 	}
 	try {
@@ -269,10 +273,6 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("o"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -281,10 +281,6 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("h"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -293,10 +289,6 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("l"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -305,10 +297,6 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("v"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -318,7 +306,8 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 			pDayLine->SetVolume(llTemp);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
 	}
 	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
 	pStock->UpdateDayLine(vDayLine);
@@ -351,7 +340,8 @@ bool CWorldMarket::ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr
 		tt = pt.get<time_t>(_T("t"));
 		pStock->SetTransactionTime(tt);
 	}
-	catch (ptree_error&) { // 数据格式不对，跳过。
+	catch (ptree_error& e) { // 数据格式不对，跳过。
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
 		return false;
 	}
 
@@ -366,27 +356,32 @@ bool CWorldMarket::ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CStr
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pt2 = it->second;
-		s = pt2.get_value<string>();
-		str = s.c_str();
-		vExchange.push_back(str);
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pt2 = it->second;
+			s = pt2.get_value<string>();
+			str = s.c_str();
+			vExchange.push_back(str);
+		}
 	}
-
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
+		return false;
+	}
 	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
-	CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
+	CForexSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
 	string s;
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pSymbol = make_shared<CFinnhubForexSymbol>();
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pSymbol = make_shared<CFinnhubForexSymbol>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
 			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
@@ -396,10 +391,10 @@ bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForex
 			pSymbol->SetSymbol(s.c_str());
 			vForexSymbol.push_back(pSymbol);
 		}
-		catch (ptree_error&) {
-			TRACE("Finnhub Forex Symbol Error\n");
-			return false;
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e);
+		return false;
 	}
 
 	return true;
@@ -444,9 +439,10 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			return false;
 		}
 	}
-	catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		pForexSymbol->SetIPOStatus(__STOCK_NULL__);
 		pForexSymbol->SetUpdateProfileDB(true);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
 		return true;
 	}
 	try {
@@ -463,7 +459,8 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			vDayLine.push_back(pDayLine);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
 		return false;
 	}
 	try {
@@ -475,10 +472,6 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("h"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -487,10 +480,6 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("l"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -499,10 +488,6 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("o"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -511,10 +496,6 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("v"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -524,7 +505,8 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 			pDayLine->SetVolume(llTemp);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
@@ -544,27 +526,32 @@ bool CWorldMarket::ProcessFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CSt
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pt2 = it->second;
-		s = pt2.get_value<string>();
-		str = s.c_str();
-		vExchange.push_back(str);
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pt2 = it->second;
+			s = pt2.get_value<string>();
+			str = s.c_str();
+			vExchange.push_back(str);
+		}
 	}
-
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e);
+		return false;
+	}
 	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol) {
-	CCryptoSymbolPtr pSymbol = make_shared<CFinnhubCryptoSymbol>();
+	CCryptoSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
 	string s;
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pSymbol = make_shared<CFinnhubCryptoSymbol>();
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
 			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
@@ -574,12 +561,11 @@ bool CWorldMarket::ProcessFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryp
 			pSymbol->SetSymbol(s.c_str());
 			vCryptoSymbol.push_back(pSymbol);
 		}
-		catch (ptree_error&) {
-			TRACE("Finnhub Crypto Symbol Error\n");
-			return false;
-		}
 	}
-
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e);
+		return false;
+	}
 	return true;
 }
 
@@ -601,7 +587,7 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 		str += pCryptoSymbol->GetSymbol();
 		str += _T("日线故障\n");
 		TRACE("%s", str.GetBuffer());
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
 
@@ -622,9 +608,10 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			return false;
 		}
 	}
-	catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		pCryptoSymbol->SetIPOStatus(__STOCK_NULL__);
 		pCryptoSymbol->SetUpdateProfileDB(true);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
 		return true;
 	}
 	try {
@@ -641,7 +628,8 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			vDayLine.push_back(pDayLine);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
 		return false;
 	}
 	try {
@@ -653,10 +641,6 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("h"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -665,10 +649,6 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("l"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -677,10 +657,6 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("o"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -689,10 +665,6 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
-	}
-	catch (ptree_error&) {
-	}
-	try {
 		pt2 = pt.get_child(_T("v"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -702,7 +674,8 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 			pDayLine->SetVolume(llTemp);
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
@@ -721,10 +694,10 @@ bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCount
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pCountry = make_shared<CCountry>();
-		pt2 = it->second;
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pCountry = make_shared<CCountry>();
+			pt2 = it->second;
 			s = pt2.get<string>(_T("code2"));
 			if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
 			s = pt2.get<string>(_T("code3"));
@@ -737,11 +710,12 @@ bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCount
 			pCountry->m_strCurrency = s.c_str();
 			s = pt2.get<string>(_T("currencyCode"));
 			pCountry->m_strCurrencyCode = s.c_str();
+			vCountry.push_back(pCountry);
 		}
-		catch (ptree_error&) {
-			return false;
-		}
-		vCountry.push_back(pCountry);
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e);
+		return false;
 	}
 	sort(vCountry.begin(), vCountry.end(), CompareCountryList);
 	return true;
@@ -788,14 +762,16 @@ bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, v
 		pt1 = pt.get_child(_T("data"));
 		stockSymbol = pt.get<string>(_T("symbol"));
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock InsiderTransaction "), e);
 		return false;
 	}
-	for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
-		pt2 = it->second;
-		try {
+
+	try {
+		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+			pInsiderTransaction = make_shared<CInsiderTransaction>();
+			pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
+			pt2 = it->second;
 			s = pt2.get<string>(_T("name"));
 			if (s.size() > 0) pInsiderTransaction->m_strPersonName = s.c_str();
 			pInsiderTransaction->m_lShare = pt2.get<long>(_T("share"));
@@ -809,11 +785,12 @@ bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, v
 			s = pt2.get<string>(_T("transactionCode"));
 			pInsiderTransaction->m_strTransactionCode = s.c_str();
 			pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
+			vInsiderTransaction.push_back(pInsiderTransaction);
 		}
-		catch (ptree_error&) {
-			return false;
-		}
-		vInsiderTransaction.push_back(pInsiderTransaction);
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock InsiderTransaction "), e);
+		return false;
 	}
 	sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);
 
@@ -829,14 +806,9 @@ bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<C
 
 	try {
 		pt1 = pt.get_child(_T("economicCalendar"));
-	}
-	catch (ptree_error&) {
-		return false;
-	}
-	for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-		pEconomicCalendar = make_shared<CEconomicCalendar>();
-		pt2 = it->second;
-		try {
+		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+			pEconomicCalendar = make_shared<CEconomicCalendar>();
+			pt2 = it->second;
 			s = pt2.get<string>(_T("country"));
 			if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
 			s = pt2.get<string>(_T("event"));
@@ -850,11 +822,12 @@ bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<C
 			pEconomicCalendar->m_strTime = s.c_str();
 			s = pt2.get<string>(_T("unit"));
 			pEconomicCalendar->m_strUnit = s.c_str();
+			vEconomicCalendar.push_back(pEconomicCalendar);
 		}
-		catch (ptree_error&) {
-			return false;
-		}
-		vEconomicCalendar.push_back(pEconomicCalendar);
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
+		return false;
 	}
 	return true;
 }
@@ -869,10 +842,10 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 
 	if (!ConvertToJSON(pt, pWebData)) return false;
 
-	for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-		pEPSSurprise = make_shared<CEPSSurprise>();
-		pt2 = it->second;
-		try {
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pEPSSurprise = make_shared<CEPSSurprise>();
+			pt2 = it->second;
 			s = pt2.get<string>(_T("symbol"));
 			pEPSSurprise->m_strSymbol = s.c_str();
 			s = pt2.get<string>(_T("period"));
@@ -881,11 +854,12 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 			pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
 			pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
 			pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
+			vEPSSurprise.push_back(pEPSSurprise);
 		}
-		catch (ptree_error&) {
-			return false;
-		}
-		vEPSSurprise.push_back(pEPSSurprise);
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e);
+		return false;
 	}
 	sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
 	return true;
@@ -944,7 +918,8 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 			return false;
 		}
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e);
 		return false;
 	}
 

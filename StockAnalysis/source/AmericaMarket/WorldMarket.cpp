@@ -31,10 +31,6 @@
 using namespace std;
 #include<algorithm>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif

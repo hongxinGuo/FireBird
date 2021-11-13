@@ -74,3 +74,5 @@ CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
 // 时间支持函数
 void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);
 void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
+
+void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);

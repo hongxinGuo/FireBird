@@ -47,6 +47,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 0);
+		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+		gl_systemMessage.PopErrorMessage();
 
 		gl_pWorldMarket->SetQuandlDataReceived(false);
 		EXPECT_CALL(QuandlWebInquiry, ReadWebData())

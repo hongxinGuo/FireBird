@@ -303,6 +303,17 @@ namespace StockAnalysisTest {
 		GetMarketTimeStruct(&tm_, tt, -8 * 3600);
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16)));
 	}
+
+	TEST_F(AccessoryTest, TestReportJSonErrorToSystemMessage) {
+		ptree_error e(_T("error message"));
+		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+
+		ReportJSonErrorToSystemMessage(_T("Error Message Prefix "), e);
+		CString strMessage = gl_systemMessage.PopErrorMessage();
+		EXPECT_STREQ(strMessage, _T("Error Message Prefix error message"));
+
+		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+	}
 }
 
 namespace StockAnalysisTest {

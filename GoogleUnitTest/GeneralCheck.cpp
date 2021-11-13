@@ -13,6 +13,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
 		EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 0) << gl_systemMessage.PopErrorMessage();
 	}
 
 	void EnvironmentCheck(void) {

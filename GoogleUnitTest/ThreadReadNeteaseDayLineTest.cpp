@@ -44,6 +44,8 @@ namespace StockAnalysisTest {
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
+		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+		gl_systemMessage.PopErrorMessage();
 
 		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);

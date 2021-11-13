@@ -49,6 +49,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 0);
+		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1) << "Tiingo工作线程报告出错";
+		gl_systemMessage.PopErrorMessage();
 
 		gl_pWorldMarket->SetTiingoDataReceived(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadWebData())

@@ -56,6 +56,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -169,6 +170,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetDayLineNeedUpdate(true);
 			m_pStock->SetDayLineNeedSaving(false);
 			m_pStock->SetUpdateProfileDB(false);
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -196,7 +198,7 @@ namespace StockAnalysisTest {
 			strMessage = _T("TiingoÏÂÔØ");
 			strMessage += m_pStock->GetSymbol();
 			strMessage += _T("ÈÕÏß¹ÊÕÏ\n");
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: //
 			EXPECT_FALSE(fSucceed);
@@ -293,6 +295,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 		}
 
@@ -369,6 +373,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 			m_pWebData = nullptr;
 		}
@@ -469,6 +474,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 		}
 

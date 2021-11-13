@@ -75,7 +75,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			strLeft = GetInquiringString().Left(80);
 			strMessage = _T("Net Warning No ") + strErrorNo + _T(" : ") + strLeft;
 			gl_systemMessage.PushErrorMessage(strMessage);
-			Sleep(1); // 等待一毫秒。不等待其实也可以，
+			Sleep(10); // 等待10毫秒。不等待其实也可以，
 			if (iCountNumber++ > 2) { // 重复读取三次皆失败后，则报错。
 				SetWebError(true);
 				m_dwWebErrorCode = exception->m_dwError;

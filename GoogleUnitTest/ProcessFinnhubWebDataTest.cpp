@@ -75,6 +75,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
@@ -143,6 +145,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
@@ -202,6 +206,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
@@ -279,6 +285,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetDayLineNeedUpdate(true);
 			m_pStock->SetDayLineNeedSaving(false);
 			m_pStock->SetUpdateProfileDB(false);
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -412,6 +419,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
 			m_pStock->SetUpdateProfileDB(false);
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -592,36 +600,48 @@ namespace StockAnalysisTest {
 			break;
 		case 4:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
 			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
 			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
 			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
 			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
 			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
@@ -633,6 +653,8 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
 			EXPECT_TRUE(m_pForexSymbol->IsNullStock());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		default:
 			break;
@@ -714,6 +736,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -777,6 +800,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -916,6 +940,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -992,6 +1017,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
@@ -1125,6 +1151,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -1254,6 +1281,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -1337,6 +1365,8 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 
 			//m_pCryptoSymbol->SetDayLineNeedUpdate(true);
@@ -1367,7 +1397,7 @@ namespace StockAnalysisTest {
 			strMessage = _T("下载");
 			strMessage += m_pCryptoSymbol->GetSymbol();
 			strMessage += _T("日线故障\n");
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_FALSE(fSucceed);
@@ -1382,7 +1412,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
 			break;
-		case 4:
+		case 4: //数据缺乏t项
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 5:

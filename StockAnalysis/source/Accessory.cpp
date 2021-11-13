@@ -442,7 +442,8 @@ bool ConvertToJSON(ptree& pt, string s) {
 	try {
 		read_json(ss, pt);
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		//ReportJSonErrorToSystemMessage(_T("JSon Reading Error "), e);
 		return false;
 	}
 	return true;
@@ -452,7 +453,8 @@ bool IsJsonReportingrror(ptree& pt, string& s) {
 	try {
 		s = pt.get<string>(_T("error"));
 	}
-	catch (ptree_error&) {
+	catch (ptree_error& e) {
+		//ReportJSonErrorToSystemMessage(_T("JSon get 'error'string Error "), e);
 		return false;
 	}
 	return true;
@@ -483,4 +485,10 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
 	tMarket = tUTC - tTimeZone;
 	gmtime_s(tm_, &tMarket);
+}
+
+void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
+	CString strError = strPrefix;
+	strError += e.what();
+	gl_systemMessage.PushErrorMessage(strError);
 }

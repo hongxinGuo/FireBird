@@ -160,6 +160,9 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	i++;
 	bufferTest[i] = 0x000;
 	if (fBadData) {
+		CString strTest = bufferTest;
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("SinaRTData整体数据出问题，抛掉不用"));
+		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 		return false; // 整个数据出现错误，后面的皆抛掉
 	}
 
@@ -855,19 +858,26 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 	long lSectionLength = 0;
 	CString strTest;
 	CString strStockSymbol, strNeteaseStockCode;
+	bool fBadData = false;
 
 	int i = 0;
-	while ((pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}') && (i < 1900)) {
+	while (!fBadData && (pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}')) {
 		bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
 		i++;
+		if (i >= 1900) {
+			fBadData = true;
+		}
+		if (pNeteaseWebRTData->GetCurrentPos() + i > pNeteaseWebRTData->GetBufferLength()) {
+			fBadData = true;
+		}
 	}
 	bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
 	i++;
 	lSectionLength = i;
 	bufferTest[i] = 0x000;
 	strTest = bufferTest;
-	if (i >= 1900) {
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+	if (fBadData) {
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("NeteaseRTData整体数据出问题，抛掉不用"));
 		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 		return false; // 整个数据出现错误，后面的皆抛掉
 	}
