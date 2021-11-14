@@ -23,9 +23,10 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 			GeneralCheck();
 			m_id.SetBufferLength(1024 * 1024 * 16);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 		}
 
 	public:

@@ -341,11 +341,8 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		SetDataSource(__SINA_RT_WEB_DATA__);
 		return true;
 	}
-	catch (exception&) {
-		TRACE(_T("ReadSinaData异常\n"));
-		CString str = m_strSymbol;
-		str += _T(" ReadSinaData异常\n");
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		return false;
 	}
 }
@@ -432,10 +429,8 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 
 		return true;
 	}
-	catch (exception&) {
-		TRACE(_T("ReadSinaOneValue异常\n"));
-		CString str = _T("ReadSinaOneValue异常\n");
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadSinaDataOneValue异常 "), e);
 		return false;
 	}
 }
@@ -732,8 +727,8 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		SetDataSource(__TENGXUN_RT_WEB_DATA__);
 		return true;
 	}
-	catch (exception&) {
-		TRACE(_T("ReadTengxunData异常\n"));
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadTengxunData异常 "), e);
 		return false;
 	}
 }
@@ -824,8 +819,8 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 		pWebDataReceived->IncreaseCurrentPos();
 		return true;
 	}
-	catch (exception&) {
-		TRACE("ReadTengxunOneValue函数异常\n");
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadTengxunOnValue异常 "), e);
 		return false;
 	}
 }
@@ -911,14 +906,8 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 		SetDataSource(__NETEASE_RT_WEB_DATA__);
 		return true;
 	}
-	catch (exception&) {
-		TRACE(_T("%s's ReadNeteaseData异常\n"), strStockCode.GetBuffer());
-		CString str = _T("ReadNeteaseData异常");
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		TRACE(_T("%s\n"), strTest.GetBuffer());
-#ifdef DEBUG
-		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
-#endif // DEBUG
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadNeteaseData异常 "), e);
 		m_fActive = false;
 		// 跨过此错误数据，寻找下一个数据的起始处。
 		pNeteaseWebRTData->SetCurrentPos(lSectionBegin + lSectionLength);
@@ -1005,8 +994,8 @@ long CWebRTData::GetNeteaseSymbolIndex(CString strSymbol) {
 	try {
 		lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
 	}
-	catch (exception&) {
-		TRACE(_T("GetNeteaseSymbolIndex异常: %s\n"), strSymbol.GetBuffer());
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("GetNeteaseSymbolIndex异常 "), e);
 		lIndex = 0;
 	}
 	return lIndex;
@@ -1086,8 +1075,8 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
 		}
 		return true;
 	}
-	catch (exception&) {
-		TRACE(_T("GetNeteaseIndexAndValue Exception\n"));
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("GetNeteaseINdexAndValue异常 "), e);
 		lIndex = 0;
 		strValue = _T("");
 		return false;

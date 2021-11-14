@@ -282,6 +282,10 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoForexData8(8, _T(""), _T("{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
 	// jsong格式错误
 	TiingoWebSocketData tiingoForexData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
+	// heart beat
+	TiingoWebSocketData tiingoForexData10(3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+	// authenizition
+	TiingoWebSocketData tiingoForexData11(4, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
 
 	class ProcessOneTiingoForexWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -307,7 +311,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
-		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &tiingoForexData8, &tiingoForexData9));
+		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &tiingoForexData8, &tiingoForexData9,
+			&tiingoForexData10, &tiingoForexData11));
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
@@ -340,6 +345,12 @@ namespace StockAnalysisTest {
 			break;
 		case 9: // jsong格式错误
 			EXPECT_FALSE(fSucceed);
+			break;
+		case 10: // heart beat
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 11: // authenizition
+			EXPECT_TRUE(fSucceed);
 			break;
 		default:
 			break;
@@ -424,7 +435,7 @@ namespace StockAnalysisTest {
 		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
 			break;
-		case 4: // 正确
+		case 4: // 正确 authenizition
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 5: // messageType错误

@@ -83,6 +83,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			gl_ThreadStatus.SetRTDataNeedCalculate(false);
@@ -113,7 +114,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:
-			EXPECT_GE(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << _T("无效实时数据，报错后直接返回");
+			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1) << _T("无效实时数据，报错后直接返回");
 			break;
 		case 2:
 			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
@@ -152,6 +153,9 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStock()) << "删除了新增加的股票";
 			EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStockMapSize()) << "也同时删除了map索引";
 			EXPECT_FALSE(gl_pChinaMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
+			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+
+			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		default:
 			break;

@@ -34,6 +34,8 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 		}
 	};
@@ -652,7 +654,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 		}
 
 	public:
@@ -1479,6 +1481,7 @@ namespace StockAnalysisTest {
 			// clearup
 			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 		}
 
 	public:

@@ -76,3 +76,4 @@ void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);
 void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
+void ReportErrorToSystemMessage(CString strPrefix, exception& e);

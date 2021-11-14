@@ -492,3 +492,9 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
 	strError += e.what();
 	gl_systemMessage.PushErrorMessage(strError);
 }
+
+void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
+	CString strError = strPrefix;
+	strError += e.what();
+	gl_systemMessage.PushErrorMessage(strError);
+}

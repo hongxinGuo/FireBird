@@ -30,6 +30,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 		}
 		CMockNeteaseDayLineWebInquiry NeteaseDayLineWebInquiry;
 	};
@@ -44,7 +45,7 @@ namespace StockAnalysisTest {
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1) << gl_systemMessage.PopErrorMessage();
 		gl_systemMessage.PopErrorMessage();
 
 		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());

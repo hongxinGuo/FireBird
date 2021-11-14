@@ -150,6 +150,8 @@ namespace StockAnalysisTest {
 
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 		}
 	};

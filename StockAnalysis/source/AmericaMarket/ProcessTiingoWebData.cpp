@@ -577,6 +577,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]}
 // {"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]}
 //
@@ -592,12 +594,20 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sService = pt.get<string>(_T("service"));
-			if (sService.compare(_T("fx")) != 0) return false;
 			sType = pt.get<string>(_T("messageType"));
 			chType = sType.at(0);
-			switch (chType) { // 交易数据
-			case 'A': // forex目前只有此项
+			switch (chType) {
+			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+				pt2 = pt.get_child(_T("data"));
+				ASSERT(m_TiingoForexWebSocket.GetSubscriptionId() == 0);
+				m_TiingoForexWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				break;
+			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
+				// do nothing
+				break;
+			case 'A': // new data
+				sService = pt.get<string>(_T("service"));
+				if (sService.compare(_T("fx")) != 0) return false; // 只有此项
 				pForexData = make_shared<CTiingoForexWebSocketData>();
 				pt2 = pt.get_child(_T("data"));
 				it = pt2.begin();
@@ -630,6 +640,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 				break;
 			default:
 				// error
+				gl_systemMessage.PushErrorMessage(_T("Tiingo Forex WebSocket type Error"));
 				return false;
 				break;
 			}

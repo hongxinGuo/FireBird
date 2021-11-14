@@ -301,7 +301,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
-			llTemp = pt3.get_value<INT64>();
+			llTemp = pt3.get_value<double>();
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
@@ -500,7 +500,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
-			llTemp = pt3.get_value<INT64>();
+			llTemp = pt3.get_value<double>();
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
@@ -669,7 +669,7 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
-			llTemp = pt3.get_value<INT64>();
+			llTemp = pt3.get_value<double>();
 			pDayLine = vDayLine.at(i++);
 			pDayLine->SetVolume(llTemp);
 		}

@@ -874,6 +874,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
@@ -1092,6 +1093,8 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}

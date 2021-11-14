@@ -717,7 +717,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("网易实时数据源设置有误"));
+			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
 			continue;
 		}
 		if (pRTData->IsActive()) { // 此实时数据有效？
@@ -1701,8 +1701,8 @@ CString CChinaMarket::GetStockName(CString strStockCode) {
 	try {
 		return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode))->GetDisplaySymbol());
 	}
-	catch (exception&) {
-		TRACE("GetStockName函数 %s 异常\n", strStockCode.GetBuffer());
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
 		return _T("");
 	}
 }
@@ -1728,8 +1728,8 @@ CChinaStockPtr CChinaMarket::GetStock(long lIndex) {
 	try {
 		return m_vChinaMarketStock.at(lIndex);
 	}
-	catch (exception&) {
-		TRACE("GetStock越界\n");
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("GetStock "), e);
 		return nullptr;
 	}
 }
