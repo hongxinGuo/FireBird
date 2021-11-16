@@ -218,8 +218,7 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 		str = _T("下载");
 		str += pStock->GetSymbol();
 		str += _T("日线故障\n");
-		TRACE("%s", str.GetBuffer());
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
 
@@ -417,8 +416,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 		str = _T("下载");
 		str += pForexSymbol->GetSymbol();
 		str += _T("日线故障\n");
-		TRACE("%s", str.GetBuffer());
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
 

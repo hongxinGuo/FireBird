@@ -313,7 +313,7 @@ namespace StockAnalysisTest {
 			strMessage = _T("下载");
 			strMessage += m_pStock->GetSymbol();
 			strMessage += _T("日线故障\n");
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_FALSE(fSucceed);
@@ -583,7 +583,7 @@ namespace StockAnalysisTest {
 			strMessage = _T("下载");
 			strMessage += m_pForexSymbol->GetSymbol();
 			strMessage += _T("日线故障\n");
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_FALSE(fSucceed);
