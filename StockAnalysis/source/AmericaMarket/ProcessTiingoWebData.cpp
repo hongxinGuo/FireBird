@@ -138,18 +138,12 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 		return false;
 	}
 
-	TRACE("今日Tiingo Symbol总数为%d\n", iCount);
-	sprintf_s(buffer, _T("%6d"), iCount);
-	strNumber = buffer;
-	str = _T("今日Tiingo Symbol总数为") + strNumber;
-	//gl_systemMessage.PushInnerSystemInformationMessage(str);
-
 	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//
+// Tiingo日线格式：
 // [{
 //	"date":"2019-01-02T00:00:00.000Z",
 //		"close" : 157.92,

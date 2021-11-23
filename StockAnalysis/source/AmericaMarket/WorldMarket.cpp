@@ -514,11 +514,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case  __COMPANY_SYMBOLS__:
 				if (ProcessFinnhubStockSymbol(pWebData, vStock)) {
-					//TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStock.size());
-					sprintf_s(buffer, _T("%6d"), (int)vStock.size());
-					strNumber = buffer;
-					str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
-					gl_systemMessage.PushInnerSystemInformationMessage(str);
 					// 加上交易所代码。
 					for (auto& pStock3 : vStock) {
 						pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
@@ -2149,7 +2144,7 @@ bool CWorldMarket::LoadStockDB(void) {
 
 	char buffer[100];
 	sprintf_s(buffer, _T("%d"), lSymbolLength);
-	str = _T("最长长度为");
+	str = _T("WorldMarket股票代码最长长度为");
 	str += buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 
@@ -3003,7 +2998,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 
 /// <summary>
 /// 更新证券的实时信息
-/// 目前只使用IEX和Finnhub的数据
+/// 目前只使用IEX和Finnhub的数据，其他数据抛弃掉
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
