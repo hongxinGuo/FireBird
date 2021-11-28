@@ -60,7 +60,7 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
       || (m_strSICSector.GetLength() > 100)
       || (m_strTiingoIndustry.GetLength() > 100)
       || (m_strTiingoSector.GetLength() > 100)) {
-    TRACE("×Ö·û´®Ì«³¤\n");
+    gl_systemMessage.PushErrorMessage(_T("Tiingo stock ") + m_strName + _T(" ×Ö·û´®Ì«³¤"));
   }
   m_strName = m_strName.Left(200);
   m_strSICIndustry = m_strSICIndustry.Left(100);

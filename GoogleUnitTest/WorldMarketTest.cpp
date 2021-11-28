@@ -1045,6 +1045,8 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
+		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub country List¸üÐÂÍê±Ï"));
 		WebInquiry inquiry = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_EQ(inquiry.m_iPriority, 10);
 		EXPECT_EQ(inquiry.m_lInquiryIndex, __ECONOMIC_COUNTRY_LIST__);

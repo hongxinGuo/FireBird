@@ -25,6 +25,10 @@ public:
 	bool Send(string message);
 
 	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }
+	bool IsClosed(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
+	bool IsOpen(void) { return m_webSocket.getReadyState() == ix::ReadyState::Open; }
+	bool IsClosing(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
+	bool IsConnecting(void) { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
 	void SetSubscriptionStatus(bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
 	bool IsSubscriptable(void) noexcept { return m_fHaveSubscriptionId; }

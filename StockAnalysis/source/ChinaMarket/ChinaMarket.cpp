@@ -1853,7 +1853,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	}
 	auto pDayLineData = dayLineContainer.GetContainer();
 
-	gl_systemMessage.PushDayLineInfoMessage(_T("开始生成今日周线"));
+	gl_systemMessage.PushInformationMessage(_T("开始生成今日周线"));
 
 	CreateStockCodeSet(setDayLineStockCode, dayLineContainer.GetContainer());
 
@@ -1884,7 +1884,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	// 存储当前周数据于当前周数据表
 	weekLineContainer.SaveCurrentWeekLine();
 
-	gl_systemMessage.PushDayLineInfoMessage(_T("生成今日周线任务完成"));
+	gl_systemMessage.PushInformationMessage(_T("生成今日周线任务完成"));
 
 	return true;
 }
@@ -2872,7 +2872,7 @@ bool CChinaMarket::BuildDayLineRS(long lDate) {
 		setDayLineBasicInfo.Close();
 		CString str = strDate;
 		str += _T("日数据集为空，没有计算相对强度");
-		gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
+		gl_systemMessage.PushInformationMessage(str);    // 采用同步机制报告信息
 		return false;
 	}
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -2954,7 +2954,7 @@ bool CChinaMarket::BuildDayLineRS(long lDate) {
 	CString strDate2 = GetStringOfDate(lDate);
 	CString strTemp;
 	strTemp = strDate2 + _T("的股票日线相对强度计算完成");
-	gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
+	gl_systemMessage.PushInformationMessage(strTemp);    // 采用同步机制报告信息
 
 	return(true);
 }

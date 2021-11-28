@@ -4,7 +4,7 @@
 
 time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
-	tm tm_;
+	tm tm_{0,0,0,0,0,0};
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(bufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -24,7 +24,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time
 
 time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
-	tm tm_;
+	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -43,7 +43,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTim
 }
 
 time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
-	tm tmMarket;
+	tm tmMarket{ 0, 0, 0, 0,0, 0};
 
 	ASSERT(lDate >= 19700101);
 	tmMarket.tm_year = lDate / 10000 - 1900;

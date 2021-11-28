@@ -55,4 +55,13 @@ namespace StockAnalysisTest {
 	TEST_F(CWebSocketTest, TestGetState) {
 		EXPECT_EQ(m_webSocket.GetState(), ix::ReadyState::Closed);
 	}
+
+
+	TEST_F(CWebSocketTest, TestIsClosed) {
+		EXPECT_EQ(m_webSocket.GetState(), ix::ReadyState::Closed);
+		EXPECT_TRUE(m_webSocket.IsClosed()) << "无法设置此标识。此标识默认为真，只能判断这种状态， 无法测试为假的状态";
+		EXPECT_FALSE(m_webSocket.IsOpen()) << "无法设置此标识，只能判断此标识为假";
+		EXPECT_FALSE(m_webSocket.IsClosing()) << "无法设置此标识，只能判断此标识为假";
+		EXPECT_FALSE(m_webSocket.IsConnecting()) << "无法设置此标识，只能判断此标识为假";
+	}
 }
