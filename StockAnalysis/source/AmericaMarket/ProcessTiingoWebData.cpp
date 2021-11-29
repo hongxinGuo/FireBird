@@ -236,6 +236,8 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// https://api.tiingo.com/documentation/websockets/iex
+// 
 // {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
@@ -250,14 +252,14 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 
 	string sMessageType, sTicker, sExchange, sDatetime, sValue;
 	int i = 0;
-	CTiingoIEXWebSocketDataPtr pIEXData = nullptr;
+	CTiingoIEXSocketPtr pIEXData = nullptr;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
 			sType = pt.get<string>(_T("messageType"));
 			switch (sType.at(0)) {
 			case 'A': // 交易数据
-				pIEXData = make_shared<CTiingoIEXWebSocketData>();
+				pIEXData = make_shared<CTiingoIEXSocket>();
 				sService = pt.get<string>(_T("service"));
 				if (sService.compare(_T("iex")) != 0) return false; // 此项必须为"iex"
 				pt2 = pt.get_child(_T("data"));
@@ -430,7 +432,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 					return false;
 					break;
 				}
-				m_qTiingoIEXWebSocketData.push(pIEXData);
+				m_qTiingoIEXSocket.push(pIEXData);
 				break;
 			case 'I':// authenization  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
@@ -459,7 +461,9 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 }
 
 /// <summary>
-///
+/// 
+/// https://api.tiingo.com/documentation/websockets/crypto
+/// 
 /// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 /// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 /// {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
@@ -475,7 +479,7 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 	char chType;
 
 	string sMessageType, sTickers, sExchange, sDatetime, sService;
-	CTiingoCryptoWebSocketDataPtr pCryptoData = nullptr;
+	CTiingoCryptoSocketPtr pCryptoData = nullptr;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
@@ -491,7 +495,7 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 				// do nothing
 				break;
 			case 'A': // new data
-				pCryptoData = make_shared<CTiingoCryptoWebSocketData>();
+				pCryptoData = make_shared<CTiingoCryptoSocket>();
 				sService = pt.get<string>(_T("service"));
 				if (sService.compare(_T("crypto_data")) != 0) return false; // 格式不符则退出
 				pt2 = pt.get_child(_T("data"));
@@ -550,7 +554,7 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 				else { // 格式不对
 					return false;
 				}
-				m_qTiingoCryptoWebSocketData.push(pCryptoData);
+				m_qTiingoCryptoSocket.push(pCryptoData);
 				break;
 			default: // 错误
 				return false;
@@ -571,6 +575,8 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// https://api.tiingo.com/documentation/websockets/forex
+// 
 // {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]}
@@ -584,7 +590,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 	char chType;
 
 	string sMessageType, sTickers, sDatetime;
-	CTiingoForexWebSocketDataPtr pForexData = nullptr;
+	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
@@ -602,7 +608,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 			case 'A': // new data
 				sService = pt.get<string>(_T("service"));
 				if (sService.compare(_T("fx")) != 0) return false; // 只有此项
-				pForexData = make_shared<CTiingoForexWebSocketData>();
+				pForexData = make_shared<CTiingoForexSocket>();
 				pt2 = pt.get_child(_T("data"));
 				it = pt2.begin();
 				pt3 = it->second;
@@ -630,7 +636,7 @@ bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) 
 				it++;
 				pt3 = it->second;
 				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价
-				m_qTiingoForexWebSocketData.push(pForexData);
+				m_qTiingoForexSocket.push(pForexData);
 				break;
 			default:
 				// error

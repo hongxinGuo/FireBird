@@ -3,9 +3,9 @@
 using namespace std;
 #include<memory>
 
-class CTiingoCryptoWebSocketData : public CObject {
+class CTiingoCryptoSocket : public CObject {
 public:
-	CTiingoCryptoWebSocketData() {
+	CTiingoCryptoSocket() {
 		m_chMessageType = ' ';
 		m_strSymbol = _T("");
 		m_strExchange = _T("");
@@ -26,11 +26,11 @@ public:
 	double m_dLastSize;
 };
 
-typedef shared_ptr<CTiingoCryptoWebSocketData> CTiingoCryptoWebSocketDataPtr;
+typedef shared_ptr<CTiingoCryptoSocket> CTiingoCryptoSocketPtr;
 
-class CTiingoForexWebSocketData : public CObject {
+class CTiingoForexSocket : public CObject {
 public:
-	CTiingoForexWebSocketData() {
+	CTiingoForexSocket() {
 		m_chMessageType = 'Q';
 		m_strSymbol = _T("");
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
@@ -47,11 +47,11 @@ public:
 	double m_dAskSize;
 };
 
-typedef shared_ptr<CTiingoForexWebSocketData> CTiingoForexWebSocketDataPtr;
+typedef shared_ptr<CTiingoForexSocket> CTiingoForexSocketPtr;
 
-class CTiingoIEXWebSocketData : public CObject {
+class CTiingoIEXSocket : public CObject {
 public:
-	CTiingoIEXWebSocketData() {
+	CTiingoIEXSocket() {
 		m_chMessageType = 'Q';
 		m_strSymbol = _T("");
 		m_iNanoseconds = 0;
@@ -78,11 +78,11 @@ public:
 	int m_iNMSRule611; // 1 if the trade is not subject to NMS Rule 611 (trade through), 0 if the trade is subject to Rule NMS 611. Only available for Trade updates, null otherwise.
 };
 
-typedef shared_ptr<CTiingoIEXWebSocketData> CTiingoIEXWebSocketDataPtr;
+typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
 
-class CFinnhubWebSocketData : public CObject {
+class CFinnhubSocket : public CObject {
 public:
-	CFinnhubWebSocketData() {
+	CFinnhubSocket() {
 		m_strSymbol = _T("");
 		m_dLastPrice = m_dLastVolume = 0;
 		m_iSeconds = 0;
@@ -96,4 +96,4 @@ public:
 	CString m_strCode; // trade conditions
 };
 
-typedef shared_ptr<CFinnhubWebSocketData> CFinnhubWebSocketDataPtr;
+typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;

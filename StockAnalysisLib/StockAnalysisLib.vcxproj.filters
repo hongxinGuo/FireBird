@@ -121,6 +121,9 @@
     <Filter Include="源文件\DataBase\PotenDailyBriefing">
       <UniqueIdentifier>{2eb37662-f63b-4c1a-98e6-a7e9f6cb7a94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\DataSourceProcess">
+      <UniqueIdentifier>{6fdbca00-8b26-43e6-9a84-1f2f9881d7bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -303,7 +306,7 @@
     <ClInclude Include="..\StockAnalysis\source\QueueString.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebSocketData.h">
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WebSocketData.h">
       <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h">
@@ -838,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp">
       <Filter>源文件\网络数据提取器</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataSource\FinnhubWebSocketData.cpp">
+      <Filter>源文件\DataSourceProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

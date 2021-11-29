@@ -1046,7 +1046,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub country List更新完毕"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("查询Finnhub country List"));
 		WebInquiry inquiry = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_EQ(inquiry.m_iPriority, 10);
 		EXPECT_EQ(inquiry.m_lInquiryIndex, __ECONOMIC_COUNTRY_LIST__);
@@ -1093,7 +1093,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubSymbolUpdated()) << "交易所都查询完了";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("交易所代码数据查询完毕"));
+		EXPECT_STREQ(str, _T("Finnhub交易所代码数据查询完毕"));
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCompanyProfileConcise) {

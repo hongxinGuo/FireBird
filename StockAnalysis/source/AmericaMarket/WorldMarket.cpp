@@ -192,10 +192,10 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_lLastTotalSICIndustry = 0;
 	m_lLastTotalNaicsIndustry = 0;
 
-	m_iFinnhubWebSocketDataSize = 0;
-	m_iTiingoIEXWebSocketDataSize = 0;
-	m_iTiingoCryptoWebSocketDataSize = 0;
-	m_iTiingoForexWebSocketDataSize = 0;
+	m_iProcessedFinnhubWebSocket = 0;
+	m_iProcessedTiingoIEXWebSocket = 0;
+	m_iProcessedTiingoCryptoWebSocket = 0;
+	m_iProcessedTiingoForexWebSocket = 0;
 
 	if (GetDayOfWeek() == 6) { // 每周的星期六更新一次EPSSurprise
 		m_lCurrentUpdateEPSSurprisePos = 0;
@@ -930,7 +930,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	}
 
 	TaskProcessWebSocketData();
-	TaskUpdateWorldStockFromWebSocketData();
+	TaskUpdateWorldStockFromWebSocket();
 
 	static bool sm_fConnectedFinnhubWebSocket = false;
 	static bool sm_fSendFinnhubWebStocketMessage = false;
@@ -1102,7 +1102,7 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 		inquiry.m_iPriority = 10;
 		m_qFinnhubWebInquiry.push(inquiry);
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Finnhub country List更新完毕"));
+		gl_systemMessage.PushInformationMessage(_T("查询Finnhub country List"));
 		return true;
 	}
 	return false;
@@ -1138,7 +1138,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			fHaveInquiry = false;
 			SetFinnhubSymbolUpdated(true);
 			TRACE("Finnhub交易所代码数据查询完毕\n");
-			str = _T("交易所代码数据查询完毕");
+			str = _T("Finnhub交易所代码数据查询完毕");
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -2964,7 +2964,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 		iTotalDataSize += pString->size();
 		ProcessOneFinnhubWebSocketData(pString);
 	}
-	m_iFinnhubWebSocketDataSize = iTotalDataSize;
+	m_iProcessedFinnhubWebSocket = iTotalDataSize;
 
 	return true;
 }
@@ -2979,7 +2979,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 		iTotalDataSize += pString->size();
 		ProcessOneTiingoIEXWebSocketData(pString);
 	}
-	m_iTiingoIEXWebSocketDataSize = iTotalDataSize;
+	m_iProcessedTiingoIEXWebSocket = iTotalDataSize;
 	return true;
 }
 
@@ -2993,7 +2993,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 		iTotalDataSize += pString->size();
 		ProcessOneTiingoCryptoWebSocketData(pString);
 	}
-	m_iTiingoCryptoWebSocketDataSize = iTotalDataSize;
+	m_iProcessedTiingoCryptoWebSocket = iTotalDataSize;
 	return true;
 }
 
@@ -3006,7 +3006,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 		iTotalDataSize += pString->size();
 		ProcessOneTiingoForexWebSocketData(pString);
 	}
-	m_iTiingoForexWebSocketDataSize = iTotalDataSize;
+	m_iProcessedTiingoForexWebSocket = iTotalDataSize;
 	return true;
 }
 
@@ -3016,44 +3016,44 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool CWorldMarket::TaskUpdateWorldStockFromWebSocketData(void) {
-	CTiingoIEXWebSocketDataPtr pIEXData;
-	CTiingoCryptoWebSocketDataPtr pCryptoData;
-	CTiingoForexWebSocketDataPtr pForexData;
-	CFinnhubWebSocketDataPtr pFinnhubData;
+bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
+	CTiingoIEXSocketPtr pIEXData;
+	CTiingoCryptoSocketPtr pCryptoData;
+	CTiingoForexSocketPtr pForexData;
+	CFinnhubSocketPtr pFinnhubData;
 	CWorldStockPtr pStock = nullptr;
 
-	auto total = m_qTiingoIEXWebSocketData.size();
+	auto total = m_qTiingoIEXSocket.size();
 
 	for (auto i = 0; i < total; i++) {
-		pIEXData = m_qTiingoIEXWebSocketData.front();
-		m_qTiingoIEXWebSocketData.pop();
-		UpdateWorldStockFromTiingoIEXWebSocketData(pIEXData);
+		pIEXData = m_qTiingoIEXSocket.front();
+		m_qTiingoIEXSocket.pop();
+		UpdateWorldStockFromTiingoIEXSocket(pIEXData);
 	}
 
-	total = m_qTiingoCryptoWebSocketData.size();
+	total = m_qTiingoCryptoSocket.size();
 	for (auto i = 0; i < total; i++) {
-		pCryptoData = m_qTiingoCryptoWebSocketData.front();
-		m_qTiingoCryptoWebSocketData.pop();
+		pCryptoData = m_qTiingoCryptoSocket.front();
+		m_qTiingoCryptoSocket.pop();
 	}
 
-	total = m_qTiingoForexWebSocketData.size();
+	total = m_qTiingoForexSocket.size();
 	for (auto i = 0; i < total; i++) {
-		pForexData = m_qTiingoForexWebSocketData.front();
-		m_qTiingoForexWebSocketData.pop();
+		pForexData = m_qTiingoForexSocket.front();
+		m_qTiingoForexSocket.pop();
 	}
 
-	total = m_qFinnhubWebSocketData.size();
+	total = m_qFinnhubSocket.size();
 	for (auto i = 0; i < total; i++) {
-		pFinnhubData = m_qFinnhubWebSocketData.front();
-		m_qFinnhubWebSocketData.pop();
-		UpdateWorldStockFromFinnhubWebSocketData(pFinnhubData);
+		pFinnhubData = m_qFinnhubSocket.front();
+		m_qFinnhubSocket.pop();
+		UpdateWorldStockFromFinnhubSocket(pFinnhubData);
 	}
 
 	return true;
 }
 
-bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData) {
+bool CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEXbData) {
 	CWorldStockPtr pStock = nullptr;
 
 	if (IsStock(pTiingoIEXbData->m_strSymbol)) {
@@ -3071,7 +3071,7 @@ bool CWorldMarket::UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocke
 	return true;
 }
 
-bool CWorldMarket::UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData) {
+bool CWorldMarket::UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhubData) {
 	CWorldStockPtr pStock = nullptr;
 
 	if (IsStock(pFinnhubData->m_strSymbol)) {
@@ -3083,28 +3083,28 @@ bool CWorldMarket::UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDat
 	return true;
 }
 
-CFinnhubWebSocketDataPtr CWorldMarket::PopFinnhubWebSocketData(void) {
-	CFinnhubWebSocketDataPtr p = m_qFinnhubWebSocketData.front();
-	m_qFinnhubWebSocketData.pop();
+CFinnhubSocketPtr CWorldMarket::PopFinnhubSocket(void) {
+	CFinnhubSocketPtr p = m_qFinnhubSocket.front();
+	m_qFinnhubSocket.pop();
 
 	return p;
 }
 
-CTiingoIEXWebSocketDataPtr CWorldMarket::PopTiingoIEXWebSocketData(void) {
-	CTiingoIEXWebSocketDataPtr p = m_qTiingoIEXWebSocketData.front();
-	m_qTiingoIEXWebSocketData.pop();
+CTiingoIEXSocketPtr CWorldMarket::PopTiingoIEXSocket(void) {
+	CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front();
+	m_qTiingoIEXSocket.pop();
 
 	return p;
 }
-CTiingoCryptoWebSocketDataPtr CWorldMarket::PopTiingoCryptoWebSocketData(void) {
-	CTiingoCryptoWebSocketDataPtr p = m_qTiingoCryptoWebSocketData.front();
-	m_qTiingoCryptoWebSocketData.pop();
+CTiingoCryptoSocketPtr CWorldMarket::PopTiingoCryptoSocket(void) {
+	CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front();
+	m_qTiingoCryptoSocket.pop();
 
 	return p;
 }
-CTiingoForexWebSocketDataPtr CWorldMarket::PopTiingoForexWebSocketData(void) {
-	CTiingoForexWebSocketDataPtr p = m_qTiingoForexWebSocketData.front();
-	m_qTiingoForexWebSocketData.pop();
+CTiingoForexSocketPtr CWorldMarket::PopTiingoForexSocket(void) {
+	CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();
+	m_qTiingoForexSocket.pop();
 
 	return p;
 }

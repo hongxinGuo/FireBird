@@ -316,12 +316,12 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
-		CTiingoForexWebSocketDataPtr pForex;
+		CTiingoForexSocketPtr pForex;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			pForex = gl_pWorldMarket->PopTiingoForexWebSocketData();
+			pForex = gl_pWorldMarket->PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_STREQ(pForex->m_strSymbol, _T("eurnok"));
 			EXPECT_DOUBLE_EQ(pForex->m_dBidSize, 5000000);
@@ -332,7 +332,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
-			pForex = gl_pWorldMarket->PopTiingoForexWebSocketData();
+			pForex = gl_pWorldMarket->PopTiingoForexSocket();
 			break;
 		case 6: //
 			EXPECT_FALSE(fSucceed);
@@ -401,12 +401,12 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
-		CTiingoCryptoWebSocketDataPtr pCrypto;
+		CTiingoCryptoSocketPtr pCrypto;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			pCrypto = gl_pWorldMarket->PopTiingoCryptoWebSocketData();
+			pCrypto = gl_pWorldMarket->PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("bitfinex"));
 			EXPECT_STREQ(pCrypto->m_strSymbol, _T("neojpy"));
@@ -420,7 +420,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			pCrypto = gl_pWorldMarket->PopTiingoCryptoWebSocketData();
+			pCrypto = gl_pWorldMarket->PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("binance"));
 			EXPECT_STREQ(pCrypto->m_strSymbol, _T("evxbtc"));
@@ -500,13 +500,13 @@ namespace StockAnalysisTest {
 			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
-		CTiingoIEXWebSocketDataPtr pTiingoIEX;
+		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
 		fSucceed = gl_pWorldMarket->ProcessOneTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXWebSocketData();
+			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("vym"));
 			EXPECT_EQ(pTiingoIEX->m_dBidSize, 100);
@@ -523,7 +523,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0); break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXWebSocketData();
+			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225594808294);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("wes"));
 			EXPECT_EQ(pTiingoIEX->m_dBidSize, 0);

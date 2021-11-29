@@ -20,7 +20,7 @@
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
 
-#include"TiingoWebSocketData.h"
+#include"WebSocketData.h"
 
 #include"WebSocket.h"
 
@@ -419,26 +419,26 @@ public:
 	bool ProcessTiingoForexWebSocketData();
 	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> data);
 
-	bool TaskUpdateWorldStockFromWebSocketData(void);
-	bool UpdateWorldStockFromTiingoIEXWebSocketData(CTiingoIEXWebSocketDataPtr pTiingoIEXbData);
-	bool UpdateWorldStockFromFinnhubWebSocketData(CFinnhubWebSocketDataPtr pFinnhubData);
+	bool TaskUpdateWorldStockFromWebSocket(void);
+	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
+	bool UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
 
 	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return (int)m_iWebSocketReceivedNumberPerSecond; }
 	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
 
-	CFinnhubWebSocketDataPtr PopFinnhubWebSocketData(void);
-	CTiingoIEXWebSocketDataPtr PopTiingoIEXWebSocketData(void);
-	CTiingoCryptoWebSocketDataPtr PopTiingoCryptoWebSocketData(void);
-	CTiingoForexWebSocketDataPtr PopTiingoForexWebSocketData(void);
+	CFinnhubSocketPtr PopFinnhubSocket(void);
+	CTiingoIEXSocketPtr PopTiingoIEXSocket(void);
+	CTiingoCryptoSocketPtr PopTiingoCryptoSocket(void);
+	CTiingoForexSocketPtr PopTiingoForexSocket(void);
 
-	int GetFinnhubWebSocketDataSize(void) noexcept { return m_iFinnhubWebSocketDataSize; }
-	void ClearFinnhubWebSocketDataSize(void) noexcept { m_iFinnhubWebSocketDataSize = 0; }
-	int GetTiingoIEXWebSocketDataSize(void) noexcept { return m_iTiingoIEXWebSocketDataSize; }
-	void ClearTiingoIEXWebSocketDataSize(void) noexcept { m_iTiingoIEXWebSocketDataSize = 0; }
-	int GetTiingoCryptoWebSocketDataSize(void) noexcept { return m_iTiingoCryptoWebSocketDataSize; }
-	void ClearTiingoCryptoWebSocketDataSize(void) noexcept { m_iTiingoCryptoWebSocketDataSize = 0; }
-	int GetTiingoForexWebSocketDataSize(void) noexcept { return m_iTiingoForexWebSocketDataSize; }
-	void ClearTiingoForexWebSocketDataSize(void) noexcept { m_iTiingoForexWebSocketDataSize = 0; }
+	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }
+	void ClearPorcessedFinnhubWebSocket(void) noexcept { m_iProcessedFinnhubWebSocket = 0; }
+	int GetProcessedTiingoIEXWebSocket(void) noexcept { return m_iProcessedTiingoIEXWebSocket; }
+	void ClearProcessedTiingoIEXWebSocket(void) noexcept { m_iProcessedTiingoIEXWebSocket = 0; }
+	int GetProcessedTiingoCryptoWebSocket(void) noexcept { return m_iProcessedTiingoCryptoWebSocket; }
+	void ClearProcessedTiingoCryptoWebSocket(void) noexcept { m_iProcessedTiingoCryptoWebSocket = 0; }
+	int GetProcessedTiingoForexWebSocket(void) noexcept { return m_iProcessedTiingoForexWebSocket; }
+	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
 protected:
 	vector<CFinnhubExchangePtr> m_vFinnhubExchange;
@@ -553,15 +553,15 @@ protected:
 	CWebSocket m_TiingoCryptoWebSocket;
 	CWebSocket m_TiingoForexWebSocket;
 
-	queue<CFinnhubWebSocketDataPtr> m_qFinnhubWebSocketData;
-	queue<CTiingoCryptoWebSocketDataPtr> m_qTiingoCryptoWebSocketData;
-	queue<CTiingoForexWebSocketDataPtr> m_qTiingoForexWebSocketData;
-	queue<CTiingoIEXWebSocketDataPtr> m_qTiingoIEXWebSocketData;
+	queue<CFinnhubSocketPtr> m_qFinnhubSocket;
+	queue<CTiingoCryptoSocketPtr> m_qTiingoCryptoSocket;
+	queue<CTiingoForexSocketPtr> m_qTiingoForexSocket;
+	queue<CTiingoIEXSocketPtr> m_qTiingoIEXSocket;
 
-	int m_iFinnhubWebSocketDataSize;
-	int m_iTiingoCryptoWebSocketDataSize;
-	int m_iTiingoForexWebSocketDataSize;
-	int m_iTiingoIEXWebSocketDataSize;
+	int m_iProcessedFinnhubWebSocket;
+	int m_iProcessedTiingoCryptoWebSocket;
+	int m_iProcessedTiingoForexWebSocket;
+	int m_iProcessedTiingoIEXWebSocket;
 
 	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量

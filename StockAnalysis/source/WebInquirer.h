@@ -125,6 +125,11 @@ public:
 	void PushTiingoForexWebSocketData(shared_ptr<string> pData) { m_qTiingoForexWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoForexWebSocketData(void) { return m_qTiingoForexWebSocketData.PopData(); }
 
+	// Finnhub WebSocket缓存数据
+	size_t GetFinnhubSocketSize(void) { return m_qFinnhubSocket.size(); }
+	void PushFinnhubSocket(CFinnhubSocketPtr p) { m_qFinnhubSocket.push(p); }
+	CFinnhubSocketPtr PopFinnhubSocket(void) { CFinnhubSocketPtr p = m_qFinnhubSocket.front(); m_qFinnhubSocket.pop(); return p; }
+
 protected:
 	CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
 	CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列
@@ -141,6 +146,12 @@ protected:
 	CQueueString m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
 	CQueueString m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
 	CQueueString m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
+
+	queue<CFinnhubSocketPtr> m_qFinnhubSocket;
+	queue<CTiingoCryptoSocketPtr> m_qTiingoCryptoSocket;
+	queue<CTiingoForexSocketPtr> m_qTiingoForexSocket;
+	queue<CTiingoIEXSocketPtr> m_qTiingoIEXSocket;
+
 };
 
 extern CWebInquirer gl_WebInquirer; //

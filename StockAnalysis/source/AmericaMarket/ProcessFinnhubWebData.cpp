@@ -8,7 +8,7 @@
 #include"WorldMarket.h"
 #include"CallableFunction.h"
 
-#include"TiingoWebSocketData.h"
+#include"WebSocketData.h"
 
 using namespace std;
 #include<algorithm>
@@ -864,6 +864,9 @@ bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSu
 }
 
 /// <summary>
+/// 
+/// https://finnhub.io/docs/api/websocket-trades
+/// 
 /// ¸ñÊ½Îª£º{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 ///        {"type":"ping"}
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
@@ -876,7 +879,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 	string sType, sSymbol, sMessage;
 	CString strMessage;
 	string code;
-	CFinnhubWebSocketDataPtr pFinnhubDataPtr = nullptr;
+	CFinnhubSocketPtr pFinnhubDataPtr = nullptr;
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
@@ -885,7 +888,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 				pt2 = pt.get_child(_T("data"));
 				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 					pt3 = it->second;
-					pFinnhubDataPtr = make_shared<CFinnhubWebSocketData>();
+					pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 					sSymbol = pt3.get<string>(_T("s"));
 					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
 					code = pt3.get<string>(_T("c"));
@@ -894,7 +897,7 @@ bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 					pFinnhubDataPtr->m_dLastPrice = pt3.get<double>(_T("p"));
 					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
 					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
-					m_qFinnhubWebSocketData.push(pFinnhubDataPtr);
+					m_qFinnhubSocket.push(pFinnhubDataPtr);
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}

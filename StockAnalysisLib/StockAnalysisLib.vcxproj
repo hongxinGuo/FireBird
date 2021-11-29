@@ -44,7 +44,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebSocketData.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WebSocketData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
@@ -243,6 +243,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataSource\FinnhubWebSocketData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
