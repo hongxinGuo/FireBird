@@ -411,7 +411,6 @@ public:
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
-	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> data);
 	bool ProcessTiingoIEXWebSocketData();
 	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> data);
 	bool ProcessTiingoCryptoWebSocketData();
@@ -425,11 +424,6 @@ public:
 
 	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return (int)m_iWebSocketReceivedNumberPerSecond; }
 	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
-
-	CFinnhubSocketPtr PopFinnhubSocket(void);
-	CTiingoIEXSocketPtr PopTiingoIEXSocket(void);
-	CTiingoCryptoSocketPtr PopTiingoCryptoSocket(void);
-	CTiingoForexSocketPtr PopTiingoForexSocket(void);
 
 	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }
 	void ClearPorcessedFinnhubWebSocket(void) noexcept { m_iProcessedFinnhubWebSocket = 0; }
@@ -552,11 +546,6 @@ protected:
 	CWebSocket m_TiingoIEXWebSocket;
 	CWebSocket m_TiingoCryptoWebSocket;
 	CWebSocket m_TiingoForexWebSocket;
-
-	queue<CFinnhubSocketPtr> m_qFinnhubSocket;
-	queue<CTiingoCryptoSocketPtr> m_qTiingoCryptoSocket;
-	queue<CTiingoForexSocketPtr> m_qTiingoForexSocket;
-	queue<CTiingoIEXSocketPtr> m_qTiingoIEXSocket;
 
 	int m_iProcessedFinnhubWebSocket;
 	int m_iProcessedTiingoCryptoWebSocket;

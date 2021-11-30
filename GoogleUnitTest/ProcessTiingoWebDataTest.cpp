@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"WebInquirer.h"
+#include"SystemData.h"
 
 #include"WorldStock.h"
 #include"WorldMarket.h"
@@ -321,7 +322,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			pForex = gl_pWorldMarket->PopTiingoForexSocket();
+			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_STREQ(pForex->m_strSymbol, _T("eurnok"));
 			EXPECT_DOUBLE_EQ(pForex->m_dBidSize, 5000000);
@@ -332,7 +333,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
-			pForex = gl_pWorldMarket->PopTiingoForexSocket();
+			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
 		case 6: //
 			EXPECT_FALSE(fSucceed);
@@ -406,7 +407,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			pCrypto = gl_pWorldMarket->PopTiingoCryptoSocket();
+			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("bitfinex"));
 			EXPECT_STREQ(pCrypto->m_strSymbol, _T("neojpy"));
@@ -420,7 +421,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			pCrypto = gl_pWorldMarket->PopTiingoCryptoSocket();
+			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("binance"));
 			EXPECT_STREQ(pCrypto->m_strSymbol, _T("evxbtc"));
@@ -506,7 +507,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXSocket();
+			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("vym"));
 			EXPECT_EQ(pTiingoIEX->m_dBidSize, 100);
@@ -523,7 +524,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0); break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			pTiingoIEX = gl_pWorldMarket->PopTiingoIEXSocket();
+			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225594808294);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("wes"));
 			EXPECT_EQ(pTiingoIEX->m_dBidSize, 0);

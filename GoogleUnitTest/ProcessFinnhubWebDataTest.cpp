@@ -4,6 +4,8 @@
 
 #include"WebInquirer.h"
 
+#include"DataSourceProcess.h"
+
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
@@ -1170,17 +1172,17 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
-		fSucceed = gl_pWorldMarket->ProcessOneFinnhubWebSocketData(m_pWebData);
+		fSucceed = ProcessOneFinnhubWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			pFinnhubWebSocket = gl_pWorldMarket->PopFinnhubSocket();
+			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("AAPL"));
 			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 43);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530221);
-			pFinnhubWebSocket = gl_pWorldMarket->PopFinnhubSocket();
+			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("A"));
 			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);

@@ -25,3 +25,4 @@ CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 CWebInquirer gl_WebInquirer;
+CSystemData gl_SystemData;

@@ -114,6 +114,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataSourceProcess.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="..\StockAnalysis\source\QueueString.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\SystemData.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
@@ -243,7 +245,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataSource\FinnhubWebSocketData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataSource\ProcessFinnhubWebSocketData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />

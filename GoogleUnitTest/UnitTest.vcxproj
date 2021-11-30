@@ -123,6 +123,7 @@
     <ClCompile Include="SetInitializeTest.cpp" />
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />
+    <ClCompile Include="SystemDataTest.cpp" />
     <ClCompile Include="ThreadCalculateRSTest.cpp" />
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />

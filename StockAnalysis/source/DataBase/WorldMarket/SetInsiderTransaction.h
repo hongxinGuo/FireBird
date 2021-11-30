@@ -23,8 +23,8 @@ public:
 	long m_ID;  // 索引用，自动生成。
 	CString m_Symbol;
 	CString m_PersonName;
-	long m_Share;
-	long m_Change;
+	CString m_Share;
+	CString m_Change;
 	long m_FilingDate;
 	long m_TransactionDate;
 	CString m_TransactionCode;

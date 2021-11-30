@@ -124,6 +124,12 @@
     <Filter Include="源文件\DataSourceProcess">
       <UniqueIdentifier>{6fdbca00-8b26-43e6-9a84-1f2f9881d7bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\System Data">
+      <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data Source Process">
+      <UniqueIdentifier>{e971063d-1380-4853-893b-a0f354580f12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -467,6 +473,12 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.h">
       <Filter>头文件\网络数据提取器</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SystemData.h">
+      <Filter>头文件\System Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataSourceProcess.h">
+      <Filter>头文件\Data Source Process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -842,7 +854,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp">
       <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataSource\FinnhubWebSocketData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataSource\ProcessFinnhubWebSocketData.cpp">
       <Filter>源文件\DataSourceProcess</Filter>
     </ClCompile>
   </ItemGroup>

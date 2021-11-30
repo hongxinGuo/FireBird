@@ -3,6 +3,8 @@
 #include"accessory.h"
 #include"WebInquirer.h"
 
+#include"DataSourceProcess.h"
+
 using namespace std;
 #include<memory>
 #include"string"
@@ -12,9 +14,9 @@ using namespace std;
 using namespace boost::property_tree;
 
 /// <summary>
-/// 
+///
 /// https://finnhub.io/docs/api/websocket-trades
-/// 
+///
 /// ¸ñÊ½Îª£º{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 ///        {"type":"ping"}
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
@@ -45,7 +47,7 @@ bool ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
 					pFinnhubDataPtr->m_dLastPrice = pt3.get<double>(_T("p"));
 					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
 					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
-					gl_WebInquirer.PushFinnhubSocket(pFinnhubDataPtr);
+					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}

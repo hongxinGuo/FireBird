@@ -7,6 +7,8 @@
 #include"FinnhubForexSymbol.h"
 #include"FinnhubCryptoSymbol.h"
 
+#include"DataSourceProcess.h"
+
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
 
@@ -2797,7 +2799,7 @@ bool CWorldMarket::ConnectTiingoCryptoWebSocket(void) {
 /// <returns></returns>
 bool CWorldMarket::ConnectTiingoForexWebSocket(void) {
 	std::string url("wss://api.tiingo.com/fx");
-	
+
 	m_TiingoForexWebSocket.Connecting(url, FunctionProcessTiingoForexWebSocket);
 	return true;
 }
@@ -3023,30 +3025,26 @@ bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
 	CFinnhubSocketPtr pFinnhubData;
 	CWorldStockPtr pStock = nullptr;
 
-	auto total = m_qTiingoIEXSocket.size();
+	auto total = gl_SystemData.GetTiingoIEXSocketSize();
 
 	for (auto i = 0; i < total; i++) {
-		pIEXData = m_qTiingoIEXSocket.front();
-		m_qTiingoIEXSocket.pop();
+		pIEXData = gl_SystemData.PopTiingoIEXSocket();
 		UpdateWorldStockFromTiingoIEXSocket(pIEXData);
 	}
 
-	total = m_qTiingoCryptoSocket.size();
+	total = gl_SystemData.GetTiingoCryptoSocketSize();
 	for (auto i = 0; i < total; i++) {
-		pCryptoData = m_qTiingoCryptoSocket.front();
-		m_qTiingoCryptoSocket.pop();
+		pCryptoData = gl_SystemData.PopTiingoCryptoSocket();
 	}
 
-	total = m_qTiingoForexSocket.size();
+	total = gl_SystemData.GetTiingoForexSocketSize();
 	for (auto i = 0; i < total; i++) {
-		pForexData = m_qTiingoForexSocket.front();
-		m_qTiingoForexSocket.pop();
+		pForexData = gl_SystemData.PopTiingoForexSocket();
 	}
 
-	total = m_qFinnhubSocket.size();
+	total = gl_SystemData.GetFinnhubSocketSize();
 	for (auto i = 0; i < total; i++) {
-		pFinnhubData = m_qFinnhubSocket.front();
-		m_qFinnhubSocket.pop();
+		pFinnhubData = gl_SystemData.PopFinnhubSocket();
 		UpdateWorldStockFromFinnhubSocket(pFinnhubData);
 	}
 
@@ -3081,30 +3079,4 @@ bool CWorldMarket::UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhubD
 	}
 
 	return true;
-}
-
-CFinnhubSocketPtr CWorldMarket::PopFinnhubSocket(void) {
-	CFinnhubSocketPtr p = m_qFinnhubSocket.front();
-	m_qFinnhubSocket.pop();
-
-	return p;
-}
-
-CTiingoIEXSocketPtr CWorldMarket::PopTiingoIEXSocket(void) {
-	CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front();
-	m_qTiingoIEXSocket.pop();
-
-	return p;
-}
-CTiingoCryptoSocketPtr CWorldMarket::PopTiingoCryptoSocket(void) {
-	CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front();
-	m_qTiingoCryptoSocket.pop();
-
-	return p;
-}
-CTiingoForexSocketPtr CWorldMarket::PopTiingoForexSocket(void) {
-	CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();
-	m_qTiingoForexSocket.pop();
-
-	return p;
 }

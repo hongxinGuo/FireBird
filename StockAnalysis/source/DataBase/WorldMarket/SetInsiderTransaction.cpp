@@ -14,8 +14,8 @@ CSetInsiderTransaction::CSetInsiderTransaction(CString strSchema, CString strTab
 	m_ID = 0;
 	m_Symbol = _T(" ");
 	m_PersonName = _T(" ");
-	m_Share = 0;
-	m_Change = 0;
+	m_Share = _T("");
+	m_Change = _T("");
 	m_FilingDate = 19700101;
 	m_TransactionDate = 19700101;
 	m_TransactionCode = _T(" ");
@@ -31,8 +31,8 @@ void CSetInsiderTransaction::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
 	RFX_Text(pFX, _T("[PersonName]"), m_PersonName);
-	RFX_Long(pFX, _T("[Share]"), m_Share);
-	RFX_Long(pFX, _T("[Change]"), m_Change);
+	RFX_Text(pFX, _T("[Share]"), m_Share);
+	RFX_Text(pFX, _T("[Change]"), m_Change);
 	RFX_Long(pFX, _T("[FilingDate]"), m_FilingDate);
 	RFX_Long(pFX, _T("[TransactionDate]"), m_TransactionDate);
 	RFX_Text(pFX, _T("[TransactionCode]"), m_TransactionCode);
