@@ -4,8 +4,6 @@
 
 #include"WebInquirer.h"
 
-#include"DataSourceProcess.h"
-
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
@@ -1172,7 +1170,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
-		fSucceed = ProcessOneFinnhubWebSocketData(m_pWebData);
+		fSucceed = gl_pWorldMarket->ProcessOneFinnhubWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(fSucceed);

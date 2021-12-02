@@ -7,8 +7,6 @@
 #include"FinnhubForexSymbol.h"
 #include"FinnhubCryptoSymbol.h"
 
-#include"DataSourceProcess.h"
-
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
 

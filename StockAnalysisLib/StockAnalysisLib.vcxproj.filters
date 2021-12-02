@@ -477,9 +477,6 @@
     <ClInclude Include="..\StockAnalysis\source\SystemData.h">
       <Filter>头文件\System Data</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataSourceProcess.h">
-      <Filter>头文件\Data Source Process</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -853,9 +850,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataSource\ProcessFinnhubWebSocketData.cpp">
-      <Filter>源文件\DataSourceProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

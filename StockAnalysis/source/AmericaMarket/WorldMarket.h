@@ -172,7 +172,7 @@ public:
 	virtual bool TaskUpdateNaicsIndustry(void);
 
 	// Finnhub数据处理函数
-	virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
 	virtual bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 	virtual bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
 	virtual bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
@@ -411,12 +411,13 @@ public:
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
+	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoIEXWebSocketData();
-	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> data);
+	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoCryptoWebSocketData();
-	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> data);
+	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoForexWebSocketData();
-	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> data);
+	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData);
 
 	bool TaskUpdateWorldStockFromWebSocket(void);
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
