@@ -596,7 +596,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					else {
 						pStock->SetIPOStatus(__STOCK_IPOED__);
 					}
-					TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
+					//TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
 				}
 				break;
 			case __FOREX_EXCHANGE__:
@@ -1215,7 +1215,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 			m_qFinnhubWebInquiry.push(inquiry);
 			SetFinnhubInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
-			TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
+			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			fHaveInquiry = false;

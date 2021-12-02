@@ -188,9 +188,8 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
 	long year, month, day;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = _T("Tiingo下载");
 		str += pStock->GetSymbol();
-		str += _T("日线故障\n");
+		str += _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}

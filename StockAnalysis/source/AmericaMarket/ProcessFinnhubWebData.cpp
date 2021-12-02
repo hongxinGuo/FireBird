@@ -216,9 +216,8 @@ bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPt
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = _T("下载");
-		str += pStock->GetSymbol();
-		str += _T("日线故障\n");
+		str = pStock->GetSymbol();
+		str += _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
@@ -414,9 +413,8 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = _T("下载");
 		str += pForexSymbol->GetSymbol();
-		str += _T("日线故障\n");
+		str += _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
 		return false;
 	}
@@ -582,9 +580,8 @@ bool CWorldMarket::ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbo
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = _T("下载");
-		str += pCryptoSymbol->GetSymbol();
-		str += _T("日线故障\n");
+		str = pCryptoSymbol->GetSymbol();
+		str += _T("日线为无效JSon数据\n");
 		TRACE("%s", str.GetBuffer());
 		gl_systemMessage.PushErrorMessage(str);
 		return false;
@@ -762,7 +759,7 @@ bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, v
 		stockSymbol = pt.get<string>(_T("symbol"));
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock InsiderTransaction "), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction "), e);
 		return false;
 	}
 
@@ -788,7 +785,7 @@ bool CWorldMarket::ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, v
 		}
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock InsiderTransaction "), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e);
 		return false;
 	}
 	sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);

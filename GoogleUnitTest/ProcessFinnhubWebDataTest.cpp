@@ -310,9 +310,8 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			strMessage = _T("下载");
-			strMessage += m_pStock->GetSymbol();
-			strMessage += _T("日线故障\n");
+			strMessage = m_pStock->GetSymbol();
+			strMessage += _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
@@ -580,9 +579,8 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pForexSymbol->IsUpdateProfileDB());
-			strMessage = _T("下载");
 			strMessage += m_pForexSymbol->GetSymbol();
-			strMessage += _T("日线故障\n");
+			strMessage += _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
@@ -1397,9 +1395,8 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pCryptoSymbol->IsUpdateProfileDB());
-			strMessage = _T("下载");
 			strMessage += m_pCryptoSymbol->GetSymbol();
-			strMessage += _T("日线故障\n");
+			strMessage += _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok

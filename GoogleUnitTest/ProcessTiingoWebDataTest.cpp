@@ -196,9 +196,8 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			strMessage = _T("Tiingo下载");
-			strMessage += m_pStock->GetSymbol();
-			strMessage += _T("日线故障\n");
+			strMessage = m_pStock->GetSymbol();
+			strMessage += _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: //
