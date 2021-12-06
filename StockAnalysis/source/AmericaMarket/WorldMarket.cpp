@@ -63,7 +63,7 @@ CWorldMarket::CWorldMarket() {
 }
 
 void CWorldMarket::InitialFinnhubInquiryStr(void) {
-	m_vFinnhubInquiringStr.resize(1000);
+	m_vFinnhubInquiringStr.resize(__ECONOMIC_COUNTRY_LIST__ + 300);
 
 	// Finnhub前缀字符串在此预设之
 	m_vFinnhubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。
@@ -97,7 +97,7 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
 }
 
 void CWorldMarket::InitialTiingoInquiryStr(void) {
-	m_vTiingoInquiringStr.resize(1000);
+	m_vTiingoInquiringStr.resize(__ECONOMIC_COUNTRY_LIST__ + 300);
 
 	m_vTiingoInquiringStr.at(__COMPANY_PROFILE__) = _T("https://api.tiingo.com/tiingo/fundamentals/");
 	m_vTiingoInquiringStr.at(__STOCK_SYMBOLS__) = _T("https://api.tiingo.com/tiingo/fundamentals/meta?"); // 可用代码集
