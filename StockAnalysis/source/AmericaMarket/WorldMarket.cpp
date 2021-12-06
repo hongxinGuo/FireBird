@@ -68,7 +68,7 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
 	// Finnhub前缀字符串在此预设之
 	m_vFinnhubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。
 	m_vFinnhubInquiringStr.at(__COMPANY_PROFILE_CONCISE__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
-	m_vFinnhubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange="); // 可用代码集
+	m_vFinnhubInquiringStr.at(__STOCK_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange="); // 可用代码集
 	m_vFinnhubInquiringStr.at(__MARKET_NEWS__) = _T("https://finnhub.io/api/v1/news?category=general");
 	m_vFinnhubInquiringStr.at(__COMPANY_NEWS__) = _T("https://finnhub.io/api/v1/company-news?symbol=");
 	m_vFinnhubInquiringStr.at(__NEWS_SENTIMENT__) = _T("https://finnhub.io/api/v1/news-sentiment?symbol=");
@@ -77,11 +77,11 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
 	m_vFinnhubInquiringStr.at(__INSIDER_TRANSACTION__) = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 	m_vFinnhubInquiringStr.at(__SEC_FILINGS__) = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
 
-	m_vFinnhubInquiringStr.at(__STOCK_EPS_SURPRISE__) = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
-	m_vFinnhubInquiringStr.at(__STOCK_EARNING_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/earnings?");
+	m_vFinnhubInquiringStr.at(__STOCK_ESTIMATES_EPS_SURPRISE__) = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
+	m_vFinnhubInquiringStr.at(__STOCK_ESTIMATES_EARNING_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/earnings?");
 
-	m_vFinnhubInquiringStr.at(__STOCK_QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
-	m_vFinnhubInquiringStr.at(__STOCK_CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
+	m_vFinnhubInquiringStr.at(__STOCK_PRICE_QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
+	m_vFinnhubInquiringStr.at(__STOCK_PRICE_CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
 
 	m_vFinnhubInquiringStr.at(__FOREX_EXCHANGE__) = _T("https://finnhub.io/api/v1/forex/exchange?");
 	m_vFinnhubInquiringStr.at(__FOREX_SYMBOLS__) = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
@@ -100,8 +100,8 @@ void CWorldMarket::InitialTiingoInquiryStr(void) {
 	m_vTiingoInquiringStr.resize(1000);
 
 	m_vTiingoInquiringStr.at(__COMPANY_PROFILE__) = _T("https://api.tiingo.com/tiingo/fundamentals/");
-	m_vTiingoInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://api.tiingo.com/tiingo/fundamentals/meta?"); // 可用代码集
-	m_vTiingoInquiringStr.at(__STOCK_CANDLES__) = _T("https://api.tiingo.com/tiingo/daily/");
+	m_vTiingoInquiringStr.at(__STOCK_SYMBOLS__) = _T("https://api.tiingo.com/tiingo/fundamentals/meta?"); // 可用代码集
+	m_vTiingoInquiringStr.at(__STOCK_PRICE_CANDLES__) = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
 CWorldMarket::~CWorldMarket() {
@@ -309,9 +309,9 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 			case __COMPANY_PROFILE_CONCISE__:
 			case __PEERS__:
 			case __INSIDER_TRANSACTION__:
-			case __STOCK_EPS_SURPRISE__:
-			case __STOCK_QUOTE__:
-			case __STOCK_CANDLES__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
+			case __STOCK_PRICE_QUOTE__:
+			case __STOCK_PRICE_CANDLES__:
 				pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
 				break;
 			default:
@@ -328,7 +328,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
 				pStock->SetProfileUpdated(true);
 				break;
-			case  __COMPANY_SYMBOLS__:
+			case  __STOCK_SYMBOLS__:
 				strMiddle = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				break;
@@ -360,7 +360,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				break;
 			case __FINANCIAL__: // Premium
 				break;
-			case __FINAICIAL_AS_REPORT__:
+			case __FINAICIAL_AS_REPORTED__:
 				break;
 			case __SEC_FILINGS__:
 				break;
@@ -374,38 +374,38 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 				break;
 			case __DIVIDENDS__: // Premium
 				break;
-			case __STOCK_RECOMMENDATION_TRENDS__:
+			case __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__:
 				break;
-			case __STOCK_PRICE_TARGET__:
+			case __STOCK_ESTIMATES_PRICE_TARGET__:
 				break;
-			case __STOCK_UPGRADE_DOWNGRADE__: // Premium
+			case __STOCK_ESTIMATES_UPGRADE_DOWNGRADE__: // Premium
 				break;
-			case __STOCK_REVENUE_EXTIMATES__: // Premium
+			case __STOCK_ESTIMATES_REVENUE_EXTIMATES__: // Premium
 				break;
-			case __STOCK_EPS_EXTIMATES__:// Premium
+			case __STOCK_ESTIMATES_EPS_EXTIMATES__:// Premium
 				break;
-			case __STOCK_EPS_SURPRISE__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
 				ASSERT(pStock != nullptr);
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
 				break;
-			case __STOCK_EARNING_CALENDAR__:
+			case __STOCK_ESTIMATES_EARNING_CALENDAR__:
 				break;
-			case __STOCK_QUOTE__:
+			case __STOCK_PRICE_QUOTE__:
 				ASSERT(pStock != nullptr);
 				strMiddle = pStock->GetSymbol();
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				break;
-			case __STOCK_CANDLES__:
+			case __STOCK_PRICE_CANDLES__:
 				ASSERT(pStock != nullptr);
 				strMiddle = pStock->GetFinnhubDayLineInquiryString(GetUTCTime());
 				gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pStock->SetDayLineNeedUpdate(false);
 				break;
-			case __STOCK_TICK_DATA__: // Premium
+			case __STOCK_PRICE_TICK_DATA__: // Premium
 				break;
-			case __STOCK_LAST_BID_ASK__: // Premium
+			case __STOCK_PRICE_LAST_BID_ASK__: // Premium
 				break;
-			case __STOCK_SPLITS__:
+			case __STOCK_PRICE_SPLITS__:
 				break;
 			case __FOREX_EXCHANGE__:
 				// do nothing
@@ -492,9 +492,9 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __COMPANY_PROFILE_CONCISE__:
 			case __PEERS__:
 			case __INSIDER_TRANSACTION__:
-			case __STOCK_EPS_SURPRISE__:
-			case __STOCK_QUOTE__:
-			case __STOCK_CANDLES__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
+			case __STOCK_PRICE_QUOTE__:
+			case __STOCK_PRICE_CANDLES__:
 				pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
 				break;
 			default:
@@ -517,7 +517,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					pStock->SetUpdateProfileDB(true);
 				}
 				break;
-			case  __COMPANY_SYMBOLS__:
+			case  __STOCK_SYMBOLS__:
 				if (ProcessFinnhubStockSymbol(pWebData, vStock)) {
 					// 加上交易所代码。
 					for (auto& pStock3 : vStock) {
@@ -557,7 +557,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					}
 				}
 				break;
-			case __STOCK_EPS_SURPRISE__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
 				ASSERT(pStock != nullptr);
 				if (ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
 					if (vEPSSurprise.size() > 0) {
@@ -571,7 +571,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					pStock->m_fEPSSurpriseNeedSave = true;
 				}
 				break;
-			case __STOCK_QUOTE__:
+			case __STOCK_PRICE_QUOTE__:
 				ASSERT(pStock != nullptr);
 				ProcessFinnhubStockQuote(pWebData, pStock);
 				if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
@@ -582,7 +582,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 					}
 				}
 				break;
-			case __STOCK_CANDLES__:
+			case __STOCK_PRICE_CANDLES__:
 				ASSERT(pStock != nullptr);
 				if (ProcessFinnhubStockCandle(pWebData, pStock)) {
 					if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
@@ -699,7 +699,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __COMPANY_PROFILE_CONCISE__:
 				break;
-			case  __COMPANY_SYMBOLS__:
+			case  __STOCK_SYMBOLS__:
 				// do nothing
 				break;
 			case __COMPANY_EXECTIVE__: // Premium
@@ -724,7 +724,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __FINANCIAL__: // Premium
 				break;
-			case __FINAICIAL_AS_REPORT__:
+			case __FINAICIAL_AS_REPORTED__:
 				break;
 			case __SEC_FILINGS__:
 				break;
@@ -738,33 +738,33 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 				break;
 			case __DIVIDENDS__: // Premium
 				break;
-			case __STOCK_RECOMMENDATION_TRENDS__:
+			case __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__:
 				break;
-			case __STOCK_PRICE_TARGET__:
+			case __STOCK_ESTIMATES_PRICE_TARGET__:
 				break;
-			case __STOCK_UPGRADE_DOWNGRADE__: // Premium
+			case __STOCK_ESTIMATES_UPGRADE_DOWNGRADE__: // Premium
 				break;
-			case __STOCK_REVENUE_EXTIMATES__: // Premium
+			case __STOCK_ESTIMATES_REVENUE_EXTIMATES__: // Premium
 				break;
-			case __STOCK_EPS_EXTIMATES__:// Premium
+			case __STOCK_ESTIMATES_EPS_EXTIMATES__:// Premium
 				break;
-			case __STOCK_EPS_SURPRISE__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
 				break;
-			case __STOCK_EARNING_CALENDAR__:
+			case __STOCK_ESTIMATES_EARNING_CALENDAR__:
 				break;
-			case __STOCK_QUOTE__:
+			case __STOCK_PRICE_QUOTE__:
 				break;
-			case __STOCK_CANDLES__: // 日线
+			case __STOCK_PRICE_CANDLES__: // 日线
 				pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
 				strMiddle = pStock->GetTiingoDayLineInquiryString(GetMarketDate());
 				gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
 				pStock->SetDayLineNeedUpdate(false);
 				break;
-			case __STOCK_TICK_DATA__: // Premium
+			case __STOCK_PRICE_TICK_DATA__: // Premium
 				break;
-			case __STOCK_LAST_BID_ASK__: // Premium
+			case __STOCK_PRICE_LAST_BID_ASK__: // Premium
 				break;
-			case __STOCK_SPLITS__:
+			case __STOCK_PRICE_SPLITS__:
 				break;
 			case __FOREX_EXCHANGE__:
 				// do nothing
@@ -825,7 +825,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 				break;
 			case __COMPANY_PROFILE_CONCISE__: // 免费账户使用此项
 				break;
-			case  __COMPANY_SYMBOLS__:
+			case  __STOCK_SYMBOLS__:
 				if (ProcessTiingoStockSymbol(pWebData, vTiingoStock)) {
 					lTemp = 0;
 					for (auto& pTiingoStock : vTiingoStock) {
@@ -864,11 +864,11 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 				break;
 			case __INSIDER_TRANSACTION__:
 				break;
-			case __STOCK_EPS_SURPRISE__:
+			case __STOCK_ESTIMATES_EPS_SURPRISE__:
 				break;
-			case __STOCK_QUOTE__:
+			case __STOCK_PRICE_QUOTE__:
 				break;
-			case __STOCK_CANDLES__:
+			case __STOCK_PRICE_CANDLES__:
 				pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
 				ProcessTiingoStockDayLine(pWebData, pStock);
 				TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
@@ -1126,7 +1126,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+			inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 			inquiry.m_lStockIndex = m_lCurrentExchangePos;
 			inquiry.m_iPriority = 10;
 			m_qFinnhubWebInquiry.push(inquiry);
@@ -1209,7 +1209,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+			inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 			inquiry.m_lStockIndex = m_lCurrentUpdateDayLinePos;
 			inquiry.m_iPriority = 10;
 			m_qFinnhubWebInquiry.push(inquiry);
@@ -1275,7 +1275,7 @@ bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
 	if (!IsFinnhubInquiring()) {
 		m_lCurrentRTDataQuotePos++;
 		if (m_lCurrentRTDataQuotePos == m_vWorldStock.size()) m_lCurrentRTDataQuotePos = 0;
-		inquiry.m_lInquiryIndex = __STOCK_QUOTE__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_QUOTE__;
 		inquiry.m_lStockIndex = m_lCurrentRTDataQuotePos;
 		inquiry.m_iPriority = 10;
 		m_qFinnhubWebInquiry.push(inquiry);
@@ -1355,7 +1355,7 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			inquiry.m_lInquiryIndex = __STOCK_EPS_SURPRISE__;
+			inquiry.m_lInquiryIndex = __STOCK_ESTIMATES_EPS_SURPRISE__;
 			inquiry.m_lStockIndex = m_lCurrentUpdateEPSSurprisePos;
 			inquiry.m_iPriority = 10;
 			m_qFinnhubWebInquiry.push(inquiry);
@@ -1524,7 +1524,7 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 	CString str;
 
 	if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
-		inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 		inquiry.m_iPriority = 10;
 		PushTiingoInquiry(inquiry);
 		SetTiingoInquiring(true);
@@ -1562,7 +1562,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+			inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 			inquiry.m_lStockIndex = m_mapWorldStock.at(pStock->GetSymbol());
 			inquiry.m_iPriority = 10;
 			PushTiingoInquiry(inquiry);
@@ -1796,11 +1796,11 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 }
 
 bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
-	RunningthreadUpdateDayLneStartEndDate();
+	CreatingthreadUpdateDayLneStartEndDate();
 	return true;
 }
 
-bool CWorldMarket::RunningthreadUpdateDayLneStartEndDate(void) {
+bool CWorldMarket::CreatingthreadUpdateDayLneStartEndDate(void) {
 	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;

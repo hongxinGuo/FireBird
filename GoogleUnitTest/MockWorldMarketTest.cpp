@@ -89,7 +89,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateDayLineStartEndDate) {
-		EXPECT_CALL(*gl_pMockWorldMarket, RunningthreadUpdateDayLneStartEndDate())
+		EXPECT_CALL(*gl_pMockWorldMarket, CreatingthreadUpdateDayLneStartEndDate())
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateDayLineStartEndDate());
 	}
@@ -517,10 +517,10 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->SetFinnhubInquiring(false);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_SYMBOLS__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->PushFinnhubInquiry(inquiry);
@@ -535,7 +535,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
 			gl_pMockWorldMarket->GetExchange(0)->m_strCode);
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __COMPANY_SYMBOLS__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_SYMBOLS__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -573,7 +573,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_EPS_SURPRISE__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_EPS_SURPRISE__;
+		inquiry.m_lInquiryIndex = __STOCK_ESTIMATES_EPS_SURPRISE__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->PushFinnhubInquiry(inquiry);
 		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
@@ -586,7 +586,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
 			gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_EPS_SURPRISE__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_ESTIMATES_EPS_SURPRISE__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -597,7 +597,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_QUOTE__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_QUOTE__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_QUOTE__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->PushFinnhubInquiry(inquiry);
 		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
@@ -610,7 +610,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
 			gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_QUOTE__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_PRICE_QUOTE__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -621,7 +621,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pMockWorldMarket->PushFinnhubInquiry(inquiry);
@@ -636,7 +636,7 @@ namespace StockAnalysisTest {
 			gl_pMockWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_CANDLES__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __STOCK_PRICE_CANDLES__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -813,7 +813,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__COMPANY_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_SYMBOLS__) {
 		// 需要修改实现函数，以适应Mock的需要
 		gl_pMockWorldMarket->SetFinnhubInquiring(true);
 	}
@@ -876,7 +876,7 @@ namespace StockAnalysisTest {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_QUOTE__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_QUOTE__;
 		inquiry.m_lStockIndex = 1;
 		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(inquiry);
 
@@ -906,7 +906,7 @@ namespace StockAnalysisTest {
 
 		vDayLine.resize(0);
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 1;
 		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(inquiry);
 
@@ -936,7 +936,7 @@ namespace StockAnalysisTest {
 		vDayLine.resize(0);
 		vDayLine.push_back(pDayLine);
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 1;
 		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(inquiry);
 
@@ -966,7 +966,7 @@ namespace StockAnalysisTest {
 		vDayLine.resize(0);
 		vDayLine.push_back(pDayLine);
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 1;
 		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(inquiry);
 
@@ -993,7 +993,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage02) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
@@ -1007,10 +1007,10 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->SetTiingoInquiring(false);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage__COMPANY_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage__STOCK_SYMBOLS__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
@@ -1025,7 +1025,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringMiddle(), _T(""));
 
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __COMPANY_SYMBOLS__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __STOCK_SYMBOLS__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -1036,7 +1036,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage__STOCK_CANDLES__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 0;
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
@@ -1051,7 +1051,7 @@ namespace StockAnalysisTest {
 			gl_pMockWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pMockWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __STOCK_CANDLES__);
+		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __STOCK_PRICE_CANDLES__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -1072,7 +1072,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__COMPANY_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_SYMBOLS__) {
 		// 需要修改实现函数，以适应Mock的需要
 	}
 
@@ -1080,7 +1080,7 @@ namespace StockAnalysisTest {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
+		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
 		inquiry.m_lStockIndex = 1;
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(inquiry);
 

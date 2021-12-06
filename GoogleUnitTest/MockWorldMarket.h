@@ -7,7 +7,7 @@
 namespace testing {
 	class CMockWorldMarket : public CWorldMarket {
 	public:
-		MOCK_METHOD(bool, RunningthreadUpdateDayLneStartEndDate, (), (override));
+		MOCK_METHOD(bool, CreatingthreadUpdateDayLneStartEndDate, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateDayLineDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));

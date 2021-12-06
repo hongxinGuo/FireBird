@@ -42,6 +42,12 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetFinnhubDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetTiingoDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetCrweberDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 0);
 	}
 
 	void GeneralCheck(void) {

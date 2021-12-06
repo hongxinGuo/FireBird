@@ -66,10 +66,10 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
 	static int s_iCount = 5;
 
 	switch (gl_pWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex) {
-	case __COMPANY_SYMBOLS__:
+	case __STOCK_SYMBOLS__:
 		// 无需中间串
 		break;
-	case __STOCK_QUOTE__:
+	case __STOCK_PRICE_QUOTE__:
 		break;
 	default:
 		break;
