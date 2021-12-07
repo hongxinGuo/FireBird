@@ -130,10 +130,10 @@
     <Filter Include="头文件\Data Source Process">
       <UniqueIdentifier>{e971063d-1380-4853-893b-a0f354580f12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Factory-Product">
+    <Filter Include="头文件\Factory Product">
       <UniqueIdentifier>{1fbeb56c-04dc-4922-b6bc-13a64060215b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Factory-Product">
+    <Filter Include="源文件\Factory Product">
       <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -483,23 +483,23 @@
     <ClInclude Include="..\StockAnalysis\source\SystemData.h">
       <Filter>头文件\System Data</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\WebSourceDataFactory.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\WebSourceProduct.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubProduct.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\TiingoFactory.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoFactory.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\FinnhubFactory.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoProduct.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\FinnhubProduct.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory-Product\TiingoProduct.h">
-      <Filter>头文件\Factory-Product</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceProduct.h">
+      <Filter>头文件\Factory Product</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -875,11 +875,11 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp">
       <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory-Product\FinnhubFactory.cpp">
-      <Filter>源文件\Factory-Product</Filter>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.cpp">
+      <Filter>源文件\Factory Product</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory-Product\TiingoFactory.cpp">
-      <Filter>源文件\Factory-Product</Filter>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp">
+      <Filter>源文件\Factory Product</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
