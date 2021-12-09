@@ -177,7 +177,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 // ]
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	vector<CDayLinePtr> vDayLine;
 	ptree pt, pt2;
 	string s;

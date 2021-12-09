@@ -132,6 +132,7 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_lChoicedStockPos = 0;
 
 	m_CurrentFinnhubInquiry.Reset();
+	m_pCurrentFinnhubProduct = nullptr;
 	while (m_qFinnhubWebInquiry.size() > 0) m_qFinnhubWebInquiry.pop();
 
 	m_vFinnhubExchange.resize(0);
@@ -204,9 +205,13 @@ void CWorldMarket::ResetFinnhub(void) {
 }
 
 void CWorldMarket::ResetQuandl(void) {
+	m_pCurrentQuandlProduct = nullptr;
 }
 
 void CWorldMarket::ResetTiingo(void) {
+	m_CurrentTiingoInquiry.Reset();
+	m_pCurrentTiingoProduct = nullptr;
+
 	m_fTiingoInquiring = false;
 	m_fTiingoDataReceived = true;
 
@@ -264,17 +269,35 @@ bool CWorldMarket::SchedulingTask(void) {
 			s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
 	}
-
-	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
-	ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
+	if (m_pCurrentFinnhubProduct != nullptr) {
+		ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
+	}
+	else {
+		ProcessFinnhubWebDataReceived2(); // 要先处理收到的Finnhub网络数据
+	}
+	if (m_qFinnhubProduct.size() > 0) {
+		ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
+	}
+	else {
+		ProcessFinnhubInquiringMessage2();
+	}
 
 	if (--s_iCountTiingoLimit < 0) {
 		s_iCountTiingoLimit = 80;
 		TaskInquiryTiingo();
 	}
-
-	ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据
-	ProcessTiingoInquiringMessage(); // 然后再申请处理下一个
+	if (m_pCurrentTiingoProduct != nullptr) {
+		ProcessTiingoWebDataReceived2(); // 要先处理收到的Tiingo网络数据
+	}
+	else {
+		ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据
+	}
+	if (m_qTiingoProduct.size() > 0) {
+		ProcessTiingoInquiringMessage2(); // 然后再申请处理下一个
+	}
+	else {
+		ProcessTiingoInquiringMessage(); // 然后再申请处理下一个
+	}
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_timeLast) {
@@ -455,6 +478,31 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 	return fDone;
 }
 
+bool CWorldMarket::ProcessFinnhubInquiringMessage2(void) {
+	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+	CString strTemp;
+	CWorldStockPtr pStock = nullptr;
+	CForexSymbolPtr pForexSymbol = nullptr;
+	CCryptoSymbolPtr pCryptoSymbol = nullptr;
+	bool fDone = false;
+
+	if (m_qFinnhubWebInquiry.size() > 0) { // 有申请等待？
+		ASSERT(IsFinnhubInquiring());
+		if (IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
+			m_pCurrentFinnhubProduct = m_qFinnhubProduct.front();
+			m_qFinnhubProduct.pop();
+
+			gl_pFinnhubWebInquiry->SetInquiryingStringPrefix(m_pCurrentFinnhubProduct->CreatMessage()); // 设置前缀
+
+			SetFinnhubDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+			gl_pFinnhubWebInquiry->GetWebData();
+			fDone = true;
+		}
+	}
+
+	return fDone;
+}
+
 //////////////////////////////////////////////
 //
 // 处理工作线程接收到的Finnhub网络信息。
@@ -487,7 +535,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			ASSERT(IsFinnhubInquiring());
 			pWebData = gl_WebInquirer.PopFinnhubData();
 
-			switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
+			switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 设置股票指针
 			case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
 			case __COMPANY_PROFILE_CONCISE__:
 			case __PEERS__:
@@ -677,6 +725,29 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 	return fDone;
 }
 
+bool CWorldMarket::ProcessFinnhubWebDataReceived2(void) {
+	CWebDataPtr pWebData = nullptr;
+	bool fDone = false;
+
+	if (m_pCurrentFinnhubProduct == nullptr) return false;
+
+	if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
+		if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
+			ASSERT(IsFinnhubInquiring());
+			pWebData = gl_WebInquirer.PopFinnhubData();
+
+			m_pCurrentFinnhubProduct->ProcessWebData(pWebData);
+
+			gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
+			SetFinnhubInquiring(false);
+			fDone = true;
+			m_pCurrentFinnhubProduct = nullptr;
+		}
+	}
+
+	return fDone;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理Tiingo各申请数据，使用线程读取Tiingo网络数据
@@ -800,6 +871,28 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
 	return fDone;
 }
 
+bool CWorldMarket::ProcessTiingoInquiringMessage2(void) {
+	bool fDone = false;
+	CString strMessage;
+
+	if (m_qTiingoProduct.size() > 0) { // 有申请等待？
+		ASSERT(IsTiingoInquiring());
+		if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
+			m_pCurrentTiingoProduct = m_qTiingoProduct.front();
+			m_qTiingoProduct.pop();
+
+			strMessage = m_pCurrentTiingoProduct->CreatMessage();
+			gl_pTiingoWebInquiry->SetInquiryingStringPrefix(strMessage);
+
+			SetTiingoDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+			gl_pTiingoWebInquiry->GetWebData(); // 调用读取网络数据的线程
+			fDone = true;
+		}
+	}
+
+	return fDone;
+}
+
 bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
 	CWorldStockPtr pStock = nullptr;
@@ -811,7 +904,6 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 	vector<CWorldStockPtr> vStock;
 	vector<CTiingoStockPtr> vTiingoStock;
 	long lTemp = 0;
-	const bool fFoundNewStock = false;
 	bool fDone = false;
 	char buffer[50];
 
@@ -896,6 +988,29 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 			gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetTiingoInquiring(false);
 			fDone = true;
+		}
+	}
+
+	return fDone;
+}
+
+bool CWorldMarket::ProcessTiingoWebDataReceived2(void) {
+	CWebDataPtr pWebData = nullptr;
+	bool fDone = false;
+
+	if (m_pCurrentTiingoProduct == nullptr) return false;
+
+	if (IsTiingoDataReceived()) { // 如果网络数据接收完成
+		if (gl_WebInquirer.GetTiingoDataSize() > 0) {  // 处理当前网络数据
+			ASSERT(IsTiingoInquiring());
+			pWebData = gl_WebInquirer.PopTiingoData();
+
+			m_pCurrentTiingoProduct->ProcessWebData(pWebData);
+
+			gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
+			SetTiingoInquiring(false);
+			fDone = true;
+			m_pCurrentTiingoProduct = nullptr;
 		}
 	}
 
@@ -1511,9 +1626,9 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 
 bool CWorldMarket::TaskInquiryTiingo(void) {
 	if (IsSystemReady()) {
-		TaskInquiryTiingoCompanySymbol();
+		TaskInquiryTiingoCompanySymbol2();
 		// 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
-		TaskInquiryTiingoDayLine(); // 初步测试完毕。
+		TaskInquiryTiingoDayLine2(); // 初步测试完毕。
 		return true;
 	}
 	return false;
@@ -1527,6 +1642,21 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
 		inquiry.m_iPriority = 10;
 		PushTiingoInquiry(inquiry);
+		SetTiingoInquiring(true);
+		str = _T("Inquiry Tiingo Symbol");
+		gl_systemMessage.PushInformationMessage(str);
+
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::TaskInquiryTiingoCompanySymbol2(void) {
+	CString str;
+
+	if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
+		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(__STOCK_SYMBOLS__);
+		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
 		str = _T("Inquiry Tiingo Symbol");
 		gl_systemMessage.PushInformationMessage(str);
@@ -1566,6 +1696,42 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 			inquiry.m_lStockIndex = m_mapWorldStock.at(pStock->GetSymbol());
 			inquiry.m_iPriority = 10;
 			PushTiingoInquiry(inquiry);
+			SetTiingoInquiring(true);
+			pStock->SetDayLineNeedUpdate(false);
+			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		}
+		else {
+			SetTiingoDayLineUpdated(true);
+			TRACE("Tiingo日线更新完毕\n");
+			str = _T("美国市场自选股票日线历史数据更新完毕");
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CWorldMarket::TaskInquiryTiingoDayLine2(void) {
+	bool fFound = false;
+	WebInquiry inquiry{ 0, 0, 0 };
+	CWorldStockPtr pStock;
+	CString str = _T("");
+	long lStockSetSize = m_vWorldChoicedStock.size();
+	bool fHaveInquiry = false;
+
+	ASSERT(IsSystemReady());
+	if (!IsTiingoDayLineUpdated() && !IsTiingoInquiring()) {
+		for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStockSetSize; m_lCurrentUpdateDayLinePos++) {
+			if (m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
+				pStock = m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos);
+				fFound = true;
+				break;
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(__STOCK_PRICE_CANDLES__);
+			p->SetIndex(m_mapWorldStock.at(pStock->GetSymbol()));
+			m_qTiingoProduct.push(p);
 			SetTiingoInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
 			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());

@@ -1179,8 +1179,8 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
 		gl_pMockWorldMarket->SetSystemReady(true);
 		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol2).Times(1);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine2).Times(1);
 
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());
 	}

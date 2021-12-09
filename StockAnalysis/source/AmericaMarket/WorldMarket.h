@@ -20,8 +20,15 @@
 #include"QuandlWebInquiry.h"
 #include"TiingoWebInquiry.h"
 
-#include"WebSocketData.h"
+#include"FinnhubFactory.h"
+#include"TiingoFactory.h"
+#include"QuandlFactory.h"
 
+#include"WebSourceDataProduct.h"
+#include"TiingoStockSymbols.h"
+#include"TiingoStockPriceCandle.h"
+
+#include"WebSocketData.h"
 #include"WebSocket.h"
 
 #include <ixwebsocket/IXWebSocket.h>
@@ -158,9 +165,14 @@ public:
 
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);
+	bool ProcessFinnhubInquiringMessage2(void);
 	bool ProcessFinnhubWebDataReceived(void);
+	bool ProcessFinnhubWebDataReceived2(void);
+
 	bool ProcessTiingoInquiringMessage(void);
+	bool ProcessTiingoInquiringMessage2(void);
 	bool ProcessTiingoWebDataReceived(void);
+	bool ProcessTiingoWebDataReceived2(void);
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -188,7 +200,9 @@ public:
 
 	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
 	virtual bool TaskInquiryTiingoCompanySymbol(void);
+	virtual bool TaskInquiryTiingoCompanySymbol2(void);
 	virtual bool TaskInquiryTiingoDayLine(void);
+	virtual bool TaskInquiryTiingoDayLine2(void);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
@@ -214,7 +228,7 @@ public:
 
 	// Tiingo数据处理函数
 	virtual bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock);
-	virtual bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock);
 
 	bool TaskUpdateStockProfileDB(void);
 	bool TaskUpdateDayLineDB(void);
@@ -480,6 +494,14 @@ protected:
 	WebInquiry m_CurrentTiingoInquiry;
 	WebInquiry m_CurrentQuandlInquiry;
 
+	CWebSourceDataProductPtr m_pCurrentFinnhubProduct;
+	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
+	CWebSourceDataProductPtr m_pCurrentQuandlProduct;
+
+	CFinnhubFactory m_FinnhubFactory;
+	CTiingoFactory m_TiingoFactory;
+	CQuandlFactory m_QuandlFactory;
+
 	vector<CWorldStockPtr> m_vWorldChoicedStock;
 	map<CString, long> m_mapWorldChoicedStock;
 	long m_lChoicedStockPos;
@@ -492,16 +514,19 @@ protected:
 
 	vector<CString> m_vFinnhubInquiringStr;
 	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）
+	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qFinnhubProduct; // 网络查询命令队列
 	bool m_fFinnhubInquiring;
 	atomic_bool m_fFinnhubDataReceived;
 
 	vector<CString> m_vTiingoInquiringStr;
 	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qTiingoWebInquiry; // 网络数据查询命令队列(有优先级）
+	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qTiingoProduct; // 网络查询命令队列
 	bool m_fTiingoInquiring;
 	atomic_bool m_fTiingoDataReceived;
 
 	vector<CString> m_vQuandlInquiringStr;
 	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qQuandlWebInquiry; // 网络数据查询命令队列(有优先级）
+	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qQuandlProduct; // 网络查询命令队列
 	bool m_fQuandlInquiring;
 	atomic_bool m_fQuandlDataReceived;
 

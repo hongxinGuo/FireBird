@@ -43,6 +43,8 @@ namespace testing {
 
 		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
 		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
+		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol2, (), (override));
+		MOCK_METHOD(bool, TaskInquiryTiingoDayLine2, (), (override));
 
 		MOCK_METHOD(bool, ProcessFinnhubStockProfile, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
 		MOCK_METHOD(bool, ProcessFinnhubStockProfileConcise, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
@@ -62,7 +64,7 @@ namespace testing {
 		MOCK_METHOD(bool, ProcessFinnhubEPSSurprise, (CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise), (override));
 
 		MOCK_METHOD(bool, ProcessTiingoStockSymbol, (CWebDataPtr pWebData, vector<CTiingoStockPtr>& vStock), (override));
-		MOCK_METHOD(bool, ProcessTiingoStockDayLine, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
+		MOCK_METHOD(bool, ProcessTiingoStockDayLine, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
 
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
