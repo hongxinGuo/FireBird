@@ -525,6 +525,12 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.h">
       <Filter>头文件\Factory Product\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -917,6 +923,10 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp">
       <Filter>源文件\Factory Product\Quandl</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

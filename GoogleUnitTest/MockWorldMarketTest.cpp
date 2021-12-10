@@ -774,7 +774,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockProfile(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfile(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
@@ -802,7 +802,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockProfileConcise(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfileConcise(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
@@ -834,7 +834,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetPeerUpdated(false);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockPeer(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockPeer(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetPeerUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
@@ -859,7 +859,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetInsiderTransactionNeedUpdate(true);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockInsiderTransaction(pWebData, _))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockInsiderTransaction(pWebData, _))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetInsiderTransactionUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
@@ -890,7 +890,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetUpdateProfileDB(false);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetTransactionTime(gl_pMockWorldMarket->GetUTCTime() - 3600 * 12 + 1);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockQuote(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockQuote(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetIPOStatus(), __STOCK_IPOED__);
@@ -918,7 +918,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->UpdateDayLine(vDayLine);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetIPOStatus(__STOCK_NOT_CHECKED__);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetIPOStatus(), __STOCK_NULL__);
@@ -948,7 +948,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->UpdateDayLine(vDayLine);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetIPOStatus(__STOCK_NOT_CHECKED__);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetIPOStatus(), __STOCK_DELISTED__);
@@ -978,7 +978,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->UpdateDayLine(vDayLine);
 		gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->SetIPOStatus(__STOCK_NOT_CHECKED__);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)->GetIPOStatus(), __STOCK_IPOED__);
@@ -1007,7 +1007,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->SetTiingoInquiring(false);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage__STOCK_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
 		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
@@ -1033,7 +1033,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->SetTiingoInquiring(false);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage__STOCK_CANDLES__) {
+	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
 		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
@@ -1072,11 +1072,11 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_SYMBOLS__) {
+	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_SYMBOLS__) {
 		// 需要修改实现函数，以适应Mock的需要
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_CANDLES__) {
+	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_CANDLES__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		WebInquiry inquiry;
 		inquiry.m_iPriority = 10;
@@ -1090,7 +1090,7 @@ namespace StockAnalysisTest {
 			gl_WebInquirer.PushTiingoData(pWebData);
 		}
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ProcessTiingoStockDayLine(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseTiingoStockDayLine(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoInquiring());

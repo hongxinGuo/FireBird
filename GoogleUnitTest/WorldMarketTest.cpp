@@ -6,6 +6,9 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"FinnhubForexExchange.h"
+#include"FinnhubEconomicCountryList.h"
+
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
 #include"MockFinnhubWebInquiry.h"
@@ -1035,22 +1038,20 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsCountryListUpdated());
 		gl_pWorldMarket->SetFinnhubInquiring(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize2(), 0);
 		gl_pWorldMarket->SetCountryListUpdated(true);
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize2(), 0);
 		gl_pWorldMarket->SetCountryListUpdated(false);
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
+		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize2(), 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("查询Finnhub country List"));
-		WebInquiry inquiry = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_EQ(inquiry.m_iPriority, 10);
-		EXPECT_EQ(inquiry.m_lInquiryIndex, __ECONOMIC_COUNTRY_LIST__);
-		EXPECT_EQ(inquiry.m_lStockIndex, 0);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("查询Finnhub economic country List"));
+		CWebSourceDataProductPtr p = gl_pWorldMarket->GetFinnhubInquiry2();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCountryList)));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 	}
 
@@ -1353,7 +1354,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubForexExchange) {
-		WebInquiry inquiry;
+		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetFinnhubForexExchangeUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubForexExchange()) << "FinnhubForexExchange Updated";
@@ -1365,9 +1366,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexExchange());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
-		inquiry = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_EQ(inquiry.m_lInquiryIndex, __FOREX_EXCHANGE__);
-		EXPECT_EQ(inquiry.m_iPriority, 10);
+		p = gl_pWorldMarket->GetFinnhubInquiry2();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexExchange)));
+		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated()) << "此标识需要等处理完数据后方设置";
 	}
 

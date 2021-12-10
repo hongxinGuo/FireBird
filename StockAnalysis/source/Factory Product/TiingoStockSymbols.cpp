@@ -21,7 +21,7 @@ bool CTiingoStockSymbols::ProcessWebData(CWebDataPtr pWebData) {
 	CString strNumber, str;
 	long lTemp = 0;
 
-	if (gl_pWorldMarket->ProcessTiingoStockSymbol(pWebData, vTiingoStock)) {
+	if (gl_pWorldMarket->ParseTiingoStockSymbol(pWebData, vTiingoStock)) {
 		lTemp = 0;
 		for (auto& pTiingoStock : vTiingoStock) {
 			if (!gl_pWorldMarket->IsTiingoStock(pTiingoStock->m_strTicker)) {

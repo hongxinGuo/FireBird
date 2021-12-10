@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData10(10, _T("AAPL"), _T("{\"address\":\"contentious  selectively\",\"city\":\"slaughterer\",\"country\":\"miscuing\",\"currency\":\"inveigles\",\"cusip\":\"Grable's\",\"description\":\"crooked ng Odis tint's\",\"employeeTotal\":\"jalopies\",\"exchange\":\"sieves abominating cuff's hesitation's debilitating\",\"finnhubIndustry\":\"culottes\",\"ggroup\":\"Ziegler's tendrils\",\"gind\":\"prairies  catalysis\",\"gsector\":\"habituate Scandinavians\",\"gsubind\":\"checkout  cherished\",\"ipo\":\"1980-12-12\",\"isin\":\"rapport\",\"logo\":\"freelancer's\",\"marketCapitalization\":8790583.5,\"naics\":\"mishmAlisha\",\"naicsNationalIndustry\":\"pollen jay's flops\",\"naicsSector\":\"smuggest\",\"naicsSubsector\":\"apprenticeship's Kringle\",\"name\":\"impediment's gondolier\",\"phone\":\"shootout's\",\"sedol\":\"decrescendi\",\"shareOutstanding\":75546.432,\"state\":\"Tweedledee\",\"ticker\":\"AAPL\",\"weburl\":\"gestated\"}"));
 
-	class ProcessFinnhubStockProfileTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockProfileTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -87,12 +87,12 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockProfile1, ProcessFinnhubStockProfileTest, testing::Values(&finnhubWebData1, &finnhubWebData2,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfile1, ParseFinnhubStockProfileTest, testing::Values(&finnhubWebData1, &finnhubWebData2,
 		&finnhubWebData3, &finnhubWebData10));
 
-	TEST_P(ProcessFinnhubStockProfileTest, TestProcessStockProfile0) {
+	TEST_P(ParseFinnhubStockProfileTest, TestProcessStockProfile0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockProfile(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockProfile(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 1: // 少于20个字符
 			EXPECT_FALSE(fSucceed);
@@ -131,7 +131,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData20(10, _T("AAPL"), _T("{\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 
-	class ProcessFinnhubStockProfileConciseTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockProfileConciseTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -157,12 +157,12 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData11, &finnhubWebData12,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ParseFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData11, &finnhubWebData12,
 		&finnhubWebData13, &finnhubWebData20));
 
-	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
+	TEST_P(ParseFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockProfileConcise(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockProfileConcise(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 1: // 少于20个字符
 			EXPECT_TRUE(fSucceed);
@@ -191,7 +191,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"mic\":\"XNAS\",\"symbol\":\"A\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"mic\":\"OOTC\",\"symbol\":\"AA\",\"type\":\"Common Stock\"}]"));
 
-	class ProcessFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -219,12 +219,12 @@ namespace StockAnalysisTest {
 		vector<CWorldStockPtr> m_vStock;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
 		&finnhubWebData30));
 
-	TEST_P(ProcessFinnhubStockSymbolTest, TestProcessFinnhubStockSymbol0) {
+	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockSymbol(m_pWebData, m_vStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockSymbol(m_pWebData, m_vStock);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -266,7 +266,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData40(10, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
 
-	class ProcessFinnhubStockCandleTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockCandleTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -296,16 +296,16 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockCandle1,
-		ProcessFinnhubStockCandleTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
+		ParseFinnhubStockCandleTest,
 		testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
 			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
-	TEST_P(ProcessFinnhubStockCandleTest, TestProcessFinnhubStockCandle0) {
+	TEST_P(ParseFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
 		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockCandle(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockCandle(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -392,7 +392,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData60(10, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
 
-	class ProcessFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -429,14 +429,14 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-		ProcessFinnhubStockQuoteTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockQuote1,
+		ParseFinnhubStockQuoteTest,
 		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
 			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
-	TEST_P(ProcessFinnhubStockQuoteTest, TestProcessFinnhubStockQuote0) {
+	TEST_P(ParseFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockQuote(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockQuote(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 3: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -532,7 +532,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData70(10, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 
-	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -565,16 +565,16 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle1,
-		ProcessFinnhubForexCandleTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexCandle1,
+		ParseFinnhubForexCandleTest,
 		testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
 			&finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
-	TEST_P(ProcessFinnhubForexCandleTest, TestProcessFinnhubForexCandle0) {
+	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ProcessFinnhubForexCandle(m_pWebData, m_pForexSymbol);
+		fSucceed = gl_pWorldMarket->ParseFinnhubForexCandle(m_pWebData, m_pForexSymbol);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -666,7 +666,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
-	class ProcessFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -687,12 +687,12 @@ namespace StockAnalysisTest {
 		vector<CString> m_vExchange;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
 		&finnhubWebData80));
 
-	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
+	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubForexExchange(m_pWebData, m_vExchange);
+		fSucceed = gl_pWorldMarket->ParseFinnhubForexExchange(m_pWebData, m_vExchange);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -722,7 +722,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData90(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
-	class ProcessFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -744,13 +744,13 @@ namespace StockAnalysisTest {
 		vector<CForexSymbolPtr> m_vForexSymbol;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
 		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
 			&finnhubWebData85, &finnhubWebData90));
 
-	TEST_P(ProcessFinnhubForexSymbolTest, TestProcessFinnhubForexSymbol0) {
+	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubForexSymbol(m_pWebData, m_vForexSymbol);
+		fSucceed = gl_pWorldMarket->ParseFinnhubForexSymbol(m_pWebData, m_vForexSymbol);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -786,7 +786,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
-	class ProcessFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -808,13 +808,13 @@ namespace StockAnalysisTest {
 		vector<CCountryPtr> m_vCountry;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
 		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
 			&finnhubWebData95, &finnhubWebData100));
 
-	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
+	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubCountryList(m_pWebData, m_vCountry);
+		fSucceed = gl_pWorldMarket->ParseFinnhubCountryList(m_pWebData, m_vCountry);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -858,7 +858,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 
-	class ProcessFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -883,13 +883,13 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer1, ProcessFinnhubStockPeerTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
 		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
 			&finnhubWebData110));
 
-	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer0) {
+	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockPeer(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockPeer(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
 			EXPECT_TRUE(fSucceed);
@@ -927,7 +927,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData120(10, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
 
-	class ProcessFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -949,13 +949,13 @@ namespace StockAnalysisTest {
 		vector<CEconomicCalendarPtr> m_vEconomicCalendar;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar1, ProcessFinnhubEconomicCalendarTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
 		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
 			&finnhubWebData115, &finnhubWebData120));
 
-	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar10) {
+	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubEconomicCalendar(m_pWebData, m_vEconomicCalendar);
+		fSucceed = gl_pWorldMarket->ParseFinnhubEconomicCalendar(m_pWebData, m_vEconomicCalendar);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -1002,7 +1002,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData130(10, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
 
-	class ProcessFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -1028,13 +1028,13 @@ namespace StockAnalysisTest {
 		vector<CEPSSurprisePtr> m_vEPSSurprise;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise1, ProcessFinnhubEPSSurpriseTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
 		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
 			&finnhubWebData125, &finnhubWebData130));
 
-	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise0) {
+	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubEPSSurprise(m_pWebData, m_vEPSSurprise);
+		fSucceed = gl_pWorldMarket->ParseFinnhubEPSSurprise(m_pWebData, m_vEPSSurprise);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -1077,7 +1077,7 @@ namespace StockAnalysisTest {
 
 	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 
-	class ProcessFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -1104,12 +1104,12 @@ namespace StockAnalysisTest {
 		vector<CInsiderTransactionPtr> m_vInsiderTransaction;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
 		testing::Values(&finnhubWebData132));
 
-	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProcessFinnhubInsiderTransaction0) {
+	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubStockInsiderTransaction(m_pWebData, m_vInsiderTransaction);
+		fSucceed = gl_pWorldMarket->ParseFinnhubStockInsiderTransaction(m_pWebData, m_vInsiderTransaction);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_vInsiderTransaction.size(), 2);
@@ -1214,7 +1214,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
-	class ProcessFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -1235,12 +1235,12 @@ namespace StockAnalysisTest {
 		vector<CString> m_vExchange;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
 		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
-	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
+	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoExchange(m_pWebData, m_vExchange);
+		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoExchange(m_pWebData, m_vExchange);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -1270,7 +1270,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
-	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -1292,13 +1292,13 @@ namespace StockAnalysisTest {
 		vector<CCryptoSymbolPtr> m_vCryptoSymbol;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol1, ProcessFinnhubCryptoSymbolTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
 		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
 			&finnhubWebData85, &finnhubWebData90));
 
-	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol0) {
+	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoSymbol(m_pWebData, m_vCryptoSymbol);
+		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoSymbol(m_pWebData, m_vCryptoSymbol);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -1346,7 +1346,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData230(10, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 
-	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*>
+	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -1381,16 +1381,16 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle1,
-		ProcessFinnhubCryptoCandleTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoCandle1,
+		ParseFinnhubCryptoCandleTest,
 		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
 			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
-	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle0) {
+	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ProcessFinnhubCryptoCandle(m_pWebData, m_pCryptoSymbol);
+		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoCandle(m_pWebData, m_pCryptoSymbol);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);

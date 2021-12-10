@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	TiingoWebData tiingoWebData10(10, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
-	class ProcessTiingoStockTest : public::testing::TestWithParam<TiingoWebData*>
+	class ParseTiingoStockTest : public::testing::TestWithParam<TiingoWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -67,14 +67,14 @@ namespace StockAnalysisTest {
 		vector<CTiingoStockPtr> m_vStock;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock1,
-		ProcessTiingoStockTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock1,
+		ParseTiingoStockTest,
 		testing::Values(&tiingoWebData1, &tiingoWebData2,
 			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
-	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile0) {
+	TEST_P(ParseTiingoStockTest, TestProcessStockProfile0) {
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessTiingoStockSymbol(m_pWebData, m_vStock);
+		fSucceed = gl_pWorldMarket->ParseTiingoStockSymbol(m_pWebData, m_vStock);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
@@ -150,7 +150,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	TiingoWebData tiingoWebData40(10, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
 
-	class ProcessTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*>
+	class ParseTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*>
 	{
 	protected:
 		virtual void SetUp(void) override {
@@ -181,17 +181,17 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pWebData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine1,
-		ProcessTiingoStockDayLineTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1,
+		ParseTiingoStockDayLineTest,
 		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
 			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
-	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine0) {
+	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		bool fSucceed = false;
 		CString strMessage;
 		CDayLinePtr pDayLine;
 
-		fSucceed = gl_pWorldMarket->ProcessTiingoStockDayLine(m_pWebData, m_pStock);
+		fSucceed = gl_pWorldMarket->ParseTiingoStockDayLine(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);

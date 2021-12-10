@@ -209,26 +209,26 @@ public:
 	virtual bool TaskUpdateNaicsIndustry(void);
 
 	// Finnhub数据处理函数
-	virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	virtual bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
-	virtual bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
-	virtual bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
-	virtual bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
-	virtual bool ProcessFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
-	virtual bool ProcessFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol);
-	virtual bool ProcessFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol);
-	virtual bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
-	virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ProcessFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
-	virtual bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
-	virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
+	virtual bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ParseFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
+	virtual bool ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ParseFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
+	virtual bool ParseFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
+	virtual bool ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
+	virtual bool ParseFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
+	virtual bool ParseFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol);
+	virtual bool ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol);
+	virtual bool ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
+	virtual bool ParseFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual bool ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
+	virtual bool ParseFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
+	virtual bool ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
 	// Tiingo数据处理函数
-	virtual bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock);
-	virtual bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual bool ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock);
+	virtual bool ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock);
 
 	bool TaskUpdateStockProfileDB(void);
 	bool TaskUpdateDayLineDB(void);
@@ -350,6 +350,10 @@ public:
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubWebInquiry.size(); }
 	void PushFinnhubInquiry(WebInquiry inquiry) { m_qFinnhubWebInquiry.push(inquiry); }
 	WebInquiry GetFinnhubInquiry(void);
+
+	size_t GetFinnhubInquiryQueueSize2(void) noexcept { return m_qFinnhubProduct.size(); }
+	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
+	CWebSourceDataProductPtr GetFinnhubInquiry2(void);
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }

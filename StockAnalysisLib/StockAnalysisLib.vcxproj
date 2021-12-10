@@ -117,7 +117,9 @@
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoFactory.h" />
@@ -254,7 +256,9 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />

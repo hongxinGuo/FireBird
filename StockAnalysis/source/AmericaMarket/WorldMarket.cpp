@@ -270,16 +270,16 @@ bool CWorldMarket::SchedulingTask(void) {
 		}
 	}
 	if (m_pCurrentFinnhubProduct != nullptr) {
-		ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
-	}
-	else {
 		ProcessFinnhubWebDataReceived2(); // 要先处理收到的Finnhub网络数据
 	}
+	else {
+		ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
+	}
 	if (m_qFinnhubProduct.size() > 0) {
-		ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
+		ProcessFinnhubInquiringMessage2(); // 然后再申请处理下一个
 	}
 	else {
-		ProcessFinnhubInquiringMessage2();
+		ProcessFinnhubInquiringMessage();
 	}
 
 	if (--s_iCountTiingoLimit < 0) {
@@ -486,7 +486,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage2(void) {
 	CCryptoSymbolPtr pCryptoSymbol = nullptr;
 	bool fDone = false;
 
-	if (m_qFinnhubWebInquiry.size() > 0) { // 有申请等待？
+	if (m_qFinnhubProduct.size() > 0) { // 有申请等待？
 		ASSERT(IsFinnhubInquiring());
 		if (IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
 			m_pCurrentFinnhubProduct = m_qFinnhubProduct.front();
@@ -551,7 +551,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
 			case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
 				ASSERT(pStock != nullptr);
-				if (ProcessFinnhubStockProfile(pWebData, pStock)) {
+				if (ParseFinnhubStockProfile(pWebData, pStock)) {
 					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 					pStock->SetProfileUpdated(true);
 					pStock->SetUpdateProfileDB(true);
@@ -559,14 +559,14 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __COMPANY_PROFILE_CONCISE__:
 				ASSERT(pStock != nullptr);
-				if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
+				if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
 					pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
 					pStock->SetProfileUpdated(true);
 					pStock->SetUpdateProfileDB(true);
 				}
 				break;
 			case  __STOCK_SYMBOLS__:
-				if (ProcessFinnhubStockSymbol(pWebData, vStock)) {
+				if (ParseFinnhubStockSymbol(pWebData, vStock)) {
 					// 加上交易所代码。
 					for (auto& pStock3 : vStock) {
 						pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
@@ -588,7 +588,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __PEERS__:
 				ASSERT(pStock != nullptr);
-				if (ProcessFinnhubStockPeer(pWebData, pStock)) {
+				if (ParseFinnhubStockPeer(pWebData, pStock)) {
 					pStock->SetPeerUpdateDate(GetMarketDate());
 					pStock->SetUpdateProfileDB(true);
 				}
@@ -596,7 +596,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			case __BASIC_FINANCIALS__:
 				break;
 			case __INSIDER_TRANSACTION__:
-				if (ProcessFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
+				if (ParseFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
 					pStock->SetInsiderTransactionUpdateDate(GetMarketDate());
 					pStock->SetUpdateProfileDB(true);
 					if (vInsiderTransaction.size() > 0) {
@@ -607,7 +607,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __STOCK_ESTIMATES_EPS_SURPRISE__:
 				ASSERT(pStock != nullptr);
-				if (ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
+				if (ParseFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
 					if (vEPSSurprise.size() > 0) {
 						pStock->UpdateEPSSurprise(vEPSSurprise);
 					}
@@ -621,7 +621,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __STOCK_PRICE_QUOTE__:
 				ASSERT(pStock != nullptr);
-				ProcessFinnhubStockQuote(pWebData, pStock);
+				ParseFinnhubStockQuote(pWebData, pStock);
 				if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
 					pStock->SetActive(true);
 					if (!pStock->IsIPOed()) {
@@ -632,7 +632,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				break;
 			case __STOCK_PRICE_CANDLES__:
 				ASSERT(pStock != nullptr);
-				if (ProcessFinnhubStockCandle(pWebData, pStock)) {
+				if (ParseFinnhubStockCandle(pWebData, pStock)) {
 					if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
 						if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
 							pStock->SetIPOStatus(__STOCK_NULL__);
@@ -648,7 +648,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __FOREX_EXCHANGE__:
-				if (ProcessFinnhubForexExchange(pWebData, vForexExchange)) {
+				if (ParseFinnhubForexExchange(pWebData, vForexExchange)) {
 					for (int i = 0; i < vForexExchange.size(); i++) {
 						if (!IsForexExchange(vForexExchange.at(i))) {
 							AddForexExchange(vForexExchange.at(i));
@@ -658,7 +658,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __FOREX_SYMBOLS__:
-				if (ProcessFinnhubForexSymbol(pWebData, vForexSymbol)) {
+				if (ParseFinnhubForexSymbol(pWebData, vForexSymbol)) {
 					for (auto& pSymbol : vForexSymbol) {
 						if (!IsForexSymbol(pSymbol->GetSymbol())) {
 							pSymbol->SetExchangeCode(m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex));
@@ -668,14 +668,14 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __FOREX_CANDLES__:
-				if (ProcessFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+				if (ParseFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
 					TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
 				}
 				break;
 			case __FOREX_ALL_RATES__:
 				break;
 			case __CRYPTO_EXCHANGE__:
-				if (ProcessFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
+				if (ParseFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
 					for (int i = 0; i < vCryptoExchange.size(); i++) {
 						if (!IsCryptoExchange(vCryptoExchange.at(i))) {
 							AddCryptoExchange(vCryptoExchange.at(i));
@@ -685,7 +685,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __CRYPTO_SYMBOLS__:
-				if (ProcessFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
+				if (ParseFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
 					for (auto& pSymbol : vCryptoSymbol) {
 						if (!IsCryptoSymbol(pSymbol->GetSymbol())) {
 							pSymbol->SetExchangeCode(m_vCryptoExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex));
@@ -695,12 +695,12 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				}
 				break;
 			case __CRYPTO_CANDLES__:
-				if (ProcessFinnhubCryptoCandle(pWebData, m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+				if (ParseFinnhubCryptoCandle(pWebData, m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
 					//TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
 				}
 				break;
 			case __ECONOMIC_COUNTRY_LIST__:
-				ProcessFinnhubCountryList(pWebData, vCountry);
+				ParseFinnhubCountryList(pWebData, vCountry);
 				for (auto& pCountry : vCountry) {
 					if (!IsCountry(pCountry)) {
 						AddCountry(pCountry);
@@ -709,7 +709,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 				SetCountryListUpdated(true);
 				break;
 			case __ECONOMIC_CALENDAR__:
-				ProcessFinnhubEconomicCalendar(pWebData, vEconomicCalendar);
+				ParseFinnhubEconomicCalendar(pWebData, vEconomicCalendar);
 				UpdateEconomicCalendar(vEconomicCalendar);
 				SetFinnhubEconomicCalendarUpdated(true);
 				break;
@@ -729,7 +729,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived2(void) {
 	CWebDataPtr pWebData = nullptr;
 	bool fDone = false;
 
-	if (m_pCurrentFinnhubProduct == nullptr) return false;
+	ASSERT(m_pCurrentFinnhubProduct != nullptr);
 
 	if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
 		if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
@@ -882,7 +882,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage2(void) {
 			m_qTiingoProduct.pop();
 
 			strMessage = m_pCurrentTiingoProduct->CreatMessage();
-			gl_pTiingoWebInquiry->SetInquiryingStringPrefix(strMessage);
+			gl_pTiingoWebInquiry->SetInquiryingStringPrefix(strMessage); // 采用此种形式时，只设置StringPrefix即可，其他两个字符串皆为空。
 
 			SetTiingoDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			gl_pTiingoWebInquiry->GetWebData(); // 调用读取网络数据的线程
@@ -918,7 +918,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 			case __COMPANY_PROFILE_CONCISE__: // 免费账户使用此项
 				break;
 			case  __STOCK_SYMBOLS__:
-				if (ProcessTiingoStockSymbol(pWebData, vTiingoStock)) {
+				if (ParseTiingoStockSymbol(pWebData, vTiingoStock)) {
 					lTemp = 0;
 					for (auto& pTiingoStock : vTiingoStock) {
 						if (!IsTiingoStock(pTiingoStock->m_strTicker)) {
@@ -962,7 +962,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 				break;
 			case __STOCK_PRICE_CANDLES__:
 				pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
-				ProcessTiingoStockDayLine(pWebData, pStock);
+				ParseTiingoStockDayLine(pWebData, pStock);
 				TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 				break;
 			case __FOREX_EXCHANGE__:
@@ -998,7 +998,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived2(void) {
 	CWebDataPtr pWebData = nullptr;
 	bool fDone = false;
 
-	if (m_pCurrentTiingoProduct == nullptr) return false;
+	ASSERT(m_pCurrentTiingoProduct != nullptr);
 
 	if (IsTiingoDataReceived()) { // 如果网络数据接收完成
 		if (gl_WebInquirer.GetTiingoDataSize() > 0) {  // 处理当前网络数据
@@ -1007,7 +1007,6 @@ bool CWorldMarket::ProcessTiingoWebDataReceived2(void) {
 
 			m_pCurrentTiingoProduct->ProcessWebData(pWebData);
 
-			gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetTiingoInquiring(false);
 			fDone = true;
 			m_pCurrentTiingoProduct = nullptr;
@@ -1210,14 +1209,11 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 }
 
 bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
-	WebInquiry inquiry{ 0, 0, 0 };
-
 	if (!IsCountryListUpdated() && !IsFinnhubInquiring()) {
-		inquiry.m_lInquiryIndex = __ECONOMIC_COUNTRY_LIST__;
-		inquiry.m_iPriority = 10;
-		m_qFinnhubWebInquiry.push(inquiry);
+		CWebSourceDataProductPtr p = m_FinnhubFactory.CreateProduct(__ECONOMIC_COUNTRY_LIST__);
+		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("查询Finnhub country List"));
+		gl_systemMessage.PushInformationMessage(_T("查询Finnhub economic country List"));
 		return true;
 	}
 	return false;
@@ -1489,13 +1485,10 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 }
 
 bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
-	WebInquiry inquiry{ 0, 0, 0 };
-
 	if (!IsFinnhubForexExchangeUpdated() && !IsFinnhubInquiring()) {
-		inquiry.m_lInquiryIndex = __FOREX_EXCHANGE__;
-		inquiry.m_iPriority = 10;
-		m_qFinnhubWebInquiry.push(inquiry);
+		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(__FOREX_EXCHANGE__));
 		SetFinnhubInquiring(true);
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub forex exchange"));
 		return true;
 	}
 	return false;
@@ -2220,6 +2213,15 @@ WebInquiry CWorldMarket::GetFinnhubInquiry(void) {
 	m_qFinnhubWebInquiry.pop();
 
 	return inquiry;
+}
+
+CWebSourceDataProductPtr CWorldMarket::GetFinnhubInquiry2(void) {
+	ASSERT(m_qFinnhubProduct.size() > 0);
+
+	CWebSourceDataProductPtr p = m_qFinnhubProduct.front();
+	m_qFinnhubProduct.pop();
+
+	return p;
 }
 
 WebInquiry CWorldMarket::GetTiingoInquiry(void) {

@@ -26,7 +26,7 @@ bool CTiingoStockPriceCandle::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 
 	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	gl_pWorldMarket->ProcessTiingoStockDayLine(pWebData, pStock);
+	gl_pWorldMarket->ParseTiingoStockDayLine(pWebData, pStock);
 	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 
 	return true;

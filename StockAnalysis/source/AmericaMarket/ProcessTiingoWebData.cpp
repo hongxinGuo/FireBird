@@ -51,7 +51,7 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
+bool CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
 	CTiingoStockPtr pStock = nullptr;
@@ -177,7 +177,7 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingo
 // ]
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+bool CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	vector<CDayLinePtr> vDayLine;
 	ptree pt, pt2;
 	string s;
