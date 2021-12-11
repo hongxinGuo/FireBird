@@ -11,8 +11,6 @@
 #include"TiingoStockPriceCandle.h"
 
 CWebSourceDataProductPtr CTiingoFactory::CreateProduct(int iIndex) {
-	CString strNumber;
-	char buffer[50];
 	CWebSourceDataProductPtr p = nullptr;
 
 	switch (iIndex) {
@@ -62,13 +60,9 @@ CWebSourceDataProductPtr CTiingoFactory::CreateProduct(int iIndex) {
 	case __CRYPTO_CANDLES__:
 	case __ECONOMIC_COUNTRY_LIST__:
 	case __ECONOMIC_CALENDAR__:
-		sprintf_s(buffer, _T("%d"), iIndex);
-		strNumber = buffer;
-		gl_systemMessage.PushErrorMessage(_T("Tiingo product尚未实现：") + strNumber);
-		break;
 	default:
 		// error. not impliment yet.
-		gl_systemMessage.PushErrorMessage(_T("Tiingo product错误"));
+		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
 		ASSERT(0);
 		break;
 	}

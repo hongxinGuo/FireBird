@@ -290,6 +290,7 @@ public:
 	bool IsTiingoDataReceived(void) noexcept { const bool f = m_fTiingoDataReceived; return f; }
 
 	CFinnhubExchangePtr GetExchange(long lIndex) { return m_vFinnhubExchange.at(lIndex); }
+	CString GetExchangeCode(long lIndex) { return m_vFinnhubExchange.at(lIndex)->m_strCode; }
 	size_t GetExchangeSize(void) noexcept { return m_mapFinnhubExchange.size(); }
 
 	bool IsStockProfileNeedUpdate(void);
@@ -352,7 +353,7 @@ public:
 	WebInquiry GetFinnhubInquiry(void);
 
 	size_t GetFinnhubInquiryQueueSize2(void) noexcept { return m_qFinnhubProduct.size(); }
-	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
+	void PushFinnhubInquiry2(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
 	CWebSourceDataProductPtr GetFinnhubInquiry2(void);
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }

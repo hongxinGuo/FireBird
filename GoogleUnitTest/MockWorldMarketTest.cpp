@@ -20,6 +20,9 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
+#include"FinnhubCryptoDayLine.h"
+#include"FinnhubForexDayLine.h"
+
 using namespace std;
 using namespace testing;
 #include<memory>
@@ -720,25 +723,24 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__CRYPTO_CANDLES__) {
-		WebInquiry inquiry;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __CRYPTO_CANDLES__;
-		inquiry.m_lStockIndex = 0;
-		gl_pMockWorldMarket->PushFinnhubInquiry(inquiry);
-		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
+		CFinnhubCryptoDayLinePtr p = make_shared<CFinnhubCryptoDayLine>();
+		p->SetIndex(0);
+		gl_pMockWorldMarket->PushFinnhubInquiry2(p);
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCryptoSymbol(p->GetIndex())->IsDayLineNeedUpdate());
+		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize2(), 1);
 		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
 		gl_pMockWorldMarket->SetFinnhubInquiring(true);
-		gl_pMockWorldMarket->GetCryptoSymbol(inquiry.m_lStockIndex)->SetDayLineNeedUpdate(true);
+		gl_pMockWorldMarket->GetCryptoSymbol(p->GetIndex())->SetDayLineNeedUpdate(true);
 
 		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
 			.Times(1);
-		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringMiddle(),
-			gl_pMockWorldMarket->GetCryptoSymbol(inquiry.m_lStockIndex)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
+		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage2());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr()
+			+ gl_pWorldMarket->GetCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()))
+			<< "这里要使用gl_pWorldMarket,因为p调用的就是真实的市场";
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex, __CRYPTO_CANDLES__);
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
-		EXPECT_FALSE(gl_pMockWorldMarket->GetCryptoSymbol(inquiry.m_lStockIndex)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状

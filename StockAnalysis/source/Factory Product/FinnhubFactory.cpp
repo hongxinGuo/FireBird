@@ -3,7 +3,19 @@
 #include"globedef.h"
 #include"WorldMarket.h"
 
+#include"FinnhubCompanyProfileConcise.h"
+#include"FinnhubCompanyPeer.h"
+#include"FinnhubCompanyInsiderTransaction.h"
+#include"FinnhubCryptoDayLine.h"
+#include"FinnhubForexDayLine.h"
+#include"FinnhubStockDayLine.h"
+
+#include"FinnhubCompanySymbolProduct.h"
+#include"FinnhubCryptoSymbolProduct.h"
+#include"FinnhubForexSymbolProduct.h"
+
 #include"FinnhubForexExchange.h"
+#include"FinnhubCryptoExchange.h"
 
 #include"FinnhubEconomicCountryList.h"
 
@@ -16,8 +28,10 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 	case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
 		break;
 	case __COMPANY_PROFILE_CONCISE__:
+		p = make_shared<CFinnhubCompanyProfileConcise>();
 		break;
 	case  __STOCK_SYMBOLS__:
+		p = make_shared<CFinnhubCompanySymbolProduct>();
 		break;
 	case __COMPANY_EXECTIVE__: // Premium
 		break;
@@ -30,10 +44,12 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 	case __NEWS_SENTIMENT__:
 		break;
 	case __PEERS__:
+		p = make_shared<CFinnhubCompanyPeer>();
 		break;
 	case __BASIC_FINANCIALS__:
 		break;
 	case __INSIDER_TRANSACTION__:
+		p = make_shared<CFinnhubCompanyInsiderTransaction>();
 		break;
 	case __OWNERSHIP__: // Premium
 		break;
@@ -72,6 +88,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 	case __STOCK_PRICE_QUOTE__:
 		break;
 	case __STOCK_PRICE_CANDLES__:
+		p = make_shared<CFinnhubStockDayLine>();
 		break;
 	case __STOCK_PRICE_TICK_DATA__: // Premium
 		break;
@@ -83,16 +100,21 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 		p = make_shared<CFinnhubForexExchange>();
 		break;
 	case __FOREX_SYMBOLS__:
+		p = make_shared<CFinnhubForexSymbolProduct>();
 		break;
 	case __FOREX_CANDLES__:
+		p = make_shared<CFinnhubForexDayLine>();
 		break;
 	case __FOREX_ALL_RATES__:
 		break;
 	case __CRYPTO_EXCHANGE__:
+		p = make_shared<CFinnhubCryptoExchange>();
 		break;
 	case __CRYPTO_SYMBOLS__:
+		p = make_shared<CFinnhubCryptoSymbolProduct>();
 		break;
 	case __CRYPTO_CANDLES__:
+		p = make_shared<CFinnhubCryptoDayLine>();
 		break;
 	case __ECONOMIC_COUNTRY_LIST__:
 		p = make_shared<CFinnhubEconomicCountryList>();
@@ -101,6 +123,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 		break;
 	default:
 		TRACE("未处理指令%d\n", iIndex);
+		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
 	ASSERT(p != nullptr);

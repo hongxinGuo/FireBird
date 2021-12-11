@@ -127,6 +127,18 @@
     <Filter Include="Test源文件\System Data">
       <UniqueIdentifier>{ef7927e9-9116-46fc-8d78-25a99432f2cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Factory Product">
+      <UniqueIdentifier>{6d8b6e28-d09f-4dda-be0f-331245a2b014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Factory Product\Finnhub">
+      <UniqueIdentifier>{6d527397-39d1-4594-b2a0-acec90a6ed58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Factory Product\Tiingo">
+      <UniqueIdentifier>{607675d2-4127-4216-9ae8-3d527fcd2960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Factory Product\Quandl">
+      <UniqueIdentifier>{01482b08-1aaf-4d80-aeb0-699ba08bccd1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -419,6 +431,27 @@
     </ClCompile>
     <ClCompile Include="SystemDataTest.cpp">
       <Filter>Test源文件\System Data</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoStockSymbolsTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoStockPriceCandleTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoFactoryTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubFactoryTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubEconomicCountryListTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCryptoExchangeTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubForexExchangeTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
