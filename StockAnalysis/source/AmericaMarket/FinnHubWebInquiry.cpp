@@ -62,20 +62,8 @@ bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-	CString str = _T("");
-	static int s_iCount = 5;
-
-	switch (gl_pWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex) {
-	case __STOCK_SYMBOLS__:
-		// 无需中间串
-		break;
-	case __STOCK_PRICE_QUOTE__:
-		break;
-	default:
-		break;
-	}
-
-	return str;
+	// do nothing
+	return _T("");
 }
 
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {

@@ -7,7 +7,7 @@
 #include "FinnhubCompanyPeer.h"
 
 CFinnhubCompanyPeer::CFinnhubCompanyPeer() {
-	m_strClassName = _T("Finnhub company profile concise");
+	m_strClassName = _T("Finnhub company peer");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
 	m_lIndex = -1;
 }

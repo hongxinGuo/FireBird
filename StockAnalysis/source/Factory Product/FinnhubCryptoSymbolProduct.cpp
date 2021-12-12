@@ -5,7 +5,7 @@
 #include "FinnhubCryptoSymbolProduct.h"
 
 CFinnhubCryptoSymbolProduct::CFinnhubCryptoSymbolProduct() {
-	m_strClassName = _T("Finnhub crypto symbol");
+	m_strClassName = _T("Finnhub crypto symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
 	m_lIndex = -1;
 }

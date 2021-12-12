@@ -170,9 +170,7 @@ public:
 	bool ProcessFinnhubWebDataReceived2(void);
 
 	bool ProcessTiingoInquiringMessage(void);
-	bool ProcessTiingoInquiringMessage2(void);
 	bool ProcessTiingoWebDataReceived(void);
-	bool ProcessTiingoWebDataReceived2(void);
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -200,9 +198,7 @@ public:
 
 	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
 	virtual bool TaskInquiryTiingoCompanySymbol(void);
-	virtual bool TaskInquiryTiingoCompanySymbol2(void);
 	virtual bool TaskInquiryTiingoDayLine(void);
-	virtual bool TaskInquiryTiingoDayLine2(void);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
@@ -272,10 +268,9 @@ public:
 	// 各种状态
 	WebInquiry GetCurrentFinnhubInquiry(void) noexcept { return m_CurrentFinnhubInquiry; }
 	void SetCurrentFinnhubInquiry(WebInquiry inquiry) noexcept { m_CurrentFinnhubInquiry = inquiry; }
-	WebInquiry GetCurrentTiingoInquiry(void) noexcept { return m_CurrentTiingoInquiry; }
-	void SetCurrentTiingoInquiry(WebInquiry inquiry) noexcept { m_CurrentTiingoInquiry = inquiry; }
-	WebInquiry GetCurrentQuandlInquiry(void) noexcept { return m_CurrentQuandlInquiry; }
-	void SetCurrentQuandlInquiry(WebInquiry inquiry) noexcept { m_CurrentQuandlInquiry = inquiry; }
+
+	CWebSourceDataProductPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
+	void SetCurentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }
 
 	bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
 	void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
@@ -390,9 +385,9 @@ public:
 	bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
 	void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
-	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoWebInquiry.size(); }
-	void PushTiingoInquiry(WebInquiry inquiry) { m_qTiingoWebInquiry.push(inquiry); }
-	WebInquiry GetTiingoInquiry(void);
+	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoProduct.size(); }
+	void PushTiingoInquiry(CWebSourceDataProductPtr p) { m_qTiingoProduct.push(p); }
+	CWebSourceDataProductPtr GetTiingoInquiry(void);
 
 	void StopReceivingWebSocket(void);
 
@@ -496,8 +491,6 @@ protected:
 	long m_lCurrentUpdateInsiderTransactionPos;
 	long m_lCurrentUpdateEPSSurprisePos;
 	WebInquiry m_CurrentFinnhubInquiry;
-	WebInquiry m_CurrentTiingoInquiry;
-	WebInquiry m_CurrentQuandlInquiry;
 
 	CWebSourceDataProductPtr m_pCurrentFinnhubProduct;
 	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
@@ -524,13 +517,10 @@ protected:
 	atomic_bool m_fFinnhubDataReceived;
 
 	vector<CString> m_vTiingoInquiringStr;
-	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qTiingoWebInquiry; // 网络数据查询命令队列(有优先级）
 	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qTiingoProduct; // 网络查询命令队列
 	bool m_fTiingoInquiring;
 	atomic_bool m_fTiingoDataReceived;
 
-	vector<CString> m_vQuandlInquiringStr;
-	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qQuandlWebInquiry; // 网络数据查询命令队列(有优先级）
 	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qQuandlProduct; // 网络查询命令队列
 	bool m_fQuandlInquiring;
 	atomic_bool m_fQuandlDataReceived;

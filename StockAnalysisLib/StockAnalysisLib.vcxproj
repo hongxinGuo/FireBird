@@ -119,6 +119,7 @@
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyPeer.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfileConcise.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoExchange.h" />
@@ -130,6 +131,8 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubForexSymbolProduct.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanySymbolProduct.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockEstimatesEPSSurprise.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoFactory.h" />
@@ -268,6 +271,7 @@
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyPeer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfileConcise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanySymbolProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.cpp" />
@@ -279,6 +283,8 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexSymbolProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockEstimatesEPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />

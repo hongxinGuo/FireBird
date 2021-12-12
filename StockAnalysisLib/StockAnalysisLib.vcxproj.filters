@@ -561,6 +561,15 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockDayLine.h">
       <Filter>头文件\Factory Product\Finnhub</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfile.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockEstimatesEPSSurprise.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -971,12 +980,33 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexSymbolProduct.cpp">
       <Filter>源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfileConcise.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyPeer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyInsiderTransaction.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyInsiderTransaction.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyPeer.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfileConcise.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexDayLine.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockDayLine.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanyProfile.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockEstimatesEPSSurprise.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

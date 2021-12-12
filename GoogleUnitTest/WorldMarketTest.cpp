@@ -15,6 +15,9 @@
 #include"FinnhubForexDayLine.h"
 #include"FinnhubStockDayLine.h"
 
+#include"TiingoStockSymbols.h"
+#include"TiingoStockPriceCandle.h"
+
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
 #include"MockFinnhubWebInquiry.h"
@@ -146,30 +149,6 @@ namespace StockAnalysisTest {
 		inquiry.m_lStockIndex = 30;
 		gl_pWorldMarket->SetCurrentFinnhubInquiry(inquiry);
 		inquiry2 = gl_pWorldMarket->GetCurrentFinnhubInquiry();
-		EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
-		EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
-		EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
-	}
-
-	TEST_F(CWorldMarketTest, TestGetCurrentTiingoInquiry) {
-		WebInquiry inquiry, inquiry2;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = 20;
-		inquiry.m_lStockIndex = 30;
-		gl_pWorldMarket->SetCurrentTiingoInquiry(inquiry);
-		inquiry2 = gl_pWorldMarket->GetCurrentTiingoInquiry();
-		EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
-		EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
-		EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
-	}
-
-	TEST_F(CWorldMarketTest, TestGetCurrentQuandlInquiry) {
-		WebInquiry inquiry, inquiry2;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = 20;
-		inquiry.m_lStockIndex = 30;
-		gl_pWorldMarket->SetCurrentQuandlInquiry(inquiry);
-		inquiry2 = gl_pWorldMarket->GetCurrentQuandlInquiry();
 		EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
 		EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
 		EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
@@ -898,18 +877,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTiingoInquiry) {
-		WebInquiry inquiry, inquiry2;
+		CWebSourceDataProductPtr p, p2;
 
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
-		inquiry.m_lInquiryIndex = 0;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lStockIndex = 0;
-		gl_pWorldMarket->PushTiingoInquiry(inquiry);
+		p = make_shared<CTiingoStockSymbols>();
+		p->SetIndex(0);
+		gl_pWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 1);
-		inquiry2 = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
-		EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
-		EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
+		p2 = gl_pWorldMarket->GetTiingoInquiry();
+		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
+		EXPECT_EQ(p2->GetIndex(), 0);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
 	}
 
@@ -1459,7 +1436,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoCompanySymbol) {
-		WebInquiry inquiry;
+		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetTiingoSymbolUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "TiingoCompanySymbol Updated";
@@ -1471,9 +1448,8 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetTiingoInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
-		inquiry = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_SYMBOLS__);
-		EXPECT_EQ(inquiry.m_iPriority, 10);
+		p = gl_pWorldMarket->GetTiingoInquiry();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiry Tiingo Symbol"));
@@ -1481,7 +1457,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoDayLine) {
 		CWorldStockPtr pStock;
-		WebInquiry inquiry;
+		CWebSourceDataProductPtr p = nullptr;
 		long lStockIndex = 0;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -1502,18 +1478,18 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
-		inquiry = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_PRICE_CANDLES__);
-		EXPECT_EQ(inquiry.m_lStockIndex, lStockIndex) << "第一个待查询股票位置";
+		p = gl_pWorldMarket->GetTiingoInquiry();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->SetTiingoInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
-		inquiry = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_PRICE_CANDLES__);
-		EXPECT_EQ(inquiry.m_lStockIndex, lStockIndex) << "第二个待查询股票位置";
+		p = gl_pWorldMarket->GetTiingoInquiry();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 

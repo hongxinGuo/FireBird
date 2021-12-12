@@ -3,12 +3,16 @@
 #include"globedef.h"
 #include"WorldMarket.h"
 
+#include"FinnhubCompanyProfile.h"
 #include"FinnhubCompanyProfileConcise.h"
 #include"FinnhubCompanyPeer.h"
 #include"FinnhubCompanyInsiderTransaction.h"
 #include"FinnhubCryptoDayLine.h"
 #include"FinnhubForexDayLine.h"
 #include"FinnhubStockDayLine.h"
+
+#include"FinnhubStockPriceQuote.h"
+#include"FinnhubStockEstimatesEPSSurprise.h"
 
 #include"FinnhubCompanySymbolProduct.h"
 #include"FinnhubCryptoSymbolProduct.h"
@@ -26,6 +30,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 
 	switch (iIndex) {
 	case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
+		p = make_shared<CFinnhubCompanyProfile>();
 		break;
 	case __COMPANY_PROFILE_CONCISE__:
 		p = make_shared<CFinnhubCompanyProfileConcise>();
@@ -82,10 +87,12 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 	case __STOCK_ESTIMATES_EPS_EXTIMATES__:// Premium
 		break;
 	case __STOCK_ESTIMATES_EPS_SURPRISE__:
+		p = make_shared<CFinnhubStockEstimatesEPSSurprise>();
 		break;
 	case __STOCK_ESTIMATES_EARNING_CALENDAR__:
 		break;
 	case __STOCK_PRICE_QUOTE__:
+		p = make_shared<CFinnhubStockPriceQuote>();
 		break;
 	case __STOCK_PRICE_CANDLES__:
 		p = make_shared<CFinnhubStockDayLine>();
@@ -126,7 +133,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
-	ASSERT(p != nullptr);
+	//ASSERT(p != nullptr);
 
 	return p;
 }

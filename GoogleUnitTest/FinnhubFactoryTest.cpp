@@ -13,11 +13,13 @@
 #include"FinnhubCryptoSymbolProduct.h"
 #include"FinnhubCompanySymbolProduct.h"
 #include"FinnhubForexSymbolProduct.h"
+#include"FinnhubCompanyProfile.h"
 #include"FinnhubCompanyProfileConcise.h"
 #include"FinnhubCompanyPeer.h"
 #include"FinnhubCompanyInsiderTransaction.h"
 #include"FinnhubCryptoDayLine.h"
 #include"FinnhubForexDayLine.h"
+#include"FinnhubStockPriceQuote.h"
 
 using namespace testing;
 
@@ -52,19 +54,25 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CFinnhubFactoryTest, TestCreateProduct) {
-		EXPECT_TRUE(factory.CreateProduct(__ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCountryList)));
-		EXPECT_TRUE(factory.CreateProduct(__CRYPTO_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoExchange)));
-		EXPECT_TRUE(factory.CreateProduct(__FOREX_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexExchange)));
-		EXPECT_TRUE(factory.CreateProduct(__STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanySymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(__CRYPTO_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(__FOREX_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(__COMPANY_PROFILE_CONCISE__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfileConcise)));
-		EXPECT_TRUE(factory.CreateProduct(__PEERS__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
-		EXPECT_TRUE(factory.CreateProduct(__INSIDER_TRANSACTION__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyInsiderTransaction)));
-		EXPECT_TRUE(factory.CreateProduct(__CRYPTO_CANDLES__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoDayLine)));
-		EXPECT_TRUE(factory.CreateProduct(__FOREX_CANDLES__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexDayLine)));
+		EXPECT_STREQ(factory.CreateProduct(__ECONOMIC_COUNTRY_LIST__)->GetName(), _T("Finnhub economic country list"));
+		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_EXCHANGE__)->GetName(), _T("Finnhub crypto exchange"));
+		EXPECT_STREQ(factory.CreateProduct(__FOREX_EXCHANGE__)->GetName(), _T("Finnhub forex exchange"));
+		EXPECT_STREQ(factory.CreateProduct(__STOCK_SYMBOLS__)->GetName(), _T("Finnhub company symbols"));
+		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_SYMBOLS__)->GetName(), _T("Finnhub crypto symbols"));
+		EXPECT_STREQ(factory.CreateProduct(__FOREX_SYMBOLS__)->GetName(), _T("Finnhub forex symbols"));
+		EXPECT_STREQ(factory.CreateProduct(__COMPANY_PROFILE__)->GetName(), _T("Finnhub company profile"));
+		EXPECT_STREQ(factory.CreateProduct(__COMPANY_PROFILE_CONCISE__)->GetName(), _T("Finnhub company profile concise"));
+		EXPECT_STREQ(factory.CreateProduct(__PEERS__)->GetName(), _T("Finnhub company peer"));
+		EXPECT_STREQ(factory.CreateProduct(__INSIDER_TRANSACTION__)->GetName(), _T("Finnhub company insider transaction"));
+		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_CANDLES__)->GetName(), _T("Finnhub crypto dayline"));
+		EXPECT_STREQ(factory.CreateProduct(__FOREX_CANDLES__)->GetName(), _T("Finnhub forex dayline"));
+		EXPECT_STREQ(factory.CreateProduct(__STOCK_PRICE_QUOTE__)->GetName(), _T("Finnhub stock price quote"));
+		EXPECT_STREQ(factory.CreateProduct(__STOCK_ESTIMATES_EPS_SURPRISE__)->GetName(), _T("Finnhub estimates EPS surprise"));
 
-		EXPECT_EQ(factory.CreateProduct(__COMPANY_PROFILE__), nullptr) << "Finnhub factory目前只有两种产品";
+		EXPECT_EQ(factory.CreateProduct(0), nullptr) << "Finnhub factory目前只有两种产品";
 		//EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub product未实现"));
+
+		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub product未实现"));
 	}
 }

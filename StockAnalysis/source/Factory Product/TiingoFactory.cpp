@@ -63,7 +63,7 @@ CWebSourceDataProductPtr CTiingoFactory::CreateProduct(int iIndex) {
 	default:
 		// error. not impliment yet.
 		gl_systemMessage.PushErrorMessage(_T("Tiingo productŒ¥ µœ÷"));
-		ASSERT(0);
+		//ASSERT(0);
 		break;
 	}
 

@@ -993,11 +993,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage02) {
-		WebInquiry inquiry;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
-		inquiry.m_lStockIndex = 0;
-		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockSymbols>();
+		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
 		gl_pMockWorldMarket->SetTiingoInquiring(true);
@@ -1010,12 +1007,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
-		WebInquiry inquiry;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_SYMBOLS__;
-		inquiry.m_lStockIndex = 0;
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockSymbols>();
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
-		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
+		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		gl_pMockWorldMarket->SetTiingoInquiring(true);
@@ -1027,7 +1021,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringMiddle(), _T(""));
 
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __STOCK_SYMBOLS__);
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -1036,12 +1030,10 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
-		WebInquiry inquiry;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
-		inquiry.m_lStockIndex = 0;
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		p->SetIndex(0);
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
-		gl_pMockWorldMarket->PushTiingoInquiry(inquiry);
+		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		gl_pMockWorldMarket->SetTiingoInquiring(true);
@@ -1049,11 +1041,11 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoInquiringMessage());
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringMiddle(),
-			gl_pMockWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pMockWorldMarket->GetMarketDate()));
-		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
+		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pMockWorldMarket->GetMarketDate()));
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate()) << "这里设置的是gl_pWorldMarket";
 		// 顺便测试一下
-		EXPECT_EQ(gl_pMockWorldMarket->GetCurrentTiingoInquiry().m_lInquiryIndex, __STOCK_PRICE_CANDLES__);
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -1063,11 +1055,17 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived01) {
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		gl_pMockWorldMarket->SetCurentTiingoInquiry(p);
+
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
+
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived02) {
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		gl_pMockWorldMarket->SetCurentTiingoInquiry(p);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		while (gl_WebInquirer.GetTiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 
@@ -1076,27 +1074,6 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_SYMBOLS__) {
 		// 需要修改实现函数，以适应Mock的需要
-	}
-
-	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_CANDLES__) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		WebInquiry inquiry;
-		inquiry.m_iPriority = 10;
-		inquiry.m_lInquiryIndex = __STOCK_PRICE_CANDLES__;
-		inquiry.m_lStockIndex = 1;
-		gl_pMockWorldMarket->SetCurrentTiingoInquiry(inquiry);
-
-		gl_pMockWorldMarket->SetTiingoInquiring(true);
-		gl_pMockWorldMarket->SetTiingoDataReceived(true);
-		if (gl_WebInquirer.GetTiingoDataSize() == 0) {
-			gl_WebInquirer.PushTiingoData(pWebData);
-		}
-
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseTiingoStockDayLine(pWebData, gl_pMockWorldMarket->GetStock(inquiry.m_lStockIndex)))
-			.WillOnce(Return(true));
-		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
-		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoInquiring());
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringMiddle(), _T(""));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {
@@ -1181,8 +1158,8 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
 		gl_pMockWorldMarket->SetSystemReady(true);
 		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol2).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine2).Times(1);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
 
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());
 	}
