@@ -5,6 +5,8 @@
 #include"TiingoStock.h"
 #include "TiingoStockSymbols.h"
 
+IMPLEMENT_DYNCREATE(CTiingoStockSymbols, CWebSourceDataProduct)
+
 CTiingoStockSymbols::CTiingoStockSymbols() : CWebSourceDataProduct() {
 	m_strClassName = _T("Tiingo stock symbols");
 	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");

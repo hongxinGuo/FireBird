@@ -6,6 +6,8 @@
 
 #include "FinnhubCompanyInsiderTransaction.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCompanyInsiderTransaction, CWebSourceDataProduct)
+
 CFinnhubCompanyInsiderTransaction::CFinnhubCompanyInsiderTransaction() {
 	m_strClassName = _T("Finnhub company insider transaction");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");

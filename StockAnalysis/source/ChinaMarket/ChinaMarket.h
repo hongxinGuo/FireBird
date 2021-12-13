@@ -38,6 +38,7 @@ class CChinaMarket : public CVirtualMarket
 {
 public:
 	// 只能有一个实例
+	DECLARE_DYNCREATE(CChinaMarket)
 	CChinaMarket(void);
 	virtual ~CChinaMarket(void);
 	virtual void ResetMarket(void) override;

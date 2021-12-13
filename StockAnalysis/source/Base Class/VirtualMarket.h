@@ -7,6 +7,7 @@ using namespace std;
 
 class CVirtualMarket : public CObject {
 public:
+	DECLARE_DYNCREATE(CVirtualMarket)
 	CVirtualMarket(void);
 	virtual ~CVirtualMarket(void);
 

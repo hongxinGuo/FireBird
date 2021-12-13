@@ -570,6 +570,9 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.h">
       <Filter>头文件\Factory Product\Finnhub</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCalendar.h">
+      <Filter>头文件\Factory Product\Finnhub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1005,6 +1008,12 @@
       <Filter>源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.cpp">
+      <Filter>源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\WebSourceDataProduct.cpp">
+      <Filter>源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCalendar.cpp">
       <Filter>源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>

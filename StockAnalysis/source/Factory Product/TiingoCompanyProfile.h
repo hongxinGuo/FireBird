@@ -9,6 +9,7 @@
 
 class CTiingoCompanyProfile : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CTiingoCompanyProfile)
 	CTiingoCompanyProfile();
 	~CTiingoCompanyProfile() {}
 

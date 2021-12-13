@@ -6,6 +6,8 @@
 
 #include "FinnhubCryptoDayLine.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCryptoDayLine, CWebSourceDataProduct)
+
 CFinnhubCryptoDayLine::CFinnhubCryptoDayLine() {
 	m_strClassName = _T("Finnhub crypto dayline");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");

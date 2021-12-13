@@ -48,6 +48,8 @@ CWebRTDataContainer gl_WebRTDataContainer;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+IMPLEMENT_DYNCREATE(CChinaMarket, CVirtualMarket)
+
 CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	static int siInstance = 0;
 

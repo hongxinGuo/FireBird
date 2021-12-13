@@ -6,6 +6,8 @@
 
 #include "FinnhubForexDayLine.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubForexDayLine, CWebSourceDataProduct)
+
 CFinnhubForexDayLine::CFinnhubForexDayLine() {
 	m_strClassName = _T("Finnhub forex dayline");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/candle?symbol=");

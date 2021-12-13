@@ -4,6 +4,8 @@
 
 #include "FinnhubCompanySymbolProduct.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCompanySymbolProduct, CWebSourceDataProduct)
+
 CFinnhubCompanySymbolProduct::CFinnhubCompanySymbolProduct() {
 	m_strClassName = _T("Finnhub company symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");

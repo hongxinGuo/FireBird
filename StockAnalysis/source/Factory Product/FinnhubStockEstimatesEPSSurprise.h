@@ -4,6 +4,7 @@
 
 class CFinnhubStockEstimatesEPSSurprise : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubStockEstimatesEPSSurprise)
 	CFinnhubStockEstimatesEPSSurprise();
 	~CFinnhubStockEstimatesEPSSurprise() {}
 

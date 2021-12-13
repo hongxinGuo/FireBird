@@ -3,24 +3,27 @@
 using namespace std;
 #include<memory>
 
+#include"VirtualMarket.h"
 #include"WebData.h"
 
 class CWebSourceDataProduct : public CObject {
 public:
-	CWebSourceDataProduct() {
-		m_lIndex = -1; // 设置为无效数字
-	}
+	DECLARE_DYNCREATE(CWebSourceDataProduct)
+	CWebSourceDataProduct();
 	~CWebSourceDataProduct() {}
 
-	virtual CString CreatMessage(void) = 0;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) = 0;
+	virtual CString CreatMessage(void) { return _T(""); }
+	virtual bool ProcessWebData(CWebDataPtr pWebData) { return true; }
 
 	CString GetName(void) { return m_strClassName; }
 	CString GetInquiringStr(void) { return m_strInquiringStr; }
 	long GetIndex(void) { return m_lIndex; }
 	void SetIndex(long lIndex) { m_lIndex = lIndex; }
+	CVirtualMarket* GetMarket(void) { return m_pMarket; }
+	void SetMarket(CVirtualMarket* pMarket) { m_pMarket = pMarket; }
 
 protected:
+	CVirtualMarket* m_pMarket; // 该产品所属的市场
 	CString m_strClassName;
 	CString m_strInquiringStr;
 	long m_lIndex;

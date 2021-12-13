@@ -4,6 +4,7 @@
 
 class CFinnhubEconomicCountryList : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubEconomicCountryList)
 	CFinnhubEconomicCountryList();
 	~CFinnhubEconomicCountryList() {}
 

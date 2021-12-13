@@ -5,6 +5,8 @@
 
 #include "FinnhubEconomicCountryList.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubEconomicCountryList, CWebSourceDataProduct)
+
 CFinnhubEconomicCountryList::CFinnhubEconomicCountryList() {
 	m_strClassName = _T("Finnhub economic country list");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/country?");

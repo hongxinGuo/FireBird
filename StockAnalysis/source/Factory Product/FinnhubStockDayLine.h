@@ -4,6 +4,7 @@
 
 class CFinnhubStockDayLine : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubStockDayLine)
 	CFinnhubStockDayLine();
 	~CFinnhubStockDayLine() {}
 

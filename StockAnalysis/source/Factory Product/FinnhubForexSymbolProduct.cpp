@@ -4,6 +4,8 @@
 
 #include "FinnhubForexSymbolProduct.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubForexSymbolProduct, CWebSourceDataProduct)
+
 CFinnhubForexSymbolProduct::CFinnhubForexSymbolProduct() {
 	m_strClassName = _T("Finnhub forex symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");

@@ -124,6 +124,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoSymbolProduct.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubForexDayLine.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoSymbolProduct.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexDayLine.cpp" />
@@ -290,6 +292,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbols.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\WebSourceDataProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />

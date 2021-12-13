@@ -22,10 +22,11 @@
 #include"FinnhubCryptoExchange.h"
 
 #include"FinnhubEconomicCountryList.h"
+#include"FinnhubEconomicCalendar.h"
 
 #include "FinnhubFactory.h"
 
-CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
+CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	switch (iIndex) {
@@ -127,13 +128,14 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(int iIndex) {
 		p = make_shared<CFinnhubEconomicCountryList>();
 		break;
 	case __ECONOMIC_CALENDAR__:
+		p = make_shared<CFinnhubEconomicCalendar>();
 		break;
 	default:
 		TRACE("未处理指令%d\n", iIndex);
 		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
-	//ASSERT(p != nullptr);
+	p->SetMarket(pMarket);
 
 	return p;
 }

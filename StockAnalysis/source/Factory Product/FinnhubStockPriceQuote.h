@@ -4,6 +4,7 @@
 
 class CFinnhubStockPriceQuote : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubStockPriceQuote)
 	CFinnhubStockPriceQuote();
 	~CFinnhubStockPriceQuote() {}
 

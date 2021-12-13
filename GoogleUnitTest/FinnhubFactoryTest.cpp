@@ -54,22 +54,24 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CFinnhubFactoryTest, TestCreateProduct) {
-		EXPECT_STREQ(factory.CreateProduct(__ECONOMIC_COUNTRY_LIST__)->GetName(), _T("Finnhub economic country list"));
-		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_EXCHANGE__)->GetName(), _T("Finnhub crypto exchange"));
-		EXPECT_STREQ(factory.CreateProduct(__FOREX_EXCHANGE__)->GetName(), _T("Finnhub forex exchange"));
-		EXPECT_STREQ(factory.CreateProduct(__STOCK_SYMBOLS__)->GetName(), _T("Finnhub company symbols"));
-		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_SYMBOLS__)->GetName(), _T("Finnhub crypto symbols"));
-		EXPECT_STREQ(factory.CreateProduct(__FOREX_SYMBOLS__)->GetName(), _T("Finnhub forex symbols"));
-		EXPECT_STREQ(factory.CreateProduct(__COMPANY_PROFILE__)->GetName(), _T("Finnhub company profile"));
-		EXPECT_STREQ(factory.CreateProduct(__COMPANY_PROFILE_CONCISE__)->GetName(), _T("Finnhub company profile concise"));
-		EXPECT_STREQ(factory.CreateProduct(__PEERS__)->GetName(), _T("Finnhub company peer"));
-		EXPECT_STREQ(factory.CreateProduct(__INSIDER_TRANSACTION__)->GetName(), _T("Finnhub company insider transaction"));
-		EXPECT_STREQ(factory.CreateProduct(__CRYPTO_CANDLES__)->GetName(), _T("Finnhub crypto dayline"));
-		EXPECT_STREQ(factory.CreateProduct(__FOREX_CANDLES__)->GetName(), _T("Finnhub forex dayline"));
-		EXPECT_STREQ(factory.CreateProduct(__STOCK_PRICE_QUOTE__)->GetName(), _T("Finnhub stock price quote"));
-		EXPECT_STREQ(factory.CreateProduct(__STOCK_ESTIMATES_EPS_SURPRISE__)->GetName(), _T("Finnhub estimates EPS surprise"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->GetName(), _T("Finnhub economic country list"));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCountryList)));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__)->GetName(), _T("Finnhub economic calendar"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_EXCHANGE__)->GetName(), _T("Finnhub crypto exchange"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_EXCHANGE__)->GetName(), _T("Finnhub forex exchange"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->GetName(), _T("Finnhub company symbols"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__)->GetName(), _T("Finnhub crypto symbols"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__)->GetName(), _T("Finnhub forex symbols"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE__)->GetName(), _T("Finnhub company profile"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__)->GetName(), _T("Finnhub company profile concise"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __PEERS__)->GetName(), _T("Finnhub company peer"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__)->GetName(), _T("Finnhub company insider transaction"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__)->GetName(), _T("Finnhub crypto dayline"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__)->GetName(), _T("Finnhub forex dayline"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__)->GetName(), _T("Finnhub stock price quote"));
+		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__)->GetName(), _T("Finnhub estimates EPS surprise"));
 
-		EXPECT_EQ(factory.CreateProduct(0), nullptr) << "Finnhub factory目前只有两种产品";
+		EXPECT_EQ(factory.CreateProduct(gl_pWorldMarket.get(), 0), nullptr) << "Finnhub factory目前只有两种产品";
 		//EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub product未实现"));
 
 		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1);

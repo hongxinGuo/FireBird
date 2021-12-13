@@ -6,6 +6,8 @@
 
 #include "FinnhubStockEstimatesEPSSurprise.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubStockEstimatesEPSSurprise, CWebSourceDataProduct)
+
 CFinnhubStockEstimatesEPSSurprise::CFinnhubStockEstimatesEPSSurprise() {
 	m_strClassName = _T("Finnhub estimates EPS surprise");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");

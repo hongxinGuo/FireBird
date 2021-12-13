@@ -4,6 +4,8 @@
 
 #include "FinnhubForexExchange.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubForexExchange, CWebSourceDataProduct)
+
 CFinnhubForexExchange::CFinnhubForexExchange() {
 	m_strClassName = _T("Finnhub forex exchange");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/exchange?");

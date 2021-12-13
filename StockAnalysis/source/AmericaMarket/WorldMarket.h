@@ -149,6 +149,7 @@ using namespace std;
 
 class CWorldMarket : public CVirtualMarket {
 public:
+	DECLARE_DYNCREATE(CWorldMarket)
 	CWorldMarket();
 	virtual ~CWorldMarket();
 	virtual void ResetMarket(void) override;
@@ -268,6 +269,8 @@ public:
 	// ¸÷ÖÖ×´Ì¬
 	WebInquiry GetCurrentFinnhubInquiry(void) noexcept { return m_CurrentFinnhubInquiry; }
 	void SetCurrentFinnhubInquiry(WebInquiry inquiry) noexcept { m_CurrentFinnhubInquiry = inquiry; }
+	CWebSourceDataProductPtr GetCurrentFinnhubInquiry2(void) { return m_pCurrentFinnhubProduct; }
+	void SetCurrentFinnhubInquiry2(CWebSourceDataProductPtr p) { m_pCurrentFinnhubProduct = p; }
 
 	CWebSourceDataProductPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
 	void SetCurentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }

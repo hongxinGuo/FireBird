@@ -5,6 +5,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+IMPLEMENT_DYNCREATE(CTiingoStockPriceCandle, CWebSourceDataProduct)
+
 CTiingoStockPriceCandle::CTiingoStockPriceCandle() : CWebSourceDataProduct() {
 	m_strClassName = _T("Tiingo stock price candle");
 	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/daily/");

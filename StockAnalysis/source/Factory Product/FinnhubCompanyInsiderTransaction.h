@@ -4,6 +4,7 @@
 
 class CFinnhubCompanyInsiderTransaction : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubCompanyInsiderTransaction)
 	CFinnhubCompanyInsiderTransaction();
 	~CFinnhubCompanyInsiderTransaction() {}
 

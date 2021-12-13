@@ -4,6 +4,7 @@
 
 class CFinnhubCompanyProfileConcise : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubCompanyProfileConcise)
 	CFinnhubCompanyProfileConcise();
 	~CFinnhubCompanyProfileConcise() {}
 

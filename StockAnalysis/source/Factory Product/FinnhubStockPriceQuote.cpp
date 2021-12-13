@@ -6,6 +6,8 @@
 
 #include "FinnhubStockPriceQuote.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubStockPriceQuote, CWebSourceDataProduct)
+
 CFinnhubStockPriceQuote::CFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/quote?symbol=");

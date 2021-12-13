@@ -4,6 +4,7 @@
 
 class CTiingoStockPriceCandle : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CTiingoStockPriceCandle)
 	CTiingoStockPriceCandle();
 	~CTiingoStockPriceCandle() {}
 

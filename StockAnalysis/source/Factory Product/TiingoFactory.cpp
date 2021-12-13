@@ -10,7 +10,7 @@
 #include"TiingoStockSymbols.h"
 #include"TiingoStockPriceCandle.h"
 
-CWebSourceDataProductPtr CTiingoFactory::CreateProduct(int iIndex) {
+CWebSourceDataProductPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	switch (iIndex) {
@@ -66,6 +66,7 @@ CWebSourceDataProductPtr CTiingoFactory::CreateProduct(int iIndex) {
 		//ASSERT(0);
 		break;
 	}
+	p->SetMarket(pMarket);
 
 	return p;
 }

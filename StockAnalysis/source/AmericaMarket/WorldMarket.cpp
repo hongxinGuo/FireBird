@@ -4,6 +4,8 @@
 #include"thread.h"
 #include"Callablefunction.h"
 
+#include"FinnhubStockPriceQuote.h"
+#include"FinnhubStockEstimatesEPSSurprise.h"
 #include"FinnhubForexSymbol.h"
 #include"FinnhubCryptoSymbol.h"
 
@@ -36,6 +38,8 @@ using namespace std;
 #endif
 
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
+
+IMPLEMENT_DYNCREATE(CWorldMarket, CVirtualMarket)
 
 CWorldMarket::CWorldMarket() {
 	static int siInstance = 0;
@@ -980,7 +984,7 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 
 bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 	if (!IsCountryListUpdated() && !IsFinnhubInquiring()) {
-		CWebSourceDataProductPtr p = m_FinnhubFactory.CreateProduct(__ECONOMIC_COUNTRY_LIST__);
+		CWebSourceDataProductPtr p = m_FinnhubFactory.CreateProduct(this, __ECONOMIC_COUNTRY_LIST__);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("查询Finnhub economic country List"));
@@ -1007,7 +1011,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__STOCK_SYMBOLS__);
+			p = m_FinnhubFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 			p->SetIndex(m_lCurrentExchangePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1051,7 +1055,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 			}
 		}
 		if (fFound) {
-			p = m_FinnhubFactory.CreateProduct(__COMPANY_PROFILE_CONCISE__);
+			p = m_FinnhubFactory.CreateProduct(this, __COMPANY_PROFILE_CONCISE__);
 			p->SetIndex(m_lCurrentProfilePos);
 			m_qFinnhubProduct.push(p);
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
@@ -1088,7 +1092,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__STOCK_PRICE_CANDLES__);
+			p = m_FinnhubFactory.CreateProduct(this, __STOCK_PRICE_CANDLES__);
 			p->SetIndex(m_lCurrentUpdateDayLinePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1128,7 +1132,7 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__INSIDER_TRANSACTION__);
+			p = m_FinnhubFactory.CreateProduct(this, __INSIDER_TRANSACTION__);
 			p->SetIndex(m_lCurrentUpdateInsiderTransactionPos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1146,16 +1150,14 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
 }
 
 bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
-	WebInquiry inquiry{ 0, 0, 0 };
-
+	CWebSourceDataProductPtr p = nullptr;
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubInquiring()) {
 		m_lCurrentRTDataQuotePos++;
 		if (m_lCurrentRTDataQuotePos == m_vWorldStock.size()) m_lCurrentRTDataQuotePos = 0;
-		inquiry.m_lInquiryIndex = __STOCK_PRICE_QUOTE__;
-		inquiry.m_lStockIndex = m_lCurrentRTDataQuotePos;
-		inquiry.m_iPriority = 10;
-		m_qFinnhubWebInquiry.push(inquiry);
+		p = make_shared<CFinnhubStockPriceQuote>();
+		p->SetIndex(m_lCurrentRTDataQuotePos);
+		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
 		TRACE("申请%s实时数据\n", m_vWorldStock.at(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
 		return true;
@@ -1182,7 +1184,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__PEERS__);
+			p = m_FinnhubFactory.CreateProduct(this, __PEERS__);
 			p->SetIndex(m_lCurrentUpdatePeerPos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1200,12 +1202,11 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
 }
 
 bool CWorldMarket::TaskInquiryFinnhubEconomicCalendar(void) {
-	WebInquiry inquiry{ 0, 0, 0 };
+	CWebSourceDataProductPtr p = nullptr;
 
 	if (!IsFinnhubEconomicCalendarUpdated() && !IsFinnhubInquiring()) {
-		inquiry.m_lInquiryIndex = __ECONOMIC_CALENDAR__;
-		inquiry.m_iPriority = 10;
-		m_qFinnhubWebInquiry.push(inquiry);
+		p = m_FinnhubFactory.CreateProduct(this, __ECONOMIC_CALENDAR__);
+		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
 		return true;
 	}
@@ -1214,7 +1215,6 @@ bool CWorldMarket::TaskInquiryFinnhubEconomicCalendar(void) {
 
 bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 	bool fFound = false;
-	WebInquiry inquiry{ 0, 0, 0 };
 	CWorldStockPtr pStock;
 	CString str = _T("");
 	long lStockSetSize = m_vWorldStock.size();
@@ -1231,10 +1231,9 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			inquiry.m_lInquiryIndex = __STOCK_ESTIMATES_EPS_SURPRISE__;
-			inquiry.m_lStockIndex = m_lCurrentUpdateEPSSurprisePos;
-			inquiry.m_iPriority = 10;
-			m_qFinnhubWebInquiry.push(inquiry);
+			CWebSourceDataProductPtr p = make_shared<CFinnhubStockEstimatesEPSSurprise>();
+			p->SetIndex(m_lCurrentUpdateEPSSurprisePos);
+			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
 			TRACE("申请%s EPS Surprise数据\n", m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
@@ -1251,7 +1250,7 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 
 bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
 	if (!IsFinnhubForexExchangeUpdated() && !IsFinnhubInquiring()) {
-		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(__FOREX_EXCHANGE__));
+		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __FOREX_EXCHANGE__));
 		SetFinnhubInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub forex exchange"));
 		return true;
@@ -1263,7 +1262,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	if (!IsFinnhubForexSymbolUpdated() && !IsFinnhubInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(__FOREX_SYMBOLS__);
+		p = m_FinnhubFactory.CreateProduct(this, __FOREX_SYMBOLS__);
 		p->SetIndex(m_lCurrentForexExchangePos++);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
@@ -1296,7 +1295,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__FOREX_CANDLES__);
+			p = m_FinnhubFactory.CreateProduct(this, __FOREX_CANDLES__);
 			p->SetIndex(m_lCurrentUpdateForexDayLinePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1315,7 +1314,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 
 bool CWorldMarket::TaskInquiryFinnhubCryptoExchange(void) {
 	if (!IsFinnhubCryptoExchangeUpdated() && !IsFinnhubInquiring()) {
-		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(__CRYPTO_EXCHANGE__));
+		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __CRYPTO_EXCHANGE__));
 		SetFinnhubInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub crypto exchange"));
 		return true;
@@ -1327,7 +1326,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	if (!IsFinnhubCryptoSymbolUpdated() && !IsFinnhubInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(__CRYPTO_SYMBOLS__);
+		p = m_FinnhubFactory.CreateProduct(this, __CRYPTO_SYMBOLS__);
 		p->SetIndex(m_lCurrentCryptoExchangePos++);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
@@ -1360,7 +1359,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(__CRYPTO_CANDLES__);
+			p = m_FinnhubFactory.CreateProduct(this, __CRYPTO_CANDLES__);
 			p->SetIndex(m_lCurrentUpdateCryptoDayLinePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1391,7 +1390,7 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 	CString str;
 
 	if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
-		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(__STOCK_SYMBOLS__);
+		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
 		str = _T("Inquiry Tiingo Symbol");
@@ -1411,7 +1410,6 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 	bool fFound = false;
-	WebInquiry inquiry{ 0, 0, 0 };
 	CWorldStockPtr pStock;
 	CString str = _T("");
 	long lStockSetSize = m_vWorldChoicedStock.size();
@@ -1428,7 +1426,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(__STOCK_PRICE_CANDLES__);
+			CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_PRICE_CANDLES__);
 			p->SetIndex(m_mapWorldStock.at(pStock->GetSymbol()));
 			m_qTiingoProduct.push(p);
 			SetTiingoInquiring(true);

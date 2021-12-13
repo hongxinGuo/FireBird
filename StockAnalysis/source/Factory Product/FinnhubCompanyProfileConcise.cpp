@@ -5,6 +5,8 @@
 
 #include "FinnhubCompanyProfileConcise.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCompanyProfileConcise, CWebSourceDataProduct)
+
 CFinnhubCompanyProfileConcise::CFinnhubCompanyProfileConcise() {
 	m_strClassName = _T("Finnhub company profile concise");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");

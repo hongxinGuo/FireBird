@@ -5,6 +5,8 @@
 
 #include "FinnhubCompanyProfile.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCompanyProfile, CWebSourceDataProduct)
+
 CFinnhubCompanyProfile::CFinnhubCompanyProfile() {
 	m_strClassName = _T("Finnhub company profile");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/profile?symbol=");

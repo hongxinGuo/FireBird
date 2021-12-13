@@ -4,6 +4,7 @@
 
 class CTiingoStockSymbols : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CTiingoStockSymbols)
 	CTiingoStockSymbols();
 	~CTiingoStockSymbols() {}
 

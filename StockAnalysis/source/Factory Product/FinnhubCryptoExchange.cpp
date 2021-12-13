@@ -4,6 +4,8 @@
 
 #include "FinnhubCryptoExchange.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCryptoExchange, CWebSourceDataProduct)
+
 CFinnhubCryptoExchange::CFinnhubCryptoExchange() {
 	m_strClassName = _T("Finnhub crypto exchange");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/exchange?");

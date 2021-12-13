@@ -4,6 +4,7 @@
 
 class CFinnhubForexDayLine : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubForexDayLine)
 	CFinnhubForexDayLine();
 	~CFinnhubForexDayLine() {}
 

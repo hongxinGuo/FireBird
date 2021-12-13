@@ -4,6 +4,7 @@
 
 class CFinnhubForexSymbolProduct : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubForexSymbolProduct)
 	CFinnhubForexSymbolProduct();
 	~CFinnhubForexSymbolProduct() {}
 

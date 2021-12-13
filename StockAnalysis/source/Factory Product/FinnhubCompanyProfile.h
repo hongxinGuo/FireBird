@@ -4,6 +4,7 @@
 
 class CFinnhubCompanyProfile : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubCompanyProfile)
 	CFinnhubCompanyProfile();
 	~CFinnhubCompanyProfile() {}
 

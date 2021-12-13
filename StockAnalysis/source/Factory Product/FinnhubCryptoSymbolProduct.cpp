@@ -4,6 +4,8 @@
 
 #include "FinnhubCryptoSymbolProduct.h"
 
+IMPLEMENT_DYNCREATE(CFinnhubCryptoSymbolProduct, CWebSourceDataProduct)
+
 CFinnhubCryptoSymbolProduct::CFinnhubCryptoSymbolProduct() {
 	m_strClassName = _T("Finnhub crypto symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");

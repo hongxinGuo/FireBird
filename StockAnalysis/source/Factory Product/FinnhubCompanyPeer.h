@@ -4,6 +4,7 @@
 
 class CFinnhubCompanyPeer : public CWebSourceDataProduct {
 public:
+	DECLARE_DYNCREATE(CFinnhubCompanyPeer)
 	CFinnhubCompanyPeer();
 	~CFinnhubCompanyPeer() {}
 
