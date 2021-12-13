@@ -15,18 +15,21 @@ CFinnhubStockEstimatesEPSSurprise::CFinnhubStockEstimatesEPSSurprise() {
 }
 
 CString CFinnhubStockEstimatesEPSSurprise::CreatMessage(void) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetSymbol();
 
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CFinnhubStockEstimatesEPSSurprise::ProcessWebData(CWebDataPtr pWebData)
-{
+bool CFinnhubStockEstimatesEPSSurprise::ProcessWebData(CWebDataPtr pWebData) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
 	vector<CEPSSurprisePtr> vEPSSurprise;
 
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
 		if (vEPSSurprise.size() > 0) {
 			pStock->UpdateEPSSurprise(vEPSSurprise);
 		}

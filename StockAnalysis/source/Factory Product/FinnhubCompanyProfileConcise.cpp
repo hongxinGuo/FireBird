@@ -14,8 +14,10 @@ CFinnhubCompanyProfileConcise::CFinnhubCompanyProfileConcise() {
 }
 
 CString CFinnhubCompanyProfileConcise::CreatMessage(void) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
 	CString strMessage;
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	strMessage = m_strInquiringStr + pStock->GetSymbol();
 	pStock->SetProfileUpdated(true);
 
@@ -23,9 +25,11 @@ CString CFinnhubCompanyProfileConcise::CreatMessage(void) {
 }
 
 bool CFinnhubCompanyProfileConcise::ProcessWebData(CWebDataPtr pWebData) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubStockProfileConcise(pWebData, pStock)) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubStockProfileConcise(pWebData, pStock)) {
+		pStock->SetProfileUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetProfileUpdated(true);
 		pStock->SetUpdateProfileDB(true);
 	}

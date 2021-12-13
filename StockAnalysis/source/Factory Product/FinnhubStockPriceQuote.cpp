@@ -15,16 +15,20 @@ CFinnhubStockPriceQuote::CFinnhubStockPriceQuote() {
 }
 
 CString CFinnhubStockPriceQuote::CreatMessage(void) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetSymbol();
 
 	return m_strInquiringStr + strMiddle;
 }
 
 bool CFinnhubStockPriceQuote::ProcessWebData(CWebDataPtr pWebData) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	gl_pWorldMarket->ParseFinnhubStockQuote(pWebData, pStock);
-	if ((pStock->GetTransactionTime() + 3600 * 12 - gl_pWorldMarket->GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	((CWorldMarket*)m_pMarket)->ParseFinnhubStockQuote(pWebData, pStock);
+	if ((pStock->GetTransactionTime() + 3600 * 12 - ((CWorldMarket*)m_pMarket)->GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
 		pStock->SetActive(true);
 		if (!pStock->IsIPOed()) {
 			pStock->SetIPOStatus(__STOCK_IPOED__);

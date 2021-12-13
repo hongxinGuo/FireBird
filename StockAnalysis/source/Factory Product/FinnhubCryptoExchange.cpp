@@ -19,13 +19,15 @@ CString CFinnhubCryptoExchange::CreatMessage(void) {
 bool CFinnhubCryptoExchange::ProcessWebData(CWebDataPtr pWebData) {
 	vector<CString> vCryptoExchange;
 
-	if (gl_pWorldMarket->ParseFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
 		for (int i = 0; i < vCryptoExchange.size(); i++) {
-			if (!gl_pWorldMarket->IsCryptoExchange(vCryptoExchange.at(i))) {
-				gl_pWorldMarket->AddCryptoExchange(vCryptoExchange.at(i));
+			if (!((CWorldMarket*)m_pMarket)->IsCryptoExchange(vCryptoExchange.at(i))) {
+				((CWorldMarket*)m_pMarket)->AddCryptoExchange(vCryptoExchange.at(i));
 			}
 		}
-		gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(true);
+		((CWorldMarket*)m_pMarket)->SetFinnhubCryptoExchangeUpdated(true);
 	}
 	return true;
 }

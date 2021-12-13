@@ -15,15 +15,20 @@ CFinnhubForexDayLine::CFinnhubForexDayLine() {
 }
 
 CString CFinnhubForexDayLine::CreatMessage(void) {
-	CForexSymbolPtr pForexSymbol = gl_pWorldMarket->GetForexSymbol(m_lIndex);
-	CString strMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime());
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);
+	CString strMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	pForexSymbol->SetDayLineNeedUpdate(false);
 
 	return strMessage;
 }
 
 bool CFinnhubForexDayLine::ProcessWebData(CWebDataPtr pWebData) {
-	CForexSymbolPtr pForexSymbol = gl_pWorldMarket->GetForexSymbol(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubForexCandle(pWebData, pForexSymbol)) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubForexCandle(pWebData, pForexSymbol)) {
 		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 	}
 	return true;

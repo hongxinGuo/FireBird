@@ -70,11 +70,5 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__)->GetName(), _T("Finnhub forex dayline"));
 		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__)->GetName(), _T("Finnhub stock price quote"));
 		EXPECT_STREQ(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__)->GetName(), _T("Finnhub estimates EPS surprise"));
-
-		EXPECT_EQ(factory.CreateProduct(gl_pWorldMarket.get(), 0), nullptr) << "Finnhub factory目前只有两种产品";
-		//EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub product未实现"));
-
-		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub product未实现"));
 	}
 }

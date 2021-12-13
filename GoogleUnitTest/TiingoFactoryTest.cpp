@@ -44,7 +44,5 @@ namespace StockAnalysisTest {
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__)->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
-		EXPECT_EQ(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__), nullptr) << "Tiingo factory目前只有两种产品";
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo product未实现"));
 	}
 }

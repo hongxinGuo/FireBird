@@ -13,19 +13,23 @@ CFinnhubForexSymbolProduct::CFinnhubForexSymbolProduct() {
 }
 
 CString CFinnhubForexSymbolProduct::CreatMessage(void) {
-	CString strMiddle = gl_pWorldMarket->GetForexExchange(m_lIndex);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);
 
 	return m_strInquiringStr + strMiddle;
 }
 
 bool CFinnhubForexSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
 	vector<CForexSymbolPtr> vForexSymbol;
 
-	if (gl_pWorldMarket->ParseFinnhubForexSymbol(pWebData, vForexSymbol)) {
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubForexSymbol(pWebData, vForexSymbol)) {
 		for (auto& pSymbol : vForexSymbol) {
-			if (!gl_pWorldMarket->IsForexSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchangeCode(gl_pWorldMarket->GetForexExchange(m_lIndex));
-				gl_pWorldMarket->AddForexSymbol(pSymbol);
+			if (!((CWorldMarket*)m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
+				pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex));
+				((CWorldMarket*)m_pMarket)->AddForexSymbol(pSymbol);
 			}
 		}
 	}

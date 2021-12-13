@@ -123,22 +123,6 @@ enum {
 	__ECONOMIC__ = 1004, //Premium
 };
 
-struct WebInquiry {
-public:
-	void Reset(void) {
-		m_iPriority = 0;
-		m_lInquiryIndex = 0;
-		m_lStockIndex = 0;
-	}
-public:
-	int m_iPriority; // 优先级
-	long m_lInquiryIndex; // 指令索引
-	long m_lStockIndex; // 股票集当前位置
-	bool operator() (WebInquiry temp1, WebInquiry temp2) {
-		return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
-	}
-};
-
 extern Semaphore gl_UpdateWorldMarketDB;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
@@ -166,9 +150,7 @@ public:
 
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);
-	bool ProcessFinnhubInquiringMessage2(void);
 	bool ProcessFinnhubWebDataReceived(void);
-	bool ProcessFinnhubWebDataReceived2(void);
 
 	bool ProcessTiingoInquiringMessage(void);
 	bool ProcessTiingoWebDataReceived(void);
@@ -267,10 +249,8 @@ public:
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
 	// 各种状态
-	WebInquiry GetCurrentFinnhubInquiry(void) noexcept { return m_CurrentFinnhubInquiry; }
-	void SetCurrentFinnhubInquiry(WebInquiry inquiry) noexcept { m_CurrentFinnhubInquiry = inquiry; }
-	CWebSourceDataProductPtr GetCurrentFinnhubInquiry2(void) { return m_pCurrentFinnhubProduct; }
-	void SetCurrentFinnhubInquiry2(CWebSourceDataProductPtr p) { m_pCurrentFinnhubProduct = p; }
+	CWebSourceDataProductPtr GetCurrentFinnhubInquiry(void) { return m_pCurrentFinnhubProduct; }
+	void SetCurrentFinnhubInquiry(CWebSourceDataProductPtr p) { m_pCurrentFinnhubProduct = p; }
 
 	CWebSourceDataProductPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
 	void SetCurentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }
@@ -346,13 +326,9 @@ public:
 	void AddCountry(CCountryPtr pCountry);
 	bool DeleteCountry(CCountryPtr pCountry);
 
-	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubWebInquiry.size(); }
-	void PushFinnhubInquiry(WebInquiry inquiry) { m_qFinnhubWebInquiry.push(inquiry); }
-	WebInquiry GetFinnhubInquiry(void);
-
-	size_t GetFinnhubInquiryQueueSize2(void) noexcept { return m_qFinnhubProduct.size(); }
-	void PushFinnhubInquiry2(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
-	CWebSourceDataProductPtr GetFinnhubInquiry2(void);
+	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
+	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
+	CWebSourceDataProductPtr GetFinnhubInquiry(void);
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
@@ -493,15 +469,6 @@ protected:
 	long m_lCurrentUpdatePeerPos;
 	long m_lCurrentUpdateInsiderTransactionPos;
 	long m_lCurrentUpdateEPSSurprisePos;
-	WebInquiry m_CurrentFinnhubInquiry;
-
-	CWebSourceDataProductPtr m_pCurrentFinnhubProduct;
-	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
-	CWebSourceDataProductPtr m_pCurrentQuandlProduct;
-
-	CFinnhubFactory m_FinnhubFactory;
-	CTiingoFactory m_TiingoFactory;
-	CQuandlFactory m_QuandlFactory;
 
 	vector<CWorldStockPtr> m_vWorldChoicedStock;
 	map<CString, long> m_mapWorldChoicedStock;
@@ -513,8 +480,14 @@ protected:
 	map<CString, long> m_mapWorldChoicedCrypto;
 	long m_lChoicedCryptoPos;
 
+	CFinnhubFactory m_FinnhubFactory;
+	CTiingoFactory m_TiingoFactory;
+	CQuandlFactory m_QuandlFactory;
+	CWebSourceDataProductPtr m_pCurrentFinnhubProduct;
+	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
+	CWebSourceDataProductPtr m_pCurrentQuandlProduct;
+
 	vector<CString> m_vFinnhubInquiringStr;
-	priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）
 	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qFinnhubProduct; // 网络查询命令队列
 	bool m_fFinnhubInquiring;
 	atomic_bool m_fFinnhubDataReceived;

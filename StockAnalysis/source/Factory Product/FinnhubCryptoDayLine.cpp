@@ -15,16 +15,18 @@ CFinnhubCryptoDayLine::CFinnhubCryptoDayLine() {
 }
 
 CString CFinnhubCryptoDayLine::CreatMessage(void) {
-	CCryptoSymbolPtr pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(m_lIndex);
-	CString strMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime());
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	CCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetCryptoSymbol(m_lIndex);
+	CString strMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
 	return strMessage;
 }
 
-bool CFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData)
-{
-	CCryptoSymbolPtr pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubCryptoCandle(pWebData, pCryptoSymbol)) {
+bool CFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetCryptoSymbol(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoCandle(pWebData, pCryptoSymbol)) {
 		//TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
 	}
 	return true;

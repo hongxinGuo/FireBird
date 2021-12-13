@@ -13,7 +13,7 @@ CFinnhubCryptoSymbolProduct::CFinnhubCryptoSymbolProduct() {
 }
 
 CString CFinnhubCryptoSymbolProduct::CreatMessage(void) {
-	CString strMiddle = gl_pWorldMarket->GetCryptoExchange(m_lIndex);
+	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	return m_strInquiringStr + strMiddle;
 }
@@ -21,11 +21,13 @@ CString CFinnhubCryptoSymbolProduct::CreatMessage(void) {
 bool CFinnhubCryptoSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	vector<CCryptoSymbolPtr> vCryptoSymbol;
 
-	if (gl_pWorldMarket->ParseFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
 		for (auto& pSymbol : vCryptoSymbol) {
-			if (!gl_pWorldMarket->IsCryptoSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchangeCode(gl_pWorldMarket->GetCryptoExchange(m_lIndex));
-				gl_pWorldMarket->AddCryptoSymbol(pSymbol);
+			if (!((CWorldMarket*)m_pMarket)->IsCryptoSymbol(pSymbol->GetSymbol())) {
+				pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
+				((CWorldMarket*)m_pMarket)->AddCryptoSymbol(pSymbol);
 			}
 		}
 	}

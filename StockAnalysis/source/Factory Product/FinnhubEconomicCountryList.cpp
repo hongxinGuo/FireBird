@@ -20,13 +20,15 @@ CString CFinnhubEconomicCountryList::CreatMessage(void) {
 bool CFinnhubEconomicCountryList::ProcessWebData(CWebDataPtr pWebData) {
 	vector<CCountryPtr> vCountry;
 
-	gl_pWorldMarket->ParseFinnhubCountryList(pWebData, vCountry);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	((CWorldMarket*)m_pMarket)->ParseFinnhubCountryList(pWebData, vCountry);
 	for (auto& pCountry : vCountry) {
-		if (!gl_pWorldMarket->IsCountry(pCountry)) {
-			gl_pWorldMarket->AddCountry(pCountry);
+		if (!((CWorldMarket*)m_pMarket)->IsCountry(pCountry)) {
+			((CWorldMarket*)m_pMarket)->AddCountry(pCountry);
 		}
 	}
-	gl_pWorldMarket->SetCountryListUpdated(true);
+	((CWorldMarket*)m_pMarket)->SetCountryListUpdated(true);
 
 	return true;
 }

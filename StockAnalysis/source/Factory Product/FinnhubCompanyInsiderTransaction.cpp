@@ -15,7 +15,9 @@ CFinnhubCompanyInsiderTransaction::CFinnhubCompanyInsiderTransaction() {
 }
 
 CString CFinnhubCompanyInsiderTransaction::CreatMessage(void) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiringStr + pStock->GetSymbol();
 	pStock->SetInsiderTransactionNeedUpdate(false);
 
@@ -23,10 +25,12 @@ CString CFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 }
 
 bool CFinnhubCompanyInsiderTransaction::ProcessWebData(CWebDataPtr pWebData) {
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
 	vector<CInsiderTransactionPtr> vInsiderTransaction;
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
-		pStock->SetInsiderTransactionUpdateDate(gl_pWorldMarket->GetMarketDate());
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
+		pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		if (vInsiderTransaction.size() > 0) {
 			pStock->UpdateInsiderTransaction(vInsiderTransaction);

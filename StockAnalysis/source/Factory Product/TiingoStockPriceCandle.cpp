@@ -17,8 +17,10 @@ CString CTiingoStockPriceCandle::CreatMessage(void) {
 	CWorldStockPtr pStock = nullptr;
 	CString strMiddle;
 
-	pStock = gl_pWorldMarket->GetStock(GetIndex());
-	strMiddle = pStock->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate());
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	pStock = ((CWorldMarket*)m_pMarket)->GetStock(GetIndex());
+	strMiddle = pStock->GetTiingoDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetDayLineNeedUpdate(false);
 
 	return m_strInquiringStr + strMiddle;
@@ -26,9 +28,10 @@ CString CTiingoStockPriceCandle::CreatMessage(void) {
 
 bool CTiingoStockPriceCandle::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	gl_pWorldMarket->ParseTiingoStockDayLine(pWebData, pStock);
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	((CWorldMarket*)m_pMarket)->ParseTiingoStockDayLine(pWebData, pStock);
 	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 
 	return true;

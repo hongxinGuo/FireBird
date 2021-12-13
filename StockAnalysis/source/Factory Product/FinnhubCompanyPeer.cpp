@@ -15,7 +15,9 @@ CFinnhubCompanyPeer::CFinnhubCompanyPeer() {
 }
 
 CString CFinnhubCompanyPeer::CreatMessage(void) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiringStr + pStock->GetSymbol();
 	pStock->SetPeerUpdated(true);
 
@@ -23,9 +25,11 @@ CString CFinnhubCompanyPeer::CreatMessage(void) {
 }
 
 bool CFinnhubCompanyPeer::ProcessWebData(CWebDataPtr pWebData) {
-	CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lIndex);
-	if (gl_pWorldMarket->ParseFinnhubStockPeer(pWebData, pStock)) {
-		pStock->SetPeerUpdateDate(gl_pWorldMarket->GetMarketDate());
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	if (((CWorldMarket*)m_pMarket)->ParseFinnhubStockPeer(pWebData, pStock)) {
+		pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 	}
 

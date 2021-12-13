@@ -20,9 +20,12 @@ CString CFinnhubEconomicCalendar::CreatMessage(void) {
 
 bool CFinnhubEconomicCalendar::ProcessWebData(CWebDataPtr pWebData) {
 	vector<CEconomicCalendarPtr> vEconomicCalendar;
-	gl_pWorldMarket->ParseFinnhubEconomicCalendar(pWebData, vEconomicCalendar);
-	gl_pWorldMarket->UpdateEconomicCalendar(vEconomicCalendar);
-	gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(true);
+
+	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	((CWorldMarket*)m_pMarket)->ParseFinnhubEconomicCalendar(pWebData, vEconomicCalendar);
+	((CWorldMarket*)m_pMarket)->UpdateEconomicCalendar(vEconomicCalendar);
+	((CWorldMarket*)m_pMarket)->SetFinnhubEconomicCalendarUpdated(true);
 
 	return true;
 }
