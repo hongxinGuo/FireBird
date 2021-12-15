@@ -453,6 +453,45 @@
     <ClCompile Include="FinnhubForexExchangeTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubCompanyInsiderTransactionTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCompanyPeerTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCompanyProfileTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCompanySymbolProductTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCryptoDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCryptoSymbolProductTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubEconomicCalendarTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubForexDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubForexSymbolProductTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubStockDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubStockEstimatesEPSSurpriseTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubStockPriceQuoteTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

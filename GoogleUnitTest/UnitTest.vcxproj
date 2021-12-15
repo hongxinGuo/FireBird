@@ -100,10 +100,23 @@
   <ItemGroup>
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
+    <ClCompile Include="FinnhubCompanyPeerTest.cpp" />
+    <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp" />
+    <ClCompile Include="FinnhubCompanyProfileTest.cpp" />
+    <ClCompile Include="FinnhubCompanyInsiderTransactionTest.cpp" />
+    <ClCompile Include="FinnhubCompanySymbolProductTest.cpp" />
+    <ClCompile Include="FinnhubCryptoDayLineTest.cpp" />
     <ClCompile Include="FinnhubCryptoExchangeTest.cpp" />
+    <ClCompile Include="FinnhubCryptoSymbolProductTest.cpp" />
+    <ClCompile Include="FinnhubEconomicCalendarTest.cpp" />
     <ClCompile Include="FinnhubEconomicCountryListTest.cpp" />
     <ClCompile Include="FinnhubFactoryTest.cpp" />
+    <ClCompile Include="FinnhubForexDayLineTest.cpp" />
     <ClCompile Include="FinnhubForexExchangeTest.cpp" />
+    <ClCompile Include="FinnhubForexSymbolProductTest.cpp" />
+    <ClCompile Include="FinnhubStockDayLineTest.cpp" />
+    <ClCompile Include="FinnhubStockEstimatesEPSSurpriseTest.cpp" />
+    <ClCompile Include="FinnhubStockPriceQuoteTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="CallableFunctionTest.cpp" />
