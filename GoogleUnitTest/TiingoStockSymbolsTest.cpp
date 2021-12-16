@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"TiingoStockSymbols.h"
+#include"TiingoStockSymbolProduct.h"
 
 using namespace testing;
 
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CTiingoStockSymbols stockSymbols;
+		CTinngoStockSymbolProduct stockSymbols;
 	};
 
 	TEST_F(CTiingoStockSymbolsTest, TestInitialize) {
@@ -45,10 +45,10 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoStockSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreatMessage(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiringStr());
 	}
 
 	TEST_F(CTiingoStockSymbolsTest, TestProcessWebData) {
-		// not implmented yet
+		// ”…MockWorldMarketTest∏∫‘≤‚ ‘
 	}
 }

@@ -519,7 +519,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\QuandlFactory.h">
       <Filter>头文件\Factory Product\Quandl</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbols.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.h">
       <Filter>头文件\Factory Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.h">
@@ -534,7 +534,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoExchange.h">
       <Filter>头文件\Factory Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCompanySymbolProduct.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubStockSymbolProduct.h">
       <Filter>头文件\Factory Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoSymbolProduct.h">
@@ -959,7 +959,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.cpp">
       <Filter>源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbols.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.cpp">
       <Filter>源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp">
@@ -974,7 +974,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubForexExchange.cpp">
       <Filter>源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCompanySymbolProduct.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockSymbolProduct.cpp">
       <Filter>源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubCryptoSymbolProduct.cpp">

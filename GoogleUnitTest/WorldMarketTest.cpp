@@ -17,11 +17,11 @@
 #include"FinnhubStockDayLine.h"
 #include"FinnhubForexSymbolProduct.h"
 #include"FinnhubCryptoSymbolProduct.h"
-#include"FinnhubCompanySymbolProduct.h"
+#include"FinnhubStockSymbolProduct.h"
 #include"FinnhubStockEstimatesEPSSurprise.h"
 #include"FinnhubStockPriceQuote.h"
 
-#include"TiingoStockSymbols.h"
+#include"TiingoStockSymbolProduct.h"
 #include"TiingoStockPriceCandle.h"
 
 #include"SetFinnhubForexExchange.h"
@@ -43,8 +43,7 @@ namespace StockAnalysisTest {
 	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
 	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
 
-	class CWorldMarketTest : public ::testing::Test
-	{
+	class CWorldMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -874,12 +873,12 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p, p2;
 
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
-		p = make_shared<CTiingoStockSymbols>();
+		p = make_shared<CTinngoStockSymbolProduct>();
 		p->SetIndex(0);
 		gl_pWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		p2 = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
+		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
 		EXPECT_EQ(p2->GetIndex(), 0);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
 	}
@@ -1441,7 +1440,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockSymbols)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiry Tiingo Symbol"));

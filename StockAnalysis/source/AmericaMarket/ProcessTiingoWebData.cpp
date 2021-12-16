@@ -51,7 +51,8 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock) {
+CTiingoStockVectorPtr CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData) {
+	CTiingoStockVectorPtr pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
 	CTiingoStockPtr pStock = nullptr;
@@ -62,7 +63,7 @@ bool CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoSt
 	char buffer[30];
 	long year, month, day;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvTiingoStock;
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pStock = make_shared<CTiingoStock>();
@@ -129,16 +130,15 @@ bool CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoSt
 			if (s.size() > 0) str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
-			vTiingoStock.push_back(pStock);
+			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e);
-		return false;
 	}
 
-	return true;
+	return pvTiingoStock;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

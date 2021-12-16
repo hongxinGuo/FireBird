@@ -53,7 +53,6 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vStock.resize(0);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -64,7 +63,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CTiingoStockPtr> m_vStock;
+		CTiingoStockVectorPtr m_pvStock;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock1,
@@ -73,60 +72,54 @@ namespace StockAnalysisTest {
 			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestProcessStockProfile0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseTiingoStockSymbol(m_pWebData, m_vStock);
+		m_pvStock = gl_pWorldMarket->ParseTiingoStockSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vStock.size(), 0);
+			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vStock.size(), 0);
+			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
 		case 3: // 缺乏address项
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vStock.size(), 1);
+			EXPECT_EQ(m_pvStock->size(), 1);
 			break;
 		case 4:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_vStock.size(), 1);
-			EXPECT_STREQ(m_vStock.at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_vStock.at(0)->m_fIsActive);
-			EXPECT_FALSE(m_vStock.at(0)->m_fIsADR);
-			EXPECT_STREQ(m_vStock.at(0)->m_strTiingoIndustry, _T("industry have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strTiingoSector, _T("sector have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strSICIndustry, _T("sicIndustry have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strSICSector, _T("sicSector have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strLocation, _T("location have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
-			EXPECT_STREQ(m_vStock.at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
-			EXPECT_EQ(m_vStock.at(0)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_vStock.at(0)->m_lDailyDataUpdateDate, 20210312);
-			EXPECT_EQ(m_vStock.at(0)->m_iSICCode, 1234);
+			EXPECT_EQ(m_pvStock->size(), 1);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
+			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
+			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("sicIndustry have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("sicSector have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210302);
+			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 1234);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_vStock.size(), 2);
-			EXPECT_STREQ(m_vStock.at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_vStock.at(1)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_vStock.at(1)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_vStock.at(1)->m_fIsActive);
-			EXPECT_FALSE(m_vStock.at(1)->m_fIsADR);
-			EXPECT_STREQ(m_vStock.at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evcaluation时，返回空串(一个空格)";
-			EXPECT_STREQ(m_vStock.at(1)->m_strTiingoSector, _T(" "));
-			EXPECT_EQ(m_vStock.at(1)->m_iSICCode, 0);
-			EXPECT_STREQ(m_vStock.at(1)->m_strSICIndustry, _T(" "));
-			EXPECT_STREQ(m_vStock.at(1)->m_strSICSector, _T(" "));
-			EXPECT_STREQ(m_vStock.at(1)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_vStock.at(1)->m_strLocation, _T(" "));
-			EXPECT_STREQ(m_vStock.at(1)->m_strCompanyWebSite, _T(" "));
-			EXPECT_STREQ(m_vStock.at(1)->m_strSECFilingWebSite, _T(" "));
-			EXPECT_EQ(m_vStock.at(1)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_vStock.at(1)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_EQ(m_pvStock->size(), 2);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("Alcoa Corp"));
+			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
+			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evcaluation时，返回空串(一个空格)";
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(" "));
+			EXPECT_EQ(m_pvStock->at(1)->m_iSICCode, 0);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
+			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
+			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
 			break;
 		}
 	}

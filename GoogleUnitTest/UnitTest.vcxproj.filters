@@ -465,7 +465,7 @@
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanySymbolProductTest.cpp">
+    <ClCompile Include="FinnhubSymbolSymbolProductTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubCryptoDayLineTest.cpp">

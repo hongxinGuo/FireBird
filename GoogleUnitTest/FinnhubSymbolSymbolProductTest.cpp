@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanySymbolProduct.h"
+#include"FinnhubStockSymbolProduct.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanySymbolProductTest : public ::testing::Test
-	{
+	class CFinnhubCompanySymbolProductTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCompanySymbolProduct companySymbolProduct;
+		CFinnhubStockSymbolProduct companySymbolProduct;
 	};
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestInitialize) {

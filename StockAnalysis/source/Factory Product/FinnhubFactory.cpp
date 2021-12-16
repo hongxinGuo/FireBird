@@ -14,7 +14,7 @@
 #include"FinnhubStockPriceQuote.h"
 #include"FinnhubStockEstimatesEPSSurprise.h"
 
-#include"FinnhubCompanySymbolProduct.h"
+#include"FinnhubStockSymbolProduct.h"
 #include"FinnhubCryptoSymbolProduct.h"
 #include"FinnhubForexSymbolProduct.h"
 
@@ -37,7 +37,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket,
 		p = make_shared<CFinnhubCompanyProfileConcise>();
 		break;
 	case  __STOCK_SYMBOLS__:
-		p = make_shared<CFinnhubCompanySymbolProduct>();
+		p = make_shared<CFinnhubStockSymbolProduct>();
 		break;
 	case __COMPANY_EXECTIVE__: // Premium
 		break;

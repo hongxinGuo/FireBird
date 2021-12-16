@@ -25,7 +25,7 @@
 #include"QuandlFactory.h"
 
 #include"WebSourceDataProduct.h"
-#include"TiingoStockSymbols.h"
+#include"TiingoStockSymbolProduct.h"
 #include"TiingoStockPriceCandle.h"
 
 #include"WebSocketData.h"
@@ -206,7 +206,7 @@ public:
 	virtual bool ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
 	// Tiingo数据处理函数
-	virtual bool ParseTiingoStockSymbol(CWebDataPtr pWebData, vector<CTiingoStockPtr>& vTiingoStock);
+	virtual CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
 	virtual bool ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock);
 
 	bool TaskUpdateStockProfileDB(void);
@@ -253,7 +253,7 @@ public:
 	void SetCurrentFinnhubInquiry(CWebSourceDataProductPtr p) { m_pCurrentFinnhubProduct = p; }
 
 	CWebSourceDataProductPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
-	void SetCurentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }
+	void SetCurrentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }
 
 	bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
 	void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }

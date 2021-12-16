@@ -62,6 +62,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoStockPriceCandleTest, TestProcessWebData) {
-		// not implmented yet
+		// ”…MockWorldMarketTest∏∫‘≤‚ ‘
 	}
 }

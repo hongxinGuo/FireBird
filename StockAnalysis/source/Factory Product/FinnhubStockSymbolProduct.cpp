@@ -2,17 +2,17 @@
 
 #include"globedef.h"
 
-#include "FinnhubCompanySymbolProduct.h"
+#include "FinnhubStockSymbolProduct.h"
 
-IMPLEMENT_DYNCREATE(CFinnhubCompanySymbolProduct, CWebSourceDataProduct)
+IMPLEMENT_DYNCREATE(CFinnhubStockSymbolProduct, CWebSourceDataProduct)
 
-CFinnhubCompanySymbolProduct::CFinnhubCompanySymbolProduct() {
+CFinnhubStockSymbolProduct::CFinnhubStockSymbolProduct() {
 	m_strClassName = _T("Finnhub company symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 	m_lIndex = -1;
 }
 
-CString CFinnhubCompanySymbolProduct::CreatMessage(void)
+CString CFinnhubStockSymbolProduct::CreatMessage(void)
 {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
@@ -21,7 +21,7 @@ CString CFinnhubCompanySymbolProduct::CreatMessage(void)
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CFinnhubCompanySymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
+bool CFinnhubStockSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	CString str;
 	vector<CWorldStockPtr> vStock;
 

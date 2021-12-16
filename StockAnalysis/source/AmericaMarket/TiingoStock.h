@@ -14,33 +14,34 @@ using namespace std;
 
 class CTiingoStock : public CObject {
 public:
-  CTiingoStock();
-  void Reset(void);
+	CTiingoStock();
+	void Reset(void);
 
-  void Load(CSetTiingoStock& setTiingoStock);
-  void Append(CSetTiingoStock& setTiingoStock);
-  void Save(CSetTiingoStock& setTiingoStock);
+	void Load(CSetTiingoStock& setTiingoStock);
+	void Append(CSetTiingoStock& setTiingoStock);
+	void Save(CSetTiingoStock& setTiingoStock);
 
 public:
-  CString m_strTiingoPermaTicker; // Tiingo永久代码标识
-  CString m_strTicker;
-  CString m_strName;
-  bool m_fIsActive; //
-  bool m_fIsADR;
-  INT32 m_iSICCode;
-  CString m_strSICIndustry;
-  CString m_strSICSector;
-  CString m_strTiingoIndustry;
-  CString m_strTiingoSector;
-  CString m_strReportingCurrency;
-  CString m_strLocation;
-  CString m_strCompanyWebSite;
-  CString m_strSECFilingWebSite;
-  long m_lStatementUpdateDate;
-  long m_lDailyDataUpdateDate;
+	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
+	CString m_strTicker;
+	CString m_strName;
+	bool m_fIsActive; //
+	bool m_fIsADR;
+	INT32 m_iSICCode;
+	CString m_strSICIndustry;
+	CString m_strSICSector;
+	CString m_strTiingoIndustry;
+	CString m_strTiingoSector;
+	CString m_strReportingCurrency;
+	CString m_strLocation;
+	CString m_strCompanyWebSite;
+	CString m_strSECFilingWebSite;
+	long m_lStatementUpdateDate;
+	long m_lDailyDataUpdateDate;
 
 protected:
-  // 无需存储数据区
+	// 无需存储数据区
 };
 
 typedef shared_ptr<CTiingoStock> CTiingoStockPtr;
+typedef shared_ptr<vector<CTiingoStockPtr>> CTiingoStockVectorPtr;

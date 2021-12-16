@@ -104,7 +104,7 @@
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp" />
     <ClCompile Include="FinnhubCompanyProfileTest.cpp" />
     <ClCompile Include="FinnhubCompanyInsiderTransactionTest.cpp" />
-    <ClCompile Include="FinnhubCompanySymbolProductTest.cpp" />
+    <ClCompile Include="FinnhubSymbolSymbolProductTest.cpp" />
     <ClCompile Include="FinnhubCryptoDayLineTest.cpp" />
     <ClCompile Include="FinnhubCryptoExchangeTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolProductTest.cpp" />
