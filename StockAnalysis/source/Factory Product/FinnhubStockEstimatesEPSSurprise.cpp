@@ -26,20 +26,19 @@ CString CFinnhubStockEstimatesEPSSurprise::CreatMessage(void) {
 bool CFinnhubStockEstimatesEPSSurprise::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	vector<CEPSSurprisePtr> vEPSSurprise;
+	CEPSSurpriseVectorPtr pvEPSSurprise;
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
-		if (vEPSSurprise.size() > 0) {
-			pStock->UpdateEPSSurprise(vEPSSurprise);
-		}
-		else {
-			pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
-			pStock->SetUpdateProfileDB(true);
-		}
-		pStock->m_fEPSSurpriseUpdated = true;
-		pStock->m_fEPSSurpriseNeedSave = true;
+	pvEPSSurprise = ((CWorldMarket*)m_pMarket)->ParseFinnhubEPSSurprise(pWebData);
+	if (pvEPSSurprise->size() > 0) {
+		pStock->UpdateEPSSurprise(*pvEPSSurprise);
 	}
+	else {
+		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
+		pStock->SetUpdateProfileDB(true);
+	}
+	pStock->m_fEPSSurpriseUpdated = true;
+	pStock->m_fEPSSurpriseNeedSave = true;
 
 	return true;
 }

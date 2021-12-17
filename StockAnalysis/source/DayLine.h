@@ -14,6 +14,7 @@ using namespace std;
 
 class CDayLine;
 typedef shared_ptr<CDayLine> CDayLinePtr;
+typedef shared_ptr<vector<CDayLinePtr>> CDayLineVectorPtr;
 
 class CDayLine : public CVirtualHistoryCandleExtend {
 public:

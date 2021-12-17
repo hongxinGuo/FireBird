@@ -28,6 +28,9 @@
 
 #include"FinnhubStockEstimatesEPSSurprise.h"
 
+#include"FinnhubCryptoExchange.h"
+#include"FinnhubForexExchange.h"
+
 #include"FinnhubStockPriceQuote.h"
 #include"FinnhubCryptoDayLine.h"
 #include"FinnhubForexDayLine.h"
@@ -809,6 +812,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfileConcise(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
+
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
 		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsProfileUpdated());
 		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
@@ -818,12 +822,41 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_SYMBOLS__) {
-		// 需要修改实现函数，以适应Mock的需要
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWebSourceDataProductPtr p = make_shared<CFinnhubStockSymbolProduct>();
+		p->SetIndex(51); // 选择上海股票交易所，代码为SS
+		p->SetMarket(gl_pMockWorldMarket.get());
+		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(p);
+		CWorldStockVectorPtr  pvStock = make_shared<vector<CWorldStockPtr>>();
+		CWorldStockPtr pStock = make_shared<CWorldStock>();
+		pStock->SetSymbol(_T("000001.SS"));
+		pvStock->push_back(pStock);
+		pStock = make_shared<CWorldStock>();
+		pStock->SetSymbol(_T("New Stock")); // 新股票代码
+		pvStock->push_back(pStock);
+		int iOldStockNumber = gl_pMockWorldMarket->GetTotalStock();
+
 		gl_pMockWorldMarket->SetFinnhubInquiring(true);
+		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
+		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
+			gl_WebInquirer.PushFinnhubData(pWebData);
+		}
+
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockSymbol(pWebData))
+			.WillOnce(Return(pvStock));
+
+		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
+
+		EXPECT_EQ(gl_pMockWorldMarket->GetTotalStock(), iOldStockNumber + 1) << "New Stock是新股票代码";
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub发现新代码:New Stock"));
+
+		// 恢复原状
+		gl_pMockWorldMarket->DeleteStock(gl_pMockWorldMarket->GetStock(_T("New Stock")));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__PEERS__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		CString strPeer = _T("abcdefg");
 		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyPeer>();
 		p->SetIndex(1);
 		p->SetMarket(gl_pMockWorldMarket.get());
@@ -837,8 +870,8 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetPeerUpdated(false);
 		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockPeer(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
-			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockPeer(pWebData))
+			.WillOnce(Return(strPeer));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetPeerUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsPeerUpdated()) << "此标识在申请数据时就预先设置了";
@@ -987,6 +1020,72 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
+	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__CRYPTO_EXCHANGE__) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWebSourceDataProductPtr p = make_shared<CFinnhubCryptoExchange>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pMockWorldMarket.get());
+		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(p);
+		shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
+		CString strExchange = _T("FXPIG"); // 这个已存在
+		pvExchange->push_back(strExchange);
+		strExchange = _T("New Exchange"); // 这个是新交易所代码
+		pvExchange->push_back(strExchange);
+
+		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
+		gl_pMockWorldMarket->SetFinnhubInquiring(true);
+		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
+			gl_WebInquirer.PushFinnhubData(pWebData);
+		}
+		gl_pMockWorldMarket->SetFinnhubCryptoExchangeUpdated(false);
+		int iOldCryptoExchangeSize = gl_pMockWorldMarket->GetCryptoExchangeSize();
+
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubCryptoExchange(pWebData))
+			.WillOnce(Return(pvExchange));
+
+		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
+
+		EXPECT_TRUE(gl_pMockWorldMarket->IsFinnhubCryptoExchangeUpdated());
+		EXPECT_EQ(gl_pMockWorldMarket->GetCryptoExchangeSize(), iOldCryptoExchangeSize + 1) << "New Exchange这个交易所代码是新增的";
+
+		// 恢复原状
+		gl_pMockWorldMarket->SetFinnhubCryptoExchangeUpdated(false);
+		gl_pMockWorldMarket->DeleteCryptoExchange(_T("New Exchange"));
+	}
+
+	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__FOREX_EXCHANGE__) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWebSourceDataProductPtr p = make_shared<CFinnhubForexExchange>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pMockWorldMarket.get());
+		gl_pMockWorldMarket->SetCurrentFinnhubInquiry(p);
+		shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
+		CString strExchange = _T("oanda"); // 这个已存在
+		pvExchange->push_back(strExchange);
+		strExchange = _T("New Exchange"); // 这个是新交易所代码
+		pvExchange->push_back(strExchange);
+
+		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
+		gl_pMockWorldMarket->SetFinnhubInquiring(true);
+		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
+			gl_WebInquirer.PushFinnhubData(pWebData);
+		}
+		gl_pMockWorldMarket->SetFinnhubForexExchangeUpdated(false);
+		int iOldForexExchangeSize = gl_pMockWorldMarket->GetForexExchangeSize();
+
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubForexExchange(pWebData))
+			.WillOnce(Return(pvExchange));
+
+		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
+
+		EXPECT_TRUE(gl_pMockWorldMarket->IsFinnhubForexExchangeUpdated());
+		EXPECT_EQ(gl_pMockWorldMarket->GetForexExchangeSize(), iOldForexExchangeSize + 1) << "New Exchange这个交易所代码是新增的";
+
+		// 恢复原状
+		gl_pMockWorldMarket->SetFinnhubForexExchangeUpdated(false);
+		gl_pMockWorldMarket->DeleteForexExchange(_T("New Exchange"));
+	}
+
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage01) {
 		while (gl_pMockWorldMarket->GetTiingoInquiryQueueSize() > 0) gl_pMockWorldMarket->GetTiingoInquiry();
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoInquiringMessage());
@@ -1109,8 +1208,39 @@ namespace StockAnalysisTest {
 		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
-	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_SYMBOLS__) {
-		// 需要修改实现函数，以适应Mock的需要
+	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_PRICE_CANDLES__) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		p->SetIndex(1);
+		p->SetMarket(gl_pMockWorldMarket.get());
+		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
+
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+
+		auto pStock = gl_pMockWorldMarket->GetStock(1);
+		pStock->SetUpdateProfileDB(false);
+		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetDayLineNeedSaving(false);
+
+		gl_pMockWorldMarket->SetTiingoInquiring(true);
+		gl_pMockWorldMarket->SetTiingoDataReceived(true);
+		if (gl_WebInquirer.GetTiingoDataSize() == 0) {
+			gl_WebInquirer.PushTiingoData(pWebData);
+		}
+
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseTiingoStockDayLine(pWebData))
+			.WillOnce(Return(pvDayLine));
+
+		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
+
+		EXPECT_EQ(pStock->GetDayLineSize(), 2);
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
+		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+		EXPECT_TRUE(pStock->IsDayLineNeedSaving());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {

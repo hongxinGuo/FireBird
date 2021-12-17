@@ -189,25 +189,25 @@ public:
 
 	// Finnhub数据处理函数
 	virtual bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	virtual bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ParseFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
-	virtual bool ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-	virtual bool ParseFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
-	virtual bool ParseFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
+	virtual bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
+	virtual bool ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual  shared_ptr<vector<CString>> ParseFinnhubForexExchange(CWebDataPtr pWebData);
+	virtual CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
 	virtual bool ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
-	virtual bool ParseFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
-	virtual bool ParseFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol);
+	virtual shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(CWebDataPtr pWebData);
+	virtual CCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(CWebDataPtr pWebData);
 	virtual bool ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol);
 	virtual bool ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
-	virtual bool ParseFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+	virtual CString ParseFinnhubStockPeer(CWebDataPtr pWebData);
 	virtual bool ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
-	virtual bool ParseFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
-	virtual bool ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
+	virtual CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
+	virtual CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
 
 	// Tiingo数据处理函数
 	virtual CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
-	virtual bool ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);
 
 	bool TaskUpdateStockProfileDB(void);
 	bool TaskUpdateDayLineDB(void);

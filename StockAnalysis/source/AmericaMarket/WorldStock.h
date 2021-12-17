@@ -221,3 +221,4 @@ protected:
 };
 
 typedef shared_ptr<CWorldStock> CWorldStockPtr;
+typedef shared_ptr<vector<CWorldStockPtr>> CWorldStockVectorPtr;

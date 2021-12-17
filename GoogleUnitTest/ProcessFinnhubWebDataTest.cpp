@@ -202,7 +202,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
-			m_vStock.resize(0);
+			m_pvStock = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -216,27 +216,25 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		vector<CWorldStockPtr> m_vStock;
+		CWorldStockVectorPtr m_pvStock;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
 		&finnhubWebData30));
 
 	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubStockSymbol(m_pWebData, m_vStock);
+		m_pvStock = gl_pWorldMarket->ParseFinnhubStockSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
 		case 3: // 缺乏currency项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_vStock.at(0)->GetSymbol(), _T("A"));
-			EXPECT_STREQ(m_vStock.at(1)->GetSymbol(), _T("AA"));
-			EXPECT_EQ(m_vStock.size(), 2);
+			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("A"));
+			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
+			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:
 			break;
@@ -674,7 +672,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vExchange.resize(0);
+			m_pvExchange = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -684,27 +682,25 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CString> m_vExchange;
+		shared_ptr<vector<CString>>  m_pvExchange;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
 		&finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubForexExchange(m_pWebData, m_vExchange);
+		m_pvExchange = gl_pWorldMarket->ParseFinnhubForexExchange(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_vExchange.at(0), _T("oanda"));
-			EXPECT_STREQ(m_vExchange.at(1), _T("fxcm"));
-			EXPECT_EQ(m_vExchange.size(), 9);
+			EXPECT_STREQ(m_pvExchange->at(0), _T("oanda"));
+			EXPECT_STREQ(m_pvExchange->at(1), _T("fxcm"));
+			EXPECT_EQ(m_pvExchange->size(), 9);
 			break;
 		default:
 			break;
@@ -730,7 +726,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vForexSymbol.resize(0);
+			m_pvForexSymbol = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -741,7 +737,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CForexSymbolPtr> m_vForexSymbol;
+		CForexSymbolVectorPtr m_pvForexSymbol;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
@@ -749,26 +745,24 @@ namespace StockAnalysisTest {
 			&finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubForexSymbol(m_pWebData, m_vForexSymbol);
+		m_pvForexSymbol = gl_pWorldMarket->ParseFinnhubForexSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 4: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 5: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_vForexSymbol.at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
-			EXPECT_STREQ(m_vForexSymbol.at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
-			EXPECT_EQ(m_vForexSymbol.size(), 2);
+			EXPECT_STREQ(m_pvForexSymbol->at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
+			EXPECT_STREQ(m_pvForexSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_pvForexSymbol->size(), 2);
 			break;
 		default:
 			break;
@@ -866,20 +860,17 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetPeer(_T(""));
+			m_strPeer = _T("");
 		}
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
-			m_pStock->SetUpdateProfileDB(false);
 		}
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CString m_strPeer;
 		CWebDataPtr m_pWebData;
 	};
 
@@ -888,28 +879,22 @@ namespace StockAnalysisTest {
 			&finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubStockPeer(m_pWebData, m_pStock);
+		m_strPeer = gl_pWorldMarket->ParseFinnhubStockPeer(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_pStock->GetPeer(), _T(" "));
+			EXPECT_STREQ(m_strPeer, _T(""));
 			break;
 		case 3: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_STREQ(m_pStock->GetPeer(), _T("")) << "没有改变";
+			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_FALSE(fSucceed);
-			EXPECT_STREQ(m_pStock->GetPeer(), _T("")) << "没有改变";
+			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
 			break;
 		case 5: // 正确的数据，但超过200个字符
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetPeer().GetLength(), 200) << "多余200个字符时截断";
+			EXPECT_EQ(m_strPeer.GetLength(), 200) << "多余200个字符时截断";
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_pStock->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_STREQ(m_strPeer, _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			break;
 		default:
 			break;
@@ -935,7 +920,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vEconomicCalendar.resize(0);
+			m_pvEconomicCalendar = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -946,7 +931,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CEconomicCalendarPtr> m_vEconomicCalendar;
+		CEconomicCalendarVectorPtr m_pvEconomicCalendar;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
@@ -954,37 +939,33 @@ namespace StockAnalysisTest {
 			&finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubEconomicCalendar(m_pWebData, m_vEconomicCalendar);
+		m_pvEconomicCalendar = gl_pWorldMarket->ParseFinnhubEconomicCalendar(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
 		case 3: // 缺乏economicCalendar
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEconomicCalendar.size(), 0);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
 		case 4: // 第一个数据缺actual
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEconomicCalendar.size(), 0);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
 		case 5: // 第二个数据缺actual
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEconomicCalendar.size(), 1);
-			EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dActual, 0.6);
-			EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strUnit, _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 1);
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
+			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
 			break;
 		case 10:
-			EXPECT_EQ(m_vEconomicCalendar.size(), 2);
-			EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dActual, 0.6);
-			EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strUnit, _T("%"));
-			EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(1)->m_dActual, -0.2);
-			EXPECT_STREQ(m_vEconomicCalendar.at(1)->m_strUnit, _T("%"));
-			EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dEstimate, 0.6);
-			EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dPrev, 1);
-			EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strCountry, _T("CN"));
-			EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strEvent, _T("CPI MM"));
-			EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strTime, _T("2021-03-10 01:30:00"));
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
+			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(1)->m_dActual, -0.2);
+			EXPECT_STREQ(m_pvEconomicCalendar->at(1)->m_strUnit, _T("%"));
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dEstimate, 0.6);
+			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dPrev, 1);
+			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strCountry, _T("CN"));
+			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strEvent, _T("CPI MM"));
+			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strTime, _T("2021-03-10 01:30:00"));
 			break;
 		default:
 			break;
@@ -1012,7 +993,7 @@ namespace StockAnalysisTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_vEPSSurprise.resize(0);
+			m_pvEPSSurprise = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -1025,7 +1006,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		vector<CEPSSurprisePtr> m_vEPSSurprise;
+		CEPSSurpriseVectorPtr m_pvEPSSurprise;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
@@ -1033,42 +1014,38 @@ namespace StockAnalysisTest {
 			&finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubEPSSurprise(m_pWebData, m_vEPSSurprise);
+		m_pvEPSSurprise = gl_pWorldMarket->ParseFinnhubEPSSurprise(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
 		case 3: //
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEPSSurprise.size(), 0);
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
 		case 4: // 第二个数据缺缺actual
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEPSSurprise.size(), 1);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 1);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 5: // 第三个数据缺CodeNo
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vEPSSurprise.size(), 2);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 2);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 10:
-			EXPECT_EQ(m_vEPSSurprise.size(), 4);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 0.6375);
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 0.5765856);
-			EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20200331);
-			EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
-			EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(3)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_vEPSSurprise.at(3)->m_lDate, 20201231);
-			EXPECT_STREQ(m_vEPSSurprise.at(3)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 0.6375);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 0.5765856);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20200331);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
 			break;
 		default:
 			break;
@@ -1222,7 +1199,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vExchange.resize(0);
+			m_pvExchange = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -1232,27 +1209,25 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CString> m_vExchange;
+		shared_ptr<vector<CString>> m_pvExchange;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
 		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoExchange(m_pWebData, m_vExchange);
+		m_pvExchange = gl_pWorldMarket->ParseFinnhubCryptoExchange(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_vExchange.at(0), _T("oanda"));
-			EXPECT_STREQ(m_vExchange.at(1), _T("fxcm"));
-			EXPECT_EQ(m_vExchange.size(), 9);
+			EXPECT_STREQ(m_pvExchange->at(0), _T("oanda"));
+			EXPECT_STREQ(m_pvExchange->at(1), _T("fxcm"));
+			EXPECT_EQ(m_pvExchange->size(), 9);
 			break;
 		default:
 			break;
@@ -1278,7 +1253,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vCryptoSymbol.resize(0);
+			m_pvCryptoSymbol = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -1289,7 +1264,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CCryptoSymbolPtr> m_vCryptoSymbol;
+		CCryptoSymbolVectorPtr m_pvCryptoSymbol;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
@@ -1297,26 +1272,24 @@ namespace StockAnalysisTest {
 			&finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoSymbol(m_pWebData, m_vCryptoSymbol);
+		m_pvCryptoSymbol = gl_pWorldMarket->ParseFinnhubCryptoSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 4: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 5: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(m_vCryptoSymbol.at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
-			EXPECT_STREQ(m_vCryptoSymbol.at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
-			EXPECT_EQ(m_vCryptoSymbol.size(), 2);
+			EXPECT_STREQ(m_pvCryptoSymbol->at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
+			EXPECT_STREQ(m_pvCryptoSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 2);
 			break;
 		default:
 			break;

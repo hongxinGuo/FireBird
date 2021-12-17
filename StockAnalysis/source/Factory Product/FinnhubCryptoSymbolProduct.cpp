@@ -19,16 +19,15 @@ CString CFinnhubCryptoSymbolProduct::CreatMessage(void) {
 }
 
 bool CFinnhubCryptoSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
-	vector<CCryptoSymbolPtr> vCryptoSymbol;
+	CCryptoSymbolVectorPtr pvCryptoSymbol;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoSymbol(pWebData, vCryptoSymbol)) {
-		for (auto& pSymbol : vCryptoSymbol) {
-			if (!((CWorldMarket*)m_pMarket)->IsCryptoSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
-				((CWorldMarket*)m_pMarket)->AddCryptoSymbol(pSymbol);
-			}
+	pvCryptoSymbol = ((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoSymbol(pWebData);
+	for (auto& pSymbol : *pvCryptoSymbol) {
+		if (!((CWorldMarket*)m_pMarket)->IsCryptoSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
+			((CWorldMarket*)m_pMarket)->AddCryptoSymbol(pSymbol);
 		}
 	}
 

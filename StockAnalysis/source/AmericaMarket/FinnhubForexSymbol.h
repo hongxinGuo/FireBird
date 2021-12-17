@@ -34,3 +34,4 @@ protected:
 };
 
 typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;
+typedef shared_ptr<vector<CForexSymbolPtr>> CForexSymbolVectorPtr;

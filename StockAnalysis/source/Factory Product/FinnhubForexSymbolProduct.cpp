@@ -23,14 +23,13 @@ CString CFinnhubForexSymbolProduct::CreatMessage(void) {
 bool CFinnhubForexSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	vector<CForexSymbolPtr> vForexSymbol;
+	CForexSymbolVectorPtr pvForexSymbol = nullptr;
 
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubForexSymbol(pWebData, vForexSymbol)) {
-		for (auto& pSymbol : vForexSymbol) {
-			if (!((CWorldMarket*)m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
-				pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex));
-				((CWorldMarket*)m_pMarket)->AddForexSymbol(pSymbol);
-			}
+	pvForexSymbol = ((CWorldMarket*)m_pMarket)->ParseFinnhubForexSymbol(pWebData);
+	for (auto& pSymbol : *pvForexSymbol) {
+		if (!((CWorldMarket*)m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex));
+			((CWorldMarket*)m_pMarket)->AddForexSymbol(pSymbol);
 		}
 	}
 

@@ -17,17 +17,17 @@ CString CFinnhubCryptoExchange::CreatMessage(void) {
 }
 
 bool CFinnhubCryptoExchange::ProcessWebData(CWebDataPtr pWebData) {
-	vector<CString> vCryptoExchange;
+	shared_ptr<vector<CString>> pvCryptoExchange = nullptr;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoExchange(pWebData, vCryptoExchange)) {
-		for (int i = 0; i < vCryptoExchange.size(); i++) {
-			if (!((CWorldMarket*)m_pMarket)->IsCryptoExchange(vCryptoExchange.at(i))) {
-				((CWorldMarket*)m_pMarket)->AddCryptoExchange(vCryptoExchange.at(i));
-			}
+	pvCryptoExchange = ((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoExchange(pWebData);
+	for (int i = 0; i < pvCryptoExchange->size(); i++) {
+		if (!((CWorldMarket*)m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
+			((CWorldMarket*)m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
 		}
-		((CWorldMarket*)m_pMarket)->SetFinnhubCryptoExchangeUpdated(true);
 	}
+	((CWorldMarket*)m_pMarket)->SetFinnhubCryptoExchangeUpdated(true);
+
 	return true;
 }

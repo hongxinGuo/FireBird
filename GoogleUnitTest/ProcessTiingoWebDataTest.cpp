@@ -150,27 +150,17 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetDayLineNeedUpdate(true);
-			m_pStock->SetDayLineNeedSaving(false);
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->UnloadDayLine();
 			m_pWebData = pData->m_pData;
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			m_pStock->SetDayLineNeedUpdate(true);
-			m_pStock->SetDayLineNeedSaving(false);
-			m_pStock->SetUpdateProfileDB(false);
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 	};
 
@@ -180,61 +170,40 @@ namespace StockAnalysisTest {
 			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
-		bool fSucceed = false;
+		CDayLineVectorPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
 
-		fSucceed = gl_pWorldMarket->ParseTiingoStockDayLine(m_pWebData, m_pStock);
+		pvDayLine = gl_pWorldMarket->ParseTiingoStockDayLine(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			strMessage = m_pStock->GetSymbol();
-			strMessage += _T("日线为无效JSon数据\n");
+			strMessage = _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: //
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 3: //
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 5:
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 6:
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 7:
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 8:
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 9:
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
+			EXPECT_EQ(pvDayLine->size(), 1);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetDayLineSize(), 2);
-			pDayLine = m_pStock->GetDayLine(0);
+			EXPECT_EQ(pvDayLine->size(), 2);
+			pDayLine = pvDayLine->at(0);
 			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
 			EXPECT_EQ(pDayLine->GetClose(), 121960);
 			EXPECT_EQ(pDayLine->GetHigh(), 123210);

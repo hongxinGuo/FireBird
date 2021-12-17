@@ -45,24 +45,24 @@ namespace testing {
 		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
 
 		MOCK_METHOD(bool, ParseFinnhubStockProfile, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockProfileConcise, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockSymbol, (CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockCandle, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockQuote, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubForexExchange, (CWebDataPtr pWebData, vector<CString>& vExchange), (override));
-		MOCK_METHOD(bool, ParseFinnhubForexSymbol, (CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol), (override));
+		MOCK_METHOD(bool, ParseFinnhubStockProfileConcise, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
+		MOCK_METHOD(CWorldStockVectorPtr, ParseFinnhubStockSymbol, (CWebDataPtr pWebData), (override));
+		MOCK_METHOD(bool, ParseFinnhubStockCandle, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
+		MOCK_METHOD(bool, ParseFinnhubStockQuote, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
+		MOCK_METHOD(shared_ptr<vector<CString>>, ParseFinnhubForexExchange, (CWebDataPtr pWebData), (override));
+		MOCK_METHOD(CForexSymbolVectorPtr, ParseFinnhubForexSymbol, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(bool, ParseFinnhubForexCandle, (CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol), (override));
-		MOCK_METHOD(bool, ParseFinnhubCryptoExchange, (CWebDataPtr pWebData, vector<CString>& vExchange), (override));
-		MOCK_METHOD(bool, ParseFinnhubCryptoSymbol, (CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol), (override));
+		MOCK_METHOD(shared_ptr<vector<CString>>, ParseFinnhubCryptoExchange, (CWebDataPtr pWebData), (override));
+		MOCK_METHOD(CCryptoSymbolVectorPtr, ParseFinnhubCryptoSymbol, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(bool, ParseFinnhubCryptoCandle, (CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol), (override));
 		MOCK_METHOD(bool, ParseFinnhubCountryList, (CWebDataPtr pWebData, vector<CCountryPtr>& vCountry), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockPeer, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
+		MOCK_METHOD(CString, ParseFinnhubStockPeer, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(bool, ParseFinnhubStockInsiderTransaction, (CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction), (override));
-		MOCK_METHOD(bool, ParseFinnhubEconomicCalendar, (CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar), (override));
-		MOCK_METHOD(bool, ParseFinnhubEPSSurprise, (CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise), (override));
+		MOCK_METHOD(CEconomicCalendarVectorPtr, ParseFinnhubEconomicCalendar, (CWebDataPtr pWebData), (override));
+		MOCK_METHOD(CEPSSurpriseVectorPtr, ParseFinnhubEPSSurprise, (CWebDataPtr pWebData), (override));
 
 		MOCK_METHOD(CTiingoStockVectorPtr, ParseTiingoStockSymbol, (CWebDataPtr pWebData), (override));
-		MOCK_METHOD(bool, ParseTiingoStockDayLine, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
+		MOCK_METHOD(CDayLineVectorPtr, ParseTiingoStockDayLine, (CWebDataPtr pWebData), (override));
 
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));

@@ -177,8 +177,8 @@ CTiingoStockVectorPtr CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData)
 // ]
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr pStock) {
-	vector<CDayLinePtr> vDayLine;
+CDayLineVectorPtr CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
+	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 	ptree pt, pt2;
 	string s;
 	double dTemp = 0;
@@ -188,10 +188,9 @@ bool CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr 
 	long year, month, day;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str += pStock->GetSymbol();
-		str += _T("日线为无效JSon数据\n");
+		str = _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
-		return false;
+		return pvDayLine;
 	}
 
 	try {
@@ -213,24 +212,15 @@ bool CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr 
 			pDayLine->SetOpen(dTemp * 1000);
 			lTemp = pt2.get<long>(_T("volume"));
 			pDayLine->SetVolume(lTemp);
-			vDayLine.push_back(pDayLine);
+			pvDayLine->push_back(pDayLine);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine "), e);
-		return false; // 数据解析出错的话，则放弃。
+		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
-	for (auto& pDayLine2 : vDayLine) {
-		pDayLine2->SetExchange(pStock->GetExchangeCode());
-		pDayLine2->SetStockSymbol(pStock->GetSymbol());
-		pDayLine2->SetDisplaySymbol(pStock->GetTicker());
-	}
-	pStock->UpdateDayLine(vDayLine);
-	pStock->SetDayLineNeedUpdate(false);
-	pStock->SetDayLineNeedSaving(true);
-	pStock->SetUpdateProfileDB(true);
-	return true;
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	return pvDayLine;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

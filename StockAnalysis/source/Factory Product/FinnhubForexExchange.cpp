@@ -19,16 +19,15 @@ CString CFinnhubForexExchange::CreatMessage(void) {
 bool CFinnhubForexExchange::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	vector<CString> vForexExchange;
+	shared_ptr<vector<CString>> pvForexExchange = nullptr;
 
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubForexExchange(pWebData, vForexExchange)) {
-		for (int i = 0; i < vForexExchange.size(); i++) {
-			if (!((CWorldMarket*)m_pMarket)->IsForexExchange(vForexExchange.at(i))) {
-				((CWorldMarket*)m_pMarket)->AddForexExchange(vForexExchange.at(i));
-			}
+	pvForexExchange = ((CWorldMarket*)m_pMarket)->ParseFinnhubForexExchange(pWebData);
+	for (int i = 0; i < pvForexExchange->size(); i++) {
+		if (!((CWorldMarket*)m_pMarket)->IsForexExchange(pvForexExchange->at(i))) {
+			((CWorldMarket*)m_pMarket)->AddForexExchange(pvForexExchange->at(i));
 		}
-		((CWorldMarket*)m_pMarket)->SetFinnhubForexExchangeUpdated(true);
 	}
+	((CWorldMarket*)m_pMarket)->SetFinnhubForexExchangeUpdated(true);
 
 	return true;
 }

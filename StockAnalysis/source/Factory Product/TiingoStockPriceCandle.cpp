@@ -30,8 +30,20 @@ bool CTiingoStockPriceCandle::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
+	CDayLineVectorPtr pvDayLine = nullptr;
+
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	((CWorldMarket*)m_pMarket)->ParseTiingoStockDayLine(pWebData, pStock);
+	pvDayLine = ((CWorldMarket*)m_pMarket)->ParseTiingoStockDayLine(pWebData);
+	for (auto& pDayLine2 : *pvDayLine) {
+		pDayLine2->SetExchange(pStock->GetExchangeCode());
+		pDayLine2->SetStockSymbol(pStock->GetSymbol());
+		pDayLine2->SetDisplaySymbol(pStock->GetTicker());
+	}
+	pStock->UpdateDayLine(*pvDayLine);
+	pStock->SetDayLineNeedUpdate(false);
+	pStock->SetDayLineNeedSaving(true);
+	pStock->SetUpdateProfileDB(true);
+
 	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 
 	return true;

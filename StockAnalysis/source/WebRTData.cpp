@@ -134,7 +134,7 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	static char buffer1[100];
-	char buffer2[7];
+	char buffer2[20];
 	static char buffer3[100];
 	static CString strHeader = _T("var hq_str_s");
 	long lStockCode = 0;

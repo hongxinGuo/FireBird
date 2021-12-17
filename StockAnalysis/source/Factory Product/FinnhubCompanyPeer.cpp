@@ -28,7 +28,9 @@ bool CFinnhubCompanyPeer::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubStockPeer(pWebData, pStock)) {
+	CString strPeer = ((CWorldMarket*)m_pMarket)->ParseFinnhubStockPeer(pWebData);
+	if (strPeer.GetLength() > 0) {
+		pStock->SetPeer(strPeer);
 		pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 	}

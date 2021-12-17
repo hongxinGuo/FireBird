@@ -124,7 +124,7 @@ bool CWorldMarket::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool CWorldMarket::ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	ptree pt;
 	string s;
 	string sError;
@@ -167,12 +167,13 @@ bool CWorldMarket::ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldS
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
+CWorldStockVectorPtr CWorldMarket::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {
+	CWorldStockVectorPtr pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	ptree pt, pt2;
 	string s, sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvStock;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -192,17 +193,17 @@ bool CWorldMarket::ParseFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldSt
 			pStock->SetSymbol(s.c_str());
 			s = pt2.get<string>(_T("type"));
 			if (s.size() > 0) pStock->SetType(s.c_str());
-			vStock.push_back(pStock);
+			pvStock->push_back(pStock);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
-		return false;
+		return pvStock;
 	}
-	return true;
+	return pvStock;
 }
 
-bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	vector<CDayLinePtr> vDayLine;
 	ptree pt, pt2, pt3;
 	string s;
@@ -316,7 +317,7 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr&
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
 	ptree pt;
 	double dTemp = 0;
@@ -347,36 +348,37 @@ bool CWorldMarket::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& 
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+shared_ptr<vector<CString>> CWorldMarket::ParseFinnhubForexExchange(CWebDataPtr pWebData) {
+	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
 	ptree pt, pt2;
 	string s;
 	CString str = _T("");
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvExchange;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pt2 = it->second;
 			s = pt2.get_value<string>();
 			str = s.c_str();
-			vExchange.push_back(str);
+			pvExchange->push_back(str);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
-		return false;
 	}
-	return true;
+	return pvExchange;
 }
 
-bool CWorldMarket::ParseFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
+CForexSymbolVectorPtr CWorldMarket::ParseFinnhubForexSymbol(CWebDataPtr pWebData) {
+	CForexSymbolVectorPtr pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
 	CForexSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
 	string s;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvForexSymbol;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -388,15 +390,14 @@ bool CWorldMarket::ParseFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSy
 			pSymbol->SetDisplaySymbol(s.c_str());
 			s = pt2.get<string>(_T("symbol"));
 			pSymbol->SetSymbol(s.c_str());
-			vForexSymbol.push_back(pSymbol);
+			pvForexSymbol->push_back(pSymbol);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e);
-		return false;
 	}
 
-	return true;
+	return pvForexSymbol;
 }
 
 bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
@@ -431,8 +432,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 			str += pForexSymbol->GetSymbol();
 			str += _T("日线返回值不为ok\n");
 			TRACE("%s", str.GetBuffer());
-			gl_systemMessage.PushInformationMessage(str);
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			gl_systemMessage.PushErrorMessage(str);
 			return false;
 		}
 	}
@@ -506,8 +506,8 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
-	pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
 	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
+	pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
 	pForexSymbol->UpdateDayLine(vDayLine);
 	pForexSymbol->SetDayLineNeedUpdate(false);
 	pForexSymbol->SetDayLineNeedSaving(true);
@@ -515,36 +515,38 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubCryptoExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+shared_ptr<vector<CString>> CWorldMarket::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
 	ptree pt, pt2;
 	string s;
 	CString str = _T("");
 	string sError;
+	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvExchange;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pt2 = it->second;
 			s = pt2.get_value<string>();
 			str = s.c_str();
-			vExchange.push_back(str);
+			pvExchange->push_back(str);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e);
-		return false;
+		return pvExchange;
 	}
-	return true;
+	return pvExchange;
 }
 
-bool CWorldMarket::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCryptoSymbolPtr>& vCryptoSymbol) {
+CCryptoSymbolVectorPtr CWorldMarket::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
+	CCryptoSymbolVectorPtr pvCryptoSymbol = make_shared<vector<CCryptoSymbolPtr>>();
 	CCryptoSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
 	string s;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvCryptoSymbol;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -556,14 +558,13 @@ bool CWorldMarket::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData, vector<CCrypto
 			pSymbol->SetDisplaySymbol(s.c_str());
 			s = pt2.get<string>(_T("symbol"));
 			pSymbol->SetSymbol(s.c_str());
-			vCryptoSymbol.push_back(pSymbol);
+			pvCryptoSymbol->push_back(pSymbol);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e);
-		return false;
 	}
-	return true;
+	return pvCryptoSymbol;
 }
 
 bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol) {
@@ -717,17 +718,17 @@ bool CWorldMarket::ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountry
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+CString CWorldMarket::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
+	CString strPeer = _T("");
 	char buffer[1000]{};
 	int i = 0;
 	ptree pt;
 	string sError;
 
 	if (pWebData->GetBufferLength() <= 3) {
-		pStock->SetPeer(_T(" ")); // 清空
-		return true; // 没有有效的同业竞争对手
+		return strPeer; // 没有有效的同业竞争对手
 	}
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return strPeer;
 
 	ASSERT(pWebData->GetBufferLength() < 1000);
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {
@@ -739,9 +740,9 @@ bool CWorldMarket::ParseFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& p
 	else {
 		buffer[pWebData->GetBufferLength()] = 0x000;
 	}
-	pStock->SetPeer(buffer);
+	strPeer = buffer;
 
-	return true;
+	return strPeer;
 }
 
 bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
@@ -793,12 +794,13 @@ bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vec
 	return true;
 }
 
-bool CWorldMarket::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
+CEconomicCalendarVectorPtr CWorldMarket::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData) {
+	CEconomicCalendarVectorPtr pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	ptree pt, pt1, pt2;
 	string s;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvEconomicCalendar;
 
 	try {
 		pt1 = pt.get_child(_T("economicCalendar"));
@@ -818,17 +820,17 @@ bool CWorldMarket::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEc
 			pEconomicCalendar->m_strTime = s.c_str();
 			s = pt2.get<string>(_T("unit"));
 			pEconomicCalendar->m_strUnit = s.c_str();
-			vEconomicCalendar.push_back(pEconomicCalendar);
+			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
-		return false;
 	}
-	return true;
+	return pvEconomicCalendar;
 }
 
-bool CWorldMarket::ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
+CEPSSurpriseVectorPtr CWorldMarket::ParseFinnhubEPSSurprise(CWebDataPtr pWebData) {
+	CEPSSurpriseVectorPtr pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
 	ptree pt, pt2;
 	string s;
 	CEPSSurprisePtr pEPSSurprise = nullptr;
@@ -836,7 +838,7 @@ bool CWorldMarket::ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurp
 	CString str;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvEPSSurprise;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -850,15 +852,15 @@ bool CWorldMarket::ParseFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurp
 			pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
 			pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
 			pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
-			vEPSSurprise.push_back(pEPSSurprise);
+			pvEPSSurprise->push_back(pEPSSurprise);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e);
-		return false;
+		return pvEPSSurprise;
 	}
-	sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
-	return true;
+	sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+	return pvEPSSurprise;
 }
 
 /// <summary>
