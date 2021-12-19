@@ -95,27 +95,19 @@ namespace StockAnalysisTest {
 		fSucceed = gl_pWorldMarket->ParseFinnhubStockProfile(m_pWebData, m_pStock);
 		switch (m_lIndex) {
 		case 1: // 少于20个字符
-			EXPECT_FALSE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsProfileUpdated());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), 19700101);
 			break;
 		case 3: // 缺乏address项
 			EXPECT_FALSE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_STRNE(m_pStock->GetCity(), _T("slaughterer")) << "没有赋值此项";
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_STREQ(m_pStock->GetCity(), _T("slaughterer"));
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		default:
 			break;
@@ -271,18 +263,12 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetCurrency(_T(""));
+			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			m_pStock->SetDayLineNeedUpdate(true);
-			m_pStock->SetDayLineNeedSaving(false);
-			m_pStock->SetUpdateProfileDB(false);
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
@@ -291,6 +277,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
+		CDayLineVectorPtr pvDayLine;
 		CWebDataPtr m_pWebData;
 	};
 
@@ -300,73 +287,46 @@ namespace StockAnalysisTest {
 			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ParseFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
-		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ParseFinnhubStockCandle(m_pWebData, m_pStock);
+		pvDayLine = gl_pWorldMarket->ParseFinnhubStockCandle(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			strMessage = m_pStock->GetSymbol();
-			strMessage += _T("日线为无效JSon数据\n");
+			EXPECT_EQ(pvDayLine->size(), 0);
+			strMessage = _T("日线为无效JSon数据");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			strMessage = _T("下载");
-			strMessage += m_pStock->GetSymbol();
-			strMessage += _T("日线返回值不为ok\n");
-			EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), strMessage);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_EQ(pvDayLine->size(), 0);
+			strMessage = _T("日线返回值不为ok");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 3: // s项报告 no data
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 4:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 5:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 6:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 7:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 8:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 9:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 3);
 			break;
 		case 11: // 没有s项
-			EXPECT_FALSE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		default:
 			break;
@@ -537,30 +497,20 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
+			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol));
-			m_pForexSymbol = gl_pWorldMarket->GetForexSymbol(pData->m_strSymbol);
-			EXPECT_TRUE(m_pForexSymbol != nullptr);
-			m_pForexSymbol->SetUpdateProfileDB(false);
 			m_pWebData = pData->m_pData;
-
-			m_pForexSymbol->SetDayLineNeedUpdate(true);
-			m_pForexSymbol->SetDayLineNeedSaving(false);
-			m_pForexSymbol->SetUpdateProfileDB(false);
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
 			GeneralCheck();
-
-			//m_pForexSymbol->SetDayLineNeedUpdate(true);
-			// m_pForexSymbol->SetDayLineNeedSaving(false);
-			m_pForexSymbol->SetUpdateProfileDB(false);
 		}
 
 	public:
 		long m_lIndex;
-		CForexSymbolPtr m_pForexSymbol;
 		CWebDataPtr m_pWebData;
+		CDayLineVectorPtr m_pvDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexCandle1,
@@ -569,86 +519,58 @@ namespace StockAnalysisTest {
 			&finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
-		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ParseFinnhubForexCandle(m_pWebData, m_pForexSymbol);
+		m_pvDayLine = gl_pWorldMarket->ParseFinnhubForexCandle(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsUpdateProfileDB());
-			strMessage += m_pForexSymbol->GetSymbol();
-			strMessage += _T("日线为无效JSon数据\n");
+			EXPECT_EQ(m_pvDayLine->size(), 0);
+			strMessage = _T("日线为无效JSon数据\n");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsUpdateProfileDB());
-			strMessage = _T("下载");
-			strMessage += m_pForexSymbol->GetSymbol();
-			strMessage += _T("日线返回值不为ok\n");
-			EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), strMessage);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_EQ(m_pvDayLine->size(), 0);
+			strMessage = _T("日线返回值不为ok\n");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 3: // s项报告 no data
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
 		case 4:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+			EXPECT_GT(m_pvDayLine->size(), 0);
 			break;
 		case 11: // 没有s项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
-			EXPECT_TRUE(m_pForexSymbol->IsNullStock());
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
@@ -788,7 +710,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_vCountry.resize(0);
+			m_pvCountry = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -799,7 +721,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		vector<CCountryPtr> m_vCountry;
+		CCountryVectorPtr m_pvCountry;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
@@ -807,34 +729,30 @@ namespace StockAnalysisTest {
 			&finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubCountryList(m_pWebData, m_vCountry);
+		m_pvCountry = gl_pWorldMarket->ParseFinnhubCountryList(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvCountry->size(), 0);
 			break;
 		case 3: // 缺乏CodeNo
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vCountry.size(), 0);
+			EXPECT_EQ(m_pvCountry->size(), 0);
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vCountry.size(), 1);
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_EQ(m_pvCountry->size(), 1);
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
 			break;
 		case 5: // 第二个数据缺CodeNo
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_vCountry.size(), 1);
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_EQ(m_pvCountry->size(), 1);
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
 			break;
 		case 10:
-			EXPECT_EQ(m_vCountry.size(), 2);
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
-			EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
-			EXPECT_STREQ(m_vCountry.at(1)->m_strCode2, _T("MF"));
-			EXPECT_STREQ(m_vCountry.at(1)->m_strCurrencyCode, _T("ANG"));
+			EXPECT_EQ(m_pvCountry->size(), 2);
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_STREQ(m_pvCountry->at(1)->m_strCode2, _T("MF"));
+			EXPECT_STREQ(m_pvCountry->at(1)->m_strCurrencyCode, _T("ANG"));
 			break;
 		default:
 			break;
@@ -1064,7 +982,7 @@ namespace StockAnalysisTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_vInsiderTransaction.resize(0);
+			m_pvInsiderTransaction = nullptr;
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -1078,26 +996,25 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		vector<CInsiderTransactionPtr> m_vInsiderTransaction;
+		CInsiderTransactionVectorPtr m_pvInsiderTransaction;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
 		testing::Values(&finnhubWebData132));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
-		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseFinnhubStockInsiderTransaction(m_pWebData, m_vInsiderTransaction);
+		m_pvInsiderTransaction = gl_pWorldMarket->ParseFinnhubStockInsiderTransaction(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_EQ(m_vInsiderTransaction.size(), 2);
-			EXPECT_STREQ(m_vInsiderTransaction.at(0)->m_strPersonName, _T("Long Brady K"));
-			EXPECT_STREQ(m_vInsiderTransaction.at(0)->m_strSymbol, _T("RIG"));
-			EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lShare, 269036);
-			EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lChange, -14236);
-			EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lFilingDate, 20210303);
-			EXPECT_EQ(m_vInsiderTransaction.at(0)->m_lTransactionDate, 20210302);
-			EXPECT_DOUBLE_EQ(m_vInsiderTransaction.at(0)->m_dTransactionPrice, 3.68);
-			EXPECT_TRUE(m_vInsiderTransaction.at(0)->m_lTransactionDate <= m_vInsiderTransaction.at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
+			EXPECT_STREQ(m_pvInsiderTransaction->at(0)->m_strPersonName, _T("Long Brady K"));
+			EXPECT_STREQ(m_pvInsiderTransaction->at(0)->m_strSymbol, _T("RIG"));
+			EXPECT_EQ(m_pvInsiderTransaction->at(0)->m_lShare, 269036);
+			EXPECT_EQ(m_pvInsiderTransaction->at(0)->m_lChange, -14236);
+			EXPECT_EQ(m_pvInsiderTransaction->at(0)->m_lFilingDate, 20210303);
+			EXPECT_EQ(m_pvInsiderTransaction->at(0)->m_lTransactionDate, 20210302);
+			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(0)->m_dTransactionPrice, 3.68);
+			EXPECT_TRUE(m_pvInsiderTransaction->at(0)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
 			break;
 		default:
 			break;
@@ -1327,14 +1244,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pData->m_strSymbol));
-			m_pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(pData->m_strSymbol);
-			EXPECT_TRUE(m_pCryptoSymbol != nullptr);
-			m_pCryptoSymbol->SetUpdateProfileDB(false);
 			m_pWebData = pData->m_pData;
-
-			m_pCryptoSymbol->SetDayLineNeedUpdate(true);
-			m_pCryptoSymbol->SetDayLineNeedSaving(false);
-			m_pCryptoSymbol->SetUpdateProfileDB(false);
+			m_pvDayLine = nullptr;
 		}
 
 		virtual void TearDown(void) override {
@@ -1342,15 +1253,11 @@ namespace StockAnalysisTest {
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
-
-			//m_pCryptoSymbol->SetDayLineNeedUpdate(true);
-			// m_pCryptoSymbol->SetDayLineNeedSaving(false);
-			m_pCryptoSymbol->SetUpdateProfileDB(false);
 		}
 
 	public:
 		long m_lIndex;
-		CCryptoSymbolPtr m_pCryptoSymbol;
+		CDayLineVectorPtr m_pvDayLine;
 		CWebDataPtr m_pWebData;
 	};
 
@@ -1360,74 +1267,46 @@ namespace StockAnalysisTest {
 			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
-		bool fSucceed = false;
 		CString strMessage;
 
-		fSucceed = gl_pWorldMarket->ParseFinnhubCryptoCandle(m_pWebData, m_pCryptoSymbol);
+		m_pvDayLine = gl_pWorldMarket->ParseFinnhubCryptoCandle(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsUpdateProfileDB());
-			strMessage += m_pCryptoSymbol->GetSymbol();
-			strMessage += _T("日线为无效JSon数据\n");
+			EXPECT_EQ(m_pvDayLine->size(), 0);
+			strMessage += _T("日线为无效JSon数据");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
-			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsUpdateProfileDB());
-			strMessage = _T("下载");
-			strMessage += m_pCryptoSymbol->GetSymbol();
-			strMessage += _T("日线返回值不为ok\n");
-			EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), strMessage);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), strMessage);
+			EXPECT_EQ(m_pvDayLine->size(), 0);
+			strMessage = _T("日线返回值不为ok");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 3: // s项报告 no data
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
 		case 4: //数据缺乏t项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
 		case 5:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 6:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 7:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 8:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 9:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_pCryptoSymbol->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pCryptoSymbol->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
+			EXPECT_EQ(m_pvDayLine->size(), 2);
 			break;
 		case 11: // 没有s项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pCryptoSymbol->IsUpdateProfileDB());
-			EXPECT_TRUE(m_pCryptoSymbol->IsNullStock());
+			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
 		default:
 			break;

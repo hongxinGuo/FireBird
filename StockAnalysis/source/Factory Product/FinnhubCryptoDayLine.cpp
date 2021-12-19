@@ -24,10 +24,23 @@ CString CFinnhubCryptoDayLine::CreatMessage(void) {
 
 bool CFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	long lTemp = 0;
 
+	CDayLineVectorPtr pvDayLine = nullptr;
 	CCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetCryptoSymbol(m_lIndex);
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoCandle(pWebData, pCryptoSymbol)) {
-		//TRACE("处理%s日线数据\n", m_vCryptoSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol().GetBuffer());
+	pvDayLine = ((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoCandle(pWebData);
+	if (pvDayLine->size() > 0) {
+		for (auto& pDayLine : *pvDayLine) {
+			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
+			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
+			lTemp = TransferToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
+			pDayLine->SetDate(lTemp);
+		}
+		pCryptoSymbol->UpdateDayLine(*pvDayLine);
+		pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
+		pCryptoSymbol->SetDayLineNeedUpdate(false);
+		pCryptoSymbol->SetDayLineNeedSaving(true);
+		pCryptoSymbol->SetUpdateProfileDB(true);
 	}
 	return true;
 }

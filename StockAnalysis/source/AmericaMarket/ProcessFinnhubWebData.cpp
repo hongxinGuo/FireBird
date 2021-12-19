@@ -30,9 +30,7 @@ bool CWorldMarket::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr
 	string s;
 
 	if (pWebData->GetBufferLength() < 20) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
-		return false; // 没有公司简介
+		return true; // 没有公司简介
 	}
 	if (!ConvertToJSON(pt, pWebData)) return false;
 	try {
@@ -93,13 +91,9 @@ bool CWorldMarket::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr
 		if (s.size() > 0) pStock->SetLogo(s.c_str());
 		s = pt.get<string>(_T("finnhubIndustry"));
 		if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
 		return true;
 	}
 	catch (ptree_error& e) {
-		pStock->SetProfileUpdateDate(gl_pWorldMarket->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile "), e);
 		return false; // 没有公司简介
 	}
@@ -203,8 +197,8 @@ CWorldStockVectorPtr CWorldMarket::ParseFinnhubStockSymbol(CWebDataPtr pWebData)
 	return pvStock;
 }
 
-bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr pStock) {
-	vector<CDayLinePtr> vDayLine;
+CDayLineVectorPtr CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
+	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 	ptree pt, pt2, pt3;
 	string s;
 	double dTemp = 0;
@@ -213,36 +207,26 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 	time_t tTemp = 0;
 	CDayLinePtr pDayLine = nullptr;
 	int i = 0;
-	CString str;
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = pStock->GetSymbol();
-		str += _T("日线为无效JSon数据\n");
-		gl_systemMessage.PushErrorMessage(str);
-		return false;
+		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
+		return pvDayLine;
 	}
 
 	try {
 		s = pt.get<string>(_T("s"));
 		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-			pStock->SetUpdateProfileDB(true);
-			return true;
+			return pvDayLine;
 		}
 		if (s.compare(_T("ok")) != 0) {
-			str = _T("下载");
-			str += pStock->GetSymbol();
-			str += _T("日线返回值不为ok\n");
-			TRACE("%s", str.GetBuffer());
-			gl_systemMessage.PushInformationMessage(str);
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			return false;
+			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
+			return pvDayLine;
 		}
 	}
 	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		pStock->SetUpdateProfileDB(true);
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
-		return false;
+		return pvDayLine;
 	}
 
 	try {
@@ -251,18 +235,13 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 			pt3 = it->second;
 			tTemp = pt3.get_value<time_t>();
 			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetExchange(pStock->GetExchangeCode());
-			pDayLine->SetStockSymbol(pStock->GetSymbol());
-			pDayLine->SetDisplaySymbol(pStock->GetTicker());
 			pDayLine->SetTime(tTemp);
-			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
-			pDayLine->SetDate(lTemp);
-			vDayLine.push_back(pDayLine);
+			pvDayLine->push_back(pDayLine);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
-		return false;
+		return pvDayLine;
 	}
 	try {
 		pt2 = pt.get_child(_T("c"));
@@ -270,7 +249,7 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("o"));
@@ -278,7 +257,7 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("h"));
@@ -286,7 +265,7 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("l"));
@@ -294,7 +273,7 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("v"));
@@ -302,19 +281,15 @@ bool CWorldMarket::ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr 
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			llTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
 	}
-	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
-	pStock->UpdateDayLine(vDayLine);
-	pStock->SetDayLineNeedUpdate(false);
-	pStock->SetDayLineNeedSaving(true);
-	pStock->SetUpdateProfileDB(true);
-	return true;
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	return pvDayLine;
 }
 
 bool CWorldMarket::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
@@ -400,8 +375,8 @@ CForexSymbolVectorPtr CWorldMarket::ParseFinnhubForexSymbol(CWebDataPtr pWebData
 	return pvForexSymbol;
 }
 
-bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
-	vector<CDayLinePtr> vDayLine;
+CDayLineVectorPtr CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData) {
+	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 	ptree pt, pt2, pt3;
 	string s;
 	double dTemp = 0;
@@ -414,33 +389,26 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str += pForexSymbol->GetSymbol();
-		str += _T("日线为无效JSon数据\n");
+		str = _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
-		return false;
+		return pvDayLine;
 	}
 
 	try {
 		s = pt.get<string>(_T("s"));
 		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-			pForexSymbol->SetIPOStatus(__STOCK_NULL__);
-			pForexSymbol->SetUpdateProfileDB(true);
-			return true;
+			return pvDayLine;
 		}
 		if (s.compare(_T("ok")) != 0) {
-			str = _T("下载");
-			str += pForexSymbol->GetSymbol();
-			str += _T("日线返回值不为ok\n");
+			str = _T("日线返回值不为ok\n");
 			TRACE("%s", str.GetBuffer());
 			gl_systemMessage.PushErrorMessage(str);
-			return false;
+			return pvDayLine;
 		}
 	}
 	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		pForexSymbol->SetIPOStatus(__STOCK_NULL__);
-		pForexSymbol->SetUpdateProfileDB(true);
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
-		return true;
+		return pvDayLine;
 	}
 	try {
 		pt2 = pt.get_child(_T("t"));
@@ -448,17 +416,15 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 			pt3 = it->second;
 			tTemp = pt3.get_value<time_t>();
 			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
-			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
 			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
-			vDayLine.push_back(pDayLine);
+			pvDayLine->push_back(pDayLine);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
-		return false;
+		return pvDayLine;
 	}
 	try {
 		pt2 = pt.get_child(_T("c"));
@@ -466,7 +432,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("h"));
@@ -474,7 +440,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("l"));
@@ -482,7 +448,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("o"));
@@ -490,7 +456,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("v"));
@@ -498,7 +464,7 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			llTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
 	}
@@ -506,13 +472,8 @@ bool CWorldMarket::ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
-	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
-	pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
-	pForexSymbol->UpdateDayLine(vDayLine);
-	pForexSymbol->SetDayLineNeedUpdate(false);
-	pForexSymbol->SetDayLineNeedSaving(true);
-	pForexSymbol->SetUpdateProfileDB(true);
-	return true;
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	return pvDayLine;
 }
 
 shared_ptr<vector<CString>> CWorldMarket::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
@@ -567,8 +528,8 @@ CCryptoSymbolVectorPtr CWorldMarket::ParseFinnhubCryptoSymbol(CWebDataPtr pWebDa
 	return pvCryptoSymbol;
 }
 
-bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol) {
-	vector<CDayLinePtr> vDayLine;
+CDayLineVectorPtr CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
+	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 	ptree pt, pt2, pt3;
 	string s;
 	double dTemp = 0;
@@ -577,39 +538,26 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 	time_t tTemp = 0;
 	CDayLinePtr pDayLine = nullptr;
 	int i = 0;
-	CString str;
 	string sError;
 
 	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = pCryptoSymbol->GetSymbol();
-		str += _T("日线为无效JSon数据\n");
-		TRACE("%s", str.GetBuffer());
-		gl_systemMessage.PushErrorMessage(str);
-		return false;
+		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
+		return pvDayLine;
 	}
 
 	try {
 		s = pt.get<string>(_T("s"));
 		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-			pCryptoSymbol->SetIPOStatus(__STOCK_NULL__);
-			pCryptoSymbol->SetUpdateProfileDB(true);
-			return true;
+			return pvDayLine;
 		}
 		if (s.compare(_T("ok")) != 0) {
-			str = _T("下载");
-			str += pCryptoSymbol->GetSymbol();
-			str += _T("日线返回值不为ok\n");
-			TRACE("%s", str.GetBuffer());
-			gl_systemMessage.PushInformationMessage(str);
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			return false;
+			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
+			return pvDayLine;
 		}
 	}
 	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		pCryptoSymbol->SetIPOStatus(__STOCK_NULL__);
-		pCryptoSymbol->SetUpdateProfileDB(true);
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
-		return true;
+		return pvDayLine;
 	}
 	try {
 		pt2 = pt.get_child(_T("t"));
@@ -617,17 +565,13 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 			pt3 = it->second;
 			tTemp = pt3.get_value<time_t>();
 			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
-			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
 			pDayLine->SetTime(tTemp);
-			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
-			pDayLine->SetDate(lTemp);
-			vDayLine.push_back(pDayLine);
+			pvDayLine->push_back(pDayLine);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
-		return false;
+		return pvDayLine;
 	}
 	try {
 		pt2 = pt.get_child(_T("c"));
@@ -635,7 +579,7 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("h"));
@@ -643,7 +587,7 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("l"));
@@ -651,7 +595,7 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("o"));
@@ -659,7 +603,7 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			dTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
 		pt2 = pt.get_child(_T("v"));
@@ -667,7 +611,7 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
 			llTemp = pt3.get_value<double>();
-			pDayLine = vDayLine.at(i++);
+			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
 	}
@@ -675,21 +619,17 @@ bool CWorldMarket::ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolP
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
-	pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
-	sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
-	pCryptoSymbol->UpdateDayLine(vDayLine);
-	pCryptoSymbol->SetDayLineNeedUpdate(false);
-	pCryptoSymbol->SetDayLineNeedSaving(true);
-	pCryptoSymbol->SetUpdateProfileDB(true);
-	return true;
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	return pvDayLine;
 }
 
-bool CWorldMarket::ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
+CCountryVectorPtr CWorldMarket::ParseFinnhubCountryList(CWebDataPtr pWebData) {
+	CCountryVectorPtr pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	ptree pt, pt2;
 	string s;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvCountry;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -707,15 +647,15 @@ bool CWorldMarket::ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountry
 			pCountry->m_strCurrency = s.c_str();
 			s = pt2.get<string>(_T("currencyCode"));
 			pCountry->m_strCurrencyCode = s.c_str();
-			vCountry.push_back(pCountry);
+			pvCountry->push_back(pCountry);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e);
-		return false;
+		return pvCountry;
 	}
-	sort(vCountry.begin(), vCountry.end(), CompareCountryList);
-	return true;
+	sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
+	return pvCountry;
 }
 
 CString CWorldMarket::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
@@ -745,7 +685,8 @@ CString CWorldMarket::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
 	return strPeer;
 }
 
-bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction) {
+CInsiderTransactionVectorPtr CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData) {
+	CInsiderTransactionVectorPtr pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
 	ptree pt, pt1, pt2;
 	string sError;
 	string s;
@@ -753,7 +694,7 @@ bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vec
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!ConvertToJSON(pt, pWebData)) return pvInsiderTransaction;
 
 	try {
 		pt1 = pt.get_child(_T("data"));
@@ -761,7 +702,7 @@ bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vec
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction "), e);
-		return false;
+		return pvInsiderTransaction;
 	}
 
 	try {
@@ -782,16 +723,16 @@ bool CWorldMarket::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vec
 			s = pt2.get<string>(_T("transactionCode"));
 			pInsiderTransaction->m_strTransactionCode = s.c_str();
 			pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
-			vInsiderTransaction.push_back(pInsiderTransaction);
+			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e);
-		return false;
+		return pvInsiderTransaction;
 	}
-	sort(vInsiderTransaction.begin(), vInsiderTransaction.end(), CompareInsiderTransaction);
+	sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(), CompareInsiderTransaction);
 
-	return true;
+	return pvInsiderTransaction;
 }
 
 CEconomicCalendarVectorPtr CWorldMarket::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData) {

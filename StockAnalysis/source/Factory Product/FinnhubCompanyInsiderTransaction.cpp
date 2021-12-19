@@ -27,15 +27,14 @@ CString CFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 bool CFinnhubCompanyInsiderTransaction::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	vector<CInsiderTransactionPtr> vInsiderTransaction;
+	CInsiderTransactionVectorPtr pvInsiderTransaction = nullptr;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	if (((CWorldMarket*)m_pMarket)->ParseFinnhubStockInsiderTransaction(pWebData, vInsiderTransaction)) {
-		pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
-		if (vInsiderTransaction.size() > 0) {
-			pStock->UpdateInsiderTransaction(vInsiderTransaction);
-			pStock->SetInsiderTransactionNeedSave(true);
-		}
+	pvInsiderTransaction = ((CWorldMarket*)m_pMarket)->ParseFinnhubStockInsiderTransaction(pWebData);
+	pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetUpdateProfileDB(true);
+	if (pvInsiderTransaction->size() > 0) {
+		pStock->UpdateInsiderTransaction(*pvInsiderTransaction);
+		pStock->SetInsiderTransactionNeedSave(true);
 	}
 
 	return true;

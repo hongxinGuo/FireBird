@@ -768,6 +768,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__COMPANY_PROFILE__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(0);
 		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyProfile>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
@@ -778,16 +779,16 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetProfileUpdateDate(19700101);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetProfileUpdated(false);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
+		pStock->SetProfileUpdateDate(19700101);
+		pStock->SetProfileUpdated(false);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfile(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfile(pWebData, pStock))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsProfileUpdated());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
+		EXPECT_EQ(pStock->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
+		EXPECT_TRUE(pStock->IsProfileUpdated());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 
 		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
@@ -795,6 +796,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__COMPANY_PROFILE_CONCISE__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
 		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyProfileConcise>();
 		p->SetIndex(1);
 		p->SetMarket(gl_pMockWorldMarket.get());
@@ -805,17 +807,17 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetProfileUpdateDate(19700101);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetProfileUpdated(false);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
+		pStock->SetProfileUpdateDate(19700101);
+		pStock->SetProfileUpdated(false);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfileConcise(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockProfileConcise(pWebData, pStock))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsProfileUpdated());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
+		EXPECT_EQ(pStock->GetProfileUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
+		EXPECT_TRUE(pStock->IsProfileUpdated());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 
 		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
@@ -856,6 +858,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__PEERS__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
 		CString strPeer = _T("abcdefg");
 		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyPeer>();
 		p->SetIndex(1);
@@ -867,20 +870,29 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetPeerUpdated(false);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
+		pStock->SetPeerUpdated(false);
+		pStock->SetUpdateProfileDB(false);
 
 		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockPeer(pWebData))
 			.WillOnce(Return(strPeer));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetPeerUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
-		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsPeerUpdated()) << "此标识在申请数据时就预先设置了";
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
+		EXPECT_EQ(pStock->GetPeerUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
+		EXPECT_FALSE(pStock->IsPeerUpdated()) << "此标识在申请数据时就预先设置了";
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__INSIDER_TRANSACTION__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
+		CInsiderTransactionVectorPtr pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
+		CInsiderTransactionPtr pInsider = make_shared<CInsiderTransaction>();
+		pInsider->m_strPersonName = _T("a");
+		pvInsiderTransaction->push_back(pInsider);
+		pInsider = make_shared<CInsiderTransaction>();
+		pInsider->m_strPersonName = _T("b");
+		pvInsiderTransaction->push_back(pInsider);
+
 		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyInsiderTransaction>();
 		p->SetIndex(1);
 		p->SetMarket(gl_pMockWorldMarket.get());
@@ -891,15 +903,15 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetInsiderTransactionNeedUpdate(true);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
+		pStock->SetInsiderTransactionNeedUpdate(true);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockInsiderTransaction(pWebData, _))
-			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockInsiderTransaction(pWebData))
+			.WillOnce(Return(pvInsiderTransaction));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetInsiderTransactionUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsInsiderTransactionNeedUpdate()) << "此标识在申请数据时就预先设置了";
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
+		EXPECT_EQ(pStock->GetInsiderTransactionUpdateDate(), gl_pMockWorldMarket->GetMarketDate());
+		EXPECT_TRUE(pStock->IsInsiderTransactionNeedUpdate()) << "此标识在申请数据时就预先设置了";
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
@@ -910,6 +922,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_QUOTE__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		pWebData->SetTime(gl_pMockWorldMarket->GetUTCTime());
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
 		CWebSourceDataProductPtr p = make_shared<CFinnhubStockPriceQuote>();
 		p->SetIndex(1);
 		p->SetMarket(gl_pMockWorldMarket.get());
@@ -920,23 +933,25 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetActive(false);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetIPOStatus(__STOCK_DELISTED__);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetUpdateProfileDB(false);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetTransactionTime(gl_pMockWorldMarket->GetUTCTime() - 3600 * 12 + 1);
+		pStock->SetActive(false);
+		pStock->SetIPOStatus(__STOCK_DELISTED__);
+		pStock->SetUpdateProfileDB(false);
+		pStock->SetTransactionTime(gl_pMockWorldMarket->GetUTCTime() - 3600 * 12 + 1);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockQuote(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockQuote(pWebData, pStock))
 			.WillOnce(Return(true));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetIPOStatus(), __STOCK_IPOED__);
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsActive());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(p->GetIndex())->IsUpdateProfileDB());
+		EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_TRUE(pStock->IsActive());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_CANDLES__1) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		CWebSourceDataProductPtr p = nullptr;
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
+		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 		vector<CDayLinePtr> vDayLine;
 
 		vDayLine.resize(0);
@@ -950,26 +965,37 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->UpdateDayLine(vDayLine);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->UpdateDayLine(vDayLine);
+		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->SetDayLineNeedSaving(false);
+		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
-			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData))
+			.WillOnce(Return(pvDayLine));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetIPOStatus(), __STOCK_NULL__);
+		EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_NOT_CHECKED__);
+		EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+		EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_CANDLES__2) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		CWebSourceDataProductPtr p = nullptr;
+		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
-		pDayLine->SetDate(gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetMarketDate(), 101)); // 早于100天之前
+		pDayLine->SetStockSymbol(pStock->GetSymbol());
+		long lPrevDay = gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetMarketDate(), 101);
+		pDayLine->SetDate(lPrevDay); // 早于100天之前
+		pDayLine->SetTime(TransferToTTime(lPrevDay, gl_pMockWorldMarket->GetMarketTimeZone(), 0));
 
 		vDayLine.resize(0);
 		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		p = make_shared<CFinnhubStockDayLine>();
 		p->SetMarket(gl_pMockWorldMarket.get());
 		p->SetIndex(1);
@@ -980,26 +1006,37 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->UpdateDayLine(vDayLine);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->UpdateDayLine(vDayLine);
+		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->SetDayLineNeedSaving(false);
+		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
-			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData))
+			.WillOnce(Return(pvDayLine));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetIPOStatus(), __STOCK_DELISTED__);
+		EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_NOT_CHECKED__);
+		EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_CANDLES__3) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		CWebSourceDataProductPtr p = nullptr;
+		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+		CWorldStockPtr pStock = gl_pMockWorldMarket->GetStock(1);
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetStockSymbol(gl_pMockWorldMarket->GetStock(1)->GetSymbol());
-		pDayLine->SetDate(gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetMarketDate(), 99)); // 晚于100天之前
+		pDayLine->SetStockSymbol(pStock->GetSymbol());
+		long lPrevDay = gl_pMockWorldMarket->GetPrevDay(gl_pMockWorldMarket->GetMarketDate(), 99);
+		pDayLine->SetDate(lPrevDay); // 晚于100天之前
+		pDayLine->SetTime(TransferToTTime(lPrevDay, gl_pMockWorldMarket->GetMarketTimeZone(), 0));
 
 		vDayLine.resize(0);
 		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		p = make_shared<CFinnhubStockDayLine>();
 		p->SetMarket(gl_pMockWorldMarket.get());
 		p->SetIndex(1);
@@ -1010,13 +1047,20 @@ namespace StockAnalysisTest {
 		if (gl_WebInquirer.GetFinnhubDataSize() == 0) {
 			gl_WebInquirer.PushFinnhubData(pWebData);
 		}
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->UpdateDayLine(vDayLine);
-		gl_pMockWorldMarket->GetStock(p->GetIndex())->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->UpdateDayLine(vDayLine);
+		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->SetDayLineNeedSaving(false);
+		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateProfileDB(false);
 
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData, gl_pMockWorldMarket->GetStock(p->GetIndex())))
-			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockWorldMarket, ParseFinnhubStockCandle(pWebData))
+			.WillOnce(Return(pvDayLine));
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
-		EXPECT_EQ(gl_pMockWorldMarket->GetStock(p->GetIndex())->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
+
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubInquiring());
 	}
 
@@ -1208,7 +1252,7 @@ namespace StockAnalysisTest {
 		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
-	TEST_F(CMockWorldMarketTest, TestParseTiingoWebDataReceived__STOCK_PRICE_CANDLES__) {
+	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_PRICE_CANDLES__) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();

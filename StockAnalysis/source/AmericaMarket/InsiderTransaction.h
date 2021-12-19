@@ -27,3 +27,4 @@ public:
 };
 
 typedef shared_ptr<CInsiderTransaction> CInsiderTransactionPtr;
+typedef shared_ptr<vector<CInsiderTransactionPtr>> CInsiderTransactionVectorPtr;

@@ -191,17 +191,17 @@ public:
 	virtual bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
 	virtual bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
 	virtual CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
-	virtual bool ParseFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	virtual CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
 	virtual bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
 	virtual  shared_ptr<vector<CString>> ParseFinnhubForexExchange(CWebDataPtr pWebData);
 	virtual CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
-	virtual bool ParseFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
+	virtual CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
 	virtual shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(CWebDataPtr pWebData);
 	virtual CCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(CWebDataPtr pWebData);
-	virtual bool ParseFinnhubCryptoCandle(CWebDataPtr pWebData, CCryptoSymbolPtr& pCryptoSymbol);
-	virtual bool ParseFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
+	virtual CDayLineVectorPtr ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
+	virtual CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
 	virtual CString ParseFinnhubStockPeer(CWebDataPtr pWebData);
-	virtual bool ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData, vector<CInsiderTransactionPtr>& vInsiderTransaction);
+	virtual CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
 	virtual CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
 	virtual CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
 

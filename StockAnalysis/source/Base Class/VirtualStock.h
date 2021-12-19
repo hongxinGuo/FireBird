@@ -8,6 +8,9 @@ using namespace std;
 #include<atomic>
 #include<vector>
 
+class CVirtualStock;
+typedef shared_ptr<CVirtualStock> CVirtualStockPtr;
+
 class CVirtualStock : public CObject {
 public:
 	CVirtualStock();
@@ -21,6 +24,8 @@ public:
 	virtual void SaveSymbol(CVirtualSetStockSymbol& setStockSymbol);
 
 public:
+	void UpdateRealTimeData(CVirtualStockPtr pStock);
+
 	CString GetDescription(void) const { return m_strDescription; }
 	void SetDescription(CString strDescription) { m_strDescription = strDescription; }
 	CString GetExchangeCode(void) const { return m_strExchangeCode; }
@@ -123,5 +128,3 @@ protected:
 	atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
 	atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 };
-
-typedef shared_ptr<CVirtualStock> CVirtualStockPtr;

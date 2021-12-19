@@ -18,12 +18,12 @@ CString CFinnhubEconomicCountryList::CreatMessage(void) {
 }
 
 bool CFinnhubEconomicCountryList::ProcessWebData(CWebDataPtr pWebData) {
-	vector<CCountryPtr> vCountry;
+	CCountryVectorPtr pvCountry;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	((CWorldMarket*)m_pMarket)->ParseFinnhubCountryList(pWebData, vCountry);
-	for (auto& pCountry : vCountry) {
+	pvCountry = ((CWorldMarket*)m_pMarket)->ParseFinnhubCountryList(pWebData);
+	for (auto& pCountry : *pvCountry) {
 		if (!((CWorldMarket*)m_pMarket)->IsCountry(pCountry)) {
 			((CWorldMarket*)m_pMarket)->AddCountry(pCountry);
 		}
