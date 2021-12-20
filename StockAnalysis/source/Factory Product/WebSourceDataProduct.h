@@ -6,6 +6,24 @@ using namespace std;
 #include"VirtualMarket.h"
 #include"WebData.h"
 
+// 此结构只用于测试中
+struct FinnhubWebData {
+	FinnhubWebData(long lIndex, CString strSymbol, CString strData) {
+		m_lIndex = lIndex;
+		m_strSymbol = strSymbol;
+		m_pData = make_shared<CWebData>();
+		m_pData->__TEST_SetBuffer__(strData);
+	}
+
+	~FinnhubWebData() {
+	}
+
+public:
+	long m_lIndex;
+	CString m_strSymbol;
+	CWebDataPtr m_pData;
+};
+
 class CWebSourceDataProduct : public CObject {
 public:
 	DECLARE_DYNCREATE(CWebSourceDataProduct)

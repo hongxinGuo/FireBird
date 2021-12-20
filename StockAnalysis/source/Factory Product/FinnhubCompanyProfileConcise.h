@@ -10,6 +10,7 @@ public:
 
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 
 typedef shared_ptr<CFinnhubCompanyProfileConcise> CFinnhubCompanyProfileConcisePtr;

@@ -1115,6 +1115,11 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockProfileUpdated()) << "股票都查询完了";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub股票简介更新完毕"));
+
+		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+			pStock = gl_pWorldMarket->GetStock(i);
+			pStock->SetProfileUpdated(false);
+		}
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubDayLine) {
@@ -1575,6 +1580,12 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubPeerUpdated());
+
+		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+			pStock = gl_pWorldMarket->GetStock(i);
+			pStock->SetPeerUpdated(false);
+			pStock->SetUpdateProfileDB(false);
+		}
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
@@ -1599,6 +1610,11 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockProfileUpdated());
+
+		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+			pStock = gl_pWorldMarket->GetStock(i);
+			pStock->SetUpdateProfileDB(false);
+		}
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoIndustry) {

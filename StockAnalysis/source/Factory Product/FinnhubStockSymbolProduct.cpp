@@ -27,7 +27,7 @@ bool CFinnhubStockSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvStock = ((CWorldMarket*)m_pMarket)->ParseFinnhubStockSymbol(pWebData);
+	pvStock = ParseFinnhubStockSymbol(pWebData);
 	// 加上交易所代码。
 	for (auto& pStock3 : *pvStock) {
 		pStock3->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetExchangeCode(m_lIndex));
@@ -41,4 +41,40 @@ bool CFinnhubStockSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	}
 
 	return true;
+}
+
+CWorldStockVectorPtr CFinnhubStockSymbolProduct::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {
+	CWorldStockVectorPtr pvStock = make_shared<vector<CWorldStockPtr>>();
+	CWorldStockPtr pStock = nullptr;
+	ptree pt, pt2;
+	string s, sError;
+
+	if (!ConvertToJSON(pt, pWebData)) return pvStock;
+
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pStock = make_shared<CWorldStock>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("currency"));
+			if (s.size() > 0) pStock->SetCurrency(s.c_str());
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pStock->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pStock->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("figi"));
+			if (s.size() > 0) pStock->SetFigi(s.c_str());
+			s = pt2.get<string>(_T("mic"));
+			if (s.size() > 0) pStock->SetMic(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pStock->SetSymbol(s.c_str());
+			s = pt2.get<string>(_T("type"));
+			if (s.size() > 0) pStock->SetType(s.c_str());
+			pvStock->push_back(pStock);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
+		return pvStock;
+	}
+	return pvStock;
 }

@@ -10,6 +10,7 @@ public:
 
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
 };
 
 typedef shared_ptr<CFinnhubStockSymbolProduct> CFinnhubCompanySymbolProductPtr;

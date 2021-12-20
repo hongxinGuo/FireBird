@@ -8,6 +8,8 @@
 
 IMPLEMENT_DYNCREATE(CFinnhubStockDayLine, CWebSourceDataProduct)
 
+bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
+
 CFinnhubStockDayLine::CFinnhubStockDayLine() {
 	m_strClassName = _T("Finnhub company profile concise");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
@@ -31,7 +33,7 @@ bool CFinnhubStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
 	long lTemp = 0;
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	pvDayLine = ((CWorldMarket*)m_pMarket)->ParseFinnhubStockCandle(pWebData);
+	pvDayLine = ParseFinnhubStockCandle(pWebData);
 
 	for (auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
@@ -48,8 +50,104 @@ bool CFinnhubStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
 		if (!IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetMarketDate(), ((CWorldMarket*)m_pMarket)->GetMarketDate(), 100)) {
 			pStock->SetIPOStatus(__STOCK_IPOED__);
 		}
+		return true;
 	}
 	//TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
 
-	return true;
+	return false;
+}
+
+CDayLineVectorPtr CFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
+	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+	ptree pt, pt2, pt3;
+	string s;
+	double dTemp = 0;
+	long lTemp = 0;
+	INT64 llTemp = 0;
+	time_t tTemp = 0;
+	CDayLinePtr pDayLine = nullptr;
+	int i = 0;
+	string sError;
+
+	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
+		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
+		return pvDayLine;
+	}
+
+	try {
+		s = pt.get<string>(_T("s"));
+		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+			return pvDayLine;
+		}
+		if (s.compare(_T("ok")) != 0) {
+			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
+			return pvDayLine;
+		}
+	}
+	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+		return pvDayLine;
+	}
+
+	try {
+		pt2 = pt.get_child(_T("t"));
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			tTemp = pt3.get_value<time_t>();
+			pDayLine = make_shared<CDayLine>();
+			pDayLine->SetTime(tTemp);
+			pvDayLine->push_back(pDayLine);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+		return pvDayLine;
+	}
+	try {
+		pt2 = pt.get_child(_T("c"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetClose(dTemp * 1000);
+		}
+		pt2 = pt.get_child(_T("o"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetOpen(dTemp * 1000);
+		}
+		pt2 = pt.get_child(_T("h"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetHigh(dTemp * 1000);
+		}
+		pt2 = pt.get_child(_T("l"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			dTemp = pt3.get_value<double>();
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetLow(dTemp * 1000);
+		}
+		pt2 = pt.get_child(_T("v"));
+		i = 0;
+		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+			pt3 = it->second;
+			llTemp = pt3.get_value<double>();
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetVolume(llTemp);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+	}
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	return pvDayLine;
 }

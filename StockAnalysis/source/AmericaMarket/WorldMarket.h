@@ -188,12 +188,6 @@ public:
 	virtual bool TaskUpdateNaicsIndustry(void);
 
 	// Finnhub数据处理函数
-	virtual bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	virtual bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	virtual CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
-	virtual CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
-	virtual bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	virtual  shared_ptr<vector<CString>> ParseFinnhubForexExchange(CWebDataPtr pWebData);
 	virtual CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
 	virtual CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
 	virtual shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(CWebDataPtr pWebData);

@@ -21,7 +21,7 @@ bool CFinnhubForexExchange::ProcessWebData(CWebDataPtr pWebData) {
 
 	shared_ptr<vector<CString>> pvForexExchange = nullptr;
 
-	pvForexExchange = ((CWorldMarket*)m_pMarket)->ParseFinnhubForexExchange(pWebData);
+	pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
 		if (!((CWorldMarket*)m_pMarket)->IsForexExchange(pvForexExchange->at(i))) {
 			((CWorldMarket*)m_pMarket)->AddForexExchange(pvForexExchange->at(i));
@@ -30,4 +30,27 @@ bool CFinnhubForexExchange::ProcessWebData(CWebDataPtr pWebData) {
 	((CWorldMarket*)m_pMarket)->SetFinnhubForexExchangeUpdated(true);
 
 	return true;
+}
+
+shared_ptr<vector<CString>> CFinnhubForexExchange::ParseFinnhubForexExchange(CWebDataPtr pWebData) {
+	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
+	ptree pt, pt2;
+	string s;
+	CString str = _T("");
+	string sError;
+
+	if (!ConvertToJSON(pt, pWebData)) return pvExchange;
+
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pt2 = it->second;
+			s = pt2.get_value<string>();
+			str = s.c_str();
+			pvExchange->push_back(str);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
+	}
+	return pvExchange;
 }

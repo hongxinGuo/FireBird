@@ -35,6 +35,11 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
+			EXPECT_FALSE(pStock->IsProfileUpdated());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 		}
 	}
 

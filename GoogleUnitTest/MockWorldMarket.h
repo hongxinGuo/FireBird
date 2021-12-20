@@ -44,12 +44,6 @@ namespace testing {
 		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
 		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
 
-		MOCK_METHOD(bool, ParseFinnhubStockProfile, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockProfileConcise, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
-		MOCK_METHOD(CWorldStockVectorPtr, ParseFinnhubStockSymbol, (CWebDataPtr pWebData), (override));
-		MOCK_METHOD(CDayLineVectorPtr, ParseFinnhubStockCandle, (CWebDataPtr pWebData), (override));
-		MOCK_METHOD(bool, ParseFinnhubStockQuote, (CWebDataPtr pWebData, CWorldStockPtr pStock), (override));
-		MOCK_METHOD(shared_ptr<vector<CString>>, ParseFinnhubForexExchange, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(CForexSymbolVectorPtr, ParseFinnhubForexSymbol, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(CDayLineVectorPtr, ParseFinnhubForexCandle, (CWebDataPtr pWebData), (override));
 		MOCK_METHOD(shared_ptr<vector<CString>>, ParseFinnhubCryptoExchange, (CWebDataPtr pWebData), (override));
