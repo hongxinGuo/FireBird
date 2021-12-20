@@ -57,4 +57,65 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubCompanyPeerTest, TestProcessWebData) {
 		// 由MockWorldMarketTest负责测试
 	}
+
+	// 不足三个字符
+	FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("[]"));
+	// 格式不对(缺开始的‘[’），无法顺利Parser
+	FinnhubWebData finnhubWebData103(3, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	// 格式不对
+	FinnhubWebData finnhubWebData104(4, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	// 正确的数据,但超过200个字符
+	FinnhubWebData finnhubWebData105(5, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]"));
+	// 正确的数据
+	FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+
+	class ParseFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*>
+	{
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_strPeer = _T("");
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CString m_strPeer;
+		CWebDataPtr m_pWebData;
+		CFinnhubCompanyPeer m_finnhubCompanyPeer;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
+		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+			&finnhubWebData110));
+
+	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
+		m_strPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // 不足三个字符
+			EXPECT_STREQ(m_strPeer, _T(""));
+			break;
+		case 3: // 格式不对
+			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
+			break;
+		case 4: // 第二个数据缺Code2
+			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
+			break;
+		case 5: // 正确的数据，但超过200个字符
+			EXPECT_EQ(m_strPeer.GetLength(), 200) << "多余200个字符时截断";
+			break;
+		case 10:
+			EXPECT_STREQ(m_strPeer, _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			break;
+		default:
+			break;
+		}
+	}
 }

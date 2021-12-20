@@ -23,7 +23,7 @@ bool CFinnhubCryptoSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvCryptoSymbol = ((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoSymbol(pWebData);
+	pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (auto& pSymbol : *pvCryptoSymbol) {
 		if (!((CWorldMarket*)m_pMarket)->IsCryptoSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
@@ -32,4 +32,32 @@ bool CFinnhubCryptoSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	}
 
 	return true;
+}
+
+CCryptoSymbolVectorPtr CFinnhubCryptoSymbolProduct::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
+	CCryptoSymbolVectorPtr pvCryptoSymbol = make_shared<vector<CCryptoSymbolPtr>>();
+	CCryptoSymbolPtr pSymbol = nullptr;
+	ptree pt, pt2;
+	string s;
+	string sError;
+
+	if (!ConvertToJSON(pt, pWebData)) return pvCryptoSymbol;
+
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pSymbol = make_shared<CFinnhubCryptoSymbol>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pSymbol->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pSymbol->SetSymbol(s.c_str());
+			pvCryptoSymbol->push_back(pSymbol);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e);
+	}
+	return pvCryptoSymbol;
 }

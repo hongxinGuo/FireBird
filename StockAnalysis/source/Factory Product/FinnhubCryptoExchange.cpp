@@ -21,7 +21,7 @@ bool CFinnhubCryptoExchange::ProcessWebData(CWebDataPtr pWebData) {
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvCryptoExchange = ((CWorldMarket*)m_pMarket)->ParseFinnhubCryptoExchange(pWebData);
+	pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
 		if (!((CWorldMarket*)m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
 			((CWorldMarket*)m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
@@ -30,4 +30,28 @@ bool CFinnhubCryptoExchange::ProcessWebData(CWebDataPtr pWebData) {
 	((CWorldMarket*)m_pMarket)->SetFinnhubCryptoExchangeUpdated(true);
 
 	return true;
+}
+
+shared_ptr<vector<CString>> CFinnhubCryptoExchange::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
+	ptree pt, pt2;
+	string s;
+	CString str = _T("");
+	string sError;
+	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
+
+	if (!ConvertToJSON(pt, pWebData)) return pvExchange;
+
+	try {
+		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+			pt2 = it->second;
+			s = pt2.get_value<string>();
+			str = s.c_str();
+			pvExchange->push_back(str);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e);
+		return pvExchange;
+	}
+	return pvExchange;
 }

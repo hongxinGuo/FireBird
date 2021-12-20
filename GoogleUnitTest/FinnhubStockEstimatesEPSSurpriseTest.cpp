@@ -53,4 +53,86 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestProcessWebData) {
 		// 由MockWorldMarketTest负责测试
 	}
+
+	// 格式不对(缺开始的‘[’），无法顺利Parser
+	FinnhubWebData finnhubWebData122(2, _T("AAPL"), _T("{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+	// 第一个数据缺乏actual
+	FinnhubWebData finnhubWebData123(3, _T("AAPL"), _T("[{\"Missing\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+	// 第二个数据缺乏actual
+	FinnhubWebData finnhubWebData124(4, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"Missing\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+	// 第三个数据缺乏actual
+	FinnhubWebData finnhubWebData125(5, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"Missing\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+	// 正确的数据
+	FinnhubWebData finnhubWebData130(10, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+
+	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*>
+	{
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			EXPECT_TRUE(m_pStock != nullptr);
+			m_pWebData = pData->m_pData;
+			m_pvEPSSurprise = nullptr;
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			m_pStock->SetProfileUpdated(false);
+			m_pStock->SetUpdateProfileDB(false);
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWorldStockPtr m_pStock;
+		CWebDataPtr m_pWebData;
+		CEPSSurpriseVectorPtr m_pvEPSSurprise;
+		CFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
+		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+			&finnhubWebData125, &finnhubWebData130));
+
+	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
+		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // 格式不对
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
+			break;
+		case 3: //
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
+			break;
+		case 4: // 第二个数据缺缺actual
+			EXPECT_EQ(m_pvEPSSurprise->size(), 1);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			break;
+		case 5: // 第三个数据缺CodeNo
+			EXPECT_EQ(m_pvEPSSurprise->size(), 2);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			break;
+		case 10:
+			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 0.6375);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 0.5765856);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20200331);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
+			break;
+		default:
+			break;
+		}
+	}
 }

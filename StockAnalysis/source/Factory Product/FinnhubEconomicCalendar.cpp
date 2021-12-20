@@ -23,9 +23,44 @@ bool CFinnhubEconomicCalendar::ProcessWebData(CWebDataPtr pWebData) {
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvEconomicCalendar = ((CWorldMarket*)m_pMarket)->ParseFinnhubEconomicCalendar(pWebData);
+	pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	((CWorldMarket*)m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
 	((CWorldMarket*)m_pMarket)->SetFinnhubEconomicCalendarUpdated(true);
 
 	return true;
+}
+
+CEconomicCalendarVectorPtr CFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData) {
+	CEconomicCalendarVectorPtr pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
+	CEconomicCalendarPtr pEconomicCalendar = nullptr;
+	ptree pt, pt1, pt2;
+	string s;
+
+	if (!ConvertToJSON(pt, pWebData)) return pvEconomicCalendar;
+
+	try {
+		pt1 = pt.get_child(_T("economicCalendar"));
+		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+			pEconomicCalendar = make_shared<CEconomicCalendar>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("country"));
+			if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
+			s = pt2.get<string>(_T("event"));
+			pEconomicCalendar->m_strEvent = s.c_str();
+			s = pt2.get<string>(_T("impact"));
+			pEconomicCalendar->m_strImpact = s.c_str();
+			pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
+			pEconomicCalendar->m_dActual = pt2.get<double>(_T("actual"));
+			pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
+			s = pt2.get<string>(_T("time"));
+			pEconomicCalendar->m_strTime = s.c_str();
+			s = pt2.get<string>(_T("unit"));
+			pEconomicCalendar->m_strUnit = s.c_str();
+			pvEconomicCalendar->push_back(pEconomicCalendar);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
+	}
+	return pvEconomicCalendar;
 }

@@ -187,18 +187,6 @@ public:
 	virtual bool TaskUpdateSICIndustry(void);
 	virtual bool TaskUpdateNaicsIndustry(void);
 
-	// Finnhub数据处理函数
-	virtual CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
-	virtual CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
-	virtual shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(CWebDataPtr pWebData);
-	virtual CCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(CWebDataPtr pWebData);
-	virtual CDayLineVectorPtr ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
-	virtual CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
-	virtual CString ParseFinnhubStockPeer(CWebDataPtr pWebData);
-	virtual CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
-	virtual CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
-	virtual CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
-
 	// Tiingo数据处理函数
 	virtual CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
 	virtual CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);

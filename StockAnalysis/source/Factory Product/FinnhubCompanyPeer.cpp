@@ -28,7 +28,7 @@ bool CFinnhubCompanyPeer::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strPeer = ((CWorldMarket*)m_pMarket)->ParseFinnhubStockPeer(pWebData);
+	CString strPeer = ParseFinnhubStockPeer(pWebData);
 	if (strPeer.GetLength() > 0) {
 		pStock->SetPeer(strPeer);
 		pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
@@ -36,4 +36,31 @@ bool CFinnhubCompanyPeer::ProcessWebData(CWebDataPtr pWebData) {
 	}
 
 	return true;
+}
+
+CString CFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
+	CString strPeer = _T("");
+	char buffer[1000]{};
+	int i = 0;
+	ptree pt;
+	string sError;
+
+	if (pWebData->GetBufferLength() <= 3) {
+		return strPeer; // 没有有效的同业竞争对手
+	}
+	if (!ConvertToJSON(pt, pWebData)) return strPeer;
+
+	ASSERT(pWebData->GetBufferLength() < 1000);
+	for (i = 0; i < pWebData->GetBufferLength(); i++) {
+		buffer[i] = pWebData->GetData(i);
+	}
+	if (i > 200) {
+		buffer[200] = 0x000;
+	}
+	else {
+		buffer[pWebData->GetBufferLength()] = 0x000;
+	}
+	strPeer = buffer;
+
+	return strPeer;
 }

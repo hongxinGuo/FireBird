@@ -10,6 +10,7 @@ public:
 
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
 };
 
 typedef shared_ptr<CFinnhubCompanyInsiderTransaction> CFinnhubCompanyInsiderTransactionPtr;
