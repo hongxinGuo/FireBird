@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubForexExchange.h"
+#include"ProductFinnhubForexExchange.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubForexExchangeTest : public ::testing::Test
-	{
+	class CFinnhubForexExchangeTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubForexExchange countryList;
+		CProductFinnhubForexExchange countryList;
 	};
 
 	TEST_F(CFinnhubForexExchangeTest, TestInitialize) {
@@ -59,8 +58,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
-	class ParseFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -78,7 +76,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		shared_ptr<vector<CString>>  m_pvExchange;
-		CFinnhubForexExchange m_finnhubForexExchange;
+		CProductFinnhubForexExchange m_finnhubForexExchange;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,

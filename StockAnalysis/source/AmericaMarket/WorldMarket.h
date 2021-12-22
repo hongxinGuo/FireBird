@@ -24,9 +24,9 @@
 #include"TiingoFactory.h"
 #include"QuandlFactory.h"
 
-#include"WebSourceDataProduct.h"
-#include"TiingoStockSymbolProduct.h"
-#include"TiingoStockDayLine.h"
+#include"ProductWebData.h"
+#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStockDayLine.h"
 
 #include"WebSocketData.h"
 #include"WebSocket.h"
@@ -145,9 +145,6 @@ public:
 	void ResetQuandl(void);
 	void ResetTiingo(void);
 
-	void InitialFinnhubInquiryStr(void);
-	void InitialTiingoInquiryStr(void);
-
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);
 	bool ProcessFinnhubWebDataReceived(void);
@@ -211,7 +208,7 @@ public:
 	virtual bool CreatingThreadUpdateStockProfileDB(void);
 	virtual bool CreatingThreadUpdateForexExchangeDB(void);
 	virtual bool CreatingThreadUpdateForexSymbolDB(void);
-	virtual bool CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
+	virtual bool CreatingThreadUpdateForexDayLineDB(CProductFinnhubForexSymbol* pSymbol);
 	virtual bool CreatingThreadUpdateCryptoExchangeDB(void);
 	virtual bool CreatingThreadUpdateCryptoSymbolDB(void);
 	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
@@ -465,12 +462,10 @@ protected:
 	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
 	CWebSourceDataProductPtr m_pCurrentQuandlProduct;
 
-	vector<CString> m_vFinnhubInquiringStr;
 	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qFinnhubProduct; // 网络查询命令队列
 	bool m_fFinnhubInquiring;
 	atomic_bool m_fFinnhubDataReceived;
 
-	vector<CString> m_vTiingoInquiringStr;
 	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qTiingoProduct; // 网络查询命令队列
 	bool m_fTiingoInquiring;
 	atomic_bool m_fTiingoDataReceived;

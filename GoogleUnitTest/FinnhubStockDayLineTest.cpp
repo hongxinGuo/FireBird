@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubStockDayLine.h"
+#include"ProductFinnhubStockDayLine.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubStockDayLineTest : public ::testing::Test
-	{
+	class CFinnhubStockDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubStockDayLine stockDayLine;
+		CProductFinnhubStockDayLine stockDayLine;
 	};
 
 	TEST_F(CFinnhubStockDayLineTest, TestInitialize) {
@@ -49,7 +48,7 @@ namespace StockAnalysisTest {
 		stockDayLine.SetMarket(gl_pWorldMarket.get());
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreatMessage(),
-			stockDayLine.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+								 stockDayLine.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
@@ -78,8 +77,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData40(10, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
 
-	class ProcessFinnhubStockCandleTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ProcessFinnhubStockCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -109,13 +107,13 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		CDayLineVectorPtr pvDayLine;
 		CWebDataPtr m_pWebData;
-		CFinnhubStockDayLine m_finnhubStockDayLine;
+		CProductFinnhubStockDayLine m_finnhubStockDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
-		ProcessFinnhubStockCandleTest,
-		testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
-			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
+													 ProcessFinnhubStockCandleTest,
+													 testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
+														 &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
 		CString strMessage;

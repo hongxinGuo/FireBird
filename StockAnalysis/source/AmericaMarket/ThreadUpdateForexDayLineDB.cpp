@@ -14,17 +14,17 @@
 
 #include"FinnhubForexSymbol.h"
 
-UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
-  CString str;
+UINT ThreadUpdateForexDayLineDB(not_null<CProductFinnhubForexSymbol*> pSymbol) {
+	CString str;
 
-  gl_ThreadStatus.IncreaseSavingThread();
-  gl_UpdateWorldMarketDB.Wait();
-  pSymbol->UpdateDayLineDB();
-  pSymbol->UnloadDayLine();
-  str = pSymbol->GetSymbol() + _T("日线资料存储完成");
-  gl_systemMessage.PushDayLineInfoMessage(str);
-  gl_UpdateWorldMarketDB.Signal();
-  gl_ThreadStatus.DecreaseSavingThread();
+	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateWorldMarketDB.Wait();
+	pSymbol->UpdateDayLineDB();
+	pSymbol->UnloadDayLine();
+	str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+	gl_systemMessage.PushDayLineInfoMessage(str);
+	gl_UpdateWorldMarketDB.Signal();
+	gl_ThreadStatus.DecreaseSavingThread();
 
-  return 38;
+	return 38;
 }

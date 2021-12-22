@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCompanyInsiderTransaction.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanyInsiderTransactionTest : public ::testing::Test
-	{
+	class CFinnhubCompanyInsiderTransactionTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCompanyInsiderTransaction companyInsiderTransaction;
+		CProductFinnhubCompanyInsiderTransaction companyInsiderTransaction;
 	};
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestInitialize) {
@@ -60,8 +59,7 @@ namespace StockAnalysisTest {
 
 	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 
-	class ParseFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -85,11 +83,11 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CInsiderTransactionVectorPtr m_pvInsiderTransaction;
-		CFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
+		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
-		testing::Values(&finnhubWebData132));
+													 testing::Values(&finnhubWebData132));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);

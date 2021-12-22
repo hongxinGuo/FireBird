@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubEconomicCalendar.h"
+#include"ProductFinnhubEconomicCalendar.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubEconomicCalendarTest : public ::testing::Test
-	{
+	class CFinnhubEconomicCalendarTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubEconomicCalendar economicCalendar;
+		CProductFinnhubEconomicCalendar economicCalendar;
 	};
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
@@ -65,8 +64,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData120(10, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
 
-	class ParseFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -85,12 +83,12 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CEconomicCalendarVectorPtr m_pvEconomicCalendar;
-		CFinnhubEconomicCalendar m_finnhubEconomicCalendar;
+		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
-		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-			&finnhubWebData115, &finnhubWebData120));
+													 testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+														 &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);

@@ -4,17 +4,17 @@
 #include"WorldMarket.h"
 #include"WorldStock.h"
 
-#include "FinnhubStockPriceQuote.h"
+#include "ProductFinnhubStockPriceQuote.h"
 
-IMPLEMENT_DYNCREATE(CFinnhubStockPriceQuote, CWebSourceDataProduct)
+IMPLEMENT_DYNCREATE(CProductFinnhubStockPriceQuote, CProductWebSourceData)
 
-CFinnhubStockPriceQuote::CFinnhubStockPriceQuote() {
+CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/quote?symbol=");
 	m_lIndex = -1;
 }
 
-CString CFinnhubStockPriceQuote::CreatMessage(void) {
+CString CProductFinnhubStockPriceQuote::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
@@ -23,7 +23,7 @@ CString CFinnhubStockPriceQuote::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CFinnhubStockPriceQuote::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubStockPriceQuote::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
@@ -40,7 +40,7 @@ bool CFinnhubStockPriceQuote::ProcessWebData(CWebDataPtr pWebData) {
 	else return false;
 }
 
-bool CFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
 	ptree pt;
 	double dTemp = 0;

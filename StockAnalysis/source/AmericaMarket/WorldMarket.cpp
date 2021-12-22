@@ -4,10 +4,10 @@
 #include"thread.h"
 #include"Callablefunction.h"
 
-#include"FinnhubStockPriceQuote.h"
-#include"FinnhubStockEstimatesEPSSurprise.h"
-#include"FinnhubForexSymbol.h"
-#include"FinnhubCryptoSymbol.h"
+#include"ProductFinnhubStockPriceQuote.h"
+#include"ProductFinnhubStockEstimatesEPSSurprise.h"
+#include"ProductFinnhubForexSymbol.h"
+#include"ProductFinnhubCryptoSymbol.h"
 
 #include"WebInquirer.h"
 #include"EPSSurprise.h"
@@ -58,54 +58,9 @@ CWorldMarket::CWorldMarket() {
 	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
 	CalculateTime();
 
-	InitialFinnhubInquiryStr();
-	InitialTiingoInquiryStr();
-
 	m_FinnhubWebSocket.SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
 
 	Reset();
-}
-
-void CWorldMarket::InitialFinnhubInquiryStr(void) {
-	m_vFinnhubInquiringStr.resize(__ECONOMIC_COUNTRY_LIST__ + 300);
-
-	// Finnhub前缀字符串在此预设之
-	m_vFinnhubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。
-	m_vFinnhubInquiringStr.at(__COMPANY_PROFILE_CONCISE__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
-	m_vFinnhubInquiringStr.at(__STOCK_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange="); // 可用代码集
-	m_vFinnhubInquiringStr.at(__MARKET_NEWS__) = _T("https://finnhub.io/api/v1/news?category=general");
-	m_vFinnhubInquiringStr.at(__COMPANY_NEWS__) = _T("https://finnhub.io/api/v1/company-news?symbol=");
-	m_vFinnhubInquiringStr.at(__NEWS_SENTIMENT__) = _T("https://finnhub.io/api/v1/news-sentiment?symbol=");
-	m_vFinnhubInquiringStr.at(__PEERS__) = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
-	m_vFinnhubInquiringStr.at(__BASIC_FINANCIALS__) = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
-	m_vFinnhubInquiringStr.at(__INSIDER_TRANSACTION__) = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
-	m_vFinnhubInquiringStr.at(__SEC_FILINGS__) = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
-
-	m_vFinnhubInquiringStr.at(__STOCK_ESTIMATES_EPS_SURPRISE__) = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
-	m_vFinnhubInquiringStr.at(__STOCK_ESTIMATES_EARNING_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/earnings?");
-
-	m_vFinnhubInquiringStr.at(__STOCK_PRICE_QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
-	m_vFinnhubInquiringStr.at(__STOCK_PRICE_CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
-
-	m_vFinnhubInquiringStr.at(__FOREX_EXCHANGE__) = _T("https://finnhub.io/api/v1/forex/exchange?");
-	m_vFinnhubInquiringStr.at(__FOREX_SYMBOLS__) = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
-	m_vFinnhubInquiringStr.at(__FOREX_CANDLES__) = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
-	m_vFinnhubInquiringStr.at(__FOREX_ALL_RATES__) = _T("https://finnhub.io/api/v1/forex/rates?base=USD");
-
-	m_vFinnhubInquiringStr.at(__CRYPTO_EXCHANGE__) = _T("https://finnhub.io/api/v1/crypto/exchange?");
-	m_vFinnhubInquiringStr.at(__CRYPTO_SYMBOLS__) = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
-	m_vFinnhubInquiringStr.at(__CRYPTO_CANDLES__) = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
-
-	m_vFinnhubInquiringStr.at(__ECONOMIC_COUNTRY_LIST__) = _T("https://finnhub.io/api/v1/country?");
-	m_vFinnhubInquiringStr.at(__ECONOMIC_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/economic?");
-}
-
-void CWorldMarket::InitialTiingoInquiryStr(void) {
-	m_vTiingoInquiringStr.resize(__ECONOMIC_COUNTRY_LIST__ + 300);
-
-	m_vTiingoInquiringStr.at(__COMPANY_PROFILE__) = _T("https://api.tiingo.com/tiingo/fundamentals/");
-	m_vTiingoInquiringStr.at(__STOCK_SYMBOLS__) = _T("https://api.tiingo.com/tiingo/fundamentals/meta?"); // 可用代码集
-	m_vTiingoInquiringStr.at(__STOCK_PRICE_CANDLES__) = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
 CWorldMarket::~CWorldMarket() {
@@ -765,7 +720,7 @@ bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
 	if (!IsFinnhubInquiring()) {
 		m_lCurrentRTDataQuotePos++;
 		if (m_lCurrentRTDataQuotePos == m_vWorldStock.size()) m_lCurrentRTDataQuotePos = 0;
-		p = make_shared<CFinnhubStockPriceQuote>();
+		p = make_shared<CProductFinnhubStockPriceQuote>();
 		p->SetIndex(m_lCurrentRTDataQuotePos);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
@@ -841,7 +796,7 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			CWebSourceDataProductPtr p = make_shared<CFinnhubStockEstimatesEPSSurprise>();
+			CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
 			p->SetIndex(m_lCurrentUpdateEPSSurprisePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
@@ -1345,7 +1300,7 @@ bool CWorldMarket::CreatingThreadUpdateForexSymbolDB() {
 	return true;
 }
 
-bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol) {
+bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CProductFinnhubForexSymbol* pSymbol) {
 	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
@@ -1690,7 +1645,7 @@ bool CWorldMarket::UpdateStockProfileDB(void) {
 	time_t tt = GetTickCount64();
 
 	if (sm_fInProcess) {
-		TRACE("此任务五分钟之内没有完成\n");
+		gl_systemMessage.PushErrorMessage(_T("UpdateStockProfileDB任务用时超过五分钟"));
 		return false;
 	}
 	else {
@@ -1974,7 +1929,7 @@ bool CWorldMarket::LoadForexSymbol(void) {
 
 	setForexSymbol.Open();
 	while (!setForexSymbol.IsEOF()) {
-		pSymbol = make_shared<CFinnhubForexSymbol>();
+		pSymbol = make_shared<CProductFinnhubForexSymbol>();
 		pSymbol->LoadSymbol(setForexSymbol);
 		pSymbol->SetCheckingDayLineStatus();
 		m_vForexSymbol.push_back(pSymbol);

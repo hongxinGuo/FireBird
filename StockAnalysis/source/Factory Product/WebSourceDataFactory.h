@@ -1,6 +1,6 @@
 #pragma once
 
-#include"WebSourceDataProduct.h"
+#include"ProductWebData.h"
 
 class CWebSourceDataFactory : public CObject {
 public:

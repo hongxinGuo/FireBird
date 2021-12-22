@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubStockEstimatesEPSSurprise.h"
+#include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubStockEstimatesEPSSurpriseTest : public ::testing::Test
-	{
+	class CFinnhubStockEstimatesEPSSurpriseTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubStockEstimatesEPSSurprise stockEstimatesEPSSurprise;
+		CProductFinnhubStockEstimatesEPSSurprise stockEstimatesEPSSurprise;
 	};
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestInitialize) {
@@ -65,8 +64,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData130(10, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
 
-	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -90,12 +88,12 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CEPSSurpriseVectorPtr m_pvEPSSurprise;
-		CFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
+		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-			&finnhubWebData125, &finnhubWebData130));
+													 testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+														 &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);

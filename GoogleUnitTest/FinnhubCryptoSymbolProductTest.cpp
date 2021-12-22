@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCryptoSymbolProduct.h"
+#include"ProductFinnhubCryptoSymbol.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCryptoSymbolProductTest : public ::testing::Test
-	{
+	class CFinnhubCryptoSymbolProductTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCryptoSymbolProduct cryptoSymbolProduct;
+		CProductFinnhubCryptoSymbol cryptoSymbolProduct;
 	};
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestInitialize) {
@@ -65,8 +64,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
-	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -85,12 +83,12 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CCryptoSymbolVectorPtr m_pvCryptoSymbol;
-		CFinnhubCryptoSymbolProduct m_finnhubCryptoSymbolProduct;
+		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
-		testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
-			&finnhubWebData215, &finnhubWebData220));
+													 testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+														 &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);

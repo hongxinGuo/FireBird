@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanyPeer.h"
+#include"ProductFinnhubCompanyPeer.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanyPeerTest : public ::testing::Test
-	{
+	class CFinnhubCompanyPeerTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCompanyPeer companyPeer;
+		CProductFinnhubCompanyPeer companyPeer;
 	};
 
 	TEST_F(CFinnhubCompanyPeerTest, TestInitialize) {
@@ -69,8 +68,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 
-	class ParseFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -89,12 +87,12 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CString m_strPeer;
 		CWebDataPtr m_pWebData;
-		CFinnhubCompanyPeer m_finnhubCompanyPeer;
+		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
-		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-			&finnhubWebData110));
+													 testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+														 &finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
 		m_strPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);

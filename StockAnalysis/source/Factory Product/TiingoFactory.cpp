@@ -6,19 +6,19 @@
 
 #include "TiingoFactory.h"
 
-#include"TiingoCompanyProfile.h"
-#include"TiingoStockSymbolProduct.h"
-#include"TiingoStockDayLine.h"
+#include"ProductTiingoCompanyProfile.h"
+#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStockDayLine.h"
 
 CWebSourceDataProductPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	switch (iIndex) {
 	case __STOCK_SYMBOLS__:
-		p = make_shared<CTinngoStockSymbolProduct>();
+		p = make_shared<CProductTinngoStockSymbol>();
 		break;
 	case __STOCK_PRICE_CANDLES__:
-		p = make_shared<CTiingoStockDayLine>();
+		p = make_shared<CProductTiingoStockDayLine>();
 		break;
 	case __COMPANY_PROFILE__:
 	case __COMPANY_PROFILE_CONCISE__:

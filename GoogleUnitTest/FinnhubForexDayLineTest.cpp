@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubForexDayLine.h"
+#include"ProductFinnhubForexDayLine.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubForexDayLineTest : public ::testing::Test
-	{
+	class CFinnhubForexDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubForexDayLine forexDayLine;
+		CProductFinnhubForexDayLine forexDayLine;
 	};
 
 	TEST_F(CFinnhubForexDayLineTest, TestInitialize) {
@@ -49,7 +48,7 @@ namespace StockAnalysisTest {
 		forexDayLine.SetMarket(gl_pWorldMarket.get());
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreatMessage(),
-			forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+								 forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
@@ -82,8 +81,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData70(10, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 
-	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -104,13 +102,13 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CDayLineVectorPtr m_pvDayLine;
-		CFinnhubForexDayLine m_finnhubForexDayLine;
+		CProductFinnhubForexDayLine m_finnhubForexDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexCandle1,
-		ParseFinnhubForexCandleTest,
-		testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
-			&finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+													 ParseFinnhubForexCandleTest,
+													 testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
+														 &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		CString strMessage;

@@ -6,8 +6,8 @@
 #include"WorldMarket.h"
 
 #include"TiingoFactory.h"
-#include"TiingoStockSymbolProduct.h"
-#include"TiingoStockDayLine.h"
+#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStockDayLine.h"
 
 using namespace testing;
 
@@ -18,8 +18,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CTiingoFactoryTest : public ::testing::Test
-	{
+	class CTiingoFactoryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -42,7 +41,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__)->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 	}
 }

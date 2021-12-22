@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubStockSymbolProduct.h"
+#include"ProductFinnhubStockSymbol.h"
 
 using namespace testing;
 
@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubStockSymbolProduct companySymbolProduct;
+		CProductFinnhubStockSymbol companySymbolProduct;
 	};
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestInitialize) {
@@ -56,8 +56,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"mic\":\"XNAS\",\"symbol\":\"A\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"mic\":\"OOTC\",\"symbol\":\"AA\",\"type\":\"Common Stock\"}]"));
 
-	class ProcessFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ProcessFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -83,11 +82,11 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CWorldStockVectorPtr m_pvStock;
-		CFinnhubStockSymbolProduct m_finnhubStockSymbolProduct;
+		CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		&finnhubWebData30));
+																																																				&finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);

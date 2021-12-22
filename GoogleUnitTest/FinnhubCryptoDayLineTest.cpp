@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCryptoDayLine.h"
+#include"ProductFinnhubCryptoDayLine.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCryptoDayLineTest : public ::testing::Test
-	{
+	class CFinnhubCryptoDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCryptoDayLine cryptoDayLine;
+		CProductFinnhubCryptoDayLine cryptoDayLine;
 	};
 
 	TEST_F(CFinnhubCryptoDayLineTest, TestInitialize) {
@@ -48,7 +47,7 @@ namespace StockAnalysisTest {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreatMessage(),
-			cryptoDayLine.GetInquiringStr() + gl_pWorldMarket->GetCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+								 cryptoDayLine.GetInquiringStr() + gl_pWorldMarket->GetCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 	}
 
 	TEST_F(CFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -78,8 +77,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData230(10, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 
-	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -101,13 +99,13 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CDayLineVectorPtr m_pvDayLine;
 		CWebDataPtr m_pWebData;
-		CFinnhubCryptoDayLine m_finnhubSryptoDayLine;
+		CProductFinnhubCryptoDayLine m_finnhubSryptoDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoCandle1,
-		ParseFinnhubCryptoCandleTest,
-		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+													 ParseFinnhubCryptoCandleTest,
+													 testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+														 &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		CString strMessage;

@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"TiingoStockSymbolProduct.h"
+#include"ProductTiingoStockSymbol.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CTiingoStockSymbolsTest : public ::testing::Test
-	{
+	class CTiingoStockSymbolsTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CTinngoStockSymbolProduct stockSymbols;
+		CProductTinngoStockSymbol stockSymbols;
 	};
 
 	TEST_F(CTiingoStockSymbolsTest, TestInitialize) {
@@ -63,8 +62,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	TiingoWebData tiingoWebData10(10, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
-	class ParseTiingoStockTest : public::testing::TestWithParam<TiingoWebData*>
-	{
+	class ParseTiingoStockTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -82,13 +80,13 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CTiingoStockVectorPtr m_pvStock;
-		CTinngoStockSymbolProduct m_tiingoStockSymbolProduct;
+		CProductTinngoStockSymbol m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock1,
-		ParseTiingoStockTest,
-		testing::Values(&tiingoWebData1, &tiingoWebData2,
-			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+													 ParseTiingoStockTest,
+													 testing::Values(&tiingoWebData1, &tiingoWebData2,
+														 &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestProcessStockProfile0) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);

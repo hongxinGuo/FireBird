@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanyProfile.h"
+#include"ProductFinnhubCompanyProfile.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanyProfileTest : public ::testing::Test
-	{
+	class CFinnhubCompanyProfileTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCompanyProfile companyProfile;
+		CProductFinnhubCompanyProfile companyProfile;
 	};
 
 	TEST_F(CFinnhubCompanyProfileTest, TestInitialize) {
@@ -92,7 +91,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CFinnhubCompanyProfile m_finnhubCompanyProfile;
+		CProductFinnhubCompanyProfile m_finnhubCompanyProfile;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockProfile, ProcessFinnhubStockProfileTest, testing::Values(&finnhubWebData1, &finnhubWebData2,

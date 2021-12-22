@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubCompanyProfileConcise.h"
+#include"ProductFinnhubCompanyProfileConcise.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanyProfileConciseTest : public ::testing::Test
-	{
+	class CFinnhubCompanyProfileConciseTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubCompanyProfileConcise companyProfileConcise;
+		CProductFinnhubCompanyProfileConcise companyProfileConcise;
 	};
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestInitialize) {
@@ -63,8 +62,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData20(10, _T("AAPL"), _T("{\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 
-	class ProcessFinnhubStockProfileConciseTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ProcessFinnhubStockProfileConciseTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -91,7 +89,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
+		CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData11, &finnhubWebData12,

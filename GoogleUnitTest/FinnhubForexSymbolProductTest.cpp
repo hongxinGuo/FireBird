@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubForexSymbolProduct.h"
+#include"ProductFinnhubForexSymbol.h"
 
 using namespace testing;
 

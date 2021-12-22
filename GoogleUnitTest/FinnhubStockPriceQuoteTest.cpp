@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubStockPriceQuote.h"
+#include"ProductFinnhubStockPriceQuote.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubStockPriceQuoteTest : public ::testing::Test
-	{
+	class CFinnhubStockPriceQuoteTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubStockPriceQuote stockPriceQuote;
+		CProductFinnhubStockPriceQuote stockPriceQuote;
 	};
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
@@ -71,8 +70,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData60(10, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
 
-	class ProcessFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ProcessFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -108,13 +106,13 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CFinnhubStockPriceQuote m_finnhubStockPriceQuote;
+		CProductFinnhubStockPriceQuote m_finnhubStockPriceQuote;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-		ProcessFinnhubStockQuoteTest,
-		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
-			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
+													 ProcessFinnhubStockQuoteTest,
+													 testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+														 &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		bool fSucceed = false;

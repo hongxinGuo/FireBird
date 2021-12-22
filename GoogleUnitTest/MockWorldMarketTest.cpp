@@ -20,27 +20,26 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
-#include"FinnhubCompanyProfile.h"
-#include"FinnhubCompanyProfileConcise.h"
-#include"FinnhubStockSymbolProduct.h"
-#include"FinnhubCompanyPeer.h"
-#include"FinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCompanyProfile.h"
+#include"ProductFinnhubCompanyProfileConcise.h"
+#include"ProductFinnhubCompanyPeer.h"
+#include"ProductFinnhubCompanyInsiderTransaction.h"
 
-#include"FinnhubStockEstimatesEPSSurprise.h"
+#include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
-#include"FinnhubCryptoExchange.h"
-#include"FinnhubForexExchange.h"
+#include"ProductFinnhubCryptoExchange.h"
+#include"ProductFinnhubForexExchange.h"
 
-#include"FinnhubStockPriceQuote.h"
-#include"FinnhubCryptoDayLine.h"
-#include"FinnhubForexDayLine.h"
-#include"FinnhubStockDayLine.h"
+#include"ProductFinnhubStockPriceQuote.h"
+#include"ProductFinnhubCryptoDayLine.h"
+#include"ProductFinnhubForexDayLine.h"
+#include"ProductFinnhubStockDayLine.h"
 
-#include"FinnhubForexSymbolProduct.h"
-#include"FinnhubCryptoSymbolProduct.h"
-#include"FinnhubStockSymbolProduct.h"
+#include"PRoductFinnhubForexSymbol.h"
+#include"ProductFinnhubCryptoSymbol.h"
+#include"ProductFinnhubStockSymbol.h"
 
-#include "TiingoStockSymbolProduct.h"
+#include "ProductTiingoStockSymbol.h"
 
 using namespace std;
 using namespace testing;
@@ -470,7 +469,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage02) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyProfileConcise>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		p->SetIndex(0);
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
@@ -484,7 +483,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyProfile>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfile>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -500,7 +499,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(0)->IsProfileUpdated());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfile)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -510,7 +509,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE_CONCISE__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyProfileConcise>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -526,7 +525,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(0)->IsProfileUpdated());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfileConcise)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -536,7 +535,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubStockSymbolProduct>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
@@ -552,7 +551,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetExchange(0)->m_strCode);
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubStockSymbolProduct)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -561,7 +560,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__PEERS__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubCompanyPeer>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetPeerUpdated(false);
@@ -577,7 +576,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(0)->IsPeerUpdated());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -587,7 +586,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_EPS_SURPRISE__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubStockEstimatesEPSSurprise>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -601,7 +600,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -610,7 +609,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_QUOTE__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubStockPriceQuote>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockPriceQuote>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -624,7 +623,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubStockPriceQuote)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -633,7 +632,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubStockDayLine>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -649,7 +648,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubStockDayLine)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -682,7 +681,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__FOREX_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubForexDayLine>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubForexDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -697,7 +696,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetForexSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubForexDayLine)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_FALSE(gl_pMockWorldMarket->GetForexSymbol(p->GetIndex())->IsDayLineNeedUpdate());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
@@ -707,7 +706,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__CRYPTO_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubCryptoSymbolProduct>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCryptoSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -721,7 +720,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetCryptoExchange(p->GetIndex()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoSymbolProduct)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoSymbol)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -730,7 +729,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__CRYPTO_CANDLES__) {
-		CFinnhubCryptoDayLinePtr p = make_shared<CFinnhubCryptoDayLine>();
+		CFinnhubCryptoDayLinePtr p = make_shared<CProductFinnhubCryptoDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -772,7 +771,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage02) {
-		CWebSourceDataProductPtr p = make_shared<CTinngoStockSymbolProduct>();
+		CWebSourceDataProductPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
@@ -786,7 +785,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CTinngoStockSymbolProduct>();
+		CWebSourceDataProductPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
@@ -800,7 +799,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringMiddle(), _T(""));
 
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -809,7 +808,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
+		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -825,7 +824,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pMockWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -835,7 +834,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived01) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
+		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
@@ -844,7 +843,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived02) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
+		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		while (gl_WebInquirer.GetTiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();

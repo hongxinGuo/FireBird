@@ -6,23 +6,23 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
-#include"FinnhubForexExchange.h"
-#include"FinnhubEconomicCountryList.h"
-#include"FinnhubEconomicCalendar.h"
-#include"FinnhubCompanyProfileConcise.h"
-#include"FinnhubCompanyPeer.h"
-#include"FinnhubCompanyInsiderTransaction.h"
-#include"FinnhubCryptoDayLine.h"
-#include"FinnhubForexDayLine.h"
-#include"FinnhubStockDayLine.h"
-#include"FinnhubForexSymbolProduct.h"
-#include"FinnhubCryptoSymbolProduct.h"
-#include"FinnhubStockSymbolProduct.h"
-#include"FinnhubStockEstimatesEPSSurprise.h"
-#include"FinnhubStockPriceQuote.h"
+#include"ProductFinnhubForexExchange.h"
+#include"ProductFinnhubEconomicCountryList.h"
+#include"ProductFinnhubEconomicCalendar.h"
+#include"ProductFinnhubCompanyProfileConcise.h"
+#include"ProductFinnhubCompanyPeer.h"
+#include"ProductFinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCryptoDayLine.h"
+#include"ProductFinnhubForexDayLine.h"
+#include"ProductFinnhubStockDayLine.h"
+#include"ProductFinnhubForexSymbol.h"
+#include"ProductFinnhubCryptoSymbol.h"
+#include"ProductFinnhubStockSymbol.h"
+#include"ProductFinnhubStockEstimatesEPSSurprise.h"
+#include"ProductFinnhubStockPriceQuote.h"
 
-#include"TiingoStockSymbolProduct.h"
-#include"TiingoStockDayLine.h"
+#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStockDayLine.h"
 
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
@@ -137,12 +137,12 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestGetCurrentFinnhubInquiry) {
 		CWebSourceDataProductPtr p = nullptr, p2 = nullptr;
-		p = make_shared<CFinnhubCompanyPeer>();
+		p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(2);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pWorldMarket->SetCurrentFinnhubInquiry(p);
 		p2 = gl_pWorldMarket->GetCurrentFinnhubInquiry();
-		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
+		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_EQ(p2->GetIndex(), 2);
 		EXPECT_TRUE(p2->GetMarket()->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	}
@@ -329,7 +329,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
 
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
@@ -339,7 +339,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
 		long lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -358,7 +358,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "空指针";
 
-		pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "此符号在符号集中不存在";
 	}
@@ -567,7 +567,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
@@ -857,13 +857,13 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = nullptr, p2 = nullptr;
 
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
-		p = make_shared<CFinnhubCompanyPeer>();
+		p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(2);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pWorldMarket->PushFinnhubInquiry(p);
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		p2 = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
+		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_EQ(p2->GetIndex(), 2);
 		EXPECT_TRUE(p2->GetMarket()->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
@@ -873,12 +873,12 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p, p2;
 
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
-		p = make_shared<CTinngoStockSymbolProduct>();
+		p = make_shared<CProductTinngoStockSymbol>();
 		p->SetIndex(0);
 		gl_pWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		p2 = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
+		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
 		EXPECT_EQ(p2->GetIndex(), 0);
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
 	}
@@ -1053,7 +1053,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
 		EXPECT_TRUE(gl_pWorldMarket->GetExchange(1)->m_fUpdated);
 		EXPECT_FALSE(gl_pWorldMarket->GetExchange(10)->m_fUpdated);
@@ -1061,7 +1061,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
 		EXPECT_TRUE(gl_pWorldMarket->GetExchange(1)->m_fUpdated);
 		EXPECT_TRUE(gl_pWorldMarket->GetExchange(10)->m_fUpdated);
@@ -1095,7 +1095,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfileConcise)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsProfileUpdated());
@@ -1104,7 +1104,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfileConcise)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -1144,7 +1144,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubStockDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), 3001) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
@@ -1152,7 +1152,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubStockDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), 3010) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
@@ -1183,7 +1183,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubRTQuote());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubStockPriceQuote)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubPeer) {
@@ -1208,7 +1208,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubPeer());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
 
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -1218,7 +1218,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubPeer());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -1255,7 +1255,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubInsiderTransaction());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyInsiderTransaction)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
 		EXPECT_EQ(p->GetIndex(), 2500) << "第一个待查询股票为中国股票，故而无需查询；第二个待查询股票为美国股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票为中国股票，没有复原";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
@@ -1311,7 +1311,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubEPSSurprise());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
@@ -1320,7 +1320,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubEPSSurprise());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
@@ -1377,7 +1377,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Forex sysbols已更新"));
@@ -1406,7 +1406,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexDayLine());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
@@ -1414,7 +1414,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexDayLine());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
@@ -1445,7 +1445,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiry Tiingo Symbol"));
@@ -1475,7 +1475,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
@@ -1484,7 +1484,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());

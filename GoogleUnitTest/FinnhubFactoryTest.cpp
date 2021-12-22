@@ -7,21 +7,21 @@
 
 #include"FinnhubFactory.h"
 
-#include"FinnhubEconomicCountryList.h"
-#include"FinnhubEconomicCalendar.h"
-#include"FinnhubCryptoExchange.h"
-#include"FinnhubForexExchange.h"
-#include"FinnhubCryptoSymbolProduct.h"
-#include"FinnhubStockSymbolProduct.h"
-#include"FinnhubForexSymbolProduct.h"
-#include"FinnhubCompanyProfile.h"
-#include"FinnhubCompanyProfileConcise.h"
-#include"FinnhubCompanyPeer.h"
-#include"FinnhubCompanyInsiderTransaction.h"
-#include"FinnhubCryptoDayLine.h"
-#include"FinnhubForexDayLine.h"
-#include"FinnhubStockPriceQuote.h"
-#include"FinnhubStockEstimatesEPSSurprise.h"
+#include"ProductFinnhubEconomicCountryList.h"
+#include"ProductFinnhubEconomicCalendar.h"
+#include"ProductFinnhubCryptoExchange.h"
+#include"ProductFinnhubForexExchange.h"
+#include"ProductFinnhubCryptoSymbol.h"
+#include"ProductFinnhubStockSymbol.h"
+#include"ProductFinnhubForexSymbol.h"
+#include"ProductFinnhubCompanyProfile.h"
+#include"ProductFinnhubCompanyProfileConcise.h"
+#include"ProductFinnhubCompanyPeer.h"
+#include"ProductFinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCryptoDayLine.h"
+#include"ProductFinnhubForexDayLine.h"
+#include"PRoductFinnhubStockPriceQuote.h"
+#include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
 using namespace testing;
 
@@ -55,21 +55,21 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CFinnhubFactoryTest, TestCreateProduct) {
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCountryList)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCountryList)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__)->IsKindOf(RUNTIME_CLASS(CFinnhubEconomicCalendar)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoExchange)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexExchange)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubStockSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoSymbolProduct)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubEconomicCountryList)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubEconomicCountryList)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubEconomicCalendar)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoExchange)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexExchange)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoSymbol)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfile)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyProfileConcise)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __PEERS__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyPeer)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__)->IsKindOf(RUNTIME_CLASS(CFinnhubCompanyInsiderTransaction)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__)->IsKindOf(RUNTIME_CLASS(CFinnhubCryptoDayLine)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexDayLine)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__)->IsKindOf(RUNTIME_CLASS(CFinnhubStockPriceQuote)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__)->IsKindOf(RUNTIME_CLASS(CFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __PEERS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoDayLine)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
 	}
 }

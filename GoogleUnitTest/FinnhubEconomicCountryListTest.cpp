@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubEconomicCountryList.h"
+#include"ProductFinnhubEconomicCountryList.h"
 
 using namespace testing;
 
@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubEconomicCountryListTest : public ::testing::Test
-	{
+	class CFinnhubEconomicCountryListTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubEconomicCountryList countryList;
+		CProductFinnhubEconomicCountryList countryList;
 	};
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestInitialize) {
@@ -63,8 +62,7 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
-	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -83,12 +81,12 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CCountryVectorPtr m_pvCountry;
-		CFinnhubEconomicCountryList m_finnhubEconomicCountryList;
+		CProductFinnhubEconomicCountryList m_finnhubEconomicCountryList;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
-		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-			&finnhubWebData95, &finnhubWebData100));
+													 testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+														 &finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
