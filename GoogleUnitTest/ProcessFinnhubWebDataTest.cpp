@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
-		fSucceed = gl_pWorldMarket->ProcessOneFinnhubWebSocketData(m_pWebData);
+		fSucceed = gl_pWorldMarket->ParseFinnhubWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(fSucceed);

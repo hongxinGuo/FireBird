@@ -34,188 +34,6 @@ namespace StockAnalysisTest {
 		CWebDataPtr m_pData;
 	};
 
-	// 格式不对，缺乏'{'
-	TiingoWebData tiingoWebData1(1, _T(""), _T("[\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
-	// 第一个数据缺项
-	TiingoWebData tiingoWebData2(2, _T(""), _T("[{\"Missing\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
-	// 第二个数据缺项
-	TiingoWebData tiingoWebData3(3, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"Missing\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
-	// 正确的数据
-	TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have data\",\"sicCode\":\"1234\",\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFileingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
-	// 正确的数据
-	TiingoWebData tiingoWebData10(10, _T(""), _T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
-
-	class ParseTiingoStockTest : public::testing::TestWithParam<TiingoWebData*>
-	{
-	protected:
-		virtual void SetUp(void) override {
-			GeneralCheck();
-			TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pWebData = pData->m_pData;
-		}
-		virtual void TearDown(void) override {
-			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-		CTiingoStockVectorPtr m_pvStock;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock1,
-		ParseTiingoStockTest,
-		testing::Values(&tiingoWebData1, &tiingoWebData2,
-			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
-
-	TEST_P(ParseTiingoStockTest, TestProcessStockProfile0) {
-		m_pvStock = gl_pWorldMarket->ParseTiingoStockSymbol(m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 格式不对
-			EXPECT_EQ(m_pvStock->size(), 0);
-			break;
-		case 2: // 格式不对
-			EXPECT_EQ(m_pvStock->size(), 0);
-			break;
-		case 3: // 缺乏address项
-			EXPECT_EQ(m_pvStock->size(), 1);
-			break;
-		case 4:
-			EXPECT_EQ(m_pvStock->size(), 1);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
-			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("sicIndustry have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("sicSector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
-			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
-			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 1234);
-			break;
-		case 10:
-			EXPECT_EQ(m_pvStock->size(), 2);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
-			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evcaluation时，返回空串(一个空格)";
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(" "));
-			EXPECT_EQ(m_pvStock->at(1)->m_iSICCode, 0);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
-			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
-			break;
-		}
-	}
-
-	// 格式不对(缺开始的‘{’），无法顺利Parser
-	TiingoWebData tiingoWebData31(1, _T("AAPL"), _T("[\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有date项
-	TiingoWebData tiingoWebData32(2, _T("AAPL"), _T("[{\"Missing\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有close项
-	TiingoWebData tiingoWebData33(3, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"Missing\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有high项
-	TiingoWebData tiingoWebData35(5, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"Missing\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有low项
-	TiingoWebData tiingoWebData36(6, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"Missing\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有open项
-	TiingoWebData tiingoWebData37(7, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"Missing\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第一个数据没有volume项
-	TiingoWebData tiingoWebData38(8, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"Missing\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 第二个数据没有date项
-	TiingoWebData tiingoWebData39(9, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"Missing\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-	// 正确的数据
-	TiingoWebData tiingoWebData40(10, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
-
-	class ParseTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*>
-	{
-	protected:
-		virtual void SetUp(void) override {
-			GeneralCheck();
-			TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pWebData = pData->m_pData;
-		}
-
-		virtual void TearDown(void) override {
-			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1,
-		ParseTiingoStockDayLineTest,
-		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
-
-	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
-		CDayLineVectorPtr pvDayLine;
-		CString strMessage;
-		CDayLinePtr pDayLine;
-
-		pvDayLine = gl_pWorldMarket->ParseTiingoStockDayLine(m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 格式不对
-			strMessage = _T("日线为无效JSon数据\n");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
-			break;
-		case 2: //
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 3: //
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 5:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 6:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 7:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 8:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 9:
-			EXPECT_EQ(pvDayLine->size(), 1);
-			break;
-		case 10:
-			EXPECT_EQ(pvDayLine->size(), 2);
-			pDayLine = pvDayLine->at(0);
-			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
-			EXPECT_EQ(pDayLine->GetClose(), 121960);
-			EXPECT_EQ(pDayLine->GetHigh(), 123210);
-			EXPECT_EQ(pDayLine->GetLow(), 121260);
-			EXPECT_EQ(pDayLine->GetOpen(), 122540);
-			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
-			break;
-		default:
-			break;
-		}
-	}
-
 	struct TiingoWebSocketData {
 		TiingoWebSocketData(long lIndex, CString strSymbol, CString strData) {
 			m_lIndex = lIndex;
@@ -279,7 +97,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoForexSocketPtr pForex;
-		fSucceed = gl_pWorldMarket->ProcessOneTiingoForexWebSocketData(m_pWebData);
+		fSucceed = gl_pWorldMarket->ParseTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
@@ -364,7 +182,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoCryptoSocketPtr pCrypto;
-		fSucceed = gl_pWorldMarket->ProcessOneTiingoCryptoWebSocketData(m_pWebData);
+		fSucceed = gl_pWorldMarket->ParseTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
@@ -464,7 +282,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ProcessOneTiingoIEXWebSocketData(m_pWebData);
+		fSucceed = gl_pWorldMarket->ParseTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);

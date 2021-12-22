@@ -766,10 +766,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 	}
 
-	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived__STOCK_EPS_SURPRISE__) {
-		// 需要更改函数实现形式，以利于测试
-	}
-
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage01) {
 		while (gl_pMockWorldMarket->GetTiingoInquiryQueueSize() > 0) gl_pMockWorldMarket->GetTiingoInquiry();
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoInquiringMessage());
@@ -813,7 +809,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -829,7 +825,7 @@ namespace StockAnalysisTest {
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pMockWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pMockWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentTiingoInquiry()->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsTiingoDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -839,7 +835,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived01) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
@@ -848,83 +844,12 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived02) {
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
+		CWebSourceDataProductPtr p = make_shared<CTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		while (gl_WebInquirer.GetTiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_SYMBOLS__) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CTiingoStockVectorPtr pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
-		CWebSourceDataProductPtr p = make_shared<CTinngoStockSymbolProduct>();
-		p->SetIndex(1);
-		p->SetMarket(gl_pMockWorldMarket.get());
-		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
-
-		CTiingoStockPtr pTiingoStock = nullptr;
-		pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->m_strTicker = _T("A");
-		pvTiingoStock->push_back(pTiingoStock);
-		pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->m_strTicker = _T("000001.SS");
-		pvTiingoStock->push_back(pTiingoStock);
-
-		gl_pMockWorldMarket->SetTiingoSymbolUpdated(false);
-		gl_pMockWorldMarket->SetTiingoInquiring(true);
-		gl_pMockWorldMarket->SetTiingoDataReceived(true);
-		if (gl_WebInquirer.GetTiingoDataSize() == 0) {
-			gl_WebInquirer.PushTiingoData(pWebData);
-		}
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseTiingoStockSymbol(pWebData))
-			.WillOnce(Return(pvTiingoStock));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
-
-		EXPECT_TRUE(gl_pMockWorldMarket->IsTiingoSymbolUpdated());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(_T("A"))->IsUpdateProfileDB());
-		EXPECT_TRUE(gl_pMockWorldMarket->GetStock(_T("000001.SS"))->IsUpdateProfileDB());
-		EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
-
-		// clear up
-		gl_systemMessage.PopInnerSystemInformationMessage();
-	}
-
-	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived__STOCK_PRICE_CANDLES__) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
-		CWebSourceDataProductPtr p = make_shared<CTiingoStockPriceCandle>();
-		p->SetIndex(1);
-		p->SetMarket(gl_pMockWorldMarket.get());
-		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
-
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
-		pvDayLine->push_back(pDayLine);
-
-		auto pStock = gl_pMockWorldMarket->GetStock(1);
-		pStock->SetUpdateProfileDB(false);
-		pStock->SetDayLineNeedUpdate(true);
-		pStock->SetDayLineNeedSaving(false);
-
-		gl_pMockWorldMarket->SetTiingoInquiring(true);
-		gl_pMockWorldMarket->SetTiingoDataReceived(true);
-		if (gl_WebInquirer.GetTiingoDataSize() == 0) {
-			gl_WebInquirer.PushTiingoData(pWebData);
-		}
-
-		EXPECT_CALL(*gl_pMockWorldMarket, ParseTiingoStockDayLine(pWebData))
-			.WillOnce(Return(pvDayLine));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
-
-		EXPECT_EQ(pStock->GetDayLineSize(), 2);
-		EXPECT_TRUE(pStock->IsUpdateProfileDB());
-		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-		EXPECT_TRUE(pStock->IsDayLineNeedSaving());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {

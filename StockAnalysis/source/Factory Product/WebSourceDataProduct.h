@@ -24,6 +24,23 @@ public:
 	CWebDataPtr m_pData;
 };
 
+struct TiingoWebData {
+	TiingoWebData(long lIndex, CString strSymbol, CString strData) {
+		m_lIndex = lIndex;
+		m_strSymbol = strSymbol;
+		m_pData = make_shared<CWebData>();
+		m_pData->__TEST_SetBuffer__(strData);
+	}
+
+	~TiingoWebData() {
+	}
+
+public:
+	long m_lIndex;
+	CString m_strSymbol;
+	CWebDataPtr m_pData;
+};
+
 class CWebSourceDataProduct : public CObject {
 public:
 	DECLARE_DYNCREATE(CWebSourceDataProduct)

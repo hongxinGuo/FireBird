@@ -435,7 +435,7 @@
     <ClCompile Include="TiingoStockSymbolsTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="TiingoStockPriceCandleTest.cpp">
+    <ClCompile Include="TiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="TiingoFactoryTest.cpp">

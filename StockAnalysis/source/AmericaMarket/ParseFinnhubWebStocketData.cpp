@@ -30,7 +30,7 @@ using namespace boost::property_tree;
 	/// </summary>
 	/// <param name="pData"></param>
 	/// <returns></returns>
-bool CWorldMarket::ProcessOneFinnhubWebSocketData(shared_ptr<string> pData) {
+bool CWorldMarket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol, sMessage;
 	CString strMessage;

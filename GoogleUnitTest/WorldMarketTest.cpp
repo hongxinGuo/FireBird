@@ -22,7 +22,7 @@
 #include"FinnhubStockPriceQuote.h"
 
 #include"TiingoStockSymbolProduct.h"
-#include"TiingoStockPriceCandle.h"
+#include"TiingoStockDayLine.h"
 
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
@@ -1475,7 +1475,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
@@ -1484,7 +1484,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
 		p = gl_pWorldMarket->GetTiingoInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());

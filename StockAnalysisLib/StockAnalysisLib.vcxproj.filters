@@ -522,7 +522,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.h">
       <Filter>头文件\Factory Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockDayLine.h">
       <Filter>头文件\Factory Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\FinnhubEconomicCountryList.h">
@@ -725,10 +725,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
       <Filter>源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseFinnhubWebStocketData.cpp">
       <Filter>源文件\World Market\实现</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseTiingoWebSocketData.cpp">
       <Filter>源文件\World Market\实现</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
@@ -956,7 +956,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp">
       <Filter>源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockDayLine.cpp">
       <Filter>源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.cpp">

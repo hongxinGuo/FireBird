@@ -147,7 +147,7 @@
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
     <ClCompile Include="TiingoFactoryTest.cpp" />
     <ClCompile Include="TiingoIndustryTest.cpp" />
-    <ClCompile Include="TiingoStockPriceCandleTest.cpp" />
+    <ClCompile Include="TiingoStockDayLineTest.cpp" />
     <ClCompile Include="TiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="WebSocketTest.cpp" />

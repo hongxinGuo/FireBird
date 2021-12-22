@@ -137,7 +137,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoFactory.h" />
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataProduct.h" />
@@ -181,8 +181,8 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseFinnhubWebStocketData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseTiingoWebSocketData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
@@ -290,7 +290,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockPriceCandle.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoStockSymbolProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\WebSourceDataProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />

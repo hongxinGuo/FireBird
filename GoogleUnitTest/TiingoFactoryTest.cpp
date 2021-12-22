@@ -7,7 +7,7 @@
 
 #include"TiingoFactory.h"
 #include"TiingoStockSymbolProduct.h"
-#include"TiingoStockPriceCandle.h"
+#include"TiingoStockDayLine.h"
 
 using namespace testing;
 
@@ -43,6 +43,6 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CTinngoStockSymbolProduct)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__)->IsKindOf(RUNTIME_CLASS(CTiingoStockPriceCandle)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__)->IsKindOf(RUNTIME_CLASS(CTiingoStockDayLine)));
 	}
 }

@@ -44,9 +44,6 @@ namespace testing {
 		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
 		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
 
-		MOCK_METHOD(CTiingoStockVectorPtr, ParseTiingoStockSymbol, (CWebDataPtr pWebData), (override));
-		MOCK_METHOD(CDayLineVectorPtr, ParseTiingoStockDayLine, (CWebDataPtr pWebData), (override));
-
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockDayLineDB, (), (override));

@@ -26,7 +26,7 @@
 
 #include"WebSourceDataProduct.h"
 #include"TiingoStockSymbolProduct.h"
-#include"TiingoStockPriceCandle.h"
+#include"TiingoStockDayLine.h"
 
 #include"WebSocketData.h"
 #include"WebSocket.h"
@@ -186,10 +186,6 @@ public:
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
 	virtual bool TaskUpdateNaicsIndustry(void);
-
-	// Tiingo数据处理函数
-	virtual CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
-	virtual CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);
 
 	bool TaskUpdateStockProfileDB(void);
 	bool TaskUpdateDayLineDB(void);
@@ -409,13 +405,13 @@ public:
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
-	bool ProcessOneFinnhubWebSocketData(shared_ptr<string> pData);
+	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoIEXWebSocketData();
-	bool ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData);
+	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoCryptoWebSocketData();
-	bool ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData);
+	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoForexWebSocketData();
-	bool ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData);
+	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
 
 	bool TaskUpdateWorldStockFromWebSocket(void);
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);

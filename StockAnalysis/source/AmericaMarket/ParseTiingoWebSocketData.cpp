@@ -24,205 +24,6 @@ using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// [
-// {
-//	"permaTicker":"US000000000133",
-//		"ticker" : "IBM",
-//		"name" : "International Business Machines Corp",
-//    "isADR" : false,
-//    "industry":"Information Technology Services",
-//    "sector":"Technology",
-//    "sicCode":3570,
-//    "sicIndustry":"Computer & Office Equipment",
-//    "sicSector":"Manufacturing",
-//		"reportingCurrency":"usd",
-//		"location":"New York, USA",
-//		"companyWebsite":"http://www.ibm.com",
-//		"secFillingWebsite":"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143",
-//		"isActive" : true,
-//		"statementLastUpdated" : "2019-12-22T22:08:11.534Z",
-//		"dailyLastUpdated" : "2019-12-22T22:08:17.530Z"
-// },
-// {
-// ...
-// }
-// ]
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStockVectorPtr CWorldMarket::ParseTiingoStockSymbol(CWebDataPtr pWebData) {
-	CTiingoStockVectorPtr pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
-	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	CString strNULL = _T(" ");
-	CTiingoStockPtr pStock = nullptr;
-	ptree pt, pt2;
-	string s;
-	int iCount = 0;
-	CString str, strNumber;
-	char buffer[30];
-	long year, month, day;
-
-	if (!ConvertToJSON(pt, pWebData)) return pvTiingoStock;
-	try {
-		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pStock = make_shared<CTiingoStock>();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("permaTicker"));
-			if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
-			s = pt2.get<string>(_T("ticker"));
-			transform(s.begin(), s.end(), s.begin(), _toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。
-			pStock->m_strTicker = s.c_str();
-			s = pt2.get<string>(_T("name"));
-			if (s.size() > 0) pStock->m_strName = s.c_str();
-			pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
-			pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
-			s = pt2.get<string>(_T("industry"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
-			}
-			else pStock->m_strTiingoIndustry = strNULL;
-			s = pt2.get<string>(_T("sector"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
-			}
-			else pStock->m_strTiingoSector = strNULL;
-			s = pt2.get<string>(_T("sicCode"));
-			if (s.compare(strNotAvailable) != 0) {
-				pStock->m_iSICCode = atoi(s.c_str());
-			}
-			else pStock->m_iSICCode = 0;
-			s = pt2.get<string>(_T("sicIndustry"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
-			}
-			else pStock->m_strSICIndustry = strNULL;
-			s = pt2.get<string>(_T("sicSector"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strSICSector = s.c_str();
-			}
-			else pStock->m_strSICSector = strNULL;
-			s = pt2.get<string>(_T("reportingCurrency"));
-			if (s.compare(strNotAvailable) != 0) { // 此项应该永远存在
-				if ((s.size() > 0)) pStock->m_strReportingCurrency = s.c_str();
-			}
-			else pStock->m_strReportingCurrency = strNULL;
-			s = pt2.get<string>(_T("location"));
-			if (s.compare(strNotAvailable) != 0) {
-				if ((s.size() > 0)) pStock->m_strLocation = s.c_str();
-			}
-			else pStock->m_strLocation = _T(" ");
-			s = pt2.get<string>(_T("companyWebsite"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
-			}
-			else pStock->m_strCompanyWebSite = strNULL;
-			s = pt2.get<string>(_T("secFilingWebsite"));
-			if (s.compare(strNotAvailable) != 0) {
-				if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
-			}
-			else pStock->m_strSECFilingWebSite = strNULL;
-			s = pt2.get<string>(_T("statementLastUpdated"));
-			if (s.size() > 0) str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
-			s = pt2.get<string>(_T("dailyLastUpdated"));
-			if (s.size() > 0) str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
-			pvTiingoStock->push_back(pStock);
-			iCount++;
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e);
-	}
-
-	return pvTiingoStock;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Tiingo日线格式：
-// [{
-//	"date":"2019-01-02T00:00:00.000Z",
-//		"close" : 157.92,
-//		"high" : 158.85,
-//		"low" : 154.23,
-//		"open" : 154.89,
-//		"volume" : 37039737,
-//		"adjClose" : 157.92,
-//		"adjHigh" : 158.85,
-//		"adjLow" : 154.23,
-//		"adjOpen" : 154.89,
-//		"adjVolume" : 37039737,
-//		"divCash" : 0.0,
-//		"splitFactor" : 1.0
-// },
-//	{
-//		"date":"2019-01-03T00:00:00.000Z",
-//		"close" : 142.19,
-//		"high" : 145.72,
-//		"low" : 142.0,
-//		"open" : 143.98,
-//		"volume" : 91312195,
-//		"adjClose" : 142.19,
-//		"adjHigh" : 145.72,
-//		"adjLow" : 142.0,
-//		"adjOpen" : 143.98,
-//		"adjVolume" : 91312195,
-//		"divCash" : 0.0,
-//		"splitFactor" : 1.0
-//	}
-// ]
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLineVectorPtr CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
-	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
-	ptree pt, pt2;
-	string s;
-	double dTemp = 0;
-	long lTemp = 0;
-	CDayLinePtr pDayLine = nullptr;
-	CString str;
-	long year, month, day;
-
-	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
-		str = _T("日线为无效JSon数据\n");
-		gl_systemMessage.PushErrorMessage(str);
-		return pvDayLine;
-	}
-
-	try {
-		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pDayLine = make_shared<CDayLine>();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("date"));
-			str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			lTemp = year * 10000 + month * 100 + day;
-			pDayLine->SetDate(lTemp);
-			dTemp = pt2.get<double>(_T("close"));
-			pDayLine->SetClose(dTemp * 1000);
-			dTemp = pt2.get<double>(_T("high"));
-			pDayLine->SetHigh(dTemp * 1000);
-			dTemp = pt2.get<double>(_T("low"));
-			pDayLine->SetLow(dTemp * 1000);
-			dTemp = pt2.get<double>(_T("open"));
-			pDayLine->SetOpen(dTemp * 1000);
-			lTemp = pt2.get<long>(_T("volume"));
-			pDayLine->SetVolume(lTemp);
-			pvDayLine->push_back(pDayLine);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine "), e);
-		return pvDayLine; // 数据解析出错的话，则放弃。
-	}
-	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
-	return pvDayLine;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // https://api.tiingo.com/documentation/websockets/iex
@@ -233,7 +34,7 @@ CDayLineVectorPtr CWorldMarket::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
+bool CWorldMarket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
 	ptree pt, pt2, pt3;
 	string sType, sSymbol, sService;
@@ -461,7 +262,7 @@ bool CWorldMarket::ProcessOneTiingoIEXWebSocketData(shared_ptr<string> pData) {
 /// </summary>
 /// <param name="pData"></param>
 /// <returns></returns>
-bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData) {
+bool CWorldMarket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
 	ptree pt, pt2, pt3;
 	string sType, sSymbol;
@@ -572,7 +373,7 @@ bool CWorldMarket::ProcessOneTiingoCryptoWebSocketData(shared_ptr<string> pData)
 // {"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessOneTiingoForexWebSocketData(shared_ptr<string> pData) {
+bool CWorldMarket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	ptree::iterator it;
 	string sType, sSymbol, sService;
