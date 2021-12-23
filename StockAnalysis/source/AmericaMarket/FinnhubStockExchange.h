@@ -28,4 +28,4 @@ public:
 	bool m_fUpdated;
 };
 
-typedef shared_ptr<CFinnhubStockExchange> CFinnhubExchangePtr;
+typedef shared_ptr<CFinnhubStockExchange> CFinnhubStockExchangePtr;

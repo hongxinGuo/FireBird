@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetMarket(gl_pWorldMarket.get());
 		companySymbolProduct.SetIndex(1);
-		EXPECT_STREQ(companySymbolProduct.CreatMessage(), companySymbolProduct.GetInquiringStr() + gl_pWorldMarket->GetExchangeCode(1));
+		EXPECT_STREQ(companySymbolProduct.CreatMessage(), companySymbolProduct.GetInquiringStr() + gl_pWorldMarket->GetStockExchangeCode(1));
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-																																																				&finnhubWebData30));
+		&finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);

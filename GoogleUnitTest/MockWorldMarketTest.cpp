@@ -549,7 +549,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
-			p->GetInquiringStr() + gl_pMockWorldMarket->GetExchange(0)->m_strCode);
+			p->GetInquiringStr() + gl_pMockWorldMarket->GetStockExchange(0)->m_strCode);
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());

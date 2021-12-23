@@ -1032,16 +1032,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCompanySymbol) {
-		CFinnhubExchangePtr pExchange;
+		CFinnhubStockExchangePtr pExchange;
 		CWebSourceDataProductPtr p = nullptr;
 
-		EXPECT_EQ(gl_pWorldMarket->GetExchangeSize(), 70);
-		for (int i = 0; i < gl_pWorldMarket->GetExchangeSize(); i++) {
-			pExchange = gl_pWorldMarket->GetExchange(i);
+		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 70);
+		for (int i = 0; i < gl_pWorldMarket->GetStockExchangeSize(); i++) {
+			pExchange = gl_pWorldMarket->GetStockExchange(i);
 			pExchange->m_fUpdated = true;
 		}
-		gl_pWorldMarket->GetExchange(1)->m_fUpdated = false;
-		gl_pWorldMarket->GetExchange(10)->m_fUpdated = false;
+		gl_pWorldMarket->GetStockExchange(1)->m_fUpdated = false;
+		gl_pWorldMarket->GetStockExchange(10)->m_fUpdated = false;
 		gl_pWorldMarket->SetFinnhubSymbolUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "Symbol Updated";
 
@@ -1055,16 +1055,16 @@ namespace StockAnalysisTest {
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
-		EXPECT_TRUE(gl_pWorldMarket->GetExchange(1)->m_fUpdated);
-		EXPECT_FALSE(gl_pWorldMarket->GetExchange(10)->m_fUpdated);
+		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
 
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
-		EXPECT_TRUE(gl_pWorldMarket->GetExchange(1)->m_fUpdated);
-		EXPECT_TRUE(gl_pWorldMarket->GetExchange(10)->m_fUpdated);
+		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
+		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
 
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "第三次查询时没有找到待查询的交易所";

@@ -67,10 +67,6 @@ CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
 
 	m_vCountry.resize(0);
-	m_vEconomicCalendar.resize(0);
-	m_vFinnhubExchange.resize(0);
-	m_vForexExchange.resize(0);
-	m_vForexSymbol.resize(0);
 	m_vWorldStock.resize(0);
 	m_vWorldChoicedStock.resize(0);
 }
@@ -92,9 +88,8 @@ void CWorldMarket::ResetFinnhub(void) {
 
 	m_pCurrentFinnhubProduct = nullptr;
 
-	m_vFinnhubExchange.resize(0);
-	m_mapFinnhubExchange.clear();
-	m_lCurrentExchangePos = 0;
+	m_dataFinnhubStockExchange.Reset();
+	m_dataFinnhubForexExchange.Reset();
 
 	// Finnhub各申请网络数据标识，每日需要重置。
 	m_fFinnhubSymbolUpdated = false; // 每日需要更新代码
@@ -105,15 +100,9 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_vWorldChoicedStock.resize(0);
 	m_mapWorldChoicedStock.clear();
 	m_fFinnhubForexExchangeUpdated = false;
-	m_vForexExchange.resize(0);
-	m_mapForexExchange.clear();
 	m_fFinnhubForexSymbolUpdated = false;
-	m_vForexSymbol.resize(0);
-	m_mapForexSymbol.clear();
 	m_fFinnhubForexDayLineUpdated = false;
 	m_fFinnhubCryptoExchangeUpdated = false;
-	m_vCryptoExchange.resize(0);
-	m_mapCryptoExchange.clear();
 	m_fFinnhubCryptoSymbolUpdated = false;
 	m_vCryptoSymbol.resize(0);
 	m_mapCryptoSymbol.clear();
@@ -121,8 +110,6 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
 	m_fCountryListUpdated = false;
-	m_vEconomicCalendar.resize(0);
-	m_mapEconomicCalendar.clear();
 	m_fFinnhubEconomicCalendarUpdated = false;
 
 	m_fFinnhubPeerUpdated = false;
@@ -136,15 +123,11 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_fRebulidDayLine = false;
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
-	m_lLastTotalForexExchange = 0;
-	m_lLastTotalForexSymbol = 0;
 	m_lCurrentUpdateForexDayLinePos = 0;
-	m_lLastTotalCryptoExchange = 0;
 	m_lLastTotalCryptoSymbol = 0;
 	m_lCurrentUpdateCryptoDayLinePos = 0;
 
 	m_lLastTotalCountry = 0;
-	m_lLastTotalEconomicCalendar = 0;
 
 	m_lLastTotalTiingoIndustry = 0;
 	m_lLastTotalSICIndustry = 0;
@@ -560,16 +543,17 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 
 bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 	bool fFound = false;
-	CFinnhubExchangePtr pExchange;
+	CFinnhubStockExchangePtr pExchange;
 	CString str = _T("");
-	long lExchangeSize = m_vFinnhubExchange.size();
+	long lExchangeSize = m_dataFinnhubStockExchange.GetExchangeSize();
 	bool fHaveInquiry = false;
 	CWebSourceDataProductPtr p = nullptr;
+	long lCurrentStockExchangePos = 0;
 
 	if (!IsFinnhubSymbolUpdated() && !IsFinnhubInquiring()) {
-		for (m_lCurrentExchangePos = 0; m_lCurrentExchangePos < lExchangeSize; m_lCurrentExchangePos++) {
-			if (!m_vFinnhubExchange.at(m_lCurrentExchangePos)->IsUpdated()) {
-				pExchange = m_vFinnhubExchange.at(m_lCurrentExchangePos);
+		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
+			if (!m_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsUpdated()) {
+				pExchange = m_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				fFound = true;
 				break;
 			}
@@ -577,7 +561,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 		if (fFound) {
 			fHaveInquiry = true;
 			p = m_FinnhubFactory.CreateProduct(this, __STOCK_SYMBOLS__);
-			p->SetIndex(m_lCurrentExchangePos);
+			p->SetIndex(lCurrentStockExchangePos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
@@ -831,7 +815,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 		p->SetIndex(m_lCurrentForexExchangePos++);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
-		if (m_lCurrentForexExchangePos >= m_vForexExchange.size()) {
+		if (m_lCurrentForexExchangePos >= m_dataFinnhubForexExchange.GetForexExchangeSize()) {
 			SetFinnhubForexSymbolUpdated(true);
 			m_lCurrentForexExchangePos = 0;
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Forex sysbols已更新"));
@@ -845,7 +829,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 	bool fFound = false;
 	CForexSymbolPtr pForexSymbol;
 	CString str = _T("");
-	const long lStockSetSize = m_vForexSymbol.size();
+	const long lStockSetSize = m_dataFinnhubForexSymbol.GetForexSymbolSize();
 	bool fHaveInquiry = false;
 	CWebSourceDataProductPtr p = nullptr;
 
@@ -895,7 +879,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
 		p->SetIndex(m_lCurrentCryptoExchangePos++);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
-		if (m_lCurrentCryptoExchangePos >= m_vCryptoExchange.size()) {
+		if (m_lCurrentCryptoExchangePos >= m_dataFinnhubCryptoExchange.GetCryptoExchangeSize()) {
 			SetFinnhubCryptoSymbolUpdated(true);
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto sysbols已更新"));
 			m_lCurrentCryptoExchangePos = 0;
@@ -1045,41 +1029,11 @@ bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
 }
 
 bool CWorldMarket::UpdateForexExchangeDB(void) {
-	CSetFinnhubForexExchange setForexExchange;
-
-	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
-		setForexExchange.Open();
-		setForexExchange.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-			setForexExchange.AddNew();
-			setForexExchange.m_Code = m_vForexExchange.at(l);
-			setForexExchange.Update();
-		}
-		setForexExchange.m_pDatabase->CommitTrans();
-		setForexExchange.Close();
-		m_lLastTotalForexExchange = m_vForexExchange.size();
-		return true;
-	}
-	return false;
+	return m_dataFinnhubForexExchange.UpdateDB();
 }
 
 bool CWorldMarket::UpdateCryptoExchangeDB(void) {
-	CSetFinnhubCryptoExchange setCryptoExchange;
-
-	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
-		setCryptoExchange.Open();
-		setCryptoExchange.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
-			setCryptoExchange.AddNew();
-			setCryptoExchange.m_Code = m_vCryptoExchange.at(l);
-			setCryptoExchange.Update();
-		}
-		setCryptoExchange.m_pDatabase->CommitTrans();
-		setCryptoExchange.Close();
-		m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
-		return true;
-	}
-	return false;
+	return m_dataFinnhubCryptoExchange.UpdateDB();
 }
 
 bool CWorldMarket::TaskUpdateStockProfileDB(void) {
@@ -1107,11 +1061,13 @@ bool CWorldMarket::TaskUpdateDayLineDB(void) {
 bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 	CString str;
 	bool fUpdated = false;
+	CForexSymbolPtr pSymbol = nullptr;
 
-	for (auto& pSymbol : m_vForexSymbol) {
+	for (int i = 0; i < m_dataFinnhubForexSymbol.GetForexSymbolSize(); i++) {
 		if (gl_fExitingSystem) {
 			break; // 如果程序正在退出，则停止存储。
 		}
+		pSymbol = m_dataFinnhubForexSymbol.GetForexSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
@@ -1374,62 +1330,7 @@ bool CWorldMarket::DeleteTiingoStock(CTiingoStockPtr pStock) {
 }
 
 bool CWorldMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
-	CString strSymbol = _T("");
-
-	for (auto& pEconomicCalendar : vEconomicCalendar) {
-		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		if (m_mapEconomicCalendar.find(strSymbol) == m_mapEconomicCalendar.end()) { // 新事件？
-			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-			m_vEconomicCalendar.push_back(pEconomicCalendar);
-		}
-	}
-	return true;
-}
-
-void CWorldMarket::AddForexExchange(CString strForexExchange) {
-	m_mapForexExchange[strForexExchange] = m_vForexExchange.size();
-	m_vForexExchange.push_back(strForexExchange);
-}
-
-bool CWorldMarket::DeleteForexExchange(CString strForexExchange) {
-	if (!IsForexExchange(strForexExchange)) return false;
-
-	auto it = find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
-	m_vForexExchange.erase(it);
-	m_mapForexExchange.erase(strForexExchange);
-
-	return true;
-}
-
-void CWorldMarket::AddForexSymbol(CForexSymbolPtr pForexSymbol) {
-	m_mapForexSymbol[pForexSymbol->GetSymbol()] = m_mapForexSymbol.size();
-	m_vForexSymbol.push_back(pForexSymbol);
-}
-
-bool CWorldMarket::DeleteForexSymbol(CForexSymbolPtr pForexSymbol) {
-	if (pForexSymbol == nullptr) return false;
-	if (!IsForexSymbol(pForexSymbol->GetSymbol())) return false;
-
-	m_mapForexSymbol.erase(pForexSymbol->GetSymbol());
-	auto it = find(m_vForexSymbol.begin(), m_vForexSymbol.end(), pForexSymbol);
-	m_vForexSymbol.erase(it);
-
-	return true;
-}
-
-void CWorldMarket::AddCryptoExchange(CString strCryptoExchange) {
-	m_mapCryptoExchange[strCryptoExchange] = m_vCryptoExchange.size();
-	m_vCryptoExchange.push_back(strCryptoExchange);
-}
-
-bool CWorldMarket::DeleteCryptoExchange(CString strCryptoExchange) {
-	if (!IsCryptoExchange(strCryptoExchange)) return false;
-
-	auto it = find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), strCryptoExchange);
-	m_vCryptoExchange.erase(it);
-	m_mapCryptoExchange.erase(strCryptoExchange);
-
-	return true;
+	return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar);
 }
 
 void CWorldMarket::AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) {
@@ -1519,23 +1420,7 @@ bool CWorldMarket::LoadOption(void) {
 }
 
 bool CWorldMarket::LoadWorldExchangeDB(void) {
-	CSetFinnhubStockExchange setExchange;
-	CFinnhubExchangePtr pExchange = nullptr;
-
-	if (m_vFinnhubExchange.size() == 0) {
-		setExchange.m_strSort = _T("[Code]");
-		setExchange.Open();
-		while (!setExchange.IsEOF()) {
-			pExchange = make_shared<CFinnhubStockExchange>();
-			pExchange->Load(setExchange);
-			m_vFinnhubExchange.push_back(pExchange);
-			m_mapFinnhubExchange[pExchange->m_strCode] = m_vFinnhubExchange.size();
-			setExchange.MoveNext();
-		}
-		setExchange.Close();
-	}
-
-	return true;
+	return m_dataFinnhubStockExchange.LoadDB();
 }
 
 bool CWorldMarket::LoadStockDB(void) {
@@ -1708,47 +1593,7 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 }
 
 bool CWorldMarket::UpdateForexSymbolDB(void) {
-	const long lTotalForexSymbol = m_vForexSymbol.size();
-	CForexSymbolPtr pSymbol = nullptr;
-	CSetFinnhubForexSymbol setForexSymbol;
-	bool fUpdateSymbol = false;
-
-	if (m_lLastTotalForexSymbol < lTotalForexSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalForexSymbol; l < lTotalForexSymbol; l++) {
-			pSymbol = m_vForexSymbol.at(l);
-			pSymbol->AppendSymbol(setForexSymbol);
-		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
-		m_lLastTotalForexSymbol = lTotalForexSymbol;
-	}
-
-	for (auto& pSymbol2 : m_vForexSymbol) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		while (!setForexSymbol.IsEOF()) {
-			if (m_mapForexSymbol.find(setForexSymbol.m_Symbol) != m_mapForexSymbol.end()) {
-				pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setForexSymbol);
-					pSymbol->SetUpdateProfileDB(false);
-				}
-			}
-			setForexSymbol.MoveNext();
-		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
-	}
-
-	return true;
+	return m_dataFinnhubForexSymbol.UpdateDB();
 }
 
 bool CWorldMarket::UpdateCryptoSymbolDB(void) {
@@ -1817,23 +1662,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 }
 
 bool CWorldMarket::UpdateEconomicCalendarDB(void) {
-	const long lTotalEconomicCalendar = m_vEconomicCalendar.size();
-	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	CSetEconomicCalendar setEconomicCalendar;
-
-	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
-		setEconomicCalendar.Open();
-		setEconomicCalendar.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-			pEconomicCalendar = m_vEconomicCalendar.at(l);
-			pEconomicCalendar->Append(setEconomicCalendar);
-		}
-		setEconomicCalendar.m_pDatabase->CommitTrans();
-		setEconomicCalendar.Close();
-		m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-	}
-
-	return true;
+	return m_dataFinnhubEconomicCalendar.UpdateDB();
 }
 
 bool CWorldMarket::UpdateTiingoStockDB(void) {
@@ -1907,75 +1736,19 @@ bool CWorldMarket::SortStockVector(void) {
 }
 
 bool CWorldMarket::LoadForexExchange(void) {
-	CSetFinnhubForexExchange setForexExchange;
-	int i = 0;
-
-	setForexExchange.Open();
-	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(setForexExchange.m_Code);
-		m_mapForexExchange[setForexExchange.m_Code] = i++;
-		setForexExchange.MoveNext();
-	}
-	setForexExchange.Close();
-	m_lLastTotalForexExchange = m_vForexExchange.size();
-
-	return true;
+	return m_dataFinnhubForexExchange.LoadDB();
 }
 
 bool CWorldMarket::LoadForexSymbol(void) {
-	CSetFinnhubForexSymbol setForexSymbol;
-	CForexSymbolPtr pSymbol = nullptr;
-	int i = 0;
-
-	setForexSymbol.Open();
-	while (!setForexSymbol.IsEOF()) {
-		pSymbol = make_shared<CProductFinnhubForexSymbol>();
-		pSymbol->LoadSymbol(setForexSymbol);
-		pSymbol->SetCheckingDayLineStatus();
-		m_vForexSymbol.push_back(pSymbol);
-		m_mapForexSymbol[pSymbol->GetSymbol()] = i++;
-		setForexSymbol.MoveNext();
-	}
-	setForexSymbol.Close();
-	m_lLastTotalForexSymbol = m_vForexSymbol.size();
-
-	return true;
+	return m_dataFinnhubForexSymbol.LoadDB();
 }
 
 bool CWorldMarket::LoadCryptoExchange(void) {
-	CSetFinnhubCryptoExchange setCryptoExchange;
-	int i = 0;
-
-	setCryptoExchange.Open();
-	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(setCryptoExchange.m_Code);
-		m_mapCryptoExchange[setCryptoExchange.m_Code] = i++;
-		setCryptoExchange.MoveNext();
-	}
-	setCryptoExchange.Close();
-	m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
-
-	return true;
+	return m_dataFinnhubCryptoExchange.LoadDB();
 }
 
 bool CWorldMarket::LoadCryptoSymbol(void) {
-	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	CCryptoSymbolPtr pSymbol = nullptr;
-	int i = 0;
-
-	setCryptoSymbol.Open();
-	while (!setCryptoSymbol.IsEOF()) {
-		pSymbol = make_shared<CFinnhubCryptoSymbol>();
-		pSymbol->LoadSymbol(setCryptoSymbol);
-		pSymbol->SetCheckingDayLineStatus();
-		m_vCryptoSymbol.push_back(pSymbol);
-		m_mapCryptoSymbol[pSymbol->GetSymbol()] = i++;
-		setCryptoSymbol.MoveNext();
-	}
-	setCryptoSymbol.Close();
-	m_lLastTotalCryptoSymbol = m_vCryptoSymbol.size();
-
-	return true;
+	return m_dataFinnhubForexSymbol.LoadDB();
 }
 
 bool CWorldMarket::LoadWorldChoicedForex(void)
@@ -2046,23 +1819,7 @@ bool CWorldMarket::LoadCountryDB(void) {
 }
 
 bool CWorldMarket::LoadEconomicCalendarDB(void) {
-	CSetEconomicCalendar setEconomicCalendar;
-	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	CString strSymbol = _T("");
-
-	setEconomicCalendar.Open();
-	while (!setEconomicCalendar.IsEOF()) {
-		pEconomicCalendar = make_shared<CEconomicCalendar>();
-		pEconomicCalendar->Load(setEconomicCalendar);
-		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-		m_vEconomicCalendar.push_back(pEconomicCalendar);
-		setEconomicCalendar.MoveNext();
-	}
-	setEconomicCalendar.Close();
-	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-
-	return true;
+	return m_dataFinnhubEconomicCalendar.LoadDB();
 }
 
 bool CWorldMarket::LoadTiingoStock(void) {

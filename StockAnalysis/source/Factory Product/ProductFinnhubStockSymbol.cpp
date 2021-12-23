@@ -15,7 +15,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 CString CProductFinnhubStockSymbol::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetExchangeCode(m_lIndex);
+	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);
 
 	return m_strInquiringStr + strMiddle;
 }
@@ -29,7 +29,7 @@ bool CProductFinnhubStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	pvStock = ParseFinnhubStockSymbol(pWebData);
 	// 加上交易所代码。
 	for (auto& pStock3 : *pvStock) {
-		pStock3->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetExchangeCode(m_lIndex));
+		pStock3->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex));
 	}
 	for (auto& pStock2 : *pvStock) {
 		if (!((CWorldMarket*)m_pMarket)->IsStock(pStock2->GetSymbol())) {
