@@ -69,7 +69,9 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubEconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.h" />
@@ -246,7 +248,9 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.cpp" />

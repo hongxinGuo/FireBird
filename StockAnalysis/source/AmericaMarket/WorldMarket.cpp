@@ -66,7 +66,6 @@ CWorldMarket::CWorldMarket() {
 CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
 
-	m_vCountry.resize(0);
 	m_vWorldStock.resize(0);
 	m_vWorldChoicedStock.resize(0);
 }
@@ -104,11 +103,7 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_fFinnhubForexDayLineUpdated = false;
 	m_fFinnhubCryptoExchangeUpdated = false;
 	m_fFinnhubCryptoSymbolUpdated = false;
-	m_vCryptoSymbol.resize(0);
-	m_mapCryptoSymbol.clear();
 	m_fFinnhubCryptoDayLineUpdated = false;
-	m_vCountry.resize(0);
-	m_mapCountry.clear();
 	m_fCountryListUpdated = false;
 	m_fFinnhubEconomicCalendarUpdated = false;
 
@@ -124,10 +119,7 @@ void CWorldMarket::ResetFinnhub(void) {
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
 	m_lCurrentUpdateForexDayLinePos = 0;
-	m_lLastTotalCryptoSymbol = 0;
 	m_lCurrentUpdateCryptoDayLinePos = 0;
-
-	m_lLastTotalCountry = 0;
 
 	m_lLastTotalTiingoIndustry = 0;
 	m_lLastTotalSICIndustry = 0;
@@ -446,22 +438,23 @@ bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
 
-	if (m_lLastTotalCountry < m_vCountry.size()) {
-		TaskUpdateCountryListDB();
+	if (((lCurrentTime < 165800) || (lCurrentTime > 170500))) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
+			TaskUpdateCountryListDB();
+		}
+		TaskUpdateForexExchangeDB();
+		TaskUpdateForexSymbolDB();
+		TaskUpdateCryptoExchangeDB();
+		TaskUpdateCryptoSymbolDB();
+		TaskUpdateInsiderTransactionDB();
+		TaskUpdateForexDayLineDB();
+		TaskUpdateCryptoDayLineDB();
+		TaskUpdateDayLineDB();
+		TaskUpdateEPSSurpriseDB();
+		TaskUpdateEconomicCalendarDB();
+		return true;
 	}
-
-	TaskUpdateForexExchangeDB();
-	TaskUpdateForexSymbolDB();
-	TaskUpdateCryptoExchangeDB();
-	TaskUpdateCryptoSymbolDB();
-	TaskUpdateInsiderTransactionDB();
-	TaskUpdateForexDayLineDB();
-	TaskUpdateCryptoDayLineDB();
-	TaskUpdateDayLineDB();
-	TaskUpdateEPSSurpriseDB();
-	TaskUpdateEconomicCalendarDB();
-
-	return true;
+	return false;
 }
 
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
@@ -503,7 +496,7 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
-	if (((lCurrentTime < 165700) || (lCurrentTime > 170200))) { // 下午五时重启系统，故而此时不允许接收网络信息。
+	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) { // 下午五时重启系统，故而此时不允许接收网络信息。
 		TaskInquiryFinnhubCountryList();
 		TaskInquiryFinnhubForexExchange();
 		TaskInquiryFinnhubCryptoExchange();
@@ -893,7 +886,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 	bool fFound = false;
 	CCryptoSymbolPtr pCryptoSymbol;
 	CString str = _T("");
-	const long lStockSetSize = m_vCryptoSymbol.size();
+	const long lStockSetSize = m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize();
 	bool fHaveInquiry = false;
 	CWebSourceDataProductPtr p = nullptr;
 
@@ -1102,11 +1095,13 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 	CString str;
 	bool fUpdated = false;
+	CCryptoSymbolPtr pSymbol = nullptr;
 
-	for (auto& pSymbol : m_vCryptoSymbol) {
+	for (int i = 0; i < m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); i++) {
 		if (gl_fExitingSystem) {
 			break; // 如果程序正在退出，则停止存储。
 		}
+		pSymbol = m_dataFinnhubCryptoSymbol.GetCryptoSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
@@ -1333,49 +1328,6 @@ bool CWorldMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomic
 	return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar);
 }
 
-void CWorldMarket::AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) {
-	m_mapCryptoSymbol[pCryptoSymbol->GetSymbol()] = m_mapCryptoSymbol.size();
-	m_vCryptoSymbol.push_back(pCryptoSymbol);
-}
-
-bool CWorldMarket::DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) {
-	if (pCryptoSymbol == nullptr) return false;
-	if (!IsCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
-
-	m_mapCryptoSymbol.erase(pCryptoSymbol->GetSymbol());
-	auto it = find(m_vCryptoSymbol.begin(), m_vCryptoSymbol.end(), pCryptoSymbol);
-	m_vCryptoSymbol.erase(it);
-
-	return true;
-}
-
-bool CWorldMarket::IsCountry(CString strCountry) {
-	if (m_mapCountry.find(strCountry) == m_mapCountry.end()) {
-		return false;
-	}
-	else return true;
-}
-
-bool CWorldMarket::IsCountry(CCountryPtr pCountry) {
-	return IsCountry(pCountry->m_strCountry);
-}
-
-void CWorldMarket::AddCountry(CCountryPtr pCountry) {
-	m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
-	m_vCountry.push_back(pCountry);
-}
-
-bool CWorldMarket::DeleteCountry(CCountryPtr pCountry) {
-	if (pCountry == nullptr) return false;
-	if (!IsCountry(pCountry->m_strCountry)) return false;
-
-	m_mapCountry.erase(pCountry->m_strCountry);
-	auto it = find(m_vCountry.begin(), m_vCountry.end(), pCountry);
-	m_vCountry.erase(it);
-
-	return true;
-}
-
 CWebSourceDataProductPtr CWorldMarket::GetFinnhubInquiry(void) {
 	ASSERT(m_qFinnhubProduct.size() > 0);
 
@@ -1499,21 +1451,7 @@ bool CWorldMarket::LoadWorldChoicedStock(void) {
 //
 //////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::UpdateCountryListDB(void) {
-	CCountryPtr pCountry = nullptr;
-	CSetCountry setCountry;
-
-	if (m_lLastTotalCountry < m_vCountry.size()) {
-		setCountry.Open();
-		setCountry.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalCountry; l < m_vCountry.size(); l++) {
-			pCountry = m_vCountry.at(l);
-			pCountry->Append(setCountry);
-		}
-		setCountry.m_pDatabase->CommitTrans();
-		setCountry.Close();
-		m_lLastTotalCountry = m_vCountry.size();
-	}
-	return true;
+	return m_dataFinnhubCountry.UpdateDB();
 }
 
 /// <summary>
@@ -1597,47 +1535,7 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
 }
 
 bool CWorldMarket::UpdateCryptoSymbolDB(void) {
-	const long lTotalCryptoSymbol = m_vCryptoSymbol.size();
-	CCryptoSymbolPtr pSymbol = nullptr;
-	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	bool fUpdateSymbol = false;
-
-	if (m_lLastTotalCryptoSymbol < lTotalCryptoSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
-			pSymbol = m_vCryptoSymbol.at(l);
-			pSymbol->AppendSymbol(setCryptoSymbol);
-		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
-		m_lLastTotalCryptoSymbol = lTotalCryptoSymbol;
-	}
-
-	for (auto& pSymbol2 : m_vCryptoSymbol) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapCryptoSymbol.find(setCryptoSymbol.m_Symbol) != m_mapCryptoSymbol.end()) {
-				pSymbol = m_vCryptoSymbol.at(m_mapCryptoSymbol.at(setCryptoSymbol.m_Symbol));
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setCryptoSymbol);
-					pSymbol->SetUpdateProfileDB(false);
-				}
-			}
-			setCryptoSymbol.MoveNext();
-		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
-	}
-
-	return true;
+	return m_dataFinnhubCryptoSymbol.UpdateDB();
 }
 
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {
@@ -1748,7 +1646,7 @@ bool CWorldMarket::LoadCryptoExchange(void) {
 }
 
 bool CWorldMarket::LoadCryptoSymbol(void) {
-	return m_dataFinnhubForexSymbol.LoadDB();
+	return m_dataFinnhubCryptoSymbol.LoadDB();
 }
 
 bool CWorldMarket::LoadWorldChoicedForex(void)
@@ -1800,22 +1698,7 @@ bool CWorldMarket::LoadWorldChoicedCrypto(void)
 }
 
 bool CWorldMarket::LoadCountryDB(void) {
-	CSetCountry setCountry;
-	CCountryPtr pCountry = nullptr;
-
-	setCountry.m_strSort = _T("[Country]");
-	setCountry.Open();
-	while (!setCountry.IsEOF()) {
-		pCountry = make_shared<CCountry>();
-		pCountry->Load(setCountry);
-		m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
-		m_vCountry.push_back(pCountry);
-		setCountry.MoveNext();
-	}
-	setCountry.Close();
-	m_lLastTotalCountry = m_vCountry.size();
-
-	return true;
+	return m_dataFinnhubCountry.LoadDB();
 }
 
 bool CWorldMarket::LoadEconomicCalendarDB(void) {

@@ -874,7 +874,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoDayLine).Times(0);
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
 
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(170201));
+		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(170501));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {

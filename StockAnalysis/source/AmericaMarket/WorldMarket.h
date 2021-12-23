@@ -32,6 +32,8 @@
 #include"DataFinnhubForexExchange.h"
 #include"DataFinnhubCryptoExchange.h"
 #include"DataFinnhubForexSymbol.h"
+#include"DataFinnhubCryptoSymbol.h"
+#include"DataFinnhubCountry.h"
 #include"DataFinnhubEconomicCalendar.h"
 
 #include"WebSocketData.h"
@@ -293,19 +295,19 @@ public:
 	size_t GetCryptoExchangeSize(void) noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
 	CString GetCryptoExchange(long lIndex) { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex); }
 
-	bool IsCryptoSymbol(CString strSymbol) { if (m_mapCryptoSymbol.find(strSymbol) == m_mapCryptoSymbol.end()) return false; else return true; }
+	bool IsCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.IsCryptoSymbol(strSymbol); }
 	bool IsCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) { return IsCryptoSymbol(pCryptoSymbol->GetSymbol()); }
-	void AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol);
-	bool DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSysbol);
-	CCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_vCryptoSymbol.at(lIndex); }
-	CCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
-	size_t GetCryptoSymbolSize(void) noexcept { return m_vCryptoSymbol.size(); }
+	void AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
+	bool DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSysbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSysbol); }
+	CCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex); }
+	CCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol); }
+	size_t GetCryptoSymbolSize(void) noexcept { return m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); }
 
-	size_t GetTotalCountry(void) noexcept { return m_vCountry.size(); }
-	bool IsCountry(CString strCountry);
-	bool IsCountry(CCountryPtr pCountry);
-	void AddCountry(CCountryPtr pCountry);
-	bool DeleteCountry(CCountryPtr pCountry);
+	size_t GetTotalCountry(void) noexcept { return m_dataFinnhubCountry.GetTotalCountry(); }
+	bool IsCountry(CString strCountry) { return m_dataFinnhubCountry.IsCountry(strCountry); }
+	bool IsCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.IsCountry(pCountry); }
+	void AddCountry(CCountryPtr pCountry) { m_dataFinnhubCountry.Add(pCountry); }
+	bool DeleteCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
 
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
 	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
@@ -461,20 +463,14 @@ protected:
 	CDataFinnhubForexExchange m_dataFinnhubForexExchange;
 	CDataFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
 	CDataFinnhubForexSymbol m_dataFinnhubForexSymbol;
+	CDataFinnhubCryptoSymbol m_dataFinnhubCryptoSymbol;
+	CDataFinnhubCountry m_dataFinnhubCountry;
+	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
 	long m_lCurrentUpdateForexDayLinePos;
-
-	vector<CCryptoSymbolPtr> m_vCryptoSymbol;
-	map<CString, long> m_mapCryptoSymbol;
-	long m_lLastTotalCryptoSymbol;
 	long m_lCurrentUpdateCryptoDayLinePos;
 
-	vector<CCountryPtr> m_vCountry;
-	map<CString, long> m_mapCountry;
 	bool m_fCountryListUpdated;
-	long m_lLastTotalCountry;
-
-	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
 	vector<CTiingoStockPtr> m_vTiingoStock;
 	map<CString, long> m_mapTiingoStock;

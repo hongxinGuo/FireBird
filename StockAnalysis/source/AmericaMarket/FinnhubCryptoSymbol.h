@@ -1,5 +1,6 @@
 #pragma once
 #include"VirtualStock.h"
+#include"DayLine.h"
 
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetCryptoDayLine.h"
