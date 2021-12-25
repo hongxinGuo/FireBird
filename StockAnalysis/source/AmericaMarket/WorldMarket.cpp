@@ -1679,7 +1679,7 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	}
 
 	CCryptoSymbolPtr pCrypto = nullptr;
-	for (long l = 0; m_dataChoicedCrypto.GetSize(); l++) {
+	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
 		pCrypto = m_dataChoicedCrypto.GetCrypto(l);
 		strMessage = CreateFinnhubWebSocketString(pCrypto->GetSymbol());
 		m_FinnhubWebSocket.Send(strMessage);
@@ -1980,26 +1980,29 @@ bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
 	CWorldStockPtr pStock = nullptr;
 
 	auto total = gl_SystemData.GetTiingoIEXSocketSize();
-
 	for (auto i = 0; i < total; i++) {
 		pIEXData = gl_SystemData.PopTiingoIEXSocket();
 		UpdateWorldStockFromTiingoIEXSocket(pIEXData);
+		SetCurrentTiingoWebSocketIEX(pIEXData->m_strSymbol);
 	}
 
 	total = gl_SystemData.GetTiingoCryptoSocketSize();
 	for (auto i = 0; i < total; i++) {
 		pCryptoData = gl_SystemData.PopTiingoCryptoSocket();
+		SetCurrentTiingoWebSocketCrypto(pCryptoData->m_strSymbol);
 	}
 
 	total = gl_SystemData.GetTiingoForexSocketSize();
 	for (auto i = 0; i < total; i++) {
 		pForexData = gl_SystemData.PopTiingoForexSocket();
+		SetCurrentTiingoWebSocketForex(pForexData->m_strSymbol);
 	}
 
 	total = gl_SystemData.GetFinnhubSocketSize();
 	for (auto i = 0; i < total; i++) {
 		pFinnhubData = gl_SystemData.PopFinnhubSocket();
 		UpdateWorldStockFromFinnhubSocket(pFinnhubData);
+		SetCurrentFinnhubWebSocketStake(pFinnhubData->m_strSymbol);
 	}
 
 	return true;

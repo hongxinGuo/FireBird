@@ -231,8 +231,6 @@ bool CWorldMarket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo webSocket IEX heart beat"));
-
 				TRACE("IEX heart beat\n");
 				break;
 			default:
@@ -286,7 +284,6 @@ bool CWorldMarket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// do nothing
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo webSocket crypto heart beat"));
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
@@ -398,7 +395,6 @@ bool CWorldMarket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 				// do nothing
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo webSocket forex heart beat"));
 				break;
 			case 'A': // new data
 				sService = pt.get<string>(_T("service"));

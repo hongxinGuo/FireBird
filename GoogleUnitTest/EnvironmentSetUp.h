@@ -59,8 +59,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			GeneralCheck();
-
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;
 			gl_pNeteaseRTWebInquiry = nullptr;
@@ -173,6 +171,9 @@ namespace StockAnalysisTest {
 
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 			EXPECT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+			gl_pWorldMarket->GetStock(_T("AAPL"))->SetProfileUpdated(false);
+
+			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {

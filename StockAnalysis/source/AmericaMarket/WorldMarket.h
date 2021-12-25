@@ -441,6 +441,15 @@ public:
 	int GetProcessedTiingoForexWebSocket(void) noexcept { return m_iProcessedTiingoForexWebSocket; }
 	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
+	void SetCurrentFinnhubWebSocketStake(CString s) { m_strCurrentFinnhubWebSocketStake = s; }
+	CString GetCurrentFinnhubWebSocketStake(void) { return m_strCurrentFinnhubWebSocketStake; }
+	void SetCurrentTiingoWebSocketIEX(CString s) { m_strCurrentTiingoWebSocketIEX = s; }
+	CString GetCurrentTiingoWebSocketIEX(void) { return m_strCurrentTiingoWebSocketIEX; }
+	void SetCurrentTiingoWebSocketForex(CString s) { m_strCurrentTiingoWebSocketForex = s; }
+	CString GetCurrentTiingoWebSocketForex(void) { return m_strCurrentTiingoWebSocketForex; }
+	void SetCurrentTiingoWebSocketCrypto(CString s) { m_strCurrentTiingoWebSocketCrypto = s; }
+	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
+
 protected:
 	vector<CWorldStockPtr> m_vWorldStock;
 	map<CString, long> m_mapWorldStock;
@@ -540,6 +549,11 @@ protected:
 	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;
+
+	CString m_strCurrentFinnhubWebSocketStake;
+	CString m_strCurrentTiingoWebSocketIEX;
+	CString m_strCurrentTiingoWebSocketForex;
+	CString m_strCurrentTiingoWebSocketCrypto;
 
 	//
 	bool m_fRebulidDayLine;

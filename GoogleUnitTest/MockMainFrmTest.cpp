@@ -104,13 +104,21 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
 			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _))
+			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(16, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(17, _))
 			.Times(1);
 		gl_pMockMainFrame->UpdateStatus();
 	}
@@ -136,13 +144,21 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
 			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _))
+			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(16, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(17, _))
 			.Times(1);
 		gl_pMockMainFrame->UpdateStatus();
 	}
@@ -779,13 +795,21 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
 			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _))
+			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(16, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(17, _))
 			.Times(1);
 
 		InSequence seq;

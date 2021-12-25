@@ -88,7 +88,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pvDayLine = nullptr;
-			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol));
+			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 		}
 
