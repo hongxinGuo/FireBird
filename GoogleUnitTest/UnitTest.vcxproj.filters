@@ -465,13 +465,13 @@
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubStockSymbolProductTest.cpp">
+    <ClCompile Include="ProductFinnhubStockSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubCryptoDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCryptoSymbolProductTest.cpp">
+    <ClCompile Include="ProductFinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubEconomicCalendarTest.cpp">
@@ -480,7 +480,7 @@
     <ClCompile Include="FinnhubForexDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubForexSymbolProductTest.cpp">
+    <ClCompile Include="ProductFinnhubForexSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubStockDayLineTest.cpp">

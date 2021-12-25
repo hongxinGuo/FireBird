@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_EXCHANGE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexExchange)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoSymbol)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbolProduct)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __PEERS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));

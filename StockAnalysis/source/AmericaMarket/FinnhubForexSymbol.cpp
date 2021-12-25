@@ -3,11 +3,11 @@
 
 #include "FinnhubForexSymbol.h"
 
-CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() : CVirtualStock() {
+CForexSymbol::CForexSymbol() : CVirtualStock() {
 	Reset();
 }
 
-void CProductFinnhubForexSymbol::Reset(void) {
+void CForexSymbol::Reset(void) {
 	CVirtualStock::Reset();
 	m_strDescription = _T(" ");
 	m_strDisplaySymbol = _T(" ");
@@ -17,7 +17,7 @@ void CProductFinnhubForexSymbol::Reset(void) {
 	m_lDayLineEndDate = 19800101;
 }
 
-bool CProductFinnhubForexSymbol::UpdateDayLineDB(void) {
+bool CForexSymbol::UpdateDayLineDB(void) {
 	SaveDayLine();
 	UpdateDayLineStartEndDate();
 	SetUpdateProfileDB(true);
@@ -25,7 +25,7 @@ bool CProductFinnhubForexSymbol::UpdateDayLineDB(void) {
 	return true;
 }
 
-bool CProductFinnhubForexSymbol::SaveDayLine() {
+bool CForexSymbol::SaveDayLine() {
 	CSetForexDayLine setForexDayLine;
 	size_t lSize = 0;
 	vector<CDayLinePtr> vDayLine;
@@ -79,7 +79,7 @@ bool CProductFinnhubForexSymbol::SaveDayLine() {
 	return fNeedUpdate;
 }
 
-void CProductFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
+void CForexSymbol::SetCheckingDayLineStatus(void) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	if (m_lIPOStatus == __STOCK_NULL__) {
 		SetDayLineNeedUpdate(false);
@@ -90,7 +90,7 @@ void CProductFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
 	}
 }
 
-CString CProductFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
+CString CForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	CString strTemp;
 	char buffer[50];
@@ -114,14 +114,14 @@ CString CProductFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurre
 	return strMiddle;
 }
 
-void CProductFinnhubForexSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
+void CForexSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
 	m_vDayLine.resize(0);
 	for (auto& pDayLine : vDayLine) {
 		m_vDayLine.push_back(pDayLine);
 	}
 }
 
-void CProductFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
+void CForexSymbol::UpdateDayLineStartEndDate(void) {
 	if (m_vDayLine.size() == 0) {
 		SetDayLineStartDate(29900101);
 		SetDayLineEndDate(19800101);
@@ -138,7 +138,7 @@ void CProductFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 	}
 }
 
-bool CProductFinnhubForexSymbol::HaveNewDayLineData(void) {
+bool CForexSymbol::HaveNewDayLineData(void) {
 	if (m_vDayLine.size() <= 0) return false;
 	if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	else return false;

@@ -4,15 +4,15 @@
 
 #include "ProductFinnhubForexSymbol.h"
 
-IMPLEMENT_DYNCREATE(CFinnhubForexSymbolProduct, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubForexSymbol, CProductWebSourceData)
 
-CFinnhubForexSymbolProduct::CFinnhubForexSymbolProduct() {
+CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strClassName = _T("Finnhub forex symbols");
 	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 	m_lIndex = -1;
 }
 
-CString CFinnhubForexSymbolProduct::CreatMessage(void) {
+CString CProductFinnhubForexSymbol::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);
@@ -20,7 +20,7 @@ CString CFinnhubForexSymbolProduct::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CFinnhubForexSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubForexSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CForexSymbolVectorPtr pvForexSymbol = nullptr;
@@ -36,7 +36,7 @@ bool CFinnhubForexSymbolProduct::ProcessWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-CForexSymbolVectorPtr CFinnhubForexSymbolProduct::ParseFinnhubForexSymbol(CWebDataPtr pWebData) {
+CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDataPtr pWebData) {
 	CForexSymbolVectorPtr pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
 	CForexSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
@@ -47,7 +47,7 @@ CForexSymbolVectorPtr CFinnhubForexSymbolProduct::ParseFinnhubForexSymbol(CWebDa
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pSymbol = make_shared<CProductFinnhubForexSymbol>();
+			pSymbol = make_shared<CForexSymbol>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
 			if (s.size() > 0) pSymbol->SetDescription(s.c_str());

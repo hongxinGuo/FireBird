@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubForexSymbolProductTest : public ::testing::Test
+	class CProductFinnhubForexSymbolTest : public ::testing::Test
 	{
 	protected:
 		static void SetUpTestSuite(void) {
@@ -36,21 +36,21 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CFinnhubForexSymbolProduct forexSymbolProduct;
+		CProductFinnhubForexSymbol productForexSymbol;
 	};
 
-	TEST_F(CFinnhubForexSymbolProductTest, TestInitialize) {
-		EXPECT_EQ(forexSymbolProduct.GetIndex(), -1);
-		EXPECT_STREQ(forexSymbolProduct.GetInquiringStr(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
+	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
+		EXPECT_EQ(productForexSymbol.GetIndex(), -1);
+		EXPECT_STREQ(productForexSymbol.GetInquiringStr(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
 	}
 
-	TEST_F(CFinnhubForexSymbolProductTest, TestCreatMessage) {
-		forexSymbolProduct.SetMarket(gl_pWorldMarket.get());
-		forexSymbolProduct.SetIndex(1);
-		EXPECT_STREQ(forexSymbolProduct.CreatMessage(), forexSymbolProduct.GetInquiringStr() + gl_pWorldMarket->GetForexExchange(1));
+	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
+		productForexSymbol.SetMarket(gl_pWorldMarket.get());
+		productForexSymbol.SetIndex(1);
+		EXPECT_STREQ(productForexSymbol.CreatMessage(), productForexSymbol.GetInquiringStr() + gl_pWorldMarket->GetForexExchange(1));
 	}
 
-	TEST_F(CFinnhubForexSymbolProductTest, TestProcessWebData) {
+	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {
 		// 由MockWorldMarketTest负责测试
 	}
 
@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CForexSymbolVectorPtr m_pvForexSymbol;
-		CFinnhubForexSymbolProduct m_finnhubForexSymbolProduct;
+		CProductFinnhubForexSymbol m_productFinnhubForexSymbol;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
@@ -93,7 +93,7 @@ namespace StockAnalysisTest {
 			&finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
-		m_pvForexSymbol = m_finnhubForexSymbolProduct.ParseFinnhubForexSymbol(m_pWebData);
+		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);

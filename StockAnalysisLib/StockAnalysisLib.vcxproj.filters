@@ -166,6 +166,18 @@
     <Filter Include="源文件\DataBase\PotenDailyBriefing">
       <UniqueIdentifier>{2eb37662-f63b-4c1a-98e6-a7e9f6cb7a94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Data Class\Tiingo">
+      <UniqueIdentifier>{bc91b495-7b4a-4ba3-9aa1-a4270def5934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data Class\Choiced">
+      <UniqueIdentifier>{237ef972-1915-4cf5-a62b-f1fef65ddc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data Class\Tiingo">
+      <UniqueIdentifier>{bcb4b930-521d-410c-a40a-ba064df92c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data Class\Choiced">
+      <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -605,6 +617,18 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.h">
       <Filter>头文件\Data Class\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h">
+      <Filter>头文件\Data Class\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h">
+      <Filter>头文件\Data Class\Choiced</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h">
+      <Filter>头文件\Data Class\Choiced</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h">
+      <Filter>头文件\Data Class\Choiced</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1070,6 +1094,14 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.cpp">
       <Filter>源文件\Data Class\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp">
+      <Filter>源文件\Data Class\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp">
+      <Filter>源文件\Data Class\Choiced</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

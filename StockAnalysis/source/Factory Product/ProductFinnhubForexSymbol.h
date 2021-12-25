@@ -2,15 +2,15 @@
 
 #include"ProductWebData.h"
 
-class CFinnhubForexSymbolProduct : public CProductWebSourceData {
+class CProductFinnhubForexSymbol : public CProductWebSourceData {
 public:
-	DECLARE_DYNCREATE(CFinnhubForexSymbolProduct)
-	CFinnhubForexSymbolProduct();
-	~CFinnhubForexSymbolProduct() {}
+	DECLARE_DYNCREATE(CProductFinnhubForexSymbol)
+	CProductFinnhubForexSymbol();
+	~CProductFinnhubForexSymbol() {}
 
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
 	CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CFinnhubForexSymbolProduct> CFinnhubForexSymbolProductPtr;
+typedef shared_ptr<CProductFinnhubForexSymbol> CProductFinnhubForexSymbolPtr;

@@ -9,9 +9,9 @@ using namespace std;
 #include<memory>
 #include<vector>
 
-class CProductFinnhubForexSymbol : public CVirtualStock {
+class CForexSymbol : public CVirtualStock {
 public:
-	CProductFinnhubForexSymbol();
+	CForexSymbol();
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override final { return 1000; }
 
@@ -34,5 +34,5 @@ public:
 protected:
 };
 
-typedef shared_ptr<CProductFinnhubForexSymbol> CForexSymbolPtr;
+typedef shared_ptr<CForexSymbol> CForexSymbolPtr;
 typedef shared_ptr<vector<CForexSymbolPtr>> CForexSymbolVectorPtr;

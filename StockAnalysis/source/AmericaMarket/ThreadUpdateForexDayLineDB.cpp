@@ -14,7 +14,7 @@
 
 #include"FinnhubForexSymbol.h"
 
-UINT ThreadUpdateForexDayLineDB(not_null<CProductFinnhubForexSymbol*> pSymbol) {
+UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbol*> pSymbol) {
 	CString str;
 
 	gl_ThreadStatus.IncreaseSavingThread();

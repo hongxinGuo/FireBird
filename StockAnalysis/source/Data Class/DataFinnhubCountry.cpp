@@ -30,6 +30,11 @@ bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////////
+//
+// 此种更新方法，是默认新的国家代码附加在最后。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CDataFinnhubCountry::UpdateDB(void) {
 	CCountryPtr pCountry = nullptr;
 	CSetCountry setCountry;

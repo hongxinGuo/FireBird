@@ -69,6 +69,9 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.h" />
@@ -76,6 +79,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
@@ -248,6 +252,9 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.cpp" />
@@ -255,6 +262,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRealTimeData.cpp" />

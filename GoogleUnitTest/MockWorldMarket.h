@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(bool, CreatingthreadUpdateDayLneStartEndDate, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateDayLineDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateStockProfileDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateForexDayLineDB, (CProductFinnhubForexSymbol* pSymbol), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateForexDayLineDB, (CForexSymbol* pSymbol), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateForexSymbolDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateForexExchangeDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateCryptoDayLineDB, (CFinnhubCryptoSymbol* pSymbol), (override));

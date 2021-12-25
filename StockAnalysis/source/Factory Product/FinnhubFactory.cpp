@@ -108,7 +108,7 @@ CWebSourceDataProductPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket,
 		p = make_shared<CProductFinnhubForexExchange>();
 		break;
 	case __FOREX_SYMBOLS__:
-		p = make_shared<CFinnhubForexSymbolProduct>();
+		p = make_shared<CProductFinnhubForexSymbol>();
 		break;
 	case __FOREX_CANDLES__:
 		p = make_shared<CProductFinnhubForexDayLine>();

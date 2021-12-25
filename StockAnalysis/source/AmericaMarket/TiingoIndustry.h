@@ -6,19 +6,20 @@ using namespace std;
 
 class CTiingoIndustry : public CObject {
 public:
-  CTiingoIndustry();
+	CTiingoIndustry();
 
-  void Append(CSetTiingoIndustry& setTiingoIndustry);
-  void Load(CSetTiingoIndustry& setTiingoIndustry);
+	void Append(CSetTiingoIndustry& setTiingoIndustry);
+	void Load(CSetTiingoIndustry& setTiingoIndustry);
 
-  void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
-  bool IsUpdated(void) const noexcept { return m_fUpdated; }
+	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:
-  CString m_strIndustry;
-  CString m_strSector;
+	CString m_strIndustry;
+	CString m_strSector;
 
-  bool m_fUpdated;
+	bool m_fUpdated;
 };
 
 typedef shared_ptr<CTiingoIndustry> CTiingoIndustryPtr;
+typedef shared_ptr<vector<CTiingoIndustryPtr>> CTiingoIndustryVectorPtr;

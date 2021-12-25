@@ -36,6 +36,12 @@
 #include"DataFinnhubCountry.h"
 #include"DataFinnhubEconomicCalendar.h"
 
+#include"DataChoicedStock.h"
+#include"DataChoicedForex.h"
+#include"DataChoicedCrypto.h"
+
+#include"DataTiingoStock.h"
+
 #include"WebSocketData.h"
 #include"WebSocket.h"
 
@@ -152,6 +158,7 @@ public:
 	void ResetFinnhub(void);
 	void ResetQuandl(void);
 	void ResetTiingo(void);
+	void ResetDataClass(void);
 
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);
@@ -216,7 +223,7 @@ public:
 	virtual bool CreatingThreadUpdateStockProfileDB(void);
 	virtual bool CreatingThreadUpdateForexExchangeDB(void);
 	virtual bool CreatingThreadUpdateForexSymbolDB(void);
-	virtual bool CreatingThreadUpdateForexDayLineDB(CProductFinnhubForexSymbol* pSymbol);
+	virtual bool CreatingThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
 	virtual bool CreatingThreadUpdateCryptoExchangeDB(void);
 	virtual bool CreatingThreadUpdateCryptoSymbolDB(void);
 	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
@@ -229,7 +236,7 @@ public:
 	virtual bool CreatingThreadUpdateNaicsIndustry(void);
 	virtual bool CreatingThreadUpdateEconomicCalendarDB(void);
 
-	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
+	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态
 	CWebSourceDataProductPtr GetCurrentFinnhubInquiry(void) { return m_pCurrentFinnhubProduct; }
@@ -258,9 +265,9 @@ public:
 	void AddStock(CWorldStockPtr pStock);
 	bool DeleteStock(CWorldStockPtr pStock);
 	size_t GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
-	void AddTiingoStock(CTiingoStockPtr pTiingoStock);
-	bool DeleteTiingoStock(CTiingoStockPtr pStock);
-	size_t GetTotalTiingoStock(void) noexcept { return m_vTiingoStock.size(); }
+	void AddTiingoStock(CTiingoStockPtr pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
+	bool DeleteTiingoStock(CTiingoStockPtr pStock) { return m_dataTiingoStock.Delete(pStock); }
+	size_t GetTotalTiingoStock(void) noexcept { return m_dataTiingoStock.GetTotalStock(); }
 	bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
 	bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
@@ -269,11 +276,11 @@ public:
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
 
-	bool IsTiingoStock(CString strSymbol) { if (m_mapTiingoStock.find(strSymbol) == m_mapTiingoStock.end()) return false; else return true; }
-	bool IsTiingoStock(CWorldStockPtr pStock) { return IsTiingoStock(pStock->GetSymbol()); }
-	bool IsTiingoStock(CTiingoStockPtr pTiingoStock) { return IsTiingoStock(pTiingoStock->m_strTicker); }
-	CTiingoStockPtr GetTiingoStock(long lIndex) { return m_vTiingoStock.at(lIndex); }
-	CTiingoStockPtr GetTiingoStock(CString strTicker) { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
+	bool IsTiingoStock(CString strSymbol) { return m_dataTiingoStock.IsStock(strSymbol); }
+	bool IsTiingoStock(CWorldStockPtr pStock) { return m_dataTiingoStock.IsStock(pStock); }
+	bool IsTiingoStock(CTiingoStockPtr pTiingoStock) { return m_dataTiingoStock.IsStock(pTiingoStock); }
+	CTiingoStockPtr GetTiingoStock(long lIndex) { return m_dataTiingoStock.GetStock(lIndex); }
+	CTiingoStockPtr GetTiingoStock(CString strTicker) { return m_dataTiingoStock.GetStock(strTicker); }
 
 	bool IsForexExchange(CString strForexExchange) { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
 	void AddForexExchange(CString strForexExchange) { m_dataFinnhubForexExchange.Add(strForexExchange); }
@@ -355,34 +362,34 @@ public:
 
 	// 数据库操作
 	bool LoadOption(void);
-	bool LoadWorldExchangeDB(void); // 装入世界交易所信息
+	bool LoadWorldExchangeDB(void) { return m_dataFinnhubStockExchange.LoadDB(); }
 
 	bool LoadStockDB(void);
 	bool LoadWorldChoicedStock(void);
 
-	virtual bool UpdateCountryListDB(void);
+	virtual bool UpdateCountryListDB(void) { return m_dataFinnhubCountry.UpdateDB(); }
 	virtual bool UpdateStockProfileDB(void);
 	virtual bool UpdateStockDayLineDB(void);
-	virtual bool UpdateForexSymbolDB(void);
+	virtual bool UpdateForexSymbolDB(void) { return m_dataFinnhubForexSymbol.UpdateDB(); }
 	virtual bool UpdateForexExchangeDB(void);
-	virtual bool UpdateCryptoSymbolDB(void);
+	virtual bool UpdateCryptoSymbolDB(void) { return m_dataFinnhubCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateCryptoExchangeDB(void);
 	virtual bool UpdateInsiderTransactionDB(void);
-	virtual bool UpdateEconomicCalendarDB(void);
+	virtual bool UpdateEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.UpdateDB(); }
 	virtual bool UpdateTiingoStockDB(void);
 	virtual bool UpdateTiingoIndustry(void);
 	virtual bool UpdateSICIndustry(void);
 	virtual bool UpdateNaicsIndustry(void);
 
-	bool LoadForexExchange(void);
-	bool LoadForexSymbol(void);
-	bool LoadCryptoExchange(void);
-	bool LoadCryptoSymbol(void);
+	bool LoadForexExchange(void) { return m_dataFinnhubForexExchange.LoadDB(); }
+	bool LoadForexSymbol(void) { return m_dataFinnhubForexSymbol.LoadDB(); }
+	bool LoadCryptoExchange(void) { return m_dataFinnhubCryptoExchange.LoadDB(); }
+	bool LoadCryptoSymbol(void) { return m_dataFinnhubCryptoSymbol.LoadDB(); }
 	bool LoadWorldChoicedForex(void);
 	bool LoadWorldChoicedCrypto(void);
 
-	bool LoadCountryDB(void);
-	bool LoadEconomicCalendarDB(void);
+	bool LoadCountryDB(void) { return m_dataFinnhubCountry.LoadDB(); }
+	bool LoadEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.LoadDB(); }
 
 	bool LoadTiingoStock(void);
 
@@ -452,12 +459,6 @@ protected:
 	vector<CWorldStockPtr> m_vWorldChoicedStock;
 	map<CString, long> m_mapWorldChoicedStock;
 	long m_lChoicedStockPos;
-	vector<CForexSymbolPtr> m_vWorldChoicedForex;
-	map<CString, long> m_mapWorldChoicedForex;
-	long m_lChoicedForexPos;
-	vector<CCryptoSymbolPtr> m_vWorldChoicedCrypto;
-	map<CString, long> m_mapWorldChoicedCrypto;
-	long m_lChoicedCryptoPos;
 
 	CDataFinnhubStockExchange m_dataFinnhubStockExchange;
 	CDataFinnhubForexExchange m_dataFinnhubForexExchange;
@@ -467,14 +468,26 @@ protected:
 	CDataFinnhubCountry m_dataFinnhubCountry;
 	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
+	CDataTiingoStock m_dataTiingoStock;
+
+	CDataChoicedStock m_dataChoicedStock;
+	CDataChoicedForex m_dataChoicedForex;
+	CDataChoicedCrypto m_dataChoicedCrypto;
+
 	long m_lCurrentUpdateForexDayLinePos;
 	long m_lCurrentUpdateCryptoDayLinePos;
 
-	bool m_fCountryListUpdated;
+	vector<CTiingoIndustryPtr> m_vTiingoIndustry;
+	map<CString, long> m_mapTiingoIndustry;
+	long m_lLastTotalTiingoIndustry;
 
-	vector<CTiingoStockPtr> m_vTiingoStock;
-	map<CString, long> m_mapTiingoStock;
-	long m_lLastTotalTiingoStock;
+	vector<CSICIndustryPtr> m_vSICIndustry;
+	map<CString, long> m_mapSICIndustry;
+	long m_lLastTotalSICIndustry;
+
+	vector<CNaicsIndustryPtr> m_vNaicsIndustry;
+	map<CString, long> m_mapNaicsIndustry;
+	long m_lLastTotalNaicsIndustry;
 
 	CFinnhubFactory m_FinnhubFactory;
 	CTiingoFactory m_TiingoFactory;
@@ -495,6 +508,7 @@ protected:
 	bool m_fQuandlInquiring;
 	atomic_bool m_fQuandlDataReceived;
 
+	bool m_fCountryListUpdated;
 	bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
 	bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
 	bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
@@ -511,18 +525,6 @@ protected:
 
 	bool m_fTiingoSymbolUpdated; // 每日更新公司代码库
 	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
-
-	vector<CTiingoIndustryPtr> m_vTiingoIndustry;
-	map<CString, long> m_mapTiingoIndustry;
-	long m_lLastTotalTiingoIndustry;
-
-	vector<CSICIndustryPtr> m_vSICIndustry;
-	map<CString, long> m_mapSICIndustry;
-	long m_lLastTotalSICIndustry;
-
-	vector<CNaicsIndustryPtr> m_vNaicsIndustry;
-	map<CString, long> m_mapNaicsIndustry;
-	long m_lLastTotalNaicsIndustry;
 
 	// WebSocket数据
 	CWebSocket m_FinnhubWebSocket;

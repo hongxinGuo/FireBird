@@ -329,7 +329,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
 
-		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CForexSymbol>();
 		pForexSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
@@ -339,7 +339,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
-		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CForexSymbol>();
 		long lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -358,7 +358,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "空指针";
 
-		pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
+		pForexSymbol = make_shared<CForexSymbol>();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "此符号在符号集中不存在";
 	}
@@ -567,7 +567,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
-		CForexSymbolPtr pForexSymbol = make_shared<CProductFinnhubForexSymbol>();
+		CForexSymbolPtr pForexSymbol = make_shared<CForexSymbol>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
@@ -1053,7 +1053,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
 		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
@@ -1061,7 +1061,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
 		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
 		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
@@ -1369,7 +1369,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexSymbol());
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 			p = gl_pWorldMarket->GetFinnhubInquiry();
-			EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbolProduct)));
+			EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 			EXPECT_EQ(p->GetIndex(), i);
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
 		}
@@ -1377,7 +1377,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Forex sysbols已更新"));

@@ -658,7 +658,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__FOREX_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CFinnhubForexSymbolProduct>();
+		CWebSourceDataProductPtr p = make_shared<CProductFinnhubForexSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -672,7 +672,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pMockWorldMarket->GetForexExchange(p->GetIndex()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbolProduct)));
+		EXPECT_TRUE(gl_pMockWorldMarket->GetCurrentFinnhubInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 

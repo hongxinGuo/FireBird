@@ -57,7 +57,8 @@ bool CWorldMarket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
-																								 // do nothing
+			// do nothing
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub webSocket heart beat"));
 			}
 			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = pt.get<string>(_T("msg"));
