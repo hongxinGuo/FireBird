@@ -6,7 +6,7 @@ using namespace std;
 
 #include"FinnhubStockExchange.h"
 
-class CDataFinnhubStockExchange : CObject {
+class CDataFinnhubStockExchange : public CObject {
 public:
 	CDataFinnhubStockExchange();
 	~CDataFinnhubStockExchange();

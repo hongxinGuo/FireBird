@@ -226,8 +226,8 @@ bool CWorldMarket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 				break;
 			case 'I':// authenization  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(m_TiingoIEXWebSocket.GetSubscriptionId() == 0);
-				m_TiingoIEXWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				ASSERT(m_dataTiingoIEXWebSocket.GetSubscriptionId() == 0);
+				m_dataTiingoIEXWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理
@@ -279,8 +279,8 @@ bool CWorldMarket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(m_TiingoCryptoWebSocket.GetSubscriptionId() == 0);
-				m_TiingoCryptoWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				ASSERT(m_dataTiingoCryptoWebSocket.GetSubscriptionId() == 0);
+				m_dataTiingoCryptoWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// do nothing
@@ -390,8 +390,8 @@ bool CWorldMarket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(m_TiingoForexWebSocket.GetSubscriptionId() == 0);
-				m_TiingoForexWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				ASSERT(m_dataTiingoForexWebSocket.GetSubscriptionId() == 0);
+				m_dataTiingoForexWebSocket.SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 				// do nothing

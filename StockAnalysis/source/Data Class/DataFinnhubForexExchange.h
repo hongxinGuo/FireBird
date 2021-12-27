@@ -3,7 +3,7 @@
 using namespace std;
 #include<vector>
 
-class CDataFinnhubForexExchange : CObject {
+class CDataFinnhubForexExchange : public CObject {
 public:
 	CDataFinnhubForexExchange();
 	~CDataFinnhubForexExchange();

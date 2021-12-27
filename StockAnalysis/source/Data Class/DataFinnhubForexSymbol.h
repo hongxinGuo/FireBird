@@ -5,7 +5,7 @@
 using namespace std;
 #include<vector>
 
-class CDataFinnhubForexSymbol : CObject {
+class CDataFinnhubForexSymbol : public CObject {
 public:
 	CDataFinnhubForexSymbol();
 	~CDataFinnhubForexSymbol();

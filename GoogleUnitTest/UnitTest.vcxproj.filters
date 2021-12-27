@@ -139,6 +139,9 @@
     <Filter Include="Test源文件\Factory Product\Quandl">
       <UniqueIdentifier>{01482b08-1aaf-4d80-aeb0-699ba08bccd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Class">
+      <UniqueIdentifier>{5e657f7e-5e8b-4b66-a363-4d14bd91127a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -491,6 +494,15 @@
     </ClCompile>
     <ClCompile Include="FinnhubStockPriceQuoteTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="DataFinnhubWebSocketTest.cpp">
+      <Filter>Test源文件\Data Class</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp">
+      <Filter>Test源文件\Data Class</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTiingoCryptoWebSocketTest.cpp">
+      <Filter>Test源文件\Data Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {
-		EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 4846) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4846) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsStock) {
@@ -229,7 +229,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
 		CWorldStockPtr pStock = nullptr;
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -244,16 +244,16 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
 		CWorldStockPtr pStock = make_shared<CWorldStock>();
-		long lTotalStock = gl_pWorldMarket->GetTotalStock();
+		long lTotalStock = gl_pWorldMarket->GetStockSize();
 		pStock->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
 		gl_pWorldMarket->AddStock(pStock);
 		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), lTotalStock + 1);
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), lTotalStock + 1);
 		gl_pWorldMarket->DeleteStock(pStock);
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), lTotalStock);
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), lTotalStock);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteStock) {
@@ -561,7 +561,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			EXPECT_FALSE(gl_pWorldMarket->GetStock(i)->IsDayLineNeedSaving()) << "此标识被重置";
 		}
 	}
@@ -1078,7 +1078,7 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetProfileUpdated(true);
 		}
@@ -1116,7 +1116,7 @@ namespace StockAnalysisTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub股票简介更新完毕"));
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetProfileUpdated(false);
 		}
@@ -1127,7 +1127,7 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
 		}
@@ -1164,7 +1164,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
 
 		// 恢复原状
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
 		}
@@ -1191,7 +1191,7 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetPeerUpdated(true);
 		}
@@ -1238,7 +1238,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated()) << "股票都查询完了";
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetInsiderTransactionNeedUpdate(false);
 		}
@@ -1294,7 +1294,7 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetEPSSurpriseUpdated(true);
 		}
@@ -1457,7 +1457,7 @@ namespace StockAnalysisTest {
 		long lStockIndex = 0;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
 		}
@@ -1496,7 +1496,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
 
 		// 恢复原状
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
 		}
@@ -1544,7 +1544,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {
 		CWorldStockPtr pStock = nullptr;
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
 			pStock->m_fEPSSurpriseUpdated = true;
@@ -1553,7 +1553,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildEPSSurprise());
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
@@ -1563,7 +1563,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
 		CWorldStockPtr pStock = nullptr;
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetPeerUpdateDate(20200101);
 			pStock->SetPeerUpdated(true);
@@ -1573,7 +1573,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildPeer());
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->IsPeerUpdated());
@@ -1581,7 +1581,7 @@ namespace StockAnalysisTest {
 		}
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubPeerUpdated());
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetPeerUpdated(false);
 			pStock->SetUpdateProfileDB(false);
@@ -1590,7 +1590,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
 		CWorldStockPtr pStock = nullptr;
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetIPOStatus(__STOCK_IPOED__);
 			pStock->SetDayLineStartDate(20200101);
@@ -1602,7 +1602,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildStockDayLineDB());
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
@@ -1611,7 +1611,7 @@ namespace StockAnalysisTest {
 		}
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockProfileUpdated());
 
-		for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -1627,26 +1627,5 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateNaicsIndustry) {
 		EXPECT_THAT(gl_pWorldMarket->UpdateNaicsIndustry(), IsFalse());
-	}
-
-	TEST_F(CWorldMarketTest, TestCreateFinnhubWebSocketString) {
-		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("AAPL")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
-		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
-		EXPECT_STREQ(gl_pWorldMarket->CreateFinnhubWebSocketString(_T("IC MARKETS:1")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
-	}
-
-	TEST_F(CWorldMarketTest, TestCreateTiingoIEXWebSocketSymbolString) {
-		CString strSymbols = gl_pWorldMarket->CreateTiingoIEXWebSocketSymbolString();
-		EXPECT_STREQ(strSymbols, _T("\"A\",\"AA\",\"AAL\",\"AAPL\"")) << "默认自选股票就是这四个";
-	}
-
-	TEST_F(CWorldMarketTest, TestCreateTiingoCryptoWebSocketSymbolString) {
-		CString strSymbols = gl_pWorldMarket->CreateTiingoCryptoWebSocketSymbolString();
-		EXPECT_STREQ(strSymbols, _T("\"FOREX:401484413\",\"FXCM:USD/SEK\",\"OANDA:AUD_SGD\"")) << "默认自选Crypto就是这三个";
-	}
-
-	TEST_F(CWorldMarketTest, TestCreateTiingoForexWebSocketSymbolString) {
-		CString strSymbols = gl_pWorldMarket->CreateTiingoForexWebSocketSymbolString();
-		EXPECT_STREQ(strSymbols, _T("\"FXCM:USD/JPY\",\"IC MARKETS:1\",\"OANDA:AUD_SGD\"")) << "默认自选Forex就是这三个";
 	}
 }

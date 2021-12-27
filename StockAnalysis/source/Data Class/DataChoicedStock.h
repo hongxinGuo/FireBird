@@ -6,13 +6,13 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CDataChoicedStock : CObject {
+class CDataChoicedStock : public CObject {
 public:
 	CDataChoicedStock();
 	~CDataChoicedStock();
 	void Reset(void);
 
-	CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
+	CWorldStockPtr GetStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
 	size_t GetSize(void) { return m_vWorldChoicedStock.size(); }
 
 	bool LoadDB(void);

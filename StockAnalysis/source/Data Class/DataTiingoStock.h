@@ -7,7 +7,7 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CDataTiingoStock : CObject {
+class CDataTiingoStock : public CObject {
 public:
 	CDataTiingoStock();
 	~CDataTiingoStock();

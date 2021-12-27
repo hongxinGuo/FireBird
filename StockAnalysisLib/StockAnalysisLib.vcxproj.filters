@@ -178,6 +178,12 @@
     <Filter Include="源文件\Data Class\Choiced">
       <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Data Class\WebSocket">
+      <UniqueIdentifier>{d5b8aca2-d6cf-4bc3-a0f4-d2d41140edc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data Class\WebSocket">
+      <UniqueIdentifier>{96a3150a-ffc4-4080-a5ea-e8c3b885ad89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -629,6 +635,33 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h">
       <Filter>头文件\Data Class\Choiced</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h">
+      <Filter>头文件\Data Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataSICIndustry.h">
+      <Filter>头文件\Data Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h">
+      <Filter>头文件\Data Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.h">
+      <Filter>头文件\Data Class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
+      <Filter>头文件\Data Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.h">
+      <Filter>头文件\Base Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.h">
+      <Filter>头文件\Data Class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.h">
+      <Filter>头文件\Data Class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.h">
+      <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1100,8 +1133,30 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp">
       <Filter>源文件\Data Class\Choiced</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp">
+      <Filter>源文件\Data Class\Choiced</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp">
+      <Filter>源文件\Data Class\Choiced</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
+      <Filter>源文件\Data Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.cpp">
+      <Filter>源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.cpp">
+      <Filter>源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.cpp">
+      <Filter>源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.cpp">
+      <Filter>源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.cpp">
+      <Filter>源文件\Base Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -6,7 +6,7 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CDataFinnhubCountry : CObject {
+class CDataFinnhubCountry : public CObject {
 public:
 	CDataFinnhubCountry();
 	~CDataFinnhubCountry();

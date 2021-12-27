@@ -6,7 +6,7 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CDataChoicedCrypto : CObject {
+class CDataChoicedCrypto : public CObject {
 public:
 	CDataChoicedCrypto();
 	~CDataChoicedCrypto();

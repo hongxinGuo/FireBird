@@ -6,7 +6,7 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CDataChoicedForex : CObject {
+class CDataChoicedForex : public CObject {
 public:
 	CDataChoicedForex();
 	~CDataChoicedForex();

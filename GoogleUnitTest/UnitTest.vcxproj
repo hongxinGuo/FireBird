@@ -99,6 +99,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="AccessoryTest.cpp" />
+    <ClCompile Include="DataFinnhubWebSocketTest.cpp" />
+    <ClCompile Include="DataTiingoCryptoWebSocketTest.cpp" />
+    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCompanyPeerTest.cpp" />
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp" />
