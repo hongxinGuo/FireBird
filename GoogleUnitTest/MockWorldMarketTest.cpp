@@ -422,7 +422,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB2) {
-		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
 			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(false);
@@ -433,7 +433,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB3) {
-		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
 			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(true);
@@ -448,7 +448,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB4) {
-		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101);
 
@@ -467,7 +467,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB5) {
-		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101);
 
@@ -948,6 +948,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo1) {
 		gl_pMockWorldMarket->SetSystemReady(false);
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCryptoSymbol).Times(0);
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
 
 		EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
@@ -956,6 +957,7 @@ namespace StockAnalysisTest {
 		gl_pMockWorldMarket->SetSystemReady(true);
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
+		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCryptoSymbol).Times(1);
 		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
 
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());

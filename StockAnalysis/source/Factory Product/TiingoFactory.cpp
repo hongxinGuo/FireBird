@@ -10,6 +10,8 @@
 #include"ProductTiingoStockSymbol.h"
 #include"ProductTiingoStockDayLine.h"
 
+#include"ProductTiingoCryptoSymbol.h"
+
 CWebSourceDataProductPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CWebSourceDataProductPtr p = nullptr;
 
@@ -57,6 +59,8 @@ CWebSourceDataProductPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, 
 	case __FOREX_ALL_RATES__:
 	case __CRYPTO_EXCHANGE__:
 	case __CRYPTO_SYMBOLS__:
+		p = make_shared<CProductTiingoCryptoSymbol>();
+		break;
 	case __CRYPTO_CANDLES__:
 	case __ECONOMIC_COUNTRY_LIST__:
 	case __ECONOMIC_CALENDAR__:

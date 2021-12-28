@@ -19,13 +19,13 @@ CString CProductFinnhubCryptoSymbol::CreatMessage(void) {
 }
 
 bool CProductFinnhubCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
-	CCryptoSymbolVectorPtr pvCryptoSymbol;
+	CFinnhubCryptoSymbolVectorPtr pvCryptoSymbol;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (auto& pSymbol : *pvCryptoSymbol) {
-		if (!((CWorldMarket*)m_pMarket)->IsCryptoSymbol(pSymbol->GetSymbol())) {
+		if (!((CWorldMarket*)m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
 			((CWorldMarket*)m_pMarket)->AddCryptoSymbol(pSymbol);
 		}
@@ -34,9 +34,9 @@ bool CProductFinnhubCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-CCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
-	CCryptoSymbolVectorPtr pvCryptoSymbol = make_shared<vector<CCryptoSymbolPtr>>();
-	CCryptoSymbolPtr pSymbol = nullptr;
+CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
+	CFinnhubCryptoSymbolVectorPtr pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
+	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 	ptree pt, pt2;
 	string s;
 	string sError;

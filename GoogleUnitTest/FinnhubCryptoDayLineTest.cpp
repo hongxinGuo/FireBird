@@ -83,7 +83,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pData->m_strSymbol));
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			m_pWebData = pData->m_pData;
 			m_pvDayLine = nullptr;
 		}

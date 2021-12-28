@@ -663,6 +663,18 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.h">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoCrypto.h">
+      <Filter>头文件\DataBase\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.h">
+      <Filter>头文件\Data Class\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1156,6 +1168,21 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.cpp">
       <Filter>源文件\Base Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp">
+      <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoCrypto.cpp">
+      <Filter>源文件\DataBase\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp">
+      <Filter>源文件\Data Class\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoCryptoDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

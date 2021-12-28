@@ -82,13 +82,13 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CCryptoSymbolVectorPtr m_pvCryptoSymbol;
+		CFinnhubCryptoSymbolVectorPtr m_pvCryptoSymbol;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
-													 testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
-														 &finnhubWebData215, &finnhubWebData220));
+		testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+			&finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);

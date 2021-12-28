@@ -11,18 +11,18 @@ public:
 	~CDataFinnhubCryptoSymbol();
 	void Reset(void);
 
-	bool IsCryptoSymbol(CString strSymbol) { if (m_mapCryptoSymbol.find(strSymbol) == m_mapCryptoSymbol.end()) return false; else return true; }
+	bool IsFinnhubCryptoSymbol(CString strSymbol) { if (m_mapCryptoSymbol.find(strSymbol) == m_mapCryptoSymbol.end()) return false; else return true; }
 	size_t GetCryptoSymbolSize(void) noexcept { return m_vCryptoSymbol.size(); }
-	CCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_vCryptoSymbol.at(lIndex); }
-	CCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
-	bool Delete(CCryptoSymbolPtr pSymbol);
-	void Add(CCryptoSymbolPtr pSymbol);
+	CFinnhubCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_vCryptoSymbol.at(lIndex); }
+	CFinnhubCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
+	bool Delete(CFinnhubCryptoSymbolPtr pSymbol);
+	void Add(CFinnhubCryptoSymbolPtr pSymbol);
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
 protected:
-	vector<CCryptoSymbolPtr> m_vCryptoSymbol;
+	vector<CFinnhubCryptoSymbolPtr> m_vCryptoSymbol;
 	map<CString, long> m_mapCryptoSymbol;
 	long m_lLastTotalCryptoSymbol;
 };

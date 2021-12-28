@@ -45,10 +45,10 @@ bool CProductTinngoStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
 		TRACE("今日Tiingo活跃股票数为：%d\n", lTemp);
 		sprintf_s(buffer, _T("%6d"), lTemp);
 		strNumber = buffer;
-		str = _T("今日Tiingo Symbol活跃股票总数为") + strNumber;
+		str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-	((CWorldMarket*)m_pMarket)->SetTiingoSymbolUpdated(true);
+	((CWorldMarket*)m_pMarket)->SetTiingoStockSymbolUpdated(true);
 
 	return true;
 }

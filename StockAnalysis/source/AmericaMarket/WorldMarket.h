@@ -44,6 +44,7 @@
 #include"DataTiingoStock.h"
 
 #include"DataTiingoIndustry.h"
+#include"DataTiingoCryptoSymbol.h"
 #include"DataSICIndustry.h"
 #include"DataNaicsIndustry.h"
 
@@ -203,6 +204,7 @@ public:
 
 	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
 	virtual bool TaskInquiryTiingoCompanySymbol(void);
+	virtual bool TaskInquiryTiingoCryptoSymbol(void);
 	virtual bool TaskInquiryTiingoDayLine(void);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
@@ -222,6 +224,7 @@ public:
 	bool TaskUpdateEconomicCalendarDB(void) { return CreatingThreadUpdateEconomicCalendarDB(); }
 	bool TaskUpdateInsiderTransactionDB(void) { return CreatingThreadUpdateInsiderTransactionDB(); }
 	bool TaskUpdateTiingoStockDB(void) { return CreatingThreadUpdateTiingoStockDB(); }
+	bool TaskUpdateTiingoCryptoDB(void) { return CreatingThreadUpdateTiingoCryptoDB(); }
 
 	bool TaskCheckSystemReady(void);
 
@@ -241,6 +244,7 @@ public:
 	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
 	virtual bool CreatingThreadUpdateInsiderTransactionDB(void);
 	virtual bool CreatingThreadUpdateTiingoStockDB(void);
+	virtual bool CreatingThreadUpdateTiingoCryptoDB(void);
 	virtual bool CreatingThreadUpdateTiingoIndustry(void);
 	virtual bool CreatingThreadUpdateSICIndustry(void);
 	virtual bool CreatingThreadUpdateNaicsIndustry(void);
@@ -312,13 +316,21 @@ public:
 	size_t GetCryptoExchangeSize(void) noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
 	CString GetCryptoExchange(long lIndex) { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex); }
 
-	bool IsCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.IsCryptoSymbol(strSymbol); }
-	bool IsCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) { return IsCryptoSymbol(pCryptoSymbol->GetSymbol()); }
-	void AddCryptoSymbol(CCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
-	bool DeleteCryptoSymbol(CCryptoSymbolPtr pCryptoSysbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSysbol); }
-	CCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex); }
-	CCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol); }
+	bool IsFinnhubCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.IsFinnhubCryptoSymbol(strSymbol); }
+	bool IsFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
+	void AddCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
+	bool DeleteCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSysbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSysbol); }
+	CFinnhubCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex); }
+	CFinnhubCryptoSymbolPtr GetCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol); }
 	size_t GetCryptoSymbolSize(void) noexcept { return m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); }
+
+	bool IsTiingoCryptoSymbol(CString strSymbol) { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
+	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
+	void AddTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
+	bool DeleteTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSysbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSysbol); }
+	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(long lIndex) { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(lIndex); }
+	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(CString strSymbol) { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
+	size_t GetTiingoCryptoSymbolSize(void) noexcept { return m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(); }
 
 	size_t GetTotalCountry(void) noexcept { return m_dataFinnhubCountry.GetTotalCountry(); }
 	bool IsCountry(CString strCountry) { return m_dataFinnhubCountry.IsCountry(strCountry); }
@@ -359,8 +371,10 @@ public:
 	bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
 	void SetFinnhubEPSSurpriseUpdated(bool fFlag) noexcept { m_fFinnhubEPSSurpriseUpdated = fFlag; }
 
-	bool IsTiingoSymbolUpdated(void) noexcept { return m_fTiingoSymbolUpdated; }
-	void SetTiingoSymbolUpdated(bool fFlag) noexcept { m_fTiingoSymbolUpdated = fFlag; }
+	bool IsTiingoStockSymbolUpdated(void) noexcept { return m_fTiingoStockSymbolUpdated; }
+	void SetTiingoStockSymbolUpdated(bool fFlag) noexcept { m_fTiingoStockSymbolUpdated = fFlag; }
+	bool IsTiingoCryptoSymbolUpdated(void) noexcept { return m_fTiingoCryptoSymbolUpdated; }
+	void SetTiingoCryptoSymbolUpdated(bool fFlag) noexcept { m_fTiingoCryptoSymbolUpdated = fFlag; }
 	bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
 	void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
@@ -387,6 +401,7 @@ public:
 	virtual bool UpdateInsiderTransactionDB(void);
 	virtual bool UpdateEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.UpdateDB(); }
 	virtual bool UpdateTiingoStockDB(void) { return m_dataTiingoStock.UpdateDB(); }
+	virtual bool UpdateTiingoCryptoDB(void) { return m_dataTiingoCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateTiingoIndustry(void);
 	virtual bool UpdateSICIndustry(void);
 	virtual bool UpdateNaicsIndustry(void);
@@ -477,7 +492,9 @@ protected:
 	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
 	CDataWorldStock m_dataWorldStock;
+
 	CDataTiingoStock m_dataTiingoStock;
+	CDataTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
 
 	CDataChoicedStock m_dataChoicedStock;
 	CDataChoicedForex m_dataChoicedForex;
@@ -520,7 +537,8 @@ protected:
 	bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
 	bool m_fFinnhubEPSSurpriseUpdated;
 
-	bool m_fTiingoSymbolUpdated; // 每日更新公司代码库
+	bool m_fTiingoStockSymbolUpdated; // 每日更新公司代码库
+	bool m_fTiingoCryptoSymbolUpdated; // 每日更新crypto代码库
 	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 
 	// WebSocket数据

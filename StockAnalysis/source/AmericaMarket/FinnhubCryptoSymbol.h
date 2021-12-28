@@ -34,5 +34,5 @@ public:
 protected:
 };
 
-typedef shared_ptr<CFinnhubCryptoSymbol> CCryptoSymbolPtr;
-typedef shared_ptr<vector<CCryptoSymbolPtr>> CCryptoSymbolVectorPtr;
+typedef shared_ptr<CFinnhubCryptoSymbol> CFinnhubCryptoSymbolPtr;
+typedef shared_ptr<vector<CFinnhubCryptoSymbolPtr>> CFinnhubCryptoSymbolVectorPtr;

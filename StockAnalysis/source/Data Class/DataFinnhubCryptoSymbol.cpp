@@ -14,9 +14,9 @@ void CDataFinnhubCryptoSymbol::Reset(void) {
 	m_lLastTotalCryptoSymbol = 0;
 }
 
-bool CDataFinnhubCryptoSymbol::Delete(CCryptoSymbolPtr pCryptoSymbol) {
+bool CDataFinnhubCryptoSymbol::Delete(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
-	if (!IsCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
+	if (!IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
 
 	m_mapCryptoSymbol.erase(pCryptoSymbol->GetSymbol());
 	auto it = find(m_vCryptoSymbol.begin(), m_vCryptoSymbol.end(), pCryptoSymbol);
@@ -25,14 +25,14 @@ bool CDataFinnhubCryptoSymbol::Delete(CCryptoSymbolPtr pCryptoSymbol) {
 	return true;
 }
 
-void CDataFinnhubCryptoSymbol::Add(CCryptoSymbolPtr pCryptoSymbol) {
+void CDataFinnhubCryptoSymbol::Add(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
 	m_mapCryptoSymbol[pCryptoSymbol->GetSymbol()] = m_mapCryptoSymbol.size();
 	m_vCryptoSymbol.push_back(pCryptoSymbol);
 }
 
 bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	CCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 	int i = 0;
 
 	setCryptoSymbol.Open();
@@ -52,7 +52,7 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 
 bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 	const long lTotalCryptoSymbol = m_vCryptoSymbol.size();
-	CCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	bool fUpdateSymbol = false;
 

@@ -388,38 +388,38 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("OANDA:XAU_SGD")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("ICMTRADER:193")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(_T("FOREX:401484413")));
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("ABC")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("OANDA:XAU_SGD")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("ICMTRADER:193")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("FOREX:401484413")));
 
-		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("FOREX:401484413"));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
-		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		long lTotalCryptoSymbol = gl_pWorldMarket->GetCryptoSymbolSize();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol + 1);
 
 		EXPECT_TRUE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol));
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
 		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
-		CCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 
 		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol)) << "空指针";
 
@@ -605,9 +605,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoSymbolDB) {
-		CCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
 		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("OANDA:AUD_SGD")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
@@ -995,12 +995,12 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEPSSurpriseUpdated());
 	}
 
-	TEST_F(CWorldMarketTest, TestIsTiingoSymbolUpdated) {
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated());
-		gl_pWorldMarket->SetTiingoSymbolUpdated(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoSymbolUpdated());
-		gl_pWorldMarket->SetTiingoSymbolUpdated(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated());
+	TEST_F(CWorldMarketTest, TestIsTiingoStockSymbolUpdated) {
+		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
+		gl_pWorldMarket->SetTiingoStockSymbolUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
+		gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 	}\
 		TEST_F(CWorldMarketTest, TestIsTiingoDayLineUpdated) {
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoDayLineUpdated());
@@ -1434,10 +1434,10 @@ namespace StockAnalysisTest {
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoCompanySymbol) {
 		CWebSourceDataProductPtr p = nullptr;
 
-		gl_pWorldMarket->SetTiingoSymbolUpdated(true);
+		gl_pWorldMarket->SetTiingoStockSymbolUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "TiingoCompanySymbol Updated";
 
-		gl_pWorldMarket->SetTiingoSymbolUpdated(false);
+		gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);
 		gl_pWorldMarket->SetTiingoInquiring(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "其他TiingoInquiry正在进行";
 
@@ -1446,9 +1446,9 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
 		p = gl_pWorldMarket->GetTiingoInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated()) << "此标识需要等处理完数据后方设置";
+		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiry Tiingo Symbol"));
+		EXPECT_STREQ(str, _T("Inquiry Tiingo stock symbol"));
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoDayLine) {

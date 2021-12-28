@@ -132,7 +132,8 @@ void CWorldMarket::ResetTiingo(void) {
 	m_fTiingoInquiring = false;
 	m_fTiingoDataReceived = true;
 
-	m_fTiingoSymbolUpdated = false;
+	m_fTiingoStockSymbolUpdated = false;
+	m_fTiingoCryptoSymbolUpdated = false;
 	m_fTiingoDayLineUpdated = false;
 }
 
@@ -232,7 +233,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
 	CString strTemp;
 	CWorldStockPtr pStock = nullptr;
 	CForexSymbolPtr pForexSymbol = nullptr;
-	CCryptoSymbolPtr pCryptoSymbol = nullptr;
+	CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 	bool fDone = false;
 
 	if (m_qFinnhubProduct.size() > 0) { // 有申请等待？
@@ -466,6 +467,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	}
 
 	TaskUpdateTiingoStockDB();
+	TaskUpdateTiingoCryptoDB();
 
 	return true;
 }
@@ -885,7 +887,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
 
 bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 	bool fFound = false;
-	CCryptoSymbolPtr pCryptoSymbol;
+	CFinnhubCryptoSymbolPtr pCryptoSymbol;
 	CString str = _T("");
 	const long lStockSetSize = m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize();
 	bool fHaveInquiry = false;
@@ -922,6 +924,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 bool CWorldMarket::TaskInquiryTiingo(void) {
 	if (IsSystemReady()) {
 		TaskInquiryTiingoCompanySymbol();
+		TaskInquiryTiingoCryptoSymbol();
 		// 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
 		TaskInquiryTiingoDayLine(); // 初步测试完毕。
 		return true;
@@ -932,11 +935,26 @@ bool CWorldMarket::TaskInquiryTiingo(void) {
 bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 	CString str;
 
-	if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
+	if (!IsTiingoStockSymbolUpdated() && !IsTiingoInquiring()) {
 		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
-		str = _T("Inquiry Tiingo Symbol");
+		str = _T("Inquiry Tiingo stock symbol");
+		gl_systemMessage.PushInformationMessage(str);
+
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::TaskInquiryTiingoCryptoSymbol(void) {
+	CString str;
+
+	if (!IsTiingoCryptoSymbolUpdated() && !IsTiingoInquiring()) {
+		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __CRYPTO_SYMBOLS__);
+		m_qTiingoProduct.push(p);
+		SetTiingoInquiring(true);
+		str = _T("Inquiry Tiingo crypto symbol");
 		gl_systemMessage.PushInformationMessage(str);
 
 		return true;
@@ -1065,7 +1083,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 	CString str;
 	bool fUpdated = false;
-	CCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 
 	for (int i = 0; i < m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); i++) {
 		if (gl_fExitingSystem) {
@@ -1163,6 +1181,12 @@ bool CWorldMarket::CreatingThreadUpdateInsiderTransactionDB(void) {
 
 bool CWorldMarket::CreatingThreadUpdateTiingoStockDB(void) {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::CreatingThreadUpdateTiingoCryptoDB(void) {
+	thread thread1(ThreadUpdateTiingoCryptoDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
@@ -1389,7 +1413,7 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	m_dataFinnhubWebSocket.Send(vSymbol);
 
 	vSymbol.resize(0);
-	CCryptoSymbolPtr pCrypto = nullptr;
+	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
 		pCrypto = m_dataChoicedCrypto.GetCrypto(l);
 		vSymbol.push_back(pCrypto->GetSymbol());
@@ -1444,7 +1468,7 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
-	CCryptoSymbolPtr pCrypto = nullptr;
+	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 	vector<CString> vSymbol;
 	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
 		pCrypto = m_dataChoicedCrypto.GetCrypto(l);

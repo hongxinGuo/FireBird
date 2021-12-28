@@ -122,6 +122,8 @@ UINT ThreadUpdateCryptoExchangeDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³
 UINT ThreadUpdateCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª52
 // ¸üĞÂCryptoÈÕÏßÊı¾İ
 UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´53
+// ¸üĞÂTiingo crypto´úÂë¼¯¡£
+UINT ThreadUpdateTiingoCryptoDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª54
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

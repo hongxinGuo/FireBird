@@ -42,6 +42,7 @@ namespace testing {
 		MOCK_METHOD(bool, TaskInquiryFinnhubCryptoDayLine, (), (override));
 
 		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
+		MOCK_METHOD(bool, TaskInquiryTiingoCryptoSymbol, (), (override));
 		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
 
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));

@@ -19,12 +19,12 @@ void CDataChoicedCrypto::Reset(void) {
 
 bool CDataChoicedCrypto::LoadDB(void) {
 	CSetWorldChoicedCrypto setWorldChoicedCrypto;
-	CCryptoSymbolPtr pCrypto = nullptr;
+	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 
 	setWorldChoicedCrypto.Open();
 	setWorldChoicedCrypto.m_pDatabase->BeginTrans();
 	while (!setWorldChoicedCrypto.IsEOF()) {
-		if (gl_pWorldMarket->IsCryptoSymbol(setWorldChoicedCrypto.m_Symbol)) {
+		if (gl_pWorldMarket->IsFinnhubCryptoSymbol(setWorldChoicedCrypto.m_Symbol)) {
 			pCrypto = gl_pWorldMarket->GetCryptoSymbol(setWorldChoicedCrypto.m_Symbol);
 			m_mapWorldChoicedCrypto[setWorldChoicedCrypto.m_Symbol] = m_mapWorldChoicedCrypto.size();
 			m_vWorldChoicedCrypto.push_back(pCrypto);

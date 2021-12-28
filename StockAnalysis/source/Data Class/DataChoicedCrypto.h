@@ -12,14 +12,14 @@ public:
 	~CDataChoicedCrypto();
 	void Reset(void);
 
-	CCryptoSymbolPtr GetCrypto(long lIndex) { return m_vWorldChoicedCrypto.at(lIndex); }
+	CFinnhubCryptoSymbolPtr GetCrypto(long lIndex) { return m_vWorldChoicedCrypto.at(lIndex); }
 	size_t GetSize(void) { return m_vWorldChoicedCrypto.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);
 
 protected:
-	vector<CCryptoSymbolPtr> m_vWorldChoicedCrypto;
+	vector<CFinnhubCryptoSymbolPtr> m_vWorldChoicedCrypto;
 	map<CString, long> m_mapWorldChoicedCrypto;
 	long m_lChoicedCryptoPos;
 };
