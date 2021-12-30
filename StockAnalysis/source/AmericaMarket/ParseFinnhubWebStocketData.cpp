@@ -20,16 +20,16 @@ using namespace std;
 using namespace boost::property_tree;
 
 /// <summary>
-	///
-	/// https://finnhub.io/docs/api/websocket-trades
-	///
-	/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-	///        {"type":"ping"}
-	///        {"msg":"Subscribing to too many symbols","type":"error"}
-	/// 目前就这三种。
-	/// </summary>
-	/// <param name="pData"></param>
-	/// <returns></returns>
+///
+/// https://finnhub.io/docs/api/websocket-trades
+///
+/// 目前三种。
+/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+///        {"type":"ping"}
+///        {"msg":"Subscribing to too many symbols","type":"error"}
+/// </summary>
+/// <param name="pData"></param>
+/// <returns></returns>
 bool CWorldMarket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	ptree pt, pt2, pt3;
 	string sType, sSymbol, sMessage;

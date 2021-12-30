@@ -29,9 +29,6 @@ bool CDataChoicedCrypto::LoadDB(void) {
 			m_mapWorldChoicedCrypto[setWorldChoicedCrypto.m_Symbol] = m_mapWorldChoicedCrypto.size();
 			m_vWorldChoicedCrypto.push_back(pCrypto);
 		}
-		else {
-			setWorldChoicedCrypto.Delete(); // 清除非法股票代码
-		}
 		setWorldChoicedCrypto.MoveNext();
 	}
 	setWorldChoicedCrypto.m_pDatabase->CommitTrans();

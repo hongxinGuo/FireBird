@@ -31,9 +31,6 @@ bool CDataChoicedStock::LoadDB(void) {
 			m_mapWorldChoicedStock[setWorldChoicedStock.m_Symbol] = m_mapWorldChoicedStock.size();
 			m_vWorldChoicedStock.push_back(pStock);
 		}
-		else {
-			setWorldChoicedStock.Delete(); // 清除非法股票代码
-		}
 		setWorldChoicedStock.MoveNext();
 	}
 	setWorldChoicedStock.m_pDatabase->CommitTrans();

@@ -340,7 +340,7 @@ public:
 
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
 	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
-	CWebSourceDataProductPtr GetFinnhubInquiry(void);
+	CWebSourceDataProductPtr GetFinnhubInquiry(void) { CWebSourceDataProductPtr p = m_qFinnhubProduct.front(); m_qFinnhubProduct.pop(); return p; }
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
@@ -380,7 +380,7 @@ public:
 
 	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoProduct.size(); }
 	void PushTiingoInquiry(CWebSourceDataProductPtr p) { m_qTiingoProduct.push(p); }
-	CWebSourceDataProductPtr GetTiingoInquiry(void);
+	CWebSourceDataProductPtr GetTiingoInquiry(void) { CWebSourceDataProductPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
 
 	void StopReceivingWebSocket(void);
 

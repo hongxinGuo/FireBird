@@ -1252,24 +1252,6 @@ bool CWorldMarket::CreatingThreadUpdateEconomicCalendarDB(void) {
 	return true;
 }
 
-CWebSourceDataProductPtr CWorldMarket::GetFinnhubInquiry(void) {
-	ASSERT(m_qFinnhubProduct.size() > 0);
-
-	CWebSourceDataProductPtr p = m_qFinnhubProduct.front();
-	m_qFinnhubProduct.pop();
-
-	return p;
-}
-
-CWebSourceDataProductPtr CWorldMarket::GetTiingoInquiry(void) {
-	ASSERT(m_qTiingoProduct.size() > 0);
-
-	CWebSourceDataProductPtr p = m_qTiingoProduct.front();
-	m_qTiingoProduct.pop();
-
-	return p;
-}
-
 void CWorldMarket::StopReceivingWebSocket(void) {
 	m_dataFinnhubWebSocket.Deconnecting();
 	m_dataTiingoIEXWebSocket.Deconnecting();

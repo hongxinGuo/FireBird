@@ -28,6 +28,7 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 //
 // https://api.tiingo.com/documentation/websockets/iex
 //
+// 共四种格式：
 // {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
@@ -255,6 +256,7 @@ bool CWorldMarket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 ///
 /// https://api.tiingo.com/documentation/websockets/crypto
 ///
+/// 共四种格式：
 /// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 /// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 /// {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
@@ -368,6 +370,7 @@ bool CWorldMarket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 //
 // https://api.tiingo.com/documentation/websockets/forex
 //
+// 共四种格式：
 // {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]}

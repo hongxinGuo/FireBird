@@ -389,16 +389,16 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("OANDA:XAU_SGD")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("ICMTRADER:193")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("FOREX:401484413")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("POLONIEX:BTC_DOT")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")));
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("COINBASE:TRIBE-USD")));
 
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		pCryptoSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
+		pCryptoSymbol->SetSymbol(_T("BINANCE:USDTUAH"));
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		pCryptoSymbol->SetSymbol(_T("FOREX:401484413"));
+		pCryptoSymbol->SetSymbol(_T("COINBASE:TRIBE-USD"));
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 	}
 
@@ -609,14 +609,14 @@ namespace StockAnalysisTest {
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
-		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("OANDA:AUD_SGD")); // 第二个现存的符号
+		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
 		gl_pWorldMarket->UpdateCryptoSymbolDB();
 
 		CSetFinnhubCryptoSymbol setWorldStock;
-		setWorldStock.m_strFilter = _T("[Symbol] = 'OANDA:AUD_SGD'");
+		setWorldStock.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
 		setWorldStock.Open();
 		EXPECT_EQ(setWorldStock.m_IPOStatus, __STOCK_DELISTED__) << "状态已被修改为摘牌";
 		setWorldStock.m_pDatabase->BeginTrans();

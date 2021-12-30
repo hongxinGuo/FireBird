@@ -30,9 +30,6 @@ bool CDataChoicedForex::LoadDB(void) {
 			m_mapWorldChoicedForex[setWorldChoicedForex.m_Symbol] = m_mapWorldChoicedForex.size();
 			m_vWorldChoicedForex.push_back(pForex);
 		}
-		else {
-			setWorldChoicedForex.Delete(); // 清除非法股票代码
-		}
 		setWorldChoicedForex.MoveNext();
 	}
 	setWorldChoicedForex.m_pDatabase->CommitTrans();
