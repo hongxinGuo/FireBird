@@ -1536,6 +1536,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopFinnhubWebSocketData();
+		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
 		iTotalDataSize += pString->size();
 		ParseFinnhubWebSocketData(pString);
 	}
@@ -1551,6 +1552,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
 		iTotalDataSize += pString->size();
 		ParseTiingoIEXWebSocketData(pString);
 	}
@@ -1565,7 +1567,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
-		gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
 		iTotalDataSize += pString->size();
 		ParseTiingoCryptoWebSocketData(pString);
 	}
@@ -1579,7 +1581,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
-		gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
 		iTotalDataSize += pString->size();
 		ParseTiingoForexWebSocketData(pString);
 	}

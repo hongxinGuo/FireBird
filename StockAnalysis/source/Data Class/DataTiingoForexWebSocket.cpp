@@ -41,6 +41,7 @@ bool CDataTiingoForexWebSocket::Send(vector<CString> vSymbol)
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
 	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
+	vSymbol.push_back(_T("eurnok")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
 
 	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
