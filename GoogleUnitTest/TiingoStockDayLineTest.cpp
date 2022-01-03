@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		long month = lMarketDate / 100 - year * 100;
 		long day = lMarketDate - year * 10000 - month * 100;
 		char buffer[30];
-		sprintf_s(buffer, _T("%4d-%2d-%2d"), year, month, day);
+		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
 		CString strEndDate = buffer;
 		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		strTest = _T("https://api.tiingo.com/tiingo/daily/000001.SS/prices?&startDate=1980-1-1&endDate=") + strEndDate;

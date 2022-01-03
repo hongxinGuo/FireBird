@@ -541,6 +541,14 @@ protected:
 	bool m_fTiingoCryptoSymbolUpdated; // 每日更新crypto代码库
 	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 
+	bool m_fInquiringFinnhubStockSymbol;
+	bool m_fInquiringFinnhubStockProfile;
+	bool m_fInquiringFinnhubStockPeer;
+	bool m_fInquiringFinnhubStockInsiderTransaction;
+	bool m_fInquiringFinnhubForexDayLine;
+	bool m_fInquiringFinnhubCryptoDayLine;
+	bool m_fInquiringFinnhubStockDayLine;
+
 	// WebSocket数据
 	CDataFinnhubWebSocket m_dataFinnhubWebSocket;
 	CDataTiingoIEXWebSocket m_dataTiingoIEXWebSocket;

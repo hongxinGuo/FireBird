@@ -91,9 +91,6 @@
     <Filter Include="源文件\Base Class">
       <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\DataSourceProcess">
-      <UniqueIdentifier>{6fdbca00-8b26-43e6-9a84-1f2f9881d7bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\System Data">
       <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
     </Filter>

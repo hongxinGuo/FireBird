@@ -97,6 +97,14 @@ void CWorldMarket::ResetFinnhub(void) {
 	m_fCountryListUpdated = false;
 	m_fFinnhubEconomicCalendarUpdated = false;
 
+	m_fInquiringFinnhubStockSymbol = false;
+	m_fInquiringFinnhubStockProfile = false;
+	m_fInquiringFinnhubStockPeer = false;
+	m_fInquiringFinnhubStockInsiderTransaction = false;
+	m_fInquiringFinnhubForexDayLine = false;
+	m_fInquiringFinnhubCryptoDayLine = false;
+	m_fInquiringFinnhubStockDayLine = false;
+
 	m_fFinnhubPeerUpdated = false;
 	m_fFinnhubInsiderTransactionUpdated = false;
 	m_lCurrentUpdatePeerPos = 0;
@@ -533,7 +541,7 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 		CWebSourceDataProductPtr p = m_FinnhubFactory.CreateProduct(this, __ECONOMIC_COUNTRY_LIST__);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("查询Finnhub economic country List"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub economic country List已更新"));
 		return true;
 	}
 	return false;
@@ -549,6 +557,10 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 	long lCurrentStockExchangePos = 0;
 
 	if (!IsFinnhubSymbolUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubStockSymbol) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock symbol..."));
+			m_fInquiringFinnhubStockSymbol = true;
+		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!m_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsUpdated()) {
 				pExchange = m_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
@@ -563,9 +575,10 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
-			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
+			TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubStockSymbol = false;
 			fHaveInquiry = false;
 			SetFinnhubSymbolUpdated(true);
 			TRACE("Finnhub交易所代码数据查询完毕\n");
@@ -593,6 +606,10 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubStockProfileUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubStockProfile) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock profile..."));
+			m_fInquiringFinnhubStockProfile = true;
+		}
 		for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < lStockSetSize; m_lCurrentProfilePos++) {
 			if (!GetStock(m_lCurrentProfilePos)->IsProfileUpdated()) {
 				fFound = true;
@@ -608,6 +625,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 			fHaveInquiry = true;
 		}
 		else {
+			m_fInquiringFinnhubStockProfile = false;
 			SetFinnhubStockProfileUpdated(true);
 			TRACE("Finnhub股票简介更新完毕\n");
 			str = _T("Finnhub股票简介更新完毕");
@@ -628,6 +646,10 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubDayLineUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubStockDayLine) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock day line..."));
+			m_fInquiringFinnhubStockDayLine = true;
+		}
 		for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStockSetSize; m_lCurrentUpdateDayLinePos++) {
 			pStock = GetStock(m_lCurrentUpdateDayLinePos);
 			if (pStock->IsUSMarket() && pStock->IsDayLineNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
@@ -642,9 +664,10 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
-			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
+			TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubStockDayLine = false;
 			fHaveInquiry = false;
 			SetFinnhubDayLineUpdated(true);
 			m_lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
@@ -666,6 +689,10 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubInsiderTransactionUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubStockInsiderTransaction) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider transaction..."));
+			m_fInquiringFinnhubStockInsiderTransaction = true;
+		}
 		for (m_lCurrentUpdateInsiderTransactionPos = 0; m_lCurrentUpdateInsiderTransactionPos < lStockSetSize; m_lCurrentUpdateInsiderTransactionPos++) {
 			pStock = GetStock(m_lCurrentUpdateInsiderTransactionPos);
 			if (pStock->IsUSMarket()) {
@@ -684,6 +711,7 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
 			TRACE("申请%s 内部交易数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubStockInsiderTransaction = false;
 			fHaveInquiry = false;
 			SetFinnhubInsiderTransactionUpdated(true);
 			TRACE("FinnhubInsider Transaction更新完毕\n");
@@ -720,6 +748,10 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubPeerUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubStockPeer) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock peer..."));
+			m_fInquiringFinnhubStockPeer = true;
+		}
 		for (m_lCurrentUpdatePeerPos = 0; m_lCurrentUpdatePeerPos < lStockSetSize; m_lCurrentUpdatePeerPos++) {
 			if (!GetStock(m_lCurrentUpdatePeerPos)->IsPeerUpdated()) {
 				pStock = GetStock(m_lCurrentUpdatePeerPos);
@@ -736,6 +768,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
 			TRACE("申请%s Peer数据\n", GetStock(m_lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubStockPeer = false;
 			fHaveInquiry = false;
 			SetFinnhubPeerUpdated(true);
 			TRACE("Finnhub Peers更新完毕\n");
@@ -797,7 +830,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
 	if (!IsFinnhubForexExchangeUpdated() && !IsFinnhubInquiring()) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __FOREX_EXCHANGE__));
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub forex exchange"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub forex exchange已更新"));
 		return true;
 	}
 	return false;
@@ -831,6 +864,10 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubForexDayLineUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubForexDayLine) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
+			m_fInquiringFinnhubForexDayLine = true;
+		}
 		for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStockSetSize; m_lCurrentUpdateForexDayLinePos++) {
 			if (GetForexSymbol(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
 				pForexSymbol = GetForexSymbol(m_lCurrentUpdateForexDayLinePos);
@@ -848,6 +885,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 			TRACE("申请Forex%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubForexDayLine = false;
 			SetFinnhubForexDayLineUpdated(true);
 			TRACE("Finnhub Forex日线更新完毕\n");
 			str = _T("Forex DayLine Updated");
@@ -861,7 +899,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoExchange(void) {
 	if (!IsFinnhubCryptoExchangeUpdated() && !IsFinnhubInquiring()) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __CRYPTO_EXCHANGE__));
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub crypto exchange"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub crypto exchange已更新"));
 		return true;
 	}
 	return false;
@@ -895,6 +933,10 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubCryptoDayLineUpdated() && !IsFinnhubInquiring()) {
+		if (!m_fInquiringFinnhubCryptoDayLine) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
+			m_fInquiringFinnhubCryptoDayLine = true;
+		}
 		for (m_lCurrentUpdateCryptoDayLinePos = 0; m_lCurrentUpdateCryptoDayLinePos < lStockSetSize; m_lCurrentUpdateCryptoDayLinePos++) {
 			if (GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
 				pCryptoSymbol = GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos);
@@ -909,9 +951,10 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
-			//TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+			TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubCryptoDayLine = false;
 			SetFinnhubCryptoDayLineUpdated(true);
 			TRACE("Finnhub Crypto日线更新完毕\n");
 			str = _T("Crypto DayLine Updated");
@@ -933,14 +976,11 @@ bool CWorldMarket::TaskInquiryTiingo(void) {
 }
 
 bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
-	CString str;
-
 	if (!IsTiingoStockSymbolUpdated() && !IsTiingoInquiring()) {
 		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
-		str = _T("Inquiry Tiingo stock symbol");
-		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 
 		return true;
 	}
@@ -948,14 +988,11 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 }
 
 bool CWorldMarket::TaskInquiryTiingoCryptoSymbol(void) {
-	CString str;
-
 	if (!IsTiingoCryptoSymbolUpdated() && !IsTiingoInquiring()) {
 		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __CRYPTO_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
-		str = _T("Inquiry Tiingo crypto symbol");
-		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
 		return true;
 	}

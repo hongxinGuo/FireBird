@@ -1025,7 +1025,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("查询Finnhub economic country List"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List已更新"));
 		CWebSourceDataProductPtr p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_STREQ(p->GetName(), _T("Finnhub economic country list"));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
@@ -1069,7 +1069,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubSymbolUpdated()) << "交易所都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock symbol..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub交易所代码数据查询完毕"));
 	}
 
@@ -1113,7 +1116,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockProfileUpdated()) << "股票都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock profile..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub股票简介更新完毕"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -1160,7 +1166,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated()) << "股票都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
 
 		// 恢复原状
@@ -1227,7 +1236,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubPeer()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubPeerUpdated()) << "股票都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock peer..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
 	}
 
@@ -1265,7 +1277,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubInsiderTransaction()) << "第二次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated()) << "股票都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider transaction..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("US Market Insider Transaction数据更新完毕"));
 
 		// 恢复原状
@@ -1349,7 +1364,7 @@ namespace StockAnalysisTest {
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_STREQ(p->GetName(), _T("Finnhub forex exchange"));
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
+		EXPECT_STREQ(str, _T("Finnhub forex exchange已更新"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated()) << "此标识需要等处理完数据后方设置";
 	}
 
@@ -1422,7 +1437,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubForexDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexDayLineUpdated()) << "股票都查询完了";
+		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub forex day line..."));
+		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Forex DayLine Updated"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetForexSymbolSize(); i++) {
@@ -1448,7 +1466,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiry Tiingo stock symbol"));
+		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoDayLine) {
