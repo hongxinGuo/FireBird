@@ -369,8 +369,10 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
-	TaskProcessWebSocketData();
-	TaskUpdateWorldStockFromWebSocket();
+	if (!IsInResetSystemTime(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+		TaskProcessWebSocketData();
+		TaskUpdateWorldStockFromWebSocket();
+	}
 
 	static bool sm_fConnectedFinnhubWebSocket = false;
 	static bool sm_fSendFinnhubWebStocketMessage = false;
@@ -450,7 +452,7 @@ bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
 
-	if (((lCurrentTime < 165800) || (lCurrentTime > 170500))) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+	if (!IsInResetSystemTime(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}

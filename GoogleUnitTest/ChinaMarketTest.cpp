@@ -757,7 +757,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
-		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarketAgain(93001));
+		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarketAgain(92701));
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_FALSE(gl_pChinaMarket->IsPermitResetMarket());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());

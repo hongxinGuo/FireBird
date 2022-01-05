@@ -44,6 +44,8 @@ public:
 	virtual void ResetMarket(void) override;
 	void Reset(void);
 
+	virtual bool IsInResetSystemTime(long lCurrentTime)  override;
+
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
 	virtual	void Dump(CDumpContext& dc) const;

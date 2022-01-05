@@ -124,6 +124,14 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetResetMarket(false);
 	}
 
+	TEST_F(CWorldMarketTest, TestIsResetSystemTime) {
+		EXPECT_TRUE(gl_pWorldMarket->IsInResetSystemTime(165800));
+		EXPECT_TRUE(gl_pWorldMarket->IsInResetSystemTime(165801));
+		EXPECT_TRUE(gl_pWorldMarket->IsInResetSystemTime(170459));
+		EXPECT_TRUE(gl_pWorldMarket->IsInResetSystemTime(170500));
+		EXPECT_FALSE(gl_pWorldMarket->IsInResetSystemTime(165759));
+		EXPECT_FALSE(gl_pWorldMarket->IsInResetSystemTime(170501));
+	}
 	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
 		tm tm_, tm2_;
 		time_t tt;

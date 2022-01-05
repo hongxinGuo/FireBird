@@ -170,6 +170,7 @@ public:
 	void ResetQuandl(void);
 	void ResetTiingo(void);
 	void ResetDataClass(void);
+	virtual bool IsInResetSystemTime(long lCurrentTime)  override { if ((lCurrentTime < 165800) || (lCurrentTime > 170500)) return false; else return true; }
 
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);

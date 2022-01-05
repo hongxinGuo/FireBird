@@ -204,6 +204,12 @@ void CChinaMarket::Reset(void) {
 	CreateTotalStockContainer();
 }
 
+bool CChinaMarket::IsInResetSystemTime(long lCurrentTime) {
+	if ((lCurrentTime >= 91300) || (lCurrentTime < 91400)) return true;
+	else if ((lCurrentTime >= 92500) || (lCurrentTime <= 92700)) return true;
+	else return false;
+}
+
 #ifdef _DEBUG
 void CChinaMarket::AssertValid() const {
 	CVirtualMarket::AssertValid();
@@ -1542,7 +1548,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 	// 九点二十五分再次重启系统
 	if (IsPermitResetMarket()) { // 如果允许重置系统
 		if ((lCurrentTime >= 92500)) {
-			if ((lCurrentTime <= 93000) && IsWorkingDay()) { // 交易日九点二十五分再次重启系统
+			if ((lCurrentTime <= 92700) && IsWorkingDay()) { // 交易日九点二十五分再次重启系统
 				SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 				SetSystemReady(false);
 			}

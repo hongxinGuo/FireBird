@@ -53,10 +53,6 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);
 	}
 
-	TEST_F(CFinnhubCompanyPeerTest, TestProcessWebData) {
-		// 由MockWorldMarketTest负责测试
-	}
-
 	// 不足三个字符
 	FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("[]"));
 	// 格式不对(缺开始的‘[’），无法顺利Parser
