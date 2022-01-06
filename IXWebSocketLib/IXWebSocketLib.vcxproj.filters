@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\ixwebsocket\IXBench.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +55,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\ixwebsocket\IXSelectInterrupt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ixwebsocket\IXSelectInterruptEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\ixwebsocket\IXSelectInterruptFactory.h">
@@ -203,6 +209,9 @@
     <ClCompile Include="..\ixwebsocket\IXSelectInterrupt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\ixwebsocket\IXSelectInterruptEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\ixwebsocket\IXSelectInterruptFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -281,8 +290,5 @@
     <ClCompile Include="..\ixwebsocket\IXWebSocketTransport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

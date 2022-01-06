@@ -44,7 +44,7 @@ public:
 	virtual void ResetMarket(void) override;
 	void Reset(void);
 
-	virtual bool IsInResetSystemTime(long lCurrentTime)  override;
+	virtual bool IsTimeToResetSystem(long lCurrentTime)  override;
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;

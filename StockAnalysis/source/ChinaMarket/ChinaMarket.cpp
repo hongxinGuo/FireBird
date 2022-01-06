@@ -204,7 +204,7 @@ void CChinaMarket::Reset(void) {
 	CreateTotalStockContainer();
 }
 
-bool CChinaMarket::IsInResetSystemTime(long lCurrentTime) {
+bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
 	if ((lCurrentTime >= 91300) || (lCurrentTime < 91400)) return true;
 	else if ((lCurrentTime >= 92500) || (lCurrentTime <= 92700)) return true;
 	else return false;

@@ -66,7 +66,7 @@ public:
 	bool IsResetMarket(void) const noexcept { return m_fResetMarket; }
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
-	virtual bool IsInResetSystemTime(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
+	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	virtual bool IsSystemReady(void) const noexcept { return m_fSystemReady; }
 	virtual void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 

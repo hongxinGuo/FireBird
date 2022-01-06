@@ -141,6 +141,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\ixwebsocket\IXBench.h" />
     <ClInclude Include="..\ixwebsocket\IXCancellationRequest.h" />
     <ClInclude Include="..\ixwebsocket\IXConnectionState.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="..\ixwebsocket\IXNetSystem.h" />
     <ClInclude Include="..\ixwebsocket\IXProgressCallback.h" />
     <ClInclude Include="..\ixwebsocket\IXSelectInterrupt.h" />
+    <ClInclude Include="..\ixwebsocket\IXSelectInterruptEvent.h" />
     <ClInclude Include="..\ixwebsocket\IXSelectInterruptFactory.h" />
     <ClInclude Include="..\ixwebsocket\IXSelectInterruptPipe.h" />
     <ClInclude Include="..\ixwebsocket\IXSetThreadName.h" />
@@ -205,6 +209,7 @@
     <ClCompile Include="..\ixwebsocket\IXHttpServer.cpp" />
     <ClCompile Include="..\ixwebsocket\IXNetSystem.cpp" />
     <ClCompile Include="..\ixwebsocket\IXSelectInterrupt.cpp" />
+    <ClCompile Include="..\ixwebsocket\IXSelectInterruptEvent.cpp" />
     <ClCompile Include="..\ixwebsocket\IXSelectInterruptFactory.cpp" />
     <ClCompile Include="..\ixwebsocket\IXSelectInterruptPipe.cpp" />
     <ClCompile Include="..\ixwebsocket\IXSetThreadName.cpp" />
@@ -231,9 +236,6 @@
     <ClCompile Include="..\ixwebsocket\IXWebSocketProxyServer.cpp" />
     <ClCompile Include="..\ixwebsocket\IXWebSocketServer.cpp" />
     <ClCompile Include="..\ixwebsocket\IXWebSocketTransport.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

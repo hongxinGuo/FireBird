@@ -51,7 +51,6 @@ CWorldMarket::CWorldMarket() {
 	// 无需每日更新的变量放在这里
 	m_fFinnhubEPSSurpriseUpdated = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;
-
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
 	m_strMarketId = _T("美国市场");
@@ -369,7 +368,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
-	if (!IsInResetSystemTime(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 		TaskProcessWebSocketData();
 		TaskUpdateWorldStockFromWebSocket();
 	}
@@ -452,7 +451,7 @@ bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
 
-	if (!IsInResetSystemTime(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}
@@ -1549,12 +1548,14 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 
 bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
-
+	CString strMessage;
 	shared_ptr<string> pString;
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
-		gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		strMessage = _T("Tiingo IEX: ");
+		strMessage += (*pString).c_str();
+		gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
 		ParseTiingoIEXWebSocketData(pString);
 	}
@@ -1564,12 +1565,15 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 
 bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
+	CString strMessage;
 
 	shared_ptr<string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
-		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		strMessage = _T("Tiingo IEX: ");
+		strMessage += (*pString).c_str();
+		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
 		ParseTiingoCryptoWebSocketData(pString);
 	}
@@ -1579,11 +1583,14 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
+	CString strMessage;
 	shared_ptr<string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
-		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		strMessage = _T("Tiingo IEX: ");
+		strMessage += (*pString).c_str();
+		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
 		ParseTiingoForexWebSocketData(pString);
 	}

@@ -606,9 +606,9 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	SysCallSetInnerSystemPaneText(8, (LPCTSTR)str);
 	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoIEXWebSocket());
 	SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
-	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoCryptoWebSocket());
-	SysCallSetInnerSystemPaneText(10, (LPCTSTR)str);
 	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoForexWebSocket());
+	SysCallSetInnerSystemPaneText(10, (LPCTSTR)str);
+	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoCryptoWebSocket());
 	SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
 }
 

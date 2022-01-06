@@ -142,6 +142,18 @@
     <Filter Include="Test源文件\Data Class">
       <UniqueIdentifier>{5e657f7e-5e8b-4b66-a363-4d14bd91127a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Class\WebSocket">
+      <UniqueIdentifier>{01fdd977-2ec6-4fde-9a3d-b50494a9c813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Class\Chioced">
+      <UniqueIdentifier>{554077ac-bba7-4a24-ba28-1986b6009468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Class\Finnhub">
+      <UniqueIdentifier>{d55b2075-9206-44c7-8f35-c9ca0c16a758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Class\Tiingo">
+      <UniqueIdentifier>{a44519eb-fe95-4d13-bf29-13a7814acb26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -496,13 +508,13 @@
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="DataFinnhubWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class</Filter>
-    </ClCompile>
-    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class</Filter>
+      <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
     <ClCompile Include="DataTiingoCryptoWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class</Filter>
+      <Filter>Test源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp">
+      <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
