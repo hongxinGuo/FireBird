@@ -4,6 +4,14 @@
 #include"CallableFunction.h"
 #include "DataTiingoCryptoWebSocket.h"
 
+UINT ThreadConnectingTiingoCryptoWebSocketAndSendMessage(not_null<CDataTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
+	gl_ThreadStatus.IncreaseSavingThread();
+	pDataTiingoCryptoWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 73;
+}
+
 CDataTiingoCryptoWebSocket::CDataTiingoCryptoWebSocket() : CVirtualDataWebSocket() {
 }
 
@@ -54,6 +62,13 @@ bool CDataTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
 	if (sm_fSendAuth) {
 		info = m_webSocket.Send(messageAuth);
 	}
+
+	return true;
+}
+
+bool CDataTiingoCryptoWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectingTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
 
 	return true;
 }

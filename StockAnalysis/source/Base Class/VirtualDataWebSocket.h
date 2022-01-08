@@ -20,6 +20,8 @@ public:
 	virtual bool Send(vector<CString> vSymbol) = 0;
 	bool Deconnecting(void) { return 	m_webSocket.Deconnecting(); }
 
+	bool ConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
+
 	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
 	CString CreateTiingoWebSocketSymbolString(CString strSymbol);
 

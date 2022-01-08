@@ -623,10 +623,13 @@ namespace StockAnalysisTest {
 	SinaRTData Data38(37, _T("var hq_str_sa600000a'浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
 	// 格式出错（股票代码后面不是'='号
 	SinaRTData Data39(38, _T("var hq_str_sa600000a\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+	// 格式出错（最后没有符号:‘;')
+	SinaRTData Data40(39, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\"\n"));
 
 	class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
 	protected:
 		virtual void SetUp(void) override {
+			GeneralCheck();
 			ASSERT_FALSE(gl_fNormalMode);
 			SinaRTData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
@@ -655,6 +658,9 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
+			GeneralCheck();
 		}
 
 	public:
@@ -669,7 +675,7 @@ namespace StockAnalysisTest {
 		&Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
 		&Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
 		&Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-		&Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38
+		&Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
 	));
 
 	TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
@@ -1415,6 +1421,11 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 38: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
+			break;
+		case 39: // 有错误，最后没有符号：';'
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票

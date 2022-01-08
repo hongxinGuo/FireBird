@@ -426,16 +426,10 @@ public:
 
 	bool SortStock(void) { return m_dataWorldStock.SortStock(); }
 
-	bool ConnectFinnhubWebSocket(void) { return m_dataFinnhubWebSocket.Connecting(); }
-	bool SendFinnhubWebSocketMessage(void);
-
-	bool ConnectTiingoIEXWebSocket(void) { return m_dataTiingoIEXWebSocket.Connecting(); }
-	bool ConnectTiingoCryptoWebSocket(void) { return m_dataTiingoCryptoWebSocket.Connecting(); }
-	bool ConnectTiingoForexWebSocket(void) { return m_dataTiingoForexWebSocket.Connecting(); }
-
-	bool SendTiingoIEXWebSocketMessage(void);
-	bool SendTiingoCryptoWebSocketMessage(void);
-	bool SendTiingoForexWebSocketMessage(void);
+	vector<CString> GetFinnhubWebSocketSymbolVector(void);
+	vector<CString> GetTiingoIEXWebSocketSymbolVector(void);
+	vector<CString> GetTiingoCryptoWebSocketSymbolVector(void);
+	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

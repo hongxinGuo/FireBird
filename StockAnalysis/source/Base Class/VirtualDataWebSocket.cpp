@@ -1,7 +1,16 @@
 #include "pch.h"
 
-#
 #include "VirtualDataWebSocket.h"
+
+bool CVirtualDataWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	ASSERT(IsClosed());
+
+	Connecting();
+	while (!IsOpen()) Sleep(1);
+	Send(vSymbol);
+
+	return true;
+}
 
 CString CVirtualDataWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol)
 {

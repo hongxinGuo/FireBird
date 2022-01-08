@@ -4,6 +4,14 @@
 #include"WebInquirer.h"
 #include "DataTiingoForexWebSocket.h"
 
+UINT ThreadConnectingTiingoForexWebSocketAndSendMessage(not_null<CDataTiingoForexWebSocket*> pDataTiingoForexWebSocket, vector<CString> vSymbol) {
+	gl_ThreadStatus.IncreaseSavingThread();
+	pDataTiingoForexWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 73;
+}
+
 CDataTiingoForexWebSocket::CDataTiingoForexWebSocket() : CVirtualDataWebSocket() {
 }
 
@@ -54,6 +62,13 @@ bool CDataTiingoForexWebSocket::Send(vector<CString> vSymbol)
 	if (sm_fSendAuth) {
 		info = m_webSocket.Send(messageAuth);
 	}
+
+	return true;
+}
+
+bool CDataTiingoForexWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectingTiingoForexWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
 
 	return true;
 }

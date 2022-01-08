@@ -373,78 +373,27 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		TaskUpdateWorldStockFromWebSocket();
 	}
 
-	static bool sm_fConnectedFinnhubWebSocket = false;
-	static bool sm_fSendFinnhubWebStocketMessage = false;
-
-	static bool sm_fConnectedTiingoIEXWebSocket = false;
-	static bool sm_fSendTiingoIEXWebStocketMessage = false;
-	static bool sm_fConnectedTiingoCryptoWebSocket = false;
-	static bool sm_fSendTiingoCryptoWebStocketMessage = false;
-	static bool sm_fConnectedTiingoForexWebSocket = false;
-	static bool sm_fSendTiingoForexWebStocketMessage = false;
-
-	if (IsSystemReady()) {
-		if (!sm_fConnectedFinnhubWebSocket) {
-			if (m_dataFinnhubWebSocket.IsClosed()) {
-				sm_fConnectedFinnhubWebSocket = true;
-				ConnectFinnhubWebSocket();
-			}
-		}
-
-		if (!sm_fSendFinnhubWebStocketMessage) {
-			if (m_dataFinnhubWebSocket.IsOpen()) {
-				sm_fSendFinnhubWebStocketMessage = true;
-				SendFinnhubWebSocketMessage();
-			}
-		}
-
-		if (!sm_fConnectedTiingoIEXWebSocket) {
-			if (m_dataTiingoIEXWebSocket.IsClosed()) {
-				sm_fConnectedTiingoIEXWebSocket = true;
-				ConnectTiingoIEXWebSocket();
-			}
-		}
-
-		if (!sm_fSendTiingoIEXWebStocketMessage) {
-			if (m_dataTiingoIEXWebSocket.IsOpen()) {
-				sm_fSendTiingoIEXWebStocketMessage = true;
-				SendTiingoIEXWebSocketMessage();
-			}
-		}
-
-		if (!sm_fConnectedTiingoCryptoWebSocket) {
-			if (m_dataTiingoCryptoWebSocket.IsClosed()) {
-				sm_fConnectedTiingoCryptoWebSocket = true;
-				ConnectTiingoCryptoWebSocket();
-			}
-		}
-
-		if (!sm_fSendTiingoCryptoWebStocketMessage) {
-			if (m_dataTiingoCryptoWebSocket.IsOpen()) {
-				sm_fSendTiingoCryptoWebStocketMessage = true;
-				SendTiingoCryptoWebSocketMessage();
-			}
-		}
-
-		if (!sm_fConnectedTiingoForexWebSocket) {
-			if (m_dataTiingoForexWebSocket.IsClosed()) {
-				sm_fConnectedTiingoForexWebSocket = true;
-				ConnectTiingoForexWebSocket();
-			}
-		}
-
-		if (!sm_fSendTiingoForexWebStocketMessage) {
-			if (m_dataTiingoForexWebSocket.IsOpen()) {
-				sm_fSendTiingoForexWebStocketMessage = true;
-				SendTiingoForexWebSocketMessage();
-			}
-		}
-	}
-
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
+	if (IsSystemReady()) {
+		if (m_dataFinnhubWebSocket.IsClosed()) {
+			m_dataFinnhubWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		}
+
+		if (m_dataTiingoIEXWebSocket.IsClosed()) {
+			m_dataTiingoIEXWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		}
+
+		if (m_dataTiingoCryptoWebSocket.IsClosed()) {
+			m_dataTiingoCryptoWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		}
+
+		if (m_dataTiingoForexWebSocket.IsClosed()) {
+			m_dataTiingoForexWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		}
+	}
 	return true;
 }
 
@@ -1421,32 +1370,26 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
+vector<CString> CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 	vector<CString> vSymbol;
 
-	ASSERT(m_dataFinnhubWebSocket.IsOpen());
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < m_dataChoicedStock.GetSize(); l++) {
 		pStock = m_dataChoicedStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol());
 	}
-	m_dataFinnhubWebSocket.Send(vSymbol);
 
-	vSymbol.resize(0);
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
 		pCrypto = m_dataChoicedCrypto.GetCrypto(l);
 		vSymbol.push_back(pCrypto->GetSymbol());
 	}
-	m_dataFinnhubWebSocket.Send(vSymbol);
 
-	vSymbol.resize(0);
 	CForexSymbolPtr pForex = nullptr;
 	for (long l = 0; l < m_dataChoicedForex.GetSize(); l++) {
 		pForex = m_dataChoicedForex.GetForex(l);
 		vSymbol.push_back(pForex->GetSymbol());
 	}
-	m_dataFinnhubWebSocket.Send(vSymbol);
 
 	// Send a message to the server (default to TEXT mode)
 	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
@@ -1455,7 +1398,7 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
 	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
 
-	return false;
+	return vSymbol;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1468,7 +1411,7 @@ bool CWorldMarket::SendFinnhubWebSocketMessage(void) {
 // thresholdlevel 0: ALL Top-of-Book AND Last Trade updates.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
+vector<CString> CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 	CWorldStockPtr pStock = nullptr;
 	vector<CString> vSymbol;
 	for (long l = 0; l < m_dataChoicedStock.GetSize(); l++) {
@@ -1476,7 +1419,7 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 		vSymbol.push_back(pStock->GetSymbol());
 	}
 
-	return m_dataTiingoIEXWebSocket.Send(vSymbol);
+	return vSymbol;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1487,7 +1430,7 @@ bool CWorldMarket::SendTiingoIEXWebSocketMessage(void) {
 // thresholdlevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
+vector<CString> CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 	vector<CString> vSymbol;
 	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
@@ -1495,7 +1438,7 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 		vSymbol.push_back(pCrypto->GetSymbol());
 	}
 
-	return m_dataTiingoCryptoWebSocket.Send(vSymbol);
+	return vSymbol;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1506,7 +1449,7 @@ bool CWorldMarket::SendTiingoCryptoWebSocketMessage(void) {
 // thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
+vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	CForexSymbolPtr pForex = nullptr;
 	vector<CString> vSymbol;
 	for (long l = 0; l < m_dataChoicedForex.GetSize(); l++) {
@@ -1514,7 +1457,7 @@ bool CWorldMarket::SendTiingoForexWebSocketMessage(void) {
 		vSymbol.push_back(pForex->GetSymbol());
 	}
 
-	return m_dataTiingoForexWebSocket.Send(vSymbol);
+	return vSymbol;
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
@@ -1533,11 +1476,14 @@ bool CWorldMarket::TaskProcessWebSocketData(void) {
 
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
+	CString strMessage;
 	shared_ptr<string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopFinnhubWebSocketData();
-		//gl_systemMessage.PushCancelBuyMessage((*pString).c_str());
+		strMessage = _T("Finnhub: ");
+		strMessage += (*pString).c_str();
+		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
 		ParseFinnhubWebSocketData(pString);
 	}
@@ -1571,9 +1517,9 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
-		strMessage = _T("Tiingo IEX: ");
+		strMessage = _T("Tiingo Crypto: ");
 		strMessage += (*pString).c_str();
-		//gl_systemMessage.PushCancelBuyMessage(strMessage);
+		gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
 		ParseTiingoCryptoWebSocketData(pString);
 	}
@@ -1588,7 +1534,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
-		strMessage = _T("Tiingo IEX: ");
+		strMessage = _T("Tiingo Forex: ");
 		strMessage += (*pString).c_str();
 		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();

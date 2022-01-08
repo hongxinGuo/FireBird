@@ -4,6 +4,14 @@
 #include"CallableFunction.h"
 #include "DataTiingoIEXWebSocket.h"
 
+UINT ThreadConnectingTiingoIEXWebSocketAndSendMessage(not_null<CDataTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vector<CString> vSymbol) {
+	gl_ThreadStatus.IncreaseSavingThread();
+	pDataTiingoIEXWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 71;
+}
+
 CDataTiingoIEXWebSocket::CDataTiingoIEXWebSocket() : CVirtualDataWebSocket() {
 }
 
@@ -33,6 +41,8 @@ bool CDataTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
+	vSymbol.push_back(_T("rig")); // 多加一个Tiingo制式的代码。
+	vSymbol.push_back(_T("aapl")); // 多加一个Tiingo制式的代码。
 	strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
 
 	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
@@ -45,6 +55,13 @@ bool CDataTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 	if (sm_fSendAuth) {
 		info = m_webSocket.Send(messageAuth);
 	}
+
+	return true;
+}
+
+bool CDataTiingoIEXWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectingTiingoIEXWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
 
 	return true;
 }

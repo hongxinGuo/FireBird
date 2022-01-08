@@ -4,6 +4,14 @@
 #include"WebInquirer.h"
 #include "DataFinnhubWebSocket.h"
 
+UINT ThreadConnectingFinnhubWebSocketAndSendMessage(not_null<CDataFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
+	gl_ThreadStatus.IncreaseSavingThread();
+	pDataFinnhubWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 70;
+}
+
 CDataFinnhubWebSocket::CDataFinnhubWebSocket() : CVirtualDataWebSocket() {
 	m_webSocket.SetSubscriptionStatus(false); // finnhub WebSocketÃ»ÓÐ×¢²áID
 }
@@ -49,4 +57,11 @@ string CDataFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
 	string sSymbol = strSymbol.GetBuffer();
 
 	return sPreffix + sSymbol + sSuffix;
+}
+
+bool CDataFinnhubWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectingFinnhubWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
+
+	return true;
 }

@@ -9,4 +9,6 @@ public:
 
 	virtual bool Connecting(void);
 	virtual bool Send(vector<CString> vSymbol) override;
+
+	bool CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
 };

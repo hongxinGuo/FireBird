@@ -10,4 +10,6 @@ public:
 	virtual bool Connecting(void);
 	virtual bool Send(vector<CString> vSymbol) override;
 	string CreateFinnhubWebSocketString(CString strSymbol);
+
+	bool CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
 };

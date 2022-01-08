@@ -149,10 +149,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (!fBadData)) {
 		bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
 		i++;
-		if (i >= 1900) {
-			fBadData = true;
-		}
-		else if ((i + pSinaWebRTData->GetCurrentPos()) > pSinaWebRTData->GetBufferLength()) {
+		if ((i >= 1900) || ((i + pSinaWebRTData->GetCurrentPos()) >= pSinaWebRTData->GetBufferLength())) {
 			fBadData = true;
 		}
 	}
