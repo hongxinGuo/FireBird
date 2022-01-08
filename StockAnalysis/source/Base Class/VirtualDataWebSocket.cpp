@@ -3,8 +3,8 @@
 #include "VirtualDataWebSocket.h"
 
 bool CVirtualDataWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
-	ASSERT(IsClosed());
-
+	if (!IsClosed()) Deconnecting();
+	while (!IsClosed()) Sleep(1);
 	Connecting();
 	while (!IsOpen()) Sleep(1);
 	Send(vSymbol);
