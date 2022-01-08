@@ -88,6 +88,8 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
+
+		CTiingoForexWebSocket m_tiingoForexWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
@@ -97,7 +99,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoForexSocketPtr pForex;
-		fSucceed = gl_pWorldMarket->ParseTiingoForexWebSocketData(m_pWebData);
+		fSucceed = m_tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
@@ -173,6 +175,8 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
+
+		CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
@@ -182,7 +186,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoCryptoSocketPtr pCrypto;
-		fSucceed = gl_pWorldMarket->ParseTiingoCryptoWebSocketData(m_pWebData);
+		fSucceed = m_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
@@ -273,6 +277,8 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		shared_ptr<string> m_pWebData;
+
+		CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
@@ -282,7 +288,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
-		fSucceed = gl_pWorldMarket->ParseTiingoIEXWebSocketData(m_pWebData);
+		fSucceed = m_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);

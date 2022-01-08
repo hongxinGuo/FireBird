@@ -39,7 +39,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h" />
@@ -47,6 +46,7 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h" />
@@ -69,13 +69,13 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataSICIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
@@ -171,7 +171,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
@@ -193,8 +192,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseFinnhubWebStocketData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseTiingoWebSocketData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
@@ -221,7 +218,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp" />
@@ -229,6 +225,7 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
@@ -266,11 +263,11 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp" />
@@ -342,7 +339,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">

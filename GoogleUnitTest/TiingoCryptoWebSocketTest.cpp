@@ -5,7 +5,7 @@
 
 #include"WorldMarket.h"
 
-#include"DataTiingoCryptoWebSocket.h"
+#include"TiingoCryptoWebSocket.h"
 
 using namespace testing;
 
@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CDataTiingoCryptoWebSocket m_dataTiingoCryptoWebSocket;
+		CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 	};
 
 	TEST_F(CDataTiingoCryptoWebSocketTest, TestCreateTiingoCryptoWebSocketSymbolString) {
@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		CString strSymbols = m_dataTiingoCryptoWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
+		CString strSymbols = m_tiingoCryptoWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
 		EXPECT_STREQ(strSymbols, _T("\"A\",\"AA\",\"AAL\",\"AAPL\""));
 	}
 }

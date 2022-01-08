@@ -7,6 +7,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"FinnhubWebSocket.h"
+
 using namespace std;
 #include<string>
 
@@ -82,6 +84,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		shared_ptr<string> m_pWebData;
+		CFinnhubWebSocket m_finnhubWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneFinnhubWebSocketData1, ProcessOneFinnhubWebSocketDataTest,
@@ -91,7 +94,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneFinnhubWebSocketDataTest, TestProcessOneFinnhubWebSocketData0) {
 		bool fSucceed = false;
 		CFinnhubSocketPtr pFinnhubWebSocket;
-		fSucceed = gl_pWorldMarket->ParseFinnhubWebSocketData(m_pWebData);
+		fSucceed = m_finnhubWebSocket.ParseFinnhubWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(fSucceed);

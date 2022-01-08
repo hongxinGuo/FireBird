@@ -1,0 +1,131 @@
+#include "pch.h"
+
+#include"CallableFunction.h"
+#include"WebInquirer.h"
+#include "FinnhubWebSocket.h"
+
+UINT ThreadConnectingFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
+	gl_ThreadStatus.IncreaseSavingThread();
+	pDataFinnhubWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	gl_ThreadStatus.DecreaseSavingThread();
+
+	return 70;
+}
+
+CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
+	SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
+}
+
+CFinnhubWebSocket::~CFinnhubWebSocket(void) {
+}
+
+/// <summary>
+/// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CFinnhubWebSocket::Connect(void) {
+	std::string url("wss://ws.finnhub.io");
+	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
+	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
+	url += strToken.GetBuffer();
+
+	return Connecting(url, FunctionProcessFinnhubWebSocket);
+}
+
+bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
+	string strMessage;
+
+	ASSERT(IsOpen());
+	for (long l = 0; l < vSymbol.size(); l++) {
+		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
+		Sending(strMessage);
+	}
+
+	return true;
+}
+
+/// <summary>
+/// Finnhub web socket格式： {"type":"subscribe","symbol":"符号串"},IEX， Crypto, Forex皆使用此格式
+/// 如{"type":"subscribe","symbol":"MSFT"}, {"type":"subscribe","symbol":"BINANCE:LTCBTC"}, {"type":"subscribe","symbol":"OANDA:AUD_SGD"}
+/// </summary>
+/// <param name="strSymbol"></param>
+/// <returns></returns>
+string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
+	string sPreffix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
+	string sSuffix = _T("\"}");
+	string sSymbol = strSymbol.GetBuffer();
+
+	return sPreffix + sSymbol + sSuffix;
+}
+
+bool CFinnhubWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectingFinnhubWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
+
+	return true;
+}
+
+/// <summary>
+///
+/// https://finnhub.io/docs/api/websocket-trades
+///
+/// 目前三种。
+/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+///        {"type":"ping"}
+///        {"msg":"Subscribing to too many symbols","type":"error"}
+/// </summary>
+/// <param name="pData"></param>
+/// <returns></returns>
+bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
+	ptree pt, pt2, pt3;
+	string sType, sSymbol, sMessage;
+	CString strMessage;
+	string code;
+	CFinnhubSocketPtr pFinnhubDataPtr = nullptr;
+
+	try {
+		if (ConvertToJSON(pt, *pData)) {
+			sType = pt.get<string>(_T("type"));
+			if (sType.compare(_T("trade")) == 0) { // 交易数据
+				pt2 = pt.get_child(_T("data"));
+				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+					pt3 = it->second;
+					pFinnhubDataPtr = make_shared<CFinnhubSocket>();
+					sSymbol = pt3.get<string>(_T("s"));
+					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
+					code = pt3.get<string>(_T("c"));
+					if (code.compare(_T("null")) == 0) code = _T("");
+					pFinnhubDataPtr->m_strCode = code.c_str();
+					pFinnhubDataPtr->m_dLastPrice = pt3.get<double>(_T("p"));
+					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
+					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
+					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
+				}
+			}
+			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
+			// do nothing
+			}
+			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+				sMessage = pt.get<string>(_T("msg"));
+				strMessage = _T("Finnhub WebSocket error message: ");
+				strMessage += sMessage.c_str();
+				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
+				return false;
+			}
+			else {
+				// ERROR
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e);
+		return false;
+	}
+
+	return true;
+}

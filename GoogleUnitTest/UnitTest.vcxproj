@@ -89,9 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="AccessoryTest.cpp" />
-    <ClCompile Include="DataFinnhubWebSocketTest.cpp" />
-    <ClCompile Include="DataTiingoCryptoWebSocketTest.cpp" />
-    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp" />
+    <ClCompile Include="FinnhubWebSocketTest.cpp" />
+    <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
+    <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCompanyPeerTest.cpp" />
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp" />
@@ -143,7 +143,6 @@
     <ClCompile Include="TiingoStockDayLineTest.cpp" />
     <ClCompile Include="TiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
-    <ClCompile Include="WebSocketTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

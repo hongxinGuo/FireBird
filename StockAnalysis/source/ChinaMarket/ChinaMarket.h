@@ -34,8 +34,7 @@ extern CWebRTDataContainer gl_WebRTDataContainer;
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
-class CChinaMarket : public CVirtualMarket
-{
+class CChinaMarket : public CVirtualMarket {
 public:
 	// 只能有一个实例
 	DECLARE_DYNCREATE(CChinaMarket)

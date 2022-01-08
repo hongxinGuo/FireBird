@@ -40,6 +40,7 @@
 #include"ProductFinnhubStockSymbol.h"
 
 #include "ProductTiingoStockSymbol.h"
+#include"ProductTiingoStockDayLine.h"
 
 using namespace std;
 using namespace testing;

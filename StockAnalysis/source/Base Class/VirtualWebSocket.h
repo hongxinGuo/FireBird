@@ -14,15 +14,21 @@ using namespace std;
 
 #include <ixwebsocket/IXWebSocket.h>
 
-class CWebSocket : public CObject {
+class CVirtualWebSocket : public CObject {
 public:
-	CWebSocket(bool fHaveSubscriptionId = true);
-	virtual ~CWebSocket();
+	CVirtualWebSocket(bool fHaveSubscriptionId = true);
+	virtual ~CVirtualWebSocket();
+
+	virtual bool Connect(void) = 0;
+	virtual bool Send(vector<CString> vSymbol) = 0;
+	bool ConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
+
+	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
 
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	bool Deconnecting(void);
 
-	bool Send(string message);
+	bool Sending(string message);
 
 	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }
 	bool IsClosed(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
@@ -35,11 +41,6 @@ public:
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
 	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
-	void SetMessagePreffix(string preffix) noexcept { m_Preffix = preffix; }
-	string GetMessagePreffix(void) noexcept { return m_Preffix; }
-	void SetMessageSuffix(string preffix) noexcept { m_Suffix = preffix; }
-	string GetMessageSuffix(void) noexcept { return m_Suffix; }
-
 protected:
 	ix::WebSocket m_webSocket;
 
@@ -49,7 +50,5 @@ protected:
 	bool m_fDeflate;
 
 	string m_url;
-	string m_Preffix;
-	string m_Suffix;
 	string m_inputMessage;
 };

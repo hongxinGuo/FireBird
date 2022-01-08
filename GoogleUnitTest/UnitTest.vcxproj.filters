@@ -423,9 +423,6 @@
     <ClCompile Include="CallableFunctionTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
     </ClCompile>
-    <ClCompile Include="WebSocketTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="GeneralCheck.cpp">
       <Filter>Test源文件\辅助检查函数</Filter>
     </ClCompile>
@@ -507,13 +504,13 @@
     <ClCompile Include="FinnhubStockPriceQuoteTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="DataFinnhubWebSocketTest.cpp">
+    <ClCompile Include="FinnhubWebSocketTest.cpp">
       <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
-    <ClCompile Include="DataTiingoCryptoWebSocketTest.cpp">
+    <ClCompile Include="TiingoCryptoWebSocketTest.cpp">
       <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
-    <ClCompile Include="DataTiingoIEXWebSocketTest.cpp">
+    <ClCompile Include="TiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
   </ItemGroup>

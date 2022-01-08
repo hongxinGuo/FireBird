@@ -1,21 +1,44 @@
 #include"pch.h"
-#include"WebSocket.h"
+#include"VirtualWebSocket.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 
-CWebSocket::CWebSocket(bool fHaveSubscription) : CObject() {
+CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_iSubscriptionId = 0;
 	m_iPingPeriod = 0;
 	m_fDeflate = true;
-	m_Preffix = m_Suffix = _T("");
 }
 
-CWebSocket::~CWebSocket() {
+CVirtualWebSocket::~CVirtualWebSocket() {
 	Deconnecting();
 }
 
-bool CWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
+bool CVirtualWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	if (!IsClosed()) Deconnecting();
+	while (!IsClosed()) Sleep(1);
+	Connect();
+	while (!IsOpen()) Sleep(1);
+	Send(vSymbol);
+
+	return true;
+}
+
+CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol)
+{
+	CString strSymbols;
+	CString strSymbol;
+
+	for (long l = 0; l < vSymbol.size(); l++) {
+		strSymbol = _T("\"") + vSymbol.at(l) + _T("\"") + _T(",");
+		strSymbols += strSymbol;
+	}
+	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
+
+	return strSymbols;
+}
+
+bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
 	ASSERT(m_webSocket.getReadyState() == ix::ReadyState::Closed);
@@ -43,18 +66,20 @@ bool CWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, i
 	return true;
 }
 
-bool CWebSocket::Deconnecting(void) {
+bool CVirtualWebSocket::Deconnecting(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
 	while (m_webSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
 
+	m_iSubscriptionId = 0;
+
 	return true;
 }
 
-bool CWebSocket::Send(string message)
+bool CVirtualWebSocket::Sending(string message)
 {
-	m_webSocket.send(m_Preffix + message + m_Suffix);
+	m_webSocket.send(message);
 
 	return true;
 }

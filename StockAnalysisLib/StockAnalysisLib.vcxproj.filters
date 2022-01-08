@@ -22,9 +22,6 @@
     <Filter Include="头文件\World Market">
       <UniqueIdentifier>{9f06f5c2-d029-4368-811d-72c29bb47e61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\World Market\实现">
-      <UniqueIdentifier>{6621a96a-7c50-494f-8f08-c8b555b4ff35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\World Market\网络通信">
       <UniqueIdentifier>{765aea51-ddfd-4f0c-8460-e4768dada099}</UniqueIdentifier>
     </Filter>
@@ -76,9 +73,6 @@
     <Filter Include="源文件\World Market">
       <UniqueIdentifier>{51cfe0a3-c9aa-4c41-bee2-bf50ca399d2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\World Market\实现">
-      <UniqueIdentifier>{957dedac-9f2b-4f13-812a-70b9b4adb921}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\World Market\工作线程">
       <UniqueIdentifier>{5a0d4619-7510-4feb-a30e-9bbfda47f02c}</UniqueIdentifier>
     </Filter>
@@ -93,9 +87,6 @@
     </Filter>
     <Filter Include="头文件\System Data">
       <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Data Source Process">
-      <UniqueIdentifier>{e971063d-1380-4853-893b-a0f354580f12}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Factory-Product">
       <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
@@ -372,9 +363,6 @@
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WebSocket.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
@@ -642,22 +630,19 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h">
       <Filter>头文件\Data Class</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
       <Filter>头文件\Data Class</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.h">
-      <Filter>头文件\Base Class</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.h">
@@ -671,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.h">
       <Filter>头文件\Data Class\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h">
+      <Filter>头文件\Base Class</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -824,12 +812,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
       <Filter>源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseFinnhubWebStocketData.cpp">
-      <Filter>源文件\World Market\实现</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ParseTiingoWebSocketData.cpp">
-      <Filter>源文件\World Market\实现</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
@@ -943,9 +925,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebSocket.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -1151,20 +1130,17 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
       <Filter>源文件\Data Class</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubWebSocket.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp">
       <Filter>源文件\Data Class\WebSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoWebSocket.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp">
       <Filter>源文件\Data Class\WebSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoForexWebSocket.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.cpp">
       <Filter>源文件\Data Class\WebSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoIEXWebSocket.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp">
       <Filter>源文件\Data Class\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataWebSocket.cpp">
-      <Filter>源文件\Base Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
@@ -1180,6 +1156,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoCryptoDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp">
+      <Filter>源文件\Base Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

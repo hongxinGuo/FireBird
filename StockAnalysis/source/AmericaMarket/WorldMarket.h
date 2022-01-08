@@ -1,32 +1,13 @@
 #pragma once
+
 #include"Semaphore.h"
+using namespace MyLib;
 
 #include"VirtualMarket.h"
-#include"WorldStock.h"
-#include"WebData.h"
-#include"FinnhubStockExchange.h"
-#include"FinnhubForexSymbol.h"
-#include"FinnhubCryptoSymbol.h"
-#include"Country.h"
-#include"EconomicCalendar.h"
-#include"InsiderTransaction.h"
-
-#include"TiingoStock.h"
-
-#include"TiingoIndustry.h"
-#include"SICIndustry.h"
-#include"NaicsIndustry.h"
-
-#include"QuandlWebInquiry.h"
-#include"TiingoWebInquiry.h"
 
 #include"FinnhubFactory.h"
 #include"TiingoFactory.h"
 #include"QuandlFactory.h"
-
-#include"ProductWebData.h"
-#include"ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
 
 #include"DataFinnhubStockExchange.h"
 #include"DataFinnhubForexExchange.h"
@@ -48,18 +29,12 @@
 #include"DataSICIndustry.h"
 #include"DataNaicsIndustry.h"
 
-#include"DataFinnhubWebSocket.h"
-#include"DataTiingoIEXWebSocket.h"
-#include"DataTiingoForexWebSocket.h"
-#include"DataTiingoCryptoWebSocket.h"
+#include"FinnhubWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+#include"TiingoForexWebSocket.h"
+#include"TiingoCryptoWebSocket.h"
 
 #include"WebSocketData.h"
-#include"WebSocket.h"
-
-#include <ixwebsocket/IXWebSocket.h>
-using namespace ix;
-
-using namespace MyLib;
 
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {
@@ -433,13 +408,9 @@ public:
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
-	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoIEXWebSocketData();
-	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoCryptoWebSocketData();
-	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 	bool ProcessTiingoForexWebSocketData();
-	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
 
 	bool TaskUpdateWorldStockFromWebSocket(void);
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
@@ -545,10 +516,10 @@ protected:
 	bool m_fInquiringFinnhubStockDayLine;
 
 	// WebSocket数据
-	CDataFinnhubWebSocket m_dataFinnhubWebSocket;
-	CDataTiingoIEXWebSocket m_dataTiingoIEXWebSocket;
-	CDataTiingoForexWebSocket m_dataTiingoForexWebSocket;
-	CDataTiingoCryptoWebSocket m_dataTiingoCryptoWebSocket;
+	CFinnhubWebSocket m_finnhubWebSocket;
+	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
+	CTiingoForexWebSocket m_tiingoForexWebSocket;
+	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 
 	int m_iProcessedFinnhubWebSocket;
 	int m_iProcessedTiingoCryptoWebSocket;

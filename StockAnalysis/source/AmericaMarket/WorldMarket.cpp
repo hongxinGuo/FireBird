@@ -377,23 +377,25 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
+	// 建立WebSocket连接
 	if (IsSystemReady()) {
-		if (m_dataFinnhubWebSocket.IsClosed()) {
-			m_dataFinnhubWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		if (m_finnhubWebSocket.IsClosed()) {
+			m_finnhubWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
 		}
 
-		if (m_dataTiingoIEXWebSocket.IsClosed()) {
-			m_dataTiingoIEXWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		if (m_tiingoIEXWebSocket.IsClosed()) {
+			m_tiingoIEXWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
 		}
 
-		if (m_dataTiingoCryptoWebSocket.IsClosed()) {
-			m_dataTiingoCryptoWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		if (m_tiingoCryptoWebSocket.IsClosed()) {
+			m_tiingoCryptoWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
 		}
 
-		if (m_dataTiingoForexWebSocket.IsClosed()) {
-			m_dataTiingoForexWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		if (m_tiingoForexWebSocket.IsClosed()) {
+			m_tiingoForexWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
 		}
 	}
+
 	return true;
 }
 
@@ -416,6 +418,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		TaskUpdateEconomicCalendarDB();
 		return true;
 	}
+
 	return false;
 }
 
@@ -1240,10 +1243,10 @@ bool CWorldMarket::CreatingThreadUpdateEconomicCalendarDB(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
-	m_dataFinnhubWebSocket.Deconnecting();
-	m_dataTiingoIEXWebSocket.Deconnecting();
-	m_dataTiingoCryptoWebSocket.Deconnecting();
-	m_dataTiingoForexWebSocket.Deconnecting();
+	m_finnhubWebSocket.Deconnecting();
+	m_tiingoIEXWebSocket.Deconnecting();
+	m_tiingoCryptoWebSocket.Deconnecting();
+	m_tiingoForexWebSocket.Deconnecting();
 }
 
 bool CWorldMarket::LoadOption(void) {
@@ -1485,7 +1488,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 		strMessage += (*pString).c_str();
 		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
-		ParseFinnhubWebSocketData(pString);
+		m_finnhubWebSocket.ParseFinnhubWebSocketData(pString);
 	}
 	m_iProcessedFinnhubWebSocket = iTotalDataSize;
 
@@ -1503,7 +1506,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
-		ParseTiingoIEXWebSocketData(pString);
+		m_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(pString);
 	}
 	m_iProcessedTiingoIEXWebSocket = iTotalDataSize;
 	return true;
@@ -1521,7 +1524,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
-		ParseTiingoCryptoWebSocketData(pString);
+		m_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(pString);
 	}
 	m_iProcessedTiingoCryptoWebSocket = iTotalDataSize;
 	return true;
@@ -1538,7 +1541,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 		strMessage += (*pString).c_str();
 		//gl_systemMessage.PushCancelBuyMessage(strMessage);
 		iTotalDataSize += pString->size();
-		ParseTiingoForexWebSocketData(pString);
+		m_tiingoForexWebSocket.ParseTiingoForexWebSocketData(pString);
 	}
 	m_iProcessedTiingoForexWebSocket = iTotalDataSize;
 	return true;
