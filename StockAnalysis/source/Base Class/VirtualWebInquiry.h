@@ -19,7 +19,6 @@ public:
 
 	virtual bool OpenFile(CString strInquiring);
 	virtual bool ReadWebData(void); // 网络实际读取函数
-	virtual bool ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);// 这种采用多次等待方式
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	CWebDataPtr TransferReceivedDataToWebData(void);
 

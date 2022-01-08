@@ -1,8 +1,8 @@
 ;
-; Definition file for the DLL version of the libssl-1_1-x64 library from OpenSSL
+; Definition file for the DLL version of the libssl-3-x64 library from OpenSSL
 ;
 
-LIBRARY         libssl-1_1-x64	
+LIBRARY         "libssl-3-x64"
 
 EXPORTS
     BIO_f_ssl
@@ -26,6 +26,8 @@ EXPORTS
     ERR_load_SSL_strings
     OPENSSL_cipher_name
     OPENSSL_init_ssl
+    OSSL_default_cipher_list
+    OSSL_default_ciphersuites
     PEM_read_SSL_SESSION
     PEM_read_bio_SSL_SESSION
     PEM_write_SSL_SESSION
@@ -112,8 +114,12 @@ EXPORTS
     SSL_CTX_get_verify_depth
     SSL_CTX_get_verify_mode
     SSL_CTX_has_client_custom_ext
+    SSL_CTX_load_verify_dir
+    SSL_CTX_load_verify_file
     SSL_CTX_load_verify_locations
+    SSL_CTX_load_verify_store
     SSL_CTX_new
+    SSL_CTX_new_ex
     SSL_CTX_remove_session
     SSL_CTX_sess_get_get_cb
     SSL_CTX_sess_get_new_cb
@@ -125,11 +131,14 @@ EXPORTS
     SSL_CTX_set0_CA_list
     SSL_CTX_set0_ctlog_store
     SSL_CTX_set0_security_ex_data
+    SSL_CTX_set0_tmp_dh_pkey
     SSL_CTX_set1_cert_store
     SSL_CTX_set1_param
     SSL_CTX_set_allow_early_data_cb
     SSL_CTX_set_alpn_protos
     SSL_CTX_set_alpn_select_cb
+    SSL_CTX_set_async_callback
+    SSL_CTX_set_async_callback_arg
     SSL_CTX_set_block_padding
     SSL_CTX_set_cert_cb
     SSL_CTX_set_cert_store
@@ -151,6 +160,7 @@ EXPORTS
     SSL_CTX_set_default_verify_dir
     SSL_CTX_set_default_verify_file
     SSL_CTX_set_default_verify_paths
+    SSL_CTX_set_default_verify_store
     SSL_CTX_set_ex_data
     SSL_CTX_set_generate_session_id
     SSL_CTX_set_info_callback
@@ -188,6 +198,7 @@ EXPORTS
     SSL_CTX_set_stateless_cookie_verify_cb
     SSL_CTX_set_timeout
     SSL_CTX_set_tlsext_max_fragment_length
+    SSL_CTX_set_tlsext_ticket_key_evp_cb
     SSL_CTX_set_tlsext_use_srtp
     SSL_CTX_set_tmp_dh_callback
     SSL_CTX_set_trust
@@ -256,6 +267,7 @@ EXPORTS
     SSL_add_dir_cert_subjects_to_stack
     SSL_add_file_cert_subjects_to_stack
     SSL_add_ssl_module
+    SSL_add_store_cert_subjects_to_stack
     SSL_alert_desc_string
     SSL_alert_desc_string_long
     SSL_alert_type_string
@@ -303,14 +315,17 @@ EXPORTS
     SSL_get0_next_proto_negotiated
     SSL_get0_param
     SSL_get0_peer_CA_list
+    SSL_get0_peer_certificate
     SSL_get0_peer_scts
     SSL_get0_peername
     SSL_get0_security_ex_data
     SSL_get0_verified_chain
+    SSL_get1_peer_certificate
     SSL_get1_session
     SSL_get1_supported_ciphers
     SSL_get_SSL_CTX
     SSL_get_all_async_fds
+    SSL_get_async_status
     SSL_get_certificate
     SSL_get_changed_async_fds
     SSL_get_cipher_list
@@ -336,7 +351,6 @@ EXPORTS
     SSL_get_num_tickets
     SSL_get_options
     SSL_get_peer_cert_chain
-    SSL_get_peer_certificate
     SSL_get_peer_finished
     SSL_get_peer_signature_type_nid
     SSL_get_pending_cipher
@@ -375,6 +389,7 @@ EXPORTS
     SSL_get_version
     SSL_get_wbio
     SSL_get_wfd
+    SSL_group_to_name
     SSL_has_matching_session_id
     SSL_has_pending
     SSL_in_before
@@ -384,7 +399,9 @@ EXPORTS
     SSL_is_server
     SSL_key_update
     SSL_load_client_CA_file
+    SSL_load_client_CA_file_ex
     SSL_new
+    SSL_new_session_ticket
     SSL_peek
     SSL_peek_ex
     SSL_pending
@@ -397,10 +414,12 @@ EXPORTS
     SSL_rstate_string
     SSL_rstate_string_long
     SSL_select_next_proto
+    SSL_sendfile
     SSL_session_reused
     SSL_set0_CA_list
     SSL_set0_rbio
     SSL_set0_security_ex_data
+    SSL_set0_tmp_dh_pkey
     SSL_set0_wbio
     SSL_set1_host
     SSL_set1_param
@@ -408,6 +427,8 @@ EXPORTS
     SSL_set_accept_state
     SSL_set_allow_early_data_cb
     SSL_set_alpn_protos
+    SSL_set_async_callback
+    SSL_set_async_callback_arg
     SSL_set_bio
     SSL_set_block_padding
     SSL_set_cert_cb
@@ -466,6 +487,7 @@ EXPORTS
     SSL_state_string
     SSL_state_string_long
     SSL_stateless
+    SSL_trace
     SSL_up_ref
     SSL_use_PrivateKey
     SSL_use_PrivateKey_ASN1
@@ -500,4 +522,3 @@ EXPORTS
     TLSv1_server_method
     d2i_SSL_SESSION
     i2d_SSL_SESSION
-

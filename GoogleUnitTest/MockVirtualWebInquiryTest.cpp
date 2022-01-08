@@ -79,46 +79,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
 	}
 
-	TEST_F(CMockVirtualWebInquiryTest, TestReadWebDataTimeLimit) {
-		CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
-
-		InSequence seq;
-		EXPECT_CALL(m_VirtualWebInquiry, OpenFile(strInquiry))
-			.Times(1)
-			.WillOnce(Return(true));
-		EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
-			.Times(8)
-			.WillOnce(Return(0)) //第一次返回值为0
-			.WillOnce(Return(0))
-			.WillOnce(Return(1024)) //第三次返回值为非零
-			.WillOnce(Return(0))
-			.WillOnce(Return(1024))
-			.WillRepeatedly(Return(0)); // 随后的三次皆为零，函数顺利返回
-		m_VirtualWebInquiry.SetReadingWebData(true);
-		m_VirtualWebInquiry.SetInquiringString(strInquiry);
-		//m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
-		EXPECT_TRUE(m_VirtualWebInquiry.ReadWebDataTimeLimit(100, 30, 20));
-		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
-		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
-	}
-
-	TEST_F(CMockVirtualWebInquiryTest, TestReadWebDataTimeLimit2) {
-		CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
-
-		InSequence seq;
-		EXPECT_CALL(m_VirtualWebInquiry, OpenFile(strInquiry))
-			.Times(1)
-			.WillOnce(Return(false));
-		EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
-			.Times(0); // 当打开网络文件失败时，不去读取该文件
-		m_VirtualWebInquiry.SetReadingWebData(true);
-		m_VirtualWebInquiry.SetInquiringString(strInquiry);
-		//m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
-		EXPECT_FALSE(m_VirtualWebInquiry.ReadWebDataTimeLimit(100, 30, 20)) << "打开网络文件失败时，函数报错";
-		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError()) << "Mock函数并没有设置此标识，真实情况下是设置了的";
-		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
-	}
-
 	TEST_F(CMockVirtualWebInquiryTest, TestGetWebData) {
 		m_VirtualWebInquiry.SetReadingWebData(true);
 		EXPECT_FALSE(m_VirtualWebInquiry.GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");

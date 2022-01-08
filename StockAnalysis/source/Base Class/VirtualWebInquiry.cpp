@@ -137,61 +137,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	return fReadingSuccess;
 }
 
-///////////////////////////////////////////////////////////////////////////
-//
-// 从网络读取数据。每次读1KB，读不到等待若干毫秒，共等待三次。
-//
-// 这种方式目前已废弃，暂时保留此功能以备不时之需。
-//
-//
-///////////////////////////////////////////////////////////////////////////
-
-bool CVirtualWebInquiry::ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
-	m_pFile = nullptr;
-	bool fDone = false;
-	bool fStatus = true;
-	time_t tt = 0;
-
-	ASSERT(IsReadingWebData());
-
-	gl_ThreadStatus.IncreaseWebInquiringThread();
-
-	long lCurrentByteReaded = 0;
-	SetWebError(false);
-	SetByteReaded(0);
-	tt = GetTickCount64();
-	if (OpenFile(GetInquiringString())) {
-		Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
-		while (!fDone) {
-			do {
-				lCurrentByteReaded = ReadWebFileOneTime();
-			} while (lCurrentByteReaded > 0);
-			Sleep(lSecondDelayTime); // 等待lSecondDelayTime毫秒后再读一次，确认没有新数据后才返回。
-			if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
-				Sleep(lThirdDelayTime); // 等待lThirdDelayTime毫秒后读第三次，确认没有新数据后才返回，否则继续读。
-				if ((lCurrentByteReaded = ReadWebFileOneTime()) == 0) {
-					fDone = true;
-				}
-			}
-		}
-		ASSERT(m_vBuffer.size() > m_lByteRead);
-		m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
-		}
-		m_lTotalByteReaded += m_lByteRead; //
-	}
-	else fStatus = false;
-
-	m_tCurrentInquiryTime = GetTickCount64() - tt;
-	gl_ThreadStatus.DecreaseWebInquiringThread();
-	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
-	return fStatus;
-}
-
-/// <summary>
 /// 每次读取1K数据，然后将读取到的数据存入缓冲区
 /// </summary>
 /// <param name=""></param>
