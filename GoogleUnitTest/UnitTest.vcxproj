@@ -332,6 +332,7 @@
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -357,6 +358,7 @@
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

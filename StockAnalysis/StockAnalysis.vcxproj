@@ -188,6 +188,7 @@
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -230,6 +231,7 @@
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

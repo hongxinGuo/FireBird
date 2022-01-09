@@ -1,8 +1,37 @@
 #include "pch.h"
 
-#include"CallableFunction.h"
 #include"WebInquirer.h"
 #include "TiingoForexWebSocket.h"
+
+void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
+	switch (msg->type) {
+	case ix::WebSocketMessageType::Message:
+		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
+		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
+		if (!gl_fExitingSystem) {
+			gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
+			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
+		}
+		break;
+	case ix::WebSocketMessageType::Error:
+		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		break;
+	case ix::WebSocketMessageType::Open:
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket已连接"));
+		break;
+	case ix::WebSocketMessageType::Close:
+		break;
+	case ix::WebSocketMessageType::Fragment:
+		break;
+	case ix::WebSocketMessageType::Ping:
+		break;
+	case ix::WebSocketMessageType::Pong:
+		//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket heart beat"));
+		break;
+	default: // error
+		break;
+	}
+}
 
 UINT ThreadConnectingTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vector<CString> vSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();

@@ -1,6 +1,9 @@
 #pragma once
 
 #include"VirtualWebSocket.h"
+#include <ixwebsocket/IXWebSocket.h>
+
+void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 
 class CTiingoForexWebSocket : public CVirtualWebSocket {
 public:
@@ -14,3 +17,26 @@ public:
 
 	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
 };
+
+typedef shared_ptr<CTiingoForexWebSocket> CTiingoForexWebSocketPtr;
+
+class CTiingoForexSocket : public CObject {
+public:
+	CTiingoForexSocket() {
+		m_chMessageType = 'Q';
+		m_strSymbol = _T("");
+		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
+	}
+
+public:
+	char m_chMessageType; // ±ÿ–Î «'Q'
+	CString m_strSymbol;
+	CTime m_date;
+	double m_dBidSize;
+	double m_dBidPrice;
+	double m_dMidPrice;
+	double m_dAskPrice;
+	double m_dAskSize;
+};
+
+typedef shared_ptr<CTiingoForexSocket> CTiingoForexSocketPtr;

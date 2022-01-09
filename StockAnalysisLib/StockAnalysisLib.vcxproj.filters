@@ -354,9 +354,6 @@
     <ClInclude Include="..\StockAnalysis\source\QueueString.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WebSocketData.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h">
       <Filter>头文件\World Market\类型</Filter>
     </ClInclude>

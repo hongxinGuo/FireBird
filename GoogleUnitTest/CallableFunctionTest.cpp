@@ -6,6 +6,11 @@
 
 #include"Callablefunction.h"
 
+#include"FinnhubWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+#include"TiingoCryptoWebSocket.h"
+#include"TiingoForexWebSocket.h"
+
 #include <ixwebsocket/IXWebSocket.h>
 
 using namespace std;

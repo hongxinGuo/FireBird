@@ -34,8 +34,6 @@ using namespace MyLib;
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
-#include"WebSocketData.h"
-
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {
 	__WEBSOCKET__TRADES__ = 1,
@@ -438,16 +436,12 @@ public:
 	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
 
 protected:
-	long m_lCurrentProfilePos;
-	long m_lCurrentUpdateDayLinePos;
-	long m_lCurrentRTDataQuotePos;
-	long m_lCurrentForexExchangePos;
+	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 	long m_lCurrentForexSymbolPos;
-	long m_lCurrentCryptoExchangePos;
 	long m_lCurrentCryptoSymbolPos;
-	long m_lCurrentUpdatePeerPos;
-	long m_lCurrentUpdateInsiderTransactionPos;
-	long m_lCurrentUpdateEPSSurprisePos;
+	long m_lCurrentUpdateForexDayLinePos;
+	long m_lCurrentUpdateCryptoDayLinePos;
 
 	CDataFinnhubStockExchange m_dataFinnhubStockExchange;
 	CDataFinnhubForexExchange m_dataFinnhubForexExchange;
@@ -465,9 +459,6 @@ protected:
 	CDataChoicedStock m_dataChoicedStock;
 	CDataChoicedForex m_dataChoicedForex;
 	CDataChoicedCrypto m_dataChoicedCrypto;
-
-	long m_lCurrentUpdateForexDayLinePos;
-	long m_lCurrentUpdateCryptoDayLinePos;
 
 	CFinnhubFactory m_FinnhubFactory;
 	CTiingoFactory m_TiingoFactory;
@@ -498,8 +489,8 @@ protected:
 	bool m_fFinnhubCryptoExchangeUpdated; // 每日更新Crypto交易所
 	bool m_fFinnhubCryptoSymbolUpdated; // 每日更新Crypto交易所代码
 	bool m_fFinnhubCryptoDayLineUpdated; // 每日更新Crypto日线数据
-	bool m_fFinnhubPeerUpdated; // 每月更新Peers数据
-	bool m_fFinnhubInsiderTransactionUpdated; // 每月更新Peers数据
+	bool m_fFinnhubPeerUpdated; // 每90天更新Peers数据
+	bool m_fFinnhubInsiderTransactionUpdated; // 每30天更新InsiderTransaction数据
 	bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
 	bool m_fFinnhubEPSSurpriseUpdated;
 
@@ -536,8 +527,7 @@ protected:
 	CString m_strCurrentTiingoWebSocketCrypto;
 
 	//
-	bool m_fRebulidDayLine;
-	// 重建日线历史数据。
+	bool m_fRebulidDayLine;	// 重建日线历史数据。
 };
 
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;

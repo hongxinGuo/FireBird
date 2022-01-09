@@ -5,15 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <ixwebsocket/IXWebSocket.h>
 #include"ChinaStock.h"
 #include"WorldStock.h"
 #include"Country.h"
-
-void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
-void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
-void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg);
-void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2);
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);

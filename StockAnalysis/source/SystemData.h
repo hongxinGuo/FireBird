@@ -9,7 +9,10 @@
 #pragma once
 
 #include"globedef.h"
-#include"WebSocketData.h"
+#include"FinnhubWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+#include"TiingoCryptoWebSocket.h"
+#include"TiingoForexWebSocket.h"
 
 class CSystemData : public CObject {
 public:
