@@ -40,11 +40,8 @@ namespace StockAnalysisTest {
 		ASSERT_FALSE(gl_fNormalMode);
 		size_t l = gl_systemMessage.GetInformationDequeSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
-		for (int i = 0; i < l + 1; i++) {
-			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
-		}
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), l + 1); // 系统报警队列
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("错误：系统不允许生成多个CSystemMessage实例"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetInformationDequeSize) {
@@ -100,5 +97,43 @@ namespace StockAnalysisTest {
 		CString str = gl_systemMessage.PopTrace2Message();
 		EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
+	}
+
+	TEST_F(SystemMessageTest, TestGetProcessedFinnhubWebSocket) {
+		EXPECT_EQ(gl_systemMessage.GetProcessedFinnhubWebSocket(), 0);
+		gl_systemMessage.SetProcessedFinnhubWebSocket(100);
+		EXPECT_EQ(gl_systemMessage.GetProcessedFinnhubWebSocket(), 100);
+		gl_systemMessage.ClearProcessedFinnhubWebSocket();
+	}
+
+	TEST_F(SystemMessageTest, TestGetProcessedTiingoIEXWebSocket) {
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoIEXWebSocket(), 0);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(100);
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoIEXWebSocket(), 100);
+		gl_systemMessage.ClearProcessedTiingoIEXWebSocket();
+	}
+
+	TEST_F(SystemMessageTest, TestGetProcessedTiingoCryptoWebSocket) {
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoCryptoWebSocket(), 0);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(100);
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoCryptoWebSocket(), 100);
+		gl_systemMessage.ClearProcessedTiingoCryptoWebSocket();
+	}
+
+	TEST_F(SystemMessageTest, TestGetProcessedTiingoForexWebSocket) {
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoForexWebSocket(), 0);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(100);
+		EXPECT_EQ(gl_systemMessage.GetProcessedTiingoForexWebSocket(), 100);
+		gl_systemMessage.ClearProcessedTiingoForexWebSocket();
+	}
+
+	TEST_F(SystemMessageTest, TestGetStockCodeForInquiringSinaRTData) {
+		gl_systemMessage.SetStockCodeForInquiringRTData(_T("601919.SS"));
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), _T("601919.SS"));
+	}
+
+	TEST_F(SystemMessageTest, TestGetReadingNeteaseDayLineDataTime) {
+		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine(), _T("600000.SS"));
 	}
 }

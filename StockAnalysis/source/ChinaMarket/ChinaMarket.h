@@ -284,12 +284,8 @@ public:
 	size_t GetTotalStockMapSize(void) const noexcept { return m_mapChinaMarketStock.size(); }
 	long GetStockOffset(CString str) const { return m_mapChinaMarketStock.at(str); }
 
-	void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
-	CString GetStockCodeForInquiringRTData(void) const { return m_strStockCodeForInquiringRTData; }
 	void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
 	clock_t GetReadingTengxunRTDataTime(void) const noexcept { return m_ReadingTengxunRTDataTime; }
-	void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
-	CString GetStockCodeForInquiringNeteaseDayLine(void) const { return m_strStockCodeForInquiringNeteaseDayLine; }
 
 	// 处理网络上提取的实时股票数据
 	bool TaskProcessWebRTDataGetFromSinaServer(void);
@@ -500,9 +496,7 @@ protected:
 	bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
 	// 多线程读取之变量
-	CString m_strStockCodeForInquiringRTData;
 	clock_t m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-	CString m_strStockCodeForInquiringNeteaseDayLine;
 
 	// 更新股票代码数据库标识
 	atomic_bool m_fUpdateOptionDB;

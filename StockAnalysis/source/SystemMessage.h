@@ -70,6 +70,33 @@ public:
 	size_t GetErrorMessageDequeSize(void) { return m_ErrorMessage.GetDequeSize(); }
 	void DisplayErrorMessage(COutputList* pOutputList, CString strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
 
+	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }
+	void SetProcessedFinnhubWebSocket(int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }
+	void ClearProcessedFinnhubWebSocket(void) noexcept { m_iProcessedFinnhubWebSocket = 0; }
+	int GetProcessedTiingoIEXWebSocket(void) noexcept { return m_iProcessedTiingoIEXWebSocket; }
+	void SetProcessedTiingoIEXWebSocket(int iValue) noexcept { m_iProcessedTiingoIEXWebSocket = iValue; }
+	void ClearProcessedTiingoIEXWebSocket(void) noexcept { m_iProcessedTiingoIEXWebSocket = 0; }
+	int GetProcessedTiingoCryptoWebSocket(void) noexcept { return m_iProcessedTiingoCryptoWebSocket; }
+	void SetProcessedTiingoCryptoWebSocket(int iValue) noexcept { m_iProcessedTiingoCryptoWebSocket = iValue; }
+	void ClearProcessedTiingoCryptoWebSocket(void) noexcept { m_iProcessedTiingoCryptoWebSocket = 0; }
+	int GetProcessedTiingoForexWebSocket(void) noexcept { return m_iProcessedTiingoForexWebSocket; }
+	void SetProcessedTiingoForexWebSocket(int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
+	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
+
+	void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
+	CString GetStockCodeForInquiringRTData(void) const { return m_strStockCodeForInquiringRTData; }
+	void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+	CString GetStockCodeForInquiringNeteaseDayLine(void) const { return m_strStockCodeForInquiringNeteaseDayLine; }
+
+	void SetCurrentFinnhubWebSocketStake(CString s) { m_strCurrentFinnhubWebSocketStake = s; }
+	CString GetCurrentFinnhubWebSocketStake(void) { return m_strCurrentFinnhubWebSocketStake; }
+	void SetCurrentTiingoWebSocketIEX(CString s) { m_strCurrentTiingoWebSocketIEX = s; }
+	CString GetCurrentTiingoWebSocketIEX(void) { return m_strCurrentTiingoWebSocketIEX; }
+	void SetCurrentTiingoWebSocketForex(CString s) { m_strCurrentTiingoWebSocketForex = s; }
+	CString GetCurrentTiingoWebSocketForex(void) { return m_strCurrentTiingoWebSocketForex; }
+	void SetCurrentTiingoWebSocketCrypto(CString s) { m_strCurrentTiingoWebSocketCrypto = s; }
+	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
+
 protected:
 	// 信息输出队列群
 	CSystemDeque m_SystemInformation;
@@ -80,4 +107,17 @@ protected:
 	CSystemDeque m_Trace2;
 	CSystemDeque m_InnerSystemInformation;
 	CSystemDeque m_ErrorMessage;
+
+	int m_iProcessedFinnhubWebSocket;
+	int m_iProcessedTiingoCryptoWebSocket;
+	int m_iProcessedTiingoForexWebSocket;
+	int m_iProcessedTiingoIEXWebSocket;
+
+	CString m_strStockCodeForInquiringRTData;
+	CString m_strStockCodeForInquiringNeteaseDayLine;
+
+	CString m_strCurrentFinnhubWebSocketStake;
+	CString m_strCurrentTiingoWebSocketIEX;
+	CString m_strCurrentTiingoWebSocketForex;
+	CString m_strCurrentTiingoWebSocketCrypto;
 };

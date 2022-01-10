@@ -963,16 +963,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), 10101010);
 	}
 
-	TEST_F(CChinaMarketTest, TestGetStockCodeForInquiringSinaRTData) {
-		gl_pChinaMarket->SetStockCodeForInquiringRTData(_T("601919.SS"));
-		EXPECT_EQ(gl_pChinaMarket->GetStockCodeForInquiringRTData(), _T("601919.SS"));
-	}
-
-	TEST_F(CChinaMarketTest, TestGetReadingNeteaseDayLineDataTime) {
-		gl_pChinaMarket->SetStockCodeForInquiringNeteaseDayLine(_T("600000.SS"));
-		EXPECT_EQ(gl_pChinaMarket->GetStockCodeForInquiringNeteaseDayLine(), _T("600000.SS"));
-	}
-
 	TEST_F(CChinaMarketTest, TestGetReadingTengxunRTDataTime) {
 		time_t tt = 1010101010;
 		gl_pChinaMarket->SetReadingTengxunRTDataTime(tt);

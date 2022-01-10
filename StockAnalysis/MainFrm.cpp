@@ -533,7 +533,7 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(5, (LPCTSTR)str);
 
 	// 显示当前读取的新浪实时数据股票代码
-	SysCallSetPaneText(6, (LPCTSTR)gl_pChinaMarket->GetStockCodeForInquiringRTData());
+	SysCallSetPaneText(6, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetTotalStock());
@@ -541,12 +541,12 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(7, (LPCTSTR)str);
 
 	// 显示当前读取网易日线历史的股票代码
-	SysCallSetPaneText(8, (LPCTSTR)gl_pChinaMarket->GetStockCodeForInquiringNeteaseDayLine());
+	SysCallSetPaneText(8, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
 
-	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFinnhubWebSocketStake());
-	SysCallSetPaneText(10, (LPCTSTR)gl_pWorldMarket->GetCurrentTiingoWebSocketIEX());
-	SysCallSetPaneText(11, (LPCTSTR)gl_pWorldMarket->GetCurrentTiingoWebSocketForex());
-	SysCallSetPaneText(12, (LPCTSTR)gl_pWorldMarket->GetCurrentTiingoWebSocketCrypto());
+	SysCallSetPaneText(9, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
+	SysCallSetPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
+	SysCallSetPaneText(11, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
+	SysCallSetPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
 
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) { // 每秒更新一次
@@ -602,13 +602,13 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
-	str = FormatToMK(gl_pWorldMarket->GetProcessedFinnhubWebSocket());
+	str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
 	SysCallSetInnerSystemPaneText(8, (LPCTSTR)str);
-	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoIEXWebSocket());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
 	SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
-	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoForexWebSocket());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
 	SysCallSetInnerSystemPaneText(10, (LPCTSTR)str);
-	str = FormatToMK(gl_pWorldMarket->GetProcessedTiingoCryptoWebSocket());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
 	SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
 }
 

@@ -28,7 +28,7 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
 	// 开市时使用今日活跃股票池
 	strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckActiveStock());
 	strSinaStockCode = strMiddle.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
-	gl_pChinaMarket->SetStockCodeForInquiringRTData(XferSinaToStandred(strSinaStockCode));
+	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandred(strSinaStockCode));
 	CreateTotalInquiringString(strMiddle);
 
 	return true;

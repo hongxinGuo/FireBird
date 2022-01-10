@@ -18,6 +18,7 @@ class CVirtualWebSocket : public CObject {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
 	virtual ~CVirtualWebSocket();
+	void Reset(void);
 
 	virtual bool Connect(void) = 0;
 	virtual bool Send(vector<CString> vSymbol) = 0;

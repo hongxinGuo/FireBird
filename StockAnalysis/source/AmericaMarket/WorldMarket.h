@@ -148,7 +148,6 @@ public:
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);
 	bool ProcessFinnhubWebDataReceived(void);
-
 	bool ProcessTiingoInquiringMessage(void);
 	bool ProcessTiingoWebDataReceived(void);
 
@@ -417,24 +416,6 @@ public:
 	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return (int)m_iWebSocketReceivedNumberPerSecond; }
 	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
 
-	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }
-	void ClearPorcessedFinnhubWebSocket(void) noexcept { m_iProcessedFinnhubWebSocket = 0; }
-	int GetProcessedTiingoIEXWebSocket(void) noexcept { return m_iProcessedTiingoIEXWebSocket; }
-	void ClearProcessedTiingoIEXWebSocket(void) noexcept { m_iProcessedTiingoIEXWebSocket = 0; }
-	int GetProcessedTiingoCryptoWebSocket(void) noexcept { return m_iProcessedTiingoCryptoWebSocket; }
-	void ClearProcessedTiingoCryptoWebSocket(void) noexcept { m_iProcessedTiingoCryptoWebSocket = 0; }
-	int GetProcessedTiingoForexWebSocket(void) noexcept { return m_iProcessedTiingoForexWebSocket; }
-	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
-
-	void SetCurrentFinnhubWebSocketStake(CString s) { m_strCurrentFinnhubWebSocketStake = s; }
-	CString GetCurrentFinnhubWebSocketStake(void) { return m_strCurrentFinnhubWebSocketStake; }
-	void SetCurrentTiingoWebSocketIEX(CString s) { m_strCurrentTiingoWebSocketIEX = s; }
-	CString GetCurrentTiingoWebSocketIEX(void) { return m_strCurrentTiingoWebSocketIEX; }
-	void SetCurrentTiingoWebSocketForex(CString s) { m_strCurrentTiingoWebSocketForex = s; }
-	CString GetCurrentTiingoWebSocketForex(void) { return m_strCurrentTiingoWebSocketForex; }
-	void SetCurrentTiingoWebSocketCrypto(CString s) { m_strCurrentTiingoWebSocketCrypto = s; }
-	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
-
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
@@ -498,33 +479,15 @@ protected:
 	bool m_fTiingoCryptoSymbolUpdated; // 每日更新crypto代码库
 	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 
-	bool m_fInquiringFinnhubStockSymbol;
-	bool m_fInquiringFinnhubStockProfile;
-	bool m_fInquiringFinnhubStockPeer;
-	bool m_fInquiringFinnhubStockInsiderTransaction;
-	bool m_fInquiringFinnhubForexDayLine;
-	bool m_fInquiringFinnhubCryptoDayLine;
-	bool m_fInquiringFinnhubStockDayLine;
-
 	// WebSocket数据
 	CFinnhubWebSocket m_finnhubWebSocket;
 	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	CTiingoForexWebSocket m_tiingoForexWebSocket;
 	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 
-	int m_iProcessedFinnhubWebSocket;
-	int m_iProcessedTiingoCryptoWebSocket;
-	int m_iProcessedTiingoForexWebSocket;
-	int m_iProcessedTiingoIEXWebSocket;
-
 	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;
-
-	CString m_strCurrentFinnhubWebSocketStake;
-	CString m_strCurrentTiingoWebSocketIEX;
-	CString m_strCurrentTiingoWebSocketForex;
-	CString m_strCurrentTiingoWebSocketCrypto;
 
 	//
 	bool m_fRebulidDayLine;	// 重建日线历史数据。

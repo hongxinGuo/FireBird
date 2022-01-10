@@ -5,18 +5,23 @@
 
 CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
-	m_iSubscriptionId = 0;
-	m_iPingPeriod = 0;
-	m_fDeflate = true;
+	Reset();
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
 	Deconnecting();
 }
 
+void CVirtualWebSocket::Reset(void) {
+	m_iSubscriptionId = 0;
+	m_iPingPeriod = 0;
+	m_fDeflate = true;
+}
+
 bool CVirtualWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
 	if (!IsClosed()) Deconnecting();
 	while (!IsClosed()) Sleep(1);
+	Reset();
 	Connect();
 	while (!IsOpen()) Sleep(1);
 	Send(vSymbol);
