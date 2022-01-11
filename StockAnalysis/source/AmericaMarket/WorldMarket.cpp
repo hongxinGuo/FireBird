@@ -1497,7 +1497,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
 		strMessage = _T("Tiingo IEX: ");
 		strMessage += (*pString).c_str();
-		gl_systemMessage.PushCancelBuyMessage(strMessage);
+		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		m_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(pString);
 	}
@@ -1515,7 +1515,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
 		strMessage = _T("Tiingo Crypto: ");
 		strMessage += (*pString).c_str();
-		gl_systemMessage.PushCancelBuyMessage(strMessage);
+		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		m_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(pString);
 	}

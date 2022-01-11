@@ -52,8 +52,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		!m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
 		!m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
 		!m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
-		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 9))
+		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
+		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 10))
 	{
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
@@ -83,12 +84,15 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)5);
+	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)6);
 	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)6);
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)7);
 	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)7);
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)8);
 
 	// 设置1000毫秒每次的软调度，用于接受处理实时网络数据
 	m_uIdTimer = SetTimer(3, 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
@@ -131,6 +135,7 @@ void COutputWnd::UpdateFonts() {
 	m_wndOutputCancelSell.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputTrace2.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndErrorMessage.SetFont(&afxGlobalData.fontRegular);
 }
@@ -285,6 +290,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		gl_systemMessage.DisplayTrace2(&m_wndOutputTrace2, strTime);
 		if (fUpdate) {
 			m_wndOutputTrace2.SetCurAtLastLine();
+		}
+	}
+
+	if (m_wndOutputWebSocketInfo.GetCount() > 10000) m_wndOutputWebSocketInfo.TruncateList(1000);
+	fUpdate = false;
+	if ((lTotal = gl_systemMessage.GetWebSocketInfoDequeSize()) > 0) {
+		lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
+		if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, strTime);
+		if (fUpdate) {
+			m_wndOutputWebSocketInfo.SetCurAtLastLine();
 		}
 	}
 

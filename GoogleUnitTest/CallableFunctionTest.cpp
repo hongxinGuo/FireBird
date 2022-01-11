@@ -105,7 +105,8 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
 			break;
 		case ix::WebSocketMessageType::Pong:
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket heart beat"));
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_THAT(gl_WebInquirer.GetFinnhubWebSocketDataSize(), 0);
@@ -180,7 +181,8 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
 			break;
 		case ix::WebSocketMessageType::Pong:
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket heart beat"));
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_THAT(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 0);
@@ -255,7 +257,8 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
 			break;
 		case ix::WebSocketMessageType::Pong:
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket heart beat"));
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_THAT(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 0);
@@ -330,7 +333,8 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
 			break;
 		case ix::WebSocketMessageType::Pong:
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket heart beat"));
 			break;
 		case ix::WebSocketMessageType::Fragment:
 			EXPECT_THAT(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 0);

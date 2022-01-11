@@ -43,6 +43,7 @@ protected:
 	COutputList m_wndOutputCancelSell;
 	COutputList m_wndOutputCancelBuy;
 	COutputList m_wndOutputTrace2;
+	COutputList m_wndOutputWebSocketInfo;
 	COutputList m_wndOutputInnerSystemInformation;
 	COutputList m_wndErrorMessage;
 

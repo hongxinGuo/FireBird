@@ -38,6 +38,7 @@
 #define IDS_TRACE2_TAB2                 307
 #define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
 #define IDS_ERROR_MESSAGE               308
+#define IDS_WEB_SOCKET_INFO_TAB         309
 #define IDD_DIALOG_PROGRAM_OPTION       310
 #define IDD_DIALOG1                     314
 #define IDD_DIALOG_CHINA_STOCKMARKET    316

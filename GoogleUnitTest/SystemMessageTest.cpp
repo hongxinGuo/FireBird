@@ -90,6 +90,15 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("TEST"));
 	}
 
+	TEST_F(SystemMessageTest, TestGetWebSocketInfoDequeSize) {
+		EXPECT_EQ(gl_systemMessage.GetWebSocketInfoDequeSize(), 0);
+		gl_systemMessage.PushWebSocketInfoMessage(_T("TEST"));
+		EXPECT_EQ(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);
+		CString str = gl_systemMessage.PopWebSocketInfoMessage();
+		EXPECT_EQ(gl_systemMessage.GetWebSocketInfoDequeSize(), 0);
+		EXPECT_STREQ(str, _T("TEST"));
+	}
+
 	TEST_F(SystemMessageTest, TestGetTrace2DequeSize) {
 		EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
 		gl_systemMessage.PushTrace2Message(_T("TEST"));

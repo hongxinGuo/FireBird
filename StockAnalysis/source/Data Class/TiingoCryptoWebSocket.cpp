@@ -26,7 +26,7 @@ void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
-		//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto WebSocket heart beat"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket heart beat"));
 		break;
 	default: // error
 		break;

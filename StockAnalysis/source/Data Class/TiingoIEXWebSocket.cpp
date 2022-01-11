@@ -26,7 +26,7 @@ void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
-		//gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket heart beat"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket heart beat"));
 		break;
 	default: // error
 		break;

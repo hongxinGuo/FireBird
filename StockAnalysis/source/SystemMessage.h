@@ -60,6 +60,11 @@ public:
 	size_t GetTrace2DequeSize(void) { return m_Trace2.GetDequeSize(); }
 	void DisplayTrace2(COutputList* pOutputList, CString strTime) { m_Trace2.Display(pOutputList, strTime); }
 
+	void PushWebSocketInfoMessage(CString str) { m_WebSocketInfo.PushMessage(str); }
+	CString PopWebSocketInfoMessage(void) { return m_WebSocketInfo.PopMessage(); }
+	size_t GetWebSocketInfoDequeSize(void) { return m_WebSocketInfo.GetDequeSize(); }
+	void DisplayWebSocketInfo(COutputList* pOutputList, CString strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
+
 	void PushInnerSystemInformationMessage(CString str) { m_InnerSystemInformation.PushMessage(str); }
 	CString PopInnerSystemInformationMessage(void) { return m_InnerSystemInformation.PopMessage(); }
 	size_t GetInnerSystemInformationDequeSize(void) { return m_InnerSystemInformation.GetDequeSize(); }
@@ -105,6 +110,7 @@ protected:
 	CSystemDeque m_CancelSell;
 	CSystemDeque m_CancelBuy;
 	CSystemDeque m_Trace2;
+	CSystemDeque m_WebSocketInfo;
 	CSystemDeque m_InnerSystemInformation;
 	CSystemDeque m_ErrorMessage;
 

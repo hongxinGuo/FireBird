@@ -28,6 +28,7 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Ping:
 		break;
 	case ix::WebSocketMessageType::Pong:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket heart beat"));
 		break;
 	default: // error
 		break;
