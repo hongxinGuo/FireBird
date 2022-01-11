@@ -16,19 +16,22 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket“—¡¨Ω”"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));
 		break;
 	case ix::WebSocketMessageType::Close:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Close"));
 		break;
 	case ix::WebSocketMessageType::Fragment:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Fragment"));
 		break;
 	case ix::WebSocketMessageType::Ping:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Ping"));
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket heart beat"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Pong"));
 		break;
 	default: // error
 		break;

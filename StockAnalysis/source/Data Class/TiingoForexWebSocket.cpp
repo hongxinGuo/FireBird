@@ -14,19 +14,22 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushInnerSystemInformationMessage(msg->errorInfo.reason.c_str());
+		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex WebSocket“—¡¨Ω”"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Open"));
 		break;
 	case ix::WebSocketMessageType::Close:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Close"));
 		break;
 	case ix::WebSocketMessageType::Fragment:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Fragment"));
 		break;
 	case ix::WebSocketMessageType::Ping:
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Ping"));
 		break;
 	case ix::WebSocketMessageType::Pong:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket heart beat"));
+		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Pong"));
 		break;
 	default: // error
 		break;

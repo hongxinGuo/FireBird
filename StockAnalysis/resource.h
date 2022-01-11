@@ -22,26 +22,19 @@
 #define IDI_OUTPUT_WND                  165
 #define IDI_OUTPUT_WND_HC               166
 #define IDR_OUTPUT_POPUP                182
-#define IDS_BUILD_TAB                   300
-#define IDS_INFORMATION_TAB             300
-#define IDS_DEBUG_TAB                   301
-#define IDS_TRANSACTION_TAB             301
-#define IDS_FIND_TAB                    302
-#define IDS_DAYLINE_TAB                 302
-#define IDS_DAYLINE_INFO_TAB            302
-#define IDS_FIND2_TAB                   303
-#define IDS_CANCEL_SELL_TAB             303
-#define IDS_TRACE1_TAB                  304
-#define IDS_CANCEL_BUY_TAB              304
-#define IDS_TRACE2_TAB                  305
 #define IDS_EDIT_MENU                   306
-#define IDS_TRACE2_TAB2                 307
-#define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
-#define IDS_ERROR_MESSAGE               308
-#define IDS_WEB_SOCKET_INFO_TAB         309
 #define IDD_DIALOG_PROGRAM_OPTION       310
 #define IDD_DIALOG1                     314
 #define IDD_DIALOG_CHINA_STOCKMARKET    316
+#define IDS_INFORMATION_TAB             400
+#define IDS_TRANSACTION_TAB             401
+#define IDS_DAYLINE_INFO_TAB            402
+#define IDS_CANCEL_SELL_TAB             403
+#define IDS_CANCEL_BUY_TAB              404
+#define IDS_TRACE2_TAB                  405
+#define IDS_INNER_SYSTEM_INFORMATION_TAB2 407
+#define IDS_ERROR_MESSAGE               408
+#define IDS_WEB_SOCKET_INFO_TAB         409
 #define IDC_COMBO_DISPLAY_RS            1003
 #define IDC_COMBO_OPTION_DISPLAY_RS     1003
 #define IDC_MFCCOLORBUTTON1             1004
@@ -164,7 +157,7 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
