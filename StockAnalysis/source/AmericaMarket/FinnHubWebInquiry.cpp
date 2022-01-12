@@ -33,6 +33,7 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 #endif // DEBUG
 	}
 	m_strConnectionName = _T("Finnhub");
+	m_lShortestInquiringInterval = 1200; // 默认使用免费账户，其查询间隔不能小于1秒，故而将默认值设为1200毫秒
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 

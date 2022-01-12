@@ -44,6 +44,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringPrefix(), _T("http://qt.gtimg.cn/q="));
 		EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_STREQ(m_TengxunRTWebInquiry.GetConnectionName(), _T("TengxunRT"));
+		EXPECT_THAT(m_TengxunRTWebInquiry.GetShortestInquiringInterval(), 400) << "默认400毫秒查询一次";
 		EXPECT_EQ(m_TengxunRTWebInquiry.GetInquiringNumber(), 900) << _T("腾讯默认值");
 	}
 

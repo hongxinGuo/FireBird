@@ -157,7 +157,6 @@ void CChinaMarket::Reset(void) {
 	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
 	m_iRTDataServer = 0; // 使用新浪实时数据服务器
-	m_iRTDataInquiryTickNumber = 3;// 默认400毫秒查询一次
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
@@ -1191,8 +1190,8 @@ bool CChinaMarket::SchedulingTask(void) {
 		TaskProcessWebRTDataGetFromSinaServer();
 		TaskProcessWebRTDataGetFromNeteaseServer();
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = 100 * m_iRTDataInquiryTickNumber; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		else m_iCountDownSlowReadingRTData = m_iRTDataInquiryTickNumber;  // 默认计数4次,即每400毫秒申请一次实时数据
+		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // 默认计数4次,即每400毫秒申请一次实时数据
 	}
 	m_iCountDownSlowReadingRTData--;
 
@@ -3272,11 +3271,10 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
 	setOptionChinaStockMarket.Open();
 	if (!setOptionChinaStockMarket.IsEOF()) {
 		m_iRTDataServer = setOptionChinaStockMarket.m_RTDataServerIndex;
-		m_iRTDataInquiryTickNumber = setOptionChinaStockMarket.m_RTDataInquiryTime / 100 - 1;
+		gl_pSinaRTWebInquiry->SetShoortestINquiringInterval(setOptionChinaStockMarket.m_RTDataInquiryTime);
 	}
 	else {
 		m_iRTDataServer = 0; // 默认使用新浪实时数据服务器
-		m_iRTDataInquiryTickNumber = 3; // 默认400毫秒查询一次
 	}
 }
 
@@ -3288,13 +3286,13 @@ bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
 	if (setOptionChinaStockMarket.IsEOF()) {
 		setOptionChinaStockMarket.AddNew();
 		setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
-		setOptionChinaStockMarket.m_RTDataInquiryTime = (m_iRTDataInquiryTickNumber + 1) * 100;
+		setOptionChinaStockMarket.m_RTDataInquiryTime = gl_pSinaRTWebInquiry->GetShortestInquiringInterval();
 		setOptionChinaStockMarket.Update();
 	}
 	else {
 		setOptionChinaStockMarket.Edit();
 		setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
-		setOptionChinaStockMarket.m_RTDataInquiryTime = (m_iRTDataInquiryTickNumber + 1) * 100;
+		setOptionChinaStockMarket.m_RTDataInquiryTime = gl_pSinaRTWebInquiry->GetShortestInquiringInterval();
 		setOptionChinaStockMarket.Update();
 	}
 	setOptionChinaStockMarket.m_pDatabase->CommitTrans();

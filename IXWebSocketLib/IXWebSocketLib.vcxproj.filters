@@ -171,6 +171,9 @@
     <ClInclude Include="..\ixwebsocket\IXWebSocketVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\ixwebsocket\IXWebSocketSendData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ixwebsocket\IXBench.cpp">

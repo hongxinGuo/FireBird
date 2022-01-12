@@ -410,7 +410,6 @@ public:
 protected:
 	// 本市场各选项
 	int m_iRTDataServer; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-	int m_iRTDataInquiryTickNumber; // 网络实时数据轮询查询时间，默认为400毫秒(3tick),这样就能保证3秒钟内轮询全体活跃股票一次。
 
 // 变量区
 protected:

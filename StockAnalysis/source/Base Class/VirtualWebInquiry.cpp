@@ -20,8 +20,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 	m_vBuffer.resize(128 * 1024);
 
+	m_lShortestInquiringInterval = 1000; // 每1秒查询一次。
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
-
 	m_tCurrentInquiryTime = 0;
 
 #ifdef DEBUG

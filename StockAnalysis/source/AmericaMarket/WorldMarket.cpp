@@ -189,14 +189,16 @@ bool CWorldMarket::SchedulingTask(void) {
 	if (--s_iCountfinnhubLimit < 0) {
 		TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
-			s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+			ASSERT(gl_pFinnhubWebInquiry->GetShortestInquiringInterval() > 100);
+			s_iCountfinnhubLimit = gl_pFinnhubWebInquiry->GetShortestInquiringInterval() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
 	ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
 	if (--s_iCountTiingoLimit < 0) {
-		s_iCountTiingoLimit = 80;
+		ASSERT(gl_pTiingoWebInquiry->GetShortestInquiringInterval() > 100);
+		s_iCountTiingoLimit = gl_pTiingoWebInquiry->GetShortestInquiringInterval() / 100;
 		TaskInquiryTiingo();
 	}
 	ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据

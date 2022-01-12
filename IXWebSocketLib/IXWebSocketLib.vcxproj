@@ -191,6 +191,7 @@
     <ClInclude Include="..\ixwebsocket\IXWebSocketPerMessageDeflateCodec.h" />
     <ClInclude Include="..\ixwebsocket\IXWebSocketPerMessageDeflateOptions.h" />
     <ClInclude Include="..\ixwebsocket\IXWebSocketProxyServer.h" />
+    <ClInclude Include="..\ixwebsocket\IXWebSocketSendData.h" />
     <ClInclude Include="..\ixwebsocket\IXWebSocketSendInfo.h" />
     <ClInclude Include="..\ixwebsocket\IXWebSocketServer.h" />
     <ClInclude Include="..\ixwebsocket\IXWebSocketTransport.h" />

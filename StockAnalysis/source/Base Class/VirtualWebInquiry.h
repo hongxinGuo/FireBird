@@ -70,6 +70,9 @@ public:
 
 	CString GetConnectionName(void) const { return m_strConnectionName; }
 
+	long GetShortestInquiringInterval(void) noexcept { return m_lShortestInquiringInterval; }
+	void SetShoortestINquiringInterval(long lValue) noexcept { m_lShortestInquiringInterval = lValue; }
+
 	INT64 GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(INT64 lValue) noexcept { m_lInquiringNumber = lValue; }
 
@@ -101,6 +104,7 @@ protected:
 
 	bool m_fReportStatus; //
 
+	long m_lShortestInquiringInterval; // 允许的最短查询间隔. 单位为毫秒。默认为1秒每次， 即1000.
 	INT64 m_lInquiringNumber; // 每次查询数量
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
