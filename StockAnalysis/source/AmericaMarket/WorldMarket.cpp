@@ -58,6 +58,11 @@ CWorldMarket::CWorldMarket() {
 	CalculateTime();
 
 	Reset();
+
+	m_fRecordFinnhubWebSocket = true;
+	m_fRecordTiingoCryptoWebSocket = false;
+	m_fRecordTiingoForexWebSocket = false;
+	m_fRecordTiingoIEXWebSocket = false;
 }
 
 CWorldMarket::~CWorldMarket() {
@@ -476,6 +481,7 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 	if (!IsCountryListUpdated() && !IsFinnhubInquiring()) {
 		CWebSourceDataProductPtr p = m_FinnhubFactory.CreateProduct(this, __ECONOMIC_COUNTRY_LIST__);
 		m_qFinnhubProduct.push(p);
+		SetCurrentFunction(_T("Finnhub country List"));
 		SetFinnhubInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Finnhub economic country List已更新"));
 		return true;
@@ -510,6 +516,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 			p->SetIndex(lCurrentStockExchangePos);
 			m_qFinnhubProduct.push(p);
+			SetCurrentFunction(_T("Finnhub查询股票代码:") + pExchange->m_strCode);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
 			TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
@@ -559,6 +566,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __COMPANY_PROFILE_CONCISE__);
 			p->SetIndex(lCurrentProfilePos);
 			m_qFinnhubProduct.push(p);
+			SetCurrentFunction(_T("Finnhub简介:") + m_dataWorldStock.GetStock(lCurrentProfilePos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetFinnhubInquiring(true);
 			fHaveInquiry = true;
@@ -604,6 +612,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
+			SetCurrentFunction(_T("Finnhub日线:") + pStock->GetSymbol());
 			TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
@@ -650,6 +659,7 @@ bool CWorldMarket::TaskInquiryFinnhubInsiderTransaction(void) {
 			p->SetIndex(lCurrentUpdateInsiderTransactionPos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
+			SetCurrentFunction(_T("内部交易:") + pStock->GetSymbol());
 			TRACE("申请%s 内部交易数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
@@ -711,7 +721,8 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
 			p->SetIndex(lCurrentUpdatePeerPos);
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
-			TRACE("申请%s Peer数据\n", GetStock(lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
+			SetCurrentFunction(_T("Peer:") + GetStock(lCurrentUpdatePeerPos)->GetSymbol());
+			//TRACE("申请%s Peer数据\n", GetStock(lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubStockPeer = false;
@@ -828,8 +839,10 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __FOREX_CANDLES__);
 			p->SetIndex(m_lCurrentUpdateForexDayLinePos);
 			m_qFinnhubProduct.push(p);
+			SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
 			pForexSymbol->SetDayLineNeedUpdate(false);
+			SetCurrentFunction(_T("Forex日线:") + pForexSymbol->GetSymbol());
 			TRACE("申请Forex%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
@@ -899,8 +912,10 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __CRYPTO_CANDLES__);
 			p->SetIndex(m_lCurrentUpdateCryptoDayLinePos);
 			m_qFinnhubProduct.push(p);
+			SetCurrentFunction(_T("Finnhub Crypto日线：") + pCryptoSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
+			SetCurrentFunction(_T("Crypto日线:") + pCryptoSymbol->GetSymbol());
 			TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
@@ -977,6 +992,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
 			CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_PRICE_CANDLES__);
 			p->SetIndex(m_dataWorldStock.GetIndex(pStock->GetSymbol()));
 			m_qTiingoProduct.push(p);
+			SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
 			SetTiingoInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
 			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
@@ -1459,11 +1475,6 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
-	m_iWebSocketReceivedNumberPerSecond = gl_WebInquirer.GetFinnhubWebSocketDataSize()
-		+ gl_WebInquirer.GetTiingoIEXWebSocketDataSize()
-		+ gl_WebInquirer.GetTiingoCryptoWebSocketDataSize()
-		+ gl_WebInquirer.GetTiingoForexWebSocketDataSize();
-
 	ProcessFinnhubWebSocketData();
 	ProcessTiingoIEXWebSocketData();
 	ProcessTiingoCryptoWebSocketData();
@@ -1479,9 +1490,11 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopFinnhubWebSocketData();
-		strMessage = _T("Finnhub: ");
-		strMessage += (*pString).c_str();
-		//gl_systemMessage.PushCancelBuyMessage(strMessage);
+		if (m_fRecordFinnhubWebSocket) {
+			strMessage = _T("Finnhub: ");
+			strMessage += (*pString).c_str();
+			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		}
 		iTotalDataSize += pString->size();
 		m_finnhubWebSocket.ParseFinnhubWebSocketData(pString);
 	}
@@ -1497,9 +1510,11 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
-		strMessage = _T("Tiingo IEX: ");
-		strMessage += (*pString).c_str();
-		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		if (m_fRecordTiingoIEXWebSocket) {
+			strMessage = _T("Tiingo IEX: ");
+			strMessage += (*pString).c_str();
+			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		}
 		iTotalDataSize += pString->size();
 		m_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(pString);
 	}
@@ -1515,9 +1530,11 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
-		strMessage = _T("Tiingo Crypto: ");
-		strMessage += (*pString).c_str();
-		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		if (m_fRecordTiingoCryptoWebSocket) {
+			strMessage = _T("Tiingo Crypto: ");
+			strMessage += (*pString).c_str();
+			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		}
 		iTotalDataSize += pString->size();
 		m_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(pString);
 	}
@@ -1532,9 +1549,11 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
-		strMessage = _T("Tiingo Forex: ");
-		strMessage += (*pString).c_str();
-		//gl_systemMessage.PushCancelBuyMessage(strMessage);
+		if (m_fRecordTiingoForexWebSocket) {
+			strMessage = _T("Tiingo Forex: ");
+			strMessage += (*pString).c_str();
+			gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		}
 		iTotalDataSize += pString->size();
 		m_tiingoForexWebSocket.ParseTiingoForexWebSocketData(pString);
 	}

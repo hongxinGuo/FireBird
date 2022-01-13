@@ -112,7 +112,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
 			.Times(1);
@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
 			.Times(1);
@@ -803,7 +803,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(15, _))
 			.Times(1);

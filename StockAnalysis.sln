@@ -25,6 +25,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StockAnalysisLib", "StockAn
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IXWebSocketLib", "IXWebSocketLib\IXWebSocketLib.vcxproj", "{B467F394-DE2A-47F9-A2C2-4BE78225B908}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F77641F7-1DF8-4461-9338-A8E502E570DC} = {F77641F7-1DF8-4461-9338-A8E502E570DC}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib and DLL", "Lib and DLL", "{46774014-7022-4250-A1D8-F2193FE3992E}"
 EndProject

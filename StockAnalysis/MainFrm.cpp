@@ -90,6 +90,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
 	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
 	ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
+	ON_COMMAND(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnRecordFinnhubWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnUpdateRecordFinnhubWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnRecordTiingoCryptoWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoCryptoWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnRecordTiingoForexWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -103,12 +111,12 @@ static UINT indicators[] =
 	ID_CURRENT_RTDATA_READING_STOCK,
 	ID_CURRENT_ACTIVE_STOCK,
 	ID_CURRENT_DAYLINE_READING_STOCK,
+	ID_CURRENT_FUNCTION,
 	ID_CURRENT_FINNHUB_STAKE,
 	ID_CURRENT_TIINGO_IEX,
 	ID_CURRENT_TIINGO_FOREX,
 	ID_CURRENT_TIINGO_CRYPTO,
 	ID_CURRENT_RTDATA_SIZE,
-	ID_CURRENT_WEB_SOCKET_DATA_SIZE,
 	ID_CURRENT_RUNNING_THREAD,
 	ID_CURRENT_RUNNING_BACKGROUND_THREAD,
 	ID_CURRENT_TIME,
@@ -543,22 +551,20 @@ void CMainFrame::UpdateStatus(void) {
 	// 显示当前读取网易日线历史的股票代码
 	SysCallSetPaneText(8, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
 
-	SysCallSetPaneText(9, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
-	SysCallSetPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
-	SysCallSetPaneText(11, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
-	SysCallSetPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
+	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
+
+	SysCallSetPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
+	SysCallSetPaneText(11, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
+	SysCallSetPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
+	SysCallSetPaneText(13, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
 
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) { // 每秒更新一次
 		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
 		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
 		m_timeLast = gl_pChinaMarket->GetUTCTime();
-		m_wndStatusBar.SetPaneText(13, (LPCTSTR)str);
+		m_wndStatusBar.SetPaneText(14, (LPCTSTR)str);
 	}
-
-	sprintf_s(buffer, _T("%5d"), gl_pWorldMarket->GetWebSocketReceivedNumberPerSecond());
-	str = buffer;
-	SysCallSetPaneText(14, (LPCTSTR)str);
 
 	// 更新当前工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
@@ -1017,4 +1023,71 @@ void CMainFrame::OnRebuildDayline() {
 void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {
 	// TODO: Add your command handler code here
 	gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
+}
+
+void CMainFrame::OnRecordFinnhubWebSocket() {
+	// TODO: Add your command handler code here
+	if (gl_pWorldMarket->IsRecordFinnhubWebSocket()) gl_pWorldMarket->SetRecordFinnhubWebSocket(false);
+	else gl_pWorldMarket->SetRecordFinnhubWebSocket(true);
+}
+
+void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
+	if (gl_pWorldMarket->IsRecordFinnhubWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnRecordTiingoCryptoWebSocket()
+{
+	// TODO: Add your command handler code here
+	if (gl_pWorldMarket->IsRecordTiingoCryptoWebSocket()) gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(false);
+	else gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(true);
+}
+
+void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
+	if (gl_pWorldMarket->IsRecordTiingoCryptoWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnRecordTiingoForexWebSocket()
+{
+	// TODO: Add your command handler code here
+	if (gl_pWorldMarket->IsRecordTiingoForexWebSocket()) gl_pWorldMarket->SetRecordTiingoForexWebSocket(false);
+	else gl_pWorldMarket->SetRecordTiingoForexWebSocket(true);
+}
+
+void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
+	if (gl_pWorldMarket->IsRecordTiingoForexWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnRecordTiingoIexWebSocket()
+{
+	// TODO: Add your command handler code here
+	if (gl_pWorldMarket->IsRecordTiingoIEXWebSocket()) gl_pWorldMarket->SetRecordTiingoIEXWebSocket(false);
+	else gl_pWorldMarket->SetRecordTiingoIEXWebSocket(true);
+}
+
+void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
+	if (gl_pWorldMarket->IsRecordTiingoIEXWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }

@@ -344,6 +344,9 @@ public:
 	bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
 	void SetFinnhubEPSSurpriseUpdated(bool fFlag) noexcept { m_fFinnhubEPSSurpriseUpdated = fFlag; }
 
+	CString GetCurrentFunction(void) { return m_strCurrentFunction; }
+	void SetCurrentFunction(CString str) { m_strCurrentFunction = str; }
+
 	bool IsTiingoStockSymbolUpdated(void) noexcept { return m_fTiingoStockSymbolUpdated; }
 	void SetTiingoStockSymbolUpdated(bool fFlag) noexcept { m_fTiingoStockSymbolUpdated = fFlag; }
 	bool IsTiingoCryptoSymbolUpdated(void) noexcept { return m_fTiingoCryptoSymbolUpdated; }
@@ -354,6 +357,15 @@ public:
 	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoProduct.size(); }
 	void PushTiingoInquiry(CWebSourceDataProductPtr p) { m_qTiingoProduct.push(p); }
 	CWebSourceDataProductPtr GetTiingoInquiry(void) { CWebSourceDataProductPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
+
+	bool IsRecordFinnhubWebSocket(void) noexcept { return m_fRecordFinnhubWebSocket; }
+	void SetRecordFinnhubWebSocket(bool fFlag) noexcept { m_fRecordFinnhubWebSocket = fFlag; }
+	bool IsRecordTiingoIEXWebSocket(void) noexcept { return m_fRecordTiingoIEXWebSocket; }
+	void SetRecordTiingoIEXWebSocket(bool fFlag) noexcept { m_fRecordTiingoIEXWebSocket = fFlag; }
+	bool IsRecordTiingoCryptoWebSocket(void) noexcept { return m_fRecordTiingoCryptoWebSocket; }
+	void SetRecordTiingoCryptoWebSocket(bool fFlag) noexcept { m_fRecordTiingoCryptoWebSocket = fFlag; }
+	bool IsRecordTiingoForexWebSocket(void) noexcept { return m_fRecordTiingoForexWebSocket; }
+	void SetRecordTiingoForexWebSocket(bool fFlag) noexcept { m_fRecordTiingoForexWebSocket = fFlag; }
 
 	void StopReceivingWebSocket(void);
 
@@ -412,9 +424,6 @@ public:
 	bool TaskUpdateWorldStockFromWebSocket(void);
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
 	bool UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
-
-	int GetWebSocketReceivedNumberPerSecond(void) noexcept { return (int)m_iWebSocketReceivedNumberPerSecond; }
-	void ClearWebSocketReceivedNumber(void) noexcept { m_iWebSocketReceivedNumberPerSecond = 0; }
 
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
@@ -479,13 +488,19 @@ protected:
 	bool m_fTiingoCryptoSymbolUpdated; // 每日更新crypto代码库
 	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 
+	CString m_strCurrentFunction; // 当前任务和处理的证券名称
+
 	// WebSocket数据
 	CFinnhubWebSocket m_finnhubWebSocket;
 	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	CTiingoForexWebSocket m_tiingoForexWebSocket;
 	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 
-	size_t m_iWebSocketReceivedNumberPerSecond; // 每秒接收到的数据个数
+	bool m_fRecordFinnhubWebSocket;
+	bool m_fRecordTiingoIEXWebSocket;
+	bool m_fRecordTiingoCryptoWebSocket;
+	bool m_fRecordTiingoForexWebSocket;
+
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;
 

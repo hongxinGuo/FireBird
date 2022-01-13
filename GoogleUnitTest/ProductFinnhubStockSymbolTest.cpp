@@ -49,6 +49,16 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(companySymbolProduct.CreatMessage(), companySymbolProduct.GetInquiringStr() + gl_pWorldMarket->GetStockExchangeCode(1));
 	}
 
+	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
+		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.L"), _T("L")));
+		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.L"), _T("l")));
+		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.l"), _T("L")));
+		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.abc"), _T("Abc")));
+		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.ABC"), _T("L")));
+		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg"), _T("L")));
+		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg."), _T("L")));
+	}
+
 	// 格式不对(缺开始的‘{’），无法顺利Parser
 	FinnhubWebData finnhubWebData22(2, _T("AAPL"), _T("[\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"mic\":\"XNAS\",\"symbol\":\"CERC\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"mic\":\"OOTC\",\"symbol\":\"ATGVF\",\"type\":\"Common Stock\"}]"));
 	// 数据缺乏currency项

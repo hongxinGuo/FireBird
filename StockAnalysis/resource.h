@@ -124,6 +124,14 @@
 #define ID_REBUILD_CHINAMARKET_DAYLINE  32897
 #define ID_BUILD_32898                  32898
 #define ID_Change_DayLineExtendInfo     32899
+#define ID_32900                        32900
+#define ID_32901                        32901
+#define ID_32902                        32902
+#define ID_32903                        32903
+#define ID_RECORD_FINNHUB_WEB_SOCKET    32904
+#define ID_RECORD_TIINGO_IEX_WEB_SOCKET 32905
+#define ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET 32906
+#define ID_RECORD_TIINGO_FOREX_WEB_SOCKET 32907
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -154,14 +162,15 @@
 #define ID_CURRENT_TIINGO_IEX           59168
 #define ID_CURRENT_TIINGO_FOREX         59169
 #define ID_CURRENT_TIINGO_CRYPTO        59170
+#define ID_CURRENT_FUNCTION             59171
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
-#define _APS_NEXT_COMMAND_VALUE         32900
+#define _APS_NEXT_COMMAND_VALUE         32908
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

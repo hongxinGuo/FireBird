@@ -23,13 +23,22 @@ CString CProductFinnhubStockSymbol::CreatMessage(void) {
 bool CProductFinnhubStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	CString str;
 	CWorldStockVectorPtr  pvStock = nullptr;
+	CString strExchangeCode;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
+	strExchangeCode = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);
 	pvStock = ParseFinnhubStockSymbol(pWebData);
 	// 加上交易所代码。
 	for (auto& pStock3 : *pvStock) {
-		pStock3->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex));
+		pStock3->SetExchangeCode(strExchangeCode);
+	}
+	//检查合法性：只有美国股票代码无须加上交易所后缀。
+	if (pvStock->size() > 0) {
+		auto pStock = pvStock->at(0);
+		if (IsNeedAddExchangeCode(pStock->GetSymbol(), strExchangeCode) && (strExchangeCode.CompareNoCase(_T("US")) == 0)) {
+			gl_systemMessage.PushErrorMessage(_T("股票代码格式不符：") + pStock->GetSymbol() + _T("  ") + strExchangeCode);
+		}
 	}
 	for (auto& pStock2 : *pvStock) {
 		if (!((CWorldMarket*)m_pMarket)->IsStock(pStock2->GetSymbol())) {
@@ -40,6 +49,18 @@ bool CProductFinnhubStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	}
 
 	return true;
+}
+
+bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode) {
+	int iLength = strExchangeCode.GetLength();
+	int iSymbolLength = strStockSymbol.GetLength();
+	CString strRight = strStockSymbol.Right(iLength);
+	if ((strRight.CompareNoCase((LPCSTR)strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {

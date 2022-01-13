@@ -10,6 +10,7 @@ public:
 
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	bool IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode);
 	CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
 };
 
