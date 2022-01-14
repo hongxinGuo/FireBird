@@ -686,6 +686,7 @@ bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
 		SetFinnhubInquiring(true);
 		s_lCurrentRTDataQuotePos++;
 		if (s_lCurrentRTDataQuotePos == GetStockSize()) s_lCurrentRTDataQuotePos = 0;
+		SetCurrentFunction(_T("Finnhub stock RT: ") + GetStock(s_lCurrentRTDataQuotePos)->GetSymbol());
 		TRACE("申请%s实时数据\n", GetStock(s_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
 		return true;
 	}
@@ -743,6 +744,7 @@ bool CWorldMarket::TaskInquiryFinnhubEconomicCalendar(void) {
 		p = m_FinnhubFactory.CreateProduct(this, __ECONOMIC_CALENDAR__);
 		m_qFinnhubProduct.push(p);
 		SetFinnhubInquiring(true);
+		SetCurrentFunction(_T("Finnhub ecomomic calendar"));
 		return true;
 	}
 	return false;
@@ -787,6 +789,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
 	if (!IsFinnhubForexExchangeUpdated() && !IsFinnhubInquiring()) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __FOREX_EXCHANGE__));
 		SetFinnhubInquiring(true);
+		SetCurrentFunction(_T("Finnhub forex exchange"));
 		gl_systemMessage.PushInformationMessage(_T("Finnhub forex exchange已更新"));
 		return true;
 	}
@@ -805,6 +808,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 		if (s_lCurrentForexExchangePos >= m_dataFinnhubForexExchange.GetForexExchangeSize()) {
 			SetFinnhubForexSymbolUpdated(true);
 			s_lCurrentForexExchangePos = 0;
+			SetCurrentFunction(_T("Finnhub forex synmbol"));
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Forex sysbols已更新"));
 		}
 		return true;
@@ -860,6 +864,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoExchange(void) {
 	if (!IsFinnhubCryptoExchangeUpdated() && !IsFinnhubInquiring()) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __CRYPTO_EXCHANGE__));
 		SetFinnhubInquiring(true);
+		SetCurrentFunction(_T("Finnhub crypto exchange"));
 		gl_systemMessage.PushInformationMessage(_T("Finnhub crypto exchange已更新"));
 		return true;
 	}
@@ -877,6 +882,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
 		SetFinnhubInquiring(true);
 		if (s_lCurrentCryptoExchangePos >= m_dataFinnhubCryptoExchange.GetCryptoExchangeSize()) {
 			SetFinnhubCryptoSymbolUpdated(true);
+			SetCurrentFunction(_T("Finnhub crypto synmbol"));
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto sysbols已更新"));
 			s_lCurrentCryptoExchangePos = 0;
 		}
@@ -945,6 +951,7 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
+		SetCurrentFunction(_T("Tiingo stock synmbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 
 		return true;
@@ -957,6 +964,7 @@ bool CWorldMarket::TaskInquiryTiingoCryptoSymbol(void) {
 		CWebSourceDataProductPtr p = m_TiingoFactory.CreateProduct(this, __CRYPTO_SYMBOLS__);
 		m_qTiingoProduct.push(p);
 		SetTiingoInquiring(true);
+		SetCurrentFunction(_T("Tiingo crypto synmbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
 		return true;
