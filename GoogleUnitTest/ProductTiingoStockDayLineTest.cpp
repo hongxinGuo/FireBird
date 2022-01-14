@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CTiingoStockDayLineTest : public ::testing::Test {
+	class CProductTiingoStockDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -38,12 +38,12 @@ namespace StockAnalysisTest {
 		CProductTiingoStockDayLine stockPriceCandle;
 	};
 
-	TEST_F(CTiingoStockDayLineTest, TestInitialize) {
+	TEST_F(CProductTiingoStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockPriceCandle.GetIndex(), -1);
 		EXPECT_STREQ(stockPriceCandle.GetInquiringStr(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
-	TEST_F(CTiingoStockDayLineTest, TestCreatMessage) {
+	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage) {
 		CString strMessage, strTest;
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
@@ -60,7 +60,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(strMessage, strTest);
 	}
 
-	TEST_F(CTiingoStockDayLineTest, TestProcessWebData) {
+	TEST_F(CProductTiingoStockDayLineTest, TestProcessWebData) {
 		// 由MockWorldMarketTest负责测试
 	}
 

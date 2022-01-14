@@ -27,7 +27,7 @@ bool CProductFinnhubCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	for (auto& pSymbol : *pvCryptoSymbol) {
 		if (!((CWorldMarket*)m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
-			((CWorldMarket*)m_pMarket)->AddCryptoSymbol(pSymbol);
+			((CWorldMarket*)m_pMarket)->AddFinnhubCryptoSymbol(pSymbol);
 		}
 	}
 

@@ -90,6 +90,8 @@
   <ItemGroup>
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
+    <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
+    <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
@@ -140,8 +142,8 @@
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
     <ClCompile Include="TiingoFactoryTest.cpp" />
     <ClCompile Include="TiingoIndustryTest.cpp" />
-    <ClCompile Include="TiingoStockDayLineTest.cpp" />
-    <ClCompile Include="TiingoStockSymbolsTest.cpp" />
+    <ClCompile Include="ProductTiingoStockDayLineTest.cpp" />
+    <ClCompile Include="ProductTiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />

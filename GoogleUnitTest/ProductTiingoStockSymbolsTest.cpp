@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CTiingoStockSymbolsTest : public ::testing::Test {
+	class CProductTiingoStockSymbolsTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -38,16 +38,16 @@ namespace StockAnalysisTest {
 		CProductTinngoStockSymbol stockSymbols;
 	};
 
-	TEST_F(CTiingoStockSymbolsTest, TestInitialize) {
+	TEST_F(CProductTiingoStockSymbolsTest, TestInitialize) {
 		EXPECT_EQ(stockSymbols.GetIndex(), -1);
 		EXPECT_STREQ(stockSymbols.GetInquiringStr(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
-	TEST_F(CTiingoStockSymbolsTest, TestCreatMessage) {
+	TEST_F(CProductTiingoStockSymbolsTest, TestCreatMessage) {
 		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiringStr());
 	}
 
-	TEST_F(CTiingoStockSymbolsTest, TestProcessWebData) {
+	TEST_F(CProductTiingoStockSymbolsTest, TestProcessWebData) {
 		// ”…MockWorldMarketTest∏∫‘≤‚ ‘
 	}
 

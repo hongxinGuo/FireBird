@@ -412,28 +412,28 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
-		long lTotalCryptoSymbol = gl_pWorldMarket->GetCryptoSymbolSize();
+		long lTotalCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
+		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol + 1);
+		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol + 1);
 
-		EXPECT_TRUE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetCryptoSymbolSize(), lTotalCryptoSymbol);
+		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
 		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 
-		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol)) << "空指针";
+		EXPECT_FALSE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol)) << "空指针";
 
 		pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol)) << "此符号在符号集中不存在";
+		EXPECT_FALSE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol)) << "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
@@ -616,8 +616,8 @@ namespace StockAnalysisTest {
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		gl_pWorldMarket->AddCryptoSymbol(pCryptoSymbol);
-		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
+		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
+		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
@@ -645,9 +645,9 @@ namespace StockAnalysisTest {
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
-		pCryptoSymbol = gl_pWorldMarket->GetCryptoSymbol(_T("SS.SS.US"));
+		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
-		gl_pWorldMarket->DeleteCryptoSymbol(pCryptoSymbol); // 恢复原状
+		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {

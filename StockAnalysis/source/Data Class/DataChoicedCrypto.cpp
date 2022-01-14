@@ -25,7 +25,7 @@ bool CDataChoicedCrypto::LoadDB(void) {
 	setWorldChoicedCrypto.m_pDatabase->BeginTrans();
 	while (!setWorldChoicedCrypto.IsEOF()) {
 		if (gl_pWorldMarket->IsFinnhubCryptoSymbol(setWorldChoicedCrypto.m_Symbol)) {
-			pCrypto = gl_pWorldMarket->GetCryptoSymbol(setWorldChoicedCrypto.m_Symbol);
+			pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(setWorldChoicedCrypto.m_Symbol);
 			m_mapWorldChoicedCrypto[setWorldChoicedCrypto.m_Symbol] = m_mapWorldChoicedCrypto.size();
 			m_vWorldChoicedCrypto.push_back(pCrypto);
 		}

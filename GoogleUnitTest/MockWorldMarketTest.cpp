@@ -424,8 +424,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB2) {
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
-			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
+			pCryptoSymbol = gl_pMockWorldMarket->GetFinnhubCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(false);
 		}
 		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoDayLineDB(_))
@@ -435,15 +435,15 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoDayLineDB3) {
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
-			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
+			pCryptoSymbol = gl_pMockWorldMarket->GetFinnhubCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(true);
 			pCryptoSymbol->m_vDayLine.resize(0);
 		}
 		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoDayLineDB(_))
 			.Times(0);
 		EXPECT_FALSE(gl_pMockWorldMarket->TaskUpdateCryptoDayLineDB()) << "DayLine数据个数皆为零";
-		EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), gl_pMockWorldMarket->GetCryptoSymbolSize());
+		EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize());
 
 		while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
 	}
@@ -453,8 +453,8 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101);
 
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
-			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
+			pCryptoSymbol = gl_pMockWorldMarket->GetFinnhubCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(true);
 			pCryptoSymbol->m_vDayLine.push_back(pDayLine);
 			pCryptoSymbol->SetDayLineEndDate(20210101);
@@ -462,7 +462,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoDayLineDB(_))
 			.Times(0);
 		EXPECT_FALSE(gl_pMockWorldMarket->TaskUpdateCryptoDayLineDB()) << "DayLine数据日期较早";
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
 			EXPECT_EQ(pCryptoSymbol->m_vDayLine.size(), 0) << "当没有执行存储任务时，函数删除掉日线数据";
 		}
 	}
@@ -472,16 +472,16 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101);
 
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
-			pCryptoSymbol = gl_pMockWorldMarket->GetCryptoSymbol(i);
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
+			pCryptoSymbol = gl_pMockWorldMarket->GetFinnhubCryptoSymbol(i);
 			pCryptoSymbol->SetDayLineNeedSaving(true);
 			pCryptoSymbol->m_vDayLine.push_back(pDayLine);
 			pCryptoSymbol->SetDayLineEndDate(20190101); // 早于新数据日期，需要存储
 		}
 		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoDayLineDB(_))
-			.Times(gl_pMockWorldMarket->GetCryptoSymbolSize());
+			.Times(gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize());
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCryptoDayLineDB());
-		for (int i = 0; i < gl_pMockWorldMarket->GetCryptoSymbolSize(); i++) {
+		for (int i = 0; i < gl_pMockWorldMarket->GetFinnhubCryptoSymbolSize(); i++) {
 			EXPECT_EQ(pCryptoSymbol->m_vDayLine.size(), 1) << "当执行存储任务时，日线数据由工作线程负责删除";
 		}
 	}
@@ -756,18 +756,18 @@ namespace StockAnalysisTest {
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
-		EXPECT_TRUE(gl_pMockWorldMarket->GetCryptoSymbol(p->GetIndex())->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pMockWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->IsDayLineNeedUpdate());
 		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
 		gl_pMockWorldMarket->SetFinnhubInquiring(true);
-		gl_pMockWorldMarket->GetCryptoSymbol(p->GetIndex())->SetDayLineNeedUpdate(true);
+		gl_pMockWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->SetDayLineNeedUpdate(true);
 
 		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
 			.Times(1);
 		EXPECT_TRUE(gl_pMockWorldMarket->ProcessFinnhubInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr()
-			+ gl_pMockWorldMarket->GetCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
+			+ gl_pMockWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pMockWorldMarket->GetUTCTime()));
 		// 顺便测试一下
 		EXPECT_FALSE(gl_pMockWorldMarket->IsFinnhubDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";

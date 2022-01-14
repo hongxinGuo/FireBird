@@ -907,8 +907,8 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			s_fInquiringFinnhubCryptoDayLine = true;
 		}
 		for (m_lCurrentUpdateCryptoDayLinePos = 0; m_lCurrentUpdateCryptoDayLinePos < lStockSetSize; m_lCurrentUpdateCryptoDayLinePos++) {
-			if (GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
-				pCryptoSymbol = GetCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos);
+			if (GetFinnhubCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
+				pCryptoSymbol = GetFinnhubCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos);
 				fFound = true;
 				break;
 			}

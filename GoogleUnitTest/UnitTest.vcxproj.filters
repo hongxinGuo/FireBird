@@ -444,10 +444,10 @@
     <ClCompile Include="SystemDataTest.cpp">
       <Filter>Test源文件\System Data</Filter>
     </ClCompile>
-    <ClCompile Include="TiingoStockSymbolsTest.cpp">
+    <ClCompile Include="ProductTiingoStockSymbolsTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="TiingoStockDayLineTest.cpp">
+    <ClCompile Include="ProductTiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="TiingoFactoryTest.cpp">
@@ -512,6 +512,12 @@
     </ClCompile>
     <ClCompile Include="TiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoCryptoSymbolTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
