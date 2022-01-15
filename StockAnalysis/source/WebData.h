@@ -7,12 +7,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+class CVirtualWebInquiry;
+
 using namespace std;
 #include<memory>
 #include<vector>
 
 class CWebData : public CObject {
 public:
+	friend CVirtualWebInquiry;
 	CWebData();
 	~CWebData();
 

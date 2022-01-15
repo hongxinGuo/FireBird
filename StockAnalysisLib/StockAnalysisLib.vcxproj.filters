@@ -1082,7 +1082,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebDatacpp">

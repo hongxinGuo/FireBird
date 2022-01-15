@@ -69,11 +69,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				delete m_pFile;
 				m_pFile = nullptr;
 			}
-			sprintf_s(buffer, _T("%d"), exception->m_dwError);
-			strErrorNo = buffer;
-			strLeft = GetInquiringString().Left(80);
-			strMessage = _T("Net Warning No ") + strErrorNo + _T(" : ") + strLeft;
-			gl_systemMessage.PushErrorMessage(strMessage);
 			Sleep(10); // 等待10毫秒。不等待其实也可以，
 			if (iCountNumber++ > 2) { // 重复读取三次皆失败后，则报错。
 				SetWebError(true);
@@ -156,10 +151,10 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
-	pWebDataReceived->Resize(byteReaded + 1);
-	for (int i = 0; i < byteReaded + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
-		pWebDataReceived->SetData(i, m_vBuffer.at(i));
-	}
+	m_vBuffer.resize(byteReaded + 1);
+	pWebDataReceived->m_vDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
+	m_vBuffer.resize(128 * 1024); // 重新分配内存
+
 	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();
 	return pWebDataReceived;

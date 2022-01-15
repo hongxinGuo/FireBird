@@ -4,8 +4,7 @@
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
-	m_vDataBuffer.resize(1024 * 1024 * 16);
-	m_lBufferLength = 1024 * 1024 * 16;
+	m_lBufferLength = 0;
 	m_lCurrentPos = 0;
 }
 

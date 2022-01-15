@@ -315,7 +315,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubStockPriceQuote.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.cpp" />

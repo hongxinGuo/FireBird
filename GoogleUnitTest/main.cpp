@@ -47,7 +47,7 @@
 // 排除外部代码
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
-ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
+//ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
 
 ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleUnitTest
@@ -61,7 +61,7 @@ ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\Stoc
 ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*"); // 排除ixWebSocket库
 ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\vld\\*.*"); // 排除vld库
 ExcludeSourceFromCodeCoverage(Exclude22, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\OPenSSL\\*.*"); // 排除OpenSSL库
-ExcludeSourceFromCodeCoverage(Exclude23, L"d:\\cfiles\\projects\\winssl\\openssl-1.1.1k\\*.*"); // 排除OpenSSL1.1.1k库
+//ExcludeSourceFromCodeCoverage(Exclude23, L"d:\\cfiles\\projects\\winssl\\openssl-1.1.1k\\*.*"); // 排除OpenSSL1.1.1k库
 ExcludeSourceFromCodeCoverage(Exclude24, L"d:\\cfiles\\projects\\winssl\\openssl-3.0.1\\*.*"); // 排除OpenSSL3.0.1库
 // 排除无需测试的单个文件
 ExcludeSourceFromCodeCoverage(Exclude101, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\ChildFrm.cpp");
