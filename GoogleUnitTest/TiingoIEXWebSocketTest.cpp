@@ -38,6 +38,10 @@ namespace StockAnalysisTest {
 		CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	};
 
+	TEST_F(CDataTiingoIEXWebSocketTest, TestGetURL) {
+		EXPECT_STREQ(m_tiingoIEXWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
+	}
+
 	TEST_F(CDataTiingoIEXWebSocketTest, TestSetScriptionStatus) {
 		EXPECT_TRUE(m_tiingoIEXWebSocket.IsSubscriptable());
 		m_tiingoIEXWebSocket.SetSubscriptionStatus(false);

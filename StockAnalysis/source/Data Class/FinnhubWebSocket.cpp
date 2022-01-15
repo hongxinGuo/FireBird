@@ -47,6 +47,7 @@ UINT ThreadConnectingFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*>
 }
 
 CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://ws.finnhub.io");
 	SetSubscriptionStatus(false); // finnhub WebSocketÃ»ÓÐ×¢²áID
 }
 
@@ -59,12 +60,11 @@ CFinnhubWebSocket::~CFinnhubWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CFinnhubWebSocket::Connect(void) {
-	std::string url("wss://ws.finnhub.io");
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
-	url += strToken.GetBuffer();
+	string urlAndAuth = m_url + strToken.GetBuffer();
 
-	return Connecting(url, FunctionProcessFinnhubWebSocket);
+	return Connecting(urlAndAuth, FunctionProcessFinnhubWebSocket);
 }
 
 bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {

@@ -519,6 +519,9 @@
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
+    <ClCompile Include="TiingoForexWebSocketTest.cpp">
+      <Filter>Test源文件\Data Class\WebSocket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

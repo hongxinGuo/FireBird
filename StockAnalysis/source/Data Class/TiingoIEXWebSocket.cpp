@@ -45,6 +45,7 @@ UINT ThreadConnectingTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSock
 }
 
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/iex");
 }
 
 CTiingoIEXWebSocket::~CTiingoIEXWebSocket(void) {
@@ -56,9 +57,7 @@ CTiingoIEXWebSocket::~CTiingoIEXWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CTiingoIEXWebSocket::Connect(void) {
-	std::string url("wss://api.tiingo.com/iex");
-
-	Connecting(url, FunctionProcessTiingoIEXWebSocket);
+	Connecting(m_url, FunctionProcessTiingoIEXWebSocket);
 
 	return true;
 }

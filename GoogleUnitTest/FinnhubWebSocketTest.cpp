@@ -38,6 +38,10 @@ namespace StockAnalysisTest {
 		CFinnhubWebSocket m_finnhubWebSocket;
 	};
 
+	TEST_F(CDataFinnhubWebSocketTest, TestGetURL) {
+		EXPECT_STREQ(m_finnhubWebSocket.GetURL().c_str(), _T("wss://ws.finnhub.io"));
+	}
+
 	TEST_F(CDataFinnhubWebSocketTest, TestSetScriptionStatus) {
 		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());
 		m_finnhubWebSocket.SetSubscriptionStatus(true);

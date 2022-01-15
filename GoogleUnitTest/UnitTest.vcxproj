@@ -93,6 +93,7 @@
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
+    <ClCompile Include="TiingoForexWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DayLineContainerTest.cpp" />
     <ClCompile Include="FinnhubCompanyPeerTest.cpp" />

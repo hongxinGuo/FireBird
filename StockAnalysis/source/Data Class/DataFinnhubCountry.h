@@ -18,6 +18,7 @@ public:
 	bool IsCountry(CCountryPtr pCountry) { return IsCountry(pCountry->m_strCountry); }
 	void Add(CCountryPtr pCountry);
 	bool Delete(CCountryPtr pCountry);
+	CCountryPtr GetCountry(CString strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
 	bool UpdateDB(void);
 	bool LoadDB(void);

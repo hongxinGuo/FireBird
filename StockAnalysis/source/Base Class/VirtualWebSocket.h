@@ -37,6 +37,9 @@ public:
 	bool IsClosing(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
 	bool IsConnecting(void) { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
+	string GetURL(void) noexcept { return m_url; }
+	void SetURL(string url) noexcept { m_url = url; }
+
 	void SetSubscriptionStatus(bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
 	bool IsSubscriptable(void) noexcept { return m_fHaveSubscriptionId; }
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
@@ -44,12 +47,12 @@ public:
 
 protected:
 	ix::WebSocket m_webSocket;
+	string m_url;
 
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
 	int m_iPingPeriod;
 	bool m_fDeflate;
 
-	string m_url;
 	string m_inputMessage;
 };

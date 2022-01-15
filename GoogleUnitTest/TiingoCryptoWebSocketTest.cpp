@@ -38,6 +38,10 @@ namespace StockAnalysisTest {
 		CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 	};
 
+	TEST_F(CDataTiingoCryptoWebSocketTest, TestGetURL) {
+		EXPECT_STREQ(m_tiingoCryptoWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
+	}
+
 	TEST_F(CDataTiingoCryptoWebSocketTest, TestCreateTiingoCryptoWebSocketSymbolString) {
 		vector<CString> vSymbol;
 		vSymbol.push_back(_T("A"));

@@ -310,6 +310,7 @@ public:
 	bool IsCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.IsCountry(pCountry); }
 	void AddCountry(CCountryPtr pCountry) { m_dataFinnhubCountry.Add(pCountry); }
 	bool DeleteCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
+	CCountryPtr GetCountry(CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
 
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
 	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }

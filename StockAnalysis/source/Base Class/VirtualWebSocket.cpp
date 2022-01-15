@@ -5,6 +5,7 @@
 
 CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
+	m_url = _T("");
 	Reset();
 }
 

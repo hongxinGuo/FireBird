@@ -45,6 +45,7 @@ UINT ThreadConnectingTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoW
 }
 
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/crypto");
 }
 
 CTiingoCryptoWebSocket::~CTiingoCryptoWebSocket(void) {
@@ -56,9 +57,7 @@ CTiingoCryptoWebSocket::~CTiingoCryptoWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CTiingoCryptoWebSocket::Connect(void) {
-	std::string url("wss://api.tiingo.com/crypto");
-
-	Connecting(url, FunctionProcessTiingoCryptoWebSocket);
+	Connecting(m_url, FunctionProcessTiingoCryptoWebSocket);
 
 	return true;
 }

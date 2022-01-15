@@ -45,6 +45,7 @@ UINT ThreadConnectingTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWeb
 }
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/fx");
 }
 
 CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
@@ -56,9 +57,7 @@ CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CTiingoForexWebSocket::Connect(void) {
-	std::string url("wss://api.tiingo.com/fx");
-
-	Connecting(url, FunctionProcessTiingoForexWebSocket);
+	Connecting(m_url, FunctionProcessTiingoForexWebSocket);
 	return true;
 }
 
