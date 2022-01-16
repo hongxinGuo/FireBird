@@ -4,7 +4,8 @@
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
-	m_lBufferLength = 0;
+	m_vDataBuffer.resize(1024 * 128); // 需要在此执行一次，否则测试无法初始化。不知为何。
+	m_lBufferLength = 1024 * 128;
 	m_lCurrentPos = 0;
 }
 
