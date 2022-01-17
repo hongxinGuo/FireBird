@@ -111,13 +111,7 @@ enum {
 	__NETEASE_RT_WEB_DATA__ = 3,
 };
 
-#include"afxinet.h"
-
-#include"NeteaseRTWebInquiry.h"
-#include"SinaRTWebInquiry.h"
 #include"WebData.h"
-#include"TengxunRTWebInquiry.h"
-
 #include"SetRealTimeData.h"
 
 using namespace std;

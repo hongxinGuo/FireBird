@@ -1,7 +1,7 @@
 #pragma once
 
 #include"WorldStock.h"
-#include <StockAnalysis/source/AmericaMarket/TiingoStock.h>
+#include <TiingoStock.h>
 
 using namespace std;
 #include<vector>

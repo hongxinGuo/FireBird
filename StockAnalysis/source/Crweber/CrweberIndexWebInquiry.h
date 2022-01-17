@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualWebInquiry.h"
+#include"WebData.h"
 
 class CCrweberIndexWebInquiry : public CVirtualWebInquiry
 {

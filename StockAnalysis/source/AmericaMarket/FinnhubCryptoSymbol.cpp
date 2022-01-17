@@ -2,6 +2,8 @@
 #include"globedef.h"
 
 #include "FinnhubCryptoSymbol.h"
+#include"SetFinnhubCryptoSymbol.h"
+#include"SetCryptoDayLine.h"
 
 CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() : CVirtualStock() {
 	Reset();

@@ -8,6 +8,10 @@
 #include"WebRTData.h"
 #include"NeteaseDayLineWebData.h"
 
+#include"NeteaseRTWebInquiry.h"
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+
 #include"MockChinaStock.h"
 
 using namespace testing;

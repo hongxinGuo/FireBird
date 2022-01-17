@@ -1,10 +1,10 @@
 #pragma once
 
+#include"FinnhubStockExchange.h"
+
 using namespace std;
 #include<vector>
 #include<map>
-
-#include"FinnhubStockExchange.h"
 
 class CDataFinnhubStockExchange : public CObject {
 public:

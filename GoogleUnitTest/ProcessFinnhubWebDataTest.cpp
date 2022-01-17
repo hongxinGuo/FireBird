@@ -1,5 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
+
+#include"SystemData.h"
 #include"GeneralCheck.h"
 
 #include"WebInquirer.h"

@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemData.h"
+
 #include"WebInquirer.h"
 #include "TiingoForexWebSocket.h"
 
@@ -69,9 +71,7 @@ bool CTiingoForexWebSocket::Connect(void) {
 // thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoForexWebSocket::Send(vector<CString> vSymbol)
-{
-	static bool sm_fSendAuth = true;
+bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 	CString str;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7£ºA top - of - book update that is due to a change in either the bid / ask price or size.
@@ -90,9 +90,8 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol)
 
 	ASSERT(IsOpen());
 
-	if (sm_fSendAuth) {
-		info = Sending(messageAuth);
-	}
+	info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }

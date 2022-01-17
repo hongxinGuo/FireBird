@@ -1,4 +1,5 @@
 #pragma once
+
 #include"SetTiingoIndustry.h"
 
 using namespace std;

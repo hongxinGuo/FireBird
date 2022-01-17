@@ -2,6 +2,7 @@
 
 using namespace std;
 #include<vector>
+#include<map>
 
 class CDataFinnhubForexExchange : public CObject {
 public:

@@ -6,8 +6,6 @@
 ///////////////////////////////////////////////////////////
 #pragma once
 
-#include"afxmt.h"
-
 #include"WebData.h"
 
 using namespace std;
@@ -17,16 +15,16 @@ using namespace std;
 class CQueueWebData final
 {
 public:
-  CQueueWebData();
-  ~CQueueWebData();
-  void Reset(void);
+	CQueueWebData();
+	~CQueueWebData();
+	void Reset(void);
 
-  // 通用接口函数
-  void PushData(CWebDataPtr pData);
-  CWebDataPtr PopData(void);
-  size_t GetDataSize(void);
+	// 通用接口函数
+	void PushData(CWebDataPtr pData);
+	CWebDataPtr PopData(void);
+	size_t GetDataSize(void);
 
 protected:
-  queue<CWebDataPtr> m_qData;
-  mutex m_MutexAccessData;
+	queue<CWebDataPtr> m_qData;
+	mutex m_MutexAccessData;
 };

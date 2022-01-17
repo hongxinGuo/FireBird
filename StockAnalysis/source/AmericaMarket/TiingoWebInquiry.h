@@ -3,6 +3,9 @@
 #include "VirtualWebInquiry.h"
 #include"WebRTData.h"
 
+using namespace std;
+#include<memory>
+
 class CTiingoWebInquiry : public CVirtualWebInquiry {
 public:
 	CTiingoWebInquiry();

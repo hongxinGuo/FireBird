@@ -4,11 +4,6 @@
 #include"WeekLine.h"
 #include "VirtualHistoryCandleExtendContainer.h"
 
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
-
-using namespace std;
-
 class CDayLineContainer : public CVirtualHistoryCandleExtendContainer {
 public:
 	CDayLineContainer();

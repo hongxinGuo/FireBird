@@ -3,6 +3,8 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubForexSymbol.h"
+#include"SetFinnhubForexSymbol.h"
+#include"SetForexDayLine.h"
 
 using namespace testing;
 

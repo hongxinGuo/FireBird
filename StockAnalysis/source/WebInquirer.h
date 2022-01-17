@@ -26,6 +26,7 @@ extern int gl_iMaxSavingOneDayLineThreads;
 
 #include"QueueString.h"
 #include"QueueDownLoadedNeteaseDayLine.h"
+#include"QueueWebData.h"
 
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集

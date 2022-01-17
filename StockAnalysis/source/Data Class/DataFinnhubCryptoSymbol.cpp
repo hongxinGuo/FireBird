@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include "DataFinnhubCryptoSymbol.h"
+#include"SetFinnhubCryptoSymbol.h"
 
 CDataFinnhubCryptoSymbol::CDataFinnhubCryptoSymbol() {
 	Reset();

@@ -1,4 +1,5 @@
 #pragma once
+
 #include"SetNaicsIndustry.h"
 
 using namespace std;
@@ -6,22 +7,22 @@ using namespace std;
 
 class CNaicsIndustry : public CObject {
 public:
-  CNaicsIndustry();
+	CNaicsIndustry();
 
-  void Append(CSetNaicsIndustry& setNaicsIndustry);
+	void Append(CSetNaicsIndustry& setNaicsIndustry);
 
-  void Load(CSetNaicsIndustry& setNaicsIndustry);
+	void Load(CSetNaicsIndustry& setNaicsIndustry);
 
-  void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
-  bool IsUpdated(void) const noexcept { return m_fUpdated; }
+	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:
-  CString m_strNaics;
-  CString m_strNationalIndustry;
-  CString m_strSector;
-  CString m_strSubSector;
+	CString m_strNaics;
+	CString m_strNationalIndustry;
+	CString m_strSector;
+	CString m_strSubSector;
 
-  bool m_fUpdated;
+	bool m_fUpdated;
 };
 
 typedef shared_ptr<CNaicsIndustry> CNaicsIndustryPtr;

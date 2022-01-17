@@ -3,6 +3,9 @@
 
 #include "FinnhubForexSymbol.h"
 
+#include"SetFinnhubForexSymbol.h"
+#include"SetForexDayLine.h"
+
 CForexSymbol::CForexSymbol() : CVirtualStock() {
 	Reset();
 }

@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemData.h"
+
 #include"WebInquirer.h"
 #include "TiingoCryptoWebSocket.h"
 
@@ -71,7 +73,6 @@ bool CTiingoCryptoWebSocket::Connect(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
-	static bool sm_fSendAuth = true;
 	CString str;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5£ºTrade Updates per-exchange.2£ºTop-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
@@ -90,9 +91,8 @@ bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
 
 	ASSERT(IsOpen());
 
-	if (sm_fSendAuth) {
-		info = Sending(messageAuth);
-	}
+	info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }

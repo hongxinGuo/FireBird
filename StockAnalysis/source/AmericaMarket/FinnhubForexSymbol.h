@@ -1,9 +1,7 @@
 #pragma once
+
 #include"VirtualStock.h"
 #include"DayLine.h"
-
-#include"SetFinnhubForexSymbol.h"
-#include"SetForexDayLine.h"
 
 using namespace std;
 #include<memory>

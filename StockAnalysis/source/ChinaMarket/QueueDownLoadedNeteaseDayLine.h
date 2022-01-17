@@ -6,8 +6,6 @@
 ///////////////////////////////////////////////////////////
 #pragma once
 
-#include"afxmt.h"
-
 #include"NeteaseDayLineWebData.h"
 
 using namespace std;

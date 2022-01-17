@@ -4,6 +4,7 @@
 
 #include"FinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"
+#include"SetCryptoDayLine.h"
 
 using namespace testing;
 

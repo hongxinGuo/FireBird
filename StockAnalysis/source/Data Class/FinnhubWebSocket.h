@@ -2,6 +2,8 @@
 
 #include"VirtualWebSocket.h"
 
+#include<ixwebsocket/IXWebSocket.h>
+
 void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 
 class CFinnhubWebSocket : public CVirtualWebSocket {

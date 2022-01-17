@@ -3,6 +3,9 @@
 #include "VirtualWebInquiry.h"
 #include"WebRTData.h"
 
+using namespace std;
+#include<memory>
+
 class CQuandlWebInquiry : public CVirtualWebInquiry {
 public:
 	CQuandlWebInquiry();

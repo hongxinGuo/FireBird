@@ -6,8 +6,6 @@
 ///////////////////////////////////////////////////////////
 #pragma once
 
-#include"afxmt.h"
-
 using namespace std;
 #include<queue>
 #include<mutex>

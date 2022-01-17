@@ -2,7 +2,7 @@
 
 #include "VirtualHistoryCandleExtendContainer.h"
 #include"WeekLine.h"
-#include"DayLine.h"
+//#include"DayLine.h"
 
 class CWeekLineContainer : public CVirtualHistoryCandleExtendContainer {
 public:

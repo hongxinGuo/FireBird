@@ -22,28 +22,19 @@ enum {
 	__SHENZHEN_CHUANGYE__ = 12, // 深圳创业板
 };
 
-#include"VirtualMarket.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-#include"WebRTData.h"
-
 #include"SystemMessage.h"
-#include"SystemData.h"
-#include"WebRTDataContainer.h"
-#include"QueueWebData.h"
 #include"PriorityQueueWebRTData.h"
 #include"ThreadStatus.h"
-
-#include"PriorityQueueWebRTData.h"
 
 using namespace std;
 #include<deque>
 #include<atomic>
 #include<vector>
-#include<map>
 
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 

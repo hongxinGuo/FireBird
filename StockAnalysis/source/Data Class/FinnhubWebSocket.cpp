@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemData.h"
+
 #include"WebInquirer.h"
 #include "FinnhubWebSocket.h"
 
@@ -74,6 +76,7 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 	for (long l = 0; l < vSymbol.size(); l++) {
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		Sending(strMessage);
+		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
 
 	return true;
@@ -138,7 +141,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
-			// do nothing
+			//
 			}
 			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = pt.get<string>(_T("msg"));

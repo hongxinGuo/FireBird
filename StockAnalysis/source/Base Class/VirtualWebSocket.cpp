@@ -6,6 +6,9 @@
 CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_url = _T("");
+	m_vSymbol.resize(0);
+	m_mapSymbol.clear();
+
 	Reset();
 }
 
@@ -20,14 +23,46 @@ void CVirtualWebSocket::Reset(void) {
 }
 
 bool CVirtualWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+	AppendSymbol(vSymbol);
 	if (!IsClosed()) Deconnecting();
 	while (!IsClosed()) Sleep(1);
 	Reset();
 	Connect();
 	while (!IsOpen()) Sleep(1);
-	Send(vSymbol);
+	Send(m_vSymbol);
 
 	return true;
+}
+
+void CVirtualWebSocket::AppendSymbol(vector<CString> vSymbol) {
+	for (auto& strSymbol : vSymbol) {
+		if (m_mapSymbol.find(strSymbol) == m_mapSymbol.end()) { // ÐÂ·ûºÅ£¿
+			AddSymbol(strSymbol);
+		}
+	}
+}
+
+void CVirtualWebSocket::AddSymbol(CString strSymbol) {
+	m_mapSymbol[strSymbol] = m_mapSymbol.size();
+	m_vSymbol.push_back(strSymbol);
+}
+
+void CVirtualWebSocket::DeleteSymbol(CString strSymbol) {
+	auto it = m_mapSymbol.find(strSymbol);
+	if (it != m_mapSymbol.end()) { // ÒÑÖª·ûºÅ£¿
+		m_mapSymbol.erase(it);
+		for (auto it2 = m_vSymbol.begin(); it2 != m_vSymbol.end(); it2++) {
+			if ((*it2).Compare(strSymbol) == 0) {
+				m_vSymbol.erase(it2);
+				break;
+			}
+		}
+	}
+}
+
+void CVirtualWebSocket::ClearSymbol(void) {
+	m_vSymbol.resize(0);
+	m_mapSymbol.clear();
 }
 
 CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol)

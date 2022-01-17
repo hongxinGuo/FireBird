@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemData.h"
+
 #include"WebInquirer.h"
 #include "TiingoIEXWebSocket.h"
 
@@ -63,7 +65,6 @@ bool CTiingoIEXWebSocket::Connect(void) {
 }
 
 bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
-	static bool sm_fSendAuth = true;
 	CString str;
 	CString strSymbols;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
@@ -83,9 +84,8 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 
 	ASSERT(IsOpen());
 
-	if (sm_fSendAuth) {
-		info = Sending(messageAuth);
-	}
+	info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }

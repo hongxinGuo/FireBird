@@ -1,12 +1,12 @@
 #pragma once
-#include"globeSymbolDef.h"
 
 #include"VirtualStock.h"
+#include"TiingoStock.h"
 
 #include"DayLine.h"
 #include"EPSSurprise.h"
 #include"InsiderTransaction.h"
-#include"TiingoStock.h"
+
 #include"SetWorldStock.h"
 
 using namespace std;

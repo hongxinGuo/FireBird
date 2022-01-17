@@ -9,6 +9,10 @@
 
 #include"GeneralCheck.h"
 
+//#include"NeteaseRTWebInquiry.h"
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+
 using namespace testing;
 
 #ifdef _DEBUG

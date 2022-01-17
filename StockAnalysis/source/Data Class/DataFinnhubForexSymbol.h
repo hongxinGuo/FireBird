@@ -4,6 +4,7 @@
 
 using namespace std;
 #include<vector>
+#include<map>
 
 class CDataFinnhubForexSymbol : public CObject {
 public:

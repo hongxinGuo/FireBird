@@ -1,4 +1,5 @@
 #pragma once
+
 #include"SetFinnhubStockExchange.h"
 
 using namespace std;

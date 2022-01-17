@@ -1,19 +1,11 @@
 #pragma once
 
-#include"pch.h"
-
-#include"WebData.h"
 #include"NeteaseDayLineWebInquiry.h"
 #include"DayLine.h"
 
 using namespace std;
 #include<vector>
 #include<memory>
-//#include<queue>
-//#include<deque>
-//#include<map>
-//#include<array>
-//#include<mutex>
 
 class CNeteaseDayLineWebData : public CObject {
 public:

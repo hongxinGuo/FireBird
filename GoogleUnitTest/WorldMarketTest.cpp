@@ -26,6 +26,9 @@
 
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
+#include"SetFinnhubCryptoSymbol.h"
+#include"SetFinnhubForexSymbol.h"
+
 #include"MockFinnhubWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
@@ -585,27 +588,27 @@ namespace StockAnalysisTest {
 		pForexSymbol->SetIPOStatus(__STOCK_DELISTED__);
 		gl_pWorldMarket->UpdateForexSymbolDB();
 
-		CSetFinnhubForexSymbol setWorldStock;
-		setWorldStock.m_strFilter = _T("[Symbol] = 'OANDA:GBP_ZAR'");
-		setWorldStock.Open();
-		EXPECT_EQ(setWorldStock.m_IPOStatus, __STOCK_DELISTED__);
-		setWorldStock.m_pDatabase->BeginTrans();
-		setWorldStock.Edit();
-		setWorldStock.m_IPOStatus = __STOCK_IPOED__;
-		setWorldStock.Update();
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		CSetFinnhubForexSymbol setCryptoSymbol;
+		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'OANDA:GBP_ZAR'");
+		setCryptoSymbol.Open();
+		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, __STOCK_DELISTED__);
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		setCryptoSymbol.Edit();
+		setCryptoSymbol.m_IPOStatus = __STOCK_IPOED__;
+		setCryptoSymbol.Update();
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
 
-		setWorldStock.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
-		setWorldStock.Open();
-		EXPECT_FALSE(setWorldStock.IsEOF()) << "存入了新符号";
-		setWorldStock.m_pDatabase->BeginTrans();
-		while (!setWorldStock.IsEOF()) {
-			setWorldStock.Delete();
-			setWorldStock.MoveNext();
+		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+		setCryptoSymbol.Open();
+		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "存入了新符号";
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		while (!setCryptoSymbol.IsEOF()) {
+			setCryptoSymbol.Delete();
+			setCryptoSymbol.MoveNext();
 		}
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
 
 		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pForexSymbol != nullptr);
@@ -623,27 +626,27 @@ namespace StockAnalysisTest {
 		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
 		gl_pWorldMarket->UpdateCryptoSymbolDB();
 
-		CSetFinnhubCryptoSymbol setWorldStock;
-		setWorldStock.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
-		setWorldStock.Open();
-		EXPECT_EQ(setWorldStock.m_IPOStatus, __STOCK_DELISTED__) << "状态已被修改为摘牌";
-		setWorldStock.m_pDatabase->BeginTrans();
-		setWorldStock.Edit();
-		setWorldStock.m_IPOStatus = __STOCK_IPOED__;
-		setWorldStock.Update();
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		CSetFinnhubCryptoSymbol setCryptoSymbol;
+		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
+		setCryptoSymbol.Open();
+		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, __STOCK_DELISTED__) << "状态已被修改为摘牌";
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		setCryptoSymbol.Edit();
+		setCryptoSymbol.m_IPOStatus = __STOCK_IPOED__;
+		setCryptoSymbol.Update();
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
 
-		setWorldStock.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
-		setWorldStock.Open();
-		EXPECT_FALSE(setWorldStock.IsEOF()) << "存入了新符号";
-		setWorldStock.m_pDatabase->BeginTrans();
-		while (!setWorldStock.IsEOF()) {
-			setWorldStock.Delete(); // 删除此新代码
-			setWorldStock.MoveNext();
+		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+		setCryptoSymbol.Open();
+		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "存入了新符号";
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		while (!setCryptoSymbol.IsEOF()) {
+			setCryptoSymbol.Delete(); // 删除此新代码
+			setCryptoSymbol.MoveNext();
 		}
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
 
 		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pCryptoSymbol != nullptr);

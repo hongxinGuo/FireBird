@@ -1,10 +1,10 @@
 #pragma once
 
+#include"EconomicCalendar.h"
+
 using namespace std;
 #include<vector>
 #include<map>
-
-#include"EconomicCalendar.h"
 
 class CDataFinnhubEconomicCalendar : public CObject {
 public:

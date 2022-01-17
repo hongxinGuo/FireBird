@@ -108,11 +108,14 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	tt = GetTickCount64();
 	if (OpenFile(GetInquiringString())) {
 		do {
-			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程。
+			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 				fReadingSuccess = false;
 				break;
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+			if (m_vBuffer.size() < (m_lByteRead + 16 * 1024)) { // 数据可存储空间不到16K时
+				m_vBuffer.resize(m_vBuffer.size() + 128 * 1024); // 扩大128K数据范围
+			}
 		} while (lCurrentByteReaded > 0);
 		ASSERT(m_vBuffer.size() > m_lByteRead);
 		m_lTotalByteReaded += m_lByteRead;
@@ -141,9 +144,6 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	const UINT uByteRead = m_pFile->Read(buffer, 1024);
 	for (int i = 0; i < uByteRead; i++) {
 		m_vBuffer.at(m_lByteRead++) = buffer[i];
-	}
-	if (m_vBuffer.size() < (m_lByteRead + 128 * 1024)) { // 相差不到128K时
-		m_vBuffer.resize(m_vBuffer.size() + 128 * 1024); // 扩大数据范围
 	}
 	return uByteRead;
 }

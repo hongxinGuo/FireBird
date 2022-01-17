@@ -14,6 +14,7 @@ enum {
 };
 
 #include"globeSymbolDef.h"
+#include"Accessory.h"
 
 #include"VirtualStock.h"
 
@@ -27,16 +28,10 @@ enum {
 #include"SetRealTimeData.h"
 #include"SetChinaStockSymbol.h"
 
-#include"WebRTData.h"
-
-#include"DayLine.h"
-#include"WeekLine.h"
 #include"OneDeal.h"
 
 #include"WeekLineContainer.h"
 #include"DayLineContainer.h"
-
-#include"NeteaseDayLineWebInquiry.h"
 
 using namespace std;
 #include<vector>

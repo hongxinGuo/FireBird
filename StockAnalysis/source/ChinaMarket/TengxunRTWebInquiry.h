@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VirtualWebInquiry.h"
+#include"WebRTData.h"
 
 class CTengxunRTWebInquiry : public CVirtualWebInquiry {
 public:

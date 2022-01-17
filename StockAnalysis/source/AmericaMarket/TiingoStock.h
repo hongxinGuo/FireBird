@@ -1,10 +1,6 @@
 #pragma once
-#include"globeSymbolDef.h"
 
-#include"DayLine.h"
-#include"EPSSurprise.h"
 #include"SetWorldStock.h"
-
 #include"SetTiingoStock.h"
 
 using namespace std;

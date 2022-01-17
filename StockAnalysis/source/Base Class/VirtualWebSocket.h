@@ -7,10 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"pch.h"
-
 using namespace std;
 #include<string>
+#include<map>
 
 #include <ixwebsocket/IXWebSocket.h>
 
@@ -25,12 +24,12 @@ public:
 	bool ConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
 
 	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
+	void AppendSymbol(vector<CString> vSymbol);
+	void AddSymbol(CString strSymbol);
+	void DeleteSymbol(CString strSymbol);
+	void ClearSymbol(void);
 
-	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool Deconnecting(void);
-
-	bool Sending(string message);
-
+	// ×´Ì¬
 	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }
 	bool IsClosed(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
 	bool IsOpen(void) { return m_webSocket.getReadyState() == ix::ReadyState::Open; }
@@ -45,6 +44,11 @@ public:
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
 	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
+	// ÊµÏÖ
+	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
+	bool Deconnecting(void);
+	bool Sending(string message);
+
 protected:
 	ix::WebSocket m_webSocket;
 	string m_url;
@@ -53,6 +57,8 @@ protected:
 	int m_iSubscriptionId;
 	int m_iPingPeriod;
 	bool m_fDeflate;
+	vector<CString> m_vSymbol;
+	map<CString, long> m_mapSymbol;
 
 	string m_inputMessage;
 };

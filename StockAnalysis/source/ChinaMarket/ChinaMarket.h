@@ -4,11 +4,10 @@
 #include"Semaphore.h"
 
 #include"VirtualMarket.h"
+#include "ChinaStock.h"
 
 #include"WebRTDataContainer.h"
 #include"StockSection.h"
-
-#include "ChinaStock.h"
 
 #include<gsl/gsl>
 using namespace gsl;

@@ -37,9 +37,6 @@
     <Filter Include="头文件\China Market\基础数据类">
       <UniqueIdentifier>{216e664f-2899-404d-a8e5-581d05a0883a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Base Class">
-      <UniqueIdentifier>{73ed0066-f487-40d1-a057-73d7bca5baea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件">
       <UniqueIdentifier>{4663b185-3a9c-45e2-a0f2-aef45b8b19d8}</UniqueIdentifier>
     </Filter>
@@ -81,9 +78,6 @@
     </Filter>
     <Filter Include="源文件\World Market\类型">
       <UniqueIdentifier>{c7c8d26e-0cb2-4560-ad3d-e714a7b6bb46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Base Class">
-      <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\System Data">
       <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
@@ -171,6 +165,12 @@
     </Filter>
     <Filter Include="源文件\Data Class\WebSocket">
       <UniqueIdentifier>{96a3150a-ffc4-4080-a5ea-e8c3b885ad89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Virtual Class">
+      <UniqueIdentifier>{73ed0066-f487-40d1-a057-73d7bca5baea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Virtual Class">
+      <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -337,16 +337,16 @@
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
       <Filter>头文件\Windows界面</Filter>
@@ -499,10 +499,10 @@
       <Filter>头文件\DataBase</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h">
       <Filter>头文件\China Market\基础数据类</Filter>
@@ -655,7 +655,7 @@
       <Filter>头文件\Data Class\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h">
-      <Filter>头文件\Base Class</Filter>
+      <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -891,16 +891,16 @@
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>源文件\windows界面</Filter>
@@ -1011,10 +1011,10 @@
       <Filter>源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
@@ -1155,7 +1155,7 @@
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp">
-      <Filter>源文件\Base Class</Filter>
+      <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
