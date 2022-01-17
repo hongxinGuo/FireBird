@@ -104,24 +104,26 @@ bool CTiingoCryptoWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vec
 	return true;
 }
 
-/// <summary>
-///
-/// https://api.tiingo.com/documentation/websockets/crypto
-///
-/// 共四种格式：
-/// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
-/// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
-/// {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
-/// {"messageType":"A","service":"crypto_data","data":["T","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]}
-///
-/// </summary>
-/// <param name="pData"></param>
-/// <returns></returns>
+// <summary>
+//
+// https://api.tiingo.com/documentation/websockets/crypto
+//
+// 共五种格式：
+// {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+// {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
+// {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
+// {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
+// {"messageType":"A","service":"crypto_data","data":["T","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]}
+//
+// </summary>
+// <param name="pData"></param>
+// <returns></returns>
 bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
-	ptree pt, pt2, pt3;
+	ptree pt, pt2, pt3, pt4;
 	string sType, sSymbol;
 	char chType;
+	string strSymbol;
 
 	string sMessageType, sTickers, sExchange, sDatetime, sService;
 	CTiingoCryptoSocketPtr pCryptoData = nullptr;
@@ -133,8 +135,18 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(GetSubscriptionId() == 0);
-				SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				try {
+					pt3 = pt2.get_child(_T("tickers"));
+					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
+						pt4 = it->second;
+						strSymbol = pt4.get_value<string>();
+						m_vCurrentSymbol.push_back(strSymbol.c_str());
+					}
+				}
+				catch (exception e) {
+					ASSERT(GetSubscriptionId() == 0);
+					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// do nothing

@@ -62,9 +62,9 @@ CWorldMarket::CWorldMarket() {
 	Reset();
 
 	m_fRecordFinnhubWebSocket = true;
-	m_fRecordTiingoCryptoWebSocket = false;
-	m_fRecordTiingoForexWebSocket = false;
-	m_fRecordTiingoIEXWebSocket = false;
+	m_fRecordTiingoCryptoWebSocket = true;
+	m_fRecordTiingoForexWebSocket = true;
+	m_fRecordTiingoIEXWebSocket = true;
 }
 
 CWorldMarket::~CWorldMarket() {

@@ -49,6 +49,8 @@ public:
 	bool Deconnecting(void);
 	bool Sending(string message);
 
+	vector<CString> m_vCurrentSymbol;
+
 protected:
 	ix::WebSocket m_webSocket;
 	string m_url;

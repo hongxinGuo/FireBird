@@ -63,9 +63,11 @@ namespace StockAnalysisTest {
 	// jsong格式错误
 	TiingoWebSocketData tiingoForexData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}"));
 	// heart beat
-	TiingoWebSocketData tiingoForexData10(3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
+	TiingoWebSocketData tiingoForexData10(10, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
 	// authenizition
-	TiingoWebSocketData tiingoForexData11(4, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	TiingoWebSocketData tiingoForexData11(11, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	// subscribe
+	TiingoWebSocketData tiingoForexData12(12, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 
 	class ProcessOneTiingoForexWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -94,7 +96,7 @@ namespace StockAnalysisTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
 		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &tiingoForexData8, &tiingoForexData9,
-			&tiingoForexData10, &tiingoForexData11));
+			&tiingoForexData10, &tiingoForexData11, &tiingoForexData12));
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
@@ -134,6 +136,14 @@ namespace StockAnalysisTest {
 		case 11: // authenizition
 			EXPECT_TRUE(fSucceed);
 			break;
+		case 12: // subscribe
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(m_tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(1), _T("FXCM:EUR/USD"));
+			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(2), _T("IC MARKETS:2"));
+			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(3), _T("OANDA:USD_JPY"));
+			break;
 		default:
 			break;
 		}
@@ -153,6 +163,8 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoCryptoData7(7, _T(""), _T("{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"A\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
 	// json格式错误
 	TiingoWebSocketData tiingoCryptoData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+	// subscribe
+	TiingoWebSocketData tiingoCryptoData10(10, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"BINANCE:IDEXBUSD\",\"BITTREX:USDT-ADA\",\"HITBTC:XRPEOS\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -181,7 +193,7 @@ namespace StockAnalysisTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
 		testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &tiingoCryptoData4, &tiingoCryptoData5,
-			&tiingoCryptoData6, &tiingoCryptoData7, &tiingoCryptoData9));
+			&tiingoCryptoData6, &tiingoCryptoData7, &tiingoCryptoData9, &tiingoCryptoData10));
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
@@ -234,6 +246,14 @@ namespace StockAnalysisTest {
 		case 9: // json格式错误
 			EXPECT_FALSE(fSucceed);
 			break;
+		case 10: // subscribe
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(1), _T("BINANCE:IDEXBUSD"));
+			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(2), _T("BITTREX:USDT-ADA"));
+			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(3), _T("HITBTC:XRPEOS"));
+			break;
 		default:
 			break;
 		}
@@ -256,6 +276,8 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T("{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
 	// json格式错误
 	TiingoWebSocketData tiingoIEXData9(9, _T(""), _T("\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+	// subscribe
+	TiingoWebSocketData tiingoIEXData10(10, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*>
 	{
@@ -266,6 +288,7 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
+			EXPECT_EQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -283,7 +306,7 @@ namespace StockAnalysisTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
 		testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &tiingoIEXData5,
-			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9));
+			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9, &tiingoIEXData10));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
@@ -345,6 +368,14 @@ namespace StockAnalysisTest {
 			break;
 		case 9: // jsong格式错误
 			EXPECT_FALSE(fSucceed);
+			break;
+		case 10: // subscribe
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(1), _T("uso"));
+			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(2), _T("msft"));
+			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(3), _T("tnk"));
 			break;
 		default:
 			break;

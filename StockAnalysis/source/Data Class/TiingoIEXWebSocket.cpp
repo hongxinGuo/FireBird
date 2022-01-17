@@ -101,8 +101,9 @@ bool CTiingoIEXWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector
 //
 // https://api.tiingo.com/documentation/websockets/iex
 //
-// 共四种格式：
+// 共五种格式：
 // {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+// {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
@@ -110,9 +111,10 @@ bool CTiingoIEXWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	ptree::iterator it;
-	ptree pt, pt2, pt3;
+	ptree pt, pt2, pt3, pt4;
 	string sType, sSymbol, sService;
 	char chType;
+	string strSymbol;
 
 	string sMessageType, sTicker, sExchange, sDatetime, sValue;
 	int i = 0;
@@ -300,8 +302,18 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				break;
 			case 'I':// authenization  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(GetSubscriptionId() == 0);
-				SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				try {
+					pt3 = pt2.get_child(_T("tickers"));
+					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
+						pt4 = it->second;
+						strSymbol = pt4.get_value<string>();
+						m_vCurrentSymbol.push_back(strSymbol.c_str());
+					}
+				}
+				catch (exception e) {
+					ASSERT(GetSubscriptionId() == 0);
+					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				}
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理

@@ -36,18 +36,17 @@ using namespace std;
 #include<atomic>
 #include<vector>
 
-extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
-
-extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
-
-extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列（尚未使用）
-extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列（尚未使用）
-
 extern atomic_bool gl_fExitingSystem; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRS; // 用于通知工作线程退出的信号
 
 extern bool gl_fNormalMode; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 extern bool gl_fTestMode; // 是否设置了gl_fTestMode标识，默认为真。系统在启动时需要设置此标识为假。（用于判断是否在实际系统中使用了MySQLTest驱动）。
+
+extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
+extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
+
+extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列（尚未使用）
+extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列（尚未使用）
 
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

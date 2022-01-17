@@ -107,18 +107,20 @@ bool CTiingoForexWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vect
 //
 // https://api.tiingo.com/documentation/websockets/forex
 //
-// 共四种格式：
+// 共五种格式：
 // {"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+// {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"fx","data":["Q","eurnok","2019-07-05T15:49:15.157000+00:00",5000000.0,9.6764,9.678135,5000000.0,9.67987]}
 // {"messageType":"A","service":"fx","data":["Q","gbpaud","2019-07-05T15:49:15.236000+00:00",1000000.0,1.79457,1.79477,5000000.0,1.79497]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
-	ptree pt, pt2, pt3;
+	ptree pt, pt2, pt3, pt4;
 	ptree::iterator it;
 	string sType, sSymbol, sService;
 	char chType;
+	string strSymbol;
 
 	string sMessageType, sTickers, sDatetime;
 	CTiingoForexSocketPtr pForexData = nullptr;
@@ -130,8 +132,18 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
-				ASSERT(GetSubscriptionId() == 0);
-				SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				try {
+					pt3 = pt2.get_child(_T("tickers"));
+					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
+						pt4 = it->second;
+						strSymbol = pt4.get_value<string>();
+						m_vCurrentSymbol.push_back(strSymbol.c_str());
+					}
+				}
+				catch (exception e) {
+					ASSERT(GetSubscriptionId() == 0);
+					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 				// do nothing
