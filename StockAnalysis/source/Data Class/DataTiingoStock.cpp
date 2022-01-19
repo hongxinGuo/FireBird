@@ -23,9 +23,8 @@ bool CDataTiingoStock::Delete(CTiingoStockPtr pTiingoStock) {
 	if (pTiingoStock == nullptr) return false;
 	if (!IsStock(pTiingoStock)) return false;
 
+	m_vTiingoStock.erase(m_vTiingoStock.begin() + m_mapTiingoStock.at(pTiingoStock->m_strTicker));
 	m_mapTiingoStock.erase(pTiingoStock->m_strTicker);
-	auto it = find(m_vTiingoStock.begin(), m_vTiingoStock.end(), pTiingoStock);
-	m_vTiingoStock.erase(it);
 
 	return true;
 }

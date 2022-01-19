@@ -20,9 +20,8 @@ bool CDataFinnhubForexSymbol::Delete(CForexSymbolPtr pForexSymbol) {
 	if (pForexSymbol == nullptr) return false;
 	if (!IsForexSymbol(pForexSymbol->GetSymbol())) return false;
 
+	m_vForexSymbol.erase(m_vForexSymbol.begin() + m_mapForexSymbol.at(pForexSymbol->GetSymbol()));
 	m_mapForexSymbol.erase(pForexSymbol->GetSymbol());
-	auto it = find(m_vForexSymbol.begin(), m_vForexSymbol.end(), pForexSymbol);
-	m_vForexSymbol.erase(it);
 
 	return true;
 }

@@ -94,13 +94,13 @@ namespace StockAnalysisTest {
 		m_strPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
-			EXPECT_STREQ(m_strPeer, _T(""));
+			EXPECT_STREQ(m_strPeer, _T("{}"));
 			break;
 		case 3: // 格式不对
-			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
+			EXPECT_STREQ(m_strPeer, _T("{}")) << "没有改变";
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_STREQ(m_strPeer, _T("")) << "没有改变";
+			EXPECT_STREQ(m_strPeer, _T("{}")) << "没有改变";
 			break;
 		case 5: // 正确的数据，但超过200个字符
 			EXPECT_EQ(m_strPeer.GetLength(), 200) << "多余200个字符时截断";

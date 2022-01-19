@@ -38,6 +38,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h" />

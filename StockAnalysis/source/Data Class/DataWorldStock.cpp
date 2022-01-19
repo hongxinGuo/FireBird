@@ -77,9 +77,8 @@ bool CDataWorldStock::Delete(CWorldStockPtr pStock) {
 	if (pStock == nullptr) return false;
 	if (!IsStock(pStock->GetSymbol())) return false;
 
+	m_vWorldStock.erase(m_vWorldStock.begin() + m_mapWorldStock.at(pStock->GetSymbol()));
 	m_mapWorldStock.erase(pStock->GetSymbol());
-	auto it = find(m_vWorldStock.begin(), m_vWorldStock.end(), pStock);
-	m_vWorldStock.erase(it);
 
 	return true;
 }

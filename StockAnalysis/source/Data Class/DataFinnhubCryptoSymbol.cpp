@@ -20,9 +20,8 @@ bool CDataFinnhubCryptoSymbol::Delete(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
 	if (!IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
 
+	m_vCryptoSymbol.erase(m_vCryptoSymbol.begin() + m_mapCryptoSymbol.at(pCryptoSymbol->GetSymbol()));
 	m_mapCryptoSymbol.erase(pCryptoSymbol->GetSymbol());
-	auto it = find(m_vCryptoSymbol.begin(), m_vCryptoSymbol.end(), pCryptoSymbol);
-	m_vCryptoSymbol.erase(it);
 
 	return true;
 }

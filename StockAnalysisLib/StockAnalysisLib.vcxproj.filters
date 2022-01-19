@@ -172,6 +172,9 @@
     <Filter Include="源文件\Virtual Class">
       <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\template">
+      <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -656,6 +659,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h">
       <Filter>头文件\Virtual Class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h">
+      <Filter>头文件\template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

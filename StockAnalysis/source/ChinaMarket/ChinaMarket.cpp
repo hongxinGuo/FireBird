@@ -416,10 +416,8 @@ bool CChinaMarket::DeleteStock(CChinaStockPtr pStock) {
 	if (pStock == nullptr) return false;
 	if (!IsStock(pStock->GetSymbol())) return false;
 
+	m_vChinaMarketStock.erase(m_vChinaMarketStock.begin() + m_mapChinaMarketStock.at(pStock->GetSymbol()));
 	m_mapChinaMarketStock.erase(pStock->GetSymbol());
-
-	auto it = find(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), pStock);
-	m_vChinaMarketStock.erase(it);
 
 	return true;
 }
@@ -2961,7 +2959,7 @@ bool CChinaMarket::BuildDayLineRS(long lDate) {
 	CString strDate2 = GetStringOfDate(lDate);
 	CString strTemp;
 	strTemp = strDate2 + _T("的股票日线相对强度计算完成");
-	gl_systemMessage.PushInformationMessage(strTemp);    // 采用同步机制报告信息
+	gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
 	return(true);
 }

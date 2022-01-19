@@ -29,17 +29,15 @@ bool CProductFinnhubCompanyPeer::ProcessWebData(CWebDataPtr pWebData) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strPeer = ParseFinnhubStockPeer(pWebData);
-	if (strPeer.GetLength() > 0) {
-		pStock->SetPeer(strPeer);
-		pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
-		pStock->SetUpdateProfileDB(true);
-	}
+	pStock->SetPeer(strPeer);
+	pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetUpdateProfileDB(true);
 
 	return true;
 }
 
 CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
-	CString strPeer = _T("");
+	CString strPeer = _T("{}"); // 默认的空状态（没有竞争对手)
 	char buffer[1000]{};
 	int i = 0;
 	ptree pt;

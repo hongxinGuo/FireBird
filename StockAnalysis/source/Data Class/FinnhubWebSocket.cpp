@@ -14,17 +14,16 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 		if (!gl_fExitingSystem) {
 			gl_WebInquirer.pushFinnhubWebSocketData(msg->str);
-			//gl_systemMessage.PushInnerSystemInformationMessage(msg->str.c_str());
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
 		break;
 	case ix::WebSocketMessageType::Open:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket Open"));
 		break;
 	case ix::WebSocketMessageType::Close:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Close"));
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub WebSocket Close"));
 		break;
 	case ix::WebSocketMessageType::Fragment:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Fragment"));

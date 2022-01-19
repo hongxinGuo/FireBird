@@ -705,11 +705,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(id2.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
+		EXPECT_EQ(id2.GetClose(), 1150);
 
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
+		setDayLineBasicInfo.Delete(); // 清除此新加的数据
 		setDayLineBasicInfo.Close();
 	}
 

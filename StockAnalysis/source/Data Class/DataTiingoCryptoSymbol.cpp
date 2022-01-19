@@ -18,9 +18,8 @@ bool CDataTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
 	if (!IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker)) return false;
 
+	m_vTiingoCrypto.erase(m_vTiingoCrypto.begin() + m_mapTiingoCrypto.at(pCryptoSymbol->m_strTicker));
 	m_mapTiingoCrypto.erase(pCryptoSymbol->m_strTicker);
-	auto it = find(m_vTiingoCrypto.begin(), m_vTiingoCrypto.end(), pCryptoSymbol);
-	m_vTiingoCrypto.erase(it);
 
 	return true;
 }
