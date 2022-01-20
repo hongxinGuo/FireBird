@@ -1091,9 +1091,6 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebDatacpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubEconomicCalendar.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
@@ -1162,6 +1159,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp">
       <Filter>源文件\Virtual Class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebData.cpp">
+      <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

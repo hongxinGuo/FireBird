@@ -34,6 +34,13 @@ bool CVirtualWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbo
 	return true;
 }
 
+bool CVirtualWebSocket::IsSymbol(CString strSymbol) {
+	if (m_mapSymbol.find(strSymbol) == m_mapSymbol.end()) { // 新符号？
+		return false;
+	}
+	else return true;
+}
+
 void CVirtualWebSocket::AppendSymbol(vector<CString> vSymbol) {
 	for (auto& strSymbol : vSymbol) {
 		if (m_mapSymbol.find(strSymbol) == m_mapSymbol.end()) { // 新符号？
@@ -42,22 +49,19 @@ void CVirtualWebSocket::AppendSymbol(vector<CString> vSymbol) {
 	}
 }
 
-void CVirtualWebSocket::AddSymbol(CString strSymbol) {
+bool CVirtualWebSocket::AddSymbol(CString strSymbol) {
+	if (IsSymbol(strSymbol)) return false;
 	m_mapSymbol[strSymbol] = m_mapSymbol.size();
 	m_vSymbol.push_back(strSymbol);
+	return true;
 }
 
-void CVirtualWebSocket::DeleteSymbol(CString strSymbol) {
-	auto it = m_mapSymbol.find(strSymbol);
-	if (it != m_mapSymbol.end()) { // 已知符号？
-		m_mapSymbol.erase(it);
-		for (auto it2 = m_vSymbol.begin(); it2 != m_vSymbol.end(); it2++) {
-			if ((*it2).Compare(strSymbol) == 0) {
-				m_vSymbol.erase(it2);
-				break;
-			}
-		}
-	}
+bool CVirtualWebSocket::DeleteSymbol(CString strSymbol) {
+	if (!IsSymbol(strSymbol)) return false;
+
+	m_vSymbol.erase(m_vSymbol.begin() + m_mapSymbol.at(strSymbol));
+	m_mapSymbol.erase(strSymbol);
+	return true;
 }
 
 void CVirtualWebSocket::ClearSymbol(void) {

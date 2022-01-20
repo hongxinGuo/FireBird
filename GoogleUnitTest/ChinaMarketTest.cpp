@@ -1266,6 +1266,18 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetRTDataReceived(), 1010101010);
 	}
 
+	TEST_F(CChinaMarketTest, TestIsTimeToResetSystem) {
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(91259));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(91300));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(91400));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(91401));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(92459));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(92500));
+		EXPECT_TRUE(gl_pChinaMarket->IsTimeToResetSystem(92700));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(92701));
+		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(93000));
+	}
+
 	TEST_F(CChinaMarketTest, TestCheckMarketReady) {
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetRTDataReceived(0);

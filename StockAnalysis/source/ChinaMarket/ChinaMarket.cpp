@@ -204,8 +204,8 @@ void CChinaMarket::Reset(void) {
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
-	if ((lCurrentTime >= 91300) || (lCurrentTime < 91400)) return true;
-	else if ((lCurrentTime >= 92500) || (lCurrentTime <= 92700)) return true;
+	if ((lCurrentTime > 91259) && (lCurrentTime < 91401)) return true;
+	else if ((lCurrentTime > 92459) && (lCurrentTime < 92701)) return true;
 	else return false;
 }
 

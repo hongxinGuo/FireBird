@@ -24,10 +24,13 @@ public:
 	bool ConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
 
 	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
+
+	bool IsSymbol(CString strSymbol);
 	void AppendSymbol(vector<CString> vSymbol);
-	void AddSymbol(CString strSymbol);
-	void DeleteSymbol(CString strSymbol);
+	bool AddSymbol(CString strSymbol);
+	bool DeleteSymbol(CString strSymbol);
 	void ClearSymbol(void);
+	size_t GetSymbolSize(void) noexcept { return m_vSymbol.size(); }
 
 	// ״̬
 	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }

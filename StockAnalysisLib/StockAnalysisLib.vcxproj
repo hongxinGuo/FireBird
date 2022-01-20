@@ -318,12 +318,12 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebDatacpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
