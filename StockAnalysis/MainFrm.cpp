@@ -584,30 +584,36 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	char buffer[30];
 	CString str;
 
-	// 更新当前工作线程数
+	// 更新新浪实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(1, (LPCTSTR)str);
-
-	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
-	str = buffer;
-	SysCallSetInnerSystemPaneText(2, (LPCTSTR)str);
+	// 更新网易实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(3, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(2, (LPCTSTR)str);
+	// 更新腾讯实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTWebInquiry->GetCurrentInquiryTime());
+	str = buffer;
+	SysCallSetInnerSystemPaneText(3, (LPCTSTR)str);
+	// 更新网易日线数据读取时间
+	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(4, (LPCTSTR)str);
 
+	// 更新Finnhub数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(5, (LPCTSTR)str);
+	// 更新Tiingo数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(6, (LPCTSTR)str);
+	// 更新Quandl数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
+
 	str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
 	SysCallSetInnerSystemPaneText(8, (LPCTSTR)str);
 	str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());

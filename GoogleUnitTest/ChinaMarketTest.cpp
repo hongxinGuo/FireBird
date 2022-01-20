@@ -6,6 +6,7 @@
 #include"ChinaStock.h"
 
 #include"SetOption.h"
+#include"SetChinaMarketOption.h"
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChoicedStock.h"
 
@@ -1523,6 +1524,35 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
+	}
+
+	TEST_F(CChinaMarketTest, TestLoadOptionChinaMarketDB) {
+		CSetChinaMarketOption setChinaMarketOption;
+
+		setChinaMarketOption.Open();
+		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
+		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 400) << "默认400毫秒轮询一次";
+
+		setChinaMarketOption.m_pDatabase->BeginTrans();
+		while (!setChinaMarketOption.IsEOF()) {
+			setChinaMarketOption.Delete();
+			setChinaMarketOption.MoveNext();
+		}
+		setChinaMarketOption.m_pDatabase->CommitTrans();
+		setChinaMarketOption.Close();
+
+		gl_pChinaMarket->LoadOptionChinaStockMarketDB();
+		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
+		EXPECT_EQ(gl_pSinaRTWebInquiry->GetShortestInquiringInterval(), 400);
+
+		gl_pChinaMarket->UpdateOptionChinaMarketDB();
+
+		setChinaMarketOption.Open();
+		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
+		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 400) << "默认400毫秒轮询一次";
+		setChinaMarketOption.Close();
+
+		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
 	}
 
 	TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {

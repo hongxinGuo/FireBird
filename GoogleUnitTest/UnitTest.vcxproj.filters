@@ -525,6 +525,15 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Class\Tiingo</Filter>
     </ClCompile>
+    <ClCompile Include="DataChoicedCryptoTest.cpp">
+      <Filter>Test源文件\Data Class\Chioced</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChoicedForexTest.cpp">
+      <Filter>Test源文件\Data Class\Chioced</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChoicedIEXTest.cpp">
+      <Filter>Test源文件\Data Class\Chioced</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

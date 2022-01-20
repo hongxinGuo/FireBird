@@ -3269,7 +3269,7 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
 	setOptionChinaStockMarket.Open();
 	if (!setOptionChinaStockMarket.IsEOF()) {
 		m_iRTDataServer = setOptionChinaStockMarket.m_RTDataServerIndex;
-		gl_pSinaRTWebInquiry->SetShoortestINquiringInterval(setOptionChinaStockMarket.m_RTDataInquiryTime);
+		gl_pSinaRTWebInquiry->SetShortestINquiringInterval(setOptionChinaStockMarket.m_RTDataInquiryTime);
 	}
 	else {
 		m_iRTDataServer = 0; // 默认使用新浪实时数据服务器

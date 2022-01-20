@@ -71,7 +71,7 @@ public:
 	CString GetConnectionName(void) const { return m_strConnectionName; }
 
 	long GetShortestInquiringInterval(void) noexcept { return m_lShortestInquiringInterval; }
-	void SetShoortestINquiringInterval(long lValue) noexcept { m_lShortestInquiringInterval = lValue; }
+	void SetShortestINquiringInterval(long lValue) noexcept { m_lShortestInquiringInterval = lValue; }
 
 	INT64 GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(INT64 lValue) noexcept { m_lInquiringNumber = lValue; }

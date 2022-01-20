@@ -142,10 +142,10 @@ namespace StockAnalysisTest {
 
 	TEST_F(CVirtualWebInquiryTest, TestGetShortestInquiringInterval) {
 		EXPECT_EQ(m_VirtualWebInquiry.GetShortestInquiringInterval(), 1000) << _T("Ä¬ÈÏÖµÎª1000ºÁÃë");
-		m_VirtualWebInquiry.SetShoortestINquiringInterval(800);
+		m_VirtualWebInquiry.SetShortestINquiringInterval(800);
 		EXPECT_EQ(m_VirtualWebInquiry.GetShortestInquiringInterval(), 800);
 
-		m_VirtualWebInquiry.SetShoortestINquiringInterval(1000);
+		m_VirtualWebInquiry.SetShortestINquiringInterval(1000);
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestGetInquiringNumber) {
