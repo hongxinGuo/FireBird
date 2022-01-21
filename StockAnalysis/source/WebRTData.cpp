@@ -886,7 +886,9 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 		}
 		do {
 			if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-				if (!SetNeteaseRTValue(lIndex, strValue)) throw exception();
+				if (!SetNeteaseRTValue(lIndex, strValue)) {
+					throw exception();
+				}
 			}
 			else {
 				throw exception();
@@ -981,6 +983,7 @@ bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
 	strStockCode += bufferStockCode;
 	strStockCode = XferSinaToStandred(strStockCode);
 	if (!gl_pChinaMarket->IsStock(strStockCode)) {
+		TRACE("无效股票代码：%s\n", strStockCode);
 		return false;
 	}
 	return true;
