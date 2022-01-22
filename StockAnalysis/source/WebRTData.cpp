@@ -984,7 +984,7 @@ bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
 	strStockCode = XferSinaToStandred(strStockCode);
 	if (!gl_pChinaMarket->IsStock(strStockCode)) {
 		TRACE("无效股票代码：%s\n", strStockCode);
-		return false;
+		//return false;
 	}
 	return true;
 }

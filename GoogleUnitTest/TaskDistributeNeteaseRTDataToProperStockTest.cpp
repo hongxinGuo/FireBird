@@ -109,7 +109,7 @@ namespace StockAnalysisTest {
 
 		gl_WebRTDataContainer.PushNeteaseData(pRTData);
 		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
-		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeNeteaseRTDataToProperStock());
+		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeNeteaseRTDataToStock());
 		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {

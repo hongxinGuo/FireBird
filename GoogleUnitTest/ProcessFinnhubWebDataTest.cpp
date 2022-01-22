@@ -72,6 +72,8 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
+			EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
+
 			FinnhubWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -100,6 +102,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("AAPL"));
 			//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
@@ -118,9 +121,13 @@ namespace StockAnalysisTest {
 			break;
 		case 3: // json格式错误
 			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub Web Socket json error"));
 			break;
 		case 4: // type类型不存在
 			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub Web Socket type error: message"));
 			break;
 		case 5: // error message
 			EXPECT_FALSE(fSucceed);

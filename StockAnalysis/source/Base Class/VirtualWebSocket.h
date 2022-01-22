@@ -21,7 +21,7 @@ public:
 
 	virtual bool Connect(void) = 0;
 	virtual bool Send(vector<CString> vSymbol) = 0;
-	bool ConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool ConnectWebSocketAndSendMessage(vector<CString> vSymbol);
 
 	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
 
@@ -47,6 +47,9 @@ public:
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
 	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
+	bool IsReceivingData(void) noexcept { return m_fReveivingData; }
+	void SetReceivingData(bool fFlag) noexcept { m_fReveivingData = fFlag; }
+
 	// 实现
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	bool Deconnecting(void);
@@ -66,4 +69,6 @@ protected:
 	map<CString, long> m_mapSymbol;
 
 	string m_inputMessage;
+
+	bool m_fReveivingData; // 正在接收数据
 };

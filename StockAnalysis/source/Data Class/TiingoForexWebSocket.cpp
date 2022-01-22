@@ -37,9 +37,9 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectingTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vector<CString> vSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	pDataTiingoForexWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 73;
@@ -95,8 +95,8 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-bool CTiingoForexWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
-	thread thread1(ThreadConnectingTiingoForexWebSocketAndSendMessage, this, vSymbol);
+bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectTiingoForexWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
 	return true;
@@ -133,8 +133,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pt2 = pt.get_child(_T("data"));
 				try {
 					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
-						pt4 = it->second;
+					for (ptree::iterator it3 = pt3.begin(); it3 != pt3.end(); it3++) {
+						pt4 = it3->second;
 						strSymbol = pt4.get_value<string>();
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
@@ -179,6 +179,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pt3 = it->second;
 				pForexData->m_dAskPrice = pt3.get_value<double>(); // Âô¼Û
 				gl_SystemData.PushTiingoForexSocket(pForexData);
+				m_fReveivingData = true;
 				break;
 			default:
 				// error

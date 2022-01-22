@@ -20,11 +20,12 @@ void CVirtualWebSocket::Reset(void) {
 	m_iSubscriptionId = 0;
 	m_iPingPeriod = 0;
 	m_fDeflate = true;
+	m_fReveivingData = false;
 }
 
-bool CVirtualWebSocket::ConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	AppendSymbol(vSymbol);
-	if (!IsClosed()) Deconnecting();
+	Deconnecting();
 	while (!IsClosed()) Sleep(1);
 	Reset();
 	Connect();

@@ -74,6 +74,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
+			EXPECT_FALSE(m_tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -105,6 +106,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_STREQ(pForex->m_strSymbol, _T("eurnok"));
@@ -116,6 +118,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
 		case 6: //
@@ -171,6 +174,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
+			EXPECT_FALSE(m_tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -202,6 +206,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("bitfinex"));
@@ -216,6 +221,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("binance"));
@@ -284,6 +290,8 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
+			EXPECT_FALSE(m_tiingoIEXWebSocket.IsReceivingData());
+
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -315,6 +323,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_tiingoIEXWebSocket.IsReceivingData());
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("vym"));

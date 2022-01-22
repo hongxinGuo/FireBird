@@ -286,9 +286,9 @@ namespace StockAnalysisTest {
 	NeteaseRTDataStockCodePrefix StockCodePrefixData105(4, _T("{'0600601\":{ "));
 	// 代码第一个字符非0或者1
 	NeteaseRTDataStockCodePrefix StockCodePrefixData106(5, _T("{\"2600601\":{ "));
-	// 无效股票代码
+	// 新股票代码， 无错误
 	NeteaseRTDataStockCodePrefix StockCodePrefixData107(6, _T("{\"1600601\":{ "));
-	// 无效股票代码
+	// 新股票代码，无错误
 	NeteaseRTDataStockCodePrefix StockCodePrefixData108(7, _T("{\"0500000\":{ "));
 	// 无错误，':'后多一个空格
 	NeteaseRTDataStockCodePrefix StockCodePrefixData109(8, _T("{\"0600601\": { "));
@@ -381,10 +381,10 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 6:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			break;
 		case 7:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			break;
 		case 8: // 无错误
 			EXPECT_TRUE(fSucceed);

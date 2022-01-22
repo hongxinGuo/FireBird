@@ -37,9 +37,9 @@ void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectingTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vector<CString> vSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	pDataTiingoIEXWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 71;
@@ -89,8 +89,8 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-bool CTiingoIEXWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
-	thread thread1(ThreadConnectingTiingoIEXWebSocketAndSendMessage, this, vSymbol);
+bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectTiingoIEXWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
 	return true;
@@ -298,13 +298,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					break;
 				}
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);
+				m_fReveivingData = true;
 				break;
 			case 'I':// authenization  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				pt2 = pt.get_child(_T("data"));
 				try {
 					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
-						pt4 = it->second;
+					for (ptree::iterator it4 = pt3.begin(); it4 != pt3.end(); it4++) {
+						pt4 = it4->second;
 						strSymbol = pt4.get_value<string>();
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}

@@ -39,9 +39,9 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectingFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	pDataFinnhubWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 70;
@@ -77,6 +77,11 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 		Sending(strMessage);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
+	for (long l2 = 0; l2 < m_vCurrentSymbol.size(); l2++) {
+		strMessage = CreateFinnhubWebSocketString(m_vCurrentSymbol.at(l2));
+		Sending(strMessage);
+		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
+	}
 
 	return true;
 }
@@ -95,8 +100,8 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
 	return sPreffix + sSymbol + sSuffix;
 }
 
-bool CFinnhubWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
-	thread thread1(ThreadConnectingFinnhubWebSocketAndSendMessage, this, vSymbol);
+bool CFinnhubWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
 	return true;
@@ -137,6 +142,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
 					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
+					m_fReveivingData = true;
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
@@ -151,10 +157,14 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			}
 			else {
 				// ERROR
+				CString strMsg = _T("Finnhub Web Socket type error: ");
+				strMsg += sType.c_str();
+				gl_systemMessage.PushInnerSystemInformationMessage(strMsg);
 				return false;
 			}
 		}
 		else {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub Web Socket json error"));
 			return false;
 		}
 	}

@@ -1,3 +1,4 @@
+#include "WorldMarket.h"
 #include"pch.h"
 
 #include"SystemData.h"
@@ -367,31 +368,15 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	// 建立WebSocket连接
-	if (IsSystemReady()) {
-		if (m_finnhubWebSocket.IsClosed()) {
-			m_finnhubWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
-		}
-
-		if (m_tiingoIEXWebSocket.IsClosed()) {
-			m_tiingoIEXWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
-		}
-
-		if (m_tiingoCryptoWebSocket.IsClosed()) {
-			m_tiingoCryptoWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
-		}
-
-		if (m_tiingoForexWebSocket.IsClosed()) {
-			m_tiingoForexWebSocket.CreatingThreadConnectingWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
-		}
-	}
-
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
+	// 建立WebSocket连接
+	TaskActivateWebSocket();
 
+	// 这个必须是最后一个任务。因其在执行完毕后返回了。
 	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
@@ -424,6 +409,8 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
+	TaskReActivateWebSocket();
+
 	return true;
 }
 
@@ -1482,6 +1469,54 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	}
 
 	return vSymbol;
+}
+
+bool CWorldMarket::TaskReActivateWebSocket(void) {
+	if (IsSystemReady()) {
+		if (!m_finnhubWebSocket.IsReceivingData()) {
+			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		}
+		else {
+			m_finnhubWebSocket.SetReceivingData(false);
+		}
+		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
+			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		}
+		else {
+			m_tiingoIEXWebSocket.SetReceivingData(false);
+		}
+		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
+			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		}
+		else {
+			m_tiingoCryptoWebSocket.SetReceivingData(false);
+		}
+		if (!m_tiingoForexWebSocket.IsReceivingData()) {
+			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		}
+		else {
+			m_tiingoForexWebSocket.SetReceivingData(false);
+		}
+	}
+	return true;
+}
+
+bool CWorldMarket::TaskActivateWebSocket(void) {
+	if (IsSystemReady()) {
+		if (m_finnhubWebSocket.IsClosed()) {
+			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		}
+		if (m_tiingoIEXWebSocket.IsClosed()) {
+			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		}
+		if (m_tiingoCryptoWebSocket.IsClosed()) {
+			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		}
+		if (m_tiingoForexWebSocket.IsClosed()) {
+			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		}
+	}
+	return true;
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {

@@ -416,6 +416,9 @@ public:
 	vector<CString> GetTiingoCryptoWebSocketSymbolVector(void);
 	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
 
+	bool TaskActivateWebSocket(void);
+	bool TaskReActivateWebSocket(void);
+
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();
 	bool ProcessTiingoIEXWebSocketData();

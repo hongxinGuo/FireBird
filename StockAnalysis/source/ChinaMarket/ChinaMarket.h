@@ -302,8 +302,9 @@ public:
 	bool TaskDiscardTengxunRTData(void);
 
 	//处理实时股票变化等
-	bool TaskDistributeSinaRTDataToProperStock(void);
-	bool TaskDistributeNeteaseRTDataToProperStock(void);
+	bool TaskDistributeSinaRTDataToStock(void);
+	bool TaskDistributeNeteaseRTDataToStock(void);
+	bool DistributeRTDataToStock(CWebRTDataPtr pData);
 
 	void TaskSaveTempDataIntoDB(long lCurrentTime);
 

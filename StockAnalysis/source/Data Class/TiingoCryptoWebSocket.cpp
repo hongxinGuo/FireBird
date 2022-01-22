@@ -37,9 +37,9 @@ void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectingTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	pDataTiingoCryptoWebSocket->ConnectingWebSocketAndSendMessage(vSymbol);
+	pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 73;
@@ -96,8 +96,8 @@ bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-bool CTiingoCryptoWebSocket::CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol) {
-	thread thread1(ThreadConnectingTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
+bool CTiingoCryptoWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
 	return true;
@@ -136,8 +136,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				pt2 = pt.get_child(_T("data"));
 				try {
 					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it = pt3.begin(); it != pt3.end(); it++) {
-						pt4 = it->second;
+					for (ptree::iterator it2 = pt3.begin(); it2 != pt3.end(); it2++) {
+						pt4 = it2->second;
 						strSymbol = pt4.get_value<string>();
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
@@ -211,6 +211,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					return false;
 				}
 				gl_SystemData.PushTiingoCryptoSocket(pCryptoData);
+				m_fReveivingData = true;
 				break;
 			default: // ´íÎó
 				return false;

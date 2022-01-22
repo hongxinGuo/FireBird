@@ -15,7 +15,7 @@ public:
 	virtual bool Send(vector<CString> vSymbol) override;
 	string CreateFinnhubWebSocketString(CString strSymbol);
 
-	bool CreatingThreadConnectingWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 };

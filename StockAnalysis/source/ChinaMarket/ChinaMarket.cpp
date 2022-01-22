@@ -654,11 +654,10 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
+bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	gl_ProcessSinaRTDataQueue.Wait();
 	const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
 	CString strVolume;
-	bool fFoundNewStock = false;
 	CString strStandredStockCode;
 	CWebRTDataPtr pRTData = nullptr;
 	CChinaStockPtr pStock = nullptr;
@@ -669,36 +668,44 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
 			continue;
 		}
-		if (pRTData->IsActive()) { // 此实时数据有效？
-			if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
-				m_ttNewestTransactionTime = pRTData->GetTransactionTime();
-			}
-			if (IsCheckActiveStock()) {
-				if (!IsStock(pRTData->GetSymbol())) {
-					CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
-					fFoundNewStock = true;
-				}
-			}
-			ASSERT(IsStock(pRTData->GetSymbol()));
-			pStock = GetStock(pRTData->GetSymbol());
-			if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
-				if (pRTData->IsValidTime(14)) {
-					pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
-					pStock->SetIPOStatus(__STOCK_IPOED__);
-				}
-			}
-			if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
-				pStock->PushRTData(pRTData); // 存储新的数据至数据池
-				if (pStock->IsRecordRTData()) {
-					StoreChoiceRTData(pRTData);
-				}
-				pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
-			}
-		}
+		DistributeRTDataToStock(pRTData);
 	}
 	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // 必须一次处理全体数据。
 	gl_ProcessSinaRTDataQueue.Signal();
+
+	return true;
+}
+
+bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
+	bool fFoundNewStock = false;
+
+	if (pRTData->IsActive()) { // 此实时数据有效？
+		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
+			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+		}
+		if (IsCheckActiveStock()) {
+			if (!IsStock(pRTData->GetSymbol())) {
+				CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
+				fFoundNewStock = true;
+			}
+		}
+		ASSERT(IsStock(pRTData->GetSymbol()));
+		auto pStock = GetStock(pRTData->GetSymbol());
+		if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
+			if (pRTData->IsValidTime(14)) {
+				pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
+				pStock->SetIPOStatus(__STOCK_IPOED__);
+			}
+		}
+		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+			pStock->PushRTData(pRTData); // 存储新的数据至数据池
+			if (pStock->IsRecordRTData()) {
+				StoreChoiceRTData(pRTData);
+			}
+			pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
+		}
+	}
 
 	return true;
 }
@@ -712,12 +719,11 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
+bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	gl_ProcessNeteaseRTDataQueue.Wait();
 	CChinaStockPtr pStock;
 	const size_t lTotalNumber = gl_WebRTDataContainer.GetNeteaseDataSize();
 	CString strVolume;
-	bool fFoundNewStock = false;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
@@ -725,32 +731,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
 			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
 			continue;
 		}
-		if (pRTData->IsActive()) { // 此实时数据有效？
-			if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
-				m_ttNewestTransactionTime = pRTData->GetTransactionTime();
-			}
-			if (IsCheckActiveStock()) {
-				if (!IsStock(pRTData->GetSymbol())) {
-					CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
-					fFoundNewStock = true;
-				}
-			}
-			ASSERT(IsStock(pRTData->GetSymbol()));
-			pStock = GetStock(pRTData->GetSymbol());
-			if (!pStock->IsActive()) {
-				if (pRTData->IsValidTime(14)) {
-					pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
-					pStock->SetIPOStatus(__STOCK_IPOED__);
-				}
-			}
-			if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
-				pStock->PushRTData(pRTData); // 存储新的数据至数据池
-				if (pStock->IsRecordRTData()) {
-					StoreChoiceRTData(pRTData);
-				}
-				pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
-			}
-		}
+		DistributeRTDataToStock(pRTData);
 	}
 	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // 必须一次处理全体数据。
@@ -957,8 +938,8 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 			iCount = 0;
 			while (!((pWebDataReceived->GetCurrentPosData() == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-				if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
-					CheckNeteaseRTDataValidation(*pRTData);
+				if (pRTData->ReadNeteaseData(pWebDataReceived)) {
+					if (IsSystemReady())	CheckNeteaseRTDataValidation(*pRTData);// 当系统准备状态完成时检测一下
 					iCount++;
 					m_llRTDataReceived++;
 					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -1302,9 +1283,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	if (s_iCountDownProcessWebRTData <= 0) {
 		// 将接收到的实时数据分发至各相关股票的实时数据队列中。
 		// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-		TaskDistributeSinaRTDataToProperStock();
+		TaskDistributeSinaRTDataToStock();
 		// 分发网易实时数据至各相关股票中。
-		TaskDistributeNeteaseRTDataToProperStock();
+		TaskDistributeNeteaseRTDataToStock();
 
 		TaskProcessTengxunRTData();
 

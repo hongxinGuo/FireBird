@@ -1531,7 +1531,7 @@ namespace StockAnalysisTest {
 
 		setChinaMarketOption.Open();
 		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
-		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 400) << "默认400毫秒轮询一次";
+		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 100) << "默认100毫秒轮询一次";
 
 		setChinaMarketOption.m_pDatabase->BeginTrans();
 		while (!setChinaMarketOption.IsEOF()) {
@@ -1543,16 +1543,14 @@ namespace StockAnalysisTest {
 
 		gl_pChinaMarket->LoadOptionChinaStockMarketDB();
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
-		EXPECT_EQ(gl_pSinaRTWebInquiry->GetShortestInquiringInterval(), 400);
+		EXPECT_EQ(gl_pSinaRTWebInquiry->GetShortestInquiringInterval(), 100);
 
 		gl_pChinaMarket->UpdateOptionChinaMarketDB();
 
 		setChinaMarketOption.Open();
 		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
-		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 400) << "默认400毫秒轮询一次";
+		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 100) << "默认100毫秒轮询一次";
 		setChinaMarketOption.Close();
-
-		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
 	}
 
 	TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {

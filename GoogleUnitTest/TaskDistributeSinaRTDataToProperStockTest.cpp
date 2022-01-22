@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
 
 		gl_WebRTDataContainer.PushSinaData(pRTData);
 		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
-		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToProperStock());
+		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToStock());
 		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {

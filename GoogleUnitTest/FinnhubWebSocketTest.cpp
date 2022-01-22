@@ -65,6 +65,14 @@ namespace StockAnalysisTest {
 		m_finnhubWebSocket.SetSubscriptionStatus(false);
 	}
 
+	TEST_F(CDataFinnhubWebSocketTest, TestSetReceivingData) {
+		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
+		m_finnhubWebSocket.SetReceivingData(true);
+		EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
+		m_finnhubWebSocket.SetReceivingData(false);
+		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
+	}
+
 	TEST_F(CDataFinnhubWebSocketTest, TestGetState) {
 		EXPECT_EQ(m_finnhubWebSocket.GetState(), ix::ReadyState::Closed);
 	}
