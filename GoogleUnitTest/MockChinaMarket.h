@@ -5,17 +5,13 @@
 namespace testing {
 	class CMockChinaMarket : public CChinaMarket {
 	public:
-		MOCK_METHOD(bool, CreatingThreadSaveChoicedRTData, (), (override));
 		MOCK_METHOD(bool, CreatingThreadProcessTodayStock, (), (override));
 		MOCK_METHOD(bool, CreatingThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
 		MOCK_METHOD(bool, CreatingThreadBuildDayLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(bool, CreatingThreadSaveTempRTData, (), (override));
 		MOCK_METHOD(bool, CreatingThreadSaveDayLineBasicInfoOfStock, (CChinaStock* pStock), (override));
 		MOCK_METHOD(bool, CreatingThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
 		MOCK_METHOD(bool, CreatingThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateStockCodeDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateOptionDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadAppendChoicedStockDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong1StockSet, (), (override));
 		MOCK_METHOD(bool, CreatingThreadChoice10RSStrongStockSet, (), (override));
@@ -27,7 +23,6 @@ namespace testing {
 		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRS, (), (override));
 		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
 		MOCK_METHOD(bool, CreatingThreadBuildWeekLineOfCurrentWeek, (), (override));
-		MOCK_METHOD(bool, CreatingThreadSaveStockSection, (), (override));
 
 		MOCK_METHOD(bool, UpdateOptionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));

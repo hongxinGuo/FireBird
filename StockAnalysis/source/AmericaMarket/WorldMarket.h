@@ -184,44 +184,29 @@ public:
 	virtual bool TaskUpdateSICIndustry(void);
 	virtual bool TaskUpdateNaicsIndustry(void);
 
-	bool TaskUpdateStockProfileDB(void) { return CreatingThreadUpdateStockProfileDB(); }
-	bool TaskUpdateDayLineDB(void) { return CreatingThreadUpdateDayLineDB(); }
-	bool TaskUpdateForexExchangeDB(void) { return CreatingThreadUpdateForexExchangeDB(); }
+	bool TaskUpdateStockProfileDB(void);
+	bool TaskUpdateDayLineDB(void);
+	bool TaskUpdateForexExchangeDB(void);
 	bool TaskUpdateForexSymbolDB(void);
 	bool TaskUpdateForexDayLineDB(void);
-	bool TaskUpdateCryptoExchangeDB(void) { return CreatingThreadUpdateCryptoExchangeDB(); }
+	bool TaskUpdateCryptoExchangeDB(void);
 	bool TaskUpdateFinnhubCryptoSymbolDB(void);
 	bool TaskUpdateCryptoDayLineDB(void);
-	bool TaskUpdateCountryListDB(void) { return CreatingThreadUpdateCountryListDB(); }
+	bool TaskUpdateCountryListDB(void);
 	bool TaskUpdateEPSSurpriseDB(void);
-	bool TaskUpdateEconomicCalendarDB(void) { return CreatingThreadUpdateEconomicCalendarDB(); }
-	bool TaskUpdateInsiderTransactionDB(void) { return CreatingThreadUpdateInsiderTransactionDB(); }
-	bool TaskUpdateTiingoStockDB(void) { return CreatingThreadUpdateTiingoStockDB(); }
-	bool TaskUpdateTiingoCryptoSymbolDB(void) { return CreatingThreadUpdateTiingoCryptoSymbolDB(); }
+	bool TaskUpdateEconomicCalendarDB(void);
+	bool TaskUpdateInsiderTransactionDB(void);
+	bool TaskUpdateTiingoStockDB(void);
+	bool TaskUpdateTiingoCryptoSymbolDB(void);
 
 	bool TaskCheckSystemReady(void);
 
-	bool TaskUpdateDayLineStartEndDate(void) { return CreatingthreadUpdateDayLneStartEndDate(); }
+	bool TaskUpdateDayLineStartEndDate(void);
 
 	// 各工作线程调用包裹函数
-	virtual bool CreatingthreadUpdateDayLneStartEndDate(void);
-	virtual bool CreatingThreadUpdateDayLineDB(void);
-	virtual bool CreatingThreadUpdateStockProfileDB(void);
-	virtual bool CreatingThreadUpdateForexExchangeDB(void);
-	virtual bool CreatingThreadUpdateForexSymbolDB(void);
 	virtual bool CreatingThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
-	virtual bool CreatingThreadUpdateCryptoExchangeDB(void);
-	virtual bool CreatingThreadUpdateFinnhubCryptoSymbolDB(void);
 	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
-	virtual bool CreatingThreadUpdateCountryListDB(void);
 	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
-	virtual bool CreatingThreadUpdateInsiderTransactionDB(void);
-	virtual bool CreatingThreadUpdateTiingoStockDB(void);
-	virtual bool CreatingThreadUpdateTiingoCryptoSymbolDB(void);
-	virtual bool CreatingThreadUpdateTiingoIndustry(void);
-	virtual bool CreatingThreadUpdateSICIndustry(void);
-	virtual bool CreatingThreadUpdateNaicsIndustry(void);
-	virtual bool CreatingThreadUpdateEconomicCalendarDB(void);
 
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 

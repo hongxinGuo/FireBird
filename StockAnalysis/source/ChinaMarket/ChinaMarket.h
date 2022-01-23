@@ -94,7 +94,6 @@ public:
 	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 各工作线程调用包裹函数
-	virtual bool CreatingThreadAppendChoicedStockDB(void);
 	virtual bool CreatingThreadBuildDayLineRS(long lStartCalculatingDay);
 	virtual bool CreatingThreadBuildDayLineRSOfDate(long lThisDay);
 	virtual bool CreatingThreadBuildWeekLine(long lStartDate);
@@ -112,12 +111,8 @@ public:
 	virtual bool CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
 	virtual bool CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
 	virtual bool CreatingThreadProcessTodayStock(void);
-	virtual bool CreatingThreadSaveChoicedRTData(void);
-	virtual bool CreatingThreadSaveTempRTData(void);
 	virtual bool CreatingThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStock);
-	virtual bool CreatingThreadSaveStockSection(void);
 	virtual bool CreatingThreadUpdateStockCodeDB(void);
-	virtual bool CreatingThreadUpdateOptionDB(void);
 	// interface function
 
 public:

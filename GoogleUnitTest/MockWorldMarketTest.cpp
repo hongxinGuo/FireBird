@@ -110,62 +110,6 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateDayLineStartEndDate) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingthreadUpdateDayLneStartEndDate())
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateDayLineStartEndDate());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateDayLineDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateDayLineDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateDayLineDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateStockProfileDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateStockProfileDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateStockProfileDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateForexSymbolDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateForexSymbolDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexSymbolDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateFinnhubCryptoSymbolDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateFinnhubCryptoSymbolDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateFinnhubCryptoSymbolDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateCountryListDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCountryListDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCountryListDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateInsiderTransactionDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateInsiderTransactionDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateInsiderTransactionDB());
-	}
-
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateEPSSurpriseDB) {
 		CWorldStockPtr pStock = nullptr;
 		for (long l = 0; l < gl_pMockWorldMarket->GetStockSize(); l++) {
@@ -190,13 +134,6 @@ namespace StockAnalysisTest {
 
 		gl_fExitingSystem = false;
 		gl_pMockWorldMarket->GetStock(1)->SetEPSSurpriseNeedSave(false);
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateTiingoStockDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateTiingoStockDB)
-			.Times(1)
-			.WillOnce(Return(true));
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateTiingoStockDB());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {
@@ -276,67 +213,6 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineStartEndDate)
 			.Times(1);
 		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), (UINT)43);
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateTiingoIndustry) {
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(false);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateTiingoIndustry)
-			.Times(0);
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskUpdateTiingoIndustry());
-
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(true);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateTiingoIndustry)
-			.Times(1);
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateTiingoIndustry());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateSICIndustry) {
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(false);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateSICIndustry)
-			.Times(0);
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskUpdateSICIndustry());
-
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(true);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateSICIndustry)
-			.Times(1);
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateSICIndustry());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateNaicsIndustry) {
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(false);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateNaicsIndustry)
-			.Times(0);
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskUpdateNaicsIndustry());
-
-		gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(true);
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateNaicsIndustry)
-			.Times(1);
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateNaicsIndustry());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateForexExchangeDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateForexExchangeDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexExchangeDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoExchangeDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoExchangeDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCryptoExchangeDB());
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateEconomicCalendarDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateEconomicCalendarDB)
-			.Times(1)
-			.WillOnce(Return(true));
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateEconomicCalendarDB());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateForexDayLineDB1) {

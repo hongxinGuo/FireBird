@@ -177,17 +177,6 @@ namespace StockAnalysisTest {
 		pStock->UnloadDayLine();
 	}
 
-	TEST_F(CMockChinaMarketTest, TestUpdateTempRTData) {
-		gl_ThreadStatus.SetSavingTempData(true);
-		EXPECT_FALSE(gl_pMockChinaMarket->UpdateTempRTData());
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
-			.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->UpdateTempRTData());
-		EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
-		gl_ThreadStatus.SetSavingTempData(true);
-	}
-
 	TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine1) {
 		gl_pMockChinaMarket->ResetCurrentStock();
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadLoadDayLine(_))
@@ -235,69 +224,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
 
 		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskUpdateOptionDB) {
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateOptionDB())
-			.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateOptionDB());
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskUpdateChoicedStockDB) {
-		gl_pMockChinaMarket->SetUpdateChoicedStockDB(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadAppendChoicedStockDB())
-			.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateChoicedStockDB());
-		gl_pMockChinaMarket->SetUpdateChoicedStockDB(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadAppendChoicedStockDB())
-			.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateChoicedStockDB());
-		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateChoicedStockDB()) << _T("自选股票更改标识设置后，就再也不重置，这样能够保证系统退出时再次更新数据库");
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskSaveChoicedRTData) {
-		gl_pMockChinaMarket->SetSystemReady(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveChoicedRTData())
-			.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskSaveChoicedRTData());
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetRecordRTData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveChoicedRTData())
-			.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskSaveChoicedRTData());
-		gl_pMockChinaMarket->SetRecordRTData(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveChoicedRTData())
-			.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskSaveChoicedRTData());
-		gl_pMockChinaMarket->SetRecordRTData(false);
-		gl_pMockChinaMarket->SetSystemReady(false);
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskSaveTempDataIntoDB) {
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetMarketOpened(true);
-		gl_ThreadStatus.SetCalculatingRTData(false);
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
-			.Times(1);
-		gl_pMockChinaMarket->TaskSaveTempDataIntoDB(93001);
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
-			.Times(1);
-		gl_pMockChinaMarket->TaskSaveTempDataIntoDB(113559);
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
-			.Times(1);
-		gl_pMockChinaMarket->TaskSaveTempDataIntoDB(130001);
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveTempRTData())
-			.Times(1);
-		gl_pMockChinaMarket->TaskSaveTempDataIntoDB(150559);
-
-		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 4);
-		for (int i = 0; i < 4; i++) {
-			gl_systemMessage.PopDayLineInfoMessage();
-		}
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong2StockSet) {
@@ -641,11 +567,5 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
 		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), (UINT)25);
 		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskSaveStockSection) {
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadSaveStockSection).Times(1);
-
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskSaveStockSection());
 	}
 }

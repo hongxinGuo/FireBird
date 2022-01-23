@@ -1,4 +1,6 @@
 #include"pch.h"
+
+#include"globedef.h"
 #include"VirtualWebSocket.h"
 
 #include <ixwebsocket/IXNetSystem.h>
@@ -24,6 +26,7 @@ void CVirtualWebSocket::Reset(void) {
 }
 
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("Reactivate web socket"));
 	AppendSymbol(vSymbol);
 	Deconnecting();
 	while (!IsClosed()) Sleep(1);

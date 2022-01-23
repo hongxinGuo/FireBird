@@ -7,23 +7,9 @@
 namespace testing {
 	class CMockWorldMarket : public CWorldMarket {
 	public:
-		MOCK_METHOD(bool, CreatingthreadUpdateDayLneStartEndDate, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateDayLineDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateForexDayLineDB, (CForexSymbol* pSymbol), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateForexSymbolDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateForexExchangeDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateCryptoDayLineDB, (CFinnhubCryptoSymbol* pSymbol), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateFinnhubCryptoSymbolDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateCryptoExchangeDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateTiingoIndustry, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateSICIndustry, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateNaicsIndustry, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateTiingoStockDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateInsiderTransactionDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateEconomicCalendarDB, (), (override));
 
 		MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
