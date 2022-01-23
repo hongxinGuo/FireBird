@@ -25,6 +25,7 @@ bool CDataTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 }
 
 void CDataTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
+	ASSERT(m_mapTiingoCrypto.find(pCryptoSymbol->m_strTicker) == m_mapTiingoCrypto.end());
 	m_mapTiingoCrypto[pCryptoSymbol->m_strTicker] = m_mapTiingoCrypto.size();
 	m_vTiingoCrypto.push_back(pCryptoSymbol);
 }
@@ -34,14 +35,23 @@ bool CDataTiingoCryptoSymbol::LoadDB(void) {
 	CTiingoCryptoSymbolPtr pSymbol = nullptr;
 	int i = 0;
 
+	setCryptoSymbol.m_strSort = _T("[Ticker]");
 	setCryptoSymbol.Open();
+	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		pSymbol = make_shared<CTiingoCryptoSymbol>();
-		pSymbol->Load(setCryptoSymbol);
-		m_vTiingoCrypto.push_back(pSymbol);
-		m_mapTiingoCrypto[pSymbol->m_strTicker] = i++;
+		if (!IsTiingoCryptoSymbol(setCryptoSymbol.m_Ticker)) {
+			pSymbol = make_shared<CTiingoCryptoSymbol>();
+			pSymbol->Load(setCryptoSymbol);
+			m_vTiingoCrypto.push_back(pSymbol);
+			m_mapTiingoCrypto[pSymbol->m_strTicker] = i++;
+		}
+		else {
+			setCryptoSymbol.Delete();
+			setCryptoSymbol.Update();
+		}
 		setCryptoSymbol.MoveNext();
 	}
+	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
 	m_lLastTotalTiingoCrypto = m_vTiingoCrypto.size();
 

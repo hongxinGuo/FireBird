@@ -14,7 +14,7 @@ namespace testing {
 		MOCK_METHOD(bool, CreatingThreadUpdateForexSymbolDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateForexExchangeDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateCryptoDayLineDB, (CFinnhubCryptoSymbol* pSymbol), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateCryptoSymbolDB, (), (override));
+		MOCK_METHOD(bool, CreatingThreadUpdateFinnhubCryptoSymbolDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateCryptoExchangeDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, CreatingThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
@@ -50,7 +50,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateStockDayLineDB, (), (override));
 		MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
 		MOCK_METHOD(bool, UpdateForexExchangeDB, (), (override));
-		MOCK_METHOD(bool, UpdateCryptoSymbolDB, (), (override));
+		MOCK_METHOD(bool, UpdateFinnhubCryptoSymbolDB, (), (override));
 		MOCK_METHOD(bool, UpdateCryptoExchangeDB, (), (override));
 		MOCK_METHOD(bool, UpdateInsiderTransactionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));

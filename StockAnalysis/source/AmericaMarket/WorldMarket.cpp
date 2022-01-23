@@ -162,10 +162,11 @@ void CWorldMarket::ResetMarket(void) {
 	LoadForexSymbol();
 	LoadWorldChoicedForex();
 	LoadCryptoExchange();
-	LoadCryptoSymbol();
+	LoadFinnhubCryptoSymbol();
 	LoadWorldChoicedCrypto();
 	LoadEconomicCalendarDB();
 	LoadTiingoStock();
+	LoadTiingoCryptoSymbol();
 
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
@@ -384,7 +385,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		TaskUpdateForexExchangeDB();
 		TaskUpdateForexSymbolDB();
 		TaskUpdateCryptoExchangeDB();
-		TaskUpdateCryptoSymbolDB();
+		TaskUpdateFinnhubCryptoSymbolDB();
 		TaskUpdateInsiderTransactionDB();
 		TaskUpdateForexDayLineDB();
 		TaskUpdateCryptoDayLineDB();
@@ -403,7 +404,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	}
 
 	TaskUpdateTiingoStockDB();
-	TaskUpdateTiingoCryptoDB();
+	TaskUpdateTiingoCryptoSymbolDB();
 
 	return true;
 }
@@ -508,7 +509,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			SetCurrentFunction(_T("Finnhub查询股票代码:") + pExchange->m_strCode);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
-			TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
+			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubStockSymbol = false;
@@ -526,8 +527,8 @@ bool CWorldMarket::TaskUpdateForexSymbolDB(void) {
 	return CreatingThreadUpdateForexSymbolDB();
 }
 
-bool CWorldMarket::TaskUpdateCryptoSymbolDB(void) {
-	return CreatingThreadUpdateCryptoSymbolDB();
+bool CWorldMarket::TaskUpdateFinnhubCryptoSymbolDB(void) {
+	return CreatingThreadUpdateFinnhubCryptoSymbolDB();
 }
 
 bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
@@ -1185,8 +1186,8 @@ bool CWorldMarket::CreatingThreadUpdateTiingoStockDB(void) {
 	return true;
 }
 
-bool CWorldMarket::CreatingThreadUpdateTiingoCryptoDB(void) {
-	thread thread1(ThreadUpdateTiingoCryptoDB, this);
+bool CWorldMarket::CreatingThreadUpdateTiingoCryptoSymbolDB(void) {
+	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
@@ -1233,8 +1234,8 @@ bool CWorldMarket::CreatingThreadUpdateCryptoExchangeDB(void) {
 	return true;
 }
 
-bool CWorldMarket::CreatingThreadUpdateCryptoSymbolDB() {
-	thread thread1(ThreadUpdateCryptoSymbolDB, this);
+bool CWorldMarket::CreatingThreadUpdateFinnhubCryptoSymbolDB() {
+	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }

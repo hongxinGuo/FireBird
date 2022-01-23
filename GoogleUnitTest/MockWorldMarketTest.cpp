@@ -142,12 +142,12 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateForexSymbolDB());
 	}
 
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateCryptoSymbolDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateCryptoSymbolDB)
+	TEST_F(CMockWorldMarketTest, TestTaskUpdateFinnhubCryptoSymbolDB) {
+		EXPECT_CALL(*gl_pMockWorldMarket, CreatingThreadUpdateFinnhubCryptoSymbolDB)
 			.Times(1)
 			.WillOnce(Return(true));
 
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateCryptoSymbolDB());
+		EXPECT_TRUE(gl_pMockWorldMarket->TaskUpdateFinnhubCryptoSymbolDB());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateCountryListDB) {
@@ -230,10 +230,10 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), (UINT)49);
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateCryptoSymbolDB) {
-		EXPECT_CALL(*gl_pMockWorldMarket, UpdateCryptoSymbolDB)
+	TEST_F(CMockWorldMarketTest, TestThreadUpdateFinnhubCryptoSymbolDB) {
+		EXPECT_CALL(*gl_pMockWorldMarket, UpdateFinnhubCryptoSymbolDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateCryptoSymbolDB(gl_pMockWorldMarket.get()), (UINT)52);
+		EXPECT_EQ(ThreadUpdateFinnhubCryptoSymbolDB(gl_pMockWorldMarket.get()), (UINT)52);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCryptoExchangedDB) {

@@ -190,14 +190,14 @@ public:
 	bool TaskUpdateForexSymbolDB(void);
 	bool TaskUpdateForexDayLineDB(void);
 	bool TaskUpdateCryptoExchangeDB(void) { return CreatingThreadUpdateCryptoExchangeDB(); }
-	bool TaskUpdateCryptoSymbolDB(void);
+	bool TaskUpdateFinnhubCryptoSymbolDB(void);
 	bool TaskUpdateCryptoDayLineDB(void);
 	bool TaskUpdateCountryListDB(void) { return CreatingThreadUpdateCountryListDB(); }
 	bool TaskUpdateEPSSurpriseDB(void);
 	bool TaskUpdateEconomicCalendarDB(void) { return CreatingThreadUpdateEconomicCalendarDB(); }
 	bool TaskUpdateInsiderTransactionDB(void) { return CreatingThreadUpdateInsiderTransactionDB(); }
 	bool TaskUpdateTiingoStockDB(void) { return CreatingThreadUpdateTiingoStockDB(); }
-	bool TaskUpdateTiingoCryptoDB(void) { return CreatingThreadUpdateTiingoCryptoDB(); }
+	bool TaskUpdateTiingoCryptoSymbolDB(void) { return CreatingThreadUpdateTiingoCryptoSymbolDB(); }
 
 	bool TaskCheckSystemReady(void);
 
@@ -211,13 +211,13 @@ public:
 	virtual bool CreatingThreadUpdateForexSymbolDB(void);
 	virtual bool CreatingThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
 	virtual bool CreatingThreadUpdateCryptoExchangeDB(void);
-	virtual bool CreatingThreadUpdateCryptoSymbolDB(void);
+	virtual bool CreatingThreadUpdateFinnhubCryptoSymbolDB(void);
 	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
 	virtual bool CreatingThreadUpdateCountryListDB(void);
 	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
 	virtual bool CreatingThreadUpdateInsiderTransactionDB(void);
 	virtual bool CreatingThreadUpdateTiingoStockDB(void);
-	virtual bool CreatingThreadUpdateTiingoCryptoDB(void);
+	virtual bool CreatingThreadUpdateTiingoCryptoSymbolDB(void);
 	virtual bool CreatingThreadUpdateTiingoIndustry(void);
 	virtual bool CreatingThreadUpdateSICIndustry(void);
 	virtual bool CreatingThreadUpdateNaicsIndustry(void);
@@ -382,12 +382,12 @@ public:
 	virtual bool UpdateStockDayLineDB(void);
 	virtual bool UpdateForexSymbolDB(void) { return m_dataFinnhubForexSymbol.UpdateDB(); }
 	virtual bool UpdateForexExchangeDB(void) { return m_dataFinnhubForexExchange.UpdateDB(); }
-	virtual bool UpdateCryptoSymbolDB(void) { return m_dataFinnhubCryptoSymbol.UpdateDB(); }
+	virtual bool UpdateFinnhubCryptoSymbolDB(void) { return m_dataFinnhubCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateCryptoExchangeDB(void) { return m_dataFinnhubCryptoExchange.UpdateDB(); }
 	virtual bool UpdateInsiderTransactionDB(void);
 	virtual bool UpdateEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.UpdateDB(); }
 	virtual bool UpdateTiingoStockDB(void) { return m_dataTiingoStock.UpdateDB(); }
-	virtual bool UpdateTiingoCryptoDB(void) { return m_dataTiingoCryptoSymbol.UpdateDB(); }
+	virtual bool UpdateTiingoCryptoSymbolDB(void) { return m_dataTiingoCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateTiingoIndustry(void);
 	virtual bool UpdateSICIndustry(void);
 	virtual bool UpdateNaicsIndustry(void);
@@ -395,7 +395,7 @@ public:
 	bool LoadForexExchange(void) { return m_dataFinnhubForexExchange.LoadDB(); }
 	bool LoadForexSymbol(void) { return m_dataFinnhubForexSymbol.LoadDB(); }
 	bool LoadCryptoExchange(void) { return m_dataFinnhubCryptoExchange.LoadDB(); }
-	bool LoadCryptoSymbol(void) { return m_dataFinnhubCryptoSymbol.LoadDB(); }
+	bool LoadFinnhubCryptoSymbol(void) { return m_dataFinnhubCryptoSymbol.LoadDB(); }
 	bool LoadWorldChoicedForex(void) { return m_dataChoicedForex.LoadDB(); }
 	bool LoadWorldChoicedCrypto(void) { return m_dataChoicedCrypto.LoadDB(); }
 
@@ -403,6 +403,7 @@ public:
 	bool LoadEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.LoadDB(); }
 
 	bool LoadTiingoStock(void) { return m_dataTiingoStock.LoadDB(); }
+	bool LoadTiingoCryptoSymbol(void) { return m_dataTiingoCryptoSymbol.LoadDB(); }
 
 	bool RebuildStockDayLineDB(void);
 	virtual bool UpdateStockDayLineStartEndDate(void);

@@ -615,7 +615,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // »Ö¸´Ô­×´
 	}
 
-	TEST_F(CWorldMarketTest, TestUpdateCryptoSymbolDB) {
+	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // ÐÂ·ûºÅ
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
@@ -624,7 +624,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
-		gl_pWorldMarket->UpdateCryptoSymbolDB();
+		gl_pWorldMarket->UpdateFinnhubCryptoSymbolDB();
 
 		CSetFinnhubCryptoSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
