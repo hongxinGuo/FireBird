@@ -203,11 +203,6 @@ public:
 
 	bool TaskUpdateDayLineStartEndDate(void);
 
-	// 各工作线程调用包裹函数
-	virtual bool CreatingThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
-	virtual bool CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol);
-	virtual bool CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
-
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态

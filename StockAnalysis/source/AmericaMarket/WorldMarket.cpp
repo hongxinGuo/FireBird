@@ -1048,7 +1048,8 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					CreatingThreadUpdateForexDayLineDB(pSymbol.get());
+					thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
+					thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -1089,7 +1090,8 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					CreatingThreadUpdateCryptoDayLineDB(pSymbol.get());
+					thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
+					thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -1113,7 +1115,8 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
 		pStock = m_dataWorldStock.GetStock(l);
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			CreatingThreadUpdateEPSSurpriseDB(pStock.get());
+			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
+			thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_fExitingSystem) {
@@ -1163,12 +1166,6 @@ bool CWorldMarket::TaskUpdateCountryListDB(void) {
 	return true;
 }
 
-bool CWorldMarket::CreatingThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
-	thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
-}
-
 bool CWorldMarket::TaskUpdateInsiderTransactionDB(void) {
 	thread thread1(ThreadUpdateInsiderTransactionDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -1199,12 +1196,6 @@ bool CWorldMarket::TaskUpdateForexSymbolDB() {
 	return true;
 }
 
-bool CWorldMarket::CreatingThreadUpdateForexDayLineDB(CForexSymbol* pSymbol) {
-	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
-}
-
 bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
 	thread thread1(ThreadUpdateCryptoExchangeDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -1213,12 +1204,6 @@ bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
 
 bool CWorldMarket::TaskUpdateFinnhubCryptoSymbolDB() {
 	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
-}
-
-bool CWorldMarket::CreatingThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbol* pSymbol) {
-	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
