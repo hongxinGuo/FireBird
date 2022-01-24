@@ -54,15 +54,8 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		id.SetOpen(10);
-		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
-		id.SetOpen(0);
-		id.SetVolume(10);
-		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
-		id.SetVolume(0);
-		id.SetHigh(10);
-		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
-		id.SetHigh(0);
-		id.SetLow(10);
+		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
+		id.SetNew(11);
 		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
 	}
 
@@ -258,7 +251,6 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
 			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 3);
 			break;
-
 		default:
 			break;
 		}

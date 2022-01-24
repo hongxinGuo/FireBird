@@ -63,8 +63,6 @@ protected:
 
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
-	int m_iPingPeriod;
-	bool m_fDeflate;
 	vector<CString> m_vSymbol;
 	map<CString, long> m_mapSymbol;
 

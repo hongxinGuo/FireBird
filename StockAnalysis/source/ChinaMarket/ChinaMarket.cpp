@@ -679,18 +679,22 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 
 bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 	bool fFoundNewStock = false;
-
+	CString strSymbol = pRTData->GetSymbol();
+	if (IsCheckActiveStock()) {
+		if (!IsStock(strSymbol) && pRTData->IsActive()) {
+			if (strSymbol.GetLength() == 9) {
+				CreateStock(strSymbol, pRTData->GetStockName(), true);
+				fFoundNewStock = true;
+			}
+		}
+	}
+	else if (!IsStock(pRTData->GetSymbol())) {
+		return false;
+	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
 			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
 		}
-		if (IsCheckActiveStock()) {
-			if (!IsStock(pRTData->GetSymbol())) {
-				CreateStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
-				fFoundNewStock = true;
-			}
-		}
-		ASSERT(IsStock(pRTData->GetSymbol()));
 		auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
 			if (pRTData->IsValidTime(14)) {
@@ -934,7 +938,8 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		pWebDataReceived->ResetCurrentPos();
 		if (!IsInvalidNeteaseRTData(*pWebDataReceived)) {
-			if (!IsValidNeteaseRTDataPrefix(*pWebDataReceived)) return false;
+			if (!IsValidNeteaseRTDataPrefix(*pWebDataReceived)) // 读过"_ntes_quote_callback("这21个字符
+				return false;
 			iCount = 0;
 			while (!((pWebDataReceived->GetCurrentPosData() == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
@@ -962,7 +967,7 @@ bool CChinaMarket::IsInvalidNeteaseRTData(CWebData& WebDataReceived) {
 	CString str1 = buffer;
 
 	if (str1.Compare(strInvalidStock) == 0) {
-		ASSERT(WebDataReceived.GetBufferLength() == 26);
+		//ASSERT(WebDataReceived.GetBufferLength() == 27);
 		return true;
 	}
 	else return false;
@@ -970,7 +975,7 @@ bool CChinaMarket::IsInvalidNeteaseRTData(CWebData& WebDataReceived) {
 
 bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebData& WebDataReceived) {
 	char buffer[50];
-	CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
+	CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共21个字符
 
 	WebDataReceived.GetData(buffer, 21, WebDataReceived.GetCurrentPos()); // 读入"_ntes_quote_callback("
 	buffer[21] = 0x000;
@@ -1005,7 +1010,6 @@ bool CChinaMarket::CheckNeteaseRTDataValidation(CWebRTData& RTData) {
 			str = RTData.GetSymbol();
 			str += _T(" 无效股票代码（网易实时数据）");
 			TRACE("\n无效股票代码%s\n", RTData.GetSymbol().GetBuffer());
-			TRACE("申请的股票集为： %s\n\n", m_strNeteaseRTDataInquiringStr.GetBuffer());
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 			return false;
 		}
@@ -1414,7 +1418,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 		m_fCheckActiveStock = true;
 		return true;
 	}
-	if (((lCurrentTime >= 91500) && (lCurrentTime < 92700))
+	else if (((lCurrentTime >= 91500) && (lCurrentTime < 92700))
 		|| ((lCurrentTime >= 113300) && (lCurrentTime < 125900))
 		|| (lCurrentTime > 150300)) {
 		m_fCheckActiveStock = true;
@@ -1424,6 +1428,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 		m_fCheckActiveStock = false;
 		return false;
 	}
+	return false;
 }
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {

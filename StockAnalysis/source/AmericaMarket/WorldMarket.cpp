@@ -411,6 +411,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 	TaskReActivateWebSocket();
+
 	return true;
 }
 

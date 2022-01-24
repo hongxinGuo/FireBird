@@ -919,12 +919,11 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
 	if (!IsValidTime(14)) { // 非活跃股票的update时间为0，转换为time_t时为-1.
 		m_fActive = false;
+		return m_fActive;
 	}
-	else {
-		if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0) && (m_lLastClose == 0)) {
-			m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-		}
-		else m_fActive = true;
+	if ((m_lOpen > 0) && (m_lNew > 0)) {
+		m_fActive = true; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+		return m_fActive;
 	}
 	return m_fActive;
 }
@@ -932,13 +931,13 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
 	CString strValue = _T("");
 	char bufferStockCode[50];
-	char bufferTest[30];
+	char bufferTest[50];
 	bool fFind = false;
 	CString strStockCode, strHeader;
 	CString strTest;
 
 	int i = 0;
-	while ((pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i) != '{') && (i < 20)) {
+	while ((pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i) != '{') && (i < 30)) {
 		bufferTest[i] = pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i);
 		i++;
 	}

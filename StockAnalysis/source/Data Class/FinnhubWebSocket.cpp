@@ -40,10 +40,14 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
-	gl_ThreadStatus.IncreaseSavingThread();
-	pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
-	gl_ThreadStatus.DecreaseSavingThread();
-
+	static bool s_fDoing = false;
+	if (!s_fDoing) {
+		s_fDoing = true;
+		gl_ThreadStatus.IncreaseSavingThread();
+		pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		gl_ThreadStatus.DecreaseSavingThread();
+		s_fDoing = false;
+	}
 	return 70;
 }
 
@@ -74,11 +78,6 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
-		Sending(strMessage);
-		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
-	}
-	for (long l2 = 0; l2 < m_vCurrentSymbol.size(); l2++) {
-		strMessage = CreateFinnhubWebSocketString(m_vCurrentSymbol.at(l2));
 		Sending(strMessage);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}

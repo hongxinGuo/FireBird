@@ -38,9 +38,14 @@ void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
-	gl_ThreadStatus.IncreaseSavingThread();
-	pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
-	gl_ThreadStatus.DecreaseSavingThread();
+	static bool s_fDoing = false;
+	if (!s_fDoing) {
+		s_fDoing = true;
+		gl_ThreadStatus.IncreaseSavingThread();
+		pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		gl_ThreadStatus.DecreaseSavingThread();
+		s_fDoing = false;
+	}
 
 	return 73;
 }
