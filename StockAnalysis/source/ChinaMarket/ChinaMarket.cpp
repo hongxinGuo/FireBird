@@ -1428,7 +1428,6 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 		m_fCheckActiveStock = false;
 		return false;
 	}
-	return false;
 }
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
@@ -3108,12 +3107,13 @@ void CChinaMarket::LoadStockCodeDB(void) {
 
 	setChinaStockSymbol.m_strSort = _T("[Symbol]");
 	setChinaStockSymbol.Open();
+	setChinaStockSymbol.m_pDatabase->BeginTrans();
 	// 装入股票代码数据库
 	while (!setChinaStockSymbol.IsEOF()) {
 		CChinaStockPtr pStock = make_shared<CChinaStock>();
 		if (!IsStock(setChinaStockSymbol.m_Symbol)) {
 			pStock->LoadStockCodeDB(setChinaStockSymbol);
-			m_vChinaMarketStock.push_back(pStock);
+			AddStock(pStock);
 		}
 		else {
 			str = _T("发现重复代码：");
@@ -3133,6 +3133,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
 		str += _T("个股票需要检查日线数据");
 		gl_systemMessage.PushInformationMessage(str);
 	}
+	setChinaStockSymbol.m_pDatabase->CommitTrans();
 	setChinaStockSymbol.Close();
 	m_lLoadedStock = m_vChinaMarketStock.size();
 	SortStockVector();

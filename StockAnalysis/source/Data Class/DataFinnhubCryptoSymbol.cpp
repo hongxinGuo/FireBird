@@ -37,14 +37,20 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	int i = 0;
 
 	setCryptoSymbol.Open();
+	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		pSymbol = make_shared<CFinnhubCryptoSymbol>();
-		pSymbol->LoadSymbol(setCryptoSymbol);
-		pSymbol->SetCheckingDayLineStatus();
-		m_vCryptoSymbol.push_back(pSymbol);
-		m_mapCryptoSymbol[pSymbol->GetSymbol()] = i++;
+		if (!IsFinnhubCryptoSymbol(setCryptoSymbol.m_Symbol)) {
+			pSymbol = make_shared<CFinnhubCryptoSymbol>();
+			pSymbol->LoadSymbol(setCryptoSymbol);
+			pSymbol->SetCheckingDayLineStatus();
+			Add(pSymbol);
+		}
+		else {
+			setCryptoSymbol.Delete();
+		}
 		setCryptoSymbol.MoveNext();
 	}
+	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
 	m_lLastTotalCryptoSymbol = m_vCryptoSymbol.size();
 

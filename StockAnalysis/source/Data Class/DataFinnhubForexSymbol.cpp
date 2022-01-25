@@ -37,14 +37,20 @@ bool CDataFinnhubForexSymbol::LoadDB(void) {
 	int i = 0;
 
 	setForexSymbol.Open();
+	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
-		pSymbol = make_shared<CForexSymbol>();
-		pSymbol->LoadSymbol(setForexSymbol);
-		pSymbol->SetCheckingDayLineStatus();
-		m_vForexSymbol.push_back(pSymbol);
-		m_mapForexSymbol[pSymbol->GetSymbol()] = i++;
+		if (!IsForexSymbol(setForexSymbol.m_Symbol)) {
+			pSymbol = make_shared<CForexSymbol>();
+			pSymbol->LoadSymbol(setForexSymbol);
+			pSymbol->SetCheckingDayLineStatus();
+			Add(pSymbol);
+		}
+		else {
+			setForexSymbol.Delete();
+		}
 		setForexSymbol.MoveNext();
 	}
+	setForexSymbol.m_pDatabase->CommitTrans();
 	setForexSymbol.Close();
 	m_lLastTotalForexSymbol = m_vForexSymbol.size();
 

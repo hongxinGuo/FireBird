@@ -54,13 +54,19 @@ bool CDataTiingoStock::LoadDB(void) {
 	CString strSymbol = _T("");
 
 	setTiingoStock.Open();
+	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
-		pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->Load(setTiingoStock);
-		m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
-		m_vTiingoStock.push_back(pTiingoStock);
+		if (!IsStock(setTiingoStock.m_Ticker)) {
+			pTiingoStock = make_shared<CTiingoStock>();
+			pTiingoStock->Load(setTiingoStock);
+			Add(pTiingoStock);
+		}
+		else {
+			setTiingoStock.Delete();
+		}
 		setTiingoStock.MoveNext();
 	}
+	setTiingoStock.m_pDatabase->CommitTrans();
 	setTiingoStock.Close();
 	m_lLastTotalTiingoStock = m_vTiingoStock.size();
 

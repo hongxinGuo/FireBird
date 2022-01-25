@@ -79,9 +79,6 @@ void CWorldMarket::Reset(void) {
 }
 
 void CWorldMarket::ResetFinnhub(void) {
-	m_lCurrentForexSymbolPos = 0;
-	m_lCurrentCryptoSymbolPos = 0;
-
 	m_pCurrentFinnhubProduct = nullptr;
 
 	m_dataFinnhubStockExchange.Reset();
@@ -108,9 +105,6 @@ void CWorldMarket::ResetFinnhub(void) {
 
 	m_fRebulidDayLine = false;
 	SetSystemReady(false); // 市场初始状态为未设置好。
-
-	m_lCurrentUpdateForexDayLinePos = 0;
-	m_lCurrentUpdateCryptoDayLinePos = 0;
 
 	if (GetDayOfWeek() == 6) { // 每周的星期六更新一次EPSSurprise
 		m_lCurrentUpdateEPSSurprisePos = 0;
@@ -411,7 +405,6 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 	TaskReActivateWebSocket();
-
 	return true;
 }
 
@@ -806,6 +799,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 	const long lStockSetSize = m_dataFinnhubForexSymbol.GetForexSymbolSize();
 	bool fHaveInquiry = false;
 	CWebSourceDataProductPtr p = nullptr;
+	long lCurrentUpdateForexDayLinePos = 0;
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubForexDayLineUpdated() && !IsFinnhubInquiring()) {
@@ -813,9 +807,9 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
 			s_fInquiringFinnhubForexDayLine = true;
 		}
-		for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStockSetSize; m_lCurrentUpdateForexDayLinePos++) {
-			if (GetForexSymbol(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
-				pForexSymbol = GetForexSymbol(m_lCurrentUpdateForexDayLinePos);
+		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
+			if (GetForexSymbol(lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
+				pForexSymbol = GetForexSymbol(lCurrentUpdateForexDayLinePos);
 				fFound = true;
 				break;
 			}
@@ -823,7 +817,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 		if (fFound) {
 			fHaveInquiry = true;
 			p = m_FinnhubFactory.CreateProduct(this, __FOREX_CANDLES__);
-			p->SetIndex(m_lCurrentUpdateForexDayLinePos);
+			p->SetIndex(lCurrentUpdateForexDayLinePos);
 			m_qFinnhubProduct.push(p);
 			SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
@@ -881,6 +875,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 	const long lStockSetSize = m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize();
 	bool fHaveInquiry = false;
 	CWebSourceDataProductPtr p = nullptr;
+	long lCurrentUpdateCryptoDayLinePos = 0;
 
 	ASSERT(IsSystemReady());
 	if (!IsFinnhubCryptoDayLineUpdated() && !IsFinnhubInquiring()) {
@@ -888,9 +883,9 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
 			s_fInquiringFinnhubCryptoDayLine = true;
 		}
-		for (m_lCurrentUpdateCryptoDayLinePos = 0; m_lCurrentUpdateCryptoDayLinePos < lStockSetSize; m_lCurrentUpdateCryptoDayLinePos++) {
-			if (GetFinnhubCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
-				pCryptoSymbol = GetFinnhubCryptoSymbol(m_lCurrentUpdateCryptoDayLinePos);
+		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
+			if (GetFinnhubCryptoSymbol(lCurrentUpdateCryptoDayLinePos)->IsDayLineNeedUpdate()) {
+				pCryptoSymbol = GetFinnhubCryptoSymbol(lCurrentUpdateCryptoDayLinePos);
 				fFound = true;
 				break;
 			}
@@ -898,7 +893,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 		if (fFound) {
 			fHaveInquiry = true;
 			p = m_FinnhubFactory.CreateProduct(this, __CRYPTO_CANDLES__);
-			p->SetIndex(m_lCurrentUpdateCryptoDayLinePos);
+			p->SetIndex(lCurrentUpdateCryptoDayLinePos);
 			m_qFinnhubProduct.push(p);
 			SetCurrentFunction(_T("Finnhub Crypto日线：") + pCryptoSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
@@ -1437,25 +1432,25 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 bool CWorldMarket::TaskReActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (!m_finnhubWebSocket.IsReceivingData()) {
-			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+			m_finnhubWebSocket.Deconnecting();
 		}
 		else {
 			m_finnhubWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
-			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+			m_tiingoIEXWebSocket.Deconnecting();
 		}
 		else {
 			m_tiingoIEXWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
-			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+			m_tiingoCryptoWebSocket.Deconnecting();
 		}
 		else {
 			m_tiingoCryptoWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoForexWebSocket.IsReceivingData()) {
-			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+			m_tiingoForexWebSocket.Deconnecting();
 		}
 		else {
 			m_tiingoForexWebSocket.SetReceivingData(false);

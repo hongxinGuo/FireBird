@@ -108,8 +108,7 @@ bool CDataWorldStock::LoadDB(void) {
 			pWorldStock->CheckEPSSurpriseStatus(gl_pWorldMarket->GetMarketDate());
 			pWorldStock->CheckPeerStatus(gl_pWorldMarket->GetMarketDate());
 			pWorldStock->CheckInsiderTransactionStatus(gl_pWorldMarket->GetMarketDate());
-			m_mapWorldStock[setWorldStock.m_Symbol] = m_lLastTotalWorldStock++;
-			m_vWorldStock.push_back(pWorldStock);
+			Add(pWorldStock);
 			if (pWorldStock->GetCurrency().GetLength() > lSymbolLength) {
 				lSymbolLength = pWorldStock->GetCurrency().GetLength();
 			}

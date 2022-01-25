@@ -42,12 +42,10 @@ bool CDataTiingoCryptoSymbol::LoadDB(void) {
 		if (!IsTiingoCryptoSymbol(setCryptoSymbol.m_Ticker)) {
 			pSymbol = make_shared<CTiingoCryptoSymbol>();
 			pSymbol->Load(setCryptoSymbol);
-			m_vTiingoCrypto.push_back(pSymbol);
-			m_mapTiingoCrypto[pSymbol->m_strTicker] = i++;
+			Add(pSymbol);
 		}
 		else {
 			setCryptoSymbol.Delete();
-			setCryptoSymbol.Update();
 		}
 		setCryptoSymbol.MoveNext();
 	}
