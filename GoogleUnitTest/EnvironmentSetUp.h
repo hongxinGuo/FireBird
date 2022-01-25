@@ -129,7 +129,6 @@ namespace StockAnalysisTest {
 					}
 				}
 			}
-
 			for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
 				auto pStock = gl_pMockChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
@@ -141,6 +140,23 @@ namespace StockAnalysisTest {
 						pStock->SetUpdateProfileDB(false);
 					}
 				}
+			}
+
+			for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
+				auto pStock = gl_pWorldMarket->GetStock(i);
+				pStock->SetDayLineNeedUpdate(true);
+				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+
+				EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+				pStock->SetUpdateProfileDB(false);
+			}
+			for (int i = 0; i < gl_pMockWorldMarket->GetStockSize(); i++) {
+				auto pStock = gl_pMockWorldMarket->GetStock(i);
+				pStock->SetDayLineNeedUpdate(true);
+				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+
+				EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+				pStock->SetUpdateProfileDB(false);
 			}
 
 			if (gl_pChinaMarket->GetMarketDate() >= 20210531) { // 目前测试数据库的日线结束日期为20210430
