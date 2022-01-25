@@ -53,6 +53,7 @@ public:
 	// й╣ож
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	bool Deconnecting(void);
+	bool DeconnectingWithoutWaitingSucceed(void);
 	bool Sending(string message);
 
 	vector<CString> m_vCurrentSymbol;

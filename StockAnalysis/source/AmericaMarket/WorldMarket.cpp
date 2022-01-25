@@ -1432,25 +1432,25 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 bool CWorldMarket::TaskReActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (!m_finnhubWebSocket.IsReceivingData()) {
-			m_finnhubWebSocket.Deconnecting();
+			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
 		}
 		else {
 			m_finnhubWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
-			m_tiingoIEXWebSocket.Deconnecting();
+			m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
 		}
 		else {
 			m_tiingoIEXWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
-			m_tiingoCryptoWebSocket.Deconnecting();
+			m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
 		}
 		else {
 			m_tiingoCryptoWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoForexWebSocket.IsReceivingData()) {
-			m_tiingoForexWebSocket.Deconnecting();
+			m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
 		}
 		else {
 			m_tiingoForexWebSocket.SetReceivingData(false);

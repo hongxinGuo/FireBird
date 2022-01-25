@@ -122,6 +122,15 @@ bool CVirtualWebSocket::Deconnecting(void) {
 	return true;
 }
 
+bool CVirtualWebSocket::DeconnectingWithoutWaitingSucceed(void) {
+	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
+		m_webSocket.stop();
+	}
+	m_iSubscriptionId = 0;
+
+	return true;
+}
+
 bool CVirtualWebSocket::Sending(string message)
 {
 	m_webSocket.send(message);
