@@ -36,6 +36,7 @@ public:
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
 	void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
+	bool IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock);
 	void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
 
 	void UpdateDayLineStartEndDate(void);

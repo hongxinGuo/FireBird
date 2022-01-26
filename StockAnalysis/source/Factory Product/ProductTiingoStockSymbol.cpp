@@ -33,8 +33,10 @@ bool CProductTinngoStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
 			if (((CWorldMarket*)m_pMarket)->IsStock(pTiingoStock->m_strTicker)) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
 				pStock = ((CWorldMarket*)m_pMarket)->GetStock(pTiingoStock->m_strTicker);
-				pStock->UpdateStockProfile(pTiingoStock);
-				pStock->SetUpdateProfileDB(true);
+				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
+					pStock->UpdateStockProfile(pTiingoStock);
+					pStock->SetUpdateProfileDB(true);
+				}
 			}
 			else { // new stock，
 				// do nothing now.

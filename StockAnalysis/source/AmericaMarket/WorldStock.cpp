@@ -438,6 +438,22 @@ void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 	}
 }
 
+bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
+	if (m_strTiingoPermaTicker.Compare(pTiingoStock->m_strTiingoPermaTicker) != 0) return true;
+	if ((m_fIsActive != pTiingoStock->m_fIsActive)) return true;
+	if (m_fIsADR != pTiingoStock->m_fIsADR) return true;
+	if (m_strTiingoIndustry.Compare(pTiingoStock->m_strTiingoIndustry) != 0) return true;
+	if (m_strTiingoSector.Compare(pTiingoStock->m_strTiingoSector) != 0) return true;
+	if (m_strSICIndustry.Compare(pTiingoStock->m_strSICIndustry) != 0) return true;
+	if (m_strSICSector.Compare(pTiingoStock->m_strSICSector) != 0) return true;
+	if (m_iSICCode != pTiingoStock->m_iSICCode) return true;
+	if (m_strCompanyWebSite.Compare(pTiingoStock->m_strCompanyWebSite) != 0) return true;
+	if (m_strSECFilingWebSite.Compare(pTiingoStock->m_strSECFilingWebSite) != 0) return true;
+	if (m_lDailyDataUpdateDate != pTiingoStock->m_lDailyDataUpdateDate) return true;
+	if (m_lStatementUpdateDate != pTiingoStock->m_lStatementUpdateDate) return true;
+	return false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 使用TiingoStock更新。

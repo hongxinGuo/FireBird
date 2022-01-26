@@ -9,17 +9,17 @@ using namespace std;
 
 class CDataChinaStock : public CObject {
 public:
-	CDataChinaStock(CSetChinaStockSymbol* pset = nullptr);
+	CDataChinaStock(CSetChinaStockSymbol* pset = nullptr); // 使用此类有两个类型，一个无需存储功能，一个需要进行存储。在生成时区别之。
 	~CDataChinaStock();
 	void Reset(void);
 
-	bool IsStock(CString strSymbol) { if (m_mapChinaStock.find(strSymbol) == m_mapChinaStock.end()) return false; else return true; }
+	bool IsStock(CString strSymbol) { if (m_mapStock.find(strSymbol) == m_mapStock.end()) return false; else return true; }
 	bool IsStock(CChinaStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
-	CChinaStockPtr GetStock(long lIndex) { return m_vChinaStock.at(lIndex); }
-	CChinaStockPtr GetStock(CString strSymbol) { return m_vChinaStock.at(m_mapChinaStock.at(strSymbol)); }
-	long GetIndex(CString strSymbol) { return m_mapChinaStock.at(strSymbol); }
-	long GetStockIndex(CString strSymbol) { return m_mapChinaStock.at(strSymbol); }
-	size_t GetStockSize(void) noexcept { return m_vChinaStock.size(); }
+	CChinaStockPtr GetStock(long lIndex) { return m_vStock.at(lIndex); }
+	CChinaStockPtr GetStock(CString strSymbol) { return m_vStock.at(m_mapStock.at(strSymbol)); }
+	long GetIndex(CString strSymbol) { return m_mapStock.at(strSymbol); }
+	long GetStockIndex(CString strSymbol) { return m_mapStock.at(strSymbol); }
+	size_t GetStockSize(void) noexcept { return m_vStock.size(); }
 	long GetLastStockSize(void) noexcept { return m_lLastTotalStock; }
 
 	bool SortStock(void);
@@ -31,8 +31,8 @@ public:
 	bool UpdateDB(void);
 
 protected:
-	vector<CChinaStockPtr> m_vChinaStock;
-	map<CString, long> m_mapChinaStock;
+	vector<CChinaStockPtr> m_vStock;
+	map<CString, long> m_mapStock;
 	long m_lLastTotalStock;
 	CSetChinaStockSymbol* m_pSetChinaStockSymbol;
 };
