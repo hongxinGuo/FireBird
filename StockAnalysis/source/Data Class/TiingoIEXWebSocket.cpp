@@ -322,7 +322,6 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理
-				TRACE("IEX heart beat\n");
 				break;
 			default:
 				return false;

@@ -175,6 +175,12 @@
     <Filter Include="头文件\template">
       <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Data Class\China Stock">
+      <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data Class\China Stock">
+      <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -633,9 +639,6 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
-      <Filter>头文件\Data Class</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.h">
       <Filter>头文件\Data Class\WebSocket</Filter>
     </ClInclude>
@@ -662,6 +665,12 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h">
       <Filter>头文件\template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h">
+      <Filter>头文件\Data Class\China Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
+      <Filter>头文件\Data Class\Finnhub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1127,9 +1136,6 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp">
       <Filter>源文件\Data Class\Choiced</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
-      <Filter>源文件\Data Class</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp">
       <Filter>源文件\Data Class\WebSocket</Filter>
     </ClCompile>
@@ -1162,6 +1168,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebData.cpp">
       <Filter>源文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
+      <Filter>源文件\Data Class\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp">
+      <Filter>源文件\Data Class\China Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

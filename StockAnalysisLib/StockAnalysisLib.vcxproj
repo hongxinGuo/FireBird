@@ -59,6 +59,7 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp" />

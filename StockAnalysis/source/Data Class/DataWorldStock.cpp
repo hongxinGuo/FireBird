@@ -108,7 +108,8 @@ bool CDataWorldStock::LoadDB(void) {
 			pWorldStock->CheckEPSSurpriseStatus(gl_pWorldMarket->GetMarketDate());
 			pWorldStock->CheckPeerStatus(gl_pWorldMarket->GetMarketDate());
 			pWorldStock->CheckInsiderTransactionStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pWorldStock);
+			m_mapWorldStock[pWorldStock->GetSymbol()] = m_vWorldStock.size();
+			m_vWorldStock.push_back(pWorldStock);
 			if (pWorldStock->GetCurrency().GetLength() > lSymbolLength) {
 				lSymbolLength = pWorldStock->GetCurrency().GetLength();
 			}
@@ -147,6 +148,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	CSetWorldStock setWorldStock;
 	int iUpdatedStock = 0;
 	int iCount = 0;
+	int iUpdatedNumber = 0;
 	time_t tt = GetTickCount64();
 
 	if (sm_fInProcess) {
@@ -170,16 +172,20 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 			pStock = GetStock(setWorldStock.m_Symbol);
 			if (pStock->IsUpdateProfileDB()) {
 				iCount++;
+				iUpdatedNumber++;
 				pStock->Update(setWorldStock);
 				pStock->SetUpdateProfileDB(false);
 			}
 			setWorldStock.MoveNext();
 		}
 		if (iCount < iUpdatedStock) {
+			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
+			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
 			for (auto& pStock3 : m_vWorldStock) {
 				if (pStock3->IsUpdateProfileDB()) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
 					iCount++;
+					iUpdatedNumber++;
 					pStock3->Append(setWorldStock);
 					pStock3->SetTodayNewStock(false);
 					TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
@@ -192,9 +198,17 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 		m_lLastTotalWorldStock = m_vWorldStock.size();
 	}
 	ASSERT(iCount == iUpdatedStock);
-	sm_fInProcess = false;
 	tt = GetTickCount64() - tt;
-	TRACE("更新WorldMarket stock用时%lld毫秒\n", tt);
+	char buffer3[30];
+	sprintf_s(buffer3, _T("%lld"), tt);
+	CString strMessage = _T("更新WorldMarket stock用时");
+	strMessage += buffer3;
+	strMessage += _T("毫秒,共更新了");
+	sprintf_s(buffer3, _T("%d"), iUpdatedNumber);
+	strMessage += buffer3;
+	strMessage += _T("个股票");
+	gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
+	sm_fInProcess = false;
 	return true;
 }

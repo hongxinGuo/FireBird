@@ -190,6 +190,8 @@ void CChinaMarket::Reset(void) {
 	m_vCurrentSectionStockCode.push_back(_T("000000.SZ")); // 深圳主板
 	m_vCurrentSectionStockCode.push_back(_T("001000.SZ")); // 深圳主板
 	m_vCurrentSectionStockCode.push_back(_T("002000.SZ")); // 深圳中小板
+	m_vCurrentSectionStockCode.push_back(_T("003000.SZ")); // 深圳中小板
+	m_vCurrentSectionStockCode.push_back(_T("004000.SZ")); // 深圳中小板
 	m_vCurrentSectionStockCode.push_back(_T("200000.SZ")); // 深圳B股
 	m_vCurrentSectionStockCode.push_back(_T("300000.SZ")); // 深圳创业板
 	m_vCurrentSectionStockCode.push_back(_T("399000.SZ")); // 深圳指数

@@ -978,13 +978,13 @@ bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
 	}
 	if (i >= 5) return false;
 	pWebDataReceived->IncreaseCurrentPos();
-	strStockCode = strHeader;
-	strStockCode += bufferStockCode;
-	strStockCode = XferSinaToStandred(strStockCode);
-	if (!gl_pChinaMarket->IsStock(strStockCode)) {
-		TRACE("无效股票代码：%s\n", strStockCode);
+	//strStockCode = strHeader;
+	//strStockCode += bufferStockCode;
+	//strStockCode = XferSinaToStandred(strStockCode);
+	//if (!gl_pChinaMarket->IsStock(strStockCode)) {
+		//TRACE("无效股票代码：%s\n", strStockCode);
 		//return false;
-	}
+	//}
 	return true;
 }
 

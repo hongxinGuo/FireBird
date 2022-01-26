@@ -51,7 +51,7 @@ CWorldMarket::CWorldMarket() {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}
 
-	// 无需每日更新的变量放在这里
+	// 无需（也无法）每日更新的变量放在这里
 	m_fFinnhubEPSSurpriseUpdated = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
@@ -405,6 +405,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 	TaskReActivateWebSocket();
+
 	return true;
 }
 
