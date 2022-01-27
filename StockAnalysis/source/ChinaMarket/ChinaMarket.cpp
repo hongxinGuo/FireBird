@@ -82,7 +82,6 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	m_vChinaMarketStock.resize(0);
 }
 
 void CChinaMarket::ResetMarket(void) {
@@ -165,7 +164,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fUpdateChoicedStockDB = false;
 
-	m_lSinaStockRTDataInquiringIndexFromTotalStockSet = 0;
 	m_lSinaStockRTDataInquiringIndex = 0;
 	m_lTengxunRTDataInquiringIndex = 0;
 	m_lNeteaseRTDataInquiringIndex = 0;
@@ -176,10 +174,9 @@ void CChinaMarket::Reset(void) {
 	m_vChinaMarketStock.clear();
 	m_mapChinaMarketStock.clear();
 
-	m_vTotalStockSet.resize(0);
-	m_mapTotalStockSet.clear();
+	m_dataTotalStockSymbol.Reset();
 
-	m_vCurrentSectionStockCode.clear();
+	m_vCurrentSectionStockCode.resize(0);
 	// 预设股票代码集如下
 	m_vCurrentSectionStockCode.push_back(_T("000000.SS")); // 上海指数
 	m_vCurrentSectionStockCode.push_back(_T("600000.SS")); // 上海主板
@@ -371,8 +368,7 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode) {
 		sprintf_s(buffer, _T("%06d"), i);
 		strStockSymbol = buffer;
 		strStockCode = CreateStockCode(strExchange, strStockSymbol);
-		m_vTotalStockSet.push_back(strStockCode); //
-		m_mapTotalStockSet[strStockCode] = m_vTotalStockSet.size();
+		m_dataTotalStockSymbol.Add(strStockCode);
 	}
 	if (UpdateStockSection(iCode / 1000 + iMarket)) {
 		SetUpdateStockSection(true);
@@ -753,7 +749,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock) {
 	if (fCheckActiveStock) {
-		return GetNextSinaStockInquiringMiddleStrFromTotalStockSet(m_lSinaStockRTDataInquiringIndexFromTotalStockSet, _T(","), lTotalNumber);
+		return GetNextSinaStockInquiringMiddleStrFromTotalStockSet(_T(","), lTotalNumber);
 	}
 	else {
 		return GetNextStockInquiringMiddleStr(m_lSinaStockRTDataInquiringIndex, _T(","), lTotalNumber, GetTotalStock());
@@ -831,45 +827,6 @@ CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStockIndex, CString 
 		IncreaseStockInquiringIndex(iStockIndex, lEndPosition);
 	}
 	if (iStockIndex > 0) iStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-	return strReturn;
-}
-
-CString CChinaMarket::GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long& lStockIndex, CString strPostfix, long lTotalNumber) {
-	CString strReturn = _T("");
-	long lEndPosition = m_vTotalStockSet.size();
-
-	if (0 == lEndPosition) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandredToSina(m_vTotalStockSet.at(lStockIndex));  // 得到第一个股票代码
-	IncreaseStockInquiringIndex(lStockIndex, lEndPosition);
-	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((lStockIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		iCount++;
-		strReturn += strPostfix;
-		strReturn += XferStandredToSina(m_vTotalStockSet.at(lStockIndex));
-		IncreaseStockInquiringIndex(lStockIndex, lEndPosition);
-	}
-	if (lStockIndex > 0) lStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-	return strReturn;
-}
-
-CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(CString strPostfix, long lTotalNumber) {
-	CString strReturn;
-	long lEndPosition = m_vTotalStockSet.size();
-	static long s_lIndex = 0;
-
-	if (0 == lEndPosition) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandredToNetease(m_vTotalStockSet.at(s_lIndex));  // 得到第一个股票代码
-	IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
-	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((s_lIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		iCount++;
-		strReturn += strPostfix;
-		strReturn += XferStandredToNetease(m_vTotalStockSet.at(s_lIndex));  // 得到第一个股票代码
-		IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
-	}
-	if (s_lIndex > 0) s_lIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }

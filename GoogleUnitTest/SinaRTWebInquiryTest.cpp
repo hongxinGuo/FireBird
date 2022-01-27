@@ -63,25 +63,6 @@ namespace StockAnalysisTest {
 			.Times(1);
 		m_SinaRTWebInquiry.GetWebData();
 		EXPECT_TRUE(m_SinaRTWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-
-		gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
-	}
-
-	TEST_F(CSinaRTWebInquiryTest, TestPrepareInquiringStr) {
-		EXPECT_EQ(gl_pChinaMarket->GetSinaStockRTDataInquiringIndex(), 0);
-		EXPECT_EQ(gl_pChinaMarket->GetSinaStockRTDataInquiringIndexFromTotalStockSet(), 0);
-		gl_pChinaMarket->SetCheckActiveStock(true);
-		EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
-		CString str = m_SinaRTWebInquiry.GetInquiringString();
-		EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh000000")) << "全局股票池起始代码为sh000000";
-		gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0); // 恢复原状
-
-		gl_pChinaMarket->SetCheckActiveStock(false);
-		EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
-		str = m_SinaRTWebInquiry.GetInquiringString();
-		EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh000001")) << "目前活跃股票池起始代码为sh000001";
-
-		gl_pChinaMarket->SetCheckActiveStock(true);
 	}
 
 	TEST_F(CSinaRTWebInquiryTest, TestReportStatus) {

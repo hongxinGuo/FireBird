@@ -9,6 +9,8 @@
 #include"WebRTDataContainer.h"
 #include"StockSection.h"
 
+#include"DataChinaStockSymbol.h"
+
 #include<gsl/gsl>
 using namespace gsl;
 
@@ -126,8 +128,8 @@ public:
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fCheckActiveStock);
 	CString	GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition);
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long& lStockIndex, CString strPostfix, long lTotalNumber);
-	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(CString strPostfix, long lTotalNumber);
+	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(CString strPostfix, long lTotalNumber) { return m_dataTotalStockSymbol.GetNextSinaStockInquiringMiddleStr(strPostfix, lTotalNumber); }
+	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(CString strPostfix, long lTotalNumber) { return m_dataTotalStockSymbol.GetNextNeteaseStockInquiringMiddleStr(strPostfix, lTotalNumber); }
 	CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition);
 	//日线历史数据读取
 	bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition);
@@ -344,8 +346,6 @@ public:
 	size_t GetChoicedRTDataSize(void) const noexcept { return m_qRTData.size(); }
 	void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
-	void SetSinaStockRTDataInquiringIndexFromTotalStockSet(long lIndex) noexcept { m_lSinaStockRTDataInquiringIndexFromTotalStockSet = lIndex; }
-	long GetSinaStockRTDataInquiringIndexFromTotalStockSet(void) const noexcept { return m_lSinaStockRTDataInquiringIndexFromTotalStockSet; }
 	void SetSinaStockRTDataInquiringIndex(long lIndex) noexcept { m_lSinaStockRTDataInquiringIndex = lIndex; }
 	void SetTengxunRTDataInquiringIndex(long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
 	void SetNeteaseRTDataInquiringIndex(long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
@@ -414,6 +414,7 @@ protected:
 
 	vector<CString> m_vTotalStockSet; // 当前所有的股票代码
 	map<CString, long> m_mapTotalStockSet; // 当前所有股票代码的映射
+	CDataChinaStockSymbol m_dataTotalStockSymbol;
 
 	vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
 	map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
@@ -462,7 +463,6 @@ protected:
 	CString m_strNeteaseRTDataInquiringStr;
 	CString m_strNeteaseDayLineDataInquiringStr;
 
-	long m_lSinaStockRTDataInquiringIndexFromTotalStockSet;
 	long m_lSinaStockRTDataInquiringIndex;
 	long m_lTengxunRTDataInquiringIndex;
 	long m_lNeteaseRTDataInquiringIndex;

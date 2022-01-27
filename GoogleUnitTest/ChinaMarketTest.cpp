@@ -145,7 +145,6 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 			EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5040));
-			gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
 
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 
@@ -1212,7 +1211,6 @@ namespace StockAnalysisTest {
 		s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
-		gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb2) {
@@ -1257,7 +1255,6 @@ namespace StockAnalysisTest {
 		s_pMockSinaRTWebInquiry->SetReadingWebData(false);
 		s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
-		gl_pChinaMarket->SetSinaStockRTDataInquiringIndexFromTotalStockSet(0);
 	}
 
 	TEST_F(CChinaMarketTest, TestGetRTDataReceived) {

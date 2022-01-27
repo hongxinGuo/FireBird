@@ -666,7 +666,7 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h">
       <Filter>头文件\template</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.h">
       <Filter>头文件\Data Class\China Stock</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
@@ -1172,7 +1172,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
       <Filter>源文件\Data Class\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.cpp">
       <Filter>源文件\Data Class\China Stock</Filter>
     </ClCompile>
   </ItemGroup>
