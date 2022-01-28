@@ -596,14 +596,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine());
 	}
 
-	TEST_F(CChinaMarketTest, TestIsUpdateStockSection) {
-		EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockSection());
-		gl_pChinaMarket->SetUpdateStockSection(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsUpdateStockSection());
-		gl_pChinaMarket->SetUpdateStockSection(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockSection());
-	}
-
 	TEST_F(CChinaMarketTest, TestIsStockSectionActive) {
 		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(0));
 		gl_pChinaMarket->SetStockSectionActiveFlag(0, true);

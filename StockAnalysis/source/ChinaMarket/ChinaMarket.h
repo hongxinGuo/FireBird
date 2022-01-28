@@ -9,7 +9,7 @@
 #include"WebRTDataContainer.h"
 #include"StockSection.h"
 
-#include"DataChinaStockSymbol.h"
+#include"DataStockSymbol.h"
 #include"DataChinaStock.h"
 
 #include<gsl/gsl>
@@ -124,8 +124,8 @@ public:
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock);
 	CString	GetNextNeteaseStockInquiringStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringStr(lTotalNumber); }
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataTotalStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataTotalStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
+	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSection.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
+	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSection.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
 	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber); }
 	//日线历史数据读取
@@ -178,7 +178,7 @@ public:
 	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); }  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockCodeDB(void) { return m_dataChinaStock.UpdateStockCodeDB(); }
 	void LoadStockCodeDB(void) { m_dataChinaStock.LoadStockCodeDB(); }
-	void LoadStockSection(void);
+	void LoadStockSection(void) { m_dataStockSection.LoadDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
@@ -191,7 +191,7 @@ public:
 	virtual bool UpdateTodayTempDB(void) { return m_dataChinaStock.UpdateTodayTempDB(); }
 	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
-	virtual bool SaveStockSection(void);
+	virtual bool SaveStockSection(void) { return m_dataStockSection.UpdateDB(); }
 
 	bool ChangeDayLineStockCodeToStandred(void);
 
@@ -369,25 +369,25 @@ public:
 	void SetStockDayLineNeedUpdate(long lValue) noexcept { m_lStockDayLineNeedUpdate = lValue; }
 	bool TooManyStockDayLineNeedUpdate(void) const noexcept { if (m_lStockDayLineNeedUpdate > 1000) return true; else return false; }
 
-	void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
-	bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
+	void SetUpdateStockSection(bool fFlag) noexcept { m_dataStockSection.SetUpdateStockSection(fFlag); }
+	bool IsUpdateStockSection(void) noexcept { return m_dataStockSection.IsUpdateStockSection(); }
 
-	void SetStockSectionActiveFlag(long lIndex, bool fFlag) noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
-	bool IsStockSectionActive(long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
+	void SetStockSectionActiveFlag(long lIndex, bool fFlag) noexcept { m_dataStockSection.SetStockSectionActiveFlag(lIndex, fFlag); }
+	bool IsStockSectionActive(long lIndex) const noexcept { return m_dataStockSection.IsStockSectionActive(lIndex); }
 
 	bool AddStock(CChinaStockPtr pStock) { return m_dataChinaStock.Add(pStock); }
+	void AddSymbol(CString strSymbol) { m_dataStockSection.Add(strSymbol); }
 	bool DeleteStock(CChinaStockPtr pStock) { return m_dataChinaStock.Delete(pStock); }
 	bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
 
-	void CreateStockSection(CString strFirstStockCode);
-	bool UpdateStockSection(CString strStockCode);
-	bool UpdateStockSection(long lIndex);
+	void CreateStockSection(CString strFirstStockCode) { m_dataStockSection.CreateStockSection(strFirstStockCode); }
+	bool UpdateStockSection(CString strStockCode) { return m_dataStockSection.UpdateStockSection(strStockCode); }
+	bool UpdateStockSection(long lIndex) { return m_dataStockSection.UpdateStockSection(lIndex); }
 
 	void SetCurrentRSStrongIndex(long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 
 protected:
 	// 初始化
-	bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
 
 public:
 	// 测试专用函数
@@ -398,12 +398,8 @@ protected:
 
 // 变量区
 protected:
-	vector<CString> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
-	vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
-	bool m_fUpdateStockSection; // 更新StockSection标识
-
-	CDataChinaStockSymbol m_dataTotalStockSymbol;
 	CDataChinaStock m_dataChinaStock;
+	CDataStockSymbol m_dataStockSection;
 
 	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
 	vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集

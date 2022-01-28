@@ -93,6 +93,7 @@
     <ClCompile Include="DataChoicedCryptoTest.cpp" />
     <ClCompile Include="DataChoicedForexTest.cpp" />
     <ClCompile Include="DataChoicedIEXTest.cpp" />
+    <ClCompile Include="DataStockSectionTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
