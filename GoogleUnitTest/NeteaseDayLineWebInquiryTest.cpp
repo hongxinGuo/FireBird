@@ -31,7 +31,6 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			ASSERT_FALSE(gl_fNormalMode);
 			gl_pChinaMarket->CalculateTime();
-			gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
 			m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -44,7 +43,6 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			gl_pChinaMarket->SetResetMarket(true);
-			gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
 			gl_pChinaMarket->SetSystemReady(false);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
@@ -109,7 +107,8 @@ namespace StockAnalysisTest {
 		}
 		gl_pChinaMarket->SetSystemReady(false);
 		EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
+		// 目前将索引移入函数内，作为静态变量存在，故而无法知道确切位置了。
+		//EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
 
 		// 恢复原态
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {

@@ -30,7 +30,6 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			gl_pChinaMarket->SetNeteaseRTDataInquiringIndex(0);
 
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		}
@@ -38,7 +37,6 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			// clearup
 			gl_pChinaMarket->SetSystemReady(false);
-			gl_pChinaMarket->SetNeteaseRTDataInquiringIndex(0);
 			GeneralCheck();
 		}
 		CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集

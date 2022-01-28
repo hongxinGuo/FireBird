@@ -178,7 +178,7 @@
     <Filter Include="源文件\Data Class\China Stock">
       <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Data Class\China Stock">
+    <Filter Include="头文件\Data Class\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -667,10 +667,16 @@
       <Filter>头文件\template</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.h">
-      <Filter>头文件\Data Class\China Stock</Filter>
+      <Filter>头文件\Data Class\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
       <Filter>头文件\Data Class\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h">
+      <Filter>头文件\Data Class\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSection.h">
+      <Filter>头文件\Data Class\China Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1175,6 +1181,10 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.cpp">
       <Filter>源文件\Data Class\China Stock</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp">
+      <Filter>源文件\Data Class\China Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataStockSection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

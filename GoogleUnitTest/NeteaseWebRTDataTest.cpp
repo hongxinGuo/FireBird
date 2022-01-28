@@ -213,7 +213,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_RTData.GetHigh(), -1); // 后续部分皆未设置。
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 3);
+			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 2);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
@@ -249,7 +249,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 3);
+			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 2);
 			break;
 		default:
 			break;

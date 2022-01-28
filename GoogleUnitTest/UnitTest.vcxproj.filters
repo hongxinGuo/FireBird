@@ -154,6 +154,9 @@
     <Filter Include="Test源文件\Data Class\Tiingo">
       <UniqueIdentifier>{a44519eb-fe95-4d13-bf29-13a7814acb26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Class\China Market">
+      <UniqueIdentifier>{49e03dbc-d9a8-4511-b8d6-fc8faf29bba8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -533,6 +536,9 @@
     </ClCompile>
     <ClCompile Include="DataChoicedIEXTest.cpp">
       <Filter>Test源文件\Data Class\Chioced</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChinaStockTest.cpp">
+      <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

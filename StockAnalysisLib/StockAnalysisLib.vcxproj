@@ -59,6 +59,7 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataSICIndustry.h" />
@@ -254,6 +256,7 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
@@ -265,6 +268,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataStockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp" />

@@ -30,7 +30,6 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_vMarketPtr.size(), 4);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 		}
 
 		static void TearDownTestSuite(void) {
@@ -46,7 +45,6 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
 			EXPECT_EQ(gl_vMarketPtr.size(), 4);
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
 			GeneralCheck();
 		}
@@ -55,12 +53,10 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_fExitingSystem = false;
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 		}
 
 		virtual void TearDown(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();

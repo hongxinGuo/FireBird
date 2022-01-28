@@ -160,7 +160,6 @@ namespace StockAnalysisTest {
 			strSymbol = pStock->GetSymbol();
 			gl_pChinaMarket->DeleteStock(pStock);
 			EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStock()) << "删除了新增加的股票";
-			EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStockMapSize()) << "也同时删除了map索引";
 			EXPECT_FALSE(gl_pChinaMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
 
 			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);

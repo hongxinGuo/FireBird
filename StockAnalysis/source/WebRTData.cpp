@@ -994,7 +994,7 @@ long CWebRTData::GetNeteaseSymbolIndex(CString strSymbol) {
 		lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("GetNeteaseSymbolIndexÒì³£ "), e);
+		ReportErrorToSystemMessage(_T("GetNeteaseSymbolIndexÒì³£ ") + strSymbol, e);
 		lIndex = 0;
 	}
 	return lIndex;
@@ -1030,7 +1030,11 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
 		}
 		buffer[i] = 0x000;
 		strIndex = buffer;
-		if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) throw exception();
+		if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) {
+			lIndex = 0;
+			strValue = _T("");
+			return false;
+		}
 		// ¿ç¹ý"\""×Ö·û
 		pNeteaseWebRTData->IncreaseCurrentPos();
 		if (pNeteaseWebRTData->GetCurrentPosData() != ':') {

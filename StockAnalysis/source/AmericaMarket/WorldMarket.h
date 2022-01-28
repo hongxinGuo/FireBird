@@ -134,7 +134,7 @@ public:
 	DECLARE_DYNCREATE(CWorldMarket)
 	CWorldMarket();
 	virtual ~CWorldMarket();
-	virtual void ResetMarket(void) override;
+	virtual void ResetMarket(void) override final;
 
 	virtual bool PreparingExitMarket(void) override final;
 
@@ -143,7 +143,7 @@ public:
 	void ResetQuandl(void);
 	void ResetTiingo(void);
 	void ResetDataClass(void);
-	virtual bool IsTimeToResetSystem(long lCurrentTime)  override { if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true; else return false; }
+	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final { if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true; else return false; }
 
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
 	bool ProcessFinnhubInquiringMessage(void);

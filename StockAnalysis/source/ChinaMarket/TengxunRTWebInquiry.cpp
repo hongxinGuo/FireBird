@@ -32,7 +32,8 @@ bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
-	return gl_pChinaMarket->GetTengxunInquiringStockStr(lTotalNumber, gl_pChinaMarket->GetTotalStock());
+	ASSERT(gl_pChinaMarket->IsSystemReady());
+	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }
 
 bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {

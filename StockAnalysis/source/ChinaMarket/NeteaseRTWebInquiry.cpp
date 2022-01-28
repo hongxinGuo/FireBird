@@ -58,7 +58,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
-	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, gl_pChinaMarket->GetTotalStock(), fCheckActiveStock);
+	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, fCheckActiveStock);
 }
 
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {

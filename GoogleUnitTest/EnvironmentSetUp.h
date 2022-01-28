@@ -169,8 +169,6 @@ namespace StockAnalysisTest {
 
 			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
-			EXPECT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 			gl_pWorldMarket->GetStock(_T("AAPL"))->SetProfileUpdated(false);
 
 			GeneralCheck();

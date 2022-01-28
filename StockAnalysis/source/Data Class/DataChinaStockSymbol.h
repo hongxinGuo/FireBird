@@ -20,11 +20,11 @@ public:
 	bool Delete(CString strSymbol);
 	void Add(CString strSymbol);
 
-	CString GetNextSinaStockInquiringMiddleStr(CString strPostfix, long lTotalNumber);
-	CString GetNextNeteaseStockInquiringMiddleStr(CString strPostfix, long lTotalNumber);
+	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber);
+	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
 private:
-	long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
+	long IncreaseIndex(long& lIndex, long lEndPosition);
 
 protected:
 	vector<CString> m_vStockSymbol;

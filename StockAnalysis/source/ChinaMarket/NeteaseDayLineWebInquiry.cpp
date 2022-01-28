@@ -30,7 +30,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 	CString strStockCode;
 
 	// 准备网易日线数据申请格式
-	if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaMarket->GetTotalStock())) {
+	if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle)) {
 		strStockCode = XferNeteaseToStandred(strMiddle);
 		SetDownLoadingStockCode(strStockCode);
 		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
