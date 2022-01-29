@@ -540,7 +540,7 @@
     <ClCompile Include="DataChinaStockTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataStockSectionTest.cpp">
+    <ClCompile Include="DataStockSymbolTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
   </ItemGroup>

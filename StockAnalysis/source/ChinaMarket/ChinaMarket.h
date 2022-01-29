@@ -178,7 +178,6 @@ public:
 	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); }  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockCodeDB(void) { return m_dataChinaStock.UpdateStockCodeDB(); }
 	void LoadStockCodeDB(void) { m_dataChinaStock.LoadStockCodeDB(); }
-	void LoadStockSection(void) { m_dataStockSection.LoadDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
@@ -372,17 +371,9 @@ public:
 	void SetUpdateStockSection(bool fFlag) noexcept { m_dataStockSection.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection(void) noexcept { return m_dataStockSection.IsUpdateStockSection(); }
 
-	void SetStockSectionActiveFlag(long lIndex, bool fFlag) noexcept { m_dataStockSection.SetStockSectionActiveFlag(lIndex, fFlag); }
-	bool IsStockSectionActive(long lIndex) const noexcept { return m_dataStockSection.IsStockSectionActive(lIndex); }
-
 	bool AddStock(CChinaStockPtr pStock) { return m_dataChinaStock.Add(pStock); }
-	void AddSymbol(CString strSymbol) { m_dataStockSection.Add(strSymbol); }
 	bool DeleteStock(CChinaStockPtr pStock) { return m_dataChinaStock.Delete(pStock); }
 	bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
-
-	void CreateStockSection(CString strFirstStockCode) { m_dataStockSection.CreateStockSection(strFirstStockCode); }
-	bool UpdateStockSection(CString strStockCode) { return m_dataStockSection.UpdateStockSection(strStockCode); }
-	bool UpdateStockSection(long lIndex) { return m_dataStockSection.UpdateStockSection(lIndex); }
 
 	void SetCurrentRSStrongIndex(long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 

@@ -596,14 +596,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine());
 	}
 
-	TEST_F(CChinaMarketTest, TestIsStockSectionActive) {
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(0));
-		gl_pChinaMarket->SetStockSectionActiveFlag(0, true);
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(0));
-		gl_pChinaMarket->SetStockSectionActiveFlag(0, false);
-		EXPECT_FALSE(gl_pChinaMarket->IsStockSectionActive(0));
-	}
-
 	TEST_F(CChinaMarketTest, TestIsRTDataSetCleared) {
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
 		gl_pChinaMarket->SetRTDataSetCleared(true);
@@ -1848,37 +1840,6 @@ namespace StockAnalysisTest {
 			auto pstock = gl_pChinaMarket->GetStock(i);
 			pstock->SetDayLineNeedUpdate(true);
 		}
-	}
-
-	TEST_F(CChinaMarketTest, TestUpdateStockSection1) {
-		EXPECT_FALSE(gl_pChinaMarket->IsStockSectionActive(1));
-		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(1));
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(1));
-		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(1));
-
-		gl_pChinaMarket->SetStockSectionActiveFlag(1, false);
-	}
-
-	TEST_F(CChinaMarketTest, TestUpdateStockSection2) {
-		CString strShanghaiStock = _T("600601.SS");
-		CString strShenzhenStock = _T("000001.SZ");
-		long lIndex = 600;
-		long lIndex2 = 1000;
-
-		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(_T("60061.SS"))); // 无效股票代码
-		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(_T("00001.SZ"))); // 无效股票代码
-
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
-		gl_pChinaMarket->SetStockSectionActiveFlag(lIndex, false);
-		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(strShanghaiStock));
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex));
-		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(strShanghaiStock));
-
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex2)) << "装载预设数据库后如此";
-		gl_pChinaMarket->SetStockSectionActiveFlag(lIndex2, false);
-		EXPECT_TRUE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
-		EXPECT_TRUE(gl_pChinaMarket->IsStockSectionActive(lIndex2));
-		EXPECT_FALSE(gl_pChinaMarket->UpdateStockSection(strShenzhenStock));
 	}
 
 	TEST_F(CChinaMarketTest, TestAppendChoicedStock) { // 也测试UpdateChoicedStock和LoadChoicedStock

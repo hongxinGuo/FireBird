@@ -86,7 +86,6 @@ void CChinaMarket::ResetMarket(void) {
 	}
 	Reset();
 
-	LoadStockSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
 	LoadStockCodeDB();
 	LoadOptionDB();
 	LoadOptionChinaStockMarketDB();
@@ -155,9 +154,6 @@ void CChinaMarket::Reset(void) {
 
 	m_dataChinaStock.Reset();
 	m_dataStockSection.Reset();
-
-	// 生成股票代码池
-	m_dataStockSection.CreateTotalStockContainer();
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
@@ -945,8 +941,12 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 	return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+//
+// 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
-	// 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
 	if (IsSystemReady() && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
 		if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
 			CString str;

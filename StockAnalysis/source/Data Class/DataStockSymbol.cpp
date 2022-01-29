@@ -22,6 +22,7 @@ CDataStockSymbol::~CDataStockSymbol()
 }
 
 void CDataStockSymbol::Reset(void) {
+	m_fUpdateStockSection = false;
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
@@ -46,12 +47,16 @@ void CDataStockSymbol::Reset(void) {
 	for (int i = 0; i < m_vStockSection.size(); i++) {
 		m_vStockSection.at(i)->SetBuildStockPtr(false);
 	}
+
+	LoadDB();
+
+	// 生成股票代码池
+	CreateTotalStockContainer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 初始化所有可能的股票代码池，只被CChinaMarket的初始函数调用一次。
-// 这个函数需要其他全局变量初始化的支持，故而gl_ChinaStockMarket实例需要放在所有全局变量的最后。
+// 初始化所有可能的股票代码池，只被CDataStockSymbol的初始化函数Reset调用一次。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataStockSymbol::CreateTotalStockContainer(void) {
@@ -144,8 +149,6 @@ void CDataStockSymbol::CreateStockSection(CString strFirstStockCode) {
 }
 
 bool CDataStockSymbol::UpdateStockSection(CString strStockCode) {
-	if (!gl_pChinaMarket->IsStock(strStockCode)) return false;
-
 	CString strCode = GetStockSymbol(strStockCode);
 	int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
