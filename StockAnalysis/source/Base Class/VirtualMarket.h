@@ -50,7 +50,6 @@ public:
 	CString GetStringOfMarketTime(void); // 得到本市场时间的字符串
 	CString GetStringOfMarketDate(void) const;
 	CString GetStringOfMarketDateTime(void);
-	CString GetStringOfDate(long lDate) const;
 
 	void CalculateTime(void) noexcept;// 计算本市场的各时间
 	void CalculateLastTradeDate(void) noexcept;

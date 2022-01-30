@@ -26,6 +26,7 @@ bool CProductFinnhubForexSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	CForexSymbolVectorPtr pvForexSymbol = nullptr;
 
 	pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
+	if (pvForexSymbol->size() == 0) return false;
 	for (auto& pSymbol : *pvForexSymbol) {
 		if (!((CWorldMarket*)m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex));

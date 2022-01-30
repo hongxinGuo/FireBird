@@ -5,6 +5,7 @@
 #include"SetStockSection.h"
 
 using namespace std;
+#include<memory>
 #include<vector>
 #include<map>
 
@@ -38,7 +39,6 @@ public:
 	bool UpdateStockSection(CString strStockCode);
 	bool UpdateStockSection(long lIndex);
 
-private:
 	long IncreaseIndex(long& lIndex, long lEndPosition);
 
 protected:
@@ -48,3 +48,5 @@ protected:
 	vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
 	bool m_fUpdateStockSection; // 更新StockSection标识
 };
+
+typedef shared_ptr<CDataStockSymbol> CDataStockSymbolPtr;

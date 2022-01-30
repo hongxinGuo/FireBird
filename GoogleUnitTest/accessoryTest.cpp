@@ -36,6 +36,14 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_fTestMode);
 	}
 
+	TEST_F(AccessoryTest, TestGetStringOfDate) {
+		char buffer[30];
+		sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), 2020, 02, 02);
+		CString str;
+		str = buffer;
+		EXPECT_STREQ(ConvertDateToString(20200202), str);
+	}
+
 	TEST_F(AccessoryTest, TestTransferToDate) {
 		tm tm_, tm_2;
 		tm_.tm_year = 2000 - 1900;

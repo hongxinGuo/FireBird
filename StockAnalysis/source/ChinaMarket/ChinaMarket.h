@@ -177,7 +177,7 @@ public:
 	virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
 	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); }  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockCodeDB(void) { return m_dataChinaStock.UpdateStockCodeDB(); }
-	void LoadStockCodeDB(void) { m_dataChinaStock.LoadStockCodeDB(); }
+	void LoadStockCodeDB(void) { m_lStockDayLineNeedUpdate = m_dataChinaStock.LoadStockCodeDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);

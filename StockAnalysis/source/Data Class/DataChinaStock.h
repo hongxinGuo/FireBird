@@ -26,9 +26,14 @@ public:
 	bool Delete(CChinaStockPtr pStock);
 	bool Add(CChinaStockPtr pStock);
 
-	void LoadStockCodeDB(void);
+	long LoadStockCodeDB(void);
 	bool UpdateStockCodeDB(void);
 	bool UnloadDayLine(void) noexcept;
+	bool BuildWeekLine(long lStartDate);
+	long BuildDayLine(long lCurrentTradeDay);
+	bool UpdateTodayTempDB(void);
+	bool BuildDayLineRS(long lDate);
+	bool BuildWeekLineRS(long lDate);
 
 	bool IsDayLineDBUpdated(void) noexcept;
 	bool IsUpdateStockCodeDB(void);
@@ -58,15 +63,6 @@ public:
 	bool Choice10RSStrong1StockSet(void);
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-	bool BuildWeekLine(long lStartDate);
-	long BuildDayLine(long lCurrentTradeDay);
-	bool UpdateTodayTempDB(void);
-	bool BuildDayLineRS(long lDate);
-	bool BuildWeekLineRS(long lDate);
-
-	bool DeleteDayLineBasicInfo(long lDate);
-	bool DeleteDayLineExtendInfo(long lDate);
-
 	bool SortStockVector(void);
 	double GetUpDownRate(CString strClose, CString strLastClose) noexcept;
 
@@ -80,7 +76,10 @@ public:
 	long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
 
 private:
+	bool DeleteDayLineBasicInfo(long lDate);
+	bool DeleteDayLineExtendInfo(long lDate);
 	bool DeleteTodayTempDB(void);
+
 	long IncreaseIndex(long& lIndex, long lEndPosition);
 
 protected:

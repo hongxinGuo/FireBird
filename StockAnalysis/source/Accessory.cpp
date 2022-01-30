@@ -2,9 +2,21 @@
 #include"globedef.h"
 #include "Accessory.h"
 
+CString ConvertDateToString(long lDate) {
+	char buffer[30];
+	long year = lDate / 10000;
+	long month = lDate / 100 - year * 100;
+	long day = lDate - year * 10000 - month * 100;
+
+	sprintf_s(buffer, _T("%4dÄê%2dÔÂ%2dÈÕ"), year, month, day);
+	CString str;
+	str = buffer;
+	return(str);
+}
+
 time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
-	tm tm_{0,0,0,0,0,0};
+	tm tm_{ 0,0,0,0,0,0 };
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(bufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -24,7 +36,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time
 
 time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset) {
 	time_t tt{ 0 };
-	tm tm_{0, 0, 0, 0, 0, 0};
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -43,7 +55,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTim
 }
 
 time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
-	tm tmMarket{ 0, 0, 0, 0,0, 0};
+	tm tmMarket{ 0, 0, 0, 0,0, 0 };
 
 	ASSERT(lDate >= 19700101);
 	tmMarket.tm_year = lDate / 10000 - 1900;

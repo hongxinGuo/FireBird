@@ -46,4 +46,27 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(m_dataChinaStock.GetUpDownRate(_T("11.11"), _T("10.0")), 0.0) << _T("大于0.11时返回0");
 		EXPECT_DOUBLE_EQ(m_dataChinaStock.GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
 	}
+
+	TEST_F(CDataChinaStockTest, TestGetNeteaseDayLineDataInquiringIndex) {
+		EXPECT_EQ(m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex(), 0);
+		m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(100);
+		EXPECT_EQ(m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex(), 100);
+	}
+
+	TEST_F(CDataChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
+		EXPECT_EQ(m_dataChinaStock.GetNeteaseRTDataInquiringIndex(), 0);
+		m_dataChinaStock.SetNeteaseRTDataInquiringIndex(100);
+		EXPECT_EQ(m_dataChinaStock.GetNeteaseRTDataInquiringIndex(), 100);
+	}
+
+	TEST_F(CDataChinaStockTest, TestGetSinaRTDataInquiringIndex) {
+		EXPECT_EQ(m_dataChinaStock.GetSinaRTDataInquiringIndex(), 0);
+		m_dataChinaStock.SetSinaRTDataInquiringIndex(100);
+		EXPECT_EQ(m_dataChinaStock.GetSinaRTDataInquiringIndex(), 100);
+	}
+	TEST_F(CDataChinaStockTest, TestGetTengxunRTDataInquiringIndex) {
+		EXPECT_EQ(m_dataChinaStock.GetTengxunRTDataInquiringIndex(), 0);
+		m_dataChinaStock.SetTengxunRTDataInquiringIndex(100);
+		EXPECT_EQ(m_dataChinaStock.GetTengxunRTDataInquiringIndex(), 100);
+	}
 }

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"Accessory.h"
 
 #include "VirtualMarket.h"
 
@@ -215,20 +216,8 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) {
 	return(str);
 }
 
-CString CVirtualMarket::GetStringOfDate(long lDate) const {
-	char buffer[30];
-	long year = lDate / 10000;
-	long month = lDate / 100 - year * 100;
-	long day = lDate - year * 10000 - month * 100;
-
-	sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), year, month, day);
-	CString str;
-	str = buffer;
-	return(str);
-}
-
 CString CVirtualMarket::GetStringOfMarketDate(void) const {
-	return GetStringOfDate(m_lMarketDate);
+	return ConvertDateToString(m_lMarketDate);
 }
 
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {

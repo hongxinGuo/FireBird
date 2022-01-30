@@ -100,10 +100,11 @@ bool CDataChinaStock::Add(CChinaStockPtr pStock) {
 	return true;
 }
 
-void CDataChinaStock::LoadStockCodeDB(void) {
+long CDataChinaStock::LoadStockCodeDB(void) {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{ 0, 0, 0 };
 	CString str;
+	long lDayLineNeedCheck = 0;
 
 	setChinaStockSymbol.m_strSort = _T("[Symbol]");
 	setChinaStockSymbol.Open();
@@ -124,11 +125,10 @@ void CDataChinaStock::LoadStockCodeDB(void) {
 		setChinaStockSymbol.MoveNext();
 	}
 	if (IsDayLineNeedUpdate()) {
-		const int i = GetDayLineNeedUpdateNumber();
-		gl_pChinaMarket->SetStockDayLineNeedUpdate(i);
+		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
-		TRACE("尚余%d个股票需要检查日线数据\n", i);
-		_itoa_s(i, buffer, 10);
+		TRACE("尚余%d个股票需要检查日线数据\n", lDayLineNeedCheck);
+		_itoa_s(lDayLineNeedCheck, buffer, 10);
 		str = buffer;
 		str += _T("个股票需要检查日线数据");
 		gl_systemMessage.PushInformationMessage(str);
@@ -137,6 +137,8 @@ void CDataChinaStock::LoadStockCodeDB(void) {
 	setChinaStockSymbol.Close();
 	m_lLoadedStock = m_vStock.size();
 	SortStockVector();
+
+	return lDayLineNeedCheck;
 }
 
 bool CDataChinaStock::UpdateStockCodeDB(void) {
@@ -595,7 +597,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 
 	CString str;
 	str = _T("开始处理");
-	str += gl_pChinaMarket->GetStringOfDate(lCurrentTradeDay);
+	str += ConvertDateToString(lCurrentTradeDay);
 	str += _T("的实时数据");
 	gl_systemMessage.PushInformationMessage(str);
 
@@ -638,7 +640,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();
 
-	str = gl_pChinaMarket->GetStringOfDate(lCurrentTradeDay);
+	str = ConvertDateToString(lCurrentTradeDay);
 	str += _T("的实时数据处理完毕");
 	gl_systemMessage.PushInformationMessage(str);
 
@@ -863,7 +865,7 @@ bool CDataChinaStock::BuildDayLineRS(long lDate) {
 	vIndex.clear();
 	vRS.clear();
 
-	CString strDate2 = gl_pChinaMarket->GetStringOfDate(lDate);
+	CString strDate2 = ConvertDateToString(lDate);
 	CString strTemp;
 	strTemp = strDate2 + _T("的股票日线相对强度计算完成");
 	gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
@@ -969,7 +971,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 	vIndex.clear();
 	vRS.clear();
 
-	CString strDate2 = gl_pChinaMarket->GetStringOfDate(lDate);
+	CString strDate2 = ConvertDateToString(lDate);
 	CString strTemp;
 	strTemp = strDate2 + _T("的股票周线相对强度计算完成");
 	gl_systemMessage.PushInformationMessage(strTemp);    // 采用同步机制报告信息

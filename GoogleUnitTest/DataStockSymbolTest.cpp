@@ -16,17 +16,21 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	static CDataStockSymbol s_dataStockSymbol;
-	class CDataStockSectionTest : public ::testing::Test {
+	static CDataStockSymbolPtr s_pDataStockSymbol = nullptr;
+	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			s_pDataStockSymbol = make_shared<CDataStockSymbol>();
+
 			GeneralCheck();
-			EXPECT_FALSE(s_dataStockSymbol.IsUpdateStockSection());
+			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 		}
 
 		static void TearDownTestSuite(void) {
+			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			GeneralCheck();
-			EXPECT_FALSE(s_dataStockSymbol.IsUpdateStockSection());
+
+			s_pDataStockSymbol = nullptr;
 		}
 
 		virtual void SetUp(void) override {
@@ -34,10 +38,10 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_FALSE(s_dataStockSymbol.IsUpdateStockSection());
-			s_dataStockSymbol.SetStockSectionActiveFlag(0, true);
-			s_dataStockSymbol.SetStockSectionActiveFlag(1, false);
-			s_dataStockSymbol.SetUpdateStockSection(false);
+			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
+			s_pDataStockSymbol->SetStockSectionActiveFlag(0, true);
+			s_pDataStockSymbol->SetStockSectionActiveFlag(1, false);
+			s_pDataStockSymbol->SetUpdateStockSection(false);
 
 			GeneralCheck();
 		}
@@ -45,45 +49,69 @@ namespace StockAnalysisTest {
 	protected:
 	};
 
-	TEST_F(CDataStockSectionTest, TestIsUpdateStockSection) {
-		EXPECT_FALSE(s_dataStockSymbol.IsUpdateStockSection());
-		s_dataStockSymbol.SetUpdateStockSection(true);
-		EXPECT_TRUE(s_dataStockSymbol.IsUpdateStockSection());
-		s_dataStockSymbol.SetUpdateStockSection(false);
-		EXPECT_FALSE(s_dataStockSymbol.IsUpdateStockSection());
+	TEST_F(CDataStockSymbolTest, TestIsUpdateStockSection) {
+		EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
+		s_pDataStockSymbol->SetUpdateStockSection(true);
+		EXPECT_TRUE(s_pDataStockSymbol->IsUpdateStockSection());
+		s_pDataStockSymbol->SetUpdateStockSection(false);
+		EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 	}
 
-	TEST_F(CDataStockSectionTest, TestIsStockSectionActive) {
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(0));
-		s_dataStockSymbol.SetStockSectionActiveFlag(0, true);
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(0));
-		s_dataStockSymbol.SetStockSectionActiveFlag(0, false);
-		EXPECT_FALSE(s_dataStockSymbol.IsStockSectionActive(0));
+	TEST_F(CDataStockSymbolTest, TestIsStockSectionActive) {
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(0));
+		s_pDataStockSymbol->SetStockSectionActiveFlag(0, true);
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(0));
+		s_pDataStockSymbol->SetStockSectionActiveFlag(0, false);
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSectionActive(0));
 	}
 
-	TEST_F(CDataStockSectionTest, TestUpdateStockSection1) {
-		EXPECT_FALSE(s_dataStockSymbol.IsStockSectionActive(1));
-		EXPECT_TRUE(s_dataStockSymbol.UpdateStockSection(1));
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(1));
-		EXPECT_FALSE(s_dataStockSymbol.UpdateStockSection(1));
+	TEST_F(CDataStockSymbolTest, TestUpdateStockSection1) {
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSectionActive(1));
+		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(1));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(1));
+		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(1));
 	}
 
-	TEST_F(CDataStockSectionTest, TestUpdateStockSection2) {
+	TEST_F(CDataStockSymbolTest, TestUpdateStockSection2) {
 		CString strShanghaiStock = _T("600601.SS");
 		CString strShenzhenStock = _T("000001.SZ");
 		long lIndex = 600;
 		long lIndex2 = 1000;
 
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
-		s_dataStockSymbol.SetStockSectionActiveFlag(lIndex, false);
-		EXPECT_TRUE(s_dataStockSymbol.UpdateStockSection(strShanghaiStock));
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(lIndex));
-		EXPECT_FALSE(s_dataStockSymbol.UpdateStockSection(strShanghaiStock));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
+		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex, false);
+		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex));
+		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
 
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(lIndex2)) << "装载预设数据库后如此";
-		s_dataStockSymbol.SetStockSectionActiveFlag(lIndex2, false);
-		EXPECT_TRUE(s_dataStockSymbol.UpdateStockSection(strShenzhenStock));
-		EXPECT_TRUE(s_dataStockSymbol.IsStockSectionActive(lIndex2));
-		EXPECT_FALSE(s_dataStockSymbol.UpdateStockSection(strShenzhenStock));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2)) << "装载预设数据库后如此";
+		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex2, false);
+		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShenzhenStock));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2));
+		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(strShenzhenStock));
+	}
+
+	TEST_F(CDataStockSymbolTest, TestIsStockSymbol) {
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("600000.SS")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("900000.SS")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("688000.SS")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("000000.SZ")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("002000.SZ")));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("001000.SZ")));
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("60000.SS")));
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("00000.SZ")));
+	}
+
+	TEST_F(CDataStockSymbolTest, TestIncreaseIndex) {
+		long l = 0;
+		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 1);
+		EXPECT_EQ(l, 1);
+		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 2);
+		EXPECT_EQ(l, 2);
+		l = 98;
+		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 99);
+		EXPECT_EQ(l, 99);
+		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 0);
+		EXPECT_EQ(l, 0);
 	}
 }

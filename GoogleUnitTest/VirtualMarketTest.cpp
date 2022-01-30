@@ -322,12 +322,9 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketDateTime(), str);
 	}
 
-	TEST_F(CVirtualMarketTest, TestGetStringOfDate) {
+	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
 		char buffer[30];
-		sprintf_s(buffer, _T("%4dÄê%2dÔÂ%2dÈÕ"), 2020, 02, 02);
 		CString str;
-		str = buffer;
-		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfDate(20200202), str);
 
 		long lDate = gl_pVirtualMarket->GetMarketDate();
 		long year = lDate / 10000;

@@ -112,4 +112,58 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	class ProcessFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer, ProcessFinnhubStockPeerTest,
+													 testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+														 &finnhubWebData110));
+
+	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
+		bool fSucceed = m_finnhubCompanyPeer.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // 不足三个字符
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}"));
+			break;
+		case 3: // 格式不对
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}")) << "没有改变";
+			break;
+		case 4: // 第二个数据缺Code2
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}")) << "没有改变";
+			break;
+		case 5: // 正确的数据，但超过200个字符
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(gl_pWorldMarket->GetStock(0)->GetPeer().GetLength(), 200) << "多余200个字符时截断";
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			break;
+		default:
+			break;
+		}
+	}
 }
