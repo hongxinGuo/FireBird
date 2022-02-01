@@ -48,7 +48,7 @@ void CDataStockSymbol::Reset(void) {
 		m_vStockSection.at(i)->SetBuildStockPtr(false);
 	}
 
-	LoadDB();
+	LoadStockSectionDB();
 
 	// 生成股票代码池
 	CreateTotalStockContainer();
@@ -68,7 +68,7 @@ bool CDataStockSymbol::CreateTotalStockContainer(void) {
 	return true;
 }
 
-void CDataStockSymbol::LoadDB(void) {
+void CDataStockSymbol::LoadStockSectionDB(void) {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -84,7 +84,7 @@ void CDataStockSymbol::LoadDB(void) {
 	setStockSection.Close();
 }
 
-bool CDataStockSymbol::UpdateDB(void) {
+bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -114,6 +114,23 @@ bool CDataStockSymbol::UpdateDB(void) {
 	setStockSection.Close();
 
 	m_fUpdateStockSection = false;
+
+	return true;
+}
+
+bool CDataStockSymbol::DeleteStockSectionDB(void) {
+	CDatabase database;
+
+	if (gl_fTestMode) {
+		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+		exit(1); //退出系统
+	}
+
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`stock_code_section`;"));
+	database.CommitTrans();
+	database.Close();
 
 	return true;
 }

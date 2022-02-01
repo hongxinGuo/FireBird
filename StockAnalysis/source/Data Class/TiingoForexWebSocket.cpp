@@ -76,6 +76,16 @@ bool CTiingoForexWebSocket::Connect(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
+	ASSERT(IsOpen());
+
+	string messageAuth(CreateMessage(vSymbol));
+	ix::WebSocketSendInfo info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+
+	return true;
+}
+
+CString CTiingoForexWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString str;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7£ºA top - of - book update that is due to a change in either the bid / ask price or size.
@@ -89,15 +99,7 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 
 	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
-	string messageAuth(str);
-	ix::WebSocketSendInfo info;
-
-	ASSERT(IsOpen());
-
-	info = Sending(messageAuth);
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
+	return str;
 }
 
 bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {

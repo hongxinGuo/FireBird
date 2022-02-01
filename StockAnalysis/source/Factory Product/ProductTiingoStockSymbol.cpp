@@ -5,6 +5,10 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 
+using namespace std;
+#include<algorithm>
+#include<string>
+
 IMPLEMENT_DYNCREATE(CProductTinngoStockSymbol, CProductWebSourceData)
 
 CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CProductWebSourceData() {
@@ -102,7 +106,7 @@ CTiingoStockVectorPtr CProductTinngoStockSymbol::ParseTiingoStockSymbol(CWebData
 			s = pt2.get<string>(_T("permaTicker"));
 			if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
 			s = pt2.get<string>(_T("ticker"));
-			transform(s.begin(), s.end(), s.begin(), _toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。
+			transform(s.begin(), s.end(), s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->m_strTicker = s.c_str();
 			s = pt2.get<string>(_T("name"));
 			if (s.size() > 0) pStock->m_strName = s.c_str();

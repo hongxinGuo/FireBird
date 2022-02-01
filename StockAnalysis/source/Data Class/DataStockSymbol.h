@@ -26,8 +26,8 @@ public:
 	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber);
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
-	void LoadDB(void);
-	bool UpdateDB(void);
+	void LoadStockSectionDB(void);
+	bool UpdateStockSectionDB(void);
 
 	void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
@@ -40,6 +40,9 @@ public:
 	bool UpdateStockSection(long lIndex);
 
 	long IncreaseIndex(long& lIndex, long lEndPosition);
+
+private:
+	bool DeleteStockSectionDB(void);
 
 protected:
 	vector<CString> m_vStockSymbol;

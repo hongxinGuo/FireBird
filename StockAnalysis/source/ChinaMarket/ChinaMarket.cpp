@@ -153,7 +153,7 @@ void CChinaMarket::Reset(void) {
 	m_pCurrentStock = nullptr;
 
 	m_dataChinaStock.Reset();
-	m_dataStockSection.Reset();
+	m_dataStockSymbol.Reset();
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
@@ -999,9 +999,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 	TaskCheckDayLineDB();
 
-	if (m_dataStockSection.IsUpdateStockSection()) {
+	if (m_dataStockSymbol.IsUpdateStockSection()) {
 		TaskSaveStockSection();
-		m_dataStockSection.SetUpdateStockSection(false);
+		m_dataStockSymbol.SetUpdateStockSection(false);
 	}
 
 	return true;

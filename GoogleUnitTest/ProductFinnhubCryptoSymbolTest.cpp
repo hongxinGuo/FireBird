@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 	// Êý¾ÝÈ±·¦symbol
 	FinnhubWebData finnhubWebData215(5, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 	// ÕýÈ·µÄÊý¾Ý
-	FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+	FinnhubWebData finnhubWebData220(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
 	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
@@ -106,9 +106,65 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_STREQ(m_pvCryptoSymbol->at(0)->GetSymbol(), _T("OANDA:SG30_SGD"));
+			EXPECT_STREQ(m_pvCryptoSymbol->at(0)->GetSymbol(), _T("New Symbol"));
 			EXPECT_STREQ(m_pvCryptoSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 2);
+			break;
+		default:
+			break;
+		}
+	}
+
+	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_finnhubCryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCryptoSymbolProduct.SetIndex(0);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol, ProcessFinnhubCryptoSymbolTest,
+		testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+			&finnhubWebData215, &finnhubWebData220));
+
+	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
+		CFinnhubCryptoSymbolPtr pCrypto;
+		bool fSucceed = m_finnhubCryptoSymbolProduct.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // ¸ñÊ½²»¶Ô
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 3: // È±·¦×Ö·û´®
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 4: // È±·¦×Ö·û´®
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 5: // È±·¦×Ö·û´®
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("New Symbol")));
+			pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("New Symbol"));
+			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
+
+			// »Ö¸´Ô­×´
+			EXPECT_TRUE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCrypto));
 			break;
 		default:
 			break;

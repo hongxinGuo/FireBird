@@ -42,10 +42,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;
-	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
-	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
-
 	class CWorldMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -62,19 +58,9 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
 			gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
 			gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
-
-			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
-			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
-			ASSERT_THAT(gl_pQuandlWebInquiry, NotNull());
-			s_pMockQuandlWebInquiry = static_pointer_cast<CMockQuandlWebInquiry>(gl_pQuandlWebInquiry);
-			ASSERT_THAT(gl_pTiingoWebInquiry, NotNull());
-			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
 		}
 		static void TearDownTestSuite(void) {
 			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
-			s_pMockFinnhubWebInquiry = nullptr;
-			s_pMockQuandlWebInquiry = nullptr;
-			s_pMockTiingoWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
@@ -475,22 +461,6 @@ namespace StockAnalysisTest {
 		pCountry = make_shared<CCountry>();
 		pCountry->m_strCountry = _T("SZ");
 		EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "此股票代码不存在于代码集中";
-	}
-
-	TEST_F(CWorldMarketTest, TestLoadOption) {
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
-
-		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
-		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
-		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
-		gl_pWorldMarket->LoadOption();
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
-		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
-
-		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T("&token=bv4ac1n48v6tcp17l5cg"));
-		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
-		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {
@@ -1015,13 +985,54 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 		gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-	}\
-		TEST_F(CWorldMarketTest, TestIsTiingoDayLineUpdated) {
+	}
+
+	TEST_F(CWorldMarketTest, TestIsTiingoCryptoSymbolUpdated) {
+		EXPECT_FALSE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
+		gl_pWorldMarket->SetTiingoCryptoSymbolUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
+		gl_pWorldMarket->SetTiingoCryptoSymbolUpdated(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsTiingoDayLineUpdated) {
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoDayLineUpdated());
 		gl_pWorldMarket->SetTiingoDayLineUpdated(true);
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoDayLineUpdated());
 		gl_pWorldMarket->SetTiingoDayLineUpdated(false);
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoDayLineUpdated());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsRecordFinnhubWebSocket) {
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
+		gl_pWorldMarket->SetRecordFinnhubWebSocket(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
+		gl_pWorldMarket->SetRecordFinnhubWebSocket(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsRecordTiingoIEXWebSocket) {
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
+		gl_pWorldMarket->SetRecordTiingoIEXWebSocket(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
+		gl_pWorldMarket->SetRecordTiingoIEXWebSocket(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsRecordTiingoCryptoWebSocket) {
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
+		gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
+		gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
+	}
+
+	TEST_F(CWorldMarketTest, TestIsRecordTiingoForexWebSocket) {
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
+		gl_pWorldMarket->SetRecordTiingoForexWebSocket(false);
+		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
+		gl_pWorldMarket->SetRecordTiingoForexWebSocket(true);
+		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCountryList) {

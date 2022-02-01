@@ -725,7 +725,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	case 'z':
 	case '.':
 		if (m_lCurrentPos < 10) {
-			m_aStockCodeTemp[m_lCurrentPos] = toupper(nChar);
+			m_aStockCodeTemp[m_lCurrentPos] = ::toupper(nChar);
 			m_lCurrentPos++;
 			m_aStockCodeTemp[m_lCurrentPos] = 0x000;
 		}

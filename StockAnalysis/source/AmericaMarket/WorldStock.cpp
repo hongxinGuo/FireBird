@@ -440,6 +440,7 @@ void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 
 bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
 	if (m_strTiingoPermaTicker.Compare(pTiingoStock->m_strTiingoPermaTicker) != 0) return true;
+	if (m_strName.Compare(pTiingoStock->m_strName) != 0) return true;
 	if ((m_fIsActive != pTiingoStock->m_fIsActive)) return true;
 	if (m_fIsADR != pTiingoStock->m_fIsADR) return true;
 	if (m_strTiingoIndustry.Compare(pTiingoStock->m_strTiingoIndustry) != 0) return true;
@@ -463,6 +464,7 @@ bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
 	m_strTiingoPermaTicker = pTiingoStock->m_strTiingoPermaTicker;
+	m_strName = pTiingoStock->m_strName;
 	m_fIsActive = pTiingoStock->m_fIsActive;
 	m_fIsADR = pTiingoStock->m_fIsADR;
 	m_strTiingoIndustry = pTiingoStock->m_strTiingoIndustry;

@@ -27,6 +27,7 @@ namespace StockAnalysisTest {
 		if (gl_pChinaMarket != nullptr) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+			//EXPECT_THAT(gl_pChinaMarket->)
 		}
 	}
 
@@ -36,6 +37,11 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+
+			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+			EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
+			EXPECT_FALSE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
+
 			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
 			EXPECT_FALSE(pStock->IsProfileUpdated());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
@@ -44,6 +50,11 @@ namespace StockAnalysisTest {
 
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
+
+			EXPECT_TRUE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
+			EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
+			EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
+			EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
 		}
 	}
 

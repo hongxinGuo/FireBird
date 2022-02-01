@@ -140,30 +140,40 @@ namespace StockAnalysisTest {
 														 &finnhubWebData110));
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
+		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		bool fSucceed = m_finnhubCompanyPeer.ProcessWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}"));
+			EXPECT_STREQ(pStock->GetPeer(), _T("{}"));
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_STREQ(pStock->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_STREQ(pStock->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 正确的数据，但超过200个字符
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_pWorldMarket->GetStock(0)->GetPeer().GetLength(), 200) << "多余200个字符时截断";
+			EXPECT_EQ(pStock->GetPeer().GetLength(), 200) << "多余200个字符时截断";
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(gl_pWorldMarket->GetStock(0)->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_STREQ(pStock->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		default:
 			break;
 		}
+
+		//恢复原状
+		pStock->SetUpdateProfileDB(false);
 	}
 }

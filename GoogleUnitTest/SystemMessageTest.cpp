@@ -141,8 +141,26 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), _T("601919.SS"));
 	}
 
-	TEST_F(SystemMessageTest, TestGetReadingNeteaseDayLineDataTime) {
+	TEST_F(SystemMessageTest, TestGetStockCodeForInquiringNeteaseDayLine) {
 		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(_T("600000.SS"));
 		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine(), _T("600000.SS"));
+	}
+
+	TEST_F(SystemMessageTest, TestGetCurrentFinnhubWebSocketStake) {
+		gl_systemMessage.SetCurrentFinnhubWebSocketStake(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentFinnhubWebSocketStake(), _T("600000.SS"));
+	}
+
+	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketIEX) {
+		gl_systemMessage.SetCurrentTiingoWebSocketIEX(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX(), _T("600000.SS"));
+	}
+	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketForex) {
+		gl_systemMessage.SetCurrentTiingoWebSocketForex(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketForex(), _T("600000.SS"));
+	}
+	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketCrypto) {
+		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), _T("600000.SS"));
 	}
 }

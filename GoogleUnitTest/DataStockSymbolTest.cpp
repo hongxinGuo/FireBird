@@ -114,4 +114,25 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 0);
 		EXPECT_EQ(l, 0);
 	}
+
+	TEST_F(CDataStockSymbolTest, TestAdd) {
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("800800.SS"))) << "没有这个数据段的股票代码";
+		s_pDataStockSymbol->Add(_T("800800.SS"));
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol(_T("800800.SS")));
+
+		// 恢复原状
+		EXPECT_TRUE(s_pDataStockSymbol->Delete(_T("800800.SS")));
+	}
+
+	TEST_F(CDataStockSymbolTest, TestUpdateStockSectionDB) {
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSectionActive(800));
+		s_pDataStockSymbol->SetStockSectionActiveFlag(800, true);
+		s_pDataStockSymbol->UpdateStockSectionDB();
+		s_pDataStockSymbol->LoadStockSectionDB();
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(800));
+
+		// 恢复原状
+		s_pDataStockSymbol->SetStockSectionActiveFlag(800, false);
+		s_pDataStockSymbol->UpdateStockSectionDB();
+	}
 }
