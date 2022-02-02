@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+#include"FinnhubInquiryType.h"
 
 #include"TiingoFactory.h"
 #include"ProductTiingoStockSymbol.h"

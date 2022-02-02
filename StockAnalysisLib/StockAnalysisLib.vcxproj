@@ -25,6 +25,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />

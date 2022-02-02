@@ -675,6 +675,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSymbol.h">
       <Filter>头文件\Data Class\China Market</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">

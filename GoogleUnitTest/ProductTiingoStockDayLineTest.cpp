@@ -104,8 +104,7 @@ namespace StockAnalysisTest {
 		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1,
-													 ParseTiingoStockDayLineTest,
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest,
 													 testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
 														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
@@ -154,5 +153,108 @@ namespace StockAnalysisTest {
 		default:
 			break;
 		}
+	}
+
+	class ProcessTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			TiingoWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket.get());
+			m_tiingoStockPriceCandle.SetIndex(0);
+		}
+
+		virtual void TearDown(void) override {
+			// clearup
+			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
+			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
+			gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
+													 testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
+
+	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
+		CDayLineVectorPtr pvDayLine;
+		CString strMessage;
+		CDayLinePtr pDayLine;
+		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+
+		bool fSucceed = m_tiingoStockPriceCandle.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			strMessage = _T("日线为无效JSon数据\n");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			break;
+		case 2: //
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 3: //
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 5:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 6:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 7:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 8:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			break;
+		case 9:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pStock->GetDayLineSize(), 1);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pStock->GetDayLineSize(), 2);
+			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			break;
+		default:
+			break;
+		}
+		// 恢复原状
+		pStock->UnloadDayLine();
 	}
 }

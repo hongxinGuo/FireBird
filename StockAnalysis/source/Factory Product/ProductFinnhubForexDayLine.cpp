@@ -46,8 +46,15 @@ bool CProductFinnhubForexDayLine::ProcessWebData(CWebDataPtr pWebData) {
 		pForexSymbol->SetDayLineNeedSaving(true);
 		pForexSymbol->SetUpdateProfileDB(true);
 		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+		return true;
 	}
-	return true;
+	else {
+		pForexSymbol->SetDayLineNeedUpdate(false);
+		pForexSymbol->SetDayLineNeedSaving(false);
+		pForexSymbol->SetUpdateProfileDB(false);
+		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+		return false;
+	}
 }
 
 CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {

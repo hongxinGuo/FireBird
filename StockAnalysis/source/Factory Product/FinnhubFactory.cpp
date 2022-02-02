@@ -2,6 +2,7 @@
 
 #include"globedef.h"
 #include"WorldMarket.h"
+#include"FinnhubInquiryType.h"
 
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"

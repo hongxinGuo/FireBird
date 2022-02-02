@@ -170,4 +170,133 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			m_pWebData = pData->m_pData;
+			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket.get());
+			m_finnhubForexDayLine.SetIndex(0);
+		}
+
+		virtual void TearDown(void) override {
+			// clearup
+
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubForexDayLine m_finnhubForexDayLine;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle, ProcessFinnhubForexCandleTest,
+													 testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
+														 &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+
+	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
+		CString strMessage;
+		CForexSymbolPtr pForex = gl_pWorldMarket->GetForexSymbol(0);
+
+		bool fSucceed = m_finnhubForexDayLine.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateProfileDB());
+			strMessage = _T("日线为无效JSon数据");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			break;
+		case 2: // s项报告not ok
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateProfileDB());
+			strMessage = _T("日线返回值不为ok");
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			break;
+		case 3: // s项报告 no data
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateProfileDB());
+			break;
+		case 4:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 5:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 6:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 7:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 8:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 9:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			break;
+		case 11: // 没有s项
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
+			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateProfileDB());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		default:
+			break;
+		}
+	}
 }

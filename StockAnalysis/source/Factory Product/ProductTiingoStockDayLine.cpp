@@ -36,19 +36,26 @@ bool CProductTiingoStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pvDayLine = ParseTiingoStockDayLine(pWebData);
-	for (auto& pDayLine2 : *pvDayLine) {
-		pDayLine2->SetExchange(pStock->GetExchangeCode());
-		pDayLine2->SetStockSymbol(pStock->GetSymbol());
-		pDayLine2->SetDisplaySymbol(pStock->GetTicker());
+	if (pvDayLine->size() > 0) {
+		for (auto& pDayLine2 : *pvDayLine) {
+			pDayLine2->SetExchange(pStock->GetExchangeCode());
+			pDayLine2->SetStockSymbol(pStock->GetSymbol());
+			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
+		}
+		pStock->UpdateDayLine(*pvDayLine);
+		pStock->SetDayLineNeedUpdate(false);
+		pStock->SetDayLineNeedSaving(true);
+		pStock->SetUpdateProfileDB(true);
+		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		return true;
 	}
-	pStock->UpdateDayLine(*pvDayLine);
-	pStock->SetDayLineNeedUpdate(false);
-	pStock->SetDayLineNeedSaving(true);
-	pStock->SetUpdateProfileDB(true);
-
-	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
-
-	return true;
+	else {
+		pStock->SetDayLineNeedUpdate(false);
+		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateProfileDB(false);
+		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		return false;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

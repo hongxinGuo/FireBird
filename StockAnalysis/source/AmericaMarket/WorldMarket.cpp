@@ -4,29 +4,18 @@
 #include"SystemData.h"
 
 #include "WorldMarket.h"
+#include"FinnhubInquiryType.h"
 #include"thread.h"
 #include"Callablefunction.h"
+#include"WebInquirer.h"
+
+#include"FinnhubInquiryType.h"
 
 #include"ProductFinnhubStockPriceQuote.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
-#include"ProductFinnhubForexSymbol.h"
-#include"ProductFinnhubCryptoSymbol.h"
-
-#include"WebInquirer.h"
-#include"EPSSurprise.h"
 
 #include"SetWorldMarketOption.h"
-#include"SetFinnhubForexExchange.h"
-#include"SetFinnhubCryptoExchange.h"
-#include"SetWorldStock.h"
-#include"SetWorldChoicedStock.h"
-#include"SetWorldChoicedForex.h"
-#include"SetWorldChoicedCrypto.h"
 #include"SetWorldStockDayLine.h"
-#include"SetCountry.h"
-#include"SetEconomicCalendar.h"
-#include"SetEPSSurprise.h"
-#include"SetTiingoStock.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
@@ -1618,6 +1607,7 @@ bool CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiin
 			pStock->SetNew(pTiingoIEXbData->m_dLastPrice * 1000);
 			break;
 		case 'Q':
+			// do nothing
 			break;
 		}
 	}

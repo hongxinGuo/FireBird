@@ -3,6 +3,7 @@
 #include"globedef.h"
 
 #include"WorldMarket.h"
+#include"FinnhubInquiryType.h"
 
 #include "TiingoFactory.h"
 
