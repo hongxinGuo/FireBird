@@ -10,8 +10,11 @@ CSetWorldMarketOption::CSetWorldMarketOption(CString strSchema, CString strTable
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_FinnhubToken = _T(" ");
+	m_FinnhubNumberPerHour = 3000; // 每分钟查询50次，每次间隔1.2秒
 	m_TiingoToken = _T(" ");
+	m_TiingoNumberPerHour = 450; // 每分钟查询7.5次。每次间隔8秒。
 	m_QuandlToken = _T(" ");
+	m_QuandlNumberPerHour = 0;
 	m_nFields = 4;
 }
 

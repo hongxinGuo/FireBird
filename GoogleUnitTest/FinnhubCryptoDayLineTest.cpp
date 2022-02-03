@@ -153,4 +153,127 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
+			m_pWebData = pData->m_pData;
+			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCryptoDayLine.SetIndex(0);
+		}
+
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle, ProcessFinnhubCryptoCandleTest,
+													 testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+														 &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+
+	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
+		CString strMessage;
+		CFinnhubCryptoSymbolPtr pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(0);
+		bool fSucceed = m_finnhubCryptoDayLine.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("日线为无效JSon数据"));
+			break;
+		case 2: // s项报告not ok
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("日线返回值不为ok"));
+			break;
+		case 3: // s项报告 no data
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
+			break;
+		case 4: //数据缺乏t项
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
+			break;
+		case 5:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 6:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 7:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 8:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 9:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			break;
+		case 11: // 没有s项
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
+			break;
+		default:
+			break;
+		}
+		pCrypto->SetDayLineNeedUpdate(true);
+		pCrypto->SetDayLineNeedSaving(false);
+		pCrypto->SetUpdateProfileDB(false);
+		pCrypto->UnloadDayLine();
+	}
 }

@@ -22,8 +22,11 @@ public:
 
 	long m_ID;  // 索引用，自动生成。
 	CString m_FinnhubToken;
+	long m_FinnhubNumberPerHour; // Finnhub.io每小时最多查询次数。 免费账户3600次/小时，付费账户54000次/小时
 	CString m_TiingoToken;
+	long m_TiingoNumberPerHour; // tiingo.com每小时最多查询次数 免费账户500次/小时，付费账户5000次/小时
 	CString m_QuandlToken;
+	long m_QuandlNumberPerHour; // quandl.com每小时最多查询次数
 
 	// 重写
 		// 向导生成的虚函数重写

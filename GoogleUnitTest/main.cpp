@@ -77,6 +77,7 @@ ExcludeSourceFromCodeCoverage(Exclude109, L"C:\\users\\hxguo\\source\\repos\\Sto
 ExcludeSourceFromCodeCoverage(Exclude110, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoIEXWebSocket.cpp");
 ExcludeSourceFromCodeCoverage(Exclude111, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoCryptoWebSocket.cpp");
 ExcludeSourceFromCodeCoverage(Exclude112, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoForexWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude113, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\semaphore.h");
 
 //  排除单个类或单个类函数
 ExcludeFromCodeCoverage(CMainFrame1, L"CMainFrame::AssertValid");

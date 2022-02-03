@@ -133,4 +133,80 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	class ProcessFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			EXPECT_TRUE(m_pStock != nullptr);
+			m_pWebData = pData->m_pData;
+			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket.get());
+			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			m_pStock->SetProfileUpdated(false);
+			m_pStock->SetUpdateProfileDB(false);
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWorldStockPtr m_pStock;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
+													 testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+														 &finnhubWebData125, &finnhubWebData130));
+
+	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
+		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		bool fSucceed = m_finnhubStockEstimatesEPSSurprise.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // 格式不对
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			break;
+		case 3: //
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			break;
+		case 4: // 第二个数据缺缺actual
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 1);
+			break;
+		case 5: // 第三个数据缺CodeNo
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 2);
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
+			break;
+		default:
+			break;
+		}
+		pStock->m_fEPSSurpriseUpdated = false;
+		pStock->m_fEPSSurpriseNeedSave = false;
+		pStock->SetUpdateProfileDB(false);
+		pStock->m_vEPSSurprise.resize(0);
+	}
 }

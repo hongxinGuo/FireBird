@@ -116,6 +116,7 @@ public:
 
 	bool TaskUpdateDayLineStartEndDate(void);
 
+	void ClearEconomicCanendar(void) { m_dataFinnhubEconomicCalendar.Reset(); }
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// ¸÷ÖÖ×´Ì¬

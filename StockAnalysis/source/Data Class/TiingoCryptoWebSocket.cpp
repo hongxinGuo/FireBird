@@ -77,6 +77,20 @@ bool CTiingoCryptoWebSocket::Connect(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
+	ASSERT(IsOpen());
+
+	string messageAuth(CreateMessage(vSymbol));
+	ix::WebSocketSendInfo info;
+
+	ASSERT(IsOpen());
+
+	info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+
+	return true;
+}
+
+CString CTiingoCryptoWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString str;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5£ºTrade Updates per-exchange.2£ºTop-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
@@ -90,15 +104,7 @@ bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
 
 	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
-	string messageAuth(str);
-	ix::WebSocketSendInfo info;
-
-	ASSERT(IsOpen());
-
-	info = Sending(messageAuth);
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
+	return str;
 }
 
 bool CTiingoCryptoWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {

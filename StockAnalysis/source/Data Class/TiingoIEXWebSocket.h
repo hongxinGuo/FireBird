@@ -15,6 +15,7 @@ public:
 
 	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
 
+	CString CreateMessage(vector<CString> vSymbol);
 	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
 };
 

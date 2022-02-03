@@ -123,4 +123,61 @@ namespace StockAnalysisTest {
 			break;
 		}
 	}
+
+	class ProcessFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket.get());
+			m_finnhubEconomicCalendar.SetIndex(0);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
+													 testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+														 &finnhubWebData115, &finnhubWebData120));
+
+	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+		bool fSucceed = m_finnhubEconomicCalendar.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 2: // 格式不对
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+			break;
+		case 3: // 缺乏economicCalendar
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+			break;
+		case 4: // 第一个数据缺actual
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+			break;
+		case 5: // 第二个数据缺actual
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+			break;
+		default:
+			break;
+		}
+		gl_pWorldMarket->ClearEconomicCanendar();
+		gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(false);
+	}
 }

@@ -69,6 +69,20 @@ bool CTiingoIEXWebSocket::Connect(void) {
 }
 
 bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
+	ASSERT(IsOpen());
+
+	string messageAuth(CreateMessage(vSymbol));
+	ix::WebSocketSendInfo info;
+
+	ASSERT(IsOpen());
+
+	info = Sending(messageAuth);
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+
+	return true;
+}
+
+CString CTiingoIEXWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString str;
 	CString strSymbols;
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
@@ -83,15 +97,7 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 
 	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
 
-	string messageAuth(str);
-	ix::WebSocketSendInfo info;
-
-	ASSERT(IsOpen());
-
-	info = Sending(messageAuth);
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
+	return str;
 }
 
 bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
