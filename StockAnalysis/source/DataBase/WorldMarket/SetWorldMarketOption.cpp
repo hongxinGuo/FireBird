@@ -10,12 +10,12 @@ CSetWorldMarketOption::CSetWorldMarketOption(CString strSchema, CString strTable
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_FinnhubToken = _T(" ");
-	m_FinnhubNumberPerHour = 3000; // 每分钟查询50次，每次间隔1.2秒
+	m_FinnhubMaxPerHour = 3000; // 每分钟查询50次，每次间隔1.2秒
 	m_TiingoToken = _T(" ");
-	m_TiingoNumberPerHour = 450; // 每分钟查询7.5次。每次间隔8秒。
+	m_TiingoMaxPerHour = 450; // 每分钟查询7.5次。每次间隔8秒。
 	m_QuandlToken = _T(" ");
-	m_QuandlNumberPerHour = 0;
-	m_nFields = 4;
+	m_QuandlMaxPerHour = 0;
+	m_nFields = 7;
 }
 
 void CSetWorldMarketOption::DoFieldExchange(CFieldExchange* pFX) {
@@ -25,8 +25,11 @@ void CSetWorldMarketOption::DoFieldExchange(CFieldExchange* pFX) {
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("FinnhubToken"), m_FinnhubToken);
+	RFX_Long(pFX, _T("FinnhubMaxPerHour"), m_FinnhubMaxPerHour);
 	RFX_Text(pFX, _T("TiingoToken"), m_TiingoToken);
+	RFX_Long(pFX, _T("TiingoMaxPerHour"), m_TiingoMaxPerHour);
 	RFX_Text(pFX, _T("QuandlToken"), m_QuandlToken);
+	RFX_Long(pFX, _T("QuandlMaxPerHour"), m_QuandlMaxPerHour);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetWorldForexDayLine 诊断

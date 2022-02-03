@@ -1213,9 +1213,11 @@ bool CWorldMarket::LoadOption(void) {
 	setOption.Open();
 	if (setOption.m_FinnhubToken.GetLength() > 5) {
 		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(setOption.m_FinnhubToken);
+		gl_pFinnhubWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_FinnhubMaxPerHour);
 	}
 	if (setOption.m_TiingoToken.GetLength() > 5) {
 		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(setOption.m_TiingoToken);
+		gl_pTiingoWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_TiingoMaxPerHour);
 	}
 	if (setOption.m_QuandlToken.GetLength() > 5) {
 		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(setOption.m_QuandlToken);
