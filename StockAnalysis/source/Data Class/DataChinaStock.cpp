@@ -618,9 +618,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		pStock->SetDayLineEndDate(lCurrentTradeDay);
 		pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
 		pStock->SetUpdateProfileDB(true);
-		setDayLineBasicInfo.AddNew();
-		pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);
-		setDayLineBasicInfo.Update();
+		pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
@@ -633,9 +631,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
 			continue;
 		}
-		setDayLineExtendInfo.AddNew();
-		pStock->SaveTodayExtendInfo(&setDayLineExtendInfo);
-		setDayLineExtendInfo.Update();
+		pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
 	}
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();

@@ -643,9 +643,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1"); // 存储新数据时无需查询旧数据，故而使用最简单的主索引ID
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		setDayLineBasicInfo.AddNew();
-		stock.SaveTodayBasicInfo(&setDayLineBasicInfo);
-		setDayLineBasicInfo.Update();
+		stock.AppendTodayBasicInfo(&setDayLineBasicInfo);
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 	}
@@ -1986,9 +1984,7 @@ namespace StockAnalysisTest {
 		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();
-		setDayLineExtendInfo.AddNew();
-		pStock->SaveTodayExtendInfo(&setDayLineExtendInfo);
-		setDayLineExtendInfo.Update();
+		pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
 		setDayLineExtendInfo.m_pDatabase->CommitTrans();
 		setDayLineExtendInfo.Close();
 
@@ -2138,7 +2134,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
-			dayLine.LoadHistoryCandleBasic(&setDayLineBasicInfo);
+			dayLine.LoadBasic(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
@@ -2503,15 +2499,15 @@ namespace StockAnalysisTest {
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineExtendInfo.Open();
-		setDayLineExtendInfo.AddNew();
-		stock.SaveTodayExtendInfo(&setDayLineExtendInfo);
-		setDayLineExtendInfo.Update();
+		setDayLineExtendInfo.m_pDatabase->BeginTrans();
+		stock.AppendTodayExtendInfo(&setDayLineExtendInfo);
+		setDayLineExtendInfo.m_pDatabase->CommitTrans();
 		setDayLineExtendInfo.Close();
 
 		CDayLine dayLine;
 		setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
 		setDayLineExtendInfo.Open();
-		dayLine.LoadHistoryCandleExtend(&setDayLineExtendInfo);
+		dayLine.LoadExtend(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetMarketTime(), 0);
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
@@ -2638,7 +2634,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		for (int i = 0; i < 10; i++) {
-			stock.LoadHistoryCandleBasic(&setWeekLineBasicInfo);
+			stock.LoadBasic(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());

@@ -1,22 +1,22 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include "DayLineContainer.h"
+#include "DataChinaDayLine.h"
 
-CDayLineContainer::CDayLineContainer() {
+CDataChinaDayLine::CDataChinaDayLine() {
 }
 
-CDayLineContainer::~CDayLineContainer() {
+CDataChinaDayLine::~CDataChinaDayLine() {
 }
 
-bool CDayLineContainer::SaveData(CString strStockSymbol) {
+bool CDataChinaDayLine::SaveDB(CString strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasic;
-	SaveBasicData(&setDayLineBasic, strStockSymbol);
+	UpdateBasicDB(&setDayLineBasic, strStockSymbol);
 
 	return true;
 }
 
-bool CDayLineContainer::LoadData(CString strStockSymbol) {
+bool CDataChinaDayLine::LoadDB(CString strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -28,16 +28,16 @@ bool CDayLineContainer::LoadData(CString strStockSymbol) {
 	setDayLineBasicInfo.m_strFilter += _T("'");
 	setDayLineBasicInfo.m_strSort = _T("[Date]");
 	setDayLineBasicInfo.Open();
-	LoadBasicData(&setDayLineBasicInfo);
+	LoadBasicDB(&setDayLineBasicInfo);
 	setDayLineBasicInfo.Close();
 
-	// 装入DayLineInfo数据
+	// 装入DayLineExtendInfo数据
 	setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '");
 	setDayLineExtendInfo.m_strFilter += strStockSymbol;
 	setDayLineExtendInfo.m_strFilter += _T("'");
 	setDayLineExtendInfo.m_strSort = _T("[Date]");
 	setDayLineExtendInfo.Open();
-	LoadExtendData(&setDayLineExtendInfo);
+	LoadExtendDB(&setDayLineExtendInfo);
 	setDayLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
@@ -51,7 +51,7 @@ bool CDayLineContainer::LoadData(CString strStockSymbol) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave) {
+void CDataChinaDayLine::UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave) {
 	CDayLinePtr pDayLine = nullptr;
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
@@ -76,7 +76,7 @@ void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fReve
 	SetDataLoaded(true);
 }
 
-bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
+bool CDataChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(GetDataSize() > 0);
 	long lCurrentDayLinePos = 0;
@@ -91,7 +91,7 @@ bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	return true;
 }
 
-CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
+CWeekLinePtr CDataChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(GetDataSize() > 0);
 	ASSERT(lCurrentDayLinePos < GetDataSize());
 

@@ -39,7 +39,7 @@ void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	else m_dRSLogarithm = 50;
 }
 
-bool CVirtualHistoryCandleBasic::SaveHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+bool CVirtualHistoryCandleBasic::SaveBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
@@ -65,16 +65,16 @@ bool CVirtualHistoryCandleBasic::SaveHistoryCandleBasic(not_null<CVirtualSetHist
 	return true;
 }
 
-bool CVirtualHistoryCandleBasic::AppendHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+bool CVirtualHistoryCandleBasic::AppendBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	pVirtualSetHistoryCandleBasic->AddNew();
-	SaveHistoryCandleBasic(pVirtualSetHistoryCandleBasic);
+	SaveBasic(pVirtualSetHistoryCandleBasic);
 	pVirtualSetHistoryCandleBasic->Update();
 
 	return true;
 }
 
-bool CVirtualHistoryCandleBasic::LoadHistoryCandleBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+bool CVirtualHistoryCandleBasic::LoadBasic(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
 	m_strExchange = pVirtualSetHistoryCandleBasic->m_Exchange;

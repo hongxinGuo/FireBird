@@ -30,8 +30,8 @@ enum {
 
 #include"OneDeal.h"
 
-#include"WeekLineContainer.h"
-#include"DayLineContainer.h"
+#include"DataChinaWeekLine.h"
+#include"DataChinaDayLine.h"
 
 using namespace std;
 #include<vector>
@@ -263,11 +263,11 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	virtual bool LoadDayLine(CString strStockCode); // 此函数加载
-	virtual bool SaveDayLineBasicInfo(void); // 存储日线历史数据
-	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-	void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
-	void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
+	virtual bool LoadDayLine(CString strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
+	virtual bool SaveDayLineBasicInfo(void) { CSetDayLineBasicInfo setDayLineBasic; return m_dataDayLine.UpdateBasicDB(&setDayLineBasic, GetSymbol()); }
+	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(psetDayLineBasicInfo); }
+	void AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
+	void AppendTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
 	void SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp); // 存储当日计算出的数据
 	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdatedData); // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate(void);
@@ -275,9 +275,9 @@ public:
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	bool CheckDayLineStatus(void);
 	//周线历史数据存取
-	virtual bool LoadWeekLine();
-	virtual bool SaveWeekLine();
-	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }
+	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
+	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(psetWeekLineBasicInfo); }
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 挂单情况
@@ -328,10 +328,10 @@ public:
 	virtual void ReportGuadanTransaction(void);
 	virtual void ReportGuadan(void);
 
-	void PushRTData(CWebRTDataPtr pData);
-	CWebRTDataPtr PopRTData(void);
-	CWebRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
-	INT64 GetRTDataQueueSize(void);
+	void PushRTData(CWebRTDataPtr pData) { m_qRTData.PushData(pData); }
+	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
+	CWebRTDataPtr GetRTDataAtHead(void) { return m_qRTData.GetHead(); }
+	INT64 GetRTDataQueueSize(void) { return m_qRTData.GetDataSize(); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque(void);
 
@@ -339,55 +339,55 @@ public:
 
 	//日线相关函数
 	// 日线历史数据
-	size_t GetDayLineSize(void) const noexcept { return m_DayLine.GetDataSize(); }
+	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
 	bool HaveNewDayLineData(void);
-	void UnloadDayLine(void) noexcept { m_DayLine.Unload(); }
-	bool StoreDayLine(CDayLinePtr pDayLine) { return m_DayLine.StoreData(pDayLine); }
-	CDayLinePtr GetDayLine(long lIndex) { return static_pointer_cast<CDayLine>(m_DayLine.GetData(lIndex)); }
-	void ShowDayLine(CDC* pDC, CRect rectClient);
-	void ShowWeekLine(CDC* pDC, CRect rectClient);
-	void Get1DaysRS(vector<double>& vRS);
-	void GetRSIndex1Day(vector<double>& vRS);
-	void GetRSLogarithm1Day(vector<double>& vRS);
-	void Get3DaysRS(vector<double>& vRS);
-	void Get5DaysRS(vector<double>& vRS);
-	void Get10DaysRS(vector<double>& vRS);
-	void Get30DaysRS(vector<double>& vRS);
-	void Get60DaysRS(vector<double>& vRS);
-	void Get120DaysRS(vector<double>& vRS);
+	void UnloadDayLine(void) noexcept { m_dataDayLine.Unload(); }
+	bool StoreDayLine(CDayLinePtr pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
+	CDayLinePtr GetDayLine(long lIndex) { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	void ShowDayLine(CDC* pDC, CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
+	void ShowWeekLine(CDC* pDC, CRect rectClient) { m_dataWeekLine.ShowData(pDC, rectClient); }
+	void Get1DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS1(vRS); }
+	void GetRSIndex1Day(vector<double>& vRS) { m_dataDayLine.GetRSIndex1(vRS); }
+	void GetRSLogarithm1Day(vector<double>& vRS) { m_dataDayLine.GetRSLogarithm1(vRS); }
+	void Get3DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS3(vRS); }
+	void Get5DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS5(vRS); }
+	void Get10DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS10(vRS); }
+	void Get30DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS30(vRS); }
+	void Get60DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS60(vRS); }
+	void Get120DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS120(vRS); }
 
 	// 日线相对强度计算
-	bool CalculateDayLineRS(void);
-	bool CalculateDayLineRSIndex(void);
-	bool CalculateDayLineRSLogarithm(void);
+	bool CalculateDayLineRS(void) { return m_dataDayLine.CalculateRS0(); }
+	bool CalculateDayLineRSIndex(void) { return m_dataDayLine.CalculateRSIndex0(); }
+	bool CalculateDayLineRSLogarithm(void) { return m_dataDayLine.CalculateRSLogarithm0(); }
 
 	bool IsDayLineDBUpdated(void) const noexcept { return (m_fDayLineDBUpdated); }
 	void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-	bool IsDayLineLoaded(void) const noexcept { return m_DayLine.IsDataLoaded(); }
-	void SetDayLineLoaded(bool fFlag) noexcept { m_DayLine.SetDataLoaded(fFlag); }
+	bool IsDayLineLoaded(void) const noexcept { return m_dataDayLine.IsDataLoaded(); }
+	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
 
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine(void);
 	void SetTodayActive(CString strStockCode, CString strStockName);
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false); // 使用新队列更新日线队列
+	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) { m_dataDayLine.UpdateData(vTempDayLine, fRevertSave); }
 	void ReportDayLineDownLoaded(void);
 
 	// 周线相关函数
-	size_t GetWeekLineSize(void) noexcept { return m_WeekLine.GetDataSize(); }
-	CWeekLinePtr GetWeekLine(long lIndex) { return static_pointer_cast<CWeekLine>(m_WeekLine.GetData(lIndex)); }
-	void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
+	size_t GetWeekLineSize(void) noexcept { return m_dataWeekLine.GetDataSize(); }
+	CWeekLinePtr GetWeekLine(long lIndex) { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
+	void UnloadWeekLine(void) noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
-	bool StoreWeekLine(CWeekLinePtr pWeekLine) { return m_WeekLine.StoreData(pWeekLine); }
-	bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
-	void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
+	bool StoreWeekLine(CWeekLinePtr pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
+	bool IsWeekLineLoaded(void) noexcept { return m_dataWeekLine.IsDataLoaded(); }
+	void SetWeekLineLoaded(bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算
-	bool CalculateWeekLineRS(void);
-	bool CalculateWeekLineRSIndex(void);
-	bool CalculateWeekLineRSLogarithm(void);
+	bool CalculateWeekLineRS(void) { return m_dataWeekLine.CalculateRS0(); }
+	bool CalculateWeekLineRSIndex(void) { return m_dataWeekLine.CalculateRSIndex0(); }
+	bool CalculateWeekLineRSLogarithm(void) { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
 	// 当前被处理历史数据容器
-	CVirtualHistoryCandleExtendContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
-	CVirtualHistoryCandleExtendContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
+	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine(void) noexcept { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine(void) noexcept { return &m_dataWeekLine; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
@@ -532,10 +532,10 @@ protected:
 	CPriorityQueueWebRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
 	CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
-	// 日线相关数据
-	CDayLineContainer m_DayLine; // 日线容器
-	// 周线相关数据
-	CWeekLineContainer m_WeekLine; // 周线容器
+	// 日线容器
+	CDataChinaDayLine m_dataDayLine;
+	// 周线容器
+	CDataChinaWeekLine m_dataWeekLine;
 
 	bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 };

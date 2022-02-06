@@ -1537,7 +1537,7 @@ namespace StockAnalysisTest {
 		setDayLine.m_strFilter += strDate;
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
-		pDayLine->AppendHistoryCandleBasic(&setDayLine);
+		pDayLine->AppendBasic(&setDayLine);
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 
@@ -1602,7 +1602,7 @@ namespace StockAnalysisTest {
 		setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
 		setCurrentWeekLine.Open();
 		setCurrentWeekLine.m_pDatabase->BeginTrans();
-		pWeekLine->AppendHistoryCandle(&setCurrentWeekLine);
+		pWeekLine->Append(&setCurrentWeekLine);
 		setCurrentWeekLine.m_pDatabase->CommitTrans();
 		setCurrentWeekLine.Close();
 
@@ -1619,10 +1619,10 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadDayLine) {
-		CDayLineContainer dayLineContainer;
+		CDataChinaDayLine dataChinaDayLine;
 		long lDate = GetCurrentMonday(20200101);
 
-		gl_pChinaMarket->LoadDayLine(dayLineContainer, lDate);
+		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
 
 		CString strSQL;
 		CString strDate;
@@ -1640,11 +1640,11 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter += strDate;
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
-			pDayLine = dynamic_pointer_cast<CDayLine>(dayLineContainer.GetData(i++));
+			pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
 			setDayLineBasicInfo.MoveNext();
 		}
-		EXPECT_EQ(i, dayLineContainer.GetDataSize());
+		EXPECT_EQ(i, dataChinaDayLine.GetDataSize());
 		setDayLineBasicInfo.Close();
 	}
 

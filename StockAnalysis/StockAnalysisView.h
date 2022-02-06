@@ -102,7 +102,7 @@ protected:
 	int m_iCurrentShowType;// 当前显示状态（日线、周线或实时。。。）
 
 	//当前被操作的历史数据容器
-	CVirtualHistoryCandleExtendContainer* m_pCurrentHistoryCandleContainer;
+	CVirtualDataHistoryCandleExtend* m_pCurrentDataHistoryCandle;
 
 	bool m_fShowTransactionGraph; // 显示交易具体情况的图
 	CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。

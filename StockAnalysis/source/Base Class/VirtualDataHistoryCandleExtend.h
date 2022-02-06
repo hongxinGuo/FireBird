@@ -13,20 +13,21 @@ using namespace std;
 #include<memory>
 #include<atomic>
 
-class CVirtualHistoryCandleExtendContainer : public CObject {
+class CVirtualDataHistoryCandleExtend : public CObject {
 public:
-	CVirtualHistoryCandleExtendContainer();
-	virtual ~CVirtualHistoryCandleExtendContainer();
+	CVirtualDataHistoryCandleExtend();
+	virtual ~CVirtualDataHistoryCandleExtend();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-	virtual bool SaveData(CString strStockSymbol) { TRACE(_T("调用了基类SaveData\n")); return false; }
-	virtual bool LoadData(CString strStockSymbol) { TRACE(_T("调用了基类LoadData\n")); return false; }
+	// 所有的派生类皆需要定义次两个存储和提取函数，不允许调用此基类函数
+	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); ASSERT(0); return false; }
+	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); ASSERT(0); return false; }
 
-	bool SaveBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
-	bool SaveExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
+	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
-	bool LoadBasicData(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
-	bool LoadExtendData(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
+	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
 	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine);
 
@@ -73,4 +74,4 @@ protected:
 	bool m_fLoadDataFirst;
 };
 
-typedef shared_ptr<CVirtualHistoryCandleExtendContainer> CVirtualHistoryCandleExtendContainerPtr;
+typedef shared_ptr<CVirtualDataHistoryCandleExtend> CVirtualDataHistoryCandleExtendPtr;

@@ -3,7 +3,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"WeekLineContainer.h"
+#include"DataChinaWeekLine.h"
 
 #include"SetCurrentWeekLine.h"
 
@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CStockWeekLineContainerTest : public ::testing::Test
+	class CStockDataChinaWeekLineTest : public ::testing::Test
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CStockWeekLineContainerTest, TestUpdateData1) {
+	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
@@ -47,26 +47,26 @@ namespace StockAnalysisTest {
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
 
-		CWeekLineContainer weekLineContainer;
+		CDataChinaWeekLine dataChinaWeekLine;
 		vector<CWeekLinePtr> vWeekLine;
 
 		vWeekLine.push_back(pWeekLine);
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 0);
-		weekLineContainer.StoreData(pWeekLine2);
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
-		EXPECT_FALSE(weekLineContainer.IsDataLoaded());
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 0);
+		dataChinaWeekLine.StoreData(pWeekLine2);
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
+		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 
-		weekLineContainer.UpdateData(vWeekLine);
+		dataChinaWeekLine.UpdateData(vWeekLine);
 
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
-		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
+		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
-		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
+		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 	}
 
-	TEST_F(CStockWeekLineContainerTest, TestUpdateData2) {
+	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(20200101);
@@ -79,18 +79,18 @@ namespace StockAnalysisTest {
 		pWeekLine->SetLow(200);
 		pWeekLine->SetTransactionNumber(1);
 
-		CWeekLineContainer weekLineContainer;
+		CDataChinaWeekLine dataChinaWeekLine;
 
-		weekLineContainer.StoreData(pWeekLine);
-		weekLineContainer.UpdateData(pDayLine);
-		CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
+		dataChinaWeekLine.StoreData(pWeekLine);
+		dataChinaWeekLine.UpdateData(pDayLine);
+		CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
 		EXPECT_EQ(pWeekLine2->GetTransactionNumber(), 102);
 	}
 
-	TEST_F(CStockWeekLineContainerTest, TestStoreData1) {
+	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
@@ -102,42 +102,42 @@ namespace StockAnalysisTest {
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
 
-		CWeekLineContainer weekLineContainer;
+		CDataChinaWeekLine dataChinaWeekLine;
 		vector<CWeekLinePtr> vWeekLine;
 
 		vWeekLine.push_back(pWeekLine);
-		EXPECT_FALSE(weekLineContainer.IsDataLoaded());
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 0);
-		weekLineContainer.StoreData(pWeekLine2);
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 1);
+		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 0);
+		dataChinaWeekLine.StoreData(pWeekLine2);
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
 
-		weekLineContainer.StoreVectorData(vWeekLine);
+		dataChinaWeekLine.StoreVectorData(vWeekLine);
 
-		EXPECT_EQ(weekLineContainer.GetDataSize(), 2);
-		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(0));
+		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 2);
+		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
-		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
+		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 
-		pWeekLine2 = static_pointer_cast<CWeekLine>(weekLineContainer.GetData(1));
+		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(1));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
-		EXPECT_TRUE(weekLineContainer.IsDataLoaded());
+		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 	}
 
-	TEST_F(CStockWeekLineContainerTest, TestSaveLoadCurrentWeekLine) {
+	TEST_F(CStockDataChinaWeekLineTest, TestSaveLoadCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		CWeekLineContainer weekLineContainer, weekLineContainer2;
+		CDataChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
-		weekLineContainer.StoreData(pWeekLine);
+		dataChinaWeekLine.StoreData(pWeekLine);
 
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
-		weekLineContainer.SaveCurrentWeekLine();
+		dataChinaWeekLine.SaveCurrentWeekLine();
 
 		weekLineContainer2.LoadCurrentWeekLine();
 		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));

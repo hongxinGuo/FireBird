@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"MockWeekLineContainer.h"
+#include"MockDataChinaWeekLine.h"
 
 using namespace testing;
 
@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CMockWeekLineContainerTest : public ::testing::Test
+	class CMockDataChinaDayLineTest : public ::testing::Test
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			pWeekLine = make_shared<CMockWeekLineContainer>();
+			pWeekLine = make_shared<CMockDataChinaWeekLine>();
 		}
 
 		virtual void TearDown(void) override {
@@ -34,10 +34,10 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CMockWeekLineContainerPtr pWeekLine;
+		CMockDataChinaWeekLinePtr pWeekLine;
 	};
 
-	TEST_F(CMockWeekLineContainerTest, TestCalculateRS) {
+	TEST_F(CMockDataChinaDayLineTest, TestCalculateRS) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRS1(3))
 			.Times(1);
@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 		pWeekLine->CalculateRS0();
 	}
 
-	TEST_F(CMockWeekLineContainerTest, TestCalculateRSLogarithm) {
+	TEST_F(CMockDataChinaDayLineTest, TestCalculateRSLogarithm) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(3))
 			.Times(1);
@@ -72,7 +72,7 @@ namespace StockAnalysisTest {
 		pWeekLine->CalculateRSLogarithm0();
 	}
 
-	TEST_F(CMockWeekLineContainerTest, TestCalculateRSIndex) {
+	TEST_F(CMockDataChinaDayLineTest, TestCalculateRSIndex) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRSIndex1(3))
 			.Times(1);

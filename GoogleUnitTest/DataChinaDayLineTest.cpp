@@ -3,7 +3,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"DayLineContainer.h"
+#include"DataChinaDayLine.h"
 using namespace testing;
 
 #ifdef _DEBUG
@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CStockDayLineContainerTest : public ::testing::Test
+	class CDataChinaDayLineTest : public ::testing::Test
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -33,8 +33,8 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CStockDayLineContainerTest, TestUpdateData1) {
-		CDayLineContainer dayLineContainer;
+	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
+		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = nullptr;
@@ -66,18 +66,18 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.SetDataLoaded(false);
+		dataChinaDayLine.SetDataLoaded(false);
 
-		dayLineContainer.UpdateData(vDayLine, false);
+		dataChinaDayLine.UpdateData(vDayLine, false);
 
-		EXPECT_THAT(dayLineContainer.IsDataLoaded(), IsTrue());
-		EXPECT_THAT(dayLineContainer.GetDataSize(), 3);
-		EXPECT_THAT(dayLineContainer.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
-		EXPECT_THAT(dayLineContainer.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
+		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
+		EXPECT_THAT(dataChinaDayLine.GetDataSize(), 3);
+		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
+		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
 	}
 
-	TEST_F(CStockDayLineContainerTest, TestUpdateData2) {
-		CDayLineContainer dayLineContainer;
+	TEST_F(CDataChinaDayLineTest, TestUpdateData2) {
+		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = nullptr;
@@ -109,18 +109,18 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.SetDataLoaded(false);
+		dataChinaDayLine.SetDataLoaded(false);
 
-		dayLineContainer.UpdateData(vDayLine, true); // 逆序存储
+		dataChinaDayLine.UpdateData(vDayLine, true); // 逆序存储
 
-		EXPECT_THAT(dayLineContainer.IsDataLoaded(), IsTrue());
-		EXPECT_THAT(dayLineContainer.GetDataSize(), 3);
-		EXPECT_THAT(dayLineContainer.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
-		EXPECT_THAT(dayLineContainer.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
+		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
+		EXPECT_THAT(dataChinaDayLine.GetDataSize(), 3);
+		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
+		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
 	}
 
-	TEST_F(CStockDayLineContainerTest, TestCreateNewWeekLine) {
-		CDayLineContainer dayLineContainer;
+	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
+		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = nullptr;
@@ -172,8 +172,8 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.UpdateData(vDayLine, false);
-		pWeekLine = dayLineContainer.CreateNewWeekLine(lCurrentDayLinePos);
+		dataChinaDayLine.UpdateData(vDayLine, false);
+		pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
 		EXPECT_THAT(pWeekLine->GetMarketDate(), 20191230) << "本周一";
@@ -182,7 +182,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(pWeekLine->GetHigh(), 10030);
 		EXPECT_THAT(pWeekLine->GetLow(), 9910);
 
-		pWeekLine = dayLineContainer.CreateNewWeekLine(lCurrentDayLinePos);
+		pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 5);
 		EXPECT_THAT(pWeekLine->GetMarketDate(), 20200106) << "本周一";
@@ -192,9 +192,9 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(pWeekLine->GetLow(), 9940);
 	}
 
-	TEST_F(CStockDayLineContainerTest, TestBuildWeekLine) {
+	TEST_F(CDataChinaDayLineTest, TestBuildWeekLine) {
 		vector<CWeekLinePtr> vWeekLine;
-		CDayLineContainer dayLineContainer;
+		CDataChinaDayLine dataChinaDayLine;
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = nullptr;
 
@@ -243,8 +243,8 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dayLineContainer.UpdateData(vDayLine, false);
-		dayLineContainer.BuildWeekLine(vWeekLine);
+		dataChinaDayLine.UpdateData(vDayLine, false);
+		dataChinaDayLine.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
 		EXPECT_THAT(vWeekLine.at(0)->GetMarketDate(), 20191230) << "本周一";

@@ -324,7 +324,7 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h">
+    <ClInclude Include="..\StockAnalysis\source\DataChinaDayLine.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Guadan.h">
@@ -342,7 +342,7 @@
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h">
+    <ClInclude Include="..\StockAnalysis\source\DataChinaWeekLine.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
@@ -510,7 +510,7 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h">
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h">
@@ -803,7 +803,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataChinaDayLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp">
@@ -821,7 +821,7 @@
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp">
+    <ClCompile Include="..\StockAnalysis\source\DataChinaWeekLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
@@ -1034,7 +1034,7 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp">
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp">
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp">

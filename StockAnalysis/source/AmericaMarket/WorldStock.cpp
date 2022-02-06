@@ -294,7 +294,7 @@ void CWorldStock::SaveDayLine(void) {
 	setWorldStockDayLine.Open();
 	while (!setWorldStockDayLine.IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandleBasic(&setWorldStockDayLine);
+		pDayLine->LoadBasic(&setWorldStockDayLine);
 		vDayLine.push_back(pDayLine);
 		lSizeOfOldDayLine++;
 		setWorldStockDayLine.MoveNext();
@@ -313,17 +313,17 @@ void CWorldStock::SaveDayLine(void) {
 	for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
 		pDayLine = m_vDayLine.at(i);
 		if (pDayLine->GetMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
-			pDayLine->AppendHistoryCandleBasic(&setSaveWorldStockDayLine);
+			pDayLine->AppendBasic(&setSaveWorldStockDayLine);
 		}
 		else {
 			while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
 			if (lCurrentPos < lSizeOfOldDayLine) {
 				if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
-					pDayLine->AppendHistoryCandleBasic(&setSaveWorldStockDayLine);
+					pDayLine->AppendBasic(&setSaveWorldStockDayLine);
 				}
 			}
 			else {
-				pDayLine->AppendHistoryCandleBasic(&setSaveWorldStockDayLine);
+				pDayLine->AppendBasic(&setSaveWorldStockDayLine);
 			}
 		}
 	}

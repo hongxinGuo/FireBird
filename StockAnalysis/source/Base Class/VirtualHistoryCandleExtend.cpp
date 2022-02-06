@@ -80,7 +80,7 @@ void CVirtualHistoryCandleExtend::Reset(void) {
 	m_lCanceledSellVolumeAbove200000 = 0;
 }
 
-bool CVirtualHistoryCandleExtend::SaveHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::SaveExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->m_Date = m_lDate;
 	pVirtualSetHistoryCandleExtend->m_Symbol = m_strStockSymbol;
@@ -153,15 +153,15 @@ bool CVirtualHistoryCandleExtend::SaveHistoryCandleExtend(CVirtualSetHistoryCand
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::AppendHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::AppendExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->AddNew();
-	SaveHistoryCandleExtend(pVirtualSetHistoryCandleExtend);
+	SaveExtend(pVirtualSetHistoryCandleExtend);
 	pVirtualSetHistoryCandleExtend->Update();
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::LoadHistoryCandleExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::LoadExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	m_lTransactionNumber = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumber);
 	m_lTransactionNumberBelow5000 = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumberBelow5000);
@@ -232,7 +232,7 @@ bool CVirtualHistoryCandleExtend::LoadHistoryCandleExtend(CVirtualSetHistoryCand
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::SaveHistoryCandle(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) {
 	ASSERT(pSet->IsOpen());
 	pSet->m_Date = GetMarketDate();
 	pSet->m_Exchange = GetExchange();
@@ -323,15 +323,15 @@ bool CVirtualHistoryCandleExtend::SaveHistoryCandle(CVirtualSetHistoryCandle* pS
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::AppendHistoryCandle(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Append(CVirtualSetHistoryCandle* pSet) {
 	ASSERT(pSet->IsOpen());
 	pSet->AddNew();
-	SaveHistoryCandle(pSet);
+	Save(pSet);
 	pSet->Update();
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::LoadHistoryCandle(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Load(CVirtualSetHistoryCandle* pSet) {
 	ASSERT(pSet->IsOpen());
 	m_lDate = pSet->m_Date;
 	m_strExchange = pSet->m_Exchange;

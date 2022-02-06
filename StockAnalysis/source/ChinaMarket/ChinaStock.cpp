@@ -141,14 +141,14 @@ void CChinaStock::ClearRTDataDeque(void) {
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
-	if (m_DayLine.GetDataSize() <= 0) return false;
-	if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
+	if (m_dataDayLine.GetDataSize() <= 0) return false;
+	if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	else return false;
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine(void) {
-	if (m_DayLine.GetDataSize() == 0) return;
-	if (gl_pChinaMarket->IsEarlyThen(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+	if (m_dataDayLine.GetDataSize() == 0) return;
+	if (gl_pChinaMarket->IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
 		SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
 	}
 	else {
@@ -163,28 +163,19 @@ void CChinaStock::SetTodayActive(CString strStockCode, CString strStockName) {
 	if (strStockName != _T("")) SetDisplaySymbol(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-// 更新日线容器。
-//
-/////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave) {
-	m_DayLine.UpdateData(vTempDayLine, fRevertSave);
-}
-
 void CChinaStock::ReportDayLineDownLoaded(void) {
 	//CString strTemp = GetSymbol();
 	//strTemp += _T("日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
 	CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 
 	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->SaveHistoryCandleBasic(psetDayLineBasicInfo);
+	pDayLine->AppendBasic(psetDayLineBasicInfo);
 }
 
 void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp) {
@@ -193,7 +184,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp) {
 	ASSERT(psetDayLineTemp->IsOpen());
 
 	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->SaveHistoryCandle(psetDayLineTemp);
+	pDayLine->Save(psetDayLineTemp);
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) {
@@ -311,30 +302,17 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//	将日线历史数据存入数据库．默认数据库为空。
-//  此函数被工作线程调用，需要注意数据同步问题。
-// 当存在旧日线历史数据时，本函数只是更新。
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::SaveDayLineBasicInfo(void) {
-	CSetDayLineBasicInfo setDayLineBasic;
-
-	return m_DayLine.SaveBasicData(&setDayLineBasic, GetSymbol());
-}
-
 void CChinaStock::UpdateDayLineStartEndDate(void) {
 	bool fUpdated = false;
 
-	if (m_DayLine.GetDataSize() > 0) {
-		if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate())) {
-			SetDayLineStartDate(m_DayLine.GetData(0)->GetMarketDate());
+	if (m_dataDayLine.GetDataSize() > 0) {
+		if ((GetDayLineStartDate() == 19900101) || (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate())) {
+			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
-		if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetMarketDate());
+		if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) {
+			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
@@ -344,12 +322,12 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 	}
 }
 
-void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
 	CDayLinePtr pDayLine = make_shared<CDayLine>();
 
 	ASSERT(psetDayLineExtendInfo->IsOpen());
 	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->SaveHistoryCandleExtend(psetDayLineExtendInfo);
+	pDayLine->AppendExtend(psetDayLineExtendInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -428,44 +406,12 @@ void CChinaStock::LoadTodaySavedInfo(CSetDayLineTodaySaved* pSetDayLineTemp) {
 	m_lCanceledSellVolumeAbove200000 = atoll(pSetDayLineTemp->m_CanceledSellVolumeAbove200000);
 }
 
-bool CChinaStock::LoadDayLine(CString strStockCode) {
-	return m_DayLine.LoadData(strStockCode);
-}
-
-bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
-	return m_DayLine.LoadBasicData(psetDayLineBasicInfo);
-}
-
-bool CChinaStock::CalculateDayLineRS(void) {
-	return m_DayLine.CalculateRS0();
-}
-
-bool CChinaStock::CalculateDayLineRSLogarithm(void) {
-	return m_DayLine.CalculateRSLogarithm0();
-}
-
-bool CChinaStock::CalculateDayLineRSIndex(void) {
-	return m_DayLine.CalculateRSIndex0();
-}
-
-bool CChinaStock::CalculateWeekLineRS(void) {
-	return m_WeekLine.CalculateRS0();
-}
-
-bool CChinaStock::CalculateWeekLineRSLogarithm(void) {
-	return m_WeekLine.CalculateRSLogarithm0();
-}
-
-bool CChinaStock::CalculateWeekLineRSIndex(void) {
-	return m_WeekLine.CalculateRSIndex0();
-}
-
 bool CChinaStock::Calculate10RSStrong2StockSet(void) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	vector<double> m_v10DaysRS;
 	int iCountFirst = 0, iCountSecond = 0;
 
-	ASSERT(m_DayLine.IsDataLoaded());
+	ASSERT(m_dataDayLine.IsDataLoaded());
 	const size_t iDayLineSize = GetDayLineSize();
 	if (iDayLineSize > 155) {
 		m_v10DaysRS.resize(iDayLineSize);
@@ -495,7 +441,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
 	vector<double> m_v10DaysRS;
 	int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
-	ASSERT(m_DayLine.IsDataLoaded());
+	ASSERT(m_dataDayLine.IsDataLoaded());
 	const size_t iDayLineSize = GetDayLineSize();
 
 	if (iDayLineSize < 350) return false;
@@ -566,7 +512,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 		fFindHigh4 = true;
 	}
 
-	ASSERT(m_DayLine.IsDataLoaded());
+	ASSERT(m_dataDayLine.IsDataLoaded());
 	const size_t iDayLineSize = GetDayLineSize();
 	if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
 		|| (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
@@ -1379,52 +1325,6 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 	return true;
 }
 
-bool CChinaStock::SaveWeekLine() {
-	return m_WeekLine.SaveData(GetSymbol());
-}
-
-bool CChinaStock::LoadWeekLine() {
-	return m_WeekLine.LoadData(GetSymbol());
-}
-
-bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
-	return m_WeekLine.LoadBasicData(psetWeekLineBasicInfo);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用同步机制存储实时数据。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::PushRTData(CWebRTDataPtr pData) {
-	m_qRTData.PushData(pData);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用同步机制提取实时数据。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-CWebRTDataPtr CChinaStock::PopRTData(void) {
-	return m_qRTData.PopData();
-}
-
-CWebRTDataPtr CChinaStock::GetRTDataAtHead(void) {
-	return m_qRTData.GetHead();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用同步机制提取栈内的实时数据数量。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-INT64 CChinaStock::GetRTDataQueueSize(void) {
-	return m_qRTData.GetDataSize();
-}
-
 bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
 	if (pStock == nullptr) return false;
 	else if (m_strSymbol.Compare(pStock->GetSymbol()) == 0) {
@@ -1462,50 +1362,6 @@ bool CChinaStock::IsTodayDataChanged(void) const {
 	}
 }
 
-void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
-	m_DayLine.ShowData(pDC, rectClient);
-}
-
-void CChinaStock::ShowWeekLine(CDC* pDC, CRect rectClient) {
-	m_WeekLine.ShowData(pDC, rectClient);
-}
-
-void CChinaStock::Get1DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS1(vRS);
-}
-
-void CChinaStock::GetRSIndex1Day(vector<double>& vRS) {
-	m_DayLine.GetRSIndex1(vRS);
-}
-
-void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
-	m_DayLine.GetRSLogarithm1(vRS);
-}
-
-void CChinaStock::Get3DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS3(vRS);
-}
-
-void CChinaStock::Get5DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS5(vRS);
-}
-
-void CChinaStock::Get10DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS10(vRS);
-}
-
-void CChinaStock::Get30DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS30(vRS);
-}
-
-void CChinaStock::Get60DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS60(vRS);
-}
-
-void CChinaStock::Get120DaysRS(vector<double>& vRS) {
-	m_DayLine.GetRS120(vRS);
-}
-
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
 	if ((m_lHighLimit2 > 0) && (m_lLowLimit2 > 0)) {
 		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
@@ -1527,20 +1383,20 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 
 bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	ASSERT(IsDayLineLoaded());
-	ASSERT(m_DayLine.GetDataSize() > 0);
+	ASSERT(m_dataDayLine.GetDataSize() > 0);
 	long i = 0;
 	CWeekLinePtr pWeekLine = nullptr;
 
-	m_WeekLine.Unload();
-	while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetMarketDate() < lStartDate)) {
+	m_dataWeekLine.Unload();
+	while ((i < m_dataDayLine.GetDataSize()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
 		i++;
 	}
-	if (i < m_DayLine.GetDataSize()) {
+	if (i < m_dataDayLine.GetDataSize()) {
 		do {
-			pWeekLine = m_DayLine.CreateNewWeekLine(i);
-			m_WeekLine.StoreData(pWeekLine);
-		} while (i < m_DayLine.GetDataSize());
-		m_WeekLine.SetDataLoaded(true);
+			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);
+			m_dataWeekLine.StoreData(pWeekLine);
+		} while (i < m_dataDayLine.GetDataSize());
+		m_dataWeekLine.SetDataLoaded(true);
 		return true;
 	}
 	else return false;

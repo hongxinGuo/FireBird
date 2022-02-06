@@ -101,7 +101,7 @@
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
-    <ClCompile Include="DayLineContainerTest.cpp" />
+    <ClCompile Include="DataChinaDayLineTest.cpp" />
     <ClCompile Include="FinnhubCompanyPeerTest.cpp" />
     <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp" />
     <ClCompile Include="FinnhubCompanyProfileTest.cpp" />
@@ -158,7 +158,7 @@
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
-    <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp" />
+    <ClCompile Include="ChinaStockDataHistoryDataTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
     <ClCompile Include="CountryTest.cpp" />
     <ClCompile Include="EconomicCalendarTest.cpp" />
@@ -177,13 +177,13 @@
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
-    <ClCompile Include="MockDayLineContainerTest.cpp" />
+    <ClCompile Include="MockDataChinaDayLineTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockFinnhubCryptoSymbol.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
-    <ClInclude Include="MockWeekLineContainer.h" />
-    <ClCompile Include="MockWeekLineContainerTest.cpp" />
+    <ClInclude Include="MockDataChinaWeekLine.h" />
+    <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
@@ -229,7 +229,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ARelease|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="WebInquirerTest.cpp" />
-    <ClCompile Include="WeekLineContainerTest.cpp" />
+    <ClCompile Include="DataChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -238,7 +238,7 @@
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
-    <ClInclude Include="MockDayLineContainer.h" />
+    <ClInclude Include="MockDataChinaDayLine.h" />
     <ClInclude Include="MockFinnHubWebInquiry.h" />
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />

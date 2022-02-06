@@ -2,15 +2,15 @@
 
 #include"DayLine.h"
 #include"WeekLine.h"
-#include "VirtualHistoryCandleExtendContainer.h"
+#include "VirtualDataHistoryCandleExtend.h"
 
-class CDayLineContainer : public CVirtualHistoryCandleExtendContainer {
+class CDataChinaDayLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CDayLineContainer();
-	virtual ~CDayLineContainer();
+	CDataChinaDayLine();
+	virtual ~CDataChinaDayLine();
 public:
-	virtual bool SaveData(CString strStockSymbol) override;
-	virtual bool LoadData(CString strStockSymbol) override;
+	virtual bool SaveDB(CString strStockSymbol) override final;
+	virtual bool LoadDB(CString strStockSymbol) override final;
 
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave);
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);

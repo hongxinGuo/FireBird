@@ -1,29 +1,29 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include "WeekLineContainer.h"
+#include "DataChinaWeekLine.h"
 #include"WeekLine.h"
 
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
-CWeekLineContainer::CWeekLineContainer() {
+CDataChinaWeekLine::CDataChinaWeekLine() {
 }
 
-CWeekLineContainer::~CWeekLineContainer() {
+CDataChinaWeekLine::~CDataChinaWeekLine() {
 }
 
-bool CWeekLineContainer::SaveData(CString strStockSymbol) {
+bool CDataChinaWeekLine::SaveDB(CString strStockSymbol) {
 	CSetWeekLineBasicInfo setWeekLineBasic;
 	CSetWeekLineExtendInfo setWeekLineExtend;
-	SaveBasicData(&setWeekLineBasic, strStockSymbol);
-	SaveExtendData(&setWeekLineExtend);
+	UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
+	SaveExtendDB(&setWeekLineExtend);
 
 	return true;
 }
 
-bool CWeekLineContainer::SaveCurrentWeekLine(void) {
+bool CDataChinaWeekLine::SaveCurrentWeekLine(void) {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 	CWeekLinePtr pWeekLine = nullptr;
 
@@ -33,7 +33,7 @@ bool CWeekLineContainer::SaveCurrentWeekLine(void) {
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		pData->AppendHistoryCandle(&setCurrentWeekLineInfo);
+		pData->Append(&setCurrentWeekLineInfo);
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
@@ -42,7 +42,7 @@ bool CWeekLineContainer::SaveCurrentWeekLine(void) {
 	return true;
 }
 
-bool CWeekLineContainer::LoadData(CString strStockCode) {
+bool CDataChinaWeekLine::LoadDB(CString strStockCode) {
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
@@ -54,7 +54,7 @@ bool CWeekLineContainer::LoadData(CString strStockCode) {
 	setWeekLineBasicInfo.m_strFilter += _T("'");
 	setWeekLineBasicInfo.m_strSort = _T("[Date]");
 	setWeekLineBasicInfo.Open();
-	LoadBasicData(&setWeekLineBasicInfo);
+	LoadBasicDB(&setWeekLineBasicInfo);
 	setWeekLineBasicInfo.Close();
 
 	// 装入WeekLineInfo数据
@@ -63,7 +63,7 @@ bool CWeekLineContainer::LoadData(CString strStockCode) {
 	setWeekLineExtendInfo.m_strFilter += _T("'");
 	setWeekLineExtendInfo.m_strSort = _T("[Date]");
 	setWeekLineExtendInfo.Open();
-	LoadExtendData(&setWeekLineExtendInfo);
+	LoadExtendDB(&setWeekLineExtendInfo);
 	setWeekLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
@@ -73,14 +73,14 @@ bool CWeekLineContainer::LoadData(CString strStockCode) {
 	return true;
 }
 
-bool CWeekLineContainer::LoadCurrentWeekLine(void) {
+bool CDataChinaWeekLine::LoadCurrentWeekLine(void) {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandle(&setCurrentWeekLineInfo);
+		pWeekLine->Load(&setCurrentWeekLineInfo);
 		StoreData(pWeekLine);
 		setCurrentWeekLineInfo.MoveNext();
 	}
@@ -90,7 +90,7 @@ bool CWeekLineContainer::LoadCurrentWeekLine(void) {
 	return true;
 }
 
-bool CWeekLineContainer::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
+bool CDataChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
 	for (auto pWeekLine : vWeekLine) {
 		StoreData(pWeekLine);
 	}
@@ -104,7 +104,7 @@ bool CWeekLineContainer::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
+void CDataChinaWeekLine::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (auto pWeekLine : vTempWeekLine) {
@@ -113,7 +113,7 @@ void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 	SetDataLoaded(true);
 }
 
-bool CWeekLineContainer::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) {
+bool CDataChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) {
 	for (auto pData : m_vHistoryData) {
 		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) { //
 			static_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pHistoryCandleExtend);

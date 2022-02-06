@@ -42,7 +42,7 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
@@ -129,7 +129,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
@@ -175,7 +175,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataChinaWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
@@ -223,7 +223,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtendContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
@@ -304,7 +304,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.cpp" />
@@ -345,7 +345,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataChinaWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

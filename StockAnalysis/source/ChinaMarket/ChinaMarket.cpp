@@ -1298,24 +1298,24 @@ void CChinaMarket::ResetCurrentStock(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
-	CDayLineContainer dayLineContainer;
-	CWeekLineContainer weekLineContainer;
+	CDataChinaDayLine dataChinaDayLine;
+	CDataChinaWeekLine dataChinaWeekLine;
 	set<CString> setDayLineStockCode;
 	set<CString> setWeekLineStockCode;
 	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
 
-	if (!LoadDayLine(dayLineContainer, GetMarketDate())) {
+	if (!LoadDayLine(dataChinaDayLine, GetMarketDate())) {
 		return true; // 加载本日日线数据失败，周线数据无需处理。
 	}
-	auto pDayLineData = dayLineContainer.GetContainer();
+	auto pDayLineData = dataChinaDayLine.GetContainer();
 
 	gl_systemMessage.PushInformationMessage(_T("开始生成今日周线"));
 
-	CreateStockCodeSet(setDayLineStockCode, dayLineContainer.GetContainer());
+	CreateStockCodeSet(setDayLineStockCode, dataChinaDayLine.GetContainer());
 
 	DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
-	weekLineContainer.LoadCurrentWeekLine();
-	CreateStockCodeSet(setWeekLineStockCode, weekLineContainer.GetContainer());
+	dataChinaWeekLine.LoadCurrentWeekLine();
+	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
 
 	CWeekLinePtr pWeekLine;
 	for (auto& pData : *pDayLineData) {
@@ -1323,22 +1323,22 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 			 // 存储此日线数据至周线数据容器
 			pWeekLine = make_shared<CWeekLine>();
 			pWeekLine->UpdateWeekLine(pData);
-			weekLineContainer.StoreData(pWeekLine);
+			dataChinaWeekLine.StoreData(pWeekLine);
 		}
 		else {
 			// 更新周线数据容器
-			weekLineContainer.UpdateData(pData);
+			dataChinaWeekLine.UpdateData(pData);
 		}
 	}
 
 	// 清除之前的周线数据
 	DeleteWeekLine(lCurrentMonday);
 	// 存储周线数据值周线数据表
-	weekLineContainer.SaveData();
+	dataChinaWeekLine.SaveDB();
 	// 清除当前周的数据
 	DeleteCurrentWeekWeekLine();
 	// 存储当前周数据于当前周数据表
-	weekLineContainer.SaveCurrentWeekLine();
+	dataChinaWeekLine.SaveCurrentWeekLine();
 
 	gl_systemMessage.PushInformationMessage(_T("生成今日周线任务完成"));
 
@@ -1365,7 +1365,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 	CString strDate;
 	char buffer[10];
 	CWeekLinePtr pWeekLine = nullptr;
-	CWeekLineContainer weekLineContainer;
+	CDataChinaWeekLine dataChinaWeekLine;
 
 	DeleteCurrentWeekWeekLine();
 
@@ -1383,7 +1383,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadHistoryCandleBasic(&setWeekLineBasicInfo);
+		pWeekLine->LoadBasic(&setWeekLineBasicInfo);
 		while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -1391,8 +1391,8 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 			setWeekLineExtendInfo.MoveFirst();
 		}
 		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
-			pWeekLine->LoadHistoryCandleExtend(&setWeekLineExtendInfo);
-			weekLineContainer.StoreData(pWeekLine);
+			pWeekLine->LoadExtend(&setWeekLineExtendInfo);
+			dataChinaWeekLine.StoreData(pWeekLine);
 			setWeekLineExtendInfo.MoveNext();
 		}
 		else {
@@ -1401,12 +1401,12 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 		setWeekLineBasicInfo.MoveNext();
 	}
 
-	weekLineContainer.SaveCurrentWeekLine();
+	dataChinaWeekLine.SaveCurrentWeekLine();
 
 	return true;
 }
 
-bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) {
+bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) {
 	CString strSQL;
 	CString strDate;
 	char  pch[30];
@@ -1435,14 +1435,14 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadHistoryCandleBasic(&setDayLineBasicInfo);
+		pDayLine->LoadBasic(&setDayLineBasicInfo);
 		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
 		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
-			pDayLine->LoadHistoryCandleExtend(&setDayLineExtendInfo);
+			pDayLine->LoadExtend(&setDayLineExtendInfo);
 		}
-		dayLineContainer.StoreData(pDayLine);
+		dataChinaDayLine.StoreData(pDayLine);
 		setDayLineBasicInfo.MoveNext();
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();

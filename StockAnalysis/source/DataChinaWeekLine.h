@@ -1,16 +1,16 @@
 #pragma once
 
-#include "VirtualHistoryCandleExtendContainer.h"
+#include "VirtualDataHistoryCandleExtend.h"
 #include"WeekLine.h"
 //#include"DayLine.h"
 
-class CWeekLineContainer : public CVirtualHistoryCandleExtendContainer {
+class CDataChinaWeekLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CWeekLineContainer();
-	virtual ~CWeekLineContainer();
+	CDataChinaWeekLine();
+	virtual ~CDataChinaWeekLine();
 
-	virtual bool LoadData(CString strStockSymbol = _T("")) override;
-	virtual bool SaveData(CString strStockSymbol = _T("")) override;
+	virtual bool LoadDB(CString strStockSymbol = _T("")) override final;
+	virtual bool SaveDB(CString strStockSymbol = _T("")) override final;
 
 	bool SaveCurrentWeekLine(void);
 	bool LoadCurrentWeekLine(void);
