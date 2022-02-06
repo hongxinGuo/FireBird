@@ -175,7 +175,7 @@ void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInf
 	ASSERT(psetDayLineBasicInfo->IsOpen());
 
 	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->AppendBasic(psetDayLineBasicInfo);
+	pDayLine->AppendBasicData(psetDayLineBasicInfo);
 }
 
 void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp) {
@@ -327,7 +327,7 @@ void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtend
 
 	ASSERT(psetDayLineExtendInfo->IsOpen());
 	UpdateCurrentHistoryCandle(pDayLine);
-	pDayLine->AppendExtend(psetDayLineExtendInfo);
+	pDayLine->AppendExtendData(psetDayLineExtendInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////

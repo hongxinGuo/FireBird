@@ -23,9 +23,9 @@ public:
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	virtual int GetRatio(void) const override final { return 1000; };
 
-	bool SaveExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend); // 存储扩展数据
-	bool AppendExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
-	bool LoadExtend(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend); // 存储扩展数据
+	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	bool LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
 	bool Save(CVirtualSetHistoryCandle* pSet); // 存储所有的数据
 	bool Append(CVirtualSetHistoryCandle* pSet);

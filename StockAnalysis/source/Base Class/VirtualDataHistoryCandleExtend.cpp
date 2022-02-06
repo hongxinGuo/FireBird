@@ -37,7 +37,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		psetHistoryCandleBasic->Open();
 		while (!psetHistoryCandleBasic->IsEOF()) {
 			pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-			pHistoryCandle->LoadBasic(psetHistoryCandleBasic);
+			pHistoryCandle->LoadBasicData(psetHistoryCandleBasic);
 			vHistoryCandle.push_back(pHistoryCandle);
 			lSizeOfOldDayLine++;
 			psetHistoryCandleBasic->MoveNext();
@@ -53,12 +53,12 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
 			if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
-				pHistoryCandle->AppendBasic(psetHistoryCandleBasic);
+				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 				fNeedUpdate = true;
 			}
 		}
 		else {
-			pHistoryCandle->AppendBasic(psetHistoryCandleBasic);
+			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 			fNeedUpdate = true;
 		}
 	}
@@ -75,7 +75,7 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 	psetHistoryCandleExtend->Open();
 	psetHistoryCandleExtend->m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		pData->AppendExtend(psetHistoryCandleExtend);
+		pData->AppendExtendData(psetHistoryCandleExtend);
 	}
 	psetHistoryCandleExtend->m_pDatabase->CommitTrans();
 	psetHistoryCandleExtend->Close();
@@ -93,7 +93,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 	Unload();
 	while (!psetHistoryCandleBasic->IsEOF()) {
 		pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-		pHistoryCandle->LoadBasic(psetHistoryCandleBasic);
+		pHistoryCandle->LoadBasicData(psetHistoryCandleBasic);
 		StoreData(pHistoryCandle);
 		psetHistoryCandleBasic->MoveNext();
 	}
@@ -122,7 +122,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 			pHistoryCandle = GetData(iPosition);
 		}
 		if (pHistoryCandle->GetMarketDate() == psetHistoryCandleExtend->m_Date) {
-			pHistoryCandle->LoadExtend(psetHistoryCandleExtend);
+			pHistoryCandle->LoadExtendData(psetHistoryCandleExtend);
 		}
 		if (GetDataSize() <= (iPosition + 1)) break;
 		psetHistoryCandleExtend->MoveNext();

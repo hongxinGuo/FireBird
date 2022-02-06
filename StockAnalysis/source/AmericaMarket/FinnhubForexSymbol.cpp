@@ -46,7 +46,7 @@ bool CForexSymbol::SaveDayLine() {
 	setForexDayLine.Open();
 	while (!setForexDayLine.IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasic(&setForexDayLine);
+		pDayLine->LoadBasicData(&setForexDayLine);
 		vDayLine.push_back(pDayLine);
 		lSizeOfOldDayLine++;
 		setForexDayLine.MoveNext();
@@ -67,12 +67,12 @@ bool CForexSymbol::SaveDayLine() {
 		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
 			if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
-				pDayLine->AppendBasic(&setForexDayLine);
+				pDayLine->AppendBasicData(&setForexDayLine);
 				fNeedUpdate = true;
 			}
 		}
 		else {
-			pDayLine->AppendBasic(&setForexDayLine);
+			pDayLine->AppendBasicData(&setForexDayLine);
 			fNeedUpdate = true;
 		}
 	}

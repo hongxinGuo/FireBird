@@ -45,7 +45,7 @@ bool CFinnhubCryptoSymbol::SaveDayLine() {
 	setCryptoDayLine.Open();
 	while (!setCryptoDayLine.IsEOF()) {
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasic(&setCryptoDayLine);
+		pDayLine->LoadBasicData(&setCryptoDayLine);
 		vDayLine.push_back(pDayLine);
 		lSizeOfOldDayLine++;
 		setCryptoDayLine.MoveNext();
@@ -66,12 +66,12 @@ bool CFinnhubCryptoSymbol::SaveDayLine() {
 		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
 		if (lCurrentPos < lSizeOfOldDayLine) {
 			if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
-				pDayLine->AppendBasic(&setCryptoDayLine);
+				pDayLine->AppendBasicData(&setCryptoDayLine);
 				fNeedUpdate = true;
 			}
 		}
 		else {
-			pDayLine->AppendBasic(&setCryptoDayLine);
+			pDayLine->AppendBasicData(&setCryptoDayLine);
 			fNeedUpdate = true;
 		}
 	}

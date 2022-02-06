@@ -656,20 +656,20 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		id.AppendBasic(&setWeekLineBasicInfo);
+		id.AppendBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
 		setWeekLineExtendInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineExtendInfo.Open();
 		setWeekLineExtendInfo.m_pDatabase->BeginTrans();
-		id.AppendExtend(&setWeekLineExtendInfo);
+		id.AppendExtendData(&setWeekLineExtendInfo);
 		setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 		setWeekLineExtendInfo.Close();
 
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100101");
 		setWeekLineBasicInfo.Open();
-		id2.LoadBasic(&setWeekLineBasicInfo);
+		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetMarketDate());
 		EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
@@ -711,7 +711,7 @@ namespace StockAnalysisTest {
 
 		setWeekLineExtendInfo.m_strFilter = _T("[Date] = 21100101");
 		setWeekLineExtendInfo.Open();
-		id2.LoadExtend(&setWeekLineExtendInfo);
+		id2.LoadExtendData(&setWeekLineExtendInfo);
 		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumber), id2.GetTransactionNumber());
 		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow5000), id2.GetTransactionNumberBelow5000());
 		EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow50000), id2.GetTransactionNumberBelow50000());
@@ -827,13 +827,13 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-		id.AppendBasic(&setWeekLineBasicInfo);
+		id.AppendBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 		setWeekLineBasicInfo.Close();
 
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100901");
 		setWeekLineBasicInfo.Open();
-		idLoaded.LoadBasic(&setWeekLineBasicInfo);
+		idLoaded.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(idLoaded.GetMarketDate(), id.GetMarketDate());
 		EXPECT_STREQ(idLoaded.GetStockSymbol(), id.GetStockSymbol());
 		//EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
@@ -881,13 +881,13 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.AddNew();
-		id.SaveBasic(&setWeekLineBasicInfo);
+		id.SaveBasicData(&setWeekLineBasicInfo);
 		setWeekLineBasicInfo.Update();
 		setWeekLineBasicInfo.Close();
 
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 19900101");
 		setWeekLineBasicInfo.Open();
-		id2.LoadBasic(&setWeekLineBasicInfo);
+		id2.LoadBasicData(&setWeekLineBasicInfo);
 		EXPECT_EQ(id.GetMarketDate(), id2.GetMarketDate());
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id.GetOpen(), id2.GetOpen());

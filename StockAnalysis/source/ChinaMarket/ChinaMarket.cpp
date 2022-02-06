@@ -1383,7 +1383,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadBasic(&setWeekLineBasicInfo);
+		pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
 		while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -1391,7 +1391,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 			setWeekLineExtendInfo.MoveFirst();
 		}
 		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
-			pWeekLine->LoadExtend(&setWeekLineExtendInfo);
+			pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
 			dataChinaWeekLine.StoreData(pWeekLine);
 			setWeekLineExtendInfo.MoveNext();
 		}
@@ -1435,12 +1435,12 @@ bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) 
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasic(&setDayLineBasicInfo);
+		pDayLine->LoadBasicData(&setDayLineBasicInfo);
 		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
 			setDayLineExtendInfo.MoveNext();
 		}
 		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
-			pDayLine->LoadExtend(&setDayLineExtendInfo);
+			pDayLine->LoadExtendData(&setDayLineExtendInfo);
 		}
 		dataChinaDayLine.StoreData(pDayLine);
 		setDayLineBasicInfo.MoveNext();

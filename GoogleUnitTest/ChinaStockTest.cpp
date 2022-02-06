@@ -2134,7 +2134,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
 		for (int i = 0; i < 10; i++) {
-			dayLine.LoadBasic(&setDayLineBasicInfo);
+			dayLine.LoadBasicData(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
@@ -2507,7 +2507,7 @@ namespace StockAnalysisTest {
 		CDayLine dayLine;
 		setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
 		setDayLineExtendInfo.Open();
-		dayLine.LoadExtend(&setDayLineExtendInfo);
+		dayLine.LoadExtendData(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetMarketTime(), 0);
 		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
@@ -2634,7 +2634,7 @@ namespace StockAnalysisTest {
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 		for (int i = 0; i < 10; i++) {
-			stock.LoadBasic(&setWeekLineBasicInfo);
+			stock.LoadBasicData(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());
