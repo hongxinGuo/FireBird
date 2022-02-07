@@ -671,10 +671,6 @@ namespace StockAnalysisTest {
 		CDayLine dayLine;
 		EXPECT_FALSE(dayLine.IsActive());
 		dayLine.SetClose(100);
-		EXPECT_FALSE(dayLine.IsActive());
-		dayLine.SetOpen(100);
-		EXPECT_FALSE(dayLine.IsActive());
-		dayLine.SetLastClose(100);
 		EXPECT_TRUE(dayLine.IsActive());
 	}
 

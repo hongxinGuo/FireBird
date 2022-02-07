@@ -50,16 +50,21 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
 	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
 		pHistoryCandle = GetData(i);
-		while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
-		if (lCurrentPos < lSizeOfOldDayLine) {
-			if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
+		if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) { // 有更早的新数据？
+			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+		}
+		else {
+			while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
+			if (lCurrentPos < lSizeOfOldDayLine) {
+				if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
+					pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+					fNeedUpdate = true;
+				}
+			}
+			else {
 				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 				fNeedUpdate = true;
 			}
-		}
-		else {
-			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
-			fNeedUpdate = true;
 		}
 	}
 	psetHistoryCandleBasic->m_pDatabase->CommitTrans();
@@ -136,13 +141,50 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandleExtend::UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData) {
+void CVirtualDataHistoryCandleExtend::UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData, bool fRevertSave) {
 	CVirtualHistoryCandleExtendPtr pData = nullptr;
 	Unload(); // 清除已载入的数据（如果有的话）
+	if (fRevertSave) {
+		for (int i = vTempData.size() - 1; i >= 0; i--) {
+			pData = vTempData.at(i);
+			if (pData->IsActive())	StoreData(pData);
+		}
+	}
+	else {
+		for (int i = 0; i < vTempData.size(); i++) {
+			pData = vTempData.at(i);
+			if (pData->IsActive())	StoreData(pData);
+		}
+	}
+	SetDataLoaded(true);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 更新日线容器。
+//
+/////////////////////////////////////////////////////////////////////////////////////
+void CVirtualDataHistoryCandleExtend::UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave) {
+	CDayLinePtr pDayLine = nullptr;
+	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (int i = 0; i < vTempData.size(); i++) {
-		pData = vTempData.at(i);
-		StoreData(pData);
+	if (fRevertSave) {
+		for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+			pDayLine = vTempDayLine.at(i);
+			if (pDayLine->IsActive()) {
+				// 清除掉不再交易（停牌或退市后出现的）的股票日线
+				StoreData(pDayLine);
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < vTempDayLine.size(); i++) {
+			pDayLine = vTempDayLine.at(i);
+			if (pDayLine->IsActive()) {
+				// 清除掉不再交易（停牌或退市后出现的）的股票日线
+				StoreData(pDayLine);
+			}
+		}
 	}
 	SetDataLoaded(true);
 }

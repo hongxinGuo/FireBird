@@ -7,6 +7,7 @@
 #pragma once
 
 #include"VirtualHistoryCandleExtend.h"
+#include"DayLine.h"
 
 using namespace std;
 #include<vector>
@@ -19,7 +20,7 @@ public:
 	virtual ~CVirtualDataHistoryCandleExtend();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-	// 所有的派生类皆需要定义次两个存储和提取函数，不允许调用此基类函数
+	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); ASSERT(0); return false; }
 	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); ASSERT(0); return false; }
 
@@ -29,7 +30,8 @@ public:
 	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
 	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
-	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine);
+	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine, bool fRevertSave = false);
+	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false);
 
 	void ShowData(CDC* pDC, CRect rectClient);
 

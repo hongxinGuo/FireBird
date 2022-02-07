@@ -158,8 +158,8 @@
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
-    <ClCompile Include="ChinaStockDataHistoryDataTest.cpp" />
-    <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
+    <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp" />
+    <ClCompile Include="VirtualHistoryCandleExtendTest.cpp" />
     <ClCompile Include="CountryTest.cpp" />
     <ClCompile Include="EconomicCalendarTest.cpp" />
     <ClCompile Include="EPSSurpriseTest.cpp" />

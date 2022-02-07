@@ -292,7 +292,7 @@ namespace StockAnalysisTest {
 		setFinnhubCryptoSymbol2.Close();
 	}
 
-	TEST_F(CFinnhubCryptoSymbolTest, TestSaveDayLine) {
+	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		vector<CDayLinePtr> vDayLine;
@@ -306,7 +306,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_THAT(FinnhubCryptoSymbol.GetDayLineStartDate(), Eq(29900101));
 
-		FinnhubCryptoSymbol.SaveDayLine();
+		FinnhubCryptoSymbol.UpdateDayLineDB();
 
 		EXPECT_THAT(FinnhubCryptoSymbol.GetDayLineStartDate(), Eq(20200817)) << "这个是数据库中该股票日线数据的起始日期";
 
@@ -314,34 +314,6 @@ namespace StockAnalysisTest {
 		setCryptoDayLine.m_strSort = _T("[Date]");
 		setCryptoDayLine.Open();
 		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101);
-		setCryptoDayLine.m_pDatabase->BeginTrans();
-		setCryptoDayLine.Delete();
-		setCryptoDayLine.m_pDatabase->CommitTrans();
-		setCryptoDayLine.Close();
-	}
-	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
-		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		vector<CDayLinePtr> vDayLine;
-		CSetCryptoDayLine setCryptoDayLine;
-
-		FinnhubCryptoSymbol.SetDayLineStartDate(20200102);
-		FinnhubCryptoSymbol.SetDayLineEndDate(19800101);
-
-		pDayLine->SetDate(20000101);
-		pDayLine->SetStockSymbol(_T("abcdefg"));
-		vDayLine.push_back(pDayLine);
-		FinnhubCryptoSymbol.UpdateDayLine(vDayLine);
-
-		FinnhubCryptoSymbol.UpdateDayLineDB();
-
-		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateProfileDB());
-		EXPECT_THAT(FinnhubCryptoSymbol.GetDayLineStartDate(), Eq(20000101));
-		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 20000101);
-
-		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'abcdefg'");
-		setCryptoDayLine.Open();
-		EXPECT_EQ(setCryptoDayLine.m_Date, 20000101);
 		setCryptoDayLine.m_pDatabase->BeginTrans();
 		setCryptoDayLine.Delete();
 		setCryptoDayLine.m_pDatabase->CommitTrans();

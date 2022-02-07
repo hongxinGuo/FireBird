@@ -20,3 +20,5 @@ public:
 
 	bool StoreVectorData(vector<CWeekLinePtr>& vWeekLine);
 };
+
+typedef shared_ptr<CDataChinaWeekLine> CDataChinaWeekLinePtr;

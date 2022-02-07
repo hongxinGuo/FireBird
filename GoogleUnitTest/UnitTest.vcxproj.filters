@@ -345,10 +345,10 @@
     <ClCompile Include="MockChinaStockTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockDataHistoryDataTest.cpp">
+    <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp">
       <Filter>Test源文件\China Market\基类</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
+    <ClCompile Include="VirtualHistoryCandleExtendTest.cpp">
       <Filter>Test源文件\China Market\基类</Filter>
     </ClCompile>
     <ClCompile Include="WorldMarketTest.cpp">

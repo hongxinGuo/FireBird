@@ -60,10 +60,13 @@
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.h" />
@@ -129,7 +132,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
@@ -175,7 +177,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataChinaWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
@@ -256,10 +257,13 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoSymbol.cpp" />
@@ -304,7 +308,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.cpp" />
@@ -345,7 +348,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataChinaWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -365,6 +367,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

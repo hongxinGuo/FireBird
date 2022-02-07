@@ -256,11 +256,13 @@ namespace StockAnalysisTest {
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetHigh(1000);
 		pHistoryData->SetLow(200);
+		pHistoryData->SetClose(100); // 确保此数据有效
 		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetHigh(11000);
 		pHistoryData2->SetLow(1200);
+		pHistoryData2->SetClose(100); // 确保此数据有效
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
 		vector<CVirtualHistoryCandleExtendPtr> vHistoryData;
@@ -275,6 +277,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pHistoryData2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pHistoryData2->GetHigh(), 1000);
 		EXPECT_EQ(pHistoryData2->GetLow(), 200);
+		EXPECT_EQ(pHistoryData2->GetClose(), 100);
 		EXPECT_TRUE(HistoryDataContainer.IsDataLoaded());
 	}
 }

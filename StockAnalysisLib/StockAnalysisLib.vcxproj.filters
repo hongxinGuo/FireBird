@@ -181,6 +181,12 @@
     <Filter Include="源文件\Data Class\China Market">
       <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Data Class\WorldMarket">
+      <UniqueIdentifier>{39c09b90-7b46-4ebb-b1f5-5c8b6c6b90ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data Class\WorldMarket">
+      <UniqueIdentifier>{17f75dc6-2a2d-4ec9-8ff2-081d76e3b05c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -324,9 +330,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataChinaDayLine.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Guadan.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
@@ -340,9 +343,6 @@
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataChinaWeekLine.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
@@ -678,6 +678,15 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h">
+      <Filter>头文件\Data Class\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.h">
+      <Filter>头文件\Data Class\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.h">
+      <Filter>头文件\Data Class\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -803,9 +812,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataChinaDayLine.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
@@ -819,9 +825,6 @@
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataChinaWeekLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
@@ -1184,8 +1187,18 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataStockSymbol.cpp">
       <Filter>源文件\Data Class\China Market</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp">
+      <Filter>源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp">
+      <Filter>源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.cpp">
+      <Filter>源文件\Data Class\WorldMarket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -29,6 +29,8 @@ public:
 
 	void CalculateRSLogarithm1(double dRS);
 
+	bool IsActive(void) const;
+
 public:
 	double GetRS(void) const noexcept { return m_dRS; }
 	void SetRS(double dValue) noexcept { m_dRS = dValue; }

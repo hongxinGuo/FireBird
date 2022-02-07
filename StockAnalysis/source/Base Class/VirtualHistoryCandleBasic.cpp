@@ -39,6 +39,13 @@ void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	else m_dRSLogarithm = 50;
 }
 
+bool CVirtualHistoryCandleBasic::IsActive(void) const {
+	if (GetClose() != 0) {
+		return true;
+	}
+	else return false;
+}
+
 bool CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 

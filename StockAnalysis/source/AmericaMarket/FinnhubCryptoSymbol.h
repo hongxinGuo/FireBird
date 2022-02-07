@@ -3,6 +3,8 @@
 #include"VirtualStock.h"
 #include"DayLine.h"
 
+#include"DataCryptoDayLine.h"
+
 using namespace std;
 #include<memory>
 #include<vector>
@@ -14,7 +16,6 @@ public:
 	virtual int GetRatio(void) const override final { return 1000; } // ±ÈÀýÎª1000
 
 	virtual bool UpdateDayLineDB(void);
-	bool SaveDayLine(void);
 
 	void SetCheckingDayLineStatus(void);
 
@@ -28,6 +29,7 @@ public:
 
 public:
 	vector<CDayLinePtr> m_vDayLine;
+	CDataCryptoDayLine m_dataDayLine;
 
 protected:
 };

@@ -746,12 +746,12 @@ namespace StockAnalysisTest {
 
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20200101); // 这个需要添加进数据库
+		pDayLine->SetDate(20200101); // 这个日期早于数据库中的最早日期，需要添加进数据库
 		pDayLine->SetClose(10010);
 		vDayLine.push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20210101); // 这个需要添加进数据库
+		pDayLine->SetDate(20210101); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(12345);
 		vDayLine.push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
@@ -761,7 +761,7 @@ namespace StockAnalysisTest {
 		vDayLine.push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20210123); // 这个需要添加进数据库
+		pDayLine->SetDate(20210123); // 这个日期为新日期，需要添加进数据库
 		pDayLine->SetClose(10030);
 		vDayLine.push_back(pDayLine);
 

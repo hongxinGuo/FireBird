@@ -20,14 +20,6 @@ void CFinnhubCryptoSymbol::Reset(void) {
 }
 
 bool CFinnhubCryptoSymbol::UpdateDayLineDB(void) {
-	SaveDayLine();
-	UpdateDayLineStartEndDate();
-	SetUpdateProfileDB(true);
-
-	return true;
-}
-
-bool CFinnhubCryptoSymbol::SaveDayLine() {
 	CSetCryptoDayLine setCryptoDayLine;
 	size_t lSize = 0;
 	vector<CDayLinePtr> vDayLine;

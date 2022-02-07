@@ -20,6 +20,8 @@ UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol) {
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_UpdateWorldMarketDB.Wait();
 	pSymbol->UpdateDayLineDB();
+	pSymbol->UpdateDayLineStartEndDate();
+	pSymbol->SetUpdateProfileDB(true);
 	pSymbol->UnloadDayLine();
 	str = pSymbol->GetSymbol() + _T("日线资料存储完成");
 	gl_systemMessage.PushDayLineInfoMessage(str);

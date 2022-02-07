@@ -10,10 +10,3 @@ CDayLine::CDayLine() : CVirtualHistoryCandleExtend() {
 void CDayLine::Reset(void) {
 	CVirtualHistoryCandleExtend::Reset();
 }
-
-bool CDayLine::IsActive(void) const {
-	if ((GetClose() != 0) && (GetLastClose() != 0)) {
-		return true;
-	}
-	else return false;
-}

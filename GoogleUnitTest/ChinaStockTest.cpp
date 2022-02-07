@@ -2105,6 +2105,10 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		gl_pChinaMarket->__TEST_SetFormatedMarketDate(20190101);
 
+		pid = make_shared<CDayLine>();
+		pid->SetClose(1000);
+		pid->SetDate(19910101); // 早于数据库中的所有日期
+		pStock->StoreDayLine(pid);
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21111201);
@@ -2133,9 +2137,9 @@ namespace StockAnalysisTest {
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { // 第一个数据日期为19910101
 			dayLine.LoadBasicData(&setDayLineBasicInfo);
-			pid = pStock->GetDayLine(i);
+			pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
@@ -2162,6 +2166,14 @@ namespace StockAnalysisTest {
 			setDayLineBasicInfo.Delete();
 			setDayLineBasicInfo.MoveNext();
 		}
+		setDayLineBasicInfo.m_pDatabase->CommitTrans();
+		setDayLineBasicInfo.Close();
+
+		setDayLineBasicInfo.m_strFilter = _T("[Date] = 19910101");
+		setDayLineBasicInfo.Open();
+		setDayLineBasicInfo.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setDayLineBasicInfo.IsEOF());
+		setDayLineBasicInfo.Delete();
 		setDayLineBasicInfo.m_pDatabase->CommitTrans();
 		setDayLineBasicInfo.Close();
 	}
