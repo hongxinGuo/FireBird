@@ -527,10 +527,7 @@ namespace StockAnalysisTest {
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
-		EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << "最后显示的更新所需时间";
-
 		// 恢复原状
-		gl_systemMessage.PopInnerSystemInformationMessage();
 		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
 		gl_pWorldMarket->DeleteStock(pStock);
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));

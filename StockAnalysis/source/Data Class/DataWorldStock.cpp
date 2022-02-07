@@ -132,7 +132,7 @@ bool CDataWorldStock::LoadDB(void) {
 	sprintf_s(buffer, _T("%d"), lSymbolLength);
 	str = _T("WorldMarket股票代码最长长度为");
 	str += buffer;
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
+	//gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return true;
 }
@@ -207,7 +207,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	sprintf_s(buffer3, _T("%d"), iUpdatedNumber);
 	strMessage += buffer3;
 	strMessage += _T("个股票");
-	gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
+	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
 	sm_fInProcess = false;
 	return true;

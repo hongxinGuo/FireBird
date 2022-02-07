@@ -1429,6 +1429,7 @@ bool CWorldMarket::TaskReActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (!m_finnhubWebSocket.IsReceivingData()) {
 			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web socket服务停止"));
 		}
 		else {
 			m_finnhubWebSocket.SetReceivingData(false);
@@ -1459,6 +1460,7 @@ bool CWorldMarket::TaskActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (m_finnhubWebSocket.IsClosed()) {
 			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web socket服务开启"));
 		}
 		if (m_tiingoIEXWebSocket.IsClosed()) {
 			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
