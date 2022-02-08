@@ -52,6 +52,7 @@ namespace StockAnalysisTest {
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 
+		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
 		symbol.UpdateDayLine(vDayLine);
 		symbol.SetSymbol(_T("abcdef"));

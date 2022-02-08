@@ -48,7 +48,7 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pSymbol = make_shared<CForexSymbol>();
+			pSymbol = make_shared<CFinnhubForexSymbol>();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
 			if (s.size() > 0) pSymbol->SetDescription(s.c_str());

@@ -33,6 +33,48 @@ namespace StockAnalysisTest {
 		}
 	};
 
+	TEST_F(CDataChinaDayLineTest, TestGetStartEndDate) {
+		CDataChinaDayLine dataChinaDayLine;
+
+		vector<CDayLinePtr> vDayLine;
+		CDayLinePtr pDayLine = nullptr;
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200101); // 星期三
+		pDayLine->SetHigh(10010);
+		pDayLine->SetLow(9910);
+		pDayLine->SetClose(10001);
+		pDayLine->SetLastClose(10005);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200102); // 星期四
+		pDayLine->SetHigh(10020);
+		pDayLine->SetLow(9920);
+		pDayLine->SetClose(10002);
+		pDayLine->SetLastClose(10001);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(20200103); // 星期五
+		pDayLine->SetHigh(10030);
+		pDayLine->SetLow(9930);
+		pDayLine->SetClose(10003);
+		pDayLine->SetLastClose(10002);
+		pDayLine->SetVolume(10000);
+		vDayLine.push_back(pDayLine);
+
+		dataChinaDayLine.SetDataLoaded(false);
+		dataChinaDayLine.UpdateData(vDayLine, false);
+		long lStartDate = 0, lEndDate = 0;
+		dataChinaDayLine.GetStartEndDate(lStartDate, lEndDate);
+
+		EXPECT_EQ(lStartDate, 20200101);
+		EXPECT_EQ(lEndDate, 20200103);
+	}
+
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
 		CDataChinaDayLine dataChinaDayLine;
 

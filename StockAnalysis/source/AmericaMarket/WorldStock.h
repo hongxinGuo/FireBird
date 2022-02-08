@@ -4,10 +4,12 @@
 #include"TiingoStock.h"
 
 #include"DayLine.h"
+#include"DataWorldStockDayLine.h"
 #include"EPSSurprise.h"
 #include"InsiderTransaction.h"
 
 #include"SetWorldStock.h"
+#include"SetWorldStockDayLine.h"
 
 using namespace std;
 #include<memory>
@@ -28,21 +30,21 @@ public:
 	void Save(CSetWorldStock& setWorldStock);
 	void Update(CSetWorldStock& setWorldStock);
 	void Append(CSetWorldStock& setWorldStock);
-	void SaveDayLine(void);
+	void SaveDayLine(void) { CSetWorldStockDayLine setDayLine; m_dataDayLine.UpdateBasicDB(&setDayLine, m_strSymbol); }
 	void SaveInsiderTransaction(void);
 	virtual bool UpdateEPSSurpriseDB(void);
 	virtual bool UpdateDayLineDB(void);
 
-	void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
+	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
 	bool IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock);
 	void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
 
 	void UpdateDayLineStartEndDate(void);
-	long GetDayLineSize(void) const noexcept { return static_cast<long>(m_vDayLine.size()); }
-	CDayLinePtr GetDayLine(long lIndex) const { return m_vDayLine.at(lIndex); }
-	void UnloadDayLine(void) { m_vDayLine.resize(0); }
+	long GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
+	CDayLinePtr GetDayLine(long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
 
 	bool HaveNewDayLineData(void);
 
@@ -165,7 +167,8 @@ public:
 	long m_lDailyDataUpdateDate;
 
 	// 系统生成信息
-	vector<CDayLinePtr> m_vDayLine;
+	CDataWorldStockDayLine m_dataDayLine;
+
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
 	bool m_fEPSSurpriseUpdated;
 	atomic_bool m_fEPSSurpriseNeedSave;

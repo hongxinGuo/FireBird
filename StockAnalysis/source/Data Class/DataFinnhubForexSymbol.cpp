@@ -40,7 +40,7 @@ bool CDataFinnhubForexSymbol::LoadDB(void) {
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
 		if (!IsForexSymbol(setForexSymbol.m_Symbol)) {
-			pSymbol = make_shared<CForexSymbol>();
+			pSymbol = make_shared<CFinnhubForexSymbol>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);

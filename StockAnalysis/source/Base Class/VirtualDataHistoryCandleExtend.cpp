@@ -231,6 +231,14 @@ void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
 	}
 }
 
+bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) {
+	if (m_vHistoryData.size() == 0) return false;
+
+	lStartDate = m_vHistoryData.at(0)->GetMarketDate();
+	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1)->GetMarketDate();
+	return true;
+}
+
 void CVirtualDataHistoryCandleExtend::Reset(void) {
 	m_vHistoryData.clear();
 

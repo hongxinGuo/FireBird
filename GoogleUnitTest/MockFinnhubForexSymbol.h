@@ -2,7 +2,7 @@
 #include"FinnhubForexSymbol.h"
 
 namespace testing {
-	class CMockFinnhubForexSymbol : public CForexSymbol {
+	class CMockFinnhubForexSymbol : public CFinnhubForexSymbol {
 	public:
 		MOCK_METHOD(bool, UpdateDayLineDB, (), (override));
 	};

@@ -235,9 +235,9 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
-		case 5:
+		case 5: // 缺乏C项，无效数据
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(pForex->GetDayLineSize(), 2);
+			EXPECT_EQ(pForex->GetDayLineSize(), 0);
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());

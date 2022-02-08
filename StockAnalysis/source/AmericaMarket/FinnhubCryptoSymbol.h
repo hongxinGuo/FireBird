@@ -4,6 +4,7 @@
 #include"DayLine.h"
 
 #include"DataCryptoDayLine.h"
+#include"SetCryptoDayLine.h"
 
 using namespace std;
 #include<memory>
@@ -15,20 +16,19 @@ public:
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override final { return 1000; } // ±ÈÀýÎª1000
 
-	virtual bool UpdateDayLineDB(void);
+	virtual bool UpdateDayLineDB(void) { CSetCryptoDayLine setCryptoDayLine; return m_dataDayLine.UpdateBasicDB(&setCryptoDayLine, m_strSymbol); }
 
 	void SetCheckingDayLineStatus(void);
 
 	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
 
-	void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
-	void UnloadDayLine(void) { m_vDayLine.resize(0); }
-	size_t GetDayLineSize(void) const noexcept { return m_vDayLine.size(); }
+	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
+	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
 	void UpdateDayLineStartEndDate(void);
 	bool HaveNewDayLineData(void);
 
 public:
-	vector<CDayLinePtr> m_vDayLine;
 	CDataCryptoDayLine m_dataDayLine;
 
 protected:

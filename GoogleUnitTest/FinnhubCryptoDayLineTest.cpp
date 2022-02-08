@@ -218,12 +218,12 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
-		case 5:
+		case 5: // 数据缺乏c项，非有效数据。
 			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
+			EXPECT_EQ(pCrypto->GetDayLineSize(), 0) << "数据缺乏c项，非有效数据";
 			break;
 		case 6:
 			EXPECT_TRUE(fSucceed);

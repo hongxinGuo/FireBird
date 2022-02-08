@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CFinnhubForexSymbolTest, TestInitialize) {
-		CForexSymbol FinnhubForexSymbol;
+		CFinnhubForexSymbol FinnhubForexSymbol;
 		EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T(" "));
 		EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T(" "));
 		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T(" "));
@@ -49,52 +49,52 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetRatio) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		EXPECT_EQ(symbol.GetRatio(), 1000);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetDescription(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDescription(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDisplaySymbol) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetDisplaySymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetSymbol) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetSymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetSymbol(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineStartDate) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetDayLineStartDate(20202020);
 		EXPECT_EQ(symbol.GetDayLineStartDate(), 20202020);
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineEndDate) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetDayLineEndDate(10101010);
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 10101010);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetIPOStatus) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		symbol.SetIPOStatus(__STOCK_IPOED__);
 		EXPECT_EQ(symbol.GetIPOStatus(), __STOCK_IPOED__);
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineNeedSaving) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		EXPECT_FALSE(symbol.IsDayLineNeedSaving());
 		symbol.SetDayLineNeedSaving(true);
@@ -104,7 +104,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestSetCheckDayLineStatus) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 
 		EXPECT_TRUE(symbol.IsDayLineNeedUpdate());
 		symbol.SetIPOStatus(__STOCK_NULL__);
@@ -119,12 +119,13 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestHaveNewDayLineData) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
 
 		CDayLinePtr pDayLine;
 		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102);
+		pDayLine->SetDate(20300102);
+		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
@@ -134,7 +135,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineStartEndDate) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine;
 
@@ -147,9 +148,11 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(symbol.GetDayLineSize(), 0);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
+		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200105);
+		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
 		symbol.UpdateDayLine(vDayLine);
 		EXPECT_EQ(symbol.GetDayLineSize(), 2);
@@ -165,7 +168,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
@@ -174,7 +177,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
-		CForexSymbol symbol;
+		CFinnhubForexSymbol symbol;
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
@@ -184,7 +187,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestAppendSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
-		CForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
@@ -229,7 +232,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2, setFinnhubForexSymbol3;
-		CForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
@@ -292,12 +295,13 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestSaveDayLine) {
-		CForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		vector<CDayLinePtr> vDayLine;
 		CSetForexDayLine setForexDayLine;
 
 		pDayLine->SetDate(19800101);
+		pDayLine->SetClose(100);
 		pDayLine->SetStockSymbol(_T("OANDA:AUD_SGD"));
 		vDayLine.push_back(pDayLine);
 		FinnhubForexSymbol.SetSymbol(_T("OANDA:AUD_SGD"));
@@ -305,43 +309,12 @@ namespace StockAnalysisTest {
 
 		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(29900101));
 
-		FinnhubForexSymbol.SaveDayLine();
-
-		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(20200406)) << "这个是数据库中该股票日线数据的起始日期";
+		FinnhubForexSymbol.UpdateDayLineDB();
 
 		setForexDayLine.m_strFilter = _T("[Symbol] = 'OANDA:AUD_SGD'");
 		setForexDayLine.m_strSort = _T("[Date]");
 		setForexDayLine.Open();
-		EXPECT_EQ(setForexDayLine.m_Date, 19800101);
-		setForexDayLine.m_pDatabase->BeginTrans();
-		setForexDayLine.Delete();
-		setForexDayLine.m_pDatabase->CommitTrans();
-		setForexDayLine.Close();
-	}
-
-	TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineDB) {
-		CForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		vector<CDayLinePtr> vDayLine;
-		CSetForexDayLine setForexDayLine;
-
-		FinnhubForexSymbol.SetDayLineStartDate(20200102);
-		FinnhubForexSymbol.SetDayLineEndDate(19800101);
-
-		pDayLine->SetDate(20000101);
-		pDayLine->SetStockSymbol(_T("abcdefg"));
-		vDayLine.push_back(pDayLine);
-		FinnhubForexSymbol.UpdateDayLine(vDayLine);
-
-		FinnhubForexSymbol.UpdateDayLineDB();
-
-		EXPECT_TRUE(FinnhubForexSymbol.IsUpdateProfileDB());
-		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(20000101));
-		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 20000101);
-
-		setForexDayLine.m_strFilter = _T("[Symbol] = 'abcdefg'");
-		setForexDayLine.Open();
-		EXPECT_EQ(setForexDayLine.m_Date, 20000101);
+		EXPECT_EQ(setForexDayLine.m_Date, 19800101) << "刚存储的数据";
 		setForexDayLine.m_pDatabase->BeginTrans();
 		setForexDayLine.Delete();
 		setForexDayLine.m_pDatabase->CommitTrans();

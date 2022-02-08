@@ -77,8 +77,6 @@ void CWorldStock::Reset(void) {
 
 	m_fFinnhubInsiderTransactionNeedUpdate = true;
 	m_fFinnhubInsiderTransactionNeedSave = false;
-
-	m_vDayLine.resize(0);
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
@@ -278,59 +276,6 @@ void CWorldStock::Append(CSetWorldStock& setWorldStock) {
 	setWorldStock.Update();
 }
 
-void CWorldStock::SaveDayLine(void) {
-	CSetWorldStockDayLine setWorldStockDayLine, setSaveWorldStockDayLine;
-
-	vector<CDayLinePtr> vDayLine;
-	CDayLinePtr pDayLine = nullptr;
-	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-
-	ASSERT(m_vDayLine.size() > 0);
-
-	setWorldStockDayLine.m_strFilter = _T("[Symbol] = '");
-	setWorldStockDayLine.m_strFilter += m_strSymbol + _T("'");
-	setWorldStockDayLine.m_strSort = _T("[Date]");
-
-	setWorldStockDayLine.Open();
-	while (!setWorldStockDayLine.IsEOF()) {
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasicData(&setWorldStockDayLine);
-		vDayLine.push_back(pDayLine);
-		lSizeOfOldDayLine++;
-		setWorldStockDayLine.MoveNext();
-	}
-	if (lSizeOfOldDayLine > 0) {
-		if (vDayLine.at(0)->GetMarketDate() < m_lDayLineStartDate) {
-			m_lDayLineStartDate = vDayLine.at(0)->GetMarketDate();
-		}
-	}
-	setWorldStockDayLine.Close();
-
-	setSaveWorldStockDayLine.m_strFilter = _T("[ID] = 1");
-	setSaveWorldStockDayLine.Open();
-	setSaveWorldStockDayLine.m_pDatabase->BeginTrans();
-	lCurrentPos = 0;
-	for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
-		pDayLine = m_vDayLine.at(i);
-		if (pDayLine->GetMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
-			pDayLine->AppendBasicData(&setSaveWorldStockDayLine);
-		}
-		else {
-			while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
-			if (lCurrentPos < lSizeOfOldDayLine) {
-				if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
-					pDayLine->AppendBasicData(&setSaveWorldStockDayLine);
-				}
-			}
-			else {
-				pDayLine->AppendBasicData(&setSaveWorldStockDayLine);
-			}
-		}
-	}
-	setSaveWorldStockDayLine.m_pDatabase->CommitTrans();
-	setSaveWorldStockDayLine.Close();
-}
-
 void CWorldStock::SaveInsiderTransaction(void) {
 	CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
 
@@ -424,13 +369,6 @@ bool CWorldStock::UpdateDayLineDB(void) {
 	return false;
 }
 
-void CWorldStock::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
-	m_vDayLine.resize(0);
-	for (auto& pDayLine : vDayLine) {
-		m_vDayLine.push_back(pDayLine);
-	}
-}
-
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
 	for (auto& p : vEPSSurprise) {
@@ -479,24 +417,24 @@ void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
 }
 
 void CWorldStock::UpdateDayLineStartEndDate(void) {
-	if (m_vDayLine.size() > 0) {
-		if (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate()) {
-			SetDayLineStartDate(m_vDayLine.at(0)->GetMarketDate());
-			SetUpdateProfileDB(true);
+	long lStartDate = 0, lEndDate = 0;
+	bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
+	if (fSucceed) {
+		if (lStartDate < GetDayLineStartDate()) {
+			SetDayLineStartDate(lStartDate);
+			m_fUpdateProfileDB = true;
 		}
-		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate());
-			SetUpdateProfileDB(true);
+		if (lEndDate > m_lDayLineEndDate) {
+			SetDayLineEndDate(lEndDate);
+			m_fUpdateProfileDB = true;
 		}
 	}
 }
 
 bool CWorldStock::HaveNewDayLineData(void) {
-	if (m_vDayLine.size() == 0) return false;
-	if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > GetDayLineEndDate())
-		|| (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate())) {
-		return true;
-	}
+	if (m_dataDayLine.GetDataSize() == 0) return false;
+	if ((m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > m_lDayLineEndDate)
+		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate)) return true;
 	else return false;
 }
 

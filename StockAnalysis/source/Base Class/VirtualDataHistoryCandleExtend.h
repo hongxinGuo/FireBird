@@ -21,8 +21,8 @@ public:
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); ASSERT(0); return false; }
-	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); ASSERT(0); return false; }
+	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); return false; }
+	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); return false; }
 
 	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
 	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
@@ -39,6 +39,7 @@ public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
 	size_t GetDataSize(void) const noexcept { return m_vHistoryData.size(); }
+	bool GetStartEndDate(long& lStartDate, long& lEndDate);
 	void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
 	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
 	bool StoreData(CVirtualHistoryCandleExtendPtr pData) { m_vHistoryData.push_back(pData); return true; }

@@ -74,7 +74,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataForexDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStockDayline.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataSICIndustry.h" />
@@ -271,7 +273,9 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubStockExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataStockSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp" />

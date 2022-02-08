@@ -2,10 +2,10 @@
 
 #include "VirtualDataHistoryCandleExtend.h"
 
-class CDataCryptoDayLine : public CVirtualDataHistoryCandleExtend {
+class CDataForexDayLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CDataCryptoDayLine();
-	virtual ~CDataCryptoDayLine();
+	CDataForexDayLine();
+	virtual ~CDataForexDayLine();
 public:
 	virtual bool SaveDB(CString strCryptoSymbol) override final;
 	virtual bool LoadDB(CString strCryptoSymbol) override final;
@@ -16,4 +16,4 @@ public:
 private:
 };
 
-typedef shared_ptr<CDataCryptoDayLine> CDataCryptoDayLinePtr;
+typedef shared_ptr<CDataForexDayLine> CDataForexDayLinePtr;

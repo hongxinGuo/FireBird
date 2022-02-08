@@ -687,6 +687,12 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.h">
       <Filter>头文件\Data Class\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataForexDayLine.h">
+      <Filter>头文件\Data Class\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStockDayline.h">
+      <Filter>头文件\Data Class\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1194,6 +1200,12 @@
       <Filter>源文件\Data Class\China Market</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.cpp">
+      <Filter>源文件\Data Class\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataForexDayLine.cpp">
+      <Filter>源文件\Data Class\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStockDayLine.cpp">
       <Filter>源文件\Data Class\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>

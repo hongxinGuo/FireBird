@@ -19,60 +19,6 @@ void CFinnhubCryptoSymbol::Reset(void) {
 	m_lDayLineEndDate = 19800101;
 }
 
-bool CFinnhubCryptoSymbol::UpdateDayLineDB(void) {
-	CSetCryptoDayLine setCryptoDayLine;
-	size_t lSize = 0;
-	vector<CDayLinePtr> vDayLine;
-	CDayLinePtr pDayLine = nullptr;
-	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-	bool fNeedUpdate = false;
-
-	ASSERT(m_vDayLine.size() > 0);
-
-	lSize = m_vDayLine.size();
-	setCryptoDayLine.m_strFilter = _T("[Symbol] = '");
-	setCryptoDayLine.m_strFilter += m_strSymbol + _T("'");
-	setCryptoDayLine.m_strSort = _T("[Date]");
-
-	setCryptoDayLine.Open();
-	while (!setCryptoDayLine.IsEOF()) {
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->LoadBasicData(&setCryptoDayLine);
-		vDayLine.push_back(pDayLine);
-		lSizeOfOldDayLine++;
-		setCryptoDayLine.MoveNext();
-	}
-	setCryptoDayLine.Close();
-	if (lSizeOfOldDayLine > 0) {
-		if (vDayLine.at(0)->GetMarketDate() < m_lDayLineStartDate) {
-			m_lDayLineStartDate = vDayLine.at(0)->GetMarketDate();
-		}
-	}
-
-	lCurrentPos = 0;
-	setCryptoDayLine.m_strFilter = _T("[ID] = 1");
-	setCryptoDayLine.Open();
-	setCryptoDayLine.m_pDatabase->BeginTrans();
-	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-		pDayLine = m_vDayLine.at(i);
-		while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetMarketDate() < pDayLine->GetMarketDate())) lCurrentPos++;
-		if (lCurrentPos < lSizeOfOldDayLine) {
-			if (vDayLine.at(lCurrentPos)->GetMarketDate() > pDayLine->GetMarketDate()) {
-				pDayLine->AppendBasicData(&setCryptoDayLine);
-				fNeedUpdate = true;
-			}
-		}
-		else {
-			pDayLine->AppendBasicData(&setCryptoDayLine);
-			fNeedUpdate = true;
-		}
-	}
-	setCryptoDayLine.m_pDatabase->CommitTrans();
-	setCryptoDayLine.Close();
-
-	return fNeedUpdate;
-}
-
 void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	if (m_lIPOStatus == __STOCK_NULL__) {
@@ -108,32 +54,27 @@ CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime
 	return strMiddle;
 }
 
-void CFinnhubCryptoSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
-	m_vDayLine.resize(0);
-	for (auto& pDayLine : vDayLine) {
-		m_vDayLine.push_back(pDayLine);
-	}
-}
-
 void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate(void) {
-	if (m_vDayLine.size() == 0) {
+	long lStartDate = 0, lEndDate = 0;
+	bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
+	if (!fSucceed) {
 		SetDayLineStartDate(29900101);
 		SetDayLineEndDate(19800101);
 	}
 	else {
-		if (m_vDayLine.at(0)->GetMarketDate() < GetDayLineStartDate()) {
-			SetDayLineStartDate(m_vDayLine.at(0)->GetMarketDate());
+		if (lStartDate < GetDayLineStartDate()) {
+			SetDayLineStartDate(lStartDate);
 			m_fUpdateProfileDB = true;
 		}
-		if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > m_lDayLineEndDate) {
-			SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate());
+		if (lEndDate > m_lDayLineEndDate) {
+			SetDayLineEndDate(lEndDate);
 			m_fUpdateProfileDB = true;
 		}
 	}
 }
 
 bool CFinnhubCryptoSymbol::HaveNewDayLineData(void) {
-	if (m_vDayLine.size() <= 0) return false;
-	if (m_vDayLine.at(m_vDayLine.size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
+	if (m_dataDayLine.GetDataSize() == 0) return false;
+	if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	else return false;
 }

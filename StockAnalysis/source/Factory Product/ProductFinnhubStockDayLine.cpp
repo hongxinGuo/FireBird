@@ -44,13 +44,17 @@ bool CProductFinnhubStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
 	}
 	if (pvDayLine->size() > 0) {
 		pStock->UpdateDayLine(*pvDayLine);
-		pStock->SetDayLineNeedUpdate(false);
-		pStock->SetDayLineNeedSaving(true);
-		pStock->SetUpdateProfileDB(true);
-		if (!IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetMarketDate(), ((CWorldMarket*)m_pMarket)->GetMarketDate(), 100)) {
-			pStock->SetIPOStatus(__STOCK_IPOED__);
+		if (pStock->GetDayLineSize() > 0) { // 添加了新数据
+			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetDayLineNeedSaving(true);
+			pStock->SetUpdateProfileDB(true);
+			long lSize = pStock->GetDayLineSize() - 1;
+			CDayLinePtr pDayLine = pStock->GetDayLine(lSize);
+			if (!IsEarlyThen(pDayLine->GetMarketDate(), ((CWorldMarket*)m_pMarket)->GetMarketDate(), 100)) {
+				pStock->SetIPOStatus(__STOCK_IPOED__);
+			}
+			return true;
 		}
-		return true;
 	}
 	//TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
 

@@ -1436,18 +1436,21 @@ bool CWorldMarket::TaskReActivateWebSocket(void) {
 		}
 		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
 			m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web socket服务停止"));
 		}
 		else {
 			m_tiingoIEXWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
 			m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web socket服务停止"));
 		}
 		else {
 			m_tiingoCryptoWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoForexWebSocket.IsReceivingData()) {
 			m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web socket服务停止"));
 		}
 		else {
 			m_tiingoForexWebSocket.SetReceivingData(false);

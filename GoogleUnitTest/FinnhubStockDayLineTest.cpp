@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
 	FinnhubWebData finnhubWebData33(3, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"no_data\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
 	// 数据缺乏t项
 	FinnhubWebData finnhubWebData34(4, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"a\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
-	// 缺乏c项。不影响结果
+	// 缺乏c项。为无效数据
 	FinnhubWebData finnhubWebData35(5, _T("AAPL"), _T("{\"a\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
 	// 缺乏h项
 	FinnhubWebData finnhubWebData36(6, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"a\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
@@ -149,11 +149,11 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 5:
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+		case 5: // 缺乏C项，为无效数据
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 6:
 			EXPECT_TRUE(fSucceed);
