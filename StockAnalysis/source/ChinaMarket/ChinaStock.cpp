@@ -812,9 +812,7 @@ void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTr
 	const INT64 j = GetOrdinaryBuyVolume() + GetOrdinarySellVolume()
 		+ GetAttackBuyVolume() + GetAttackSellVolume()
 		+ GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume();
-	ASSERT(pRTData->GetVolume() == GetOrdinaryBuyVolume() + GetOrdinarySellVolume()
-		+ GetAttackBuyVolume() + GetAttackSellVolume()
-		+ GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume());
+	ASSERT(I == j);
 }
 
 void CChinaStock::IncreaseTransactionNumber(void) {

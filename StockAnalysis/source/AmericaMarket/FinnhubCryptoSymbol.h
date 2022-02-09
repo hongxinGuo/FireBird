@@ -16,7 +16,7 @@ public:
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override final { return 1000; } // ±ÈÀýÎª1000
 
-	virtual bool UpdateDayLineDB(void) { CSetCryptoDayLine setCryptoDayLine; return m_dataDayLine.UpdateBasicDB(&setCryptoDayLine, m_strSymbol); }
+	virtual bool UpdateDayLineDB(void) { return m_dataDayLine.SaveDB(m_strSymbol); }
 
 	void SetCheckingDayLineStatus(void);
 

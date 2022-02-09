@@ -30,7 +30,7 @@ public:
 	void Save(CSetWorldStock& setWorldStock);
 	void Update(CSetWorldStock& setWorldStock);
 	void Append(CSetWorldStock& setWorldStock);
-	void SaveDayLine(void) { CSetWorldStockDayLine setDayLine; m_dataDayLine.UpdateBasicDB(&setDayLine, m_strSymbol); }
+	void SaveDayLine(void) { m_dataDayLine.SaveDB(m_strSymbol); }
 	void SaveInsiderTransaction(void);
 	virtual bool UpdateEPSSurpriseDB(void);
 	virtual bool UpdateDayLineDB(void);

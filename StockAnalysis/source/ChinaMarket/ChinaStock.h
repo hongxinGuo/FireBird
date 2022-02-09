@@ -264,7 +264,7 @@ public:
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
 	virtual bool LoadDayLine(CString strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
-	virtual bool SaveDayLineBasicInfo(void) { CSetDayLineBasicInfo setDayLineBasic; return m_dataDayLine.UpdateBasicDB(&setDayLineBasic, GetSymbol()); }
+	virtual bool SaveDayLineBasicInfo(void) { return m_dataDayLine.SaveDB(GetSymbol()); }
 	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(psetDayLineBasicInfo); }
 	void AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
 	void AppendTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);

@@ -303,14 +303,14 @@ namespace StockAnalysisTest {
 
 		pDayLine->SetDate(19800101);
 		pDayLine->SetClose(100);
-		pDayLine->SetStockSymbol(_T("BINANCE:WINUSDC"));
+		pDayLine->SetStockSymbol(_T("NewSymbol"));
 		vDayLine.push_back(pDayLine);
-		FinnhubCryptoSymbol.SetSymbol(_T("BINANCE:WINUSDC"));
+		FinnhubCryptoSymbol.SetSymbol(_T("NewSymbol")); // 新代码
 		FinnhubCryptoSymbol.UpdateDayLine(vDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();
 
-		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'BINANCE:WINUSDC'");
+		setCryptoDayLine.m_strFilter = _T("[Symbol] = 'NewSymbol'");
 		setCryptoDayLine.m_strSort = _T("[Date]");
 		setCryptoDayLine.Open();
 		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101) << "这个是新存储的数据";

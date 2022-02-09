@@ -24,7 +24,6 @@ public:
 	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); return false; }
 	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); return false; }
 
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
 	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
 	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
@@ -34,6 +33,9 @@ public:
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false);
 
 	void ShowData(CDC* pDC, CRect rectClient);
+
+protected:
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
 
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
