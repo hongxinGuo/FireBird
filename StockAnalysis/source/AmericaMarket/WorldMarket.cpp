@@ -492,7 +492,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			SetCurrentFunction(_T("Finnhub查询股票代码:") + pExchange->m_strCode);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
-			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
+			TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubStockSymbol = false;

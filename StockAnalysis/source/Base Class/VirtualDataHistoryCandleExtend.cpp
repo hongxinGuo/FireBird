@@ -48,23 +48,31 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	psetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
 	psetHistoryCandleBasic->Open();
 	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
-	for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-		pHistoryCandle = GetData(i);
-		if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) { // 有更早的新数据？
-			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
-		}
-		else {
-			while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
-			if (lCurrentPos < lSizeOfOldDayLine) {
-				if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
+	if (lSizeOfOldDayLine > 0) { // 有旧数据
+		for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+			pHistoryCandle = GetData(i);
+			if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) { // 有更早的新数据？
+				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+			}
+			else {
+				while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
+				if (lCurrentPos < lSizeOfOldDayLine) {
+					if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
+						pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+						fNeedUpdate = true;
+					}
+				}
+				else {
 					pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 					fNeedUpdate = true;
 				}
 			}
-			else {
-				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
-				fNeedUpdate = true;
-			}
+		}
+	}
+	else { // 没有旧数据
+		for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+			pHistoryCandle = GetData(i);
+			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 		}
 	}
 	psetHistoryCandleBasic->m_pDatabase->CommitTrans();
