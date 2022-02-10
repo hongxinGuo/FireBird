@@ -48,6 +48,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102); // 星期四
 		pDayLine->SetHigh(10020);
@@ -57,6 +58,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200103); // 星期五
 		pDayLine->SetHigh(10030);
@@ -90,6 +92,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102); // 星期四
 		pDayLine->SetHigh(10020);
@@ -99,6 +102,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200103); // 星期五
 		pDayLine->SetHigh(10030);
@@ -117,7 +121,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
 	}
-
+	/*
 	TEST_F(CDataChinaDayLineTest, TestUpdateData2) {
 		CDataChinaDayLine dataChinaDayLine;
 
@@ -133,6 +137,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102); // 星期四
 		pDayLine->SetHigh(10020);
@@ -142,6 +147,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200103); // 星期五
 		pDayLine->SetHigh(10030);
@@ -159,8 +165,10 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(dataChinaDayLine.GetDataSize(), 3);
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
-	}
 
+		vDayLine.resize(0);
+	}
+	*/
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
 		CDataChinaDayLine dataChinaDayLine;
 
@@ -178,6 +186,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102); // 星期四
 		pDayLine->SetHigh(10020);
@@ -187,6 +196,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200103); // 星期五
 		pDayLine->SetHigh(10030);
@@ -196,6 +206,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200106); // 星期一
 		pDayLine->SetHigh(10040);
@@ -240,6 +251,7 @@ namespace StockAnalysisTest {
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine = nullptr;
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
@@ -249,6 +261,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102); // 星期四
 		pDayLine->SetHigh(10020);
@@ -258,6 +271,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200103); // 星期五
 		pDayLine->SetHigh(10030);
@@ -267,6 +281,7 @@ namespace StockAnalysisTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
+		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200106); // 星期一
 		pDayLine->SetHigh(10040);
