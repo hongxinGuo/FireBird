@@ -157,6 +157,9 @@
     <Filter Include="Mock类\Virtual Class">
       <UniqueIdentifier>{eb36a23a-1556-486c-91ef-c7a08d65a00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Class\World Market">
+      <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -541,6 +544,21 @@
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
     <ClCompile Include="DataStockSymbolTest.cpp">
+      <Filter>Test源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="DataCryptoDayLineTest.cpp">
+      <Filter>Test源文件\Data Class\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="DataForexDayLineTest.cpp">
+      <Filter>Test源文件\Data Class\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="DataWorldStockDayLineTest.cpp">
+      <Filter>Test源文件\Data Class\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChinaStockDayLineTest.cpp">
+      <Filter>Test源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChinaStockWeekLineTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
   </ItemGroup>

@@ -53,7 +53,12 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
 	}
 
-	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+	// 正确数据
+	FinnhubWebData finnhubWebData131(1, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+	// 缺乏 data项
+	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T("{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+	// 缺乏 Symbol项
+	FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T("{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
 
 	class ProcessFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
@@ -89,15 +94,25 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
-													 testing::Values(&finnhubWebData132));
+													 testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ProcessWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 2: // 正确
+		case 1: // 正确
 			EXPECT_TRUE(m_pStock->IsInsiderTransactionNeedSave());
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			break;
+		case 2:
+			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedSave());
+			break;
+		case 3:
+			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedSave());
 			break;
 		default:
 			break;
@@ -132,12 +147,12 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
-													 testing::Values(&finnhubWebData132));
+													 testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
 		switch (m_lIndex) {
-		case 2: // 正确
+		case 1: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
 			EXPECT_STREQ(m_pvInsiderTransaction->at(0)->m_strPersonName, _T("Long Brady K"));
 			EXPECT_STREQ(m_pvInsiderTransaction->at(0)->m_strSymbol, _T("RIG"));
@@ -147,6 +162,12 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvInsiderTransaction->at(0)->m_lTransactionDate, 20210302);
 			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(0)->m_dTransactionPrice, 3.68);
 			EXPECT_TRUE(m_pvInsiderTransaction->at(0)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
+			break;
+		case 2: // 缺乏data项
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
+			break;
+		case 3: // 缺乏Symbol
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
 			break;
 		default:
 			break;
