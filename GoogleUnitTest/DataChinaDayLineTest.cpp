@@ -121,7 +121,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
 	}
-	/*
+
 	TEST_F(CDataChinaDayLineTest, TestUpdateData2) {
 		CDataChinaDayLine dataChinaDayLine;
 
@@ -168,7 +168,7 @@ namespace StockAnalysisTest {
 
 		vDayLine.resize(0);
 	}
-	*/
+
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
 		CDataChinaDayLine dataChinaDayLine;
 
@@ -315,5 +315,34 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(vWeekLine.at(1)->GetLastClose(), 10003);
 		EXPECT_THAT(vWeekLine.at(1)->GetHigh(), 10050);
 		EXPECT_THAT(vWeekLine.at(1)->GetLow(), 9940);
+	}
+
+	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
+		vector<CDayLinePtr> vDayLine;
+		CDayLinePtr pDayLine = nullptr;
+		CDataChinaDayLine dataChinaDayLine;
+
+		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为20200817，故此数据位于最前面
+		pDayLine->SetStockSymbol(_T("000001.SZ"));
+		pDayLine->SetClose(100);
+		vDayLine.push_back(pDayLine);
+		dataChinaDayLine.UpdateData(vDayLine);
+
+		dataChinaDayLine.SaveDB(_T("000001.SZ"));
+
+		dataChinaDayLine.LoadDB(_T("000001.SZ"));
+		EXPECT_EQ(dataChinaDayLine.GetData(0)->GetMarketDate(), 19910102) << "新存储数据的日期";
+
+		// 恢复原状
+		CSetDayLineBasicInfo setChinaStockDayLineBasic;
+		setChinaStockDayLineBasic.m_strFilter = _T("[Symbol] = '000001.SZ'");
+		setChinaStockDayLineBasic.m_strSort = _T("[Date]");
+		setChinaStockDayLineBasic.Open();
+		setChinaStockDayLineBasic.m_pDatabase->BeginTrans();
+		EXPECT_EQ(setChinaStockDayLineBasic.m_Date, 19910102) << "新存储数据的日期";
+		setChinaStockDayLineBasic.Delete();
+		setChinaStockDayLineBasic.m_pDatabase->CommitTrans();
+		setChinaStockDayLineBasic.Close();
 	}
 }

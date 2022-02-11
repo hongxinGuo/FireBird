@@ -89,9 +89,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="AccessoryTest.cpp" />
-    <ClCompile Include="DataChinaStockDayLineTest.cpp" />
     <ClCompile Include="DataChinaStockTest.cpp" />
-    <ClCompile Include="DataChinaStockWeekLineTest.cpp" />
     <ClCompile Include="DataChoicedCryptoTest.cpp" />
     <ClCompile Include="DataChoicedForexTest.cpp" />
     <ClCompile Include="DataChoicedIEXTest.cpp" />

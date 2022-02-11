@@ -306,17 +306,8 @@
     <ClCompile Include="WebRTDataContainerTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="MockDataChinaWeekLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="MockDataChinaDayLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
-    </ClCompile>
     <ClCompile Include="CalculateHighLowTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="DataChinaWeekLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubWebInquiryTest.cpp">
       <Filter>Test源文件\World Market\网络通信</Filter>
@@ -395,9 +386,6 @@
     </ClCompile>
     <ClCompile Include="SemaphoreTest.cpp">
       <Filter>Test源文件\MyLab</Filter>
-    </ClCompile>
-    <ClCompile Include="DataChinaDayLineTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="MockVirtualWebInquiryTest.cpp">
       <Filter>Test源文件\Virtual Class</Filter>
@@ -555,10 +543,16 @@
     <ClCompile Include="DataWorldStockDayLineTest.cpp">
       <Filter>Test源文件\Data Class\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataChinaStockDayLineTest.cpp">
+    <ClCompile Include="DataChinaDayLineTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataChinaStockWeekLineTest.cpp">
+    <ClCompile Include="DataChinaWeekLineTest.cpp">
+      <Filter>Test源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="MockDataChinaDayLineTest.cpp">
+      <Filter>Test源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="MockDataChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
   </ItemGroup>
