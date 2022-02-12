@@ -331,7 +331,7 @@
       <AdditionalDependencies>\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
+      <PreserveSbr>false</PreserveSbr>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

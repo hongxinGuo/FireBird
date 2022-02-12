@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"WorldMarket.h"
 
 #include "FinnhubForexSymbol.h"
 

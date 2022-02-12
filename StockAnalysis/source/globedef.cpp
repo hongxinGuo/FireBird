@@ -1,9 +1,14 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"WebInquirer.h"
 #include "ChinaMarket.h"
+#include"WorldMarket.h"
+#include"PotenDailyBriefingMarket.h"
+#include"CrweberIndexMarket.h"
+
+#include"SystemMessage.h"
 #include"SystemData.h"
+#include"WebInquirer.h"
 
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 
@@ -20,10 +25,11 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
+CWebInquirer gl_WebInquirer;
+CSystemData gl_SystemData;
+
 // ¸÷ÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
 CWorldMarketPtr gl_pWorldMarket = nullptr;
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-CWebInquirer gl_WebInquirer;
-CSystemData gl_SystemData;

@@ -22,13 +22,7 @@ enum {
 	__SHENZHEN_CHUANGYE__ = 12, // 深圳创业板
 };
 
-#include"PotenDailyBriefingMarket.h"
-#include"CrweberIndexMarket.h"
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
-
 #include"SystemMessage.h"
-#include"PriorityQueueWebRTData.h"
 #include"ThreadStatus.h"
 
 using namespace std;
@@ -47,12 +41,3 @@ extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列（尚未使用）
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列（尚未使用）
-
-extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
-
-// 各市场唯一的实例
-extern CWorldMarketPtr gl_pWorldMarket;
-extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
-extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
-// 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
-extern CChinaMarketPtr gl_pChinaMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

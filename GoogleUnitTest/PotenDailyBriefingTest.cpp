@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
+#include"PotenDailyBriefingMarket.h"
 #include"PotenDailyBriefing.h"
 
 #ifdef _DEBUG

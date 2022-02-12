@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"WorldMarket.h"
 
 UINT ThreadUpdateStockProfileDB(not_null<CWorldMarket*> pMarket) {
 	static bool sm_fInProcess = false;

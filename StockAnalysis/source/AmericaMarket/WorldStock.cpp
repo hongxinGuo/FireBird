@@ -2,6 +2,7 @@
 #include"globedef.h"
 #include"accessory.h"
 #include "WorldStock.h"
+#include"WorldMarket.h"
 
 #include"SetWorldStockDayLine.h"
 

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"accessory.h"
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {

@@ -7,6 +7,7 @@
 #include "pch.h"
 
 #include"globedef.h"
+#include"WorldMarket.h"
 
 #include"SetWorldStock.h"
 #include"CallableFunction.h"

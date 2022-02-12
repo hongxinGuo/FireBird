@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ChinaMarket.h"
 #include "DataChinaStock.h"
 #include"CallableFunction.h"
 #include"Thread.h"

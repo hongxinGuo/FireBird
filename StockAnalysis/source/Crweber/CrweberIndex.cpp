@@ -3,6 +3,7 @@
 
 #include"Accessory.h"
 #include "CrweberIndex.h"
+#include"CrweberIndexMarket.h"
 
 #include<gsl/gsl>
 using namespace gsl;

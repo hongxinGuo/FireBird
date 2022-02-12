@@ -1,9 +1,14 @@
 #include "pch.h"
 
 #include"globedef.h"
+#include"accessory.h"
 #include"worldMarket.h"
 
 #include "ProductFinnhubCompanyProfile.h"
+
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
 
 IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfile, CProductWebSourceData)
 

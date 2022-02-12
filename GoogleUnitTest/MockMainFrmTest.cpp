@@ -1,9 +1,12 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"WorldMarket.h"
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
+#include"PotenDailyBriefingMarket.h"
+#include"CrweberIndexMarket.h"
 
 #include"MockMainFrm.h"
 

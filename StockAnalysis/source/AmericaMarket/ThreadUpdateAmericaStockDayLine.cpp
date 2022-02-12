@@ -13,6 +13,7 @@
 #include"globedef.h"
 
 #include"WorldStock.h"
+#include"WorldMarket.h"
 
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();

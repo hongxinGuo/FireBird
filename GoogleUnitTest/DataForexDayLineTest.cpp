@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"DataForexDayLine.h"
+#include"SetForexDayLine.h"
 
 using namespace testing;
 

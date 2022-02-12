@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ChinaMarket.h"
 
 #include"WebInquirer.h"
 #include"MockNeteaseDayLineWebInquiry.h"

@@ -127,3 +127,5 @@ protected:
 	CString m_strCurrentTiingoWebSocketForex;
 	CString m_strCurrentTiingoWebSocketCrypto;
 };
+
+extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。

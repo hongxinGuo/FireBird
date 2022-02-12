@@ -9,6 +9,7 @@
 #pragma once
 
 #include"globedef.h"
+#include"ChinaMarket.h"
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"

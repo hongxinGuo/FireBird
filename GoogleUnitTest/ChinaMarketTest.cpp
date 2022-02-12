@@ -2,6 +2,7 @@
 
 #include"globedef.h"
 
+#include"SystemMessage.h"
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"accessory.h"
 #include"VirtualHistoryCandleExtend.h"
 
 CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCandleBasic() {

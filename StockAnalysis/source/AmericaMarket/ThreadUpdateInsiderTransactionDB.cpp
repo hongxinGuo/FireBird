@@ -12,14 +12,14 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"WorldStock.h"
+#include"WorldMarket.h"
 
 UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket) {
-  gl_ThreadStatus.IncreaseSavingThread();
-  gl_UpdateWorldMarketDB.Wait();
-  pMarket->UpdateInsiderTransactionDB();
-  gl_UpdateWorldMarketDB.Signal();
-  gl_ThreadStatus.DecreaseSavingThread();
+	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateWorldMarketDB.Wait();
+	pMarket->UpdateInsiderTransactionDB();
+	gl_UpdateWorldMarketDB.Signal();
+	gl_ThreadStatus.DecreaseSavingThread();
 
-  return 48;
+	return 48;
 }

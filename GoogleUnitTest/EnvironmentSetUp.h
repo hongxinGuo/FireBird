@@ -9,6 +9,7 @@
 
 #include"GeneralCheck.h"
 
+#include"PotenDailyBriefingMarket.h"
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 

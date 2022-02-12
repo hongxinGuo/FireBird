@@ -1,9 +1,11 @@
 #include "pch.h"
 
 #include"globedef.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
 
 #include"crweberIndex.h"
+#include"CrweberIndexMarket.h"
 
 using namespace std;
 #include<string>

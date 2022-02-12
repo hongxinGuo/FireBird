@@ -1,5 +1,6 @@
 #pragma once
 
+#include"WorldMarket.h"
 #include"ProductWebData.h"
 
 class CProductFinnhubForexSymbol : public CProductWebSourceData {

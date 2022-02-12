@@ -115,3 +115,4 @@ private:
 };
 
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask

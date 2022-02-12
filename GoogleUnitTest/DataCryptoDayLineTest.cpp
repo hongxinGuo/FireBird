@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"DataCryptoDayLine.h"
+#include"SetCryptoDayLine.h"
 
 using namespace testing;
 

@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include"globedef.h"
+#include"accessory.h"
+#include"WorldMarket.h"
 
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"

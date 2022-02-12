@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"SystemMessage.h"
+#include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #ifdef _DEBUG

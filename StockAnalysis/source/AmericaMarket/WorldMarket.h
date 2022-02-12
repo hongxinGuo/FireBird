@@ -404,3 +404,4 @@ protected:
 };
 
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;
+extern CWorldMarketPtr gl_pWorldMarket;

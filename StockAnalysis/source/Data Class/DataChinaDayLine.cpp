@@ -1,7 +1,10 @@
 #include"pch.h"
 #include"globedef.h"
+#include"accessory.h"
 
 #include "DataChinaDayLine.h"
+#include"SetDayLineBasicInfo.h"
+#include"SetDayLineExtendInfo.h"
 
 CDataChinaDayLine::CDataChinaDayLine() {
 }

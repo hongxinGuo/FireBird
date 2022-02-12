@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"SystemMessage.h"
 #include"ChinaStock.h"
 #include"CrweberIndexMarket.h"
 #include"WebInquirer.h"

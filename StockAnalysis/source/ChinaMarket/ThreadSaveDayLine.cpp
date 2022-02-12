@@ -11,24 +11,26 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"ChinaStock.h"
+#include"ChinaMarket.h"
 
 UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
-  CString str;
-  bool fDataSaved = false;
+	CString str;
+	bool fDataSaved = false;
 
-  gl_ThreadStatus.IncreaseSavingThread();
-  gl_SaveOneStockDayLine.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
-  if (!gl_fExitingSystem) {
-    fDataSaved = pStock->SaveDayLineBasicInfo();
-    pStock->UpdateDayLineStartEndDate();
-    if (fDataSaved) {
-      str = pStock->GetSymbol() + _T("日线资料存储完成");
-      gl_systemMessage.PushDayLineInfoMessage(str);
-    }
-    pStock->UnloadDayLine();
-  }
-  gl_SaveOneStockDayLine.Signal();
-  gl_ThreadStatus.DecreaseSavingThread();
+	gl_ThreadStatus.IncreaseSavingThread();
+	gl_SaveOneStockDayLine.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
+	if (!gl_fExitingSystem) {
+		fDataSaved = pStock->SaveDayLineBasicInfo();
+		pStock->UpdateDayLineStartEndDate();
+		if (fDataSaved) {
+			str = pStock->GetSymbol() + _T("日线资料存储完成");
+			gl_systemMessage.PushDayLineInfoMessage(str);
+		}
+		pStock->UnloadDayLine();
+	}
+	gl_SaveOneStockDayLine.Signal();
+	gl_ThreadStatus.DecreaseSavingThread();
 
-  return 15;
+	return 15;
 }
