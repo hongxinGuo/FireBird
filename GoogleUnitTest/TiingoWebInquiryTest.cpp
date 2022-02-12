@@ -1,11 +1,10 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"GeneralCheck.h"
 #include"WorldMarket.h"
 
 #include"MockTiingoWebInquiry.h"
-
-#include"GeneralCheck.h"
 
 using namespace std;
 using namespace testing;

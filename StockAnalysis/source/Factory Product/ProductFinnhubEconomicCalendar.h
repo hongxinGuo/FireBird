@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"EconomicCalendar.h"
 
 class CProductFinnhubEconomicCalendar : public CProductWebSourceData {
 public:

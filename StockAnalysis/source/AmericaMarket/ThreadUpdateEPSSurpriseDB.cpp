@@ -1,7 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"WorldMarket.h"
+#include"SemaphoreDef.h"
 #include"WorldStock.h"
 
 UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStock) {

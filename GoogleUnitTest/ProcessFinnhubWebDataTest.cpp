@@ -6,9 +6,6 @@
 
 #include"WebInquirer.h"
 
-#include"WorldStock.h"
-#include"WorldMarket.h"
-
 #include"FinnhubWebSocket.h"
 
 using namespace std;

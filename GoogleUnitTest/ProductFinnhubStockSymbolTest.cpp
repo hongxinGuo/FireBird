@@ -4,8 +4,6 @@
 #include"SystemMessage.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"ProductFinnhubStockSymbol.h"
 
 using namespace testing;

@@ -1,8 +1,5 @@
 #pragma once
 
-#include"Semaphore.h"
-using namespace MyLib;
-
 #include"VirtualMarket.h"
 
 #include"FinnhubFactory.h"
@@ -33,8 +30,6 @@ using namespace MyLib;
 #include"TiingoIEXWebSocket.h"
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
-
-extern Semaphore gl_UpdateWorldMarketDB;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
 #include<map>

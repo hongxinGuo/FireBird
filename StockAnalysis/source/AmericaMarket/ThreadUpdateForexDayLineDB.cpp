@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-#include"WorldMarket.h"
+#include"SemaphoreDef.h"
 
 #include"FinnhubForexSymbol.h"
 

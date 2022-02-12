@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"Country.h"
 
 class CProductFinnhubEconomicCountryList : public CProductWebSourceData {
 public:

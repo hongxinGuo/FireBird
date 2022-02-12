@@ -11,8 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"SemaphoreDef.h"
 
-#include"WorldStock.h"
 #include"WorldMarket.h"
 
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {

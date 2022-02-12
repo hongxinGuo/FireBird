@@ -693,6 +693,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStockDayline.h">
       <Filter>头文件\Data Class\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"WorldMarket.h"
+#include"WorldStock.h"
 #include"FinnhubInquiryType.h"
 
 #include"ProductFinnhubCompanyProfile.h"

@@ -1,16 +1,13 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"WorldMarket.h"
 #include"GeneralCheck.h"
-
+#include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
 
 #include"MockMainFrm.h"
-
-#include"GeneralCheck.h"
 
 using namespace testing;
 using namespace ::testing;

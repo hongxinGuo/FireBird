@@ -6,7 +6,6 @@
 #include"SystemData.h"
 
 #include"WorldStock.h"
-#include"WorldMarket.h"
 
 using namespace testing;
 

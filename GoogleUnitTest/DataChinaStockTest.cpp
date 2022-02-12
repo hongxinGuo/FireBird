@@ -3,8 +3,6 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"DataChinaStock.h"
 
 using namespace testing;

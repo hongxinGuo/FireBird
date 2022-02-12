@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"GeneralCheck.h"
 #include"accessory.h"
 #include"GeneralCheck.h"
 
@@ -7,8 +8,6 @@
 #include"WorldMarket.h"
 
 #include"SetWorldStockDayLine.h"
-
-#include"GeneralCheck.h"
 
 using namespace testing;
 

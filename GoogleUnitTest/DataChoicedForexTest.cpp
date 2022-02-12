@@ -3,8 +3,6 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"DataChoicedForex.h"
 
 using namespace testing;

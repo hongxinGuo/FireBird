@@ -3,7 +3,6 @@
 #include"Thread.h"
 
 #include "QuandlWebInquiry.h"
-#include"WorldMarket.h"
 #include"WebInquirer.h"
 
 using namespace std;

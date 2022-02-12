@@ -10,9 +10,6 @@
 
 #include"Thread.h"
 
-#include"WorldMarket.h"
-#include"WorldStock.h"
-
 #include"WebInquirer.h"
 
 #include"MockWorldMarket.h"

@@ -3,6 +3,8 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
+#include"Country.h"
+
 #include"WorldMarket.h"
 
 #include"ProductFinnhubEconomicCountryList.h"

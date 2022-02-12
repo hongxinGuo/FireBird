@@ -170,6 +170,7 @@
     <ClInclude Include="..\StockAnalysis\source\QueueString.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemData.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />

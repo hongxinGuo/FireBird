@@ -7,21 +7,6 @@
 // 中国股票市场起始日
 #define __CHINA_MARKET_BEGIN_DATE__ 19900101
 
-enum {
-	__SHANGHAI_MARKET__ = 1, // 上海市场
-	__SHENZHEN_MARKET__ = 2, // 深圳市场
-	__SHANGHAI_INDEX__ = 3, // 上海指数
-	__SHENZHEN_INDEX__ = 4, // 深圳指数
-	__SHANGHAI_MAIN__ = 5, // 上海主板
-	__SHENZHEN_MAIN__ = 6, // 深圳主板
-	__SHANGHAI_3BAN__ = 7, // 上海3板
-	__SHENZHEN_3BAN__ = 8, //深圳中小板
-	__SHANGHAI_B_SHARE__ = 9, //上海B股
-	__SHENZHEN_B_SHARE__ = 10, // 深圳B股
-	__SHANGHAI_KECHUANG__ = 11, // 上海科创板
-	__SHENZHEN_CHUANGYE__ = 12, // 深圳创业板
-};
-
 #include"SystemMessage.h"
 #include"ThreadStatus.h"
 

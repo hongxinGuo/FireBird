@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"InsiderTransaction.h"
 
 class CProductFinnhubCompanyInsiderTransaction : public CProductWebSourceData {
 public:

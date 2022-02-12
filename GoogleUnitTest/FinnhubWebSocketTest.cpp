@@ -8,8 +8,6 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"FinnhubWebSocket.h"
 
 using namespace testing;

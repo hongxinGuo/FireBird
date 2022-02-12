@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"DayLine.h"
 
 class CProductTiingoStockDayLine : public CProductWebSourceData {
 public:

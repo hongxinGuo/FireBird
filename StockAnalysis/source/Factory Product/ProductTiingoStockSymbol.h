@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"TiingoStock.h"
 
 class CProductTinngoStockSymbol : public CProductWebSourceData {
 public:

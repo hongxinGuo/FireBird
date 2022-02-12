@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 #include"WorldMarket.h"
-#include"WorldMarket.h"
 
 #include"MockQuandlWebInquiry.h"
 

@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
+#include"WorldStock.h"
 #include"WorldMarket.h"
 
 #include"ProductTiingoStockSymbol.h"

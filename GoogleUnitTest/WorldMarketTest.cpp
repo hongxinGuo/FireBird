@@ -4,7 +4,6 @@
 #include"WebInquirer.h"
 
 #include"WorldStock.h"
-#include"WorldMarket.h"
 
 #include"ProductFinnhubForexExchange.h"
 #include"ProductFinnhubEconomicCountryList.h"

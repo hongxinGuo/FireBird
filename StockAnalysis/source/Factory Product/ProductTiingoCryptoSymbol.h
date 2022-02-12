@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"TiingoCryptoSymbol.h"
 
 class CProductTiingoCryptoSymbol : public CProductWebSourceData {
 public:

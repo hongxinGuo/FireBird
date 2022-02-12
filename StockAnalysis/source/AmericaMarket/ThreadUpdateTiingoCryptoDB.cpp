@@ -1,6 +1,8 @@
 #include"pch.h"
 #include"globedef.h"
-#include "..\Thread.h"
+#include"SemaphoreDef.h"
+#include"WorldMarket.h"
+#include "Thread.h"
 
 UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();

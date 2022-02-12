@@ -1,11 +1,12 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"WorldMarket.h"
 
 #include"GeneralCheck.h"
 
 #include"DataWorldStockDayLine.h"
+
+#include"SEtWorldStockDayLine.h"
 
 using namespace testing;
 
