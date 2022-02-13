@@ -29,8 +29,6 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 
-Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
-
 IMPLEMENT_DYNCREATE(CWorldMarket, CVirtualMarket)
 
 CWorldMarket::CWorldMarket() {

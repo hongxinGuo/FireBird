@@ -24,8 +24,7 @@ protected:
 	mutex m_mutex;
 };
 
-class CSystemMessage final
-{
+class CSystemMessage final {
 public:
 	CSystemMessage();
 	~CSystemMessage();

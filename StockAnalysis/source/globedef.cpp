@@ -1,5 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 所有的全局变量的定义皆位于此处
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"SemaphoreDef.h"
 
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
@@ -9,6 +17,16 @@
 #include"SystemMessage.h"
 #include"SystemData.h"
 #include"WebInquirer.h"
+
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+#include"NeteaseRTWebInquiry.h"
+#include"CrweberIndexWebInquiry.h"
+#include"PotenDailyBriefingWebInquiry.h"
+#include"NeteaseDayLineWebInquiry.h"
+#include"FinnhubWebInquiry.h"
+#include"TiingoWebInquiry.h"
+#include"QuandlWebInquiry.h"
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 
@@ -23,10 +41,34 @@ bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 bool gl_fTestMode = true; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
+CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
+
+// 信号量必须声明为全局变量（为了初始化）
+Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
+Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
+Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
+Semaphore gl_ProcessTengxunRTDataQueue(1);
+Semaphore gl_ProcessNeteaseRTDataQueue(1);
+Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大默认为8
+Semaphore gl_MaintainCrweberDB(1); // Crweber数据库只允许同时一个线程操作之。
+
 vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 CWebInquirer gl_WebInquirer;
 CSystemData gl_SystemData;
+
+int gl_iMaxSavingOneDayLineThreads = 4; // 允许存储日线数据的线程数。此变量取值范围为1-4
+// 网络数据提取器
+CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
+CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
+CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
+CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
+CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
+CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
+CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
+CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
+CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 
 // 各市场。皆为唯一实例
 CWorldMarketPtr gl_pWorldMarket = nullptr;

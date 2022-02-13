@@ -5,29 +5,6 @@
 
 #include"WebInquirer.h"
 
-int gl_iMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
-
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"CrweberIndexWebInquiry.h"
-#include"PotenDailyBriefingWebInquiry.h"
-#include"NeteaseDayLineWebInquiry.h"
-#include"FinnhubWebInquiry.h"
-#include"TiingoWebInquiry.h"
-#include"QuandlWebInquiry.h"
-
-CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
-CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
-CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
-CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
-CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
-CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
-CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
-CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
-
 CWebInquirer::CWebInquirer(void) : CObject() {
 }
 

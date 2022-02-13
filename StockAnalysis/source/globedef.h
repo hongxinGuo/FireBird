@@ -1,14 +1,15 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-#error "ÔÚ°üº¬´ËÎÄ¼şÖ®Ç°°üº¬¡°stdafx.h¡±ÒÔÉú³É PCH ÎÄ¼ş"
+#error "ÔÚ°üº¬´ËÎÄ¼şÖ®Ç°±ØĞëÏÈ°üº¬¡°stdafx.h¡±ÎÄ¼şÒÔÉú³É PCH ÎÄ¼ş"
 #endif
 
 // ÖĞ¹ú¹ÉÆ±ÊĞ³¡ÆğÊ¼ÈÕ
-#define __CHINA_MARKET_BEGIN_DATE__ 19900101
+constexpr auto __CHINA_MARKET_BEGIN_DATE__ = 19900101;
 
 #include"SystemMessage.h"
 #include"ThreadStatus.h"
+#include"WebRTDataContainer.h"
 
 using namespace std;
 #include<deque>
@@ -23,6 +24,8 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ÔÚÆô¶¯Ê±Ğ
 
 extern CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 extern CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
+
+extern CWebRTDataContainer gl_WebRTDataContainer; // ÍøÂçÊµÊ±Êı¾İ´æ´¢ÈİÆ÷
 
 extern deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©
 extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©

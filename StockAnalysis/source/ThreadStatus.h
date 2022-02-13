@@ -5,7 +5,7 @@ using namespace std;
 
 constexpr int cMaxBackGroundTaskThreads = 8;
 
-class CThreadStatus { // 各线程状态
+class CThreadStatus  final { // 各线程状态
 public:
 	CThreadStatus();
 	~CThreadStatus();

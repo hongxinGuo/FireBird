@@ -1,12 +1,8 @@
 #pragma once
 
-#include"Accessory.h"
-#include"Semaphore.h"
-
 #include"VirtualMarket.h"
 #include "ChinaStock.h"
 
-#include"WebRTDataContainer.h"
 #include"StockSection.h"
 
 #include"DataStockSymbol.h"
@@ -15,23 +11,12 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-using namespace MyLib;
-
 using namespace std;
 #include<vector>
 #include<map>
 #include<atomic>
 #include<queue>
 #include<set>
-
-// 信号量必须声明为全局变量（为了初始化）
-extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
-extern Semaphore gl_SemaphoreBackGroundTaskThreads; // 后台工作线程数。最大为8
-extern Semaphore gl_ProcessSinaRTDataQueue;
-extern Semaphore gl_ProcessTengxunRTDataQueue;
-extern Semaphore gl_ProcessNeteaseRTDataQueue;
-
-extern CWebRTDataContainer gl_WebRTDataContainer;
 
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
@@ -467,4 +452,5 @@ private:
 };
 
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
+
 extern CChinaMarketPtr gl_pChinaMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

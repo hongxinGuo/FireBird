@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"accessory.h"
 #include"Thread.h"
+#include"SemaphoreDef.h"
 
 #include"WebInquirer.h"
 
@@ -32,15 +33,6 @@ using namespace std;
 
 #include<gsl/gsl>
 using namespace gsl;
-
-// 信号量必须声明为全局变量（为了初始化）
-Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
-Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
-Semaphore gl_ProcessTengxunRTDataQueue(1);
-Semaphore gl_ProcessNeteaseRTDataQueue(1);
-Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大为8
-
-CWebRTDataContainer gl_WebRTDataContainer;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

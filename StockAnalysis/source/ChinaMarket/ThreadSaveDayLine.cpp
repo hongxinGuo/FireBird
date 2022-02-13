@@ -11,8 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"SemaphoreDef.h"
 #include"ChinaStock.h"
-#include"ChinaMarket.h"
 
 UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 	CString str;
