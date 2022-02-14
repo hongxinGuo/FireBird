@@ -1427,28 +1427,28 @@ bool CWorldMarket::TaskReActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (!m_finnhubWebSocket.IsReceivingData()) {
 			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web socket服务停止"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
 		}
 		else {
 			m_finnhubWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
 			m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web socket服务停止"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo IEX web socket服务"));
 		}
 		else {
 			m_tiingoIEXWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
 			m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web socket服务停止"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Crypto web socket服务"));
 		}
 		else {
 			m_tiingoCryptoWebSocket.SetReceivingData(false);
 		}
 		if (!m_tiingoForexWebSocket.IsReceivingData()) {
 			m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web socket服务停止"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Forex web socket服务"));
 		}
 		else {
 			m_tiingoForexWebSocket.SetReceivingData(false);
@@ -1461,16 +1461,19 @@ bool CWorldMarket::TaskActivateWebSocket(void) {
 	if (IsSystemReady()) {
 		if (m_finnhubWebSocket.IsClosed()) {
 			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web socket服务开启"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
 		}
 		if (m_tiingoIEXWebSocket.IsClosed()) {
 			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
 		}
 		if (m_tiingoCryptoWebSocket.IsClosed()) {
 			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
 		}
 		if (m_tiingoForexWebSocket.IsClosed()) {
 			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
 		}
 	}
 	return true;

@@ -12,6 +12,8 @@ atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_pSession = new CInternetSession{ _T("如果此项为空，则测试时会出现断言错误。但不影响测试结果") };
 	m_pFile = nullptr;
+	m_strHeaders = _T("");
+
 	m_lByteRead = 0;
 	m_fWebError = false;
 	m_dwWebErrorCode = 0;
@@ -53,6 +55,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	int iCountNumber = 0;
 	CString strMessage, strLeft, strErrorNo;
 	char buffer[30];
+	long lHeadersLength = m_strHeaders.GetLength();
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
@@ -60,7 +63,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		try {
 			// 使用dynamic_cast时，Address Sanitizer在此处报错
 			//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
-			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 			fDone = true;
 		}
 		catch (CInternetException* exception) {

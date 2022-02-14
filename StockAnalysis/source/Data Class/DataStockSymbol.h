@@ -42,7 +42,6 @@ public:
 	long IncreaseIndex(long& lIndex, long lEndPosition);
 
 private:
-	bool DeleteStockSectionDB(void);
 
 protected:
 	vector<CString> m_vStockSymbol;

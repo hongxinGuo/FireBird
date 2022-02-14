@@ -87,51 +87,40 @@ void CDataStockSymbol::LoadStockSectionDB(void) {
 
 bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	CSetStockSection setStockSection;
-
-	setStockSection.Open();
-	setStockSection.m_pDatabase->BeginTrans();
-	while (!setStockSection.IsEOF()) {
-		setStockSection.Delete();
-		setStockSection.MoveNext();
-	}
-	setStockSection.m_pDatabase->CommitTrans();
-	setStockSection.Close();
-
 	CStockSectionPtr pStockSection = nullptr;
 
+	setStockSection.m_strSort = _T("[ID]");
 	setStockSection.Open();
 	setStockSection.m_pDatabase->BeginTrans();
-	for (int i = 0; i < 2000; i++) {
-		pStockSection = m_vStockSection.at(i);
-		setStockSection.AddNew();
-		setStockSection.m_ID = i;
-		setStockSection.m_Active = pStockSection->IsActive();
-		setStockSection.m_Market = pStockSection->GetMarket();
-		setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
-		setStockSection.m_Comment = pStockSection->GetComment();
-		setStockSection.Update();
+	if (setStockSection.IsEOF()) {// 空表
+		for (int i = 0; i < 2000; i++) {
+			pStockSection = m_vStockSection.at(i);
+			setStockSection.AddNew();
+			setStockSection.m_ID = i;
+			setStockSection.m_Active = pStockSection->IsActive();
+			setStockSection.m_Market = pStockSection->GetMarket();
+			setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
+			setStockSection.m_Comment = pStockSection->GetComment();
+			setStockSection.Update();
+		}
+	}
+	else { // 表已存在
+		while (!setStockSection.IsEOF()) {
+			if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
+				setStockSection.Edit();
+				setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
+				setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
+				setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
+				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
+				setStockSection.Update();
+			}
+			setStockSection.MoveNext();
+		}
 	}
 	setStockSection.m_pDatabase->CommitTrans();
 	setStockSection.Close();
 
 	m_fUpdateStockSection = false;
-
-	return true;
-}
-
-bool CDataStockSymbol::DeleteStockSectionDB(void) {
-	CDatabase database;
-
-	if (gl_fTestMode) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1); //退出系统
-	}
-
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`stock_code_section`;"));
-	database.CommitTrans();
-	database.Close();
 
 	return true;
 }

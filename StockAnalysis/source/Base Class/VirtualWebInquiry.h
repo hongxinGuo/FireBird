@@ -90,6 +90,7 @@ public:
 protected:
 	CInternetSession* m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
+	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 	DWORD m_dwWebErrorCode; //网络读取错误代码
 	CString m_strInquire;// 查询所需的字符串
 	vector<char> m_vBuffer; // 接收到数据的缓冲区
