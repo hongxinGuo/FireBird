@@ -43,12 +43,19 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CVirtualWebInquiryTest, TestInitialize) {
+		EXPECT_STREQ(m_VirtualWebInquiry.GetHeaders(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
+	}
+
+	TEST_F(CVirtualWebInquiryTest, TestGetHeaders) {
+		EXPECT_STREQ(m_VirtualWebInquiry.GetHeaders(), _T(""));
+		m_VirtualWebInquiry.SetHeaders(_T("abcdefg"));
+		EXPECT_STREQ(m_VirtualWebInquiry.GetHeaders(), _T("abcdefg"));
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestReset) {

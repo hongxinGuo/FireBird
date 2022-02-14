@@ -259,11 +259,13 @@ public:
 
 	// 处理网络上提取的实时股票数据
 	bool TaskProcessWebRTDataGetFromSinaServer(void);
+	bool TaskProcessWebRTDataGetFromSinaServer2(void);
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
 	bool TaskProcessWebRTDataGetFromTengxunServer(void);
 	bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
 	bool CheckTengxunRTDataValidation(CWebRTData& RTData);
 	bool TaskProcessWebRTDataGetFromNeteaseServer(void);
+	bool TaskProcessWebRTDataGetFromNeteaseServer2(void);
 	bool IsInvalidNeteaseRTData(CWebData& WebDataReceived);
 	bool IsValidNeteaseRTDataPrefix(CWebData& pWebDataReceived);
 	bool CheckNeteaseRTDataValidation(CWebRTData& RTData);

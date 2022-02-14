@@ -34,6 +34,10 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -502,6 +506,28 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// sina实时数据是JavaScript格式，看看能否使用json解析之。
+// 目前无法使用boost的ptree解析，原因不明。20220214
+//
+//
+////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer2(void) {
+	CWebDataPtr pWebDataReceived = nullptr;
+	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
+	string ss;
+	ptree pt;
+	bool fSucceed = true;
+
+	for (int i = 0; i < lTotalData; i++) {
+		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
+		ss = pWebDataReceived->CreateString();
+		fSucceed = ConvertToJSON(pt, ss);
+	}
+	return true;
+}
+
 void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 	m_qRTData.push(pRTData);
 }
@@ -550,6 +576,119 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 		}
 	}
 
+	return true;
+}
+
+bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer2(void) {
+	CWebDataPtr pWebDataReceived = nullptr;
+	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
+	string ss;
+	ptree pt, pt1, pt2;
+	bool fSucceed = true;
+	string strSymbol, strSymbol2, strTime, strName;
+	double dHigh, dLow, dNew, dOpen, dLastClose;
+	array<long, 5> aAskVolume, aBidVolume;
+	array<double, 5> aAsk, aBid;
+	time_t ttTemp;
+	CString strSymbol4, str1;
+
+	for (int i = 0; i < lTotalData; i++) {
+		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
+		ss = pWebDataReceived->CreateString(21, 2);
+		if (ConvertToJSON(pt, ss)) {
+			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+				try {
+					strSymbol = it->first;
+					if (strSymbol.at(0) == '0') str1 = _T("SS");
+					else if (strSymbol.at(0) == '1') str1 = _T("SZ");
+					else throw;
+					strSymbol4 = strSymbol.c_str();
+					pRTData->SetSymbol(CreateStockCode(str1, strSymbol4.Right(6)));
+					pt1 = it->second;
+					strSymbol2 = pt1.get<string>(_T("code"));
+					//strName = pt1.get<string>(_T("name")); // 网易中文股票名称的制式不明，暂时不使用。
+					//pRTData->SetStockName(strName.c_str());
+					strTime = pt1.get<string>(_T("time"));
+					if (pRTData->GetTransactionTime() > 0) { // 设置过？
+						ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
+						if (pRTData->GetTransactionTime() > ttTemp) pRTData->SetTransactionTime(ttTemp);
+					}
+					else {
+						pRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+					}
+					strTime = pt1.get<string>(_T("update"));
+					if (pRTData->GetTransactionTime() > 0) { // 设置过？
+						ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
+						if (pRTData->GetTransactionTime() > ttTemp) pRTData->SetTransactionTime(ttTemp);
+					}
+					else {
+						pRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+					}
+				}
+				catch (ptree_error& e) { // 结构不完整
+					// do nothing
+					CString strError2 = strSymbol.c_str();
+					strError2 += _T(" ");
+					strError2 += e.what();
+					gl_systemMessage.PushErrorMessage(strError2);
+				}
+				try {
+					dHigh = pt1.get<double>(_T("high"));
+					pRTData->SetHigh(dHigh * 1000);
+					dLow = pt1.get<double>(_T("low"));
+					pRTData->SetLow(dLow * 1000);
+					dNew = pt1.get<double>(_T("price"));
+					pRTData->SetNew(dNew * 1000);
+					dLastClose = pt1.get<double>(_T("yestclose"));
+					pRTData->SetLastClose(dLastClose * 1000);
+					dOpen = pt1.get<double>(_T("open"));
+					pRTData->SetOpen(dOpen * 1000);
+
+					pRTData->SetVBuy(0, pt1.get<long>(_T("bidvol1")));
+					pRTData->SetVBuy(1, pt1.get<long>(_T("bidvol2")));
+					pRTData->SetVBuy(2, pt1.get<long>(_T("bidvol3")));
+					pRTData->SetVBuy(3, pt1.get<long>(_T("bidvol4")));
+					pRTData->SetVBuy(4, pt1.get<long>(_T("bidvol5")));
+					pRTData->SetVSell(0, pt1.get<long>(_T("askvol1")));
+					pRTData->SetVSell(1, pt1.get<long>(_T("askvol2")));
+					pRTData->SetVSell(2, pt1.get<long>(_T("askvol3")));
+					pRTData->SetVSell(3, pt1.get<long>(_T("askvol4")));
+					pRTData->SetVSell(4, pt1.get<long>(_T("askvol5")));
+					aAsk[0] = pt1.get<double>(_T("ask1"));
+					pRTData->SetPSell(0, aAsk[0] * 1000);
+					aAsk[1] = pt1.get<double>(_T("ask2"));
+					pRTData->SetPSell(1, aAsk[1] * 1000);
+					aAsk[2] = pt1.get<double>(_T("ask3"));
+					pRTData->SetPSell(2, aAsk[2] * 1000);
+					aAsk[3] = pt1.get<double>(_T("ask4"));
+					pRTData->SetPSell(3, aAsk[3] * 1000);
+					aAsk[4] = pt1.get<double>(_T("ask5"));
+					pRTData->SetPSell(4, aAsk[4] * 1000);
+					aBid[0] = pt1.get<double>(_T("bid1"));
+					pRTData->SetPBuy(0, aBid[0] * 1000);
+					aBid[1] = pt1.get<double>(_T("bid2"));
+					pRTData->SetPBuy(1, aBid[1] * 1000);
+					aBid[2] = pt1.get<double>(_T("bid3"));
+					pRTData->SetPBuy(2, aBid[2] * 1000);
+					aBid[3] = pt1.get<double>(_T("bid4"));
+					pRTData->SetPBuy(3, aBid[3] * 1000);
+					aBid[4] = pt1.get<double>(_T("bid5"));
+					pRTData->SetPBuy(4, aBid[4] * 1000);
+
+					pRTData->CheckNeteaseRTDataActive();
+					m_llRTDataReceived++;
+					if (IsSystemReady())	CheckNeteaseRTDataValidation(*pRTData);// 当系统准备状态完成时检测一下
+					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+				}
+				catch (ptree_error& e) { // 非活跃股票（已下市等）
+					pRTData->SetActive(false);
+					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+				}
+			}
+		}
+	}
 	return true;
 }
 
@@ -766,7 +905,7 @@ bool CChinaMarket::SchedulingTask(void) {
 	if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
 		TaskGetRTDataFromWeb();
 		TaskProcessWebRTDataGetFromSinaServer();
-		TaskProcessWebRTDataGetFromNeteaseServer();
+		TaskProcessWebRTDataGetFromNeteaseServer2();
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
 		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // 默认计数4次,即每400毫秒申请一次实时数据

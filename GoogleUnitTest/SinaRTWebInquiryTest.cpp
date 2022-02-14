@@ -43,7 +43,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CSinaRTWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
+		EXPECT_STREQ(m_SinaRTWebInquiry.GetHeaders(), _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
+		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringPrefix(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_FALSE(m_SinaRTWebInquiry.IsReportStatus());
 		EXPECT_THAT(m_SinaRTWebInquiry.GetShortestInquiringInterval(), 400) << "每400毫秒查询一次，即可在3秒内查询6000个股票（850 * 7），完成完整轮询一次的任务";

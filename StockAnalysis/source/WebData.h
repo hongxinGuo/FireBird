@@ -45,6 +45,8 @@ public:
 	char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
 
+	string CreateString(long lBeginPos = 0, long lEndPos = 0) { string str(m_vDataBuffer.begin() + lBeginPos, m_vDataBuffer.end() - lEndPos - 1); return str; }
+
 	// ≤‚ ‘”√∫Ø ˝
 	void __TEST_SetBuffer__(CString strBuffer);
 

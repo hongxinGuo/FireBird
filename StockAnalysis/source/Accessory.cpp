@@ -2,6 +2,10 @@
 #include"globedef.h"
 #include "Accessory.h"
 
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
+
 CString ConvertDateToString(long lDate) {
 	char buffer[30];
 	long year = lDate / 10000;

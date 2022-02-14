@@ -63,6 +63,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		try {
 			// 使用dynamic_cast时，Address Sanitizer在此处报错
 			//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
+			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 			fDone = true;
 		}

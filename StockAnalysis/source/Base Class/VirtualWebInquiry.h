@@ -46,6 +46,9 @@ public:
 	void SetInquiringString(CString str) { m_strInquire = str; }
 	void AppendInquiringString(CString str) { m_strInquire += str; }
 
+	CString GetHeaders(void) { return m_strHeaders; }
+	void SetHeaders(CString strHeaders) { m_strHeaders = strHeaders; }
+
 	char GetData(long lIndex) const { return m_vBuffer.at(lIndex); }
 	void SetData(long lIndex, char value) { m_vBuffer.at(lIndex) = value; }
 
