@@ -1,11 +1,13 @@
 #include"pch.h"
+
+#include"Accessory.h"
 #include"WebData.h"
 
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
-	m_vDataBuffer.resize(1024 * 128); // 需要在此执行一次，否则测试无法初始化。不知为何。
-	m_lBufferLength = 1024 * 128;
+	m_vDataBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
+	m_lBufferLength = 1024 * 1024;
 	m_lCurrentPos = 0;
 }
 
@@ -44,9 +46,16 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
+bool CWebData::CreatePTree(ptree& pt, long lBeginPos, long lEndPos) {
+	if (lBeginPos > 0)	m_vDataBuffer.erase(m_vDataBuffer.begin(), m_vDataBuffer.begin() + lBeginPos);
+	if (lEndPos > 0) m_vDataBuffer.resize(m_vDataBuffer.size() - lEndPos);
+	return ConvertToJSON(pt, m_vDataBuffer);
+}
+
 void CWebData::__TEST_SetBuffer__(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
 	char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_vDataBuffer.at(i) = pBuffer[i]; }
 	m_vDataBuffer.at(m_lBufferLength) = 0x000;
+	m_vDataBuffer.resize(m_lBufferLength + 1);
 }

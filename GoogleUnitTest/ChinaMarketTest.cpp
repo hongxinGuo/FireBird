@@ -959,36 +959,6 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CChinaMarketTest, TestIsInvalidNeteaseRTData) {
-		CWebDataPtr pWebDataReceived;
-		pWebDataReceived = make_shared<CWebData>();
-		CString str = _T("_ntes_quote_callback({ });");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-		EXPECT_TRUE(gl_pChinaMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
-		str = _T("_ntes_quote_callback({});");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-		EXPECT_FALSE(gl_pChinaMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
-	}
-
-	TEST_F(CChinaMarketTest, TestIsValidNeteaseRTDataPrefix) {
-		CWebDataPtr pWebDataReceived;
-		pWebDataReceived = make_shared<CWebData>();
-		CString str = _T("_ntes_quote_callback({\"");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-		EXPECT_TRUE(gl_pChinaMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
-		str = _T("_ntes_quo_callback({\"");
-		pWebDataReceived->SetData((LPSTR)str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-		EXPECT_FALSE(gl_pChinaMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
-	}
-
 	TEST_F(CChinaMarketTest, TestValidateNeteaseRTData) {
 		CWebRTData webRTData;
 
@@ -1075,7 +1045,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromNeteaseServer) {
-		CString strRTData = _T("_ntes_quote_callback({\"0601872\":{\"code\": \"0601872\",\"percent\": 0.038251, \"high\": 5.72, \"askvol3\": 311970, \"askvol2\": 257996,\"askvol5\": 399200, \"askvol4\": 201000, \"price\": 5.7, \"open\": 5.53, \"bid5\": 5.65, \"bid4\": 5.66, \"bid3\": 5.67,\"bid2\": 5.68, \"bid1\": 5.69, \"low\": 5.51, \"updown\": 0.21, \"type\": \"SH\", \"symbol\": \"601872\", \"status\": 0,\"ask4\": 5.73, \"bidvol3\": 234700, \"bidvol2\": 166300, \"bidvol1\": 641291, \"update\": \"2019/11/04 15:59:54\",\"bidvol5\": 134500, \"bidvol4\": 96600, \"yestclose\": 5.49, \"askvol1\": 396789, \"ask5\": 5.74, \"volume\": 78750304,\"ask1\": 5.7, \"name\": \"\u62db\u5546\u8f6e\u8239\", \"ask3\": 5.72, \"ask2\": 5.71, \"arrow\": \"\u2191\",\"time\": \"2019/11/04 15:59:52\", \"turnover\": 443978974} });");
+		CString strRTData = "_ntes_quote_callback({\"0600270\": {\"time\": \"2020/04/23 08:30:01\", \"code\": \"0600270\",\"name\":\"don't use chinese character\",\"update\": \"2020/04/23 08:30:01\"} });";
 		CWebDataPtr pData = make_shared<CWebData>();
 		pData->__TEST_SetBuffer__(strRTData);
 		gl_WebInquirer.PushNeteaseRTData(pData);

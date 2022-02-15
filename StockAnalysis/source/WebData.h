@@ -12,8 +12,13 @@ class CVirtualWebInquiry;
 using namespace std;
 #include<memory>
 #include<vector>
+#include<string>
 
-class CWebData : public CObject {
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
+
+class CWebData final : public CObject {
 public:
 	friend CVirtualWebInquiry;
 	CWebData();
@@ -45,7 +50,7 @@ public:
 	char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	string CreateString(long lBeginPos = 0, long lEndPos = 0) { string str(m_vDataBuffer.begin() + lBeginPos, m_vDataBuffer.end() - lEndPos - 1); return str; }
+	bool CreatePTree(ptree& pt, long lBeginPos, long lEndPos);
 
 	// 测试用函数
 	void __TEST_SetBuffer__(CString strBuffer);
@@ -53,7 +58,7 @@ public:
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
-	vector<char> m_vDataBuffer;
+	string m_vDataBuffer;
 	INT64 m_lBufferLength;
 	INT64 m_lCurrentPos;
 };

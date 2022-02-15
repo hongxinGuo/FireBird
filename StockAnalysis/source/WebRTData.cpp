@@ -98,10 +98,12 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
 //
-//  新浪实时行情站点：http://hq.sinajs.cn/list=sh601006
-// var hq_str_sh601006=”大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
+//  新浪实时行情站点：https://hq.sinajs.cn/list=sh601006
+// OpenURL时，需要设置	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
+//
+// var hq_str_sh601006="大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
-//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00”;
+//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00";
 //
 // 无效数据格式为：var hq_str_sh688801="";
 //
@@ -841,80 +843,94 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
 // （turnover即为成交金额，可以使用之。05/12/2020）
 //
-//////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
-	long lIndex = 0;
-	CString strValue = _T("");
-	char bufferTest[2000];
-	long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
-	CString strStockCode = _T(" "), strHeader;
-	long lSectionLength = 0;
-	CString strTest;
-	CString strStockSymbol, strNeteaseStockCode;
-	bool fBadData = false;
-
-	int i = 0;
-	while (!fBadData && (pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}')) {
-		bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
-		i++;
-		if (i >= 1900) {
-			fBadData = true;
-		}
-		if (pNeteaseWebRTData->GetCurrentPos() + i > pNeteaseWebRTData->GetBufferLength()) {
-			fBadData = true;
-		}
-	}
-	bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
-	i++;
-	lSectionLength = i;
-	bufferTest[i] = 0x000;
-	strTest = bufferTest;
-	if (fBadData) {
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("NeteaseRTData整体数据出问题，抛掉不用"));
-		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
-		return false; // 整个数据出现错误，后面的皆抛掉
-	}
-
-	char ch = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + lSectionLength - 1);
-	ASSERT(ch == '}');
-	ASSERT(bufferTest[i - 1] == '}');
+//  网易中文股票名称的制式不明，暂时不使用（由于boost ptree对中文的支持不足，其只支持utf8制式，导致提取中文字符时出现乱码）。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
+	ptree pt1, pt2;
+	bool fSucceed = true;
+	string strSymbol, strSymbol2, strTime, strUpdateTime, strName;
+	double dHigh, dLow, dNew, dOpen, dLastClose;
+	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
+	time_t ttTemp;
+	CString strSymbol4, str1;
+	string Name;
 
 	try {
-		m_fActive = false;    // 初始状态为无效数据
-		// 跨过前缀字符（"0601872")，直接使用其后的数据
-		if (!ReadNeteaseStockCodePrefix(pNeteaseWebRTData)) {
-			throw exception();
+		strSymbol = it->first;
+		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
+		SetSymbol(strSymbol4);
+		pt1 = it->second;
+		strSymbol2 = pt1.get<string>(_T("code"));
+		strTime = pt1.get<string>(_T("time"));
+		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
+		strUpdateTime = pt1.get<string>(_T("update"));
+		ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strUpdateTime.c_str());
+		if ((gl_pChinaMarket->GetUTCTime() - ttTemp) < 3600 * 24 * 30) { // 当是退市股票时，其update的时间为0
+			ASSERT(ttTemp >= m_time);
 		}
-		do {
-			if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-				if (!SetNeteaseRTValue(lIndex, strValue)) {
-					throw exception();
-				}
-			}
-			else {
-				throw exception();
-			}
-		} while ((lIndex != 63) && (pNeteaseWebRTData->GetCurrentPosData() != '}'));  // 读至turnover(63)或者遇到字符'}'
-		// 读过'}'就结束了
-		while (pNeteaseWebRTData->GetCurrentPosData() != '}') {
-			pNeteaseWebRTData->IncreaseCurrentPos();
-		}
-		ASSERT(pNeteaseWebRTData->GetCurrentPosData() == '}');
-		pNeteaseWebRTData->IncreaseCurrentPos();
+	}
+	catch (ptree_error& e) { // 结构不完整
+		// do nothing
+		CString strError2 = strSymbol4;
+		strError2 += _T(" ");
+		strError2 += e.what();
+		gl_systemMessage.PushErrorMessage(strError2);
+		fSucceed = false;
+	}
+	try {
+		SetVolume(pt1.get<INT64>(_T("volume")));
+		m_llAmount = pt1.get<INT64>(_T("turnover"));
+		dHigh = pt1.get<double>(_T("high"));
+		SetHigh(dHigh * 1000);
+		dLow = pt1.get<double>(_T("low"));
+		SetLow(dLow * 1000);
+		dNew = pt1.get<double>(_T("price"));
+		SetNew(dNew * 1000);
+		dLastClose = pt1.get<double>(_T("yestclose"));
+		SetLastClose(dLastClose * 1000);
+		dOpen = pt1.get<double>(_T("open"));
+		SetOpen(dOpen * 1000);
+
+		SetVBuy(0, pt1.get<long>(_T("bidvol1")));
+		SetVBuy(1, pt1.get<long>(_T("bidvol2")));
+		SetVBuy(2, pt1.get<long>(_T("bidvol3")));
+		SetVBuy(3, pt1.get<long>(_T("bidvol4")));
+		SetVBuy(4, pt1.get<long>(_T("bidvol5")));
+		SetVSell(0, pt1.get<long>(_T("askvol1")));
+		SetVSell(1, pt1.get<long>(_T("askvol2")));
+		SetVSell(2, pt1.get<long>(_T("askvol3")));
+		SetVSell(3, pt1.get<long>(_T("askvol4")));
+		SetVSell(4, pt1.get<long>(_T("askvol5")));
+		aAsk[0] = pt1.get<double>(_T("ask1"));
+		SetPSell(0, aAsk[0] * 1000);
+		aAsk[1] = pt1.get<double>(_T("ask2"));
+		SetPSell(1, aAsk[1] * 1000);
+		aAsk[2] = pt1.get<double>(_T("ask3"));
+		SetPSell(2, aAsk[2] * 1000);
+		aAsk[3] = pt1.get<double>(_T("ask4"));
+		SetPSell(3, aAsk[3] * 1000);
+		aAsk[4] = pt1.get<double>(_T("ask5"));
+		SetPSell(4, aAsk[4] * 1000);
+		aBid[0] = pt1.get<double>(_T("bid1"));
+		SetPBuy(0, aBid[0] * 1000);
+		aBid[1] = pt1.get<double>(_T("bid2"));
+		SetPBuy(1, aBid[1] * 1000);
+		aBid[2] = pt1.get<double>(_T("bid3"));
+		SetPBuy(2, aBid[2] * 1000);
+		aBid[3] = pt1.get<double>(_T("bid4"));
+		SetPBuy(3, aBid[3] * 1000);
+		aBid[4] = pt1.get<double>(_T("bid5"));
+		SetPBuy(4, aBid[4] * 1000);
 
 		CheckNeteaseRTDataActive();
-		SetDataSource(__NETEASE_RT_WEB_DATA__);
-		return true;
+		fSucceed = true;
 	}
-	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadNeteaseData异常 "), e);
-		m_fActive = false;
-		// 跨过此错误数据，寻找下一个数据的起始处。
-		pNeteaseWebRTData->SetCurrentPos(lSectionBegin + lSectionLength);
-		ASSERT(pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() - 1) == '}');
-		SetDataSource(__NETEASE_RT_WEB_DATA__);
-		return true; // 返回真，则跨过此错误数据，继续处理。
+	catch (ptree_error& e) { // 非活跃股票（已下市等）
+		SetActive(false);
+		fSucceed = true;
 	}
+	return fSucceed;
 }
 
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
@@ -927,302 +943,6 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 		return m_fActive;
 	}
 	return m_fActive;
-}
-
-bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
-	CString strValue = _T("");
-	char bufferStockCode[50];
-	char bufferTest[50];
-	bool fFind = false;
-	CString strStockCode, strHeader;
-	CString strTest;
-
-	int i = 0;
-	while ((pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i) != '{') && (i < 30)) {
-		bufferTest[i] = pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i);
-		i++;
-	}
-	bufferTest[i] = 0x000;
-	strTest = bufferTest;
-
-	i = 0;  // 跨过前缀字符（"0601872")，直接使用其后的数据
-	if (!((pWebDataReceived->GetCurrentPosData() == '{') || (pWebDataReceived->GetCurrentPosData() == ','))) {
-		return false;
-	}
-	else pWebDataReceived->IncreaseCurrentPos();
-	if (pWebDataReceived->GetCurrentPosData() != '\"') {
-		return false;
-	}
-	else pWebDataReceived->IncreaseCurrentPos();
-	if (pWebDataReceived->GetCurrentPosData() == '0') strHeader = _T("sh");
-	else if (pWebDataReceived->GetCurrentPosData() == '1') strHeader = _T("sz");
-	else {
-		return false;
-	}
-	pWebDataReceived->IncreaseCurrentPos();
-	i = 0;
-	while (!fFind && (i < 13)) {
-		if (pWebDataReceived->GetCurrentPosData() == '"') {
-			fFind = true;
-			bufferStockCode[i] = 0x000;
-		}
-		else {
-			bufferStockCode[i++] = pWebDataReceived->GetCurrentPosData();
-		}
-		pWebDataReceived->IncreaseCurrentPos();
-	}
-	if (!fFind) return false;
-	i = 1;
-	while ((pWebDataReceived->GetCurrentPosData() != '{') && (pWebDataReceived->GetCurrentPosData() != '"' && (i < 5))) {
-		i++;
-		pWebDataReceived->IncreaseCurrentPos();
-	}
-	if (i >= 5) return false;
-	pWebDataReceived->IncreaseCurrentPos();
-	//strStockCode = strHeader;
-	//strStockCode += bufferStockCode;
-	//strStockCode = XferSinaToStandred(strStockCode);
-	//if (!gl_pChinaMarket->IsStock(strStockCode)) {
-		//TRACE("无效股票代码：%s\n", strStockCode);
-		//return false;
-	//}
-	return true;
-}
-
-long CWebRTData::GetNeteaseSymbolIndex(CString strSymbol) {
-	long lIndex = 0;
-	try {
-		lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
-	}
-	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("GetNeteaseSymbolIndex异常 ") + strSymbol, e);
-		lIndex = 0;
-	}
-	return lIndex;
-}
-
-bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue) {
-	char buffer[100];
-	int i = 0;
-	CString strIndex;
-	bool fFind = false;
-	char bufferTest[100];
-
-	try {
-		while (pNeteaseWebRTData->GetCurrentPosData() != '"') {
-			pNeteaseWebRTData->IncreaseCurrentPos();
-		}
-		pNeteaseWebRTData->IncreaseCurrentPos();
-
-		while ((pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}') && (pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != ',') && (i < 99)) {
-			bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
-			i++;
-		}
-		bufferTest[i] = 0x000;
-
-		i = 0;
-		while ((pNeteaseWebRTData->GetCurrentPosData() != '"') && (pNeteaseWebRTData->GetCurrentPosData() != ':') && (pNeteaseWebRTData->GetCurrentPosData() != ',')) {
-			buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
-			pNeteaseWebRTData->IncreaseCurrentPos();
-		}
-		if (pNeteaseWebRTData->GetCurrentPosData() != '"') {
-			TRACE(_T("未遇到正确字符'\"'\n"));
-			return false;
-		}
-		buffer[i] = 0x000;
-		strIndex = buffer;
-		if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) {
-			lIndex = 0;
-			strValue = _T("");
-			return false;
-		}
-		// 跨过"\""字符
-		pNeteaseWebRTData->IncreaseCurrentPos();
-		if (pNeteaseWebRTData->GetCurrentPosData() != ':') {
-			TRACE(_T("未遇到正确字符':'\n"));
-			return false;
-		}
-		pNeteaseWebRTData->IncreaseCurrentPos();
-		if (pNeteaseWebRTData->GetCurrentPosData() != ' ') {
-			TRACE(_T("未遇到正确字符' '\n"));
-			return false;
-		}
-		pNeteaseWebRTData->IncreaseCurrentPos();
-
-		if (pNeteaseWebRTData->GetCurrentPosData() == '"') {
-			fFind = true;
-			pNeteaseWebRTData->IncreaseCurrentPos();
-		}
-		else fFind = false;
-
-		i = 0;
-		if (fFind) {
-			while ((pNeteaseWebRTData->GetCurrentPosData() != '"') && (pNeteaseWebRTData->GetCurrentPosData() != ',')) {
-				buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
-				pNeteaseWebRTData->IncreaseCurrentPos();
-			}
-			if (pNeteaseWebRTData->GetCurrentPosData() != '"') {
-				TRACE(_T("未遇到正确字符'\"'\n"));
-				return false;
-			}
-			buffer[i] = 0x000;
-			strValue = buffer;
-			pNeteaseWebRTData->IncreaseCurrentPos();
-		}
-		else {
-			while ((pNeteaseWebRTData->GetCurrentPosData() != ',') && (pNeteaseWebRTData->GetCurrentPosData() != '}')) {
-				buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
-				pNeteaseWebRTData->IncreaseCurrentPos();
-			}
-			buffer[i] = 0x000;
-			strValue = buffer;
-		}
-		return true;
-	}
-	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("GetNeteaseINdexAndValue异常 "), e);
-		lIndex = 0;
-		strValue = _T("");
-		return false;
-	}
-}
-
-bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
-	CString str1, str;
-	time_t ttTemp = 0;
-	WORD wMarket;
-
-	switch (lIndex) {
-	case 1: // time. 这个时间可能是实际的成交时间。需要与Update时间比较，采用较早的时间。此时间为东八区（北京标准时间）
-		if (m_time > 0) { // 设置过？
-			ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-			if (m_time > ttTemp) m_time = ttTemp;
-		}
-		else {
-			m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-		}
-		break;
-	case 2: // code
-		ASSERT(strValue.GetLength() == 7);
-		str = strValue.Left(1);
-		if (str.Compare(_T("0")) == 0) {
-			str1 = _T("SS");
-		}
-		else str1 = _T("SZ");
-		m_strSymbol = CreateStockCode(str1, strValue.Right(6));
-		break;
-	case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
-		//m_strStockName = buffer;
-		break;
-	case 4: // type
-		if (strValue.Compare(_T("SH")) == 0) wMarket = __SHANGHAI_MARKET__;
-		else wMarket = __SHENZHEN_MARKET__;
-		break;
-	case 5: // symbol
-		break;
-	case 6: // status
-		break;
-	case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间可能要晚。采用较早的时间。此时间为东八区（北京标准时间）
-		if (m_time > 0) { // 设置过？
-			ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-			if (m_time > ttTemp) m_time = ttTemp;
-		}
-		else {
-			m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-		}
-		break;
-	case 10: // open
-		m_lOpen = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 11: // yestclose
-		m_lLastClose = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 12: // high
-		m_lHigh = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 13: // low
-		m_lLow = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 14: // price
-		m_lNew = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 15: // volume
-		m_llVolume = atoll(strValue);
-		break;
-	case 20: // bid1
-		m_lPBuy[0] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 21: // bid2
-		m_lPBuy[1] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 22: // bid3
-		m_lPBuy[2] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 23: // bid4
-		m_lPBuy[3] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 24: // bid5
-		m_lPBuy[4] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 30: // bidvol1
-		m_lVBuy[0] = atol(strValue);
-		break;
-	case 31: // bidvol2
-		m_lVBuy[1] = atol(strValue);
-		break;
-	case 32: // bidvol3
-		m_lVBuy[2] = atol(strValue);
-		break;
-	case 33: // bidvol4
-		m_lVBuy[3] = atol(strValue);
-		break;
-	case 34: // bidvol5
-		m_lVBuy[4] = atol(strValue);
-		break;
-	case 40: // ask1
-		m_lPSell[0] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 41: // ask2
-		m_lPSell[1] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 42: // ask3
-		m_lPSell[2] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 43: // ask4
-		m_lPSell[3] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 44: // ask5
-		m_lPSell[4] = static_cast<long>(atof(strValue) * 1000);
-		break;
-	case 50: // askvol1
-		m_lVSell[0] = atol(strValue);
-		break;
-	case 51: // askvol2
-		m_lVSell[1] = atol(strValue);
-		break;
-	case 52: // askvol3
-		m_lVSell[2] = atol(strValue);
-		break;
-	case 53: // askvol4
-		m_lVSell[3] = atol(strValue);
-		break;
-	case 54: // askvol5
-		m_lVSell[4] = atol(strValue);
-		break;
-	case 60: // percent
-
-	case 61: // updown
-	case 62: // arrow
-	case 63: // turnover
-		m_llAmount = atoll(strValue);
-		break;
-	default:
-		// 出错了
-		TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue.GetBuffer());
-		return false;
-		break;
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

@@ -454,7 +454,6 @@ bool ConvertToJSON(ptree& pt, CWebDataPtr pWebData) {
 
 bool ConvertToJSON(ptree& pt, string s) {
 	stringstream ss(s);
-
 	try {
 		read_json(ss, pt);
 	}

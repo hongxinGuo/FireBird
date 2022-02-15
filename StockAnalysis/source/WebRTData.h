@@ -119,6 +119,10 @@ using namespace std;
 #include<array>
 #include<map>
 
+#include<boost/property_tree/ptree.hpp>
+#include<boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
+
 class CWebRTData;
 
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;
@@ -154,11 +158,7 @@ public:
 
 	// 读取网易实时数据函数
 	// 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-	bool ReadNeteaseData(CWebDataPtr pNeteaseWebRTData);
-	bool ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived);
-	long GetNeteaseSymbolIndex(CString strSymbol);
-	bool GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
-	bool SetNeteaseRTValue(long lIndex, CString strValue);
+	bool ReadNeteaseData(ptree::iterator& it);
 
 public:
 	void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }

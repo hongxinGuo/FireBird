@@ -20,7 +20,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_strInquire = _T("");
 	m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
-	m_vBuffer.resize(128 * 1024);
+	m_vBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
 	m_lShortestInquiringInterval = 1000; // 每1秒查询一次。
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -118,7 +118,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
 			if (m_vBuffer.size() < (m_lByteRead + 16 * 1024)) { // 数据可存储空间不到16K时
-				m_vBuffer.resize(m_vBuffer.size() + 128 * 1024); // 扩大128K数据范围
+				m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大1M数据范围
 			}
 		} while (lCurrentByteReaded > 0);
 		ASSERT(m_vBuffer.size() > m_lByteRead);
@@ -157,7 +157,7 @@ CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
 	auto byteReaded = GetByteReaded();
 	m_vBuffer.resize(byteReaded + 1);
 	pWebDataReceived->m_vDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
-	m_vBuffer.resize(128 * 1024); // 重新分配内存
+	m_vBuffer.resize(1024 * 1024); // 重新分配内存
 
 	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();

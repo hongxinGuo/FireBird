@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 			EXPECT_EQ(m_id.GetCurrentPos(), 0);
 			EXPECT_EQ(m_id.GetTime(), 0);
-			EXPECT_EQ(m_id.GetBufferLength(), 1024 * 128);
+			EXPECT_EQ(m_id.GetBufferLength(), 1024 * 1024);
 			m_id.ResetCurrentPos();
 			EXPECT_EQ(m_id.GetCurrentPos(), 0);
 		}
@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
 			GeneralCheck();
-			m_id.SetBufferLength(1024 * 128);
+			m_id.SetBufferLength(1024 * 1024);
 		}
 
 	public:
@@ -61,9 +61,9 @@ namespace StockAnalysisTest {
 	TEST_F(CWebDataTest, TestGetData1) {
 		char buffer[10];
 
-		EXPECT_EQ(m_id.GetBufferLength(), 1024 * 128);
+		EXPECT_EQ(m_id.GetBufferLength(), 1024 * 1024);
 		EXPECT_EQ(m_id.GetCurrentPos(), 0);
-		m_id.SetCurrentPos(1024 * 128 - 9);
+		m_id.SetCurrentPos(1024 * 1024 - 9);
 		EXPECT_FALSE(m_id.GetData(buffer, 10)) << "Ô½½ç";
 	}
 
