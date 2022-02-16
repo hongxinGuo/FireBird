@@ -45,7 +45,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	string sError;
 	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
 
-	if (!ConvertToJSON(pt, pWebData)) return pvExchange;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvExchange;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

@@ -694,11 +694,11 @@ namespace StockAnalysisTest {
 
 	TEST_P(IsJsonReportingErrorTest, TestIsJsonReportingError1) {
 		ptree pt;
-		string s;
-		CWebDataPtr pData = make_shared<CWebData>();
-		pData->SetData(bufferJson, iBufferLength);
+		string s, sInput;
 
-		ConvertToJSON(pt, pData);
+		sInput = bufferJson;
+
+		ConvertToJSON(pt, sInput);
 		if (IsJsonReportingrror(pt, s)) {
 			EXPECT_EQ(s.at(0), 'E');
 		}

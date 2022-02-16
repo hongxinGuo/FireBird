@@ -41,7 +41,7 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	ptree pt, pt1, pt2;
 	string s;
 
-	if (!ConvertToJSON(pt, pWebData)) return pvEconomicCalendar;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvEconomicCalendar;
 
 	try {
 		pt1 = pt.get_child(_T("economicCalendar"));

@@ -536,7 +536,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 
 	for (int i = 0; i < lTotalData; i++) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(pt, 21, 3)) { // 网易数据前21位为前缀，后两位为后缀，加上故意加上的一个字符0x000
+		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);

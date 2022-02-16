@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(p->GetBufferLength(), str.GetLength());
 		char buffer[30];
 		int i = 0;
-		while ((i < 30) && (p->GetData(i) != 0x000)) {
+		while ((i < m_VirtualWebInquiry.GetByteReaded())) {
 			buffer[i] = p->GetData(i);
 			i++;
 		}

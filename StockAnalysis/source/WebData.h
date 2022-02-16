@@ -28,7 +28,7 @@ public:
 
 	void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
-
+	bool OutOfRange(void) { if (m_lCurrentPos >= m_lBufferLength) return true; else return false; }
 	void Resize(long lSize) { m_vDataBuffer.resize(lSize); m_lBufferLength = lSize; }
 
 	time_t GetTime(void) const noexcept { return m_tTime; }

@@ -9,7 +9,6 @@
 
 #include"GeneralCheck.h"
 
-#include"PotenDailyBriefingMarket.h"
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -22,13 +21,10 @@
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
-#include"MockPotenDailyBriefingWebInquiry.h"
-#include"MockCrweberIndexWebInquiry.h"
 #include"MockFinnhubWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
 #include"MockChinaMarket.h"
-#include"MockCrweberIndexMarket.h"
 
 using namespace testing;
 // using testing::GTEST_FLAG(brief); // 此标识已实现，但在1.10.0中尚未允许使用。
@@ -50,8 +46,6 @@ namespace StockAnalysisTest {
 	CMockChinaMarketPtr gl_pMockChinaMarket;
 	CMockMainFrame* gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
-	CMockCrweberIndexMarketPtr gl_pMockCrweberIndexMarket;
-
 	class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
 	public:
 		TestEnvironment(void) {
@@ -66,8 +60,6 @@ namespace StockAnalysisTest {
 			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
 			gl_pFinnhubWebInquiry = nullptr;
-			gl_pPotenDailyBriefingWebInquiry = nullptr;
-			gl_pCrweberIndexWebInquiry = nullptr;
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pTiingoWebInquiry = nullptr;
 			gl_pQuandlWebInquiry = nullptr;
@@ -76,23 +68,14 @@ namespace StockAnalysisTest {
 			gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
 			gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
 			gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
-			gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
-			gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 			gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
 			gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
 			gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
-			CCrweberIndexWebInquiryPtr pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
-			CMockCrweberIndexWebInquiryPtr pMockCrweberIndexWebInquiry = static_pointer_cast<CMockCrweberIndexWebInquiry>(pCrweberIndexWebInquiry);
-
-			gl_pMockCrweberIndexMarket = make_shared<CMockCrweberIndexMarket>();
-
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();
-			gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
-			gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
 			gl_pWorldMarket = make_shared<CWorldMarket>();
 			gl_pChinaMarket->ResetMarket();
 			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -101,8 +84,6 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_vMarketPtr.size(), 0);
 			gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 			gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
-			gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
-			gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 
 			gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
 			gl_pMockChinaMarket->ResetMarket();
@@ -211,8 +192,6 @@ namespace StockAnalysisTest {
 			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
 			gl_pFinnhubWebInquiry = nullptr;
-			gl_pPotenDailyBriefingWebInquiry = nullptr;
-			gl_pCrweberIndexWebInquiry = nullptr;
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pTiingoWebInquiry = nullptr;
 			gl_pQuandlWebInquiry = nullptr;
@@ -223,11 +202,7 @@ namespace StockAnalysisTest {
 			while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;
-			gl_pCrweberIndexMarket = nullptr;
-			gl_pPotenDailyBriefingMarket = nullptr;
 			gl_vMarketPtr.clear();
-
-			gl_pMockCrweberIndexMarket = nullptr;
 		}
 	};
 }

@@ -104,7 +104,7 @@ CTiingoStockVectorPtr CProductTinngoStockSymbol::ParseTiingoStockSymbol(CWebData
 	char buffer[30];
 	long year, month, day;
 
-	if (!ConvertToJSON(pt, pWebData)) return pvTiingoStock;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvTiingoStock;
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pStock = make_shared<CTiingoStock>();

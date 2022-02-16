@@ -149,11 +149,12 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	bool fBadData = false;
 
 	int i = 0;
-	while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (!fBadData)) {
+	while ((!fBadData) && (pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';')) {
 		bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
 		i++;
-		if ((i >= 1900) || ((i + pSinaWebRTData->GetCurrentPos()) >= pSinaWebRTData->GetBufferLength())) {
+		if ((i >= 1900) || ((i + pSinaWebRTData->GetCurrentPos()) >= (pSinaWebRTData->GetBufferLength() - 1))) {
 			fBadData = true;
+			break;
 		}
 	}
 	bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
@@ -224,17 +225,17 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			SetDataSource(__SINA_RT_WEB_DATA__);
 			return true;  // 非活跃股票没有实时数据，在此返回。
 		}
-		if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
+		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) {
 			throw exception();
 		}
-		if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
+		if ((buffer1[1] == 0x00a) || pSinaWebRTData->OutOfRange()) {
 			throw exception();
 		}
 		pSinaWebRTData->IncreaseCurrentPos(2);
 
 		i = 2;
 		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
-			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || (pSinaWebRTData->GetCurrentPosData() == 0x000)) {
+			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) {
 				throw exception();
 			}
 			buffer1[i++] = pSinaWebRTData->GetCurrentPosData();
@@ -328,7 +329,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		// 后面的数据皆为无效数据，读至此数据的结尾处即可。
 		while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
 			pSinaWebRTData->IncreaseCurrentPos();
-			if (pSinaWebRTData->GetCurrentPosData() == 0x000) {
+			if ((pSinaWebRTData->GetCurrentPos() >= pSinaWebRTData->GetBufferLength())) {
 				throw exception();
 			}
 		}
@@ -418,7 +419,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 	int i = 0;
 	try {
 		while ((pSinaWebRTData->GetCurrentPosData() != ',')) {
-			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || (pSinaWebRTData->GetCurrentPosData() == 0x000)) throw exception();
+			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) throw exception();
 			if (i > 150) throw exception();
 			buffer[i++] = pSinaWebRTData->GetCurrentPosData();
 			pSinaWebRTData->IncreaseCurrentPos();
@@ -718,7 +719,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		// 后面的数据具体内容不清楚，暂时放弃解码。
 		while (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
 			pTengxunWebRTData->IncreaseCurrentPos();
-			if (pTengxunWebRTData->GetCurrentPosData() == 0x000) {
+			if (pTengxunWebRTData->OutOfRange()) {
 				return false;
 			}
 		}
@@ -811,7 +812,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 	int i = 0;
 	try {
 		while (pWebDataReceived->GetCurrentPosData() != '~') {
-			if ((pWebDataReceived->GetCurrentPosData() == 0x00a) || (pWebDataReceived->GetCurrentPosData() == 0x000)) return false;
+			if ((pWebDataReceived->GetCurrentPosData() == 0x00a) || pWebDataReceived->OutOfRange()) return false;
 			buffer[i++] = pWebDataReceived->GetCurrentPosData();
 			pWebDataReceived->IncreaseCurrentPos();
 		}

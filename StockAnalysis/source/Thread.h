@@ -6,8 +6,6 @@
 class CChinaMarket;
 #include"WorldMarket.h"
 #include"WorldStock.h"
-#include"PotenDailyBriefingMarket.h"
-#include"CrweberIndexMarket.h"
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -62,14 +60,8 @@ UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为19
 // 更新选项数据库
 UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为20
-// 存储Poten.com新的数据
-UINT ThreadSavePotenData(not_null<CPotenDailyBriefingMarket*> pMarket); // 此线程返回值为21
 // 更新选项数据库
 UINT ThreadAppendChoicedStockDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为22
-// 存储crweber当日数据
-UINT ThreadSaveCrweberDB(not_null<CCrweberIndexMarket*> pMarket, not_null<CCrweberIndexPtr> pCrweberIndex); // 此线程返回值为23
-// 整理Crweber数据库
-UINT ThreadMaintainCrweberDB(not_null<CCrweberIndexMarket*> pMarket); // 此线程返回值为24
 // 生成周线历史数据
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate); // 此线程的返回值为25
 // 生成股票的周线历史数据

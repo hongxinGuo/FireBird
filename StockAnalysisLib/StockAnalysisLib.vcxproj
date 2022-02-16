@@ -57,9 +57,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.h" />
@@ -163,9 +160,6 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h" />
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueString.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
@@ -256,10 +250,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
@@ -340,9 +330,6 @@
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />

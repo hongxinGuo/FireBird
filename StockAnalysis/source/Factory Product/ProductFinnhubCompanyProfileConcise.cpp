@@ -71,7 +71,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 		//正常的长度大致为300左右, 小于100则为无效信息。
 		return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
 	}
-	if (!ConvertToJSON(pt, pWebData)) return false;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return false;
 	try {
 		s = pt.get<string>(_T("ticker"));
 		if (s.size() > 0) pStock->SetTicker(s.c_str());

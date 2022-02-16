@@ -46,7 +46,6 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
-		DayLineWebInquiry.SetData(str.GetLength(), 0x000);
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 		EXPECT_TRUE(DayLine.SkipNeteaseDayLineInformationHeader());
 		EXPECT_EQ(DayLine.GetCurrentPos(), str.GetLength());
@@ -58,7 +57,6 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
-		DayLineWebInquiry.SetData(str.GetLength(), 0x000);
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader());
 		EXPECT_EQ(DayLine.GetCurrentPos(), str.GetLength());
@@ -70,19 +68,17 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
-		DayLineWebInquiry.SetData(str.GetLength(), 0x000);
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader());
 		EXPECT_EQ(DayLine.GetCurrentPos(), str.GetLength());
 		DayLine.SetCurrentPos(0);
 
-		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值"); // 缺少\r，直接遇到0x000
+		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值"); // 缺少\r
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
 		DayLineWebInquiry.SetByteReaded(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
-		DayLineWebInquiry.SetData(str.GetLength(), 0x000);
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader());
 		EXPECT_EQ(DayLine.GetCurrentPos(), str.GetLength());

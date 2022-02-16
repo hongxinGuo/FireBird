@@ -25,8 +25,6 @@ namespace StockAnalysisTest {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
-			EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
 
 			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
 			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
@@ -35,7 +33,6 @@ namespace StockAnalysisTest {
 		}
 
 		static void TearDownTestSuite(void) {
-			EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
@@ -54,7 +51,6 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 			}
-			EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			GeneralCheck();
@@ -62,11 +58,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CWebInquirerTest, TestInitialize) {
-		EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
-		EXPECT_FALSE(gl_WebInquirer.IsReadingCrweberIndex());
 		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 0);
 	}
 
@@ -106,27 +99,6 @@ namespace StockAnalysisTest {
 		gl_WebInquirer.PushTengxunRTData(pWebData);
 		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 1);
 		pWebData2 = gl_WebInquirer.PopTengxunRTData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPopCrweberData) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		gl_WebInquirer.PushCrweberData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetCrweberDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopCrweberData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPopPotenDailyBriefingData) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
-		gl_WebInquirer.PushPotenDailyBriefingData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopPotenDailyBriefingData();
 		EXPECT_EQ(pWebData2->GetTime(), 101010);
 	}
 

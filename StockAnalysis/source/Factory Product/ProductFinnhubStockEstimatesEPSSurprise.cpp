@@ -53,7 +53,7 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	CString str;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return pvEPSSurprise;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvEPSSurprise;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

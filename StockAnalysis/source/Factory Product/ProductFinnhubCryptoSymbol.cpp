@@ -46,7 +46,7 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	string s;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return pvCryptoSymbol;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvCryptoSymbol;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

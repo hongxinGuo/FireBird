@@ -123,7 +123,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 		} while (lCurrentByteReaded > 0);
 		ASSERT(m_vBuffer.size() > m_lByteRead);
 		m_lTotalByteReaded += m_lByteRead;
-		m_vBuffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
 		if (m_pFile != nullptr) {
 			m_pFile->Close();
 			delete m_pFile;
@@ -155,7 +154,7 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
-	m_vBuffer.resize(byteReaded + 1);
+	m_vBuffer.resize(byteReaded);
 	pWebDataReceived->m_vDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
 	m_vBuffer.resize(1024 * 1024); // 重新分配内存
 
@@ -206,7 +205,6 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_vBuffer.at(i) = buffer[i];
 	}
-	m_vBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }
 
@@ -219,7 +217,6 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_vBuffer.at(i) = buffer[i];
 	}
-	m_vBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }
 

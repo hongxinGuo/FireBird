@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pWebData->GetBufferLength(), 8) << "testData×Ö·û´®³¤¶ÈÎª8";
 		char buffer[30];
 		int i = 0;
-		while ((i < 30) && (pWebData->GetData(i) != 0x000)) {
+		while (i < pWebData->GetBufferLength()) {
 			buffer[i] = pWebData->GetData(i);
 			i++;
 		}

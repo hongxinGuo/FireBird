@@ -11,8 +11,6 @@
 
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
-#include"PotenDailyBriefingMarket.h"
-#include"CrweberIndexMarket.h"
 
 #include"SystemMessage.h"
 #include"SystemData.h"
@@ -21,8 +19,6 @@
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
-#include"CrweberIndexWebInquiry.h"
-#include"PotenDailyBriefingWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
@@ -62,8 +58,6 @@ int gl_iMaxSavingOneDayLineThreads = 4; // ÔÊĞí´æ´¢ÈÕÏßÊı¾İµÄÏß³ÌÊı¡£´Ë±äÁ¿È¡Öµ·
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // ĞÂÀËÊµÊ±Êı¾İ²É¼¯
 CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // ÌÚÑ¶ÊµÊ±Êı¾İ²É¼¯
 CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // ÍøÒ×ÊµÊ±Êı¾İ²É¼¯
-CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.comÉÏµÄÃ¿ÈÕÓÍÔËÖ¸Êı
-CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.comÉÏµÄÓÍÔËÊı¾İ¡£
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.ioÖ¤È¯ĞÅÏ¢
@@ -72,6 +66,4 @@ CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 
 // ¸÷ÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
 CWorldMarketPtr gl_pWorldMarket = nullptr;
-CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
-CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

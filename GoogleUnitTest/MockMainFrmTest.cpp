@@ -4,8 +4,6 @@
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
-#include"PotenDailyBriefingMarket.h"
-#include"CrweberIndexMarket.h"
 
 #include"MockMainFrm.h"
 
@@ -27,7 +25,7 @@ namespace StockAnalysisTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
-			EXPECT_EQ(gl_vMarketPtr.size(), 4);
+			EXPECT_EQ(gl_vMarketPtr.size(), 2) << "ChinaMarket and WorldMarket";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
@@ -39,12 +37,10 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetResetMarket(true);
-			gl_pCrweberIndexMarket->SetResetMarket(true);
-			gl_pPotenDailyBriefingMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
-			EXPECT_EQ(gl_vMarketPtr.size(), 4);
+			EXPECT_EQ(gl_vMarketPtr.size(), 2);
 
 			GeneralCheck();
 		}
@@ -69,21 +65,15 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
 		EXPECT_TRUE(gl_pMockMainFrame->CreateMarketContainer());
-		EXPECT_EQ(gl_vMarketPtr.size(), 8);
+		EXPECT_EQ(gl_vMarketPtr.size(), 4);
 		CVirtualMarketPtr pMarket;
-		pMarket = gl_vMarketPtr.at(7);
-		gl_vMarketPtr.pop_back();
-		EXPECT_STREQ(pMarket->GetMarketID(), gl_pCrweberIndexMarket->GetMarketID());
-		pMarket = gl_vMarketPtr.at(6);
-		gl_vMarketPtr.pop_back();
-		EXPECT_STREQ(pMarket->GetMarketID(), gl_pPotenDailyBriefingMarket->GetMarketID());
-		pMarket = gl_vMarketPtr.at(5);
+		pMarket = gl_vMarketPtr.at(3);
 		gl_vMarketPtr.pop_back();
 		EXPECT_STREQ(pMarket->GetMarketID(), gl_pChinaMarket->GetMarketID());
-		pMarket = gl_vMarketPtr.at(4);
+		pMarket = gl_vMarketPtr.at(2);
 		gl_vMarketPtr.pop_back();
 		EXPECT_STREQ(pMarket->GetMarketID(), gl_pWorldMarket->GetMarketID());
-		EXPECT_EQ(gl_vMarketPtr.size(), 4);
+		EXPECT_EQ(gl_vMarketPtr.size(), 2);
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
@@ -547,12 +537,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnBuildResetMarket) {
 		gl_pChinaMarket->SetResetMarket(false);
-		gl_pPotenDailyBriefingMarket->SetResetMarket(false);
-		gl_pCrweberIndexMarket->SetResetMarket(false);
 		gl_pMockMainFrame->OnBuildResetMarket();
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {

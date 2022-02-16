@@ -55,8 +55,6 @@ ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\Stoc
 ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
 ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\googletest\\*.*"); // 排除GoogleTest
 ExcludeSourceFromCodeCoverage(Exclude13, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
-ExcludeSourceFromCodeCoverage(Exclude17, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Poten Daily\\*.*"); // 排除PotenDaily Market.此市场不再使用
-ExcludeSourceFromCodeCoverage(Exclude18, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\Crweber\\*.*"); // 排除Crweber.com.此市场不再使用
 ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除所有的数据库类
 ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*"); // 排除ixWebSocket库
 ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\vld\\*.*"); // 排除vld库
@@ -207,9 +205,6 @@ ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDayLine");
 ExcludeFromCodeCoverage(CChinaStock15, L"CChinaStock::Calculate10RSStrong1StockSet");
 ExcludeFromCodeCoverage(CChinaStock16, L"CChinaStock::Calculate10RSStrong2StockSet");
 ExcludeFromCodeCoverage(CChinaStock17, L"CChinaStock::Calculate10RSStrongStockSet");
-
-ExcludeFromCodeCoverage(CPotenDailyBriefingMarket1, L"CPotenDailyBriefingMarket::CreatingThreadSavePotenData");
-ExcludeFromCodeCoverage(CPotenDailyBriefingMarket2, L"CPotenDailyBriefingMarket::ShedulingTask");
 
 ExcludeFromCodeCoverage(CCrweberIndexMarket1, L"CCrweberIndexMarket::CreatingThreadMaintainDB");
 ExcludeFromCodeCoverage(CCrweberIndexMarket2, L"CCrweberIndexMarket::CreatingThreadSaveCrweberDB");

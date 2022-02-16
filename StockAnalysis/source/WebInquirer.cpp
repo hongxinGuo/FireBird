@@ -15,8 +15,6 @@ void CWebInquirer::Initialize(void) {
 	gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
 	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
 	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
-	gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
-	gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
 	gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();

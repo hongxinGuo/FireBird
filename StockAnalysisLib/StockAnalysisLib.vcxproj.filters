@@ -13,9 +13,6 @@
     <Filter Include="头文件\网络数据提取器">
       <UniqueIdentifier>{981ca3e0-3ae5-4c79-8fc8-0ea6f8debf62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Crweber.com Market">
-      <UniqueIdentifier>{3ddda2e9-b6d6-4cf9-bc76-51b1b08cc739}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Poten Daily Briefing Market">
       <UniqueIdentifier>{78206375-ee02-4ab0-b1d6-8348908173c1}</UniqueIdentifier>
     </Filter>
@@ -48,12 +45,6 @@
     </Filter>
     <Filter Include="源文件\网络数据提取器">
       <UniqueIdentifier>{3981220c-4662-435a-a721-45d95b4d2dcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Crweber.com Market">
-      <UniqueIdentifier>{ae74ceb8-bef9-49c2-9722-20d5b0a93335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Poten Daily Briefing Market">
-      <UniqueIdentifier>{89d9be71-7d99-4902-af5b-c70b8044595a}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\China Market">
       <UniqueIdentifier>{8a803185-2520-4215-bcf0-1d461de24aec}</UniqueIdentifier>
@@ -245,24 +236,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h">
       <Filter>头文件\World Market</Filter>
@@ -739,27 +712,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp">
       <Filter>源文件\China Market</Filter>

@@ -41,7 +41,7 @@ private:
 	CString m_strStockCode;
 	vector<char> m_vDataBuffer; // 日线读取缓冲区
 	vector<CDayLinePtr> m_vTempDayLine; // 日线数据缓冲区
-	INT64 m_lBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
+	INT64 m_lBufferLength; // 缓冲区大小。
 	INT64 m_lCurrentPos;
 
 	CDayLinePtr m_pCurrentProcessingDayLine;

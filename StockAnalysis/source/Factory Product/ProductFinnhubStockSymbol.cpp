@@ -74,7 +74,7 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	ptree pt, pt2;
 	string s, sError;
 
-	if (!ConvertToJSON(pt, pWebData)) return pvStock;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return pvStock;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

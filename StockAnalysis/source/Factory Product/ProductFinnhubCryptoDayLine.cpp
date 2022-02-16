@@ -58,7 +58,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	int i = 0;
 	string sError;
 
-	if (!ConvertToJSON(pt, pWebData)) { // 工作线程故障
+	if (!pWebData->CreatePTree(pt, 0, 0)) { // 工作线程故障
 		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
 		return pvDayLine;
 	}

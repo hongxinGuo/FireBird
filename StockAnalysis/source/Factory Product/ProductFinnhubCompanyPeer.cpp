@@ -51,7 +51,7 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 	if (pWebData->GetBufferLength() <= 3) {
 		return strPeer; // 没有有效的同业竞争对手
 	}
-	if (!ConvertToJSON(pt, pWebData)) return strPeer;
+	if (!pWebData->CreatePTree(pt, 0, 0)) return strPeer;
 
 	ASSERT(pWebData->GetBufferLength() < 1000);
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {

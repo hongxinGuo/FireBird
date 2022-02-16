@@ -55,11 +55,10 @@ namespace StockAnalysisTest {
 			NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();
-			m_pData.resize(lLength + 1);
+			m_pData.resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pData.at(i) = pData->m_strData.GetAt(i);
 			}
-			m_pData.at(lLength) = 0x000;
 			m_lCountPos = 0;
 
 			m_DayLine.SetAmount(-1);
@@ -194,11 +193,10 @@ namespace StockAnalysisTest {
 			ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();
-			m_pData = new char[lLength + 1];
+			m_pData = new char[lLength];
 			for (int i = 0; i < lLength; i++) {
 				m_pData[i] = pData->m_strData[i];
 			}
-			m_pData[lLength] = 0x000;
 			m_pCurrentPos = m_pData;
 			m_lCountPos = 0;
 		}
@@ -273,11 +271,10 @@ namespace StockAnalysisTest {
 			ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();
-			m_pData.resize(lLength + 1);
+			m_pData.resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pData[i] = pData->m_strData[i];
 			}
-			m_pData[lLength] = 0x000;
 			m_lCountPos = 0;
 		}
 

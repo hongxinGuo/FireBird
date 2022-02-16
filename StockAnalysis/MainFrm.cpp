@@ -197,8 +197,6 @@ CMainFrame::~CMainFrame() {
 bool CMainFrame::CreateMarketContainer(void) {
 	gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 	gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
-	gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
-	gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 	return true;
 }
 
@@ -206,8 +204,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
-	if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
-	if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	gl_WebInquirer.Initialize();
 
@@ -217,8 +213,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	TRACE(_T("开始重置系统\n"));
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pPotenDailyBriefingMarket != nullptr);
-	ASSERT(gl_pCrweberIndexMarket != nullptr);
 	ResetMarket();
 	TRACE(_T("重置系统结束\n"));
 

@@ -26,8 +26,8 @@ void CNeteaseDayLineWebData::Reset(void) {
 
 bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	m_vDataBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
-	for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
+	m_vDataBuffer.resize(pNeteaseWebDayLineData->GetByteReaded());
+	for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded(); i++) {
 		m_vDataBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
 	}
 	m_lBufferLength = pNeteaseWebDayLineData->GetByteReaded();
@@ -39,9 +39,8 @@ bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLi
 
 bool CNeteaseDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	ASSERT(pWebData->GetData(pWebData->GetBufferLength()) == 0x000);
-	m_vDataBuffer.resize(pWebData->GetBufferLength() + 1);
-	for (int i = 0; i < pWebData->GetBufferLength() + 1; i++) {
+	m_vDataBuffer.resize(pWebData->GetBufferLength());
+	for (int i = 0; i < pWebData->GetBufferLength(); i++) {
 		m_vDataBuffer.at(i) = pWebData->GetData(i);
 	}
 	m_lBufferLength = pWebData->GetBufferLength();
@@ -64,8 +63,6 @@ bool CNeteaseDayLineWebData::ProcessNeteaseDayLineData(void) {
 		return false;
 	}
 
-	char a = m_vDataBuffer.at(m_lBufferLength);
-	ASSERT(m_vDataBuffer.at(m_lBufferLength) == 0x000); // 最后字符为增加的0x000.
 	if (!SkipNeteaseDayLineInformationHeader()) {
 		return false;
 	}
@@ -112,7 +109,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 
 	i = 0;
 	while ((m_vDataBuffer.at(m_lCurrentPos) != 0x02c)) { // 读取日期，直到遇到逗号
-		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDataBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
+		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
 			return false; // 数据出错，放弃载入
 		}
 		buffer3[i++] = m_vDataBuffer.at(m_lCurrentPos++);
@@ -187,7 +184,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	// 流通市值的数据形式有两种，故而需要程序判定。
 	i = 0;
 	while (m_vDataBuffer.at(m_lCurrentPos) != 0x00d) {
-		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_vDataBuffer.at(m_lCurrentPos) == 0x000) || (i > 30)) return false; // 数据出错，放弃载入
+		if ((m_vDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) return false; // 数据出错，放弃载入
 		buffer2[i++] = m_vDataBuffer.at(m_lCurrentPos++);
 	}
 	m_lCurrentPos++;
@@ -201,17 +198,18 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 
 bool CNeteaseDayLineWebData::SkipNeteaseDayLineInformationHeader(void) {
 	ASSERT(m_lCurrentPos == 0);
-	while (m_vDataBuffer.at(m_lCurrentPos) != 0X0d) { // 寻找\r
+	do {
+		if (m_lCurrentPos >= m_lBufferLength) {
+			return false;
+		}
 		if (m_vDataBuffer.at(m_lCurrentPos) == 0x0a) {// 遇到\n
 			m_lCurrentPos++; // 跨过此\n
 			return false;
 		}
-		else if (m_vDataBuffer.at(m_lCurrentPos) == 0x000) { // 遇到0x000
-			return false;
-		}
-		m_lCurrentPos++;
+	} while (m_vDataBuffer.at(m_lCurrentPos++) != 0X0d);// 寻找\r
+	if (m_lCurrentPos >= m_lBufferLength) {
+		return false;
 	}
-	m_lCurrentPos++;
 	if (m_vDataBuffer.at(m_lCurrentPos) != 0x0a) {
 		return false;
 	}

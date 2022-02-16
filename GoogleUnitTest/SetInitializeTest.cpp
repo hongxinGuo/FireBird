@@ -15,9 +15,6 @@
 #include"SetStockSection.h"
 #include"SetWeekLineExtendInfo.h"
 
-#include"SetPotenDailyBriefing.h"
-#include"SetCrweberIndex.h"
-
 #include"SetCountry.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
@@ -207,32 +204,6 @@ TEST(SetInitializeTest, TestWeekLineExtendInfoInitialize) {
 	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultSQL(), _T("[WeekLineinfo]"));
-}
-
-TEST(SetInitializeTest, TestPotenDailyBriefingInitialize) {
-	CSetPotenDailyBriefing setPotenDailyBriefing;
-
-	EXPECT_FALSE(gl_fNormalMode);
-	EXPECT_STREQ(setPotenDailyBriefing.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-	gl_fNormalMode = true;
-	EXPECT_STREQ(setPotenDailyBriefing.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-	gl_fNormalMode = false;
-	gl_fTestMode = true;
-
-	EXPECT_STREQ(setPotenDailyBriefing.GetDefaultSQL(), _T("[potendailybriefing]"));
-}
-
-TEST(SetInitializeTest, TestCrweberIndexInitialize) {
-	CSetCrweberIndex setCrweberIndex;
-
-	EXPECT_FALSE(gl_fNormalMode);
-	EXPECT_STREQ(setCrweberIndex.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-	gl_fNormalMode = true;
-	EXPECT_STREQ(setCrweberIndex.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-	gl_fNormalMode = false;
-	gl_fTestMode = true;
-
-	EXPECT_STREQ(setCrweberIndex.GetDefaultSQL(), _T("[crweberIndex]"));
 }
 
 TEST(SetInitializeTest, TestDayLineBasicInfoInitialize) {
