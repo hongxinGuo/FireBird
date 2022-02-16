@@ -845,6 +845,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 // （turnover即为成交金额，可以使用之。05/12/2020）
 //
 //  网易中文股票名称的制式不明，暂时不使用（由于boost ptree对中文的支持不足，其只支持utf8制式，导致提取中文字符时出现乱码）。
+// 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
@@ -854,8 +855,10 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 	double dHigh, dLow, dNew, dOpen, dLastClose;
 	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
 	time_t ttTemp;
-	CString strSymbol4, str1;
+	CString strSymbol4, str1, strName3;
 	string Name;
+	wstring wsName;
+	CStringW strWName;
 
 	try {
 		strSymbol = it->first;
@@ -863,6 +866,11 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 		SetSymbol(strSymbol4);
 		pt1 = it->second;
 		strSymbol2 = pt1.get<string>(_T("code"));
+		Name = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码
+		wsName = to_wide_string(Name); // 将中文utf8转成多字节字符串
+		strWName = wsName.c_str();
+		strName3 = strWName;
+		SetStockName(strName3);
 		strTime = pt1.get<string>(_T("time"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 		strUpdateTime = pt1.get<string>(_T("update"));

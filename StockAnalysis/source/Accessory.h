@@ -6,7 +6,7 @@
 
 using namespace std;
 #include<vector>
-#include"string"
+#include<string>
 
 #include<boost/property_tree/ptree.hpp>
 #include<boost/property_tree/json_parser.hpp>
@@ -67,7 +67,10 @@ public:
 	double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
 };
 
-bool ConvertToJSON(ptree& pt, string s);
+bool ConvertToJSON(ptree& pt, string& s);
+bool ConvertToWJSON(wptree& pt, string& s); // 此函数用于解析带中文字符的json
+wstring to_wide_string(const string& input);
+string to_byte_string(const wstring& input);
 bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告
 
 CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位

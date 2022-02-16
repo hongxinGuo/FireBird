@@ -150,7 +150,7 @@ namespace StockAnalysisTest {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
 			EXPECT_EQ(m_RTData.GetOpen(), 12480);
 			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
 			EXPECT_EQ(m_RTData.GetNew(), 12290);
@@ -184,7 +184,7 @@ namespace StockAnalysisTest {
 			fSucceed = m_RTData.ReadNeteaseData(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character"));
 			EXPECT_EQ(m_RTData.GetOpen(), 12480);
 			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
 			EXPECT_EQ(m_RTData.GetNew(), 12290);
@@ -225,7 +225,7 @@ namespace StockAnalysisTest {
 			fSucceed = m_RTData.ReadNeteaseData(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("")) << "目前不解析网易的股票名称";
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character"));
 			EXPECT_EQ(m_RTData.GetOpen(), 12480);
 			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
 			EXPECT_EQ(m_RTData.GetNew(), 12290);

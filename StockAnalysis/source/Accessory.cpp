@@ -2,6 +2,9 @@
 #include"globedef.h"
 #include "Accessory.h"
 
+using namespace std;
+#include<codecvt>
+
 #include<boost/property_tree/ptree.hpp>
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
@@ -437,7 +440,7 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	}
 }
 
-bool ConvertToJSON(ptree& pt, string s) {
+bool ConvertToJSON(ptree& pt, string& s) {
 	stringstream ss(s);
 	try {
 		read_json(ss, pt);
@@ -447,6 +450,31 @@ bool ConvertToJSON(ptree& pt, string s) {
 		return false;
 	}
 	return true;
+}
+
+bool ConvertToWJSON(wptree& pt, string& s) {
+	wstring ws = to_wide_string(s);
+	wstringstream ss(ws);
+	try {
+		read_json(ss, pt);
+	}
+	catch (ptree_error& e) {
+		//ReportJSonErrorToSystemMessage(_T("JSon Reading Error "), e);
+		return false;
+	}
+	return true;
+}
+
+wstring to_wide_string(const std::string& input) {
+	wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	return converter.from_bytes(input);
+}
+
+string to_byte_string(const wstring& input)
+{
+	//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	return converter.to_bytes(input);
 }
 
 bool IsJsonReportingrror(ptree& pt, string& s) {
