@@ -55,7 +55,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	if (pWebData->GetBufferLength() < 20) {
 		return true; // 没有公司简介
 	}
-	if (!pWebData->CreatePTree(pt, 0, 0)) return false;
+	if (!pWebData->CreatePTree(pt)) return false;
 	try {
 		s = pt.get<string>(_T("address"));
 		pStock->SetAddress(s.c_str());

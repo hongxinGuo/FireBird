@@ -50,7 +50,7 @@ public:
 	char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	bool CreatePTree(ptree& pt, long lBeginPos, long lEndPos);
+	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
 
 	// ≤‚ ‘”√∫Ø ˝
 	void __TEST_SetBuffer__(CString strBuffer);

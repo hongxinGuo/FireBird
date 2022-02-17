@@ -78,8 +78,8 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	int i = 0;
 	string sError;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) { // 工作线程故障
-		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
+	if (!pWebData->CreatePTree(pt)) { // 工作线程故障
+		gl_systemMessage.PushErrorMessage(_T("Finnhub Forex日线为无效JSon数据"));
 		return pvDayLine;
 	}
 

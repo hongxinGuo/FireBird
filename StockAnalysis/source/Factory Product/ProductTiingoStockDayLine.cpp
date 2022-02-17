@@ -104,7 +104,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 	CString str;
 	long year, month, day;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) { // 工作线程故障
+	if (!pWebData->CreatePTree(pt)) { // 工作线程故障
 		str = _T("日线为无效JSon数据\n");
 		gl_systemMessage.PushErrorMessage(str);
 		return pvDayLine;

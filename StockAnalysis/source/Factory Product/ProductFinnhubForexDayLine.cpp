@@ -69,8 +69,8 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	int i = 0;
 	string sError;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) { // 工作线程故障
-		gl_systemMessage.PushErrorMessage(_T("日线为无效JSon数据"));
+	if (!pWebData->CreatePTree(pt)) { // 工作线程故障
+		gl_systemMessage.PushErrorMessage(_T("Finnhub Forex日线为无效JSon数据"));
 		return pvDayLine;
 	}
 
@@ -85,7 +85,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		}
 	}
 	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle没有s项"), e);
 		return pvDayLine;
 	}
 	try {

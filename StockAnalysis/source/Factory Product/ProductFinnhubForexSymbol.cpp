@@ -50,7 +50,7 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 	string s;
 	string sError;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) return pvForexSymbol;
+	if (!pWebData->CreatePTree(pt)) return pvForexSymbol;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

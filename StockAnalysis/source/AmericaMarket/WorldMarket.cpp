@@ -436,10 +436,10 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 			TaskInquiryFinnhubPeer();
 			TaskInquiryFinnhubInsiderTransaction();
 			//TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
-			TaskInquiryFinnhubForexDayLine();
+			//TaskInquiryFinnhubForexDayLine(); // Forex dayline目前只限于付费用户使用
 			TaskInquiryFinnhubCryptoDayLine();
-			TaskInquiryFinnhubDayLine();
-			if (!IsFinnhubDayLineUpdated()) {
+			TaskInquiryFinnhubStockDayLine();
+			if (!IsFinnhubStockDayLineUpdated()) {
 				//TaskInquiryFinnhubRTQuote();
 			}
 		}
@@ -546,7 +546,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 	return fHaveInquiry;
 }
 
-bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
+bool CWorldMarket::TaskInquiryFinnhubStockDayLine(void) {
 	static bool s_fInquiringFinnhubStockDayLine = false;
 	bool fFound = false;
 	CWorldStockPtr pStock;
@@ -556,7 +556,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
 	CWebSourceDataProductPtr p = nullptr;
 
 	ASSERT(IsSystemReady());
-	if (!IsFinnhubDayLineUpdated() && !IsFinnhubInquiring()) {
+	if (!IsFinnhubStockDayLineUpdated() && !IsFinnhubInquiring()) {
 		if (!s_fInquiringFinnhubStockDayLine) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock day line..."));
 			s_fInquiringFinnhubStockDayLine = true;
@@ -811,7 +811,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 			SetFinnhubInquiring(true);
 			pForexSymbol->SetDayLineNeedUpdate(false);
 			SetCurrentFunction(_T("Forex日线:") + pForexSymbol->GetSymbol());
-			TRACE("申请Forex%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+			TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubForexDayLine = false;
@@ -887,7 +887,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
 			SetCurrentFunction(_T("Crypto日线:") + pCryptoSymbol->GetSymbol());
-			TRACE("申请Crypto %s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+			TRACE("申请%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubCryptoDayLine = false;

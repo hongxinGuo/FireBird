@@ -41,7 +41,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 	ptree pt, pt2;
 	string s;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) return pvCountry;
+	if (!pWebData->CreatePTree(pt)) return pvCountry;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

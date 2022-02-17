@@ -130,7 +130,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestNeteaseRTData) {
 		ptree pt;
-		m_pNeteaseWebRTData->CreatePTree(pt, 0, 0);
+		m_pNeteaseWebRTData->CreatePTree(pt);
 		ptree::iterator it = pt.begin();
 		bool fSucceed = m_RTData.ReadNeteaseData(it);
 		time_t ttime, ttime2, ttime3;

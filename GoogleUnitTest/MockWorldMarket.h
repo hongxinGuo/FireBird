@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubCompanyProfileConcise, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubDayLine, (), (override));
+		MOCK_METHOD(bool, TaskInquiryFinnhubStockDayLine, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubRTQuote, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubPeer, (), (override));
 		MOCK_METHOD(bool, TaskInquiryFinnhubInsiderTransaction, (), (override));

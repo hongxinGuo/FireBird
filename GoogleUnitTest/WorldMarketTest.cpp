@@ -888,11 +888,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsFinnhubDayLineUpdated) {
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockDayLineUpdated());
 		gl_pWorldMarket->SetFinnhubDayLineUpdated(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockDayLineUpdated());
 		gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubStockDayLineUpdated());
 	}
 
 	TEST_F(CWorldMarketTest, TestIsFinnhubForexExhangeUpdated) {
@@ -1161,14 +1161,14 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
 		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(true);
 		gl_pWorldMarket->SetFinnhubDayLineUpdated(true);
-		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "DayLine Updated";
+		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine()) << "DayLine Updated";
 
 		gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
 		gl_pWorldMarket->SetFinnhubInquiring(true);
-		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "其他FinnhubInquiry正在进行";
+		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine()) << "其他FinnhubInquiry正在进行";
 
 		gl_pWorldMarket->SetFinnhubInquiring(false);
-		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
+		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
@@ -1177,7 +1177,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->SetFinnhubInquiring(false);
-		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
+		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), 3010) << "第一个待查询股票位置";
@@ -1185,8 +1185,8 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->SetFinnhubInquiring(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockDayLineUpdated()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));

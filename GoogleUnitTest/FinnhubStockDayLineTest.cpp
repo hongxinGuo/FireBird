@@ -124,7 +124,7 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			strMessage = _T("日线为无效JSon数据");
+			strMessage = _T("Finnhub Forex日线为无效JSon数据");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());

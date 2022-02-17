@@ -45,7 +45,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	CString str = _T("");
 	string sError;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) return pvExchange;
+	if (!pWebData->CreatePTree(pt)) return pvExchange;
 
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {

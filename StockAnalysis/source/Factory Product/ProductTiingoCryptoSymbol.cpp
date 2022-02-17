@@ -63,7 +63,7 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	int iCount = 0;
 	CString str, strNumber;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) return pvTiingoCrypto;
+	if (!pWebData->CreatePTree(pt)) return pvTiingoCrypto;
 	try {
 		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 			pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();

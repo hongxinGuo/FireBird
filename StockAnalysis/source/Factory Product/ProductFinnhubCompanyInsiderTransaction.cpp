@@ -50,7 +50,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) return pvInsiderTransaction;
+	if (!pWebData->CreatePTree(pt)) return pvInsiderTransaction;
 
 	try {
 		pt1 = pt.get_child(_T("data"));

@@ -70,7 +70,7 @@ public:
 	virtual bool TaskInquiryFinnhubCountryList(void);
 	virtual bool TaskInquiryFinnhubCompanySymbol(void);
 	virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
-	virtual bool TaskInquiryFinnhubDayLine(void);
+	virtual bool TaskInquiryFinnhubStockDayLine(void);
 	virtual bool TaskInquiryFinnhubRTQuote(void);
 	virtual bool TaskInquiryFinnhubPeer(void);
 	virtual bool TaskInquiryFinnhubInsiderTransaction(void);
@@ -211,7 +211,7 @@ public:
 	void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
 	bool IsFinnhubStockProfileUpdated(void) noexcept { return m_fFinnhubStockProfileUpdated; }
 	void SetFinnhubStockProfileUpdated(bool fFlag) noexcept { m_fFinnhubStockProfileUpdated = fFlag; }
-	bool IsFinnhubDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
+	bool IsFinnhubStockDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
 	void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
 	bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
 	void SetFinnhubForexExchangeUpdated(bool fFlag) noexcept { m_fFinnhubForexExchangeUpdated = fFlag; }

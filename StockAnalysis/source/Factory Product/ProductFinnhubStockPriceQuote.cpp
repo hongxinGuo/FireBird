@@ -51,7 +51,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	double dTemp = 0;
 	time_t tt = 0;
 
-	if (!pWebData->CreatePTree(pt, 0, 0)) {
+	if (!pWebData->CreatePTree(pt)) {
 		return false;
 	}
 	try {
