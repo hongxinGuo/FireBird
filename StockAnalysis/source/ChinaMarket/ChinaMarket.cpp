@@ -383,13 +383,11 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 }
 
 bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
-	bool fFoundNewStock = false;
 	CString strSymbol = pRTData->GetSymbol();
-	if (IsCheckActiveStock()) {
+	if (IsCheckingActiveStock()) {
 		if (!IsStock(strSymbol) && pRTData->IsActive()) {
 			if (strSymbol.GetLength() == 9) {
 				CreateStock(strSymbol, pRTData->GetStockName(), true);
-				fFoundNewStock = true;
 			}
 		}
 	}
@@ -468,7 +466,7 @@ CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool 
 		return GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(lTotalNumber);
 	}
 	else {
-		return GetNextNeteaseStockInquiringStr(lTotalNumber);
+		return GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
 	}
 }
 

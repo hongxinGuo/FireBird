@@ -50,8 +50,7 @@ public:
 	CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
 	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
-	CString GetNextNeteaseStockInquiringStr(long lTotalNumber);
-	CString GetNextNeteaseStockInquiringMiddleStr(CString strPostfix, long lTotalNumber);
+	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
 	bool TaskProcessRTData(void);
 	bool TaskSaveDayLineData(void);

@@ -169,6 +169,7 @@ public:
 	void SetSymbol(CString str) { m_strSymbol = str; }
 	CString GetStockName(void) const { return m_strStockName; }
 	void SetStockName(CString str) { m_strStockName = str; }
+	void SetStockName(string& s);
 	long GetLastClose(void) const noexcept { return m_lLastClose; }
 	void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen(void) const noexcept { return m_lOpen; }

@@ -1,10 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 所有的全局变量的定义皆位于此处
-//
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
 #include"SemaphoreDef.h"
@@ -66,4 +59,4 @@ CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 
 // 各市场。皆为唯一实例
 CWorldMarketPtr gl_pWorldMarket = nullptr;
-CChinaMarketPtr gl_pChinaMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
+CChinaMarketPtr gl_pChinaMarket = nullptr; //此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//

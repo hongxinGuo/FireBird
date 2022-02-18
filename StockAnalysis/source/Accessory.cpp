@@ -446,9 +446,11 @@ bool ConvertToJSON(ptree& pt, string& s) {
 		read_json(ss, pt);
 	}
 	catch (ptree_error& e) {
+#ifndef _DEBUG
 		CString str = s.c_str();
-		str = str.Left(80);
-		//ReportJSonErrorToSystemMessage(_T("JSon Reading Error ") + str + _T(" "), e);
+		str = str.Left(160);
+		ReportJSonErrorToSystemMessage(_T("JSon Reading Error ") + str + _T(" "), e);
+#endif
 		return false;
 	}
 	return true;

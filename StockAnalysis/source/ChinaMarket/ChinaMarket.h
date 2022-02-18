@@ -107,7 +107,7 @@ public:
 	// 实时数据读取
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock);
-	CString	GetNextNeteaseStockInquiringStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringStr(lTotalNumber); }
+	CString	GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
 	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
@@ -226,7 +226,7 @@ public:
 	bool IsLoadSelectedStock(void) const noexcept { return m_fLoadedSelectedStock; }
 	void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
 
-	bool IsCheckActiveStock(void) const noexcept { return m_fCheckActiveStock; }
+	bool IsCheckingActiveStock(void) const noexcept { return m_fCheckActiveStock; }
 	void SetCheckActiveStock(bool fFlag) noexcept { m_fCheckActiveStock = fFlag; }
 
 	bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }

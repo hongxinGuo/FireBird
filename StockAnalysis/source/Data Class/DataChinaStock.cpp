@@ -276,20 +276,19 @@ CString CDataChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CStri
 	strReturn = XferStandredToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
 	IncreaseIndex(iStockIndex, lEndPosition);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((iStockIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		iCount++;
-		strReturn += strPostfix;
-		strReturn += XferStandredToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
-			// 每次查到最后时暂停一下。目前不使用之，已加快查询速度
-		// if (iStockIndex == lStartPosition) break;
+	while (iCount < lTotalNumber) { // 每次最大查询量为lTotalNumber个股票
+		if (m_vStock.at(iStockIndex)->IsActive() || m_vStock.at(iStockIndex)->IsIPOed()) {
+			iCount++;
+			strReturn += strPostfix;
+			strReturn += XferStandredToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
+		}
 		IncreaseIndex(iStockIndex, lEndPosition);
 	}
-	if (iStockIndex > 0) iStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
 
-CString CDataChinaStock::GetNextNeteaseStockInquiringStr(long lTotalNumber) {
+CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
 	CString strStockCode, strRight6, strLeft2, strPrefix;
 	CString strNeteaseRTDataInquiringStr = _T("");
 	long lEndPosition = m_vStock.size();
@@ -297,35 +296,14 @@ CString CDataChinaStock::GetNextNeteaseStockInquiringStr(long lTotalNumber) {
 	strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
 	IncreaseIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNeteaseRTDataInquiringIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		iCount++;
-		strNeteaseRTDataInquiringStr += _T(",");
-		strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
-		if (m_lNeteaseRTDataInquiringIndex == 0) break;
+	while (iCount < lTotalNumber) { // 每次最大查询量为lTotalNumber个股票
+		if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive() || m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsIPOed()) {
+			iCount++;
+			strNeteaseRTDataInquiringStr += _T(",");
+			strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
+		}
 		IncreaseIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
 	}
-	if (m_lNeteaseRTDataInquiringIndex > 0) m_lNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-	return strNeteaseRTDataInquiringStr;
-}
-
-CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(CString strPostfix, long lTotalNumber) {
-	CString strStockCode, strRight6, strLeft2, strPrefix;
-	long lEndPosition = m_vStock.size();
-	static long lNeteaseRTDataInquiringIndex = 0;
-	CString strNeteaseRTDataInquiringStr = _T("");
-
-	strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vStock.at(lNeteaseRTDataInquiringIndex)->GetSymbol());
-	IncreaseIndex(lNeteaseRTDataInquiringIndex, lEndPosition);
-	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((lNeteaseRTDataInquiringIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		iCount++;
-		strNeteaseRTDataInquiringStr += _T(",");
-		strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vStock.at(lNeteaseRTDataInquiringIndex)->GetSymbol());
-		if (lNeteaseRTDataInquiringIndex == 0) break;
-		IncreaseIndex(lNeteaseRTDataInquiringIndex, lEndPosition);
-	}
-	if (lNeteaseRTDataInquiringIndex > 0) lNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strNeteaseRTDataInquiringStr;
 }

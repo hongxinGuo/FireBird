@@ -94,6 +94,17 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 
 #endif //_DEBUG
 
+void CWebRTData::SetStockName(string& s) {
+	CString strName3;
+	wstring wsName;
+	CStringW strWName;
+
+	wsName = to_wide_string(s); // 将中文utf8转成多字节字符串
+	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，
+	strName3 = strWName; // 将CStringW制式转换成CString
+	m_strStockName = strName3;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
@@ -854,11 +865,8 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 	string strSymbol, strSymbol2, strTime, strUpdateTime, strName;
 	double dHigh, dLow, dNew, dOpen, dLastClose;
 	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
-	time_t ttTemp;
 	CString strSymbol4, str1, strName3;
 	string Name;
-	wstring wsName;
-	CStringW strWName;
 
 	try {
 		strSymbol = it->first;
@@ -867,17 +875,9 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 		pt1 = it->second;
 		strSymbol2 = pt1.get<string>(_T("code"));
 		Name = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码
-		wsName = to_wide_string(Name); // 将中文utf8转成多字节字符串
-		strWName = wsName.c_str();
-		strName3 = strWName;
-		SetStockName(strName3);
+		SetStockName(Name);
 		strTime = pt1.get<string>(_T("time"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
-		strUpdateTime = pt1.get<string>(_T("update"));
-		ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strUpdateTime.c_str());
-		if ((gl_pChinaMarket->GetUTCTime() - ttTemp) < 3600 * 24 * 30) { // 当是退市股票时，其update的时间为0
-			ASSERT(ttTemp >= m_time);
-		}
 	}
 	catch (ptree_error& e) { // 结构不完整
 		// do nothing
@@ -935,7 +935,7 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (ptree_error& e) { // 非活跃股票（已下市等）
+	catch (ptree_error&) { // 非活跃股票（已下市等）
 		SetActive(false);
 		fSucceed = true;
 	}
@@ -943,14 +943,15 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 }
 
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
+	m_fActive = false;
 	if (!IsValidTime(14)) { // 非活跃股票的update时间为0，转换为time_t时为-1.
-		m_fActive = false;
 		return m_fActive;
 	}
-	if ((m_lOpen > 0) && (m_lNew > 0)) {
-		m_fActive = true; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+	if ((m_lOpen == 0) || (m_lNew == 0)) {// 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
 		return m_fActive;
 	}
+	m_fActive = true;
+
 	return m_fActive;
 }
 
