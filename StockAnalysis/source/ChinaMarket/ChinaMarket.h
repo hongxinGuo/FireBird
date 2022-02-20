@@ -258,13 +258,11 @@ public:
 	clock_t GetReadingTengxunRTDataTime(void) const noexcept { return m_ReadingTengxunRTDataTime; }
 
 	// 处理网络上提取的实时股票数据
-	bool TaskProcessWebRTDataGetFromSinaServer(void);
+	bool TaskParseWebRTDataGetFromSinaServer(void);
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
-	bool TaskProcessWebRTDataGetFromTengxunServer(void);
+	bool TaskParseWebRTDataGetFromTengxunServer(void);
 	bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
-	bool CheckTengxunRTDataValidation(CWebRTData& RTData);
-	bool TaskProcessWebRTDataGetFromNeteaseServer(void);
-	bool CheckNeteaseRTDataValidation(CWebRTData& RTData);
+	bool TaskParseWebRTDataGetFromNeteaseServer(void);
 
 	bool TaskDiscardNeteaseRTData(void);
 	bool TaskDiscardSinaRTData(void);

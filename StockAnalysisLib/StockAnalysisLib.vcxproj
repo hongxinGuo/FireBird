@@ -183,6 +183,7 @@
     <ClCompile Include="..\StockAnalysis\ChildFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadChinaMarketBackground.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />

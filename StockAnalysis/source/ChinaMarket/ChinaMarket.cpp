@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////
+ï»¿//////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
 #include"accessory.h"
@@ -50,30 +50,43 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	static int siInstance = 0;
 
 	if (++siInstance > 1) {
-		TRACE(_T("ChinaMarketÊĞ³¡±äÁ¿Ö»ÔÊĞí´æÔÚÒ»¸öÊµÀı\n"));
+		TRACE(_T("ChinaMarketå¸‚åœºå˜é‡åªå…è®¸å­˜åœ¨ä¸€ä¸ªå®ä¾‹\n"));
 	}
-	m_strMarketId = _T("ÖĞ¹ú¹ÉÆ±ÊĞ³¡");
-	m_lMarketTimeZone = -8 * 3600; // ±±¾©±ê×¼Ê±¼äÎ»ÓÚ¶«°ËÇø£¬³¬Ç°GMT8Ğ¡Ê±
-	m_fSaveRTData = false; // ´Ë´æ´¢ÊµÊ±Êı¾İ±êÊ¶£¬ÓÃÓÚ´æ´¢¹©²âÊÔº¯ÊıÓÃµÄÊµÊ±Êı¾İ¡£Ä¿Ç°ÈÎÎñÒÑ¾­Íê³É¡£
+	m_strMarketId = _T("ä¸­å›½è‚¡ç¥¨å¸‚åœº");
+	m_lMarketTimeZone = -8 * 3600; // åŒ—äº¬æ ‡å‡†æ—¶é—´ä½äºä¸œå…«åŒºï¼Œè¶…å‰GMT8å°æ—¶
+	m_fSaveRTData = false; // æ­¤å­˜å‚¨å®æ—¶æ•°æ®æ ‡è¯†ï¼Œç”¨äºå­˜å‚¨ä¾›æµ‹è¯•å‡½æ•°ç”¨çš„å®æ—¶æ•°æ®ã€‚ç›®å‰ä»»åŠ¡å·²ç»å®Œæˆã€‚
 
 	m_avChoicedStock.resize(30);
 	m_aRSStrongOption.resize(10);
 
 	Reset();
+
+	if (!gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) {
+		thread thread1(ThreadChinaMarketBackground);
+		thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// È«¾Ö±äÁ¿µÄ½âÎöÎ»ÓÚ³ÌĞòÍË³öµÄ×îºó£¬ÒªÍíÓÚCMainFrameµÄ½âÎö¡£¹Ê¶øÈç¹ûÒªÏë½«ÏµÍ³ÍË³öµÄ¹ı³Ì·ÅÔÚÕâÀï£¬ĞèÒªÑĞ¾¿¡£
-// Ä¿Ç°²»ÔÊĞí´ËÎö¹¹º¯ÊıÍê³ÉÈÎºÎ¹¦ÄÜ¡£
+// å…¨å±€å˜é‡çš„è§£æä½äºç¨‹åºé€€å‡ºçš„æœ€åï¼Œè¦æ™šäºCMainFrameçš„è§£æã€‚æ•…è€Œå¦‚æœè¦æƒ³å°†ç³»ç»Ÿé€€å‡ºçš„è¿‡ç¨‹æ”¾åœ¨è¿™é‡Œï¼Œéœ€è¦ç ”ç©¶ã€‚
+// ç›®å‰ä¸å…è®¸æ­¤ææ„å‡½æ•°å®Œæˆä»»ä½•åŠŸèƒ½ã€‚
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
+	if (!gl_fExitingSystem) {
+		gl_fExitingSystem = true;
+		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
+		gl_fExitingSystem = false;
+	}
+	else {
+		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
+	}
 }
 
 void CChinaMarket::ResetMarket(void) {
-	TRACE(_T("ÖØÖÃÖĞ¹ú¹ÉÊĞ\n"));
-	CString str = _T("ÖØÖÃÖĞ¹ú¹ÉÊĞÓÚ±±¾©±ê×¼Ê±¼ä£º");
+	TRACE(_T("é‡ç½®ä¸­å›½è‚¡å¸‚\n"));
+	CString str = _T("é‡ç½®ä¸­å›½è‚¡å¸‚äºåŒ—äº¬æ ‡å‡†æ—¶é—´ï¼š");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 	while (gl_ThreadStatus.IsBackGroundthreadsWorking() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
@@ -93,13 +106,13 @@ void CChinaMarket::ResetMarket(void) {
 }
 
 void CChinaMarket::Reset(void) {
-	CalculateTime(); // ³õÊ¼»¯ÊĞ³¡Ê±¼ä
+	CalculateTime(); // åˆå§‹åŒ–å¸‚åœºæ—¶é—´
 
 	m_llRTDataReceived = 0;
 	m_lStockDayLineNeedUpdate = 0;
 
 	m_fLoadedSelectedStock = false;
-	SetSystemReady(false); // ÊĞ³¡³õÊ¼×´Ì¬ÎªÎ´ÉèÖÃºÃ¡£
+	SetSystemReady(false); // å¸‚åœºåˆå§‹çŠ¶æ€ä¸ºæœªè®¾ç½®å¥½ã€‚
 	m_fCurrentStockChanged = false;
 	m_fChoiced10RSStrong1StockSet = false;
 	m_fChoiced10RSStrong2StockSet = false;
@@ -111,8 +124,8 @@ void CChinaMarket::Reset(void) {
 
 	m_ttNewestTransactionTime = 0;
 
-	if (GetMarketTime() >= 150400) { // ÖĞ¹ú¹ÉÆ±ÊĞ³¡ÒÑ¾­±ÕÊĞ
-		SetTodayStockProcessed(true); // ±ÕÊĞºó²ÅÖ´ĞĞ±¾ÏµÍ³£¬ÔòÈÏÎªÒÑ¾­´¦Àí¹ı½ñÈÕ¹ÉÆ±Êı¾İÁË¡£
+	if (GetMarketTime() >= 150400) { // ä¸­å›½è‚¡ç¥¨å¸‚åœºå·²ç»é—­å¸‚
+		SetTodayStockProcessed(true); // é—­å¸‚åæ‰æ‰§è¡Œæœ¬ç³»ç»Ÿï¼Œåˆ™è®¤ä¸ºå·²ç»å¤„ç†è¿‡ä»Šæ—¥è‚¡ç¥¨æ•°æ®äº†ã€‚
 	}
 	else SetTodayStockProcessed(false);
 
@@ -127,21 +140,21 @@ void CChinaMarket::Reset(void) {
 	m_fTodayTempDataLoaded = false;
 
 	m_lCurrentRSStrongIndex = 0;
-	m_lCurrentSelectedStockSet = -1; // Ñ¡ÔñÊ¹ÓÃÈ«Ìå¹ÉÆ±¼¯¡¢
+	m_lCurrentSelectedStockSet = -1; // é€‰æ‹©ä½¿ç”¨å…¨ä½“è‚¡ç¥¨é›†ã€
 	m_lCurrentSelectedPosition = 0;
 
 	m_fRTDataSetCleared = false;
 
-	m_fCheckActiveStock = true;  //¼ì²éµ±ÈÕ»îÔ¾¹ÉÆ±£¬±ØĞëÎªÕæ¡£
+	m_fCheckActiveStock = true;  //æ£€æŸ¥å½“æ—¥æ´»è·ƒè‚¡ç¥¨ï¼Œå¿…é¡»ä¸ºçœŸã€‚
 
 	m_fGetRTData = true;
-	m_iCountDownSlowReadingRTData = 3; // 400ºÁÃëÃ¿´Î
+	m_iCountDownSlowReadingRTData = 3; // 400æ¯«ç§’æ¯æ¬¡
 
-	m_iRTDataServer = 0; // Ê¹ÓÃĞÂÀËÊµÊ±Êı¾İ·şÎñÆ÷
+	m_iRTDataServer = 0; // ä½¿ç”¨æ–°æµªå®æ—¶æ•°æ®æœåŠ¡å™¨
 
-	m_fUsingSinaRTDataReceiver = true; // Ê¹ÓÃĞÂÀËÊµÊ±Êı¾İÌáÈ¡Æ÷
-	m_fUsingTengxunRTDataReceiver = true; // Ä¬ÈÏ×´Ì¬ÏÂ¶ÁÈ¡ÌÚÑ¶ÊµÊ±ĞĞÇé
-	m_fUsingNeteaseRTDataReceiver = true; // Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İÌáÈ¡Æ÷
+	m_fUsingSinaRTDataReceiver = true; // ä½¿ç”¨æ–°æµªå®æ—¶æ•°æ®æå–å™¨
+	m_fUsingTengxunRTDataReceiver = true; // é»˜è®¤çŠ¶æ€ä¸‹è¯»å–è…¾è®¯å®æ—¶è¡Œæƒ…
+	m_fUsingNeteaseRTDataReceiver = true; // ä½¿ç”¨ç½‘æ˜“å®æ—¶æ•°æ®æå–å™¨
 	m_iCountDownTengxunNumber = 5;
 
 	m_fUpdateChoicedStockDB = false;
@@ -173,7 +186,7 @@ bool CChinaMarket::CheckMarketReady(void) {
 		long lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
-			gl_systemMessage.PushInformationMessage(_T("ÖĞ¹ú¹ÉÆ±ÊĞ³¡³õÊ¼»¯Íê±Ï"));
+			gl_systemMessage.PushInformationMessage(_T("ä¸­å›½è‚¡ç¥¨å¸‚åœºåˆå§‹åŒ–å®Œæ¯•"));
 		}
 	}
 	return IsSystemReady();
@@ -294,7 +307,7 @@ bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool 
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	AddStock(pStock);
 	ASSERT(pStock->IsDayLineNeedUpdate());
-	str = _T("china MarketÉú³ÉĞÂ´úÂë") + pStock->GetSymbol();
+	str = _T("china Marketç”Ÿæˆæ–°ä»£ç ") + pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 	return true;
 }
@@ -308,7 +321,7 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) 
 
 /////////////////////////////////////////////////////////////////////////
 //
-//	µÃµ½·ÖÊ±ÏßÆ«ÒÆÁ¿¡£09:30Îª0£¬15:00Îª240,²½³¤Îª1·ÖÖÓ
+//	å¾—åˆ°åˆ†æ—¶çº¿åç§»é‡ã€‚09:30ä¸º0ï¼Œ15:00ä¸º240,æ­¥é•¿ä¸º1åˆ†é’Ÿ
 //
 //
 ////////////////////////////////////////////////////////////////////////
@@ -335,16 +348,16 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ×¥È¡ÍøÒ×ÀúÊ·ÈÕÏßÊı¾İ
-// ÓÉÓÚ¿ÉÄÜ»á×¥È¡È«²¿5000¸ö×óÓÒÈÕÏßÊı¾İ£¬ËùĞèÊ±¼ä³¬¹ı10·ÖÖÓ£¬¹Ê¶ø9:15:00µÚÒ»´ÎÖØÖÃÏµÍ³Ê±²»È¥¸üĞÂ£¬¶øÔÚ9:25:00µÚ¶ş´ÎÖØÖÃÏµÍ³ºó²Å¿ªÊ¼¡£
-// ÎªÁË·ÀÖ¹ÓëÖØÆôÏµÍ³·¢Éú³åÍ»£¬Êµ¼ÊÖ´ĞĞÊ±¼äÑÓºóÖÁ9:26:00¡£
+// æŠ“å–ç½‘æ˜“å†å²æ—¥çº¿æ•°æ®
+// ç”±äºå¯èƒ½ä¼šæŠ“å–å…¨éƒ¨5000ä¸ªå·¦å³æ—¥çº¿æ•°æ®ï¼Œæ‰€éœ€æ—¶é—´è¶…è¿‡10åˆ†é’Ÿï¼Œæ•…è€Œ9:15:00ç¬¬ä¸€æ¬¡é‡ç½®ç³»ç»Ÿæ—¶ä¸å»æ›´æ–°ï¼Œè€Œåœ¨9:25:00ç¬¬äºŒæ¬¡é‡ç½®ç³»ç»Ÿåæ‰å¼€å§‹ã€‚
+// ä¸ºäº†é˜²æ­¢ä¸é‡å¯ç³»ç»Ÿå‘ç”Ÿå†²çªï¼Œå®é™…æ‰§è¡Œæ—¶é—´å»¶åè‡³9:26:00ã€‚
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 	ASSERT(IsSystemReady());
 	if ((GetMarketTime() >= 92600) && IsDayLineNeedUpdate()) {
-		// ×¥È¡ÈÕÏßÊı¾İ.¿ªÊ¼ÓÚ09:26:00
-		// ×î¶àÊ¹ÓÃËÄ¸öÒıÇæ£¬·ñÔòÈİÒ×±»ÍøÒ×·şÎñÆ÷¾Ü¾ø·şÎñ¡£Ò»°ã»¹ÊÇÓÃÁ½¸öÎªºÃ¡£
+		// æŠ“å–æ—¥çº¿æ•°æ®.å¼€å§‹äº09:26:00
+		// æœ€å¤šä½¿ç”¨å››ä¸ªå¼•æ“ï¼Œå¦åˆ™å®¹æ˜“è¢«ç½‘æ˜“æœåŠ¡å™¨æ‹’ç»æœåŠ¡ã€‚ä¸€èˆ¬è¿˜æ˜¯ç”¨ä¸¤ä¸ªä¸ºå¥½ã€‚
 		return(gl_WebInquirer.GetNeteaseDayLineData());
 	}
 	else return false;
@@ -352,15 +365,14 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´¦ÀíÊµÊ±Êı¾İµÈ£¬ÓÉSchedulingTaskPerSecondº¯Êıµ÷ÓÃ,Ã¿ÈıÃëÖ´ĞĞÒ»´Î¡£
-// ½«ÊµÊ±Êı¾İÔİ´æ¶ÓÁĞÖĞµÄÊı¾İ·Ö±ğ´æ·Åµ½¸÷×Ô¹ÉÆ±µÄÊµÊ±¶ÓÁĞÖĞ¡£
-// ·Ö·¢Êı¾İÊ±£¬Ö»·Ö·¢ĞÂµÄ£¨½»Ò×Ê±¼äÍíÓÚÖ®Ç°Êı¾İµÄ£©ÊµÊ±Êı¾İ¡£
+// å¤„ç†å®æ—¶æ•°æ®ç­‰ï¼Œç”±SchedulingTaskPerSecondå‡½æ•°è°ƒç”¨,æ¯ä¸‰ç§’æ‰§è¡Œä¸€æ¬¡ã€‚
+// å°†å®æ—¶æ•°æ®æš‚å­˜é˜Ÿåˆ—ä¸­çš„æ•°æ®åˆ†åˆ«å­˜æ”¾åˆ°å„è‡ªè‚¡ç¥¨çš„å®æ—¶é˜Ÿåˆ—ä¸­ã€‚
+// åˆ†å‘æ•°æ®æ—¶ï¼Œåªåˆ†å‘æ–°çš„ï¼ˆäº¤æ˜“æ—¶é—´æ™šäºä¹‹å‰æ•°æ®çš„ï¼‰å®æ—¶æ•°æ®ã€‚
 //
-// ´Ëº¯ÊıÓÃµ½´óÁ¿µÄÈ«¾Ö±äÁ¿£¬»¹ÊÇ·ÅÔÚÖ÷Ïß³ÌÎªºÃ¡£¹¤×÷Ïß³ÌÄ¿Ç°»¹ÊÇÖ»×ö¼ÆËã¸ö¹ÉµÄ¹Òµ¥Çé¿ö¡£
+// æ­¤å‡½æ•°ç”¨åˆ°å¤§é‡çš„å…¨å±€å˜é‡ï¼Œè¿˜æ˜¯æ”¾åœ¨ä¸»çº¿ç¨‹ä¸ºå¥½ã€‚å·¥ä½œçº¿ç¨‹ç›®å‰è¿˜æ˜¯åªåšè®¡ç®—ä¸ªè‚¡çš„æŒ‚å•æƒ…å†µã€‚
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
-	gl_ProcessSinaRTDataQueue.Wait();
 	const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
 	CString strVolume;
 	CString strStandredStockCode;
@@ -370,14 +382,14 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		pRTData = gl_WebRTDataContainer.PopSinaData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("ĞÂÀËÊµÊ±Êı¾İÔ´ÉèÖÃÓĞÎó"));
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("æ–°æµªå®æ—¶æ•°æ®æºè®¾ç½®æœ‰è¯¯"));
 			continue;
 		}
 		DistributeRTDataToStock(pRTData);
 	}
-	gl_ThreadStatus.SetRTDataNeedCalculate(true); // ÉèÖÃ½ÓÊÕµ½ÊµÊ±Êı¾İ±êÊ¶
-	ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // ±ØĞëÒ»´Î´¦ÀíÈ«ÌåÊı¾İ¡£
-	gl_ProcessSinaRTDataQueue.Signal();
+	gl_ThreadStatus.SetRTDataNeedCalculate(true); // è®¾ç½®æ¥æ”¶åˆ°å®æ—¶æ•°æ®æ ‡è¯†
+	// ç”±äºä½¿ç”¨çº¿ç¨‹Parseæ–°æµªå®æ—¶æ•°æ®ï¼Œæ•…æ­¤å¤„ä¸å†æ£€æµ‹é˜Ÿåˆ—ä¸ºé›¶
+	//ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // å¿…é¡»ä¸€æ¬¡å¤„ç†å…¨ä½“æ•°æ®ã€‚
 
 	return true;
 }
@@ -394,23 +406,23 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 	else if (!IsStock(pRTData->GetSymbol())) {
 		return false;
 	}
-	if (pRTData->IsActive()) { // ´ËÊµÊ±Êı¾İÓĞĞ§£¿
+	if (pRTData->IsActive()) { // æ­¤å®æ—¶æ•°æ®æœ‰æ•ˆï¼Ÿ
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
 			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
 		}
 		auto pStock = GetStock(pRTData->GetSymbol());
-		if (!pStock->IsActive()) { // ÕâÀïÔÚ·¢ĞĞ°æÔËĞĞÊ±³öÏÖ´íÎó£¬Ô­Òò´ı²é¡£
+		if (!pStock->IsActive()) { // è¿™é‡Œåœ¨å‘è¡Œç‰ˆè¿è¡Œæ—¶å‡ºç°é”™è¯¯ï¼ŒåŸå› å¾…æŸ¥ã€‚
 			if (pRTData->IsValidTime(14)) {
 				pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
 				pStock->SetIPOStatus(__STOCK_IPOED__);
 			}
 		}
-		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // ĞÂµÄÊı¾İ£¿
-			pStock->PushRTData(pRTData); // ´æ´¢ĞÂµÄÊı¾İÖÁÊı¾İ³Ø
+		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // æ–°çš„æ•°æ®ï¼Ÿ
+			pStock->PushRTData(pRTData); // å­˜å‚¨æ–°çš„æ•°æ®è‡³æ•°æ®æ± 
 			if (pStock->IsRecordRTData()) {
 				StoreChoiceRTData(pRTData);
 			}
-			pStock->SetTransactionTime(pRTData->GetTransactionTime());   // ÉèÖÃ×îĞÂ½ÓÊÜµ½ÊµÊ±Êı¾İµÄÊ±¼ä
+			pStock->SetTransactionTime(pRTData->GetTransactionTime());   // è®¾ç½®æœ€æ–°æ¥å—åˆ°å®æ—¶æ•°æ®çš„æ—¶é—´
 		}
 	}
 
@@ -419,15 +431,14 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´¦ÀíÊµÊ±Êı¾İµÈ£¬ÓÉSchedulingTaskPerSecondº¯Êıµ÷ÓÃ,Ã¿ÈıÃëÖ´ĞĞÒ»´Î¡£
-// ½«ÊµÊ±Êı¾İÔİ´æ¶ÓÁĞÖĞµÄÊı¾İ·Ö±ğ´æ·Åµ½¸÷×Ô¹ÉÆ±µÄÊµÊ±¶ÓÁĞÖĞ¡£
-// ·Ö·¢Êı¾İÊ±£¬Ö»·Ö·¢ĞÂµÄ£¨½»Ò×Ê±¼äÍíÓÚÖ®Ç°Êı¾İµÄ£©ÊµÊ±Êı¾İ¡£
+// å¤„ç†å®æ—¶æ•°æ®ç­‰ï¼Œç”±SchedulingTaskPerSecondå‡½æ•°è°ƒç”¨,æ¯ä¸‰ç§’æ‰§è¡Œä¸€æ¬¡ã€‚
+// å°†å®æ—¶æ•°æ®æš‚å­˜é˜Ÿåˆ—ä¸­çš„æ•°æ®åˆ†åˆ«å­˜æ”¾åˆ°å„è‡ªè‚¡ç¥¨çš„å®æ—¶é˜Ÿåˆ—ä¸­ã€‚
+// åˆ†å‘æ•°æ®æ—¶ï¼Œåªåˆ†å‘æ–°çš„ï¼ˆäº¤æ˜“æ—¶é—´æ™šäºä¹‹å‰æ•°æ®çš„ï¼‰å®æ—¶æ•°æ®ã€‚
 //
-// ´Ëº¯ÊıÓÃµ½´óÁ¿µÄÈ«¾Ö±äÁ¿£¬»¹ÊÇ·ÅÔÚÖ÷Ïß³ÌÎªºÃ¡£¹¤×÷Ïß³ÌÄ¿Ç°»¹ÊÇÖ»×ö¼ÆËã¸ö¹ÉµÄ¹Òµ¥Çé¿ö¡£
+// æ­¤å‡½æ•°ç”¨åˆ°å¤§é‡çš„å…¨å±€å˜é‡ï¼Œè¿˜æ˜¯æ”¾åœ¨ä¸»çº¿ç¨‹ä¸ºå¥½ã€‚å·¥ä½œçº¿ç¨‹ç›®å‰è¿˜æ˜¯åªåšè®¡ç®—ä¸ªè‚¡çš„æŒ‚å•æƒ…å†µã€‚
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
-	gl_ProcessNeteaseRTDataQueue.Wait();
 	CChinaStockPtr pStock;
 	const size_t lTotalNumber = gl_WebRTDataContainer.GetNeteaseDataSize();
 	CString strVolume;
@@ -435,21 +446,21 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
-			gl_systemMessage.PushErrorMessage(_T("ÍøÒ×ÊµÊ±Êı¾İÔ´ÉèÖÃÓĞÎó"));
+			gl_systemMessage.PushErrorMessage(_T("ç½‘æ˜“å®æ—¶æ•°æ®æºè®¾ç½®æœ‰è¯¯"));
 			continue;
 		}
 		DistributeRTDataToStock(pRTData);
 	}
-	gl_ThreadStatus.SetRTDataNeedCalculate(true); // ÉèÖÃ½ÓÊÕµ½ÊµÊ±Êı¾İ±êÊ¶
-	ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // ±ØĞëÒ»´Î´¦ÀíÈ«ÌåÊı¾İ¡£
-	gl_ProcessNeteaseRTDataQueue.Signal();
+	gl_ThreadStatus.SetRTDataNeedCalculate(true); // è®¾ç½®æ¥æ”¶åˆ°å®æ—¶æ•°æ®æ ‡è¯†
+	// ç”±äºä½¿ç”¨çº¿ç¨‹Parseç½‘æ˜“å®æ—¶æ•°æ®ï¼Œæ•…æ­¤å¤„ä¸å†æ£€æµ‹é˜Ÿåˆ—ä¸ºé›¶
+	//ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // å¿…é¡»ä¸€æ¬¡å¤„ç†å…¨ä½“æ•°æ®ã€‚
 
 	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// Éú³ÉÃ¿´Î²éÑ¯ĞÂÀËÊµÊ±¹ÉÆ±Êı¾İµÄ×Ö·û´®
+// ç”Ÿæˆæ¯æ¬¡æŸ¥è¯¢æ–°æµªå®æ—¶è‚¡ç¥¨æ•°æ®çš„å­—ç¬¦ä¸²
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock) {
@@ -476,8 +487,8 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 	strNetease = str.Left(7);
 	strStockCode = XferNeteaseToStandred(strNetease);
 	if (!IsStock(strStockCode)) {
-		CString strReport = _T("ÍøÒ×ÈÕÏß²éÑ¯¹ÉÆ±´úÂë´íÎó£º");
-		TRACE(_T("ÍøÒ×ÈÕÏß²éÑ¯¹ÉÆ±´úÂë´íÎó£º%s\n"), strStockCode.GetBuffer());
+		CString strReport = _T("ç½‘æ˜“æ—¥çº¿æŸ¥è¯¢è‚¡ç¥¨ä»£ç é”™è¯¯ï¼š");
+		TRACE(_T("ç½‘æ˜“æ—¥çº¿æŸ¥è¯¢è‚¡ç¥¨ä»£ç é”™è¯¯ï¼š%s\n"), strStockCode.GetBuffer());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;
@@ -486,7 +497,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 	return true;
 }
 
-bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
+bool CChinaMarket::TaskParseWebRTDataGetFromSinaServer(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
 	for (int i = 0; i < lTotalData; i++) {
@@ -496,9 +507,9 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadSinaData(pWebDataReceived)) {
 				m_llRTDataReceived++;
-				gl_WebRTDataContainer.PushSinaData(pRTData); // ½«´ËÊµÊ±Êı¾İÖ¸Õë´æÈëÊµÊ±Êı¾İ¶ÓÁĞ
+				gl_WebRTDataContainer.PushSinaData(pRTData); // å°†æ­¤å®æ—¶æ•°æ®æŒ‡é’ˆå­˜å…¥å®æ—¶æ•°æ®é˜Ÿåˆ—
 			}
-			else return false;  // ºóÃæµÄÊı¾İ³öÎÊÌâ£¬Å×µô²»ÓÃ¡£
+			else return false;  // åé¢çš„æ•°æ®å‡ºé—®é¢˜ï¼ŒæŠ›æ‰ä¸ç”¨ã€‚
 		}
 	}
 	return true;
@@ -511,7 +522,7 @@ void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// Òª»ñÈ¡×îĞÂĞĞÇé£¬·ÃÎÊÊı¾İ½Ó¿Ú£ºhttp://api.money.126.net/data/feed/0601872
+// è¦è·å–æœ€æ–°è¡Œæƒ…ï¼Œè®¿é—®æ•°æ®æ¥å£ï¼šhttp://api.money.126.net/data/feed/0601872
 //
 // _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
 //                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
@@ -521,10 +532,10 @@ void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-// Ê¹ÓÃjson½âÎö£¬ÒÑ¾­Ã»ÓĞ´íÎóÊı¾İÁË¡£
+// ä½¿ç”¨jsonè§£æï¼Œå·²ç»æ²¡æœ‰é”™è¯¯æ•°æ®äº†ã€‚
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
+bool CChinaMarket::TaskParseWebRTDataGetFromNeteaseServer(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
@@ -532,14 +543,13 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 
 	for (int i = 0; i < lTotalData; i++) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // ÍøÒ×Êı¾İÇ°21Î»ÎªÇ°×º£¬ºóÁ½Î»Îªºó×º
+		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // ç½‘æ˜“æ•°æ®å‰21ä½ä¸ºå‰ç¼€ï¼Œåä¸¤ä½ä¸ºåç¼€
 			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 				if (pRTData->ReadNeteaseData(it)) {
 					m_llRTDataReceived++;
-					if (IsSystemReady())	CheckNeteaseRTDataValidation(*pRTData);// µ±ÏµÍ³×¼±¸×´Ì¬Íê³ÉÊ±¼ì²âÒ»ÏÂ
-					gl_WebRTDataContainer.PushNeteaseData(pRTData); // ½«´ËÊµÊ±Êı¾İÖ¸Õë´æÈëÊµÊ±Êı¾İ¶ÓÁĞ
+					gl_WebRTDataContainer.PushNeteaseData(pRTData); // å°†æ­¤å®æ—¶æ•°æ®æŒ‡é’ˆå­˜å…¥å®æ—¶æ•°æ®é˜Ÿåˆ—
 				}
 			}
 		}
@@ -547,40 +557,12 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 	return true;
 }
 
-bool CChinaMarket::CheckNeteaseRTDataValidation(CWebRTData& RTData) {
-	// ¼ì²âÒ»ÏÂ
-	CString str;
-
-	ASSERT(RTData.GetDataSource() == __NETEASE_RT_WEB_DATA__);
-	if (RTData.IsActive()) {
-		CChinaStockPtr pStock = nullptr;
-		if (IsStock(RTData.GetSymbol())) {
-			pStock = GetStock(RTData.GetSymbol());
-			if (!pStock->IsActive()) {
-				str = pStock->GetSymbol();
-				str += _T(" ÍøÒ×ÊµÊ±¼ì²âµ½²»´¦ÓÚ»îÔ¾×´Ì¬");
-				gl_systemMessage.PushInnerSystemInformationMessage(str);
-				return false;
-			}
-		}
-		else {
-			str = RTData.GetSymbol();
-			str += _T(" ÎŞĞ§¹ÉÆ±´úÂë£¨ÍøÒ×ÊµÊ±Êı¾İ£©");
-			TRACE("\nÎŞĞ§¹ÉÆ±´úÂë%s\n", RTData.GetSymbol().GetBuffer());
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			return false;
-		}
-		return true;
-	}
-	return false;
-}
-
 bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
 	const size_t lTotalData = gl_WebRTDataContainer.GetNeteaseDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
-		// Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
+		// ç›®å‰ä¸ä½¿ç”¨ç½‘æ˜“å®æ—¶æ•°æ®ï¼Œè¿™é‡Œåªæ˜¯ç®€å•åœ°å–å‡ºåæ‰”æ‰ã€‚
 		pRTData = gl_WebRTDataContainer.PopNeteaseData();
 		pRTData = nullptr;
 	}
@@ -593,7 +575,7 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
 	const size_t lTotalData = gl_WebRTDataContainer.GetSinaDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
-		// Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
+		// ç›®å‰ä¸ä½¿ç”¨ç½‘æ˜“å®æ—¶æ•°æ®ï¼Œè¿™é‡Œåªæ˜¯ç®€å•åœ°å–å‡ºåæ‰”æ‰ã€‚
 		pRTData = gl_WebRTDataContainer.PopSinaData();
 		pRTData = nullptr;
 	}
@@ -606,7 +588,7 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
 	const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
-		// Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
+		// ç›®å‰ä¸ä½¿ç”¨ç½‘æ˜“å®æ—¶æ•°æ®ï¼Œè¿™é‡Œåªæ˜¯ç®€å•åœ°å–å‡ºåæ‰”æ‰ã€‚
 		pRTData = gl_WebRTDataContainer.PopTengxunData();
 		pRTData = nullptr;
 	}
@@ -616,32 +598,27 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// ÌÚÑ¶ÊµÊ±Êı¾İ£¬Èç¹ûÓöµ½±»²éÑ¯¹ÉÆ±´úÂëÎª·ÇÉÏÊĞÊ±£¬Ö»ÊÇ¼òµ¥ÂÔ¹ı£¬²»·µ»ØÊı¾İ¡£¹Ê¶ø²éÑ¯900¸ö¹ÉÆ±£¬·µ»ØµÄÊı¾İÁ¿ÒªĞ¡ÓÚ900.
-// Ö»ÓĞµ±ËùÓĞµÄ²éÑ¯¹ÉÆ±½ÔÎª·ÇÉÏÊĞÊ±£¬²Å·µ»ØÒ»¸ö21¸ö×Ö·û´®£ºv_pv_none_match=\"1\";\n
+// è…¾è®¯å®æ—¶æ•°æ®ï¼Œå¦‚æœé‡åˆ°è¢«æŸ¥è¯¢è‚¡ç¥¨ä»£ç ä¸ºéä¸Šå¸‚æ—¶ï¼Œåªæ˜¯ç®€å•ç•¥è¿‡ï¼Œä¸è¿”å›æ•°æ®ã€‚æ•…è€ŒæŸ¥è¯¢900ä¸ªè‚¡ç¥¨ï¼Œè¿”å›çš„æ•°æ®é‡è¦å°äº900.
+// åªæœ‰å½“æ‰€æœ‰çš„æŸ¥è¯¢è‚¡ç¥¨çš†ä¸ºéä¸Šå¸‚æ—¶ï¼Œæ‰è¿”å›ä¸€ä¸ª21ä¸ªå­—ç¬¦ä¸²ï¼šv_pv_none_match=\"1\";\n
 //
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
+bool CChinaMarket::TaskParseWebRTDataGetFromTengxunServer(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
-	int j = 0;
 
 	const size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
 	for (int i = 0; i < lTotalData; i++) {
 		pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
 		pWebDataReceived->ResetCurrentPos();
-		if (!IsInvalidTengxunRTData(*pWebDataReceived)) { // ´¦ÀíÕâ21¸ö×Ö·û´®µÄº¯Êı¿ÉÒÔ·ÅÔÚÕâÀï£¬Ò²¿ÉÒÔ·ÅÔÚ×îÇ°Ãæ¡£
-			j = 0;
+		if (!IsInvalidTengxunRTData(*pWebDataReceived)) { // å¤„ç†è¿™21ä¸ªå­—ç¬¦ä¸²çš„å‡½æ•°å¯ä»¥æ”¾åœ¨è¿™é‡Œï¼Œä¹Ÿå¯ä»¥æ”¾åœ¨æœ€å‰é¢ã€‚
 			while (!pWebDataReceived->IsProcessedAllTheData()) {
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				if (pRTData->ReadTengxunData(pWebDataReceived)) {
-					CheckTengxunRTDataValidation(*pRTData); // ¼ì²âÒ»ÏÂ
-					j++;
-					gl_WebRTDataContainer.PushTengxunData(pRTData); // ½«´ËÊµÊ±Êı¾İÖ¸Õë´æÈëÊµÊ±Êı¾İ¶ÓÁĞ
+					gl_WebRTDataContainer.PushTengxunData(pRTData); // å°†æ­¤å®æ—¶æ•°æ®æŒ‡é’ˆå­˜å…¥å®æ—¶æ•°æ®é˜Ÿåˆ—
 				}
-				else return false;  // ºóÃæµÄÊı¾İ³öÎÊÌâ£¬Å×µô²»ÓÃ¡£
+				else return false;  // åé¢çš„æ•°æ®å‡ºé—®é¢˜ï¼ŒæŠ›æ‰ä¸ç”¨ã€‚
 			}
-			//TRACE(_T("½ÓÊÕµ½%d¸öÌÚÑ¶ÊµÊ±Êı¾İ\n"), j);
 		}
 	}
 	return true;
@@ -649,13 +626,13 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// µ±ËùÓĞ±»²éÑ¯µÄ¹ÉÆ±½ÔÎª·ÇÉÏÊĞ¹ÉÆ±Ê±£¬ÌÚÑ¶ÊµÊ±¹ÉÆ±·şÎñÆ÷»á·µ»ØÒ»¸ö21¸ö×Ö·û³¤µÄ×Ö·û´®£ºv_pv_none_match=\"1\";\n
+// å½“æ‰€æœ‰è¢«æŸ¥è¯¢çš„è‚¡ç¥¨çš†ä¸ºéä¸Šå¸‚è‚¡ç¥¨æ—¶ï¼Œè…¾è®¯å®æ—¶è‚¡ç¥¨æœåŠ¡å™¨ä¼šè¿”å›ä¸€ä¸ª21ä¸ªå­—ç¬¦é•¿çš„å­—ç¬¦ä¸²ï¼šv_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
 	char buffer[50];
 	char* pBuffer = buffer;
-	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // ´ËÎªÎŞĞ§¹ÉÆ±²éÑ¯µ½µÄÊı¾İ¸ñÊ½£¬¹²21¸ö×Ö·û
+	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // æ­¤ä¸ºæ— æ•ˆè‚¡ç¥¨æŸ¥è¯¢åˆ°çš„æ•°æ®æ ¼å¼ï¼Œå…±21ä¸ªå­—ç¬¦
 
 	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
 	buffer[21] = 0x000;
@@ -666,31 +643,6 @@ bool CChinaMarket::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
 		return true;
 	}
 	else return false;
-}
-
-bool CChinaMarket::CheckTengxunRTDataValidation(CWebRTData& RTData) {
-	CString str;
-	ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
-	if (RTData.IsActive()) {
-		CChinaStockPtr pStock = nullptr;
-		if (IsStock(RTData.GetSymbol())) {
-			pStock = GetStock(RTData.GetSymbol());
-			if (!pStock->IsActive()) {
-				str = pStock->GetSymbol();
-				str += _T("ÌÚÑ¶ÊµÊ±¼ì²âµ½²»´¦ÓÚ»îÔ¾×´Ì¬");
-				//gl_systemMessage.PushInnerSystemInformationMessage(str);
-				return false;
-			}
-		}
-		else {
-			str = RTData.GetSymbol();
-			str += _T("ÎŞĞ§¹ÉÆ±´úÂë£¨ÌÚÑ¶ÊµÊ±Êı¾İ£©");
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			return false;
-		}
-		return true;
-	}
-	return false;
 }
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
@@ -714,7 +666,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// ´óÔ¼Ã¿100ºÁÃëµ÷¶ÈÒ»´Î
+// å¤§çº¦æ¯100æ¯«ç§’è°ƒåº¦ä¸€æ¬¡
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -724,30 +676,32 @@ bool CChinaMarket::SchedulingTask(void) {
 	static time_t s_timeLast = 0;
 	const long lCurrentTime = GetMarketTime();
 
-	// ×¥È¡ÊµÊ±Êı¾İ(ĞÂÀË¡¢ÌÚÑ¶ºÍÍøÒ×£©¡£Ã¿400ºÁÃëÉêÇëÒ»´Î£¬¼´¿É±£Ö¤ÔÚ3ÃëÖĞÄÚ±éÀúÒ»±éÈ«Ìå»îÔ¾¹ÉÆ±¡£
+	// æŠ“å–å®æ—¶æ•°æ®(æ–°æµªã€è…¾è®¯å’Œç½‘æ˜“ï¼‰ã€‚æ¯400æ¯«ç§’ç”³è¯·ä¸€æ¬¡ï¼Œå³å¯ä¿è¯åœ¨3ç§’ä¸­å†…éå†ä¸€éå…¨ä½“æ´»è·ƒè‚¡ç¥¨ã€‚
 	if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
 		TaskGetRTDataFromWeb();
-		TaskProcessWebRTDataGetFromSinaServer();
-		TaskProcessWebRTDataGetFromNeteaseServer();
-		// Èç¹ûÒªÇóÂıËÙ¶ÁÈ¡ÊµÊ±Êı¾İ£¬ÔòÉèÖÃ¶ÁÈ¡ËÙÂÊÎªÃ¿·ÖÖÓÒ»´Î
-		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // ÍêÈ«ÂÖÑ¯Ò»±éºó£¬·Ç½»Ò×Ê±¶ÎÒ»·ÖÖÓ×óÓÒ¸üĞÂÒ»´Î¼´¿É
-		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // Ä¬ÈÏ¼ÆÊı4´Î,¼´Ã¿400ºÁÃëÉêÇëÒ»´ÎÊµÊ±Êı¾İ
+		// è§£ææ–°æµªå’Œç½‘æ˜“å®æ—¶æ•°æ®çš„ä»»åŠ¡ç§»è‡³çº¿ç¨‹ThreadChinaMarketBackgroundä¸­ã€‚
+		//TaskParseWebRTDataGetFromSinaServer();
+		//TaskParseWebRTDataGetFromNeteaseServer();
+		// å¦‚æœè¦æ±‚æ…¢é€Ÿè¯»å–å®æ—¶æ•°æ®ï¼Œåˆ™è®¾ç½®è¯»å–é€Ÿç‡ä¸ºæ¯åˆ†é’Ÿä¸€æ¬¡
+		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // å®Œå…¨è½®è¯¢ä¸€éåï¼Œéäº¤æ˜“æ—¶æ®µä¸€åˆ†é’Ÿå·¦å³æ›´æ–°ä¸€æ¬¡å³å¯
+		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // é»˜è®¤è®¡æ•°4æ¬¡,å³æ¯400æ¯«ç§’ç”³è¯·ä¸€æ¬¡å®æ—¶æ•°æ®
 	}
 	m_iCountDownSlowReadingRTData--;
 
-	//¸ù¾İÊ±¼ä£¬µ÷¶È¸÷Ïî¶¨Ê±ÈÎÎñ.Ã¿Ãëµ÷¶ÈÒ»´Î
+	//æ ¹æ®æ—¶é—´ï¼Œè°ƒåº¦å„é¡¹å®šæ—¶ä»»åŠ¡.æ¯ç§’è°ƒåº¦ä¸€æ¬¡
 	if (GetUTCTime() > s_timeLast) {
 		SchedulingTaskPerSecond(GetUTCTime() - s_timeLast, lCurrentTime);
 		s_timeLast = GetUTCTime();
 	}
 
-	// ÏµÍ³×¼±¸ºÃÁËÖ®ºóĞèÒªÍê³ÉµÄ¸÷Ïî¹¤×÷
+	// ç³»ç»Ÿå‡†å¤‡å¥½äº†ä¹‹åéœ€è¦å®Œæˆçš„å„é¡¹å·¥ä½œ
 	if (IsSystemReady()) {
-		if (!m_fTodayTempDataLoaded) { // ´Ë¹¤×÷½ö½øĞĞÒ»´Î¡£
+		if (!m_fTodayTempDataLoaded) { // æ­¤å·¥ä½œä»…è¿›è¡Œä¸€æ¬¡ã€‚
 			LoadTodayTempDB(GetMarketDate());
 			m_fTodayTempDataLoaded = true;
 		}
-		TaskProcessWebRTDataGetFromTengxunServer();
+		// è§£æè…¾è®¯å®æ—¶æ•°æ®çš„ä»»åŠ¡ç§»è‡³çº¿ç¨‹ThreadChinaMarketBackgroundä¸­ã€‚
+		//TaskParseWebRTDataGetFromTengxunServer();
 		TaskGetNeteaseDayLineFromWeb();
 	}
 
@@ -756,36 +710,36 @@ bool CChinaMarket::SchedulingTask(void) {
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-// ´ÓĞÂÀË¡¢ÍøÒ×»òÕßÌÚÑ¶ÊµÊ±ĞĞÇéÊı¾İ·şÎñÆ÷¶ÁÈ¡ÊµÊ±Êı¾İ¡£Ê¹ÓÃÆäÖĞÖ®Ò»¼´¿É¡£
+// ä»æ–°æµªã€ç½‘æ˜“æˆ–è€…è…¾è®¯å®æ—¶è¡Œæƒ…æ•°æ®æœåŠ¡å™¨è¯»å–å®æ—¶æ•°æ®ã€‚ä½¿ç”¨å…¶ä¸­ä¹‹ä¸€å³å¯ã€‚
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 	switch (m_iRTDataServer) {
-	case 0: // Ê¹ÓÃĞÂÀËÊµÊ±Êı¾İ·şÎñÆ÷
+	case 0: // ä½¿ç”¨æ–°æµªå®æ—¶æ•°æ®æœåŠ¡å™¨
 		if (IsUsingSinaRTDataReceiver()) {
-			gl_WebInquirer.GetSinaRTData(); // Ã¿400ºÁÃë(100X4)ÉêÇëÒ»´ÎÊµÊ±Êı¾İ¡£ĞÂÀËµÄÊµÊ±ĞĞÇé·şÎñÆ÷ÏìÓ¦Ê±¼ä²»³¬¹ı100ºÁÃë£¨30-70Ö®¼ä£©£¬ÇÒÃ»ÓĞ³öÏÖ¹ıÊı¾İ´íÎó¡£
+			gl_WebInquirer.GetSinaRTData(); // æ¯400æ¯«ç§’(100X4)ç”³è¯·ä¸€æ¬¡å®æ—¶æ•°æ®ã€‚æ–°æµªçš„å®æ—¶è¡Œæƒ…æœåŠ¡å™¨å“åº”æ—¶é—´ä¸è¶…è¿‡100æ¯«ç§’ï¼ˆ30-70ä¹‹é—´ï¼‰ï¼Œä¸”æ²¡æœ‰å‡ºç°è¿‡æ•°æ®é”™è¯¯ã€‚
 		}
 		break;
-	case 1: // Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ·şÎñÆ÷
-		// ÍøÒ×ÊµÊ±Êı¾İÓĞ´óÁ¿µÄÈ±Ê§×Ö¶Î£¬ÇÒÇ°×ººó×ºÒ²ÓĞÊ±È±Ê§¡£
-		// ÍøÒ×ÊµÊ±Êı¾İÓĞÊ±»¹·¢ËÍÃ»ÓĞÒªÇó¹ıµÄ¹ÉÆ±£¬²»ÖªÎªºÎ¡£
+	case 1: // ä½¿ç”¨ç½‘æ˜“å®æ—¶æ•°æ®æœåŠ¡å™¨
+		// ç½‘æ˜“å®æ—¶æ•°æ®æœ‰å¤§é‡çš„ç¼ºå¤±å­—æ®µï¼Œä¸”å‰ç¼€åç¼€ä¹Ÿæœ‰æ—¶ç¼ºå¤±ã€‚
+		// ç½‘æ˜“å®æ—¶æ•°æ®æœ‰æ—¶è¿˜å‘é€æ²¡æœ‰è¦æ±‚è¿‡çš„è‚¡ç¥¨ï¼Œä¸çŸ¥ä¸ºä½•ã€‚
 		if (IsUsingNeteaseRTDataReceiver()) {
-			// ¶ÁÈ¡ÍøÒ×ÊµÊ±ĞĞÇéÊı¾İ¡£¹À¼ÆÍøÒ×ÊµÊ±ĞĞÇéÓëĞÂÀËµÄÊı¾İÔ´ÏàÍ¬£¬¹Ê¶øÁ½Õß¿É»¥»»£¬Ê¹ÓÃÆäÒ»¼´¿É¡£
+			// è¯»å–ç½‘æ˜“å®æ—¶è¡Œæƒ…æ•°æ®ã€‚ä¼°è®¡ç½‘æ˜“å®æ—¶è¡Œæƒ…ä¸æ–°æµªçš„æ•°æ®æºç›¸åŒï¼Œæ•…è€Œä¸¤è€…å¯äº’æ¢ï¼Œä½¿ç”¨å…¶ä¸€å³å¯ã€‚
 			gl_WebInquirer.GetNeteaseRTData();
 		}
 		break;
-	default: // ´íÎó
+	default: // é”™è¯¯
 		break;
 	}
 
 	if (IsSystemReady()) {
-		// ¶ÁÈ¡ÌÚÑ¶ÊµÊ±ĞĞÇéÊı¾İ¡£ ÓÉÓÚÌÚÑ¶ÊµÊ±ĞĞÇéµÄ¹ÉÊı¾«¶ÈÎªÊÖ£¬Ã»ÓĞÁã¹ÉĞÅÏ¢£¬µ¼ÖÂÎŞ·¨ÓëĞÂÀËÊµÊ±ĞĞÇéÊı¾İ¶Ô½Ó£¨ĞÂÀË¾«¶ÈÎª¹É£©£¬¹Ê¶øÔİÊ±²»ÓÃ
+		// è¯»å–è…¾è®¯å®æ—¶è¡Œæƒ…æ•°æ®ã€‚ ç”±äºè…¾è®¯å®æ—¶è¡Œæƒ…çš„è‚¡æ•°ç²¾åº¦ä¸ºæ‰‹ï¼Œæ²¡æœ‰é›¶è‚¡ä¿¡æ¯ï¼Œå¯¼è‡´æ— æ³•ä¸æ–°æµªå®æ—¶è¡Œæƒ…æ•°æ®å¯¹æ¥ï¼ˆæ–°æµªç²¾åº¦ä¸ºè‚¡ï¼‰ï¼Œæ•…è€Œæš‚æ—¶ä¸ç”¨
 		if (IsUsingTengxunRTDataReceiver()) {
 			if (m_iCountDownTengxunNumber <= 0) {
-				gl_WebInquirer.GetTengxunRTData();// Ö»ÓĞµ±ÏµÍ³×¼±¸Íê±Ïºó£¬·½¿ÉÖ´ĞĞ¶ÁÈ¡ÌÚÑ¶ÊµÊ±ĞĞÇéÊı¾İµÄ¹¤×÷¡£Ä¿Ç°²»Ê¹ÓÃ´Ë¹¦ÄÜ
+				gl_WebInquirer.GetTengxunRTData();// åªæœ‰å½“ç³»ç»Ÿå‡†å¤‡å®Œæ¯•åï¼Œæ–¹å¯æ‰§è¡Œè¯»å–è…¾è®¯å®æ—¶è¡Œæƒ…æ•°æ®çš„å·¥ä½œã€‚ç›®å‰ä¸ä½¿ç”¨æ­¤åŠŸèƒ½
 				m_iCountDownTengxunNumber = 5;
 			}
-			else m_iCountDownTengxunNumber--; // ĞÂÀËÊµÊ±Êı¾İ¶ÁÈ¡Îå´Î£¬ÌÚÑ¶²Å¶ÁÈ¡Ò»´Î¡£ÒòÎªÌÚÑ¶µÄ¹Òµ¥¹ÉÊı²ÉÓÃµÄÊÇÃ¿ÊÖ±ê×¼£¬¾«¶È²»¹»
+			else m_iCountDownTengxunNumber--; // æ–°æµªå®æ—¶æ•°æ®è¯»å–äº”æ¬¡ï¼Œè…¾è®¯æ‰è¯»å–ä¸€æ¬¡ã€‚å› ä¸ºè…¾è®¯çš„æŒ‚å•è‚¡æ•°é‡‡ç”¨çš„æ˜¯æ¯æ‰‹æ ‡å‡†ï¼Œç²¾åº¦ä¸å¤Ÿ
 		}
 	}
 	return true;
@@ -793,10 +747,10 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶¨Ê±µ÷¶Èº¯Êı£¬Ã¿ÃëÒ»´Î¡£
+// å®šæ—¶è°ƒåº¦å‡½æ•°ï¼Œæ¯ç§’ä¸€æ¬¡ã€‚
 //
-// ¸÷ÖÖÈÎÎñÖ®¼äÓĞ¿ÉÄÜ³öÏÖ»¥³âµÄÏÖÏó£¬Èç´æ´¢ÁÙÊ±ÊµÊ±Êı¾İµÄ¹¤×÷Ïß³ÌÓë¼ÆËãÊµÊ±Êı¾İµÄ¹¤×÷Ïß³ÌÖ®¼ä¾Í²»ÔÊĞíÍ¬Ê±ÔËĞĞ£¬
-// ¹Ê¶øËùÓĞµÄ¶¨Ê±ÈÎÎñ£¬Òª°´ÕÕÊ±¼ä¼ä¸ô´Ó³¤µ½¶ÌÅÅÁĞ£¬¼´ÏÈÖ´ĞĞÃ¿·ÖÖÓÒ»´ÎµÄÈÎÎñ£¬ÔÙÖ´ĞĞÃ¿ÃëÖÓÒ»´ÎµÄÈÎÎñ£¬ÕâÑùÄÜ¹»±£Ö¤³¤¼ä¸ôµÄÈÎÎñÓÅÏÈÖ´ĞĞ¡£
+// å„ç§ä»»åŠ¡ä¹‹é—´æœ‰å¯èƒ½å‡ºç°äº’æ–¥çš„ç°è±¡ï¼Œå¦‚å­˜å‚¨ä¸´æ—¶å®æ—¶æ•°æ®çš„å·¥ä½œçº¿ç¨‹ä¸è®¡ç®—å®æ—¶æ•°æ®çš„å·¥ä½œçº¿ç¨‹ä¹‹é—´å°±ä¸å…è®¸åŒæ—¶è¿è¡Œï¼Œ
+// æ•…è€Œæ‰€æœ‰çš„å®šæ—¶ä»»åŠ¡ï¼Œè¦æŒ‰ç…§æ—¶é—´é—´éš”ä»é•¿åˆ°çŸ­æ’åˆ—ï¼Œå³å…ˆæ‰§è¡Œæ¯åˆ†é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ï¼Œå†æ‰§è¡Œæ¯ç§’é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ï¼Œè¿™æ ·èƒ½å¤Ÿä¿è¯é•¿é—´éš”çš„ä»»åŠ¡ä¼˜å…ˆæ‰§è¡Œã€‚
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -828,7 +782,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
-	CheckMarketReady(); // ¼ì²éÊĞ³¡ÊÇ·ñÍê³É³õÊ¼»¯
+	CheckMarketReady(); // æ£€æŸ¥å¸‚åœºæ˜¯å¦å®Œæˆåˆå§‹åŒ–
 
 	if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0) && m_fCalculateChoiced10RS) {
 		TaskChoice10RSStrongStockSet(lCurrentTime);
@@ -836,16 +790,16 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		TaskChoice10RSStrong2StockSet(lCurrentTime);
 	}
 
-	// ÅĞ¶ÏÊÇ·ñ¿ªÊ¼Õı³£ÊÕ¼¯Êı¾İ
+	// åˆ¤æ–­æ˜¯å¦å¼€å§‹æ­£å¸¸æ”¶é›†æ•°æ®
 	TaskCheckStartReceivingData(lCurrentTime);
-	// ÅĞ¶ÏÖĞ¹ú¹ÉÆ±ÊĞ³¡¿ªÊĞ×´Ì¬
+	// åˆ¤æ–­ä¸­å›½è‚¡ç¥¨å¸‚åœºå¼€å¸‚çŠ¶æ€
 	TaskCheckMarketOpen(lCurrentTime);
 
 	if (s_iCountDownProcessWebRTData <= 0) {
-		// ½«½ÓÊÕµ½µÄÊµÊ±Êı¾İ·Ö·¢ÖÁ¸÷Ïà¹Ø¹ÉÆ±µÄÊµÊ±Êı¾İ¶ÓÁĞÖĞ¡£
-		// ÓÉÓÚÓĞ¶à¸öÊı¾İÔ´£¬¹Ê¶øĞèÒªµÈ´ı¸÷Êı¾İÔ´¶¼Ö´ĞĞÒ»´Îºó£¬·½¿ÉÒÔ·Ö·¢ÖÁÏà¹Ø¹ÉÆ±´¦£¬¹Ê¶øĞèÒªÃ¿ÈıÃëÖ´ĞĞÒ»´Î£¬ÒÔ±£Ö¤¸÷Êı¾İÔ´ÖÁÉÙ¶¼ÄÜÌá¹©Ò»´ÎÊı¾İ¡£
+		// å°†æ¥æ”¶åˆ°çš„å®æ—¶æ•°æ®åˆ†å‘è‡³å„ç›¸å…³è‚¡ç¥¨çš„å®æ—¶æ•°æ®é˜Ÿåˆ—ä¸­ã€‚
+		// ç”±äºæœ‰å¤šä¸ªæ•°æ®æºï¼Œæ•…è€Œéœ€è¦ç­‰å¾…å„æ•°æ®æºéƒ½æ‰§è¡Œä¸€æ¬¡åï¼Œæ–¹å¯ä»¥åˆ†å‘è‡³ç›¸å…³è‚¡ç¥¨å¤„ï¼Œæ•…è€Œéœ€è¦æ¯ä¸‰ç§’æ‰§è¡Œä¸€æ¬¡ï¼Œä»¥ä¿è¯å„æ•°æ®æºè‡³å°‘éƒ½èƒ½æä¾›ä¸€æ¬¡æ•°æ®ã€‚
 		TaskDistributeSinaRTDataToStock();
-		// ·Ö·¢ÍøÒ×ÊµÊ±Êı¾İÖÁ¸÷Ïà¹Ø¹ÉÆ±ÖĞ¡£
+		// åˆ†å‘ç½‘æ˜“å®æ—¶æ•°æ®è‡³å„ç›¸å…³è‚¡ç¥¨ä¸­ã€‚
 		TaskDistributeNeteaseRTDataToStock();
 
 		TaskProcessTengxunRTData();
@@ -857,9 +811,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	}
 	else s_iCountDownProcessWebRTData--;
 
-	// ¼ÆËãÊµÊ±Êı¾İ£¬Ã¿ÃëÖÓÒ»´Î¡£Ä¿Ç°¸ö¹ÉÊµÊ±Êı¾İÎªÃ¿3ÃëÖÓÒ»´Î¸üĞÂ£¬¹Ê¶øÎŞĞèÔÙ¿ìÁË¡£
-	// ´Ë¼ÆËãÈÎÎñÒªÔÚDistributeRTDataReceivedFromWebToProperStockÖ®ºóÖ´ĞĞ£¬ÒÔ·ÀÖ¹³öÏÖÍ¬²½ÎÊÌâ¡£
-	// ÔÚÏµÍ³´æ´¢ÁÙÊ±Êı¾İÊ±²»ÄÜÍ¬Ê±¼ÆËãÊµÊ±Êı¾İ£¬·ñÔòÈİÒ×³öÏÖÍ¬²½ÎÊÌâ¡£Èç¹ûÏµÍ³ÕıÔÚ´æ´¢ÁÙÊ±ÊµÊ±Êı¾İ£¬ÔòµÈ´ıÒ»ÃëºóµÄÏÂÒ»´ÎÂÖÑ¯Ê±ÔÙ¼ÆËãÊµÊ±Êı¾İ
+	// è®¡ç®—å®æ—¶æ•°æ®ï¼Œæ¯ç§’é’Ÿä¸€æ¬¡ã€‚ç›®å‰ä¸ªè‚¡å®æ—¶æ•°æ®ä¸ºæ¯3ç§’é’Ÿä¸€æ¬¡æ›´æ–°ï¼Œæ•…è€Œæ— éœ€å†å¿«äº†ã€‚
+	// æ­¤è®¡ç®—ä»»åŠ¡è¦åœ¨DistributeRTDataReceivedFromWebToProperStockä¹‹åæ‰§è¡Œï¼Œä»¥é˜²æ­¢å‡ºç°åŒæ­¥é—®é¢˜ã€‚
+	// åœ¨ç³»ç»Ÿå­˜å‚¨ä¸´æ—¶æ•°æ®æ—¶ä¸èƒ½åŒæ—¶è®¡ç®—å®æ—¶æ•°æ®ï¼Œå¦åˆ™å®¹æ˜“å‡ºç°åŒæ­¥é—®é¢˜ã€‚å¦‚æœç³»ç»Ÿæ­£åœ¨å­˜å‚¨ä¸´æ—¶å®æ—¶æ•°æ®ï¼Œåˆ™ç­‰å¾…ä¸€ç§’åçš„ä¸‹ä¸€æ¬¡è½®è¯¢æ—¶å†è®¡ç®—å®æ—¶æ•°æ®
 	if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) {
 		if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
 			gl_ThreadStatus.SetCalculatingRTData(true);
@@ -871,19 +825,19 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 
 	TaskShowCurrentTransaction();
 
-	// ×°ÔØµ±Ç°¹ÉÆ±ÈÕÏßÊı¾İ
+	// è£…è½½å½“å‰è‚¡ç¥¨æ—¥çº¿æ•°æ®
 	TaskLoadCurrentStockHistoryData();
 
 	return true;
 }
 
 bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
-	// ¼ÆËãÃ¿Ò»Ğ¡Ê±Ò»´ÎµÄÈÎÎñ
+	// è®¡ç®—æ¯ä¸€å°æ—¶ä¸€æ¬¡çš„ä»»åŠ¡
 	return true;
 }
 
 bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
-	// ¼ÆËãÃ¿Îå·ÖÖÓÒ»´ÎµÄÈÎÎñ¡£
+	// è®¡ç®—æ¯äº”åˆ†é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ã€‚
 
 	TaskUpdateOptionDB();
 	TaskUpdateStockCodeDB();
@@ -897,14 +851,14 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
-// ¿ªÊĞÊ±Ã¿Îå·ÖÖÓ´æ´¢Ò»´Îµ±Ç°×´Ì¬¡£ÕâÊÇÒ»¸ö±¸ÓÃ´ëÊ©£¬·ÀÖ¹ÍË³öÏµÍ³ºó¾Í¶ªµôÁËËùÓĞµÄÊı¾İ£¬²»±ØÌ«Æµ·±¡£
+// å¼€å¸‚æ—¶æ¯äº”åˆ†é’Ÿå­˜å‚¨ä¸€æ¬¡å½“å‰çŠ¶æ€ã€‚è¿™æ˜¯ä¸€ä¸ªå¤‡ç”¨æªæ–½ï¼Œé˜²æ­¢é€€å‡ºç³»ç»Ÿåå°±ä¸¢æ‰äº†æ‰€æœ‰çš„æ•°æ®ï¼Œä¸å¿…å¤ªé¢‘ç¹ã€‚
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
 	if (IsSystemReady() && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
-		if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // ´æ´¢ÁÙÊ±Êı¾İÑÏ¸ñ°´ÕÕ½»Ò×Ê±¼äÀ´È·¶¨(ÖĞ¼äĞİÊĞÆÚ¼äºÍ±ÕÊĞºó¸÷Òª´æ´¢Ò»´Î£¬¹Ê¶øµ½11:36ºÍ15:06²ÅÖĞÖ¹£©
+		if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // å­˜å‚¨ä¸´æ—¶æ•°æ®ä¸¥æ ¼æŒ‰ç…§äº¤æ˜“æ—¶é—´æ¥ç¡®å®š(ä¸­é—´ä¼‘å¸‚æœŸé—´å’Œé—­å¸‚åå„è¦å­˜å‚¨ä¸€æ¬¡ï¼Œæ•…è€Œåˆ°11:36å’Œ15:06æ‰ä¸­æ­¢ï¼‰
 			CString str;
-			str = _T("´æ´¢ÁÙÊ±Êı¾İ");
+			str = _T("å­˜å‚¨ä¸´æ—¶æ•°æ®");
 			gl_systemMessage.PushDayLineInfoMessage(str);
 			UpdateTempRTData();
 		}
@@ -935,14 +889,14 @@ bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
 }
 
 bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
-	// ¼ÆËãÃ¿·ÖÖÓÒ»´ÎµÄÈÎÎñ¡£ËùÓĞµÄ¶¨Ê±ÈÎÎñ£¬Òª°´ÕÕÊ±¼ä¼ä¸ô´Ó³¤µ½¶ÌÅÅÁĞ£¬¼´ÏÈÖ´ĞĞÃ¿·ÖÖÓÒ»´ÎµÄÈÎÎñ£¬ÔÙÖ´ĞĞÃ¿ÃëÖÓÒ»´ÎµÄÈÎÎñ£¬ÕâÑùÄÜ¹»±£Ö¤³¤¼ä¸ôµÄÈÎÎñÓÅÏÈÖ´ĞĞ¡£
+	// è®¡ç®—æ¯åˆ†é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ã€‚æ‰€æœ‰çš„å®šæ—¶ä»»åŠ¡ï¼Œè¦æŒ‰ç…§æ—¶é—´é—´éš”ä»é•¿åˆ°çŸ­æ’åˆ—ï¼Œå³å…ˆæ‰§è¡Œæ¯åˆ†é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ï¼Œå†æ‰§è¡Œæ¯ç§’é’Ÿä¸€æ¬¡çš„ä»»åŠ¡ï¼Œè¿™æ ·èƒ½å¤Ÿä¿è¯é•¿é—´éš”çš„ä»»åŠ¡ä¼˜å…ˆæ‰§è¡Œã€‚
 	TaskResetMarket(lCurrentTime);
 	TaskResetMarketAgain(lCurrentTime);
 
-	// ÔÚ¿ªÊĞÇ°ºÍÖĞÎçÔİÍ£Ê±²éÑ¯ËùÓĞ¹ÉÆ±³Ø£¬ÕÒµ½µ±Ìì»îÔ¾¹ÉÆ±¡£
+	// åœ¨å¼€å¸‚å‰å’Œä¸­åˆæš‚åœæ—¶æŸ¥è¯¢æ‰€æœ‰è‚¡ç¥¨æ± ï¼Œæ‰¾åˆ°å½“å¤©æ´»è·ƒè‚¡ç¥¨ã€‚
 	TaskSetCheckActiveStockFlag(lCurrentTime);
 
-	// ÏÂÎçÈıµãÈı·Ö¿ªÊ¼´¦Àíµ±ÈÕÊµÊ±Êı¾İ¡£
+	// ä¸‹åˆä¸‰ç‚¹ä¸‰åˆ†å¼€å§‹å¤„ç†å½“æ—¥å®æ—¶æ•°æ®ã€‚
 	TaskProcessTodayStock(lCurrentTime);
 
 	TaskSaveChoicedRTData();
@@ -1016,12 +970,12 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 bool CChinaMarket::TaskCheckDayLineDB(void) {
 	if (m_fSaveDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
 		m_fSaveDayLine = false;
-		TRACE("ÈÕÏßÀúÊ·Êı¾İ¸üĞÂÍê±Ï\n");
+		TRACE("æ—¥çº¿å†å²æ•°æ®æ›´æ–°å®Œæ¯•\n");
 		CString str;
-		str = _T("ÖĞ¹úÊĞ³¡ÈÕÏßÀúÊ·Êı¾İ¸üĞÂÍê±Ï");
+		str = _T("ä¸­å›½å¸‚åœºæ—¥çº¿å†å²æ•°æ®æ›´æ–°å®Œæ¯•");
 		gl_systemMessage.PushInformationMessage(str);
 		if (IsDayLineDBUpdated()) {
-			// ¸üĞÂ¹ÉÆ±³ØÊı¾İ¿â
+			// æ›´æ–°è‚¡ç¥¨æ± æ•°æ®åº“
 			ClearDayLineDBUpdatedFlag();
 		}
 		return true;
@@ -1030,11 +984,11 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
-	if (!IsWorkingDay()) { //ÖÜÁù»òÕßÖÜÈÕ±ÕÊĞ¡£½á¹¹tmÓÃ0--6±íÊ¾ĞÇÆÚÈÕÖÁĞÇÆÚÁù
+	if (!IsWorkingDay()) { //å‘¨å…­æˆ–è€…å‘¨æ—¥é—­å¸‚ã€‚ç»“æ„tmç”¨0--6è¡¨ç¤ºæ˜ŸæœŸæ—¥è‡³æ˜ŸæœŸå…­
 		m_fFastReceivingRTData = false;
 		return(m_fFastReceivingRTData);
 	}
-	else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //ÏÂÎçÈıµãÁù·ÖÈıÊ®ÃëÊĞ³¡½»Ò×½áÊø£¨ÎªÁË±£Ö¤×îºóÒ»¸öÁÙÊ±Êı¾İµÄ´æ´¢£©
+	else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //ä¸‹åˆä¸‰ç‚¹å…­åˆ†ä¸‰åç§’å¸‚åœºäº¤æ˜“ç»“æŸï¼ˆä¸ºäº†ä¿è¯æœ€åä¸€ä¸ªä¸´æ—¶æ•°æ®çš„å­˜å‚¨ï¼‰
 		m_fFastReceivingRTData = false;
 
 		return(m_fFastReceivingRTData);
@@ -1044,10 +998,10 @@ bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
-	if (!IsWorkingDay()) { //ÖÜÁù»òÕßÖÜÈÕ±ÕÊĞ¡£½á¹¹tmÓÃ0--6±íÊ¾ĞÇÆÚÈÕÖÁĞÇÆÚÁù
+	if (!IsWorkingDay()) { //å‘¨å…­æˆ–è€…å‘¨æ—¥é—­å¸‚ã€‚ç»“æ„tmç”¨0--6è¡¨ç¤ºæ˜ŸæœŸæ—¥è‡³æ˜ŸæœŸå…­
 		m_fMarketOpened = false;
 	}
-	else if ((lCurrentTime > 92800) && (lCurrentTime < 150600)) { // ÊĞ³¡½áÊø½ÓÊÕÊı¾İµÄÊ±¼ä£¬½Ô¶¨Îª150600£¨ÓëÍ£Ö¹´æ´¢ÁÙÊ±Êı¾İµÄÊ±¼äÒ»Ñù£©
+	else if ((lCurrentTime > 92800) && (lCurrentTime < 150600)) { // å¸‚åœºç»“æŸæ¥æ”¶æ•°æ®çš„æ—¶é—´ï¼Œçš†å®šä¸º150600ï¼ˆä¸åœæ­¢å­˜å‚¨ä¸´æ—¶æ•°æ®çš„æ—¶é—´ä¸€æ ·ï¼‰
 		m_fMarketOpened = true;
 	}
 	else m_fMarketOpened = false;
@@ -1057,16 +1011,16 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´ËÈÎÎñ±ØĞëÃ¿·ÖÖÓµ÷¶ÈÒ»´Î£¬ÒòÆäÊµÏÖ»úÖÆ²ÉÓÃÁË
+// æ­¤ä»»åŠ¡å¿…é¡»æ¯åˆ†é’Ÿè°ƒåº¦ä¸€æ¬¡ï¼Œå› å…¶å®ç°æœºåˆ¶é‡‡ç”¨äº†
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
-	// ¾ÅµãÊ®Èı·ÖÖØÆôÏµÍ³
-// ±ØĞëÔÚ´ËÊ±¼ä¶ÎÄÚÖØÆô£¬Èç¹û¸üÔçµÄ»°ÈİÒ×³öÏÖÊı¾İ²»È«µÄÎÊÌâ¡£
-	if (IsPermitResetMarket()) { // Èç¹ûÔÊĞíÖØÖÃÏµÍ³
-		if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // ½»Ò×ÈÕ¾ÅµãÊ®Îå·ÖÖØÆôÏµÍ³
-			if (!TooManyStockDayLineNeedUpdate()) { // µ±ÓĞ¹¤×÷ÈÕ×÷ÎªĞİ¼ÙÈÕºó£¬ËùÓĞµÄÈÕÏßÊı¾İ¶¼ĞèÒª¼ì²éÒ»±é£¬´ËÊ±²»ÔÚ0915Ê±ÖØÖÃÏµÍ³ÒÔ±ÜÃâ¸üĞÂÈÕÏßº¯ÊıÉĞÔÚÖ´ĞĞ¡£
-				SetResetMarket(true);// Ö»ÊÇÉèÖÃÖØÆô±êÊ¶£¬Êµ¼ÊÖØÆô¹¤×÷ÓÉCMainFrameµÄOnTimerº¯ÊıÍê³É¡£
+	// ä¹ç‚¹åä¸‰åˆ†é‡å¯ç³»ç»Ÿ
+// å¿…é¡»åœ¨æ­¤æ—¶é—´æ®µå†…é‡å¯ï¼Œå¦‚æœæ›´æ—©çš„è¯å®¹æ˜“å‡ºç°æ•°æ®ä¸å…¨çš„é—®é¢˜ã€‚
+	if (IsPermitResetMarket()) { // å¦‚æœå…è®¸é‡ç½®ç³»ç»Ÿ
+		if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // äº¤æ˜“æ—¥ä¹ç‚¹åäº”åˆ†é‡å¯ç³»ç»Ÿ
+			if (!TooManyStockDayLineNeedUpdate()) { // å½“æœ‰å·¥ä½œæ—¥ä½œä¸ºä¼‘å‡æ—¥åï¼Œæ‰€æœ‰çš„æ—¥çº¿æ•°æ®éƒ½éœ€è¦æ£€æŸ¥ä¸€éï¼Œæ­¤æ—¶ä¸åœ¨0915æ—¶é‡ç½®ç³»ç»Ÿä»¥é¿å…æ›´æ–°æ—¥çº¿å‡½æ•°å°šåœ¨æ‰§è¡Œã€‚
+				SetResetMarket(true);// åªæ˜¯è®¾ç½®é‡å¯æ ‡è¯†ï¼Œå®é™…é‡å¯å·¥ä½œç”±CMainFrameçš„OnTimerå‡½æ•°å®Œæˆã€‚
 				SetSystemReady(false);
 			}
 		}
@@ -1075,14 +1029,14 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
-	// ¾Åµã¶şÊ®Îå·ÖÔÙ´ÎÖØÆôÏµÍ³
-	if (IsPermitResetMarket()) { // Èç¹ûÔÊĞíÖØÖÃÏµÍ³
+	// ä¹ç‚¹äºŒåäº”åˆ†å†æ¬¡é‡å¯ç³»ç»Ÿ
+	if (IsPermitResetMarket()) { // å¦‚æœå…è®¸é‡ç½®ç³»ç»Ÿ
 		if ((lCurrentTime >= 92500)) {
-			if ((lCurrentTime <= 92700) && IsWorkingDay()) { // ½»Ò×ÈÕ¾Åµã¶şÊ®Îå·ÖÔÙ´ÎÖØÆôÏµÍ³
-				SetResetMarket(true);// Ö»ÊÇÉèÖÃÖØÆô±êÊ¶£¬Êµ¼ÊÖØÆô¹¤×÷ÓÉCMainFrameµÄOnTimerº¯ÊıÍê³É¡£
+			if ((lCurrentTime <= 92700) && IsWorkingDay()) { // äº¤æ˜“æ—¥ä¹ç‚¹äºŒåäº”åˆ†å†æ¬¡é‡å¯ç³»ç»Ÿ
+				SetResetMarket(true);// åªæ˜¯è®¾ç½®é‡å¯æ ‡è¯†ï¼Œå®é™…é‡å¯å·¥ä½œç”±CMainFrameçš„OnTimerå‡½æ•°å®Œæˆã€‚
 				SetSystemReady(false);
 			}
-			SetPermitResetMarket(false); // ½ñÌì²»ÔÙÔÊĞíÖØÆôÏµÍ³¡£
+			SetPermitResetMarket(false); // ä»Šå¤©ä¸å†å…è®¸é‡å¯ç³»ç»Ÿã€‚
 		}
 	}
 	return true;
@@ -1098,21 +1052,21 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
 	thread thread1(ThreadUpdateOptionDB, this);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::TaskUpdateChoicedStockDB(void) {
 	if (IsUpdateChoicedStockDB()) {
 		thread thread1(ThreadAppendChoicedStockDB, this);
-		thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+		thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 		return true;
 	}
 	return false;
 }
 
 bool CChinaMarket::TaskShowCurrentTransaction(void) {
-	// ÏÔÊ¾µ±Ç°½»Ò×Çé¿ö
+	// æ˜¾ç¤ºå½“å‰äº¤æ˜“æƒ…å†µ
 	CChinaStockPtr pCurrentStock = GetCurrentStock();
 
 	if (pCurrentStock != nullptr) {
@@ -1129,7 +1083,7 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
 	if (IsSystemReady() && m_fSaveRTData) {
 		thread thread1(ThreadSaveRTData, this);
-		thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+		thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 		return true;
 	}
 	else return false;
@@ -1137,7 +1091,7 @@ bool CChinaMarket::TaskSaveChoicedRTData(void) {
 
 /////////////////////////////////////////////////////////////////////
 //
-// ¾Åµã¶şÊ®Îå·ÖÖÁ¾ÅµãÈıÊ®·ÖÄÚÇå³ı×òÈÕµÄÊµÊ±Êı¾İ¡£
+// ä¹ç‚¹äºŒåäº”åˆ†è‡³ä¹ç‚¹ä¸‰ååˆ†å†…æ¸…é™¤æ˜¨æ—¥çš„å®æ—¶æ•°æ®ã€‚
 //
 /////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskClearChoicedRTDataSet(long lCurrentTime) {
@@ -1187,13 +1141,13 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandred(void) {
 }
 
 bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	// ¼ÆËãÃ¿Ê®ÃëÖÓÒ»´ÎµÄÈÎÎñ
-		// ½«´¦ÀíÈÕÏßÀúÊ·Êı¾İµÄº¯Êı¸ÄÎª¶¨Ê±²éÑ¯£¬¶ÁÈ¡ºÍ´æ´¢²ÉÓÃ¹¤×÷½ø³Ì¡£
+	// è®¡ç®—æ¯åç§’é’Ÿä¸€æ¬¡çš„ä»»åŠ¡
+		// å°†å¤„ç†æ—¥çº¿å†å²æ•°æ®çš„å‡½æ•°æ”¹ä¸ºå®šæ—¶æŸ¥è¯¢ï¼Œè¯»å–å’Œå­˜å‚¨é‡‡ç”¨å·¥ä½œè¿›ç¨‹ã€‚
 	if (IsDayLineNeedProcess()) {
 		TaskProcessDayLineGetFromNeeteaseServer();
 	}
 
-	// ÅĞ¶ÏÊÇ·ñ´æ´¢ÈÕÏß¿âºÍ¹ÉÆ±´úÂë¿â
+	// åˆ¤æ–­æ˜¯å¦å­˜å‚¨æ—¥çº¿åº“å’Œè‚¡ç¥¨ä»£ç åº“
 	if (IsDayLineNeedSaving()) {
 		m_fSaveDayLine = true;
 		TaskSaveDayLineData();
@@ -1203,7 +1157,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
-//	Í¨¹ı¹ÉÆ±´úÂëºÍÊĞ³¡´úÂëÉèÖÃµ±Ç°Ñ¡Ôñ¹ÉÆ±
+//	é€šè¿‡è‚¡ç¥¨ä»£ç å’Œå¸‚åœºä»£ç è®¾ç½®å½“å‰é€‰æ‹©è‚¡ç¥¨
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CString strStockCode) {
@@ -1215,9 +1169,9 @@ void CChinaMarket::SetCurrentStock(CString strStockCode) {
 
 //////////////////////////////////////////////////////////////////////////
 //
-// ÉèÖÃµ±Ç°²Ù×÷µÄ¹ÉÆ±
+// è®¾ç½®å½“å‰æ“ä½œçš„è‚¡ç¥¨
 //
-// ÉèÖÃÏàÓ¦µÄ¹ÉÆ±Ö¸Õë£¬×°ÔØÆäÈÕÏßÊı¾İ¡£
+// è®¾ç½®ç›¸åº”çš„è‚¡ç¥¨æŒ‡é’ˆï¼Œè£…è½½å…¶æ—¥çº¿æ•°æ®ã€‚
 //
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
@@ -1235,7 +1189,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 		pStock->SetRecordRTData(true);
 		m_pCurrentStock = pStock;
 		SetCurrentStockChanged(true);
-		m_pCurrentStock->SetDayLineLoaded(false); // ÕâÀïÖ»ÊÇÉèÖÃ±êÊ¶£¬Êµ¼Ê×°ÔØÈÕÏßÓÉµ÷¶È³ÌĞòÖ´ĞĞ¡£
+		m_pCurrentStock->SetDayLineLoaded(false); // è¿™é‡Œåªæ˜¯è®¾ç½®æ ‡è¯†ï¼Œå®é™…è£…è½½æ—¥çº¿ç”±è°ƒåº¦ç¨‹åºæ‰§è¡Œã€‚
 	}
 }
 
@@ -1248,7 +1202,7 @@ void CChinaMarket::ResetCurrentStock(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Ê¹ÓÃµ±Ç°ÈÕÆÚµÄÈÕÏßÊı¾İÉú³É±¾ÖÜµÄÖÜÏßÊı¾İ¡£
+// ä½¿ç”¨å½“å‰æ—¥æœŸçš„æ—¥çº¿æ•°æ®ç”Ÿæˆæœ¬å‘¨çš„å‘¨çº¿æ•°æ®ã€‚
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
@@ -1259,42 +1213,42 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
 
 	if (!LoadDayLine(dataChinaDayLine, GetMarketDate())) {
-		return true; // ¼ÓÔØ±¾ÈÕÈÕÏßÊı¾İÊ§°Ü£¬ÖÜÏßÊı¾İÎŞĞè´¦Àí¡£
+		return true; // åŠ è½½æœ¬æ—¥æ—¥çº¿æ•°æ®å¤±è´¥ï¼Œå‘¨çº¿æ•°æ®æ— éœ€å¤„ç†ã€‚
 	}
 	auto pDayLineData = dataChinaDayLine.GetContainer();
 
-	gl_systemMessage.PushInformationMessage(_T("¿ªÊ¼Éú³É½ñÈÕÖÜÏß"));
+	gl_systemMessage.PushInformationMessage(_T("å¼€å§‹ç”Ÿæˆä»Šæ—¥å‘¨çº¿"));
 
 	CreateStockCodeSet(setDayLineStockCode, dataChinaDayLine.GetContainer());
 
-	DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // ´Óµ±Ç°ÖÜÖÜÏß±íÖĞÇå³ıµô±¾ĞÇÆÚÒ»Ö®Ç°µÄÊı¾İ
+	DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // ä»å½“å‰å‘¨å‘¨çº¿è¡¨ä¸­æ¸…é™¤æ‰æœ¬æ˜ŸæœŸä¸€ä¹‹å‰çš„æ•°æ®
 	dataChinaWeekLine.LoadCurrentWeekLine();
 	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
 
 	CWeekLinePtr pWeekLine;
 	for (auto& pData : *pDayLineData) {
-		if (setWeekLineStockCode.find(pData->GetStockSymbol()) == setWeekLineStockCode.end()) { //ÖÜÏßÊı¾İÈİÆ÷ÖĞÎŞ´ËÈÕÏßÊı¾İ
-			 // ´æ´¢´ËÈÕÏßÊı¾İÖÁÖÜÏßÊı¾İÈİÆ÷
+		if (setWeekLineStockCode.find(pData->GetStockSymbol()) == setWeekLineStockCode.end()) { //å‘¨çº¿æ•°æ®å®¹å™¨ä¸­æ— æ­¤æ—¥çº¿æ•°æ®
+			 // å­˜å‚¨æ­¤æ—¥çº¿æ•°æ®è‡³å‘¨çº¿æ•°æ®å®¹å™¨
 			pWeekLine = make_shared<CWeekLine>();
 			pWeekLine->UpdateWeekLine(pData);
 			dataChinaWeekLine.StoreData(pWeekLine);
 		}
 		else {
-			// ¸üĞÂÖÜÏßÊı¾İÈİÆ÷
+			// æ›´æ–°å‘¨çº¿æ•°æ®å®¹å™¨
 			dataChinaWeekLine.UpdateData(pData);
 		}
 	}
 
-	// Çå³ıÖ®Ç°µÄÖÜÏßÊı¾İ
+	// æ¸…é™¤ä¹‹å‰çš„å‘¨çº¿æ•°æ®
 	DeleteWeekLine(lCurrentMonday);
-	// ´æ´¢ÖÜÏßÊı¾İÖµÖÜÏßÊı¾İ±í
+	// å­˜å‚¨å‘¨çº¿æ•°æ®å€¼å‘¨çº¿æ•°æ®è¡¨
 	dataChinaWeekLine.SaveDB();
-	// Çå³ıµ±Ç°ÖÜµÄÊı¾İ
+	// æ¸…é™¤å½“å‰å‘¨çš„æ•°æ®
 	DeleteCurrentWeekWeekLine();
-	// ´æ´¢µ±Ç°ÖÜÊı¾İÓÚµ±Ç°ÖÜÊı¾İ±í
+	// å­˜å‚¨å½“å‰å‘¨æ•°æ®äºå½“å‰å‘¨æ•°æ®è¡¨
 	dataChinaWeekLine.SaveCurrentWeekLine();
 
-	gl_systemMessage.PushInformationMessage(_T("Éú³É½ñÈÕÖÜÏßÈÎÎñÍê³É"));
+	gl_systemMessage.PushInformationMessage(_T("ç”Ÿæˆä»Šæ—¥å‘¨çº¿ä»»åŠ¡å®Œæˆ"));
 
 	return true;
 }
@@ -1344,7 +1298,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 		if (setWeekLineExtendInfo.IsEOF()) {
 			setWeekLineExtendInfo.MoveFirst();
 		}
-		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // ÓÉÓÚ´æÔÚÊÂºó²¹Êı¾İµÄÔµ¹Ê£¬´ËÁ½¸ö±íµÄ¹ÉÆ±¿ÉÄÜ²»ÊÇÒ»Ò»¶ÔÓ¦
+		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // ç”±äºå­˜åœ¨äº‹åè¡¥æ•°æ®çš„ç¼˜æ•…ï¼Œæ­¤ä¸¤ä¸ªè¡¨çš„è‚¡ç¥¨å¯èƒ½ä¸æ˜¯ä¸€ä¸€å¯¹åº”
 			pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
 			dataChinaWeekLine.StoreData(pWeekLine);
 			setWeekLineExtendInfo.MoveNext();
@@ -1374,11 +1328,11 @@ bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) 
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
 	setDayLineBasicInfo.m_strFilter += strDate;
 	setDayLineBasicInfo.Open();
-	if (setDayLineBasicInfo.IsEOF()) { // Êı¾İ¼¯Îª¿Õ£¬±íÃ÷´ËÈÕÃ»ÓĞ½»Ò×
+	if (setDayLineBasicInfo.IsEOF()) { // æ•°æ®é›†ä¸ºç©ºï¼Œè¡¨æ˜æ­¤æ—¥æ²¡æœ‰äº¤æ˜“
 		setDayLineBasicInfo.Close();
 		CString str = strDate;
-		str += _T("ÈÕÊı¾İ¼¯Îª¿Õ£¬ÎŞĞè´¦ÀíÖÜÏßÊı¾İ");
-		gl_systemMessage.PushDayLineInfoMessage(str);    // ²ÉÓÃÍ¬²½»úÖÆ±¨¸æĞÅÏ¢
+		str += _T("æ—¥æ•°æ®é›†ä¸ºç©ºï¼Œæ— éœ€å¤„ç†å‘¨çº¿æ•°æ®");
+		gl_systemMessage.PushDayLineInfoMessage(str);    // é‡‡ç”¨åŒæ­¥æœºåˆ¶æŠ¥å‘Šä¿¡æ¯
 		return false;
 	}
 	setDayLineExtendInfo.m_strSort = _T("[Symbol]");
@@ -1416,7 +1370,7 @@ bool CChinaMarket::DeleteWeekLine(long lMonday) {
 
 bool CChinaMarket::DeleteWeekLine(void) {
 	if (gl_fTestMode) {
-		ASSERT(0); // ÓÉÓÚ´¦ÀíÊµ¼ÊÊı¾İ¿â£¬¹Ê²»ÔÊĞí²âÊÔ´Ëº¯Êı
+		ASSERT(0); // ç”±äºå¤„ç†å®é™…æ•°æ®åº“ï¼Œæ•…ä¸å…è®¸æµ‹è¯•æ­¤å‡½æ•°
 		exit(1);
 	}
 	DeleteWeekLineBasicInfo();
@@ -1428,7 +1382,7 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 	CDatabase database;
 
 	if (gl_fTestMode) {
-		ASSERT(0); // ÓÉÓÚ´¦ÀíÊµ¼ÊÊı¾İ¿â£¬¹Ê²»ÔÊĞí²âÊÔ´Ëº¯Êı
+		ASSERT(0); // ç”±äºå¤„ç†å®é™…æ•°æ®åº“ï¼Œæ•…ä¸å…è®¸æµ‹è¯•æ­¤å‡½æ•°
 		exit(1);
 	}
 
@@ -1445,7 +1399,7 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
 	CDatabase database;
 
 	if (gl_fTestMode) {
-		ASSERT(0); // ÓÉÓÚ´¦ÀíÊµ¼ÊÊı¾İ¿â£¬¹Ê²»ÔÊĞí²âÊÔ´Ëº¯Êı
+		ASSERT(0); // ç”±äºå¤„ç†å®é™…æ•°æ®åº“ï¼Œæ•…ä¸å…è®¸æµ‹è¯•æ­¤å‡½æ•°
 		exit(1);
 	}
 
@@ -1546,7 +1500,7 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
-//	½«ÊµÊ±Êı¾İ´æÈëÊı¾İ¿â£®Ä¬ÈÏÊı¾İ¿âÎª¿Õ¡£
+//	å°†å®æ—¶æ•°æ®å­˜å…¥æ•°æ®åº“ï¼é»˜è®¤æ•°æ®åº“ä¸ºç©ºã€‚
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1561,7 +1515,7 @@ bool CChinaMarket::SaveRTData(void) {
 		setRTData.m_pDatabase->BeginTrans();
 		for (size_t i = 0; i < lTotal; i++) {
 			pRTData = m_qRTData.front();
-			m_qRTData.pop(); // Å×µô×îÇ°ÃæÕâ¸öÊı¾İ
+			m_qRTData.pop(); // æŠ›æ‰æœ€å‰é¢è¿™ä¸ªæ•°æ®
 			pRTData->AppendData(setRTData);
 		}
 		setRTData.m_pDatabase->CommitTrans();
@@ -1591,11 +1545,11 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 		pData->ProcessNeteaseDayLineData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
-		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pDataµÄÈÕÏßÊı¾İÊÇÄæĞòµÄ£¬×îĞÂÈÕÆÚµÄÔÚÇ°Ãæ¡£
+		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pDataçš„æ—¥çº¿æ•°æ®æ˜¯é€†åºçš„ï¼Œæœ€æ–°æ—¥æœŸçš„åœ¨å‰é¢ã€‚
 		pStock->UpdateStatusByDownloadedDayLine();
 
 		pStock->SetDayLineLoaded(true);
-		pStock->SetDayLineNeedSaving(true); // ÉèÖÃ´æ´¢ÈÕÏß±êÊ¶
+		pStock->SetDayLineNeedSaving(true); // è®¾ç½®å­˜å‚¨æ—¥çº¿æ ‡è¯†
 
 		pData = nullptr;
 	}
@@ -1618,55 +1572,55 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
 
 bool CChinaMarket::CreatingThreadProcessTodayStock(void) {
 	thread thread1(ThreadProcessTodayStock, this);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadBuildDayLineRS(long lStartCalculatingDay) {
 	thread thread1(ThreadBuildDayLineRS, this, lStartCalculatingDay);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadBuildDayLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildDayLineRSOfDate, this, lThisDay);
-	thread1.detach(); // ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach(); // å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadBuildWeekLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildWeekLineRSOfDate, this, lThisDay);
-	thread1.detach(); // ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach(); // å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadLoadDayLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadDayLine, pCurrentStock);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadWeekLine, pCurrentStock);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadUpdateStockCodeDB(void) {
 	thread thread1(ThreadUpdateStockCodeDB, this);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadChoice10RSStrong2StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong2StockSet, this);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
 bool CChinaMarket::CreatingThreadChoice10RSStrong1StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong1StockSet, this);
-	thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+	thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 	return true;
 }
 
@@ -1674,11 +1628,11 @@ bool CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
 			thread thread1(ThreadChoice10RSStrongStockSet, this, &(m_aRSStrongOption.at(i)), i);
-			thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+			thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 		}
 	}
 	SetUpdatedDateFor10DaysRS(GetMarketDate());
-	SetUpdateOptionDB(true); // ¸üĞÂÑ¡ÏîÊı¾İ¿â.´ËÊ±¼ÆËã¹¤×÷Ïß³ÌÖ»ÊÇ¸Õ¸ÕÆô¶¯£¬ĞèÒªÊ±¼äÈ¥Íê³É¡£
+	SetUpdateOptionDB(true); // æ›´æ–°é€‰é¡¹æ•°æ®åº“.æ­¤æ—¶è®¡ç®—å·¥ä½œçº¿ç¨‹åªæ˜¯åˆšåˆšå¯åŠ¨ï¼Œéœ€è¦æ—¶é—´å»å®Œæˆã€‚
 
 	return true;
 }
@@ -1768,12 +1722,12 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÔİ´æµÄµ±Ç°Êı¾İ£¬ÖØÖÃ·ÖÎöµÄ³õÊ¼Ì¬¡£ÕâÑùµ±ÔÚ¿ªÊĞÊ±ÏµÍ³ÍË³öÊ±£¬²»ÖÁÓÚËğÊ§µôËùÓĞÒÑ·ÖÎöµÄÊı¾İ
+// è¯»å…¥æš‚å­˜çš„å½“å‰æ•°æ®ï¼Œé‡ç½®åˆ†æçš„åˆå§‹æ€ã€‚è¿™æ ·å½“åœ¨å¼€å¸‚æ—¶ç³»ç»Ÿé€€å‡ºæ—¶ï¼Œä¸è‡³äºæŸå¤±æ‰æ‰€æœ‰å·²åˆ†æçš„æ•°æ®
 //
-// ÔÚÉèÖÃm_lUnknownVolumeÎª¼ÇÂ¼¼¯ÖĞµÄm_UnknownVolume - m_Volume£¬ÕâÊÇÒòÎªµÚÒ»´Î¼ÆËãÊ±Ö»ÊÇ³õÊ¼»¯ÏµÍ³¡£
-// ĞèÒªÉèÖÃm_lUnknownVolume = pRTData->m_lVolume - setDayLineTemp.m_Volume + setDayLineTemp.m_UnknownVolume
-// ¶øµÚÒ»´ÎÖ´ĞĞ¼ÆËãÊµÊ±Êı¾İÊ±£¬Ö»ÊÇ³õÊ¼»¯ÏµÍ³»·¾³£¬ÆäÖĞÉèÖÃm_lUnknownVolume += pRTData->GetVolume
-// ¹Ê¶ø´Ë´¦ÕâÑù¼ÆËã¡£
+// åœ¨è®¾ç½®m_lUnknownVolumeä¸ºè®°å½•é›†ä¸­çš„m_UnknownVolume - m_Volumeï¼Œè¿™æ˜¯å› ä¸ºç¬¬ä¸€æ¬¡è®¡ç®—æ—¶åªæ˜¯åˆå§‹åŒ–ç³»ç»Ÿã€‚
+// éœ€è¦è®¾ç½®m_lUnknownVolume = pRTData->m_lVolume - setDayLineTemp.m_Volume + setDayLineTemp.m_UnknownVolume
+// è€Œç¬¬ä¸€æ¬¡æ‰§è¡Œè®¡ç®—å®æ—¶æ•°æ®æ—¶ï¼Œåªæ˜¯åˆå§‹åŒ–ç³»ç»Ÿç¯å¢ƒï¼Œå…¶ä¸­è®¾ç½®m_lUnknownVolume += pRTData->GetVolume
+// æ•…è€Œæ­¤å¤„è¿™æ ·è®¡ç®—ã€‚
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	CChinaStockPtr pStock = nullptr;
@@ -1781,15 +1735,15 @@ bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	CWebRTDataPtr pRTData;
 
 	ASSERT(!m_fTodayTempDataLoaded);
-	ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // Ö´ĞĞ´Ë³õÊ¼»¯¹¤×÷Ê±£¬¼ÆËãÊµÊ±Êı¾İµÄ¹¤×÷Ïß³Ì±ØĞëÃ»ÓĞÔËĞĞ¡£
-	// ¶ÁÈ¡½ñÈÕÉú³ÉµÄÊı¾İÓÚDayLineToday±íÖĞ¡£
+	ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // æ‰§è¡Œæ­¤åˆå§‹åŒ–å·¥ä½œæ—¶ï¼Œè®¡ç®—å®æ—¶æ•°æ®çš„å·¥ä½œçº¿ç¨‹å¿…é¡»æ²¡æœ‰è¿è¡Œã€‚
+	// è¯»å–ä»Šæ—¥ç”Ÿæˆçš„æ•°æ®äºDayLineTodayè¡¨ä¸­ã€‚
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
-		if (setDayLineTemp.m_Date == lTheDay) { // Èç¹ûÊÇµ±ÌìµÄĞĞÇé£¬ÔòÔØÈë£¬·ñÔò·ÅÆú£¨Ä¬ÈÏËùÓĞµÄÊı¾İÈÕÆÚ½ÔÎªÍ¬Ò»¸öÊ±¼ä£©
+		if (setDayLineTemp.m_Date == lTheDay) { // å¦‚æœæ˜¯å½“å¤©çš„è¡Œæƒ…ï¼Œåˆ™è½½å…¥ï¼Œå¦åˆ™æ”¾å¼ƒï¼ˆé»˜è®¤æ‰€æœ‰çš„æ•°æ®æ—¥æœŸçš†ä¸ºåŒä¸€ä¸ªæ—¶é—´ï¼‰
 			while (!setDayLineTemp.IsEOF()) {
 				if (IsStock(setDayLineTemp.m_Symbol)) {
 					pStock = GetStock(setDayLineTemp.m_Symbol);
-					ASSERT(!pStock->HaveFirstRTData()); // È·±£Ã»ÓĞ¿ªÊ¼¼ÆËãÊµÊ±Êı¾İ
+					ASSERT(!pStock->HaveFirstRTData()); // ç¡®ä¿æ²¡æœ‰å¼€å§‹è®¡ç®—å®æ—¶æ•°æ®
 					pStock->LoadTodaySavedInfo(&setDayLineTemp);
 				}
 				setDayLineTemp.MoveNext();
@@ -1913,7 +1867,7 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 	while (!setRSStrongStock.IsEOF()) {
 		if (IsStock(setRSStrongStock.m_Symbol)) {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(setRSStrongStock.m_Symbol);
-			m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10ÈÕRS¹ÉÆ±¼¯ÆğÊ¼Î»ÖÃÎªµÚ10¸ö¡£
+			m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10æ—¥RSè‚¡ç¥¨é›†èµ·å§‹ä½ç½®ä¸ºç¬¬10ä¸ªã€‚
 		}
 		setRSStrongStock.MoveNext();
 	}
@@ -1924,7 +1878,7 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// ¸üĞÂÑ¡ÏîÊı¾İ¿â
+// æ›´æ–°é€‰é¡¹æ•°æ®åº“
 //
 //
 //
@@ -1978,9 +1932,9 @@ void CChinaMarket::LoadOptionDB(void) {
 		else {
 			SetRSEndDate(setOption.m_RSEndDate);
 			if (GetRSEndDate() > __CHINA_MARKET_BEGIN_DATE__) {
-				// µ±ÈÕÏßÀúÊ·Êı¾İ¿âÖĞ´æÔÚ¾ÉÊı¾İÊ±£¬²ÉÓÃµ¥Ïß³ÌÄ£Ê½´æ´¢ĞÂÊı¾İ¡£Ê¹ÓÃ¶àÏß³ÌÄ£Ê½Ê±£¬MySQL»á³öÏÖ»¥³âÇøException£¬¹À¼ÆÊÇÊı¾İ¿âÖØÈëÊ±·¢ÉúÍ¬²½ÎÊÌâ£©¡£
-				// ¹Ê¶øĞŞ²¹Êı¾İÊ±Í¬Ê±Ö»ÔËĞĞÒ»¸ö´æ´¢Ïß³Ì£¬ÆäËû¶¼´¦ÓÚĞİÃß×´Ì¬¡£´ËÖÖÎÊÌâ²»»á³öÏÖÓÚÉú³ÉËùÓĞÈÕÏßÊı¾İÊ±£¬¹Ê¶øĞÂ½¨ÈÕÏßÊı¾İÊ±¿ÉÒÔÊ¹ÓÃ¶àÏß³Ì£¨Ä¿Ç°Îª4¸ö£©¡£
-				// Ê¹ÓÃ8.0.27²âÊÔ£¬·¢ÏÖ¿ÉÒÔ²ÉÓÃ4¸öÏß³ÌÁË£¨20211103£©
+				// å½“æ—¥çº¿å†å²æ•°æ®åº“ä¸­å­˜åœ¨æ—§æ•°æ®æ—¶ï¼Œé‡‡ç”¨å•çº¿ç¨‹æ¨¡å¼å­˜å‚¨æ–°æ•°æ®ã€‚ä½¿ç”¨å¤šçº¿ç¨‹æ¨¡å¼æ—¶ï¼ŒMySQLä¼šå‡ºç°äº’æ–¥åŒºExceptionï¼Œä¼°è®¡æ˜¯æ•°æ®åº“é‡å…¥æ—¶å‘ç”ŸåŒæ­¥é—®é¢˜ï¼‰ã€‚
+				// æ•…è€Œä¿®è¡¥æ•°æ®æ—¶åŒæ—¶åªè¿è¡Œä¸€ä¸ªå­˜å‚¨çº¿ç¨‹ï¼Œå…¶ä»–éƒ½å¤„äºä¼‘çœ çŠ¶æ€ã€‚æ­¤ç§é—®é¢˜ä¸ä¼šå‡ºç°äºç”Ÿæˆæ‰€æœ‰æ—¥çº¿æ•°æ®æ—¶ï¼Œæ•…è€Œæ–°å»ºæ—¥çº¿æ•°æ®æ—¶å¯ä»¥ä½¿ç”¨å¤šçº¿ç¨‹ï¼ˆç›®å‰ä¸º4ä¸ªï¼‰ã€‚
+				// ä½¿ç”¨8.0.27æµ‹è¯•ï¼Œå‘ç°å¯ä»¥é‡‡ç”¨4ä¸ªçº¿ç¨‹äº†ï¼ˆ20211103ï¼‰
 				gl_SaveOneStockDayLine.SetMaxCount(1);
 			}
 		}
@@ -2020,7 +1974,7 @@ void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
 		gl_pSinaRTWebInquiry->SetShortestINquiringInterval(setOptionChinaStockMarket.m_RTDataInquiryTime);
 	}
 	else {
-		m_iRTDataServer = 0; // Ä¬ÈÏÊ¹ÓÃĞÂÀËÊµÊ±Êı¾İ·şÎñÆ÷
+		m_iRTDataServer = 0; // é»˜è®¤ä½¿ç”¨æ–°æµªå®æ—¶æ•°æ®æœåŠ¡å™¨
 	}
 }
 
@@ -2095,7 +2049,7 @@ void CChinaMarket::LoadChoicedStockDB(void) {
 	CSetChinaChoicedStock setChinaChoicedStock;
 
 	setChinaChoicedStock.Open();
-	// ×°Èë¹ÉÆ±´úÂëÊı¾İ¿â
+	// è£…å…¥è‚¡ç¥¨ä»£ç æ•°æ®åº“
 	while (!setChinaChoicedStock.IsEOF()) {
 		CChinaStockPtr pStock = nullptr;
 		if (IsStock(setChinaChoicedStock.m_Symbol)) {
@@ -2116,7 +2070,7 @@ bool CChinaMarket::UpdateTempRTData(void) {
 	if (!gl_ThreadStatus.IsSavingTempData()) {
 		gl_ThreadStatus.SetSavingTempData(true);
 		thread thread1(ThreadSaveTempRTData, this);
-		thread1.detach();// ±ØĞë·ÖÀëÖ®£¬ÒÔÊµÏÖ²¢ĞĞ²Ù×÷£¬²¢±£Ö¤ÓÉÏµÍ³»ØÊÕ×ÊÔ´¡£
+		thread1.detach();// å¿…é¡»åˆ†ç¦»ä¹‹ï¼Œä»¥å®ç°å¹¶è¡Œæ“ä½œï¼Œå¹¶ä¿è¯ç”±ç³»ç»Ÿå›æ”¶èµ„æºã€‚
 		return true;
 	}
 	return false;

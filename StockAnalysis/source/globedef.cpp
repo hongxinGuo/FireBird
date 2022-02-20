@@ -35,9 +35,6 @@ CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
-Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
-Semaphore gl_ProcessTengxunRTDataQueue(1);
-Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大默认为8
 Semaphore gl_MaintainCrweberDB(1); // Crweber数据库只允许同时一个线程操作之。
 

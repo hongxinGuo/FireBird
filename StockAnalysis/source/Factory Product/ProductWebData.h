@@ -51,7 +51,7 @@ public:
 	virtual CString CreatMessage(void) { return _T(""); }
 	virtual bool ProcessWebData(CWebDataPtr pWebData) { return true; }
 
-	CString GetName(void) { return m_strClassName; }
+	CString GetClassNameString(void) { return m_strClassName; }
 	CString GetInquiringStr(void) { return m_strInquiringStr; }
 	long GetIndex(void) { return m_lIndex; }
 	void SetIndex(long lIndex) { m_lIndex = lIndex; }

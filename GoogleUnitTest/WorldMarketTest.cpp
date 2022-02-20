@@ -1048,7 +1048,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List已更新"));
 		CWebSourceDataProductPtr p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_STREQ(p->GetName(), _T("Finnhub economic country list"));
+		EXPECT_STREQ(p->GetClassNameString(), _T("Finnhub economic country list"));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 	}
 
@@ -1322,7 +1322,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalendar());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_STREQ(p->GetName(), _T("Finnhub economic calendar"));
+		EXPECT_STREQ(p->GetClassNameString(), _T("Finnhub economic calendar"));
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubEPSSurprise) {
@@ -1383,7 +1383,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubForexExchange());
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		p = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_STREQ(p->GetName(), _T("Finnhub forex exchange"));
+		EXPECT_STREQ(p->GetClassNameString(), _T("Finnhub forex exchange"));
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub forex exchange已更新"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated()) << "此标识需要等处理完数据后方设置";
