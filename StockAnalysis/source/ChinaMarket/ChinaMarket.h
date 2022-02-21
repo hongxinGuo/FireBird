@@ -30,6 +30,8 @@ public:
 	virtual void ResetMarket(void) override final;
 	void Reset(void);
 
+	virtual bool PreparingExitMarket(void) override final;
+
 	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final;
 
 #ifdef _DEBUG

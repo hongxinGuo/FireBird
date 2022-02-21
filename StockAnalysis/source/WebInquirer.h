@@ -114,21 +114,21 @@ public:
 	shared_ptr<string> PopTiingoForexWebSocketData(void) { return m_qTiingoForexWebSocketData.PopData(); }
 
 protected:
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qSinaRTWebData; // 新浪股票网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qTengxunRTWebData; // 腾讯网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qNeteaseRTWebData; // 网易网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qFinnhubData; // Finnhub.io网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qQuandlData; // Quandl.com网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qTiingoData; // Tiingo.com网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qSinaRTWebData; // 新浪股票网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qTengxunRTWebData; // 腾讯网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qNeteaseRTWebData; // 网易网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qFinnhubData; // Finnhub.io网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qQuandlData; // Quandl.com网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qTiingoData; // Tiingo.com网络数据暂存队列
 
-	CTemplateMutexAccessQueue<CWebDataPtr> m_qNeteaseDayLine; // 网易日线数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qNeteaseDayLine; // 网易日线数据暂存队列
 
-	CTemplateMutexAccessQueue<CNeteaseDayLineWebDataPtr> m_qParsedNeteaseDayLine;
+	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qParsedNeteaseDayLine;
 
-	CTemplateMutexAccessQueue<shared_ptr<string>> m_qFinnhubWebSocketData; // finnhub的WebSocket数据
-	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
-	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
-	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<string> m_qFinnhubWebSocketData; // finnhub的WebSocket数据
+	CTemplateMutexAccessQueue<string> m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<string> m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<string> m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
 };
 
 extern CWebInquirer gl_WebInquirer; //

@@ -71,17 +71,11 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 // 全局变量的解析位于程序退出的最后，要晚于CMainFrame的解析。故而如果要想将系统退出的过程放在这里，需要研究。
 // 目前不允许此析构函数完成任何功能。
+// 此市场退出时，要保证其后台工作线程已提前退出。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	if (!gl_fExitingSystem) {
-		gl_fExitingSystem = true;
-		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
-		gl_fExitingSystem = false;
-	}
-	else {
-		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
-	}
+	ASSERT(!gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning());
 }
 
 void CChinaMarket::ResetMarket(void) {
@@ -163,6 +157,12 @@ void CChinaMarket::Reset(void) {
 
 	m_dataChinaStock.Reset();
 	m_dataStockSymbol.Reset();
+}
+
+bool CChinaMarket::PreparingExitMarket(void) {
+	while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1); // 退出后台工作线程
+
+	return true;
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {

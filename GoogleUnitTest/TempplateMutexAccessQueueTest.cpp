@@ -21,6 +21,8 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
+			m_data1 = make_shared<T>();
+			m_data2 = make_shared<T>();
 			GeneralCheck();
 		}
 
@@ -29,30 +31,29 @@ namespace StockAnalysisTest {
 			m_qData.Reset();
 			GeneralCheck();
 		}
-		T m_data1;
-		T m_data2;
+		shared_ptr<T> m_data1;
+		shared_ptr<T> m_data2;
 		CTemplateMutexAccessQueue<T> m_qData;
 	};
 
 	TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest);
 
 	TYPED_TEST_P(CTemplateMutexAccessQueueTest, TestReset) {
-		m_qData.PushData(m_data1);
-		m_qData.PushData(m_data2);
-		EXPECT_EQ(m_qData.GetDataSize(), 2);
-		m_qData.Reset();
+		m_qData.PushData(this->m_data1);
+		m_qData.PushData(this->m_data2);
+		EXPECT_EQ(this->m_qData.GetDataSize(), 2);
+		this->m_qData.Reset();
 		EXPECT_EQ(m_qData.GetDataSize(), 0);
 	}
 
 	TYPED_TEST_P(CTemplateMutexAccessQueueTest, TestPushPopData) {
-		m_qData.PushData(m_data1);
-		m_qData.PushData(m_data2);
-		TypeParam m_data3 = m_qData.PopData();
-		EXPECT_EQ(m_data3, m_data1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
+		m_qData.PushData(this->m_data1);
+		m_qData.PushData(this->m_data2);
+		EXPECT_EQ(this->m_qData.PopData(), this->m_data1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
 	}
 
 	REGISTER_TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest, TestReset, TestPushPopData);
 
-	using MyTypes = ::testing::Types<shared_ptr<string>, CWebDataPtr, CNeteaseDayLineWebDataPtr, int>;
+	using MyTypes = ::testing::Types<string, CWebData, CNeteaseDayLineWebData, int>;
 	INSTANTIATE_TYPED_TEST_SUITE_P(My, CTemplateMutexAccessQueueTest, MyTypes);
 }
