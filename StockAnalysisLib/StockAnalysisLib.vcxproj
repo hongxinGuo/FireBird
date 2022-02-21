@@ -39,7 +39,8 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.h" />
@@ -53,7 +54,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
@@ -160,9 +160,8 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
+    <ClInclude Include="..\StockAnalysis\source\Parse.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\QueueString.h" />
-    <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemData.h" />
@@ -234,7 +233,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />
@@ -332,8 +330,6 @@
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\QueueString.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />

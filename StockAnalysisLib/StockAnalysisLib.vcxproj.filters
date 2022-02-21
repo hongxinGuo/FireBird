@@ -163,9 +163,6 @@
     <Filter Include="源文件\Virtual Class">
       <UniqueIdentifier>{7cc184b7-5385-47c9-b146-37324b0d64db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\template">
-      <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Data Class\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
@@ -177,6 +174,9 @@
     </Filter>
     <Filter Include="源文件\Data Class\WorldMarket">
       <UniqueIdentifier>{17f75dc6-2a2d-4ec9-8ff2-081d76e3b05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Template">
+      <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\targetver.h">
       <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\QueueWebData.h">
-      <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
@@ -332,9 +329,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
       <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\QueueString.h">
-      <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h">
       <Filter>头文件\World Market\类型</Filter>
@@ -489,9 +483,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.h">
-      <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SystemData.h">
       <Filter>头文件\System Data</Filter>
     </ClInclude>
@@ -636,8 +627,8 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\CTemplateDataStake.h">
-      <Filter>头文件\template</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h">
+      <Filter>头文件\Template</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
       <Filter>头文件\Data Class\Finnhub</Filter>
@@ -668,6 +659,12 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Parse.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h">
+      <Filter>头文件\Template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -890,12 +887,6 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueString.cpp">
-      <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
-      <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
@@ -1003,9 +994,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\QueueDownLoadedNeteaseDayLine.cpp">
-      <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>

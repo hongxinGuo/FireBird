@@ -148,6 +148,9 @@
     <Filter Include="Test源文件\Data Class\World Market">
       <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Template">
+      <UniqueIdentifier>{f40c7b2e-813d-495c-87fa-36becac40cb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -363,9 +366,6 @@
     <ClCompile Include="ThreadCalculateRSTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="QueueStringTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
@@ -389,9 +389,6 @@
     </ClCompile>
     <ClCompile Include="ProcessDayLineDataTest.cpp">
       <Filter>Test源文件\China Market\基础数据类\NeteaseDayLineWebData</Filter>
-    </ClCompile>
-    <ClCompile Include="QueueWebDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="SystemDataTest.cpp">
       <Filter>Test源文件\System Data</Filter>
@@ -512,6 +509,12 @@
     </ClCompile>
     <ClCompile Include="MockDataChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="TempplateMutexAccessQueueTest.cpp">
+      <Filter>Test源文件\Template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

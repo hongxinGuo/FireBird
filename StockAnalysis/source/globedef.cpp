@@ -36,7 +36,6 @@ CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大默认为8
-Semaphore gl_MaintainCrweberDB(1); // Crweber数据库只允许同时一个线程操作之。
 
 vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

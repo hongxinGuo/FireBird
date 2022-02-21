@@ -257,12 +257,7 @@ public:
 	void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
 	clock_t GetReadingTengxunRTDataTime(void) const noexcept { return m_ReadingTengxunRTDataTime; }
 
-	// 处理网络上提取的实时股票数据
-	bool TaskParseWebRTDataGetFromSinaServer(void);
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
-	bool TaskParseWebRTDataGetFromTengxunServer(void);
-	bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
-	bool TaskParseWebRTDataGetFromNeteaseServer(void);
 
 	bool TaskDiscardNeteaseRTData(void);
 	bool TaskDiscardSinaRTData(void);
@@ -336,6 +331,7 @@ public:
 
 	INT64 GetRTDataReceived(void) const noexcept { return m_llRTDataReceived; }
 	void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
+	void IncreaseRTDataReceived(INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 
 	bool CheckMarketReady(void);
 
@@ -385,7 +381,7 @@ protected:
 	bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
 	bool m_fCalculateChoiced10RS;
 
-	INT64 m_llRTDataReceived; // 接收到的实时数据数量
+	atomic_uint64_t m_llRTDataReceived; // 接收到的实时数据数量
 
 	long m_lStockDayLineNeedUpdate; // 股票历史日线今日需要更新数
 

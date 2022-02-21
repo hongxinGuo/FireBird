@@ -497,64 +497,8 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 	return true;
 }
 
-bool CChinaMarket::TaskParseWebRTDataGetFromSinaServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
-		pWebDataReceived->ResetCurrentPos();
-		while (!pWebDataReceived->IsProcessedAllTheData()) {
-			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadSinaData(pWebDataReceived)) {
-				m_llRTDataReceived++;
-				gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
-			}
-			else return false;  // 后面的数据出问题，抛掉不用。
-		}
-	}
-	return true;
-}
-
 void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 	m_qRTData.push(pRTData);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
-//
-// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
-//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
-//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
-//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
-//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
-//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
-//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
-//
-// 使用json解析，已经没有错误数据了。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskParseWebRTDataGetFromNeteaseServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
-	string ss;
-	ptree pt;
-
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
-			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
-				if (pRTData->ReadNeteaseData(it)) {
-					m_llRTDataReceived++;
-					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
-				}
-			}
-		}
-	}
-	return true;
 }
 
 bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
@@ -596,55 +540,6 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
 	return true;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 腾讯实时数据，如果遇到被查询股票代码为非上市时，只是简单略过，不返回数据。故而查询900个股票，返回的数据量要小于900.
-// 只有当所有的查询股票皆为非上市时，才返回一个21个字符串：v_pv_none_match=\"1\";\n
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskParseWebRTDataGetFromTengxunServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-
-	const size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
-		pWebDataReceived->ResetCurrentPos();
-		if (!IsInvalidTengxunRTData(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
-			while (!pWebDataReceived->IsProcessedAllTheData()) {
-				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-				if (pRTData->ReadTengxunData(pWebDataReceived)) {
-					gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
-				}
-				else return false;  // 后面的数据出问题，抛掉不用。
-			}
-		}
-	}
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
-	char buffer[50];
-	char* pBuffer = buffer;
-	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
-
-	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
-	buffer[21] = 0x000;
-	CString str1 = buffer;
-
-	if (str1.Compare(strInvalidStock) == 0) {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
-		return true;
-	}
-	else return false;
-}
-
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
 	const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
@@ -680,8 +575,6 @@ bool CChinaMarket::SchedulingTask(void) {
 	if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
 		TaskGetRTDataFromWeb();
 		// 解析新浪和网易实时数据的任务移至线程ThreadChinaMarketBackground中。
-		//TaskParseWebRTDataGetFromSinaServer();
-		//TaskParseWebRTDataGetFromNeteaseServer();
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
 		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // 默认计数4次,即每400毫秒申请一次实时数据
@@ -701,7 +594,6 @@ bool CChinaMarket::SchedulingTask(void) {
 			m_fTodayTempDataLoaded = true;
 		}
 		// 解析腾讯实时数据的任务移至线程ThreadChinaMarketBackground中。
-		//TaskParseWebRTDataGetFromTengxunServer();
 		TaskGetNeteaseDayLineFromWeb();
 	}
 

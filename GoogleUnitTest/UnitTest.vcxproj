@@ -99,7 +99,9 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
+    <ClCompile Include="ParseTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
+    <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
@@ -140,8 +142,6 @@
     </ClCompile>
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
-    <ClCompile Include="QueueStringTest.cpp" />
-    <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SetInitializeTest.cpp" />
     <ClCompile Include="SICIndustryTest.cpp" />
     <ClCompile Include="StockSectionTest.cpp" />

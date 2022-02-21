@@ -21,9 +21,10 @@ extern int gl_iMaxSavingOneDayLineThreads;
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 
-#include"QueueString.h"
-#include"QueueDownLoadedNeteaseDayLine.h"
-#include"QueueWebData.h"
+#include"TemplateMutexAccessQueue.h"
+
+#include"NeteaseDayLineWebData.h"
+#include"WebData.h"
 
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
@@ -84,45 +85,50 @@ public:
 	size_t GetNeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.GetDataSize()); }
 	void PushNeteaseDayLineData(CWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
 	CWebDataPtr PopNeteaseDayLineData(void) { return m_qNeteaseDayLine.PopData(); }
+	size_t GetParsedNeteaseDayLineDataSize(void) { return(m_qParsedNeteaseDayLine.GetDataSize()); }
+	void PushParsedNeteaseDayLineData(CNeteaseDayLineWebDataPtr pData) { m_qParsedNeteaseDayLine.PushData(pData); }
+	CNeteaseDayLineWebDataPtr PopParsedNeteaseDayLineData(void) { return m_qParsedNeteaseDayLine.PopData(); }
 
 	// Finnhub股票推送数据
 	size_t GetFinnhubWebSocketDataSize(void) { return m_qFinnhubWebSocketData.GetDataSize(); }
-	void pushFinnhubWebSocketData(string data) { m_qFinnhubWebSocketData.PushData(data); }
+	void pushFinnhubWebSocketData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qFinnhubWebSocketData.PushData(pData); }
 	void PushFinnhubWebSocketData(shared_ptr<string> pData) { m_qFinnhubWebSocketData.PushData(pData); }
 	shared_ptr<string> PopFinnhubWebSocketData(void) { return m_qFinnhubWebSocketData.PopData(); }
 
 	// Tiingo IEX股票推送数据
 	size_t GetTiingoIEXWebSocketDataSize(void) { return m_qTiingoIEXWebSocketData.GetDataSize(); }
-	void PushTiingoIEXWebSocketData(string data) { m_qTiingoIEXWebSocketData.PushData(data); }
+	void PushTiingoIEXWebSocketData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qTiingoIEXWebSocketData.PushData(pData); }
 	void PushTiingoIEXWebSocketData(shared_ptr<string> pData) { m_qTiingoIEXWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoIEXWebSocketData(void) { return m_qTiingoIEXWebSocketData.PopData(); }
 
 	// Tiingo Crypto推送数据
 	size_t GetTiingoCryptoWebSocketDataSize(void) { return m_qTiingoCryptoWebSocketData.GetDataSize(); }
-	void PushTiingoCryptoWebSocketData(string data) { m_qTiingoCryptoWebSocketData.PushData(data); }
+	void PushTiingoCryptoWebSocketData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qTiingoCryptoWebSocketData.PushData(pData); }
 	void PushTiingoCryptoWebSocketData(shared_ptr<string> pData) { m_qTiingoCryptoWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoCryptoWebSocketData(void) { return m_qTiingoCryptoWebSocketData.PopData(); }
 
 	// Tiingo forex推送数据
 	size_t GetTiingoForexWebSocketDataSize(void) { return m_qTiingoForexWebSocketData.GetDataSize(); }
-	void PushTiingoForexWebSocketData(string data) { m_qTiingoForexWebSocketData.PushData(data); }
+	void PushTiingoForexWebSocketData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qTiingoForexWebSocketData.PushData(pData); }
 	void PushTiingoForexWebSocketData(shared_ptr<string> pData) { m_qTiingoForexWebSocketData.PushData(pData); }
 	shared_ptr<string> PopTiingoForexWebSocketData(void) { return m_qTiingoForexWebSocketData.PopData(); }
 
 protected:
-	CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
-	CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列
-	CQueueWebData m_qNeteaseRTWebData; // 网易网络数据暂存队列
-	CQueueWebData m_qFinnhubData; // Finnhub.io网络数据暂存队列
-	CQueueWebData m_qQuandlData; // Quandl.com网络数据暂存队列
-	CQueueWebData m_qTiingoData; // Tiingo.com网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qSinaRTWebData; // 新浪股票网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qTengxunRTWebData; // 腾讯网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qNeteaseRTWebData; // 网易网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qFinnhubData; // Finnhub.io网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qQuandlData; // Quandl.com网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qTiingoData; // Tiingo.com网络数据暂存队列
 
-	CQueueWebData m_qNeteaseDayLine; // 网易日线数据暂存队列
+	CTemplateMutexAccessQueue<CWebDataPtr> m_qNeteaseDayLine; // 网易日线数据暂存队列
 
-	CQueueString m_qFinnhubWebSocketData; // finnhub的WebSocket数据
-	CQueueString m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
-	CQueueString m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
-	CQueueString m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<CNeteaseDayLineWebDataPtr> m_qParsedNeteaseDayLine;
+
+	CTemplateMutexAccessQueue<shared_ptr<string>> m_qFinnhubWebSocketData; // finnhub的WebSocket数据
+	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoIEXWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoCryptoWebSocketData; // tiingo的WebSocket数据
+	CTemplateMutexAccessQueue<shared_ptr<string>> m_qTiingoForexWebSocketData; // tiingo的WebSocket数据
 };
 
 extern CWebInquirer gl_WebInquirer; //
