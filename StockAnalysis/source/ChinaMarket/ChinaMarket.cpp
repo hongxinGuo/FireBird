@@ -75,7 +75,14 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	ASSERT(!gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning());
+	if (!gl_fExitingSystem) {
+		gl_fExitingSystem = true;
+		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
+		gl_fExitingSystem = false;
+	}
+	else {
+		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
+	}
 }
 
 void CChinaMarket::ResetMarket(void) {
@@ -1430,11 +1437,9 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CWebDataPtr pWebData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
-	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
-		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
-		pData = make_shared<CNeteaseDayLineWebData>();
-		pData->TransferWebDataToBuffer(pWebData);
-		pData->ProcessNeteaseDayLineData();
+	// 网易日线的Parse由ThreadChinaMarketBackground工作线程完成。
+	while (gl_WebInquirer.GetParsedNeteaseDayLineDataSize() > 0) {
+		pData = gl_WebInquirer.PopParsedNeteaseDayLineData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。

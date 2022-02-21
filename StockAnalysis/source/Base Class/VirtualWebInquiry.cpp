@@ -155,7 +155,7 @@ CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
 	m_vBuffer.resize(byteReaded);
-	pWebDataReceived->m_vDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
+	pWebDataReceived->m_sDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
 	m_vBuffer.resize(1024 * 1024); // 重新分配内存
 
 	pWebDataReceived->SetBufferLength(byteReaded);

@@ -24,8 +24,8 @@ UINT ThreadChinaMarketBackground(void) {
 		ParseWebRTDataGetFromSinaServer(); // 解析新浪实时数据
 		ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
 		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
-
-		Sleep(100); // 最少间隔100ms
+		ParseDayLineGetFromNeeteaseServer();
+		Sleep(50); // 最少间隔50ms
 	}
 	gl_ThreadStatus.SetChinaMarketBackground(false);
 	return 201;
@@ -117,7 +117,6 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
 	ptree pt;
-	bool fSucceed = true;
 	INT64 llTotal = 0;
 
 	for (int i = 0; i < lTotalData; i++) {
@@ -240,4 +239,26 @@ bool ParseWebRTDataGetFromTengxunServer(void) {
 	}
 
 	return fSucceed;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理从网易日线服务器上读取的股票日线数据。
+// 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
+//
+// 日线数据是逆序的，最新日期的在前面。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+bool ParseDayLineGetFromNeeteaseServer(void) {
+	CNeteaseDayLineWebDataPtr pData;
+	CWebDataPtr pWebData = nullptr;
+
+	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
+		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
+		pData = make_shared<CNeteaseDayLineWebData>();
+		pData->TransferWebDataToBuffer(pWebData);
+		pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
+		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
+	}
+	return true;
 }

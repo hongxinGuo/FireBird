@@ -8,6 +8,7 @@
 #pragma once
 
 class CVirtualWebInquiry;
+class CNeteaseDayLineWebData;
 
 using namespace std;
 #include<memory>
@@ -21,6 +22,7 @@ using namespace boost::property_tree;
 class CWebData final : public CObject {
 public:
 	friend CVirtualWebInquiry;
+	friend CNeteaseDayLineWebData;
 	CWebData();
 	~CWebData();
 
@@ -29,7 +31,7 @@ public:
 	void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 	bool OutOfRange(void) { if (m_lCurrentPos >= m_lBufferLength) return true; else return false; }
-	void Resize(long lSize) { m_vDataBuffer.resize(lSize); m_lBufferLength = lSize; }
+	void Resize(long lSize) { m_sDataBuffer.resize(lSize); m_lBufferLength = lSize; }
 
 	time_t GetTime(void) const noexcept { return m_tTime; }
 	void SetTime(time_t tTime) noexcept { m_tTime = tTime; }
@@ -45,10 +47,10 @@ public:
 	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
 	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrenPos开始填充。
 
-	char GetData(INT64 lIndex) const { return m_vDataBuffer.at(lIndex); }
-	void SetData(INT64 lIndex, char cValue) { m_vDataBuffer.at(lIndex) = cValue; }
-	char GetCurrentPosData(void) const { return m_vDataBuffer.at(m_lCurrentPos); }
-	void SetCurrentPosData(char cValue) { m_vDataBuffer.at(m_lCurrentPos) = cValue; }
+	char GetData(INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
+	void SetData(INT64 lIndex, char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
+	char GetCurrentPosData(void) const { return m_sDataBuffer.at(m_lCurrentPos); }
+	void SetCurrentPosData(char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
 	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
 
@@ -58,7 +60,7 @@ public:
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
-	string m_vDataBuffer;
+	string m_sDataBuffer;
 	INT64 m_lBufferLength;
 	INT64 m_lCurrentPos;
 };

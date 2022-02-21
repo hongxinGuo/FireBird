@@ -285,7 +285,7 @@ namespace StockAnalysisTest {
 
 	public:
 		int m_iCount;
-		vector<char> m_pData;
+		string m_pData;
 		INT64 m_lCountPos = 0;
 	};
 

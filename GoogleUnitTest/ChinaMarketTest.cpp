@@ -453,13 +453,12 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
-		CWebDataPtr pData = make_shared<CWebData>();
+		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
 		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
-		pData->__TEST_SetBuffer__(strTest);
-		gl_WebInquirer.PushNeteaseDayLineData(pData);
+		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);

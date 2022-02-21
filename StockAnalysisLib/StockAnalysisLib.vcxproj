@@ -182,7 +182,6 @@
     <ClCompile Include="..\StockAnalysis\ChildFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadChinaMarketBackground.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
@@ -239,6 +238,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChinaMarketBackground.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />

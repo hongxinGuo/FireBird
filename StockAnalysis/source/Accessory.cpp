@@ -415,7 +415,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
 	return str;
 }
 
-bool ReadOneValueOfNeteaseDayLine(vector<char>& pBuffer, char* buffer, INT64& lCurrentPos) {
+bool ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos) {
 	int i = 0;
 
 	while (pBuffer.at(lCurrentPos) != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
