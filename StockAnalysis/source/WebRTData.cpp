@@ -939,6 +939,8 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 		SetActive(false);
 		fSucceed = true;
 	}
+	SetActive(true);
+
 	return fSucceed;
 }
 

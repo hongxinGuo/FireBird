@@ -287,7 +287,7 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 	SetVolume(pRTData->GetVolume());
 	SetAmount(pRTData->GetAmount());
 	SetUpDown(m_lNew - m_lLastClose);
-	if (m_lLastClose != 0) SetUpDownRate((double)m_lUpDown * 100 / m_lLastClose);
+	if (m_lLastClose > 0) SetUpDownRate((double)m_lUpDown * 100 / m_lLastClose);
 	else SetUpDownRate(0);
 	// 新浪实时数据是没有总市值和流通市值这两项的，故而需要判断一下是否为零
 	if (pRTData->GetTotalValue() > 0) SetTotalValue(pRTData->GetTotalValue());
