@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
 		NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 1);
 
 		gl_WebInquirer.PopNeteaseDayLineData();
 	}

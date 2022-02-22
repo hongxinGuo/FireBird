@@ -134,3 +134,4 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 // 后台处理线程
 // 处理实时数据等耗时任务的后台线程
 UINT ThreadChinaMarketBackground(void); // 中国市场后台数据处理线程，此线程返回值为201
+UINT ThreadWorldMarketBackground(void); // 美国市场后台数据处理线程，此线程返回值为202

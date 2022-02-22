@@ -443,12 +443,12 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
-		CWebDataPtr pData = make_shared<CWebData>();
-		gl_WebInquirer.PushNeteaseDayLineData(pData);
+		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
+		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_WebInquirer.PopNeteaseDayLineData();
+		gl_WebInquirer.PopParsedNeteaseDayLineData();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 

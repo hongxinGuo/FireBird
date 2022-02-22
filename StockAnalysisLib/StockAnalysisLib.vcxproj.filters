@@ -1157,6 +1157,9 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChinaMarketBackground.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

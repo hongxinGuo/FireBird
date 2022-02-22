@@ -39,11 +39,7 @@ bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLi
 
 bool CNeteaseDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	m_sDataBuffer.resize(pWebData->GetBufferLength());
-	for (int i = 0; i < pWebData->GetBufferLength(); i++) {
-		m_sDataBuffer.at(i) = pWebData->GetData(i);
-	}
-	//m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
+	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
 
 	m_lBufferLength = pWebData->GetBufferLength();
 	m_strStockCode = pWebData->GetStockCode();

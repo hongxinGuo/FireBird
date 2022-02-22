@@ -212,6 +212,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoCryptoDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp" />

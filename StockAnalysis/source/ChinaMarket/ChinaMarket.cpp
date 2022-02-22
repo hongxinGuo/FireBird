@@ -167,6 +167,7 @@ void CChinaMarket::Reset(void) {
 }
 
 bool CChinaMarket::PreparingExitMarket(void) {
+	ASSERT(gl_fExitingSystem);
 	while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1); // 退出后台工作线程
 
 	return true;
@@ -1424,7 +1425,7 @@ bool CChinaMarket::SaveRTData(void) {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
-	if (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) return true;
+	if (gl_WebInquirer.GetParsedNeteaseDayLineDataSize() > 0) return true;
 	else return false;
 }
 
@@ -1434,7 +1435,6 @@ long CChinaMarket::GetDayLineNeedProcessNumber(void) {
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CNeteaseDayLineWebDataPtr pData;
-	CWebDataPtr pWebData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
 	// 网易日线的Parse由ThreadChinaMarketBackground工作线程完成。

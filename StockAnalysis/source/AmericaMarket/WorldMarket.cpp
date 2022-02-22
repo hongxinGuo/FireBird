@@ -53,10 +53,22 @@ CWorldMarket::CWorldMarket() {
 	m_fRecordTiingoCryptoWebSocket = true;
 	m_fRecordTiingoForexWebSocket = true;
 	m_fRecordTiingoIEXWebSocket = true;
+
+	thread thread1(ThreadWorldMarketBackground);
+	thread1.detach();
 }
 
 CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
+
+	if (!gl_fExitingSystem) {
+		gl_fExitingSystem = true;
+		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
+		gl_fExitingSystem = false;
+	}
+	else {
+		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
+	}
 }
 
 void CWorldMarket::Reset(void) {
@@ -156,7 +168,9 @@ void CWorldMarket::ResetMarket(void) {
 
 bool CWorldMarket::PreparingExitMarket(void)
 {
+	ASSERT(gl_fExitingSystem);
 	StopReceivingWebSocket();
+	while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
 
 	return true;
 }

@@ -250,7 +250,7 @@ bool ParseWebRTDataGetFromTengxunServer(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseDayLineGetFromNeeteaseServer(void) {
-	CNeteaseDayLineWebDataPtr pData;
+	CNeteaseDayLineWebDataPtr pData = nullptr;
 	CWebDataPtr pWebData = nullptr;
 
 	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
