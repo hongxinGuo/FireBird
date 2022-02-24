@@ -1269,7 +1269,7 @@ bool CChinaMarket::DeleteWeekLine(long lMonday) {
 }
 
 bool CChinaMarket::DeleteWeekLine(void) {
-	if (gl_fTestMode) {
+	if (!gl_fNormalMode) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1281,7 +1281,7 @@ bool CChinaMarket::DeleteWeekLine(void) {
 bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 	CDatabase database;
 
-	if (gl_fTestMode) {
+	if (!gl_fNormalMode) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1298,7 +1298,7 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
 	CDatabase database;
 
-	if (gl_fTestMode) {
+	if (!gl_fNormalMode) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}

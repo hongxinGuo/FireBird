@@ -21,7 +21,6 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			gl_fNormalMode = false;
-			gl_fTestMode = true;
 
 			GeneralCheck();
 		}
@@ -30,13 +29,10 @@ namespace StockAnalysisTest {
 	TEST_F(AccessoryTest, TestGetSchemaConnect) {
 		EXPECT_FALSE(gl_fNormalMode) << "默认状态下此标识为假。";
 		EXPECT_STREQ(GetSchemaConnect(_T("WorldMarket")), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		EXPECT_TRUE(gl_fTestMode);
 		gl_fNormalMode = true;
 		EXPECT_STREQ(GetSchemaConnect(_T("ChinaMarket")), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-		EXPECT_FALSE(gl_fTestMode);
 		gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
 		EXPECT_STREQ(GetSchemaConnect(_T("WorldMarket")), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		EXPECT_TRUE(gl_fTestMode);
 	}
 
 	TEST_F(AccessoryTest, TestGetStringOfDate) {
@@ -650,7 +646,6 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			gl_fNormalMode = false;
-			gl_fTestMode = true;
 		}
 	};
 

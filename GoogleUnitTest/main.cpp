@@ -281,7 +281,6 @@ int main(int argc, char* argv[]) {
 	::testing::AddGlobalTestEnvironment(new TestEnvironment);
 
 	ASSERT(!gl_fNormalMode);
-	ASSERT(gl_fTestMode);
 
 	return RUN_ALL_TESTS();
 }

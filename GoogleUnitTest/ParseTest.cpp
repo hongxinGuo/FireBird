@@ -23,7 +23,6 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			gl_fNormalMode = false;
-			gl_fTestMode = true;
 
 			GeneralCheck();
 		}

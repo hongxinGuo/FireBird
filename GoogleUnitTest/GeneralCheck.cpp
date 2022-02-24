@@ -20,7 +20,6 @@ namespace StockAnalysisTest {
 
 	void EnvironmentCheck(void) {
 		ASSERT_FALSE(gl_fNormalMode);
-		ASSERT_TRUE(gl_fTestMode);
 
 		EXPECT_FALSE(gl_fExitingSystem);
 	}

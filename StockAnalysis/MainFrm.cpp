@@ -158,7 +158,7 @@ void CMainFrame::Reset(void) {
 }
 
 CMainFrame::~CMainFrame() {
-	if (gl_fTestMode) TRACE("使用了Test驱动\n");
+	if (!gl_fNormalMode) TRACE("使用了Test驱动\n");
 
 	gl_fExitingSystem = true;
 
@@ -498,7 +498,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 
-	if (gl_fTestMode) {
+	if (!gl_fNormalMode) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
 	}
 

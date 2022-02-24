@@ -45,7 +45,6 @@ TEST(SetInitializeTest, TestChinaMarketOptionInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setChinaMarketOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setChinaMarketOption.GetDefaultSQL(), _T("[option_china_stockmarket]"));
 }
@@ -58,7 +57,6 @@ TEST(SetInitializeTest, TestChinaStockSymbolInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setChinaStockSymbol.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setChinaStockSymbol.GetDefaultSQL(), _T("[stockcode]"));
 }
@@ -71,7 +69,6 @@ TEST(SetInitializeTest, TestCurrentWeekLineInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setCurrentWeekLine.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setCurrentWeekLine.GetDefaultSQL(), _T("[CurrentWeekLine]"));
 }
@@ -84,7 +81,6 @@ TEST(SetInitializeTest, TestDayLineExtendInfoInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setDayLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setDayLineExtendInfo.GetDefaultSQL(), _T("[daylineinfo]"));
 }
@@ -97,7 +93,6 @@ TEST(SetInitializeTest, TestDayLineTempInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setDayLineTemp.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setDayLineTemp.GetDefaultSQL(), _T("[today]"));
 }
@@ -110,7 +105,6 @@ TEST(SetInitializeTest, TestOptionInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setOption.GetDefaultSQL(), _T("[options]"));
 }
@@ -123,7 +117,6 @@ TEST(SetInitializeTest, TestRealTimeDataInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setRealTimeData.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setRealTimeData.GetDefaultSQL(), _T("[RealTimeData]"));
 }
@@ -136,7 +129,6 @@ TEST(SetInitializeTest, TestRSOptionInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setRSOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setRSOption.GetDefaultSQL(), _T("[option_calculatingrs]"));
 }
@@ -149,7 +141,6 @@ TEST(SetInitializeTest, TestRSStrong1StockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setRSStrong1Stock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setRSStrong1Stock.GetDefaultSQL(), _T("[10rs1above55]"));
 }
@@ -162,7 +153,6 @@ TEST(SetInitializeTest, TestRSStrong2StockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setRSStrong2Stock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setRSStrong2Stock.GetDefaultSQL(), _T("[10rs2above55]"));
 }
@@ -175,7 +165,6 @@ TEST(SetInitializeTest, TestRSStrongStockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setRSStrongStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setRSStrongStock.GetDefaultSQL(), _T("[selected_rs_1]"));
 }
@@ -188,7 +177,6 @@ TEST(SetInitializeTest, TestStockSectionInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setStockSection.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setStockSection.GetDefaultSQL(), _T("[Stock_Code_Section]"));
 }
@@ -201,7 +189,6 @@ TEST(SetInitializeTest, TestWeekLineExtendInfoInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWeekLineExtendInfo.GetDefaultSQL(), _T("[WeekLineinfo]"));
 }
@@ -214,7 +201,6 @@ TEST(SetInitializeTest, TestDayLineBasicInfoInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setDayLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setDayLineBasicInfo.GetDefaultSQL(), _T("[dayline]"));
 }
@@ -227,7 +213,6 @@ TEST(SetInitializeTest, TestWeekLineBasicInfoInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultSQL(), _T("[weekline]"));
 }
@@ -240,7 +225,6 @@ TEST(SetInitializeTest, TestWorldStockDayLineInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWorldStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWorldStockDayLine.GetDefaultSQL(), _T("[stock_dayline]"));
 }
@@ -253,7 +237,6 @@ TEST(SetInitializeTest, TestCryptoDayLineInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setCryptoDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setCryptoDayLine.GetDefaultSQL(), _T("[crypto_dayline]"));
 }
@@ -266,7 +249,6 @@ TEST(SetInitializeTest, TestForexDayLineInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setForexDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[forex_dayline]"));
 }
@@ -279,7 +261,6 @@ TEST(SetInitializeTest, TestChinaChoicedStockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setChinaChoicedStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setChinaChoicedStock.GetDefaultSQL(), _T("[choiced_stock]"));
 }
@@ -292,7 +273,6 @@ TEST(SetInitializeTest, TestWorldChoicedForexInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWorldChoicedForex.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWorldChoicedForex.GetDefaultSQL(), _T("[choiced_forex]"));
 }
@@ -305,7 +285,6 @@ TEST(SetInitializeTest, TestWorldChoicedCryptoInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWorldChoicedCrypto.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWorldChoicedCrypto.GetDefaultSQL(), _T("[choiced_crypto]"));
 }
@@ -318,7 +297,6 @@ TEST(SetInitializeTest, TestWorldChoicedStockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWorldChoicedStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWorldChoicedStock.GetDefaultSQL(), _T("[choiced_stock]"));
 }
@@ -331,7 +309,6 @@ TEST(SetInitializeTest, TestCountryInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setCountry.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setCountry.GetDefaultSQL(), _T("[country_list]"));
 }
@@ -344,7 +321,6 @@ TEST(SetInitializeTest, TestEconomicCalendarInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setEconomicCalendar.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setEconomicCalendar.GetDefaultSQL(), _T("[economic_calendar]"));
 }
@@ -357,7 +333,6 @@ TEST(SetInitializeTest, TestEPSSurpriseInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setEPSSurprise.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setEPSSurprise.GetDefaultSQL(), _T("[eps_surprise]"));
 }
@@ -370,7 +345,6 @@ TEST(SetInitializeTest, TestInsiderTransactionInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setInsiderTransaction.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[insider_transaction]"));
 }
@@ -383,7 +357,6 @@ TEST(SetInitializeTest, TestNaicsIndustryInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setNaicsIndustry.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setNaicsIndustry.GetDefaultSQL(), _T("[naics_industry]"));
 }
@@ -396,7 +369,6 @@ TEST(SetInitializeTest, TestSICIndustryInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setSICIndustry.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setSICIndustry.GetDefaultSQL(), _T("[sic_industry]"));
 }
@@ -409,7 +381,6 @@ TEST(SetInitializeTest, TestTiingoIndustryInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setTiingoIndustry.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setTiingoIndustry.GetDefaultSQL(), _T("[tiingo_industry]"));
 }
@@ -422,7 +393,6 @@ TEST(SetInitializeTest, TestTiingoStockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setTiingoStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setTiingoStock.GetDefaultSQL(), _T("[tiingo_stock_fundanmental]"));
 }
@@ -435,7 +405,6 @@ TEST(SetInitializeTest, TestWorldStockInitialize) {
 	gl_fNormalMode = true;
 	EXPECT_STREQ(setWorldStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_fNormalMode = false;
-	gl_fTestMode = true;
 
 	EXPECT_STREQ(setWorldStock.GetDefaultSQL(), _T("[stock_profile]"));
 }

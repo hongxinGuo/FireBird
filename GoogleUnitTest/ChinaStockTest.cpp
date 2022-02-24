@@ -628,7 +628,6 @@ namespace StockAnalysisTest {
 		stock.SetTotalValue(9090909090909);
 
 		ASSERT(!gl_fNormalMode);
-		ASSERT(gl_fTestMode);
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
 		setDayLineBasicInfo.m_strFilter += strDate;
@@ -1496,7 +1495,6 @@ namespace StockAnalysisTest {
 		pStock->SetCanceledSellVolumeAbove200000(77);
 
 		ASSERT(!gl_fNormalMode);
-		ASSERT(gl_fTestMode);
 		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
 		setDayLineTemp.Open();
 		setDayLineTemp.m_pDatabase->BeginTrans();

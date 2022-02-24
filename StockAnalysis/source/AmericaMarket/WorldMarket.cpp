@@ -501,7 +501,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __STOCK_SYMBOLS__);
 			p->SetIndex(lCurrentStockExchangePos);
 			m_qFinnhubProduct.push(p);
-			SetCurrentFunction(_T("Finnhub查询股票代码:") + pExchange->m_strCode);
+			SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
 			SetFinnhubInquiring(true);
 			pExchange->SetUpdated(true);
 			TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
@@ -543,7 +543,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __COMPANY_PROFILE_CONCISE__);
 			p->SetIndex(lCurrentProfilePos);
 			m_qFinnhubProduct.push(p);
-			SetCurrentFunction(_T("Finnhub简介:") + m_dataWorldStock.GetStock(lCurrentProfilePos)->GetSymbol());
+			SetCurrentFunction(_T("简介:") + m_dataWorldStock.GetStock(lCurrentProfilePos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetFinnhubInquiring(true);
 			fHaveInquiry = true;
@@ -589,8 +589,8 @@ bool CWorldMarket::TaskInquiryFinnhubStockDayLine(void) {
 			m_qFinnhubProduct.push(p);
 			SetFinnhubInquiring(true);
 			pStock->SetDayLineNeedUpdate(false);
-			SetCurrentFunction(_T("Finnhub日线:") + pStock->GetSymbol());
-			TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
+			SetCurrentFunction(_T("日线:") + pStock->GetSymbol());
+			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubStockDayLine = false;
@@ -824,7 +824,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
 			SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
 			pForexSymbol->SetDayLineNeedUpdate(false);
-			SetCurrentFunction(_T("Forex日线:") + pForexSymbol->GetSymbol());
+			SetCurrentFunction(_T("日线:") + pForexSymbol->GetSymbol());
 			TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
@@ -900,8 +900,8 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoDayLine(void) {
 			SetCurrentFunction(_T("Finnhub Crypto日线：") + pCryptoSymbol->GetSymbol());
 			SetFinnhubInquiring(true);
 			pCryptoSymbol->SetDayLineNeedUpdate(false);
-			SetCurrentFunction(_T("Crypto日线:") + pCryptoSymbol->GetSymbol());
-			TRACE("申请%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
+			SetCurrentFunction(_T("日线:") + pCryptoSymbol->GetSymbol());
+			//TRACE("申请%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			s_fInquiringFinnhubCryptoDayLine = false;
@@ -1090,7 +1090,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 					thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
 					thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 					fUpdated = true;
-					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
+					//TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}

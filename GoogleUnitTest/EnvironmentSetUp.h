@@ -167,6 +167,8 @@ namespace StockAnalysisTest {
 				auto pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
+
+			gl_fExitingSystem = true;
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pMockChinaMarket = nullptr;
 			gl_pMockWorldMarket = nullptr;
@@ -182,9 +184,9 @@ namespace StockAnalysisTest {
 			}
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
+			gl_fExitingSystem = false;
 			delete gl_pMockMainFrame;
 			EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
-			gl_fExitingSystem = false;
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;

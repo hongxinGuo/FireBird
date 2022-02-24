@@ -1,4 +1,10 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// 所有的全局变量皆应放在此文件中。
+//
+///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
+
 #include"globedef.h"
 #include"SemaphoreDef.h"
 
@@ -28,7 +34,6 @@ atomic_bool gl_fExitingSystem = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 
 bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
-bool gl_fTestMode = true; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
 CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 
@@ -36,8 +41,6 @@ CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大默认为8
-
-vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 CWebInquirer gl_WebInquirer;
 CSystemData gl_SystemData;
@@ -49,9 +52,11 @@ CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
 CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
-CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
-CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
-CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
+CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.io证券信息
+CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr;
+CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr;
+
+vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 // 各市场。皆为唯一实例
 CWorldMarketPtr gl_pWorldMarket = nullptr;
