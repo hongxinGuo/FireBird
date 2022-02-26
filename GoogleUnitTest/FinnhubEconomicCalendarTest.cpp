@@ -72,6 +72,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvEconomicCalendar = nullptr;
 		}
 		virtual void TearDown(void) override {

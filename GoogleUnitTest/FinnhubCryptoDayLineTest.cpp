@@ -86,6 +86,8 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvDayLine = nullptr;
 		}
 
@@ -115,8 +117,6 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			strMessage += _T("日线为无效JSon数据");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -163,6 +163,10 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCryptoDayLine.SetIndex(0);
 		}
@@ -195,7 +199,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("日线为无效JSon数据"));
 			break;
 		case 2: // s项报告not ok
 			EXPECT_TRUE(fSucceed);
@@ -203,7 +206,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("日线返回值不为ok"));
 			break;
 		case 3: // s项报告 no data
 			EXPECT_TRUE(fSucceed);

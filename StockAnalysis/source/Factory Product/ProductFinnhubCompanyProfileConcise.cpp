@@ -62,44 +62,43 @@ bool CProductFinnhubCompanyProfileConcise::ProcessWebData(CWebDataPtr pWebData) 
 /// <param name="pStock"></param>
 /// <returns></returns>
 bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock) {
-	ptree pt;
 	string s;
 	string sError;
 
-	if (pWebData->GetBufferLength() < 30) {
-		TRACE("%s无公司简介, 字符串长度为：%d\n", pStock->GetSymbol().GetBuffer(), pWebData->GetBufferLength());
-		//正常的长度大致为300左右, 小于100则为无效信息。
-		return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
+	shared_ptr<ptree> ppt;
+
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ppt = pWebData->GetPTree();
+		try {
+			s = ppt->get<string>(_T("ticker"));
+			if (s.size() > 0) pStock->SetTicker(s.c_str());
+			s = ppt->get<string>(_T("country"));
+			if (s.size() > 0) pStock->SetCountry(s.c_str());
+			s = ppt->get<string>(_T("currency"));
+			if (s.size() > 0) pStock->SetCurrency(s.c_str());
+			s = ppt->get<string>(_T("exchange"));
+			if (s.size() > 0) pStock->SetListedExchange(s.c_str());
+			s = ppt->get<string>(_T("name"));
+			if (s.size() > 0) pStock->SetName(s.c_str());
+			s = ppt->get<string>(_T("finnhubIndustry"));
+			if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
+			s = ppt->get<string>(_T("logo"));
+			if (s.size() > 0) pStock->SetLogo(s.c_str());
+			s = ppt->get<string>(_T("marketCapitalization"));
+			if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
+			s = ppt->get<string>(_T("phone"));
+			if (s.size() > 0) pStock->SetPhone(s.c_str());
+			if (s.size() > 0) pStock->SetShareOutstanding(ppt->get<double>(_T("shareOutstanding")));
+			s = ppt->get<string>(_T("weburl"));
+			if (s.size() > 0) pStock->SetWebURL(s.c_str());
+			s = ppt->get<string>(_T("ipo"));
+			if (s.size() > 0) pStock->SetIPODate(s.c_str());
+		}
+		catch (ptree_error& e) {
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e);
+			return false; // 出现错误则返回任务失败
+		}
+		return true;
 	}
-	if (!pWebData->CreatePTree(pt)) return false;
-	try {
-		s = pt.get<string>(_T("ticker"));
-		if (s.size() > 0) pStock->SetTicker(s.c_str());
-		s = pt.get<string>(_T("country"));
-		if (s.size() > 0) pStock->SetCountry(s.c_str());
-		s = pt.get<string>(_T("currency"));
-		if (s.size() > 0) pStock->SetCurrency(s.c_str());
-		s = pt.get<string>(_T("exchange"));
-		if (s.size() > 0) pStock->SetListedExchange(s.c_str());
-		s = pt.get<string>(_T("name"));
-		if (s.size() > 0) pStock->SetName(s.c_str());
-		s = pt.get<string>(_T("finnhubIndustry"));
-		if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
-		s = pt.get<string>(_T("logo"));
-		if (s.size() > 0) pStock->SetLogo(s.c_str());
-		s = pt.get<string>(_T("marketCapitalization"));
-		if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
-		s = pt.get<string>(_T("phone"));
-		if (s.size() > 0) pStock->SetPhone(s.c_str());
-		if (s.size() > 0) pStock->SetShareOutstanding(pt.get<double>(_T("shareOutstanding")));
-		s = pt.get<string>(_T("weburl"));
-		if (s.size() > 0) pStock->SetWebURL(s.c_str());
-		s = pt.get<string>(_T("ipo"));
-		if (s.size() > 0) pStock->SetIPODate(s.c_str());
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e);
-		return false; // 出现错误则返回任务失败
-	}
-	return true;
+	return false;
 }

@@ -91,6 +91,8 @@ namespace StockAnalysisTest {
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -118,8 +120,6 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			strMessage = _T("Finnhub Forex日线为无效JSon数据");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -180,6 +180,8 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubForexDayLine.SetIndex(0);
 		}
@@ -211,16 +213,14 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			strMessage = _T("Finnhub Forex日线为无效JSon数据");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: // s项报告not ok
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		case 3: // s项报告 no data
 			EXPECT_FALSE(fSucceed);

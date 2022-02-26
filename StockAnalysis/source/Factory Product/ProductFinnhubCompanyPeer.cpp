@@ -45,25 +45,20 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 	CString strPeer = _T("{}"); // 默认的空状态（没有竞争对手)
 	char buffer[1000]{};
 	int i = 0;
-	ptree pt;
 	string sError;
 
-	if (pWebData->GetBufferLength() <= 3) {
-		return strPeer; // 没有有效的同业竞争对手
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ASSERT(pWebData->GetBufferLength() < 1000);
+		for (i = 0; i < pWebData->GetBufferLength(); i++) {
+			buffer[i] = pWebData->GetData(i);
+		}
+		if (i > 200) {
+			buffer[200] = 0x000;
+		}
+		else {
+			buffer[pWebData->GetBufferLength()] = 0x000;
+		}
+		strPeer = buffer;
 	}
-	if (!pWebData->CreatePTree(pt)) return strPeer;
-
-	ASSERT(pWebData->GetBufferLength() < 1000);
-	for (i = 0; i < pWebData->GetBufferLength(); i++) {
-		buffer[i] = pWebData->GetData(i);
-	}
-	if (i > 200) {
-		buffer[200] = 0x000;
-	}
-	else {
-		buffer[pWebData->GetBufferLength()] = 0x000;
-	}
-	strPeer = buffer;
-
 	return strPeer;
 }

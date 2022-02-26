@@ -68,6 +68,7 @@ public:
 };
 
 bool ConvertToJSON(ptree& pt, string& s);
+bool ConvertToJSON(shared_ptr<ptree>& ppt, string& s);
 bool ConvertToWJSON(wptree& pt, string& s); // 此函数用于解析带中文字符的json
 wstring to_wide_string(const string& input);
 string to_byte_string(const wstring& input);

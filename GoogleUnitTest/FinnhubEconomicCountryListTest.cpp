@@ -67,6 +67,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvCountry = nullptr;
 		}
 		virtual void TearDown(void) override {
@@ -124,6 +126,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}
 		virtual void TearDown(void) override {

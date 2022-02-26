@@ -65,6 +65,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvExchange = nullptr;
 		}
 		virtual void TearDown(void) override {
@@ -109,6 +111,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket.get());
 			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";

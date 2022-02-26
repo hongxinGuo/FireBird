@@ -75,6 +75,8 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvStock = nullptr;
 		}
 		virtual void TearDown(void) override {
@@ -123,6 +125,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)

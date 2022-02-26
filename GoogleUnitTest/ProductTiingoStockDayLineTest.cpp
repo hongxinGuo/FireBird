@@ -90,6 +90,8 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 		}
 
 		virtual void TearDown(void) override {
@@ -116,8 +118,7 @@ namespace StockAnalysisTest {
 		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			strMessage = _T("日线为无效JSon数据\n");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 2: //
 			EXPECT_EQ(pvDayLine->size(), 0);
@@ -162,6 +163,8 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockPriceCandle.SetIndex(0);
 		}
@@ -198,8 +201,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
-			strMessage = _T("日线为无效JSon数据\n");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 2: //
 			EXPECT_FALSE(fSucceed);

@@ -84,10 +84,11 @@ namespace StockAnalysisTest {
 		m_VirtualWebInquiry.SetInquiryingStringSuffix(_T(""));
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestTransferReceivedDataToWebData) {
+	TEST_F(CVirtualWebInquiryTest, TestTransferReceivedDataToWebDataAndParseItIfNeeded) {
 		CString str = _T("abcdefghijklmnop");
 		m_VirtualWebInquiry.__TESTSetBuffer(str);
-		CWebDataPtr p = m_VirtualWebInquiry.TransferReceivedDataToWebData();
+		CWebDataPtr p = m_VirtualWebInquiry.TransferReceivedDataToWebDataAndParseItIfNeeded();
+		EXPECT_FALSE(p->IsJSonContentType());
 		EXPECT_EQ(p->GetBufferLength(), str.GetLength());
 		char buffer[30];
 		int i = 0;

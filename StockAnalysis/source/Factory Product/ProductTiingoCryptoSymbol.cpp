@@ -58,34 +58,36 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	CTiingoCryptoVectorPtr pvTiingoCrypto = make_shared<vector<CTiingoCryptoSymbolPtr>>();
 	CString strNULL = _T(" ");
 	CTiingoCryptoSymbolPtr pTiingoCrypto = nullptr;
-	ptree pt, pt2;
+	ptree pt2;
 	string s;
 	int iCount = 0;
 	CString str, strNumber;
+	shared_ptr<ptree> ppt;
 
-	if (!pWebData->CreatePTree(pt)) return pvTiingoCrypto;
-	try {
-		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("ticker"));
-			pTiingoCrypto->m_strTicker = s.c_str();
-			s = pt2.get<string>(_T("name"));
-			if (s.size() > 0) pTiingoCrypto->m_strName = s.c_str();
-			s = pt2.get<string>(_T("description"));
-			if (s.size() > 0) pTiingoCrypto->m_strDescription = s.c_str();
-			s = pt2.get<string>(_T("baseCurrency"));
-			if (s.size() > 0) pTiingoCrypto->m_strBaseCurrency = s.c_str();
-			s = pt2.get<string>(_T("quoteCurrency"));
-			pTiingoCrypto->m_strQuoteCurrency = s.c_str();
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ppt = pWebData->GetPTree();
+		try {
+			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+				pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
+				pt2 = it->second;
+				s = pt2.get<string>(_T("ticker"));
+				pTiingoCrypto->m_strTicker = s.c_str();
+				s = pt2.get<string>(_T("name"));
+				if (s.size() > 0) pTiingoCrypto->m_strName = s.c_str();
+				s = pt2.get<string>(_T("description"));
+				if (s.size() > 0) pTiingoCrypto->m_strDescription = s.c_str();
+				s = pt2.get<string>(_T("baseCurrency"));
+				if (s.size() > 0) pTiingoCrypto->m_strBaseCurrency = s.c_str();
+				s = pt2.get<string>(_T("quoteCurrency"));
+				pTiingoCrypto->m_strQuoteCurrency = s.c_str();
 
-			pvTiingoCrypto->push_back(pTiingoCrypto);
-			iCount++;
+				pvTiingoCrypto->push_back(pTiingoCrypto);
+				iCount++;
+			}
+		}
+		catch (ptree_error& e) {
+			ReportJSonErrorToSystemMessage(_T("Tiingo Crypto Symbol "), e);
 		}
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto Symbol "), e);
-	}
-
 	return pvTiingoCrypto;
 }

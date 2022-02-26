@@ -86,6 +86,8 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockDayLine.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
@@ -124,8 +126,6 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			strMessage = _T("Finnhub Forex日线为无效JSon数据");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());

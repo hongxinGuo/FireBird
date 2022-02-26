@@ -47,31 +47,31 @@ bool CProductFinnhubStockPriceQuote::ProcessWebData(CWebDataPtr pWebData) {
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
-	ptree pt;
 	double dTemp = 0;
 	time_t tt = 0;
+	shared_ptr<ptree> ppt;
 
-	if (!pWebData->CreatePTree(pt)) {
-		return false;
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ppt = pWebData->GetPTree();
+		try {
+			dTemp = ppt->get<double>(_T("c"));
+			pStock->SetNew(dTemp * 1000);
+			dTemp = ppt->get<double>(_T("h"));
+			pStock->SetHigh(dTemp * 1000);
+			dTemp = ppt->get<double>(_T("l"));
+			pStock->SetLow(dTemp * 1000);
+			dTemp = ppt->get<double>(_T("o"));
+			pStock->SetOpen(dTemp * 1000);
+			dTemp = ppt->get<double>(_T("pc"));
+			pStock->SetLastClose(dTemp * 1000);
+			tt = ppt->get<time_t>(_T("t"));
+			pStock->SetTransactionTime(tt);
+		}
+		catch (ptree_error& e) { // 数据格式不对，跳过。
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
+			return false;
+		}
+		return true;
 	}
-	try {
-		dTemp = pt.get<double>(_T("c"));
-		pStock->SetNew(dTemp * 1000);
-		dTemp = pt.get<double>(_T("h"));
-		pStock->SetHigh(dTemp * 1000);
-		dTemp = pt.get<double>(_T("l"));
-		pStock->SetLow(dTemp * 1000);
-		dTemp = pt.get<double>(_T("o"));
-		pStock->SetOpen(dTemp * 1000);
-		dTemp = pt.get<double>(_T("pc"));
-		pStock->SetLastClose(dTemp * 1000);
-		tt = pt.get<time_t>(_T("t"));
-		pStock->SetTransactionTime(tt);
-	}
-	catch (ptree_error& e) { // 数据格式不对，跳过。
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
-		return false;
-	}
-
-	return true;
+	return false;
 }

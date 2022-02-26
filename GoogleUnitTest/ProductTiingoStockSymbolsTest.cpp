@@ -70,6 +70,8 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -149,6 +151,8 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockSymbolProduct.SetIndex(0);
 			gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);

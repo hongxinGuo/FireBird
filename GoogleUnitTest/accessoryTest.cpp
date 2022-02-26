@@ -272,8 +272,20 @@ namespace StockAnalysisTest {
 		ptree pt;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
 		EXPECT_TRUE(ConvertToJSON(pt, s));
+		string sSubscribe = pt.get<string>(_T("eventName"));
+		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
 		EXPECT_FALSE(ConvertToJSON(pt, s));
+	}
+
+	TEST_F(AccessoryTest, TestConvertToJson2) {
+		shared_ptr<ptree> ppt = make_shared<ptree>();
+		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
+		EXPECT_TRUE(ConvertToJSON(ppt, s));
+		string sSubscribe = ppt->get<string>(_T("eventName"));
+		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
+		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
+		EXPECT_FALSE(ConvertToJSON(ppt, s));
 	}
 
 	TEST_F(AccessoryTest, TestFormatToMK) {

@@ -70,6 +70,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_pvCryptoSymbol = nullptr;
 		}
 		virtual void TearDown(void) override {
@@ -121,6 +123,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCryptoSymbolProduct.SetIndex(0);
 		}

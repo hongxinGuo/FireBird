@@ -9,6 +9,9 @@ CWebData::CWebData() : CObject() {
 	m_sDataBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
 	m_lBufferLength = 1024 * 1024;
 	m_lCurrentPos = 0;
+
+	m_fJSonContentType = false;
+	m_ppt = make_shared<ptree>();
 }
 
 CWebData::~CWebData() {
@@ -49,7 +52,16 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 bool CWebData::CreatePTree(ptree& pt, long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	return ConvertToJSON(pt, m_sDataBuffer);
+	m_fSucceedCreatePTree = ConvertToJSON(pt, m_sDataBuffer);
+	return m_fSucceedCreatePTree;
+}
+
+bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
+{
+	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
+	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
+	m_fSucceedCreatePTree = ConvertToJSON(m_ppt, m_sDataBuffer);
+	return m_fSucceedCreatePTree;
 }
 
 void CWebData::__TEST_SetBuffer__(CString strBuffer) {

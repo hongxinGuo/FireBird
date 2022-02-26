@@ -40,23 +40,25 @@ bool CProductFinnhubForexExchange::ProcessWebData(CWebDataPtr pWebData) {
 
 shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(CWebDataPtr pWebData) {
 	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
-	ptree pt, pt2;
+	ptree pt2;
 	string s;
 	CString str = _T("");
 	string sError;
+	shared_ptr<ptree> ppt;
 
-	if (!pWebData->CreatePTree(pt)) return pvExchange;
-
-	try {
-		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pt2 = it->second;
-			s = pt2.get_value<string>();
-			str = s.c_str();
-			pvExchange->push_back(str);
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ppt = pWebData->GetPTree();
+		try {
+			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+				pt2 = it->second;
+				s = pt2.get_value<string>();
+				str = s.c_str();
+				pvExchange->push_back(str);
+			}
 		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
+		catch (ptree_error& e) {
+			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
+		}
 	}
 	return pvExchange;
 }

@@ -38,34 +38,36 @@ bool CProductFinnhubEconomicCountryList::ProcessWebData(CWebDataPtr pWebData) {
 CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CWebDataPtr pWebData) {
 	CCountryVectorPtr pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
-	ptree pt, pt2;
+	ptree pt2;
 	string s;
+	shared_ptr<ptree> ppt;
 
-	if (!pWebData->CreatePTree(pt)) return pvCountry;
-
-	try {
-		for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-			pCountry = make_shared<CCountry>();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("code2"));
-			if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
-			s = pt2.get<string>(_T("code3"));
-			pCountry->m_strCode3 = s.c_str();
-			s = pt2.get<string>(_T("codeNo"));
-			pCountry->m_strCodeNo = s.c_str();
-			s = pt2.get<string>(_T("country"));
-			pCountry->m_strCountry = s.c_str();
-			s = pt2.get<string>(_T("currency"));
-			pCountry->m_strCurrency = s.c_str();
-			s = pt2.get<string>(_T("currencyCode"));
-			pCountry->m_strCurrencyCode = s.c_str();
-			pvCountry->push_back(pCountry);
+	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		ppt = pWebData->GetPTree();
+		try {
+			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+				pCountry = make_shared<CCountry>();
+				pt2 = it->second;
+				s = pt2.get<string>(_T("code2"));
+				if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
+				s = pt2.get<string>(_T("code3"));
+				pCountry->m_strCode3 = s.c_str();
+				s = pt2.get<string>(_T("codeNo"));
+				pCountry->m_strCodeNo = s.c_str();
+				s = pt2.get<string>(_T("country"));
+				pCountry->m_strCountry = s.c_str();
+				s = pt2.get<string>(_T("currency"));
+				pCountry->m_strCurrency = s.c_str();
+				s = pt2.get<string>(_T("currencyCode"));
+				pCountry->m_strCurrencyCode = s.c_str();
+				pvCountry->push_back(pCountry);
+			}
 		}
+		catch (ptree_error& e) {
+			ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e);
+			return pvCountry;
+		}
+		sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e);
-		return pvCountry;
-	}
-	sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
 	return pvCountry;
 }

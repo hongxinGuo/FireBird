@@ -454,6 +454,23 @@ bool ConvertToJSON(ptree& pt, string& s) {
 	return true;
 }
 
+bool ConvertToJSON(shared_ptr<ptree>& ppt, string& s) {
+	ASSERT(ppt != nullptr);
+	stringstream ss(s);
+	try {
+		read_json(ss, *ppt);
+	}
+	catch (ptree_error& e) {
+#ifndef _DEBUG
+		CString str = s.c_str();
+		str = str.Left(160);
+		ReportJSonErrorToSystemMessage(_T("JSon Reading Error ") + str + _T(" "), e);
+#endif
+		return false;
+}
+	return true;
+}
+
 bool ConvertToWJSON(wptree& pt, string& s) {
 	wstring ws = to_wide_string(s);
 	wstringstream ss(ws);

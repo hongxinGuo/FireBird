@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 	}
 
 	// 不足三个字符
-	FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("[]"));
+	FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("{}"));
 	// 格式不对(缺开始的‘[’），无法顺利Parser
 	FinnhubWebData finnhubWebData103(3, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 	// 格式不对
@@ -72,6 +72,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_strPeer = _T("");
 		}
 		virtual void TearDown(void) override {
@@ -121,6 +123,8 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
 		}

@@ -21,7 +21,7 @@ public:
 	virtual bool OpenFile(CString strInquiring);
 	virtual bool ReadWebData(void); // 网络实际读取函数
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
-	CWebDataPtr TransferReceivedDataToWebData(void);
+	CWebDataPtr TransferReceivedDataToWebDataAndParseItIfNeeded(void);
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
@@ -108,6 +108,7 @@ protected:
 	atomic_bool m_fWebError; // 读取网络数据时是否出现错误标识
 
 	bool m_fReportStatus; //
+	bool m_fFSonContentType;
 
 	long m_lShortestInquiringInterval; // 允许的最短查询间隔. 单位为毫秒。默认为1秒每次， 即1000.
 	INT64 m_lInquiringNumber; // 每次查询数量

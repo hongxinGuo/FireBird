@@ -54,8 +54,6 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
 	}
 
-	// 数据少于20个字符
-	FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"acoy\"}"));
 	// 格式不对(缺开始的‘{’），无法顺利Parser
 	FinnhubWebData finnhubWebData2(2, _T("AAPL"), _T("\"address\":\"contentious  selectively\",\"city\":\"slaughterer\",\"country\":\"miscuing\",\"currency\":\"inveigles\",\"cusip\":\"Grable's\",\"description\":\"crooked ng Odis tint's\",\"employeeTotal\":\"jalopies\",\"exchange\":\"sieves abominating cuff's hesitation's debilitating\",\"finnhubIndustry\":\"culottes\",\"ggroup\":\"Ziegler's tendrils\",\"gind\":\"prairies  catalysis\",\"gsector\":\"habituate Scandinavians\",\"gsubind\":\"checkout  cherished\",\"ipo\":\"1980-12-12\",\"isin\":\"rapport\",\"logo\":\"freelancer's\",\"marketCapitalization\":8790583.5,\"naics\":\"mishmAlisha\",\"naicsNationalIndustry\":\"pollen jay's flops\",\"naicsSector\":\"smuggest\",\"naicsSubsector\":\"apprenticeship's Kringle\",\"name\":\"impediment's gondolier\",\"phone\":\"shootout's\",\"sedol\":\"decrescendi\",\"shareOutstanding\":75546.432,\"state\":\"Tweedledee\",\"ticker\":\"AAPL\",\"weburl\":\"gestated\"}"));
 	// 数据缺乏address项
@@ -75,6 +73,8 @@ namespace StockAnalysisTest {
 			m_pStock->SetProfileUpdateDate(19700101);
 			m_pStock->SetCity(_T(""));
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
@@ -95,19 +95,13 @@ namespace StockAnalysisTest {
 		CProductFinnhubCompanyProfile m_finnhubCompanyProfile;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockProfile, ProcessFinnhubStockProfileTest, testing::Values(&finnhubWebData1, &finnhubWebData2,
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockProfile, ProcessFinnhubStockProfileTest, testing::Values(&finnhubWebData2,
 		&finnhubWebData3, &finnhubWebData10));
 
 	TEST_P(ProcessFinnhubStockProfileTest, TestProcessStockProfile0) {
 		bool fSucceed = false;
 		fSucceed = m_finnhubCompanyProfile.ProcessWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 少于20个字符
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsProfileUpdated());

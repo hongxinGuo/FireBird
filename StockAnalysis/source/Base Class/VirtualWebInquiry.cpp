@@ -26,6 +26,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
 
+	m_fFSonContentType = false;
+
 #ifdef DEBUG
 	m_fReportStatus = false;
 #else
@@ -88,6 +90,13 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			exception->Delete();
 		}
 	} while (!fDone);
+	if (fStatus) {
+		CString str;
+		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, str);
+		if (str.Find(_T("json")) >= 0) {
+			m_fFSonContentType = true;
+		}
+	}
 
 	return fStatus;
 }
@@ -151,13 +160,18 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	return uByteRead;
 }
 
-CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebData() {
+CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
 	m_vBuffer.resize(byteReaded);
 	pWebDataReceived->m_sDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
+	if (m_fFSonContentType) {
+		// 当网络数据格式为JSon时，在此处解析后生成ptree，这样能够减轻窗口线程的工作压力。
+		// 网易实时数据、新浪实时数据和腾讯实时数据不在此处解析。
+		pWebDataReceived->CreatePTree();
+		pWebDataReceived->SetJSonContentType(true);
+	}
 	m_vBuffer.resize(1024 * 1024); // 重新分配内存
-
 	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();
 	return pWebDataReceived;
@@ -231,7 +245,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 
 	pVirtualWebInquiry->PrepareReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
-		CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebData();
+		CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebDataAndParseItIfNeeded();
 		if (pWebData != nullptr) {
 			pVirtualWebInquiry->SetTime(pWebData);
 			pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);

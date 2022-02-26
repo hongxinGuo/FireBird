@@ -42,6 +42,7 @@ public:
 	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
+	string GetDataBuffer(void) noexcept { return m_sDataBuffer; }
 	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
 	bool GetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始拷贝
 	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
@@ -52,7 +53,13 @@ public:
 	char GetCurrentPosData(void) const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
+	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
+	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
+	bool IsSucceedCreatePTree(void) noexcept { return m_fSucceedCreatePTree; }
+
 	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
+	bool CreatePTree(long lBeginPos = 0, long lEndPos = 0);
+	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
 	// 测试用函数
 	void __TEST_SetBuffer__(CString strBuffer);
@@ -63,6 +70,10 @@ protected:
 	string m_sDataBuffer;
 	INT64 m_lBufferLength;
 	INT64 m_lCurrentPos;
+
+	bool m_fJSonContentType;
+	bool m_fSucceedCreatePTree;
+	shared_ptr<ptree> m_ppt;
 };
 
 typedef shared_ptr<CWebData> CWebDataPtr;

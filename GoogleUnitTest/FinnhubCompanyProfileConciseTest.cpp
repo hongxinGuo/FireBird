@@ -53,8 +53,6 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
 	}
 
-	// 数据少于30个字符
-	FinnhubWebData finnhubWebData11(1, _T("AAPL"), _T("{\"acoy\"}"));
 	// 格式不对(缺开始的‘{’），无法顺利Parser
 	FinnhubWebData finnhubWebData12(2, _T("AAPL"), _T("\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 	// 数据缺乏country项
@@ -72,6 +70,8 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
 			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket.get());
 			m_FinnhubCompanyProfileConcise.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
@@ -92,19 +92,13 @@ namespace StockAnalysisTest {
 		CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData11, &finnhubWebData12,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData12,
 		&finnhubWebData13, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
 		fSucceed = m_FinnhubCompanyProfileConcise.ProcessWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 少于20个字符
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsProfileUpdated());
