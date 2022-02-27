@@ -108,7 +108,8 @@ protected:
 	atomic_bool m_fWebError; // 读取网络数据时是否出现错误标识
 
 	bool m_fReportStatus; //
-	bool m_fFSonContentType;
+	bool m_fFSonContentType; // 数据格式是否为JSon
+	long m_lContentLength; // 数据长度
 
 	long m_lShortestInquiringInterval; // 允许的最短查询间隔. 单位为毫秒。默认为1秒每次， 即1000.
 	INT64 m_lInquiringNumber; // 每次查询数量

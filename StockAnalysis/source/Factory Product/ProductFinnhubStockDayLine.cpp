@@ -79,7 +79,9 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	string sError;
 	shared_ptr<ptree> ppt;
 
+	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		if (pWebData->IsVoidJSon()) return pvDayLine;
 		ppt = pWebData->GetPTree();
 		try {
 			s = ppt->get<string>(_T("s"));

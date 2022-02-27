@@ -47,8 +47,9 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 	int i = 0;
 	string sError;
 
+	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
-		ASSERT(pWebData->GetBufferLength() < 1000);
+		if (pWebData->IsVoidJSon()) return strPeer;
 		for (i = 0; i < pWebData->GetBufferLength(); i++) {
 			buffer[i] = pWebData->GetData(i);
 		}

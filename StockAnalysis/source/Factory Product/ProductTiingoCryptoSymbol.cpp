@@ -64,7 +64,9 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	CString str, strNumber;
 	shared_ptr<ptree> ppt;
 
+	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		if (pWebData->IsVoidJSon()) return pvTiingoCrypto;
 		ppt = pWebData->GetPTree();
 		try {
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

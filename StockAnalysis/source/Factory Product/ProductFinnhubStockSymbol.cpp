@@ -75,7 +75,9 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	string s, sError;
 	shared_ptr<ptree> ppt;
 
+	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		if (pWebData->IsVoidJSon()) return pvStock;
 		ppt = pWebData->GetPTree();
 		try {
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

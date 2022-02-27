@@ -42,7 +42,9 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	string s;
 	shared_ptr<ptree> ppt;
 
+	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+		if (pWebData->IsVoidJSon()) return pvEconomicCalendar;
 		ppt = pWebData->GetPTree();
 		try {
 			pt1 = ppt->get_child(_T("economicCalendar"));

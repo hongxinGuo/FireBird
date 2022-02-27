@@ -56,6 +56,7 @@ public:
 	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
 	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
 	bool IsSucceedCreatePTree(void) noexcept { return m_fSucceedCreatePTree; }
+	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 
 	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
 	bool CreatePTree(long lBeginPos = 0, long lEndPos = 0);

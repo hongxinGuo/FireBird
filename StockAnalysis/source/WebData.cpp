@@ -11,6 +11,7 @@ CWebData::CWebData() : CObject() {
 	m_lCurrentPos = 0;
 
 	m_fJSonContentType = false;
+	m_fSucceedCreatePTree = false;
 	m_ppt = make_shared<ptree>();
 }
 

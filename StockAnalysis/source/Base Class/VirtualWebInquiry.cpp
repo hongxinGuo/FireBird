@@ -28,6 +28,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 
 	m_fFSonContentType = false;
 
+	m_lContentLength = -1;
+
 #ifdef DEBUG
 	m_fReportStatus = false;
 #else
@@ -93,8 +95,12 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	if (fStatus) {
 		CString str;
 		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, str);
-		if (str.Find(_T("json")) >= 0) {
+		if (str.Find(_T("application/json")) >= 0) {
 			m_fFSonContentType = true;
+		}
+		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+		if (str.GetLength() > 0) {
+			m_lContentLength = atol(str.GetBuffer());
 		}
 	}
 
@@ -163,6 +169,9 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded() {
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
+	if (m_lContentLength > 0) {
+		ASSERT(m_lContentLength == byteReaded);
+	}
 	m_vBuffer.resize(byteReaded);
 	pWebDataReceived->m_sDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
 	if (m_fFSonContentType) {
