@@ -132,7 +132,9 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine "), e);
+			CString str3 = pWebData->GetDataBuffer().c_str();
+			str3 = str3.Left(120);
+			ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e);
 			return pvDayLine; // 数据解析出错的话，则放弃。
 		}
 		sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。

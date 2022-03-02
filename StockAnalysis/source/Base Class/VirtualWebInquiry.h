@@ -50,8 +50,8 @@ public:
 	CString GetHeaders(void) { return m_strHeaders; }
 	void SetHeaders(CString strHeaders) { m_strHeaders = strHeaders; }
 
-	char GetData(long lIndex) const { return m_vBuffer.at(lIndex); }
-	void SetData(long lIndex, char value) { m_vBuffer.at(lIndex) = value; }
+	char GetData(long lIndex) const { return m_sBuffer.at(lIndex); }
+	void SetData(long lIndex, char value) { m_sBuffer.at(lIndex) = value; }
 
 	INT64 GetByteReaded(void) const noexcept { return m_lByteRead; }
 	void SetByteReaded(INT64 lValue) noexcept { m_lByteRead = lValue; }
@@ -97,7 +97,7 @@ protected:
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 	DWORD m_dwWebErrorCode; //网络读取错误代码
 	CString m_strInquire;// 查询所需的字符串
-	string m_vBuffer; // 接收到数据的缓冲区
+	string m_sBuffer; // 接收到数据的缓冲区
 	INT64 m_lByteRead; // 接收到的字符数.
 
 	CString m_strWebDataInquireMiddle; // 查询字符串中间字段

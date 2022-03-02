@@ -656,9 +656,9 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	static int s_iCountDownProcessWebRTData = 0;
-	static int s_iCount1Hour = 3599;
-	static int s_iCount5Minute = 299;
-	static int s_iCount1Minute = 59;
+	static int s_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	static int s_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
+	static int s_iCount1Minute = 58; // 与10秒每次的错开1秒钟
 	static int s_iCount10Second = 9;
 
 	s_iCount10Second -= lSecond;

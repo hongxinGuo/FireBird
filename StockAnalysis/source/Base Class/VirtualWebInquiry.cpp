@@ -20,7 +20,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_strInquire = _T("");
 	m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
-	m_vBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
+	m_sBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
 	m_lShortestInquiringInterval = 1000; // 每1秒查询一次。
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -132,11 +132,11 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 				break;
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-			if (m_vBuffer.size() < (m_lByteRead + 16 * 1024)) { // 数据可存储空间不到16K时
-				m_vBuffer.resize(m_vBuffer.size() + 1024 * 1024); // 扩大1M数据范围
+			if (m_sBuffer.size() < (m_lByteRead + 16 * 1024)) { // 数据可存储空间不到16K时
+				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
 			}
 		} while (lCurrentByteReaded > 0);
-		ASSERT(m_vBuffer.size() > m_lByteRead);
+		ASSERT(m_sBuffer.size() > m_lByteRead);
 		m_lTotalByteReaded += m_lByteRead;
 		if (m_pFile != nullptr) {
 			m_pFile->Close();
@@ -161,7 +161,7 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	char buffer[1024];
 	const UINT uByteRead = m_pFile->Read(buffer, 1024);
 	for (int i = 0; i < uByteRead; i++) {
-		m_vBuffer.at(m_lByteRead++) = buffer[i];
+		m_sBuffer.at(m_lByteRead++) = buffer[i];
 	}
 	return uByteRead;
 }
@@ -170,17 +170,17 @@ CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded(
 	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 	auto byteReaded = GetByteReaded();
 	if (m_lContentLength > 0) {
-		ASSERT(m_lContentLength == byteReaded);
+		if (m_lContentLength != byteReaded) gl_systemMessage.PushErrorMessage(_T("网络数据长度不符：") + m_strInquire.Left(120));
 	}
-	m_vBuffer.resize(byteReaded);
-	pWebDataReceived->m_sDataBuffer = std::move(m_vBuffer); // 使用std::move以加速执行速度
+	m_sBuffer.resize(byteReaded);
+	pWebDataReceived->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	if (m_fFSonContentType) {
 		// 当网络数据格式为JSon时，在此处解析后生成ptree，这样能够减轻窗口线程的工作压力。
-		// 网易实时数据、新浪实时数据和腾讯实时数据不在此处解析。
+		// 网易实时数据、新浪实时数据和腾讯实时数据不是JSon格式，不在此处解析。
 		pWebDataReceived->CreatePTree();
 		pWebDataReceived->SetJSonContentType(true);
 	}
-	m_vBuffer.resize(1024 * 1024); // 重新分配内存
+	m_sBuffer.resize(1024 * 1024); // 重新分配内存
 	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();
 	return pWebDataReceived;
@@ -222,11 +222,11 @@ void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
-	if (m_vBuffer.size() < (lTotalNumber + 128 * 1024)) {
-		m_vBuffer.resize(lTotalNumber + 128 * 1024);
+	if (m_sBuffer.size() < (lTotalNumber + 128 * 1024)) {
+		m_sBuffer.resize(lTotalNumber + 128 * 1024);
 	}
 	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_vBuffer.at(i) = buffer[i];
+		m_sBuffer.at(i) = buffer[i];
 	}
 	m_lByteRead = lTotalNumber;
 }
@@ -234,11 +234,11 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	INT64 lTotalNumber = str.GetLength();
 	char* buffer = str.GetBuffer();
-	if (m_vBuffer.size() < (lTotalNumber + 128 * 1024)) {
-		m_vBuffer.resize(lTotalNumber + 128 * 1024);
+	if (m_sBuffer.size() < (lTotalNumber + 128 * 1024)) {
+		m_sBuffer.resize(lTotalNumber + 128 * 1024);
 	}
 	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_vBuffer.at(i) = buffer[i];
+		m_sBuffer.at(i) = buffer[i];
 	}
 	m_lByteRead = lTotalNumber;
 }
