@@ -27,6 +27,14 @@ void CDataChinaStock::Reset(void) {
 	m_lTengxunRTDataInquiringIndex = 0;
 }
 
+long CDataChinaStock::GetActiveStockSize(void) {
+	long lTotalActiveStock = 0;
+	for (auto& pStock : m_vStock) {
+		if (pStock->IsActive()) lTotalActiveStock++;
+	}
+	return lTotalActiveStock;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //		判断strStockCode是否为沪深A股主板的股票代码。

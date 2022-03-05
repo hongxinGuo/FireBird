@@ -13,6 +13,11 @@ using namespace std;
 class CFinnhubCryptoSymbol : public CVirtualStock {
 public:
 	CFinnhubCryptoSymbol();
+	// 不允许赋值。
+	CFinnhubCryptoSymbol(const CFinnhubCryptoSymbol&) = delete;
+	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&) = delete;
+	CFinnhubCryptoSymbol(const CFinnhubCryptoSymbol&&) noexcept = delete;
+	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&&) noexcept = delete;
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override final { return 1000; } // 比例为1000
 

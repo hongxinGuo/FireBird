@@ -16,6 +16,8 @@ CWebData::CWebData() : CObject() {
 }
 
 CWebData::~CWebData() {
+	m_sDataBuffer.resize(0);
+	m_ppt = nullptr;
 }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {

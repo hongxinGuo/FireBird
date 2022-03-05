@@ -538,7 +538,7 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(6, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
-	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetTotalStock());
+	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetTotalActiveStock());
 	str = buffer;
 	SysCallSetPaneText(7, (LPCTSTR)str);
 

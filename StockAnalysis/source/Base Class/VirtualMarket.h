@@ -7,6 +7,11 @@ class CVirtualMarket : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualMarket)
 	CVirtualMarket(void);
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CVirtualMarket(const CVirtualMarket&) = delete;
+	CVirtualMarket& operator=(const CVirtualMarket&) = delete;
+	CVirtualMarket(const CVirtualMarket&&) noexcept = delete;
+	CVirtualMarket& operator=(const CVirtualMarket&&) noexcept = delete;
 	virtual ~CVirtualMarket(void);
 
 #ifdef _DEBUG

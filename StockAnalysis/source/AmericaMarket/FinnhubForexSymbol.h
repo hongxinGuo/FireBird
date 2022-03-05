@@ -12,6 +12,11 @@ using namespace std;
 class CFinnhubForexSymbol : public CVirtualStock {
 public:
 	CFinnhubForexSymbol();
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CFinnhubForexSymbol(const CFinnhubForexSymbol&) = delete;
+	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&) = delete;
+	CFinnhubForexSymbol(const CFinnhubForexSymbol&&) noexcept = delete;
+	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&&) noexcept = delete;
 	virtual void Reset(void);
 	virtual int GetRatio(void) const override final { return 1000; }
 

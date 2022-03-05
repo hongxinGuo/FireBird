@@ -17,14 +17,26 @@
 
 #include"Parse.h"
 
+using namespace std;
+#include<chrono>
+
 UINT ThreadChinaMarketBackground(void) {
+	LARGE_INTEGER startTime, endTime;
+	static INT64 s_MaxNumber = 0;
 	gl_ThreadStatus.SetChinaMarketBackground(true);
 	while (!gl_fExitingSystem) {
-		// 此三个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
+		QueryPerformanceCounter(&startTime);
+		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
+		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseWebRTDataGetFromSinaServer(); // 解析新浪实时数据
 		ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
 		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
+		QueryPerformanceCounter(&endTime);
+		INT64 iDiff = endTime.QuadPart - startTime.QuadPart;
+		if (iDiff > s_MaxNumber) {
+			s_MaxNumber = iDiff; // 存储最大值
+		}
 		Sleep(50); // 最少间隔50ms
 	}
 	gl_ThreadStatus.SetChinaMarketBackground(false);
@@ -81,6 +93,7 @@ bool ParseWebRTDataGetFromSinaServer(void) {
 		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
 		pWebDataReceived->ResetCurrentPos();
 		while (!pWebDataReceived->IsProcessedAllTheData()) {
+			if (gl_fExitingSystem) return fSucceed;
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadSinaData(pWebDataReceived)) {
 				llTotal++;
@@ -88,11 +101,14 @@ bool ParseWebRTDataGetFromSinaServer(void) {
 			}
 			else {
 				fSucceed = false;
+				gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
 				break;  // 后面的数据出问题，抛掉不用。
 			}
 		}
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
+	pWebDataReceived = nullptr;
+
 	return fSucceed;
 }
 
@@ -123,17 +139,24 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+				if (gl_fExitingSystem) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 				if (pRTData->ReadNeteaseData(it)) {
 					llTotal++;
 					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
 				}
-				else break;
+				else {
+					gl_systemMessage.PushErrorMessage(_T("网易实时数据解析返回失败信息"));
+				}
 			}
+		}
+		else {
+			gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 		}
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
+	pWebDataReceived = nullptr;
 
 	return true;
 }
@@ -226,6 +249,7 @@ bool ParseWebRTDataGetFromTengxunServer(void) {
 		pWebDataReceived->ResetCurrentPos();
 		if (!IsTengxunRTDataInvalid(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 			while (!pWebDataReceived->IsProcessedAllTheData()) {
+				if (gl_fExitingSystem) return fSucceed;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				if (pRTData->ReadTengxunData(pWebDataReceived)) {
 					gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -237,6 +261,7 @@ bool ParseWebRTDataGetFromTengxunServer(void) {
 			}
 		}
 	}
+	pWebDataReceived = nullptr;
 
 	return fSucceed;
 }
@@ -254,11 +279,14 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 	CWebDataPtr pWebData = nullptr;
 
 	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
+		if (gl_fExitingSystem) return true;
 		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
 		pData = make_shared<CNeteaseDayLineWebData>();
 		pData->TransferWebDataToBuffer(pWebData);
 		pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
 		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 	}
+	pWebData = nullptr;
+
 	return true;
 }

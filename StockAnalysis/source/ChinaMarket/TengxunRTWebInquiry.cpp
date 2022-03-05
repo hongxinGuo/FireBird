@@ -31,7 +31,7 @@ bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 	return true;
 }
 
-CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
+CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }

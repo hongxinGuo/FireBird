@@ -19,6 +19,11 @@ using namespace std;
 class CWorldStock : public CVirtualStock {
 public:
 	CWorldStock();
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CWorldStock(const CWorldStock&) = delete;
+	CWorldStock& operator=(const CWorldStock&) = delete;
+	CWorldStock(const CWorldStock&&) noexcept = delete;
+	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
 	virtual ~CWorldStock();
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }

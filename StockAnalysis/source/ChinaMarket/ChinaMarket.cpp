@@ -75,7 +75,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	if (!gl_fExitingSystem) {
+	if (!gl_fExitingSystem) { // 此种情况为运行单元测试，此时没有设置gl_fExitingSystem
 		gl_fExitingSystem = true;
 		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
 		gl_fExitingSystem = false;
@@ -159,6 +159,8 @@ void CChinaMarket::Reset(void) {
 	m_iCountDownTengxunNumber = 5;
 
 	m_fUpdateChoicedStockDB = false;
+
+	m_lTotalActiveStock = 0;
 
 	m_pCurrentStock = nullptr;
 
@@ -471,8 +473,8 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock) {
-	if (fCheckActiveStock) {
+CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet) {
+	if (fUsingTotalStockSet) {
 		return GetNextSinaStockInquiringMiddleStrFromTotalStockSet(lTotalNumber);
 	}
 	else {
@@ -480,8 +482,8 @@ CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckAct
 	}
 }
 
-CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
-	if (fCheckActiveStock) {
+CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
+	if (fUsingTotalStockSet) {
 		return GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(lTotalNumber);
 	}
 	else {
@@ -690,8 +692,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		TaskChoice10RSStrong2StockSet(lCurrentTime);
 	}
 
-	// 判断是否开始正常收集数据
-	TaskCheckStartReceivingData(lCurrentTime);
+	// 判断是否开始快速收集数据
+	TaskCheckFastReceivingData(lCurrentTime);
 	// 判断中国股票市场开市状态
 	TaskCheckMarketOpen(lCurrentTime);
 
@@ -704,15 +706,15 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 
 		TaskProcessTengxunRTData();
 
-		TaskDiscardNeteaseRTData();
-		TaskDiscardSinaRTData();
-		TaskDiscardTengxunRTData();
+		//TaskDiscardNeteaseRTData();
+		//TaskDiscardSinaRTData();
+		//TaskDiscardTengxunRTData();
 		s_iCountDownProcessWebRTData = 0;
 	}
 	else s_iCountDownProcessWebRTData--;
 
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-	// 此计算任务要在DistributeRTDataReceivedFromWebToProperStock之后执行，以防止出现同步问题。
+	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDitributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
 	if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) {
 		if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
@@ -883,9 +885,9 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 	return false;
 }
 
-bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
+bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
 	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-		m_fFastReceivingRTData = false;
+		m_fFastReceivingRTData = true;
 		return(m_fFastReceivingRTData);
 	}
 	else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
@@ -1023,6 +1025,10 @@ bool CChinaMarket::TaskSaveStockSection(void) {
 	return true;
 }
 
+void CChinaMarket::TaskGetActiveStockSize(void) {
+	m_lTotalActiveStock = m_dataChinaStock.GetActiveStockSize();
+}
+
 bool CChinaMarket::ChangeDayLineStockCodeToStandred(void) {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -1052,6 +1058,9 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 		m_fSaveDayLine = true;
 		TaskSaveDayLineData();
 	}
+
+	TaskGetActiveStockSize();
+
 	return true;
 }
 

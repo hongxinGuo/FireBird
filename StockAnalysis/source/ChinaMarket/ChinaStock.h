@@ -49,6 +49,11 @@ typedef shared_ptr<CChinaStock> CChinaStockPtr;
 class CChinaStock : public CVirtualStock {
 public:
 	CChinaStock(void);
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CChinaStock(const CChinaStock&) = delete;
+	CChinaStock& operator=(const CChinaStock&) = delete;
+	CChinaStock(const CChinaStock&&) noexcept = delete;
+	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
 	virtual ~CChinaStock(void);
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }

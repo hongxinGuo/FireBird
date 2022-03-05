@@ -45,8 +45,8 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
 // 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock) {
-	return gl_pChinaMarket->GetSinaStockInquiringStr(lTotalNumber, fCheckActiveStock);
+CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
+	return gl_pChinaMarket->GetSinaStockInquiringStr(lTotalNumber, fUsingTotalStockSet);
 }
 
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {

@@ -14,7 +14,8 @@ public:
 	void Reset(void);
 
 	long GetIndex(CString strSymbol) { return m_mapStock.at(strSymbol); }
-	size_t GetStockSize(void) noexcept { return m_vStock.size(); }
+	long GetStockSize(void) noexcept { return (long)m_vStock.size(); }
+	long GetActiveStockSize(void);
 	long GetLoadedStockSize(void) noexcept { return m_lLoadedStock; }
 	bool IsStock(CString strSymbol) { if (m_mapStock.find(strSymbol) == m_mapStock.end()) return false; else return true; }
 	bool IsAStock(CString strStockCode) const;

@@ -23,9 +23,13 @@ constexpr int c_10DaysRSStockSetStartPosition = 10; //  Æ»’œ‡∂‘«ø∂»π…∆±ºØ∆ ºŒª÷
 
 class CChinaMarket : public CVirtualMarket {
 public:
-	// ÷ªƒ‹”–“ª∏ˆ µ¿˝
 	DECLARE_DYNCREATE(CChinaMarket)
 	CChinaMarket(void);
+	// ÷ªƒ‹”–“ª∏ˆ µ¿˝,≤ª‘ –Ì∏≥÷µ°£
+	CChinaMarket(const CChinaMarket&) = delete;
+	CChinaMarket& operator=(const CChinaMarket&) = delete;
+	CChinaMarket(const CChinaMarket&&) noexcept = delete;
+	CChinaMarket& operator=(const CChinaMarket&&) noexcept = delete;
 	virtual ~CChinaMarket(void);
 	virtual void ResetMarket(void) override final;
 	void Reset(void);
@@ -58,7 +62,7 @@ public:
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 	bool TaskCheckDayLineDB(void);
-	bool TaskCheckStartReceivingData(long lCurrentTime);
+	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
 	bool TaskResetMarketAgain(long lCurrentTime);
@@ -73,6 +77,8 @@ public:
 	bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
 	bool TaskSaveStockSection(void); //
+
+	void TaskGetActiveStockSize(void);
 
 	//¥¶¿Ì∏ˆπ…∆±µƒ µ ± ˝æ›£¨º∆À„π“µ•±‰ªØµ»°£”…π§◊˜œﬂ≥ÃThreadCalculatingRTDataProcµ˜”√°£
 	bool TaskProcessRTData(void) { return m_dataChinaStock.TaskProcessRTData(); }
@@ -107,8 +113,8 @@ public:
 	// ≥ı ºªØ –≥°
 
 	//  µ ± ˝æ›∂¡»°
-	CString GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock);
-	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fCheckActiveStock);
+	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
+	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString	GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
 	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
@@ -287,6 +293,7 @@ public:
 	void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
 	long GetTotalStock(void) noexcept { return m_dataChinaStock.GetStockSize(); }
+	long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
 	long GetTotalLoadedStock(void) noexcept { return m_dataChinaStock.GetLoadedStockSize(); }
 	void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
 	time_t GetNewestTransactionTime(void) const noexcept { return m_ttNewestTransactionTime; }
@@ -434,6 +441,7 @@ protected:
 	int m_iTodayStockProcessed; // ΩÒ»’ «∑Ò÷¥––¡Àπ…∆± ’≈Ã.0:…–Œ¥÷¥––£ª1£∫’˝‘⁄÷¥––÷–£ª2£∫“—÷¥––ÕÍ°£
 	bool m_fCheckActiveStock; //  «∑Ò≤È—ØΩÒ»’ªÓ‘æπ…∆±¥˙¬Î
 	bool m_fTodayTempDataLoaded; //ΩÒ»’‘›¥Êµƒ¡Ÿ ± ˝æ› «∑Òº”‘ÿ±Í ∂°£
+	long m_lTotalActiveStock;
 
 	// ∂‡œﬂ≥Ã∂¡»°÷Æ±‰¡ø
 	clock_t m_ReadingTengxunRTDataTime; // √ø¥Œ∂¡»°Ã⁄—∂ µ ± ˝æ›µƒ ±º‰

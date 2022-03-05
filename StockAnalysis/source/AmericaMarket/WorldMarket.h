@@ -41,6 +41,11 @@ class CWorldMarket : public CVirtualMarket {
 public:
 	DECLARE_DYNCREATE(CWorldMarket)
 	CWorldMarket();
+	// 只能有一个实例,不允许赋值。
+	CWorldMarket(const CWorldMarket&) = delete;
+	CWorldMarket& operator=(const CWorldMarket&) = delete;
+	CWorldMarket(const CWorldMarket&&) noexcept = delete;
+	CWorldMarket& operator=(const CWorldMarket&&) noexcept = delete;
 	virtual ~CWorldMarket();
 	virtual void ResetMarket(void) override final;
 

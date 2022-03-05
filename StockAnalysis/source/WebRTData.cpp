@@ -35,45 +35,6 @@ void CWebRTData::Reset(void) {
 		m_lVSell.at(i) = 0;
 	}
 	m_fActive = false;
-
-	m_mapNeteaseSymbolToIndex[_T("time")] = 1;
-	m_mapNeteaseSymbolToIndex[_T("code")] = 2;
-	m_mapNeteaseSymbolToIndex[_T("name")] = 3;
-	m_mapNeteaseSymbolToIndex[_T("type")] = 4;
-	m_mapNeteaseSymbolToIndex[_T("symbol")] = 5;
-	m_mapNeteaseSymbolToIndex[_T("status")] = 6;
-	m_mapNeteaseSymbolToIndex[_T("update")] = 7;
-	m_mapNeteaseSymbolToIndex[_T("open")] = 10;
-	m_mapNeteaseSymbolToIndex[_T("yestclose")] = 11;
-	m_mapNeteaseSymbolToIndex[_T("high")] = 12;
-	m_mapNeteaseSymbolToIndex[_T("low")] = 13;
-	m_mapNeteaseSymbolToIndex[_T("price")] = 14;
-	m_mapNeteaseSymbolToIndex[_T("volume")] = 15;
-	m_mapNeteaseSymbolToIndex[_T("precloseioev")] = 16;
-	m_mapNeteaseSymbolToIndex[_T("bid1")] = 20;
-	m_mapNeteaseSymbolToIndex[_T("bid2")] = 21;
-	m_mapNeteaseSymbolToIndex[_T("bid3")] = 22;
-	m_mapNeteaseSymbolToIndex[_T("bid4")] = 23;
-	m_mapNeteaseSymbolToIndex[_T("bid5")] = 24;
-	m_mapNeteaseSymbolToIndex[_T("bidvol1")] = 30;
-	m_mapNeteaseSymbolToIndex[_T("bidvol2")] = 31;
-	m_mapNeteaseSymbolToIndex[_T("bidvol3")] = 32;
-	m_mapNeteaseSymbolToIndex[_T("bidvol4")] = 33;
-	m_mapNeteaseSymbolToIndex[_T("bidvol5")] = 34;
-	m_mapNeteaseSymbolToIndex[_T("ask1")] = 40;
-	m_mapNeteaseSymbolToIndex[_T("ask2")] = 41;
-	m_mapNeteaseSymbolToIndex[_T("ask3")] = 42;
-	m_mapNeteaseSymbolToIndex[_T("ask4")] = 43;
-	m_mapNeteaseSymbolToIndex[_T("ask5")] = 44;
-	m_mapNeteaseSymbolToIndex[_T("askvol1")] = 50;
-	m_mapNeteaseSymbolToIndex[_T("askvol2")] = 51;
-	m_mapNeteaseSymbolToIndex[_T("askvol3")] = 52;
-	m_mapNeteaseSymbolToIndex[_T("askvol4")] = 53;
-	m_mapNeteaseSymbolToIndex[_T("askvol5")] = 54;
-	m_mapNeteaseSymbolToIndex[_T("percent")] = 60;
-	m_mapNeteaseSymbolToIndex[_T("updown")] = 61;
-	m_mapNeteaseSymbolToIndex[_T("arrow")] = 62;
-	m_mapNeteaseSymbolToIndex[_T("turnover")] = 63;
 }
 
 CWebRTData::CWebRTData(void) : CObject() {

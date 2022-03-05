@@ -248,5 +248,4 @@ protected:
 
 // 非存储数据
 	bool m_fActive; // 本股票是否存在有效实时数据
-	map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
 };

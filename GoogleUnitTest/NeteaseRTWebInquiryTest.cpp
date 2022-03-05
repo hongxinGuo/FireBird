@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetConnectionName(), _T("NeteaseRT"));
 		EXPECT_THAT(m_NeteaseRTWebInquiry.GetShortestInquiringInterval(), 400) << "默认400毫秒查询一次";
-		EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 700) << _T("网易默认值");
+		EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 900) << _T("网易默认值");
 	}
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestGetWebData) {
