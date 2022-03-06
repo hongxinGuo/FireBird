@@ -54,21 +54,14 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(QuandlWebInquiry, ReadWebData())
 			.Times(1)
 			.WillOnce(Return(true));
-		QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
+		QuandlWebInquiry.__TESTSetBuffer(_T("{\"test\":\"testData\"}"));
 		QuandlWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
-		EXPECT_EQ(pWebData->GetBufferLength(), 8) << "testData字符串长度为8";
-		char buffer[30];
-		int i = 0;
-		while (i < pWebData->GetBufferLength()) {
-			buffer[i] = pWebData->GetData(i);
-			i++;
-		}
-		buffer[i] = 0x000;
-		CString str = buffer;
-		EXPECT_STREQ(str, _T("testData"));
+		EXPECT_EQ(pWebData->GetBufferLength(), 1024 * 1024) << "重置缓冲区大小为默认值";
+		EXPECT_TRUE(pWebData->IsSucceedCreatePTree());
+		EXPECT_TRUE(pWebData->IsJSonContentType());
 	}
 }

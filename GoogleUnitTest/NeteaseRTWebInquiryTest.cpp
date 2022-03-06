@@ -72,4 +72,15 @@ namespace StockAnalysisTest {
 		CString str = m_NeteaseRTWebInquiry.GetInquiringString();
 		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
 	}
+
+	TEST_F(CNeteaseRTWebInquiryTest, TestParseData) {
+		long llTotal = gl_pChinaMarket->GetRTDataReceived();
+		CString strRTData = "_ntes_quote_callback({\"0600270\": {\"time\": \"2020/04/23 08:30:01\", \"code\": \"0600270\",\"name\":\"don't use chinese character\",\"update\": \"2020/04/23 08:30:01\"} });";
+		CWebDataPtr pData = make_shared<CWebData>();
+
+		m_NeteaseRTWebInquiry.__TESTSetBuffer(strRTData);
+		EXPECT_TRUE(m_NeteaseRTWebInquiry.ParseData(pData));
+		EXPECT_TRUE(pData->IsSucceedCreatePTree());
+		EXPECT_EQ(gl_pChinaMarket->GetRTDataReceived(), llTotal) << "网易实时数据用于更新接收总数";
+	}
 }

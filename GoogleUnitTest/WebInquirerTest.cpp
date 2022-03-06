@@ -57,57 +57,12 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CWebInquirerTest, TestInitialize) {
-		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 0);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPop) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		gl_WebInquirer.PushSinaRTData(pWebData);
-		pWebData2 = gl_WebInquirer.PopSinaRTData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPopSinaData) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		gl_WebInquirer.PushSinaRTData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopSinaRTData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPopNeteaseData) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		gl_WebInquirer.PushNeteaseRTData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopNeteaseRTData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
-	TEST_F(CWebInquirerTest, TestPushPopTengxunData) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		pWebData->SetTime(101010);
-		gl_WebInquirer.PushTengxunRTData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopTengxunRTData();
-		EXPECT_EQ(pWebData2->GetTime(), 101010);
-	}
-
 	TEST_F(CWebInquirerTest, TestPushPopNeteaseDayLine) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		CWebDataPtr pWebData2;
 		CString strTest = _T("");
 		pWebData->SetStockCode(_T("abcdefg"));
-		pWebData->__TEST_SetBuffer__(strTest);
+		pWebData->__TEST_SetBuffer(strTest);
 
 		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
 		gl_WebInquirer.PushNeteaseDayLineData(pWebData);

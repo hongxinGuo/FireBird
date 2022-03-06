@@ -28,9 +28,6 @@ UINT ThreadChinaMarketBackground(void) {
 		QueryPerformanceCounter(&startTime);
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
-		ParseWebRTDataGetFromSinaServer(); // 解析新浪实时数据
-		//ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
-		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
 		QueryPerformanceCounter(&endTime);
 		INT64 iDiff = endTime.QuadPart - startTime.QuadPart;
@@ -84,33 +81,6 @@ UINT ThreadChinaMarketBackground(void) {
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromSinaServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
-	INT64 llTotal = 0;
-	bool fSucceed = true;
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
-		pWebDataReceived->ResetCurrentPos();
-		while (!pWebDataReceived->IsProcessedAllTheData()) {
-			if (gl_fExitingSystem) return fSucceed;
-			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadSinaData(pWebDataReceived)) {
-				llTotal++;
-				gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
-			}
-			else {
-				fSucceed = false;
-				gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
-				break;  // 后面的数据出问题，抛掉不用。
-			}
-		}
-	}
-	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
-	pWebDataReceived = nullptr;
-
-	return fSucceed;
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -128,59 +98,6 @@ bool ParseWebRTDataGetFromSinaServer(void) {
 // 使用json解析，已经没有错误数据了。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromNeteaseServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
-	string ss;
-	ptree pt;
-	INT64 llTotal = 0;
-
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
-			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-				if (gl_fExitingSystem) return true;
-				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
-				if (pRTData->ReadNeteaseData(it)) {
-					llTotal++;
-					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
-				}
-				else {
-					gl_systemMessage.PushErrorMessage(_T("网易实时数据解析返回失败信息"));
-				}
-			}
-		}
-		else {
-			gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
-		}
-	}
-	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
-	pWebDataReceived = nullptr;
-
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
-	char buffer[50]{};
-	char* pBuffer = buffer;
-	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
-
-	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
-	buffer[21] = 0x000;
-	CString str1 = buffer;
-
-	if (str1.Compare(strInvalidStock) == 0) {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
-		return true;
-	}
-	else return false;
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -239,32 +156,6 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromTengxunServer(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	bool fSucceed = true;
-
-	const size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
-		pWebDataReceived->ResetCurrentPos();
-		if (!IsTengxunRTDataInvalid(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
-			while (!pWebDataReceived->IsProcessedAllTheData()) {
-				if (gl_fExitingSystem) return fSucceed;
-				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-				if (pRTData->ReadTengxunData(pWebDataReceived)) {
-					gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
-				}
-				else {
-					fSucceed = false;
-					break;// 后面的数据出问题，抛掉不用。
-				}
-			}
-		}
-	}
-	pWebDataReceived = nullptr;
-
-	return fSucceed;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //

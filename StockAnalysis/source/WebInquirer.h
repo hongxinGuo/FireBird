@@ -51,21 +51,6 @@ public:
 	bool GetNeteaseDayLineData(void);
 
 public:
-	// 新浪实时股票数据。从网站上查询到的原始数据，每个数据都是存储的网站提供的原始数据。下同
-	size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetDataSize(); }
-	void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushData(pData); }
-	CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopData(); }
-
-	// 腾讯实时股票数据
-	size_t GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetDataSize(); }
-	void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushData(pData); }
-	CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopData(); }
-
-	// 网易实时股票数据
-	size_t GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetDataSize(); }
-	void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushData(pData); }
-	CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopData(); }
-
 	// Finnhub股票数据
 	size_t GetFinnhubDataSize(void) { return m_qFinnhubData.GetDataSize(); }
 	void PushFinnhubData(CWebDataPtr pData) { m_qFinnhubData.PushData(pData); }

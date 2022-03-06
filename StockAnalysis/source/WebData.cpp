@@ -67,7 +67,7 @@ bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 	return m_fSucceedCreatePTree;
 }
 
-void CWebData::__TEST_SetBuffer__(CString strBuffer) {
+void CWebData::__TEST_SetBuffer(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
 	char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_sDataBuffer.at(i) = pBuffer[i]; }

@@ -37,6 +37,28 @@ bool CSinaRTWebInquiry::TransferData(CWebDataPtr pWebData) {
 	return true;
 }
 
+bool CSinaRTWebInquiry::ProcessData(CWebDataPtr pWebData) {
+	INT64 llTotal = 0;
+	bool fSucceed = true;
+	pWebData->ResetCurrentPos();
+	while (!pWebData->IsProcessedAllTheData()) {
+		if (gl_fExitingSystem) return fSucceed;
+		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		if (pRTData->ReadSinaData(pWebData)) {
+			llTotal++;
+			gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
+		}
+		else {
+			fSucceed = false;
+			gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
+			break;  // 后面的数据出问题，抛掉不用。
+		}
+	}
+	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
+
+	return fSucceed;
+}
+
 bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
 	CString strMiddle = _T("");
 	CString strSinaStockCode;
@@ -65,8 +87,4 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUs
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;
-}
-
-void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushSinaRTData(pWebDataBeStored);
 }

@@ -244,9 +244,7 @@ void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
-	if (m_sBuffer.size() < (lTotalNumber + 128 * 1024)) {
-		m_sBuffer.resize(lTotalNumber + 128 * 1024);
-	}
+	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}
@@ -256,9 +254,8 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	INT64 lTotalNumber = str.GetLength();
 	char* buffer = str.GetBuffer();
-	if (m_sBuffer.size() < (lTotalNumber + 128 * 1024)) {
-		m_sBuffer.resize(lTotalNumber + 128 * 1024);
-	}
+
+	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}
@@ -281,8 +278,6 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 		pVirtualWebInquiry->ParseData(pWebData);
 		pVirtualWebInquiry->ProcessData(pWebData);
 		pVirtualWebInquiry->ResetBuffer();
-
-		//CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebDataAndParseItIfNeeded();
 
 		ASSERT(pWebData != nullptr);
 		pVirtualWebInquiry->SetTime(pWebData);

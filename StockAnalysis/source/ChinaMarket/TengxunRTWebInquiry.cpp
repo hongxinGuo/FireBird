@@ -33,6 +33,26 @@ bool CTengxunRTWebInquiry::TransferData(CWebDataPtr pWebData) {
 	return true;
 }
 
+bool CTengxunRTWebInquiry::ProcessData(CWebDataPtr pWebData) {
+	bool fSucceed = true;
+
+	pWebData->ResetCurrentPos();
+	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+		while (!pWebData->IsProcessedAllTheData()) {
+			if (gl_fExitingSystem) return fSucceed;
+			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+			if (pRTData->ReadTengxunData(pWebData)) {
+				gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
+			}
+			else {
+				fSucceed = false;
+				break;// 后面的数据出问题，抛掉不用。
+			}
+		}
+	}
+	return true;
+}
+
 bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 	CString strMiddle = _T("");
 	ASSERT(gl_pChinaMarket->IsSystemReady());
@@ -54,6 +74,23 @@ bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CTengxunRTWebInquiry::IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
+	char buffer[50]{};
+	char* pBuffer = buffer;
+	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+
+	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
+	buffer[21] = 0x000;
+	CString str1 = buffer;
+
+	if (str1.Compare(strInvalidStock) == 0) {
+		ASSERT(WebDataReceived.GetBufferLength() == 21);
+		return true;
+	}
+	else return false;
 }

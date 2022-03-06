@@ -41,7 +41,7 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->m_fSucceedCreatePTree = CreatePTree(pWebData->m_ppt, 21, 2);
+	pWebData->m_fSucceedCreatePTree = CreatePTree(pWebData->m_ppt, 21, 2); // 网易实时数据前缀为21个字符，后缀为2个字符，抛掉
 	return pWebData->IsSucceedCreatePTree();
 }
 
@@ -90,9 +90,4 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
 
 CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
 	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, fUsingTotalStockSet);
-}
-
-void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	// do nothing
-	//gl_WebInquirer.PushNeteaseRTData(pWebDataBeStored);
 }

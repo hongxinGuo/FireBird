@@ -510,9 +510,6 @@
     <ClCompile Include="MockDataChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="ParseTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp">
       <Filter>Test源文件\Template</Filter>
     </ClCompile>

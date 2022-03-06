@@ -55,21 +55,14 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(FinnhubWebInquiry, ReadWebData())
 			.Times(1)
 			.WillOnce(Return(true));
-		FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
+		FinnhubWebInquiry.__TESTSetBuffer(_T("{\"test\":\"testData\"}"));
 		FinnhubWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetFinnhubDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopFinnhubData();
-		EXPECT_EQ(pWebData->GetBufferLength(), 8);
-		char buffer[30];
-		int i = 0;
-		while ((i < pWebData->GetBufferLength())) {
-			buffer[i] = pWebData->GetData(i);
-			i++;
-		}
-		buffer[i] = 0x000;
-		CString str = buffer;
-		EXPECT_STREQ(str, _T("testData"));
+		EXPECT_EQ(pWebData->GetBufferLength(), 1024 * 1024) << "重置缓冲区大小为默认值";
+		EXPECT_TRUE(pWebData->IsSucceedCreatePTree());
+		EXPECT_TRUE(pWebData->IsJSonContentType());
 	}
 }

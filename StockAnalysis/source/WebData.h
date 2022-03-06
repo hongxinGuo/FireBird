@@ -71,7 +71,7 @@ public:
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
 	// 测试用函数
-	void __TEST_SetBuffer__(CString strBuffer);
+	void __TEST_SetBuffer(CString strBuffer);
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式

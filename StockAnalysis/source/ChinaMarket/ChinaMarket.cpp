@@ -887,7 +887,7 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
 	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-		m_fFastReceivingRTData = true;
+		m_fFastReceivingRTData = false;
 		return(m_fFastReceivingRTData);
 	}
 	else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）

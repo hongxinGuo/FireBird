@@ -12,7 +12,7 @@ struct FinnhubWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__TEST_SetBuffer__(strData);
+		m_pData->__TEST_SetBuffer(strData);
 	}
 
 	~FinnhubWebData() {
@@ -29,7 +29,7 @@ struct TiingoWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__TEST_SetBuffer__(strData);
+		m_pData->__TEST_SetBuffer(strData);
 	}
 
 	~TiingoWebData() {
