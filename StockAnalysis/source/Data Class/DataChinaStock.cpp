@@ -891,7 +891,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 		setWeekLineBasicInfo.Close();
 		CString str = strDate;
 		str += _T("日数据集为空，没有计算相对强度");
-		gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
+		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();

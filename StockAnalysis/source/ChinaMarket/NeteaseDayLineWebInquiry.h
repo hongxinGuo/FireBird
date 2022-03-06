@@ -8,6 +8,10 @@ public:
 	CNeteaseDayLineWebInquiry();
 	virtual ~CNeteaseDayLineWebInquiry();
 
+	virtual bool TransferData(CWebDataPtr pWebData) override final; // 将接收到的数移至pWebData中，默认不移动。
+	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
+	virtual bool ProcessData(CWebDataPtr pWebData) override final { return true; } // 处理接收到的数据。 默认不处理。
+
 	virtual bool PrepareNextInquiringStr(void) override;
 
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) override final; // 成功接收后更新系统状态。 默认无动作

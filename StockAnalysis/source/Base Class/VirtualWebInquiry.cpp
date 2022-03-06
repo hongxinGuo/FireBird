@@ -132,7 +132,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 				break;
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-			if (m_sBuffer.size() < (m_lByteRead + 16 * 1024)) { // 数据可存储空间不到16K时
+			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
 				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
 			}
 		} while (lCurrentByteReaded > 0);
@@ -184,6 +184,28 @@ CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded(
 	pWebDataReceived->SetBufferLength(byteReaded);
 	pWebDataReceived->ResetCurrentPos();
 	return pWebDataReceived;
+}
+
+bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
+	m_sBuffer.resize(m_lByteRead);
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析接收到的数据，默认数据格式为JSon
+//
+////////////////////////////////////////////////////////////////////////////////////
+bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
+	pWebData->m_fSucceedCreatePTree = CreatePTree(pWebData->m_ppt, 0, 0);
+	pWebData->SetJSonContentType(true);
+	return pWebData->IsSucceedCreatePTree();
+}
+
+bool CVirtualWebInquiry::CreatePTree(shared_ptr<ptree> ppt, long lBeginPos, long lEndPos) {
+	if (lBeginPos > 0)	m_sBuffer.erase(m_sBuffer.begin(), m_sBuffer.begin() + lBeginPos);
+	if (lEndPos > 0) m_sBuffer.resize(m_sBuffer.size() - lEndPos);
+	return ConvertToJSON(ppt, m_sBuffer);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -254,12 +276,18 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 
 	pVirtualWebInquiry->PrepareReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
-		CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebDataAndParseItIfNeeded();
-		if (pWebData != nullptr) {
-			pVirtualWebInquiry->SetTime(pWebData);
-			pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
-			pVirtualWebInquiry->StoreWebData(pWebData);
-		}
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		pVirtualWebInquiry->TransferData(pWebData);
+		pVirtualWebInquiry->ParseData(pWebData);
+		pVirtualWebInquiry->ProcessData(pWebData);
+		pVirtualWebInquiry->ResetBuffer();
+
+		//CWebDataPtr pWebData = pVirtualWebInquiry->TransferReceivedDataToWebDataAndParseItIfNeeded();
+
+		ASSERT(pWebData != nullptr);
+		pVirtualWebInquiry->SetTime(pWebData);
+		pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
+		pVirtualWebInquiry->StoreWebData(pWebData);
 	}
 	else { // error handling
 		pVirtualWebInquiry->ClearUpIfReadingWebDataFailed();

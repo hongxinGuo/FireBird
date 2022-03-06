@@ -23,6 +23,13 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	CWebDataPtr TransferReceivedDataToWebDataAndParseItIfNeeded(void);
 
+	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中，默认不移动，只调整缓存区大小
+	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
+	virtual bool ProcessData(CWebDataPtr pWebData) { return false; } // 处理接收到的数据。 默认不处理。
+	void ResetBuffer(void) { m_sBuffer.resize(1024 * 1024); }
+
+	bool CreatePTree(shared_ptr<ptree> ppt, long lBeginPos, long lEndPos);
+
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
 

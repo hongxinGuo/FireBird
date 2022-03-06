@@ -827,17 +827,17 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 	double dHigh, dLow, dNew, dOpen, dLastClose;
 	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
 	CString strSymbol4, str1, strName3;
-	string Name;
+	string sName;
 
 	try {
+		pt1 = it->second;
 		strSymbol = it->first;
 		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
 		SetSymbol(strSymbol4);
-		pt1 = it->second;
-		strSymbol2 = pt1.get<string>(_T("code"));
-		Name = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码
-		SetStockName(Name);
+		sName = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码
+		SetStockName(sName);
 		strTime = pt1.get<string>(_T("time"));
+		strSymbol2 = pt1.get<string>(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
 	catch (ptree_error& e) { // 结构不完整

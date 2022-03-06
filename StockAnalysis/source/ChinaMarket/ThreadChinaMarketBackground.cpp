@@ -29,7 +29,7 @@ UINT ThreadChinaMarketBackground(void) {
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseWebRTDataGetFromSinaServer(); // 解析新浪实时数据
-		ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
+		//ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
 		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
 		QueryPerformanceCounter(&endTime);

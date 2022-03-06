@@ -40,6 +40,37 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
+bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
+	pWebData->m_fSucceedCreatePTree = CreatePTree(pWebData->m_ppt, 21, 2);
+	return pWebData->IsSucceedCreatePTree();
+}
+
+bool CNeteaseRTWebInquiry::ProcessData(CWebDataPtr pWebData) {
+	string ss;
+	ptree pt;
+	INT64 llTotal = 0;
+
+	if (pWebData->IsSucceedCreatePTree()) {
+		for (ptree::iterator it = pWebData->m_ppt->begin(); it != pWebData->m_ppt->end(); ++it) {
+			if (gl_fExitingSystem) return true;
+			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+			pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+			if (pRTData->ReadNeteaseData(it)) {
+				llTotal++;
+				gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+			}
+			else {
+				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析返回失败信息"));
+			}
+		}
+		gl_pChinaMarket->IncreaseRTDataReceived(1);
+	}
+	else {
+		gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
+	}
+	return true;
+}
+
 bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个网易实时数据\n", lNumberOfData);
 	return true;
@@ -62,5 +93,6 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 }
 
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushNeteaseRTData(pWebDataBeStored);
+	// do nothing
+	//gl_WebInquirer.PushNeteaseRTData(pWebDataBeStored);
 }

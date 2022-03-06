@@ -106,7 +106,7 @@ CTiingoStockVectorPtr CProductTinngoStockSymbol::ParseTiingoStockSymbol(CWebData
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedCreatePTree()) {
 		if (pWebData->IsVoidJSon()) return pvTiingoStock;
 		ppt = pWebData->GetPTree();
 		try {

@@ -60,7 +60,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedCreatePTree()) {
 		if (pWebData->IsVoidJSon()) return pvDayLine;
 		ppt = pWebData->GetPTree();
 		try {

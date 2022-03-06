@@ -8,6 +8,10 @@
 #pragma once
 
 class CVirtualWebInquiry;
+class CNeteaseRTWebInquiry;
+class CSinaRTWebInquiry;
+class CTengxunRTWebInquiry;
+class CNeteaseDayLineWebInquiry;
 class CNeteaseDayLineWebData;
 
 using namespace std;
@@ -22,6 +26,10 @@ using namespace boost::property_tree;
 class CWebData final : public CObject {
 public:
 	friend CVirtualWebInquiry;
+	friend CNeteaseRTWebInquiry;
+	friend CSinaRTWebInquiry;
+	friend CTengxunRTWebInquiry;
+	friend CNeteaseDayLineWebInquiry;
 	friend CNeteaseDayLineWebData;
 	CWebData();
 	~CWebData();

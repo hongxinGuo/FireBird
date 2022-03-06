@@ -8,6 +8,10 @@ public:
 	CSinaRTWebInquiry();
 	virtual ~CSinaRTWebInquiry();
 
+	virtual bool TransferData(CWebDataPtr pWebData) override final; // 将接收到的数移至pWebData中，默认不移动。
+	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
+	virtual bool ProcessData(CWebDataPtr pWebData) override final { return true; } // 处理接收到的数据。 默认不处理。
+
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual CString GetNextInquiringMiddleStr(long lTotalNumer, bool fUsingTotalStockSet = false) override;
 	virtual bool ReportStatus(long lNumberOfData) const override;
