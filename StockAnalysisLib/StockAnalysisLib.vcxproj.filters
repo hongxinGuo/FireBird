@@ -663,9 +663,6 @@
     <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Parse.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h">
       <Filter>头文件\Template</Filter>
     </ClInclude>

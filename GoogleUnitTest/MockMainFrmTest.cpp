@@ -32,7 +32,6 @@ namespace StockAnalysisTest {
 
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->ResetCurrentStock();

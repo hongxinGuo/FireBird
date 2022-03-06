@@ -57,21 +57,6 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CWebInquirerTest, TestPushPopNeteaseDayLine) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		CWebDataPtr pWebData2;
-		CString strTest = _T("");
-		pWebData->SetStockCode(_T("abcdefg"));
-		pWebData->__TEST_SetBuffer(strTest);
-
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
-		gl_WebInquirer.PushNeteaseDayLineData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopNeteaseDayLineData();
-		EXPECT_STREQ(pWebData2->GetStockCode(), _T("abcdefg"));
-		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
-	}
-
 	TEST_F(CWebInquirerTest, TestPushPopParseNeteaseDayLine) {
 		CNeteaseDayLineWebDataPtr pWebData = make_shared<CNeteaseDayLineWebData>();
 		CNeteaseDayLineWebDataPtr pWebData2;

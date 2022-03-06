@@ -22,7 +22,6 @@ namespace StockAnalysisTest {
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			GeneralCheck();
 		}
 
@@ -97,6 +96,5 @@ namespace StockAnalysisTest {
 		}
 		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 		EXPECT_EQ(DayLine.GetBufferLength(), str.GetLength());
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 	}
 };

@@ -199,7 +199,6 @@ namespace StockAnalysisTest {
 			gl_pQuandlWebInquiry = nullptr;
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 			gl_pWorldMarket = nullptr;

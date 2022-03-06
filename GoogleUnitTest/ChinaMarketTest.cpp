@@ -65,7 +65,6 @@ namespace StockAnalysisTest {
 				CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -79,7 +78,6 @@ namespace StockAnalysisTest {
 			s_pMockTengxunRTWebInquiry = nullptr;
 			s_pMockNeteaseRTWebInquiry = nullptr;
 
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -97,7 +95,6 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			ASSERT_FALSE(gl_fNormalMode);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
@@ -135,7 +132,6 @@ namespace StockAnalysisTest {
 				if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 			EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5040));
 
@@ -184,7 +180,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetStockOffset(_T("000001.SS")), 0);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0) << gl_pChinaMarket->GetDayLineNeedProcessNumber();
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
@@ -461,8 +456,6 @@ namespace StockAnalysisTest {
 		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseDayLineDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestIsLoadSelectedStock) {

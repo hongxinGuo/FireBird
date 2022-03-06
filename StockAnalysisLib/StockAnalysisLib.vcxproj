@@ -160,7 +160,6 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
-    <ClInclude Include="..\StockAnalysis\source\Parse.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h" />

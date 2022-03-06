@@ -224,7 +224,6 @@ public:
 	bool IsDayLineNeedProcess(void) const noexcept;
 	bool IsDayLineNeedSaving(void) const { return m_dataChinaStock.IsDayLineNeedSaving(); }
 	long GetDayLineNeedUpdateNumber(void) { return m_dataChinaStock.GetDayLineNeedUpdateNumber(); }
-	long GetDayLineNeedProcessNumber(void);
 	long GetDayLineNeedSaveNumber(void) { return m_dataChinaStock.GetDayLineNeedSaveNumber(); }
 
 	virtual long BuildDayLine(long lCurrentTradeDay) { return m_dataChinaStock.BuildDayLine(lCurrentTradeDay); }

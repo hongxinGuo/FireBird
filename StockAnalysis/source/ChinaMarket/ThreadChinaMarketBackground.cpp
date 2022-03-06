@@ -28,7 +28,6 @@ UINT ThreadChinaMarketBackground(void) {
 		QueryPerformanceCounter(&startTime);
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
-		ParseDayLineGetFromNeeteaseServer();
 		QueryPerformanceCounter(&endTime);
 		INT64 iDiff = endTime.QuadPart - startTime.QuadPart;
 		if (iDiff > s_MaxNumber) {
@@ -165,19 +164,3 @@ UINT ThreadChinaMarketBackground(void) {
 // 日线数据是逆序的，最新日期的在前面。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseDayLineGetFromNeeteaseServer(void) {
-	CNeteaseDayLineWebDataPtr pData = nullptr;
-	CWebDataPtr pWebData = nullptr;
-
-	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
-		if (gl_fExitingSystem) return true;
-		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
-		pData = make_shared<CNeteaseDayLineWebData>();
-		pData->TransferWebDataToBuffer(pWebData);
-		pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
-		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
-	}
-	pWebData = nullptr;
-
-	return true;
-}

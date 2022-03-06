@@ -21,7 +21,6 @@ namespace StockAnalysisTest {
 
 		static void TearDownTestSuite() {
 			GeneralCheck();
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedProcessNumber(), 0);
 		}
 
 		virtual void SetUp(void) override {

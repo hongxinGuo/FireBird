@@ -31,6 +31,17 @@ bool CNeteaseDayLineWebInquiry::TransferData(CWebDataPtr pWebData) {
 	return true;
 }
 
+bool CNeteaseDayLineWebInquiry::ProcessData(CWebDataPtr pWebData) {
+	CNeteaseDayLineWebDataPtr pData = nullptr;
+
+	pData = make_shared<CNeteaseDayLineWebData>();
+	pData->TransferWebDataToBuffer(pWebData);
+	pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
+	gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
+
+	return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：
@@ -67,10 +78,6 @@ void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	strErrorMessage = GetDownLoadingStockCode();
 	strErrorMessage += _T(" 网易日线读取线程出错");
 	gl_systemMessage.PushErrorMessage(strErrorMessage);
-}
-
-void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushNeteaseDayLineData(pWebDataBeStored);
 }
 
 /// <summary>

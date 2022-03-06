@@ -1438,10 +1438,6 @@ bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
 	else return false;
 }
 
-long CChinaMarket::GetDayLineNeedProcessNumber(void) {
-	return gl_WebInquirer.GetNeteaseDayLineDataSize();
-}
-
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CNeteaseDayLineWebDataPtr pData;
 	CChinaStockPtr pStock = nullptr;
