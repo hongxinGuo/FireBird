@@ -93,6 +93,8 @@ bool CProductTiingoStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
 //	}
 // ]
 //
+// 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
 	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
@@ -109,6 +111,16 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 	if (pWebData->IsSucceedCreatePTree()) {
 		if (pWebData->IsVoidJSon()) return pvDayLine;
 		ppt = pWebData->GetPTree();
+		try {
+			s = ppt->get<string>(_T("detail")); // 是否有报错信息
+			CString strMessage = _T("Tiingo stock dayLine ");
+			strMessage += s.c_str();
+			gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
+			return pvDayLine;
+		}
+		catch (ptree_error&) {
+			// 正确， do nothing，继续执行
+		}
 		try {
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 				pDayLine = make_shared<CDayLine>();

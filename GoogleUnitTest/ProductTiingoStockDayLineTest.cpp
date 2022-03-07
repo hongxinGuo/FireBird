@@ -82,6 +82,8 @@ namespace StockAnalysisTest {
 	TiingoWebData tiingoWebData39(9, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"Missing\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
 	// 正确的数据
 	TiingoWebData tiingoWebData40(10, _T("AAPL"), _T("[{\"date\":\"2021-03-11T00:00:00.000Z\",\"close\":121.96,\"high\":123.21,\"low\":121.26,\"open\":122.54,\"volume\":103026514,\"adjClose\":121.96,\"adjHigh\":123.21,\"adjLow\":121.26,\"adjOpen\":122.54,\"adjVolume\":103026514,\"divCash\":0.0,\"splitFactor\":1.0}, {\"date\":\"2021-03-12T00:00:00.000Z\",\"close\":121.03,\"high\":121.17,\"low\":119.16,\"open\":120.4,\"volume\":88105050,\"adjClose\":121.03,\"adjHigh\":121.17,\"adjLow\":119.16,\"adjOpen\":120.4,\"adjVolume\":88105050,\"divCash\":0.0,\"splitFactor\":1.0}]"));
+	// 股票没有日线数据
+	TiingoWebData tiingoWebData41(11, _T("AAPL"), _T("{\"detail\":\"Error:Ticker 'AAPL' not found\"}"));
 
 	class ParseTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
@@ -108,7 +110,8 @@ namespace StockAnalysisTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest,
 													 testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
+														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+														 &tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CDayLineVectorPtr pvDayLine;
@@ -150,6 +153,11 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pDayLine->GetLow(), 121260);
 			EXPECT_EQ(pDayLine->GetOpen(), 122540);
 			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
+			break;
+		case 11: // 股票没有日线数据
+			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1) << "函数报告错误信息";
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
 			break;
 		default:
 			break;
