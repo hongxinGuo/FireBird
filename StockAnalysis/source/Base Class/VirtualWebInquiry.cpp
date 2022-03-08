@@ -207,15 +207,9 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->m_fSucceedCreatePTree = CreatePTree(pWebData->m_ppt, 0, 0);
+	pWebData->m_fSucceedCreatePTree = pWebData->CreatePTree(0, 0);
 	pWebData->SetJSonContentType(true);
 	return pWebData->IsSucceedCreatePTree();
-}
-
-bool CVirtualWebInquiry::CreatePTree(shared_ptr<ptree> ppt, long lBeginPos, long lEndPos) {
-	if (lBeginPos > 0)	m_sBuffer.erase(m_sBuffer.begin(), m_sBuffer.begin() + lBeginPos);
-	if (lEndPos > 0) m_sBuffer.resize(m_sBuffer.size() - lEndPos);
-	return ConvertToJSON(ppt, m_sBuffer);
 }
 
 /////////////////////////////////////////////////////////////////////////

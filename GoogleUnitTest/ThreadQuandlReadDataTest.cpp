@@ -50,17 +50,19 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
 		gl_systemMessage.PopErrorMessage();
 
+		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pWorldMarket->SetQuandlDataReceived(false);
 		EXPECT_CALL(QuandlWebInquiry, ReadWebData())
 			.Times(1)
 			.WillOnce(Return(true));
-		QuandlWebInquiry.__TESTSetBuffer(_T("{\"test\":\"testData\"}"));
+		QuandlWebInquiry.__TESTSetBuffer(strMessage);
 		QuandlWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
-		EXPECT_EQ(pWebData->GetBufferLength(), 1024 * 1024) << "重置缓冲区大小为默认值";
+		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
+		EXPECT_EQ(QuandlWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_TRUE(pWebData->IsSucceedCreatePTree());
 		EXPECT_TRUE(pWebData->IsJSonContentType());
 	}

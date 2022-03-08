@@ -79,6 +79,7 @@ namespace StockAnalysisTest {
 		CWebDataPtr pData = make_shared<CWebData>();
 
 		m_NeteaseRTWebInquiry.__TESTSetBuffer(strRTData);
+		m_NeteaseRTWebInquiry.TransferData(pData);
 		EXPECT_TRUE(m_NeteaseRTWebInquiry.ParseData(pData));
 		EXPECT_TRUE(pData->IsSucceedCreatePTree());
 		EXPECT_EQ(gl_pChinaMarket->GetRTDataReceived(), llTotal) << "网易实时数据用于更新接收总数";

@@ -890,7 +890,7 @@ bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
 		m_fFastReceivingRTData = false;
 		return(m_fFastReceivingRTData);
 	}
-	else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+	else if ((lCurrentTime < 91200) || (lCurrentTime > 220630) || ((lCurrentTime > 114500) && (lCurrentTime < 124500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
 		m_fFastReceivingRTData = false;
 
 		return(m_fFastReceivingRTData);

@@ -47,6 +47,8 @@ namespace StockAnalysisTest {
 	NetEaseDayLineData Data13(13, _T("2019-07-23\n,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
 	// 中途遇到\r
 	NetEaseDayLineData Data14(14, _T("2019-07-23\r,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+	// 缺少项
+	NetEaseDayLineData Data15(15, _T("2019-12-02,'000834,价值7030,,None,None,None,3654.1602,4.82,,None,None,,\r\n"));
 
 	class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
 	protected:
@@ -69,6 +71,17 @@ namespace StockAnalysisTest {
 			m_DayLine.SetLow(-1);
 
 			m_DayLinePtr = make_shared<CDayLine>();
+			m_DayLinePtr->SetClose(-1);
+			m_DayLinePtr->SetHigh(-1);
+			m_DayLinePtr->SetLow(-1);
+			m_DayLinePtr->SetOpen(-1);
+			m_DayLinePtr->SetLastClose(-1);
+			m_DayLinePtr->SetUpDown(-1);
+			m_DayLinePtr->SetUpDownRate(-1);
+			m_DayLinePtr->SetVolume(-1);
+			m_DayLinePtr->SetAmount(-1);
+			m_DayLinePtr->SetTotalValue(-1);
+			m_DayLinePtr->SetCurrentValue(-1);
 
 			WebInquiry.__TESTSetBuffer(pData->m_strData);
 			WebInquiry.SetByteReaded(pData->m_strData.GetLength());
@@ -181,89 +194,15 @@ namespace StockAnalysisTest {
 	ReadDayLineOneValueData rdata5(5, _T("11.0\n50,"));
 	// 缺少','
 	ReadDayLineOneValueData rdata6(6, _T("11.050"));
-	// 读取小数点后三位后，放弃气候多余的数值
+	// 读取小数点后三位后，放弃其后多余的数值
 	ReadDayLineOneValueData rdata7(7, _T("11.050000,"));
 	// 0x00a出现于‘，’前。
 	ReadDayLineOneValueData rdata8(8, _T("11.05000\n,"));
+	// 成功
+	ReadDayLineOneValueData rdata9(9, _T("技术领先,8864.664"));
+	// 成功
+	ReadDayLineOneValueData rdata10(10, _T("none, 8864.664"));
 
-	/*
-	class ReadDayLineOneValueTest : public::testing::TestWithParam<ReadDayLineOneValueData*> {
-	protected:
-		virtual void SetUp(void) override {
-			ReadDayLineOneValueData* pData = GetParam();
-			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
-			m_pData = new char[lLength];
-			for (int i = 0; i < lLength; i++) {
-				m_pData[i] = pData->m_strData[i];
-			}
-			m_pCurrentPos = m_pData;
-			m_lCountPos = 0;
-		}
-
-		virtual void TearDown(void) override {
-			// clearup
-			delete m_pData;
-		}
-
-	public:
-		int m_iCount;
-		char* m_pData;
-		char* m_pCurrentPos;
-		long m_lCountPos = 0;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
-													 testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
-													 ));
-
-	TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
-		char buffer[30];
-		bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
-		CString str;
-		str = buffer;
-		switch (m_iCount) {
-		case 1:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_EQ(m_lCountPos, 7);
-		EXPECT_STREQ(str, _T("11.050"));
-		break;
-		case 2:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_EQ(m_lCountPos, 6);
-		EXPECT_STREQ(str, _T("11.05"));
-		break;
-		case 3:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_EQ(m_lCountPos, 5);
-		EXPECT_STREQ(str, _T("11.0"));
-		break;
-		case 4:
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 5:
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 6:
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 7:
-		EXPECT_TRUE(fSucceed);
-		EXPECT_EQ(m_lCountPos, 10);
-		EXPECT_STREQ(str, _T("11.050000"));
-		break;
-		case 8:
-		EXPECT_FALSE(fSucceed);
-		break;
-		case 13:
-		case 14:
-		EXPECT_FALSE(fSucceed);
-		break;
-		default:
-		break;
-		}
-	}
-	*/
 	class ReadDayLineOneValueTest2 : public::testing::TestWithParam<ReadDayLineOneValueData*> {
 	protected:
 		virtual void SetUp(void) override {
@@ -290,7 +229,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest2,
-		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
+		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
 		));
 
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
@@ -331,9 +270,13 @@ namespace StockAnalysisTest {
 		case 8:
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 13:
-		case 14:
-			EXPECT_FALSE(fSucceed);
+		case 9:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(str, _T("技术领先"));
+			break;
+		case 10:
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(str, _T("none"));
 			break;
 		default:
 			break;

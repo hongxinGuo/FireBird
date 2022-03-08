@@ -9,7 +9,7 @@ public:
 	virtual ~CNeteaseDayLineWebInquiry();
 
 	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
-	virtual bool ProcessData(CWebDataPtr pWebData) override final { return true; } // 处理接收到的数据。
+	virtual bool ProcessData(CWebDataPtr pWebData) override final; // 处理接收到的数据。
 
 	virtual bool PrepareNextInquiringStr(void) override;
 

@@ -44,6 +44,7 @@ bool CNeteaseDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 	m_lBufferLength = pWebData->GetBufferLength();
 	m_strStockCode = pWebData->GetStockCode();
 	m_lCurrentPos = 0;
+	ASSERT(m_sDataBuffer.size() == m_lBufferLength);
 
 	return true;
 }
@@ -92,12 +93,12 @@ bool CNeteaseDayLineWebData::ProcessNeteaseDayLineData(void) {
 // 处理一条日线数据。采用网易日线历史数据格式。
 //
 // 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
-// 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,涨跌比率,换手率,成交股数,成交金额,总市值,流通市值\r\n
+// 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,换手率,成交股数,成交金额,总市值,流通市值\r\n
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
-	static char buffer2[200], buffer3[100];
+	char buffer2[200], buffer3[100];
 	long i = 0;
 	long lMarketDate = 0;
 	int year = 0, month = 0, day = 0;
@@ -108,6 +109,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	m_pCurrentProcessingDayLine = make_shared<CDayLine>();
 
 	i = 0;
+	// 日期
 	while ((m_sDataBuffer.at(m_lCurrentPos) != 0x02c)) { // 读取日期，直到遇到逗号
 		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
 			return false; // 数据出错，放弃载入
@@ -125,40 +127,49 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	if (m_sDataBuffer.at(m_lCurrentPos) != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
 	m_lCurrentPos++;
 
+	// 股票代码
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetStockSymbol(m_strStockCode); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
 
+	// 股票名称
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	str = buffer2;
 	m_pCurrentProcessingDayLine->SetDisplaySymbol(str);
 
+	// 收盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
-	dTemp = atof(buffer2);
-	m_pCurrentProcessingDayLine->SetClose(dTemp * 1000);
+	if (buffer2[0] != 0x000) {
+		dTemp = atof(buffer2);
+		m_pCurrentProcessingDayLine->SetClose(dTemp * 1000);
+	}
 
+	// 最高价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetHigh(dTemp * 1000);
 
+	// 最低价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetLow(dTemp * 1000);
 
+	// 开盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetOpen(dTemp * 1000);
 
+	// 前收盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	dTemp = atof(buffer2);
 	m_pCurrentProcessingDayLine->SetLastClose(dTemp * 1000);
 
+	// 涨跌值
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	if (m_pCurrentProcessingDayLine->GetOpen() == 0) {
 		//ASSERT(strcmp(buffer2, _T("None") == 0);
 		m_pCurrentProcessingDayLine->SetUpDown(0.0);
 	}
 	else m_pCurrentProcessingDayLine->SetUpDown(buffer2);
-
 	if (m_pCurrentProcessingDayLine->GetLastClose() == 0) { // 设置涨跌幅。
 		m_pCurrentProcessingDayLine->SetUpDownRate(0.0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
 	}
@@ -167,12 +178,15 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 		m_pCurrentProcessingDayLine->SetUpDownRate(((double)(m_pCurrentProcessingDayLine->GetUpDown() * 100000.0)) / m_pCurrentProcessingDayLine->GetLastClose());
 	}
 
+	// 换手率
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetChangeHandRate(buffer2);
 
+	// 成交量
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetVolume(buffer2); // 读入的是股数
 
+// 成交金额
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetAmount(buffer2);
 
@@ -180,8 +194,8 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return false;
 	m_pCurrentProcessingDayLine->SetTotalValue(buffer2); // 总市值的单位为：元
 
-	// 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数
-	// 流通市值的数据形式有两种，故而需要程序判定。
+// 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数
+// 流通市值的数据形式有两种，故而需要程序判定。
 	i = 0;
 	while (m_sDataBuffer.at(m_lCurrentPos) != 0x00d) {
 		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) return false; // 数据出错，放弃载入
@@ -190,7 +204,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	m_lCurrentPos++;
 	buffer2[i] = 0x000;
 	m_pCurrentProcessingDayLine->SetCurrentValue(buffer2); // 流通市值的单位为：元。
-	// \r后面紧跟着应该是\n
+// \r后面紧跟着应该是\n
 	if (m_sDataBuffer.at(m_lCurrentPos++) != 0x0a) return false; // 数据出错，放弃载入
 
 	return true;

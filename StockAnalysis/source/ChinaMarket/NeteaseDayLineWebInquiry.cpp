@@ -18,6 +18,21 @@ CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
 CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 }
 
+bool CNeteaseDayLineWebInquiry::ProcessData(CWebDataPtr pWebData) {
+	CNeteaseDayLineWebDataPtr pData = nullptr;
+
+	ASSERT(pWebData->GetBufferLength() == pWebData->m_sDataBuffer.size());
+	pWebData->SetStockCode(GetDownLoadingStockCode());
+
+	pData = make_shared<CNeteaseDayLineWebData>();
+	pData->TransferWebDataToBuffer(pWebData);
+
+	pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
+	gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
+
+	return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：
@@ -46,7 +61,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
-	pData->SetStockCode(GetDownLoadingStockCode());
+	//pData->SetStockCode(GetDownLoadingStockCode());
 }
 
 void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
@@ -57,7 +72,7 @@ void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushNeteaseDayLineData(pWebDataBeStored);
+	//gl_WebInquirer.PushNeteaseDayLineData(pWebDataBeStored);
 }
 
 /// <summary>
