@@ -187,7 +187,17 @@ CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded(
 }
 
 bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
-	m_sBuffer.resize(m_lByteRead);
+	auto byteReaded = GetByteReaded();
+
+	if (m_lContentLength > 0) {
+		if (m_lContentLength != byteReaded) gl_systemMessage.PushErrorMessage(_T("网络数据长度不符：") + m_strInquire.Left(120));
+	}
+	m_sBuffer.resize(byteReaded);
+	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
+	m_sBuffer.resize(1024 * 1024); // 重新分配内存
+	pWebData->SetBufferLength(byteReaded);
+	pWebData->ResetCurrentPos();
+
 	return true;
 }
 
