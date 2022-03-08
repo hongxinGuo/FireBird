@@ -67,6 +67,9 @@ public:
 	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
 
 	// 网易日线数据
+	size_t GetNeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.GetDataSize()); }
+	void PushNeteaseDayLineData(CWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	CWebDataPtr PopNeteaseDayLineData(void) { return m_qNeteaseDayLine.PopData(); }
 	size_t GetParsedNeteaseDayLineDataSize(void) { return(m_qParsedNeteaseDayLine.GetDataSize()); }
 	void PushParsedNeteaseDayLineData(CNeteaseDayLineWebDataPtr pData) { m_qParsedNeteaseDayLine.PushData(pData); }
 	CNeteaseDayLineWebDataPtr PopParsedNeteaseDayLineData(void) { return m_qParsedNeteaseDayLine.PopData(); }
