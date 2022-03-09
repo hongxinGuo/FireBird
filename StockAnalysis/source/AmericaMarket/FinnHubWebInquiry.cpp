@@ -9,29 +9,9 @@
 using namespace std;
 #include<thread>
 
-//
-//m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
-//m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
-// 下面的是第二个,用于dell240工作机。
-//m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 密钥放在最后
-//m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
-
-//m_strWebDataInquireSuffix = _T("&token=c1i57rv48v6vit20lrc0"); // hxguo111@hotmail.com
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-
-	// finnhub不允许一个账户同时用于两个机器上，故而使用两个账户，看看能否避开速度限制。
-	// 有可能一个网址只允许一个账户运行，则这种两个账户的方法也不起作用。
-	if (m_strWebDataInquireSuffix.GetLength() < 5) {
-#ifdef DEBUG
-		m_strWebDataInquireSuffix = _T("&token=c1i57rv48v6vit20lrc0"); // 调试版使用hxguo111@hotmail.com账户
-		//m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
-#else
-		//m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
-		m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 发行版使用hxguo1111@hotmail.com账户
-	//m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
-#endif // DEBUG
-	}
+	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Finnhub");
 	m_lShortestInquiringInterval = 1200; // 默认使用免费账户，其查询间隔不能小于1秒，故而将默认值设为1200毫秒
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值

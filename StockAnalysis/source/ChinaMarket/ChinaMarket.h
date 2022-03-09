@@ -454,4 +454,4 @@ private:
 
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
 
-extern CChinaMarketPtr gl_pChinaMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
+extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

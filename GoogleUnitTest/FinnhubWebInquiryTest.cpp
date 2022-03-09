@@ -43,11 +43,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubWebInquiryTest, TestInitialize) {
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringPrefix(), _T(""));
-#ifdef  DEBUG
-		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=c1i57rv48v6vit20lrc0"));
-#else
-		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
-#endif //  DEBUG
+		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetConnectionName(), _T("Finnhub"));
 		EXPECT_THAT(m_FinnhubWebInquiry.GetShortestInquiringInterval(), 1200) << "默认值为1200毫秒每次";
 		EXPECT_THAT(m_FinnhubWebInquiry.GetInquiringNumber(), 1) << "默认每次一个数据";
@@ -74,15 +70,10 @@ namespace StockAnalysisTest {
 		for (int i = 0; i < 4; i++) {
 			if (m_FinnhubWebInquiry.PrepareNextInquiringStr()) {
 				str = m_FinnhubWebInquiry.GetInquiringString();
-#ifdef  DEBUG
-				EXPECT_STREQ(str.Right(27), _T("&token=c1i57rv48v6vit20lrc0"));
-#else
-				EXPECT_STREQ(str.Right(27), _T("&token=bv985d748v6ujthqfke0"));
-#endif //  DEBUG
+				EXPECT_STREQ(str.Right(27), _T(""));
 			}
-			else EXPECT_EQ(str.GetLength(), 0);
+			gl_pWorldMarket->SetSystemReady(false);
 		}
-		gl_pWorldMarket->SetSystemReady(false);
 	}
 
 	TEST_F(CFinnhubWebInquiryTest, TestGetNextInquiringMiddleStr) {

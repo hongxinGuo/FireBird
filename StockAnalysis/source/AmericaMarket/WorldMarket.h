@@ -406,4 +406,5 @@ private:
 };
 
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;
-extern CWorldMarketPtr gl_pWorldMarket;
+
+extern CWorldMarketPtr gl_pWorldMarket;// 股票市场。 单一实例变量，仅允许存在一个实例。

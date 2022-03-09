@@ -1229,11 +1229,17 @@ bool CWorldMarket::LoadOption(void) {
 			gl_pFinnhubWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_FinnhubMaxPerHour);
 		}
 	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
+	}
 	if (setOption.m_TiingoToken.GetLength() > 5) {
 		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(setOption.m_TiingoToken);
 		if (setOption.m_TiingoMaxPerHour > 0) {
 			gl_pTiingoWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_TiingoMaxPerHour);
 		}
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
 	}
 	if (setOption.m_QuandlToken.GetLength() > 5) {
 		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(setOption.m_QuandlToken);
