@@ -8,6 +8,11 @@ constexpr int cMaxBackGroundTaskThreads = 8;
 class CThreadStatus  final { // 各线程状态
 public:
 	CThreadStatus();
+	// 只能有一个实例,不允许赋值。
+	CThreadStatus(const CThreadStatus&) = delete;
+	CThreadStatus& operator=(const CThreadStatus&) = delete;
+	CThreadStatus(const CThreadStatus&&) noexcept = delete;
+	CThreadStatus& operator=(const CThreadStatus&&) noexcept = delete;
 	~CThreadStatus();
 
 	void SetChinaMarketBackground(bool fFlag) noexcept { m_ChinaMarketBackground = fFlag; }

@@ -108,10 +108,10 @@ void CWebRTData::SetStockName(string& s) {
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
-	static char buffer1[100];
+	char buffer1[100];
 	char buffer2[20];
-	static char buffer3[100];
-	static CString strHeader = _T("var hq_str_s");
+	char buffer3[100];
+	CString strHeader = _T("var hq_str_s");
 	long lStockCode = 0;
 	double dTemp = 0;
 	char bufferTest[2000];
@@ -335,7 +335,7 @@ bool CWebRTData::CheckSinaRTDataActive(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue) {
 	INT64 llTemp;
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 		return false;
@@ -354,7 +354,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnVal
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
 	long lTemp;
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 		return false;
@@ -372,7 +372,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue) {
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 		return false;
@@ -462,10 +462,10 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
-	static char buffer1[200];
+	char buffer1[200];
 	char buffer2[7];
-	static char buffer3[200];
-	static CString strHeader = _T("v_s");
+	char buffer3[200];
+	CString strHeader = _T("v_s");
 	long lTemp = 0;
 	INT64 llTemp = 0;
 	double dTemp = 0.0;
@@ -726,7 +726,7 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturnValue) {
 	INT64 llTemp;
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 		return false;
@@ -745,7 +745,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llRet
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturnValue) {
 	double dTemp;
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 		return false;
@@ -763,7 +763,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dRet
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnValue) {
 	long lTemp;
-	static char buffer3[200];
+	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pWebDataReceived, buffer3)) {
 		return false;
@@ -834,8 +834,8 @@ bool CWebRTData::ReadNeteaseData(ptree::iterator& it) {
 		strSymbol = it->first;
 		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
 		SetSymbol(strSymbol4);
-		sName = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码
-		SetStockName(sName);
+		sName = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码（系统使用多字节字符集，此处为utf-8字符集）
+		SetStockName(sName); // 将utf-8字符集转换为多字节字符集
 		strTime = pt1.get<string>(_T("time"));
 		strSymbol2 = pt1.get<string>(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());

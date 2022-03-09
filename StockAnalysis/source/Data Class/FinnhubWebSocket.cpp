@@ -40,13 +40,13 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
-	static bool s_fDoing = false;
-	if (!s_fDoing) {
-		s_fDoing = true;
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
+		s_fConnecting = true;
 		gl_ThreadStatus.IncreaseSavingThread();
 		pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 		gl_ThreadStatus.DecreaseSavingThread();
-		s_fDoing = false;
+		s_fConnecting = false;
 	}
 	return 70;
 }

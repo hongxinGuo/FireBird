@@ -163,19 +163,11 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 }
 
 UINT ThreadChinaMarketBackground(void) {
-	LARGE_INTEGER startTime, endTime;
-	static INT64 s_MaxNumber = 0;
 	gl_ThreadStatus.SetChinaMarketBackground(true);
 	while (!gl_fExitingSystem) {
-		QueryPerformanceCounter(&startTime);
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseDayLineGetFromNeeteaseServer();
-		QueryPerformanceCounter(&endTime);
-		INT64 iDiff = endTime.QuadPart - startTime.QuadPart;
-		if (iDiff > s_MaxNumber) {
-			s_MaxNumber = iDiff; // 存储最大值
-		}
 		Sleep(50); // 最少间隔50ms
 	}
 	gl_ThreadStatus.SetChinaMarketBackground(false);

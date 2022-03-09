@@ -485,7 +485,7 @@ bool ConvertToWJSON(wptree& pt, string& s) {
 }
 
 wstring to_wide_string(const std::string& input) {
-	static wstring_convert<std::codecvt_utf8<wchar_t>> converter; // 使用静态变量以节省时间。主义防止多线程复用。
+	wstring_convert<std::codecvt_utf8<wchar_t>> converter; // 使用静态变量以节省时间。主义防止多线程复用。
 	return converter.from_bytes(input);
 }
 

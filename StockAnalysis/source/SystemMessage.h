@@ -27,6 +27,11 @@ protected:
 class CSystemMessage final {
 public:
 	CSystemMessage();
+	// 只能有一个实例,不允许赋值。
+	CSystemMessage(const CSystemMessage&) = delete;
+	CSystemMessage& operator=(const CSystemMessage&) = delete;
+	CSystemMessage(const CSystemMessage&&) noexcept = delete;
+	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
 	~CSystemMessage();
 
 	void PushInformationMessage(CString str) { m_SystemInformation.PushMessage(str); }

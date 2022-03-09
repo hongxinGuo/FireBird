@@ -401,6 +401,25 @@ protected:
 
 	//
 	bool m_fRebulidDayLine;	// 重建日线历史数据。
+
+private:
+	time_t m_lastTimeSchedulingTask;
+	int m_iCountfinnhubLimit; // Finnhub.io每1.5秒左右申请一次，以防止出现频率过高的情况。
+	int m_iCountTiingoLimit; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
+	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
+	int m_iCount1Minute; // 与10秒每次的错开1秒钟
+	int m_iCount10Second;
+	bool m_fInquiringFinnhubStockSymbol;
+	bool m_fInquiringFinnhubStockProfile;
+	bool m_fInquiringFinnhubStockDayLine;
+	bool m_fInquiringFinnhubStockInsiderTransaction;
+	long m_lCurrentRTDataQuotePos;
+	bool m_fInquiringFinnhubStockPeer;
+	long m_lCurrentForexExchangePos;
+	bool m_fInquiringFinnhubForexDayLine;
+	long m_lCurrentCryptoExchangePos;
+	bool m_fInquiringFinnhubCryptoDayLine;
 };
 
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;

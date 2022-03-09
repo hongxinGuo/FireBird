@@ -38,13 +38,13 @@ void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vector<CString> vSymbol) {
-	static bool s_fDoing = false;
-	if (!s_fDoing) {
-		s_fDoing = true;
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
+		s_fConnecting = true;
 		gl_ThreadStatus.IncreaseSavingThread();
 		pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
 		gl_ThreadStatus.DecreaseSavingThread();
-		s_fDoing = false;
+		s_fConnecting = false;
 	}
 
 	return 71;
