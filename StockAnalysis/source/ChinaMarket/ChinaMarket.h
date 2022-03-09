@@ -450,12 +450,6 @@ protected:
 	bool m_fUpdateChoicedStockDB;
 
 private:
-	time_t m_lastTimeSchedulingTask;
-	int m_iCountDownProcessWebRTData;
-	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
-	int m_iCount1Minute; // 与10秒每次的错开1秒钟
-	int m_iCount10Second;
 };
 
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;

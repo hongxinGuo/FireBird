@@ -166,13 +166,6 @@ void CChinaMarket::Reset(void) {
 
 	m_dataChinaStock.Reset();
 	m_dataStockSymbol.Reset();
-
-	m_lastTimeSchedulingTask = 0;
-	m_iCountDownProcessWebRTData = 0;
-	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
-	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
-	m_iCount10Second = 9;
 }
 
 bool CChinaMarket::PreparingExitMarket(void) {
@@ -585,6 +578,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 bool CChinaMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
+	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
 	// 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
@@ -598,9 +592,9 @@ bool CChinaMarket::SchedulingTask(void) {
 	m_iCountDownSlowReadingRTData--;
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetUTCTime() > m_lastTimeSchedulingTask) {
-		SchedulingTaskPerSecond(GetUTCTime() - m_lastTimeSchedulingTask, lCurrentTime);
-		m_lastTimeSchedulingTask = GetUTCTime();
+	if (GetUTCTime() > s_lastTimeSchedulingTask) {
+		SchedulingTaskPerSecond(GetUTCTime() - s_lastTimeSchedulingTask, lCurrentTime);
+		s_lastTimeSchedulingTask = GetUTCTime();
 	}
 
 	// 系统准备好了之后需要完成的各项工作
@@ -663,24 +657,30 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	m_iCount10Second -= lSecond;
-	m_iCount1Minute -= lSecond;
-	m_iCount5Minute -= lSecond;
-	m_iCount1Hour -= lSecond;
-	if (m_iCount1Hour < 0) {
-		m_iCount1Hour = 3599;
+	static int s_iCountDownProcessWebRTData = 0;
+	static int s_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	static int s_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
+	static int s_iCount1Minute = 58; // 与10秒每次的错开1秒钟
+	static int s_iCount10Second = 9;
+
+	s_iCount10Second -= lSecond;
+	s_iCount1Minute -= lSecond;
+	s_iCount5Minute -= lSecond;
+	s_iCount1Hour -= lSecond;
+	if (s_iCount1Hour < 0) {
+		s_iCount1Hour = 3599;
 		SchedulingTaskPerHour(lCurrentTime);
 	}
-	if (m_iCount5Minute < 0) {
-		m_iCount5Minute = 299;
+	if (s_iCount5Minute < 0) {
+		s_iCount5Minute = 299;
 		SchedulingTaskPer5Minutes(lCurrentTime);
 	}
-	if (m_iCount1Minute < 0) {
-		m_iCount1Minute = 59;
+	if (s_iCount1Minute < 0) {
+		s_iCount1Minute = 59;
 		SchedulingTaskPerMinute(lCurrentTime);
 	}
-	if (m_iCount10Second < 0) {
-		m_iCount10Second = 9;
+	if (s_iCount10Second < 0) {
+		s_iCount10Second = 9;
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
@@ -697,7 +697,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 判断中国股票市场开市状态
 	TaskCheckMarketOpen(lCurrentTime);
 
-	if (m_iCountDownProcessWebRTData <= 0) {
+	if (s_iCountDownProcessWebRTData <= 0) {
 		// 将接收到的实时数据分发至各相关股票的实时数据队列中。
 		// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
 		TaskDistributeSinaRTDataToStock();
@@ -709,9 +709,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		//TaskDiscardNeteaseRTData();
 		//TaskDiscardSinaRTData();
 		//TaskDiscardTengxunRTData();
-		m_iCountDownProcessWebRTData = 0;
+		s_iCountDownProcessWebRTData = 0;
 	}
-	else m_iCountDownProcessWebRTData--;
+	else s_iCountDownProcessWebRTData--;
 
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDitributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
