@@ -193,6 +193,7 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 
 bool CChinaMarket::CheckMarketReady(void) {
 	if (!IsSystemReady()) {
+		if (IsResetMarket()) return false;
 		long lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
