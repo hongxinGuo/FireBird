@@ -24,7 +24,6 @@ public:
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
-	virtual bool ProcessData(CWebDataPtr pWebData) { return false; } // 处理接收到的数据。 默认不处理。
 	void ResetBuffer(void) { m_sBuffer.resize(1024 * 1024); }
 
 	// 唯一的公共接口函数

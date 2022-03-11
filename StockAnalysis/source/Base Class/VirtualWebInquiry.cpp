@@ -77,7 +77,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				delete m_pFile;
 				m_pFile = nullptr;
 			}
-			Sleep(10); // 等待10毫秒。不等待其实也可以，
+			Sleep(1); // 等待10毫秒。不等待其实也可以，
 			if (iCountNumber++ > 2) { // 重复读取三次皆失败后，则报错。
 				SetWebError(true);
 				m_dwWebErrorCode = exception->m_dwError;
@@ -94,10 +94,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	} while (!fDone);
 	if (fStatus) {
 		CString str;
-		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_TYPE, str);
-		if (str.Find(_T("application/json")) >= 0) {
-			m_fFSonContentType = true;
-		}
 		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
 		if (str.GetLength() > 0) {
 			m_lContentLength = atol(str.GetBuffer());
@@ -113,23 +109,29 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 // 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
 // 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
 //
+// 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
+//
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
 	m_pFile = nullptr;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
+	QueryPerformanceCounter(&liBegin);
 	if (OpenFile(GetInquiringString())) {
+		QueryPerformanceCounter(&liEnd);
 		do {
 			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 				fReadingSuccess = false;
 				break;
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+
 			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
 				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
 			}
@@ -146,6 +148,8 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
+
+	SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 
 	return fReadingSuccess;
 }
@@ -194,7 +198,7 @@ bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
-	if (!IsReadingWebData()) {
+	if (!IsReadingWebData()) { // 工作线程没有启动？
 		if (PrepareNextInquiringStr()) {
 			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
 			StartReadingThread();
@@ -202,7 +206,7 @@ bool CVirtualWebInquiry::GetWebData(void) {
 		}
 		else return false;
 	}
-	else return false;
+	else return false; // 工作线程已在执行接收数据的任务
 }
 
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
@@ -259,7 +263,6 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		pVirtualWebInquiry->TransferData(pWebData);
 		pVirtualWebInquiry->ParseData(pWebData);
-		pVirtualWebInquiry->ProcessData(pWebData);
 		pVirtualWebInquiry->ResetBuffer();
 
 		pVirtualWebInquiry->SetTime(pWebData);
@@ -275,7 +278,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 
 	QueryPerformanceCounter(&liEnd);
 
-	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
+	//pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 
 	return 1;
 }

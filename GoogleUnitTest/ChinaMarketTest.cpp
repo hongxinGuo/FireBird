@@ -1005,6 +1005,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckMarketReady) {
+		gl_pChinaMarket->SetResetMarket(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetRTDataReceived(0);
 		EXPECT_TRUE(gl_pChinaMarket->CheckMarketReady());

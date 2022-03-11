@@ -582,12 +582,12 @@ bool CChinaMarket::SchedulingTask(void) {
 	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
-	// 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
+	// 抓取实时数据(新浪、腾讯和网易）。每100毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
 	if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
 		TaskGetRTDataFromWeb();
 		// 解析新浪和网易实时数据的任务移至线程ThreadChinaMarketBackground中。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() - 100; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval(); // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // 默认计数4次,即每400毫秒申请一次实时数据
 	}
 	m_iCountDownSlowReadingRTData--;
@@ -615,6 +615,8 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 // 从新浪、网易或者腾讯实时行情数据服务器读取实时数据。使用其中之一即可。
 //
+// 新浪实时数据服务器的读取时间大致为200毫秒，网易的读取时间最大为1000毫秒，故而需要不断地读，无需等待400毫秒了。
+//
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 	switch (m_iRTDataServer) {
@@ -624,8 +626,6 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 		}
 		break;
 	case 1: // 使用网易实时数据服务器
-		// 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失。
-		// 网易实时数据有时还发送没有要求过的股票，不知为何。
 		if (IsUsingNeteaseRTDataReceiver()) {
 			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
 			gl_WebInquirer.GetNeteaseRTData();

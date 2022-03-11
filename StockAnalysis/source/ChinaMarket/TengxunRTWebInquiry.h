@@ -9,7 +9,6 @@ public:
 	virtual ~CTengxunRTWebInquiry();
 
 	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
-	virtual bool ProcessData(CWebDataPtr pWebData) override final { return true; }; // 处理接收到的数据。
 
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual CString GetNextInquiringMiddleStr(long lTotalNubmer, bool fUsingTotalStockSet = false) override;

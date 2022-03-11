@@ -51,9 +51,9 @@ namespace StockAnalysisTest {
 		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 1);
 
 		// »Ö¸´Ô­×´
-		gl_WebRTDataContainer.PopNeteaseData();
+		gl_WebInquirer.PopNeteaseRTData();
 	}
 }

@@ -78,20 +78,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_TengxunRTWebInquiry.ReportStatus(1));
 	}
 
-	TEST_F(CTengxunRTWebInquiryTest, TestProcessData) {
-		INT64 llTotal = gl_pChinaMarket->GetRTDataReceived();
-		CString strRTData = _T("v_sz000001=\"51~平安银行~000001~15.59~15.90~15.75~1046363~518391~527971~15.58~2365~15.57~802~15.56~1855~15.55~2316~15.54~320~15.59~661~15.60~15381~15.61~3266~15.62~450~15.63~520~~20190930154003~-0.31~-1.95~15.89~15.57~15.59/1046363/1645828527~1046363~164583~0.54~11.27~~15.89~15.57~2.01~3025.36~3025.38~1.15~17.49~14.31~0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP-A~68.91~~0.82\";\n");
-		CWebDataPtr pData = make_shared<CWebData>();
-		m_TengxunRTWebInquiry.__TESTSetBuffer(strRTData);
-		m_TengxunRTWebInquiry.TransferData(pData);
-		EXPECT_TRUE(m_TengxunRTWebInquiry.ProcessData(pData));
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 1);
-		EXPECT_EQ(gl_pChinaMarket->GetRTDataReceived(), llTotal) << "腾讯实时数据不更新此变量";
-		for (int i = 0; i < 1; i++) {
-			CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopTengxunData();
-		}
-	}
-
 	TEST_F(CTengxunRTWebInquiryTest, TestIsTengxunRTDataInValid) {
 		CWebDataPtr pWebDataReceived;
 		pWebDataReceived = make_shared<CWebData>();

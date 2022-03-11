@@ -9,7 +9,6 @@ public:
 	virtual ~CNeteaseRTWebInquiry();
 
 	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; }; // 解析接收到的数据， 默认数据格式为JSon，解析之。
-	virtual bool ProcessData(CWebDataPtr pWebData) override final { return true; }; // 处理接收到的数据。
 
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual bool PrepareNextInquiringStr(void) override;
