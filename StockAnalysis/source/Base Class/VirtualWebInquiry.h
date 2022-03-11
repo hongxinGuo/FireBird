@@ -21,7 +21,6 @@ public:
 	virtual bool OpenFile(CString strInquiring);
 	virtual bool ReadWebData(void); // 网络实际读取函数
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
-	CWebDataPtr TransferReceivedDataToWebDataAndParseItIfNeeded(void);
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
@@ -90,6 +89,7 @@ public:
 	void SetTotalByteReaded(INT64 lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
 	void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
 
+	void SetCurrentInquiryTime(time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
 
 public:

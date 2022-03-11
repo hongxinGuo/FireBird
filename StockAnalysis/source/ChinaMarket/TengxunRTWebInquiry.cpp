@@ -20,26 +20,6 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
 }
 
-bool CTengxunRTWebInquiry::ProcessData(CWebDataPtr pWebData) {
-	bool fSucceed = true;
-
-	pWebData->ResetCurrentPos();
-	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
-		while (!pWebData->IsProcessedAllTheData()) {
-			if (gl_fExitingSystem) return fSucceed;
-			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadTengxunData(pWebData)) {
-				gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
-			}
-			else {
-				fSucceed = false;
-				break;// 后面的数据出问题，抛掉不用。
-			}
-		}
-	}
-	return true;
-}
-
 bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 	CString strMiddle = _T("");
 	ASSERT(gl_pChinaMarket->IsSystemReady());
@@ -80,4 +60,8 @@ bool CTengxunRTWebInquiry::IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 		return true;
 	}
 	else return false;
+}
+
+void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+	gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
 }

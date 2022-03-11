@@ -84,26 +84,6 @@ namespace StockAnalysisTest {
 		m_VirtualWebInquiry.SetInquiryingStringSuffix(_T(""));
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestTransferReceivedDataToWebDataAndParseItIfNeeded) {
-		CString str = _T("abcdefghijklmnop");
-		m_VirtualWebInquiry.__TESTSetBuffer(str);
-		CWebDataPtr p = m_VirtualWebInquiry.TransferReceivedDataToWebDataAndParseItIfNeeded();
-		EXPECT_FALSE(p->IsJSonContentType());
-		EXPECT_EQ(p->GetBufferLength(), str.GetLength());
-		char buffer[30];
-		int i = 0;
-		while ((i < m_VirtualWebInquiry.GetByteReaded())) {
-			buffer[i] = p->GetData(i);
-			i++;
-		}
-		buffer[i] = 0x000;
-		CString strCompare = buffer;
-		EXPECT_STREQ(strCompare, str);
-
-		str = _T("");
-		m_VirtualWebInquiry.__TESTSetBuffer(str); // 清除掉之前的设置。
-	}
-
 	TEST_F(CVirtualWebInquiryTest, TestReportStatus) {
 		EXPECT_TRUE(m_VirtualWebInquiry.ReportStatus(0));
 	}

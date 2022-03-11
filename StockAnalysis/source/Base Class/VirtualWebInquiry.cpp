@@ -117,14 +117,12 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 bool CVirtualWebInquiry::ReadWebData(void) {
 	m_pFile = nullptr;
 	bool fReadingSuccess = true;
-	time_t tt = 0;
 	long lCurrentByteReaded = 0;
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
-	tt = GetTickCount64();
 	if (OpenFile(GetInquiringString())) {
 		do {
 			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
@@ -146,7 +144,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	}
 	else fReadingSuccess = false;
 
-	m_tCurrentInquiryTime = GetTickCount64() - tt;
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
 
@@ -166,26 +163,6 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	return uByteRead;
 }
 
-CWebDataPtr CVirtualWebInquiry::TransferReceivedDataToWebDataAndParseItIfNeeded() {
-	CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-	auto byteReaded = GetByteReaded();
-	if (m_lContentLength > 0) {
-		if (m_lContentLength != byteReaded) gl_systemMessage.PushErrorMessage(_T("网络数据长度不符：") + m_strInquire.Left(120));
-	}
-	m_sBuffer.resize(byteReaded);
-	pWebDataReceived->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
-	if (m_fFSonContentType) {
-		// 当网络数据格式为JSon时，在此处解析后生成ptree，这样能够减轻窗口线程的工作压力。
-		// 网易实时数据、新浪实时数据和腾讯实时数据不是JSon格式，不在此处解析。
-		pWebDataReceived->CreatePTree();
-		pWebDataReceived->SetJSonContentType(true);
-	}
-	m_sBuffer.resize(1024 * 1024); // 重新分配内存
-	pWebDataReceived->SetBufferLength(byteReaded);
-	pWebDataReceived->ResetCurrentPos();
-	return pWebDataReceived;
-}
-
 bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 	auto byteReaded = GetByteReaded();
 
@@ -194,7 +171,6 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 	}
 	m_sBuffer.resize(byteReaded);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
-	m_sBuffer.resize(1024 * 1024); // 重新分配内存
 	pWebData->SetBufferLength(byteReaded);
 	pWebData->ResetCurrentPos();
 
@@ -274,6 +250,9 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
 	ASSERT(pVirtualWebInquiry->IsReadingWebData());
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+
+	QueryPerformanceCounter(&liBegin);
 
 	pVirtualWebInquiry->PrepareReadingWebData();
 	if (pVirtualWebInquiry->ReadWebData()) {
@@ -283,7 +262,6 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 		pVirtualWebInquiry->ProcessData(pWebData);
 		pVirtualWebInquiry->ResetBuffer();
 
-		ASSERT(pWebData != nullptr);
 		pVirtualWebInquiry->SetTime(pWebData);
 		pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
 		pVirtualWebInquiry->StoreWebData(pWebData);
@@ -294,6 +272,10 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 	pVirtualWebInquiry->UpdateAfterReadingWebData();
 
 	pVirtualWebInquiry->SetReadingWebData(false);
+
+	QueryPerformanceCounter(&liEnd);
+
+	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 
 	return 1;
 }
