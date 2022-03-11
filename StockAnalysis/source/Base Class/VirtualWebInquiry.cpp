@@ -116,15 +116,12 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	m_pFile = nullptr;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
-	QueryPerformanceCounter(&liBegin);
 	if (OpenFile(GetInquiringString())) {
-		QueryPerformanceCounter(&liEnd);
 		do {
 			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 				fReadingSuccess = false;
@@ -148,8 +145,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
-
-	SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 
 	return fReadingSuccess;
 }
@@ -277,8 +272,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 	pVirtualWebInquiry->SetReadingWebData(false);
 
 	QueryPerformanceCounter(&liEnd);
-
-	//pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
+	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 
 	return 1;
 }
