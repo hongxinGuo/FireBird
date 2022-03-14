@@ -112,7 +112,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 // 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
 //
 ///////////////////////////////////////////////////////////////////////////
-bool CVirtualWebInquiry::ReadWebData(void) {
+bool CVirtualWebInquiry::ReadingWebData(void) {
 	m_pFile = nullptr;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
@@ -133,7 +133,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
 			}
 		} while (lCurrentByteReaded > 0);
-		ASSERT(m_sBuffer.size() > m_lByteRead);
 		m_lTotalByteReaded += m_lByteRead;
 		if (m_pFile != nullptr) {
 			m_pFile->Close();
@@ -144,7 +143,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
 	else fReadingSuccess = false;
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
-	ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
 
 	return fReadingSuccess;
 }
@@ -204,6 +202,44 @@ bool CVirtualWebInquiry::GetWebData(void) {
 	else return false; // 工作线程已在执行接收数据的任务
 }
 
+void CVirtualWebInquiry::StartReadingThread(void) {
+	thread thread1(ThreadReadVirtualWebData, this);
+	thread1.detach();
+}
+
+UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
+	pVirtualWebInquiry->Read();
+	return 1;
+}
+
+void CVirtualWebInquiry::Read(void) {
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+
+	ASSERT(IsReadingWebData());
+	QueryPerformanceCounter(&liBegin);
+
+	PrepareReadingWebData();
+	if (ReadingWebData()) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		TransferData(pWebData);
+		ParseData(pWebData);
+		ResetBuffer();
+
+		SetTime(pWebData);
+		UpdateStatusWhenSecceed(pWebData);
+		StoreWebData(pWebData);
+	}
+	else { // error handling
+		ClearUpIfReadingWebDataFailed();
+	}
+	UpdateAfterReadingWebData();
+
+	SetReadingWebData(false);
+
+	QueryPerformanceCounter(&liEnd);
+	SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
+}
+
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个实时数据\n", lNumberOfData);
 	return true;
@@ -211,11 +247,6 @@ bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
 
 void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 	m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
-}
-
-void CVirtualWebInquiry::StartReadingThread(void) {
-	thread thread1(ThreadReadVirtualWebData, this);
-	thread1.detach();
 }
 
 void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
@@ -247,32 +278,3 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
-	ASSERT(pVirtualWebInquiry->IsReadingWebData());
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-
-	QueryPerformanceCounter(&liBegin);
-
-	pVirtualWebInquiry->PrepareReadingWebData();
-	if (pVirtualWebInquiry->ReadWebData()) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pVirtualWebInquiry->TransferData(pWebData);
-		pVirtualWebInquiry->ParseData(pWebData);
-		pVirtualWebInquiry->ResetBuffer();
-
-		pVirtualWebInquiry->SetTime(pWebData);
-		pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
-		pVirtualWebInquiry->StoreWebData(pWebData);
-	}
-	else { // error handling
-		pVirtualWebInquiry->ClearUpIfReadingWebDataFailed();
-	}
-	pVirtualWebInquiry->UpdateAfterReadingWebData();
-
-	pVirtualWebInquiry->SetReadingWebData(false);
-
-	QueryPerformanceCounter(&liEnd);
-	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
-
-	return 1;
-}

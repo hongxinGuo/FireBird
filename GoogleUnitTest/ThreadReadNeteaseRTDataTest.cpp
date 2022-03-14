@@ -37,14 +37,14 @@ namespace StockAnalysisTest {
 
 	TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
-		EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData())
+		EXPECT_CALL(NeteaseRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("_ntes_quote_callback({\"0600270\": {\"time\": \"2020/04/23 08:30:01\", \"code\": \"0600270\",\"name\":\"don't use chinese character\",\"update\": \"2020/04/23 08:30:01\"} });")); // 要采用网易实时数据制式
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
-		EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData())
+		EXPECT_CALL(NeteaseRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("_ntes_quote_callback({\"0600270\": {\"time\": \"2020/04/23 08:30:01\", \"code\": \"0600270\",\"name\":\"don't use chinese character\",\"update\": \"2020/04/23 08:30:01\"} });")); // 要采用网易实时数据制式

@@ -19,7 +19,7 @@ using namespace std;
 class CWorldStock : public CVirtualStock {
 public:
 	CWorldStock();
-	// 不允许赋值。
+	// 不允许复制和赋值。
 	CWorldStock(const CWorldStock&) = delete;
 	CWorldStock& operator=(const CWorldStock&) = delete;
 	CWorldStock(const CWorldStock&&) noexcept = delete;

@@ -6,7 +6,7 @@ namespace testing {
 	public:
 		MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));
 		MOCK_METHOD(void, StartReadingThread, (), (override));
-		MOCK_METHOD(bool, ReadWebData, (), (override));
+		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};
 	typedef  shared_ptr<CMockNeteaseDayLineWebInquiry> CMockNeteaseDayLineWebInquiryPtr;
 }

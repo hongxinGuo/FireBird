@@ -5,7 +5,7 @@ namespace testing {
 	class CMockSinaRTWebInquiry : public CSinaRTWebInquiry {
 	public:
 		MOCK_METHOD(void, StartReadingThread, (), (override));
-		MOCK_METHOD(bool, ReadWebData, (), (override));
+		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};
 	typedef  shared_ptr<CMockSinaRTWebInquiry> CMockSinaRTWebInquiryPtr;
 }

@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringPrefix(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_FALSE(m_SinaRTWebInquiry.IsReportStatus());
-		EXPECT_THAT(m_SinaRTWebInquiry.GetShortestInquiringInterval(), 400) << "每400毫秒查询一次，即可在3秒内查询6000个股票（850 * 7），完成完整轮询一次的任务";
+		EXPECT_THAT(m_SinaRTWebInquiry.GetShortestInquiringInterval(), 100) << "每100毫秒查询一次，即可在3秒内查询6000个股票（850 * 7），完成完整轮询一次的任务";
 		EXPECT_EQ(m_SinaRTWebInquiry.GetInquiringNumber(), 850) << _T("新浪默认值");
 	}
 

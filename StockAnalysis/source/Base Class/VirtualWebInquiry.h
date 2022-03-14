@@ -19,7 +19,7 @@ public:
 	virtual ~CVirtualWebInquiry(void);
 
 	virtual bool OpenFile(CString strInquiring);
-	virtual bool ReadWebData(void); // 网络实际读取函数
+	virtual bool ReadingWebData(void); // 网络实际读取函数
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
@@ -28,6 +28,8 @@ public:
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
+
+	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 
 	void Reset(void) noexcept;
 	virtual bool ReportStatus(long lNumberOfData) const;
