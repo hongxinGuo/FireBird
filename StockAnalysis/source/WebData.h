@@ -31,7 +31,13 @@ public:
 	friend CTengxunRTWebInquiry;
 	friend CNeteaseDayLineWebInquiry;
 	friend CNeteaseDayLineWebData;
+
 	CWebData();
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CWebData(const CWebData&) = delete;
+	CWebData& operator=(const CWebData&) = delete;
+	CWebData(const CWebData&&) noexcept = delete;
+	CWebData& operator=(const CWebData&&) noexcept = delete;
 	~CWebData();
 
 	bool IsProcessedAllTheData(void) const noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }

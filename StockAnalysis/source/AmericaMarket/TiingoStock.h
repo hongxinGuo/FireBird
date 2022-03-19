@@ -11,6 +11,13 @@ using namespace std;
 class CTiingoStock : public CObject {
 public:
 	CTiingoStock();
+	// 不允许复制和赋值。
+	CTiingoStock(const CTiingoStock&) = delete;
+	CTiingoStock& operator=(const CTiingoStock&) = delete;
+	CTiingoStock(const CTiingoStock&&) noexcept = delete;
+	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
+	virtual ~CTiingoStock() {}
+
 	void Reset(void);
 
 	void Load(CSetTiingoStock& setTiingoStock);

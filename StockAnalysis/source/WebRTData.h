@@ -131,6 +131,12 @@ class CWebRTData final : public CObject {
 public:
 	// 初始化
 	CWebRTData(void);
+	// 不允许赋值。
+	CWebRTData(const CWebRTData&) = delete;
+	CWebRTData& operator=(const CWebRTData&) = delete;
+	CWebRTData(const CWebRTData&&) noexcept = delete;
+	CWebRTData& operator=(const CWebRTData&&) noexcept = delete;
+	virtual ~CWebRTData(void) {}
 
 	void Reset(void);
 

@@ -25,6 +25,7 @@ public:
 	CWorldStock(const CWorldStock&&) noexcept = delete;
 	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
 	virtual ~CWorldStock();
+
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }
 

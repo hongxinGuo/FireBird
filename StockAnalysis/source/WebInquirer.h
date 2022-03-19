@@ -38,6 +38,11 @@ extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 class CWebInquirer : public CObject {
 public:
 	CWebInquirer(void);
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CWebInquirer(const CWebInquirer&) = delete;
+	CWebInquirer& operator=(const CWebInquirer&) = delete;
+	CWebInquirer(const CWebInquirer&&) noexcept = delete;
+	CWebInquirer& operator=(const CWebInquirer&&) noexcept = delete;
 	virtual ~CWebInquirer(void);
 
 	void Initialize(void);

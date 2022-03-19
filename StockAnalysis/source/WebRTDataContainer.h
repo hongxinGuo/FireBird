@@ -12,7 +12,13 @@
 class CWebRTDataContainer final : public CObject {
 public:
 	CWebRTDataContainer();
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CWebRTDataContainer(const CWebRTDataContainer&) = delete;
+	CWebRTDataContainer& operator=(const CWebRTDataContainer&) = delete;
+	CWebRTDataContainer(const CWebRTDataContainer&&) noexcept = delete;
+	CWebRTDataContainer& operator=(const CWebRTDataContainer&&) noexcept = delete;
 	~CWebRTDataContainer();
+
 	void ResetSinaQueue(void) { m_qSinaRTData.Reset(); }
 	size_t GetSinaDataSize(void) { return m_qSinaRTData.GetDataSize(); }
 	void PushSinaData(CWebRTDataPtr pData) { m_qSinaRTData.PushData(pData); }

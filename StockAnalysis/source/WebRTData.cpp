@@ -793,7 +793,10 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 		return true;
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadTengxunOnValue“Ï≥£ "), e);
+		buffer[i] = 0x000;
+		CString errorMessage = pWebDataReceived->GetStockCode() + _T(" ReadTengxunOnValue“Ï≥£:");
+		errorMessage += buffer;
+		ReportErrorToSystemMessage(errorMessage, e);
 		return false;
 	}
 }

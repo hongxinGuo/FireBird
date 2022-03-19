@@ -18,6 +18,11 @@
 class CSystemData : public CObject {
 public:
 	CSystemData(void) {}
+	// ≤ª‘ –Ì∏≥÷µ°£
+	CSystemData(const CSystemData&) = delete;
+	CSystemData& operator=(const CSystemData&) = delete;
+	CSystemData(const CSystemData&&) noexcept = delete;
+	CSystemData& operator=(const CSystemData&&) noexcept = delete;
 	~CSystemData(void) {}
 
 public:
