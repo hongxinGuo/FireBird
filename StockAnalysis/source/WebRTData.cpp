@@ -60,7 +60,7 @@ void CWebRTData::SetStockName(string& s) {
 	wstring wsName;
 	CStringW strWName;
 
-	wsName = to_wide_string(s); // 将中文utf8转成多字节字符串
+	wsName = to_wide_string(s); // 将中文utf8转成宽字节字符串
 	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，
 	strName3 = strWName; // 将CStringW制式转换成CString
 	m_strStockName = strName3;

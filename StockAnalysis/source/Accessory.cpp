@@ -485,15 +485,43 @@ bool ConvertToWJSON(wptree& pt, string& s) {
 }
 
 wstring to_wide_string(const std::string& input) {
-	wstring_convert<std::codecvt_utf8<wchar_t>> converter; // 使用静态变量以节省时间。主义防止多线程复用。
-	return converter.from_bytes(input);
+	char* pBuffer;
+	long lLength = input.size();
+	pBuffer = new char[lLength + 1];
+	for (int i = 0; i < input.size(); i++) {
+		pBuffer[i] = input.at(i);
+	}
+	pBuffer[lLength] = 0x000;
+	WCHAR* pBufferW = new WCHAR[lLength * 2];
+
+	long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
+	pBufferW[lReturnSize] = 0x000;
+	wstring ws = pBufferW;
+
+	delete[]pBuffer;
+	delete[]pBufferW;
+
+	return ws;
 }
 
-string to_byte_string(const wstring& input)
-{
-	//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-	wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	return converter.to_bytes(input);
+string to_byte_string(const wstring& input) {
+	WCHAR* pBufferW;
+	long lLength = input.size();
+	pBufferW = new WCHAR[lLength + 1];
+	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
+	for (int i = 0; i < input.size(); i++) {
+		pBufferW[i] = input.at(i);
+	}
+	char* pBuffer = new char[lLength * 2];
+
+	long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
+	pBuffer[lReturnSize] = 0x000;
+	string s = pBuffer;
+
+	delete[]pBuffer;
+	delete[]pBufferW;
+
+	return s;
 }
 
 bool IsJsonReportingrror(ptree& pt, string& s) {

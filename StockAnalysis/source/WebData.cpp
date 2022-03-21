@@ -6,8 +6,8 @@
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
-	m_sDataBuffer.resize(1024 * 1024); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
-	m_lBufferLength = 1024 * 1024;
+	m_sDataBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
+	m_lBufferLength = __DefaultWebDataBufferSize__;
 	m_lCurrentPos = 0;
 
 	m_fJSonContentType = false;

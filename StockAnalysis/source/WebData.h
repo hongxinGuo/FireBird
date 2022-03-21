@@ -23,6 +23,8 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
+constexpr int __DefaultWebDataBufferSize__ = 1024 * 1024;
+
 class CWebData final : public CObject {
 public:
 	friend CVirtualWebInquiry;
