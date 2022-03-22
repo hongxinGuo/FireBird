@@ -573,7 +573,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 //
 //
 // 大约每100毫秒调度一次
-//
+// 新浪实时数据服务器的读取时间大致为200毫秒，网易的读取时间最大为1000毫秒，故而需要不断地读，无需等待400毫秒了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTask(void) {
@@ -587,8 +587,8 @@ bool CChinaMarket::SchedulingTask(void) {
 		TaskGetRTDataFromWeb();
 		// 解析新浪和网易实时数据的任务移至线程ThreadChinaMarketBackground中。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval(); // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		else m_iCountDownSlowReadingRTData = gl_pSinaRTWebInquiry->GetShortestInquiringInterval() / 100 - 1;  // 默认计数4次,即每400毫秒申请一次实时数据
+		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = 600; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		else m_iCountDownSlowReadingRTData = 0;  // 由于每次读取网络数据的时间都在200毫秒以上，故而无需在此延长时间去等待了
 	}
 	m_iCountDownSlowReadingRTData--;
 
@@ -615,19 +615,18 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 // 从新浪、网易或者腾讯实时行情数据服务器读取实时数据。使用其中之一即可。
 //
-// 新浪实时数据服务器的读取时间大致为200毫秒，网易的读取时间最大为1000毫秒，故而需要不断地读，无需等待400毫秒了。
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 	switch (m_iRTDataServer) {
 	case 0: // 使用新浪实时数据服务器
 		if (IsUsingSinaRTDataReceiver()) {
-			gl_WebInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+			gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 		}
 		break;
 	case 1: // 使用网易实时数据服务器
 		if (IsUsingNeteaseRTDataReceiver()) {
-			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
+			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。网易的响应时间为500-1000毫秒，偶尔有数据错误。
 			gl_WebInquirer.GetNeteaseRTData();
 		}
 		break;
@@ -639,10 +638,10 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 		// 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
 		if (IsUsingTengxunRTDataReceiver()) {
 			if (m_iCountDownTengxunNumber <= 0) {
-				gl_WebInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
-				m_iCountDownTengxunNumber = 5;
+				gl_WebInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。
+				m_iCountDownTengxunNumber = 5; //
 			}
-			else m_iCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
+			else m_iCountDownTengxunNumber--;
 		}
 	}
 	return true;

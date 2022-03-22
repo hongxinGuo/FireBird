@@ -66,9 +66,8 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	ASSERT(m_pFile == nullptr);
 	do {
 		try {
-			// 使用dynamic_cast时，Address Sanitizer在此处报错
-			//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring));
 			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
+			// 其他的数据尚未需要提供头验证数据。
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 			fDone = true;
 		}
@@ -289,3 +288,34 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
+	ASSERT(pVirtualWebInquiry->IsReadingWebData());
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+
+	QueryPerformanceCounter(&liBegin);
+
+	pVirtualWebInquiry->PrepareReadingWebData();
+	if (pVirtualWebInquiry->ReadingWebData()) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		pVirtualWebInquiry->TransferData(pWebData);
+		pVirtualWebInquiry->ParseData(pWebData);
+		pVirtualWebInquiry->ResetBuffer();
+
+		pVirtualWebInquiry->SetTime(pWebData);
+		pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
+		pVirtualWebInquiry->StoreWebData(pWebData);
+	}
+	else { // error handling
+		pVirtualWebInquiry->ClearUpIfReadingWebDataFailed();
+	}
+	pVirtualWebInquiry->UpdateAfterReadingWebData();
+
+	pVirtualWebInquiry->SetReadingWebData(false);
+
+	QueryPerformanceCounter(&liEnd);
+	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
+
+	return 1;
+}
+*/
