@@ -196,18 +196,17 @@ void CDataStockSymbol::Add(CString strSymbol) {
 
 CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
 	CString strReturn = _T("");
-	long lEndPosition = m_vStockSymbol.size();
 	CString strSuffix = _T(",");
 
-	if (0 == lEndPosition) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
+	if (m_vStockSymbol.size() == 0) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
 	strReturn = XferStandredToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));  // 得到第一个股票代码
-	IncreaseIndex(m_lNextSinaStockInquiringMiddleStrIndex, lEndPosition);
+	GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNextSinaStockInquiringMiddleStrIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strSuffix;
 		strReturn += XferStandredToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));
-		IncreaseIndex(m_lNextSinaStockInquiringMiddleStrIndex, lEndPosition);
+		GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	}
 	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
@@ -216,26 +215,25 @@ CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) 
 
 CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
 	CString strReturn;
-	long lEndPosition = m_vStockSymbol.size();
 	CString strPostfix = _T(",");
 
-	if (0 == lEndPosition) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
+	if (m_vStockSymbol.size() == 0) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
 	strReturn = XferStandredToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex));  // 得到第一个股票代码
-	IncreaseIndex(m_lNeteaseRTDataInquiryIndex, lEndPosition);
+	GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNeteaseRTDataInquiryIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strPostfix;
 		strReturn += XferStandredToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex));  // 得到第一个股票代码
-		IncreaseIndex(m_lNeteaseRTDataInquiryIndex, lEndPosition);
+		GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	}
 	if (m_lNeteaseRTDataInquiryIndex > 0) m_lNeteaseRTDataInquiryIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
 
-long CDataStockSymbol::IncreaseIndex(long& lIndex, long lEndPosition) {
-	if (++lIndex >= lEndPosition) {
+long CDataStockSymbol::GetNextIndex(long& lIndex) {
+	if (++lIndex >= m_vStockSymbol.size()) {
 		lIndex = 0;
 	}
 	return lIndex;

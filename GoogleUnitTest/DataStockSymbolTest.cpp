@@ -22,6 +22,7 @@ namespace StockAnalysisTest {
 
 			GeneralCheck();
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
+			EXPECT_EQ(s_pDataStockSymbol->GetStockSize(), 14000) << "默认装入的StockSymbol数为14000";
 		}
 
 		static void TearDownTestSuite(void) {
@@ -100,16 +101,16 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol(_T("00000.SZ")));
 	}
 
-	TEST_F(CDataStockSymbolTest, TestIncreaseIndex) {
+	TEST_F(CDataStockSymbolTest, TestGetNextIndex) {
 		long l = 0;
-		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 1);
+		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 1);
 		EXPECT_EQ(l, 1);
-		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 2);
+		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 2);
 		EXPECT_EQ(l, 2);
-		l = 98;
-		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 99);
-		EXPECT_EQ(l, 99);
-		EXPECT_EQ(s_pDataStockSymbol->IncreaseIndex(l, 100), 0);
+		l = 14000 - 2;
+		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 14000 - 1);
+		EXPECT_EQ(l, 14000 - 1);
+		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 0) << "默认装入的StockSymbol数为14000";
 		EXPECT_EQ(l, 0);
 	}
 

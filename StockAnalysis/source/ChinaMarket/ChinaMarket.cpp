@@ -588,7 +588,7 @@ bool CChinaMarket::SchedulingTask(void) {
 		// 解析新浪和网易实时数据的任务移至线程ThreadChinaMarketBackground中。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
 		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = 600; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		else m_iCountDownSlowReadingRTData = 0;  // 由于每次读取网络数据的时间都在200毫秒以上，故而无需在此延长时间去等待了
+		else m_iCountDownSlowReadingRTData = 2;  // 由于每次读取网络数据的时间都在200毫秒以上，故而无需在此延长时间去等待了.
 	}
 	m_iCountDownSlowReadingRTData--;
 
@@ -614,7 +614,8 @@ bool CChinaMarket::SchedulingTask(void) {
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 从新浪、网易或者腾讯实时行情数据服务器读取实时数据。使用其中之一即可。
-//
+// 新浪读取时间为200-300毫秒；网易读取时间为500-1000毫秒；腾讯读取时间为2000-3000毫秒。由于腾讯读取时间超长，故
+// 需要多个提取器（8-10个）同时申请方可。
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {

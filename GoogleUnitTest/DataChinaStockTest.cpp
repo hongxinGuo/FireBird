@@ -2,6 +2,7 @@
 
 #include"globedef.h"
 #include"GeneralCheck.h"
+#include"ChinaMarket.h"
 
 #include"DataChinaStock.h"
 
@@ -25,6 +26,12 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			CChinaStockPtr pStock = nullptr;
+
+			for (int i = 0; i < 100; i++) {
+				pStock = gl_pChinaMarket->GetStock(i);
+				m_dataChinaStock.Add(pStock);
+			}
 		}
 
 		virtual void TearDown(void) override {
@@ -66,5 +73,18 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(m_dataChinaStock.GetTengxunRTDataInquiringIndex(), 0);
 		m_dataChinaStock.SetTengxunRTDataInquiringIndex(100);
 		EXPECT_EQ(m_dataChinaStock.GetTengxunRTDataInquiringIndex(), 100);
+	}
+
+	TEST_F(CDataChinaStockTest, TestGetNextIndex) {
+		long l = 0;
+		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 1);
+		EXPECT_EQ(l, 1);
+		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 2);
+		EXPECT_EQ(l, 2);
+		l = 98;
+		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 99);
+		EXPECT_EQ(l, 99);
+		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 0) << "默认的Stock数为100";
+		EXPECT_EQ(l, 0);
 	}
 }

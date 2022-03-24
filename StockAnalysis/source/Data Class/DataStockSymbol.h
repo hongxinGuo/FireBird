@@ -12,6 +12,11 @@ using namespace std;
 class CDataStockSymbol : public CObject {
 public:
 	CDataStockSymbol();
+	// 只能有一个实例,不允许赋值。
+	CDataStockSymbol(const CDataStockSymbol&) = delete;
+	CDataStockSymbol& operator=(const CDataStockSymbol&) = delete;
+	CDataStockSymbol(const CDataStockSymbol&&) noexcept = delete;
+	CDataStockSymbol& operator=(const CDataStockSymbol&&) noexcept = delete;
 	~CDataStockSymbol();
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
@@ -39,7 +44,7 @@ public:
 	bool UpdateStockSection(CString strStockCode);
 	bool UpdateStockSection(long lIndex);
 
-	long IncreaseIndex(long& lIndex, long lEndPosition);
+	long GetNextIndex(long& lIndex);
 
 private:
 

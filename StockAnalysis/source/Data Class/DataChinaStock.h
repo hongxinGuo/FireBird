@@ -10,6 +10,11 @@ using namespace std;
 class CDataChinaStock : public CObject {
 public:
 	CDataChinaStock();
+	// 只能有一个实例,不允许赋值。
+	CDataChinaStock(const CDataChinaStock&) = delete;
+	CDataChinaStock& operator=(const CDataChinaStock&) = delete;
+	CDataChinaStock(const CDataChinaStock&&) noexcept = delete;
+	CDataChinaStock& operator=(const CDataChinaStock&&) noexcept = delete;
 	~CDataChinaStock();
 	void Reset(void);
 
@@ -74,13 +79,12 @@ public:
 	long GetSinaRTDataInquiringIndex(void) noexcept { return m_lSinaRTDataInquiringIndex; }
 	void SetTengxunRTDataInquiringIndex(long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
 	long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
+	long GetNextIndex(long& lIndex);
 
 private:
 	bool DeleteDayLineBasicInfo(long lDate);
 	bool DeleteDayLineExtendInfo(long lDate);
 	bool DeleteTodayTempDB(void);
-
-	long IncreaseIndex(long& lIndex, long lEndPosition);
 
 protected:
 	vector<CChinaStockPtr> m_vStock; // 本系统允许的所有股票池（无论代码是否存在）
