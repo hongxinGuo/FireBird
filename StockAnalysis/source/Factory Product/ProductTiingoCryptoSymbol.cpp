@@ -43,15 +43,22 @@ bool CProductTiingoCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//[
-//{
-//	"ticker":"curebtc",
-//	"baseCurrency" : "cure",
-//	"name" : "CureCoin (CURE/BTC)",
+// https://api.tiingo.com/documentation/crypto
+// ¸ñÊ½£º
+// [
+// {
 //	"quoteCurrency" : "btc",
-//	"description" : "CureCoin (CURE/BTC)"
-//}
-//]
+//	"name" : "CureCoin (CURE/BTC)",
+//	"ticker":"curebtc",
+//	"baseCurrency" : "cure"
+// },
+// {
+//	"quoteCurrency": "ust",
+//	"name" : "KSM (KSM/UST)",
+//	"ticker" : "ksmust",
+//	"baseCurrency" : "ksm"
+// }
+// ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebDataPtr pWebData) {
@@ -76,8 +83,6 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 				pTiingoCrypto->m_strTicker = s.c_str();
 				s = pt2.get<string>(_T("name"));
 				if (s.size() > 0) pTiingoCrypto->m_strName = s.c_str();
-				s = pt2.get<string>(_T("description"));
-				if (s.size() > 0) pTiingoCrypto->m_strDescription = s.c_str();
 				s = pt2.get<string>(_T("baseCurrency"));
 				if (s.size() > 0) pTiingoCrypto->m_strBaseCurrency = s.c_str();
 				s = pt2.get<string>(_T("quoteCurrency"));
@@ -88,7 +93,7 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Tiingo Crypto Symbol "), e);
+			ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->m_strTicker, e);
 		}
 	}
 	return pvTiingoCrypto;

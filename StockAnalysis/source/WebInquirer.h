@@ -48,6 +48,10 @@ public:
 	void Initialize(void);
 public:
 	// ÍøÂçÊý¾Ý²éÑ¯Æ÷
+	bool IsReadingSinaRTData(void) { return gl_pSinaRTWebInquiry->IsReadingWebData(); }
+	bool IsReadingNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->IsReadingWebData(); }
+	bool IsReadingTengxunRTData(void) { return gl_pTengxunRTWebInquiry->IsReadingWebData(); }
+
 	bool GetQuandlData(void) { return gl_pQuandlWebInquiry->GetWebData(); }
 	bool GetFinnhubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
 	bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }

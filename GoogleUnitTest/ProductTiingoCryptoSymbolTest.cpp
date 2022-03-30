@@ -49,11 +49,11 @@ namespace StockAnalysisTest {
 	}
 
 	// 格式不对，缺乏'{'
-	TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\",\"description\":\"CureCoin(CURE/BTC)\"}]"));
+	TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 	// 第一个数据缺项
-	TiingoWebData tiingoWebData12(12, _T(""), _T("[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\",\"description\":\"CureCoin(CURE/BTC)\"}]"));
+	TiingoWebData tiingoWebData12(12, _T(""), _T("[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 	// 正确的数据
-	TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\",\"description\":\"CureCoin(CURE/BTC)\"}]"));
+	TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 
 	class ParseTiingoCryptoTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
@@ -96,7 +96,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strTicker, _T("New Symbol"));
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("CureCoin(CURE/BTC)"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
 			break;
 		}

@@ -59,6 +59,7 @@ ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\Stoc
 ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*"); // ÅÅ³ýixWebSocket¿â
 ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\vld\\*.*"); // ÅÅ³ývld¿â
 ExcludeSourceFromCodeCoverage(Exclude22, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\OPenSSL\\*.*"); // ÅÅ³ýOpenSSL¿â
+ExcludeSourceFromCodeCoverage(Exclude23, L"d:\\cfiles\\projects\\winssl\\openssl-1.1.1n\\*.*"); // ÅÅ³ýOpenSSL1.1.1n¿â
 ExcludeSourceFromCodeCoverage(Exclude24, L"d:\\cfiles\\projects\\winssl\\openssl-3.0.1\\*.*"); // ÅÅ³ýOpenSSL3.0.1¿â
 
 // ÅÅ³ýÎÞÐè²âÊÔµÄµ¥¸öÎÄ¼þ

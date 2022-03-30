@@ -204,6 +204,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			// clearup
 			GeneralCheck();
 		}

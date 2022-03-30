@@ -481,6 +481,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		CString str1;
 		str1 = buffer1;
 		if (strHeader.Compare(str1) != 0) { // 数据格式出错
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData格式出错"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(3);
@@ -491,6 +492,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
 		}
 		else {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无效市场代码"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
@@ -507,6 +509,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			strTengxunStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
 			break;
 		default:
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无效市场代码"));
 			return false;
 		}
 		m_strSymbol = XferTengxunToStandred(strTengxunStockCode);
@@ -515,15 +518,18 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 
 		pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // 读入'="'
 		if (buffer1[0] != '=') {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：需要'='"));
 			return false;
 		}
 		if (buffer1[1] != '"') {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：需要'\"'"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(2);
 
 		// 市场标识代码（51为深市，1为沪市）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：市场标识代码"));
 			return false;
 		}
 #ifdef DEBUG
@@ -532,53 +538,66 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		else ASSERT(0); // 报错
 #endif
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：股票名称"));
 			return false;
 		}
 		m_strStockName = buffer1; // 设置股票名称
 		// 六位股票代码
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：股票代码"));
 			return false;
 		}
-		if (lTemp != lStockCode) return false;
+		if (lTemp != lStockCode) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：股票代码不符"));
+			return false;
+		}
 
 		// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交价"));
 			return false;
 		}
 		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 前收盘价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：前收盘"));
 			return false;
 		}
 		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 开盘价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：开盘价"));
 			return false;
 		}
 		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 成交手数。成交股数存储实际值
 		// 不使用此处的成交量，而是使用第三十五项处的成交量。
 		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交手数"));
 			return false;
 		}
 		// 外盘
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：外盘"));
 			return false;
 		}
 		// 内盘
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：内盘"));
 			return false;
 		}
 		// 读入买一至买五的价格和手数
 		for (int j = 0; j < 5; j++) {
 			// 买盘价格
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：买盘价格"));
 				return false;
 			}
 			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 
 			// 买盘数量（手）
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：买盘数量"));
 				return false;
 			}
 			m_lVBuy.at(j) = lTemp * 100;
@@ -587,45 +606,54 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		for (int j = 0; j < 5; j++) {
 			//读入卖盘价格
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：买盘价格"));
 				return false;
 			}
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 			// 卖盘数量（手）
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：买盘数量"));
 				return false;
 			}
 			m_lVSell.at(j) = lTemp * 100;
 		}
 		// 最近逐笔成交
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：最近逐笔成交"));
 			return false;
 		}
 		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交日期和时间"));
 			return false;
 		}
 		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		// 涨跌
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：涨跌"));
 			return false;
 		}
 		// 涨跌率
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：涨跌率"));
 			return false;
 		}
 		// 最高价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：最高价"));
 			return false;
 		}
 		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 最低价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：最低价"));
 			return false;
 		}
 		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 第三十五项，成交价/成交量（手）/成交金额（元）
 		// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交价、成交手数、成交额"));
 			return false;
 		}
 		sscanf_s(buffer3, _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
@@ -633,57 +661,70 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		// 成交手数
 		// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交量"));
 			return false;
 		}
 		// 成交金额（万元）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：成交金额"));
 			return false;
 		}
 		// 换手率
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：换手率"));
 			return false;
 		}
 		// 市盈率
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：市盈率"));
 			return false;
 		}
 		// 无名
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无名"));
 			return false;
 		}
 		// 最高价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：最高价"));
 			return false;
 		}
 		// 最低价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：最低价"));
 			return false;
 		}
 		// 振幅
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：振幅"));
 			return false;
 		}
 		// 流通市值（单位为：亿元）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：流通市值"));
 			return false;
 		}
 		m_llCurrentValue = static_cast<INT64>(dTemp * 100000000);
 		// 总市值（单位为：亿元）
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：总市值"));
 			return false;
 		}
 		m_llTotalValue = static_cast<INT64>(dTemp * 100000000);
 		// 市净率
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：市净率"));
 			return false;
 		}
 		// 涨停价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：涨停价"));
 			return false;
 		}
 		if (dTemp > 0.01) m_lHighLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 跌停价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：跌停价"));
 			return false;
 		}
 		if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);

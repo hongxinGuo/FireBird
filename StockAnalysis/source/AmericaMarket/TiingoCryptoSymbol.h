@@ -20,7 +20,7 @@ public:
 public:
 	CString m_strTicker;
 	CString m_strName;
-	CString m_strDescription;
+	CString m_strDescription; // 此项已废弃不用了。
 	CString m_strBaseCurrency;
 	CString m_strQuoteCurrency;
 
