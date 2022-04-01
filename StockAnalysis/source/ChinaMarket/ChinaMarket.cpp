@@ -148,7 +148,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fCheckActiveStock = true;  //检查当日活跃股票，必须为真。
 
-	m_fGetRTData = true;
 	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
 	m_iRTDataServer = 0; // 使用新浪实时数据服务器
@@ -583,7 +582,7 @@ bool CChinaMarket::SchedulingTask(void) {
 	const long lCurrentTime = GetMarketTime();
 
 	// 抓取实时数据(新浪、腾讯和网易）。每100毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-	if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
+	if (m_iCountDownSlowReadingRTData <= 0) {
 		TaskGetRTDataFromWeb();
 		// 解析新浪和网易实时数据的任务移至线程ThreadChinaMarketBackground中。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次

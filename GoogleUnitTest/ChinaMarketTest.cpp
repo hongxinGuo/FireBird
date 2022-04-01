@@ -170,7 +170,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackBuyAmount(), 0);
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackSellAmount(), 0);
-		EXPECT_TRUE(gl_pChinaMarket->IsGetRTData());
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 		EXPECT_EQ(gl_pChinaMarket->GetCountDownSlowReadingRTData(), 3);
 		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池

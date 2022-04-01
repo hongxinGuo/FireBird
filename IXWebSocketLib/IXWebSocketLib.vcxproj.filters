@@ -159,6 +159,9 @@
     <ClInclude Include="..\ixwebsocket\IXWebSocketProxyServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\ixwebsocket\IXWebSocketSendData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\ixwebsocket\IXWebSocketSendInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -169,9 +172,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\ixwebsocket\IXWebSocketVersion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ixwebsocket\IXWebSocketSendData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
