@@ -21,7 +21,6 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
-	pDataHead = m_sBuffer.data();
 
 	m_lShortestInquiringInterval = 1000; // 每1秒查询一次。
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -122,7 +121,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	SetWebError(false);
 	SetByteReaded(0);
 	if (OpenFile(GetInquiringString())) {
-		pDataHead = m_sBuffer.data();
 		do {
 			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 				fReadingSuccess = false;
@@ -132,7 +130,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
 				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
-				pDataHead = m_sBuffer.data();
 			}
 		} while (lCurrentByteReaded > 0);
 		m_lTotalByteReaded += m_lByteRead;
@@ -152,7 +149,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 每次读取1K数据，然后将读取到的数据存入缓冲区
-// 此函数的耗时，皆在Read函数，故而无法加快执行速度了。
+// 此函数的耗时，皆在Read函数，故而无论是否使用buffer做缓冲，皆无法加快其执行速度。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
@@ -162,8 +159,8 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 		//m_sBuffer.at(m_lByteRead++) = buffer[i];
 	//}
 
-	ASSERT(pDataHead == m_sBuffer.data());
-	const UINT uByteRead = m_pFile->Read(pDataHead + m_lByteRead, 1024);
+	string::pointer pDataHead = m_sBuffer.data() + m_lByteRead;
+	const UINT uByteRead = m_pFile->Read(pDataHead, 1024);
 	m_lByteRead += uByteRead;
 
 	return uByteRead;
@@ -263,7 +260,6 @@ void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
-	pDataHead = m_sBuffer.data();
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}
@@ -275,7 +271,6 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	char* buffer = str.GetBuffer();
 
 	m_sBuffer.resize(lTotalNumber);
-	pDataHead = m_sBuffer.data();
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}

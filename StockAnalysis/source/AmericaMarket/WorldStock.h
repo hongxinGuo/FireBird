@@ -84,6 +84,10 @@ public:
 	void SetMic(CString strMic) { m_strMic = strMic; }
 	CString GetFigi(void) const { return m_strFigi; }
 	void SetFigi(CString strFigi) { m_strFigi = strFigi; }
+	CString GetShareClassFIGI(void) const { return m_strShareClassFIGI; }
+	void SetShareClassFIGI(CString strFigi) { m_strShareClassFIGI = strFigi; }
+	CString GetSymbol2(void) const { return m_strSymbol2; }
+	void SetSymbol2(CString str) { m_strSymbol2 = str; }
 	CString GetCurrency(void) const { return m_strCurrency; }
 	void SetCurrency(CString strCurrency) { m_strCurrency = strCurrency; }
 
@@ -185,8 +189,10 @@ public:
 protected:
 	// Finnhub symbol信息
 	CString m_strType;
+	CString m_strSymbol2; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
 	CString m_strMic;
-	CString m_strFigi;
+	CString m_strFigi; // FIGI identifier
+	CString m_strShareClassFIGI; // Global Share Class FIGI
 	CString m_strCurrency;
 
 	// Finnhub profile信息

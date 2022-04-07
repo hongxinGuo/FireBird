@@ -68,6 +68,24 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, C
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// ÍøÖ·£ºhttps://finnhub.io/docs/api/stock-symbols
+//
+// {
+// "currency": "EUR",
+// "description": "ASN Groenprojectenfonds",
+// "displaySymbol" : "NL0012314660.AS",
+// "figi" : "",
+// "isin" : null,
+// "mic" : "XAMS",
+// "shareClassFIGI" : "",
+// "symbol" : "NL0012314660.AS",
+// "symbol2" : "",
+// "type" : ""
+// }
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {
 	CWorldStockVectorPtr pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
@@ -93,8 +111,12 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 				if (s.size() > 0) pStock->SetFigi(s.c_str());
 				s = pt2.get<string>(_T("mic"));
 				if (s.size() > 0) pStock->SetMic(s.c_str());
+				s = pt2.get<string>(_T("shareClassFIGI"));
+				if (s.size() > 0) pStock->SetShareClassFIGI(s.c_str());
 				s = pt2.get<string>(_T("symbol"));
 				pStock->SetSymbol(s.c_str());
+				s = pt2.get<string>(_T("symbol2"));
+				pStock->SetSymbol2(s.c_str());
 				s = pt2.get<string>(_T("type"));
 				if (s.size() > 0) pStock->SetType(s.c_str());
 				pvStock->push_back(pStock);
