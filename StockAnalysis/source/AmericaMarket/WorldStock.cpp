@@ -74,6 +74,7 @@ void CWorldStock::Reset(void) {
 	m_dShareOutstanding = 0;
 
 	m_fProfileUpdated = false;
+	m_fBasicFinancialsUpdated = false;
 	m_fEPSSurpriseUpdated = false;
 	m_fEPSSurpriseNeedSave = false;
 	m_fFinnhubPeerUpdated = false;

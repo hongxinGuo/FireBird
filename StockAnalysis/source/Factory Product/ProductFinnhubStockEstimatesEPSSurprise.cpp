@@ -68,8 +68,8 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 				str = s.c_str();
 				sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 				pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
-				pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
-				pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
+				pEPSSurprise->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
+				pEPSSurprise->m_dActual = ptreeGetDouble(pt2, _T("actual"));
 				pvEPSSurprise->push_back(pEPSSurprise);
 			}
 		}

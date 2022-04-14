@@ -573,3 +573,27 @@ void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
 	strError += e.what();
 	gl_systemMessage.PushErrorMessage(strError);
 }
+
+double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
+	string s = pt.get<string>(szKey);
+	if (s.compare(_T("null")) == 0) return dDefault;
+	else return stod(s);
+}
+
+int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
+	string s = pt.get<string>(szKey);
+	if (s.compare(_T("null")) == 0) return iDefault;
+	else return stoi(s);
+}
+
+long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
+	string s = pt.get<string>(szKey);
+	if (s.compare(_T("null")) == 0) return llDefault;
+	else return stoll(s);
+}
+
+long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
+	string s = pt.get<string>(szKey);
+	if (s.compare(_T("null")) == 0) return lDefault;
+	else return stol(s);
+}

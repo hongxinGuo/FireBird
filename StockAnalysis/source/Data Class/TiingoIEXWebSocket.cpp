@@ -323,7 +323,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				catch (exception e) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}

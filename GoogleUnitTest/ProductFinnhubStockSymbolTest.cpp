@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 	// 数据缺乏currency项
 	FinnhubWebData finnhubWebData23(3, _T("AAPL"), _T("[{\"cuency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"CERC\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"CERC\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"ATGVF\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"ATGVF\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"isin\":null,\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"A\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"New Symbol\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
+	FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"isin\":\"not null\",\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"A\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"New Symbol\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
 
 	class ParseFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
@@ -110,7 +110,9 @@ namespace StockAnalysisTest {
 			break;
 		case 10:
 			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("A"));
+			EXPECT_STREQ(m_pvStock->at(0)->GetIsin(), _T("not null")) << "此时内容不为空，需要双引号";
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("New Symbol"));
+			EXPECT_STREQ(m_pvStock->at(1)->GetIsin(), _T("null")) << "当内容为空（null）时，无需双引号";
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:

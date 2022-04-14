@@ -56,15 +56,15 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 		if (pWebData->IsVoidJSon()) return false;
 		ppt = pWebData->GetPTree();
 		try {
-			dTemp = ppt->get<double>(_T("c"));
+			dTemp = ptreeGetDouble(*ppt, _T("c"));
 			pStock->SetNew(dTemp * 1000);
-			dTemp = ppt->get<double>(_T("h"));
+			dTemp = ptreeGetDouble(*ppt, _T("h"));
 			pStock->SetHigh(dTemp * 1000);
-			dTemp = ppt->get<double>(_T("l"));
+			dTemp = ptreeGetDouble(*ppt, _T("l"));
 			pStock->SetLow(dTemp * 1000);
-			dTemp = ppt->get<double>(_T("o"));
+			dTemp = ptreeGetDouble(*ppt, _T("o"));
 			pStock->SetOpen(dTemp * 1000);
-			dTemp = ppt->get<double>(_T("pc"));
+			dTemp = ptreeGetDouble(*ppt, _T("pc"));
 			pStock->SetLastClose(dTemp * 1000);
 			tt = ppt->get<time_t>(_T("t"));
 			pStock->SetTransactionTime(tt);

@@ -666,6 +666,15 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h">
       <Filter>头文件\Template</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancials.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancials.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialsMetric.h">
+      <Filter>头文件\DataBase\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1156,6 +1165,15 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancials.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancials.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialsMetric.cpp">
+      <Filter>源文件\DataBase\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

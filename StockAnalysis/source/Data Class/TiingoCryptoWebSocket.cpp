@@ -155,7 +155,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				catch (exception e) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}

@@ -21,6 +21,7 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancials.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialsMetric.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h" />
@@ -132,6 +134,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancials.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.h" />
@@ -182,6 +185,7 @@
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancials.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
@@ -283,6 +287,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Crweber Index\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\Poten Daily\SetPotenDailyBriefing.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialsMetric.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp" />
@@ -302,6 +307,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancials.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.cpp" />

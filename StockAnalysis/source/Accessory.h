@@ -82,3 +82,8 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 void ReportErrorToSystemMessage(CString strPrefix, exception& e);
+
+double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault = 0.0);
+int ptreeGetInt(ptree& pt, const char* szKey, int iDefault = 0);
+long ptreeGetLong(ptree& pt, const char* szKey, long lDefault = 0);
+long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault = 0);

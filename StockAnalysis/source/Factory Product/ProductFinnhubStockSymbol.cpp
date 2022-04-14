@@ -109,6 +109,8 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 				pStock->SetDisplaySymbol(s.c_str());
 				s = pt2.get<string>(_T("figi"));
 				if (s.size() > 0) pStock->SetFigi(s.c_str());
+				s = pt2.get<string>(_T("isin"));
+				if (s.size() > 0) pStock->SetIsin(s.c_str());
 				s = pt2.get<string>(_T("mic"));
 				if (s.size() > 0) pStock->SetMic(s.c_str());
 				s = pt2.get<string>(_T("shareClassFIGI"));

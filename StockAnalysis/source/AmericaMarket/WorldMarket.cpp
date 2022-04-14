@@ -447,6 +447,7 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
 		if (IsSystemReady()) {
 			TaskInquiryFinnhubCompanyProfileConcise();
+			//TaskInquiryFinnhubCompanyBasicFinancials();
 			TaskInquiryFinnhubPeer();
 			TaskInquiryFinnhubInsiderTransaction();
 			//TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
@@ -553,6 +554,48 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 			SetFinnhubStockProfileUpdated(true);
 			TRACE("Finnhub股票简介更新完毕\n");
 			str = _T("Finnhub股票简介更新完毕");
+			gl_systemMessage.PushInformationMessage(str);
+			fHaveInquiry = false;
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CWorldMarket::TaskInquiryFinnhubCompanyBasicFinancials(void) {
+	static bool s_fInquiringFinnhubCompanyBasicFinancials = false;
+	bool fFound = false;
+	long lStockSetSize = GetStockSize();
+	CString str = _T("");
+	bool fHaveInquiry = false;
+	CWebSourceDataProductPtr p = nullptr;
+	long lCurrentBasicFinncialsPos;
+
+	ASSERT(IsSystemReady());
+	if (!IsFinnhubStockBasicFinncialsUpdated() && !IsFinnhubInquiring()) {
+		if (!s_fInquiringFinnhubCompanyBasicFinancials) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock basic financials..."));
+			s_fInquiringFinnhubCompanyBasicFinancials = true;
+		}
+		for (lCurrentBasicFinncialsPos = 0; lCurrentBasicFinncialsPos < lStockSetSize; lCurrentBasicFinncialsPos++) {
+			if (!GetStock(lCurrentBasicFinncialsPos)->IsBasicFinancialsUpdated()) {
+				fFound = true;
+				break;
+			}
+		}
+		if (fFound) {
+			p = m_FinnhubFactory.CreateProduct(this, __BASIC_FINANCIALS__);
+			p->SetIndex(lCurrentBasicFinncialsPos);
+			m_qFinnhubProduct.push(p);
+			SetCurrentFunction(_T("基本情况:") + m_dataWorldStock.GetStock(lCurrentBasicFinncialsPos)->GetSymbol());
+			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+			SetFinnhubInquiring(true);
+			fHaveInquiry = true;
+		}
+		else {
+			s_fInquiringFinnhubCompanyBasicFinancials = false;
+			SetFinnhubStockBasicFinncialsUpdated(true);
+			TRACE("Finnhub股票基本情况更新完毕\n");
+			str = _T("Finnhub股票基本情况更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}

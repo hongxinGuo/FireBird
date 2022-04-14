@@ -122,6 +122,8 @@ bool CDataWorldStock::LoadDB(void) {
 			setWorldStock.Delete(); // É¾³ý´ËÖØ¸´´úÂë
 		}
 		setWorldStock.MoveNext();
+
+		//CheckStockSymbol(pWorldStock);
 	}
 	setWorldStock.m_pDatabase->CommitTrans();
 	setWorldStock.Close();
@@ -211,5 +213,18 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
 	sm_fInProcess = false;
+	return true;
+}
+
+bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
+	CString strSymbol = pStock->GetSymbol();
+	CString strExhangeCode = pStock->GetExchangeCode();
+
+	if (strExhangeCode.Compare(_T("US")) == 0) return true;
+	int pos = strSymbol.Find(_T(".") + strExhangeCode);
+	if ((pos + 1) < (strSymbol.GetLength() - strExhangeCode.GetLength())) {
+		gl_systemMessage.PushErrorMessage(_T("stock sysmbol Error: ") + strSymbol);
+		return false;
+	}
 	return true;
 }

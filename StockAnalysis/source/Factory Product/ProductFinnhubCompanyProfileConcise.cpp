@@ -89,7 +89,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 			if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
 			s = ppt->get<string>(_T("phone"));
 			if (s.size() > 0) pStock->SetPhone(s.c_str());
-			if (s.size() > 0) pStock->SetShareOutstanding(ppt->get<double>(_T("shareOutstanding")));
+			if (s.size() > 0) pStock->SetShareOutstanding(ptreeGetDouble(*ppt, _T("shareOutstanding")));
 			s = ppt->get<string>(_T("weburl"));
 			if (s.size() > 0) pStock->SetWebURL(s.c_str());
 			s = ppt->get<string>(_T("ipo"));

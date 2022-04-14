@@ -57,6 +57,9 @@ public:
 	bool IsProfileUpdated(void) const noexcept { return m_fProfileUpdated; }
 	void SetProfileUpdated(bool fFlag) noexcept { m_fProfileUpdated = fFlag; }
 
+	bool IsBasicFinancialsUpdated(void) const noexcept { return m_fBasicFinancialsUpdated; }
+	void SetBasicFinancialsUpdated(bool fFlag) noexcept { m_fBasicFinancialsUpdated = fFlag; }
+
 	bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
 	void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
 	bool CheckEPSSurpriseStatus(long lCurrentDate);
@@ -231,6 +234,7 @@ protected:
 
 	// 无需存储数据区
 	bool m_fProfileUpdated; // 公司简介已更新
+	bool m_fBasicFinancialsUpdated; // 公司基本情况已更新
 	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 	bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
 	atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储

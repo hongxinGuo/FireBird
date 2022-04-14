@@ -137,8 +137,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					code = pt3.get<string>(_T("c"));
 					if (code.compare(_T("null")) == 0) code = _T("");
 					pFinnhubDataPtr->m_strCode = code.c_str();
-					pFinnhubDataPtr->m_dLastPrice = pt3.get<double>(_T("p"));
-					pFinnhubDataPtr->m_dLastVolume = pt3.get<double>(_T("v"));
+					pFinnhubDataPtr->m_dLastPrice = ptreeGetDouble(pt3, _T("p"));
+					pFinnhubDataPtr->m_dLastVolume = ptreeGetDouble(pt3, _T("v"));
 					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 					m_fReveivingData = true;

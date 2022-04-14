@@ -57,9 +57,9 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 				pEconomicCalendar->m_strEvent = s.c_str();
 				s = pt2.get<string>(_T("impact"));
 				pEconomicCalendar->m_strImpact = s.c_str();
-				pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
-				pEconomicCalendar->m_dActual = pt2.get<double>(_T("actual"));
-				pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
+				pEconomicCalendar->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
+				pEconomicCalendar->m_dActual = ptreeGetDouble(pt2, _T("actual"));
+				pEconomicCalendar->m_dPrev = ptreeGetDouble(pt2, _T("prev"));
 				s = pt2.get<string>(_T("time"));
 				pEconomicCalendar->m_strTime = s.c_str();
 				s = pt2.get<string>(_T("unit"));

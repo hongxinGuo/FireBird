@@ -35,6 +35,8 @@ public:
 	bool LoadDB(void);
 	bool UpdateProfileDB(void);
 
+	bool CheckStockSymbol(CWorldStockPtr pstock);
+
 protected:
 	vector<CWorldStockPtr> m_vWorldStock;
 	map<CString, long> m_mapWorldStock;

@@ -130,13 +130,13 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 				sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 				lTemp = year * 10000 + month * 100 + day;
 				pDayLine->SetDate(lTemp);
-				dTemp = pt2.get<double>(_T("close"));
+				dTemp = ptreeGetDouble(pt2, _T("close"));
 				pDayLine->SetClose(dTemp * 1000);
-				dTemp = pt2.get<double>(_T("high"));
+				dTemp = ptreeGetDouble(pt2, _T("high"));
 				pDayLine->SetHigh(dTemp * 1000);
-				dTemp = pt2.get<double>(_T("low"));
+				dTemp = ptreeGetDouble(pt2, _T("low"));
 				pDayLine->SetLow(dTemp * 1000);
-				dTemp = pt2.get<double>(_T("open"));
+				dTemp = ptreeGetDouble(pt2, _T("open"));
 				pDayLine->SetOpen(dTemp * 1000);
 				lTemp = pt2.get<long>(_T("volume"));
 				pDayLine->SetVolume(lTemp);

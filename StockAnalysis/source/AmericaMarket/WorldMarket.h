@@ -75,6 +75,7 @@ public:
 	virtual bool TaskInquiryFinnhubCountryList(void);
 	virtual bool TaskInquiryFinnhubCompanySymbol(void);
 	virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
+	virtual bool TaskInquiryFinnhubCompanyBasicFinancials();
 	virtual bool TaskInquiryFinnhubStockDayLine(void);
 	virtual bool TaskInquiryFinnhubRTQuote(void);
 	virtual bool TaskInquiryFinnhubPeer(void);
@@ -216,6 +217,8 @@ public:
 	void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
 	bool IsFinnhubStockProfileUpdated(void) noexcept { return m_fFinnhubStockProfileUpdated; }
 	void SetFinnhubStockProfileUpdated(bool fFlag) noexcept { m_fFinnhubStockProfileUpdated = fFlag; }
+	bool IsFinnhubStockBasicFinncialsUpdated(void) noexcept { return m_fFinnhubStockBasicFinancialsUpdated; }
+	void SetFinnhubStockBasicFinncialsUpdated(bool fFlag) noexcept { m_fFinnhubStockBasicFinancialsUpdated = fFlag; }
 	bool IsFinnhubStockDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
 	void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
 	bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
@@ -324,6 +327,8 @@ public:
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
 	bool UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
 
+	// chekc function
+
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
@@ -367,6 +372,7 @@ protected:
 	bool m_fCountryListUpdated;
 	bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
 	bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
+	bool m_fFinnhubStockBasicFinancialsUpdated; // 每日更新公司日线
 	bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
 	bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
 	bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码

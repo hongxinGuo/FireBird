@@ -148,7 +148,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				}
 				catch (exception e) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(pt2.get<int>(_T("subscriptionId")));
+					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}

@@ -71,8 +71,8 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 				pt2 = it->second;
 				s = pt2.get<string>(_T("name"));
 				if (s.size() > 0) pInsiderTransaction->m_strPersonName = s.c_str();
-				pInsiderTransaction->m_lShare = pt2.get<INT64>(_T("share"));
-				pInsiderTransaction->m_lChange = pt2.get<INT64>(_T("change"));
+				pInsiderTransaction->m_lShare = ptreeGetLongLong(pt2, _T("share"));
+				pInsiderTransaction->m_lChange = ptreeGetLongLong(pt2, _T("change"));
 				s = pt2.get<string>(_T("filingDate"));
 				sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
 				pInsiderTransaction->m_lFilingDate = year * 10000 + month * 100 + day;
@@ -81,7 +81,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 				pInsiderTransaction->m_lTransactionDate = year * 10000 + month * 100 + day;
 				s = pt2.get<string>(_T("transactionCode"));
 				pInsiderTransaction->m_strTransactionCode = s.c_str();
-				pInsiderTransaction->m_dTransactionPrice = pt2.get<double>(_T("transactionPrice"));
+				pInsiderTransaction->m_dTransactionPrice = ptreeGetDouble(pt2, _T("transactionPrice"));
 				pvInsiderTransaction->push_back(pInsiderTransaction);
 			}
 		}
