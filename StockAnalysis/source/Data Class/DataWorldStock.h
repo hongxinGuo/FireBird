@@ -24,6 +24,7 @@ public:
 	bool SortStock(void);
 
 	bool IsStockProfileNeedUpdate(void);
+	bool IsBasicFinancialNeedUpdate(void);
 
 	void ResetEPSSurprise(void);
 	void ResetPeer(void);
@@ -34,6 +35,11 @@ public:
 
 	bool LoadDB(void);
 	bool UpdateProfileDB(void);
+
+	bool UpdateBasicFinancialDB(void);
+	bool UpdateBasicFinancialMetricDB(void);
+	bool UpdateBasicFinancialAnnualDB(void);
+	bool UpdateBasicFinancialQuarterDB(void);
 
 	bool CheckStockSymbol(CWorldStockPtr pstock);
 

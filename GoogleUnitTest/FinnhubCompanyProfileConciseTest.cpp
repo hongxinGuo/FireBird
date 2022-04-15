@@ -57,6 +57,8 @@ namespace StockAnalysisTest {
 	FinnhubWebData finnhubWebData12(2, _T("AAPL"), _T("\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 	// 数据缺乏country项
 	FinnhubWebData finnhubWebData13(3, _T("AAPL"), _T("{\"counry\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
+	// 空数据
+	FinnhubWebData finnhubWebData14(4, _T("AAPL"), _T("{}"));
 	// 正确的数据
 	FinnhubWebData finnhubWebData20(10, _T("AAPL"), _T("{\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 
@@ -93,7 +95,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData12,
-		&finnhubWebData13, &finnhubWebData20));
+		&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
@@ -111,6 +113,12 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(m_pStock->IsProfileUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			break;
+		case 4: // 空数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

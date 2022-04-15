@@ -1,40 +1,12 @@
+// CSetCountry.h : CSetCountry 的声明
+
 #pragma once
 
-#include"SetFinnhubStockBasicFinancialsMetric.h"
-
-using namespace std;
-#include<memory>
-
-struct strValue {
-	int m_period;
-	double m_value;
-};
-
-struct strSeasonData {
-	vector<strValue> m_cashRatio;
-	vector<strValue> m_currentRatio;
-	vector<strValue> m_ebitPerShare;
-	vector<strValue> m_eps;
-	vector<strValue> m_grossMargin;
-	vector<strValue> m_longtermDebtTotalAsset;
-	vector<strValue> m_longtermDebtTotalCapital;
-	vector<strValue> m_longtermDebtTotalEquity;
-	vector<strValue> m_netDebtToTotalCapital;
-	vector<strValue> m_netDebtToTotalEquity;
-	vector<strValue> m_netMargin;
-	vector<strValue> m_operatingMargin;
-	vector<strValue> m_pretaxMargin;
-	vector<strValue> m_salesPerShare;
-	vector<strValue> m_sgaToSale;
-	vector<strValue> m_totalDebtToEquity;
-	vector<strValue> m_totalDebtToTotalAsset;
-	vector<strValue> m_totalDebtToTotalCapital;
-	vector<strValue> m_totalRatio;
-};
+#include"VirtualRecordset.h"
 
 /// <summary>
 ///
-// "metric": {
+/// "metric": {
 // "10DayAverageTradingVolume": 0.43212,
 // "13WeekPriceReturnDaily" : 56.53409,
 // "26WeekPriceReturnDaily" : 39.84772,
@@ -181,24 +153,28 @@ struct strSeasonData {
 //"totalDebtCagr5Y" : -4.27798,
 //
 //"yearToDatePriceReturnDaily" : 63.01775
-//		},
-//		"metricType": "all",
-	//
-/// </summary>
-
-class CFinnhubStockBasicFinancials : public CObject {
+//		}
+//
+///
+class CSetFinnhubStockBasicFinancialMetric : public CVirtualRecordset
+{
 public:
-	CFinnhubStockBasicFinancials();
+	CSetFinnhubStockBasicFinancialMetric(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
+	DECLARE_DYNAMIC(CSetFinnhubStockBasicFinancialMetric)
 
-	void AppendMetric(CSetFinnhubStockBasicFinancialsMetric& setMetric);
-	void UpdateMetric(CSetFinnhubStockBasicFinancialsMetric& setMetric);
-	void SaveMetric(CSetFinnhubStockBasicFinancialsMetric& setMetric);
-	void LoadMetric(CSetFinnhubStockBasicFinancialsMetric& setMetric);
+	// 字段/参数数据
 
-public:
+	// 以下字符串类型(如果存在)反映数据库字段(ANSI 数据类型的 CStringA 和 Unicode
+	// 数据类型的 CStringW)的实际数据类型。
+	//  这是为防止 ODBC 驱动程序执行可能
+	// 不必要的转换。如果希望，可以将这些成员更改为
+	// CString 类型，ODBC 驱动程序将执行所有必要的转换。
+	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
+	// 以同时支持 Unicode 和这些转换)。
+
+	long m_ID;  // 索引用，自动生成。
 	CString m_symbol;
 
-	// Metric financials data
 	double m_10DayAverageTradingVolume;
 	double m_13WeekPriceReturnDaily;
 	double m_26WeekPriceReturnDaily;
@@ -236,9 +212,9 @@ public:
 	double m_dividendYieldIndicatedAnnual;
 	double m_dividendsPerShareTTM;
 
+	double m_ebitdPerShareTTM;
 	double m_ebitdaCagr5Y;
 	double m_ebitdaInterimCagr5Y;
-	double m_ebitdPerShareTTM;
 	double m_epsBasicExclExtraItemsAnnual;
 	double m_epsBasicExclExtraItemsTTM;
 	double m_epsExclExtraItemsAnnual;
@@ -320,8 +296,8 @@ public:
 	double m_receivablesTurnoverTTM;
 	double m_revenueEmployeeAnnual;
 	double m_revenueEmployeeTTM;
-	double m_revenueGrowth5Y;
 	double m_revenueGrowth3Y;
+	double m_revenueGrowth5Y;
 	double m_revenueGrowthQuarterlyYoy;
 	double m_revenueGrowthTTMYoy;
 	double m_revenuePerShareAnnual;
@@ -346,10 +322,14 @@ public:
 
 	double m_yearToDatePriceReturnDaily;
 
-	// seasonal Financials data
-	strSeasonData m_annual;
-	strSeasonData m_quarterly;
-};
+	// 重写
+		// 向导生成的虚函数重写
+public:
+	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
-typedef shared_ptr<CFinnhubStockBasicFinancials> CFinnhubStockBasicFinancialsPtr;
-typedef shared_ptr<vector<CFinnhubStockBasicFinancialsPtr>> CFinnhubStockBasicFinancialsVectorPtr;
+// 实现
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+};

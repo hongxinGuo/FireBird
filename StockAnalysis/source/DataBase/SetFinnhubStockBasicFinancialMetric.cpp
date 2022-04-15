@@ -1,15 +1,15 @@
-// SetFinnhubStockBasicFinancialsMetric.cpp : CSetFinnhubStockBasicFinancialsMetric 类的实现
+// SetFinnhubStockBasicFinancialMetric.cpp : CSetFinnhubStockBasicFinancialMetric 类的实现
 
 // 代码生成在 2019年6月2日, 5:10
 
 #include"pch.h"
 #include"globedef.h"
 
-#include "SetFinnhubStockBasicFinancialsMetric.h"
+#include "SetFinnhubStockBasicFinancialMetric.h"
 
-IMPLEMENT_DYNAMIC(CSetFinnhubStockBasicFinancialsMetric, CVirtualRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubStockBasicFinancialMetric, CVirtualRecordset)
 
-CSetFinnhubStockBasicFinancialsMetric::CSetFinnhubStockBasicFinancialsMetric(CString strSchema, CString strTable, CDatabase* pdb)
+CSetFinnhubStockBasicFinancialMetric::CSetFinnhubStockBasicFinancialMetric(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_symbol = _T("");
@@ -20,7 +20,7 @@ CSetFinnhubStockBasicFinancialsMetric::CSetFinnhubStockBasicFinancialsMetric(CSt
 	m_nFields = 131; // 129个实际字段，一个ID，一个代码名称。
 }
 
-void CSetFinnhubStockBasicFinancialsMetric::DoFieldExchange(CFieldExchange* pFX) {
+void CSetFinnhubStockBasicFinancialMetric::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。
@@ -179,11 +179,11 @@ void CSetFinnhubStockBasicFinancialsMetric::DoFieldExchange(CFieldExchange* pFX)
 // CSetCountry 诊断
 
 #ifdef _DEBUG
-void CSetFinnhubStockBasicFinancialsMetric::AssertValid() const {
+void CSetFinnhubStockBasicFinancialMetric::AssertValid() const {
 	CVirtualRecordset::AssertValid();
 }
 
-void CSetFinnhubStockBasicFinancialsMetric::Dump(CDumpContext& dc) const {
+void CSetFinnhubStockBasicFinancialMetric::Dump(CDumpContext& dc) const {
 	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

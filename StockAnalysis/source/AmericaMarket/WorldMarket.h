@@ -75,7 +75,7 @@ public:
 	virtual bool TaskInquiryFinnhubCountryList(void);
 	virtual bool TaskInquiryFinnhubCompanySymbol(void);
 	virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
-	virtual bool TaskInquiryFinnhubCompanyBasicFinancials();
+	virtual bool TaskInquiryFinnhubCompanyBasicFinancial();
 	virtual bool TaskInquiryFinnhubStockDayLine(void);
 	virtual bool TaskInquiryFinnhubRTQuote(void);
 	virtual bool TaskInquiryFinnhubPeer(void);
@@ -99,6 +99,7 @@ public:
 	virtual bool TaskUpdateNaicsIndustry(void);
 
 	bool TaskUpdateStockProfileDB(void);
+	bool TaskUpdateBasicFinancialDB(void);
 	bool TaskUpdateDayLineDB(void);
 	bool TaskUpdateForexExchangeDB(void);
 	bool TaskUpdateForexSymbolDB(void);
@@ -155,6 +156,8 @@ public:
 	CWorldStockPtr GetStock(long lIndex) { return m_dataWorldStock.GetStock(lIndex); }
 	CWorldStockPtr GetStock(CString strSymbol) { return m_dataWorldStock.GetStock(strSymbol); }
 	long GetStockIndex(CString strSymbol) { return m_dataWorldStock.GetStockIndex(strSymbol); }
+
+	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_dataChoicedStock.GetStock(lIndex); }
 
@@ -217,8 +220,8 @@ public:
 	void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
 	bool IsFinnhubStockProfileUpdated(void) noexcept { return m_fFinnhubStockProfileUpdated; }
 	void SetFinnhubStockProfileUpdated(bool fFlag) noexcept { m_fFinnhubStockProfileUpdated = fFlag; }
-	bool IsFinnhubStockBasicFinncialsUpdated(void) noexcept { return m_fFinnhubStockBasicFinancialsUpdated; }
-	void SetFinnhubStockBasicFinncialsUpdated(bool fFlag) noexcept { m_fFinnhubStockBasicFinancialsUpdated = fFlag; }
+	bool IsFinnhubStockBasicFinancialUpdated(void) noexcept { return m_fFinnhubStockBasicFinancialUpdated; }
+	void SetFinnhubStockBasicFinancialUpdated(bool fFlag) noexcept { m_fFinnhubStockBasicFinancialUpdated = fFlag; }
 	bool IsFinnhubStockDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
 	void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
 	bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
@@ -276,6 +279,7 @@ public:
 
 	virtual bool UpdateCountryListDB(void) { return m_dataFinnhubCountry.UpdateDB(); }
 	virtual bool UpdateStockProfileDB(void) { return m_dataWorldStock.UpdateProfileDB(); }
+	virtual bool UpdateBasicFinancialDB(void) { return m_dataWorldStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB(void);
 	virtual bool UpdateForexSymbolDB(void) { return m_dataFinnhubForexSymbol.UpdateDB(); }
 	virtual bool UpdateForexExchangeDB(void) { return m_dataFinnhubForexExchange.UpdateDB(); }
@@ -372,7 +376,7 @@ protected:
 	bool m_fCountryListUpdated;
 	bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
 	bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
-	bool m_fFinnhubStockBasicFinancialsUpdated; // 每日更新公司日线
+	bool m_fFinnhubStockBasicFinancialUpdated; // 每日更新公司日线
 	bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
 	bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
 	bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码

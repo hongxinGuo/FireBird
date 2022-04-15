@@ -398,6 +398,10 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 		TaskUpdateStockProfileDB();
 	}
 
+	if (IsBasicFinancialNeedUpdate()) {
+		//TaskUpdateBasicFinancialDB();
+	}
+
 	TaskUpdateTiingoStockDB();
 	TaskUpdateTiingoCryptoSymbolDB();
 
@@ -444,16 +448,16 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 		TaskInquiryFinnhubCryptoSymbol();
 		//TaskInquiryFinnhubEconomicCalendar();
 
-		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
+		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (IsSystemReady()) {
 			TaskInquiryFinnhubCompanyProfileConcise();
-			//TaskInquiryFinnhubCompanyBasicFinancials();
+			TaskInquiryFinnhubCompanyBasicFinancial();
 			TaskInquiryFinnhubPeer();
 			TaskInquiryFinnhubInsiderTransaction();
-			//TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
-			//TaskInquiryFinnhubForexDayLine(); // Forex dayline目前只限于付费用户使用
 			TaskInquiryFinnhubCryptoDayLine();
 			TaskInquiryFinnhubStockDayLine();
+			//TaskInquiryFinnhubForexDayLine(); // Forex dayline目前只限于付费用户使用
+			//TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
 			if (!IsFinnhubStockDayLineUpdated()) {
 				//TaskInquiryFinnhubRTQuote();
 			}
@@ -561,8 +565,8 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
 	return fHaveInquiry;
 }
 
-bool CWorldMarket::TaskInquiryFinnhubCompanyBasicFinancials(void) {
-	static bool s_fInquiringFinnhubCompanyBasicFinancials = false;
+bool CWorldMarket::TaskInquiryFinnhubCompanyBasicFinancial(void) {
+	static bool s_fInquiringFinnhubCompanyBasicFinancial = false;
 	bool fFound = false;
 	long lStockSetSize = GetStockSize();
 	CString str = _T("");
@@ -571,13 +575,13 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyBasicFinancials(void) {
 	long lCurrentBasicFinncialsPos;
 
 	ASSERT(IsSystemReady());
-	if (!IsFinnhubStockBasicFinncialsUpdated() && !IsFinnhubInquiring()) {
-		if (!s_fInquiringFinnhubCompanyBasicFinancials) {
+	if (!IsFinnhubStockBasicFinancialUpdated() && !IsFinnhubInquiring()) {
+		if (!s_fInquiringFinnhubCompanyBasicFinancial) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock basic financials..."));
-			s_fInquiringFinnhubCompanyBasicFinancials = true;
+			s_fInquiringFinnhubCompanyBasicFinancial = true;
 		}
 		for (lCurrentBasicFinncialsPos = 0; lCurrentBasicFinncialsPos < lStockSetSize; lCurrentBasicFinncialsPos++) {
-			if (!GetStock(lCurrentBasicFinncialsPos)->IsBasicFinancialsUpdated()) {
+			if (!GetStock(lCurrentBasicFinncialsPos)->IsBasicFinancialUpdated()) {
 				fFound = true;
 				break;
 			}
@@ -586,16 +590,16 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyBasicFinancials(void) {
 			p = m_FinnhubFactory.CreateProduct(this, __BASIC_FINANCIALS__);
 			p->SetIndex(lCurrentBasicFinncialsPos);
 			m_qFinnhubProduct.push(p);
-			SetCurrentFunction(_T("基本情况:") + m_dataWorldStock.GetStock(lCurrentBasicFinncialsPos)->GetSymbol());
+			SetCurrentFunction(_T("基本财务:") + m_dataWorldStock.GetStock(lCurrentBasicFinncialsPos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetFinnhubInquiring(true);
 			fHaveInquiry = true;
 		}
 		else {
-			s_fInquiringFinnhubCompanyBasicFinancials = false;
-			SetFinnhubStockBasicFinncialsUpdated(true);
-			TRACE("Finnhub股票基本情况更新完毕\n");
-			str = _T("Finnhub股票基本情况更新完毕");
+			s_fInquiringFinnhubCompanyBasicFinancial = false;
+			SetFinnhubStockBasicFinancialUpdated(true);
+			TRACE("Finnhub股票基本财务情况更新完毕\n");
+			str = _T("Finnhub股票基本财务情况更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}
@@ -1196,6 +1200,12 @@ bool CWorldMarket::TaskUpdateDayLineDB() {
 
 bool CWorldMarket::TaskUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateStockProfileDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
+bool CWorldMarket::TaskUpdateBasicFinancialDB(void) {
+	thread thread1(ThreadUpdateBasicFinancialDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }

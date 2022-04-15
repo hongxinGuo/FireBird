@@ -48,6 +48,7 @@ void CWorldStock::Reset(void) {
 	m_strNaicsSubsector = _T(" ");
 	m_strState = _T(" ");
 	m_lProfileUpdateDate = 19800101;
+	m_lBasicFinancialUpdateDate = 19800101;
 	m_lDayLineStartDate = 29900101;
 	m_lDayLineEndDate = 19800101;
 	m_lLastRTDataUpdateDate = 19800101;
@@ -74,13 +75,16 @@ void CWorldStock::Reset(void) {
 	m_dShareOutstanding = 0;
 
 	m_fProfileUpdated = false;
-	m_fBasicFinancialsUpdated = false;
+	m_fBasicFinancialUpdated = false;
 	m_fEPSSurpriseUpdated = false;
 	m_fEPSSurpriseNeedSave = false;
 	m_fFinnhubPeerUpdated = false;
 
 	m_fFinnhubInsiderTransactionNeedUpdate = true;
+	m_fUpdateFinnhubBasicFinancialDB = false;
 	m_fFinnhubInsiderTransactionNeedSave = false;
+
+	m_pBasicFinancial = nullptr;
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
@@ -120,6 +124,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
 	m_strPeer = setWorldStock.m_Peer;
 	m_lProfileUpdateDate = setWorldStock.m_ProfileUpdateDate;
+	m_lBasicFinancialUpdateDate = setWorldStock.m_BasicFinancialUpdateDate;
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
 	m_lLastRTDataUpdateDate = setWorldStock.m_LastRTDataUpdateDate;
@@ -151,6 +156,16 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 		m_fProfileUpdated = true;
 	}
 	return m_fProfileUpdated;
+}
+
+bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 45)) {
+		m_fBasicFinancialUpdated = false;
+	}
+	else {
+		m_fBasicFinancialUpdated = true;
+	}
+	return m_fBasicFinancialUpdated;
 }
 
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
@@ -200,6 +215,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 
 void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	ASSERT(m_lProfileUpdateDate >= 19700101);
+	ASSERT(m_lBasicFinancialUpdateDate >= 19700101);
 	ASSERT(m_lDayLineStartDate >= 19700101);
 	ASSERT(m_lDayLineEndDate >= 19700101);
 	ASSERT(m_lPeerUpdateDate >= 19700101);
@@ -245,6 +261,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	setWorldStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
 	setWorldStock.m_Peer = m_strPeer.Left(200);
 	setWorldStock.m_ProfileUpdateDate = m_lProfileUpdateDate;
+	setWorldStock.m_BasicFinancialUpdateDate = m_lBasicFinancialUpdateDate;
 	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
 	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
 	setWorldStock.m_PeerUpdateDate = m_lPeerUpdateDate;
@@ -373,6 +390,28 @@ bool CWorldStock::UpdateDayLineDB(void) {
 	return false;
 }
 
+void CWorldStock::AppendBasicFinancialAnnual(void) {
+	CSetFinnhubStockBasicFinancialAnnual set;
+
+	set.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	set.Open();
+	set.m_pDatabase->BeginTrans();
+	m_pBasicFinancial->AppendAnnualData(set);
+	set.m_pDatabase->CommitTrans();
+	set.Close();
+}
+
+void CWorldStock::AppendBasicFinancialQuarter(void) {
+	CSetFinnhubStockBasicFinancialQuarter set;
+
+	set.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	set.Open();
+	set.m_pDatabase->BeginTrans();
+	m_pBasicFinancial->AppendQuarterData(set);
+	set.m_pDatabase->CommitTrans();
+	set.Close();
+}
+
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
 	for (auto& p : vEPSSurprise) {
@@ -440,6 +479,12 @@ bool CWorldStock::HaveNewDayLineData(void) {
 	if ((m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > m_lDayLineEndDate)
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate)) return true;
 	else return false;
+}
+
+bool CWorldStock::UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial) {
+	m_pBasicFinancial = pFinnhubStockBasicFinancial;
+
+	return true;
 }
 
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {

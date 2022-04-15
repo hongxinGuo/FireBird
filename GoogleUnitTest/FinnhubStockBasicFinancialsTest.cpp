@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"FinnhubStockBasicFinancials.h"
+#include"FinnhubStockBasicFinancial.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -11,7 +11,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubStockBasicFinancialsMetricTest : public ::testing::Test
+	class CFinnhubStockBasicFinancialTest : public ::testing::Test
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -31,12 +31,102 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CFinnhubStockBasicFinancialsMetricTest, TestInitialize) {
+	TEST_F(CFinnhubStockBasicFinancialTest, TestInitialize) {
 	}
 
-	TEST_F(CFinnhubStockBasicFinancialsMetricTest, Test_Load) {
-		CFinnhubStockBasicFinancials instance, instanceLoaded;
-		CSetFinnhubStockBasicFinancialsMetric setMetric, setMetricLoad;
+	TEST_F(CFinnhubStockBasicFinancialTest, TestIsNewData) {
+		CFinnhubStockBasicFinancial finnhubStockBasicFinancial;
+		vector<strSeasonDBData> vDBData;
+		strSeasonDBData data;
+		data.m_symbol = _T("AAPL");
+		data.m_type = _T("currentRatio");
+		data.m_date = 20190101;
+		data.m_value = 1.0;
+		vDBData.push_back(data);
+		data.m_symbol = _T("AAPL");
+		data.m_type = _T("currentRatio");
+		data.m_date = 20200101;
+		data.m_value = 2.0;
+		vDBData.push_back(data);
+		data.m_symbol = _T("AAPL");
+		data.m_type = _T("currentRatio");
+		data.m_date = 20210101;
+		data.m_value = 3.0;
+		vDBData.push_back(data);
+
+		strValue valueData{ 20190101, 1.0 };
+		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData)) << "数据已存在于数据库中";
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
+		valueData.m_period = 20220101;
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData));
+		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAnnualData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialAnnual setAnnual;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("AAPL");
+		instance.m_annual.m_cashRatio.push_back({ 20190101, 1.0 });
+		instance.m_annual.m_cashRatio.push_back({ 20200101, 2.0 });
+		instance.m_annual.m_cashRatio.push_back({ 20210101, 3.0 });
+
+		setAnnual.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setAnnual.Open();
+		while (!setAnnual.IsEOF()) {
+			dbData.m_symbol = setAnnual.m_symbol;
+			dbData.m_type = setAnnual.m_type;
+			dbData.m_date = setAnnual.m_date;
+			dbData.m_value = setAnnual.m_value;
+			seasonDBData.push_back(dbData);
+			setAnnual.MoveNext();
+		}
+		setAnnual.Close();
+
+		setAnnual.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		instance.SaveAnnualData(setAnnual, instance.m_annual.m_cashRatio, _T("cashRatio"), seasonDBData);
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveQuarterData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialQuarter setQuarter;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("AAPL");
+		instance.m_quarter.m_cashRatio.push_back({ 20190101, 1.0 });
+		instance.m_quarter.m_cashRatio.push_back({ 20200101, 2.0 });
+		instance.m_quarter.m_cashRatio.push_back({ 20210101, 3.0 });
+
+		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setQuarter.Open();
+		while (!setQuarter.IsEOF()) {
+			dbData.m_symbol = setQuarter.m_symbol;
+			dbData.m_type = setQuarter.m_type;
+			dbData.m_date = setQuarter.m_date;
+			dbData.m_value = setQuarter.m_value;
+			seasonDBData.push_back(dbData);
+			setQuarter.MoveNext();
+		}
+		setQuarter.Close();
+
+		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, _T("cashRatio"), seasonDBData);
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, Test_LoadSaveMetric) {
+		CFinnhubStockBasicFinancial instance, instanceLoaded;
+		CSetFinnhubStockBasicFinancialMetric setMetric, setMetricLoad;
 
 		instance.m_symbol = _T("AAPL");
 

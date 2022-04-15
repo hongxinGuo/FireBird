@@ -98,8 +98,8 @@
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
-    <ClCompile Include="FinnhubCompanyBasicFinancialsTest.cpp" />
-    <ClCompile Include="FinnhubStockBasicFinancialsMetricTest.cpp" />
+    <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp" />
+    <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />

@@ -68,7 +68,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsSucceedCreatePTree()) {
-		if (pWebData->IsVoidJSon()) return false;
+		if (pWebData->IsVoidJSon()) return true; // 即使为空，也完成了查询。
 		ppt = pWebData->GetPTree();
 		try {
 			s = ppt->get<string>(_T("ticker"));

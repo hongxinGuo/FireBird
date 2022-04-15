@@ -3,6 +3,8 @@
 #include"VirtualStock.h"
 #include"TiingoStock.h"
 
+#include"FinnhubStockBasicFinancial.h"
+
 #include"DayLine.h"
 #include"DataWorldStockDayLine.h"
 #include"EPSSurprise.h"
@@ -32,6 +34,7 @@ public:
 public:
 	void Load(CSetWorldStock& setWorldStock);
 	bool CheckProfileUpdateStatus(long lTodayDate);
+	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 	void Save(CSetWorldStock& setWorldStock);
 	void Update(CSetWorldStock& setWorldStock);
@@ -40,6 +43,11 @@ public:
 	void SaveInsiderTransaction(void);
 	virtual bool UpdateEPSSurpriseDB(void);
 	virtual bool UpdateDayLineDB(void);
+
+	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) { m_pBasicFinancial->UpdateMetric(set); }
+	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) { m_pBasicFinancial->AppendMetric(set); }
+	void AppendBasicFinancialAnnual(void);
+	void AppendBasicFinancialQuarter(void);
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
@@ -57,8 +65,13 @@ public:
 	bool IsProfileUpdated(void) const noexcept { return m_fProfileUpdated; }
 	void SetProfileUpdated(bool fFlag) noexcept { m_fProfileUpdated = fFlag; }
 
-	bool IsBasicFinancialsUpdated(void) const noexcept { return m_fBasicFinancialsUpdated; }
-	void SetBasicFinancialsUpdated(bool fFlag) noexcept { m_fBasicFinancialsUpdated = fFlag; }
+	bool IsBasicFinancialUpdated(void) const noexcept { return m_fBasicFinancialUpdated; }
+	void SetBasicFinancialUpdated(bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
+	bool IsUpdateBasicFinancialDB(void) const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
+	void SetUpdateBasicFinancialDB(bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
+	bool IsUpdateBasicFinancialDBAndClearFlag(void) { const bool fNeedSave = m_fUpdateFinnhubBasicFinancialDB.exchange(false); return fNeedSave; }
+	bool UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial);
+	CFinnhubStockBasicFinancialPtr GetBasicFinancial(void) noexcept { return m_pBasicFinancial; }
 
 	bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
 	void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
@@ -150,6 +163,8 @@ public:
 	void SetPeer(CString strPeer) { m_strPeer = strPeer; }
 	long GetProfileUpdateDate(void) const noexcept { return m_lProfileUpdateDate; }
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
+	long GetBasicFinancialUpdateDate(void) const noexcept { return m_lBasicFinancialUpdateDate; }
+	void SetBasicFinancialUpdateDate(long lBasicFinancialUpdateDate) noexcept { m_lBasicFinancialUpdateDate = lBasicFinancialUpdateDate; }
 	long GetLastRTDataUpdateDate(void) const noexcept { return m_lLastRTDataUpdateDate; }
 	void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
 	long GetPeerUpdateDate(void) const noexcept { return m_lPeerUpdateDate; }
@@ -227,16 +242,20 @@ protected:
 	CString m_strFinnhubIndustry;
 	CString m_strPeer;
 	long m_lProfileUpdateDate; // 最新简介更新日期
+	long m_lBasicFinancialUpdateDate; // 最新基本财务更新日期
 	long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
 	long m_lPeerUpdateDate; // 最新竞争对手数据更新日期
 	long m_lInsiderTransactionUpdateDate; // 最新内部人员交易数据更新日期
 	long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
 
+	CFinnhubStockBasicFinancialPtr m_pBasicFinancial;
+
 	// 无需存储数据区
 	bool m_fProfileUpdated; // 公司简介已更新
-	bool m_fBasicFinancialsUpdated; // 公司基本情况已更新
+	bool m_fBasicFinancialUpdated; // 基本财务已更新
 	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 	bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
+	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存
 	atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储
 };
 

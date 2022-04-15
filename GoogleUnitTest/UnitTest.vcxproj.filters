@@ -513,10 +513,10 @@
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp">
       <Filter>Test源文件\Template</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubStockBasicFinancialsMetricTest.cpp">
+    <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyBasicFinancialsTest.cpp">
+    <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>

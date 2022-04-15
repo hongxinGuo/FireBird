@@ -56,6 +56,7 @@ public:
 	CString m_FinnhubIndustry;
 	CString m_Peer;
 	long m_ProfileUpdateDate;
+	long m_BasicFinancialUpdateDate;
 	long m_DayLineStartDate;
 	long m_DayLineEndDate;
 	long m_LastRTDataUpdateDate; // 最新实时数据更新日期

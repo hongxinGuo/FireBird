@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-#include"ProductFinnhubCompanyBasicFinancials.h"
+#include"ProductFinnhubCompanyBasicFinancial.h"
 
 using namespace testing;
 
@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCompanyBasicFinancialsTest : public ::testing::Test {
+	class CProductFinnhubCompanyBasicFinancialTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,10 +36,23 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CProductFinnhubCompanyBasicFinancials companyBasicFinancials;
+		CProductFinnhubCompanyBasicFinancial companyBasicFinancial;
 	};
 
-	TEST_F(CFinnhubCompanyBasicFinancialsTest, TestInitialize) {
+	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestInitialize) {
+		EXPECT_EQ(companyBasicFinancial.GetIndex(), -1);
+		EXPECT_STREQ(companyBasicFinancial.GetInquiringStr(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
+	}
+
+	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
+		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(1);
+		pStock->SetBasicFinancialUpdated(false);
+		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
+		companyBasicFinancial.SetIndex(1);
+		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_TRUE(pStock->IsBasicFinancialUpdated());
+
+		gl_pWorldMarket->GetStock(1)->SetBasicFinancialUpdated(false);
 	}
 
 	FinnhubWebData finnhubWebData1001(1, _T("AAPL"),
@@ -240,7 +253,7 @@ namespace StockAnalysisTest {
 		\"symbol\":\"AAPL\"\
 }"));
 
-	class ParseFinnhubStockBasicFinancialsTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubStockBasicFinancialTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -254,9 +267,9 @@ namespace StockAnalysisTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreatePTree();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyBasicFinancials.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
-			m_finnhubCompanyBasicFinancials.SetIndex(lIndex);
+			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -272,21 +285,71 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CProductFinnhubCompanyBasicFinancials m_finnhubCompanyBasicFinancials;
+		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialsTest,
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
 												 testing::Values(&finnhubWebData1001));
 
-	TEST_P(ParseFinnhubStockBasicFinancialsTest, TestParseFinnhubInsiderTransaction0) {
-		CFinnhubStockBasicFinancialsPtr pBasicFinancials = std::make_shared<CFinnhubStockBasicFinancials>();
-		bool fSucceed = m_finnhubCompanyBasicFinancials.ParseFinnhubStockBasicFinancials(m_pWebData, pBasicFinancials);
+	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
+		CFinnhubStockBasicFinancialPtr pBasicFinancial = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pBasicFinancials->m_symbol, _T("AAPL"));
-			EXPECT_DOUBLE_EQ(pBasicFinancials->m_10DayAverageTradingVolume, 0.43212);
-			EXPECT_DOUBLE_EQ(pBasicFinancials->m_yearToDatePriceReturnDaily, 63.01775);
+			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
+			break;
+		default:
+			break;
+		}
+	}
+
+	class ProcessFinnhubStockBasicFinancialTest : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		virtual void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			EXPECT_TRUE(m_pStock != nullptr);
+			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
+			m_pStock->SetUpdateBasicFinancialDB(false);
+			m_pWebData = pData->m_pData;
+			m_pWebData->CreatePTree();
+			m_pWebData->SetJSonContentType(true);
+			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
+			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
+		}
+		virtual void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			m_pStock->SetUpdateBasicFinancialDB(false);
+			m_pStock->SetBasicFinancialUpdateDate(19800101);
+
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWorldStockPtr m_pStock;
+		CWebDataPtr m_pWebData;
+		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
+													 testing::Values(&finnhubWebData1001));
+
+	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
+		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
+		m_finnhubCompanyBasicFinancial.ProcessWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 1:
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
+			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
+
+			EXPECT_THAT(0, 0);
 			break;
 		default:
 			break;
