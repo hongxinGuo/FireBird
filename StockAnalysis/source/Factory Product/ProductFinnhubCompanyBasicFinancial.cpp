@@ -36,11 +36,12 @@ bool CProductFinnhubCompanyBasicFinancial::ProcessWebData(CWebDataPtr pWebData) 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
-	pStock->SetBasicFinancialUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	if (pFinnhubStockBasicFinancial != nullptr) {
 		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
+	pStock->SetBasicFinancialUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetUpdateProfileDB(true);
 
 	return true;
 }

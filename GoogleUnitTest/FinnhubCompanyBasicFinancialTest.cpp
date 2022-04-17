@@ -346,8 +346,12 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1:
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
+
+			// »Ö¸´Ô­×´
+			m_pStock->SetUpdateProfileDB(false);
 
 			EXPECT_THAT(0, 0);
 			break;

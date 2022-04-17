@@ -391,25 +391,25 @@ bool CWorldStock::UpdateDayLineDB(void) {
 }
 
 void CWorldStock::AppendBasicFinancialAnnual(void) {
-	CSetFinnhubStockBasicFinancialAnnual set;
+	CSetFinnhubStockBasicFinancialAnnual setAnnual;
 
-	set.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
-	set.Open();
-	set.m_pDatabase->BeginTrans();
-	m_pBasicFinancial->AppendAnnualData(set);
-	set.m_pDatabase->CommitTrans();
-	set.Close();
+	setAnnual.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	setAnnual.Open();
+	setAnnual.m_pDatabase->BeginTrans();
+	m_pBasicFinancial->AppendAnnualData(setAnnual);
+	setAnnual.m_pDatabase->CommitTrans();
+	setAnnual.Close();
 }
 
 void CWorldStock::AppendBasicFinancialQuarter(void) {
-	CSetFinnhubStockBasicFinancialQuarter set;
+	CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
-	set.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
-	set.Open();
-	set.m_pDatabase->BeginTrans();
-	m_pBasicFinancial->AppendQuarterData(set);
-	set.m_pDatabase->CommitTrans();
-	set.Close();
+	setQuarter.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	setQuarter.Open();
+	setQuarter.m_pDatabase->BeginTrans();
+	m_pBasicFinancial->AppendQuarterData(setQuarter);
+	setQuarter.m_pDatabase->CommitTrans();
+	setQuarter.Close();
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {

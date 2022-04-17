@@ -304,12 +304,12 @@ void CFinnhubStockBasicFinancial::LoadMetric(CSetFinnhubStockBasicFinancialMetri
 	m_yearToDatePriceReturnDaily = setMetric.m_yearToDatePriceReturnDaily;
 }
 
-void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinancialQuarter& setMetric) {
+void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinancialQuarter& setBeSaved) {
 	CSetFinnhubStockBasicFinancialQuarter setQuarterly;
 	vector<strSeasonDBData> vData;
 	strSeasonDBData data;
 
-	ASSERT(setMetric.IsOpen());
+	ASSERT(setBeSaved.IsOpen());
 	setQuarterly.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
 	setQuarterly.Open();
 	while (!setQuarterly.IsEOF()) {
@@ -322,15 +322,15 @@ void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinanci
 	}
 	setQuarterly.Close();
 
-	SaveAllQuarterData(setMetric, vData);
+	SaveAllQuarterData(setBeSaved, vData);
 }
 
-void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancialAnnual& setMetric) {
+void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancialAnnual& setBeSaved) {
 	CSetFinnhubStockBasicFinancialAnnual setAnnual;
 	vector<strSeasonDBData> vData;
 	strSeasonDBData data;
 
-	ASSERT(setMetric.IsOpen());
+	ASSERT(setBeSaved.IsOpen());
 	setAnnual.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
 	setAnnual.Open();
 	while (!setAnnual.IsEOF())
@@ -344,7 +344,7 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	}
 	setAnnual.Close();
 
-	SaveAllAnnualData(setMetric, vData);
+	SaveAllAnnualData(setBeSaved, vData);
 }
 
 void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<strSeasonDBData>& vDBData) {
@@ -376,8 +376,8 @@ void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancial
 			SetQuarterData.AddNew();
 			SetQuarterData.m_symbol = m_symbol;
 			SetQuarterData.m_type = typeName;
-			SetQuarterData.m_date = m_quarter.m_cashRatio.at(i).m_period;
-			SetQuarterData.m_value = m_quarter.m_cashRatio.at(i).m_value;
+			SetQuarterData.m_date = vData.at(i).m_period;
+			SetQuarterData.m_value = vData.at(i).m_value;
 			SetQuarterData.Update();
 		}
 	}
@@ -415,8 +415,8 @@ void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialA
 			setAnnualData.AddNew();
 			setAnnualData.m_symbol = m_symbol;
 			setAnnualData.m_type = typeName;
-			setAnnualData.m_date = m_annual.m_cashRatio.at(i).m_period;
-			setAnnualData.m_value = m_annual.m_cashRatio.at(i).m_value;
+			setAnnualData.m_date = vData.at(i).m_period;
+			setAnnualData.m_value = vData.at(i).m_value;
 			setAnnualData.Update();
 		}
 	}

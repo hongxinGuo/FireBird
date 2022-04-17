@@ -86,6 +86,7 @@ void CWorldMarket::ResetFinnhub(void) {
 	// Finnhub各申请网络数据标识，每日需要重置。
 	m_fFinnhubSymbolUpdated = false; // 每日需要更新代码
 	m_fFinnhubStockProfileUpdated = false;
+	m_fFinnhubStockBasicFinancialUpdated = false;
 	m_fFinnhubDayLineUpdated = false;
 	m_fFinnhubForexExchangeUpdated = false;
 	m_fFinnhubForexSymbolUpdated = false;
@@ -399,7 +400,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	}
 
 	if (IsBasicFinancialNeedUpdate()) {
-		//TaskUpdateBasicFinancialDB();
+		TaskUpdateBasicFinancialDB();
 	}
 
 	TaskUpdateTiingoStockDB();
@@ -473,7 +474,7 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 		m_qFinnhubProduct.push(p);
 		SetCurrentFunction(_T("Finnhub country List"));
 		SetFinnhubInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Finnhub economic country List已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub economic country List"));
 		return true;
 	}
 	return false;
@@ -814,7 +815,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __FOREX_EXCHANGE__));
 		SetFinnhubInquiring(true);
 		SetCurrentFunction(_T("Finnhub forex exchange"));
-		gl_systemMessage.PushInformationMessage(_T("Finnhub forex exchange已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub forex exchange"));
 		return true;
 	}
 	return false;
@@ -833,7 +834,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 			SetFinnhubForexSymbolUpdated(true);
 			s_lCurrentForexExchangePos = 0;
 			SetCurrentFunction(_T("Finnhub forex synmbol"));
-			gl_systemMessage.PushInformationMessage(_T("Finnhub Forex sysbols已更新"));
+			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Forex sysbols"));
 		}
 		return true;
 	}
@@ -890,7 +891,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoExchange(void) {
 		m_qFinnhubProduct.push(m_FinnhubFactory.CreateProduct(this, __CRYPTO_EXCHANGE__));
 		SetFinnhubInquiring(true);
 		SetCurrentFunction(_T("Finnhub crypto exchange"));
-		gl_systemMessage.PushInformationMessage(_T("Finnhub crypto exchange已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub crypto exchange"));
 		return true;
 	}
 	return false;
@@ -908,7 +909,7 @@ bool CWorldMarket::TaskInquiryFinnhubCryptoSymbol(void) {
 		if (s_lCurrentCryptoExchangePos >= m_dataFinnhubCryptoExchange.GetCryptoExchangeSize()) {
 			SetFinnhubCryptoSymbolUpdated(true);
 			SetCurrentFunction(_T("Finnhub crypto synmbol"));
-			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto sysbols已更新"));
+			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Crypto sysbols"));
 			s_lCurrentCryptoExchangePos = 0;
 		}
 		return true;

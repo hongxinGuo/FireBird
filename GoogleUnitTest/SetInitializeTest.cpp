@@ -16,6 +16,9 @@
 #include"SetWeekLineExtendInfo.h"
 
 #include"SetCountry.h"
+#include"SetFinnhubStockBasicFinancialMetric.h"
+#include"SetFinnhubStockBasicFinancialAnnual.h"
+#include"SetFinnhubStockBasicFinancialQuarter.h"
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
 #include"SetInsiderTransaction.h"
@@ -407,4 +410,40 @@ TEST(SetInitializeTest, TestWorldStockInitialize) {
 	gl_fNormalMode = false;
 
 	EXPECT_STREQ(setWorldStock.GetDefaultSQL(), _T("[stock_profile]"));
+}
+
+TEST(SetInitializeTest, TestFinnhubStockBasicFinancialMetricInitialize) {
+	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
+
+	EXPECT_FALSE(gl_fNormalMode);
+	EXPECT_STREQ(setBasicFinancialMetric.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	gl_fNormalMode = true;
+	EXPECT_STREQ(setBasicFinancialMetric.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	gl_fNormalMode = false;
+
+	EXPECT_STREQ(setBasicFinancialMetric.GetDefaultSQL(), _T("[finnhub_stock_basic_financials_metric]"));
+}
+
+TEST(SetInitializeTest, TestFinnhubStockBasicFinancialAnnualInitialize) {
+	CSetFinnhubStockBasicFinancialAnnual setBasicFinancialAnnual;
+
+	EXPECT_FALSE(gl_fNormalMode);
+	EXPECT_STREQ(setBasicFinancialAnnual.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	gl_fNormalMode = true;
+	EXPECT_STREQ(setBasicFinancialAnnual.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	gl_fNormalMode = false;
+
+	EXPECT_STREQ(setBasicFinancialAnnual.GetDefaultSQL(), _T("[finnhub_stock_basic_financials_annual]"));
+}
+
+TEST(SetInitializeTest, TestFinnhubStockBasicFinancialQuarterlyInitialize) {
+	CSetFinnhubStockBasicFinancialQuarter setBasicFinancialQuarter;
+
+	EXPECT_FALSE(gl_fNormalMode);
+	EXPECT_STREQ(setBasicFinancialQuarter.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	gl_fNormalMode = true;
+	EXPECT_STREQ(setBasicFinancialQuarter.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	gl_fNormalMode = false;
+
+	EXPECT_STREQ(setBasicFinancialQuarter.GetDefaultSQL(), _T("[finnhub_stock_basic_financials_quarterly]"));
 }
