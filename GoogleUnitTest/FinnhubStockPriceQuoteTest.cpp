@@ -124,58 +124,58 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 4: // 缺乏c
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 0);
-			EXPECT_EQ(m_pStock->GetHigh(), 0);
-			EXPECT_EQ(m_pStock->GetLow(), 0);
-			EXPECT_EQ(m_pStock->GetOpen(), 0);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(m_pStock->GetNew(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_EQ(m_pStock->GetHigh(), 121170);
+			EXPECT_EQ(m_pStock->GetLow(), 119160);
+			EXPECT_EQ(m_pStock->GetOpen(), 120400);
+			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 			break;
 		case 5: // 缺乏h项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 0);
-			EXPECT_EQ(m_pStock->GetLow(), 0);
-			EXPECT_EQ(m_pStock->GetOpen(), 0);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_EQ(m_pStock->GetHigh(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_EQ(m_pStock->GetLow(), 119160);
+			EXPECT_EQ(m_pStock->GetOpen(), 120400);
+			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 			break;
 		case 6: // 缺乏l项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 0);
-			EXPECT_EQ(m_pStock->GetOpen(), 0);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_EQ(m_pStock->GetLow(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_EQ(m_pStock->GetOpen(), 120400);
+			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 			break;
 		case 7: // 缺乏o项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);
 			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 0);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_EQ(m_pStock->GetOpen(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 			break;
 		case 8: // 缺乏pc
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);
 			EXPECT_EQ(m_pStock->GetLow(), 119160);
 			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_EQ(m_pStock->GetLastClose(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
 			break;
 		case 9: // 缺乏t项
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);
 			EXPECT_EQ(m_pStock->GetLow(), 119160);
 			EXPECT_EQ(m_pStock->GetOpen(), 120400);
 			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0);
+			EXPECT_EQ(m_pStock->GetTransactionTime(), 0) << "此项解析失败，使用默认值0";
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
 		pStock->SetBasicFinancialUpdated(false);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
 		EXPECT_TRUE(pStock->IsBasicFinancialUpdated());
 
 		gl_pWorldMarket->GetStock(1)->SetBasicFinancialUpdated(false);

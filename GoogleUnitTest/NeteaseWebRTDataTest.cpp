@@ -229,7 +229,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS")); // 股票代码已设置
-			EXPECT_EQ(m_RTData.GetHigh(), -1); // 此位置出错，没有设置，为测试开始时设置的值（-1）。
+			EXPECT_EQ(m_RTData.GetHigh(), 0) << "此位置出错，使用默认值0";
 			it++;
 			fSucceed = m_RTData.ReadNeteaseData(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误

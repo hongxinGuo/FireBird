@@ -105,21 +105,21 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
 		case 3: //
-			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
+			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
 			break;
 		case 4: // 第二个数据缺缺actual
-			EXPECT_EQ(m_pvEPSSurprise->size(), 1);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
 			break;
 		case 5: // 第三个数据缺CodeNo
-			EXPECT_EQ(m_pvEPSSurprise->size(), 2);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
@@ -185,20 +185,20 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
 			break;
 		case 4: // 第二个数据缺缺actual
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 1);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
 			break;
 		case 5: // 第三个数据缺CodeNo
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 2);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

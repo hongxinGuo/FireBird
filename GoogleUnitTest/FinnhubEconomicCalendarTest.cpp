@@ -103,10 +103,10 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
 		case 4: // 第一个数据缺actual
-			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
 			break;
 		case 5: // 第二个数据缺actual
-			EXPECT_EQ(m_pvEconomicCalendar->size(), 1);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
 			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
 			break;

@@ -127,16 +127,16 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 3: //
-			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(pvDayLine->size(), 2);
 			break;
 		case 5:
-			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(pvDayLine->size(), 2);
 			break;
 		case 6:
-			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(pvDayLine->size(), 2);
 			break;
 		case 7:
-			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(pvDayLine->size(), 2);
 			break;
 		case 8:
 			EXPECT_EQ(pvDayLine->size(), 0);
@@ -217,28 +217,28 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: //
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 5:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 6:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 7:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 8:
 			EXPECT_FALSE(fSucceed);
