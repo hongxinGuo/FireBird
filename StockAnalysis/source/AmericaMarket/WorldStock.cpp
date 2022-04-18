@@ -159,7 +159,7 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 }
 
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 45)) {
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 90)) { // 每季更新一次数据
 		m_fBasicFinancialUpdated = false;
 	}
 	else {

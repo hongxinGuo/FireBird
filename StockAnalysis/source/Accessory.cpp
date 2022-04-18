@@ -574,26 +574,71 @@ void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
 	gl_systemMessage.PushErrorMessage(strError);
 }
 
+string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
+	string s;
+	try {
+		s = pt.get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		s = szDefault;
+	}
+	return s;
+}
+
 double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
-	string s = pt.get<string>(szKey);
+	string s;
+	try {
+		s = pt.get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		return dDefault;
+	}
 	if (s.compare(_T("null")) == 0) return dDefault;
 	else return stod(s);
 }
 
 int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
-	string s = pt.get<string>(szKey);
+	string s;
+	try {
+		s = pt.get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		return iDefault;
+	}
 	if (s.compare(_T("null")) == 0) return iDefault;
 	else return stoi(s);
 }
 
 long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
-	string s = pt.get<string>(szKey);
+	string s;
+	try {
+		s = pt.get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		return llDefault;
+	}
 	if (s.compare(_T("null")) == 0) return llDefault;
 	else return stoll(s);
 }
 
 long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
-	string s = pt.get<string>(szKey);
+	string s;
+	try {
+		s = pt.get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		return lDefault;
+	}
 	if (s.compare(_T("null")) == 0) return lDefault;
 	else return stol(s);
+}
+
+bool ptreeGetChild(ptree& pt, const char* szKey, ptree* ppt) {
+	try {
+		*ppt = pt.get_child(szKey);
+	}
+	catch (ptree_error& e) {
+		return false;
+	}
+	return true;
 }

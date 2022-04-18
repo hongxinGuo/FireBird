@@ -57,8 +57,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	bool fStatus = true;
 	bool fDone = false;
-	int iCountNumber = 0;
-	CString strMessage, strLeft, strErrorNo;
+	CString strMessage, strErrorNo;
 	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
 
@@ -73,22 +72,21 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		}
 		catch (CInternetException* exception) {
 			if (m_pFile != nullptr) {
+				m_pFile->QueryInfoStatusCode(m_dwWebErrorCode);
 				m_pFile->Close();
 				delete m_pFile;
 				m_pFile = nullptr;
 			}
-			Sleep(1); // 等待10毫秒。不等待其实也可以，
-			if (iCountNumber++ > 2) { // 重复读取三次皆失败后，则报错。
-				SetWebError(true);
+			else {
 				m_dwWebErrorCode = exception->m_dwError;
-				TRACE(_T("Net Error No %d,  %s\n"), exception->m_dwError, (LPCTSTR)strLeft);
-				sprintf_s(buffer, _T("%d"), exception->m_dwError);
-				strErrorNo = buffer;
-				strMessage = _T("Net Error No ") + strErrorNo + _T(" : ") + strLeft + _T("\n");
-				gl_systemMessage.PushErrorMessage(strMessage);
-				fStatus = false;
-				fDone = true;
 			}
+			SetWebError(true);
+			sprintf_s(buffer, _T("%d"), m_dwWebErrorCode);
+			strErrorNo = buffer;
+			strMessage = _T("Net Error No ") + strErrorNo;
+			gl_systemMessage.PushErrorMessage(strMessage);
+			fStatus = false;
+			fDone = true;
 			exception->Delete();
 		}
 	} while (!fDone);
