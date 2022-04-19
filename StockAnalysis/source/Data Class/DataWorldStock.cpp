@@ -247,19 +247,19 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 bool CDataWorldStock::UpdateBasicFinancialMetricDB(void) {
 	CWorldStockPtr pStock = nullptr;
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	int iUpdatedStock = 0;
+	int iUpdatedBasicFinancial = 0;
 	int iCount = 0;
 	int iUpdatedNumber = 0;
 
 	//更新原有的基本财务信息
 	if (IsBasicFinancialNeedUpdate()) {
 		for (auto& pStock2 : m_vWorldStock) {
-			if (pStock2->IsUpdateBasicFinancialDB()) iUpdatedStock++;
+			if (pStock2->IsUpdateBasicFinancialDB()) iUpdatedBasicFinancial++;
 		}
 		setBasicFinancialMetric.m_strSort = _T("[Symbol]");
 		setBasicFinancialMetric.Open();
 		setBasicFinancialMetric.m_pDatabase->BeginTrans();
-		while (iCount < iUpdatedStock) {
+		while (iCount < iUpdatedBasicFinancial) {
 			if (setBasicFinancialMetric.IsEOF()) break;
 			pStock = GetStock(setBasicFinancialMetric.m_symbol);
 			if (pStock->IsUpdateBasicFinancialDB()) {
@@ -270,7 +270,7 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(void) {
 			}
 			setBasicFinancialMetric.MoveNext();
 		}
-		if (iCount < iUpdatedStock) {
+		if (iCount < iUpdatedBasicFinancial) {
 			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveLast();
 			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveNext();
 			for (auto& pStock3 : m_vWorldStock) {
@@ -279,7 +279,7 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(void) {
 					iUpdatedNumber++;
 					pStock3->AppendBasicFinancialMetric(setBasicFinancialMetric);
 				}
-				if (iCount >= iUpdatedStock) break;
+				if (iCount >= iUpdatedBasicFinancial) break;
 			}
 		}
 		setBasicFinancialMetric.m_pDatabase->CommitTrans();

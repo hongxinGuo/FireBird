@@ -56,6 +56,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	bool fStatus = true;
+	int iCounter = 0;
 	bool fDone = false;
 	CString strMessage, strErrorNo;
 	char buffer[30];
@@ -67,8 +68,14 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		try {
 			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
 			// 其他的数据尚未需要提供头验证数据。
-			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-			fDone = true;
+			if (gl_fExitingSystem) {
+				fStatus = false;
+				fDone = true;
+			}
+			else {
+				m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+				fDone = true;
+			}
 		}
 		catch (CInternetException* exception) {
 			if (m_pFile != nullptr) {
@@ -76,17 +83,21 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				m_pFile->Close();
 				delete m_pFile;
 				m_pFile = nullptr;
+				sprintf_s(buffer, _T("%d"), m_dwWebErrorCode);
+				strErrorNo = buffer;
+				strMessage = _T("Net Error No. ") + strErrorNo;
 			}
 			else {
-				m_dwWebErrorCode = exception->m_dwError;
+				sprintf_s(buffer, _T("%d"), exception->m_dwError);
+				strErrorNo = buffer;
+				strMessage = _T("Net Error #") + strErrorNo;
 			}
-			SetWebError(true);
-			sprintf_s(buffer, _T("%d"), m_dwWebErrorCode);
-			strErrorNo = buffer;
-			strMessage = _T("Net Error No ") + strErrorNo;
-			gl_systemMessage.PushErrorMessage(strMessage);
-			fStatus = false;
-			fDone = true;
+			if (iCounter++ > 0) {
+				SetWebError(true);
+				gl_systemMessage.PushErrorMessage(strMessage);
+				fStatus = false;
+				fDone = true;
+			}
 			exception->Delete();
 		}
 	} while (!fDone);

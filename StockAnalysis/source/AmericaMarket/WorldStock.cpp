@@ -11,6 +11,7 @@ CWorldStock::CWorldStock() : CVirtualStock() {
 }
 
 CWorldStock::~CWorldStock() {
+	m_pBasicFinancial = nullptr;
 }
 
 void CWorldStock::Reset(void) {
