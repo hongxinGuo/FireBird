@@ -305,7 +305,7 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(void) {
 			pStock->AppendBasicFinancialAnnual();
 		}
 	}
-	return false;
+	return true;
 }
 
 bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {

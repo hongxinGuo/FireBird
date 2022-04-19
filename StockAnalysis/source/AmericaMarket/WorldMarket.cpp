@@ -400,7 +400,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	}
 
 	if (IsBasicFinancialNeedUpdate()) {
-		//TaskUpdateBasicFinancialDB();
+		TaskUpdateBasicFinancialDB();
 	}
 
 	TaskUpdateTiingoStockDB();
