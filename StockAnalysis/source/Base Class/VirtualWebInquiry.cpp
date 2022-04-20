@@ -92,7 +92,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				strErrorNo = buffer;
 				strMessage = _T("Net Error #") + strErrorNo;
 			}
-			if (iCounter++ > 0) {
+			if (iCounter++ > 1) { // 如果重试次数超过2次，则报告错误
 				SetWebError(true);
 				gl_systemMessage.PushErrorMessage(strMessage);
 				fStatus = false;

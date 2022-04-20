@@ -238,8 +238,8 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	}
 
 	UpdateBasicFinancialMetricDB();
-	UpdateBasicFinancialAnnualDB();
-	UpdateBasicFinancialQuarterDB();
+	//UpdateBasicFinancialAnnualDB();
+	//UpdateBasicFinancialQuarterDB();
 
 	return true;
 }
