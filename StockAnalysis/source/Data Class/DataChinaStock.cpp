@@ -153,18 +153,18 @@ long CDataChinaStock::LoadStockCodeDB(void) {
 bool CDataChinaStock::UpdateStockCodeDB(void) {
 	CChinaStockPtr pStock = nullptr;
 	CSetChinaStockSymbol setChinaStockSymbol;
-	int iUpdatedStock = 0;
+	int iStockCodeNeedUpdate = 0;
 	int iCount = 0;
 
 	//更新原有的代码集状态
 	if (IsUpdateStockCodeDB()) {
 		for (auto& pStock2 : m_vStock) {
-			if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
+			if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
 		}
 		setChinaStockSymbol.m_strSort = _T("[Symbol]");
 		setChinaStockSymbol.Open();
 		setChinaStockSymbol.m_pDatabase->BeginTrans();
-		while (iCount < iUpdatedStock) {
+		while (iCount < iStockCodeNeedUpdate) {
 			if (setChinaStockSymbol.IsEOF()) break;
 			pStock = m_vStock.at(m_mapStock.at(setChinaStockSymbol.m_Symbol));
 			if (pStock->IsUpdateProfileDBAndClearFlag()) {
@@ -174,7 +174,7 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 			}
 			setChinaStockSymbol.MoveNext();
 		}
-		if (iCount < iUpdatedStock) {
+		if (iCount < iStockCodeNeedUpdate) {
 			for (auto& pStock3 : m_vStock) {
 				if (pStock3->IsUpdateProfileDBAndClearFlag()) {
 					ASSERT(pStock3->IsTodayNewStock());
@@ -182,14 +182,14 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 					pStock3->AppendSymbol(setChinaStockSymbol);
 					pStock3->SetTodayNewStock(false);
 				}
-				if (iCount >= iUpdatedStock) break;
+				if (iCount >= iStockCodeNeedUpdate) break;
 			}
 		}
 		setChinaStockSymbol.m_pDatabase->CommitTrans();
 		setChinaStockSymbol.Close();
 		m_lLoadedStock = m_vStock.size();
 	}
-	ASSERT(iCount == iUpdatedStock);
+	ASSERT(iCount == iStockCodeNeedUpdate);
 	return true;
 }
 

@@ -7,6 +7,7 @@
 #include "pch.h"
 
 #include"globedef.h"
+#include"thread.h"
 #include"WorldMarket.h"
 
 #include"SetWorldStock.h"
@@ -158,9 +159,8 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	static bool sm_fInProcess = false;
 	CWorldStockPtr pStock = nullptr;
 	CSetWorldStock setWorldStock;
-	int iUpdatedStock = 0;
-	int iCount = 0;
-	int iUpdatedNumber = 0;
+	int iStockNeedUpdate = 0;
+	int iCurrentUpdated = 0;
 	time_t tt = GetTickCount64();
 
 	if (sm_fInProcess) {
@@ -174,49 +174,47 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	//更新原有的代码集状态
 	if (IsStockProfileNeedUpdate()) {
 		for (auto& pStock2 : m_vWorldStock) {
-			if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
+			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
 		setWorldStock.m_strSort = _T("[Symbol]");
 		setWorldStock.Open();
 		setWorldStock.m_pDatabase->BeginTrans();
-		while (iCount < iUpdatedStock) {
+		while (iCurrentUpdated < iStockNeedUpdate) {
 			if (setWorldStock.IsEOF()) break;
 			pStock = GetStock(setWorldStock.m_Symbol);
 			if (pStock->IsUpdateProfileDB()) {
-				iCount++;
-				iUpdatedNumber++;
+				iCurrentUpdated++;
 				pStock->Update(setWorldStock);
 				pStock->SetUpdateProfileDB(false);
 			}
 			setWorldStock.MoveNext();
 		}
-		if (iCount < iUpdatedStock) {
+		if (iCurrentUpdated < iStockNeedUpdate) {
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
 			for (auto& pStock3 : m_vWorldStock) {
 				if (pStock3->IsUpdateProfileDB()) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
-					iCount++;
-					iUpdatedNumber++;
+					iCurrentUpdated++;
 					pStock3->Append(setWorldStock);
 					pStock3->SetTodayNewStock(false);
 					TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
 				}
-				if (iCount >= iUpdatedStock) break;
+				if (iCurrentUpdated >= iStockNeedUpdate) break;
 			}
 		}
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 		m_lLastTotalWorldStock = m_vWorldStock.size();
 	}
-	ASSERT(iCount == iUpdatedStock);
+	ASSERT(iCurrentUpdated == iStockNeedUpdate);
 	tt = GetTickCount64() - tt;
 	char buffer3[30];
 	sprintf_s(buffer3, _T("%lld"), tt);
 	CString strMessage = _T("更新WorldMarket stock用时");
 	strMessage += buffer3;
 	strMessage += _T("毫秒,共更新了");
-	sprintf_s(buffer3, _T("%d"), iUpdatedNumber);
+	sprintf_s(buffer3, _T("%d"), iCurrentUpdated);
 	strMessage += buffer3;
 	strMessage += _T("个股票");
 	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
@@ -228,58 +226,65 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	static bool sm_fInProcess = false;
 	time_t tt = GetTickCount64();
+	vector<CWorldStockPtr> vStock;
+	CWorldStockPtr pStock = nullptr;
 
 	if (sm_fInProcess) {
-		gl_systemMessage.PushErrorMessage(_T("UpdateStockProfileDB任务用时超过五分钟"));
+		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
 		return false;
 	}
 	else {
 		sm_fInProcess = true;
 	}
+	for (auto& pStock4 : m_vWorldStock) {
+		if (pStock4->IsUpdateBasicFinancialDB()) {
+			vStock.push_back(pStock4);
+		}
+	}
 
-	UpdateBasicFinancialMetricDB();
-	//UpdateBasicFinancialAnnualDB();
-	//UpdateBasicFinancialQuarterDB();
+	UpdateBasicFinancialMetricDB(vStock);
+	UpdateBasicFinancialAnnualDB(vStock);
+	UpdateBasicFinancialQuarterDB(vStock);
 
+	for (auto& pStock5 : vStock) {
+		pStock5->SetUpdateBasicFinancialDB(false);
+	}
+
+	sm_fInProcess = false;
 	return true;
 }
 
-bool CDataWorldStock::UpdateBasicFinancialMetricDB(void) {
+bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
 	CWorldStockPtr pStock = nullptr;
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	int iUpdatedBasicFinancial = 0;
-	int iCount = 0;
-	int iUpdatedNumber = 0;
+	int iBasicFinancialNeedUpdate = 0;
+	int iCurrentUpdated = 0;
 
 	//更新原有的基本财务信息
 	if (IsBasicFinancialNeedUpdate()) {
-		for (auto& pStock2 : m_vWorldStock) {
-			if (pStock2->IsUpdateBasicFinancialDB()) iUpdatedBasicFinancial++;
-		}
+		iBasicFinancialNeedUpdate = vStock.size();
 		setBasicFinancialMetric.m_strSort = _T("[Symbol]");
 		setBasicFinancialMetric.Open();
 		setBasicFinancialMetric.m_pDatabase->BeginTrans();
-		while (iCount < iUpdatedBasicFinancial) {
+		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 			if (setBasicFinancialMetric.IsEOF()) break;
 			pStock = GetStock(setBasicFinancialMetric.m_symbol);
-			if (pStock->IsUpdateBasicFinancialDB()) {
-				iCount++;
-				iUpdatedNumber++;
+			if (vStock.end() != find(vStock.begin(), vStock.end(), pStock)) {
+				iCurrentUpdated++;
 				pStock->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-				pStock->SetUpdateBasicFinancialDB(false);
 			}
 			setBasicFinancialMetric.MoveNext();
 		}
-		if (iCount < iUpdatedBasicFinancial) {
+		if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+			ASSERT(setBasicFinancialMetric.IsEOF());
 			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveLast();
 			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveNext();
-			for (auto& pStock3 : m_vWorldStock) {
-				if (pStock3->IsUpdateBasicFinancialDB()) {
-					iCount++;
-					iUpdatedNumber++;
-					pStock3->AppendBasicFinancialMetric(setBasicFinancialMetric);
-				}
-				if (iCount >= iUpdatedBasicFinancial) break;
+			for (int i = iCurrentUpdated; i < iBasicFinancialNeedUpdate; i++) {
+				auto& pStock3 = vStock.at(i);
+				ASSERT(pStock3->IsUpdateBasicFinancialDB());
+				iCurrentUpdated++;
+				pStock3->AppendBasicFinancialMetric(setBasicFinancialMetric);
+				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
 			}
 		}
 		setBasicFinancialMetric.m_pDatabase->CommitTrans();
@@ -289,21 +294,18 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(void) {
 	return true;
 }
 
-bool CDataWorldStock::UpdateBasicFinancialQuarterDB(void) {
-	for (auto& pStock : m_vWorldStock) {
-		if (pStock->IsUpdateBasicFinancialDB()) {
-			pStock->AppendBasicFinancialQuarter();
-			pStock->SetUpdateBasicFinancialDB(false); // 更新完成.此函数必须位于appendBasicFinancialMetric和appendBasicFinancialAnnual之后
-		}
+bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
+	for (auto& pStock : vStock) {
+		thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, pStock.get());
+		thread1.detach();
 	}
 	return true;
 }
 
-bool CDataWorldStock::UpdateBasicFinancialAnnualDB(void) {
-	for (auto& pStock : m_vWorldStock) {
-		if (pStock->IsUpdateBasicFinancialDB()) {
-			pStock->AppendBasicFinancialAnnual();
-		}
+bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
+	for (auto& pStock : vStock) {
+		thread thread1(ThreadUpdateBasicFinancialAnnualDB, pStock.get());
+		thread1.detach();
 	}
 	return true;
 }

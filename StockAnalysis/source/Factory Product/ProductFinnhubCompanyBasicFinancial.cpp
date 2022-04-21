@@ -43,8 +43,13 @@ bool CProductFinnhubCompanyBasicFinancial::ProcessWebData(CWebDataPtr pWebData) 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
 	if (pFinnhubStockBasicFinancial != nullptr) {
-		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
-		pStock->SetUpdateBasicFinancialDB(true);
+		if (pFinnhubStockBasicFinancial->m_symbol == pStock->GetSymbol()) {
+			pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
+			pStock->SetUpdateBasicFinancialDB(true);
+		}
+		else {
+			ASSERT(FALSE);
+		}
 	}
 	pStock->SetBasicFinancialUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
@@ -249,10 +254,10 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		if (pWebData->IsVoidJSon()) return nullptr;
 		ppt = pWebData->GetPTree();
 		try {
-			s = ppt->get<string>(_T("symbol"));
+			s = ptreeGetString(*ppt, _T("symbol"));
 			pBasicFinancial->m_symbol = s.c_str();
 
-			ptMetric = ppt->get_child(_T("metric"));
+			ptreeGetChild(*ppt, _T("metric"), &ptMetric);
 			pBasicFinancial->m_10DayAverageTradingVolume = ptreeGetDouble(ptMetric, _T("10DayAverageTradingVolume"));
 			pBasicFinancial->m_13WeekPriceReturnDaily = ptreeGetDouble(ptMetric, _T("13WeekPriceReturnDaily"));
 			pBasicFinancial->m_26WeekPriceReturnDaily = ptreeGetDouble(ptMetric, _T("26WeekPriceReturnDaily"));
@@ -404,52 +409,53 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 
 			pBasicFinancial->m_yearToDatePriceReturnDaily = ptreeGetDouble(ptMetric, _T("yearToDatePriceReturnDaily"));
 
-			s = ppt->get<string>(_T("metricType"));
+			s = ptreeGetString(*ppt, _T("metricType"));
 			ASSERT(s.compare(_T("all")) == 0);
 
-			ptSeries = ppt->get_child(_T("series"));
-			if (ptreeGetChild(ptSeries, _T("annual"), &ptAnnual)) {
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_cashRatio, _T("cashRatio"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_currentRatio, _T("currentRatio"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_ebitPerShare, _T("ebitPerShare"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_eps, _T("eps"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_grossMargin, _T("grossMargin"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netMargin, _T("netMargin"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_operatingMargin, _T("operatingMargin"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_pretaxMargin, _T("pretaxMargin"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_salesPerShare, _T("salesPerShare"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_sgaToSale, _T("sgaToSale"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToEquity, _T("totalDebtToEquity"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
-				GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalRatio, _T("totalRatio"));
-			}
+			if (ptreeGetChild(*ppt, _T("series"), &ptSeries)) {
+				if (ptreeGetChild(ptSeries, _T("annual"), &ptAnnual)) {
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_cashRatio, _T("cashRatio"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_currentRatio, _T("currentRatio"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_ebitPerShare, _T("ebitPerShare"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_eps, _T("eps"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_grossMargin, _T("grossMargin"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_netMargin, _T("netMargin"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_operatingMargin, _T("operatingMargin"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_pretaxMargin, _T("pretaxMargin"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_salesPerShare, _T("salesPerShare"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_sgaToSale, _T("sgaToSale"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToEquity, _T("totalDebtToEquity"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
+					GetSeasonData(ptAnnual, pBasicFinancial->m_annual.m_totalRatio, _T("totalRatio"));
+				}
 
-			if (ptreeGetChild(ptSeries, _T("quarterly"), &ptQuarterly)) {
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_cashRatio, _T("cashRatio"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_currentRatio, _T("currentRatio"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_ebitPerShare, _T("ebitPerShare"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_eps, _T("eps"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_grossMargin, _T("grossMargin"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netMargin, _T("netMargin"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_operatingMargin, _T("operatingMargin"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_pretaxMargin, _T("pretaxMargin"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_salesPerShare, _T("salesPerShare"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_sgaToSale, _T("sgaToSale"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToEquity, _T("totalDebtToEquity"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalRatio, _T("totalRatio"));
+				if (ptreeGetChild(ptSeries, _T("quarterly"), &ptQuarterly)) {
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_cashRatio, _T("cashRatio"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_currentRatio, _T("currentRatio"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_ebitPerShare, _T("ebitPerShare"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_eps, _T("eps"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_grossMargin, _T("grossMargin"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netMargin, _T("netMargin"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_operatingMargin, _T("operatingMargin"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_pretaxMargin, _T("pretaxMargin"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_salesPerShare, _T("salesPerShare"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_sgaToSale, _T("sgaToSale"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToEquity, _T("totalDebtToEquity"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
+					GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_totalRatio, _T("totalRatio"));
+				}
 			}
 		}
 		catch (ptree_error& e) {

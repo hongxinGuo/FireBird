@@ -116,8 +116,12 @@ UINT ThreadUpdateFinnhubCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // 此工
 UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol); // 此工作线程的返回值未53
 // 更新Tiingo crypto代码集。
 UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为54
-// 更新Finnhub Basic financial
+// 更新Finnhub basic financial
 UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为55
+// 更新Finnhub basic financial annual data
+UINT ThreadUpdateBasicFinancialAnnualDB(not_null<CWorldStock*> pStock); // 此工作线程返回值为56
+// 更新Finnhub basic financial quarterly data
+UINT ThreadUpdateBasicFinancialQuarterlyDB(not_null<CWorldStock*> pStock); // 此工作线程返回值为57
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）
