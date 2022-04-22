@@ -484,7 +484,6 @@ bool CWorldStock::HaveNewDayLineData(void) {
 
 bool CWorldStock::UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial) {
 	m_pBasicFinancial = pFinnhubStockBasicFinancial;
-	ASSERT(m_pBasicFinancial->m_symbol == m_strSymbol);
 
 	return true;
 }

@@ -242,9 +242,9 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 		}
 	}
 
-	UpdateBasicFinancialMetricDB(vStock);
 	UpdateBasicFinancialAnnualDB(vStock);
 	UpdateBasicFinancialQuarterDB(vStock);
+	UpdateBasicFinancialMetricDB(vStock);
 
 	for (auto& pStock5 : vStock) {
 		pStock5->SetUpdateBasicFinancialDB(false);

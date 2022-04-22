@@ -192,27 +192,27 @@ bool CWorldMarket::SchedulingTask(void) {
 	TaskCheckSystemReady();
 
 	if (--s_iCountfinnhubLimit < 0) {
-		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
-			gl_pFinnhubWebInquiry->SetWebError(false);
-			s_iCountfinnhubLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
-		}
 		TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
 			ASSERT(gl_pFinnhubWebInquiry->GetShortestInquiringInterval() > 100);
 			s_iCountfinnhubLimit = gl_pFinnhubWebInquiry->GetShortestInquiringInterval() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+		}
+		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
+			gl_pFinnhubWebInquiry->SetWebError(false);
+			s_iCountfinnhubLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
 	ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
 	if (--s_iCountTiingoLimit < 0) {
+		ASSERT(gl_pTiingoWebInquiry->GetShortestInquiringInterval() > 100);
+		s_iCountTiingoLimit = gl_pTiingoWebInquiry->GetShortestInquiringInterval() / 100;
+		TaskInquiryTiingo();
 		if (gl_pTiingoWebInquiry->IsWebError()) {
 			gl_pTiingoWebInquiry->SetWebError(false);
 			s_iCountTiingoLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
 		}
-		ASSERT(gl_pTiingoWebInquiry->GetShortestInquiringInterval() > 100);
-		s_iCountTiingoLimit = gl_pTiingoWebInquiry->GetShortestInquiringInterval() / 100;
-		TaskInquiryTiingo();
 	}
 	ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据
 	ProcessTiingoInquiringMessage(); // 然后再申请处理下一个

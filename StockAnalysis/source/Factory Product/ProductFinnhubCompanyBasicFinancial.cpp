@@ -43,12 +43,14 @@ bool CProductFinnhubCompanyBasicFinancial::ProcessWebData(CWebDataPtr pWebData) 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
 	if (pFinnhubStockBasicFinancial != nullptr) {
-		if (pFinnhubStockBasicFinancial->m_symbol == pStock->GetSymbol()) {
+		if ((pFinnhubStockBasicFinancial->m_symbol.Compare(pStock->GetSymbol()) == 0)
+			|| (pStock->GetSymbol().GetLength() >= 5)) { //如果股票代码相同，或者股票代码长度大于等于5(外国股票的代码，此时数据中的代码为其本土代码，与pStock中的不同），则认为是有效数据
+			pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol(); // 因为接收到的股票代码是本土代码，可能不同，所以需要更新股票代码
 			pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 			pStock->SetUpdateBasicFinancialDB(true);
 		}
 		else {
-			ASSERT(FALSE);
+			gl_systemMessage.PushErrorMessage(_T("BasicFinancial股票代码不符：") + pStock->GetSymbol() + _T("  ") + pFinnhubStockBasicFinancial->m_symbol);
 		}
 	}
 	pStock->SetBasicFinancialUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());

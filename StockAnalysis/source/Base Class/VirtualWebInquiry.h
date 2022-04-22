@@ -24,7 +24,7 @@ public:
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
-	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); 	pDataHead = m_sBuffer.data(); }
+	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); }
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
@@ -105,7 +105,6 @@ protected:
 	DWORD m_dwWebErrorCode; //网络读取错误代码
 	CString m_strInquire;// 查询所需的字符串
 	string m_sBuffer; // 接收到数据的缓冲区
-	string::pointer pDataHead;
 	INT64 m_lByteRead; // 接收到的字符数.
 
 	CString m_strWebDataInquireMiddle; // 查询字符串中间字段
