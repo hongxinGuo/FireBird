@@ -394,7 +394,7 @@ bool CWorldStock::UpdateDayLineDB(void) {
 void CWorldStock::AppendBasicFinancialAnnual(void) {
 	CSetFinnhubStockBasicFinancialAnnual setAnnual;
 
-	setAnnual.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	setAnnual.m_strFilter = _T("[ID] = 1");
 	setAnnual.Open();
 	setAnnual.m_pDatabase->BeginTrans();
 	m_pBasicFinancial->AppendAnnualData(setAnnual);
@@ -405,7 +405,7 @@ void CWorldStock::AppendBasicFinancialAnnual(void) {
 void CWorldStock::AppendBasicFinancialQuarter(void) {
 	CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
-	setQuarter.m_strFilter = _T("[Symbol] = '") + m_strSymbol + _T("'");
+	setQuarter.m_strFilter = _T("[ID] = 1");
 	setQuarter.Open();
 	setQuarter.m_pDatabase->BeginTrans();
 	m_pBasicFinancial->AppendQuarterData(setQuarter);

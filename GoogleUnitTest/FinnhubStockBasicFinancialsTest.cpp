@@ -62,13 +62,376 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
 	}
 
+	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveQuarterData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialQuarter setQuarter;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("200054.SZ");
+		instance.m_quarter.m_cashRatio.push_back({ 20210630, 1.0 }); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({ 20210930, 2.0 }); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({ 20211231, 3.0 }); // 这个是新数据
+
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		while (!setQuarter.IsEOF()) {
+			dbData.m_symbol = setQuarter.m_symbol;
+			dbData.m_type = setQuarter.m_type;
+			dbData.m_date = setQuarter.m_date;
+			dbData.m_value = setQuarter.m_value;
+			seasonDBData.push_back(dbData);
+			setQuarter.MoveNext();
+		}
+		setQuarter.Close();
+
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, _T("cashRatio"), seasonDBData);
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+
+		// 检查数据库中的数据，并恢复原状
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Type] = 'cashRatio'");
+		setQuarter.m_strSort = _T("[Date] ASC");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		setQuarter.MoveLast();
+		EXPECT_EQ(setQuarter.m_date, 20211231) << "新数据存入了数据库";
+		setQuarter.Delete();
+		setQuarter.MovePrev();
+		EXPECT_EQ(setQuarter.m_date, 20210930) << "数据库中已有此数据，无需插入新数据";
+		setQuarter.MovePrev();
+		EXPECT_EQ(setQuarter.m_date, 20210630) << "数据库中已有此数据， 无需插入新数据";
+		setQuarter.MovePrev();
+		EXPECT_EQ(setQuarter.m_date, 20210331) << "数据库中已有此数据， 无需插入新数据";
+		setQuarter.MovePrev();
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAllQuarterData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialQuarter setQuarter;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("200054.SZ");
+		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
+
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		while (!setQuarter.IsEOF()) {
+			dbData.m_symbol = setQuarter.m_symbol;
+			dbData.m_type = setQuarter.m_type;
+			dbData.m_date = setQuarter.m_date;
+			dbData.m_value = setQuarter.m_value;
+			seasonDBData.push_back(dbData);
+			setQuarter.MoveNext();
+		}
+		setQuarter.Close();
+
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		instance.SaveAllQuarterData(setQuarter, seasonDBData);
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+
+		int i = 0;
+		setQuarter.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		while (!setQuarter.IsEOF()) {
+			i = setQuarter.m_value;
+			switch (i) {
+			case 1:
+				EXPECT_STREQ(setQuarter.m_type, _T("cashRatio"));
+				break;
+			case 2:
+				EXPECT_STREQ(setQuarter.m_type, _T("currentRatio"));
+				break;
+			case 3:
+				EXPECT_STREQ(setQuarter.m_type, _T("ebitPerShare"));
+				break;
+			case 4:
+				EXPECT_STREQ(setQuarter.m_type, _T("eps"));
+				break;
+			case 5:
+				EXPECT_STREQ(setQuarter.m_type, _T("grossMargin"));
+				break;
+			case 6:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalAsset"));
+				break;
+			case 7:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalCapital"));
+				break;
+			case 8:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalEquity"));
+				break;
+			case 9:
+				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalCapital"));
+				break;
+			case 10:
+				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalEquity"));
+				break;
+			case 11:
+				EXPECT_STREQ(setQuarter.m_type, _T("netMargin"));
+				break;
+			case 12:
+				EXPECT_STREQ(setQuarter.m_type, _T("operatingMargin"));
+				break;
+			case 13:
+				EXPECT_STREQ(setQuarter.m_type, _T("pretaxMargin"));
+				break;
+			case 14:
+				EXPECT_STREQ(setQuarter.m_type, _T("salesPerShare"));
+				break;
+			case 15:
+				EXPECT_STREQ(setQuarter.m_type, _T("sgaToSale"));
+				break;
+			case 16:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToEquity"));
+				break;
+			case 17:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalAsset"));
+				break;
+			case 18:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalCapital"));
+				break;
+			case 19:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalRatio"));
+				break;
+			default:
+				EXPECT_TRUE(false);
+				break;
+			}
+			setQuarter.MoveNext();
+		}
+		setQuarter.Close();
+
+		// 恢复原状
+		setQuarter.m_strFilter = _T("[Date] = 19800101");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		while (!setQuarter.IsEOF()) {
+			setQuarter.Delete();
+			setQuarter.MoveNext();
+		}
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, TestAppendQuarterData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialQuarter setQuarter;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("200054.SZ");
+		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
+
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		instance.AppendQuarterData(setQuarter);
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+
+		int i = 0;
+		setQuarter.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setQuarter.Open();
+		while (!setQuarter.IsEOF()) {
+			i = setQuarter.m_value;
+			switch (i) {
+			case 1:
+				EXPECT_STREQ(setQuarter.m_type, _T("cashRatio"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 1.0);
+				break;
+			case 2:
+				EXPECT_STREQ(setQuarter.m_type, _T("currentRatio"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 2.0);
+				break;
+			case 3:
+				EXPECT_STREQ(setQuarter.m_type, _T("ebitPerShare"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 3.0);
+				break;
+			case 4:
+				EXPECT_STREQ(setQuarter.m_type, _T("eps"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 4.0);
+				break;
+			case 5:
+				EXPECT_STREQ(setQuarter.m_type, _T("grossMargin"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 5.0);
+				break;
+			case 6:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalAsset"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 6.0);
+				break;
+			case 7:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalCapital"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 7.0);
+				break;
+			case 8:
+				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalEquity"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 8.0);
+				break;
+			case 9:
+				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalCapital"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 9.0);
+				break;
+			case 10:
+				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalEquity"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 10.0);
+				break;
+			case 11:
+				EXPECT_STREQ(setQuarter.m_type, _T("netMargin"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 11.0);
+				break;
+			case 12:
+				EXPECT_STREQ(setQuarter.m_type, _T("operatingMargin"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 12.0);
+				break;
+			case 13:
+				EXPECT_STREQ(setQuarter.m_type, _T("pretaxMargin"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 13.0);
+				break;
+			case 14:
+				EXPECT_STREQ(setQuarter.m_type, _T("salesPerShare"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 14.0);
+				break;
+			case 15:
+				EXPECT_STREQ(setQuarter.m_type, _T("sgaToSale"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 15.0);
+				break;
+			case 16:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToEquity"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 16.0);
+				break;
+			case 17:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalAsset"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 17.0);
+				break;
+			case 18:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalCapital"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 18.0);
+				break;
+			case 19:
+				EXPECT_STREQ(setQuarter.m_type, _T("totalRatio"));
+				EXPECT_DOUBLE_EQ(setQuarter.m_value, 19.0);
+				break;
+			default:
+				EXPECT_TRUE(false);
+				break;
+			}
+			setQuarter.MoveNext();
+		}
+		setQuarter.Close();
+
+		// 恢复原状
+		setQuarter.m_strFilter = _T("[Date] = 19800101");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		while (!setQuarter.IsEOF()) {
+			setQuarter.Delete();
+			setQuarter.MoveNext();
+		}
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+	}
+
+	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAnnualData) {
+		CFinnhubStockBasicFinancial instance;
+		CSetFinnhubStockBasicFinancialAnnual setAnnual;
+		vector<strSeasonDBData> seasonDBData;
+		strSeasonDBData dbData;
+
+		instance.m_symbol = _T("200054.SZ");
+		instance.m_annual.m_cashRatio.push_back({ 20191231, 1.0 }); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({ 20201231, 2.0 }); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({ 20211231, 3.0 }); // 这个是新数据
+
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.Open();
+		while (!setAnnual.IsEOF()) {
+			dbData.m_symbol = setAnnual.m_symbol;
+			dbData.m_type = setAnnual.m_type;
+			dbData.m_date = setAnnual.m_date;
+			dbData.m_value = setAnnual.m_value;
+			seasonDBData.push_back(dbData);
+			setAnnual.MoveNext();
+		}
+		setAnnual.Close();
+
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		instance.SaveAnnualData(setAnnual, instance.m_annual.m_cashRatio, _T("cashRatio"), seasonDBData);
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
+
+		// 检查数据库中的数据，并恢复原状
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Type] = 'cashRatio'");
+		setAnnual.m_strSort = _T("[Date] ASC");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		setAnnual.MoveLast();
+		EXPECT_EQ(setAnnual.m_date, 20211231) << "新数据存入了数据库";
+		setAnnual.Delete();
+		setAnnual.MovePrev();
+		EXPECT_EQ(setAnnual.m_date, 20201231) << "数据库中已有此数据，无需插入新数据";
+		setAnnual.MovePrev();
+		EXPECT_EQ(setAnnual.m_date, 20191231) << "数据库中已有此数据， 无需插入新数据";
+		setAnnual.MovePrev();
+		EXPECT_EQ(setAnnual.m_date, 20181231) << "数据库中已有此数据， 无需插入新数据";
+		setAnnual.MovePrev();
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
+	}
+
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAllAnnualData) {
 		CFinnhubStockBasicFinancial instance, instanceLoaded;
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
 		vector<strSeasonDBData> seasonDBData;
 		strSeasonDBData dbData;
 
-		instance.m_symbol = _T("AAPL");
+		instance.m_symbol = _T("200054.SZ");
 		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
 		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
 		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
@@ -89,7 +452,7 @@ namespace StockAnalysisTest {
 		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
 		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
 
-		setAnnual.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
 			dbData.m_symbol = setAnnual.m_symbol;
@@ -101,7 +464,7 @@ namespace StockAnalysisTest {
 		}
 		setAnnual.Close();
 
-		setAnnual.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		instance.SaveAllAnnualData(setAnnual, seasonDBData);
@@ -109,7 +472,7 @@ namespace StockAnalysisTest {
 		setAnnual.Close();
 
 		int i = 0;
-		setAnnual.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = 'AAPL'");
+		setAnnual.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
 			i = setAnnual.m_value;
@@ -192,171 +555,147 @@ namespace StockAnalysisTest {
 		setAnnual.Close();
 	}
 
-	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAllQuarterData) {
-		CFinnhubStockBasicFinancial instance;
-		CSetFinnhubStockBasicFinancialQuarter setQuarter;
+	TEST_F(CFinnhubStockBasicFinancialTest, TestAppendAnnualData) {
+		CFinnhubStockBasicFinancial instance, instanceLoaded;
+		CSetFinnhubStockBasicFinancialAnnual setAnnual;
 		vector<strSeasonDBData> seasonDBData;
 		strSeasonDBData dbData;
 
-		instance.m_symbol = _T("AAPL");
-		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
-		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
-		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
-		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
-		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
-		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
-		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
-		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
-		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
-		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
-		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
-		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
-		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
-		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
-		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
-		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
-		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
-		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
-		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
+		instance.m_symbol = _T("200054.SZ");
+		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_annual.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_annual.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_annual.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_annual.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_annual.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_annual.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_annual.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_annual.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_annual.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_annual.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_annual.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_annual.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_annual.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_annual.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
 
-		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
-		setQuarter.Open();
-		while (!setQuarter.IsEOF()) {
-			dbData.m_symbol = setQuarter.m_symbol;
-			dbData.m_type = setQuarter.m_type;
-			dbData.m_date = setQuarter.m_date;
-			dbData.m_value = setQuarter.m_value;
-			seasonDBData.push_back(dbData);
-			setQuarter.MoveNext();
-		}
-		setQuarter.Close();
-
-		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
-		setQuarter.Open();
-		setQuarter.m_pDatabase->BeginTrans();
-		instance.SaveAllQuarterData(setQuarter, seasonDBData);
-		setQuarter.m_pDatabase->CommitTrans();
-		setQuarter.Close();
+		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		instance.AppendAnnualData(setAnnual);
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
 
 		int i = 0;
-		setQuarter.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = 'AAPL'");
-		setQuarter.Open();
-		while (!setQuarter.IsEOF()) {
-			i = setQuarter.m_value;
+		setAnnual.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setAnnual.Open();
+		while (!setAnnual.IsEOF()) {
+			i = setAnnual.m_value;
 			switch (i) {
 			case 1:
-				EXPECT_STREQ(setQuarter.m_type, _T("cashRatio"));
+				EXPECT_STREQ(setAnnual.m_type, _T("cashRatio"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 1.0);
 				break;
 			case 2:
-				EXPECT_STREQ(setQuarter.m_type, _T("currentRatio"));
+				EXPECT_STREQ(setAnnual.m_type, _T("currentRatio"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 2.0);
 				break;
 			case 3:
-				EXPECT_STREQ(setQuarter.m_type, _T("ebitPerShare"));
+				EXPECT_STREQ(setAnnual.m_type, _T("ebitPerShare"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 3.0);
 				break;
 			case 4:
-				EXPECT_STREQ(setQuarter.m_type, _T("eps"));
+				EXPECT_STREQ(setAnnual.m_type, _T("eps"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 4.0);
 				break;
 			case 5:
-				EXPECT_STREQ(setQuarter.m_type, _T("grossMargin"));
+				EXPECT_STREQ(setAnnual.m_type, _T("grossMargin"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 5.0);
 				break;
 			case 6:
-				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalAsset"));
+				EXPECT_STREQ(setAnnual.m_type, _T("longtermDebtTotalAsset"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 6.0);
 				break;
 			case 7:
-				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalCapital"));
+				EXPECT_STREQ(setAnnual.m_type, _T("longtermDebtTotalCapital"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 7.0);
 				break;
 			case 8:
-				EXPECT_STREQ(setQuarter.m_type, _T("longtermDebtTotalEquity"));
+				EXPECT_STREQ(setAnnual.m_type, _T("longtermDebtTotalEquity"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 8.0);
 				break;
 			case 9:
-				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalCapital"));
+				EXPECT_STREQ(setAnnual.m_type, _T("netDebtToTotalCapital"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 9.0);
 				break;
 			case 10:
-				EXPECT_STREQ(setQuarter.m_type, _T("netDebtToTotalEquity"));
+				EXPECT_STREQ(setAnnual.m_type, _T("netDebtToTotalEquity"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 10.0);
 				break;
 			case 11:
-				EXPECT_STREQ(setQuarter.m_type, _T("netMargin"));
+				EXPECT_STREQ(setAnnual.m_type, _T("netMargin"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 11.0);
 				break;
 			case 12:
-				EXPECT_STREQ(setQuarter.m_type, _T("operatingMargin"));
+				EXPECT_STREQ(setAnnual.m_type, _T("operatingMargin"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 12.0);
 				break;
 			case 13:
-				EXPECT_STREQ(setQuarter.m_type, _T("pretaxMargin"));
+				EXPECT_STREQ(setAnnual.m_type, _T("pretaxMargin"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 13.0);
 				break;
 			case 14:
-				EXPECT_STREQ(setQuarter.m_type, _T("salesPerShare"));
+				EXPECT_STREQ(setAnnual.m_type, _T("salesPerShare"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 14.0);
 				break;
 			case 15:
-				EXPECT_STREQ(setQuarter.m_type, _T("sgaToSale"));
+				EXPECT_STREQ(setAnnual.m_type, _T("sgaToSale"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 15.0);
 				break;
 			case 16:
-				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToEquity"));
+				EXPECT_STREQ(setAnnual.m_type, _T("totalDebtToEquity"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 16.0);
 				break;
 			case 17:
-				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalAsset"));
+				EXPECT_STREQ(setAnnual.m_type, _T("totalDebtToTotalAsset"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 17.0);
 				break;
 			case 18:
-				EXPECT_STREQ(setQuarter.m_type, _T("totalDebtToTotalCapital"));
+				EXPECT_STREQ(setAnnual.m_type, _T("totalDebtToTotalCapital"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 18.0);
 				break;
 			case 19:
-				EXPECT_STREQ(setQuarter.m_type, _T("totalRatio"));
+				EXPECT_STREQ(setAnnual.m_type, _T("totalRatio"));
+				EXPECT_DOUBLE_EQ(setAnnual.m_value, 19.0);
 				break;
 			default:
 				EXPECT_TRUE(false);
 				break;
 			}
-			setQuarter.MoveNext();
+			setAnnual.MoveNext();
 		}
-		setQuarter.Close();
+		setAnnual.Close();
 
 		// 恢复原状
-		setQuarter.m_strFilter = _T("[Date] = 19800101");
-		setQuarter.Open();
-		setQuarter.m_pDatabase->BeginTrans();
-		while (!setQuarter.IsEOF()) {
-			setQuarter.Delete();
-			setQuarter.MoveNext();
+		setAnnual.m_strFilter = _T("[Date] = 19800101");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		while (!setAnnual.IsEOF()) {
+			setAnnual.Delete();
+			setAnnual.MoveNext();
 		}
-		setQuarter.m_pDatabase->CommitTrans();
-		setQuarter.Close();
-	}
-
-	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveQuarterData) {
-		CFinnhubStockBasicFinancial instance;
-		CSetFinnhubStockBasicFinancialQuarter setQuarter;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
-
-		instance.m_symbol = _T("AAPL");
-		instance.m_quarter.m_cashRatio.push_back({ 20190101, 1.0 });
-		instance.m_quarter.m_cashRatio.push_back({ 20200101, 2.0 });
-		instance.m_quarter.m_cashRatio.push_back({ 20210101, 3.0 });
-
-		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
-		setQuarter.Open();
-		while (!setQuarter.IsEOF()) {
-			dbData.m_symbol = setQuarter.m_symbol;
-			dbData.m_type = setQuarter.m_type;
-			dbData.m_date = setQuarter.m_date;
-			dbData.m_value = setQuarter.m_value;
-			seasonDBData.push_back(dbData);
-			setQuarter.MoveNext();
-		}
-		setQuarter.Close();
-
-		setQuarter.m_strFilter = _T("[Symbol] = 'AAPL'");
-		setQuarter.Open();
-		setQuarter.m_pDatabase->BeginTrans();
-		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, _T("cashRatio"), seasonDBData);
-		setQuarter.m_pDatabase->CommitTrans();
-		setQuarter.Close();
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
 	}
 
 	TEST_F(CFinnhubStockBasicFinancialTest, Test_LoadSaveMetric) {
 		CFinnhubStockBasicFinancial instance, instanceLoaded;
-		CSetFinnhubStockBasicFinancialMetric setMetric, setMetricLoad;
+		CSetFinnhubStockBasicFinancialMetric setMetric, setMetricLoad, setMetric2;
 
-		instance.m_symbol = _T("AAPL");
+		instance.m_symbol = _T("NEW_CODE");
 
 		instance.m_10DayAverageTradingVolume = 1;
 		instance.m_13WeekPriceReturnDaily = 2;
@@ -511,7 +850,7 @@ namespace StockAnalysisTest {
 		setMetric.m_pDatabase->CommitTrans();
 		setMetric.Close();
 
-		setMetricLoad.m_strFilter = _T("[Symbol] = 'AAPL'");
+		setMetricLoad.m_strFilter = _T("[Symbol] = 'NEW_CODE'");
 		setMetricLoad.Open();
 		instanceLoaded.LoadMetric(setMetricLoad);
 		setMetricLoad.Close();
@@ -664,14 +1003,14 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(instance.m_yearToDatePriceReturnDaily, instanceLoaded.m_yearToDatePriceReturnDaily);
 
 		// restore default
-		setMetricLoad.m_strFilter = _T("[Symbol] = 'AAPL'");
-		setMetricLoad.Open();
-		setMetricLoad.m_pDatabase->BeginTrans();
-		while (setMetricLoad.IsEOF()) {
-			setMetricLoad.Delete();
-			setMetricLoad.MoveNext();
+		setMetric2.m_strFilter = _T("[Symbol] = 'NEW_CODE'");
+		setMetric2.Open();
+		setMetric2.m_pDatabase->BeginTrans();
+		while (!setMetric2.IsEOF()) {
+			setMetric2.Delete();
+			setMetric2.MoveNext();
 		}
-		setMetricLoad.m_pDatabase->CommitTrans();
-		setMetricLoad.Close();
+		setMetric2.m_pDatabase->CommitTrans();
+		setMetric2.Close();
 	}
 }

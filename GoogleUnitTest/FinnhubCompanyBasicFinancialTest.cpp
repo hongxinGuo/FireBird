@@ -253,6 +253,9 @@ namespace StockAnalysisTest {
 		\"symbol\":\"AAPL\"\
 }"));
 
+	// BVDRF是美股ADR，其本土代码为MBWS.PA
+	FinnhubWebData finnhubWebData1002(2, _T("BVDRF"), _T("{\"metric\":{\"10DayAverageTradingVolume\": 0.43212},\"series\":{\"annual\":{},\"quarterly\":{}},\"metricType\":\"all\",\"symbol\":\"MBWS.PA\"}"));
+
 	class ParseFinnhubStockBasicFinancialTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		virtual void SetUp(void) override {
@@ -262,7 +265,7 @@ namespace StockAnalysisTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
-			m_pStock->SetInsiderTransactionNeedSave(false);
+			m_pStock->SetBasicFinancialUpdated(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreatePTree();
@@ -275,8 +278,8 @@ namespace StockAnalysisTest {
 			// clearup
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetInsiderTransactionNeedSave(false);
-			m_pStock->SetInsiderTransactionUpdateDate(19800101);
+			m_pStock->SetBasicFinancialUpdateDate(19800101);
+			m_pStock->SetBasicFinancialUpdated(false);
 
 			GeneralCheck();
 		}
@@ -289,7 +292,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-												 testing::Values(&finnhubWebData1001));
+												 testing::Values(&finnhubWebData1001, &finnhubWebData1002));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(m_pWebData);
@@ -299,6 +302,9 @@ namespace StockAnalysisTest {
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			break;
+		case 2: //
+			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 		default:
 			break;
 		}
@@ -331,14 +337,14 @@ namespace StockAnalysisTest {
 		}
 
 	public:
-		long m_lIndex;
-		CWorldStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
+		long m_lIndex = 0;
+		CWorldStockPtr m_pStock = nullptr;
+		CWebDataPtr m_pWebData = nullptr;
 		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-													 testing::Values(&finnhubWebData1001));
+													 testing::Values(&finnhubWebData1001, &finnhubWebData1002));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
@@ -350,13 +356,17 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 
-			// 恢复原状
-			m_pStock->SetUpdateProfileDB(false);
-
 			EXPECT_THAT(0, 0);
 			break;
+		case 2: //
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
+			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 		default:
 			break;
 		}
+		// 恢复原状
+		m_pStock->SetUpdateProfileDB(false);
 	}
 }
