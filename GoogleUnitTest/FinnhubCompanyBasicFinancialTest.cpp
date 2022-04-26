@@ -295,14 +295,17 @@ namespace StockAnalysisTest {
 												 testing::Values(&finnhubWebData1001, &finnhubWebData1002));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
-		CFinnhubStockBasicFinancialPtr pBasicFinancial = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(m_pWebData);
+		CFinnhubStockBasicFinancialPtr pBasicFinancial;
+		bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
+			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			break;
 		case 2: //
+			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 		default:
@@ -358,11 +361,12 @@ namespace StockAnalysisTest {
 
 			EXPECT_THAT(0, 0);
 			break;
-		case 2: //
+		case 2: // ADR
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
+			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 		default:
 			break;
 		}

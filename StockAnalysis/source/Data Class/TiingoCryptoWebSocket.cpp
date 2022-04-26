@@ -140,7 +140,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("messageType"));
+			sType = ptreeGetString(pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
@@ -163,7 +163,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
-				sService = pt.get<string>(_T("service"));
+				sService = ptreeGetString(pt, _T("service"));
 				if (sService.compare(_T("crypto_data")) != 0) return false; // 格式不符则退出
 				pt2 = pt.get_child(_T("data"));
 				it = pt2.begin();

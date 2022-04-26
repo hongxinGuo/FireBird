@@ -42,13 +42,10 @@ bool CProductFinnhubCompanyBasicFinancial::ProcessWebData(CWebDataPtr pWebData) 
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
-	if (pFinnhubStockBasicFinancial != nullptr) {
-		if ((pFinnhubStockBasicFinancial->m_symbol.Compare(pStock->GetSymbol()) != 0)
-			&& (pStock->GetSymbol().GetLength() >= 5)) { // ADR的代码大于等于5
-			gl_systemMessage.PushErrorMessage(_T("BasicFinancial股票代码不符：") + pStock->GetSymbol() + _T("  ") + pFinnhubStockBasicFinancial->m_symbol);
-		}
-		pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol(); // 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码
+	if (ParseFinnhubStockBasicFinancial(pFinnhubStockBasicFinancial, pWebData)) {
+		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
+		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
+		pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol();
 		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
@@ -238,8 +235,7 @@ bool CProductFinnhubCompanyBasicFinancial::ProcessWebData(CWebDataPtr pWebData) 
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData) {
-	CFinnhubStockBasicFinancialPtr pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
+bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
 	string s;
 	shared_ptr<ptree> ppt;
 	ptree ptMetric, ptSeries, ptAnnual, ptQuarterly;
@@ -247,8 +243,9 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	int year, month, day;
 
 	ASSERT(pWebData->IsJSonContentType());
+	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (pWebData->IsSucceedCreatePTree()) {
-		if (pWebData->IsVoidJSon()) return nullptr;
+		if (pWebData->IsVoidJSon()) return false;
 		ppt = pWebData->GetPTree();
 		try {
 			s = ptreeGetString(*ppt, _T("symbol"));
@@ -457,11 +454,11 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		}
 		catch (ptree_error& e) {
 			ReportJSonErrorToSystemMessage(_T("Finnhub Stock basic financials "), e);
-			return nullptr;
+			return false;
 		}
-		return pBasicFinancial;
+		return true;
 	}
-	return nullptr;
+	return false;
 }
 
 bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<strValue>& vData, const char* szMsg)

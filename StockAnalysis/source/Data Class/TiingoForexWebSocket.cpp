@@ -133,7 +133,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("messageType"));
+			sType = ptreeGetString(pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
@@ -155,7 +155,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				// do nothing
 				break;
 			case 'A': // new data
-				sService = pt.get<string>(_T("service"));
+				sService = ptreeGetString(pt, _T("service"));
 				if (sService.compare(_T("fx")) != 0) return false; // 只有此项
 				pForexData = make_shared<CTiingoForexSocket>();
 				pt2 = pt.get_child(_T("data"));

@@ -272,7 +272,7 @@ namespace StockAnalysisTest {
 		ptree pt;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
 		EXPECT_TRUE(ConvertToJSON(pt, s));
-		string sSubscribe = pt.get<string>(_T("eventName"));
+		string sSubscribe = ptreeGetString(pt, _T("eventName"));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
 		EXPECT_FALSE(ConvertToJSON(pt, s));

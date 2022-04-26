@@ -126,16 +126,15 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("type"));
+			sType = ptreeGetString(pt, _T("type"));
 			if (sType.compare(_T("trade")) == 0) { // 交易数据
 				pt2 = pt.get_child(_T("data"));
 				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 					pt3 = it->second;
 					pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-					sSymbol = pt3.get<string>(_T("s"));
+					sSymbol = ptreeGetString(pt3, _T("s"));
 					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
-					code = pt3.get<string>(_T("c"));
-					if (code.compare(_T("null")) == 0) code = _T("");
+					code = ptreeGetString(pt3, _T("c"));
 					pFinnhubDataPtr->m_strCode = code.c_str();
 					pFinnhubDataPtr->m_dLastPrice = ptreeGetDouble(pt3, _T("p"));
 					pFinnhubDataPtr->m_dLastVolume = ptreeGetDouble(pt3, _T("v"));
@@ -148,7 +147,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			//
 			}
 			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
-				sMessage = pt.get<string>(_T("msg"));
+				sMessage = ptreeGetString(pt, _T("msg"));
 				strMessage = _T("Finnhub WebSocket error message: ");
 				strMessage += sMessage.c_str();
 				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);

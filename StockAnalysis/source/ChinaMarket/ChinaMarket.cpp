@@ -14,7 +14,6 @@
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
 #include"SetChinaMarketOption.h"
-#include"SetCrweberIndex.h"
 #include"SetChinaChoicedStock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrong1Stock.h"

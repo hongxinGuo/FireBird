@@ -582,6 +582,31 @@ string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
 	catch (ptree_error& e) {
 		s = szDefault;
 	}
+	if (s.compare(_T("null")) == 0) return szDefault;
+	return s;
+}
+
+string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
+	string s;
+	try {
+		s = ppt->get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		s = szDefault;
+	}
+	if (s.compare(_T("null")) == 0) return szDefault;
+	return s;
+}
+
+string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDefault) {
+	string s;
+	try {
+		s = ppt->get<string>(szKey);
+	}
+	catch (ptree_error& e) {
+		s = szDefault;
+	}
+	if (s.compare(_T("null")) == 0) return szDefault;
 	return s;
 }
 

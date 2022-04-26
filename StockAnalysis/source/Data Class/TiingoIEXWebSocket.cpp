@@ -132,11 +132,12 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 
 	try {
 		if (ConvertToJSON(pt, *pData)) {
-			sType = pt.get<string>(_T("messageType"));
+			sType = ptreeGetString(pt, _T("messageType"));
+			if (sType == _T("")) return false;
 			switch (sType.at(0)) {
 			case 'A': // 交易数据
 				pIEXData = make_shared<CTiingoIEXSocket>();
-				sService = pt.get<string>(_T("service"));
+				sService = ptreeGetString(pt, _T("service"));
 				if (sService.compare(_T("iex")) != 0) return false; // 此项必须为"iex"
 				pt2 = pt.get_child(_T("data"));
 				it = pt2.begin();

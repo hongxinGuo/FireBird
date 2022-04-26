@@ -84,6 +84,8 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 void ReportErrorToSystemMessage(CString strPrefix, exception& e);
 
 string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault = _T(""));
+string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault = _T(""));
+string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDefault = _T(""));
 double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault = 0.0);
 int ptreeGetInt(ptree& pt, const char* szKey, int iDefault = 0);
 long ptreeGetLong(ptree& pt, const char* szKey, long lDefault = 0);
