@@ -152,7 +152,7 @@ void CChinaMarket::Reset(void) {
 	m_iRTDataServer = 0; // 使用新浪实时数据服务器
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-	m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
+	m_fUsingTengxunRTDataReceiver = false; // 默认状态下不读取腾讯实时行情
 	m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
 	m_iCountDownTengxunNumber = 10;
 

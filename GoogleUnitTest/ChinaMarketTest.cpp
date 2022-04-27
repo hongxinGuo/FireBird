@@ -181,7 +181,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsPermitResetMarket());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 
 		EXPECT_EQ(gl_pChinaMarket->GetSinaStockRTDataInquiringIndex(), 0);
@@ -921,7 +921,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataServer());
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
 		EXPECT_CALL(*s_pMockSinaRTWebInquiry, StartReadingThread).Times(1);
@@ -934,6 +934,7 @@ namespace StockAnalysisTest {
 		s_pMockSinaRTWebInquiry->SetReadingWebData(false);
 
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
+		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		s_pMockSinaRTWebInquiry->SetReadingWebData(false);
 		s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
@@ -945,7 +946,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataServer());
 		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
 		EXPECT_CALL(*s_pMockSinaRTWebInquiry, StartReadingThread).Times(0);
@@ -954,7 +955,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(s_pMockNeteaseRTWebInquiry->IsReadingWebData());
 		gl_pChinaMarket->TaskGetRTDataFromWeb();
 		EXPECT_TRUE(s_pMockNeteaseRTWebInquiry->IsReadingWebData());
-		EXPECT_EQ(gl_pChinaMarket->GetCountDownTengxunNumber(), 9) << _T("调用TaskGetRTDataFromWeb后计数器已减一");
+		EXPECT_EQ(gl_pChinaMarket->GetCountDownTengxunNumber(), 10) << _T("默认不调用TaskGetRTDataFromWeb");
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
 		gl_pChinaMarket->SetUsingSinaRTDataServer();
 
@@ -976,9 +977,10 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(s_pMockTengxunRTWebInquiry->IsReadingWebData());
 		gl_pChinaMarket->TaskGetRTDataFromWeb();
 		EXPECT_TRUE(s_pMockSinaRTWebInquiry->IsReadingWebData());
-		EXPECT_TRUE(s_pMockTengxunRTWebInquiry->IsReadingWebData()) << "默认不使用腾讯实时数据提取器";
+		EXPECT_FALSE(s_pMockTengxunRTWebInquiry->IsReadingWebData()) << "默认不使用腾讯实时数据提取器";
 
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
+		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		s_pMockSinaRTWebInquiry->SetReadingWebData(false);
 		s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
@@ -1149,11 +1151,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUsingTengxunRTDataReceiver) {
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
-		gl_pChinaMarket->SetUsingTengxunRTDataReceiver(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		gl_pChinaMarket->SetUsingTengxunRTDataReceiver(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
+		gl_pChinaMarket->SetUsingTengxunRTDataReceiver(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 	}
 
 	TEST_F(CChinaMarketTest, TestGetCountDownTengxunNumber) {
