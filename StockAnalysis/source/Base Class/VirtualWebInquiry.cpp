@@ -173,9 +173,19 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 
 bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 	auto byteReaded = GetByteReaded();
+	char buffer[100];
+	CString str = _T("网络数据长度不符。预期长度：");
 
 	if (m_lContentLength > 0) {
-		if (m_lContentLength != byteReaded) gl_systemMessage.PushErrorMessage(_T("网络数据长度不符：") + m_strInquire.Left(120));
+		if (m_lContentLength != byteReaded) {
+			sprintf_s(buffer, _T("%d"), m_lContentLength);
+			str += buffer;
+			str += _T("，实际长度：");
+			sprintf_s(buffer, _T("%I64d"), byteReaded);
+			str += buffer;
+			str += m_strInquire.Left(120);
+			gl_systemMessage.PushErrorMessage(str);
+		}
 	}
 	m_sBuffer.resize(byteReaded);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度

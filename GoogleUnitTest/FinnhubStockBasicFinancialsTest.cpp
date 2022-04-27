@@ -158,7 +158,7 @@ namespace StockAnalysisTest {
 		setQuarter.Close();
 
 		int i = 0;
-		setQuarter.m_strFilter = _T("[Date] = 19800101 AND [Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Date] = 19800101");
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
 			i = setQuarter.m_value;
