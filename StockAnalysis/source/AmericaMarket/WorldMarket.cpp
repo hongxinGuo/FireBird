@@ -217,7 +217,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据
 	ProcessTiingoInquiringMessage(); // 然后再申请处理下一个
 
-//根据时间，调度各项定时任务.每秒调度一次
+	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_lastTimeSchedulingTask) {
 		SchedulingTaskPerSecond(GetUTCTime() - s_lastTimeSchedulingTask, lCurrentTime);
 		s_lastTimeSchedulingTask = GetUTCTime();
