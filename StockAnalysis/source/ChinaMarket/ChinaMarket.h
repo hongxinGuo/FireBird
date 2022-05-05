@@ -38,6 +38,11 @@ public:
 
 	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final;
 
+	virtual bool IsWorkingTime(void) override final;
+	virtual bool IsWorkingTime(long lTime) override final;
+	virtual bool IsDummyTime(void) override final;
+	virtual bool IsDummyTime(long lTime) override final;
+
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
 	virtual	void Dump(CDumpContext& dc) const;

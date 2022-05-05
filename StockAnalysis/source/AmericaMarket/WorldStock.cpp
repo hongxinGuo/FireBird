@@ -159,8 +159,13 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 	return m_fProfileUpdated;
 }
 
+/// <summary>
+/// 系统每季更新一次数据，故查询两次即可满足。所以设定45天查询一次
+/// </summary>
+/// <param name="lTodayDate"></param>
+/// <returns></returns>
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 45)) { // 每季更新一次数据
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 45)) { // 系统每季更新一次数据，故查询两次即可。
 		m_fBasicFinancialUpdated = false;
 	}
 	else {
@@ -169,6 +174,15 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 	return m_fBasicFinancialUpdated;
 }
 
+/// <summary>
+/// 默认状态为日线需要更新。
+/// 未上市股票无需查询，摘牌股票每星期六查询一次，
+/// </summary>
+/// <param name="lTodayDate"></param>
+/// <param name="lLastTradeDate"></param>
+/// <param name="lTime"></param>
+/// <param name="lDayOfWeek"></param>
+/// <returns></returns>
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
@@ -215,16 +229,6 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 }
 
 void CWorldStock::Save(CSetWorldStock& setWorldStock) {
-	ASSERT(m_lProfileUpdateDate >= 19700101);
-	ASSERT(m_lBasicFinancialUpdateDate >= 19700101);
-	ASSERT(m_lDayLineStartDate >= 19700101);
-	ASSERT(m_lDayLineEndDate >= 19700101);
-	ASSERT(m_lPeerUpdateDate >= 19700101);
-	ASSERT(m_lInsiderTransactionUpdateDate >= 19700101);
-	ASSERT(m_lLastRTDataUpdateDate >= 19700101);
-	ASSERT(m_lLastEPSSurpriseUpdateDate >= 19700101);
-	ASSERT(m_lLastRTDataUpdateDate >= 19700101);
-
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
 	setWorldStock.m_Symbol = m_strSymbol.Left(20);
 	setWorldStock.m_ExchangeCode = m_strExchangeCode.Left(3);

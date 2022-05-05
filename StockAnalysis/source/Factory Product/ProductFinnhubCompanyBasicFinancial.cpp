@@ -465,10 +465,12 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<strVa
 {
 	vector<strValue> vDataTemp;
 	try {
-		ptree ptChild = pt.get_child(szMsg);
-		ParseVector(ptChild, vDataTemp);
-		for (int i = 0; i < vDataTemp.size(); i++) {
-			vData.push_back(vDataTemp[i]);
+		ptree ptChild;
+		if (ptreeGetChild(pt, szMsg, &ptChild)) {
+			ParseVector(ptChild, vDataTemp);
+			for (int i = 0; i < vDataTemp.size(); i++) {
+				vData.push_back(vDataTemp[i]);
+			}
 		}
 	}
 	catch (ptree_error&) {
@@ -484,17 +486,18 @@ bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<str
 		for (ptree::iterator it = ptData.begin(); it != ptData.end(); ++it) {
 			strValue sv{ 0, 0 };
 			string sDate;
-			int year, month, day;
+			int year{ 0 }, month{ 0 }, day{ 0 };
 			pt2 = it->second;
-			sDate = pt2.get<string>(_T("period"));
-			sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);
-			sv.m_period = year * 10000 + month * 100 + day;
-			sv.m_value = ptreeGetDouble(pt2, _T("v"));
-			vecData.push_back(sv);
+			if ((sDate = ptreeGetString(pt2, _T("period"))) != _T("")) {
+				sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);
+				sv.m_period = year * 10000 + month * 100 + day;
+				sv.m_value = ptreeGetDouble(pt2, _T("v"));
+				vecData.push_back(sv);
+			}
 		}
 	}
 	catch (ptree_error&) {
-		// do nothing
+		// just skip
 	}
 
 	return true;

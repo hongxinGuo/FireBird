@@ -524,17 +524,6 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
-bool IsJsonReportingrror(ptree& pt, string& s) {
-	try {
-		s = pt.get<string>(_T("error"));
-	}
-	catch (ptree_error& e) {
-		//ReportJSonErrorToSystemMessage(_T("JSon get 'error'string Error "), e);
-		return false;
-	}
-	return true;
-}
-
 CString FormatToMK(long long iNumber) {
 	char buffer[100];
 	CString str;
@@ -579,7 +568,7 @@ string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
 	try {
 		s = pt.get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		s = szDefault;
 	}
 	if (s.compare(_T("null")) == 0) return szDefault;
@@ -591,7 +580,7 @@ string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
 	try {
 		s = ppt->get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		s = szDefault;
 	}
 	if (s.compare(_T("null")) == 0) return szDefault;
@@ -603,7 +592,7 @@ string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDe
 	try {
 		s = ppt->get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		s = szDefault;
 	}
 	if (s.compare(_T("null")) == 0) return szDefault;
@@ -615,7 +604,7 @@ double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
 	try {
 		s = pt.get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		return dDefault;
 	}
 	if (s.compare(_T("null")) == 0) return dDefault;
@@ -627,7 +616,7 @@ int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
 	try {
 		s = pt.get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		return iDefault;
 	}
 	if (s.compare(_T("null")) == 0) return iDefault;
@@ -639,7 +628,7 @@ long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
 	try {
 		s = pt.get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		return llDefault;
 	}
 	if (s.compare(_T("null")) == 0) return llDefault;
@@ -651,18 +640,18 @@ long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
 	try {
 		s = pt.get<string>(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		return lDefault;
 	}
 	if (s.compare(_T("null")) == 0) return lDefault;
 	else return stol(s);
 }
 
-bool ptreeGetChild(ptree& pt, const char* szKey, ptree* ppt) {
+bool ptreeGetChild(ptree& inputPt, const char* szKey, ptree* outputPpt) {
 	try {
-		*ppt = pt.get_child(szKey);
+		*outputPpt = inputPt.get_child(szKey);
 	}
-	catch (ptree_error& e) {
+	catch (ptree_error&) {
 		return false;
 	}
 	return true;

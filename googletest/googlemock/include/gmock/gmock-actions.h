@@ -322,9 +322,6 @@ struct is_callable_r_impl<void_t<call_result_t<F, Args...>>, R, F, Args...>
 template <typename R, typename F, typename... Args>
 using is_callable_r = is_callable_r_impl<void, R, F, Args...>;
 
-template <typename F>
-class TypedExpectation;
-
 // Specialized for function types below.
 template <typename F>
 class OnceAction;
@@ -441,9 +438,6 @@ class OnceAction<Result(Args...)> final {
   }
 
  private:
-  // Allow TypedExpectation::WillOnce to use our type-unsafe API below.
-  friend class TypedExpectation<Result(Args...)>;
-
   // An adaptor that wraps a callable that is compatible with our signature and
   // being invoked as an rvalue reference so that it can be used as an
   // StdFunctionAdaptor. This throws away type safety, but that's fine because
@@ -900,12 +894,12 @@ struct ByMoveWrapper {
 // of gtl::Container() is passed into Return.
 //
 template <typename R>
-class ReturnAction {
+class ReturnAction final {
  public:
   // Constructs a ReturnAction object from the value to be returned.
   // 'value' is passed by value instead of by const reference in order
   // to allow Return("string literal") to compile.
-  explicit ReturnAction(R value) : value_(new R(std::move(value))) {}
+  explicit ReturnAction(R value) : value_(std::move(value)) {}
 
   // This template type conversion operator allows Return(x) to be
   // used in ANY function that returns x's type.
@@ -924,26 +918,27 @@ class ReturnAction {
                   "use ReturnRef instead of Return to return a reference");
     static_assert(!std::is_void<Result>::value,
                   "Can't use Return() on an action expected to return `void`.");
-    return Action<F>(new Impl<R, F>(value_));
+    return Action<F>(new Impl<F>(value_));
   }
 
  private:
   // Implements the Return(x) action for a particular function type F.
-  template <typename R_, typename F>
+  template <typename F>
   class Impl : public ActionInterface<F> {
    public:
     typedef typename Function<F>::Result Result;
     typedef typename Function<F>::ArgumentTuple ArgumentTuple;
 
-    // The implicit cast is necessary when Result has more than one
-    // single-argument constructor (e.g. Result is std::vector<int>) and R
-    // has a type conversion operator template.  In that case, value_(value)
-    // won't compile as the compiler doesn't known which constructor of
-    // Result to call.  ImplicitCast_ forces the compiler to convert R to
-    // Result without considering explicit constructors, thus resolving the
-    // ambiguity. value_ is then initialized using its copy constructor.
-    explicit Impl(const std::shared_ptr<R>& value)
-        : value_before_cast_(*value),
+    explicit Impl(const R& value)
+        : value_before_cast_(value),
+          // Make an implicit conversion to Result before initializing the
+          // Result object we store, avoiding calling any explicit constructor
+          // of Result from R.
+          //
+          // This simulates the language rules: a function with return type
+          // Result that does `return R()` requires R to be implicitly
+          // convertible to Result, and uses that path for the conversion, even
+          // if Result has an explicit constructor from R.
           value_(ImplicitCast_<Result>(value_before_cast_)) {}
 
     Result Perform(const ArgumentTuple&) override { return value_; }
@@ -960,30 +955,39 @@ class ReturnAction {
     Impl& operator=(const Impl&) = delete;
   };
 
-  // Partially specialize for ByMoveWrapper. This version of ReturnAction will
-  // move its contents instead.
-  template <typename R_, typename F>
-  class Impl<ByMoveWrapper<R_>, F> : public ActionInterface<F> {
-   public:
-    typedef typename Function<F>::Result Result;
-    typedef typename Function<F>::ArgumentTuple ArgumentTuple;
+  R value_;
+};
 
-    explicit Impl(const std::shared_ptr<R>& wrapper)
-        : performed_(false), wrapper_(wrapper) {}
+// A specialization of ReturnAction<R> when R is ByMoveWrapper<T> for some T.
+//
+// This version applies the type system-defeating hack of moving from T even in
+// the const call operator, checking at runtime that it isn't called more than
+// once, since the user has declared their intent to do so by using ByMove.
+template <typename T>
+class ReturnAction<ByMoveWrapper<T>> final {
+ public:
+  explicit ReturnAction(ByMoveWrapper<T> wrapper)
+      : state_(new State(std::move(wrapper.payload))) {}
 
-    Result Perform(const ArgumentTuple&) override {
-      GTEST_CHECK_(!performed_)
-          << "A ByMove() action should only be performed once.";
-      performed_ = true;
-      return std::move(wrapper_->payload);
-    }
+  T operator()() const {
+    GTEST_CHECK_(!state_->called)
+        << "A ByMove() action must be performed at most once.";
 
-   private:
-    bool performed_;
-    const std::shared_ptr<R> wrapper_;
+    state_->called = true;
+    return std::move(state_->value);
+  }
+
+ private:
+  // We store our state on the heap so that we are copyable as required by
+  // Action, despite the fact that we are stateful and T may not be copyable.
+  struct State {
+    explicit State(T&& value_in) : value(std::move(value_in)) {}
+
+    T value;
+    bool called = false;
   };
 
-  const std::shared_ptr<R> value_;
+  const std::shared_ptr<State> state_;
 };
 
 // Implements the ReturnNull() action.

@@ -144,7 +144,6 @@ void CSetWorldStock::AssertValid() const {
 	ASSERT(m_DayLineEndDate >= 19700101);
 	ASSERT(m_PeerUpdateDate >= 19700101);
 	ASSERT(m_InsiderTransactionUpdateDate >= 19700101);
-	ASSERT(m_LastRTDataUpdateDate >= 19700101);
 	ASSERT(m_LastEPSSurpriseUpdateDate >= 19700101);
 	ASSERT(m_LastRTDataUpdateDate >= 19700101);
 }

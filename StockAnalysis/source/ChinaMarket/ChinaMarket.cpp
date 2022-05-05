@@ -179,6 +179,26 @@ bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
 	else return false;
 }
 
+bool CChinaMarket::IsWorkingTime(long lTime) {
+	if (!IsWorkingDay()) return false;
+	if (lTime < 91200) return false;
+	if ((lTime > 114500) && (lTime < 124500))  return false;
+	if (lTime > 150630) return false;
+	return true;
+}
+
+bool CChinaMarket::IsWorkingTime(void) {
+	return IsWorkingTime(GetMarketTime());
+}
+
+bool CChinaMarket::IsDummyTime(long lTime) {
+	return !IsWorkingTime(lTime);
+}
+
+bool CChinaMarket::IsDummyTime(void) {
+	return !IsWorkingTime();
+}
+
 #ifdef _DEBUG
 void CChinaMarket::AssertValid() const {
 	CVirtualMarket::AssertValid();
@@ -359,13 +379,13 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 //
 // 抓取网易历史日线数据
 // 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
-// 为了防止与重启系统发生冲突，实际执行时间延后至9:26:00。
+// 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 	ASSERT(IsSystemReady());
-	if ((GetMarketTime() >= 92600) && IsDayLineNeedUpdate()) {
-		// 抓取日线数据.开始于09:26:00
+	if ((GetMarketTime() > 114500) && IsDayLineNeedUpdate() && IsDummyTime()) {
+		// 抓取日线数据.开始于11:45:01
 		// 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
 		return(gl_WebInquirer.GetNeteaseDayLineData());
 	}
@@ -887,6 +907,8 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
+	m_fFastReceivingRTData = IsWorkingTime(lCurrentTime);
+	/*
 	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
 		m_fFastReceivingRTData = false;
 		return(m_fFastReceivingRTData);
@@ -897,6 +919,7 @@ bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
 		return(m_fFastReceivingRTData);
 	}
 	else m_fFastReceivingRTData = true;
+	*/
 	return m_fFastReceivingRTData;
 }
 

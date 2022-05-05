@@ -46,6 +46,11 @@ public:
 	bool IsWorkingDay(CTime timeCurrent) const noexcept;
 	bool IsWorkingDay(long lDate) const noexcept;
 
+	virtual bool IsWorkingTime(void) { return true; }
+	virtual bool IsWorkingTime(long lTime) { return true; }
+	virtual bool IsDummyTime(void) { return false; }
+	virtual bool IsDummyTime(long lTime) { return false; }
+
 	bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;
 	long GetNextDay(long lDate, long lTimeSpanDays = 1) const noexcept;
 	long GetPrevDay(long lDate, long lTimeSpanDays = 1) const noexcept;

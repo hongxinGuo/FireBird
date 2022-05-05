@@ -72,7 +72,6 @@ bool ConvertToJSON(shared_ptr<ptree>& ppt, string& s);
 bool ConvertToWJSON(wptree& pt, string& s); // 此函数用于解析带中文字符的json
 wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
 string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
-bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告
 
 CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
 
