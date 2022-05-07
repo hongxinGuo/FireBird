@@ -185,7 +185,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
 	static time_t s_lastTimeSchedulingTask = 0;
-	static int s_iCountfinnhubLimit = 12; // Finnhub.io每1.5秒左右申请一次，以防止出现频率过高的情况。
+	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
 	static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
 	const long lCurrentTime = GetMarketTime();
 
@@ -199,7 +199,7 @@ bool CWorldMarket::SchedulingTask(void) {
 		}
 		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
 			gl_pFinnhubWebInquiry->SetWebError(false);
-			s_iCountfinnhubLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
+			s_iCountfinnhubLimit = 3000; // 如果出现错误，则每5分钟重新申请一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据

@@ -49,6 +49,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 
 /// <summary>
 /// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之
+/// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致巨大延时。
 ///
 /// </summary>
 /// <param name="strInquiring"></param>
@@ -60,6 +61,11 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	CString strMessage, strErrorNo;
 	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+	bool fBegin = false, fEnd = false;
+	long long  differ = 0;
+
+	fBegin = QueryPerformanceCounter(&liBegin);
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
@@ -77,21 +83,17 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			}
 		}
 		catch (CInternetException* exception) {
+			ASSERT(m_pFile == nullptr);
 			if (m_pFile != nullptr) {
-				m_pFile->QueryInfoStatusCode(m_dwWebErrorCode);
 				m_pFile->Close();
 				delete m_pFile;
 				m_pFile = nullptr;
-				sprintf_s(buffer, _T("%d"), m_dwWebErrorCode);
-				strErrorNo = buffer;
-				strMessage = _T("Net Error No. ") + strErrorNo;
 			}
-			else {
+			if (iCounter++ > 0) { // 如果重试次数超过0次，则报告错误
+				m_dwWebErrorCode = exception->m_dwError;
 				sprintf_s(buffer, _T("%d"), exception->m_dwError);
 				strErrorNo = buffer;
 				strMessage = _T("Net Error #") + strErrorNo;
-			}
-			if (iCounter++ > 1) { // 如果重试次数超过2次，则报告错误
 				SetWebError(true);
 				gl_systemMessage.PushErrorMessage(strMessage);
 				fStatus = false;
@@ -106,6 +108,11 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		if (str.GetLength() > 0) {
 			m_lContentLength = atol(str.GetBuffer());
 		}
+	}
+	fEnd = QueryPerformanceCounter(&liEnd);
+	if (fBegin && fEnd) {
+		differ = liEnd.QuadPart - liBegin.QuadPart;
+		SetCurrentInquiryTime(differ / gl_lFrequency);
 	}
 
 	return fStatus;
@@ -234,10 +241,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-
 	ASSERT(IsReadingWebData());
-	QueryPerformanceCounter(&liBegin);
 
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
@@ -255,8 +259,6 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateAfterReadingWebData();
 
-	QueryPerformanceCounter(&liEnd);
-	SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
 	SetReadingWebData(false);
 }
 
