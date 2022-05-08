@@ -15,8 +15,6 @@
 #include"thread.h"
 #include"WebInquirer.h"
 
-#include"Parse.h"
-
 using namespace std;
 #include<chrono>
 

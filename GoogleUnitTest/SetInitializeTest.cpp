@@ -1,7 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"SetChinaMarketOption.h"
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
 #include"SetDayLineExtendInfo.h"
@@ -39,18 +38,6 @@
 #include"SetWorldChoicedForex.h"
 #include"SetWorldChoicedCrypto.h"
 #include"SetWorldChoicedStock.h"
-
-TEST(SetInitializeTest, TestChinaMarketOptionInitialize) {
-	CSetChinaMarketOption setChinaMarketOption;
-
-	EXPECT_FALSE(gl_fNormalMode);
-	EXPECT_STREQ(setChinaMarketOption.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-	gl_fNormalMode = true;
-	EXPECT_STREQ(setChinaMarketOption.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-	gl_fNormalMode = false;
-
-	EXPECT_STREQ(setChinaMarketOption.GetDefaultSQL(), _T("[option_china_stockmarket]"));
-}
 
 TEST(SetInitializeTest, TestChinaStockSymbolInitialize) {
 	CSetChinaStockSymbol setChinaStockSymbol;

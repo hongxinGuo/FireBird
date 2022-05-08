@@ -342,9 +342,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.h">
-      <Filter>头文件\DataBase\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h">
       <Filter>头文件\DataBase\ChinaMarket</Filter>
     </ClInclude>
@@ -681,6 +678,9 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
       <Filter>头文件\DataBase\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\GlobeOption.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -916,9 +916,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaMarketOption.cpp">
-      <Filter>源文件\DataBase\ChinaMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp">
       <Filter>源文件\DataBase\ChinaMarket</Filter>
@@ -1189,6 +1186,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp">
       <Filter>源文件\DataBase\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\GlobeOption.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

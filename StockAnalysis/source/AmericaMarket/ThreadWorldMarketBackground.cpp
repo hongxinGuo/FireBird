@@ -15,8 +15,6 @@
 #include"thread.h"
 #include"WebInquirer.h"
 
-#include"Parse.h"
-
 UINT ThreadWorldMarketBackground(void) {
 	gl_ThreadStatus.SetWorldMarketBackground(true);
 	while (!gl_fExitingSystem) {

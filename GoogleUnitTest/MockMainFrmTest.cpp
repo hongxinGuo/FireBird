@@ -622,11 +622,11 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
-		gl_pChinaMarket->SetUsingSinaRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(0);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
@@ -634,17 +634,17 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingSinaRealtimeDataServer) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->SetUsingSinaRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(0);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
-		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
 
 		//»Ö¸´³õÌ¬
-		gl_pChinaMarket->SetUsingSinaRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(0);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {

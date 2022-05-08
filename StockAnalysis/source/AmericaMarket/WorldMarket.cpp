@@ -17,6 +17,8 @@
 #include"SetWorldMarketOption.h"
 #include"SetWorldStockDayLine.h"
 
+#include"GlobeOption.h"
+
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
@@ -1573,7 +1575,7 @@ bool CWorldMarket::TaskProcessWebSocketData(void) {
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	auto total = gl_WebInquirer.GetFinnhubWebSocketDataSize();
 	CString strMessage;
-	shared_ptr<string> pString;
+	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopFinnhubWebSocketData();
@@ -1593,7 +1595,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoIEXWebSocketDataSize();
 	CString strMessage;
-	shared_ptr<string> pString;
+	shared_ptr<std::string> pString;
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
@@ -1613,7 +1615,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoCryptoWebSocketDataSize();
 	CString strMessage;
 
-	shared_ptr<string> pString;
+	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
@@ -1632,7 +1634,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	auto total = gl_WebInquirer.GetTiingoForexWebSocketDataSize();
 	CString strMessage;
-	shared_ptr<string> pString;
+	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		pString = gl_WebInquirer.PopTiingoForexWebSocketData();

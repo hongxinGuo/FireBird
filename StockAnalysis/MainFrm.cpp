@@ -171,8 +171,6 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateOptionDB();
 	}
 
-	gl_pChinaMarket->UpdateOptionChinaMarketDB();
-
 	if (gl_pChinaMarket->IsUpdateChoicedStockDB()) {
 		gl_pChinaMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
@@ -919,12 +917,12 @@ void CMainFrame::OnStopUpdateDayLine() {
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->SetUsingNeteaseRTDataServer();
+	gl_pChinaMarket->SetUsingRTDataServer(1);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->SetUsingSinaRTDataServer();
+	gl_pChinaMarket->SetUsingRTDataServer(0);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {

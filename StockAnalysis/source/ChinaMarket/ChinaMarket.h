@@ -8,6 +8,8 @@
 #include"DataStockSymbol.h"
 #include"DataChinaStock.h"
 
+#include"GlobeOption.h"
+
 #include<gsl/gsl>
 using namespace gsl;
 
@@ -179,8 +181,6 @@ public:
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
-	void LoadOptionChinaStockMarketDB(void);
-	virtual bool UpdateOptionChinaMarketDB(void);
 	bool UpdateChoicedStockDB(void);
 	virtual bool AppendChoicedStockDB(void);
 	void LoadChoicedStockDB(void);
@@ -282,8 +282,7 @@ public:
 
 	void TaskSaveTempDataIntoDB(long lCurrentTime);
 
-	void SetUsingSinaRTDataServer(void) noexcept { m_iRTDataServer = 0; }
-	void SetUsingNeteaseRTDataServer(void) noexcept { m_iRTDataServer = 1; }
+	void SetUsingRTDataServer(int iIndex) noexcept { m_iRTDataServer = iIndex; gl_GlobeOption.AssignKey("ChinaMarketRealtimeDataServer", iIndex); }
 	bool IsUsingSinaRTDataServer(void) const noexcept { if (m_iRTDataServer == 0) return true; else return false; }
 	bool IsUsingNeteaseRTDataServer(void) const noexcept { if (m_iRTDataServer == 1) return true; else return false; }
 

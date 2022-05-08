@@ -7,7 +7,6 @@
 #include"ChinaStock.h"
 
 #include"SetOption.h"
-#include"SetChinaMarketOption.h"
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChoicedStock.h"
 
@@ -944,7 +943,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataServer());
-		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(1);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
@@ -957,7 +956,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(s_pMockNeteaseRTWebInquiry->IsReadingWebData());
 		EXPECT_EQ(gl_pChinaMarket->GetCountDownTengxunNumber(), 10) << _T("默认不调用TaskGetRTDataFromWeb");
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
-		gl_pChinaMarket->SetUsingSinaRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(0);
 
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
@@ -1134,10 +1133,10 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestSetUsingSinaRTDataServer) {
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataServer());
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataServer());
-		gl_pChinaMarket->SetUsingNeteaseRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(1);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingSinaRTDataServer());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataServer());
-		gl_pChinaMarket->SetUsingSinaRTDataServer();
+		gl_pChinaMarket->SetUsingRTDataServer(0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataServer());
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataServer());
 	}
@@ -1242,33 +1241,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
-	}
-
-	TEST_F(CChinaMarketTest, TestLoadOptionChinaMarketDB) {
-		CSetChinaMarketOption setChinaMarketOption;
-
-		setChinaMarketOption.Open();
-		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
-		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 100) << "默认100毫秒轮询一次";
-
-		setChinaMarketOption.m_pDatabase->BeginTrans();
-		while (!setChinaMarketOption.IsEOF()) {
-			setChinaMarketOption.Delete();
-			setChinaMarketOption.MoveNext();
-		}
-		setChinaMarketOption.m_pDatabase->CommitTrans();
-		setChinaMarketOption.Close();
-
-		gl_pChinaMarket->LoadOptionChinaStockMarketDB();
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
-		EXPECT_EQ(gl_pSinaRTWebInquiry->GetShortestInquiringInterval(), 100);
-
-		gl_pChinaMarket->UpdateOptionChinaMarketDB();
-
-		setChinaMarketOption.Open();
-		EXPECT_EQ(setChinaMarketOption.m_RTDataServerIndex, 0) << "默认值为0";
-		EXPECT_EQ(setChinaMarketOption.m_RTDataInquiryTime, 100) << "默认100毫秒轮询一次";
-		setChinaMarketOption.Close();
 	}
 
 	TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {

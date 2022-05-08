@@ -13,7 +13,6 @@
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
-#include"SetChinaMarketOption.h"
 #include"SetChinaChoicedStock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrong1Stock.h"
@@ -97,7 +96,6 @@ void CChinaMarket::ResetMarket(void) {
 
 	LoadStockCodeDB();
 	LoadOptionDB();
-	LoadOptionChinaStockMarketDB();
 	LoadChoicedStockDB();
 	Load10DaysRSStrong1StockSet();
 	Load10DaysRSStrong2StockSet();
@@ -149,7 +147,7 @@ void CChinaMarket::Reset(void) {
 
 	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
-	m_iRTDataServer = 0; // 使用新浪实时数据服务器
+	m_iRTDataServer = gl_GlobeOption.GetInt("ChinaMarketRealtimeDataServer"); // 使用新浪实时数据服务器
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = false; // 默认状态下不读取腾讯实时行情
@@ -1889,42 +1887,6 @@ void CChinaMarket::LoadOptionDB(void) {
 	}
 
 	setOption.Close();
-}
-
-void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
-	CSetChinaMarketOption setOptionChinaStockMarket;
-
-	setOptionChinaStockMarket.Open();
-	if (!setOptionChinaStockMarket.IsEOF()) {
-		m_iRTDataServer = setOptionChinaStockMarket.m_RTDataServerIndex;
-		gl_pSinaRTWebInquiry->SetShortestINquiringInterval(setOptionChinaStockMarket.m_RTDataInquiryTime);
-	}
-	else {
-		m_iRTDataServer = 0; // 默认使用新浪实时数据服务器
-	}
-}
-
-bool CChinaMarket::UpdateOptionChinaMarketDB(void) {
-	CSetChinaMarketOption setOptionChinaStockMarket;
-
-	setOptionChinaStockMarket.Open();
-	setOptionChinaStockMarket.m_pDatabase->BeginTrans();
-	if (setOptionChinaStockMarket.IsEOF()) {
-		setOptionChinaStockMarket.AddNew();
-		setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
-		setOptionChinaStockMarket.m_RTDataInquiryTime = gl_pSinaRTWebInquiry->GetShortestInquiringInterval();
-		setOptionChinaStockMarket.Update();
-	}
-	else {
-		setOptionChinaStockMarket.Edit();
-		setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
-		setOptionChinaStockMarket.m_RTDataInquiryTime = gl_pSinaRTWebInquiry->GetShortestInquiringInterval();
-		setOptionChinaStockMarket.Update();
-	}
-	setOptionChinaStockMarket.m_pDatabase->CommitTrans();
-	setOptionChinaStockMarket.Close();
-
-	return true;
 }
 
 bool CChinaMarket::UpdateChoicedStockDB(void) {
