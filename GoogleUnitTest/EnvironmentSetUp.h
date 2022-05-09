@@ -54,6 +54,10 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			ASSERT(!gl_fNormalMode);
+			gl_GlobeOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.json"));
+			gl_GlobeOption.LoadDB();
+
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;
 			gl_pNeteaseRTWebInquiry = nullptr;

@@ -268,10 +268,17 @@ public:
 	bool IsRecordTiingoForexWebSocket(void) noexcept { return m_fRecordTiingoForexWebSocket; }
 	void SetRecordTiingoForexWebSocket(bool fFlag) noexcept { m_fRecordTiingoForexWebSocket = fFlag; }
 
+	bool IsNeedUpdateForexExchangeDB(void) noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
+	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
+	bool IsNeedUpdateCryptoExchangeDB(void) noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
+	bool IsNeedUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsNeedUpdate(); }
+	bool IsNeedUpdateExonomicCalendarDB(void) noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
+
 	void StopReceivingWebSocket(void);
 
 	// Êý¾Ý¿â²Ù×÷
 	bool LoadOption(void);
+	bool LoadOption1(void);
 	bool LoadWorldExchangeDB(void) { return m_dataFinnhubStockExchange.LoadDB(); }
 
 	bool LoadStockDB(void) { return m_dataWorldStock.LoadDB(); }

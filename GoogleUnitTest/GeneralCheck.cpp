@@ -65,8 +65,6 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 0);
-
-		EXPECT_EQ(gl_pSinaRTWebInquiry->GetShortestInquiringInterval(), 100);
 	}
 
 	void DataContainerCheck(void) {

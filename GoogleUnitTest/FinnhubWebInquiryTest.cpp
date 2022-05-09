@@ -45,7 +45,6 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringPrefix(), _T(""));
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetConnectionName(), _T("Finnhub"));
-		EXPECT_THAT(m_FinnhubWebInquiry.GetShortestInquiringInterval(), 1200) << "默认值为1200毫秒每次";
 		EXPECT_THAT(m_FinnhubWebInquiry.GetInquiringNumber(), 1) << "默认每次一个数据";
 	}
 

@@ -22,7 +22,6 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
-	m_lShortestInquiringInterval = 1000; // 每1秒查询一次。
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
 
@@ -61,11 +60,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	CString strMessage, strErrorNo;
 	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-	bool fBegin = false, fEnd = false;
-	long long  differ = 0;
-
-	fBegin = QueryPerformanceCounter(&liBegin);
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
@@ -108,11 +102,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		if (str.GetLength() > 0) {
 			m_lContentLength = atol(str.GetBuffer());
 		}
-	}
-	fEnd = QueryPerformanceCounter(&liEnd);
-	if (fBegin && fEnd) {
-		differ = liEnd.QuadPart - liBegin.QuadPart;
-		SetCurrentInquiryTime(differ / gl_lFrequency);
 	}
 
 	return fStatus;
@@ -241,8 +230,13 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	ASSERT(IsReadingWebData());
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+	bool fBegin = false, fEnd = false;
+	long long  differ = 0;
 
+	fBegin = QueryPerformanceCounter(&liBegin);
+
+	ASSERT(IsReadingWebData());
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
@@ -258,6 +252,12 @@ void CVirtualWebInquiry::Read(void) {
 		ClearUpIfReadingWebDataFailed();
 	}
 	UpdateAfterReadingWebData();
+
+	fEnd = QueryPerformanceCounter(&liEnd);
+	if (fBegin && fEnd) {
+		differ = liEnd.QuadPart - liBegin.QuadPart;
+		SetCurrentInquiryTime(differ / gl_lFrequency);
+	}
 
 	SetReadingWebData(false);
 }

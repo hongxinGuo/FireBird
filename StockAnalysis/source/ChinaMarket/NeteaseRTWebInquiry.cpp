@@ -33,7 +33,6 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
-	m_lShortestInquiringInterval = 100; // 默认100毫秒查询一次
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 }
 

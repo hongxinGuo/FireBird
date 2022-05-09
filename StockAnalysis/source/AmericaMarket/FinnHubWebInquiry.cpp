@@ -13,7 +13,6 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Finnhub");
-	m_lShortestInquiringInterval = 1200; // 默认使用免费账户，其查询间隔不能小于1秒，故而将默认值设为1200毫秒
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 

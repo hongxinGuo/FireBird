@@ -147,8 +147,6 @@ void CChinaMarket::Reset(void) {
 
 	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
-	m_iRTDataServer = gl_GlobeOption.GetInt("ChinaMarketRealtimeDataServer"); // 使用新浪实时数据服务器
-
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = false; // 默认状态下不读取腾讯实时行情
 	m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
@@ -635,7 +633,7 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
-	switch (m_iRTDataServer) {
+	switch (gl_GlobeOption.GetChinaMarketRealtimeServer()) {
 	case 0: // 使用新浪实时数据服务器
 		if (IsUsingSinaRTDataReceiver()) {
 			if (!gl_WebInquirer.IsReadingSinaRTData()) gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。

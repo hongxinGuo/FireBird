@@ -13,7 +13,6 @@ CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Tiingo");
-	m_lShortestInquiringInterval = 8000; //默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 }
 

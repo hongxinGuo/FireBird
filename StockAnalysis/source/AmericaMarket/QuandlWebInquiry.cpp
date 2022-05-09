@@ -12,7 +12,6 @@ using namespace std;
 //m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 // 下面的是第二个,用于dell240工作机。
 //m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
-
 CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 

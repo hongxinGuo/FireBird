@@ -48,7 +48,6 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringPrefix(), _T(""));
 		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T(""));
 		EXPECT_STREQ(m_TiingoWebInquiry.GetConnectionName(), _T("Tiingo"));
-		EXPECT_THAT(m_TiingoWebInquiry.GetShortestInquiringInterval(), 8000) << "默认值为8000毫秒每次";
 		EXPECT_THAT(m_TiingoWebInquiry.GetInquiringNumber(), 1) << "默认每次一个数据";
 	}
 

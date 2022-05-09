@@ -189,6 +189,7 @@ CMainFrame::~CMainFrame() {
 
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 
+	gl_GlobeOption.SaveDB(); // 保存全局参数。
 	TRACE("finally exited\n");
 }
 
@@ -201,6 +202,7 @@ bool CMainFrame::CreateMarketContainer(void) {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
+	gl_GlobeOption.LoadDB(); // 装入系统参数
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	gl_WebInquirer.Initialize();
@@ -634,7 +636,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 		gl_fExitingSystem = true; // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
-		for (auto pMarket : gl_vMarketPtr) {
+		for (auto& pMarket : gl_vMarketPtr) {
 			pMarket->PreparingExitMarket();
 		}
 	}
@@ -917,17 +919,17 @@ void CMainFrame::OnStopUpdateDayLine() {
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->SetUsingRTDataServer(1);
+	gl_GlobeOption.SetChinaMarketRealtimeServer(1);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->SetUsingRTDataServer(0);
+	gl_GlobeOption.SetChinaMarketRealtimeServer(0);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pChinaMarket->IsUsingNeteaseRTDataServer()) {
+	if (gl_GlobeOption.IsUsingNeteaseRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -937,7 +939,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pChinaMarket->IsUsingSinaRTDataServer()) {
+	if (gl_GlobeOption.IsUsingSinaRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {

@@ -282,10 +282,6 @@ public:
 
 	void TaskSaveTempDataIntoDB(long lCurrentTime);
 
-	void SetUsingRTDataServer(int iIndex) noexcept { m_iRTDataServer = iIndex; gl_GlobeOption.AssignKey("ChinaMarketRealtimeDataServer", iIndex); }
-	bool IsUsingSinaRTDataServer(void) const noexcept { if (m_iRTDataServer == 0) return true; else return false; }
-	bool IsUsingNeteaseRTDataServer(void) const noexcept { if (m_iRTDataServer == 1) return true; else return false; }
-
 	// 状态反馈
 	bool IsUsingSinaRTDataReceiver(void) const noexcept { return m_fUsingSinaRTDataReceiver; }
 	bool IsUsingNeteaseRTDataReceiver(void) const noexcept { return m_fUsingNeteaseRTDataReceiver; }
@@ -373,7 +369,6 @@ public:
 
 protected:
 	// 本市场各选项
-	int m_iRTDataServer; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 
 // 变量区
 protected:

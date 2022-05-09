@@ -19,6 +19,8 @@ public:
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
+	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) return true; else return false; }
+
 protected:
 	vector<CString> m_vCryptoExchange;
 	map<CString, long> m_mapCryptoExchange;

@@ -21,8 +21,6 @@ void CWebInquirer::Initialize(void) {
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
-
-	gl_pSinaRTWebInquiry->SetShortestINquiringInterval(gl_GlobeOption.GetInt("ChinaMarketRealtimeDataInquiryTime"));
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

@@ -128,14 +128,6 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T("dcba"));
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestGetShortestInquiringInterval) {
-		EXPECT_EQ(m_VirtualWebInquiry.GetShortestInquiringInterval(), 1000) << _T("默认值为1000毫秒");
-		m_VirtualWebInquiry.SetShortestINquiringInterval(800);
-		EXPECT_EQ(m_VirtualWebInquiry.GetShortestInquiringInterval(), 800);
-
-		m_VirtualWebInquiry.SetShortestINquiringInterval(1000);
-	}
-
 	TEST_F(CVirtualWebInquiryTest, TestGetInquiringNumber) {
 		EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 500) << _T("默认值为500");
 		m_VirtualWebInquiry.SetInquiringNumber(800);

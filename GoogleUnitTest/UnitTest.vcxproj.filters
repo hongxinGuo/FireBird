@@ -519,6 +519,9 @@
     <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="GlobeOptionTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

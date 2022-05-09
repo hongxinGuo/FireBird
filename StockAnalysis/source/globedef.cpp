@@ -24,6 +24,8 @@
 #include"QuandlWebInquiry.h"
 #include"GlobeOption.h"
 
+bool gl_fNormalMode = false; // ²âÊÔÄ£Ê½±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ĞèÒªÔÚÆô¶¯Ê±ÉèÖÃ´Ë±êÊ¶£¬·ñÔòÖ»ÓĞ¶ÁÈ¡Êı¾İ¿âµÄÈ¨Àû£¬ÎŞ·¨Ìí¼ÓºÍ¸ü¸Ä¡£
+
 CGlobeOption gl_GlobeOption{}; // ÏµÍ³²ÎÊı×Ü»ã.´ËÈ«¾Ö±äÁ¿ÒªÎ»ÓÚËùÓĞÈ«¾Ö±äÁ¿µÄ×îÇ°Ãæ
 
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
@@ -36,11 +38,9 @@ deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê
 atomic_bool gl_fExitingSystem = false; //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
 bool gl_fExitingCalculatingRS = false; // ÓÃÓÚÍ¨Öª¹¤×÷Ïß³ÌÍË³öµÄĞÅºÅ
 
-bool gl_fNormalMode = false; // ²âÊÔÄ£Ê½±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ĞèÒªÔÚÆô¶¯Ê±ÉèÖÃ´Ë±êÊ¶£¬·ñÔòÖ»ÓĞ¶ÁÈ¡Êı¾İ¿âµÄÈ¨Àû£¬ÎŞ·¨Ìí¼ÓºÍ¸ü¸Ä¡£
-
 CWebRTDataContainer gl_WebRTDataContainer; // ÍøÂçÊµÊ±Êı¾İ´æ´¢ÈİÆ÷
 
-long long gl_lFrequency; // ÆµÂÊ¼ÆÊıÆ÷¡£¸ß¾«¶È¼ÆÊıÆ÷Ã¿ÃëÆµÂÊ
+long long gl_lFrequency = 10000000; // ÆµÂÊ¼ÆÊıÆ÷¡£¸ß¾«¶È¼ÆÊıÆ÷Ã¿ÃëÆµÂÊ
 
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
 Semaphore gl_UpdateWorldMarketDB(1);  // ´ËĞÅºÅÁ¿ÓÃÓÚÉú³ÉÃÀ¹ú¹ÉÆ±ÈÕÏßÀúÊ·Êı¾İ¿â

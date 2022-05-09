@@ -21,7 +21,6 @@ CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("SinaRT");
-	m_lShortestInquiringInterval = 100; // 新浪实时数据每3秒服务器更新一次，故而每100毫秒查询一次即可在3秒内完成轮询一次的任务
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 }
 

@@ -19,6 +19,8 @@ public:
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
+	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalForexExchange < m_vForexExchange.size()) return true; else return false; }
+
 protected:
 	vector<CString> m_vForexExchange;
 	map<CString, long> m_mapForexExchange;

@@ -21,6 +21,8 @@ public:
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
+	bool IsNeedUpdate(void) { if (m_lLastTotalCryptoSymbol < m_vCryptoSymbol.size()) return true; else return false; }
+
 protected:
 	vector<CFinnhubCryptoSymbolPtr> m_vCryptoSymbol;
 	map<CString, long> m_mapCryptoSymbol;

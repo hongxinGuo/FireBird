@@ -22,6 +22,8 @@ public:
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
+	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalForexSymbol < m_vForexSymbol.size()) return true; else return false; }
+
 protected:
 	vector<CForexSymbolPtr> m_vForexSymbol;
 	map<CString, long> m_mapForexSymbol;

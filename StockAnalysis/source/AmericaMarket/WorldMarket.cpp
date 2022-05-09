@@ -149,7 +149,7 @@ void CWorldMarket::ResetDataClass(void) {
 void CWorldMarket::ResetMarket(void) {
 	Reset();
 
-	LoadOption();
+	LoadOption1();
 	LoadWorldExchangeDB(); // 装入世界交易所信息
 	LoadCountryDB();
 	LoadStockDB();
@@ -196,8 +196,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	if (--s_iCountfinnhubLimit < 0) {
 		TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
-			ASSERT(gl_pFinnhubWebInquiry->GetShortestInquiringInterval() > 100);
-			s_iCountfinnhubLimit = gl_pFinnhubWebInquiry->GetShortestInquiringInterval() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+			s_iCountfinnhubLimit = gl_GlobeOption.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
 		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
 			gl_pFinnhubWebInquiry->SetWebError(false);
@@ -208,8 +207,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
 	if (--s_iCountTiingoLimit < 0) {
-		ASSERT(gl_pTiingoWebInquiry->GetShortestInquiringInterval() > 100);
-		s_iCountTiingoLimit = gl_pTiingoWebInquiry->GetShortestInquiringInterval() / 100;
+		s_iCountTiingoLimit = gl_GlobeOption.GetWorldMarketTiingoInquiryTime() / 100;
 		TaskInquiryTiingo();
 		if (gl_pTiingoWebInquiry->IsWebError()) {
 			gl_pTiingoWebInquiry->SetWebError(false);
@@ -388,16 +386,16 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}
-		TaskUpdateForexExchangeDB();
-		TaskUpdateForexSymbolDB();
-		TaskUpdateCryptoExchangeDB();
-		TaskUpdateFinnhubCryptoSymbolDB();
+		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
+		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
+		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
+		if (IsNeedUpdateCryptoSymbolDB())  TaskUpdateFinnhubCryptoSymbolDB();
 		TaskUpdateInsiderTransactionDB();
 		TaskUpdateForexDayLineDB();
 		TaskUpdateCryptoDayLineDB();
 		TaskUpdateDayLineDB();
 		TaskUpdateEPSSurpriseDB();
-		TaskUpdateEconomicCalendarDB();
+		if (IsNeedUpdateExonomicCalendarDB()) TaskUpdateEconomicCalendarDB();
 		return true;
 	}
 
@@ -1289,18 +1287,12 @@ bool CWorldMarket::LoadOption(void) {
 	setOption.Open();
 	if (setOption.m_FinnhubToken.GetLength() > 5) {
 		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(setOption.m_FinnhubToken);
-		if (setOption.m_FinnhubMaxPerHour > 0) {
-			gl_pFinnhubWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_FinnhubMaxPerHour);
-		}
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
 	}
 	if (setOption.m_TiingoToken.GetLength() > 5) {
 		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(setOption.m_TiingoToken);
-		if (setOption.m_TiingoMaxPerHour > 0) {
-			gl_pTiingoWebInquiry->SetShortestINquiringInterval(3600000 / setOption.m_TiingoMaxPerHour);
-		}
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
@@ -1308,7 +1300,35 @@ bool CWorldMarket::LoadOption(void) {
 	if (setOption.m_QuandlToken.GetLength() > 5) {
 		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(setOption.m_QuandlToken);
 	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
+	}
 	setOption.Close();
+
+	return true;
+}
+
+bool CWorldMarket::LoadOption1(void) {
+	ASSERT(gl_GlobeOption.IsInitialized());
+
+	if (gl_GlobeOption.GetFinnhubToken().GetLength() > 5) {
+		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(gl_GlobeOption.GetFinnhubToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
+	}
+	if (gl_GlobeOption.GetTiingoToken().GetLength() > 5) {
+		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(gl_GlobeOption.GetTiingoToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
+	}
+	if (gl_GlobeOption.GetQuandlToken().GetLength() > 5) {
+		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(gl_GlobeOption.GetQuandlToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
+	}
 
 	return true;
 }
