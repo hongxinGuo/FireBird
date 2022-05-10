@@ -25,6 +25,8 @@ public:
 	bool UpdateDB(void);
 	bool LoadDB(void);
 
+	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalTiingoCrypto < m_vTiingoCrypto.size()) return true; else return false; }
+
 protected:
 	vector<CTiingoCryptoSymbolPtr> m_vTiingoCrypto;
 	map<CString, long> m_mapTiingoCrypto;

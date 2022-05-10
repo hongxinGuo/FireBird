@@ -43,6 +43,14 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0);
 	}
 
+	TEST_F(CDataTiingoCryptoSymbolTest, TestIsNeedUpdate) {
+		CTiingoCryptoSymbolPtr pCrypto = make_shared<CTiingoCryptoSymbol>();
+
+		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
+		m_dataTiingoCryptoSymbol.Add(pCrypto);
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
+	}
+
 	TEST_F(CDataTiingoCryptoSymbolTest, TestAddDelete) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 0);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0);

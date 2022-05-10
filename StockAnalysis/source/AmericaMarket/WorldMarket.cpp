@@ -149,7 +149,8 @@ void CWorldMarket::ResetDataClass(void) {
 void CWorldMarket::ResetMarket(void) {
 	Reset();
 
-	LoadOption1();
+	UpdateToken();
+
 	LoadWorldExchangeDB(); // 装入世界交易所信息
 	LoadCountryDB();
 	LoadStockDB();
@@ -390,10 +391,10 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
 		if (IsNeedUpdateCryptoSymbolDB())  TaskUpdateFinnhubCryptoSymbolDB();
-		TaskUpdateInsiderTransactionDB();
+		if (IsNeedUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
 		TaskUpdateForexDayLineDB();
 		TaskUpdateCryptoDayLineDB();
-		TaskUpdateDayLineDB();
+		if (IsNeedSaveStockDayLineDB()) TaskUpdateDayLineDB();
 		TaskUpdateEPSSurpriseDB();
 		if (IsNeedUpdateExonomicCalendarDB()) TaskUpdateEconomicCalendarDB();
 		return true;
@@ -407,12 +408,10 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 		TaskUpdateStockProfileDB();
 	}
 
-	if (IsBasicFinancialNeedUpdate()) {
-		TaskUpdateBasicFinancialDB();
-	}
+	if (IsBasicFinancialNeedUpdate())	TaskUpdateBasicFinancialDB();
 
-	TaskUpdateTiingoStockDB();
-	TaskUpdateTiingoCryptoSymbolDB();
+	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
+	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
 	return true;
 }
@@ -1281,34 +1280,7 @@ void CWorldMarket::StopReceivingWebSocket(void) {
 	m_tiingoForexWebSocket.Deconnecting();
 }
 
-bool CWorldMarket::LoadOption(void) {
-	CSetWorldMarketOption setOption;
-
-	setOption.Open();
-	if (setOption.m_FinnhubToken.GetLength() > 5) {
-		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(setOption.m_FinnhubToken);
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
-	}
-	if (setOption.m_TiingoToken.GetLength() > 5) {
-		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(setOption.m_TiingoToken);
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
-	}
-	if (setOption.m_QuandlToken.GetLength() > 5) {
-		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(setOption.m_QuandlToken);
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
-	}
-	setOption.Close();
-
-	return true;
-}
-
-bool CWorldMarket::LoadOption1(void) {
+bool CWorldMarket::UpdateToken(void) {
 	ASSERT(gl_GlobeOption.IsInitialized());
 
 	if (gl_GlobeOption.GetFinnhubToken().GetLength() > 5) {

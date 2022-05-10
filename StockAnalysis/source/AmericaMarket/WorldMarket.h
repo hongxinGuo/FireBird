@@ -272,13 +272,18 @@ public:
 	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
 	bool IsNeedUpdateCryptoExchangeDB(void) noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsNeedUpdate(); }
+	bool IsNeedUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
+	bool IsNeedSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsNeedSaveDayLine(); }
 	bool IsNeedUpdateExonomicCalendarDB(void) noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
+
+	bool IsNeedUpdateTiingoStock(void) noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
+	bool IsNeedUpdateTiingoCryptoSymbol(void) noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
 
 	void StopReceivingWebSocket(void);
 
+	bool UpdateToken(void);
+
 	// Êý¾Ý¿â²Ù×÷
-	bool LoadOption(void);
-	bool LoadOption1(void);
 	bool LoadWorldExchangeDB(void) { return m_dataFinnhubStockExchange.LoadDB(); }
 
 	bool LoadStockDB(void) { return m_dataWorldStock.LoadDB(); }

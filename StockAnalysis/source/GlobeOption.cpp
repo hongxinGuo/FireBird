@@ -1,3 +1,20 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Finnhub密钥：
+// 1："&token=bv985d748v6ujthqfke0"
+// 2："&token=c1i57rv48v6vit20lrc0"
+//
+// Tiingo密钥：
+// 1："&token=c897a00b7cfc2adffc630d23befd5316a4683156"
+// 2："&token=fad87279362b9e580e4fb364a263cda3c67336c8"
+//
+// Quandl密钥：
+//  api_key=zBMXMyoTyiy_N3pMb3ex
+//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+// 下面的是第二个,用于dell240工作机。
+//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
 
@@ -12,10 +29,6 @@ using namespace std;
 #include<iostream>
 #include<fstream>
 
-//  api_key=zBMXMyoTyiy_N3pMb3ex
-//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
-// 下面的是第二个,用于dell240工作机。
-//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 CGlobeOption::CGlobeOption() {
 	static int siInstance = 0;
 

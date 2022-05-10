@@ -107,7 +107,7 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(CMockWorldMarketTest, TestLoadOption) {
+	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
 		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
 		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
 		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
 		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
-		gl_pMockWorldMarket->LoadOption();
+		gl_pMockWorldMarket->UpdateToken();
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
 		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));

@@ -43,6 +43,9 @@ public:
 
 	bool CheckStockSymbol(CWorldStockPtr pstock);
 
+	bool IsNeedSaveDayLine(void);
+	bool IsNeedSaveInsiderTransaction(void);
+
 protected:
 	vector<CWorldStockPtr> m_vWorldStock;
 	map<CString, long> m_mapWorldStock;

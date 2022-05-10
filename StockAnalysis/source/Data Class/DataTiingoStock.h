@@ -25,6 +25,8 @@ public:
 	bool UpdateDB(void);
 	bool LoadDB(void);
 
+	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) return true; else return false; }
+
 protected:
 	vector<CTiingoStockPtr> m_vTiingoStock;
 	map<CString, long> m_mapTiingoStock;

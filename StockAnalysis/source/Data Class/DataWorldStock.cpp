@@ -322,3 +322,17 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	}
 	return true;
 }
+
+bool CDataWorldStock::IsNeedSaveDayLine(void) {
+	for (auto& pStock : m_vWorldStock) {
+		if (pStock->IsDayLineNeedSaving()) return true;
+	}
+	return false;
+}
+
+bool CDataWorldStock::IsNeedSaveInsiderTransaction(void) {
+	for (auto& pStock : m_vWorldStock) {
+		if (pStock->IsInsiderTransactionNeedSave()) return true;
+	}
+	return false;
+}
