@@ -14,7 +14,6 @@
 #include "StockAnalysis.h"
 #include "MainFrm.h"
 
-#include "ChildFrm.h"
 #include "StockAnalysisDoc.h"
 #include "StockAnalysisView.h"
 

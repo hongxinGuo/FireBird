@@ -216,9 +216,6 @@
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\ChildFrm.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\MainFrm.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
@@ -707,9 +704,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\ChildFrm.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
@@ -1193,5 +1187,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
