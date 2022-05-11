@@ -120,28 +120,41 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	m_pFile = nullptr;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
+	CString strMessage, strErrorNo;
+	char buffer[30];
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
 	if (OpenFile(GetInquiringString())) {
-		do {
-			if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
-				fReadingSuccess = false;
-				break;
-			}
-			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+		try {
+			do {
+				if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
+					fReadingSuccess = false;
+					break;
+				}
+				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
 
-			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
-				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
+				if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
+					m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
+				}
+			} while (lCurrentByteReaded > 0);
+			m_lTotalByteReaded += m_lByteRead;
+			if (m_pFile != nullptr) {
+				m_pFile->Close();
+				delete m_pFile;
+				m_pFile = nullptr;
 			}
-		} while (lCurrentByteReaded > 0);
-		m_lTotalByteReaded += m_lByteRead;
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
+		}
+		catch (CInternetException* exception) {
+			fReadingSuccess = false;
+			m_dwWebErrorCode = exception->m_dwError;
+			sprintf_s(buffer, _T("%d"), exception->m_dwError);
+			strErrorNo = buffer;
+			strMessage = _T("Net Error #") + strErrorNo;
+			SetWebError(true);
+			gl_systemMessage.PushErrorMessage(strMessage);
 		}
 	}
 	else fReadingSuccess = false;
