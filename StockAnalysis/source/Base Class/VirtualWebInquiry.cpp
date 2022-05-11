@@ -127,8 +127,8 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
-	if (OpenFile(GetInquiringString())) {
-		try {
+	try {
+		if (OpenFile(GetInquiringString())) {
 			do {
 				if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 					fReadingSuccess = false;
@@ -147,17 +147,17 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 				m_pFile = nullptr;
 			}
 		}
-		catch (CInternetException* exception) {
-			fReadingSuccess = false;
-			m_dwWebErrorCode = exception->m_dwError;
-			sprintf_s(buffer, _T("%d"), exception->m_dwError);
-			strErrorNo = buffer;
-			strMessage = _T("Net Error #") + strErrorNo;
-			SetWebError(true);
-			gl_systemMessage.PushErrorMessage(strMessage);
-		}
+		else fReadingSuccess = false;
 	}
-	else fReadingSuccess = false;
+	catch (CInternetException* exception) {
+		fReadingSuccess = false;
+		m_dwWebErrorCode = exception->m_dwError;
+		sprintf_s(buffer, _T("%d"), exception->m_dwError);
+		strErrorNo = buffer;
+		strMessage = _T("Net Error #") + strErrorNo;
+		SetWebError(true);
+		gl_systemMessage.PushErrorMessage(strMessage);
+	}
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 

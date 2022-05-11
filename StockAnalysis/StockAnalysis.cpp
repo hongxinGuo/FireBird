@@ -70,7 +70,7 @@ CStockAnalysisApp::CStockAnalysisApp() {
 
 	// TODO: 将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
 	//为 CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("FiriBird.StockAnalysis.AppID.0.22"));
+	SetAppID(_T("FiriBird.StockAnalysis.AppID.0.25"));
 
 	// TODO: 在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
@@ -84,7 +84,7 @@ CStockAnalysisApp theApp;
 BOOL CStockAnalysisApp::InitInstance() {
 #ifndef DEBUG
 	// 非调试状态下只允许运行一个实例
-	if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
+	if (FindWindow(nullptr, "StockAnalysis1 -")) {
 		//找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
 		MessageBox(nullptr,
 			"Only one instance can run!",
@@ -109,7 +109,6 @@ BOOL CStockAnalysisApp::InitInstance() {
 	CWinAppEx::InitInstance();
 
 	EnableTaskbarInteraction(FALSE);
-
 
 	// 标准初始化
 	// 如果未使用这些功能并希望减小
