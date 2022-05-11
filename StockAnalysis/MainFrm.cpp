@@ -36,13 +36,13 @@ bool CMainFrame::sm_fInitIxWebSocket = false;
 
 // CMainFrame
 
-IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
+IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
 constexpr int  iMaxUserToolbars = 10;
 constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
-BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
+BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
@@ -216,19 +216,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ResetMarket();
 	TRACE(_T("重置系统结束\n"));
 
-	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
+	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	BOOL bNameValid{ true };
-
-	CMDITabInfo mdiTabParams;
-	mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...
-	mdiTabParams.m_bActiveTabCloseButton = TRUE; // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
-	mdiTabParams.m_bTabIcons = FALSE; // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
-	mdiTabParams.m_bAutoColor = TRUE; // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
-	mdiTabParams.m_bDocumentMenu = TRUE; // 在选项卡区域的右边缘启用文档菜单
-	EnableMDITabbedGroups(TRUE, mdiTabParams);
-
+	
 	if (!m_wndMenuBar.Create(this))
 	{
 		TRACE0("未能创建菜单栏\n");
@@ -243,8 +235,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
 	{
-		TRACE0("未能创建工具栏\n");
-		return -1;      // 未能创建
+		TRACE0("Failed to create toolbar\n");
+		return -1;      // fail to create
 	}
 
 	CString strToolBarName;
@@ -257,13 +249,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ASSERT(bNameValid);
 	m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
-	// 允许用户定义的工具栏操作:
+	// Allow user-defined toolbars operations:
 	InitUserToolbars(nullptr, uiFirstUserToolBarId, uiLastUserToolBarId);
 
 	if (!m_wndStatusBar.Create(this))
 	{
-		TRACE0("未能创建状态栏\n");
-		return -1;      // 未能创建
+		TRACE0("Failed to create status bar\n");
+		return -1;      // fail to create
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
@@ -273,13 +265,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		return -1;      // 未能创建
 	}
 	m_wndInnerSystemBar.SetIndicators(innerSystemIndicators, sizeof(innerSystemIndicators) / sizeof(UINT));
-
-	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
-	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndMenuBar);
-	DockPane(&m_wndToolBar);
 
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
@@ -293,17 +278,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		return -1;
 	}
 
-	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndOutput.EnableDocking(CBRS_ALIGN_BOTTOM);
 	DockPane(&m_wndOutput);
-
-	//m_wndOutput2.EnableDocking(CBRS_ALIGN_ANY);
-	//DockPane(&m_wndOutput2);
 
 	// 设置用于绘制所有用户界面元素的视觉管理器
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
-
-	// 启用增强的窗口管理对话框
-	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 
 	// 启用工具栏和停靠窗口菜单替换
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
@@ -356,6 +335,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
+void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
+{
+	HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 //系统更新任务由各CVirtualMarket类中的调度函数完成，
@@ -379,7 +365,7 @@ bool CMainFrame::ResetMarket(void) {
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
-	if (!CMDIFrameWndEx::PreCreateWindow(cs))
+	if (!CFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -403,29 +389,22 @@ BOOL CMainFrame::CreateDockingWindows() {
 	return TRUE;
 }
 
-void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
-	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
-
-	UpdateMDITabbedBarsIcons();
-}
-
 // CMainFrame 诊断
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const {
-	CMDIFrameWndEx::AssertValid();
+	CFrameWndEx::AssertValid();
 }
 
 void CMainFrame::Dump(CDumpContext& dc) const {
-	CMDIFrameWndEx::Dump(dc);
+	CFrameWndEx::Dump(dc);
 }
 #endif //_DEBUG
 
 // CMainFrame 消息处理程序
 
 void CMainFrame::OnWindowManager() {
-	ShowWindowsDialog();
+	//ShowWindowsDialog();
 }
 
 void CMainFrame::OnViewCustomize() {
@@ -435,7 +414,7 @@ void CMainFrame::OnViewCustomize() {
 }
 
 LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
-	LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
+	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0)
 	{
 		return 0;
@@ -456,7 +435,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
 	// 基类将执行真正的工作
 
-	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
+	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
 	{
 		return FALSE;
 	}
@@ -480,7 +459,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 }
 
 void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
-	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
+	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
 }
 
