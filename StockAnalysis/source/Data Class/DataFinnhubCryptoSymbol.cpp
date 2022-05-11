@@ -100,3 +100,12 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 
 	return true;
 }
+
+bool CDataFinnhubCryptoSymbol::IsNeedUpdate(void) {
+	for (auto& pCrypto : m_vCryptoSymbol) {
+		if (pCrypto->IsUpdateProfileDB()) {
+			return true;
+		}
+	}
+	return false;
+}

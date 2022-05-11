@@ -435,7 +435,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>${workspaceFolder}/**;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>

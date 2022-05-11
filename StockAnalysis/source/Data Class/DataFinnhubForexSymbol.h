@@ -22,7 +22,7 @@ public:
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
-	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalForexSymbol < m_vForexSymbol.size()) return true; else return false; }
+	bool IsNeedUpdate(void);
 
 protected:
 	vector<CForexSymbolPtr> m_vForexSymbol;

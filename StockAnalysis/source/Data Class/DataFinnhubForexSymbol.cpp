@@ -100,3 +100,12 @@ bool CDataFinnhubForexSymbol::UpdateDB(void) {
 
 	return true;
 }
+
+bool CDataFinnhubForexSymbol::IsNeedUpdate(void) {
+	for (auto& pForex : m_vForexSymbol) {
+		if (pForex->IsUpdateProfileDB()) {
+			return true;
+		}
+	}
+	return false;
+}
