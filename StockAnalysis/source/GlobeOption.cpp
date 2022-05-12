@@ -29,6 +29,35 @@ using namespace std;
 #include<iostream>
 #include<fstream>
 
+/// <summary>
+/// 系统配置文件，采用nlohmann json库格式。
+///
+/// </summary>
+string gl_sSystemOption = R"(
+{
+"ChinaMarketRealtimeServer" : 0,
+"ChinaMarketRealtimeInquiryTime" : 200,
+
+"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
+"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
+"QuandlToken" : "&api_key=zBMXMyoTyiy_N3pMb3ex",
+"WorldMarketFinnhubInquiryTime" : 1200,
+"WorldMarketTiingoInquiryTime" : 9000,
+"WorldMarketQuandlInquiryTime" : 36000
+}
+)";
+
+string gl_sSystemConfiguration = R"(
+{
+"SinaRealtimeDataInquiryNumberPerTime" : 850,
+"NeteaseRealtimeDataInquiryNumberPerTime" : 900,
+"TengxunRealtimeDataInquiryNumberPerTime" : 900,
+"FinnhubRealtimeDataInquiryNumberPerTime" : 1,
+"TiingoRealtimeDataInquiryNumberPerTime" : 1,
+"QuandlRealtimeDataInquiryNumberPerTime" : 1
+}
+)";
+
 CGlobeOption::CGlobeOption() {
 	static int siInstance = 0;
 

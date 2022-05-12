@@ -26,6 +26,13 @@ namespace StockAnalysisTest {
 		}
 	};
 
+	TEST_F(GlobeOptionTest, TestGlobeVariable) {
+		json jsSystemOption = json::parse(gl_sSystemOption);
+
+		EXPECT_TRUE(jsSystemOption.find("ChinaMarketRealtimeServer") != jsSystemOption.end());
+		EXPECT_EQ(jsSystemOption["ChinaMarketRealtimeServer"], 0);
+	}
+
 	TEST_F(GlobeOptionTest, TestInitialize) {
 		EXPECT_EQ(gl_GlobeOption.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
 		EXPECT_EQ(gl_GlobeOption.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200秒";

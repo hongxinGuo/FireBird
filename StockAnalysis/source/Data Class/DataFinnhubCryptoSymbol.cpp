@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include "DataFinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"
 
@@ -34,8 +36,8 @@ void CDataFinnhubCryptoSymbol::Add(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
 bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
-	int i = 0;
 
+	setCryptoSymbol.m_strSort = _T("[Symbol]");
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
@@ -43,6 +45,9 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
+			if (m_mapCryptoSymbol.find(pSymbol->GetSymbol()) != m_mapCryptoSymbol.end()) {
+				gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol());
+			}
 			Add(pSymbol);
 		}
 		else {

@@ -3,6 +3,9 @@
 #include"Accessory.h"
 #include"WebData.h"
 
+#include<nlohmann/json.hpp>
+using namespace nlohmann;
+
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
@@ -65,6 +68,23 @@ bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
 	m_fSucceedCreatePTree = ConvertToJSON(m_ppt, m_sDataBuffer);
 	return m_fSucceedCreatePTree;
+}
+
+bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
+	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
+	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
+	js = json::parse(m_sDataBuffer);
+
+	return true;
+}
+
+bool CWebData::CreateJSon(long lBeginPos, long lEndPos) {
+	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
+	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
+	m_pjs = make_shared<nlohmann::json>();
+	*m_pjs = json::parse(m_sDataBuffer);
+
+	return true;
 }
 
 void CWebData::__TEST_SetBuffer(CString strBuffer) {

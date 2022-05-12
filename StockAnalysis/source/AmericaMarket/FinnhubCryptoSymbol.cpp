@@ -22,10 +22,13 @@ void CFinnhubCryptoSymbol::Reset(void) {
 
 void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-	if (m_lIPOStatus == __STOCK_NULL__) {
+	if (IsNullStock()) {
 		SetDayLineNeedUpdate(false);
 	}
-	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
+	else if (IsDelisted() && (gl_pWorldMarket->GetDayOfWeek() != 1)) {
+		SetDayLineNeedUpdate(false);
+	}
+	// 不再更新日线数据比上上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	else if (gl_pWorldMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
 		SetDayLineNeedUpdate(false); // 日线数据不需要更新
 	}

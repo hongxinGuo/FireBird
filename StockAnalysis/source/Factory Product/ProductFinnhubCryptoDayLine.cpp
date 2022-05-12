@@ -38,7 +38,13 @@ bool CProductFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
 			pDayLine->SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(*pvDayLine);
-		pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
+		pCryptoSymbol->UpdateDayLineStartEndDate();
+		if (gl_pWorldMarket->GetLastTradeDate() <= pCryptoSymbol->GetDayLineEndDate()) {
+			pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
+		}
+		else {
+			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+		}
 		pCryptoSymbol->SetDayLineNeedUpdate(false);
 		pCryptoSymbol->SetDayLineNeedSaving(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);

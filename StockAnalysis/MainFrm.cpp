@@ -112,10 +112,6 @@ static UINT indicators[] =
 	ID_CURRENT_ACTIVE_STOCK,
 	ID_CURRENT_DAYLINE_READING_STOCK,
 	ID_CURRENT_FUNCTION,
-	ID_CURRENT_FINNHUB_STAKE,
-	ID_CURRENT_TIINGO_IEX,
-	ID_CURRENT_TIINGO_FOREX,
-	ID_CURRENT_TIINGO_CRYPTO,
 	ID_CURRENT_RTDATA_SIZE,
 	ID_CURRENT_RUNNING_THREAD,
 	ID_CURRENT_RUNNING_BACKGROUND_THREAD,
@@ -132,9 +128,13 @@ static UINT innerSystemIndicators[] =
 	ID_SHOW_FINNHUB_WEB,
 	ID_SHOW_TIINGO_WEB,
 	ID_SHOW_QUANDL_WEB,
-	ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
+		ID_CURRENT_FINNHUB_STAKE,
+ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
+	ID_CURRENT_TIINGO_IEX,
 	ID_SHOW_TIINGO_IEX_WEBSOCKET_DATASIZE,
+	ID_CURRENT_TIINGO_FOREX,
 	ID_SHOW_TIINGO_CRYPTO_WEBSOCKET_DATASIZE,
+	ID_CURRENT_TIINGO_CRYPTO,
 	ID_SHOW_TIINGO_FOREX_WEBSOCKET_DATASIZE,
 };
 
@@ -220,7 +220,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		return -1;
 
 	BOOL bNameValid{ true };
-	
+
 	if (!m_wndMenuBar.Create(this))
 	{
 		TRACE0("未能创建菜单栏\n");
@@ -340,7 +340,6 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 	HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -532,31 +531,26 @@ void CMainFrame::UpdateStatus(void) {
 
 	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
 
-	SysCallSetPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
-	SysCallSetPaneText(11, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
-	SysCallSetPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
-	SysCallSetPaneText(13, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) { // 每秒更新一次
 		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
 		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
 		m_timeLast = gl_pChinaMarket->GetUTCTime();
-		m_wndStatusBar.SetPaneText(14, (LPCTSTR)str);
+		m_wndStatusBar.SetPaneText(10, (LPCTSTR)str);
 	}
 
 	// 更新当前工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
 	str = buffer;
-	SysCallSetPaneText(15, (LPCTSTR)str);
+	SysCallSetPaneText(11, (LPCTSTR)str);
 
 	// 更新当前后台工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	str = buffer;
-	SysCallSetPaneText(16, (LPCTSTR)str);
+	SysCallSetPaneText(12, (LPCTSTR)str);
 
 	//更新当地时间的显示
-	SysCallSetPaneText(17, (LPCTSTR)gl_pChinaMarket->GetStringOfLocalTime());
+	SysCallSetPaneText(13, (LPCTSTR)gl_pChinaMarket->GetStringOfLocalTime());
 }
 
 void CMainFrame::UpdateInnerSystemStatus(void) {
@@ -593,14 +587,21 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	str = buffer;
 	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 
+	SysCallSetInnerSystemPaneText(8, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
 	str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
-	SysCallSetInnerSystemPaneText(8, (LPCTSTR)str);
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
 	SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
-	SysCallSetInnerSystemPaneText(10, (LPCTSTR)str);
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
+
+	SysCallSetInnerSystemPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
 	SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
+
+	SysCallSetInnerSystemPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
+	SysCallSetInnerSystemPaneText(13, (LPCTSTR)str);
+
+	SysCallSetInnerSystemPaneText(14, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
+	str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
+	SysCallSetInnerSystemPaneText(15, (LPCTSTR)str);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,9 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
+#include"nlohmann/json.hpp"
+using namespace nlohmann;
+
 constexpr int __DefaultWebDataBufferSize__ = 1024 * 1024;
 
 class CWebData final : public CObject {
@@ -78,6 +81,9 @@ public:
 	bool CreatePTree(long lBeginPos = 0, long lEndPos = 0);
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
+	bool CreateJSon(json& js, long lBeginPos = 0, long lEndPos = 0);
+	bool CreateJSon(long lBeginPos = 0, long lEndPos = 0);
+
 	// ≤‚ ‘”√∫Ø ˝
 	void __TEST_SetBuffer(CString strBuffer);
 
@@ -91,6 +97,9 @@ protected:
 	bool m_fJSonContentType;
 	bool m_fSucceedCreatePTree;
 	shared_ptr<ptree> m_ppt;
+
+	bool m_fSucceedCreateJSon;
+	shared_ptr<json> m_pjs;
 };
 
 typedef shared_ptr<CWebData> CWebDataPtr;

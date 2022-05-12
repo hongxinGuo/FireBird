@@ -23,6 +23,27 @@ bool CProductTiingoCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	char buffer[100];
 	CString strNumber, str;
 
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
+	bool fBegin = false, fEnd = false;
+	long long  differ1 = 0, differ2 = 0;
+
+	// 测试结果，ptree所需时间为json的160%。
+	/*
+		fBegin = QueryPerformanceCounter(&liBegin);
+		for (int i = 0; i < 100; i++) {
+			pWebData->CreatePTree();
+		}
+		fEnd = QueryPerformanceCounter(&liEnd);
+		differ1 = liEnd.QuadPart - liBegin.QuadPart;
+
+		fBegin = QueryPerformanceCounter(&liBegin);
+		for (int i = 0; i < 100; i++) {
+			pWebData->CreateJSon();
+		}
+		fEnd = QueryPerformanceCounter(&liEnd);
+		differ2 = liEnd.QuadPart - liBegin.QuadPart;
+		*/
+
 	pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (pvTiingoCrypto->size() > 0) {
 		for (auto& pTiingoCrypto : *pvTiingoCrypto) {

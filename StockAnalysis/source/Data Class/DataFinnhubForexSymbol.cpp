@@ -36,6 +36,7 @@ bool CDataFinnhubForexSymbol::LoadDB(void) {
 	CForexSymbolPtr pSymbol = nullptr;
 	int i = 0;
 
+	setForexSymbol.m_strSort = _T("[Symbol]");
 	setForexSymbol.Open();
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {

@@ -1149,10 +1149,16 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else { // 此种情况为有股票代码，但此代码尚未上市
-				CString str1 = pSymbol->GetSymbol();
-				str1 += _T(" 为未上市股票代码");
-				gl_systemMessage.PushDayLineInfoMessage(str1);
+			else { // 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
+				if (pSymbol->GetDayLineEndDate() > 19800101) { // 已退市
+					pSymbol->SetIPOStatus(__STOCK_DELISTED__);
+					pSymbol->SetUpdateProfileDB(true);
+				}
+				else { // 此种情况为有股票代码，但此代码尚未上市
+					CString str1 = pSymbol->GetSymbol();
+					str1 += _T(" 为未上市股票代码");
+					gl_systemMessage.PushDayLineInfoMessage(str1);
+				}
 			}
 		}
 	}

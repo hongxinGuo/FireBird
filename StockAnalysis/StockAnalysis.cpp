@@ -84,7 +84,7 @@ CStockAnalysisApp theApp;
 BOOL CStockAnalysisApp::InitInstance() {
 #ifndef DEBUG
 	// 非调试状态下只允许运行一个实例
-	if (FindWindow(nullptr, "StockAnalysis1 -")) {
+	if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
 		//找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
 		MessageBox(nullptr,
 			"Only one instance can run!",
@@ -134,7 +134,7 @@ BOOL CStockAnalysisApp::InitInstance() {
 //  serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
-		IDR_StockAnalysisTYPE,
+		IDR_MAINFRAME,
 		RUNTIME_CLASS(CStockAnalysisDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
 		RUNTIME_CLASS(CStockAnalysisView));

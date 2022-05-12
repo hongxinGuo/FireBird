@@ -48,6 +48,7 @@ public:
 public:
 
 protected:
+
 	json m_systemOption;
 	CString m_strFileName;
 
@@ -66,5 +67,8 @@ protected:
 	bool m_fUpdate;
 	bool m_fInitialized = false;
 };
+
+extern	string gl_sSystemOption; // 系统配置信息
+extern	string gl_sSytemConfiguration; // 系统配置信息
 
 extern CGlobeOption gl_GlobeOption;

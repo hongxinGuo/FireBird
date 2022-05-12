@@ -10,6 +10,7 @@ using namespace std;
 #include<thread>
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
+	m_strHeaders = _T("Timeout:(5,60)\r\n");
 	m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Finnhub");
