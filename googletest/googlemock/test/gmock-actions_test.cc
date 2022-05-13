@@ -51,6 +51,7 @@
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 #include "gmock/gmock.h"
 #include "gmock/internal/gmock-port.h"
@@ -647,24 +648,34 @@ TEST(ReturnTest, AcceptsStringLiteral) {
   EXPECT_EQ("world", a2.Perform(std::make_tuple()));
 }
 
-// Test struct which wraps a vector of integers. Used in
-// 'SupportsWrapperReturnType' test.
-struct IntegerVectorWrapper {
-  std::vector<int>* v;
-  IntegerVectorWrapper(std::vector<int>& _v) : v(&_v) {}  // NOLINT
-};
+// Return(x) should work fine when the mock function's return type is a
+// reference-like wrapper for decltype(x), as when x is a std::string and the
+// mock function returns std::string_view.
+TEST(ReturnTest, SupportsReferenceLikeReturnType) {
+  // A reference wrapper for std::vector<int>, implicitly convertible from it.
+  struct Result {
+    const std::vector<int>* v;
+    Result(const std::vector<int>& v) : v(&v) {}  // NOLINT
+  };
 
-// Tests that Return() works when return type is a wrapper type.
-TEST(ReturnTest, SupportsWrapperReturnType) {
-  // Initialize vector of integers.
-  std::vector<int> v;
-  for (int i = 0; i < 5; ++i) v.push_back(i);
+  // Set up an action for a mock function that returns the reference wrapper
+  // type, initializing it with an actual vector.
+  //
+  // The returned wrapper should be initialized with a copy of that vector
+  // that's embedded within the action itself (which should stay alive as long
+  // as the mock object is alive), rather than e.g. a reference to the temporary
+  // we feed to Return. This should work fine both for WillOnce and
+  // WillRepeatedly.
+  MockFunction<Result()> mock;
+  EXPECT_CALL(mock, Call)
+      .WillOnce(Return(std::vector<int>{17, 19, 23}))
+      .WillRepeatedly(Return(std::vector<int>{29, 31, 37}));
 
-  // Return() called with 'v' as argument. The Action will return the same data
-  // as 'v' (copy) but it will be wrapped in an IntegerVectorWrapper.
-  Action<IntegerVectorWrapper()> a = Return(v);
-  const std::vector<int>& result = *(a.Perform(std::make_tuple()).v);
-  EXPECT_THAT(result, ::testing::ElementsAre(0, 1, 2, 3, 4));
+  EXPECT_THAT(mock.AsStdFunction()(),
+              Field(&Result::v, Pointee(ElementsAre(17, 19, 23))));
+
+  EXPECT_THAT(mock.AsStdFunction()(),
+              Field(&Result::v, Pointee(ElementsAre(29, 31, 37))));
 }
 
 TEST(ReturnTest, PrefersConversionOperator) {
@@ -696,6 +707,56 @@ TEST(ReturnTest, PrefersConversionOperator) {
   MockFunction<Out()> mock;
   EXPECT_CALL(mock, Call).WillOnce(Return(In()));
   EXPECT_THAT(mock.AsStdFunction()(), Field(&Out::x, 19));
+}
+
+// Return(x) should not be usable with a mock function result type that's
+// implicitly convertible from decltype(x) but requires a non-const lvalue
+// reference to the input. It doesn't make sense for the conversion operator to
+// modify the input.
+TEST(ReturnTest, ConversionRequiresMutableLvalueReference) {
+  // Set up a type that is implicitly convertible from std::string&, but not
+  // std::string&& or `const std::string&`.
+  //
+  // Avoid asserting about conversion from std::string on MSVC, which seems to
+  // implement std::is_convertible incorrectly in this case.
+  struct S {
+    S(std::string&) {}  // NOLINT
+  };
+
+  static_assert(std::is_convertible<std::string&, S>::value, "");
+#ifndef _MSC_VER
+  static_assert(!std::is_convertible<std::string&&, S>::value, "");
+#endif
+  static_assert(!std::is_convertible<const std::string&, S>::value, "");
+
+  // It shouldn't be possible to use the result of Return(std::string) in a
+  // context where an S is needed.
+  using RA = decltype(Return(std::string()));
+
+  static_assert(!std::is_convertible<RA, Action<S()>>::value, "");
+  static_assert(!std::is_convertible<RA, OnceAction<S()>>::value, "");
+}
+
+// Return(x) should not be usable with a mock function result type that's
+// implicitly convertible from decltype(x) but requires an rvalue reference to
+// the input. We don't yet support handing over the value for consumption.
+TEST(ReturnTest, ConversionRequiresRvalueReference) {
+  // Set up a type that is implicitly convertible from std::string&& and
+  // `const std::string&&`, but not `const std::string&`.
+  struct S {
+    S(std::string&&) {}        // NOLINT
+    S(const std::string&&) {}  // NOLINT
+  };
+
+  static_assert(std::is_convertible<std::string, S>::value, "");
+  static_assert(!std::is_convertible<const std::string&, S>::value, "");
+
+  // It shouldn't be possible to use the result of Return(std::string) in a
+  // context where an S is needed.
+  using RA = decltype(Return(std::string()));
+
+  static_assert(!std::is_convertible<RA, Action<S()>>::value, "");
+  static_assert(!std::is_convertible<RA, OnceAction<S()>>::value, "");
 }
 
 // Tests that Return(v) is covaraint.
@@ -747,19 +808,6 @@ TEST(ReturnTest, ConvertsArgumentWhenConverted) {
   action.Perform(std::tuple<>());
   EXPECT_FALSE(converted) << "Action must NOT convert its argument "
                           << "when performed.";
-}
-
-class DestinationType {};
-
-class SourceType {
- public:
-  // Note: a non-const typecast operator.
-  operator DestinationType() { return DestinationType(); }
-};
-
-TEST(ReturnTest, CanConvertArgumentUsingNonConstTypeCastOperator) {
-  SourceType s;
-  Action<DestinationType()> action(Return(s));
 }
 
 // Tests that ReturnNull() returns NULL in a pointer-returning function.
@@ -1920,7 +1968,7 @@ TEST(MockMethodTest, ActionSwallowsAllArguments) {
 
 struct ActionWithTemplatedConversionOperators {
   template <typename... Args>
-  operator internal::OnceAction<int(Args...)>() && {  // NOLINT
+  operator OnceAction<int(Args...)>() && {  // NOLINT
     return [] { return 17; };
   }
 

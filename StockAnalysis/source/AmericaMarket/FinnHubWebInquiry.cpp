@@ -10,7 +10,7 @@ using namespace std;
 #include<thread>
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
-	m_strHeaders = _T("Timeout:(5,60)\r\n");
+	//m_strHeaders = _T("Timeout:10\r\n");
 	m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Finnhub");
@@ -48,7 +48,7 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
 }
 
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
+	TRACE("读入%d个Finnhub数据\n", lNumberOfData);
 	return true;
 }
 
@@ -59,7 +59,6 @@ void CFinnhubWebInquiry::PrepareReadingWebData(void) {
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
 	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
-	gl_systemMessage.PushErrorMessage(_T("finnhub工作线程出错"));
 }
 
 void CFinnhubWebInquiry::UpdateAfterReadingWebData(void) {

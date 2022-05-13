@@ -48,8 +48,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_WebInquirer.GetFinnhubDataSize(), 0);
-		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
-		gl_systemMessage.PopErrorMessage();
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pWorldMarket->SetFinnhubDataReceived(false);

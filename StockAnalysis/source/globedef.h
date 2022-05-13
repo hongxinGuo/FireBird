@@ -26,7 +26,7 @@ extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
 extern CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 
-extern long long gl_lFrequency; // 频率计数器。高精度计数器每秒频率
+extern long long gl_lFrequency; // 频率计数器。高精度计数器每毫秒频率
 
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列（尚未使用）
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列（尚未使用）

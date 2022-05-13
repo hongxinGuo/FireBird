@@ -40,7 +40,7 @@ bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 
 CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 
-long long gl_lFrequency = 10000000; // 频率计数器。高精度计数器每秒频率
+long long gl_lFrequency = 10000; // 频率计数器。高精度计数器每毫秒频率
 
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库

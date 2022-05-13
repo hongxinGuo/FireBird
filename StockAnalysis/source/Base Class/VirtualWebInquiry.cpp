@@ -10,7 +10,17 @@
 atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
-	m_pSession = new CInternetSession{ _T("") };
+	DWORD dwValue = 0;
+
+	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->QueryOption(INTERNET_OPTION_SEND_TIMEOUT, dwValue);
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->QueryOption(INTERNET_OPTION_CONNECT_RETRIES, dwValue); // 查询重连次数
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 	m_pFile = nullptr;
 	m_strHeaders = _T("");
 
@@ -69,8 +79,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
-	fStatus2 = m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 200); // 设置连接超时时间为2秒
-	fStatus2 = m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 	do {
 		try {
 			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
@@ -98,9 +106,9 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				sprintf_s(buffer, _T("%d"), exception->m_dwError);
 				strErrorNo = buffer;
 				strMessage = _T("Net Error #") + strErrorNo;
-				if (ll > 5 * gl_lFrequency) {
-					strMessage += _T(" (超时)");
-				}
+				sprintf_s(buffer, _T(" %lld毫秒"), ll / gl_lFrequency);
+				strMessage += _T(" 用时:");
+				strMessage += buffer;
 				SetWebError(true);
 				gl_systemMessage.PushErrorMessage(strMessage);
 				fStatus = false;
@@ -135,14 +143,18 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	long lCurrentByteReaded = 0;
 	CString strMessage, strErrorNo;
 	char buffer[30];
+	DWORD dwValue = 0;
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
+
 	if (m_pSession != nullptr) delete m_pSession;
-	m_pSession = new CInternetSession(_T(""), 1, INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, INTERNET_FLAG_TRANSFER_ASCII);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 200); // 设置连接超时时间为2秒
+	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 	if (OpenFile(GetInquiringString())) {
 		try {
@@ -176,8 +188,10 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	}
 	else fReadingSuccess = false;
 
-	delete m_pSession;
-	m_pSession = nullptr;
+	if (m_pSession != nullptr) {
+		delete m_pSession;
+		m_pSession = nullptr;
+	}
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 

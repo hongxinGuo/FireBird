@@ -201,7 +201,7 @@ bool CWorldMarket::SchedulingTask(void) {
 		}
 		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
 			gl_pFinnhubWebInquiry->SetWebError(false);
-			s_iCountfinnhubLimit = 3000; // 如果出现错误，则每5分钟重新申请一次。
+			s_iCountfinnhubLimit = 600; // 如果出现错误，则每1分钟重新申请一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据

@@ -10,7 +10,7 @@ using namespace std;
 #include<thread>
 
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
-	m_strHeaders = _T("TimeOut:(1, 2)\r\n");
+	//m_strHeaders = _T("Timeout:2\r\n");
 	m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
 	m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strConnectionName = _T("NeteaseDayLine");
