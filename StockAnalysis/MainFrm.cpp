@@ -532,7 +532,7 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) { // 每秒更新一次
+	if ((gl_pSinaRTWebInquiry->GetTotalByteReaded() > 0) && ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0)) { // 每秒更新一次
 		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
 		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
 		m_timeLast = gl_pChinaMarket->GetUTCTime();

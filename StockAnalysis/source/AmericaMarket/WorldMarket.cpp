@@ -201,7 +201,7 @@ bool CWorldMarket::SchedulingTask(void) {
 		}
 		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
 			gl_pFinnhubWebInquiry->SetWebError(false);
-			s_iCountfinnhubLimit = 600; // 如果出现错误，则每1分钟重新申请一次。
+			s_iCountfinnhubLimit = 3000; // 如果出现错误，则每5分钟重新申请一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
@@ -379,8 +379,6 @@ bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
-	// 建立WebSocket连接
-	TaskActivateWebSocket();
 
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
 	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
@@ -404,14 +402,24 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
+	// 建立WebSocket连接
+	TaskActivateWebSocket();
+
 	if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
 		TaskUpdateStockProfileDB();
 	}
 
-	if (IsBasicFinancialNeedUpdate())	TaskUpdateBasicFinancialDB();
+	if (IsBasicFinancialNeedUpdate()) {
+		TaskUpdateBasicFinancialDB();
+	}
 
-	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
-	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
+	if (IsNeedUpdateTiingoStock()) {
+		TaskUpdateTiingoStockDB();
+	}
+
+	if (IsNeedUpdateTiingoCryptoSymbol()) {
+		TaskUpdateTiingoCryptoSymbolDB();
+	}
 
 	return true;
 }

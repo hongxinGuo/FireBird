@@ -85,6 +85,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
+			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreatePTree();
 			m_pWebData->SetJSonContentType(true);
@@ -94,6 +95,7 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
 
 			GeneralCheck();
 		}
@@ -195,28 +197,29 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
-			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
+			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
+			EXPECT_EQ(pCrypto->GetIPOStatus(), __STOCK_DELISTED__);
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 2: // s项报告not ok
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 3: // s项报告 no data
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 4: //数据缺乏t项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
@@ -264,9 +267,8 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 11: // 没有s项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(pCrypto->IsDayLineNeedUpdate());
+			EXPECT_FALSE(fSucceed);
+			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_FALSE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);

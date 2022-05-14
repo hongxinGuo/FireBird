@@ -10,7 +10,6 @@ using namespace std;
 #include<thread>
 
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
-	//m_strHeaders = _T("Timeout:100\r\n");
 	m_strWebDataInquirePrefix = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Tiingo");

@@ -64,7 +64,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 /// <param name="strInquiring"></param>
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
-	bool fStatus = true, fStatus2 = false;
+	bool fStatus = true;
 	int iCounter = 0;
 	bool fDone = false;
 	CString strMessage, strErrorNo;
@@ -73,7 +73,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 
 	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
 	bool fBegin = false, fEnd = false;
-	long long  differ = 0;
 
 	fBegin = QueryPerformanceCounter(&liBegin);
 
@@ -99,7 +98,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				delete m_pFile;
 				m_pFile = nullptr;
 			}
-			if (iCounter++ > 0) { // 如果重试次数超过0次，则报告错误
+			if (iCounter++ >= 0) { // 如果重试次数超过0次，则报告错误
 				fEnd = QueryPerformanceCounter(&liEnd);
 				long long ll = liEnd.QuadPart - liBegin.QuadPart;
 				m_dwWebErrorCode = exception->m_dwError;
@@ -136,6 +135,8 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 //
 // 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
 //
+// 目前设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。--20220514
+//
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {
 	m_pFile = nullptr;
@@ -143,7 +144,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	long lCurrentByteReaded = 0;
 	CString strMessage, strErrorNo;
 	char buffer[30];
-	DWORD dwValue = 0;
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
@@ -155,7 +155,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 2); // 2次重试
 	if (OpenFile(GetInquiringString())) {
 		try {
 			do {

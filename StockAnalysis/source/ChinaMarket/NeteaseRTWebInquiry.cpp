@@ -29,7 +29,6 @@ using namespace std;
 #include<thread>
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
-	//m_strHeaders = _T("timeout:1\r\n");
 	m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("NeteaseRT");

@@ -136,7 +136,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Bscmake>
-      <PreserveSbr>false</PreserveSbr>
+      <PreserveSbr>true</PreserveSbr>
     </Bscmake>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>

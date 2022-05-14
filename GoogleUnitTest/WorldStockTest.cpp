@@ -1337,7 +1337,7 @@ namespace StockAnalysisTest {
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
-		ttOld = gl_pWorldMarket->TransferToUTCTime(20190502); // 20190501的第二天
+		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501); // 20190501
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");

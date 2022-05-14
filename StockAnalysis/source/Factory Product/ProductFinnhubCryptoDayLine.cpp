@@ -26,6 +26,7 @@ CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
 bool CProductFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	long lTemp = 0;
+	bool fStatus = true;
 
 	CDayLineVectorPtr pvDayLine = nullptr;
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
@@ -49,7 +50,19 @@ bool CProductFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
 		pCryptoSymbol->SetDayLineNeedSaving(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 	}
-	return true;
+	else {
+		pCryptoSymbol->SetDayLineNeedUpdate(false);
+		pCryptoSymbol->SetDayLineNeedSaving(false);
+		if (!pCryptoSymbol->IsDelisted()) {
+			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+			pCryptoSymbol->SetUpdateProfileDB(true);
+			fStatus = true;
+		}
+		else {
+			fStatus = false;
+		}
+	}
+	return fStatus;
 }
 
 CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
