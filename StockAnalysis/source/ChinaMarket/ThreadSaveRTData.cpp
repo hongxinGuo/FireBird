@@ -8,14 +8,15 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"ThreadStatus.h"
 
 #include"ChinaMarket.h"
 
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket) {
-  ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
-  gl_ThreadStatus.IncreaseSavingThread();
-  pMarket->SaveRTData();
-  gl_ThreadStatus.DecreaseSavingThread();
+	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
+	gl_ThreadStatus.IncreaseSavingThread();
+	pMarket->SaveRTData();
+	gl_ThreadStatus.DecreaseSavingThread();
 
-  return 19;
+	return 19;
 }

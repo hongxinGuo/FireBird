@@ -1,7 +1,9 @@
 #pragma once
 
 #include"VirtualMarket.h"
-#include "ChinaStock.h"
+
+class CChinaStock;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
 #include"StockSection.h"
 

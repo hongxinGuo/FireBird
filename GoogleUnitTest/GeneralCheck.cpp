@@ -8,6 +8,8 @@ using namespace testing;
 #include"SystemMessage.h"
 #include"WebInquirer.h"
 
+#include"WebRTDataContainer.h"
+
 #include "GeneralCheck.h"
 
 namespace StockAnalysisTest {

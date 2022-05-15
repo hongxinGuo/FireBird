@@ -43,6 +43,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{B5233B65
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{5C4CEB93-050C-4CD9-BCAC-8498EFC87370}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
+	ProjectSection(SolutionItems) = preProject
+		StockAnalysis\source\NetError.txt = StockAnalysis\source\NetError.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

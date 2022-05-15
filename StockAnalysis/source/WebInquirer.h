@@ -9,8 +9,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"globedef.h"
-
 extern int gl_iMaxSavingOneDayLineThreads;
 
 #include"SinaRTWebInquiry.h"
@@ -24,7 +22,6 @@ extern int gl_iMaxSavingOneDayLineThreads;
 #include"TemplateMutexAccessQueue.h"
 
 #include"NeteaseDayLineWebData.h"
-#include"WebData.h"
 
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集

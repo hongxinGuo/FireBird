@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"ThreadStatus.h"
 #include"SemaphoreDef.h"
 #include"WorldMarket.h"
 

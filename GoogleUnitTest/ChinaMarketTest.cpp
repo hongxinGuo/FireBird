@@ -2,7 +2,9 @@
 
 #include"globedef.h"
 
+#include"ThreadStatus.h"
 #include"SystemMessage.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -11,6 +13,8 @@
 #include"SetChinaChoicedStock.h"
 
 #include"WebInquirer.h"
+
+#include"WebRTDataContainer.h"
 
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"

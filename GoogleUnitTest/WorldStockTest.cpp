@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
 #include"accessory.h"
 #include"GeneralCheck.h"
@@ -1337,7 +1338,7 @@ namespace StockAnalysisTest {
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // ÍíÓÚ20190102
-		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501); // 20190501
+		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501);
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");

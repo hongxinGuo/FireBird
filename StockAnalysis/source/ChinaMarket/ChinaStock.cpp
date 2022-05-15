@@ -1,9 +1,9 @@
 #include"pch.h"
 
 #include "globedef.h"
-//#include "timer.h"
 
 #include"Accessory.h"
+#include"SystemMessage.h"
 
 #include "ChinaStock.h"
 #include"ChinaMarket.h"

@@ -678,6 +678,9 @@
     <ClInclude Include="..\StockAnalysis\source\GlobeOption.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">

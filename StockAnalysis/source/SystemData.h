@@ -8,12 +8,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"globedef.h"
-#include"ChinaMarket.h"
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
+
+using namespace std;
+#include<queue>
 
 class CSystemData : public CObject {
 public:

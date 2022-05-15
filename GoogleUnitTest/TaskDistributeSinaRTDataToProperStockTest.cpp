@@ -1,10 +1,14 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+
+#include"WebRTDataContainer.h"
 
 #include"GeneralCheck.h"
 

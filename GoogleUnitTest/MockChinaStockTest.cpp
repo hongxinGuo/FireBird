@@ -1,9 +1,12 @@
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
 #include"Thread.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+
+#include"NeteaseDayLineWebInquiry.h"
 
 #include"MockChinaStock.h"
 

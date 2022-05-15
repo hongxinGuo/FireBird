@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
 #include"GeneralCheck.h"
 #include"WebInquirer.h"
 #include"MockTengxunRTWebInquiry.h"

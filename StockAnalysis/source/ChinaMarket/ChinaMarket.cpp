@@ -3,7 +3,11 @@
 #include"globedef.h"
 #include"accessory.h"
 #include"Thread.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
 #include"SemaphoreDef.h"
+
+#include"WebRTDataContainer.h"
 
 #include"WebInquirer.h"
 

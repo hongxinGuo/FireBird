@@ -11,6 +11,7 @@
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
 
+#include"ThreadStatus.h"
 #include"SystemMessage.h"
 #include"SystemData.h"
 #include"WebInquirer.h"
@@ -23,6 +24,8 @@
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 #include"GlobeOption.h"
+
+#include"WebRTDataContainer.h"
 
 bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 

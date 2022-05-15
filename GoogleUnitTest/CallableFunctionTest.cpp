@@ -1,7 +1,15 @@
 #include"pch.h"
 #include"globedef.h"
+#include"accessory.h"
 #include"SystemMessage.h"
 #include"GeneralCheck.h"
+
+#include"EPSSurprise.h"
+#include"DayLine.h"
+#include"Country.h"
+#include"InsiderTransaction.h"
+#include"ChinaStock.h"
+#include"WorldStock.h"
 
 #include"WebInquirer.h"
 

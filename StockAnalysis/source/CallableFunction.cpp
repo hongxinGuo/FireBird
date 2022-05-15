@@ -3,6 +3,13 @@
 #include"globedef.h"
 #include "CallableFunction.h"
 
+#include"EPSSurprise.h"
+#include"DayLine.h"
+#include"Country.h"
+#include"InsiderTransaction.h"
+#include"ChinaStock.h"
+#include"WorldStock.h"
+
 #include"WebInquirer.h"
 
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }

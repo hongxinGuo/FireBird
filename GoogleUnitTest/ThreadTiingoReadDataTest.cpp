@@ -1,7 +1,11 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
+
+#include"WorldMarket.h"
 
 #include"WebInquirer.h"
 #include"MockTiingoWebInquiry.h"

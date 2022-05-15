@@ -1,6 +1,10 @@
 #include"pch.h"
 #include"globedef.h"
 #include"Thread.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
+
+#include"WorldMarket.h"
 
 #include "QuandlWebInquiry.h"
 #include"WebInquirer.h"

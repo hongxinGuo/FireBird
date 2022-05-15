@@ -3,6 +3,9 @@
 
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
+
 #include "StockAnalysis.h"
 
 #include "MainFrm.h"
@@ -13,6 +16,7 @@
 #include"DayLine.h"
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include"WorldMarket.h"
 
 #include"SinaRTWebInquiry.h"
 

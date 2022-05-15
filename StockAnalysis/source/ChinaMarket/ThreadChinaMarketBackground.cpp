@@ -8,12 +8,16 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
 #include"thread.h"
 #include"WebInquirer.h"
+
+#include"WebRTDataContainer.h"
 
 using namespace std;
 #include<chrono>

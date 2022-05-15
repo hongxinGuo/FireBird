@@ -7,9 +7,7 @@
 // 中国股票市场起始日
 constexpr auto __CHINA_MARKET_BEGIN_DATE__ = 19900101;
 
-#include"SystemMessage.h"
-#include"ThreadStatus.h"
-#include"WebRTDataContainer.h"
+#include"ClassDeclaration.h"
 
 using namespace std;
 #include<deque>

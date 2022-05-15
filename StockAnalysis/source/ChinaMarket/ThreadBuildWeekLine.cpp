@@ -1,6 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
 #include"Thread.h"
 #include"SemaphoreDef.h"
 

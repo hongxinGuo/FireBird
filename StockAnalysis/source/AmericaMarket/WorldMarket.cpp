@@ -1,7 +1,11 @@
 #include"pch.h"
 
+#include"globedef.h"
+
 #include "WorldMarket.h"
 #include"SystemData.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
 
 #include "WorldMarket.h"
 #include"FinnhubInquiryType.h"
@@ -849,7 +853,7 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 			SetFinnhubForexSymbolUpdated(true);
 			s_lCurrentForexExchangePos = 0;
 			SetCurrentFunction(_T("Finnhub forex synmbol"));
-			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Forex sysbols"));
+			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Forex sysbols..."));
 		}
 		return true;
 	}
@@ -1658,7 +1662,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 
 /// <summary>
 /// 更新证券的实时信息
-/// 目前只使用IEX和Finnhub的数据，其他数据抛弃掉
+/// 目前只使用IEX和Crypto的数据，其他数据抛弃掉
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>

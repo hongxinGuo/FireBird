@@ -1,6 +1,8 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
 #include"WebInquirer.h"
 #include"MockNeteaseRTWebInquiry.h"

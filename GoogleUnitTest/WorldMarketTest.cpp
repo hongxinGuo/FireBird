@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
 #include"GeneralCheck.h"
 #include"WebInquirer.h"
 
@@ -1416,7 +1417,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex sysbols"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex sysbols..."));
 		gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false); //»Ö¸´Ô­×´
 	}
 

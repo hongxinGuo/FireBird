@@ -2,6 +2,7 @@
 
 #include"globedef.h"
 #include"Accessory.h"
+#include"SystemMessage.h"
 
 #include "VirtualMarket.h"
 

@@ -1,14 +1,19 @@
 #pragma once
 
-#include"NeteaseDayLineWebInquiry.h"
-
-#include"ChinaStock.h"
-class CChinaMarket;
-#include"WorldMarket.h"
-#include"WorldStock.h"
+#include"Accessory.h"
 
 #include<gsl/gsl>
 using namespace gsl;
+
+class CVirtualWebInquiry;
+class CFinnhubForexSymbol;
+class CFinnhubCryptoSymbol;
+class CChinaStock;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
+class CChinaMarket;
+class CWorldMarket;
+class CWorldStock;
+class CNeteaseDayLineWebInquiry;
 
 // 各工作线程声明
 // 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。

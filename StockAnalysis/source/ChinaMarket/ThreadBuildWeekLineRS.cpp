@@ -10,6 +10,8 @@
 #include"globedef.h"
 #include"Thread.h"
 #include"Accessory.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
 #include"SemaphoreDef.h"
 
 #include"ChinaMarket.h"

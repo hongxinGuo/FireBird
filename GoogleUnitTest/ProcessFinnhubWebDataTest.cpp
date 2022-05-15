@@ -1,5 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
+#include"SystemMessage.h"
 
 #include"SystemData.h"
 #include"GeneralCheck.h"

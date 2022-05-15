@@ -2,6 +2,7 @@
 
 #include"globedef.h"
 #include"accessory.h"
+#include"SystemMessage.h"
 #include"WorldMarket.h"
 
 #include"TiingoCryptoSymbol.h"

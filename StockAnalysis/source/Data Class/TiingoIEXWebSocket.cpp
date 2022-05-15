@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#include"globedef.h"
+#include"accessory.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 #include"SystemData.h"
 
 #include"WebInquirer.h"

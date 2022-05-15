@@ -6,6 +6,8 @@
 #endif
 
 #include"globedef.h"
+#include"ThreadStatus.h"
+#include"SystemMessage.h"
 
 #include"GeneralCheck.h"
 

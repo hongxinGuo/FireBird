@@ -1,8 +1,10 @@
 #include"pch.h"
 
+#include"globedef.h"
+#include"SystemMessage.h"
+#include"ThreadStatus.h"
 #include"Thread.h"
 
-#include"globedef.h"
 #include"ChinaMarket.h"
 
 #include"VirtualWebInquiry.h"
@@ -135,7 +137,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 //
 // 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
 //
-// 目前设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。--20220514
+// 设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。目前接收数据最长的是申请Tiingo stock，大致为60秒。--20220514
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {

@@ -53,6 +53,7 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.h" />

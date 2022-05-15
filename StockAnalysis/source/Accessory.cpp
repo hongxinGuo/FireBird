@@ -1,6 +1,7 @@
 #include"pch.h"
 #include"globedef.h"
 #include "Accessory.h"
+#include"SystemMessage.h"
 
 using namespace std;
 #include<codecvt>
