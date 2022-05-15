@@ -1,18 +1,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 网络通用数据包结构。
+// 网络通用数据包结构，用于存储从网路上提取的各种原始数据。
 //
-// 用于存储从网路上提取的各种原始数据。
+// 目前使用boost的propertytree来存储和处理网络数据中的json格式，其速度与nlohmann的json库相比差距较大（是其60%），故而考虑转移之。--20220516
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-class CVirtualWebInquiry;
-class CNeteaseRTWebInquiry;
-class CSinaRTWebInquiry;
-class CTengxunRTWebInquiry;
-class CNeteaseDayLineWebInquiry;
-class CNeteaseDayLineWebData;
+#include"ClassDeclaration.h"
 
 using namespace std;
 #include<memory>
@@ -81,6 +76,7 @@ public:
 	bool CreatePTree(long lBeginPos = 0, long lEndPos = 0);
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
+	// 将数据转换为json格式。目前暂不使用
 	bool CreateJSon(json& js, long lBeginPos = 0, long lEndPos = 0);
 	bool CreateJSon(long lBeginPos = 0, long lEndPos = 0);
 
@@ -98,6 +94,7 @@ protected:
 	bool m_fSucceedCreatePTree;
 	shared_ptr<ptree> m_ppt;
 
+	// 以下为nlohmann制式的json数据，目前暂不使用
 	bool m_fSucceedCreateJSon;
 	shared_ptr<json> m_pjs;
 };

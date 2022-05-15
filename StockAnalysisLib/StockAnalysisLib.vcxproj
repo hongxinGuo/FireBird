@@ -410,13 +410,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(AnalysisInclude);$(PackageInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(PackageInclude);C:\Users\hxguo\source\repos\StockAnalysis\packages\boost.1.79.0\lib\native\include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)StockAnalysis\Source\;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(AnalysisInclude);$(PackageInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(PackageInclude);C:\Users\hxguo\source\repos\StockAnalysis\packages\boost.1.79.0\lib\native\include</IncludePath>
     <SourcePath>$(SolutionDir)StockAnalysis\Source\;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

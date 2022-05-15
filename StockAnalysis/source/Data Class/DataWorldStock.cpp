@@ -226,7 +226,6 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	static bool sm_fInProcess = false;
-	time_t tt = GetTickCount64();
 	vector<CWorldStockPtr> vStock;
 	CWorldStockPtr pStock = nullptr;
 

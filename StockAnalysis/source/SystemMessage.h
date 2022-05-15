@@ -1,6 +1,6 @@
 #pragma once
 
-#include"OutputWnd.h"
+class COutputList;
 
 using namespace std;
 #include<deque>

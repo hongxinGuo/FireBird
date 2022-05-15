@@ -2,9 +2,6 @@
 
 #include"VirtualMarket.h"
 
-class CChinaStock;
-typedef shared_ptr<CChinaStock> CChinaStockPtr;
-
 #include"StockSection.h"
 
 #include"DataStockSymbol.h"

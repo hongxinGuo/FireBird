@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"MockSystemMessage.h"
+#include"OutputWnd.h"
 
 using namespace testing;
 using namespace testing;

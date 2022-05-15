@@ -1,9 +1,5 @@
 #pragma once
 
-#include<time.h>
-
-#include"WebData.h"
-
 using namespace std;
 #include<vector>
 #include<string>

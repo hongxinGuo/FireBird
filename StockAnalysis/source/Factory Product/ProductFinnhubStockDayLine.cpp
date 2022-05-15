@@ -73,7 +73,6 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	ptree pt2, pt3;
 	string s;
 	double dTemp = 0;
-	long lTemp = 0;
 	INT64 llTemp = 0;
 	time_t tTemp = 0;
 	CDayLinePtr pDayLine = nullptr;

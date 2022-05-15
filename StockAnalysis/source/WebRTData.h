@@ -124,7 +124,6 @@ using namespace std;
 using namespace boost::property_tree;
 
 class CWebRTData;
-
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 
 class CWebRTData final : public CObject {
