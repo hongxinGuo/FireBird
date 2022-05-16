@@ -244,7 +244,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 
 	ASSERT(pWebData->IsJSonContentType());
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return false;
 		ppt = pWebData->GetPTree();
 		try {

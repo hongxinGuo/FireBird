@@ -44,7 +44,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return pvCountry;
 		ppt = pWebData->GetPTree();
 		try {

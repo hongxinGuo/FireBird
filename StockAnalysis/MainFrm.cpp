@@ -591,21 +591,29 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	str = buffer;
 	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 
-	SysCallSetInnerSystemPaneText(8, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
-	str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
-	SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
+	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
+		SysCallSetInnerSystemPaneText(8, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
+		str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
+		SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
+	}
 
-	SysCallSetInnerSystemPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
-	SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
+	if (gl_systemMessage.GetProcessedTiingoIEXWebSocket() > 0) {
+		SysCallSetInnerSystemPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
+		str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
+		SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
+	}
 
-	SysCallSetInnerSystemPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
-	SysCallSetInnerSystemPaneText(13, (LPCTSTR)str);
+	if (gl_systemMessage.GetProcessedTiingoForexWebSocket() > 0) {
+		SysCallSetInnerSystemPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
+		str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
+		SysCallSetInnerSystemPaneText(13, (LPCTSTR)str);
+	}
 
-	SysCallSetInnerSystemPaneText(14, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-	str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
-	SysCallSetInnerSystemPaneText(15, (LPCTSTR)str);
+	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
+		SysCallSetInnerSystemPaneText(14, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
+		str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
+		SysCallSetInnerSystemPaneText(15, (LPCTSTR)str);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

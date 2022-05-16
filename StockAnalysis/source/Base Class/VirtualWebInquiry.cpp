@@ -242,13 +242,13 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// 解析接收到的数据，默认数据格式为JSon
+// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->m_fSucceedCreatePTree = pWebData->CreatePTree(0, 0);
+	pWebData->m_fSucceedParsed = pWebData->CreatePTree(0, 0);
 	pWebData->SetJSonContentType(true);
-	return pWebData->IsSucceedCreatePTree();
+	return pWebData->IsSucceedParsed();
 }
 
 /////////////////////////////////////////////////////////////////////////

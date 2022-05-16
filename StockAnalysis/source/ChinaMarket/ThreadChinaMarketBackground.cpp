@@ -111,13 +111,15 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
-	ptree pt;
+	shared_ptr<ptree> ppt = nullptr;
 	INT64 llTotal = 0;
+	bool fProcess = true;
 
 	for (int i = 0; i < lTotalData; i++) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(pt, 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
-			for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+		if (pWebDataReceived->CreatePTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			ppt = pWebDataReceived->GetPTree();
+			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 				if (gl_fExitingSystem) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
@@ -131,6 +133,7 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 			}
 		}
 		else {
+			fProcess = false;
 			gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 		}
 	}

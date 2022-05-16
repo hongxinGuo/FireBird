@@ -1574,10 +1574,10 @@ bool CWorldMarket::TaskActivateWebSocket(void) {
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
-	ProcessFinnhubWebSocketData();
-	ProcessTiingoIEXWebSocketData();
-	ProcessTiingoCryptoWebSocketData();
-	ProcessTiingoForexWebSocketData();
+	if (gl_WebInquirer.GetFinnhubWebSocketDataSize() > 0) ProcessFinnhubWebSocketData();
+	if (gl_WebInquirer.GetTiingoIEXWebSocketDataSize() > 0) ProcessTiingoIEXWebSocketData();
+	if (gl_WebInquirer.GetTiingoCryptoWebSocketDataSize() > 0) ProcessTiingoCryptoWebSocketData();
+	if (gl_WebInquirer.GetTiingoForexWebSocketDataSize() > 0) ProcessTiingoForexWebSocketData();
 
 	return true;
 }

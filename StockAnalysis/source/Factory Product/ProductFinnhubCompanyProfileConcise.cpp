@@ -67,7 +67,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return true; // 即使为空，也完成了查询。
 		ppt = pWebData->GetPTree();
 		try {

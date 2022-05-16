@@ -52,7 +52,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return false;
 		ppt = pWebData->GetPTree();
 		try {

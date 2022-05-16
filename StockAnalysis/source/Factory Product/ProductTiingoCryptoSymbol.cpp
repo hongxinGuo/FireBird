@@ -28,23 +28,24 @@ bool CProductTiingoCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	bool fBegin = false, fEnd = false;
 	long long  differ1 = 0, differ2 = 0;
 
-	// 测试结果，ptree所需时间为json的160%。
+	// 测试结果，DEBUG状态下，ptree所需时间为json的160%；Release状态下，为3-4倍。
 	/*
-		fBegin = QueryPerformanceCounter(&liBegin);
-		for (int i = 0; i < 100; i++) {
-			pWebData->CreatePTree();
-		}
-		fEnd = QueryPerformanceCounter(&liEnd);
-		differ1 = liEnd.QuadPart - liBegin.QuadPart;
+	fBegin = QueryPerformanceCounter(&liBegin);
+	//for (int i = 0; i < 100; i++) {
+	pWebData->CreatePTree();
+	//}
+	fEnd = QueryPerformanceCounter(&liEnd);
+	m_differ1 = liEnd.QuadPart - liBegin.QuadPart;
 
-		fBegin = QueryPerformanceCounter(&liBegin);
-		for (int i = 0; i < 100; i++) {
-			pWebData->CreateJSon();
-		}
-		fEnd = QueryPerformanceCounter(&liEnd);
-		differ2 = liEnd.QuadPart - liBegin.QuadPart;
-		*/
+	fBegin = QueryPerformanceCounter(&liBegin);
+	//for (int i = 0; i < 100; i++) {
+	pWebData->CreateJSon();
+	//}
+	fEnd = QueryPerformanceCounter(&liEnd);
+	m_differ2 = liEnd.QuadPart - liBegin.QuadPart;
 
+	m_ratio = (double)m_differ1 / (double)m_differ2;
+	*/
 	pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (pvTiingoCrypto->size() > 0) {
 		for (auto& pTiingoCrypto : *pvTiingoCrypto) {
@@ -94,7 +95,7 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return pvTiingoCrypto;
 		ppt = pWebData->GetPTree();
 		try {

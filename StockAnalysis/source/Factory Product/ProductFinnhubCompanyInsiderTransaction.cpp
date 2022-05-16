@@ -53,7 +53,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedCreatePTree()) {
+	if (pWebData->IsSucceedParsed()) {
 		if (pWebData->IsVoidJSon()) return pvInsiderTransaction;
 		ppt = pWebData->GetPTree();
 		try {

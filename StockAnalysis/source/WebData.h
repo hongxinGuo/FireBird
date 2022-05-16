@@ -69,7 +69,8 @@ public:
 
 	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
 	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
-	bool IsSucceedCreatePTree(void) noexcept { return m_fSucceedCreatePTree; }
+	void SetSucceedParsed(bool fFlag) noexcept { m_fSucceedParsed = fFlag; }
+	bool IsSucceedParsed(void) noexcept { return m_fSucceedParsed; }
 	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 
 	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
@@ -91,11 +92,10 @@ protected:
 	INT64 m_lCurrentPos;
 
 	bool m_fJSonContentType;
-	bool m_fSucceedCreatePTree;
+	bool m_fSucceedParsed;
 	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用
-	bool m_fSucceedCreateJSon;
 	shared_ptr<json> m_pjs;
 };
 

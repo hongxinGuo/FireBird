@@ -14,13 +14,14 @@ CWebData::CWebData() : CObject() {
 	m_lCurrentPos = 0;
 
 	m_fJSonContentType = false;
-	m_fSucceedCreatePTree = false;
+	m_fSucceedParsed = false;
 	m_ppt = make_shared<ptree>();
 }
 
 CWebData::~CWebData() {
 	m_sDataBuffer.resize(0);
-	m_ppt = nullptr;
+	if (m_ppt != nullptr) m_ppt = nullptr;
+	if (m_pjs != nullptr) m_pjs = nullptr;
 }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
@@ -58,16 +59,17 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 bool CWebData::CreatePTree(ptree& pt, long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fSucceedCreatePTree = ConvertToJSON(pt, m_sDataBuffer);
-	return m_fSucceedCreatePTree;
+	m_fSucceedParsed = ConvertToJSON(pt, m_sDataBuffer);
+	return m_fSucceedParsed;
 }
 
 bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fSucceedCreatePTree = ConvertToJSON(m_ppt, m_sDataBuffer);
-	return m_fSucceedCreatePTree;
+	if (m_ppt == nullptr) m_ppt = make_shared<ptree>();
+	m_fSucceedParsed = ConvertToJSON(m_ppt, m_sDataBuffer);
+	return m_fSucceedParsed;
 }
 
 bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
@@ -81,8 +83,14 @@ bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
 bool CWebData::CreateJSon(long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_pjs = make_shared<nlohmann::json>();
-	*m_pjs = json::parse(m_sDataBuffer);
+	if (m_pjs == nullptr) m_pjs = make_shared<nlohmann::json>();
+	try {
+		*m_pjs = json::parse(m_sDataBuffer);
+	}
+	catch (json::parse_error& e) {
+		m_pjs = nullptr;
+		return false;
+	}
 
 	return true;
 }

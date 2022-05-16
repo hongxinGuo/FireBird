@@ -12,6 +12,10 @@ public:
 	virtual CString CreatMessage(void) override final;
 	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
 	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(CWebDataPtr pWebData);
+
+	// ≤‚ ‘”√
+	long long m_differ1, m_differ2;
+	double m_ratio;
 };
 
 typedef shared_ptr<CProductTiingoCryptoSymbol> CProductTiingoCryptoSymbolsPtr;
