@@ -186,7 +186,7 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <returns></returns>
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-	if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+	if (lDayOfWeek != 4) {
 		if (!m_fIsActive) {
 			SetDayLineNeedUpdate(false);
 			return m_fDayLineNeedUpdate;
@@ -563,15 +563,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	if (gl_pWorldMarket->GetDayOfWeek() == 4) { // 每周四检查最近一年的数据
-		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
-	}
-	else { // 其他日期只检查是否有新数据
-		tStartTime = gl_pWorldMarket->TransferToUTCTime(m_lDayLineEndDate);
-		if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
-			tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
-		}
-	}
+	tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);// 检查最近一年的数据
 	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
 	strTemp = buffer;
 	strMiddle += strTemp;

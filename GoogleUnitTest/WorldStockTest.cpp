@@ -623,11 +623,11 @@ namespace StockAnalysisTest {
 
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_DELISTED__);
-		for (int i = 0; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期六检查日线\n";
+		for (int i = 0; i < 7; i++) {
+			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			stock.SetDayLineNeedUpdate(true);
 		}
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, 6)) << "摘牌股票只在星期六检查日线\n";
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus4) {
@@ -1343,12 +1343,7 @@ namespace StockAnalysisTest {
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");
 		strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
-		if (gl_pWorldMarket->GetDayOfWeek() == 4) {
-			EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "周一检查一年的数据";
-		}
-		else {
-			EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "周二检查一年的数据";
-		}
+		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "检查一年的数据";
 	}
 
 	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString) {

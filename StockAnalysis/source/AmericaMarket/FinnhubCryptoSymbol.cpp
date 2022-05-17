@@ -43,15 +43,7 @@ CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	if (gl_pWorldMarket->GetDayOfWeek() == 2) {	// 每周二检查最近一年的数据
-		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
-	}
-	else { // 其他日期只检查是否有新数据
-		tStartTime = gl_pWorldMarket->TransferToUTCTime(m_lDayLineEndDate);
-		if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
-			tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
-		}
-	}
+	tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
 	strTemp = buffer;
 	strMiddle += strTemp;
