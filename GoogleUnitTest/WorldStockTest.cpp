@@ -1328,13 +1328,13 @@ namespace StockAnalysisTest {
 		CString strTime = buffer;
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		CString strTimeOld = buffer;
-		CString strMiddle;
+		CString strMiddle, strMiddle2;
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20180101); // 早于20190102
-		strMiddle = _T("600601.SS&resolution=D");
-		strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
-		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "免费账户最多只能申请一年的日线数据";
+		strMiddle2 = _T("600601.SS&resolution=D");
+		strMiddle2 += _T("&from=") + strTimeOld + _T("&to=") + strTime;
+		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "免费账户最多只能申请一年的日线数据";
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
@@ -1343,7 +1343,12 @@ namespace StockAnalysisTest {
 		strTimeOld = buffer;
 		strMiddle = _T("600601.SS&resolution=D");
 		strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
-		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "即使最后更新日期晚于一年前，也申请一年的日线数据";
+		if (gl_pWorldMarket->GetDayOfWeek() == 4) {
+			EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "周一检查一年的数据";
+		}
+		else {
+			EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "周二检查一年的数据";
+		}
 	}
 
 	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString) {

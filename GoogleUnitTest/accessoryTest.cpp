@@ -269,24 +269,44 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(XferStandredToTengxun(_T("00001.SZ")), _T("sz00001."));
 	}
 
-	TEST_F(AccessoryTest, TestConvertToJson) {
+	TEST_F(AccessoryTest, TestConvertToPTreeJson) {
 		ptree pt;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToJSON(pt, s));
+		EXPECT_TRUE(ConvertToPTreeJSon(pt, s));
 		string sSubscribe = ptreeGetString(pt, _T("eventName"));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToJSON(pt, s));
+		EXPECT_FALSE(ConvertToPTreeJSon(pt, s));
 	}
 
-	TEST_F(AccessoryTest, TestConvertToJson2) {
+	TEST_F(AccessoryTest, TestConvertToPTreeJson2) {
 		shared_ptr<ptree> ppt = make_shared<ptree>();
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToJSON(ppt, s));
+		EXPECT_TRUE(ConvertToPTreeJSon(ppt, s));
 		string sSubscribe = ppt->get<string>(_T("eventName"));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToJSON(ppt, s));
+		EXPECT_FALSE(ConvertToPTreeJSon(ppt, s));
+	}
+
+	TEST_F(AccessoryTest, TestConvertToNlohmannJson) {
+		json js;
+		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
+		EXPECT_TRUE(ConvertToNlohmannJSon(js, s));
+		string sSubscribe = js.at(_T("eventName"));
+		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
+		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
+		EXPECT_FALSE(ConvertToNlohmannJSon(js, s));
+	}
+
+	TEST_F(AccessoryTest, TestConvertToNlohmannJson2) {
+		shared_ptr<json> pjs = make_shared<json>();
+		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
+		EXPECT_TRUE(ConvertToNlohmannJSon(pjs, s));
+		string sSubscribe = pjs->at((_T("eventName")));
+		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
+		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
+		EXPECT_FALSE(ConvertToNlohmannJSon(pjs, s));
 	}
 
 	TEST_F(AccessoryTest, TestFormatToMK) {

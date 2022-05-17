@@ -52,7 +52,7 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsSucceedParsed()) {
+	if (pWebData->IsJSonContentType() && pWebData->IsParsed()) {
 		if (pWebData->IsVoidJSon()) return pvForexSymbol;
 		ppt = pWebData->GetPTree();
 		try {

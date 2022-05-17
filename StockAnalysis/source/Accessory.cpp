@@ -10,6 +10,9 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
+#include"nlohmann/json.hpp"
+using json = nlohmann::json;
+
 CString ConvertDateToString(long lDate) {
 	char buffer[30];
 	long year = lDate / 10000;
@@ -439,7 +442,7 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	}
 }
 
-bool ConvertToJSON(ptree& pt, string& s) {
+bool ConvertToPTreeJSon(ptree& pt, string& s) {
 	stringstream ss(s);
 	try {
 		read_json(ss, pt);
@@ -455,7 +458,7 @@ bool ConvertToJSON(ptree& pt, string& s) {
 	return true;
 }
 
-bool ConvertToJSON(shared_ptr<ptree>& ppt, string& s) {
+bool ConvertToPTreeJSon(shared_ptr<ptree>& ppt, string& s) {
 	ASSERT(ppt != nullptr);
 	stringstream ss(s);
 	try {
@@ -479,7 +482,7 @@ bool ConvertToWJSON(wptree& pt, string& s) {
 		read_json(ss, pt);
 	}
 	catch (ptree_error& e) {
-		//ReportJSonErrorToSystemMessage(_T("JSon Reading Error "), e);
+		//ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error "), e);
 		return false;
 	}
 	return true;
@@ -523,6 +526,32 @@ string to_byte_string(const wstring& input) {
 	delete[]pBufferW;
 
 	return s;
+}
+
+bool ConvertToNlohmannJSon(json& js, std::string& s) {
+	try {
+		js = json::parse(s);
+	}
+	catch (json::parse_error& e) {
+		return false;
+	}
+	return true;
+}
+
+bool ConvertToNlohmannJSon(shared_ptr<json>& pjs, std::string& s) {
+	try {
+		*pjs = json::parse(s);
+	}
+	catch (json::parse_error& e) {
+#ifndef _DEBUG
+		CString str = s.c_str();
+		str = str.Left(160);
+		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str + _T(" ") + e.what());
+#endif
+		pjs = nullptr;
+		return false;
+	}
+	return true;
 }
 
 CString FormatToMK(long long iNumber) {

@@ -25,7 +25,7 @@ void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 	if (IsNullStock()) {
 		SetDayLineNeedUpdate(false);
 	}
-	else if (IsDelisted() && (gl_pWorldMarket->GetDayOfWeek() != 1)) {
+	else if (IsDelisted() && (gl_pWorldMarket->GetDayOfWeek() != 2)) {
 		SetDayLineNeedUpdate(false);
 	}
 	// 不再更新日线数据比上上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
@@ -43,7 +43,7 @@ CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	if (gl_pWorldMarket->GetDayOfWeek() == 1) {	// 每周一检查最近一年的数据
+	if (gl_pWorldMarket->GetDayOfWeek() == 2) {	// 每周二检查最近一年的数据
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}
 	else { // 其他日期只检查是否有新数据

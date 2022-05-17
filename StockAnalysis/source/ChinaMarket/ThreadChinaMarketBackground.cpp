@@ -116,8 +116,16 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 	bool fProcess = true;
 
 	for (int i = 0; i < lTotalData; i++) {
+		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (pWebDataReceived->CreatePTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+		ASSERT(pWebDataReceived->IsParsed());
+		if (!pWebDataReceived->IsParsed()) {
+			if (!pWebDataReceived->CreatePTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
+				fProcess = false;
+			}
+		}
+		if (fProcess && pWebDataReceived->IsParsed()) {
 			ppt = pWebDataReceived->GetPTree();
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 				if (gl_fExitingSystem) return true;
@@ -131,10 +139,6 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 					gl_systemMessage.PushErrorMessage(_T("网易实时数据解析返回失败信息"));
 				}
 			}
-		}
-		else {
-			fProcess = false;
-			gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 		}
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);

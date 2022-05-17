@@ -4,7 +4,7 @@
 #include"WebData.h"
 
 #include<nlohmann/json.hpp>
-using namespace nlohmann;
+using json = nlohmann::json;
 
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
@@ -14,7 +14,7 @@ CWebData::CWebData() : CObject() {
 	m_lCurrentPos = 0;
 
 	m_fJSonContentType = false;
-	m_fSucceedParsed = false;
+	m_fParsed = false;
 	m_ppt = make_shared<ptree>();
 }
 
@@ -59,40 +59,32 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 bool CWebData::CreatePTree(ptree& pt, long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fSucceedParsed = ConvertToJSON(pt, m_sDataBuffer);
-	return m_fSucceedParsed;
+	m_fParsed = ConvertToPTreeJSon(pt, m_sDataBuffer);
+	return m_fParsed;
 }
 
 bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 {
-	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
+	if (lBeginPos > 0) m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
 	if (m_ppt == nullptr) m_ppt = make_shared<ptree>();
-	m_fSucceedParsed = ConvertToJSON(m_ppt, m_sDataBuffer);
-	return m_fSucceedParsed;
+	m_fParsed = ConvertToPTreeJSon(m_ppt, m_sDataBuffer);
+	return m_fParsed;
 }
 
 bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	js = json::parse(m_sDataBuffer);
-
-	return true;
+	m_fParsed = ConvertToNlohmannJSon(js, m_sDataBuffer);
+	return m_fParsed;
 }
 
 bool CWebData::CreateJSon(long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
 	if (m_pjs == nullptr) m_pjs = make_shared<nlohmann::json>();
-	try {
-		*m_pjs = json::parse(m_sDataBuffer);
-	}
-	catch (json::parse_error& e) {
-		m_pjs = nullptr;
-		return false;
-	}
-
-	return true;
+	m_fParsed = ConvertToNlohmannJSon(m_pjs, m_sDataBuffer);
+	return m_fParsed;
 }
 
 void CWebData::__TEST_SetBuffer(CString strBuffer) {

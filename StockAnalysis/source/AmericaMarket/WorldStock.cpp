@@ -197,7 +197,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 		return m_fDayLineNeedUpdate;
 	}
 	else if (IsDelisted()) { // 摘牌股票?
-		if (lDayOfWeek != 6) { // 每星期六检查一次
+		if (lDayOfWeek != 4) { // 每星期四检查一次
 			SetDayLineNeedUpdate(false);
 			return m_fDayLineNeedUpdate;
 		}
@@ -563,7 +563,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	if (gl_pWorldMarket->GetDayOfWeek() == 1) { // 每周一检查最近一年的数据
+	if (gl_pWorldMarket->GetDayOfWeek() == 4) { // 每周四检查最近一年的数据
 		tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
 	}
 	else { // 其他日期只检查是否有新数据

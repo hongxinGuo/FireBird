@@ -48,7 +48,7 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsSucceedParsed()) {
+	if (pWebData->IsParsed()) {
 		if (pWebData->IsVoidJSon()) return pvCryptoSymbol;
 		ppt = pWebData->GetPTree();
 		try {

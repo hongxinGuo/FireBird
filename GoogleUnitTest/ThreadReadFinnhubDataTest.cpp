@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		CWebDataPtr pWebData = gl_WebInquirer.PopFinnhubData();
 		EXPECT_EQ(FinnhubWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
-		EXPECT_TRUE(pWebData->IsSucceedParsed());
+		EXPECT_TRUE(pWebData->IsParsed());
 		EXPECT_TRUE(pWebData->IsJSonContentType());
 	}
 }

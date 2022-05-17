@@ -19,7 +19,7 @@ using namespace std;
 using namespace boost::property_tree;
 
 #include"nlohmann/json.hpp"
-using namespace nlohmann;
+using json = nlohmann::json;
 
 constexpr int __DefaultWebDataBufferSize__ = 1024 * 1024;
 
@@ -69,8 +69,8 @@ public:
 
 	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
 	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
-	void SetSucceedParsed(bool fFlag) noexcept { m_fSucceedParsed = fFlag; }
-	bool IsSucceedParsed(void) noexcept { return m_fSucceedParsed; }
+	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
+	bool IsParsed(void) noexcept { return m_fParsed; }
 	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 
 	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
@@ -92,7 +92,7 @@ protected:
 	INT64 m_lCurrentPos;
 
 	bool m_fJSonContentType;
-	bool m_fSucceedParsed;
+	bool m_fParsed;
 	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用

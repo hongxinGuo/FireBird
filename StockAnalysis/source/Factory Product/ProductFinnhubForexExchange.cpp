@@ -47,7 +47,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsSucceedParsed()) {
+	if (pWebData->IsJSonContentType() && pWebData->IsParsed()) {
 		if (pWebData->IsVoidJSon()) return pvExchange;
 		ppt = pWebData->GetPTree();
 		try {

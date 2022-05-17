@@ -175,7 +175,12 @@ namespace StockAnalysisTest {
 
 		symbol.SetSymbol(_T("ABCDE"));
 		str = symbol.GetFinnhubDayLineInquiryString(123456789);
-		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
+		if (gl_pWorldMarket->GetDayOfWeek() == 2) {
+			EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=91920789&to=123456789")) << "91920789比123456789早一年（365天）";
+		}
+		else {
+			EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "91920789比123456789早一天（1天）";
+		}
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {

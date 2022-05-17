@@ -198,7 +198,7 @@ bool CWorldMarket::SchedulingTask(void) {
 
 	TaskCheckSystemReady();
 
-	if (--s_iCountfinnhubLimit < 0) {
+	if (s_iCountfinnhubLimit < 0) {
 		TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
 			s_iCountfinnhubLimit = gl_GlobeOption.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
@@ -208,16 +208,24 @@ bool CWorldMarket::SchedulingTask(void) {
 			s_iCountfinnhubLimit = 3000; // 如果出现错误，则每5分钟重新申请一次。
 		}
 	}
+	else {
+		if (s_iCountfinnhubLimit > 2) s_iCountfinnhubLimit--;
+		else if (!IsFinnhubInquiring()) s_iCountfinnhubLimit--;
+	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
 	ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
-	if (--s_iCountTiingoLimit < 0) {
+	if (s_iCountTiingoLimit < 0) {
 		s_iCountTiingoLimit = gl_GlobeOption.GetWorldMarketTiingoInquiryTime() / 100;
 		TaskInquiryTiingo();
 		if (gl_pTiingoWebInquiry->IsWebError()) {
 			gl_pTiingoWebInquiry->SetWebError(false);
 			s_iCountTiingoLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
 		}
+	}
+	else {
+		if (s_iCountTiingoLimit > 2) s_iCountTiingoLimit--;
+		else if (!IsTiingoInquiring()) s_iCountTiingoLimit--;
 	}
 	ProcessTiingoWebDataReceived(); // 要先处理收到的Tiingo网络数据
 	ProcessTiingoInquiringMessage(); // 然后再申请处理下一个
