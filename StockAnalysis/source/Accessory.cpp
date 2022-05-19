@@ -451,7 +451,7 @@ bool ConvertToPTreeJSon(ptree& pt, string& s) {
 #ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
-		ReportJSonErrorToSystemMessage(_T("JSon Reading Error ") + str + _T(" "), e);
+		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
 	}
@@ -468,7 +468,7 @@ bool ConvertToPTreeJSon(shared_ptr<ptree>& ppt, string& s) {
 #ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
-		ReportJSonErrorToSystemMessage(_T("JSon Reading Error ") + str + _T(" "), e);
+		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
 	}
@@ -533,6 +533,11 @@ bool ConvertToNlohmannJSon(json& js, std::string& s) {
 		js = json::parse(s);
 	}
 	catch (json::parse_error& e) {
+#ifndef _DEBUG
+		CString str = s.c_str();
+		str = str.Left(160);
+		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
+#endif
 		return false;
 	}
 	return true;
@@ -546,7 +551,7 @@ bool ConvertToNlohmannJSon(shared_ptr<json>& pjs, std::string& s) {
 #ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
-		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str + _T(" ") + e.what());
+		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
 #endif
 		pjs = nullptr;
 		return false;
