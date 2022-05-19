@@ -5,6 +5,8 @@
 #error _T("本测试系统必须使用GOOGLE MOCK")
 #endif
 
+#define JSON_DIAGNOSTICS 1
+
 #include"globedef.h"
 #include"ThreadStatus.h"
 #include"SystemMessage.h"
@@ -57,8 +59,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			ASSERT(!gl_fNormalMode);
-			gl_GlobeOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.json"));
-			gl_GlobeOption.LoadDB();
+			gl_systemOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.ini"));
+			gl_systemOption.LoadDB();
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;

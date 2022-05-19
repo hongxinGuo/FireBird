@@ -11,7 +11,7 @@ using namespace std;
 using namespace boost::property_tree;
 
 #include"nlohmann/json.hpp"
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 CString ConvertDateToString(long lDate) {
 	char buffer[30];

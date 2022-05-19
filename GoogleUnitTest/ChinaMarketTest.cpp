@@ -921,7 +921,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb1) { // 这三个从网络读取数据的测试有内存泄露问题，待查。
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_GlobeOption.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
@@ -946,8 +946,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_GlobeOption.IsUsingSinaRTServer());
-		gl_GlobeOption.SetChinaMarketRealtimeServer(1);
+		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
+		gl_systemOption.SetChinaMarketRealtimeServer(1);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
@@ -960,7 +960,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(s_pMockNeteaseRTWebInquiry->IsReadingWebData());
 		EXPECT_EQ(gl_pChinaMarket->GetCountDownTengxunNumber(), 10) << _T("默认不调用TaskGetRTDataFromWeb");
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
-		gl_GlobeOption.SetChinaMarketRealtimeServer(0);
+		gl_systemOption.SetChinaMarketRealtimeServer(0);
 
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);

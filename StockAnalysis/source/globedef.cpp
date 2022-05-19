@@ -23,13 +23,13 @@
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
-#include"GlobeOption.h"
+#include"SystemOption.h"
 
 #include"WebRTDataContainer.h"
 
 bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 
-CGlobeOption gl_GlobeOption{}; // 系统参数总汇.此全局变量要位于所有全局变量的最前面
+CSystemOption gl_systemOption{}; // 系统参数总汇.此全局变量要位于所有全局变量的最前面
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 

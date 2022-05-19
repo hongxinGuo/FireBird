@@ -519,7 +519,7 @@
     <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="GlobeOptionTest.cpp">
+    <ClCompile Include="SystemOptionTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>

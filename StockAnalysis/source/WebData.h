@@ -19,7 +19,7 @@ using namespace std;
 using namespace boost::property_tree;
 
 #include"nlohmann/json.hpp"
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 constexpr int __DefaultWebDataBufferSize__ = 1024 * 1024;
 
@@ -80,6 +80,7 @@ public:
 	// 将数据转换为json格式。目前暂不使用
 	bool CreateJSon(json& js, long lBeginPos = 0, long lEndPos = 0);
 	bool CreateJSon(long lBeginPos = 0, long lEndPos = 0);
+	shared_ptr<json> GetJSon(void) { return m_pjs; }
 
 	// 测试用函数
 	void __TEST_SetBuffer(CString strBuffer);

@@ -123,6 +123,9 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
+#include"nlohmann/json.hpp"
+using json = nlohmann::ordered_json;
+
 class CWebRTData;
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 
@@ -163,7 +166,8 @@ public:
 
 	// 读取网易实时数据函数
 	// 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-	bool ReadNeteaseData(ptree::iterator& it);
+	bool ParseNeteaseDataWithPTree(ptree::iterator& it);
+	bool ParseNeteaseDataWithNlohmannJSon(json::iterator& it);
 
 public:
 	void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }

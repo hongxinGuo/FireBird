@@ -12,6 +12,7 @@
 #include <ixwebsocket/IXWebSocket.h>
 
 void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
+	CString str;
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -21,7 +22,9 @@ void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
-		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
+		str = _T("Finnhub WebSocket Error: ");
+		str += msg->errorInfo.reason.c_str();
+		gl_systemMessage.PushErrorMessage(str);
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));

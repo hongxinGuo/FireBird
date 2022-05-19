@@ -599,28 +599,28 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {
-		EXPECT_TRUE(gl_GlobeOption.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
 		gl_pMockMainFrame->OnUsingNeteaseRealtimeDataServer();
-		EXPECT_TRUE(gl_GlobeOption.IsUsingNeteaseRTServer());
-		EXPECT_FALSE(gl_GlobeOption.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemOption.IsUsingSinaRTServer());
 		gl_pMockMainFrame->OnUsingNeteaseRealtimeDataServer();
-		EXPECT_TRUE(gl_GlobeOption.IsUsingNeteaseRTServer());
-		EXPECT_FALSE(gl_GlobeOption.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemOption.IsUsingSinaRTServer());
 		gl_pMockMainFrame->OnUsingSinaRealtimeDataServer();
-		EXPECT_TRUE(gl_GlobeOption.IsUsingSinaRTServer());
-		EXPECT_FALSE(gl_GlobeOption.IsUsingNeteaseRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemOption.IsUsingNeteaseRTServer());
 		gl_pMockMainFrame->OnUsingSinaRealtimeDataServer();
-		EXPECT_TRUE(gl_GlobeOption.IsUsingSinaRTServer());
-		EXPECT_FALSE(gl_GlobeOption.IsUsingNeteaseRTServer());
+		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemOption.IsUsingNeteaseRTServer());
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
 		CCmdUI cmdUI;
-		gl_GlobeOption.SetChinaMarketRealtimeServer(1);
+		gl_systemOption.SetChinaMarketRealtimeServer(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
-		gl_GlobeOption.SetChinaMarketRealtimeServer(0);
+		gl_systemOption.SetChinaMarketRealtimeServer(0);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
@@ -628,17 +628,17 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingSinaRealtimeDataServer) {
 		CCmdUI cmdUI;
-		gl_GlobeOption.SetChinaMarketRealtimeServer(0);
+		gl_systemOption.SetChinaMarketRealtimeServer(0);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
-		gl_GlobeOption.SetChinaMarketRealtimeServer(1);
+		gl_systemOption.SetChinaMarketRealtimeServer(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
 
 		//»Ö¸´³õÌ¬
-		gl_GlobeOption.SetChinaMarketRealtimeServer(0);
+		gl_systemOption.SetChinaMarketRealtimeServer(0);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {

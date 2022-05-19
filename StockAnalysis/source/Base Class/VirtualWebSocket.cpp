@@ -24,15 +24,21 @@ void CVirtualWebSocket::Reset(void) {
 }
 
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
-	AppendSymbol(vSymbol);
-	Deconnecting();
-	while (!IsClosed()) Sleep(1);
-	ASSERT(IsClosed());
-	Reset();
-	Connect();
-	while (!IsOpen()) Sleep(1);
-	ASSERT(IsOpen());
-	Send(m_vSymbol);
+	try {
+		AppendSymbol(vSymbol);
+		Deconnecting();
+		while (!IsClosed()) Sleep(1);
+		ASSERT(IsClosed());
+		Reset();
+		Connect();
+		while (!IsOpen()) Sleep(1);
+		ASSERT(IsOpen());
+		Send(m_vSymbol);
+	}
+	catch (exception& e) {
+		CString sError = e.what();
+		return false;
+	}
 
 	return true;
 }

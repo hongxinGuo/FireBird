@@ -158,7 +158,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
-    <ClInclude Include="..\StockAnalysis\source\GlobeOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\SystemOption.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
@@ -332,7 +332,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\GlobeOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />

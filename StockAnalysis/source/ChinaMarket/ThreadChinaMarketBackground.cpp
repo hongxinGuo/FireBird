@@ -63,7 +63,7 @@ using namespace std;
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromSinaServer(void) {
+bool ParseSinaData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
 	INT64 llTotal = 0;
@@ -104,10 +104,10 @@ bool ParseWebRTDataGetFromSinaServer(void) {
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-// 使用json解析，已经没有错误数据了。
+// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromNeteaseServer(void) {
+bool ParseNeteaseDataWithPTree(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
@@ -118,12 +118,14 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 	for (int i = 0; i < lTotalData; i++) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		ASSERT(pWebDataReceived->IsParsed());
 		if (!pWebDataReceived->IsParsed()) {
 			if (!pWebDataReceived->CreatePTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 				fProcess = false;
 			}
+		}
+		else {
+			ASSERT(pWebDataReceived->GetJSon() == nullptr);
 		}
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			ppt = pWebDataReceived->GetPTree();
@@ -131,12 +133,64 @@ bool ParseWebRTDataGetFromNeteaseServer(void) {
 				if (gl_fExitingSystem) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
-				if (pRTData->ReadNeteaseData(it)) {
+				if (pRTData->ParseNeteaseDataWithPTree(it)) {
 					llTotal++;
 					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
 				}
-				else {
-					gl_systemMessage.PushErrorMessage(_T("网易实时数据解析返回失败信息"));
+			}
+		}
+	}
+	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
+	pWebDataReceived = nullptr;
+
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+bool ParseNeteaseDataWithNlohmannJSon(void) {
+	CWebDataPtr pWebDataReceived = nullptr;
+	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
+	string ss;
+	shared_ptr<json> pjs = nullptr;
+	INT64 llTotal = 0;
+	bool fProcess = true;
+
+	for (int i = 0; i < lTotalData; i++) {
+		fProcess = true;
+		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
+		if (!pWebDataReceived->IsParsed()) {
+			if (!pWebDataReceived->CreateJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
+				fProcess = false;
+			}
+		}
+		else {
+			ASSERT(pWebDataReceived->GetPTree() == nullptr);
+		}
+		if (fProcess && pWebDataReceived->IsParsed()) {
+			pjs = pWebDataReceived->GetJSon();
+			for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
+				if (gl_fExitingSystem) return true;
+				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+				if (pRTData->ParseNeteaseDataWithNlohmannJSon(it)) {
+					llTotal++;
+					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
 				}
 			}
 		}
@@ -299,8 +353,9 @@ UINT ThreadChinaMarketBackground(void) {
 		// 网易实时数据的接收加上处理时间超过了400毫秒，导致接收频率降低。故而将处理任务移至此工作线程中。
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
-		ParseWebRTDataGetFromSinaServer(); // 解析新浪实时数据
-		ParseWebRTDataGetFromNeteaseServer(); // 解析网易实时数据
+		ParseSinaData(); // 解析新浪实时数据
+		ParseNeteaseDataWithPTree(); // 使用 perproty tree解析网易实时数据
+		//ParseNeteaseDataWithNlohmannJSon(); // 使用nlohmann json解析网易实时数据
 		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
 		Sleep(50); // 最少间隔50ms

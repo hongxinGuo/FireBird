@@ -2,7 +2,6 @@
 #include"globedef.h"
 
 #include "ChinaStock.h"
-#include"GlobeOption.h"
 
 #include"WebInquirer.h"
 

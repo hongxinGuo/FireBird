@@ -636,7 +636,7 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
-	switch (gl_GlobeOption.GetChinaMarketRealtimeServer()) {
+	switch (gl_systemOption.GetChinaMarketRealtimeServer()) {
 	case 0: // 使用新浪实时数据服务器
 		if (IsUsingSinaRTDataReceiver()) {
 			if (!gl_WebInquirer.IsReadingSinaRTData()) gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。

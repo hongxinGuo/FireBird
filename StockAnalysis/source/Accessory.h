@@ -9,7 +9,7 @@ using namespace std;
 using namespace boost::property_tree;
 
 #include"nlohmann/json.hpp"
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
 CString ConvertDateToString(long lDate);

@@ -107,7 +107,7 @@ namespace StockAnalysisTest {
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Error"));
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Finnhub WebSocket Error: Error"));
 			break;
 		case ix::WebSocketMessageType::Ping:
 			EXPECT_THAT(gl_systemMessage.GetWebSocketInfoDequeSize(), 1);

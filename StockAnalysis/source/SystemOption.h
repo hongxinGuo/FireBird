@@ -2,7 +2,7 @@
 //
 // 所有的全局参数皆位于此文件中，用于系统配置。
 //
-// 存储方式使用json格式，存储与文件systemOption.json中。
+// 存储方式使用json格式，存储与文件SystemOption.ini中。
 //
 // 使用boost中的JSON库来解析之，实现序列化和反序列化。
 //
@@ -10,17 +10,17 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
-using nlohmann::json;
+using json = nlohmann::ordered_json;
 
-class CGlobeOption : CObject {
+class CSystemOption : CObject {
 public:
-	CGlobeOption();
-	~CGlobeOption();
+	CSystemOption();
+	~CSystemOption();
 
 	bool LoadDB();
 	bool SaveDB();
-	void Update(json& jInput);
 	void Update(void);
+	void UpdateJson(void);
 
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
 
@@ -43,6 +43,18 @@ public:
 	bool IsUsingSinaRTServer(void) const noexcept { if (m_iChinaMarketRealtimeServer == 0) return true; else return false; }
 	bool IsUsingNeteaseRTServer(void) const noexcept { if (m_iChinaMarketRealtimeServer == 1) return true; else return false; }
 
+	// WebSocket
+	bool IsUsingFinnhubWebSocket(void) const noexcept { return m_bUsingFinnhubWebSocket; }
+	void SetUsingFinnhubWebSocket(bool bUsingFinnhubWebSocket) noexcept { m_bUsingFinnhubWebSocket = bUsingFinnhubWebSocket; }
+	bool IsUsingTiingoIEXWebSocket(void) const noexcept { return m_bUsingTiingoIEXWebSocket; }
+	void SetUsingTiingoIEXWebSocket(bool bUsingTiingoIEXWebSocket) noexcept { m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket; }
+	bool IsUsingTiingoCryptoWebSocket(void) const noexcept { return m_bUsingTiingoCryptoWebSocket; }
+	void SetUsingTiingoCryptoWebSocket(bool bUsingTiingoCryptoWebSocket) noexcept { m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket; }
+	bool IsUsingTiingoForexWebSocket(void) const noexcept { return m_bUsingTiingoForexWebSocket; }
+	void SetUsingTiingoForexWebSocket(bool bUsingTiingoForexWebSocket) noexcept { m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket; }
+	bool IsUsingQuandlWebSocket(void) const noexcept { return m_bUsingQuandlWebSocket; }
+	void SetUsingQuandlWebSocket(bool bUsingQuandlWebSocket) noexcept { m_bUsingQuandlWebSocket = bUsingQuandlWebSocket; }
+
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
@@ -64,6 +76,13 @@ protected:
 	CString m_strTiingoToken;
 	CString m_strQuandlToken;
 
+	// WebSocket
+	bool m_bUsingFinnhubWebSocket;
+	bool m_bUsingTiingoIEXWebSocket;
+	bool m_bUsingTiingoCryptoWebSocket;
+	bool m_bUsingTiingoForexWebSocket;
+	bool m_bUsingQuandlWebSocket;
+
 	bool m_fUpdate;
 	bool m_fInitialized = false;
 };
@@ -71,4 +90,4 @@ protected:
 extern	string gl_sSystemOption; // 系统配置信息
 extern	string gl_sSytemConfiguration; // 系统配置信息
 
-extern CGlobeOption gl_GlobeOption;
+extern CSystemOption gl_systemOption;

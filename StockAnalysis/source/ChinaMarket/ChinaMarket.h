@@ -7,7 +7,7 @@
 #include"DataStockSymbol.h"
 #include"DataChinaStock.h"
 
-#include"GlobeOption.h"
+#include"SystemOption.h"
 
 #include<gsl/gsl>
 using namespace gsl;

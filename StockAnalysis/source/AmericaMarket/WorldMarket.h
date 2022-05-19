@@ -259,15 +259,6 @@ public:
 	void PushTiingoInquiry(CWebSourceDataProductPtr p) { m_qTiingoProduct.push(p); }
 	CWebSourceDataProductPtr GetTiingoInquiry(void) { CWebSourceDataProductPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
 
-	bool IsRecordFinnhubWebSocket(void) noexcept { return m_fRecordFinnhubWebSocket; }
-	void SetRecordFinnhubWebSocket(bool fFlag) noexcept { m_fRecordFinnhubWebSocket = fFlag; }
-	bool IsRecordTiingoIEXWebSocket(void) noexcept { return m_fRecordTiingoIEXWebSocket; }
-	void SetRecordTiingoIEXWebSocket(bool fFlag) noexcept { m_fRecordTiingoIEXWebSocket = fFlag; }
-	bool IsRecordTiingoCryptoWebSocket(void) noexcept { return m_fRecordTiingoCryptoWebSocket; }
-	void SetRecordTiingoCryptoWebSocket(bool fFlag) noexcept { m_fRecordTiingoCryptoWebSocket = fFlag; }
-	bool IsRecordTiingoForexWebSocket(void) noexcept { return m_fRecordTiingoForexWebSocket; }
-	void SetRecordTiingoForexWebSocket(bool fFlag) noexcept { m_fRecordTiingoForexWebSocket = fFlag; }
-
 	bool IsNeedUpdateForexExchangeDB(void) noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
 	bool IsNeedUpdateCryptoExchangeDB(void) noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
@@ -412,11 +403,6 @@ protected:
 	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	CTiingoForexWebSocket m_tiingoForexWebSocket;
 	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
-
-	bool m_fRecordFinnhubWebSocket;
-	bool m_fRecordTiingoIEXWebSocket;
-	bool m_fRecordTiingoCryptoWebSocket;
-	bool m_fRecordTiingoForexWebSocket;
 
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;

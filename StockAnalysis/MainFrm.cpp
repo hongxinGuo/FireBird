@@ -21,6 +21,7 @@
 #include"SinaRTWebInquiry.h"
 
 #include"Thread.h"
+#include"SystemOption.h"
 
 #include"WebInquirer.h"
 
@@ -193,7 +194,7 @@ CMainFrame::~CMainFrame() {
 
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 
-	gl_GlobeOption.SaveDB(); // 保存全局参数。
+	gl_systemOption.SaveDB(); // 保存全局参数。
 	TRACE("finally exited\n");
 }
 
@@ -206,7 +207,7 @@ bool CMainFrame::CreateMarketContainer(void) {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
-	gl_GlobeOption.LoadDB(); // 装入系统参数
+	gl_systemOption.LoadDB(); // 装入系统参数
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	gl_WebInquirer.Initialize();
@@ -911,17 +912,17 @@ void CMainFrame::OnStopUpdateDayLine() {
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_GlobeOption.SetChinaMarketRealtimeServer(1);
+	gl_systemOption.SetChinaMarketRealtimeServer(1);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	// TODO: Add your command handler code here
-	gl_GlobeOption.SetChinaMarketRealtimeServer(0);
+	gl_systemOption.SetChinaMarketRealtimeServer(0);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_GlobeOption.IsUsingNeteaseRTServer()) {
+	if (gl_systemOption.IsUsingNeteaseRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -931,7 +932,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_GlobeOption.IsUsingSinaRTServer()) {
+	if (gl_systemOption.IsUsingSinaRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -1025,13 +1026,13 @@ void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	// TODO: Add your command handler code here
-	if (gl_pWorldMarket->IsRecordFinnhubWebSocket()) gl_pWorldMarket->SetRecordFinnhubWebSocket(false);
-	else gl_pWorldMarket->SetRecordFinnhubWebSocket(true);
+	if (gl_systemOption.IsUsingFinnhubWebSocket()) gl_systemOption.SetUsingFinnhubWebSocket(false);
+	else gl_systemOption.SetUsingFinnhubWebSocket(true);
 }
 
 void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pWorldMarket->IsRecordFinnhubWebSocket()) {
+	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -1042,13 +1043,13 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoCryptoWebSocket()
 {
 	// TODO: Add your command handler code here
-	if (gl_pWorldMarket->IsRecordTiingoCryptoWebSocket()) gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(false);
-	else gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(true);
+	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) gl_systemOption.SetUsingTiingoCryptoWebSocket(false);
+	else gl_systemOption.SetUsingTiingoCryptoWebSocket(true);
 }
 
 void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pWorldMarket->IsRecordTiingoCryptoWebSocket()) {
+	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -1059,13 +1060,13 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoForexWebSocket()
 {
 	// TODO: Add your command handler code here
-	if (gl_pWorldMarket->IsRecordTiingoForexWebSocket()) gl_pWorldMarket->SetRecordTiingoForexWebSocket(false);
-	else gl_pWorldMarket->SetRecordTiingoForexWebSocket(true);
+	if (gl_systemOption.IsUsingTiingoForexWebSocket()) gl_systemOption.SetUsingTiingoForexWebSocket(false);
+	else gl_systemOption.SetUsingTiingoForexWebSocket(true);
 }
 
 void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pWorldMarket->IsRecordTiingoForexWebSocket()) {
+	if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {
@@ -1076,13 +1077,13 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoIexWebSocket()
 {
 	// TODO: Add your command handler code here
-	if (gl_pWorldMarket->IsRecordTiingoIEXWebSocket()) gl_pWorldMarket->SetRecordTiingoIEXWebSocket(false);
-	else gl_pWorldMarket->SetRecordTiingoIEXWebSocket(true);
+	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) gl_systemOption.SetUsingTiingoIEXWebSocket(false);
+	else gl_systemOption.SetUsingTiingoIEXWebSocket(true);
 }
 
 void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pWorldMarket->IsRecordTiingoIEXWebSocket()) {
+	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {

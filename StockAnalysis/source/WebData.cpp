@@ -4,7 +4,7 @@
 #include"WebData.h"
 
 #include<nlohmann/json.hpp>
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
@@ -82,7 +82,7 @@ bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
 bool CWebData::CreateJSon(long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	if (m_pjs == nullptr) m_pjs = make_shared<nlohmann::json>();
+	if (m_pjs == nullptr) m_pjs = make_shared<nlohmann::ordered_json>();
 	m_fParsed = ConvertToNlohmannJSon(m_pjs, m_sDataBuffer);
 	return m_fParsed;
 }

@@ -1000,38 +1000,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoDayLineUpdated());
 	}
 
-	TEST_F(CWorldMarketTest, TestIsRecordFinnhubWebSocket) {
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
-		gl_pWorldMarket->SetRecordFinnhubWebSocket(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
-		gl_pWorldMarket->SetRecordFinnhubWebSocket(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordFinnhubWebSocket());
-	}
-
-	TEST_F(CWorldMarketTest, TestIsRecordTiingoIEXWebSocket) {
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
-		gl_pWorldMarket->SetRecordTiingoIEXWebSocket(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
-		gl_pWorldMarket->SetRecordTiingoIEXWebSocket(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoIEXWebSocket());
-	}
-
-	TEST_F(CWorldMarketTest, TestIsRecordTiingoCryptoWebSocket) {
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
-		gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
-		gl_pWorldMarket->SetRecordTiingoCryptoWebSocket(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoCryptoWebSocket());
-	}
-
-	TEST_F(CWorldMarketTest, TestIsRecordTiingoForexWebSocket) {
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
-		gl_pWorldMarket->SetRecordTiingoForexWebSocket(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
-		gl_pWorldMarket->SetRecordTiingoForexWebSocket(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsRecordTiingoForexWebSocket());
-	}
-
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCountryList) {
 		EXPECT_FALSE(gl_pWorldMarket->IsCountryListUpdated());
 		gl_pWorldMarket->SetFinnhubInquiring(true);

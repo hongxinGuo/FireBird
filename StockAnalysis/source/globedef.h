@@ -4,6 +4,10 @@
 #error "在包含此文件之前必须先包含“stdafx.h”文件以生成 PCH 文件"
 #endif
 
+#ifdef _DEBUG
+#define JSON_DIAGNOSTICS 1
+#endif
+
 // 中国股票市场起始日
 constexpr auto __CHINA_MARKET_BEGIN_DATE__ = 19900101;
 
