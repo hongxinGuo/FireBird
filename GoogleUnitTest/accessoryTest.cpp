@@ -290,23 +290,17 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(AccessoryTest, TestConvertToNlohmannJson) {
-		json js;
-		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToNlohmannJSon(js, s));
-		string sSubscribe = js.at(_T("eventName"));
-		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToNlohmannJSon(js, s));
-	}
-
-	TEST_F(AccessoryTest, TestConvertToNlohmannJson2) {
-		shared_ptr<json> pjs = make_shared<json>();
+		json* pjs =  new json;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
 		EXPECT_TRUE(ConvertToNlohmannJSon(pjs, s));
 		string sSubscribe = pjs->at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
 		EXPECT_FALSE(ConvertToNlohmannJSon(pjs, s));
+
+		gl_systemMessage.PopErrorMessage();
+		delete pjs;
+
 	}
 
 	TEST_F(AccessoryTest, TestFormatToMK) {

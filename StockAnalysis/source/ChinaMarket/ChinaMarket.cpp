@@ -6,6 +6,7 @@
 #include"SystemMessage.h"
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
+#include"SystemOption.h"
 
 #include"WebRTDataContainer.h"
 
@@ -906,6 +907,10 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
+	if (gl_systemOption.IsFastInquiringRTData()) {
+		m_fFastReceivingRTData = true;
+		return m_fFastReceivingRTData;
+	}
 	m_fFastReceivingRTData = IsWorkingTime(lCurrentTime);
 	/*
 	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六

@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将ChinaMarket中的耗时计算任务移至此处。
 //
@@ -107,7 +107,7 @@ bool ParseSinaData(void) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseNeteaseDataWithPTree(void) {
+bool ParseNeteaseRTDataWithPTree(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
@@ -162,25 +162,23 @@ bool ParseNeteaseDataWithPTree(void) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseNeteaseDataWithNlohmannJSon(void) {
+bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
-	shared_ptr<json> pjs = nullptr;
+	json* pjs = nullptr;
 	INT64 llTotal = 0;
 	bool fProcess = true;
 
+	if (lTotalData == 0) return false;
 	for (int i = 0; i < lTotalData; i++) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		if (!pWebDataReceived->IsParsed()) {
-			if (!pWebDataReceived->CreateJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			if (!pWebDataReceived->CreateJSon(pWebDataReceived->GetJSon(), 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 				fProcess = false;
 			}
-		}
-		else {
-			ASSERT(pWebDataReceived->GetPTree() == nullptr);
 		}
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			pjs = pWebDataReceived->GetJSon();
@@ -196,7 +194,6 @@ bool ParseNeteaseDataWithNlohmannJSon(void) {
 		}
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
-	pWebDataReceived = nullptr;
 
 	return true;
 }
@@ -296,7 +293,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseWebRTDataGetFromTengxunServer(void) {
+bool ParseTengxunRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	bool fSucceed = true;
 
@@ -354,9 +351,9 @@ UINT ThreadChinaMarketBackground(void) {
 		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseSinaData(); // 解析新浪实时数据
-		ParseNeteaseDataWithPTree(); // 使用 perproty tree解析网易实时数据
-		//ParseNeteaseDataWithNlohmannJSon(); // 使用nlohmann json解析网易实时数据
-		ParseWebRTDataGetFromTengxunServer(); // 解析腾讯实时数据
+		//ParseNeteaseRTDataWithPTree(); // 使用 perproty tree解析网易实时数据
+		ParseNeteaseRTDataWithNlohmannJSon(); // 使用nlohmann json解析网易实时数据
+		ParseTengxunRTData(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
 		Sleep(50); // 最少间隔50ms
 	}

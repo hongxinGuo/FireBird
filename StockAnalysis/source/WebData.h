@@ -78,9 +78,8 @@ public:
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
 	// 将数据转换为json格式。目前暂不使用
-	bool CreateJSon(json& js, long lBeginPos = 0, long lEndPos = 0);
-	bool CreateJSon(long lBeginPos = 0, long lEndPos = 0);
-	shared_ptr<json> GetJSon(void) { return m_pjs; }
+	bool CreateJSon(json * pjs, long lBeginPos = 0, long lEndPos = 0);
+	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数
 	void __TEST_SetBuffer(CString strBuffer);
@@ -97,7 +96,7 @@ protected:
 	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用
-	shared_ptr<json> m_pjs;
+	json m_js;
 };
 
 typedef shared_ptr<CWebData> CWebDataPtr;

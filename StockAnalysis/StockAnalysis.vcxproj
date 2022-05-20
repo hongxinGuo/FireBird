@@ -115,8 +115,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateMapFile>false</GenerateMapFile>
       <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
+      <HeapReserveSize>40971520</HeapReserveSize>
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
@@ -124,6 +123,7 @@
       <AdditionalLibraryDirectories>C:\Program Files\OpenSSL-Win64\lib;C:\Program Files\OpenSSL-Win64\lib\VC;C:\Program Files\OpenSSL-Win64\lib\VC\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
+      <HeapCommitSize>40971520</HeapCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -175,6 +175,8 @@
       <LargeAddressAware>true</LargeAddressAware>
       <Profile>true</Profile>
       <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <HeapReserveSize>40971520</HeapReserveSize>
+      <HeapCommitSize>40971520</HeapCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

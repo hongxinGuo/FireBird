@@ -81,8 +81,7 @@ bool ConvertToWJSON(wptree& pt, string& s); // 此函数用于解析带中文字符的json
 wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
 string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
 
-bool ConvertToNlohmannJSon(json& js, string& s);
-bool ConvertToNlohmannJSon(shared_ptr<json>& pjs, string& s);
+bool ConvertToNlohmannJSon(json* pjs, string& s);
 
 string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault = _T(""));
 string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault = _T(""));

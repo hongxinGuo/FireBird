@@ -49,6 +49,9 @@ string gl_sSystemOption = R"(
 	"UsingTiingoIEXWebSocket" : true,
 	"UsingTiingoCryptoWebSocket" : true,
 	"UsingTiingoForexWebSocket" : true
+},
+"ChinaMarket" : {
+	"FastInquiringRealtimeData" : false
 }
 })";
 
@@ -94,6 +97,9 @@ CSystemOption::CSystemOption() {
 	m_bUsingTiingoIEXWebSocket = true; // 是否使用Tiingo的WebSocket
 	m_bUsingTiingoCryptoWebSocket = true; // 是否使用Tiingo的WebSocket
 	m_bUsingTiingoForexWebSocket = true; // 是否使用Tiingo的WebSocket
+
+	// ChinaMarket
+	m_bFastInquiringRTData = false;
 
 	LoadDB();
 	Update();

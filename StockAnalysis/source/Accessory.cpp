@@ -533,26 +533,26 @@ bool ConvertToNlohmannJSon(json& js, std::string& s) {
 		js = json::parse(s);
 	}
 	catch (json::parse_error& e) {
-#ifndef _DEBUG
+//#ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
 		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
-#endif
+//#endif
 		return false;
 	}
 	return true;
 }
 
-bool ConvertToNlohmannJSon(shared_ptr<json>& pjs, std::string& s) {
+bool ConvertToNlohmannJSon(json* pjs, std::string& s) {
 	try {
 		*pjs = json::parse(s);
 	}
 	catch (json::parse_error& e) {
-#ifndef _DEBUG
+//#ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
 		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
-#endif
+//#endif
 		pjs = nullptr;
 		return false;
 	}

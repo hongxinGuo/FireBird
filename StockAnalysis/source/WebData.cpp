@@ -15,13 +15,12 @@ CWebData::CWebData() : CObject() {
 
 	m_fJSonContentType = false;
 	m_fParsed = false;
-	m_ppt = make_shared<ptree>();
+	m_ppt = nullptr;
 }
 
 CWebData::~CWebData() {
 	m_sDataBuffer.resize(0);
 	if (m_ppt != nullptr) m_ppt = nullptr;
-	if (m_pjs != nullptr) m_pjs = nullptr;
 }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
@@ -72,18 +71,10 @@ bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 	return m_fParsed;
 }
 
-bool CWebData::CreateJSon(json& js, long lBeginPos, long lEndPos) {
+bool CWebData::CreateJSon(json * pjs, long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fParsed = ConvertToNlohmannJSon(js, m_sDataBuffer);
-	return m_fParsed;
-}
-
-bool CWebData::CreateJSon(long lBeginPos, long lEndPos) {
-	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
-	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	if (m_pjs == nullptr) m_pjs = make_shared<nlohmann::ordered_json>();
-	m_fParsed = ConvertToNlohmannJSon(m_pjs, m_sDataBuffer);
+	m_fParsed = ConvertToNlohmannJSon(pjs, m_sDataBuffer);
 	return m_fParsed;
 }
 

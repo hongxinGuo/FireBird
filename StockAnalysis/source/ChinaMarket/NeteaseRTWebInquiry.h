@@ -8,7 +8,8 @@ public:
 	CNeteaseRTWebInquiry();
 	virtual ~CNeteaseRTWebInquiry();
 
-	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; }; // 解析接收到的数据， 默认数据格式为JSon。由于耗时太长，不解析。
+	//virtual bool ParseData(CWebDataPtr pWebData) override final { return true; }; // 解析接收到的数据， 默认数据格式为JSon。由于耗时太长，不解析。
+	virtual bool ParseData(CWebDataPtr pWebData) override final;
 
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual bool PrepareNextInquiringStr(void) override;

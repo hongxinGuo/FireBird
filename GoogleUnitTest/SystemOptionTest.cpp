@@ -39,7 +39,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(SystemOptionTest, TestInitialize) {
-		EXPECT_EQ(gl_systemOption.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
 		EXPECT_EQ(gl_systemOption.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200秒";
 		EXPECT_EQ(gl_systemOption.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";
 		EXPECT_EQ(gl_systemOption.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";

@@ -278,7 +278,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseNeteaseDataWithNlohmannJSon) {
 		json js;
-	  EXPECT_TRUE(m_pNeteaseWebRTData->CreateJSon(js));
+	  EXPECT_TRUE(m_pNeteaseWebRTData->CreateJSon(&js));
 		json::iterator it = js.begin();
 		bool fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
 		time_t ttime, ttime2, ttime3, tUTCTime;

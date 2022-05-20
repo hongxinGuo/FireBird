@@ -55,6 +55,9 @@ public:
 	bool IsUsingQuandlWebSocket(void) const noexcept { return m_bUsingQuandlWebSocket; }
 	void SetUsingQuandlWebSocket(bool bUsingQuandlWebSocket) noexcept { m_bUsingQuandlWebSocket = bUsingQuandlWebSocket; }
 
+	// ChinaMarket
+	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
+
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
@@ -82,6 +85,9 @@ protected:
 	bool m_bUsingTiingoCryptoWebSocket;
 	bool m_bUsingTiingoForexWebSocket;
 	bool m_bUsingQuandlWebSocket;
+
+	// ChinaMarket
+	bool m_bFastInquiringRTData; 
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;
