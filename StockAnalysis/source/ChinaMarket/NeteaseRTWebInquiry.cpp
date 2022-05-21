@@ -35,15 +35,35 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
-	m_lInquiringNumber = 700; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 目前neteaseRTData使用nlohmann json库函数解析。由于json::parse()函数的运行时间较长，导致使用debug模式编译后的系统解析时间太长，
+// 故而决定使用独立线程来解析接收到的数据，并存入数据队列中。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CNeteaseRTWebInquiry::ParseAndStoreData(CWebDataPtr pWebData) {
+	thread thread1(ThreadParseAndStoreNeteaseRTData, this, pWebData);
+	thread1.detach();
+	return true;
+}
+
+UINT ThreadParseAndStoreNeteaseRTData(CNeteaseRTWebInquiry * pInquiry, CWebDataPtr pWebData) {
+	pInquiry->ParseData(pWebData);
+	if (pWebData->IsParsed()) {
+		pInquiry->StoreWebData(pWebData);
+	}
+	return 1000;
+}
+
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	//pWebData->m_fParsed = pWebData->CreateJSon(21, 2);
-	//pWebData->SetJSonContentType(true);
+	pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));
+	pWebData->SetJSonContentType(true);
 	return pWebData->IsParsed();
 }
 

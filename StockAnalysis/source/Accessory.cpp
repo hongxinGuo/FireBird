@@ -528,21 +528,6 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
-bool ConvertToNlohmannJSon(json& js, std::string& s) {
-	try {
-		js = json::parse(s);
-	}
-	catch (json::parse_error& e) {
-//#ifndef _DEBUG
-		CString str = s.c_str();
-		str = str.Left(160);
-		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
-//#endif
-		return false;
-	}
-	return true;
-}
-
 bool ConvertToNlohmannJSon(json* pjs, std::string& s) {
 	try {
 		*pjs = json::parse(s);

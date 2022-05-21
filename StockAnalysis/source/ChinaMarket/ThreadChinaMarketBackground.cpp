@@ -167,7 +167,7 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
 	string ss;
 	json* pjs = nullptr;
-	INT64 llTotal = 0;
+	INT64 llTotalActive = 0, llTotal = 0;
 	bool fProcess = true;
 
 	if (lTotalData == 0) return false;
@@ -183,17 +183,18 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			pjs = pWebDataReceived->GetJSon();
 			for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
+				llTotal++;
 				if (gl_fExitingSystem) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 				if (pRTData->ParseNeteaseDataWithNlohmannJSon(it)) {
-					llTotal++;
+					llTotalActive++;
 					gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
 				}
 			}
 		}
 	}
-	gl_pChinaMarket->IncreaseRTDataReceived(llTotal);
+	gl_pChinaMarket->IncreaseRTDataReceived(llTotalActive);
 
 	return true;
 }
@@ -348,7 +349,7 @@ UINT ThreadChinaMarketBackground(void) {
 	gl_ThreadStatus.SetChinaMarketBackground(true);
 	while (!gl_fExitingSystem) {
 		// 网易实时数据的接收加上处理时间超过了400毫秒，导致接收频率降低。故而将处理任务移至此工作线程中。
-		// 此四个任务比较费时，尤其时网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
+		// 此四个任务比较费时，尤其是网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseSinaData(); // 解析新浪实时数据
 		//ParseNeteaseRTDataWithPTree(); // 使用 perproty tree解析网易实时数据

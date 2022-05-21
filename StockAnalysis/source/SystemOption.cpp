@@ -99,7 +99,7 @@ CSystemOption::CSystemOption() {
 	m_bUsingTiingoForexWebSocket = true; // 是否使用Tiingo的WebSocket
 
 	// ChinaMarket
-	m_bFastInquiringRTData = false;
+	m_bFastInquiringRTData = false; // 主要用于测试。当需要测试系统实时数据接收负载时，设置为真。
 
 	LoadDB();
 	Update();
@@ -119,11 +119,6 @@ void CSystemOption::Update() {
 	string sTemp;
 
 	try {
-		// 测试用
-		try { int i = m_systemOption.at("NotExist"); }
-		catch (json::out_of_range&) {
-			TRACE(_T("条目不存在，导致出现异常。json::out_of_range\n"));
-		}
 		// ChinaMarket
 		try {
 			m_iChinaMarketRealtimeServer = m_systemOption.at("ChinaMarketRealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。

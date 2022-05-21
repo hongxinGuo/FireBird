@@ -53,9 +53,8 @@ namespace StockAnalysisTest {
 		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0) << "解析和存储任务由独立的线程来完成，故而此处没有存储数据";
 
 		// 恢复原状
-		gl_WebInquirer.PopNeteaseRTData();
 	}
 }

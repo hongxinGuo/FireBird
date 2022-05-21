@@ -23,6 +23,7 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
+	virtual bool ParseAndStoreData(CWebDataPtr pWebData);
 	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
 	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); }
 
@@ -30,6 +31,7 @@ public:
 	virtual bool GetWebData(void);
 
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
+
 
 	void Reset(void) noexcept;
 	virtual bool ReportStatus(long lNumberOfData) const;
