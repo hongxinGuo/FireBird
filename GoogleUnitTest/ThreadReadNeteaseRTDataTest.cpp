@@ -37,15 +37,19 @@ namespace StockAnalysisTest {
 		CMockNeteaseRTWebInquiry NeteaseRTWebInquiry;
 	};
 
-	TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData) {
+	TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData1) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+
 		EXPECT_CALL(NeteaseRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
 		NeteaseRTWebInquiry.__TESTSetBuffer(_T("_ntes_quote_callback({\"0600270\": {\"time\": \"2020/04/23 08:30:01\", \"code\": \"0600270\",\"name\":\"don't use chinese character\",\"update\": \"2020/04/23 08:30:01\"} });")); // 要采用网易实时数据制式
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
+	}
 
+	TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData2) {
+		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 		EXPECT_CALL(NeteaseRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
@@ -53,8 +57,9 @@ namespace StockAnalysisTest {
 		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0) << "解析和存储任务由独立的线程来完成，故而此处没有存储数据";
+		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTData(), 1);
 
 		// 恢复原状
+		gl_WebInquirer.PopNeteaseRTData();
 	}
 }

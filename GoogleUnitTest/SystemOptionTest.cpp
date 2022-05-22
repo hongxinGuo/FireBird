@@ -62,9 +62,10 @@ namespace StockAnalysisTest {
 		gl_systemOption.UpdateJson();
 		gl_systemOption.SaveDB();
 		gl_systemOption.LoadDB();
+		gl_systemOption.Update();
 
 		try {
-			EXPECT_TRUE(jsSystemOption[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemOption.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为false";
+			EXPECT_FALSE(jsSystemOption[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemOption.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为false";
 			EXPECT_TRUE(jsSystemOption[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemOption.IsUsingTiingoIEXWebSocket());
 		}
 		catch (json::type_error e) {

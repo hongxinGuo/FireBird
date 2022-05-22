@@ -291,7 +291,8 @@ void CVirtualWebInquiry::Read(void) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		TransferData(pWebData);
 		SetTime(pWebData);
-		ParseAndStoreData(pWebData); // 解析并存储数据。由于可能需要使用线程解析，故而将此两个动作放在一处，以备线程同步完成。
+		ParseData(pWebData);
+		StoreWebData(pWebData);
 		ResetBuffer();
 		UpdateStatusWhenSecceed(pWebData);
 	}
@@ -307,12 +308,6 @@ void CVirtualWebInquiry::Read(void) {
 	}
 
 	SetReadingWebData(false);
-}
-
-bool CVirtualWebInquiry::ParseAndStoreData(CWebDataPtr pWebData) {
-	bool fSucceed = ParseData(pWebData);
-	StoreWebData(pWebData);
-	return fSucceed;
 }
 
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {

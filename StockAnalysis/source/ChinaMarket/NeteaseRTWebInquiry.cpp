@@ -35,7 +35,11 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
+#ifdef _DEBUG
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
+#else
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
+#endif
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
@@ -47,23 +51,9 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 // 故而决定使用独立线程来解析接收到的数据，并存入数据队列中。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseRTWebInquiry::ParseAndStoreData(CWebDataPtr pWebData) {
-	thread thread1(ThreadParseAndStoreNeteaseRTData, this, pWebData);
-	thread1.detach();
-	return true;
-}
-
-UINT ThreadParseAndStoreNeteaseRTData(CNeteaseRTWebInquiry * pInquiry, CWebDataPtr pWebData) {
-	pInquiry->ParseData(pWebData);
-	if (pWebData->IsParsed()) {
-		pInquiry->StoreWebData(pWebData);
-	}
-	return 1000;
-}
-
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));
-	pWebData->SetJSonContentType(true);
+	//pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));yh
+	//pWebData->SetJSonContentType(true);
 	return pWebData->IsParsed();
 }
 

@@ -143,7 +143,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 	CTiingoCryptoSocketPtr pCryptoData = nullptr;
 
 	try {
-		if (ConvertToPTreeJSon(pt, *pData)) {
+		if (ParseWithPTree(pt, *pData)) {
 			sType = ptreeGetString(pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {

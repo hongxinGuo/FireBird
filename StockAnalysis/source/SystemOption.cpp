@@ -99,7 +99,11 @@ CSystemOption::CSystemOption() {
 	m_bUsingTiingoForexWebSocket = true; // 是否使用Tiingo的WebSocket
 
 	// ChinaMarket
-	m_bFastInquiringRTData = false; // 主要用于测试。当需要测试系统实时数据接收负载时，设置为真。
+#ifdef DEBUG
+	m_bFastInquiringRTData = true; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
+#else
+	m_bFastInquiringRTData = false;
+#endif
 
 	LoadDB();
 	Update();
@@ -109,8 +113,9 @@ CSystemOption::~CSystemOption() {
 	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("ini ");
 	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("bak");
 
-	rename(strOld, strNew);
-
+	if (m_fUpdate) {
+		rename(strOld, strNew); // 保存备份
+	}
 	UpdateJson();
 	SaveDB();
 }
@@ -166,26 +171,30 @@ void CSystemOption::Update() {
 
 		// WebSocket
 		try {
-			m_bUsingFinnhubWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")); // 是否使用Finnhub的WebSocket
+			//m_bUsingFinnhubWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")); // 是否使用Finnhub的WebSocket
+			m_bUsingFinnhubWebSocket = m_systemOption.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_bUsingTiingoIEXWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoIEXWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoIEXWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_bUsingTiingoCryptoWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoCryptoWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoCryptoWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_bUsingTiingoForexWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoForexWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoForexWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 	}
-	catch (json::type_error& e) {
+	catch (json::type_error&) {
 		ASSERT(0);
 	}
 }

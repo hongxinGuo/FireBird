@@ -306,7 +306,7 @@ CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
 	while (iCount < lTotalNumber) { // 每次最大查询量为lTotalNumber个股票
 		if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive() || m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsIPOed()) {
-		//if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive()) {
+			//if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive()) {
 			iCount++;
 			strNeteaseRTDataInquiringStr += _T(",");
 			strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());

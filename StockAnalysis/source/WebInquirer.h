@@ -123,6 +123,7 @@ protected:
 	CTemplateMutexAccessQueue<CWebData> m_qSinaRTWebData; // 新浪股票网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qTengxunRTWebData; // 腾讯网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qNeteaseRTWebData; // 网易网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qNeteaseWaitingParseRTWebData; // 网易网络数据暂存队列（等待Parsing）
 	CTemplateMutexAccessQueue<CWebData> m_qFinnhubData; // Finnhub.io网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qQuandlData; // Quandl.com网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qTiingoData; // Tiingo.com网络数据暂存队列

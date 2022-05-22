@@ -8,6 +8,7 @@
 #include"GeneralCheck.h"
 
 #include"accessory.h"
+#include"NlohmannJsonParse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -269,38 +270,37 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(XferStandredToTengxun(_T("00001.SZ")), _T("sz00001."));
 	}
 
-	TEST_F(AccessoryTest, TestConvertToPTreeJson) {
+	TEST_F(AccessoryTest, TestParseWithPTree) {
 		ptree pt;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToPTreeJSon(pt, s));
+		EXPECT_TRUE(ParseWithPTree(pt, s));
 		string sSubscribe = ptreeGetString(pt, _T("eventName"));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToPTreeJSon(pt, s));
+		EXPECT_FALSE(ParseWithPTree(pt, s));
 	}
 
-	TEST_F(AccessoryTest, TestConvertToPTreeJson2) {
+	TEST_F(AccessoryTest, TestParseWithPTree2) {
 		shared_ptr<ptree> ppt = make_shared<ptree>();
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToPTreeJSon(ppt, s));
+		EXPECT_TRUE(ParseWithPTree(ppt, s));
 		string sSubscribe = ppt->get<string>(_T("eventName"));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToPTreeJSon(ppt, s));
+		EXPECT_FALSE(ParseWithPTree(ppt, s));
 	}
 
 	TEST_F(AccessoryTest, TestConvertToNlohmannJson) {
-		json* pjs =  new json;
+		json* pjs = new json;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ConvertToNlohmannJSon(pjs, s));
+		EXPECT_TRUE(ParseWithNlohmannJSon(pjs, s));
 		string sSubscribe = pjs->at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ConvertToNlohmannJSon(pjs, s));
+		EXPECT_FALSE(ParseWithNlohmannJSon(pjs, s));
 
 		gl_systemMessage.PopErrorMessage();
 		delete pjs;
-
 	}
 
 	TEST_F(AccessoryTest, TestFormatToMK) {

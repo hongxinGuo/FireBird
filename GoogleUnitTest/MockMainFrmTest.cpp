@@ -135,6 +135,10 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateInnerSystemStatus) {
+		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _))
 			.Times(1);
@@ -167,6 +171,12 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(15, _))
 			.Times(1);
 		gl_pMockMainFrame->UpdateInnerSystemStatus();
+
+		// »Ö¸´Ô­×´
+		gl_systemMessage.SetProcessedFinnhubWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(0);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnSysCommand) {
@@ -752,6 +762,10 @@ namespace StockAnalysisTest {
 	TEST_F(CMockMainFrameTest, TestOnTimer) {
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
+		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 
 		EXPECT_CALL(*gl_pMockMainFrame, ResetMarket())
 			.Times(1);
@@ -816,5 +830,11 @@ namespace StockAnalysisTest {
 
 		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
 		gl_systemMessage.PopInformationMessage();
+
+		// »Ö¸´Ô­×´
+		gl_systemMessage.SetProcessedFinnhubWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(0);
 	}
 }

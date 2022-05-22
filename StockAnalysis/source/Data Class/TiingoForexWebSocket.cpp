@@ -136,7 +136,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (ConvertToPTreeJSon(pt, *pData)) {
+		if (ParseWithPTree(pt, *pData)) {
 			sType = ptreeGetString(pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {

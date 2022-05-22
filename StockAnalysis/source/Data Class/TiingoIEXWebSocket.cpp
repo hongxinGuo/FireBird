@@ -135,7 +135,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	CTiingoIEXSocketPtr pIEXData = nullptr;
 
 	try {
-		if (ConvertToPTreeJSon(pt, *pData)) {
+		if (ParseWithPTree(pt, *pData)) {
 			sType = ptreeGetString(pt, _T("messageType"));
 			if (sType == _T("")) return false;
 			switch (sType.at(0)) {

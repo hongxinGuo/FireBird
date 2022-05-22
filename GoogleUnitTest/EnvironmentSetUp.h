@@ -61,6 +61,7 @@ namespace StockAnalysisTest {
 			ASSERT(!gl_fNormalMode);
 			gl_systemOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.ini"));
 			gl_systemOption.LoadDB();
+			gl_systemOption.Update();
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;

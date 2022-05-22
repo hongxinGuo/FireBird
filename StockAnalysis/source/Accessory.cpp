@@ -442,7 +442,7 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	}
 }
 
-bool ConvertToPTreeJSon(ptree& pt, string& s) {
+bool ParseWithPTree(ptree& pt, string& s) {
 	stringstream ss(s);
 	try {
 		read_json(ss, pt);
@@ -458,7 +458,7 @@ bool ConvertToPTreeJSon(ptree& pt, string& s) {
 	return true;
 }
 
-bool ConvertToPTreeJSon(shared_ptr<ptree>& ppt, string& s) {
+bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
 	ASSERT(ppt != nullptr);
 	stringstream ss(s);
 	try {
@@ -528,16 +528,16 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
-bool ConvertToNlohmannJSon(json* pjs, std::string& s) {
+bool ParseWithNlohmannJSon(json* pjs, std::string& s) {
 	try {
 		*pjs = json::parse(s);
 	}
 	catch (json::parse_error& e) {
-//#ifndef _DEBUG
+		//#ifndef _DEBUG
 		CString str = s.c_str();
 		str = str.Left(160);
 		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
-//#endif
+		//#endif
 		pjs = nullptr;
 		return false;
 	}

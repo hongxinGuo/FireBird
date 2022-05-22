@@ -1,4 +1,4 @@
- /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将ChinaMarket中的耗时计算任务移至此处。
 //
@@ -9,6 +9,7 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
+#include"NlohmannJsonParse.h"
 #include"SystemMessage.h"
 
 #include"ChinaMarket.h"
@@ -345,6 +346,7 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 
 	return true;
 }
+
 UINT ThreadChinaMarketBackground(void) {
 	gl_ThreadStatus.SetChinaMarketBackground(true);
 	while (!gl_fExitingSystem) {
@@ -352,8 +354,8 @@ UINT ThreadChinaMarketBackground(void) {
 		// 此四个任务比较费时，尤其是网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。
 		ParseSinaData(); // 解析新浪实时数据
-		//ParseNeteaseRTDataWithPTree(); // 使用 perproty tree解析网易实时数据
 		ParseNeteaseRTDataWithNlohmannJSon(); // 使用nlohmann json解析网易实时数据
+		//ParseNeteaseRTDataWithPTree(); // 使用 perproty tree解析网易实时数据
 		ParseTengxunRTData(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
 		Sleep(50); // 最少间隔50ms

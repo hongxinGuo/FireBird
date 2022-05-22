@@ -186,7 +186,8 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			break;
 		case 4: // 第二个数据缺缺actual
 			EXPECT_TRUE(fSucceed);
@@ -209,9 +210,11 @@ namespace StockAnalysisTest {
 		default:
 			break;
 		}
+		// 恢复原状
 		pStock->m_fEPSSurpriseUpdated = false;
 		pStock->m_fEPSSurpriseNeedSave = false;
 		pStock->SetUpdateProfileDB(false);
 		pStock->m_vEPSSurprise.resize(0);
+		pStock->SetLastEPSSurpriseUpdateDate(19800101);
 	}
 }

@@ -132,7 +132,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	CFinnhubSocketPtr pFinnhubDataPtr = nullptr;
 
 	try {
-		if (ConvertToPTreeJSon(pt, *pData)) {
+		if (ParseWithPTree(pt, *pData)) {
 			sType = ptreeGetString(pt, _T("type"));
 			if (sType.compare(_T("trade")) == 0) { // 交易数据
 				pt2 = pt.get_child(_T("data"));

@@ -57,6 +57,7 @@ public:
 
 	// ChinaMarket
 	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
+	void SetFastInquiringRTData(bool fFlag) noexcept { m_bFastInquiringRTData = fFlag; }
 
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
@@ -87,7 +88,7 @@ protected:
 	bool m_bUsingQuandlWebSocket;
 
 	// ChinaMarket
-	bool m_bFastInquiringRTData; 
+	bool m_bFastInquiringRTData;
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;
