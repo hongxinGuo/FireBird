@@ -141,14 +141,14 @@ void CChinaStock::ClearRTDataDeque(void) {
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
-	if (m_dataDayLine.GetDataSize() <= 0) return false;
-	if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
+	if (m_dataDayLine.Size() <= 0) return false;
+	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	else return false;
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine(void) {
-	if (m_dataDayLine.GetDataSize() == 0) return;
-	if (gl_pChinaMarket->IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+	if (m_dataDayLine.Size() == 0) return;
+	if (gl_pChinaMarket->IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
 		SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
 	}
 	else {
@@ -305,14 +305,14 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 void CChinaStock::UpdateDayLineStartEndDate(void) {
 	bool fUpdated = false;
 
-	if (m_dataDayLine.GetDataSize() > 0) {
+	if (m_dataDayLine.Size() > 0) {
 		if ((GetDayLineStartDate() == 19900101) || (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate())) {
 			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
-		if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate());
+		if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) {
+			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
@@ -1381,19 +1381,19 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 
 bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	ASSERT(IsDayLineLoaded());
-	ASSERT(m_dataDayLine.GetDataSize() > 0);
+	ASSERT(m_dataDayLine.Size() > 0);
 	long i = 0;
 	CWeekLinePtr pWeekLine = nullptr;
 
 	m_dataWeekLine.Unload();
-	while ((i < m_dataDayLine.GetDataSize()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
+	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
 		i++;
 	}
-	if (i < m_dataDayLine.GetDataSize()) {
+	if (i < m_dataDayLine.Size()) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);
 			m_dataWeekLine.StoreData(pWeekLine);
-		} while (i < m_dataDayLine.GetDataSize());
+		} while (i < m_dataDayLine.Size());
 		m_dataWeekLine.SetDataLoaded(true);
 		return true;
 	}

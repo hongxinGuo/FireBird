@@ -72,7 +72,7 @@ void CQuandlWebInquiry::PrepareReadingWebData(void) {
 }
 
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_WebInquirer.GetQuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
+	while (gl_WebInquirer.QuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
 	gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("Quandl工作线程出错"));
 }

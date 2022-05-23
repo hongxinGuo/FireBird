@@ -16,7 +16,7 @@ public:
 	void PushData(CWebRTDataPtr pData);
 	CWebRTDataPtr PopData(void);
 	CWebRTDataPtr GetHead(void) noexcept { return m_priorityqueueStockData.top(); }
-	size_t GetDataSize(void);
+	size_t Size(void);
 
 protected:
 	// 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。

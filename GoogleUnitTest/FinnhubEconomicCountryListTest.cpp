@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -86,8 +86,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
-													 testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-														 &finnhubWebData95, &finnhubWebData100));
+		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+			&finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
@@ -137,7 +137,7 @@ namespace StockAnalysisTest {
 				auto pCountry = gl_pWorldMarket->GetCountry(_T("New Country"));
 				gl_pWorldMarket->DeleteCountry(pCountry);
 			}
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -148,8 +148,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
-													 testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-														 &finnhubWebData95, &finnhubWebData100));
+		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+			&finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		long l = gl_pWorldMarket->GetTotalCountry();

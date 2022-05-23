@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetSystemReady(false);
 			GeneralCheck();
 		}
-		CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集
+		CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 网易实时数据采集
 	};
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestInitialize) {

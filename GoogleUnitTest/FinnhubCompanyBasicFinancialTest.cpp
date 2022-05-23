@@ -276,7 +276,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetBasicFinancialUpdateDate(19800101);
 			m_pStock->SetBasicFinancialUpdated(false);
@@ -292,7 +292,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-												 testing::Values(&finnhubWebData1001, &finnhubWebData1002));
+		testing::Values(&finnhubWebData1001, &finnhubWebData1002));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
@@ -332,7 +332,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateBasicFinancialDB(false);
 			m_pStock->SetBasicFinancialUpdateDate(19800101);
 
@@ -347,7 +347,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-													 testing::Values(&finnhubWebData1001, &finnhubWebData1002));
+		testing::Values(&finnhubWebData1001, &finnhubWebData1002));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
@@ -366,7 +366,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 		default:
 			break;
 		}

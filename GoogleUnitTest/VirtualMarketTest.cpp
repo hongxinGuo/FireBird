@@ -359,7 +359,7 @@ namespace StockAnalysisTest {
 		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(1500);
 		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket());
 
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 2);
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 	}

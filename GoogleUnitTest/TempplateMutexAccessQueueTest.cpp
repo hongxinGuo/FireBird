@@ -41,9 +41,9 @@ namespace StockAnalysisTest {
 	TYPED_TEST_P(CTemplateMutexAccessQueueTest, TestReset) {
 		m_qData.PushData(this->m_data1);
 		m_qData.PushData(this->m_data2);
-		EXPECT_EQ(this->m_qData.GetDataSize(), 2);
+		EXPECT_EQ(this->m_qData.Size(), 2);
 		this->m_qData.Reset();
-		EXPECT_EQ(m_qData.GetDataSize(), 0);
+		EXPECT_EQ(m_qData.Size(), 0);
 	}
 
 	TYPED_TEST_P(CTemplateMutexAccessQueueTest, TestPushPopData) {

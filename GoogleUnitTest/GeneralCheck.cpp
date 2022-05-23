@@ -14,10 +14,10 @@ using namespace testing;
 
 namespace StockAnalysisTest {
 	void SystemMessageCheck(void) {
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0) << gl_systemMessage.PopInformationMessage();
-		EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
-		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 0) << gl_systemMessage.PopErrorMessage();
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
+		EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+		EXPECT_THAT(gl_systemMessage.DayLineInfoSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
+		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << gl_systemMessage.PopErrorMessage();
 	}
 
 	void EnvironmentCheck(void) {
@@ -57,17 +57,17 @@ namespace StockAnalysisTest {
 	}
 
 	void WebInquirerCheck(void) {
-		EXPECT_THAT(gl_WebInquirer.GetFinnhubDataSize(), 0);
-		EXPECT_THAT(gl_WebInquirer.GetTiingoDataSize(), 0);
-		EXPECT_THAT(gl_WebInquirer.GetTiingoCryptoWebSocketDataSize(), 0);
-		EXPECT_THAT(gl_WebInquirer.GetTiingoForexWebSocketDataSize(), 0);
-		EXPECT_THAT(gl_WebInquirer.GetTiingoIEXWebSocketDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.FinnhubDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.TiingoDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
+		EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);
 	}
 
 	void DataContainerCheck(void) {
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		EXPECT_EQ(gl_WebInquirer.GetParsedNeteaseDayLineDataSize(), 0);
 	}
 

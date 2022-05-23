@@ -32,9 +32,9 @@ namespace StockAnalysisTest {
 		COutputList outputList;
 		CString strCmp = _T("20200101: first time test");
 		systemDeque.PushMessage(_T("first time test"));
-		EXPECT_EQ(systemDeque.GetDequeSize(), 1);
+		EXPECT_EQ(systemDeque.Size(), 1);
 		EXPECT_CALL(systemDeque, SysCallOutputListAddString(&outputList, strCmp)).Times(1);
 		systemDeque.Display(&outputList, _T("20200101"));
-		EXPECT_EQ(systemDeque.GetDequeSize(), 0);
+		EXPECT_EQ(systemDeque.Size(), 0);
 	}
 }

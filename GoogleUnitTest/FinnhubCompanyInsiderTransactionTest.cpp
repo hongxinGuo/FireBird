@@ -81,7 +81,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetInsiderTransactionNeedSave(false);
 			m_pStock->SetInsiderTransactionUpdateDate(19800101);
@@ -97,7 +97,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
-													 testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ProcessWebData(m_pWebData);
@@ -137,7 +137,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
-													 testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);

@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
 		forexDayLine.SetMarket(gl_pWorldMarket.get());
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreatMessage(),
-								 forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+			forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
@@ -109,9 +109,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexCandle1,
-													 ParseFinnhubForexCandleTest,
-													 testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
-														 &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+		ParseFinnhubForexCandleTest,
+		testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
+			&finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		CString strMessage;
@@ -131,32 +131,32 @@ namespace StockAnalysisTest {
 			break;
 		case 4:
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
 			break;
 		case 11: // 没有s项
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		default:
@@ -199,8 +199,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle, ProcessFinnhubForexCandleTest,
-													 testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
-														 &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+		testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
+			&finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
 	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
 		CString strMessage;
@@ -219,7 +219,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 3: // s项报告 no data
@@ -233,7 +233,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5: // 缺乏C项，无效数据
@@ -242,7 +242,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
@@ -251,7 +251,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
@@ -260,7 +260,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
@@ -269,7 +269,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
@@ -278,7 +278,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
@@ -293,7 +293,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		default:

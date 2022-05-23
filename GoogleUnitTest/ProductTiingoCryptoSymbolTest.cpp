@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -79,8 +79,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-													 ParseTiingoCryptoTest,
-													 testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+		ParseTiingoCryptoTest,
+		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -126,8 +126,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCrypto1,
-													 ProcessTiingoCryptoTest,
-													 testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+		ProcessTiingoCryptoTest,
+		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto = nullptr;
@@ -144,7 +144,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_pWorldMarket->GetTiingoCryptoSymbolSize(), l + 1);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoCryptoSymbol(_T("New Symbol")));
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			pCrypto = gl_pWorldMarket->GetTiingoCryptoSymbol(_T("New Symbol"));

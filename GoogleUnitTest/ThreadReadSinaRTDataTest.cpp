@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		SinaRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&SinaRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.SinaRTDataSize(), 1);
 		for (int i = 0; i < 1; i++) {
 			CWebDataPtr pRTData = gl_WebInquirer.PopSinaRTData();
 		}

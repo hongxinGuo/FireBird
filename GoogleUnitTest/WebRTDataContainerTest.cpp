@@ -25,17 +25,17 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	TEST(RTDataContainerTest, TestInitialize) {
 		ASSERT_FALSE(gl_fNormalMode);
-		size_t l = gl_systemMessage.GetInformationDequeSize();
+		size_t l = gl_systemMessage.InformationSize();
 		for (int i = 0; i < l; i++) {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
 		}
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 	}
 
 	// 测试有优先级的队列存储临时实时数据。
 	TEST(RTDataContainerTest, TestGetSinaRTDataDuqueSize) {
 		ASSERT_FALSE(gl_fNormalMode);
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_WebRTDataContainer.PushSinaData(pRTData);
@@ -53,29 +53,29 @@ namespace StockAnalysisTest {
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_WebRTDataContainer.PushSinaData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 5);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 5);
 		CWebRTDataPtr p2 = gl_WebRTDataContainer.PopSinaData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 4);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 4);
 		EXPECT_EQ(p2->GetTransactionTime(), 200);
 		p2 = gl_WebRTDataContainer.PopSinaData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 3);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 3);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200);
 		p2 = gl_WebRTDataContainer.PopSinaData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 2);
 		EXPECT_EQ(p2->GetTransactionTime(), 100100100);
 		p2 = gl_WebRTDataContainer.PopSinaData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 1);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 		EXPECT_EQ(p2->GetBuy(), 1);
 		p2 = gl_WebRTDataContainer.PopSinaData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 	}
 
 	TEST(RTDataContainerTest, TestGetTengxunRTDataDuqueSize) {
 		ASSERT_FALSE(gl_fNormalMode);
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_WebRTDataContainer.PushTengxunData(pRTData);
@@ -93,29 +93,29 @@ namespace StockAnalysisTest {
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_WebRTDataContainer.PushTengxunData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 5);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 5);
 		CWebRTDataPtr p2 = gl_WebRTDataContainer.PopTengxunData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 4);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 4);
 		EXPECT_EQ(p2->GetTransactionTime(), 200);
 		p2 = gl_WebRTDataContainer.PopTengxunData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 3);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 3);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200);
 		p2 = gl_WebRTDataContainer.PopTengxunData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 2);
 		EXPECT_EQ(p2->GetTransactionTime(), 100100100);
 		p2 = gl_WebRTDataContainer.PopTengxunData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 1);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 1);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 		EXPECT_EQ(p2->GetBuy(), 1);
 		p2 = gl_WebRTDataContainer.PopTengxunData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 		EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 	}
 
 	TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
 		ASSERT_FALSE(gl_fNormalMode);
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_WebRTDataContainer.PushNeteaseData(pRTData);
@@ -133,22 +133,22 @@ namespace StockAnalysisTest {
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_WebRTDataContainer.PushNeteaseData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 5);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 5);
 		CWebRTDataPtr p2 = gl_WebRTDataContainer.PopNeteaseData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 4);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 4);
 		EXPECT_EQ(p2->GetTransactionTime(), 200);
 		p2 = gl_WebRTDataContainer.PopNeteaseData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 3);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 3);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200);
 		p2 = gl_WebRTDataContainer.PopNeteaseData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 2);
 		EXPECT_EQ(p2->GetTransactionTime(), 100100100);
 		p2 = gl_WebRTDataContainer.PopNeteaseData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 1);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 		EXPECT_EQ(p2->GetBuy(), 1);
 		p2 = gl_WebRTDataContainer.PopNeteaseData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
 		EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 	}

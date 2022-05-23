@@ -403,7 +403,7 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
-	const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
+	const size_t lTotalNumber = gl_WebRTDataContainer.SinaDataSize();
 	CString strVolume;
 	CString strStandredStockCode;
 	CWebRTDataPtr pRTData = nullptr;
@@ -419,7 +419,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	}
 	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	// 由于使用线程Parse新浪实时数据，故此处不再检测队列为零
-	//ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // 必须一次处理全体数据。
+	//ASSERT(gl_WebRTDataContainer.SinaDataSize() == 0); // 必须一次处理全体数据。
 
 	return true;
 }
@@ -470,7 +470,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	CChinaStockPtr pStock;
-	const size_t lTotalNumber = gl_WebRTDataContainer.GetNeteaseDataSize();
+	const size_t lTotalNumber = gl_WebRTDataContainer.NeteaseDataSize();
 	CString strVolume;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
@@ -483,7 +483,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	}
 	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	// 由于使用线程Parse网易实时数据，故此处不再检测队列为零
-	//ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // 必须一次处理全体数据。
+	//ASSERT(gl_WebRTDataContainer.NeteaseDataSize() == 0); // 必须一次处理全体数据。
 
 	return true;
 }
@@ -533,7 +533,7 @@ void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 
 bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.GetNeteaseDataSize();
+	const size_t lTotalData = gl_WebRTDataContainer.NeteaseDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
 		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -546,7 +546,7 @@ bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
 
 bool CChinaMarket::TaskDiscardSinaRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.GetSinaDataSize();
+	const size_t lTotalData = gl_WebRTDataContainer.SinaDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
 		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -559,7 +559,7 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
 
 bool CChinaMarket::TaskDiscardTengxunRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
+	const size_t lTotalData = gl_WebRTDataContainer.TengxunDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
 		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -572,7 +572,7 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
+	const size_t lTotalData = gl_WebRTDataContainer.TengxunDataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
 		pRTData = gl_WebRTDataContainer.PopTengxunData();

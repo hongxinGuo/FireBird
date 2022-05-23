@@ -26,9 +26,9 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
 
-	ASSERT(GetDataSize() > 0);
+	ASSERT(Size() > 0);
 
-	lSize = GetDataSize();
+	lSize = Size();
 	if (strStockSymbol.GetLength() > 0) {
 		psetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
 		psetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
@@ -130,14 +130,14 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 	while (!psetHistoryCandleExtend->IsEOF()) {
 		pHistoryCandle = GetData(iPosition);
 		while ((pHistoryCandle->GetMarketDate() < psetHistoryCandleExtend->m_Date)
-			&& (GetDataSize() > (iPosition + 1))) {
+			&& (Size() > (iPosition + 1))) {
 			iPosition++;
 			pHistoryCandle = GetData(iPosition);
 		}
 		if (pHistoryCandle->GetMarketDate() == psetHistoryCandleExtend->m_Date) {
 			pHistoryCandle->LoadExtendData(psetHistoryCandleExtend);
 		}
-		if (GetDataSize() <= (iPosition + 1)) break;
+		if (Size() <= (iPosition + 1)) break;
 		psetHistoryCandleExtend->MoveNext();
 	}
 	m_fLoadDataFirst = false;

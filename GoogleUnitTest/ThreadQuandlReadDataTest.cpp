@@ -51,8 +51,8 @@ namespace StockAnalysisTest {
 		QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 0);
-		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.QuandlDataSize(), 0);
+		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 		gl_systemMessage.PopErrorMessage();
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
 		QuandlWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.QuandlDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_EQ(QuandlWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";

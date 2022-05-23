@@ -66,7 +66,7 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseSinaData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
+	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
 	INT64 llTotal = 0;
 	bool fSucceed = true;
 	for (int i = 0; i < lTotalData; i++) {
@@ -110,7 +110,7 @@ bool ParseSinaData(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseNeteaseRTDataWithPTree(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
+	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	string ss;
 	shared_ptr<ptree> ppt = nullptr;
 	INT64 llTotal = 0;
@@ -165,7 +165,7 @@ bool ParseNeteaseRTDataWithPTree(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
+	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	string ss;
 	json* pjs = nullptr;
 	INT64 llTotalActive = 0, llTotal = 0;
@@ -299,7 +299,7 @@ bool ParseTengxunRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	bool fSucceed = true;
 
-	const size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
+	const size_t lTotalData = gl_WebInquirer.TengxunRTDataSize();
 	for (int i = 0; i < lTotalData; i++) {
 		pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
 		pWebDataReceived->ResetCurrentPos();
@@ -334,7 +334,7 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 	CNeteaseDayLineWebDataPtr pData = nullptr;
 	CWebDataPtr pWebData = nullptr;
 
-	while (gl_WebInquirer.GetNeteaseDayLineDataSize() > 0) {
+	while (gl_WebInquirer.NeteaseDayLineDataSize() > 0) {
 		if (gl_fExitingSystem) return true;
 		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
 		pData = make_shared<CNeteaseDayLineWebData>();

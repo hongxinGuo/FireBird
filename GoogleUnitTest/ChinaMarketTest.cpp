@@ -121,7 +121,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pChinaMarket->SetPermitResetMarket(true);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 			gl_pChinaMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
@@ -142,7 +142,7 @@ namespace StockAnalysisTest {
 
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -871,36 +871,36 @@ namespace StockAnalysisTest {
 		CWebRTDataPtr prtData1, prtData2;
 		prtData1 = make_shared<CWebRTData>();
 		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
 		gl_WebRTDataContainer.PushNeteaseData(prtData1);
 		gl_WebRTDataContainer.PushNeteaseData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 2);
 		gl_pChinaMarket->TaskDiscardNeteaseRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskDiscardSinaRTData) {
 		CWebRTDataPtr prtData1, prtData2;
 		prtData1 = make_shared<CWebRTData>();
 		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		gl_WebRTDataContainer.PushSinaData(prtData1);
 		gl_WebRTDataContainer.PushSinaData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 2);
 		gl_pChinaMarket->TaskDiscardSinaRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskDiscardTengxunRTData) {
 		CWebRTDataPtr prtData1, prtData2;
 		prtData1 = make_shared<CWebRTData>();
 		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 		gl_WebRTDataContainer.PushTengxunData(prtData1);
 		gl_WebRTDataContainer.PushTengxunData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 2);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 2);
 		gl_pChinaMarket->TaskDiscardTengxunRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {
@@ -1377,7 +1377,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
 			setDayLineBasicInfo.MoveNext();
 		}
-		EXPECT_EQ(i, dataChinaDayLine.GetDataSize());
+		EXPECT_EQ(i, dataChinaDayLine.Size());
 		setDayLineBasicInfo.Close();
 	}
 
@@ -1482,7 +1482,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
-		EXPECT_THAT(gl_WebRTDataContainer.GetTengxunDataSize(), Eq(0));
+		EXPECT_THAT(gl_WebRTDataContainer.TengxunDataSize(), Eq(0));
 
 		pRTData->SetActive(true);
 		pRTData->SetSymbol(_T("600000.SS"));
@@ -1530,7 +1530,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(pStock->GetHighLimit(), 0);
 		EXPECT_THAT(pStock->GetLowLimit(), 0);
 
-		EXPECT_THAT(gl_WebRTDataContainer.GetTengxunDataSize(), Eq(0));
+		EXPECT_THAT(gl_WebRTDataContainer.TengxunDataSize(), Eq(0));
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {
@@ -1566,7 +1566,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine()) << "此标识被重置";
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("中国市场日线历史数据更新完毕"));
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {

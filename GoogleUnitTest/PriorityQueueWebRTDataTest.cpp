@@ -32,9 +32,9 @@ namespace StockAnalysisTest {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(1);
 		gl_PriorityQueueRTData.PushData(pRTData);
-		EXPECT_EQ(gl_PriorityQueueRTData.GetDataSize(), 1);
+		EXPECT_EQ(gl_PriorityQueueRTData.Size(), 1);
 		gl_PriorityQueueRTData.Reset();
-		EXPECT_EQ(gl_PriorityQueueRTData.GetDataSize(), 0);
+		EXPECT_EQ(gl_PriorityQueueRTData.Size(), 0);
 	}
 
 	TEST_F(CPriorityQueueRTDataTest, TestPushPopData) {

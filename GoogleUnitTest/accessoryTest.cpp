@@ -340,13 +340,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(AccessoryTest, TestReportJSonErrorToSystemMessage) {
 		ptree_error e(_T("error message"));
-		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 
 		ReportJSonErrorToSystemMessage(_T("Error Message Prefix "), e);
 		CString strMessage = gl_systemMessage.PopErrorMessage();
 		EXPECT_STREQ(strMessage, _T("Error Message Prefix error message"));
 
-		EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 	}
 }
 

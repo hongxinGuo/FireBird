@@ -2388,7 +2388,7 @@ namespace StockAnalysisTest {
 		CChinaStock stock;
 		stock.SetSymbol(_T("600008.SS"));
 		stock.ReportDayLineDownLoaded();
-		//EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+		//EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		//CString str = gl_systemMessage.PopDayLineInfoMessage();
 		//EXPECT_STREQ(str, _T("sh600008日线下载完成."));
 	}

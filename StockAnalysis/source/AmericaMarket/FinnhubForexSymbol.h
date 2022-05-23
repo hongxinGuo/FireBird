@@ -28,7 +28,7 @@ public:
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
-	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
+	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate(void);
 	bool HaveNewDayLineData(void);
 

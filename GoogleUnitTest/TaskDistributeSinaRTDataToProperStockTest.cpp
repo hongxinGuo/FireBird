@@ -92,8 +92,8 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			gl_ThreadStatus.SetRTDataNeedCalculate(false);
 			pStock->ClearRTDataDeque();
@@ -117,13 +117,13 @@ namespace StockAnalysisTest {
 		CString strSymbol;
 
 		gl_WebRTDataContainer.PushSinaData(pRTData);
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 1);
 		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToStock());
-		EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << _T("无效实时数据，报错后直接返回");
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << _T("无效实时数据，报错后直接返回");
 
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(lTotalStock, gl_pChinaMarket->GetTotalStock()) << "删除了新增加的股票";
 			EXPECT_FALSE(gl_pChinaMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
 
-			EXPECT_THAT(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1);
 
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;

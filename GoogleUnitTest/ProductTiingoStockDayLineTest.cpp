@@ -99,7 +99,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -110,9 +110,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest,
-													 testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
-														 &tiingoWebData41));
+		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+			&tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CDayLineVectorPtr pvDayLine;
@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
 			break;
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1) << "函数报告错误信息";
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "函数报告错误信息";
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
 			break;
 		default:
@@ -183,7 +183,7 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
 			gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -194,8 +194,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
-													 testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-														 &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
+		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
 		CDayLineVectorPtr pvDayLine;

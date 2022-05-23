@@ -81,7 +81,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 
@@ -135,7 +135,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("New Symbol"))) << "新增加的代码";
 			pStock = gl_pWorldMarket->GetStock(_T("New Symbol"));
 			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AS")) << "第一个交易所";
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
 			// 恢复原状

@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreatMessage(),
-								 cryptoDayLine.GetInquiringStr() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+			cryptoDayLine.GetInquiringStr() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 	}
 
 	TEST_F(CFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -94,7 +94,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
 
 			GeneralCheck();
@@ -108,9 +108,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoCandle1,
-													 ParseFinnhubCryptoCandleTest,
-													 testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-														 &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+		ParseFinnhubCryptoCandleTest,
+		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		CString strMessage;
@@ -177,7 +177,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(lIPOStatus);
 
 			GeneralCheck();
@@ -191,8 +191,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle, ProcessFinnhubCryptoCandleTest,
-													 testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-														 &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
 		CString strMessage;

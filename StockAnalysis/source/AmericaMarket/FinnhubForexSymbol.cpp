@@ -76,7 +76,7 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 }
 
 bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
-	if (m_dataDayLine.GetDataSize() == 0) return false;
-	if (m_dataDayLine.GetData(m_dataDayLine.GetDataSize() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
+	if (m_dataDayLine.Size() == 0) return false;
+	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	else return false;
 }

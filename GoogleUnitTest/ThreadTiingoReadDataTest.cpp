@@ -52,8 +52,8 @@ namespace StockAnalysisTest {
 		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 0);
-		EXPECT_THAT(gl_systemMessage.GetErrorMessageDequeSize(), 1) << "Tiingo工作线程报告出错";
+		EXPECT_EQ(gl_WebInquirer.TiingoDataSize(), 0);
+		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1) << "Tiingo工作线程报告出错";
 		gl_systemMessage.PopErrorMessage();
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
@@ -65,7 +65,7 @@ namespace StockAnalysisTest {
 		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetTiingoDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.TiingoDataSize(), 1);
 		CWebDataPtr pWebData = gl_WebInquirer.PopTiingoData();
 		EXPECT_EQ(TiingoWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());

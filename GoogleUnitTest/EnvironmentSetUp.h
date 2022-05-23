@@ -87,7 +87,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket = make_shared<CChinaMarket>();
 			gl_pWorldMarket = make_shared<CWorldMarket>();
 			gl_pChinaMarket->ResetMarket();
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pWorldMarket->ResetMarket();
 
 			EXPECT_EQ(gl_vMarketPtr.size(), 0);
@@ -96,13 +96,13 @@ namespace StockAnalysisTest {
 
 			gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
 			gl_pMockChinaMarket->ResetMarket();
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
 			gl_pMockWorldMarket->ResetMarket();
 			EXPECT_LE(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
-			while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
 			gl_pMockMainFrame = new CMockMainFrame;
@@ -158,7 +158,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetSystemReady(true);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
-			while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
 			gl_pWorldMarket->GetStock(_T("AAPL"))->SetProfileUpdated(false);
 

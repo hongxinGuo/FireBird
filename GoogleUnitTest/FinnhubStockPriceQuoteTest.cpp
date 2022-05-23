@@ -100,7 +100,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
 			m_pStock->SetUpdateProfileDB(false);
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -113,9 +113,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-													 ProcessFinnhubStockQuoteTest,
-													 testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
-														 &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
+		ProcessFinnhubStockQuoteTest,
+		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		bool fSucceed = false;

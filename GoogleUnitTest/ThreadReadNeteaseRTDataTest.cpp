@@ -22,6 +22,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -57,7 +58,7 @@ namespace StockAnalysisTest {
 		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.GetNeteaseRTData(), 1);
+		EXPECT_EQ(gl_WebInquirer.NeteaseRTDataSize(), 1);
 
 		// »Ö¸´Ô­×´
 		gl_WebInquirer.PopNeteaseRTData();

@@ -336,7 +336,7 @@ public:
 	void PushRTData(CWebRTDataPtr pData) { m_qRTData.PushData(pData); }
 	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
 	CWebRTDataPtr GetRTDataAtHead(void) { return m_qRTData.GetHead(); }
-	INT64 GetRTDataQueueSize(void) { return m_qRTData.GetDataSize(); }
+	INT64 GetRTDataQueueSize(void) { return m_qRTData.Size(); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque(void);
 
@@ -344,7 +344,7 @@ public:
 
 	//日线相关函数
 	// 日线历史数据
-	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
+	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
 	bool HaveNewDayLineData(void);
 	void UnloadDayLine(void) noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(CDayLinePtr pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
@@ -378,7 +378,7 @@ public:
 	void ReportDayLineDownLoaded(void);
 
 	// 周线相关函数
-	size_t GetWeekLineSize(void) noexcept { return m_dataWeekLine.GetDataSize(); }
+	size_t GetWeekLineSize(void) noexcept { return m_dataWeekLine.Size(); }
 	CWeekLinePtr GetWeekLine(long lIndex) { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
 	void UnloadWeekLine(void) noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);

@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
 		dataChinaDayLine.UpdateData(vDayLine, false);
 
 		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
-		EXPECT_THAT(dataChinaDayLine.GetDataSize(), 3);
+		EXPECT_THAT(dataChinaDayLine.Size(), 3);
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
 	}
@@ -163,7 +163,7 @@ namespace StockAnalysisTest {
 		dataChinaDayLine.UpdateData(vDayLine, true); // 逆序存储
 
 		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
-		EXPECT_THAT(dataChinaDayLine.GetDataSize(), 3);
+		EXPECT_THAT(dataChinaDayLine.Size(), 3);
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
 

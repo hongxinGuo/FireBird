@@ -56,7 +56,7 @@ public:
 	void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
 
 	void UpdateDayLineStartEndDate(void);
-	long GetDayLineSize(void) const noexcept { return m_dataDayLine.GetDataSize(); }
+	long GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
 	CDayLinePtr GetDayLine(long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
 

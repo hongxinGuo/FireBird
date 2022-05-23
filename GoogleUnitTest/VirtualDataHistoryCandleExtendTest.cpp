@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS1(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -89,7 +89,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRSIndex1(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -111,7 +111,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRSLogarithm1(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -133,7 +133,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS3(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -155,7 +155,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS5(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -177,7 +177,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS10(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -199,7 +199,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS30(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -221,7 +221,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS60(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -243,7 +243,7 @@ namespace StockAnalysisTest {
 		HistoryDataContainer.StoreData(pHistoryData2);
 
 		vector<double> vRS;
-		vRS.resize(HistoryDataContainer.GetDataSize());
+		vRS.resize(HistoryDataContainer.Size());
 
 		HistoryDataContainer.GetRS120(vRS);
 		EXPECT_DOUBLE_EQ(vRS[0], 1.1);
@@ -268,11 +268,11 @@ namespace StockAnalysisTest {
 		vector<CVirtualHistoryCandleExtendPtr> vHistoryData;
 
 		vHistoryData.push_back(pHistoryData);
-		EXPECT_EQ(HistoryDataContainer.GetDataSize(), 0);
+		EXPECT_EQ(HistoryDataContainer.Size(), 0);
 		HistoryDataContainer.StoreData(pHistoryData2);
-		EXPECT_EQ(HistoryDataContainer.GetDataSize(), 1);
+		EXPECT_EQ(HistoryDataContainer.Size(), 1);
 		HistoryDataContainer.UpdateData(vHistoryData);
-		EXPECT_EQ(HistoryDataContainer.GetDataSize(), 1);
+		EXPECT_EQ(HistoryDataContainer.Size(), 1);
 		pHistoryData2 = HistoryDataContainer.GetData(0);
 		EXPECT_EQ(pHistoryData2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pHistoryData2->GetHigh(), 1000);

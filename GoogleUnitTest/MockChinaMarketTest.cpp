@@ -359,7 +359,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), gl_pMockChinaMarket->GetMarketDate());
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 4); // 共两次调用，有四个信息
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 4); // 共两次调用，有四个信息
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
@@ -461,7 +461,7 @@ namespace StockAnalysisTest {
 		}
 		EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), (UINT)30);
 
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();
 	}
 

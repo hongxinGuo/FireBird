@@ -20,13 +20,13 @@ public:
 	~CWebRTDataContainer();
 
 	void ResetSinaQueue(void) { m_qSinaRTData.Reset(); }
-	size_t GetSinaDataSize(void) { return m_qSinaRTData.GetDataSize(); }
+	size_t SinaDataSize(void) { return m_qSinaRTData.Size(); }
 	void PushSinaData(CWebRTDataPtr pData) { m_qSinaRTData.PushData(pData); }
 	CWebRTDataPtr PopSinaData(void) { return m_qSinaRTData.PopData(); }
-	size_t GetTengxunDataSize(void) { return m_qTengxunRTData.GetDataSize(); }
+	size_t TengxunDataSize(void) { return m_qTengxunRTData.Size(); }
 	void PushTengxunData(CWebRTDataPtr pData) { m_qTengxunRTData.PushData(pData); }
 	CWebRTDataPtr PopTengxunData(void) { return m_qTengxunRTData.PopData(); }
-	size_t GetNeteaseDataSize(void) { return m_qNeteaseRTData.GetDataSize(); }
+	size_t NeteaseDataSize(void) { return m_qNeteaseRTData.Size(); }
 	void PushNeteaseData(CWebRTDataPtr pData) { m_qNeteaseRTData.PushData(pData); }
 	CWebRTDataPtr PopNeteaseData(void) { return m_qNeteaseRTData.PopData(); }
 

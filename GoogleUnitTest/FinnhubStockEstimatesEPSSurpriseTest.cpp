@@ -80,7 +80,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 			GeneralCheck();
@@ -95,8 +95,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-													 testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-														 &finnhubWebData125, &finnhubWebData130));
+		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+			&finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
@@ -153,7 +153,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 			GeneralCheck();
@@ -167,8 +167,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-													 testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-														 &finnhubWebData125, &finnhubWebData130));
+		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+			&finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);

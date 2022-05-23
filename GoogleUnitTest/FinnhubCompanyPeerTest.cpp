@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -90,8 +90,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
-													 testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-														 &finnhubWebData110));
+		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+			&finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
 		m_strPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
@@ -130,7 +130,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -141,8 +141,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer, ProcessFinnhubStockPeerTest,
-													 testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-														 &finnhubWebData110));
+		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+			&finnhubWebData110));
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);

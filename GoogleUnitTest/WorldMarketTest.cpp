@@ -60,7 +60,7 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
 		}
 		static void TearDownTestSuite(void) {
-			EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 0);
+			EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 			GeneralCheck();
 		}
 
@@ -713,7 +713,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderTransactionDB) {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction());
-		EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		CWorldStockPtr pStock;
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
@@ -755,7 +755,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
 
-		EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易资料更新完成"));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderTransactionNeedSave());
@@ -1014,7 +1014,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
 		CWebSourceDataProductPtr p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_STREQ(p->GetClassNameString(), _T("Finnhub economic country list"));
@@ -1059,7 +1059,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubSymbolUpdated()) << "交易所都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock symbol..."));
 		str = gl_systemMessage.PopInformationMessage();
@@ -1106,7 +1106,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockProfileUpdated()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock profile..."));
 		str = gl_systemMessage.PopInformationMessage();
@@ -1156,7 +1156,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubStockDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockDayLineUpdated()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));
 		str = gl_systemMessage.PopInformationMessage();
@@ -1226,7 +1226,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubPeer()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubPeerUpdated()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock peer..."));
 		str = gl_systemMessage.PopInformationMessage();
@@ -1267,7 +1267,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubInsiderTransaction()) << "第二次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider transaction..."));
 		str = gl_systemMessage.PopInformationMessage();
@@ -1427,7 +1427,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetFinnhubInquiring(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubForexDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexDayLineUpdated()) << "股票都查询完了";
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "Inquiring and Inquired";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub forex day line..."));
 		str = gl_systemMessage.PopInformationMessage();

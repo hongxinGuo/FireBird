@@ -22,7 +22,7 @@ public:
 	// 通用接口函数
 	void PushData(shared_ptr<T> pData) { m_MutexAccessData.lock(); m_qData.push(pData); m_MutexAccessData.unlock(); }
 	shared_ptr<T> PopData(void) { shared_ptr<T> pData;	m_MutexAccessData.lock();	pData = m_qData.front(); m_qData.pop();	m_MutexAccessData.unlock();	return pData; }
-	size_t GetDataSize(void) { size_t size = 0;	m_MutexAccessData.lock();	size = m_qData.size(); m_MutexAccessData.unlock(); return size; }
+	size_t Size(void) { size_t size = 0;	m_MutexAccessData.lock();	size = m_qData.size(); m_MutexAccessData.unlock(); return size; }
 
 protected:
 	queue<shared_ptr<T>> m_qData;

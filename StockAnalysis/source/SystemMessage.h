@@ -13,7 +13,7 @@ public:
 
 	void PushMessage(CString str);
 	CString PopMessage(void);
-	size_t GetDequeSize(void);
+	size_t Size(void);
 
 	void Display(COutputList* pOutputList, CString strTime);
 
@@ -36,47 +36,47 @@ public:
 
 	void PushInformationMessage(CString str) { m_SystemInformation.PushMessage(str); }
 	CString PopInformationMessage(void) { return m_SystemInformation.PopMessage(); }
-	size_t GetInformationDequeSize(void) { return m_SystemInformation.GetDequeSize(); }
+	size_t InformationSize(void) { return m_SystemInformation.Size(); }
 	void DisplayInformation(COutputList* pOutputList, CString strTime) { m_SystemInformation.Display(pOutputList, strTime); }
 
 	void PushDayLineInfoMessage(CString str) { m_DayLineInformation.PushMessage(str); }
 	CString PopDayLineInfoMessage(void) { return m_DayLineInformation.PopMessage(); }
-	size_t GetDayLineInfoDequeSize(void) { return m_DayLineInformation.GetDequeSize(); }
+	size_t DayLineInfoSize(void) { return m_DayLineInformation.Size(); }
 	void DisplayDayLineInfo(COutputList* pOutputList, CString strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
 
 	void PushTransactionMessage(CString str) { m_Transaction.PushMessage(str); }
 	CString PopTransactionMessage(void) { return m_Transaction.PopMessage(); }
-	size_t GetTransactionDequeSize(void) { return m_Transaction.GetDequeSize(); }
+	size_t TransactionInfoSize(void) { return m_Transaction.Size(); }
 	void DisplayTransaction(COutputList* pOutputList, CString strTime) { m_Transaction.Display(pOutputList, strTime); }
 
 	void PushCancelSellMessage(CString str) { m_CancelSell.PushMessage(str); }
 	CString PopCancelSellMessage(void) { return m_CancelSell.PopMessage(); }
-	size_t GetCancelSellDequeSize(void) { return m_CancelSell.GetDequeSize(); }
+	size_t CancelSellInfoSize(void) { return m_CancelSell.Size(); }
 	void DisplayCancelSell(COutputList* pOutputList, CString strTime) { m_CancelSell.Display(pOutputList, strTime); }
 
 	void PushCancelBuyMessage(CString str) { m_CancelBuy.PushMessage(str); }
 	CString PopCancelBuyMessage(void) { return m_CancelBuy.PopMessage(); }
-	size_t GetCancelBuyDequeSize(void) { return m_CancelBuy.GetDequeSize(); }
+	size_t CancelBuyInfoSize(void) { return m_CancelBuy.Size(); }
 	void DisplayCancelBuy(COutputList* pOutputList, CString strTime) { m_CancelBuy.Display(pOutputList, strTime); }
 
 	void PushTrace2Message(CString str) { m_Trace2.PushMessage(str); }
 	CString PopTrace2Message(void) { return m_Trace2.PopMessage(); }
-	size_t GetTrace2DequeSize(void) { return m_Trace2.GetDequeSize(); }
+	size_t Trace2Size(void) { return m_Trace2.Size(); }
 	void DisplayTrace2(COutputList* pOutputList, CString strTime) { m_Trace2.Display(pOutputList, strTime); }
 
 	void PushWebSocketInfoMessage(CString str) { m_WebSocketInfo.PushMessage(str); }
 	CString PopWebSocketInfoMessage(void) { return m_WebSocketInfo.PopMessage(); }
-	size_t GetWebSocketInfoDequeSize(void) { return m_WebSocketInfo.GetDequeSize(); }
+	size_t WebSocketInfoSize(void) { return m_WebSocketInfo.Size(); }
 	void DisplayWebSocketInfo(COutputList* pOutputList, CString strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
 
 	void PushInnerSystemInformationMessage(CString str) { m_InnerSystemInformation.PushMessage(str); }
 	CString PopInnerSystemInformationMessage(void) { return m_InnerSystemInformation.PopMessage(); }
-	size_t GetInnerSystemInformationDequeSize(void) { return m_InnerSystemInformation.GetDequeSize(); }
+	size_t InnerSystemInfoSize(void) { return m_InnerSystemInformation.Size(); }
 	void DisplayInnerSystemInformation(COutputList* pOutputList, CString strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
 
 	void PushErrorMessage(CString str) { m_ErrorMessage.PushMessage(str); }
 	CString PopErrorMessage(void) { return m_ErrorMessage.PopMessage(); }
-	size_t GetErrorMessageDequeSize(void) { return m_ErrorMessage.GetDequeSize(); }
+	size_t ErrorMessageSize(void) { return m_ErrorMessage.Size(); }
 	void DisplayErrorMessage(COutputList* pOutputList, CString strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
 
 	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }

@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -90,8 +90,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
-													 testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-														 &finnhubWebData115, &finnhubWebData120));
+		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+			&finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
@@ -141,7 +141,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -152,8 +152,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
-													 testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-														 &finnhubWebData115, &finnhubWebData120));
+		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+			&finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());

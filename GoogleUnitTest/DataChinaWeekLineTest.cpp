@@ -52,14 +52,14 @@ namespace StockAnalysisTest {
 		vector<CWeekLinePtr> vWeekLine;
 
 		vWeekLine.push_back(pWeekLine);
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 0);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
 		dataChinaWeekLine.StoreData(pWeekLine2);
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 
 		dataChinaWeekLine.UpdateData(vWeekLine);
 
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
@@ -108,13 +108,13 @@ namespace StockAnalysisTest {
 
 		vWeekLine.push_back(pWeekLine);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 0);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
 		dataChinaWeekLine.StoreData(pWeekLine2);
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 1);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 
 		dataChinaWeekLine.StoreVectorData(vWeekLine);
 
-		EXPECT_EQ(dataChinaWeekLine.GetDataSize(), 2);
+		EXPECT_EQ(dataChinaWeekLine.Size(), 2);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);

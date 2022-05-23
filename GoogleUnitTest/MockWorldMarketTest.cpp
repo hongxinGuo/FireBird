@@ -497,7 +497,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubWebDataReceived02) {
 		gl_pMockWorldMarket->SetFinnhubDataReceived(true);
-		while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
+		while (gl_WebInquirer.FinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
 
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessFinnhubWebDataReceived());
 	}
@@ -583,7 +583,7 @@ namespace StockAnalysisTest {
 		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
-		while (gl_WebInquirer.GetTiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
+		while (gl_WebInquirer.TiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 
 		EXPECT_FALSE(gl_pMockWorldMarket->ProcessTiingoWebDataReceived());
 	}

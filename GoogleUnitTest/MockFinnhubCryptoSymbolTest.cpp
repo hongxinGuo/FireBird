@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadUpdateCryptoDayLineDB(&symbol), (UINT)53);
 
 		EXPECT_THAT(symbol.GetDayLineSize(), Eq(0));
-		EXPECT_THAT(gl_systemMessage.GetDayLineInfoDequeSize(), Eq(1));
+		EXPECT_THAT(gl_systemMessage.DayLineInfoSize(), Eq(1));
 		EXPECT_STREQ(gl_systemMessage.PopDayLineInfoMessage(), _T("abcdef日线资料存储完成"));
 	}
 }

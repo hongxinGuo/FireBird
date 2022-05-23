@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -88,9 +88,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-													 ParseTiingoStockTest,
-													 testing::Values(&tiingoWebData1, &tiingoWebData2,
-														 &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+		ParseTiingoStockTest,
+		testing::Values(&tiingoWebData1, &tiingoWebData2,
+			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
@@ -160,7 +160,7 @@ namespace StockAnalysisTest {
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
 
@@ -171,9 +171,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock,
-													 ProcessTiingoStockTest,
-													 testing::Values(&tiingoWebData1, &tiingoWebData2,
-														 &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+		ProcessTiingoStockTest,
+		testing::Values(&tiingoWebData1, &tiingoWebData2,
+			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
@@ -185,26 +185,26 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 3: // 第二个数据缺乏address项
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << "第一个数据是正确的";
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 4:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 
@@ -215,7 +215,7 @@ namespace StockAnalysisTest {
 		case 10:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_EQ(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_pWorldMarket->GetTiingoStock(_T("NEW SYMBOL"))) != nullptr);

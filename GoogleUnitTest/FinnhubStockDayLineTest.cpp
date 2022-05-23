@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
 		stockDayLine.SetMarket(gl_pWorldMarket.get());
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreatMessage(),
-								 stockDayLine.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+			stockDayLine.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
@@ -95,7 +95,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetDayLineNeedSaving(false);
@@ -114,9 +114,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
-													 ProcessFinnhubStockCandleTest,
-													 testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
-														 &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
+		ProcessFinnhubStockCandleTest,
+		testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
+			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
 		CString strMessage;

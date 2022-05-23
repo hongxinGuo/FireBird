@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			while (gl_systemMessage.GetErrorMessageDequeSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
 		}
@@ -224,7 +224,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_RTData.GetHigh(), 12480); // 后续部分皆未设置。
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
@@ -262,7 +262,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_TRUE(fSucceed);
@@ -278,7 +278,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseNeteaseDataWithNlohmannJSon) {
 		json js;
-	  EXPECT_TRUE(m_pNeteaseWebRTData->CreateJSon(&js));
+		EXPECT_TRUE(m_pNeteaseWebRTData->CreateJSon(&js));
 		json::iterator it = js.begin();
 		bool fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
 		time_t ttime, ttime2, ttime3, tUTCTime;
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_RTData.GetHigh(), 12480); // 后续部分皆未设置。
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 1);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
@@ -408,7 +408,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
-			EXPECT_EQ(gl_systemMessage.GetErrorMessageDequeSize(), 0);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_TRUE(fSucceed);
@@ -421,5 +421,4 @@ namespace StockAnalysisTest {
 		// 恢复原态
 		gl_pChinaMarket->__TEST_SetUTCTime(tUTCTime);
 	}
-
 }

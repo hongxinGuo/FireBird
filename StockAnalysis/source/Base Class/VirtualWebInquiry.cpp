@@ -290,11 +290,12 @@ void CVirtualWebInquiry::Read(void) {
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		TransferData(pWebData);
-		SetTime(pWebData);
 		ParseData(pWebData);
-		StoreWebData(pWebData);
 		ResetBuffer();
+
+		SetTime(pWebData);
 		UpdateStatusWhenSecceed(pWebData);
+		StoreWebData(pWebData);
 	}
 	else { // error handling
 		ClearUpIfReadingWebDataFailed();

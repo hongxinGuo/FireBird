@@ -33,7 +33,7 @@ CWebRTDataPtr CPriorityQueueWebRTData::PopData(void) {
 	return pData;
 }
 
-size_t CPriorityQueueWebRTData::GetDataSize(void) {
+size_t CPriorityQueueWebRTData::Size(void) {
 	size_t size = 0;
 	m_MutexAccessData.lock();
 	size = m_priorityqueueStockData.size();

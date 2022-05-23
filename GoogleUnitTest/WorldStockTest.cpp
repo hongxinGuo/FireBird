@@ -859,7 +859,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_THAT(stock.GetDayLineStartDate(), Eq(20200101)) << "日线开始日期已更新为较早日期";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		ASSERT_GE(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+		ASSERT_GE(gl_systemMessage.DayLineInfoSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopDayLineInfoMessage(), _T("A日线资料存储完成"));
 
 		// 清除添加的数据，恢复原状

@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		m_dataWorldStockDayLine.SaveDB(_T("A"));
 
 		m_dataWorldStockDayLine.LoadDB(_T("A"));
-		EXPECT_EQ(m_dataWorldStockDayLine.GetData(m_dataWorldStockDayLine.GetDataSize() - 1)->GetMarketDate(), 20220101) << "新存储数据位于最后";
+		EXPECT_EQ(m_dataWorldStockDayLine.GetData(m_dataWorldStockDayLine.Size() - 1)->GetMarketDate(), 20220101) << "新存储数据位于最后";
 
 		// 恢复原状
 		CSetWorldStockDayLine setWorldStockDayLineBasic;

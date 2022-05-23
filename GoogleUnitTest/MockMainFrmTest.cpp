@@ -828,7 +828,7 @@ namespace StockAnalysisTest {
 
 		gl_pMockMainFrame->OnTimer(__STOCK_ANALYSIS_TIMER__);
 
-		EXPECT_THAT(gl_systemMessage.GetInformationDequeSize(), 1);
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();
 
 		// »Ö¸´Ô­×´

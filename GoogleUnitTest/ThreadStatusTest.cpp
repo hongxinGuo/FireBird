@@ -46,13 +46,13 @@ namespace StockAnalysisTest {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 
-		size_t l = gl_systemMessage.GetInformationDequeSize();
+		size_t l = gl_systemMessage.InformationSize();
 		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
+		EXPECT_EQ(gl_systemMessage.InformationSize(), l + 1); // 系统报警队列
 		for (int i = 0; i < l + 1; i++) {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
 		}
-		EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 	}
 
 	TEST_F(ThreadStatusTest, TestIsCalculatingDayLineRS) {

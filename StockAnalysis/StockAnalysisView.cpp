@@ -491,7 +491,7 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPoint ptCurrent;
 	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
-	if (m_vRSShow.size() != m_pCurrentDataHistoryCandle->GetDataSize()) m_vRSShow.resize(m_pCurrentDataHistoryCandle->GetDataSize());
+	if (m_vRSShow.size() != m_pCurrentDataHistoryCandle->Size()) m_vRSShow.resize(m_pCurrentDataHistoryCandle->Size());
 	if (pCurrentStock == nullptr) return;
 	if (!m_pCurrentDataHistoryCandle->IsDataLoaded()) return;
 

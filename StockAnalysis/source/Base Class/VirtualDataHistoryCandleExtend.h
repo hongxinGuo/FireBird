@@ -40,7 +40,7 @@ protected:
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
-	long GetDataSize(void) const noexcept { return (long)(m_vHistoryData.size()); }
+	long Size(void) const noexcept { return (long)(m_vHistoryData.size()); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate);
 	void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
 	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }

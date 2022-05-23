@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&TengxunRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
-		EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 1);
+		EXPECT_EQ(gl_WebInquirer.TengxunRTDataSize(), 1);
 
 		// »Ö¸´Ô­×´
 		gl_WebInquirer.PopTengxunRTData();
