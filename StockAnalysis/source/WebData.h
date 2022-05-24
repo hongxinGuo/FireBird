@@ -78,7 +78,7 @@ public:
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
 	// 将数据转换为json格式。目前暂不使用
-	bool CreateJSon(json * pjs, long lBeginPos = 0, long lEndPos = 0);
+	bool CreateJSon(json* pjs, long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数

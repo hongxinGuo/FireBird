@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 600; // 网易实时数据查询默认值
-#else
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
+#else
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #endif
 }
 
@@ -52,8 +52,8 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	//pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));yh
-	//pWebData->SetJSonContentType(true);
+	pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));
+	pWebData->SetJSonContentType(true);
 	return pWebData->IsParsed();
 }
 

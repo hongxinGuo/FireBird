@@ -9,7 +9,6 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"NlohmannJsonParse.h"
 #include"SystemMessage.h"
 
 #include"ChinaMarket.h"

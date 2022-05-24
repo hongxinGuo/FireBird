@@ -158,7 +158,6 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
-    <ClInclude Include="..\StockAnalysis\source\NlohmannJsonParse.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemOption.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
@@ -337,11 +336,6 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\NlohmannJsonParse.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
@@ -412,10 +406,12 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\StockAanlysis.props" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\StockAanlysis.props" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

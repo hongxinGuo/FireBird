@@ -535,8 +535,8 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s) {
 	catch (json::parse_error& e) {
 		//#ifndef _DEBUG
 		CString str = s.c_str();
-		str = str.Left(160);
-		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
+		str = str.Left(80);
+		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str + e.what());
 		//#endif
 		pjs = nullptr;
 		return false;

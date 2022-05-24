@@ -55,8 +55,8 @@ CWorldMarket::CWorldMarket() {
 
 	Reset();
 
-	thread thread1(ThreadWorldMarketBackground);
-	thread1.detach();
+	//thread thread1(ThreadWorldMarketBackground);
+	//thread1.detach();
 }
 
 CWorldMarket::~CWorldMarket() {
