@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -180,7 +180,7 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubForexDayLine.SetIndex(0);

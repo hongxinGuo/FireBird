@@ -52,9 +52,7 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->SetParsed(pWebData->CreateJSon(pWebData->GetJSon(), 21, 2));
-	pWebData->SetJSonContentType(true);
-	return pWebData->IsParsed();
+	return pWebData->ParseWithNlohmannJson(21, 2);
 }
 
 bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {

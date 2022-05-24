@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_pvCountry = nullptr;
 		}
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}

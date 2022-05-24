@@ -55,15 +55,13 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
-bool CWebData::CreatePTree(ptree& pt, long lBeginPos, long lEndPos) {
-	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
-	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fParsed = ParseWithPTree(pt, m_sDataBuffer);
+bool CWebData::ParseWithPropertyTree(long lBeginPos, long lEndPos) {
+	m_fParsed = CreatePropertyTree(lBeginPos, lEndPos);
+	SetJSonContentType(true);
 	return m_fParsed;
 }
 
-bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
-{
+bool CWebData::CreatePropertyTree(long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0) m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
 	if (m_ppt == nullptr) m_ppt = make_shared<ptree>();
@@ -71,10 +69,16 @@ bool CWebData::CreatePTree(long lBeginPos, long lEndPos)
 	return m_fParsed;
 }
 
-bool CWebData::CreateJSon(json* pjs, long lBeginPos, long lEndPos) {
+bool CWebData::ParseWithNlohmannJson(long lBeginPos, long lEndPos) {
+	m_fParsed = CreateNlohmannJSon(lBeginPos, lEndPos);
+	SetJSonContentType(true);
+	return m_fParsed;
+}
+
+bool CWebData::CreateNlohmannJSon(long lBeginPos, long lEndPos) {
 	if (lBeginPos > 0)	m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
 	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	m_fParsed = ParseWithNlohmannJSon(pjs, m_sDataBuffer);
+	m_fParsed = ParseWithNlohmannJSon(&m_js, m_sDataBuffer);
 	return m_fParsed;
 }
 

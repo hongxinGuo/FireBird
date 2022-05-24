@@ -93,7 +93,7 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -172,7 +172,7 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockPriceCandle.SetIndex(0);

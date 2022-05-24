@@ -87,7 +87,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_pvDayLine = nullptr;
 		}
@@ -167,9 +167,7 @@ namespace StockAnalysisTest {
 			lIPOStatus = gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->GetIPOStatus();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(__STOCK_IPOED__);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
-			m_pWebData->SetJSonContentType(true);
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCryptoDayLine.SetIndex(0);

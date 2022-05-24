@@ -132,9 +132,8 @@ namespace StockAnalysisTest {
 	));
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseNeteaseDataWithPTree) {
-		ptree pt;
-		EXPECT_TRUE(m_pNeteaseWebRTData->CreatePTree(pt));
-		ptree::iterator it = pt.begin();
+		EXPECT_TRUE(m_pNeteaseWebRTData->CreatePropertyTree());
+		ptree::iterator it = m_pNeteaseWebRTData->GetPTree()->begin();
 		bool fSucceed = m_RTData.ParseNeteaseDataWithPTree(it);
 		time_t ttime, ttime2, ttime3, tUTCTime;
 		tm tm_;
@@ -277,9 +276,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseNeteaseDataWithNlohmannJSon) {
-		json js;
-		EXPECT_TRUE(m_pNeteaseWebRTData->CreateJSon(&js));
-		json::iterator it = js.begin();
+		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJSon());
+		json::iterator it = m_pNeteaseWebRTData->GetJSon()->begin();
 		bool fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
 		time_t ttime, ttime2, ttime3, tUTCTime;
 		tm tm_;

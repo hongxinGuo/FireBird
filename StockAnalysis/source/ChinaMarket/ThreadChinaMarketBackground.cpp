@@ -119,7 +119,7 @@ bool ParseNeteaseRTDataWithPTree(void) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		if (!pWebDataReceived->IsParsed()) {
-			if (!pWebDataReceived->CreatePTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			if (!pWebDataReceived->CreatePropertyTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 				fProcess = false;
 			}
@@ -175,7 +175,7 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		if (!pWebDataReceived->IsParsed()) {
-			if (!pWebDataReceived->CreateJSon(pWebDataReceived->GetJSon(), 21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			if (!pWebDataReceived->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
 				fProcess = false;
 			}

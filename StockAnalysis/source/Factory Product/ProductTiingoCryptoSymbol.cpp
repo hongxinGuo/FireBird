@@ -32,7 +32,7 @@ bool CProductTiingoCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
 	/*
 	fBegin = QueryPerformanceCounter(&liBegin);
 	//for (int i = 0; i < 100; i++) {
-	pWebData->CreatePTree();
+	pWebData->CreatePropertyTree();
 	//}
 	fEnd = QueryPerformanceCounter(&liEnd);
 	m_differ1 = liEnd.QuadPart - liBegin.QuadPart;

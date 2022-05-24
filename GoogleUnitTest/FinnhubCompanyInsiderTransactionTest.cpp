@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetInsiderTransactionNeedSave(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
@@ -131,7 +131,7 @@ namespace StockAnalysisTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePTree();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderTransaction = nullptr;
 		}

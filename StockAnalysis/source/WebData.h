@@ -73,12 +73,14 @@ public:
 	bool IsParsed(void) noexcept { return m_fParsed; }
 	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 
-	bool CreatePTree(ptree& pt, long lBeginPos = 0, long lEndPos = 0);
-	bool CreatePTree(long lBeginPos = 0, long lEndPos = 0);
+	// 使用boost Property tree将数据转换为json格式。
+	bool ParseWithPropertyTree(long lBeginPos = 0, long lEndPos = 0);
+	bool CreatePropertyTree(long lBeginPos = 0, long lEndPos = 0);
 	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
 
-	// 将数据转换为json格式。目前暂不使用
-	bool CreateJSon(json* pjs, long lBeginPos = 0, long lEndPos = 0);
+	// 使用Nlohmann json将数据转换为json格式。
+	bool ParseWithNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
+	bool CreateNlohmannJSon(long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数

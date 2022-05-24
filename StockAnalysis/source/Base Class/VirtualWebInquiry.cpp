@@ -246,9 +246,7 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
-	pWebData->m_fParsed = pWebData->CreatePTree(0, 0);
-	pWebData->SetJSonContentType(true);
-	return pWebData->IsParsed();
+	return pWebData->ParseWithPropertyTree(0, 0);
 }
 
 /////////////////////////////////////////////////////////////////////////
