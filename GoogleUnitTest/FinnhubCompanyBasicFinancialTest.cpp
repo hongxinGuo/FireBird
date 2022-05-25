@@ -324,7 +324,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJSon();
+			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);

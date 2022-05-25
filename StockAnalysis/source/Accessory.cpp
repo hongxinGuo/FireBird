@@ -449,12 +449,16 @@ bool ParseWithPTree(ptree& pt, string& s) {
 	}
 	catch (ptree_error& e) {
 #ifndef _DEBUG
-		CString str = s.c_str();
-		str = str.Left(160);
+		char buffer[180];
+		for (int i = 0; i < 80; i++) {
+			buffer[i] = s.at(i);
+	}
+		buffer[80] = 0x000;
+		CString str = buffer;
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-	}
+}
 	return true;
 }
 
@@ -471,7 +475,7 @@ bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-	}
+}
 	return true;
 }
 
@@ -528,6 +532,7 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
+/*
 bool ParseWithNlohmannJSon(json* pjs, std::string& s) {
 	try {
 		*pjs = json::parse(s);
@@ -543,6 +548,7 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s) {
 	}
 	return true;
 }
+*/
 
 CString FormatToMK(long long iNumber) {
 	char buffer[100];

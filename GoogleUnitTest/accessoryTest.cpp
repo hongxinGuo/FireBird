@@ -8,6 +8,7 @@
 #include"GeneralCheck.h"
 
 #include"accessory.h"
+#include"JsonParse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -295,10 +296,21 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(ParseWithNlohmannJSon(pjs, s));
 		string sSubscribe = pjs->at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
+		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"); // abcdefg之前缺少字符':'
 		EXPECT_FALSE(ParseWithNlohmannJSon(pjs, s));
 
-		gl_systemMessage.PopErrorMessage();
+		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+		delete pjs;
+	}
+
+	TEST_F(AccessoryTest, TestConvertToNlohmannJson2) {
+		json* pjs = new json;
+		string s{ _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo") };
+		EXPECT_TRUE(ParseWithNlohmannJSon(pjs, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
+		string sSubscribe = pjs->at((_T("eventName")));
+		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
+
+		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 		delete pjs;
 	}
 

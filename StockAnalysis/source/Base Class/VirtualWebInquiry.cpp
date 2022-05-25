@@ -287,6 +287,7 @@ void CVirtualWebInquiry::Read(void) {
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
+		//fBegin = QueryPerformanceCounter(&liBegin);
 		TransferData(pWebData);
 		ParseData(pWebData);
 		ResetBuffer();

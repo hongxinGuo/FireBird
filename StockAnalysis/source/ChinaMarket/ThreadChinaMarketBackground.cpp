@@ -174,12 +174,6 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	for (int i = 0; i < lTotalData; i++) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		if (!pWebDataReceived->IsParsed()) {
-			if (!pWebDataReceived->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
-				gl_systemMessage.PushErrorMessage(_T("网易实时数据解析失败"));
-				fProcess = false;
-			}
-		}
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			pjs = pWebDataReceived->GetJSon();
 			for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {

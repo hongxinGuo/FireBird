@@ -681,6 +681,9 @@
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\JsonParse.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1185,6 +1188,9 @@
       <Filter>源文件\DataBase\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\JsonParse.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>

@@ -38,7 +38,7 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 #ifdef _DEBUG
 	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #endif
 }
 
@@ -47,12 +47,23 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 目前neteaseRTData使用nlohmann json库函数解析。由于json::parse()函数的运行时间较长，导致使用debug模式编译后的系统解析时间太长，
-// 故而决定使用独立线程来解析接收到的数据，并存入数据队列中。
+// 目前neteaseRTData使用nlohmann json库函数解析，其解析速度大致是property tree的两倍。
+// 解析900个网易数据，DEBUG模式下大致时间要300-400毫秒；Release模式下也就50毫秒。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseWithNlohmannJson(21, 2);
+	if ((pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 1) == ';')
+		 && (pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 3) == '}')) {
+		return pWebData->ParseWithNlohmannJson(21, 2); // 网易实时数据前缀为21个字节，后缀为2个字节。
+	}
+	else if (pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 1) == '}') {
+		return pWebData->ParseWithNlohmannJson(21, 0); // 网易实时数据有时会缺少后缀，在此做简易判断。
+	}
+	else {
+		gl_systemMessage.PushErrorMessage(_T("Netease RT Data Json Error"));
+		TRACE(_T("Netease RT Data Json Error\n"));
+		return false; // 其他字符结尾的抛掉，不解析
+	}
 }
 
 bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
