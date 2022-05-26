@@ -174,6 +174,11 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	for (int i = 0; i < lTotalData; i++) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
+		if (!pWebDataReceived->IsParsed()) {
+			if (!pWebDataReceived->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+				fProcess = false;
+			}
+		}
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			pjs = pWebDataReceived->GetJSon();
 			for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
@@ -351,7 +356,7 @@ UINT ThreadChinaMarketBackground(void) {
 		//ParseNeteaseRTDataWithPTree(); // 使用 perproty tree解析网易实时数据
 		ParseTengxunRTData(); // 解析腾讯实时数据
 		ParseDayLineGetFromNeeteaseServer();
-		Sleep(50); // 最少间隔50ms
+		Sleep(20); // 最少间隔20ms
 	}
 	gl_ThreadStatus.SetChinaMarketBackground(false);
 	return 201;

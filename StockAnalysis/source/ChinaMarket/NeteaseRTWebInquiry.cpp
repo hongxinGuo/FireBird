@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 550; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 900; // 网易实时数据查询默认值
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #endif
 }
 
@@ -52,18 +52,31 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {
-	if ((pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 1) == ';')
-		 && (pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 3) == '}')) {
-		return pWebData->ParseWithNlohmannJson(21, 2); // 网易实时数据前缀为21个字节，后缀为2个字节。
+	ASSERT(pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 1) == ';');
+	ASSERT(pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 2) == ')');
+	ASSERT(pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 3) == '}');
+
+	/*
+	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 }, d1, d2;
+	bool fBegin = false, fEnd = false;
+	long long  differ1 = 0, differ2 = 0, differ3;
+
+	fBegin = QueryPerformanceCounter(&liBegin);
+	for (int i = 0; i < 100; i++) {
+		pWebData->CreatePropertyTree(21, 2);
 	}
-	else if (pWebData->GetDataBuffer().at(pWebData->GetBufferLength() - 1) == '}') {
-		return pWebData->ParseWithNlohmannJson(21, 0); // 网易实时数据有时会缺少后缀，在此做简易判断。
+	fEnd = QueryPerformanceCounter(&liEnd);
+	differ1 = liEnd.QuadPart - liBegin.QuadPart;
+
+	fBegin = QueryPerformanceCounter(&liBegin);
+	for (int i = 0; i < 100; i++) {
+		pWebData->CreateNlohmannJSon(21, 2);
 	}
-	else {
-		gl_systemMessage.PushErrorMessage(_T("Netease RT Data Json Error"));
-		TRACE(_T("Netease RT Data Json Error\n"));
-		return false; // 其他字符结尾的抛掉，不解析
-	}
+	fEnd = QueryPerformanceCounter(&liEnd);
+	differ2 = liEnd.QuadPart - liBegin.QuadPart;
+	*/
+
+	return false;
 }
 
 bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
