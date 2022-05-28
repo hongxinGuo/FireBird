@@ -10,4 +10,6 @@ using namespace boost::property_tree;
 #include"nlohmann/json.hpp"
 using json = nlohmann::ordered_json;
 
+bool ParseWithPTree(ptree& pt, std::string& s);
+bool ParseWithPTree(shared_ptr<ptree>& ppt, std::string& s);
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);

@@ -203,7 +203,7 @@ namespace StockAnalysisTest {
 		CDayLinePtr pDayLine;
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 
-		bool fSucceed = m_tiingoStockPriceCandle.ProcessWebData(m_pWebData);
+		bool fSucceed = m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);

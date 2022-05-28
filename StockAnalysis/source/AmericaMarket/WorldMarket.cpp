@@ -275,7 +275,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
 			ASSERT(IsFinnhubInquiring());
 			pWebData = gl_WebInquirer.PopFinnhubData();
 
-			m_pCurrentFinnhubProduct->ProcessWebData(pWebData);
+			m_pCurrentFinnhubProduct->ParseAndStoreWebData(pWebData);
 
 			gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetFinnhubInquiring(false);
@@ -326,7 +326,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 			ASSERT(IsTiingoInquiring());
 			pWebData = gl_WebInquirer.PopTiingoData();
 
-			m_pCurrentTiingoProduct->ProcessWebData(pWebData);
+			m_pCurrentTiingoProduct->ParseAndStoreWebData(pWebData);
 
 			SetTiingoInquiring(false);
 			fDone = true;

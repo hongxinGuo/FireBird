@@ -172,7 +172,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
-		bool fSucceed = m_finnhubStockEstimatesEPSSurprise.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

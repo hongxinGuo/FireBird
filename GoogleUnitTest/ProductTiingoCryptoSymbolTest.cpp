@@ -132,7 +132,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto = nullptr;
 		long l = gl_pWorldMarket->GetTiingoCryptoSymbolSize();
-		bool fSucceed = m_tiingoCryptoSymbolProduct.ProcessWebData(m_pWebData);
+		bool fSucceed = m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 11: // 格式不对
 			EXPECT_TRUE(fSucceed);

@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
-													 testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
@@ -134,7 +134,7 @@ namespace StockAnalysisTest {
 		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
-		m_finnhubCryptoExchange.ProcessWebData(m_pWebData);
+		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());

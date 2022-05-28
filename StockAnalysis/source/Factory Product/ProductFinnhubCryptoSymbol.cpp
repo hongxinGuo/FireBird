@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoSymbol::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductFinnhubCryptoSymbol::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CFinnhubCryptoSymbolVectorPtr pvCryptoSymbol;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));

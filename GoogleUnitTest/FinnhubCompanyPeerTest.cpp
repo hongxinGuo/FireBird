@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
-		bool fSucceed = m_finnhubCompanyPeer.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // ²»×ãÈý¸ö×Ö·û
 			EXPECT_TRUE(fSucceed);

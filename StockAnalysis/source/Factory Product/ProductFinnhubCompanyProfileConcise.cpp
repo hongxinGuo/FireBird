@@ -29,7 +29,7 @@ CString CProductFinnhubCompanyProfileConcise::CreatMessage(void) {
 	return strMessage;
 }
 
-bool CProductFinnhubCompanyProfileConcise::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);

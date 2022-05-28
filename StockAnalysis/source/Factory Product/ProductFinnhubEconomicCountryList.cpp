@@ -20,7 +20,7 @@ CString CProductFinnhubEconomicCountryList::CreatMessage(void) {
 	return m_strInquiringStr;
 }
 
-bool CProductFinnhubEconomicCountryList::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CCountryVectorPtr pvCountry;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));

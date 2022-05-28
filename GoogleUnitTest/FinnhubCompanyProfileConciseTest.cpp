@@ -100,7 +100,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
-		fSucceed = m_FinnhubCompanyProfileConcise.ProcessWebData(m_pWebData);
+		fSucceed = m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);

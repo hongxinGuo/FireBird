@@ -351,7 +351,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
-		m_finnhubCompanyBasicFinancial.ProcessWebData(m_pWebData);
+		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1:
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());

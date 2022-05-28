@@ -154,7 +154,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		long l = gl_pWorldMarket->GetTotalCountry();
 		CCountryPtr pCountry = nullptr;
-		bool fSucceed = m_finnhubEconomicCountryList.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

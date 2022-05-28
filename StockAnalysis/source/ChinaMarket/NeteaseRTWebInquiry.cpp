@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #endif
 }
 
@@ -49,6 +49,9 @@ CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 //
 // 目前neteaseRTData使用nlohmann json库函数解析，其解析速度大致是property tree的两倍。
 // 解析900个网易数据，DEBUG模式下大致时间要300-400毫秒；Release模式下也就50毫秒。
+//
+// 在此解析数据的话，系统容易锁死，原因大概与网络读取数据有关，但确切原因不明，故而决定将解析功能移至ChinaMarket的后台工作线程中。
+// 且在使用全局优化来编译JsonParse.cpp文件后，其速度在DEBUG模式下也能够达到要求，故而无需特别处理了。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTWebInquiry::ParseData(CWebDataPtr pWebData) {

@@ -26,7 +26,7 @@ CString CProductFinnhubForexSymbol::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductFinnhubForexSymbol::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CForexSymbolVectorPtr pvForexSymbol = nullptr;

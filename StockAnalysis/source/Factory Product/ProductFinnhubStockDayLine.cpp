@@ -33,7 +33,7 @@ CString CProductFinnhubStockDayLine::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductFinnhubStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CDayLineVectorPtr pvDayLine = nullptr;

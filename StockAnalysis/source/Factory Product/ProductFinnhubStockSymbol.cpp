@@ -26,7 +26,7 @@ CString CProductFinnhubStockSymbol::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductFinnhubStockSymbol::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CString str;
 	CWorldStockVectorPtr  pvStock = nullptr;
 	CString strExchangeCode;

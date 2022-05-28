@@ -146,7 +146,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
 		CFinnhubCryptoSymbolPtr pCrypto;
-		bool fSucceed = m_finnhubCryptoSymbolProduct.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

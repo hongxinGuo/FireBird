@@ -25,7 +25,7 @@ CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
 	return strMessage;
 }
 
-bool CProductFinnhubCryptoDayLine::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	long lTemp = 0;
 	bool fStatus = true;

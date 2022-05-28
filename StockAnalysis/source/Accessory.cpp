@@ -442,43 +442,6 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	}
 }
 
-bool ParseWithPTree(ptree& pt, string& s) {
-	stringstream ss(s);
-	try {
-		read_json(ss, pt);
-	}
-	catch (ptree_error& e) {
-#ifndef _DEBUG
-		char buffer[180];
-		for (int i = 0; i < 80; i++) {
-			buffer[i] = s.at(i);
-	}
-		buffer[80] = 0x000;
-		CString str = buffer;
-		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
-#endif
-		return false;
-}
-	return true;
-}
-
-bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
-	ASSERT(ppt != nullptr);
-	stringstream ss(s);
-	try {
-		read_json(ss, *ppt);
-	}
-	catch (ptree_error& e) {
-#ifndef _DEBUG
-		CString str = s.c_str();
-		str = str.Left(160);
-		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
-#endif
-		return false;
-}
-	return true;
-}
-
 bool ConvertToWJSON(wptree& pt, string& s) {
 	wstring ws = to_wide_string(s);
 	wstringstream ss(ws);

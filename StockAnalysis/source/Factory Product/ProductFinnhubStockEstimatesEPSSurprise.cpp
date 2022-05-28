@@ -25,7 +25,7 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductFinnhubStockEstimatesEPSSurprise::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CEPSSurpriseVectorPtr pvEPSSurprise;

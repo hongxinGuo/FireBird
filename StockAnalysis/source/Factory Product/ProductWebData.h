@@ -47,9 +47,9 @@ public:
 	CProductWebSourceData();
 	~CProductWebSourceData() {}
 
-	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreatMessage和ProcessWebData声明为纯虚函数。
+	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreatMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreatMessage(void) { return _T(""); }
-	virtual bool ProcessWebData(CWebDataPtr pWebData) { return true; }
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
 
 	CString GetClassNameString(void) { return m_strClassName; }
 	CString GetInquiringStr(void) { return m_strInquiringStr; }

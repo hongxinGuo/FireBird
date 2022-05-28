@@ -10,7 +10,7 @@ public:
 	~CProductFinnhubCompanyBasicFinancial() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	bool ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData);
 	bool GetSeasonData(ptree& pt, vector<strValue>& vData, const char* szMsg);
 	bool ParseVector(ptree& ptData, vector<strValue>& vecData);

@@ -10,7 +10,7 @@ public:
 	~CProductFinnhubCompanyInsiderTransaction() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
 };
 

@@ -351,6 +351,7 @@
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</FunctionLevelLinking>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
+      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableParallelCodeGeneration>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
@@ -360,7 +361,14 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
+    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">

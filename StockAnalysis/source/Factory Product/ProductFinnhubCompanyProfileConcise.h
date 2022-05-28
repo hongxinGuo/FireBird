@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubCompanyProfileConcise() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 

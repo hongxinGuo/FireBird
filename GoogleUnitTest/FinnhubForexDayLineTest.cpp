@@ -206,7 +206,7 @@ namespace StockAnalysisTest {
 		CString strMessage;
 		CForexSymbolPtr pForex = gl_pWorldMarket->GetForexSymbol(0);
 
-		bool fSucceed = m_finnhubForexDayLine.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);

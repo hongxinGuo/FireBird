@@ -23,7 +23,7 @@ CString CProductFinnhubEconomicCalendar::CreatMessage(void) {
 	return m_strInquiringStr;
 }
 
-bool CProductFinnhubEconomicCalendar::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CEconomicCalendarVectorPtr pvEconomicCalendar;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));

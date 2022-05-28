@@ -195,7 +195,7 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
 		CString strMessage;
 		CFinnhubCryptoSymbolPtr pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(0);
-		bool fSucceed = m_finnhubCryptoDayLine.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);

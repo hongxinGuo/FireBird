@@ -149,7 +149,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;
-		bool fSucceed = m_productFinnhubForexSymbol.ProcessWebData(m_pWebData);
+		bool fSucceed = m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);

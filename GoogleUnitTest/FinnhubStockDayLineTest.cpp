@@ -122,7 +122,7 @@ namespace StockAnalysisTest {
 		CString strMessage;
 		bool fSucceed = false;
 
-		fSucceed = m_finnhubStockDayLine.ProcessWebData(m_pWebData);
+		fSucceed = m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);

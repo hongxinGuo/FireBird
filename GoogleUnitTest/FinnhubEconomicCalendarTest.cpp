@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
-		bool fSucceed = m_finnhubEconomicCalendar.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

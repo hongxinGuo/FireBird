@@ -151,7 +151,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CWorldStockPtr pStock = nullptr;
-		bool fSucceed = m_finnhubStockSymbolProduct.ProcessWebData(m_pWebData);
+		bool fSucceed = m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

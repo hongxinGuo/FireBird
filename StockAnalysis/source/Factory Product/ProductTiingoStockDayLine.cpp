@@ -30,7 +30,7 @@ CString CProductTiingoStockDayLine::CreatMessage(void) {
 	return m_strInquiringStr + strMiddle;
 }
 
-bool CProductTiingoStockDayLine::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 

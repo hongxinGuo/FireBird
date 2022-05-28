@@ -135,7 +135,7 @@ namespace StockAnalysisTest {
 		&finnhubWebData80));
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
-		m_finnhubForexExchange.ProcessWebData(m_pWebData);
+		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());

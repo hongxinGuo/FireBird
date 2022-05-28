@@ -180,7 +180,7 @@ namespace StockAnalysisTest {
 		CWorldStockPtr pStock = nullptr;
 		EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-		bool fSucceed = m_tiingoStockSymbolProduct.ProcessWebData(m_pWebData);
+		bool fSucceed = m_tiingoStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);

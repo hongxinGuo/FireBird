@@ -22,7 +22,7 @@ CString CProductFinnhubForexExchange::CreatMessage(void) {
 	return m_strInquiringStr;
 }
 
-bool CProductFinnhubForexExchange::ProcessWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	shared_ptr<vector<CString>> pvForexExchange = nullptr;

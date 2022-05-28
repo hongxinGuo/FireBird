@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubForexExchange() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	shared_ptr<vector<CString>> ParseFinnhubForexExchange(CWebDataPtr pWebData);
 };
 

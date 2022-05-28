@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubStockDayLine() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ProcessWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
 };
 

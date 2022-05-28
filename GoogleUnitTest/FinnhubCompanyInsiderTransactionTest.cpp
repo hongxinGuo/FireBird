@@ -100,7 +100,7 @@ namespace StockAnalysisTest {
 		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
-		m_finnhubCompanyInsiderTransaction.ProcessWebData(m_pWebData);
+		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(m_pStock->IsInsiderTransactionNeedSave());

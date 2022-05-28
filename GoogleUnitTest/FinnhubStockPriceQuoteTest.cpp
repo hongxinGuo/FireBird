@@ -119,7 +119,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		bool fSucceed = false;
-		fSucceed = m_finnhubStockPriceQuote.ProcessWebData(m_pWebData);
+		fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 3: // 格式不对
 			EXPECT_FALSE(fSucceed);
