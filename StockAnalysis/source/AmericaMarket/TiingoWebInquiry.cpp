@@ -53,10 +53,6 @@ bool CTiingoWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CTiingoWebInquiry::PrepareReadingWebData(void) {
-	ASSERT(!gl_pWorldMarket->IsTiingoDataReceived());
-}
-
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.TiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 	gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。

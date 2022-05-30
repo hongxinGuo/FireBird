@@ -38,7 +38,8 @@ public:
 	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
 	virtual bool PrepareNextInquiringStr(void) { ASSERT(0); return true; }
 	virtual CString GetNextInquiringMiddleStr(long, bool) { ASSERT(0); return _T(""); } // 申请下一个查询用字符串
-	virtual void PrepareReadingWebData(void) { /* do nothing in default*/ } // 在读取网络数据前的准备工作，默认无动作。
+	virtual void PrepareReadingWebData(void);
+	virtual void InitializeSession(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) { /* do nothing in default*/ } // 成功接收后更新系统状态。 默认无动作
 	virtual void ClearUpIfReadingWebDataFailed(void) { /* do nothing in default*/ } // 处理失败的接收过程

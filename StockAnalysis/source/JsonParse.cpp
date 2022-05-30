@@ -88,7 +88,8 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndP
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}
 	catch (json::parse_error& e) {
-		ReportJsonError(e, s);
+		gl_systemMessage.PushErrorMessage("nlohmann json parse error");
+		//ReportJsonError(e, s);
 		pjs = nullptr;
 		return false;
 	}

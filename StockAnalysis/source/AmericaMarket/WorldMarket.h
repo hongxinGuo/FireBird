@@ -271,6 +271,7 @@ public:
 	bool IsNeedUpdateTiingoCryptoSymbol(void) noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
 
 	void StopReceivingWebSocket(void);
+	void DeconnectingAllWebSocket(void);
 
 	bool UpdateToken(void);
 

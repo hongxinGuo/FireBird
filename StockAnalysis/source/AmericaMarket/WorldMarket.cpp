@@ -50,7 +50,7 @@ CWorldMarket::CWorldMarket() {
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
 	m_strMarketId = _T("美国市场");
-	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
+	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
 	CalculateTime();
 
 	Reset();
@@ -172,7 +172,7 @@ void CWorldMarket::ResetMarket(void) {
 bool CWorldMarket::PreparingExitMarket(void)
 {
 	ASSERT(gl_fExitingSystem);
-	StopReceivingWebSocket();
+	DeconnectingAllWebSocket();
 	while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
 
 	return true;
@@ -1287,6 +1287,13 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
+	if (!gl_systemOption.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
+	if (!gl_systemOption.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
+	if (!gl_systemOption.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
+	if (!gl_systemOption.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
+}
+
+void CWorldMarket::DeconnectingAllWebSocket(void) {
 	if (gl_systemOption.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
 	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
 	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();

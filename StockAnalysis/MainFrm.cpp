@@ -330,7 +330,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	LARGE_INTEGER li;
 	QueryPerformanceFrequency(&li);
 	gl_lFrequency = li.QuadPart;
-	gl_lFrequency /= 1000;
 
 	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
 	m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
@@ -1028,6 +1027,7 @@ void CMainFrame::OnRecordFinnhubWebSocket() {
 	// TODO: Add your command handler code here
 	if (gl_systemOption.IsUsingFinnhubWebSocket()) gl_systemOption.SetUsingFinnhubWebSocket(false);
 	else gl_systemOption.SetUsingFinnhubWebSocket(true);
+	gl_pWorldMarket->StopReceivingWebSocket();
 }
 
 void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
@@ -1045,6 +1045,7 @@ void CMainFrame::OnRecordTiingoCryptoWebSocket()
 	// TODO: Add your command handler code here
 	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) gl_systemOption.SetUsingTiingoCryptoWebSocket(false);
 	else gl_systemOption.SetUsingTiingoCryptoWebSocket(true);
+	gl_pWorldMarket->StopReceivingWebSocket();
 }
 
 void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
@@ -1062,6 +1063,7 @@ void CMainFrame::OnRecordTiingoForexWebSocket()
 	// TODO: Add your command handler code here
 	if (gl_systemOption.IsUsingTiingoForexWebSocket()) gl_systemOption.SetUsingTiingoForexWebSocket(false);
 	else gl_systemOption.SetUsingTiingoForexWebSocket(true);
+	gl_pWorldMarket->StopReceivingWebSocket();
 }
 
 void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
@@ -1079,6 +1081,7 @@ void CMainFrame::OnRecordTiingoIexWebSocket()
 	// TODO: Add your command handler code here
 	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) gl_systemOption.SetUsingTiingoIEXWebSocket(false);
 	else gl_systemOption.SetUsingTiingoIEXWebSocket(true);
+	gl_pWorldMarket->StopReceivingWebSocket();
 }
 
 void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {

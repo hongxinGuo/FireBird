@@ -53,6 +53,15 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUs
 	return gl_pChinaMarket->GetSinaStockInquiringStr(lTotalNumber, fUsingTotalStockSet);
 }
 
+void CSinaRTWebInquiry::InitializeSession(void) {
+	if (m_pSession != nullptr) delete m_pSession;
+	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 200); // 正常情况下sina实时数据接收时间不超过50毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 200); // 设置接收超时时间为200毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+}
+
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;

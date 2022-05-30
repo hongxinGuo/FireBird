@@ -107,7 +107,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				sprintf_s(buffer, _T("%d"), exception->m_dwError);
 				strErrorNo = buffer;
 				strMessage = _T("Net Error #") + strErrorNo;
-				sprintf_s(buffer, _T(" %lld毫秒"), ll / gl_lFrequency);
+				sprintf_s(buffer, _T(" %lld毫秒"), ll * 1000 / gl_lFrequency);
 				strMessage += _T(" 用时:");
 				strMessage += buffer;
 				SetWebError(true);
@@ -152,12 +152,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	SetWebError(false);
 	SetByteReaded(0);
 
-	if (m_pSession != nullptr) delete m_pSession;
-	m_pSession = new CInternetSession{ _T("StockAnalysis") };
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 2); // 2次重试
 	if (OpenFile(GetInquiringString())) {
 		try {
 			do {
@@ -266,6 +260,19 @@ bool CVirtualWebInquiry::GetWebData(void) {
 	else return false; // 工作线程已在执行接收数据的任务
 }
 
+void CVirtualWebInquiry::PrepareReadingWebData(void) {
+	InitializeSession();
+}
+
+void CVirtualWebInquiry::InitializeSession(void) {
+	if (m_pSession != nullptr) delete m_pSession;
+	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
+}
+
 void CVirtualWebInquiry::StartReadingThread(void) {
 	thread thread1(ThreadReadVirtualWebData, this);
 	thread1.detach();
@@ -304,7 +311,7 @@ void CVirtualWebInquiry::Read(void) {
 	fEnd = QueryPerformanceCounter(&liEnd);
 	if (fBegin && fEnd) {
 		differ = liEnd.QuadPart - liBegin.QuadPart;
-		SetCurrentInquiryTime(differ / gl_lFrequency);
+		SetCurrentInquiryTime(differ * 1000 / gl_lFrequency); // 显示的是毫秒值，故要转换为毫秒
 	}
 
 	SetReadingWebData(false);
@@ -341,41 +348,3 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
 	}
 	m_lByteRead = lTotalNumber;
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 通用网络数据读取线程。
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
-	ASSERT(pVirtualWebInquiry->IsReadingWebData());
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-
-	QueryPerformanceCounter(&liBegin);
-
-	pVirtualWebInquiry->PrepareReadingWebData();
-	if (pVirtualWebInquiry->ReadingWebData()) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		pVirtualWebInquiry->TransferData(pWebData);
-		pVirtualWebInquiry->ParseData(pWebData);
-		pVirtualWebInquiry->ResetBuffer();
-
-		pVirtualWebInquiry->SetTime(pWebData);
-		pVirtualWebInquiry->UpdateStatusWhenSecceed(pWebData);
-		pVirtualWebInquiry->StoreWebData(pWebData);
-	}
-	else { // error handling
-		pVirtualWebInquiry->ClearUpIfReadingWebDataFailed();
-	}
-	pVirtualWebInquiry->UpdateAfterReadingWebData();
-
-	pVirtualWebInquiry->SetReadingWebData(false);
-
-	QueryPerformanceCounter(&liEnd);
-	pVirtualWebInquiry->SetCurrentInquiryTime((liEnd.QuadPart - liBegin.QuadPart) / 1000);
-
-	return 1;
-}
-*/

@@ -67,10 +67,6 @@ bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CQuandlWebInquiry::PrepareReadingWebData(void) {
-	ASSERT(!gl_pWorldMarket->IsQuandlDataReceived());
-}
-
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.QuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
 	gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。

@@ -13,9 +13,6 @@
     <Filter Include="头文件\网络数据提取器">
       <UniqueIdentifier>{981ca3e0-3ae5-4c79-8fc8-0ea6f8debf62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Poten Daily Briefing Market">
-      <UniqueIdentifier>{78206375-ee02-4ab0-b1d6-8348908173c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\World Market">
       <UniqueIdentifier>{9f06f5c2-d029-4368-811d-72c29bb47e61}</UniqueIdentifier>
     </Filter>
@@ -1196,6 +1193,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
