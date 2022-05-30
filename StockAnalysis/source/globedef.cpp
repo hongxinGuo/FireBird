@@ -26,19 +26,19 @@
 #include"SystemOption.h"
 
 #include"WebRTDataContainer.h"
+#include"HighPerformanceCounter.h"
 
 bool gl_fNormalMode = false; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 
 CSystemOption gl_systemOption{}; // 系统参数总汇.此全局变量要位于所有全局变量的最前面
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
+CHighPerformanceCounter g_highPerformanceCounter;
 
 atomic_bool gl_fExitingSystem = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 
 CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
-
-long long gl_lFrequency = 10000000; // 频率计数器。高精度计数器每秒频率. 默认为1千万（i710700KF处理器的默认值）。
 
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库

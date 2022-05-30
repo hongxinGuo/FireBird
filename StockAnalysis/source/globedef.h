@@ -22,5 +22,3 @@ extern CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£
 extern CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
 
 extern CWebRTDataContainer gl_WebRTDataContainer; // ÍøÂçÊµÊ±Êı¾İ´æ´¢ÈİÆ÷
-
-extern long long gl_lFrequency; // ÆµÂÊ¼ÆÊıÆ÷¡£¸ß¾«¶È¼ÆÊıÆ÷Ã¿ÃëÆµÂÊ

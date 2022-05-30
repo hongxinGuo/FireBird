@@ -53,12 +53,17 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUs
 	return gl_pChinaMarket->GetSinaStockInquiringStr(lTotalNumber, fUsingTotalStockSet);
 }
 
+/// <summary>
+/// 网易实时数据接收时，不时会出现解析失败的情况。感觉原因出在网易数据服务器发送错误，但还要继续观察。
+/// 调整Session的选项可能会改善接收情况。
+/// </summary>
+/// <param name=""></param>
 void CSinaRTWebInquiry::InitializeSession(void) {
 	if (m_pSession != nullptr) delete m_pSession;
 	m_pSession = new CInternetSession{ _T("StockAnalysis") };
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 200); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 200); // 设置接收超时时间为200毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 150); // 正常情况下sina实时数据接收时间不超过50毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 150); // 设置接收超时时间为150毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 50); // 设置发送超时时间为50毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 

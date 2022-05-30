@@ -8,6 +8,7 @@
 #include"ChinaMarket.h"
 
 #include"VirtualWebInquiry.h"
+#include"HighPerformanceCounter.h"
 
 atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
@@ -72,11 +73,9 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	CString strMessage, strErrorNo;
 	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
+	CHighPerformanceCounter counter;
 
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-	bool fBegin = false, fEnd = false;
-
-	fBegin = QueryPerformanceCounter(&liBegin);
+	counter.Start();
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
@@ -101,13 +100,12 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				m_pFile = nullptr;
 			}
 			if (iCounter++ >= 0) { // 如果重试次数超过0次，则报告错误
-				fEnd = QueryPerformanceCounter(&liEnd);
-				long long ll = liEnd.QuadPart - liBegin.QuadPart;
+				counter.Stop();
 				m_dwWebErrorCode = exception->m_dwError;
 				sprintf_s(buffer, _T("%d"), exception->m_dwError);
 				strErrorNo = buffer;
 				strMessage = _T("Net Error #") + strErrorNo;
-				sprintf_s(buffer, _T(" %lld毫秒"), ll * 1000 / gl_lFrequency);
+				sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
 				strMessage += _T(" 用时:");
 				strMessage += buffer;
 				SetWebError(true);
@@ -284,17 +282,14 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-	bool fBegin = false, fEnd = false;
-	long long  differ = 0;
+	CHighPerformanceCounter counter;
 
-	fBegin = QueryPerformanceCounter(&liBegin);
-
+	counter.Start();
 	ASSERT(IsReadingWebData());
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		//fBegin = QueryPerformanceCounter(&liBegin);
+		//counter.start();
 		TransferData(pWebData);
 		ParseData(pWebData);
 		ResetBuffer();
@@ -308,11 +303,8 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateAfterReadingWebData();
 
-	fEnd = QueryPerformanceCounter(&liEnd);
-	if (fBegin && fEnd) {
-		differ = liEnd.QuadPart - liBegin.QuadPart;
-		SetCurrentInquiryTime(differ * 1000 / gl_lFrequency); // 显示的是毫秒值，故要转换为毫秒
-	}
+	counter.Stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond()); // 显示的是毫秒值
 
 	SetReadingWebData(false);
 }

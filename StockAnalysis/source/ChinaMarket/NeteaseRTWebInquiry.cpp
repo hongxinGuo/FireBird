@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 600; // 网易实时数据查询默认值
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 600; // 网易实时数据查询默认值
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #endif
 }
 
@@ -79,12 +79,17 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, fUsingTotalStockSet);
 }
 
+/// <summary>
+/// 网易实时数据的接收，不时出现错误数据。目前无法确定是服务器本身的错误还是接收中出现的错误。如果服务器本身就发送错了，就无法修正了。
+/// 修改session各参数，试试能否解决问题。
+/// </summary>
+/// <param name=""></param>
 void CNeteaseRTWebInquiry::InitializeSession(void) {
 	if (m_pSession != nullptr) delete m_pSession;
 	m_pSession = new CInternetSession{ _T("StockAnalysis") };
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 300); // 设置连接超时时间为300毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 300); // 设置接收超时时间为300毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为500毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为500毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 2次重试
 }
 

@@ -8,6 +8,8 @@
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"
 
+#include"HighPerformanceCounter.h"
+
 IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CProductWebSourceData)
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CProductWebSourceData() {
@@ -24,27 +26,23 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	char buffer[100];
 	CString strNumber, str;
 
-	LARGE_INTEGER liBegin{ 0,0 }, liEnd{ 0,0 };
-	bool fBegin = false, fEnd = false;
-	long long  differ1 = 0, differ2 = 0;
+	CHighPerformanceCounter counter, counter2;
 
 	// 测试结果，DEBUG状态下，ptree所需时间为json的160%；Release状态下，为3-4倍。
 	/*
-	fBegin = QueryPerformanceCounter(&liBegin);
+	counter.start();
 	//for (int i = 0; i < 100; i++) {
 	pWebData->CreatePropertyTree();
 	//}
-	fEnd = QueryPerformanceCounter(&liEnd);
-	m_differ1 = liEnd.QuadPart - liBegin.QuadPart;
+	counter.stop();
 
-	fBegin = QueryPerformanceCounter(&liBegin);
+	counter2.start();
 	//for (int i = 0; i < 100; i++) {
 	pWebData->CreateJSon();
 	//}
-	fEnd = QueryPerformanceCounter(&liEnd);
-	m_differ2 = liEnd.QuadPart - liBegin.QuadPart;
+	counter2.stop();
 
-	m_ratio = (double)m_differ1 / (double)m_differ2;
+	m_ratio = (double)counter.GetElapsedMicroSeconde() / counter2.GetElapsedMicroSeconde();
 	*/
 	pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (pvTiingoCrypto->size() > 0) {
