@@ -15,6 +15,8 @@ CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
 	m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strConnectionName = _T("NeteaseDayLine");
+
+	ConfigerateSession();
 }
 
 CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
@@ -45,6 +47,15 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 		return true;
 	}
 	return false;
+}
+
+void CNeteaseDayLineWebInquiry::ConfigerateSession(void)
+{
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下Netease日线数据接收时间不超过500毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 2); // 1次重试
 }
 
 void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {

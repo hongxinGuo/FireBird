@@ -14,6 +14,8 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("Finnhub");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
+
+	ConfigerateSession();
 }
 
 CFinnhubWebInquiry::~CFinnhubWebInquiry() {
@@ -49,6 +51,14 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个Finnhub数据\n", lNumberOfData);
 	return true;
+}
+
+void CFinnhubWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 15000); // 设置连接超时时间为15秒。 正常情况下Finnhub.io数据接收时间不超过5秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 15000); // 设置接收超时时间为15秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为100毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {

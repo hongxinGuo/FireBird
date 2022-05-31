@@ -12,7 +12,7 @@ public:
 
 	virtual bool PrepareNextInquiringStr(void) override;
 	virtual CString GetNextInquiringMiddleStr(long lTotalNumer, bool fUsingTotalStockSet = false) override;
-	virtual void InitializeSession(void) override final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+	virtual void ConfigerateSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Sina RT的m_pSession状态。
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final; // 无需将网络上读取到的数据存入本地
 };

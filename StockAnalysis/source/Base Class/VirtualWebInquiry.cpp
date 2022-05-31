@@ -47,6 +47,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 #else
 	m_fReportStatus = false;
 #endif
+
+	ConfigerateSession();
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
@@ -182,11 +184,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	}
 	else fReadingSuccess = false;
 
-	if (m_pSession != nullptr) {
-		delete m_pSession;
-		m_pSession = nullptr;
-	}
-
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 
 	return fReadingSuccess;
@@ -259,12 +256,10 @@ bool CVirtualWebInquiry::GetWebData(void) {
 }
 
 void CVirtualWebInquiry::PrepareReadingWebData(void) {
-	InitializeSession();
 }
 
-void CVirtualWebInquiry::InitializeSession(void) {
-	if (m_pSession != nullptr) delete m_pSession;
-	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+void CVirtualWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒

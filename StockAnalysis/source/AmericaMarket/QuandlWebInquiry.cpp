@@ -30,6 +30,8 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 	}
 	m_strConnectionName = _T("Quandl");
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
+
+	ConfigerateSession();
 }
 
 CQuandlWebInquiry::~CQuandlWebInquiry() {
@@ -65,6 +67,14 @@ CString CQuandlWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSk
 bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;
+}
+
+void CQuandlWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
 }
 
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {

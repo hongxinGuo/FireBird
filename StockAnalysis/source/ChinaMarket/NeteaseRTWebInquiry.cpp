@@ -36,10 +36,12 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 600; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 600; // 网易实时数据查询默认值
 #endif
+
+	ConfigerateSession();
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
@@ -84,9 +86,8 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 /// 修改session各参数，试试能否解决问题。
 /// </summary>
 /// <param name=""></param>
-void CNeteaseRTWebInquiry::InitializeSession(void) {
-	if (m_pSession != nullptr) delete m_pSession;
-	m_pSession = new CInternetSession{ _T("StockAnalysis") };
+void CNeteaseRTWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为500毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒

@@ -14,6 +14,8 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 	m_strWebDataInquireSuffix = _T("");
 	m_strConnectionName = _T("TengxunRT");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
+
+	ConfigerateSession();
 }
 
 CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
@@ -33,6 +35,15 @@ bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
+}
+
+void CTengxunRTWebInquiry::ConfigerateSession(void)
+{
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 正常情况下sina实时数据接收时间不超过300毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为300毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 50); // 设置发送超时时间为50毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
 bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) const {
