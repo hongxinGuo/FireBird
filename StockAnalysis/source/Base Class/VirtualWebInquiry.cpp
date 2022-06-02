@@ -15,7 +15,7 @@ atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	DWORD dwValue = 0;
 
-	m_pSession = new CInternetSession();
+	m_pSession = new CInternetSession(_T("StockAnalysis"));
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
@@ -255,6 +255,14 @@ bool CVirtualWebInquiry::GetWebData(void) {
 
 void CVirtualWebInquiry::PrepareReadingWebData(void) {
 	ConfigerateSession();
+}
+
+void CVirtualWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
 }
 
 void CVirtualWebInquiry::StartReadingThread(void) {
