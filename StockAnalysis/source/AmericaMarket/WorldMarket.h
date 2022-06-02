@@ -270,9 +270,6 @@ public:
 	bool IsNeedUpdateTiingoStock(void) noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
 	bool IsNeedUpdateTiingoCryptoSymbol(void) noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
 
-	void StopReceivingWebSocket(void);
-	void DeconnectingAllWebSocket(void);
-
 	bool UpdateToken(void);
 
 	// Êý¾Ý¿â²Ù×÷
@@ -322,8 +319,10 @@ public:
 	vector<CString> GetTiingoCryptoWebSocketSymbolVector(void);
 	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
 
-	bool TaskActivateWebSocket(void);
-	bool TaskReActivateWebSocket(void);
+	bool StartWebSocket(void);
+	bool RestartWebSocket(void);
+	void StopReceivingWebSocket(void);
+	void DeconnectingAllWebSocket(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

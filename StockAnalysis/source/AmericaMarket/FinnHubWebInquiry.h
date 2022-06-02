@@ -17,7 +17,7 @@ public:
 	virtual void ConfigerateSession(void) override final;
 	virtual void ClearUpIfReadingWebDataFailed(void) override final; // 处理失败的接收过程
 	virtual void UpdateAfterReadingWebData(void) override final;
-	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final;
+	virtual void StoreWebData(CWebDataPtr pWebDataReceived) override final;
 
 protected:
 };

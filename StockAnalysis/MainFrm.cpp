@@ -327,11 +327,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	// 获取高精度计时器频率
-	LARGE_INTEGER li;
-	QueryPerformanceFrequency(&li);
-	g_highPerformanceCounter.SetFrequency(li.QuadPart);
-
 	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
 	m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
 	if (m_uIdTimer == 0) {
@@ -475,7 +470,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	static int s_iCounterforUpdateStatusBar = 0;
 	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
@@ -485,7 +480,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	//CMainFrame只执行更新状态任务
 	UpdateStatus();
-	UpdateInnerSystemStatus();
+	if (--s_iCounterforUpdateStatusBar < 0) {
+		UpdateInnerSystemStatus();
+		s_iCounterforUpdateStatusBar = 0;
+	}
 
 	if (!gl_fNormalMode) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
@@ -1026,9 +1024,13 @@ void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	// TODO: Add your command handler code here
-	if (gl_systemOption.IsUsingFinnhubWebSocket()) gl_systemOption.SetUsingFinnhubWebSocket(false);
-	else gl_systemOption.SetUsingFinnhubWebSocket(true);
-	gl_pWorldMarket->StopReceivingWebSocket();
+	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
+		gl_systemOption.SetUsingFinnhubWebSocket(false);
+		gl_pWorldMarket->StopReceivingWebSocket();
+	}
+	else {
+		gl_systemOption.SetUsingFinnhubWebSocket(true);
+	}
 }
 
 void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {

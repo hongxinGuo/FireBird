@@ -10,6 +10,7 @@
 #include"globedef.h"
 #include"ThreadStatus.h"
 #include"SystemMessage.h"
+#include"HighPerformanceCounter.h"
 
 #include"GeneralCheck.h"
 
@@ -59,6 +60,9 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			ASSERT(!gl_fNormalMode);
+
+			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
+
 			gl_systemOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.ini"));
 			gl_systemOption.LoadDB();
 			gl_systemOption.Update();

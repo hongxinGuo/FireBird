@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 600; // 网易实时数据查询默认值
+	m_lInquiringNumber = 550; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 600; // 网易实时数据查询默认值
+	m_lInquiringNumber = 550; // 网易实时数据查询默认值
 #endif
 
 	ConfigerateSession();
@@ -88,10 +88,10 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 /// <param name=""></param>
 void CNeteaseRTWebInquiry::ConfigerateSession(void) {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为500毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为500毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为1000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为1000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 2次重试
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 0); // 重试似乎必须设置成0，这样误码率降低了。
 }
 
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {

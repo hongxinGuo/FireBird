@@ -53,6 +53,14 @@ bool CTiingoWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
+void CTiingoWebInquiry::ConfigerateSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
+}
+
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.TiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 	gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。

@@ -402,7 +402,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	// 建立WebSocket连接
-	TaskActivateWebSocket();
+	StartWebSocket();
 
 	if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
 		TaskUpdateStockProfileDB();
@@ -424,7 +424,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
-	TaskReActivateWebSocket();
+	RestartWebSocket();
 
 	return true;
 }
@@ -1519,7 +1519,7 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	return vSymbol;
 }
 
-bool CWorldMarket::TaskReActivateWebSocket(void) {
+bool CWorldMarket::RestartWebSocket(void) {
 	if (IsSystemReady()) {
 		if (gl_systemOption.IsUsingFinnhubWebSocket()) {
 			if (!m_finnhubWebSocket.IsReceivingData()) {
@@ -1562,7 +1562,7 @@ bool CWorldMarket::TaskReActivateWebSocket(void) {
 	return true;
 }
 
-bool CWorldMarket::TaskActivateWebSocket(void) {
+bool CWorldMarket::StartWebSocket(void) {
 	if (IsSystemReady()) {
 		if (gl_systemOption.IsUsingFinnhubWebSocket()) {
 			if (m_finnhubWebSocket.IsClosed()) {

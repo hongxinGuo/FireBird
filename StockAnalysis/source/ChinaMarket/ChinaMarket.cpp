@@ -153,7 +153,7 @@ void CChinaMarket::Reset(void) {
 	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-	m_fUsingTengxunRTDataReceiver = false; // 默认状态下不读取腾讯实时行情
+	m_fUsingTengxunRTDataReceiver = true; // 默认状态下不读取腾讯实时行情
 	m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
 	m_iCountDownTengxunNumber = 10;
 
@@ -640,13 +640,13 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 	switch (gl_systemOption.GetChinaMarketRealtimeServer()) {
 	case 0: // 使用新浪实时数据服务器
 		if (IsUsingSinaRTDataReceiver()) {
-			gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+			if (!gl_WebInquirer.IsReadingSinaRTData()) gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 		}
 		break;
 	case 1: // 使用网易实时数据服务器
 		if (IsUsingNeteaseRTDataReceiver()) {
-			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。网易的响应时间为500-1000毫秒，偶尔有数据错误。
-			gl_WebInquirer.GetNeteaseRTData();
+			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。网易的响应时间为50-200毫秒，偶尔有数据错误。
+			if (!gl_WebInquirer.IsReadingNeteaseRTData()) gl_WebInquirer.GetNeteaseRTData();
 		}
 		break;
 	default: // 错误
