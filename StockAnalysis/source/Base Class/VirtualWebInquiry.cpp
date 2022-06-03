@@ -15,7 +15,7 @@ atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	DWORD dwValue = 0;
 
-	m_pSession = new CInternetSession(_T("StockAnalysis"));
+	m_pSession = new CInternetSession(_T("StockAnalysis")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
@@ -57,6 +57,66 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 	m_lByteRead = 0;
 	m_dwWebErrorCode = 0;
 	m_fWebError = false;
+}
+
+///////////////////////////////////////////////////////////////////////////
+//
+// 从网络读取数据。每次读1KB，直到读不到为止。
+// 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
+// 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
+//
+// 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
+//
+// 设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。目前接收数据最长的是申请Tiingo stock，大致为60秒。--20220514
+//
+///////////////////////////////////////////////////////////////////////////
+bool CVirtualWebInquiry::ReadingWebData(void) {
+	m_pFile = nullptr;
+	bool fReadingSuccess = true;
+	long lCurrentByteReaded = 0;
+	CString strMessage, strErrorNo;
+	char buffer[30];
+
+	ASSERT(IsReadingWebData());
+	gl_ThreadStatus.IncreaseWebInquiringThread();
+	SetWebError(false);
+	SetByteReaded(0);
+
+	if (OpenFile(GetInquiringString())) {
+		try {
+			do {
+				if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
+					fReadingSuccess = false;
+					break;
+				}
+				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+
+				if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
+					m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
+				}
+			} while (lCurrentByteReaded > 0);
+			m_lTotalByteReaded += m_lByteRead;
+			if (m_pFile != nullptr) {
+				m_pFile->Close();
+				delete m_pFile;
+				m_pFile = nullptr;
+			}
+		}
+		catch (CInternetException* exception) {
+			fReadingSuccess = false;
+			m_dwWebErrorCode = exception->m_dwError;
+			sprintf_s(buffer, _T("%d"), exception->m_dwError);
+			strErrorNo = buffer;
+			strMessage = _T("Net Error #") + strErrorNo;
+			SetWebError(true);
+			gl_systemMessage.PushErrorMessage(strMessage);
+		}
+	}
+	else fReadingSuccess = false;
+
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+
+	return fReadingSuccess;
 }
 
 /// <summary>
@@ -127,66 +187,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	return fStatus;
 }
 
-///////////////////////////////////////////////////////////////////////////
-//
-// 从网络读取数据。每次读1KB，直到读不到为止。
-// 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
-// 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
-//
-// 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
-//
-// 设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。目前接收数据最长的是申请Tiingo stock，大致为60秒。--20220514
-//
-///////////////////////////////////////////////////////////////////////////
-bool CVirtualWebInquiry::ReadingWebData(void) {
-	m_pFile = nullptr;
-	bool fReadingSuccess = true;
-	long lCurrentByteReaded = 0;
-	CString strMessage, strErrorNo;
-	char buffer[30];
-
-	ASSERT(IsReadingWebData());
-	gl_ThreadStatus.IncreaseWebInquiringThread();
-	SetWebError(false);
-	SetByteReaded(0);
-
-	if (OpenFile(GetInquiringString())) {
-		try {
-			do {
-				if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
-					fReadingSuccess = false;
-					break;
-				}
-				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-
-				if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
-					m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
-				}
-			} while (lCurrentByteReaded > 0);
-			m_lTotalByteReaded += m_lByteRead;
-			if (m_pFile != nullptr) {
-				m_pFile->Close();
-				delete m_pFile;
-				m_pFile = nullptr;
-			}
-		}
-		catch (CInternetException* exception) {
-			fReadingSuccess = false;
-			m_dwWebErrorCode = exception->m_dwError;
-			sprintf_s(buffer, _T("%d"), exception->m_dwError);
-			strErrorNo = buffer;
-			strMessage = _T("Net Error #") + strErrorNo;
-			SetWebError(true);
-			gl_systemMessage.PushErrorMessage(strMessage);
-		}
-	}
-	else fReadingSuccess = false;
-
-	gl_ThreadStatus.DecreaseWebInquiringThread();
-
-	return fReadingSuccess;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 每次读取1K数据，然后将读取到的数据存入缓冲区
@@ -227,15 +227,6 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 	return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
-//
-////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseWithPropertyTree(0, 0);
-}
-
 /////////////////////////////////////////////////////////////////////////
 //
 // 这是此类唯一的接口函数
@@ -255,14 +246,6 @@ bool CVirtualWebInquiry::GetWebData(void) {
 
 void CVirtualWebInquiry::PrepareReadingWebData(void) {
 	ConfigerateSession();
-}
-
-void CVirtualWebInquiry::ConfigerateSession(void) {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
 }
 
 void CVirtualWebInquiry::StartReadingThread(void) {

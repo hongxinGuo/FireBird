@@ -56,8 +56,17 @@ void CFinnhubWebInquiry::ConfigerateSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 15000); // 设置连接超时时间为15秒。 正常情况下Finnhub.io数据接收时间不超过5秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 15000); // 设置接收超时时间为15秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 2); // 2次重试
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为1秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 0); // 0次重试
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
+//
+////////////////////////////////////////////////////////////////////////////////////
+bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
+	return pWebData->ParseWithPropertyTree(0, 0);
 }
 
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {

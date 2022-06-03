@@ -36,9 +36,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 550; // 网易实时数据查询默认值
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 550; // 网易实时数据查询默认值
+	m_lInquiringNumber = 800; // 网易实时数据查询默认值
 #endif
 
 	ConfigerateSession();

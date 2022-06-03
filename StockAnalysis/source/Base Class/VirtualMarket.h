@@ -46,9 +46,11 @@ public:
 	bool IsWorkingDay(CTime timeCurrent) const noexcept;
 	bool IsWorkingDay(long lDate) const noexcept;
 
-	virtual bool IsWorkingTime(void) { return true; }
+	virtual bool IsOrdinaryTradeTime(void) { return true; } // 日常交易时间
+	virtual bool IsOrdinaryTradeTime(long) { return true; }
+	virtual bool IsWorkingTime(void) { return true; } // 工作时间（日常交易时间 + 延长的交易时间）
 	virtual bool IsWorkingTime(long) { return true; }
-	virtual bool IsDummyTime(void) { return false; }
+	virtual bool IsDummyTime(void) { return false; } // 空闲时间
 	virtual bool IsDummyTime(long) { return false; }
 
 	bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;

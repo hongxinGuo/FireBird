@@ -165,6 +165,9 @@ void CChinaMarket::Reset(void) {
 
 	m_dataChinaStock.Reset();
 	m_dataStockSymbol.Reset();
+
+	m_lRTDataReceivedInOrdinaryTradeTime = 0;
+	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
 }
 
 bool CChinaMarket::PreparingExitMarket(void) {
@@ -178,6 +181,18 @@ bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
 	if ((lCurrentTime > 91259) && (lCurrentTime < 91401)) return true;
 	else if ((lCurrentTime > 92459) && (lCurrentTime < 92701)) return true;
 	else return false;
+}
+
+bool CChinaMarket::IsOrdinaryTradeTime(long lTime) {
+	if (!IsWorkingDay()) return false;
+	if (lTime < 93000) return false;
+	if ((lTime > 113000) && (lTime < 130000))  return false;
+	if (lTime > 150000) return false;
+	return true;
+}
+
+bool CChinaMarket::IsOrdinaryTradeTime(void) {
+	return IsOrdinaryTradeTime(GetMarketTime());
 }
 
 bool CChinaMarket::IsWorkingTime(long lTime) {
@@ -409,6 +424,8 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	CWebRTDataPtr pRTData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
+	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		pRTData = gl_WebRTDataContainer.PopSinaData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
@@ -448,6 +465,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+			if (IsOrdinaryTradeTime()) m_lNewRTDataReceivedInOrdinaryTradeTime++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
 			if (pStock->IsRecordRTData()) {
 				StoreChoiceRTData(pRTData);
@@ -472,6 +490,8 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	CChinaStockPtr pStock;
 	const size_t lTotalNumber = gl_WebRTDataContainer.NeteaseDataSize();
 	CString strVolume;
+
+	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();

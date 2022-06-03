@@ -39,6 +39,8 @@ public:
 
 	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final;
 
+	virtual bool IsOrdinaryTradeTime(void) override final; // 日常交易时间
+	virtual bool IsOrdinaryTradeTime(long) override final;
 	virtual bool IsWorkingTime(void) override final;
 	virtual bool IsWorkingTime(long lTime) override final;
 	virtual bool IsDummyTime(void) override final;
@@ -279,6 +281,9 @@ public:
 	bool TaskDistributeNeteaseRTDataToStock(void);
 	bool DistributeRTDataToStock(CWebRTDataPtr pData);
 
+	long GetRTDataReceivedInOrdinaryTradeTime(void) noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
+	long GetNewRTDataReveivedInOrdinaryTradeTime(void) noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
+
 	void TaskSaveTempDataIntoDB(long lCurrentTime);
 
 	// 状态反馈
@@ -387,6 +392,8 @@ protected:
 	bool m_fCalculateChoiced10RS;
 
 	atomic_uint64_t m_llRTDataReceived; // 接收到的实时数据数量
+	long m_lRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的实时数据数量
+	long m_lNewRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的新实时数据数量
 
 	long m_lStockDayLineNeedUpdate; // 股票历史日线今日需要更新数
 

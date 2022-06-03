@@ -548,7 +548,13 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(11, (LPCTSTR)str);
 
 	// 更新当前后台工作线程数
-	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+
+	double dRatio = 0;
+	if (gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime() > 0) {
+		dRatio = (double)(gl_pChinaMarket->GetNewRTDataReveivedInOrdinaryTradeTime()) / gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime();
+	}
+	sprintf_s(buffer, _T("%1.3f"), dRatio);
 	str = buffer;
 	SysCallSetPaneText(12, (LPCTSTR)str);
 

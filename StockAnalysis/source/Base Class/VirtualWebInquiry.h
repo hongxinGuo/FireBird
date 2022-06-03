@@ -23,7 +23,7 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
-	virtual bool ParseData(CWebDataPtr pWebData); // 解析接收到的数据， 默认数据格式为JSon，解析之。
+	virtual bool ParseData(CWebDataPtr pWebData) { TRACE("调用了基类函数\n"); return false; }; // 解析接收到的数据。继承类必须实现此函数。
 	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); }
 
 	// 唯一的公共接口函数
@@ -39,7 +39,7 @@ public:
 	virtual bool PrepareNextInquiringStr(void) { ASSERT(0); return true; }
 	virtual CString GetNextInquiringMiddleStr(long, bool) { ASSERT(0); return _T(""); } // 申请下一个查询用字符串
 	virtual void PrepareReadingWebData(void);// 在读取网络数据前的准备工作，默认为设置m_pSession状态。
-	virtual void ConfigerateSession(void);// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
+	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) { /* do nothing in default*/ } // 成功接收后更新系统状态。 默认无动作
 	virtual void ClearUpIfReadingWebDataFailed(void) { /* do nothing in default*/ } // 处理失败的接收过程

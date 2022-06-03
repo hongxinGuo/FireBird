@@ -61,6 +61,15 @@ void CTiingoWebInquiry::ConfigerateSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
+//
+////////////////////////////////////////////////////////////////////////////////////
+bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
+	return pWebData->ParseWithPropertyTree(0, 0);
+}
+
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.TiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();
 	gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。

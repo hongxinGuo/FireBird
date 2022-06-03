@@ -77,6 +77,15 @@ void CQuandlWebInquiry::ConfigerateSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 2); // 2次重试
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
+//
+////////////////////////////////////////////////////////////////////////////////////
+bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {
+	return pWebData->ParseWithPropertyTree(0, 0);
+}
+
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	while (gl_WebInquirer.QuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
 	gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。

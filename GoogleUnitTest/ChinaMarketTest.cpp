@@ -1013,6 +1013,52 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsTimeToResetSystem(93000));
 	}
 
+	TEST_F(CChinaMarketTest, TestIsOrdinaryTradeTime) {
+		if (gl_pChinaMarket->IsWorkingDay()) {
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(92959));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(93000));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(113000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(113001));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(125959));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(130000));
+			EXPECT_TRUE(gl_pChinaMarket->IsOrdinaryTradeTime(150000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(150001));
+		}
+		else {
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(92959));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(93000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(113000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(113001));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(125959));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(130000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(150000));
+			EXPECT_FALSE(gl_pChinaMarket->IsOrdinaryTradeTime(150001));
+		}
+	}
+
+	TEST_F(CChinaMarketTest, TestIsWorkingTime) {
+		if (gl_pChinaMarket->IsWorkingDay()) {
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(91159));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(91200));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(114500));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(114501));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(124459));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(124500));
+			EXPECT_TRUE(gl_pChinaMarket->IsWorkingTime(150630));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(150631));
+		}
+		else {
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(91159));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(91200));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(114500));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(114501));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(124459));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(124500));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(150630));
+			EXPECT_FALSE(gl_pChinaMarket->IsWorkingTime(150631));
+		}
+	}
+
 	TEST_F(CChinaMarketTest, TestCheckMarketReady) {
 		gl_pChinaMarket->SetResetMarket(false);
 		gl_pChinaMarket->SetSystemReady(true);
