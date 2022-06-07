@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 
-#include "WorldMarket.h"
 #include"SystemData.h"
 #include"SystemMessage.h"
 #include"ThreadStatus.h"
@@ -13,13 +12,10 @@
 #include"Callablefunction.h"
 #include"WebInquirer.h"
 
-#include"FinnhubInquiryType.h"
-
 #include"ProductFinnhubStockPriceQuote.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
 #include"SetWorldMarketOption.h"
-#include"SetWorldStockDayLine.h"
 
 #include"SystemOption.h"
 

@@ -13,7 +13,10 @@
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
+// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。(turnover就是成交金额，不缺了）。
+//
+// 网易实时数据服务器的发送频率为每六秒更新一次，比新浪实时数据的更新速度（每三秒一次）要慢一倍，故而做为第一备选。
+//
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
@@ -36,9 +39,9 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #else
-	m_lInquiringNumber = 800; // 网易实时数据查询默认值
+	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #endif
 
 	ConfigerateSession();
@@ -91,7 +94,7 @@ void CNeteaseRTWebInquiry::ConfigerateSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为1000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为1000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 0); // 重试似乎必须设置成0，这样误码率降低了。
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 重试一次。
 }
 
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
