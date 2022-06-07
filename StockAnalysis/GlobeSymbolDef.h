@@ -5,6 +5,7 @@ enum {
 	__STOCK_IPOED__ = 255, // 正常股票标识
 	__STOCK_NULL__ = 127, // 无效代码（此代码的股票不存在）
 	__STOCK_DELISTED__ = 1, // 已退市（或停牌）的股票标识
+	__STOCK_NOT_YET_LIST__ = 2, // 已存在股票代码，但未上市（或未上市的股票）的股票标识
 };
 
 enum {

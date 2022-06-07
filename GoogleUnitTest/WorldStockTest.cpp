@@ -263,6 +263,14 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.IsDelisted());
 	}
 
+	TEST_F(CWorldStockTest, TestIsNotYetList) {
+		CWorldStock stock;
+		stock.SetIPOStatus(__STOCK_NOT_YET_LIST__);
+		EXPECT_TRUE(stock.IsNotYetList());
+		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		EXPECT_FALSE(stock.IsNotYetList());
+	}
+
 	TEST_F(CWorldStockTest, TestIsDayLineNeedUpdate) {
 		CWorldStock stock;
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());

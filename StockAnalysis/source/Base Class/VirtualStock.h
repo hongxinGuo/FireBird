@@ -84,6 +84,7 @@ public:
 	long GetIPOStatus(void) const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
 	bool IsDelisted(void) const noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
+	bool IsNotYetList(void) const noexcept { return (m_lIPOStatus == __STOCK_NOT_YET_LIST__); }
 	bool IsNullStock(void) const noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
 	bool IsIPOed(void) const noexcept { return(m_lIPOStatus == __STOCK_IPOED__); }
 	bool IsNotChecked(void) const noexcept { return(m_lIPOStatus == __STOCK_NOT_CHECKED__); }
