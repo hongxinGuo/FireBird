@@ -44,6 +44,7 @@ CWorldMarket::CWorldMarket() {
 	m_fFinnhubEPSSurpriseUpdated = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
+	m_bFinnhubWebSiteAccessible = true;
 
 	m_strMarketId = _T("美国市场");
 	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
@@ -151,7 +152,7 @@ void CWorldMarket::ResetMarket(void) {
 	LoadStockDB();
 	LoadWorldChoicedStock();
 	LoadForexExchange();
-	LoadForexSymbol();
+	LoadFinnhubForexSymbol();
 	LoadWorldChoicedForex();
 	LoadCryptoExchange();
 	LoadFinnhubCryptoSymbol();
@@ -190,13 +191,9 @@ bool CWorldMarket::SchedulingTask(void) {
 	TaskCheckSystemReady();
 
 	if (--s_iCountfinnhubLimit < 0) {
-		if (!IsFinnhubInquiring()) TaskInquiryFinnhub(lCurrentTime);
+		if (!IsFinnhubInquiring() && !gl_pFinnhubWebInquiry->IsWebError()) TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
 			s_iCountfinnhubLimit = gl_systemOption.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
-		}
-		if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。
-			gl_pFinnhubWebInquiry->SetWebError(false);
-			s_iCountfinnhubLimit = 3000; // 如果出现错误，则每5分钟重新申请一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
@@ -399,6 +396,10 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	// 建立WebSocket连接
 	StartWebSocket();
+
+	if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。每五分钟清除标志一次
+		gl_pFinnhubWebInquiry->SetWebError(false);
+	}
 
 	if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
 		TaskUpdateStockProfileDB();
@@ -1519,75 +1520,90 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 
 bool CWorldMarket::RestartWebSocket(void) {
 	if (IsSystemReady()) {
-		if (gl_systemOption.IsUsingFinnhubWebSocket()) {
-			if (!m_finnhubWebSocket.IsReceivingData()) {
-				m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
-			}
-			else {
-				m_finnhubWebSocket.SetReceivingData(false);
-			}
-		}
-
-		if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
-			if (!m_tiingoIEXWebSocket.IsReceivingData()) {
-				m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo IEX web socket服务"));
-			}
-			else {
-				m_tiingoIEXWebSocket.SetReceivingData(false);
-			}
-		}
-		if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
-			if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
-				m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Crypto web socket服务"));
-			}
-			else {
-				m_tiingoCryptoWebSocket.SetReceivingData(false);
-			}
-		}
-		if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
-			if (!m_tiingoForexWebSocket.IsReceivingData()) {
-				m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Forex web socket服务"));
-			}
-			else {
-				m_tiingoForexWebSocket.SetReceivingData(false);
-			}
-		}
+		if (!gl_pFinnhubWebInquiry->IsWebError()) RestartFinnhubWebSocket();
+		if (!gl_pTiingoWebInquiry->IsWebError()) RestartTiingoWebSocket();
 	}
 	return true;
 }
 
-bool CWorldMarket::StartWebSocket(void) {
-	if (IsSystemReady()) {
-		if (gl_systemOption.IsUsingFinnhubWebSocket()) {
-			if (m_finnhubWebSocket.IsClosed()) {
-				m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
-			}
+void CWorldMarket::RestartFinnhubWebSocket(void) {
+	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
+		if (!m_finnhubWebSocket.IsReceivingData()) {
+			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
 		}
-		if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
-			if (m_tiingoIEXWebSocket.IsClosed()) {
-				m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
-			}
-		}
-		if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
-			if (m_tiingoCryptoWebSocket.IsClosed()) {
-				m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
-			}
-		}
-		if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
-			if (m_tiingoForexWebSocket.IsClosed()) {
-				m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
-			}
+		else {
+			m_finnhubWebSocket.SetReceivingData(false);
 		}
 	}
+}
+
+void CWorldMarket::RestartTiingoWebSocket(void) {
+	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
+		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
+			m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo IEX web socket服务"));
+		}
+		else {
+			m_tiingoIEXWebSocket.SetReceivingData(false);
+		}
+	}
+	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
+		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
+			m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Crypto web socket服务"));
+		}
+		else {
+			m_tiingoCryptoWebSocket.SetReceivingData(false);
+		}
+	}
+	if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
+		if (!m_tiingoForexWebSocket.IsReceivingData()) {
+			m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Forex web socket服务"));
+		}
+		else {
+			m_tiingoForexWebSocket.SetReceivingData(false);
+		}
+	}
+}
+
+bool CWorldMarket::StartWebSocket(void) {
+	if (IsSystemReady()) {
+		if (!gl_pFinnhubWebInquiry->IsWebError()) StartFinnhubWebSocket();
+		if (!gl_pTiingoWebInquiry->IsWebError()) StartTiingoWebSocket();
+	}
 	return true;
+}
+
+void CWorldMarket::StartFinnhubWebSocket(void) {
+	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
+		if (m_finnhubWebSocket.IsClosed()) {
+			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
+		}
+	}
+}
+
+void CWorldMarket::StartTiingoWebSocket(void) {
+	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
+		if (m_tiingoIEXWebSocket.IsClosed()) {
+			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
+		}
+	}
+	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
+		if (m_tiingoCryptoWebSocket.IsClosed()) {
+			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
+		}
+	}
+	if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
+		if (m_tiingoForexWebSocket.IsClosed()) {
+			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
+		}
+	}
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {

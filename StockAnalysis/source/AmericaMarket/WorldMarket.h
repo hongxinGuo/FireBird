@@ -295,7 +295,7 @@ public:
 	virtual bool UpdateNaicsIndustry(void);
 
 	bool LoadForexExchange(void) { return m_dataFinnhubForexExchange.LoadDB(); }
-	bool LoadForexSymbol(void) { return m_dataFinnhubForexSymbol.LoadDB(); }
+	bool LoadFinnhubForexSymbol(void) { return m_dataFinnhubForexSymbol.LoadDB(); }
 	bool LoadCryptoExchange(void) { return m_dataFinnhubCryptoExchange.LoadDB(); }
 	bool LoadFinnhubCryptoSymbol(void) { return m_dataFinnhubCryptoSymbol.LoadDB(); }
 	bool LoadWorldChoicedForex(void) { return m_dataChoicedForex.LoadDB(); }
@@ -320,7 +320,11 @@ public:
 	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
 
 	bool StartWebSocket(void);
+	void StartFinnhubWebSocket(void);
+	void StartTiingoWebSocket(void);
 	bool RestartWebSocket(void);
+	void RestartFinnhubWebSocket(void);
+	void RestartTiingoWebSocket(void);
 	void StopReceivingWebSocket(void);
 	void DeconnectingAllWebSocket(void);
 
@@ -334,7 +338,7 @@ public:
 	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
 	bool UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
 
-	// chekc function
+	// check function
 
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
@@ -409,6 +413,8 @@ protected:
 
 	//
 	bool m_fRebulidDayLine;	// 重建日线历史数据。
+
+	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 
 private:
 };

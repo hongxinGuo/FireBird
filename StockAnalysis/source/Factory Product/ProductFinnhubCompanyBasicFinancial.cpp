@@ -189,7 +189,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 //      "totalDebtCagr5Y" : 7.6067,
 //      "yearToDatePriceReturnDaily" : -4.21242
 //  },
-//    "metricType": "all",
+//    "metricType": "PerShare",
 //      "series" : {
 //				"annual":{
  //"cashRatio": [{"period":"2020-12-31", "v" : 0.7634660421545667}, { "period":"2019-12-31","v" : 0.11672683513838748 }],
@@ -404,7 +404,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 				pBasicFinancial->m_yearToDatePriceReturnDaily = ptreeGetDouble(ptMetric, _T("yearToDatePriceReturnDaily"));
 			} // metric
 			s = ptreeGetString(*ppt, _T("metricType"));
-			ASSERT(s.compare(_T("all")) == 0);
+			ASSERT((s.compare(_T("all")) == 0) || (s.compare(_T("perShare")) == 0)); // 例子中返回的是all，但实际返回的是perShare
 
 			if (ptreeGetChild(*ppt, _T("series"), &ptSeries)) {
 				if (ptreeGetChild(ptSeries, _T("annual"), &ptAnnual)) {

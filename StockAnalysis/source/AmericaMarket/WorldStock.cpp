@@ -196,7 +196,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 		SetDayLineNeedUpdate(false);
 		return m_fDayLineNeedUpdate;
 	}
-	else if (IsDelisted()) { // 摘牌股票?
+	else if (IsDelisted() || IsNotYetList()) { // 摘牌股票?
 		if (lDayOfWeek != 4) { // 每星期四检查一次
 			SetDayLineNeedUpdate(false);
 			return m_fDayLineNeedUpdate;

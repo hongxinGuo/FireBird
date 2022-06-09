@@ -611,7 +611,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.m_fIsActive = false;
+		stock.SetActive(false);
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "非活跃股票工作日不更新日线\n";
 			stock.SetDayLineNeedUpdate(true);
@@ -643,7 +643,7 @@ namespace StockAnalysisTest {
 
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		stock.m_fIsActive = true;
+		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
 		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(stock.GetDayLineEndDate()));
@@ -657,7 +657,7 @@ namespace StockAnalysisTest {
 
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		stock.m_fIsActive = true;
+		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
@@ -676,7 +676,7 @@ namespace StockAnalysisTest {
 
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		stock.m_fIsActive = true;
+		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
@@ -695,11 +695,23 @@ namespace StockAnalysisTest {
 
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(__STOCK_IPOED__);
-		stock.m_fIsActive = true;
+		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetPrevDay(lPrevMonday, 2), gl_pWorldMarket->GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
 		stock.SetDayLineNeedUpdate(true); // 重置之
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetPrevDay(lPrevMonday, 1), gl_pWorldMarket->GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
+	}
+
+	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus8) {
+		CWorldStock stock;
+
+		stock.SetDayLineNeedUpdate(true);
+		stock.SetIPOStatus(__STOCK_NOT_YET_LIST__);
+		for (int i = 0; i < 7; i++) {
+			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			stock.SetDayLineNeedUpdate(true);
+		}
 	}
 
 	TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
@@ -865,7 +877,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.UpdateDayLineDB()) << "执行实际操作";
 		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
-		EXPECT_THAT(stock.GetDayLineStartDate(), Eq(20200101)) << "日线开始日期已更新为较早日期";
+		EXPECT_EQ(stock.GetDayLineStartDate(), 20200101) << "日线开始日期已更新为较早日期";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		ASSERT_GE(gl_systemMessage.DayLineInfoSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopDayLineInfoMessage(), _T("A日线资料存储完成"));
@@ -1198,19 +1210,19 @@ namespace StockAnalysisTest {
 
 		stock.UpdateStockProfile(pTiingoStock);
 
-		EXPECT_STREQ(stock.m_strTiingoPermaTicker, pTiingoStock->m_strTiingoPermaTicker);
+		EXPECT_STREQ(stock.GetTiingoPermaTicker(), pTiingoStock->m_strTiingoPermaTicker);
 		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->m_strTicker);
-		EXPECT_TRUE(stock.m_fIsActive);
-		EXPECT_TRUE(stock.m_fIsADR);
-		EXPECT_EQ(stock.m_iSICCode, pTiingoStock->m_iSICCode);
-		EXPECT_STREQ(stock.m_strSICIndustry, pTiingoStock->m_strSICIndustry);
-		EXPECT_STREQ(stock.m_strSICSector, pTiingoStock->m_strSICSector);
-		EXPECT_STREQ(stock.m_strTiingoIndustry, pTiingoStock->m_strTiingoIndustry);
-		EXPECT_STREQ(stock.m_strSICSector, pTiingoStock->m_strSICSector);
-		EXPECT_STREQ(stock.m_strCompanyWebSite, pTiingoStock->m_strCompanyWebSite);
-		EXPECT_STREQ(stock.m_strSECFilingWebSite, pTiingoStock->m_strSECFilingWebSite);
-		EXPECT_EQ(stock.m_lStatementUpdateDate, pTiingoStock->m_lStatementUpdateDate);
-		EXPECT_EQ(stock.m_lDailyDataUpdateDate, pTiingoStock->m_lDailyDataUpdateDate);
+		EXPECT_TRUE(stock.IsActive());
+		EXPECT_TRUE(stock.IsADR());
+		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSICCode);
+		EXPECT_STREQ(stock.GetSICIndustry(), pTiingoStock->m_strSICIndustry);
+		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
+		EXPECT_STREQ(stock.GetTiingoIndustry(), pTiingoStock->m_strTiingoIndustry);
+		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
+		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
+		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
+		EXPECT_EQ(stock.GetStatementUpdateDate(), pTiingoStock->m_lStatementUpdateDate);
+		EXPECT_EQ(stock.GetDailyDataUpdateDate(), pTiingoStock->m_lDailyDataUpdateDate);
 	}
 
 	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
@@ -1405,16 +1417,16 @@ namespace StockAnalysisTest {
 		stock.SetEmployeeTotal(101023);
 		stock.SetMarketCapitalization(34324.234);
 
-		stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
-		stock.m_fIsActive = true;
-		stock.m_fIsADR = true;
-		stock.m_iSICCode = 1234;
-		stock.m_strSICIndustry = _T("defg");
-		stock.m_strSICSector = _T("efg");
-		stock.m_strTiingoIndustry = _T("ghi");
-		stock.m_strTiingoSector = _T("defghijk");
-		stock.m_strCompanyWebSite = _T("ijk");
-		stock.m_strSECFilingWebSite = _T("https://def.com");
+		stock.SetTiingoPermaTicker(_T("aasdfasdfj"));
+		stock.SetActive(true);
+		stock.SetADR(true);
+		stock.SetSICCode(1234);
+		stock.SetSICIndustry(_T("defg"));
+		stock.SetSICSector(_T("efg"));
+		stock.SetTiingoIndustry(_T("ghi"));
+		stock.SetTiingoSector(_T("defghijk"));
+		stock.SetCompanyWebSite(_T("ijk"));
+		stock.SetSECFilingWebSite(_T("https://def.com"));
 
 		stock.SetProfileUpdateDate(20000102);
 		stock.SetLastRTDataUpdateDate(20000103);
@@ -1423,8 +1435,8 @@ namespace StockAnalysisTest {
 		stock.SetDayLineEndDate(19700102);
 		stock.SetPeerUpdateDate(20010101);
 		stock.SetInsiderTransactionUpdateDate(20000101);
-		stock.m_lDailyDataUpdateDate = 20202020;
-		stock.m_lStatementUpdateDate = 10101010;
+		stock.SetDailyDataUpdateDate(20202020);
+		stock.SetStatementUpdateDate(10101010);
 
 		setWorldStock.Open();
 		stock.Append(setWorldStock);
@@ -1475,14 +1487,14 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
 		EXPECT_EQ(stock.GetIPOStatus(), stock2.GetIPOStatus());
-		EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
-		EXPECT_TRUE(stock.m_fIsActive == stock2.m_fIsActive);
-		EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);
-		EXPECT_EQ(stock.m_iSICCode, stock2.m_iSICCode);
-		EXPECT_STREQ(stock.m_strSICIndustry, stock2.m_strSICIndustry);
-		EXPECT_STREQ(stock.m_strSICSector, stock2.m_strSICSector);
-		EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
-		EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
+		EXPECT_STREQ(stock.GetTiingoPermaTicker(), stock2.GetTiingoPermaTicker());
+		EXPECT_TRUE(stock.IsActive() == stock2.IsActive());
+		EXPECT_TRUE(stock.IsADR() == stock2.IsADR());
+		EXPECT_EQ(stock.GetSICCode(), stock2.GetSICCode());
+		EXPECT_STREQ(stock.GetSICIndustry(), stock2.GetSICIndustry());
+		EXPECT_STREQ(stock.GetSICSector(), stock2.GetSICSector());
+		EXPECT_STREQ(stock.GetCompanyWebSite(), stock2.GetCompanyWebSite());
+		EXPECT_STREQ(stock.GetSECFilingWebSite(), stock2.GetSECFilingWebSite());
 		EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
@@ -1490,7 +1502,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
 		EXPECT_EQ(stock.GetPeerUpdateDate(), stock2.GetPeerUpdateDate());
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), stock2.GetInsiderTransactionUpdateDate());
-		EXPECT_EQ(stock.m_lDailyDataUpdateDate, stock2.m_lDailyDataUpdateDate);
-		EXPECT_EQ(stock.m_lStatementUpdateDate, stock2.m_lStatementUpdateDate);
+		EXPECT_EQ(stock.GetDailyDataUpdateDate(), stock2.GetDailyDataUpdateDate());
+		EXPECT_EQ(stock.GetStatementUpdateDate(), stock2.GetStatementUpdateDate());
 	}
 }
