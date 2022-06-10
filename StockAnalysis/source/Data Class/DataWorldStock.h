@@ -28,6 +28,7 @@ public:
 
 	void ResetEPSSurprise(void);
 	void ResetPeer(void);
+	void ResetBasicFinancial(void);
 	void ResetDayLine(void);
 
 	bool Delete(CWorldStockPtr pStock);

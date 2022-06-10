@@ -1387,6 +1387,13 @@ bool CWorldMarket::RebuildPeer(void) {
 	return true;
 }
 
+bool CWorldMarket::RebuildBasicFinancial(void) {
+	m_dataWorldStock.ResetBasicFinancial();
+	SetFinnhubStockBasicFinancialUpdated(false);
+
+	return true;
+}
+
 bool CWorldMarket::RebuildStockDayLineDB(void) {
 	m_dataWorldStock.ResetDayLine();
 	SetFinnhubStockProfileUpdated(false);

@@ -140,4 +140,5 @@ public:
 	afx_msg void OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRecordTiingoIexWebSocket();
 	afx_msg void OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI);
+	afx_msg void OnRebuildBasicFinancial();
 };

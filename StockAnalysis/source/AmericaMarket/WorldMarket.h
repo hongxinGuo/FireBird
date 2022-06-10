@@ -311,6 +311,7 @@ public:
 	virtual bool UpdateStockDayLineStartEndDate(void);
 	bool RebuildEPSSurprise(void);
 	bool RebuildPeer(void);
+	bool RebuildBasicFinancial(void);
 
 	bool SortStock(void) { return m_dataWorldStock.SortStock(); }
 

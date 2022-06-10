@@ -74,6 +74,16 @@ void CDataWorldStock::ResetPeer(void) {
 	}
 }
 
+void CDataWorldStock::ResetBasicFinancial(void) {
+	for (auto& pStock : m_vWorldStock) {
+		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
+			pStock->SetBasicFinancialUpdateDate(19800101);
+			pStock->SetBasicFinancialUpdated(false);
+			pStock->SetUpdateProfileDB(true);
+		}
+	}
+}
+
 void CDataWorldStock::ResetDayLine(void) {
 	for (auto& pStock : m_vWorldStock) {
 		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);

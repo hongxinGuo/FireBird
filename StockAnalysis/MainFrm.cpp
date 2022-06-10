@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
 	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
+	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1101,4 +1102,9 @@ void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
 	else {
 		SysCallCmdUISetCheck(pCmdUI, false);
 	}
+}
+
+void CMainFrame::OnRebuildBasicFinancial() {
+	// TODO: Add your command handler code here
+	gl_pWorldMarket->RebuildBasicFinancial();
 }
