@@ -63,9 +63,9 @@ namespace StockAnalysisTest {
 
 			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
 
-			gl_systemOption.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemOptionTest.ini"));
-			gl_systemOption.LoadDB();
-			gl_systemOption.Update();
+			gl_systemConfigeration.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
+			gl_systemConfigeration.LoadDB();
+			gl_systemConfigeration.Update();
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;

@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文�
 	ProjectSection(SolutionItems) = preProject
 		StockAnalysis\source\NetError.txt = StockAnalysis\source\NetError.txt
 		propertysheet.props = propertysheet.props
+		..\..\..\..\..\StockAnalysis\SystemConfigeration.json = ..\..\..\..\..\StockAnalysis\SystemConfigeration.json
 	EndProjectSection
 EndProject
 Global
@@ -77,8 +78,8 @@ Global
 		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Debug|x64.Build.0 = Debug|x64
 		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Debug|x86.ActiveCfg = Debug|x64
 		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Debug|x86.Build.0 = Debug|x64
-		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x64.ActiveCfg = Debug|x64
-		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x64.Build.0 = Debug|x64
+		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x64.ActiveCfg = Release|x64
+		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x64.Build.0 = Release|x64
 		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x86.ActiveCfg = Release|x64
 		{F77641F7-1DF8-4461-9338-A8E502E570DC}.Release|x86.Build.0 = Release|x64
 		{4DAC4767-5D5B-4F93-9677-F27227996E69}.Debug|x64.ActiveCfg = Debug|x64

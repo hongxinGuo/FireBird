@@ -708,11 +708,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckFastReceivingRTData) {
-		EXPECT_TRUE(gl_systemOption.IsFastInquiringRTData()) << "DEBUG模式时默认为真";
+		EXPECT_TRUE(gl_systemConfigeration.IsFastInquiringRTData()) << "DEBUG模式时默认为真";
 		tm tm_;
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
-		gl_systemOption.SetFastInquiringRTData(false);
+		gl_systemConfigeration.SetFastInquiringRTData(false);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(91159));
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 		EXPECT_TRUE(gl_pChinaMarket->TaskCheckFastReceivingData(91200));
@@ -748,7 +748,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 
 		// 恢复原状
-		gl_systemOption.SetFastInquiringRTData(false);
+		gl_systemConfigeration.SetFastInquiringRTData(false);
 	}
 
 	TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {
@@ -926,7 +926,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb1) { // 这三个从网络读取数据的测试有内存泄露问题，待查。
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemConfigeration.IsUsingSinaRTServer());
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
@@ -951,8 +951,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_systemOption.IsUsingSinaRTServer());
-		gl_systemOption.SetChinaMarketRealtimeServer(1);
+		EXPECT_TRUE(gl_systemConfigeration.IsUsingSinaRTServer());
+		gl_systemConfigeration.SetChinaMarketRealtimeServer(1);
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
@@ -965,7 +965,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(s_pMockNeteaseRTWebInquiry->IsReadingWebData());
 		EXPECT_EQ(gl_pChinaMarket->GetCountDownTengxunNumber(), 9) << _T("默认调用TaskGetRTDataFromWeb");
 		s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
-		gl_systemOption.SetChinaMarketRealtimeServer(0);
+		gl_systemConfigeration.SetChinaMarketRealtimeServer(0);
 
 		gl_pChinaMarket->SetCountDownTengxunNumber(10);
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);

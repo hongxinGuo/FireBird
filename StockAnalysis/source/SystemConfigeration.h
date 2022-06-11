@@ -2,7 +2,7 @@
 //
 // 所有的全局参数皆位于此文件中，用于系统配置。
 //
-// 存储方式使用json格式，存储与文件SystemOption.ini中。
+// 存储方式使用json格式，存储与文件SystemConfigeration.json中。
 //
 // 使用boost中的JSON库来解析之，实现序列化和反序列化。
 //
@@ -12,17 +12,23 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::ordered_json;
 
-class CSystemOption : CObject {
+class CSystemConfigeration : CObject {
 public:
-	CSystemOption();
-	~CSystemOption();
+	CSystemConfigeration();
+	~CSystemConfigeration();
 
 	bool LoadDB();
 	bool SaveDB();
 	void Update(void);
 	void UpdateJson(void);
 
+	void UpdateSystem(void); // 使用本参数去更新系统
+
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
+
+	// 获取系统配置参数
+	int GetBackgroundThreadPermittedNumber(void) noexcept { return m_iBackgroundThreadPermittedNumber; }
+	int GetSavingThreadPermittedNumber(void) noexcept { return m_iSavingThreadPermittedNumber; }
 
 	// 全局参数
 	int GetChinaMarketRealtimeServer(void) noexcept { return m_iChinaMarketRealtimeServer; }
@@ -68,6 +74,10 @@ protected:
 	json m_systemOption;
 	CString m_strFileName;
 
+	// 系统配置
+	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
+	int m_iSavingThreadPermittedNumber; // 允许的最大存储线程数， 默认为4
+
 	// 系统参数
 	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器
 	int m_iChinaMarketRealtimeInquiryTime; // 中国市场实时数据查询间隔时间
@@ -94,7 +104,6 @@ protected:
 	bool m_fInitialized = false;
 };
 
-extern	string gl_sSystemOption; // 系统配置信息
-extern	string gl_sSytemConfiguration; // 系统配置信息
+extern	string gl_sSystemConfigeration; // 系统配置信息
 
-extern CSystemOption gl_systemOption;
+extern CSystemConfigeration gl_systemConfigeration;

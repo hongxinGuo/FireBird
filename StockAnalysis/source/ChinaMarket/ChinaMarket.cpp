@@ -6,7 +6,7 @@
 #include"SystemMessage.h"
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
-#include"SystemOption.h"
+#include"SystemConfigeration.h"
 
 #include"WebRTDataContainer.h"
 
@@ -657,7 +657,7 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
-	switch (gl_systemOption.GetChinaMarketRealtimeServer()) {
+	switch (gl_systemConfigeration.GetChinaMarketRealtimeServer()) {
 	case 0: // 使用新浪实时数据服务器
 		if (IsUsingSinaRTDataReceiver()) {
 			if (!gl_WebInquirer.IsReadingSinaRTData()) gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -927,7 +927,7 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
-	if (gl_systemOption.IsFastInquiringRTData()) {
+	if (gl_systemConfigeration.IsFastInquiringRTData()) {
 		m_fFastReceivingRTData = true;
 		return m_fFastReceivingRTData;
 	}
@@ -1885,7 +1885,7 @@ void CChinaMarket::LoadOptionDB(void) {
 				// 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
 				// 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
 				// 使用8.0.27测试，发现可以采用4个线程了（20211103）
-				gl_SaveOneStockDayLine.SetMaxCount(1);
+				gl_SaveThreadPermitted.SetMaxCount(1);
 			}
 		}
 		if (setOption.m_RSStartDate == 0) {

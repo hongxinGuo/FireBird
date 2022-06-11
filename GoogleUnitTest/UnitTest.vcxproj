@@ -82,7 +82,7 @@
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
-    <ClCompile Include="SystemOptionTest.cpp" />
+    <ClCompile Include="SystemConfigerationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />

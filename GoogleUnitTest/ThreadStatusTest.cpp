@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"SystemConfigeration.h"
 #include"SystemMessage.h"
 
 #include"GeneralCheck.h"
@@ -105,10 +106,10 @@ namespace StockAnalysisTest {
 
 	TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
-		for (int i = 0; i < cMaxBackGroundTaskThreads; i++) {  // 目前采用最多8个线程
+		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber(); i++) {  // 目前采用最多8个线程
 			gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 		}
-		for (int i = 0; i < cMaxBackGroundTaskThreads - 1; i++) {
+		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber() - 1; i++) {
 			gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
 			EXPECT_TRUE(gl_ThreadStatus.IsBackGroundthreadsWorking());
 		}

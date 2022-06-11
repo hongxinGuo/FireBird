@@ -17,7 +17,7 @@
 
 #include"SetWorldMarketOption.h"
 
-#include"SystemOption.h"
+#include"SystemConfigeration.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
@@ -193,7 +193,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	if (--s_iCountfinnhubLimit < 0) {
 		if (!IsFinnhubInquiring() && !gl_pFinnhubWebInquiry->IsWebError()) TaskInquiryFinnhub(lCurrentTime);
 		if (IsFinnhubInquiring()) {
-			s_iCountfinnhubLimit = gl_systemOption.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+			s_iCountfinnhubLimit = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
 	}
 	ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
@@ -201,7 +201,7 @@ bool CWorldMarket::SchedulingTask(void) {
 
 	if (--s_iCountTiingoLimit < 0) {
 		if (!IsTiingoInquiring()) TaskInquiryTiingo();
-		s_iCountTiingoLimit = gl_systemOption.GetWorldMarketTiingoInquiryTime() / 100;
+		s_iCountTiingoLimit = gl_systemConfigeration.GetWorldMarketTiingoInquiryTime() / 100;
 		if (gl_pTiingoWebInquiry->IsWebError()) {
 			gl_pTiingoWebInquiry->SetWebError(false);
 			s_iCountTiingoLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
@@ -1286,36 +1286,36 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
-	if (!gl_systemOption.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
-	if (!gl_systemOption.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
-	if (!gl_systemOption.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
-	if (!gl_systemOption.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
 }
 
 void CWorldMarket::DeconnectingAllWebSocket(void) {
-	if (gl_systemOption.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
-	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
-	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
-	if (gl_systemOption.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
+	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
+	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
+	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
 }
 
 bool CWorldMarket::UpdateToken(void) {
-	ASSERT(gl_systemOption.IsInitialized());
+	ASSERT(gl_systemConfigeration.IsInitialized());
 
-	if (gl_systemOption.GetFinnhubToken().GetLength() > 5) {
-		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(gl_systemOption.GetFinnhubToken());
+	if (gl_systemConfigeration.GetFinnhubToken().GetLength() > 5) {
+		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetFinnhubToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
 	}
-	if (gl_systemOption.GetTiingoToken().GetLength() > 5) {
-		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(gl_systemOption.GetTiingoToken());
+	if (gl_systemConfigeration.GetTiingoToken().GetLength() > 5) {
+		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetTiingoToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
 	}
-	if (gl_systemOption.GetQuandlToken().GetLength() > 5) {
-		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(gl_systemOption.GetQuandlToken());
+	if (gl_systemConfigeration.GetQuandlToken().GetLength() > 5) {
+		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetQuandlToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
@@ -1534,7 +1534,7 @@ bool CWorldMarket::RestartWebSocket(void) {
 }
 
 void CWorldMarket::RestartFinnhubWebSocket(void) {
-	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) {
 		if (!m_finnhubWebSocket.IsReceivingData()) {
 			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
@@ -1546,7 +1546,7 @@ void CWorldMarket::RestartFinnhubWebSocket(void) {
 }
 
 void CWorldMarket::RestartTiingoWebSocket(void) {
-	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) {
 		if (!m_tiingoIEXWebSocket.IsReceivingData()) {
 			m_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo IEX web socket服务"));
@@ -1555,7 +1555,7 @@ void CWorldMarket::RestartTiingoWebSocket(void) {
 			m_tiingoIEXWebSocket.SetReceivingData(false);
 		}
 	}
-	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) {
 		if (!m_tiingoCryptoWebSocket.IsReceivingData()) {
 			m_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Crypto web socket服务"));
@@ -1564,7 +1564,7 @@ void CWorldMarket::RestartTiingoWebSocket(void) {
 			m_tiingoCryptoWebSocket.SetReceivingData(false);
 		}
 	}
-	if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) {
 		if (!m_tiingoForexWebSocket.IsReceivingData()) {
 			m_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Forex web socket服务"));
@@ -1584,7 +1584,7 @@ bool CWorldMarket::StartWebSocket(void) {
 }
 
 void CWorldMarket::StartFinnhubWebSocket(void) {
-	if (gl_systemOption.IsUsingFinnhubWebSocket()) {
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) {
 		if (m_finnhubWebSocket.IsClosed()) {
 			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
@@ -1593,19 +1593,19 @@ void CWorldMarket::StartFinnhubWebSocket(void) {
 }
 
 void CWorldMarket::StartTiingoWebSocket(void) {
-	if (gl_systemOption.IsUsingTiingoIEXWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) {
 		if (m_tiingoIEXWebSocket.IsClosed()) {
 			m_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
 		}
 	}
-	if (gl_systemOption.IsUsingTiingoCryptoWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) {
 		if (m_tiingoCryptoWebSocket.IsClosed()) {
 			m_tiingoCryptoWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
 		}
 	}
-	if (gl_systemOption.IsUsingTiingoForexWebSocket()) {
+	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) {
 		if (m_tiingoForexWebSocket.IsClosed()) {
 			m_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));

@@ -160,7 +160,7 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
@@ -355,7 +355,7 @@
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableParallelCodeGeneration>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />

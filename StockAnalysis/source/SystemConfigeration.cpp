@@ -20,7 +20,9 @@
 
 #include"ChinaMarket.h"
 
-#include"SystemOption.h"
+#include"SystemConfigeration.h"
+
+#include"SemaphoreDef.h"
 
 #include "nlohmann/json.hpp"
 using json = nlohmann::ordered_json;
@@ -33,8 +35,12 @@ using namespace std;
 /// 系统配置文件，采用nlohmann json库格式。
 ///
 /// </summary>
-string gl_sSystemOption = R"(
+string gl_sSystemConfigeration = R"(
 {
+"SystemConfigeration": {
+	"BackgroundThreadPermittedNumber" : 8,
+	"SavingThreadPermittedNumber" : 4
+},
 "ChinaMarketRealtimeServer" : 0,
 "ChinaMarketRealtimeInquiryTime" : 200,
 
@@ -55,18 +61,7 @@ string gl_sSystemOption = R"(
 }
 })";
 
-string gl_sSystemConfiguration = R"(
-{
-"SinaRealtimeDataInquiryNumberPerTime" : 850,
-"NeteaseRealtimeDataInquiryNumberPerTime" : 900,
-"TengxunRealtimeDataInquiryNumberPerTime" : 900,
-"FinnhubRealtimeDataInquiryNumberPerTime" : 1,
-"TiingoRealtimeDataInquiryNumberPerTime" : 1,
-"QuandlRealtimeDataInquiryNumberPerTime" : 1
-}
-)";
-
-CSystemOption::CSystemOption() {
+CSystemConfigeration::CSystemConfigeration() {
 	static int siInstance = 0;
 
 	if (++siInstance > 1) {
@@ -78,7 +73,11 @@ CSystemOption::CSystemOption() {
 
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
-	m_strFileName = "C:\\StockAnalysis\\SystemOption.ini"; // json file name
+	m_strFileName = "C:\\StockAnalysis\\SystemConfigeration.json"; // json file name
+
+	// 系统配置
+	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
+	m_iSavingThreadPermittedNumber = 4; // 默认存储线程数为4
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
@@ -105,25 +104,37 @@ CSystemOption::CSystemOption() {
 	m_bFastInquiringRTData = false;
 #endif
 
-	LoadDB();
-	Update();
+	if (LoadDB()) {
+		Update();
+	}
 }
 
-CSystemOption::~CSystemOption() {
-	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("ini ");
+CSystemConfigeration::~CSystemConfigeration() {
+	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("json");
 	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("bak");
 
 	if (m_fUpdate) {
+		DeleteFile(strNew);
 		rename(strOld, strNew); // 保存备份
 	}
 	UpdateJson();
 	SaveDB();
 }
 
-void CSystemOption::Update() {
+void CSystemConfigeration::Update() {
 	string sTemp;
 
 	try {
+		// 系统配置
+		try {
+			m_iBackgroundThreadPermittedNumber = m_systemOption.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
+		}
+		catch (json::out_of_range&) {}
+		try {
+			m_iSavingThreadPermittedNumber = m_systemOption.at("SystemConfigeration").at("SavingThreadPermittedNumber");
+		}
+		catch (json::out_of_range&) {}
+
 		// ChinaMarket
 		try {
 			m_iChinaMarketRealtimeServer = m_systemOption.at("ChinaMarketRealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
@@ -194,12 +205,15 @@ void CSystemOption::Update() {
 		}
 		catch (json::out_of_range&) {}
 	}
-	catch (json::type_error&) {
+	catch (json::type_error& e) {
 		ASSERT(0);
 	}
 }
 
-void CSystemOption::UpdateJson(void) {
+void CSystemConfigeration::UpdateJson(void) {
+	m_systemOption["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
+	m_systemOption["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
+
 	m_systemOption["ChinaMarketRealtimeServer"] = m_iChinaMarketRealtimeServer;
 	m_systemOption["ChinaMarketRealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
 
@@ -210,22 +224,27 @@ void CSystemOption::UpdateJson(void) {
 	m_systemOption["WorldMarketTiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
 	m_systemOption["WorldMarketQuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
-	m_systemOption[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] = m_bUsingFinnhubWebSocket;
-	m_systemOption[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] = m_bUsingTiingoIEXWebSocket;
-	m_systemOption[json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")] = m_bUsingTiingoCryptoWebSocket;
-	m_systemOption[json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")] = m_bUsingTiingoForexWebSocket;
+	m_systemOption["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
+	m_systemOption["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
+	m_systemOption["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
+	m_systemOption["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
 }
 
-bool CSystemOption::LoadDB() {
+void CSystemConfigeration::UpdateSystem(void) {
+	gl_SemaphoreBackGroundTaskThreads.SetMaxCount(m_iBackgroundThreadPermittedNumber);
+	gl_SaveThreadPermitted.SetMaxCount(m_iSavingThreadPermittedNumber);
+}
+
+bool CSystemConfigeration::LoadDB() {
 	fstream f(m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_systemOption;
+		return true;
 	}
-
-	return true;
+	return false;
 }
 
-bool CSystemOption::SaveDB() {
+bool CSystemConfigeration::SaveDB() {
 	fstream f(m_strFileName, ios::out);
 	f << m_systemOption;
 	f.close();

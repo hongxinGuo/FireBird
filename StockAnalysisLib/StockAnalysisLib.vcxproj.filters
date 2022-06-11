@@ -672,7 +672,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
       <Filter>头文件\DataBase\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SystemOption.h">
+    <ClInclude Include="..\StockAnalysis\source\SystemConfigeration.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
@@ -1187,7 +1187,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp">
       <Filter>源文件\DataBase\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SystemOption.cpp">
+    <ClCompile Include="..\StockAnalysis\source\SystemConfigeration.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\JsonParse.cpp">
