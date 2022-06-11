@@ -10,7 +10,7 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
+using json = nlohmann::ordered_json; // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 class CSystemConfigeration : CObject {
 public:
@@ -32,19 +32,19 @@ public:
 
 	// 全局参数
 	int GetChinaMarketRealtimeServer(void) noexcept { return m_iChinaMarketRealtimeServer; }
-	void SetChinaMarketRealtimeServer(int iChinaMarketRealtimeServer) noexcept { m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer; }
+	void SetChinaMarketRealtimeServer(int iChinaMarketRealtimeServer) noexcept { m_fUpdate = true; m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer; }
 	int GetChinaMarketRealtimeInquiryTime(void) noexcept { return m_iChinaMarketRealtimeInquiryTime; }
-	void SetChinaMarketRealtimeInquiryTime(int iChinaMarketRealtimeInquiryTime) noexcept { m_iChinaMarketRealtimeInquiryTime = iChinaMarketRealtimeInquiryTime; }
+	void SetChinaMarketRealtimeInquiryTime(int iChinaMarketRealtimeInquiryTime) noexcept { m_fUpdate = true; m_iChinaMarketRealtimeInquiryTime = iChinaMarketRealtimeInquiryTime; }
 
 	CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
 	CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
 	CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
 	int GetWorldMarketFinnhubInquiryTime(void) noexcept { return m_iWorldMarketFinnhubInquiryTime; }
-	void SetWorldMarketFinnhubInquiryTime(int iWorldMarketFinnhubInquiryTime) noexcept { m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime; }
+	void SetWorldMarketFinnhubInquiryTime(int iWorldMarketFinnhubInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime; }
 	int GetWorldMarketTiingoInquiryTime(void) noexcept { return m_iWorldMarketTiingoInquiryTime; }
-	void SetWorldMarketTiingoInquiryTime(int iWorldMarketTiingoInquiryTime) noexcept { m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime; }
+	void SetWorldMarketTiingoInquiryTime(int iWorldMarketTiingoInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime; }
 	int GetWorldMarketQuandlInquiryTime(void) noexcept { return m_iWorldMarketQuandlInquiryTime; }
-	void SetWorldMarketQuandlInquiryTime(int iWorldMarketQuandlInquiryTime) noexcept { m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime; }
+	void SetWorldMarketQuandlInquiryTime(int iWorldMarketQuandlInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime; }
 
 	bool IsUsingSinaRTServer(void) const noexcept { if (m_iChinaMarketRealtimeServer == 0) return true; else return false; }
 	bool IsUsingNeteaseRTServer(void) const noexcept { if (m_iChinaMarketRealtimeServer == 1) return true; else return false; }
@@ -53,25 +53,24 @@ public:
 	bool IsUsingFinnhubWebSocket(void) const noexcept { return m_bUsingFinnhubWebSocket; }
 	void SetUsingFinnhubWebSocket(bool bUsingFinnhubWebSocket) noexcept { m_bUsingFinnhubWebSocket = bUsingFinnhubWebSocket; }
 	bool IsUsingTiingoIEXWebSocket(void) const noexcept { return m_bUsingTiingoIEXWebSocket; }
-	void SetUsingTiingoIEXWebSocket(bool bUsingTiingoIEXWebSocket) noexcept { m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket; }
+	void SetUsingTiingoIEXWebSocket(bool bUsingTiingoIEXWebSocket) noexcept { m_fUpdate = true; m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket; }
 	bool IsUsingTiingoCryptoWebSocket(void) const noexcept { return m_bUsingTiingoCryptoWebSocket; }
-	void SetUsingTiingoCryptoWebSocket(bool bUsingTiingoCryptoWebSocket) noexcept { m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket; }
+	void SetUsingTiingoCryptoWebSocket(bool bUsingTiingoCryptoWebSocket) noexcept { m_fUpdate = true; m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket; }
 	bool IsUsingTiingoForexWebSocket(void) const noexcept { return m_bUsingTiingoForexWebSocket; }
-	void SetUsingTiingoForexWebSocket(bool bUsingTiingoForexWebSocket) noexcept { m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket; }
+	void SetUsingTiingoForexWebSocket(bool bUsingTiingoForexWebSocket) noexcept { m_fUpdate = true; m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket; }
 	bool IsUsingQuandlWebSocket(void) const noexcept { return m_bUsingQuandlWebSocket; }
-	void SetUsingQuandlWebSocket(bool bUsingQuandlWebSocket) noexcept { m_bUsingQuandlWebSocket = bUsingQuandlWebSocket; }
+	void SetUsingQuandlWebSocket(bool bUsingQuandlWebSocket) noexcept { m_fUpdate = true; m_bUsingQuandlWebSocket = bUsingQuandlWebSocket; }
 
 	// ChinaMarket
 	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
-	void SetFastInquiringRTData(bool fFlag) noexcept { m_bFastInquiringRTData = fFlag; }
+	void SetFastInquiringRTData(bool fFlag) noexcept { m_fUpdate = true; m_bFastInquiringRTData = fFlag; }
 
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
 
 protected:
-
-	json m_systemOption;
+	json m_systemConfigeration;
 	CString m_strFileName;
 
 	// 系统配置

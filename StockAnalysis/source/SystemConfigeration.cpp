@@ -10,22 +10,17 @@
 //
 // Quandl密钥：
 //  api_key=zBMXMyoTyiy_N3pMb3ex
-//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+// m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 // 下面的是第二个,用于dell240工作机。
-//m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+// m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-
+#include"SemaphoreDef.h"
 #include"ChinaMarket.h"
 
 #include"SystemConfigeration.h"
-
-#include"SemaphoreDef.h"
-
-#include "nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
 
 using namespace std;
 #include<iostream>
@@ -41,23 +36,27 @@ string gl_sSystemConfigeration = R"(
 	"BackgroundThreadPermittedNumber" : 8,
 	"SavingThreadPermittedNumber" : 4
 },
-"ChinaMarketRealtimeServer" : 0,
-"ChinaMarketRealtimeInquiryTime" : 200,
 
-"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
-"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
-"QuandlToken" : "&api_key=zBMXMyoTyiy_N3pMb3ex",
-"WorldMarketFinnhubInquiryTime" : 1200,
-"WorldMarketTiingoInquiryTime" : 9000,
-"WorldMarketQuandlInquiryTime" : 36000,
 "WebSocket" : {
 	"UsingFinnhubWebSocket" : true,
 	"UsingTiingoIEXWebSocket" : true,
 	"UsingTiingoCryptoWebSocket" : true,
 	"UsingTiingoForexWebSocket" : true
 },
+
 "ChinaMarket" : {
+	"RealtimeServer" : 0,
+	"RealtimeInquiryTime" : 200,
 	"FastInquiringRealtimeData" : false
+},
+
+"WorldMarket" : {
+	"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
+	"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
+	"QuandlToken" : "&api_key=zBMXMyoTyiy_N3pMb3ex",
+	"FinnhubInquiryTime" : 1200,
+	"TiingoInquiryTime" : 9000,
+	"QuandlInquiryTime" : 36000
 }
 })";
 
@@ -107,6 +106,9 @@ CSystemConfigeration::CSystemConfigeration() {
 	if (LoadDB()) {
 		Update();
 	}
+	else {
+		m_fUpdate = true;
+	}
 }
 
 CSystemConfigeration::~CSystemConfigeration() {
@@ -127,81 +129,81 @@ void CSystemConfigeration::Update() {
 	try {
 		// 系统配置
 		try {
-			m_iBackgroundThreadPermittedNumber = m_systemOption.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
+			m_iBackgroundThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
 		}
 		catch (json::out_of_range&) {}
 		try {
-			m_iSavingThreadPermittedNumber = m_systemOption.at("SystemConfigeration").at("SavingThreadPermittedNumber");
+			m_iSavingThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("SavingThreadPermittedNumber");
 		}
 		catch (json::out_of_range&) {}
 
 		// ChinaMarket
 		try {
-			m_iChinaMarketRealtimeServer = m_systemOption.at("ChinaMarketRealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+			m_iChinaMarketRealtimeServer = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_iChinaMarketRealtimeInquiryTime = m_systemOption.at("ChinaMarketRealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+			m_iChinaMarketRealtimeInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 		}
 		catch (json::out_of_range&) {}
 
 		// WorldMarket
 		try {
-			sTemp = m_systemOption.at("FinnhubToken"); // Finnhub token
+			sTemp = m_systemConfigeration.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 			m_strFinnhubToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			sTemp = m_systemOption.at("TiingoToken"); // Tiingo token
+			sTemp = m_systemConfigeration.at("WorldMarket").at("TiingoToken"); // Tiingo token
 			m_strTiingoToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			sTemp = m_systemOption.at("QuandlToken"); // Quandl token
+			sTemp = m_systemConfigeration.at("WorldMarket").at("QuandlToken"); // Quandl token
 			m_strQuandlToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_iWorldMarketFinnhubInquiryTime = m_systemOption.at("WorldMarketFinnhubInquiryTime"); // 默认每小时最多查询3000次
+			m_iWorldMarketFinnhubInquiryTime = m_systemConfigeration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_iWorldMarketTiingoInquiryTime = m_systemOption.at("WorldMarketTiingoInquiryTime"); // 默认每小时最多查询400次
+			m_iWorldMarketTiingoInquiryTime = m_systemConfigeration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			m_iWorldMarketQuandlInquiryTime = m_systemOption.at("WorldMarketQuandlInquiryTime"); // 默认每小时最多查询100次
+			m_iWorldMarketQuandlInquiryTime = m_systemConfigeration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 		}
 		catch (json::out_of_range&) {}
 
 		// WebSocket
 		try {
-			//m_bUsingFinnhubWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")); // 是否使用Finnhub的WebSocket
-			m_bUsingFinnhubWebSocket = m_systemOption.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
+			//m_bUsingFinnhubWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")); // 是否使用Finnhub的WebSocket
+			m_bUsingFinnhubWebSocket = m_systemConfigeration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			//m_bUsingTiingoIEXWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")); // 是否使用Tiingo的WebSocket
-			m_bUsingTiingoIEXWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			//m_bUsingTiingoCryptoWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")); // 是否使用Tiingo的WebSocket
-			m_bUsingTiingoCryptoWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 
 		try {
-			//m_bUsingTiingoForexWebSocket = m_systemOption.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")); // 是否使用Tiingo的WebSocket
-			m_bUsingTiingoForexWebSocket = m_systemOption.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
+			//m_bUsingTiingoForexWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoForexWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) {}
 	}
@@ -211,23 +213,23 @@ void CSystemConfigeration::Update() {
 }
 
 void CSystemConfigeration::UpdateJson(void) {
-	m_systemOption["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
-	m_systemOption["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
+	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
+	m_systemConfigeration["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
 
-	m_systemOption["ChinaMarketRealtimeServer"] = m_iChinaMarketRealtimeServer;
-	m_systemOption["ChinaMarketRealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
+	m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = m_iChinaMarketRealtimeServer;
+	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
 
-	m_systemOption["FinnhubToken"] = m_strFinnhubToken;
-	m_systemOption["TiingoToken"] = m_strTiingoToken;
-	m_systemOption["QuandlToken"] = m_strQuandlToken;
-	m_systemOption["WorldMarketFinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
-	m_systemOption["WorldMarketTiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
-	m_systemOption["WorldMarketQuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
+	m_systemConfigeration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
+	m_systemConfigeration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
+	m_systemConfigeration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
+	m_systemConfigeration["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
+	m_systemConfigeration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
+	m_systemConfigeration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
-	m_systemOption["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
-	m_systemOption["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
-	m_systemOption["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
-	m_systemOption["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
+	m_systemConfigeration["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
+	m_systemConfigeration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
+	m_systemConfigeration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
+	m_systemConfigeration["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
 }
 
 void CSystemConfigeration::UpdateSystem(void) {
@@ -238,7 +240,7 @@ void CSystemConfigeration::UpdateSystem(void) {
 bool CSystemConfigeration::LoadDB() {
 	fstream f(m_strFileName, ios::in);
 	if (f.is_open()) {
-		f >> m_systemOption;
+		f >> m_systemConfigeration;
 		return true;
 	}
 	return false;
@@ -246,7 +248,7 @@ bool CSystemConfigeration::LoadDB() {
 
 bool CSystemConfigeration::SaveDB() {
 	fstream f(m_strFileName, ios::out);
-	f << m_systemOption;
+	f << m_systemConfigeration;
 	f.close();
 
 	return true;
