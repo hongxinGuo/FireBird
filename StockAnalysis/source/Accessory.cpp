@@ -6,13 +6,6 @@
 using namespace std;
 #include<codecvt>
 
-#include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
-#include"nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
-
 CString ConvertDateToString(long lDate) {
 	char buffer[30];
 	long year = lDate / 10000;

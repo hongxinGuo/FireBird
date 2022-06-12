@@ -192,6 +192,7 @@ CMainFrame::~CMainFrame() {
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
 	if (gl_pChinaMarket->IsUpdateStockCodeDB()) {
+		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
 		gl_pChinaMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 

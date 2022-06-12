@@ -133,7 +133,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetCurrentFinnhubInquiry) {
-		CWebSourceDataProductPtr p = nullptr, p2 = nullptr;
+		CProductWebSourceDataPtr p = nullptr, p2 = nullptr;
 		p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(2);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -835,7 +835,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {
-		CWebSourceDataProductPtr p = nullptr, p2 = nullptr;
+		CProductWebSourceDataPtr p = nullptr, p2 = nullptr;
 
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 		p = make_shared<CProductFinnhubCompanyPeer>();
@@ -851,7 +851,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTiingoInquiry) {
-		CWebSourceDataProductPtr p, p2;
+		CProductWebSourceDataPtr p, p2;
 
 		EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
 		p = make_shared<CProductTinngoStockSymbol>();
@@ -1016,14 +1016,14 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
-		CWebSourceDataProductPtr p = gl_pWorldMarket->GetFinnhubInquiry();
+		CProductWebSourceDataPtr p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_STREQ(p->GetClassNameString(), _T("Finnhub economic country list"));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCompanySymbol) {
 		CFinnhubStockExchangePtr pExchange;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 70);
 		for (int i = 0; i < gl_pWorldMarket->GetStockExchangeSize(); i++) {
@@ -1068,7 +1068,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCompanyProfileConcise) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -1120,7 +1120,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubDayLine) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -1170,7 +1170,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubRTQuote) {
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 
@@ -1187,7 +1187,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubPeer) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -1235,7 +1235,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubInsiderTransaction) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInsiderTransactionUpdated()) << "股票都查询完了";
 
@@ -1278,7 +1278,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubEconomicCalendar) {
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalendar()) << "EconomicCalendar Updated";
@@ -1296,7 +1296,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubEPSSurprise) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -1339,7 +1339,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubForexExchange) {
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetFinnhubForexExchangeUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubForexExchange()) << "FinnhubForexExchange Updated";
@@ -1359,7 +1359,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubForexSymbol) {
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetFinnhubForexSymbolUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubForexSymbol()) << "ForexSymbol Updated";
@@ -1391,7 +1391,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubForexDayLine) {
 		CForexSymbolPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetForexSymbolSize(); i++) {
@@ -1440,7 +1440,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoCompanySymbol) {
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetTiingoStockSymbolUpdated(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "TiingoCompanySymbol Updated";
@@ -1461,7 +1461,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskInquiryTiingoDayLine) {
 		CWorldStockPtr pStock;
-		CWebSourceDataProductPtr p = nullptr;
+		CProductWebSourceDataPtr p = nullptr;
 		long lStockIndex = 0;
 
 		gl_pWorldMarket->SetSystemReady(true);

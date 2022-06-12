@@ -1,8 +1,5 @@
 #pragma once
 
-#include"FinnhubForexSymbol.h"
-#include"FinnhubCryptoSymbol.h"
-
 using namespace std;
 #include<vector>
 #include<map>

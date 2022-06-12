@@ -151,6 +151,9 @@
     <Filter Include="Test源文件\Template">
       <UniqueIdentifier>{f40c7b2e-813d-495c-87fa-36becac40cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Data Source">
+      <UniqueIdentifier>{d40221f3-8292-408e-8c70-388a5df3f7a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -524,6 +527,9 @@
     </ClCompile>
     <ClCompile Include="HighPerformanceCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

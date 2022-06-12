@@ -123,8 +123,7 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
-#include"nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
+#include"nlohmannJsonDeclaration.h"
 
 class CWebRTData;
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;

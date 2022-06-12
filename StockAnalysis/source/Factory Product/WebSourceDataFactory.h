@@ -8,5 +8,5 @@ public:
 	CWebSourceDataFactory() {}
 	~CWebSourceDataFactory() {}
 
-	virtual CWebSourceDataProductPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) = 0;
+	virtual CProductWebSourceDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) = 0;
 };

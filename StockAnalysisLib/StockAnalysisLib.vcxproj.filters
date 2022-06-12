@@ -178,6 +178,15 @@
     <Filter Include="源文件\工作线程">
       <UniqueIdentifier>{005a6b40-baa6-4d29-9184-49b4931f38cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\命名声明">
+      <UniqueIdentifier>{acdd2f2c-14a6-4293-b212-e6295a355a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data Source">
+      <UniqueIdentifier>{2b47277a-47dc-488f-89f8-41d5e695fb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data Source">
+      <UniqueIdentifier>{24ec8f03-914a-4a32-b165-8447cac1b5f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\GlobeSymbolDef.h">
@@ -202,9 +211,6 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Thread.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h">
@@ -675,14 +681,23 @@
     <ClInclude Include="..\StockAnalysis\source\SystemConfigeration.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
+      <Filter>头文件\命名声明</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
+      <Filter>头文件\命名声明</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Thread.h">
+      <Filter>头文件\命名声明</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h">
+      <Filter>头文件\Data Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1195,6 +1210,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\HighPerformanceCounter.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp">
+      <Filter>源文件\Data Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -81,6 +81,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineBasicInfo.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
+    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
@@ -282,6 +284,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSOption.cpp" />

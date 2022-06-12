@@ -7,8 +7,7 @@ using namespace std;
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
-#include"nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
+#include"nlohmannJsonDeclaration.h"
 
 bool ParseWithPTree(ptree& pt, std::string& s);
 bool ParseWithPTree(shared_ptr<ptree>& ppt, std::string& s);

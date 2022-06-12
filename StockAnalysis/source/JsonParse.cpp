@@ -17,13 +17,6 @@
 using namespace std;
 #include<string>
 
-#include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
-#include"nlohmann/json.hpp"
-using json = nlohmann::ordered_json;
-
 bool ParseWithPTree(ptree& pt, string& s) {
 	stringstream ss(s);
 	try {

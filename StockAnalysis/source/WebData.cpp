@@ -4,9 +4,6 @@
 #include"JsonParse.h"
 #include"WebData.h"
 
-#include<nlohmann/json.hpp>
-using json = nlohmann::ordered_json;
-
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");

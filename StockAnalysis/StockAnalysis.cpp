@@ -10,12 +10,18 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ThreadStatus.h"
 
 #include "StockAnalysis.h"
 #include "MainFrm.h"
 
 #include "StockAnalysisDoc.h"
 #include "StockAnalysisView.h"
+
+#include"ChinaMarket.h"
+#include"WorldMarket.h"
+
+#include <ixwebsocket/IXNetSystem.h>
 
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL

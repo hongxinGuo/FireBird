@@ -13,8 +13,8 @@
 
 #include"ProductTiingoCryptoSymbol.h"
 
-CWebSourceDataProductPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
-	CWebSourceDataProductPtr p = nullptr;
+CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
+	CProductWebSourceDataPtr p = nullptr;
 
 	switch (iIndex) {
 	case __STOCK_SYMBOLS__:

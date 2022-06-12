@@ -7,5 +7,5 @@ public:
 	CTiingoFactory() {}
 	~CTiingoFactory() {}
 
-	virtual CWebSourceDataProductPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
+	virtual CProductWebSourceDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
 };

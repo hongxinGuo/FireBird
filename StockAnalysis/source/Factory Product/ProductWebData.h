@@ -65,4 +65,4 @@ protected:
 	long m_lIndex;
 };
 
-typedef shared_ptr<CProductWebSourceData> CWebSourceDataProductPtr;
+typedef shared_ptr<CProductWebSourceData> CProductWebSourceDataPtr;

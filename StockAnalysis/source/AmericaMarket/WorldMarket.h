@@ -41,7 +41,7 @@ class CWorldMarket : public CVirtualMarket {
 public:
 	DECLARE_DYNCREATE(CWorldMarket)
 	CWorldMarket();
-	// 只能有一个实例,不允许赋值。
+	// 只能有一个实例,不允许赋值、拷贝
 	CWorldMarket(const CWorldMarket&) = delete;
 	CWorldMarket& operator=(const CWorldMarket&) = delete;
 	CWorldMarket(const CWorldMarket&&) noexcept = delete;
@@ -122,11 +122,11 @@ public:
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态
-	CWebSourceDataProductPtr GetCurrentFinnhubInquiry(void) { return m_pCurrentFinnhubProduct; }
-	void SetCurrentFinnhubInquiry(CWebSourceDataProductPtr p) { m_pCurrentFinnhubProduct = p; }
+	CProductWebSourceDataPtr GetCurrentFinnhubInquiry(void) { return m_pCurrentFinnhubProduct; }
+	void SetCurrentFinnhubInquiry(CProductWebSourceDataPtr p) { m_pCurrentFinnhubProduct = p; }
 
-	CWebSourceDataProductPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
-	void SetCurrentTiingoInquiry(CWebSourceDataProductPtr p) { m_pCurrentTiingoProduct = p; }
+	CProductWebSourceDataPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
+	void SetCurrentTiingoInquiry(CProductWebSourceDataPtr p) { m_pCurrentTiingoProduct = p; }
 
 	bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
 	void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
@@ -211,8 +211,8 @@ public:
 	CCountryPtr GetCountry(CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
 
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
-	void PushFinnhubInquiry(CWebSourceDataProductPtr p) { m_qFinnhubProduct.push(p); }
-	CWebSourceDataProductPtr GetFinnhubInquiry(void) { CWebSourceDataProductPtr p = m_qFinnhubProduct.front(); m_qFinnhubProduct.pop(); return p; }
+	void PushFinnhubInquiry(CProductWebSourceDataPtr p) { m_qFinnhubProduct.push(p); }
+	CProductWebSourceDataPtr GetFinnhubInquiry(void) { CProductWebSourceDataPtr p = m_qFinnhubProduct.front(); m_qFinnhubProduct.pop(); return p; }
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
@@ -256,8 +256,8 @@ public:
 	void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
 	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoProduct.size(); }
-	void PushTiingoInquiry(CWebSourceDataProductPtr p) { m_qTiingoProduct.push(p); }
-	CWebSourceDataProductPtr GetTiingoInquiry(void) { CWebSourceDataProductPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
+	void PushTiingoInquiry(CProductWebSourceDataPtr p) { m_qTiingoProduct.push(p); }
+	CProductWebSourceDataPtr GetTiingoInquiry(void) { CProductWebSourceDataPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
 
 	bool IsNeedUpdateForexExchangeDB(void) noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
@@ -365,19 +365,19 @@ protected:
 	CFinnhubFactory m_FinnhubFactory;
 	CTiingoFactory m_TiingoFactory;
 	CQuandlFactory m_QuandlFactory;
-	CWebSourceDataProductPtr m_pCurrentFinnhubProduct;
-	CWebSourceDataProductPtr m_pCurrentTiingoProduct;
-	CWebSourceDataProductPtr m_pCurrentQuandlProduct;
+	CProductWebSourceDataPtr m_pCurrentFinnhubProduct;
+	CProductWebSourceDataPtr m_pCurrentTiingoProduct;
+	CProductWebSourceDataPtr m_pCurrentQuandlProduct;
 
-	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qFinnhubProduct; // 网络查询命令队列
+	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qFinnhubProduct; // 网络查询命令队列
 	bool m_fFinnhubInquiring;
 	atomic_bool m_fFinnhubDataReceived;
 
-	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qTiingoProduct; // 网络查询命令队列
+	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qTiingoProduct; // 网络查询命令队列
 	bool m_fTiingoInquiring;
 	atomic_bool m_fTiingoDataReceived;
 
-	queue<CWebSourceDataProductPtr, list<CWebSourceDataProductPtr>> m_qQuandlProduct; // 网络查询命令队列
+	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qQuandlProduct; // 网络查询命令队列
 	bool m_fQuandlInquiring;
 	atomic_bool m_fQuandlDataReceived;
 

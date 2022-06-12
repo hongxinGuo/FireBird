@@ -206,7 +206,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage02) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		p->SetIndex(0);
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 1);
@@ -220,7 +220,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfile>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfile>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -246,7 +246,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE_CONCISE__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -272,7 +272,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockSymbol>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
@@ -297,7 +297,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__PEERS__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCompanyPeer>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetPeerUpdated(false);
@@ -323,7 +323,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_EPS_SURPRISE__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -346,7 +346,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_QUOTE__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockPriceQuote>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockPriceQuote>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -369,7 +369,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubStockDayLine>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -395,7 +395,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__FOREX_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubForexSymbol>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubForexSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -418,7 +418,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__FOREX_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubForexDayLine>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubForexDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -443,7 +443,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__CRYPTO_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CProductFinnhubCryptoSymbol>();
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCryptoSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->PushFinnhubInquiry(p);
@@ -508,7 +508,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoInquiringMessage02) {
-		CWebSourceDataProductPtr p = make_shared<CProductTinngoStockSymbol>();
+		CProductWebSourceDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
@@ -522,7 +522,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
-		CWebSourceDataProductPtr p = make_shared<CProductTinngoStockSymbol>();
+		CProductWebSourceDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pMockWorldMarket->GetStock(0)->SetProfileUpdated(false);
 		gl_pMockWorldMarket->PushTiingoInquiry(p);
 		EXPECT_EQ(gl_pMockWorldMarket->GetTiingoInquiryQueueSize(), 1);
@@ -545,7 +545,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
-		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
+		CProductWebSourceDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pMockWorldMarket.get());
 		gl_pMockWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -571,7 +571,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived01) {
-		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
+		CProductWebSourceDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 
 		gl_pMockWorldMarket->SetTiingoDataReceived(false);
@@ -580,7 +580,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestProcessTiingoWebDataReceived02) {
-		CWebSourceDataProductPtr p = make_shared<CProductTiingoStockDayLine>();
+		CProductWebSourceDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		gl_pMockWorldMarket->SetCurrentTiingoInquiry(p);
 		gl_pMockWorldMarket->SetTiingoDataReceived(true);
 		while (gl_WebInquirer.TiingoDataSize() > 0) gl_WebInquirer.PopTiingoData();

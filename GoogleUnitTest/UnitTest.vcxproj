@@ -41,9 +41,11 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="..\StockAanlysis.props" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="..\StockAanlysis.props" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -75,6 +77,7 @@
     <ClCompile Include="DataChoicedIEXTest.cpp" />
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
+    <ClCompile Include="DataSourceTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />

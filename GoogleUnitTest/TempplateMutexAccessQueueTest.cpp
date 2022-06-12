@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"TemplateMutexAccessQueue.h"
+
 #include"NeteaseDayLineWebData.h"
 #include"WebData.h"
 
@@ -17,8 +18,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	template <typename T>class CTemplateMutexAccessQueueTest : public ::testing::Test
-	{
+	template <typename T>
+	class CTemplateMutexAccessQueueTest : public ::testing::Test {
 	protected:
 		virtual void SetUp(void) override {
 			m_data1 = make_shared<T>();
@@ -55,5 +56,5 @@ namespace StockAnalysisTest {
 	REGISTER_TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest, TestReset, TestPushPopData);
 
 	using MyTypes = ::testing::Types<string, CWebData, CNeteaseDayLineWebData, int>;
-	INSTANTIATE_TYPED_TEST_SUITE_P(testTempplateNutexAccessQueue, CTemplateMutexAccessQueueTest, MyTypes);
+	INSTANTIATE_TYPED_TEST_SUITE_P(TestTemplateMutexAccessQueue, CTemplateMutexAccessQueueTest, MyTypes);
 }
