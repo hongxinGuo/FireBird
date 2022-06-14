@@ -87,15 +87,15 @@ bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_WebInquirer.QuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
-	gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+	while (gl_pDataSourceQuandl->GetReceivedDataSize() > 0) gl_pDataSourceQuandl->GetReceivedData();
+	gl_pDataSourceQuandl->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("Quandl工作线程出错"));
 }
 
 void CQuandlWebInquiry::UpdateAfterReadingWebData(void) {
-	gl_pWorldMarket->SetQuandlDataReceived(true); // 接收完网络数据后，清除状态。
+	gl_pDataSourceQuandl->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CQuandlWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushQuandlData(pWebDataBeStored);
+	gl_pDataSourceQuandl->StoreReceivedData(pWebDataBeStored);
 }

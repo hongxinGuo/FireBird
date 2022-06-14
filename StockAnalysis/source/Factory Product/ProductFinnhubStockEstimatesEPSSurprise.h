@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductWebData.h"
+#include"EPSSurprise.h"
 
 class CProductFinnhubStockEstimatesEPSSurprise : public CProductWebSourceData {
 public:

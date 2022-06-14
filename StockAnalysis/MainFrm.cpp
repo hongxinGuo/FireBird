@@ -214,6 +214,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfigeration.LoadDB(); // 装入系统参数
 	gl_systemConfigeration.UpdateSystem(); // 更新系统参数
 
+	// 此三个要在gl_pWorldMarket前生成
+	gl_pDataSourceFinnhub = make_shared<CDataSource>();
+	gl_pDataSourceTiingo = make_shared<CDataSource>();
+	gl_pDataSourceQuandl = make_shared<CDataSource>();
+
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
 	gl_WebInquirer.Initialize();

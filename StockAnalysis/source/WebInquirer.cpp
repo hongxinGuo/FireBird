@@ -4,6 +4,7 @@
 #include "ChinaStock.h"
 
 #include"WebInquirer.h"
+#include"DataSource.h"
 
 CWebInquirer::CWebInquirer(void) : CObject() {
 }
@@ -20,6 +21,13 @@ void CWebInquirer::Initialize(void) {
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
+
+	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
+	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
+	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+
+	gl_vDataSource.push_back(gl_pDataSourceFinnhub);
+	gl_vDataSource.push_back(gl_pDataSourceTiingo);
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

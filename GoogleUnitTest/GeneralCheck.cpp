@@ -57,8 +57,8 @@ namespace StockAnalysisTest {
 	}
 
 	void WebInquirerCheck(void) {
-		EXPECT_THAT(gl_WebInquirer.FinnhubDataSize(), 0);
-		EXPECT_THAT(gl_WebInquirer.TiingoDataSize(), 0);
+		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pDataSourceTiingo->GetReceivedDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);

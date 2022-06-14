@@ -72,21 +72,6 @@ public:
 	void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushData(pData); }
 	CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopData(); }
 
-	// Finnhub股票数据
-	size_t FinnhubDataSize(void) { return m_qFinnhubData.Size(); }
-	void PushFinnhubData(CWebDataPtr pData) { m_qFinnhubData.PushData(pData); }
-	CWebDataPtr PopFinnhubData(void) { return m_qFinnhubData.PopData(); }
-
-	// Quandl股票数据
-	size_t QuandlDataSize(void) { return m_qQuandlData.Size(); }
-	void PushQuandlData(CWebDataPtr pData) { m_qQuandlData.PushData(pData); }
-	CWebDataPtr PopQuandlData(void) { return m_qQuandlData.PopData(); }
-
-	// Tiingo股票数据
-	size_t TiingoDataSize(void) { return m_qTiingoData.Size(); }
-	void PushTiingoData(CWebDataPtr pData) { m_qTiingoData.PushData(pData); }
-	CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
-
 	// 网易日线数据
 	size_t NeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.Size()); }
 	void PushNeteaseDayLineData(CWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
@@ -125,7 +110,6 @@ protected:
 	CTemplateMutexAccessQueue<CWebData> m_qNeteaseRTWebData; // 网易网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qNeteaseWaitingParseRTWebData; // 网易网络数据暂存队列（等待Parsing）
 	CTemplateMutexAccessQueue<CWebData> m_qFinnhubData; // Finnhub.io网络数据暂存队列
-	CTemplateMutexAccessQueue<CWebData> m_qQuandlData; // Quandl.com网络数据暂存队列
 	CTemplateMutexAccessQueue<CWebData> m_qTiingoData; // Tiingo.com网络数据暂存队列
 
 	CTemplateMutexAccessQueue<CWebData> m_qNeteaseDayLine; // 网易日线数据暂存队列

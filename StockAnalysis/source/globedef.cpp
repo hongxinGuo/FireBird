@@ -60,6 +60,11 @@ CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.io证券信息
 CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 
+vector<CDataSourcePtr> gl_vDataSource;
+CDataSourcePtr gl_pDataSourceFinnhub = nullptr;
+CDataSourcePtr gl_pDataSourceTiingo = nullptr;
+CDataSourcePtr gl_pDataSourceQuandl = nullptr;
+
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 // 各市场。皆为唯一实例

@@ -70,7 +70,7 @@ bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_WebInquirer.FinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
+	while (gl_pDataSourceFinnhub->GetReceivedDataSize() > 0) gl_pDataSourceFinnhub->GetReceivedData();
 	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 }
 
@@ -79,5 +79,5 @@ void CFinnhubWebInquiry::UpdateAfterReadingWebData(void) {
 }
 
 void CFinnhubWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_WebInquirer.PushFinnhubData(pWebDataReceived);
+	gl_pDataSourceFinnhub->StoreReceivedData(pWebDataReceived);
 }

@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 		FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.FinnhubDataSize(), 0);
+		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pWorldMarket->SetFinnhubDataReceived(false);
@@ -63,8 +63,8 @@ namespace StockAnalysisTest {
 		FinnhubWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.FinnhubDataSize(), 1);
-		CWebDataPtr pWebData = gl_WebInquirer.PopFinnhubData();
+		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 1);
+		CWebDataPtr pWebData = gl_pDataSourceFinnhub->GetReceivedData();
 		EXPECT_EQ(FinnhubWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_TRUE(pWebData->IsParsed());

@@ -31,6 +31,8 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
+#include"DataSource.h"
+
 using namespace std;
 #include<map>
 #include<vector>
@@ -58,11 +60,9 @@ public:
 	void ResetDataClass(void);
 	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final { if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true; else return false; }
 
-	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
-	bool ProcessFinnhubInquiringMessage(void);
-	bool ProcessFinnhubWebDataReceived(void);
-	bool ProcessTiingoInquiringMessage(void);
-	bool ProcessTiingoWebDataReceived(void);
+	virtual bool SchedulingTask(void) override final;
+	// 由程序的定时器调度，大约每100毫秒一次
+	void ProcessMessageAndReceivedData(long lCurrentTime);
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -122,23 +122,15 @@ public:
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态
-	CProductWebSourceDataPtr GetCurrentFinnhubInquiry(void) { return m_pCurrentFinnhubProduct; }
-	void SetCurrentFinnhubInquiry(CProductWebSourceDataPtr p) { m_pCurrentFinnhubProduct = p; }
+	bool IsFinnhubInquiring(void) noexcept { return gl_pDataSourceFinnhub->IsInquiring(); }
+	void SetFinnhubInquiring(bool fFlag) noexcept { gl_pDataSourceFinnhub->SetInquiring(fFlag); }
+	void SetFinnhubDataReceived(bool fFlag) noexcept { gl_pDataSourceFinnhub->SetDataReceived(fFlag); }
+	bool IsFinnhubDataReceived(void) noexcept { return gl_pDataSourceFinnhub->IsDataReceived(); }
 
-	CProductWebSourceDataPtr GetCurrentTiingoInquiry(void) { return m_pCurrentTiingoProduct; }
-	void SetCurrentTiingoInquiry(CProductWebSourceDataPtr p) { m_pCurrentTiingoProduct = p; }
-
-	bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
-	void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
-	void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
-	bool IsFinnhubDataReceived(void) noexcept { const bool f = m_fFinnhubDataReceived; return f; }
-	void SetQuandlInquiring(bool fFlag) noexcept { m_fQuandlInquiring = fFlag; }
-	void SetQuandlDataReceived(bool fFlag) noexcept { m_fQuandlDataReceived = fFlag; }
-	bool IsQuandlDataReceived(void) noexcept { const bool f = m_fQuandlDataReceived; return f; }
-	bool IsTiingoInquiring(void) noexcept { return m_fTiingoInquiring; }
-	void SetTiingoInquiring(bool fFlag) noexcept { m_fTiingoInquiring = fFlag; }
-	void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
-	bool IsTiingoDataReceived(void) noexcept { const bool f = m_fTiingoDataReceived; return f; }
+	bool IsTiingoInquiring(void) noexcept { return gl_pDataSourceTiingo->IsInquiring(); }
+	void SetTiingoInquiring(bool fFlag) noexcept { gl_pDataSourceTiingo->SetInquiring(fFlag); }
+	void SetTiingoDataReceived(bool fFlag) noexcept { gl_pDataSourceTiingo->SetDataReceived(fFlag); }
+	bool IsTiingoDataReceived(void) noexcept { return gl_pDataSourceTiingo->IsDataReceived(); }
 
 	CFinnhubStockExchangePtr GetStockExchange(long lIndex) { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
 	CString GetStockExchangeCode(long lIndex) { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
@@ -210,9 +202,9 @@ public:
 	bool DeleteCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
 	CCountryPtr GetCountry(CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
 
-	size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubProduct.size(); }
-	void PushFinnhubInquiry(CProductWebSourceDataPtr p) { m_qFinnhubProduct.push(p); }
-	CProductWebSourceDataPtr GetFinnhubInquiry(void) { CProductWebSourceDataPtr p = m_qFinnhubProduct.front(); m_qFinnhubProduct.pop(); return p; }
+	size_t GetFinnhubInquiryQueueSize(void) noexcept { return gl_pDataSourceFinnhub->GetInquiryQueueSize(); }
+	void StoreFinnhubInquiry(CProductWebSourceDataPtr p) { gl_pDataSourceFinnhub->StoreInquiry(p); }
+	CProductWebSourceDataPtr GetFinnhubInquiry(void) { return gl_pDataSourceFinnhub->GetInquiry(); }
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
@@ -254,10 +246,6 @@ public:
 	void SetTiingoCryptoSymbolUpdated(bool fFlag) noexcept { m_fTiingoCryptoSymbolUpdated = fFlag; }
 	bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
 	void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
-
-	size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoProduct.size(); }
-	void PushTiingoInquiry(CProductWebSourceDataPtr p) { m_qTiingoProduct.push(p); }
-	CProductWebSourceDataPtr GetTiingoInquiry(void) { CProductWebSourceDataPtr p = m_qTiingoProduct.front(); m_qTiingoProduct.pop(); return p; }
 
 	bool IsNeedUpdateForexExchangeDB(void) noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
@@ -365,21 +353,6 @@ protected:
 	CFinnhubFactory m_FinnhubFactory;
 	CTiingoFactory m_TiingoFactory;
 	CQuandlFactory m_QuandlFactory;
-	CProductWebSourceDataPtr m_pCurrentFinnhubProduct;
-	CProductWebSourceDataPtr m_pCurrentTiingoProduct;
-	CProductWebSourceDataPtr m_pCurrentQuandlProduct;
-
-	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qFinnhubProduct; // 网络查询命令队列
-	bool m_fFinnhubInquiring;
-	atomic_bool m_fFinnhubDataReceived;
-
-	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qTiingoProduct; // 网络查询命令队列
-	bool m_fTiingoInquiring;
-	atomic_bool m_fTiingoDataReceived;
-
-	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qQuandlProduct; // 网络查询命令队列
-	bool m_fQuandlInquiring;
-	atomic_bool m_fQuandlDataReceived;
 
 	bool m_fCountryListUpdated;
 	bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
