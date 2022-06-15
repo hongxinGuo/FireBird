@@ -10,13 +10,18 @@ CDataSource::CDataSource(void) {
 	Reset();
 }
 
-void CDataSource::Reset(void) {
+bool CDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fDataReceived = true;
+
+	return true;
 }
 
 void CDataSource::Run(long lCurrentTime) {
-	ProcessWebDataReceived();
+	Inquiry(lCurrentTime);
+	if (ProcessWebDataReceived()) {
+		UpdateStatus();
+	}
 	ProcessInquiringMessage();
 }
 
@@ -69,7 +74,6 @@ bool CDataSource::ProcessWebDataReceived(void) {
 			m_pWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetInquiring(false);
 			fDone = true;
-			m_pCurrentProduct = nullptr;
 		}
 	}
 

@@ -31,7 +31,8 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
-#include"DataSource.h"
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
 
 using namespace std;
 #include<map>
@@ -70,29 +71,6 @@ public:
 	bool SchedulingTaskPer5Minute(long lCurrentTime);
 	bool SchedulingTaskPerHour(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
-
-	bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有查询Finnhub的任务皆位于此函数内。
-	virtual bool TaskInquiryFinnhubCountryList(void);
-	virtual bool TaskInquiryFinnhubCompanySymbol(void);
-	virtual bool TaskInquiryFinnhubCompanyProfileConcise(void);
-	virtual bool TaskInquiryFinnhubCompanyBasicFinancial();
-	virtual bool TaskInquiryFinnhubStockDayLine(void);
-	virtual bool TaskInquiryFinnhubRTQuote(void);
-	virtual bool TaskInquiryFinnhubPeer(void);
-	virtual bool TaskInquiryFinnhubInsiderTransaction(void);
-	virtual bool TaskInquiryFinnhubEconomicCalendar(void);
-	virtual bool TaskInquiryFinnhubEPSSurprise(void);
-	virtual bool TaskInquiryFinnhubForexExchange(void);
-	virtual bool TaskInquiryFinnhubForexSymbol(void);
-	virtual bool TaskInquiryFinnhubForexDayLine(void);
-	virtual bool TaskInquiryFinnhubCryptoExchange(void);
-	virtual bool TaskInquiryFinnhubCryptoSymbol(void);
-	virtual bool TaskInquiryFinnhubCryptoDayLine(void);
-
-	bool TaskInquiryTiingo(void);// 这个函数做为总括，所有查询Tiingo的任务皆位于此函数内。
-	virtual bool TaskInquiryTiingoCompanySymbol(void);
-	virtual bool TaskInquiryTiingoCryptoSymbol(void);
-	virtual bool TaskInquiryTiingoDayLine(void);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
@@ -152,6 +130,7 @@ public:
 	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_dataChoicedStock.GetStock(lIndex); }
+	size_t GetChoicedStockSize(void) noexcept { return m_dataChoicedStock.GetSize(); }
 
 	bool IsTiingoStock(CString strSymbol) { return m_dataTiingoStock.IsStock(strSymbol); }
 	bool IsTiingoStock(CWorldStockPtr pStock) { return m_dataTiingoStock.IsStock(pStock); }
@@ -206,46 +185,8 @@ public:
 	void StoreFinnhubInquiry(CProductWebSourceDataPtr p) { gl_pDataSourceFinnhub->StoreInquiry(p); }
 	CProductWebSourceDataPtr GetFinnhubInquiry(void) { return gl_pDataSourceFinnhub->GetInquiry(); }
 
-	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
-	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
-	bool IsFinnhubSymbolUpdated(void) noexcept { return m_fFinnhubSymbolUpdated; }
-	void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
-	bool IsFinnhubStockProfileUpdated(void) noexcept { return m_fFinnhubStockProfileUpdated; }
-	void SetFinnhubStockProfileUpdated(bool fFlag) noexcept { m_fFinnhubStockProfileUpdated = fFlag; }
-	bool IsFinnhubStockBasicFinancialUpdated(void) noexcept { return m_fFinnhubStockBasicFinancialUpdated; }
-	void SetFinnhubStockBasicFinancialUpdated(bool fFlag) noexcept { m_fFinnhubStockBasicFinancialUpdated = fFlag; }
-	bool IsFinnhubStockDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
-	void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
-	bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
-	void SetFinnhubForexExchangeUpdated(bool fFlag) noexcept { m_fFinnhubForexExchangeUpdated = fFlag; }
-	bool IsFinnhubForexSymbolUpdated(void) noexcept { return m_fFinnhubForexSymbolUpdated; }
-	void SetFinnhubForexSymbolUpdated(bool fFlag) noexcept { m_fFinnhubForexSymbolUpdated = fFlag; }
-	bool IsFinnhubForexDayLineUpdated(void) noexcept { return m_fFinnhubForexDayLineUpdated; }
-	void SetFinnhubForexDayLineUpdated(bool fFlag) noexcept { m_fFinnhubForexDayLineUpdated = fFlag; }
-	bool IsFinnhubCryptoExchangeUpdated(void) noexcept { return m_fFinnhubCryptoExchangeUpdated; }
-	void SetFinnhubCryptoExchangeUpdated(bool fFlag) noexcept { m_fFinnhubCryptoExchangeUpdated = fFlag; }
-	bool IsFinnhubCryptoSymbolUpdated(void) noexcept { return m_fFinnhubCryptoSymbolUpdated; }
-	void SetFinnhubCryptoSymbolUpdated(bool fFlag) noexcept { m_fFinnhubCryptoSymbolUpdated = fFlag; }
-	bool IsFinnhubCryptoDayLineUpdated(void) noexcept { return m_fFinnhubCryptoDayLineUpdated; }
-	void SetFinnhubCryptoDayLineUpdated(bool fFlag) noexcept { m_fFinnhubCryptoDayLineUpdated = fFlag; }
-	bool IsFinnhubPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
-	void SetFinnhubPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
-	bool IsFinnhubInsiderTransactionUpdated(void) noexcept { return m_fFinnhubInsiderTransactionUpdated; }
-	void SetFinnhubInsiderTransactionUpdated(bool fFlag) noexcept { m_fFinnhubInsiderTransactionUpdated = fFlag; }
-	bool IsFinnhubEconomicCalendarUpdated(void) noexcept { return m_fFinnhubEconomicCalendarUpdated; }
-	void SetFinnhubEconomicCalendarUpdated(bool fFlag) noexcept { m_fFinnhubEconomicCalendarUpdated = fFlag; }
-	bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
-	void SetFinnhubEPSSurpriseUpdated(bool fFlag) noexcept { m_fFinnhubEPSSurpriseUpdated = fFlag; }
-
 	CString GetCurrentFunction(void) { return m_strCurrentFunction; }
 	void SetCurrentFunction(CString str) { m_strCurrentFunction = str; }
-
-	bool IsTiingoStockSymbolUpdated(void) noexcept { return m_fTiingoStockSymbolUpdated; }
-	void SetTiingoStockSymbolUpdated(bool fFlag) noexcept { m_fTiingoStockSymbolUpdated = fFlag; }
-	bool IsTiingoCryptoSymbolUpdated(void) noexcept { return m_fTiingoCryptoSymbolUpdated; }
-	void SetTiingoCryptoSymbolUpdated(bool fFlag) noexcept { m_fTiingoCryptoSymbolUpdated = fFlag; }
-	bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
-	void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
 	bool IsNeedUpdateForexExchangeDB(void) noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
@@ -349,30 +290,6 @@ protected:
 	CDataChoicedStock m_dataChoicedStock;
 	CDataChoicedForex m_dataChoicedForex;
 	CDataChoicedCrypto m_dataChoicedCrypto;
-
-	CFinnhubFactory m_FinnhubFactory;
-	CTiingoFactory m_TiingoFactory;
-	CQuandlFactory m_QuandlFactory;
-
-	bool m_fCountryListUpdated;
-	bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
-	bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
-	bool m_fFinnhubStockBasicFinancialUpdated; // 每日更新公司日线
-	bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
-	bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
-	bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
-	bool m_fFinnhubForexDayLineUpdated; // 每日更新Forex日线数据
-	bool m_fFinnhubCryptoExchangeUpdated; // 每日更新Crypto交易所
-	bool m_fFinnhubCryptoSymbolUpdated; // 每日更新Crypto交易所代码
-	bool m_fFinnhubCryptoDayLineUpdated; // 每日更新Crypto日线数据
-	bool m_fFinnhubPeerUpdated; // 每90天更新Peers数据
-	bool m_fFinnhubInsiderTransactionUpdated; // 每30天更新InsiderTransaction数据
-	bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
-	bool m_fFinnhubEPSSurpriseUpdated;
-
-	bool m_fTiingoStockSymbolUpdated; // 每日更新公司代码库
-	bool m_fTiingoCryptoSymbolUpdated; // 每日更新crypto代码库
-	bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

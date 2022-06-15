@@ -699,6 +699,15 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h">
+      <Filter>头文件\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
+      <Filter>头文件\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\DummyProduct.h">
+      <Filter>头文件\Factory-Product</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1213,6 +1222,15 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp">
       <Filter>源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp">
+      <Filter>源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp">
+      <Filter>源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\DummyProduct.cpp">
+      <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

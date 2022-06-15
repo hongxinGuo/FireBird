@@ -33,7 +33,6 @@ bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			((CWorldMarket*)m_pMarket)->AddForexExchange(pvForexExchange->at(i));
 		}
 	}
-	((CWorldMarket*)m_pMarket)->SetFinnhubForexExchangeUpdated(true);
 
 	return true;
 }

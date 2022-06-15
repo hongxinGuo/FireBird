@@ -151,8 +151,8 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket->DeleteTiingoCryptoSymbol(pCrypto);
 			break;
 		}
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated()) << "此标识由UpdateStatus函数更新";
 
-		gl_pWorldMarket->SetTiingoCryptoSymbolUpdated(false);
+		gl_pDataSourceTiingo->SetCryptoSymbolUpdated(false);
 	}
 }

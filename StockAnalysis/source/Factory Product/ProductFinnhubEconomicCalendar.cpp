@@ -30,7 +30,6 @@ bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 
 	pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	((CWorldMarket*)m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
-	((CWorldMarket*)m_pMarket)->SetFinnhubEconomicCalendarUpdated(true);
 
 	return true;
 }

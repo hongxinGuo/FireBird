@@ -7,27 +7,6 @@
 namespace testing {
 	class CMockWorldMarket : public CWorldMarket {
 	public:
-		MOCK_METHOD(bool, TaskInquiryFinnhubCountryList, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCompanySymbol, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCompanyProfileConcise, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCompanyBasicFinancial, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubStockDayLine, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubRTQuote, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubPeer, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubInsiderTransaction, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubEconomicCalendar, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubEPSSurprise, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubForexExchange, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubForexSymbol, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubForexDayLine, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCryptoExchange, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCryptoSymbol, (), (override));
-		MOCK_METHOD(bool, TaskInquiryFinnhubCryptoDayLine, (), (override));
-
-		MOCK_METHOD(bool, TaskInquiryTiingoCompanySymbol, (), (override));
-		MOCK_METHOD(bool, TaskInquiryTiingoCryptoSymbol, (), (override));
-		MOCK_METHOD(bool, TaskInquiryTiingoDayLine, (), (override));
-
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockDayLineDB, (), (override));

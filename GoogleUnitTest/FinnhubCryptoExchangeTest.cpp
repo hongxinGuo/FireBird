@@ -113,12 +113,12 @@ namespace StockAnalysisTest {
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket.get());
-			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
+			EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			gl_pWorldMarket->SetFinnhubCryptoExchangeUpdated(false);
+			gl_pDataSourceFinnhub->SetCryptoExchangeUpdated(false);
 
 			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
@@ -137,21 +137,18 @@ namespace StockAnalysisTest {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14);
 			break;
 		case 10:
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 15) << "加入了new exchange这个新的交易所";
-
 			EXPECT_TRUE(gl_pWorldMarket->DeleteCryptoExchange(_T("new exchange"))); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;
 		}
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
 	}
 }

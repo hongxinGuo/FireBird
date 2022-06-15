@@ -13,11 +13,13 @@ public:
 	CDataSource(void);
 	virtual ~CDataSource(void) {}
 
-	void Reset(void);
+	virtual bool Reset(void);
 
 	void Run(long lCurrentTime);
+	virtual bool Inquiry(long lCurrentTime) { return true; } // 继承类实现各自的查询任务
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
+	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
 
 	void SetWebInquiringPtr(CVirtualWebInquiryPtr p) {
 		m_pWebInquiry = p;
@@ -52,6 +54,4 @@ protected:
 typedef shared_ptr<CDataSource> CDataSourcePtr;
 
 extern vector<CDataSourcePtr> gl_vDataSource;
-extern CDataSourcePtr gl_pDataSourceFinnhub;
-extern CDataSourcePtr gl_pDataSourceTiingo;
 extern CDataSourcePtr gl_pDataSourceQuandl;

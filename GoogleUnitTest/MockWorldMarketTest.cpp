@@ -88,8 +88,8 @@ namespace StockAnalysisTest {
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 			s_pMockQuandlWebInquiry->SetReadingWebData(false);
-			gl_pMockWorldMarket->SetFinnhubStockProfileUpdated(false);
-			EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+			gl_pDataSourceFinnhub->SetStockProfileUpdated(false);
+			EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
 		}
 
 		virtual void TearDown(void) override {
@@ -198,100 +198,6 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineStartEndDate)
 			.Times(1);
 		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), (UINT)43);
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub1) {
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(165700));
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryFinnhub(170200));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub2) {
-		gl_pMockWorldMarket->SetSystemReady(false);
-		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyBasicFinancial).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
-		//EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoDayLine).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubStockDayLine).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(170501));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub3) {
-		gl_pMockWorldMarket->SetSystemReady(true);
-		gl_pMockWorldMarket->SetFinnhubDayLineUpdated(false);
-		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0); //"目前未使用"
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyBasicFinancial).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0); //"目前未使用"
-		//EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1); // Finnhub Forex DayLine为Premium数据了
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoDayLine).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubStockDayLine).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryFinnhub4) {
-		gl_pMockWorldMarket->SetSystemReady(true);
-		gl_pMockWorldMarket->SetFinnhubDayLineUpdated(true);
-		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCountryList).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoExchange).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanySymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEconomicCalendar).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyProfileConcise).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCompanyBasicFinancial).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubPeer).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubInsiderTransaction).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubEPSSurprise).Times(0);
-		//EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubForexDayLine).Times(1);// Finnhub Forex DayLine为Premium数据了
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubCryptoDayLine).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubStockDayLine).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryFinnhubRTQuote).Times(0);
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryFinnhub(165659));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo1) {
-		gl_pMockWorldMarket->SetSystemReady(false);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCryptoSymbol).Times(0);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(0);
-
-		EXPECT_FALSE(gl_pMockWorldMarket->TaskInquiryTiingo());
-	}
-	TEST_F(CMockWorldMarketTest, TestTaskInquiryTiingo2) {
-		gl_pMockWorldMarket->SetSystemReady(true);
-		InSequence seq;
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCompanySymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoCryptoSymbol).Times(1);
-		EXPECT_CALL(*gl_pMockWorldMarket, TaskInquiryTiingoDayLine).Times(1);
-
-		EXPECT_TRUE(gl_pMockWorldMarket->TaskInquiryTiingo());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateEconmicCalendarDB) {

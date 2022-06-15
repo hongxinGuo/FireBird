@@ -13,6 +13,8 @@
 
 #include"ProductTiingoCryptoSymbol.h"
 
+#include"DummyProduct.h"
+
 CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CProductWebSourceDataPtr p = nullptr;
 
@@ -67,11 +69,13 @@ CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, 
 	case __ECONOMIC_CALENDAR__:
 	default:
 		// error. not impliment yet.
+		p = make_shared<CProductDummy>();
 		gl_systemMessage.PushErrorMessage(_T("Tiingo productÎ´ÊµÏÖ"));
 		//ASSERT(0);
 		break;
 	}
 	p->SetMarket(pMarket);
+	p->SetProductType(iIndex);
 
 	return p;
 }

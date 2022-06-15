@@ -58,6 +58,14 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTim
 	return tt;
 }
 
+long GetDayOfWeek(void) {
+	time_t tUTC = 0;
+	time(&tUTC);
+	tm tm_;
+	GetMarketTimeStruct(&tm_, tUTC, 0);
+	return tm_.tm_wday;
+}
+
 time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
 	tm tmMarket{ 0, 0, 0, 0,0, 0 };
 

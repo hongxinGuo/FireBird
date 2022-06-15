@@ -4,7 +4,8 @@
 #include "ChinaStock.h"
 
 #include"WebInquirer.h"
-#include"DataSource.h"
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
 
 CWebInquirer::CWebInquirer(void) : CObject() {
 }

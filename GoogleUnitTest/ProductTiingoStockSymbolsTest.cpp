@@ -156,7 +156,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockSymbolProduct.SetIndex(0);
-			gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);
+			gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -179,31 +179,26 @@ namespace StockAnalysisTest {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		CWorldStockPtr pStock = nullptr;
 		EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 		bool fSucceed = m_tiingoStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 3: // 第二个数据缺乏address项
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 4:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_pWorldMarket->IsStockProfileNeedUpdate());
@@ -214,7 +209,6 @@ namespace StockAnalysisTest {
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("NEW SYMBOL")));
@@ -230,9 +224,5 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		}
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-
-		gl_pWorldMarket->SetTiingoStockSymbolUpdated(false);
-		gl_pWorldMarket->SetFinnhubStockProfileUpdated(false);
 	}
 }

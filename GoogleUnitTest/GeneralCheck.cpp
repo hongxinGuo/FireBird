@@ -36,15 +36,6 @@ namespace StockAnalysisTest {
 
 	void WorldMarketCheck(void) {
 		if (gl_pWorldMarket != nullptr) {
-			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoExchangeUpdated());
-			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
-			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbolUpdated());
-			EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
-
-			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
-			EXPECT_FALSE(gl_pWorldMarket->IsTiingoStockSymbolUpdated());
-			EXPECT_FALSE(gl_pWorldMarket->IsTiingoCryptoSymbolUpdated());
-
 			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
 			EXPECT_FALSE(pStock->IsProfileUpdated());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
@@ -62,6 +53,27 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);
+
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCountryListUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoDayLineUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexDayLineUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockDayLineUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsSymbolUpdated());
+
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());
+
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+
+		EXPECT_FALSE(gl_pDataSourceTiingo->IsStockSymbolUpdated());
+		EXPECT_FALSE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated());
 	}
 
 	void DataContainerCheck(void) {

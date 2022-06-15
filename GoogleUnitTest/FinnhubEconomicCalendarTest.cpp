@@ -156,33 +156,28 @@ namespace StockAnalysisTest {
 			&finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsEconomicCalendarUpdated());
 		bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
 			break;
 		case 3: // 缺乏economicCalendar
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
 			break;
 		case 4: // 第一个数据缺actual
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
 			break;
 		case 5: // 第二个数据缺actual
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
 			break;
 		default:
 			break;
 		}
 		gl_pWorldMarket->ClearEconomicCanendar();
-		gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(false);
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsEconomicCalendarUpdated());
 	}
 }

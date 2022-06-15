@@ -28,6 +28,8 @@
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
 
+#include"DummyProduct.h"
+
 #include "FinnhubFactory.h"
 
 CProductWebSourceDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
@@ -136,11 +138,13 @@ CProductWebSourceDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket,
 		p = make_shared<CProductFinnhubEconomicCalendar>();
 		break;
 	default:
+		p = make_shared<CProductDummy>();
 		TRACE("未处理指令%d\n", iIndex);
 		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
 	p->SetMarket(pMarket);
+	p->SetProductType(iIndex);
 
 	return p;
 }

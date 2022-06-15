@@ -82,6 +82,8 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineBasicInfo.h" />
@@ -132,6 +134,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\DummyProduct.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
@@ -285,6 +288,8 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSOption.cpp" />
@@ -316,6 +321,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\DummyProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />

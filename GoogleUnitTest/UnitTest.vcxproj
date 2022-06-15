@@ -82,6 +82,7 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp" />
+    <ClCompile Include="FinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="HighPerformanceCounterTest.cpp" />

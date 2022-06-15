@@ -531,6 +531,9 @@
     <ClCompile Include="DataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

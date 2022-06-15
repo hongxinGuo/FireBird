@@ -58,11 +58,15 @@ public:
 	CVirtualMarket* GetMarket(void) { return m_pMarket; }
 	void SetMarket(CVirtualMarket* pMarket) { m_pMarket = pMarket; }
 
+	void SetProductType(int iProductType) { m_iProductType = iProductType; }
+	int GetProductType(void) { return m_iProductType; }
+
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场
 	CString m_strClassName;
 	CString m_strInquiringStr;
 	long m_lIndex;
+	int m_iProductType;
 };
 
 typedef shared_ptr<CProductWebSourceData> CProductWebSourceDataPtr;

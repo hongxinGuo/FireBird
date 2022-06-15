@@ -31,7 +31,6 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 			((CWorldMarket*)m_pMarket)->AddCountry(pCountry);
 		}
 	}
-	((CWorldMarket*)m_pMarket)->SetCountryListUpdated(true);
 
 	return true;
 }

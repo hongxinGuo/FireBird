@@ -28,9 +28,12 @@
 #include"WebRTDataContainer.h"
 #include"HighPerformanceCounter.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
 bool gl_fNormalMode = false; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 
-CSystemConfigeration gl_systemConfigeration{}; // 系统参数总汇.此全局变量要位于所有全局变量的最前面
+CSystemConfigeration gl_systemConfigeration; // 系统参数总汇.此全局变量要位于所有全局变量的最前面
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 CHighPerformanceCounter g_highPerformanceCounter;
@@ -61,8 +64,8 @@ CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 
 vector<CDataSourcePtr> gl_vDataSource;
-CDataSourcePtr gl_pDataSourceFinnhub = nullptr;
-CDataSourcePtr gl_pDataSourceTiingo = nullptr;
+CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
+CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CDataSourcePtr gl_pDataSourceQuandl = nullptr;
 
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask

@@ -38,7 +38,10 @@ public:
 	CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
 	CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
 	CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
-	int GetWorldMarketFinnhubInquiryTime(void) noexcept { return m_iWorldMarketFinnhubInquiryTime; }
+	int GetWorldMarketFinnhubInquiryTime(void) noexcept {
+		int j = 0;
+		return m_iWorldMarketFinnhubInquiryTime;
+	}
 	void SetWorldMarketFinnhubInquiryTime(int iWorldMarketFinnhubInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime; }
 	int GetWorldMarketTiingoInquiryTime(void) noexcept { return m_iWorldMarketTiingoInquiryTime; }
 	void SetWorldMarketTiingoInquiryTime(int iWorldMarketTiingoInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime; }

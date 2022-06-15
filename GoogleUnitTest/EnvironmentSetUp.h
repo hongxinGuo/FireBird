@@ -87,8 +87,8 @@ namespace StockAnalysisTest {
 			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
-			gl_pDataSourceFinnhub = make_shared<CDataSource>();
-			gl_pDataSourceTiingo = make_shared<CDataSource>();
+			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
+			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
 			gl_pDataSourceQuandl = make_shared<CDataSource>();
 
 			// 下列全局智能指针为实际类

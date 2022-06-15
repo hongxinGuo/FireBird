@@ -61,7 +61,6 @@ bool CProductTinngoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-	((CWorldMarket*)m_pMarket)->SetTiingoStockSymbolUpdated(true);
 
 	return true;
 }
