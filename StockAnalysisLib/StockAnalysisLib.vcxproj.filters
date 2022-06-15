@@ -705,7 +705,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\DummyProduct.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1229,7 +1229,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp">
       <Filter>源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\DummyProduct.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
   </ItemGroup>

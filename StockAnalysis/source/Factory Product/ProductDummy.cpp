@@ -4,7 +4,7 @@
 #include"accessory.h"
 #include"worldMarket.h"
 
-#include "DummyProduct.h"
+#include "ProductDummy.h"
 
 IMPLEMENT_DYNCREATE(CProductDummy, CProductWebSourceData)
 
@@ -15,12 +15,10 @@ CProductDummy::CProductDummy() {
 }
 
 CString CProductDummy::CreatMessage(void) {
-	ASSERT(0);
 	return _T("");
 }
 
 bool CProductDummy::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	TRACE("dummy product\n");
-	ASSERT(0);
 	return true;
 }

@@ -11,8 +11,6 @@ public:
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
 
-	bool IsReady(void);
-
 	virtual bool Inquiry(long lCurrentTime) override final;
 
 	bool InquiryFinnhub(long lCurrentTime);

@@ -151,13 +151,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CFinnhubDataSource::IsReady(void) {
-	if (IsSymbolUpdated() && IsForexExchangeUpdated() && IsForexSymbolUpdated() && IsCryptoExchangeUpdated() && IsCryptoSymbolUpdated()) {
-		return true;
-	}
-	return false;
-}
-
 bool CFinnhubDataSource::Inquiry(long lCurrentTime) {
 	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
 	int i = 0;

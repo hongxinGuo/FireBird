@@ -12,9 +12,6 @@
 #include"Callablefunction.h"
 #include"WebInquirer.h"
 
-#include"ProductFinnhubStockPriceQuote.h"
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
-
 #include"SetWorldMarketOption.h"
 
 #include"SystemConfigeration.h"
@@ -123,6 +120,10 @@ void CWorldMarket::ResetMarket(void) {
 	LoadEconomicCalendarDB();
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
+
+	for (auto& pDataSource : gl_vDataSource) {
+		pDataSource->Reset();
+	}
 
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
@@ -443,7 +444,8 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 	CString str = _T("");
 
 	if (!IsSystemReady()) {
-		if (gl_pDataSourceFinnhub->IsReady()) {
+		if (gl_pDataSourceFinnhub->IsSymbolUpdated() && gl_pDataSourceFinnhub->IsForexExchangeUpdated() && gl_pDataSourceFinnhub->IsForexSymbolUpdated()
+			&& gl_pDataSourceFinnhub->IsCryptoExchangeUpdated() && gl_pDataSourceFinnhub->IsCryptoSymbolUpdated()) {
 			str = _T("世界市场初始化完毕");
 			gl_systemMessage.PushInformationMessage(str);
 			SetSystemReady(true);

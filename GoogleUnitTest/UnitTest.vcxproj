@@ -91,6 +91,7 @@
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
+    <ClCompile Include="TiingoDataSourceTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DataChinaDayLineTest.cpp" />

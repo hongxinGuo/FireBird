@@ -74,6 +74,9 @@ namespace StockAnalysisTest {
 
 		EXPECT_FALSE(gl_pDataSourceTiingo->IsStockSymbolUpdated());
 		EXPECT_FALSE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated());
+
+		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
 	}
 
 	void DataContainerCheck(void) {

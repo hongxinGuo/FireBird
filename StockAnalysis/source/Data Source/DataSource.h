@@ -28,18 +28,18 @@ public:
 	size_t GetInquiryQueueSize(void) noexcept { return m_qProduct.size(); }
 	void StoreInquiry(CProductWebSourceDataPtr p) { m_qProduct.push(p); }
 	CProductWebSourceDataPtr GetInquiry(void) { m_pCurrentProduct = m_qProduct.front(); m_qProduct.pop(); return m_pCurrentProduct; }
+
 	CProductWebSourceDataPtr GetCurrentInquiry(void) noexcept { return m_pCurrentProduct; }
+	void SetCurrentInquiry(CProductWebSourceDataPtr p) { m_pCurrentProduct = p; }
 
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
 	void SetDataReceived(bool fFlag) noexcept { m_fDataReceived = fFlag; }
 	bool IsDataReceived(void) noexcept { const bool f = m_fDataReceived; return f; }
 
-	CProductWebSourceDataPtr GetCurrentProduct(void) noexcept { return m_pCurrentProduct; }
-
-	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReveivedData.PushData(pData); }
-	CWebDataPtr GetReceivedData(void) noexcept { return m_qReveivedData.PopData(); }
-	size_t GetReceivedDataSize(void) noexcept { return m_qReveivedData.Size(); }
+	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
+	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
+	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
 protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
@@ -48,7 +48,7 @@ protected:
 	bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 
-	CTemplateMutexAccessQueue<CWebData> m_qReveivedData; // 网络数据暂存队列
+	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 };
 
 typedef shared_ptr<CDataSource> CDataSourcePtr;

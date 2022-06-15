@@ -9,6 +9,8 @@
 
 #include"MockFinnhubWebInquiry.h"
 
+#include"ProductFinnhubCompanyProfile.h"
+#include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubForexExchange.h"
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
@@ -514,77 +516,6 @@ namespace StockAnalysisTest {
 		gl_pDataSourceFinnhub->SetForexDayLineUpdated(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestInquiryTiingoCompanySymbol) {
-		CProductWebSourceDataPtr p = nullptr;
-
-		gl_pDataSourceTiingo->SetStockSymbolUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryCompanySymbol()) << "TiingoCompanySymbol Updated";
-
-		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
-		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryCompanySymbol()) << "其他TiingoInquiry正在进行";
-
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryCompanySymbol());
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
-		p = gl_pDataSourceTiingo->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
-	}
-
-	TEST_F(CFinnhubDataSourceTest, TestInquiryTiingoDayLine) {
-		CWorldStockPtr pStock;
-		CProductWebSourceDataPtr p = nullptr;
-		long lStockIndex = 0;
-
-		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetDayLineNeedUpdate(false);
-		}
-		gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(true);
-		gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(true);
-		gl_pDataSourceTiingo->SetDayLineUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "DayLine Updated";
-
-		gl_pDataSourceTiingo->SetDayLineUpdated(false);
-		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "其他TiingoInquiry正在进行";
-
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryDayLine());
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
-		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
-		p = gl_pDataSourceTiingo->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
-		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
-
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryDayLine());
-		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
-		p = gl_pDataSourceTiingo->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
-
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsDayLineUpdated()) << "股票都查询完了";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
-
-		// 恢复原状
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetDayLineNeedUpdate(true);
-		}
-	}
-
 	TEST_F(CFinnhubDataSourceTest, TestTaskCheckSystemReady) {
 		gl_pWorldMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
@@ -626,5 +557,308 @@ namespace StockAnalysisTest {
 		gl_pDataSourceFinnhub->SetForexExchangeUpdated(false);
 		gl_pDataSourceFinnhub->SetCryptoSymbolUpdated(false);
 		gl_pDataSourceFinnhub->SetForexSymbolUpdated(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessInquiringMessage01) {
+		while (gl_pDataSourceFinnhub->GetInquiryQueueSize() > 0) gl_pDataSourceFinnhub->GetInquiry();
+		EXPECT_FALSE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage02) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
+		p->SetIndex(0);
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(false);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+		EXPECT_FALSE(gl_pDataSourceFinnhub->ProcessInquiringMessage()) << "Finnhub web data尚未接受到";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->GetInquiry();
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfile>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false); // 无论是否使用mock，被操作的都是gl_pWorldMarket
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsProfileUpdated());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE_CONCISE__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsProfileUpdated());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_SYMBOLS__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockSymbol>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+		s_pMockFinnhubWebInquiry->SetReadingWebData(false);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStockExchange(0)->m_strCode);
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__PEERS__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCompanyPeer>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pWorldMarket->GetStock(0)->SetPeerUpdated(false);
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsPeerUpdated());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pWorldMarket->GetStock(0)->SetPeerUpdated(false);
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_EPS_SURPRISE__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_QUOTE__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockPriceQuote>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockDayLine>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__FOREX_SYMBOLS__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubForexSymbol>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetForexExchange(p->GetIndex()));
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__FOREX_CANDLES__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubForexDayLine>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+		gl_pWorldMarket->GetForexSymbol(p->GetIndex())->SetDayLineNeedUpdate(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(p->GetIndex())->IsDayLineNeedUpdate());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__CRYPTO_SYMBOLS__) {
+		CProductWebSourceDataPtr p = make_shared<CProductFinnhubCryptoSymbol>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr() + gl_pWorldMarket->GetCryptoExchange(p->GetIndex()));
+		// 顺便测试一下
+		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoSymbol)));
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__CRYPTO_CANDLES__) {
+		CFinnhubCryptoDayLinePtr p = make_shared<CProductFinnhubCryptoDayLine>();
+		p->SetIndex(0);
+		p->SetMarket(gl_pWorldMarket.get());
+		gl_pDataSourceFinnhub->StoreInquiry(p);
+		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->IsDayLineNeedUpdate());
+		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		gl_pDataSourceFinnhub->SetInquiring(true);
+		gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->SetDayLineNeedUpdate(true);
+
+		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
+			.Times(1);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
+			p->GetInquiringStr()
+			+ gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+		// 顺便测试一下
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+
+		// 恢复原状
+		gl_pDataSourceFinnhub->SetInquiring(false);
+	}
+
+	// 以下测试尚未完成
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubWebDataReceived01) {
+		gl_pDataSourceFinnhub->SetDataReceived(false);
+		EXPECT_FALSE(gl_pDataSourceFinnhub->ProcessWebDataReceived());
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubWebDataReceived02) {
+		gl_pDataSourceFinnhub->SetDataReceived(true);
+		while (gl_pDataSourceFinnhub->GetInquiryQueueSize() > 0) gl_pDataSourceFinnhub->GetInquiry();
+
+		EXPECT_FALSE(gl_pDataSourceFinnhub->ProcessWebDataReceived());
 	}
 }

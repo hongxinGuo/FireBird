@@ -13,7 +13,7 @@
 
 #include"ProductTiingoCryptoSymbol.h"
 
-#include"DummyProduct.h"
+#include"ProductDummy.h"
 
 CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
 	CProductWebSourceDataPtr p = nullptr;

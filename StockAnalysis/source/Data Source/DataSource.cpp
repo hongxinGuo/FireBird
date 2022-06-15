@@ -65,9 +65,9 @@ bool CDataSource::ProcessWebDataReceived(void) {
 	if (m_pCurrentProduct == nullptr) return false;
 
 	if (IsDataReceived()) { // 如果网络数据接收完成
-		if (m_qReveivedData.Size() > 0) {  // 处理当前网络数据
+		if (m_qReceivedData.Size() > 0) {  // 处理当前网络数据
 			ASSERT(IsInquiring());
-			pWebData = m_qReveivedData.PopData();
+			pWebData = m_qReceivedData.PopData();
 
 			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 
