@@ -28,7 +28,7 @@ bool CTiingoDataSource::UpdateStatus(void)
 {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case __STOCK_SYMBOLS__:
-		m_fCryptoSymbolUpdated = true;
+		m_fStockSymbolUpdated = true;
 		break;
 	case __STOCK_PRICE_CANDLES__:
 		break;
@@ -68,7 +68,9 @@ bool CTiingoDataSource::UpdateStatus(void)
 	case __FOREX_CANDLES__:
 	case __FOREX_ALL_RATES__:
 	case __CRYPTO_EXCHANGE__:
+		break;
 	case __CRYPTO_SYMBOLS__:
+		m_fCryptoSymbolUpdated = true;
 		break;
 	case __CRYPTO_CANDLES__:
 	case __ECONOMIC_COUNTRY_LIST__:

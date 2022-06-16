@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 #include"SystemMessage.h"
 
+#include"FinnhubInquiryType.h"
 #include"FinnhubDataSource.h"
 #include"WebInquirer.h"
 
@@ -28,6 +29,7 @@
 
 #include"ProductTiingoStockSymbol.h"
 #include"ProductTiingoStockDayLine.h"
+#include"ProductDummy.h"
 
 using namespace testing;
 
@@ -67,6 +69,48 @@ namespace StockAnalysisTest {
 		}
 	protected:
 	};
+
+	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus) {
+		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCountryListUpdated());
+
+		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		gl_pDataSourceFinnhub->SetCurrentInquiry(p);
+
+		p->SetProductType(__ECONOMIC_COUNTRY_LIST__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsCountryListUpdated());
+		gl_pDataSourceFinnhub->SetCountryListUpdated(false);
+
+		p->SetProductType(__COMPANY_PROFILE__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+		gl_pDataSourceFinnhub->SetStockProfileUpdated(false);
+
+		p->SetProductType(__COMPANY_PROFILE_CONCISE__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+		gl_pDataSourceFinnhub->SetStockProfileUpdated(false);
+
+		p->SetProductType(__PEERS__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsPeerUpdated());
+		gl_pDataSourceFinnhub->SetPeerUpdated(false);
+
+		p->SetProductType(__FOREX_EXCHANGE__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
+		gl_pDataSourceFinnhub->SetForexExchangeUpdated(false);
+
+		p->SetProductType(__CRYPTO_EXCHANGE__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
+		gl_pDataSourceFinnhub->SetCryptoExchangeUpdated(false);
+
+		p->SetProductType(__ECONOMIC_CALENDAR__);
+		gl_pDataSourceFinnhub->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsEconomicCalendarUpdated());
+		gl_pDataSourceFinnhub->SetEconomicCalendarUpdated(false);
+	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryCountryList) {
 		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCountryListUpdated());

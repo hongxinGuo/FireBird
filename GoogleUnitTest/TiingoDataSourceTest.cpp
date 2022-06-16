@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 #include"SystemMessage.h"
+#include"FinnhubInquiryType.h"
 
 #include"TiingoDataSource.h"
 #include"WebInquirer.h"
@@ -53,6 +54,21 @@ namespace StockAnalysisTest {
 		}
 	protected:
 	};
+
+	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
+		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		gl_pDataSourceTiingo->SetCurrentInquiry(p);
+
+		p->SetProductType(__STOCK_SYMBOLS__);
+		gl_pDataSourceTiingo->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceTiingo->IsStockSymbolUpdated());
+		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
+
+		p->SetProductType(__CRYPTO_SYMBOLS__);
+		gl_pDataSourceTiingo->UpdateStatus();
+		EXPECT_TRUE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated());
+		gl_pDataSourceTiingo->SetCryptoSymbolUpdated(false);
+	}
 
 	TEST_F(CTiingoDataSourceTest, TestInquiryTiingoCompanySymbol) {
 		CProductWebSourceDataPtr p = nullptr;
@@ -194,7 +210,6 @@ namespace StockAnalysisTest {
 		gl_pDataSourceTiingo->SetInquiring(false);
 	}
 
-	// 以下测试尚未完成
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
 		gl_pDataSourceTiingo->SetDataReceived(false);
 		gl_pDataSourceTiingo->SetCurrentInquiry(nullptr);
@@ -235,6 +250,7 @@ namespace StockAnalysisTest {
 		gl_pDataSourceTiingo->StoreReceivedData(pData);
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);
 		gl_pDataSourceTiingo->SetDataReceived(true);
+		gl_pDataSourceTiingo->SetInquiring(true);
 
 		EXPECT_TRUE(gl_pDataSourceTiingo->ProcessWebDataReceived());
 		// 恢复原状

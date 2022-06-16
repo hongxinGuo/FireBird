@@ -68,10 +68,9 @@ CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, 
 	case __ECONOMIC_COUNTRY_LIST__:
 	case __ECONOMIC_CALENDAR__:
 	default:
-		// error. not impliment yet.
+		// not impliment yet.
 		p = make_shared<CProductDummy>();
 		gl_systemMessage.PushErrorMessage(_T("Tiingo productÎ´ÊµÏÖ"));
-		//ASSERT(0);
 		break;
 	}
 	p->SetMarket(pMarket);

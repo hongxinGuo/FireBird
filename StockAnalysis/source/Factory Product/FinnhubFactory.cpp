@@ -28,7 +28,7 @@
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
 
-#include"DummyProduct.h"
+#include"ProductDummy.h"
 
 #include "FinnhubFactory.h"
 
