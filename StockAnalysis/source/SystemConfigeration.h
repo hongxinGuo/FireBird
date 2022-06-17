@@ -38,10 +38,7 @@ public:
 	CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
 	CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
 	CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
-	int GetWorldMarketFinnhubInquiryTime(void) noexcept {
-		int j = 0;
-		return 1200; // m_iWorldMarketFinnhubInquiryTime;
-	}
+	int GetWorldMarketFinnhubInquiryTime(void) noexcept { return m_iWorldMarketFinnhubInquiryTime; }
 	void SetWorldMarketFinnhubInquiryTime(int iWorldMarketFinnhubInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime; }
 	int GetWorldMarketTiingoInquiryTime(void) noexcept { return m_iWorldMarketTiingoInquiryTime; }
 	void SetWorldMarketTiingoInquiryTime(int iWorldMarketTiingoInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime; }
@@ -72,7 +69,6 @@ public:
 public:
 
 protected:
-	json m_systemConfigeration;
 	CString m_strFileName;
 
 	// 系统配置
@@ -103,6 +99,9 @@ protected:
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;
+
+	// 如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明。暂时将json变量放在最后。
+	json m_systemConfigeration;
 };
 
 extern	string gl_sSystemConfigeration; // 系统配置信息
