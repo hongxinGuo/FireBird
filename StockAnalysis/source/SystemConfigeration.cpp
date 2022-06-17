@@ -112,8 +112,8 @@ CSystemConfigeration::CSystemConfigeration() {
 }
 
 CSystemConfigeration::~CSystemConfigeration() {
-	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("json");
-	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 3) + _T("bak");
+	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
+	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
 	if (m_fUpdate) {
 		DeleteFile(strNew);

@@ -40,7 +40,7 @@ public:
 	CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
 	int GetWorldMarketFinnhubInquiryTime(void) noexcept {
 		int j = 0;
-		return m_iWorldMarketFinnhubInquiryTime;
+		return 1200; // m_iWorldMarketFinnhubInquiryTime;
 	}
 	void SetWorldMarketFinnhubInquiryTime(int iWorldMarketFinnhubInquiryTime) noexcept { m_fUpdate = true; m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime; }
 	int GetWorldMarketTiingoInquiryTime(void) noexcept { return m_iWorldMarketTiingoInquiryTime; }

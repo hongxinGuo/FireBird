@@ -103,7 +103,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 't' "), e);
 			return pvDayLine;
 		}
 		try {
@@ -149,7 +149,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 'v' "), e);
 			// 有些外汇交易不提供成交量，忽略就可以了
 		}
 		sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);

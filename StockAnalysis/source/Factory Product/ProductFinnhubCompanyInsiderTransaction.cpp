@@ -61,7 +61,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 			stockSymbol = ppt->get<string>(_T("symbol"));
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiringStr(), e);
 			return pvInsiderTransaction;
 		}
 

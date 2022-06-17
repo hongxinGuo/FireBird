@@ -95,7 +95,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			}
 		}
 		catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiringStr(), e);
 			return pvDayLine;
 		}
 
@@ -110,7 +110,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiringStr(), e);
 			return pvDayLine;
 		}
 		try {
@@ -156,7 +156,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiringStr(), e);
 		}
 		sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 	}

@@ -95,7 +95,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 			}
 		}
 		catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-			ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 's' "), e);
 			return pvDayLine;
 		}
 		try {
@@ -109,7 +109,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 			}
 		}
 		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
+			ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 't' "), e);
 			return pvDayLine;
 		}
 		try {
