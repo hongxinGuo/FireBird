@@ -24,6 +24,7 @@ public:
 	void UpdateSystem(void); // 使用本参数去更新系统
 
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
+	CString GetDefaultFileName(void) { return m_strFileName; }
 
 	// 获取系统配置参数
 	int GetBackgroundThreadPermittedNumber(void) noexcept { return m_iBackgroundThreadPermittedNumber; }
@@ -100,7 +101,7 @@ protected:
 	bool m_fUpdate;
 	bool m_fInitialized = false;
 
-	// 如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明。暂时将json变量放在最后。
+	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者nholmann json库bug，两者必居其一）。
 	json m_systemConfigeration;
 };
 

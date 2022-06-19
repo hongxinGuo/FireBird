@@ -73,3 +73,5 @@ protected:
 	atomic_int m_NumberOfSavingThread; // 正在运行的存储工作线程数量
 	atomic_int m_NumberOfWebInquiringThread; // 正在运行的提取网络数据工作线程数量
 };
+
+extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用

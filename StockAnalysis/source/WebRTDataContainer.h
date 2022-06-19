@@ -35,3 +35,5 @@ protected:
 	CPriorityQueueWebRTData m_qTengxunRTData; // 腾讯实时数据队列。
 	CPriorityQueueWebRTData m_qNeteaseRTData; // 网易实时数据队列。
 };
+
+extern CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器

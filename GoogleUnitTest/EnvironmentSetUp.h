@@ -31,10 +31,9 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockChinaMarket.h"
 
-using namespace testing;
-// using testing::GTEST_FLAG(brief); // 此标识已实现，但在1.10.0中尚未允许使用。
-
 #include"WebInquirer.h"
+
+using namespace testing;
 
 using namespace std;
 #include<memory>
@@ -63,6 +62,7 @@ namespace StockAnalysisTest {
 
 			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
 
+			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileName(), _T("C:\\StockAnalysis\\SystemConfigeration.json"));
 			gl_systemConfigeration.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
 			gl_systemConfigeration.LoadDB();
 			gl_systemConfigeration.Update();
@@ -205,6 +205,7 @@ namespace StockAnalysisTest {
 			delete gl_pMockMainFrame;
 			EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
 
+			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;
 			gl_pNeteaseRTWebInquiry = nullptr;

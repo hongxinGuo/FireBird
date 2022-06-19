@@ -72,7 +72,7 @@ CSystemConfigeration::CSystemConfigeration() {
 
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
-	m_strFileName = "C:\\StockAnalysis\\SystemConfigeration.json"; // json file name
+	m_strFileName = _T("C:\\StockAnalysis\\SystemConfigeration.json"); // json file name
 
 	// 系统配置
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
@@ -103,6 +103,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_bFastInquiringRTData = false;
 #endif
 
+	ASSERT(m_strFileName.Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
