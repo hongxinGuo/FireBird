@@ -5,7 +5,6 @@ using namespace testing;
 #include"globedef.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
-#include"SystemMessage.h"
 #include"WebInquirer.h"
 
 #include"WebRTDataContainer.h"
@@ -21,9 +20,9 @@ namespace StockAnalysisTest {
 	}
 
 	void EnvironmentCheck(void) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 
-		EXPECT_FALSE(gl_fExitingSystem);
+		EXPECT_FALSE(gl_systemStatus.IsExitingSystem());
 	}
 
 	void ChinaMarketCheck(void) {

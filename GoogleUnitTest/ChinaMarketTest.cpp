@@ -3,7 +3,6 @@
 #include"globedef.h"
 
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
@@ -96,7 +95,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->CalculateTime();

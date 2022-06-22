@@ -56,7 +56,7 @@ namespace StockAnalysisTest {
 		SICIndustry.m_strSector = _T("abdc");
 		SICIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setSICIndustry.Open();
 		setSICIndustry.m_pDatabase->BeginTrans();
 		SICIndustry.Append(setSICIndustry);

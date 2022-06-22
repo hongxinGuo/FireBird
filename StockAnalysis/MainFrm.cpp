@@ -3,7 +3,8 @@
 
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+
+#include"SystemStatus.h"
 #include"ThreadStatus.h"
 
 #include "StockAnalysis.h"
@@ -166,9 +167,9 @@ void CMainFrame::Reset(void) {
 }
 
 CMainFrame::~CMainFrame() {
-	if (!gl_fNormalMode) TRACE("使用了Test驱动\n");
+	if (!gl_systemStatus.IsNormalMode()) TRACE("使用了Test驱动\n");
 
-	gl_fExitingSystem = true;
+	gl_systemStatus.SetExitingSystem(true);
 
 	if (sm_fInitIxWebSocket) {
 		sm_fInitIxWebSocket = false; // 退出系统时，析构IXWebSocket库，且只能析构一次。
@@ -495,7 +496,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		s_iCounterforUpdateStatusBar = 0;
 	}
 
-	if (!gl_fNormalMode) {
+	if (!gl_systemStatus.IsNormalMode()) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
 	}
 
@@ -641,7 +642,7 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
-		gl_fExitingSystem = true; // 提示各工作线程中途退出
+		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
 		for (auto& pMarket : gl_vMarketPtr) {
 			pMarket->PreparingExitMarket();
@@ -851,8 +852,8 @@ void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnAbortBuindingRS() {
 	// TODO: Add your command handler code here
-	ASSERT(gl_fExitingCalculatingRS == false);
-	gl_fExitingCalculatingRS = true;
+	ASSERT(!gl_systemStatus.IsExitingCalculatingRS());
+	gl_systemStatus.SetExitingCalculatingRS(true);
 }
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {

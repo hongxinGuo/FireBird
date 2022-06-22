@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
 
 #include"GeneralCheck.h"
 
@@ -43,7 +42,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CStockWebRTDataTest, TestInitialize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
@@ -343,7 +342,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			SinaRTData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;

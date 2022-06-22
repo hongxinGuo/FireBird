@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"Thread.h"
 
@@ -85,7 +85,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	if (OpenFile(GetInquiringString())) {
 		try {
 			do {
-				if (gl_fExitingSystem) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
+				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 					fReadingSuccess = false;
 					break;
 				}
@@ -143,7 +143,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		try {
 			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
 			// 其他的数据尚未需要提供头验证数据。
-			if (gl_fExitingSystem) {
+			if (gl_systemStatus.IsExitingSystem()) {
 				fStatus = false;
 				fDone = true;
 			}

@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 		TiingoIndustry.m_strSector = _T("abdc");
 		TiingoIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setTiingoIndustry.Open();
 		setTiingoIndustry.m_pDatabase->BeginTrans();
 		TiingoIndustry.Append(setTiingoIndustry);

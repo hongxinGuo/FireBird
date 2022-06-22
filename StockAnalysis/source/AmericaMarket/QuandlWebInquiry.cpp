@@ -2,7 +2,6 @@
 #include"globedef.h"
 #include"Thread.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 
 #include"WorldMarket.h"
 

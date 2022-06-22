@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 #include"GeneralCheck.h"
-#include"SystemMessage.h"
 #include"FinnhubInquiryType.h"
 
 #include"TiingoDataSource.h"

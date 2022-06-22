@@ -1,6 +1,5 @@
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
@@ -16,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	TEST(CWebRTDataTest, TestNeteaseInitialize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));

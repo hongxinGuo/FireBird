@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
 		FinnhubExchange.m_strSource = _T("abc");
 		FinnhubExchange.m_fUpdated = true;
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setFinnhubExchange.Open();
 		setFinnhubExchange.m_pDatabase->BeginTrans();
 		FinnhubExchange.Append(setFinnhubExchange);

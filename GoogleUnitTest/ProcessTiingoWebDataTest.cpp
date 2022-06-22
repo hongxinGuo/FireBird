@@ -1,10 +1,8 @@
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
 #include"GeneralCheck.h"
 
 #include"WebInquirer.h"
-#include"SystemData.h"
 
 #include"WorldStock.h"
 

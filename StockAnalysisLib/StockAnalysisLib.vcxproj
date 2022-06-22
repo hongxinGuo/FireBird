@@ -165,14 +165,16 @@
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SemaphoreDef.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemData.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemData.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemMessage.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
@@ -364,11 +366,12 @@
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableParallelCodeGeneration>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />

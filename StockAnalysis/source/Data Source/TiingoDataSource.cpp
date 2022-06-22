@@ -1,7 +1,7 @@
 #include"pch.h"
 
-#include"SystemMessage.h"
-#include"SystemConfigeration.h"
+#include"globedef.h"
+
 #include "TiingoDataSource.h"
 #include"FinnhubInquiryType.h"
 

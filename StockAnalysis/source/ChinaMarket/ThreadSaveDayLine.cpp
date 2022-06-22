@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
 #include"ChinaStock.h"
@@ -22,7 +22,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_SaveThreadPermitted.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		fDataSaved = pStock->SaveDayLineBasicInfo();
 		pStock->UpdateDayLineStartEndDate();
 		if (fDataSaved) {

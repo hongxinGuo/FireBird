@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include "DataChinaStock.h"
@@ -445,7 +444,7 @@ bool CDataChinaStock::TaskSaveDayLineData(void) {
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
 		}
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -475,7 +474,7 @@ bool CDataChinaStock::Choice10RSStrong2StockSet(void) {
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_fExitingSystem) return false;
+		if (gl_systemStatus.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 
@@ -508,7 +507,7 @@ bool CDataChinaStock::Choice10RSStrong1StockSet(void) {
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_fExitingSystem) return false;
+		if (gl_systemStatus.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 
@@ -542,7 +541,7 @@ bool CDataChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	}
 
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_fExitingSystem) return false;
+		if (gl_systemStatus.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 
@@ -725,7 +724,7 @@ bool CDataChinaStock::UpdateTodayTempDB(void) {
 bool CDataChinaStock::DeleteTodayTempDB(void) {
 	CDatabase database;
 
-	if (!gl_fNormalMode) {
+	if (!gl_systemStatus.IsNormalMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1); //退出系统
 	}

@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"Thread.h"
 #include"SemaphoreDef.h"
@@ -43,7 +43,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 
 	while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
-	if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
+	if (!gl_systemStatus.IsExitingCalculatingRS()) { // 如果顺利完成了计算任务
 		pMarket->SetRSEndDate(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		// 显示花费的时间
@@ -59,7 +59,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	else {
-		gl_fExitingCalculatingRS = false;// 如果是计算过程中止了，则重置中止标识。
+		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
 	gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
@@ -76,7 +76,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_SemaphoreBackGroundTaskThreads.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
+	if (!gl_systemStatus.IsExitingSystem() && !gl_systemStatus.IsExitingCalculatingRS()) {
 		pMarket->BuildDayLineRS(lDate);  // 调用实际执行函数
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一

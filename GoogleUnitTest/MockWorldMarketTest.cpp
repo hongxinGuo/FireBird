@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 			s_pMockQuandlWebInquiry->SetReadingWebData(false);

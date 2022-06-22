@@ -9,7 +9,6 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
@@ -72,7 +71,7 @@ bool ParseSinaData(void) {
 		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
 		pWebDataReceived->ResetCurrentPos();
 		while (!pWebDataReceived->IsProcessedAllTheData()) {
-			if (gl_fExitingSystem) return fSucceed;
+			if (gl_systemStatus.IsExitingSystem()) return fSucceed;
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadSinaData(pWebDataReceived)) {
 				llTotal++;
@@ -129,7 +128,7 @@ bool ParseNeteaseRTDataWithPTree(void) {
 		if (fProcess && pWebDataReceived->IsParsed()) {
 			ppt = pWebDataReceived->GetPTree();
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				if (gl_fExitingSystem) return true;
+				if (gl_systemStatus.IsExitingSystem()) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 				if (pRTData->ParseNeteaseDataWithPTree(it)) {
@@ -182,7 +181,7 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 			pjs = pWebDataReceived->GetJSon();
 			for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
 				llTotal++;
-				if (gl_fExitingSystem) return true;
+				if (gl_systemStatus.IsExitingSystem()) return true;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 				if (pRTData->ParseNeteaseDataWithNlohmannJSon(it)) {
@@ -302,7 +301,7 @@ bool ParseTengxunRTData(void) {
 		pWebDataReceived->ResetCurrentPos();
 		if (!IsTengxunRTDataInvalid(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 			while (!pWebDataReceived->IsProcessedAllTheData()) {
-				if (gl_fExitingSystem) return fSucceed;
+				if (gl_systemStatus.IsExitingSystem()) return fSucceed;
 				CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 				if (pRTData->ReadTengxunData(pWebDataReceived)) {
 					gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -332,7 +331,7 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 	CWebDataPtr pWebData = nullptr;
 
 	while (gl_WebInquirer.NeteaseDayLineDataSize() > 0) {
-		if (gl_fExitingSystem) return true;
+		if (gl_systemStatus.IsExitingSystem()) return true;
 		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
 		pData = make_shared<CNeteaseDayLineWebData>();
 		pData->TransferWebDataToBuffer(pWebData);
@@ -346,7 +345,7 @@ bool ParseDayLineGetFromNeeteaseServer(void) {
 
 UINT ThreadChinaMarketBackground(void) {
 	gl_ThreadStatus.SetChinaMarketBackground(true);
-	while (!gl_fExitingSystem) {
+	while (!gl_systemStatus.IsExitingSystem()) {
 		// 网易实时数据的接收加上处理时间超过了400毫秒，导致接收频率降低。故而将处理任务移至此工作线程中。
 		// 此四个任务比较费时，尤其是网易实时数据解析时需要使用json解析器，故而放在此独立线程中。
 		// 分析计算具体挂单状况的函数，也应该移至此工作线程中。研究之。

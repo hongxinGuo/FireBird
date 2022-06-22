@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
@@ -22,18 +21,18 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 		virtual void TearDown(void) override {
-			gl_fNormalMode = false;
+			gl_systemStatus.SetNormalMode(false);
 
 			GeneralCheck();
 		}
 	};
 
 	TEST_F(AccessoryTest, TestGetSchemaConnect) {
-		EXPECT_FALSE(gl_fNormalMode) << "默认状态下此标识为假。";
+		EXPECT_FALSE(gl_systemStatus.IsNormalMode()) << "默认状态下此标识为假。";
 		EXPECT_STREQ(GetSchemaConnect(_T("WorldMarket")), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_fNormalMode = true;
+		gl_systemStatus.SetNormalMode(true);
 		EXPECT_STREQ(GetSchemaConnect(_T("ChinaMarket")), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-		gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
+		gl_systemStatus.SetNormalMode(false); // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
 		EXPECT_STREQ(GetSchemaConnect(_T("WorldMarket")), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 	}
 
@@ -386,7 +385,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			strConvertBufferToTime* pData = GetParam();
 			strBuffer = pData->m_strBuffer;
 			strFormat = pData->m_strFormat;
@@ -480,7 +479,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
 			strValue = pData->m_strValue;
@@ -538,7 +537,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
 			strValue = pData->m_strValue;
@@ -596,7 +595,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			strValue = pData->m_strValue;
@@ -654,7 +653,7 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			strValue = pData->m_strValue;
@@ -683,7 +682,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 		}
 		virtual void TearDown(void) override {
-			gl_fNormalMode = false;
+			gl_systemStatus.SetNormalMode(false);
 		}
 	};
 

@@ -1,7 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
 #include"accessory.h"
-#include"SystemMessage.h"
 
 #include"TiingoCryptoSymbol.h"
 
@@ -33,10 +32,10 @@ void CTiingoCryptoSymbol::Append(CSetTiingoCrypto& setTiingoCrypto) {
 
 void CTiingoCryptoSymbol::Save(CSetTiingoCrypto& setTiingoCrypto) {
 	if ((m_strTicker.GetLength() > 45)
-			|| (m_strName.GetLength() > 100)
-			|| (m_strDescription.GetLength() > 100)
-			|| (m_strBaseCurrency.GetLength() > 20)
-			|| (m_strQuoteCurrency.GetLength() > 20)) {
+		|| (m_strName.GetLength() > 100)
+		|| (m_strDescription.GetLength() > 100)
+		|| (m_strBaseCurrency.GetLength() > 20)
+		|| (m_strQuoteCurrency.GetLength() > 20)) {
 		gl_systemMessage.PushErrorMessage(_T("Tiingo Crypto ") + m_strTicker + _T(" ×Ö·û´®Ì«³¤"));
 	}
 	m_strName = m_strName.Left(100);

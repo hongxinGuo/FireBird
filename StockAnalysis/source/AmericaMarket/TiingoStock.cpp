@@ -1,7 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
 #include"accessory.h"
-#include"SystemMessage.h"
 
 #include"TiingoStock.h"
 
@@ -55,12 +54,12 @@ void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
 
 void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	if ((m_strCompanyWebSite.GetLength() > 100)
-			|| (m_strName.GetLength() > 200)
-			|| (m_strSECFilingWebSite.GetLength() > 150)
-			|| (m_strSICIndustry.GetLength() > 100)
-			|| (m_strSICSector.GetLength() > 100)
-			|| (m_strTiingoIndustry.GetLength() > 100)
-			|| (m_strTiingoSector.GetLength() > 100)) {
+		|| (m_strName.GetLength() > 200)
+		|| (m_strSECFilingWebSite.GetLength() > 150)
+		|| (m_strSICIndustry.GetLength() > 100)
+		|| (m_strSICSector.GetLength() > 100)
+		|| (m_strTiingoIndustry.GetLength() > 100)
+		|| (m_strTiingoSector.GetLength() > 100)) {
 		gl_systemMessage.PushErrorMessage(_T("Tiingo stock ") + m_strName + _T(" ×Ö·û´®Ì«³¤"));
 	}
 	m_strName = m_strName.Left(200);

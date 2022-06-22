@@ -3,7 +3,6 @@
 #include"globedef.h"
 
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 
 CThreadStatus::CThreadStatus() {
 	static int siInstance = 0;

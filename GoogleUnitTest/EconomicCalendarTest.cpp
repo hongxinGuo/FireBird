@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 		EconomicCalendar.m_dEstimate = 1.1;
 		EconomicCalendar.m_dPrev = 1.0;
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setEconomicCalendar.Open();
 		setEconomicCalendar.m_pDatabase->BeginTrans();
 		EconomicCalendar.Append(setEconomicCalendar);

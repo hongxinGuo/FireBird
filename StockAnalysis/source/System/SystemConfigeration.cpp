@@ -23,6 +23,7 @@
 #include"SystemConfigeration.h"
 
 using namespace std;
+#include<string>
 #include<iostream>
 #include<fstream>
 
@@ -30,7 +31,7 @@ using namespace std;
 /// 系统配置文件，采用nlohmann json库格式。
 ///
 /// </summary>
-string gl_sSystemConfigeration = R"(
+std::string gl_sSystemConfigeration = R"(
 {
 "SystemConfigeration": {
 	"BackgroundThreadPermittedNumber" : 8,

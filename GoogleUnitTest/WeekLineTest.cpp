@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CWeekLineTest, TestGetDate) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWeekLine dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
@@ -70,7 +70,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWeekLineTest, TestGetOpen) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetOpen(), 0);
 		dl.SetOpen(11100);
@@ -121,7 +121,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWeekLineTest, TestGetChangeHandRate) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWeekLine dl;
 		EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
 		dl.SetChangeHandRate(30.30);
@@ -653,7 +653,7 @@ namespace StockAnalysisTest {
 		id.SetCanceledSellVolumeBelow200000(76);
 		id.SetCanceledSellVolumeAbove200000(77);
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -824,7 +824,7 @@ namespace StockAnalysisTest {
 		id.SetRSIndex(135.6);
 		id.SetRSBackup(120.9);
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();

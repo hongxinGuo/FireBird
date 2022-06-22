@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 #include"accessory.h"
-#include"SystemMessage.h"
+
 #include"WorldStock.h"
 #include"WorldMarket.h"
 #include"CallableFunction.h"

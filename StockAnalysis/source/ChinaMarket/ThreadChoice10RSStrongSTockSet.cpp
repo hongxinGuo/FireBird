@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"Thread.h"
 #include"SemaphoreDef.h"
@@ -78,7 +78,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_SemaphoreBackGroundTaskThreads.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());
@@ -103,7 +103,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_SemaphoreBackGroundTaskThreads.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());
@@ -128,7 +128,7 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_SemaphoreBackGroundTaskThreads.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());

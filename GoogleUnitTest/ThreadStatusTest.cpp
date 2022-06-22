@@ -1,9 +1,6 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemConfigeration.h"
-#include"SystemMessage.h"
-
 #include"GeneralCheck.h"
 
 #include"ThreadStatus.h"
@@ -37,7 +34,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
 		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());

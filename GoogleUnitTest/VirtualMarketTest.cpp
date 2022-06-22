@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"Accessory.h"
 #include"VirtualMarket.h"
 
@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		time_t tUTC;
 		tm tm_, tmLocal;
 
@@ -338,7 +338,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		time_t tUTC;
 		tm tm_;
 		time(&tUTC);

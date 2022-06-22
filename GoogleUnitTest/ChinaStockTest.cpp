@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			pStock = nullptr;
 			gl_pChinaMarket->CalculateTime();
 
@@ -451,7 +451,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaStockTest, TestReset) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
 		CChinaStock stock;
@@ -515,7 +515,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaStockTest, TestUpdateStatus) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
@@ -627,7 +627,7 @@ namespace StockAnalysisTest {
 		stock.SetCurrentValue(8080808080808);
 		stock.SetTotalValue(9090909090909);
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
 		setDayLineBasicInfo.m_strFilter += strDate;
@@ -1494,7 +1494,7 @@ namespace StockAnalysisTest {
 		pStock->SetCanceledSellVolumeBelow200000(76);
 		pStock->SetCanceledSellVolumeAbove200000(77);
 
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		setDayLineTemp.m_strFilter = _T("[Date] = 20191101");
 		setDayLineTemp.Open();
 		setDayLineTemp.m_pDatabase->BeginTrans();
@@ -1905,7 +1905,7 @@ namespace StockAnalysisTest {
 
 		pStock->SetDayLineEndDate(21890101);
 		pStock->SetSymbol(_T("600011.SS"));
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
@@ -2129,7 +2129,7 @@ namespace StockAnalysisTest {
 		}
 		pStock->SetDayLineEndDate(10190101);
 		pStock->SetSymbol(_T("600016.SS"));
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->SaveDayLineBasicInfo();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
@@ -2206,7 +2206,7 @@ namespace StockAnalysisTest {
 		}
 		pStock->SetSymbol(_T("600010.SS"));
 		pStock->SetDayLineEndDate(10190101);
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->SaveDayLineBasicInfo();
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21121201");
@@ -2273,7 +2273,7 @@ namespace StockAnalysisTest {
 		pStock->SetSymbol(_T("600004.SS"));
 		pStock->SetDayLineStartDate(19920102);
 		pStock->SetDayLineEndDate(20800100);
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__ + 9 * 100000 + 2) << "日线最新日期已更新";
 		EXPECT_EQ(pStock->GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__ + 2) << "日线最初日期已更新";
@@ -2312,7 +2312,7 @@ namespace StockAnalysisTest {
 		pStock->SetSymbol(_T("600008.SS"));
 		pStock->SetDayLineStartDate(19900101);
 		pStock->SetDayLineEndDate(20800102);
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << _T("当起始日期为19900101时，需要更新之");
@@ -2351,7 +2351,7 @@ namespace StockAnalysisTest {
 		pStock->SetSymbol(_T("600008.SS"));
 		pStock->SetDayLineStartDate(19900102);
 		pStock->SetDayLineEndDate(20800102);
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900102);
@@ -2637,7 +2637,7 @@ namespace StockAnalysisTest {
 			pStock->StoreWeekLine(pid);
 		}
 		pStock->SetSymbol(_T("600016.SS"));
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->SaveWeekLine();
 
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21100501");
@@ -2706,7 +2706,7 @@ namespace StockAnalysisTest {
 			pStock->StoreWeekLine(pid);
 		}
 		pStock->SetSymbol(_T("600010.SS"));
-		ASSERT(!gl_fNormalMode);
+		ASSERT(!gl_systemStatus.IsNormalMode());
 		pStock->SaveWeekLine();
 
 		setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");

@@ -9,7 +9,6 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 #include"HighPerformanceCounter.h"
 
 #include"GeneralCheck.h"
@@ -58,7 +57,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT(!gl_fNormalMode);
+			ASSERT(!gl_systemStatus.IsNormalMode());
 
 			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
 
@@ -185,7 +184,7 @@ namespace StockAnalysisTest {
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 
-			gl_fExitingSystem = true;
+			gl_systemStatus.SetExitingSystem(true);
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pMockChinaMarket = nullptr;
 			gl_pMockWorldMarket = nullptr;
@@ -201,9 +200,9 @@ namespace StockAnalysisTest {
 			}
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 			delete gl_pMockMainFrame;
-			EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
+			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pSinaRTWebInquiry = nullptr;

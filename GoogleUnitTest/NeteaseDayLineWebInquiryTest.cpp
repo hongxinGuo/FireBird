@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_fNormalMode);
+			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			gl_pChinaMarket->CalculateTime();
 			m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());

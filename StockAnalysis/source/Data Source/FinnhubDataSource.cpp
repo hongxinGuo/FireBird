@@ -1,8 +1,7 @@
 #include"pch.h"
 
+#include"globedef.h"
 #include"Accessory.h"
-#include"SystemMessage.h"
-#include"SystemConfigeration.h"
 
 #include"FinnhubInquiryType.h"
 

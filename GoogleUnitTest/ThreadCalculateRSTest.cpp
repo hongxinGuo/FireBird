@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			pMockStock = nullptr;
 			vStock.resize(0);
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 		}
 		CMockChinaStockPtr pMockStock;
 		vector<CChinaStockPtr> vStock;
@@ -45,8 +45,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock1) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600602.SS"));
 		pMockStock->SetActive(true);
 
@@ -62,8 +62,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock2) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
@@ -79,8 +79,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock3) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = true;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(true);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -93,8 +93,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock4) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -107,8 +107,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock5) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -121,8 +121,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock6) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
@@ -137,8 +137,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock1) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600666.SS"));
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -153,8 +153,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock2) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
@@ -170,8 +170,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock3) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = true;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(true);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -184,8 +184,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock4) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -198,8 +198,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock5) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -212,8 +212,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock6) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
@@ -228,8 +228,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock1) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600666.SS"));
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -244,8 +244,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock2) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
@@ -261,8 +261,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock3) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = true; // 退出系统标识为真
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(true); // 退出系统标识为真
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -275,8 +275,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock4) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -289,8 +289,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock5) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -303,8 +303,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock6) {
-		gl_fExitingCalculatingRS = false;
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载

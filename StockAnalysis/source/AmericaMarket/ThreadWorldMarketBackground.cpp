@@ -9,6 +9,7 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
+#include"SystemStatus.h"
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
@@ -18,7 +19,7 @@
 
 UINT ThreadWorldMarketBackground(void) {
 	gl_ThreadStatus.SetWorldMarketBackground(true);
-	while (!gl_fExitingSystem) {
+	while (!gl_systemStatus.IsExitingSystem()) {
 		Sleep(50); // ×îÉÙ¼ä¸ô50ms
 	}
 	gl_ThreadStatus.SetWorldMarketBackground(false);

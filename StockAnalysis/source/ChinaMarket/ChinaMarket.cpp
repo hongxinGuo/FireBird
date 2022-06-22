@@ -3,7 +3,7 @@
 #include"globedef.h"
 #include"accessory.h"
 #include"Thread.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
 #include"SystemConfigeration.h"
@@ -78,10 +78,10 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	if (!gl_fExitingSystem) { // 此种情况为运行单元测试，此时没有设置gl_fExitingSystem
-		gl_fExitingSystem = true;
+	if (!gl_systemStatus.IsExitingSystem()) { // 此种情况为运行单元测试，此时没有设置gl_systemStatus.IsExitingSystem()
+		gl_systemStatus.SetExitingSystem(true);
 		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 	}
 	else {
 		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
@@ -171,7 +171,7 @@ void CChinaMarket::Reset(void) {
 }
 
 bool CChinaMarket::PreparingExitMarket(void) {
-	ASSERT(gl_fExitingSystem);
+	ASSERT(gl_systemStatus.IsExitingSystem());
 	while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1); // 退出后台工作线程
 
 	return true;
@@ -1326,7 +1326,7 @@ bool CChinaMarket::DeleteWeekLine(long lMonday) {
 }
 
 bool CChinaMarket::DeleteWeekLine(void) {
-	if (!gl_fNormalMode) {
+	if (!gl_systemStatus.IsNormalMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1338,7 +1338,7 @@ bool CChinaMarket::DeleteWeekLine(void) {
 bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 	CDatabase database;
 
-	if (!gl_fNormalMode) {
+	if (!gl_systemStatus.IsNormalMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1355,7 +1355,7 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
 	CDatabase database;
 
-	if (!gl_fNormalMode) {
+	if (!gl_systemStatus.IsNormalMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}

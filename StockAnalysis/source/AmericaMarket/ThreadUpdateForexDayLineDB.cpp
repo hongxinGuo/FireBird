@@ -12,7 +12,7 @@
 #include"pch.h"
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
+
 #include"SemaphoreDef.h"
 
 #include"FinnhubForexSymbol.h"

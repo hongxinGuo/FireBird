@@ -1,7 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
 #include"Thread.h"
-#include"SystemMessage.h"
 
 #include "TiingoWebInquiry.h"
 #include"WorldMarket.h"

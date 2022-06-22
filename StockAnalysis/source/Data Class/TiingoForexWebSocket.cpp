@@ -4,7 +4,7 @@
 #include"accessory.h"
 #include"JsonParse.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
+
 #include"SystemData.h"
 
 #include"WebInquirer.h"
@@ -15,7 +15,7 @@ void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_fExitingSystem) {
+		if (!gl_systemStatus.IsExitingSystem()) {
 			gl_WebInquirer.PushTiingoForexWebSocketData(msg->str);
 		}
 		break;

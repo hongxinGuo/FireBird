@@ -8,8 +8,6 @@
 #include"globedef.h"
 #include"GeneralCheck.h"
 
-#include"SystemData.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

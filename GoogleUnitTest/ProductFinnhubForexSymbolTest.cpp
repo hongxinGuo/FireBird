@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"GeneralCheck.h"
 
 #include"ProductFinnhubForexSymbol.h"

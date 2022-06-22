@@ -1,6 +1,5 @@
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
 #include"Thread.h"
 
 #include"ChinaStock.h"
@@ -48,7 +47,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 
@@ -82,7 +81,7 @@ namespace StockAnalysisTest {
 			.Times(0);
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
-		gl_fExitingSystem = true;
+		gl_systemStatus.SetExitingSystem(true);
 		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
@@ -92,7 +91,7 @@ namespace StockAnalysisTest {
 			.WillOnce(Return(false));
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
@@ -102,7 +101,7 @@ namespace StockAnalysisTest {
 			.WillOnce(Return(true));
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
@@ -133,11 +132,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadBuildWeekLineOfStock) {
-		gl_fExitingSystem = true;
+		gl_systemStatus.SetExitingSystem(true);
 		EXPECT_CALL(*pStock, BuildWeekLine(_)).Times(0);
 		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock.get(), 20200101), 26);
 
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_CALL(*pStock, BuildWeekLine(20200101)).Times(1);
 		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock.get(), 20200101), 26);
 	}

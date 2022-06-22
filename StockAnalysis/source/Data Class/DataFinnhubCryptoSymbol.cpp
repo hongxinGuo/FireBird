@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"SystemMessage.h"
+#include"globedef.h"
 
 #include "DataFinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"

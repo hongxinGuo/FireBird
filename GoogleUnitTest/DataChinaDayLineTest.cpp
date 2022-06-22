@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"DataChinaDayLine.h"
+
 using namespace testing;
 
 #ifdef _DEBUG

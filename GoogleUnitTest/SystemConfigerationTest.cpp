@@ -20,7 +20,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 		virtual void TearDown(void) override {
-			gl_fNormalMode = false;
+			gl_systemStatus.SetNormalMode(false);
 
 			GeneralCheck();
 		}

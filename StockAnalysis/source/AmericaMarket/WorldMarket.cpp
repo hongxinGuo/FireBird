@@ -3,7 +3,8 @@
 #include"globedef.h"
 
 #include"SystemData.h"
-#include"SystemMessage.h"
+
+#include"SystemStatus.h"
 #include"ThreadStatus.h"
 
 #include "WorldMarket.h"
@@ -55,10 +56,10 @@ CWorldMarket::CWorldMarket() {
 CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
 
-	if (!gl_fExitingSystem) {
-		gl_fExitingSystem = true;
+	if (!gl_systemStatus.IsExitingSystem()) {
+		gl_systemStatus.SetExitingSystem(true);
 		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 	}
 	else {
 		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
@@ -132,7 +133,7 @@ void CWorldMarket::ResetMarket(void) {
 
 bool CWorldMarket::PreparingExitMarket(void)
 {
-	ASSERT(gl_fExitingSystem);
+	ASSERT(gl_systemStatus.IsExitingSystem());
 	DeconnectingAllWebSocket();
 	while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
 
@@ -346,7 +347,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 	CForexSymbolPtr pSymbol = nullptr;
 
 	for (int i = 0; i < m_dataFinnhubForexSymbol.GetForexSymbolSize(); i++) {
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubForexSymbol.GetForexSymbol(i);
@@ -389,7 +390,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 
 	for (int i = 0; i < m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); i++) {
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubCryptoSymbol.GetCryptoSymbol(i);
@@ -432,7 +433,7 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 			thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -580,7 +581,7 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 	for (long i = 0; i < GetStockSize(); i++) {
 		pStock = GetStock(i);
 		pStock->UpdateDayLineDB();
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -601,7 +602,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
 			}
 		}
-		if (gl_fExitingSystem) {
+		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}

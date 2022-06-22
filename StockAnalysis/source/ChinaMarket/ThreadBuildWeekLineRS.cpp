@@ -10,7 +10,7 @@
 #include"globedef.h"
 #include"Thread.h"
 #include"Accessory.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
 
@@ -41,7 +41,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 
 	while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
-	if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
+	if (!gl_systemStatus.IsExitingCalculatingRS()) { // 如果顺利完成了计算任务
 		// 显示花费的时间
 		time(&tEnd);
 		const long tDiffer = tEnd - tStart;
@@ -55,7 +55,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	else {
-		gl_fExitingCalculatingRS = false;// 如果是计算过程中止了，则重置中止标识。
+		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
 	gl_ThreadStatus.SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
@@ -80,7 +80,7 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
-	if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
+	if (!gl_systemStatus.IsExitingSystem() && !gl_systemStatus.IsExitingCalculatingRS()) {
 		pMarket->BuildWeekLineRS(lDate);
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一

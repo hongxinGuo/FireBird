@@ -8,7 +8,6 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
 
 #include"GeneralCheck.h"
 
@@ -24,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	TEST(RTDataContainerTest, TestInitialize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		size_t l = gl_systemMessage.InformationSize();
 		for (int i = 0; i < l; i++) {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
@@ -34,7 +33,7 @@ namespace StockAnalysisTest {
 
 	// 测试有优先级的队列存储临时实时数据。
 	TEST(RTDataContainerTest, TestGetSinaRTDataDuqueSize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
@@ -74,7 +73,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(RTDataContainerTest, TestGetTengxunRTDataDuqueSize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
@@ -114,7 +113,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
-		ASSERT_FALSE(gl_fNormalMode);
+		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);

@@ -1,7 +1,8 @@
 #include"pch.h"
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
+
+#include"SystemStatus.h"
 #include"SemaphoreDef.h"
 #include"WorldMarket.h"
 #include "Thread.h"
@@ -29,7 +30,7 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
 UINT ThreadUpdateBasicFinancialAnnualDB(not_null<CWorldStock*> pStock) {
 	gl_SaveThreadPermitted.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		pStock->AppendBasicFinancialAnnual();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
@@ -41,7 +42,7 @@ UINT ThreadUpdateBasicFinancialAnnualDB(not_null<CWorldStock*> pStock) {
 UINT ThreadUpdateBasicFinancialQuarterlyDB(not_null<CWorldStock*> pStock) {
 	gl_SaveThreadPermitted.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-	if (!gl_fExitingSystem) {
+	if (!gl_systemStatus.IsExitingSystem()) {
 		pStock->AppendBasicFinancialQuarter();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一

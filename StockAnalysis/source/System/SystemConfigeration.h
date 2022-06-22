@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+using namespace std;
+#include<string>
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 class CSystemConfigeration : CObject {
@@ -105,6 +107,6 @@ protected:
 	json m_systemConfigeration;
 };
 
-extern	string gl_sSystemConfigeration; // 系统配置信息
+extern	std::string gl_sSystemConfigeration; // 系统配置信息
 
 extern CSystemConfigeration gl_systemConfigeration;

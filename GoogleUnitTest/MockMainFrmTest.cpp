@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 #include"ThreadStatus.h"
-#include"SystemMessage.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
@@ -48,7 +47,7 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
@@ -58,7 +57,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();
 			gl_ThreadStatus.SetCalculatingDayLineRS(false);
-			gl_fExitingSystem = false;
+			gl_systemStatus.SetExitingSystem(false);
 
 			GeneralCheck();
 		}
@@ -180,17 +179,17 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnSysCommand) {
-		gl_fExitingSystem = false;
+		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnSysCommand)
 			.Times(1);
 		gl_pMockMainFrame->OnSysCommand(SC_CLOSE, 0);
-		EXPECT_TRUE(gl_fExitingSystem) << "关闭系统时设置此标识";
-		gl_fExitingSystem = false;
+		EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "关闭系统时设置此标识";
+		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnSysCommand)
 			.Times(1);
 		gl_pMockMainFrame->OnSysCommand(0xFFFF ^ SC_CLOSE, 0);
-		EXPECT_FALSE(gl_fExitingSystem) << "其他系统命令不影响此标识";
-		gl_fExitingSystem = false;
+		EXPECT_FALSE(gl_systemStatus.IsExitingSystem()) << "其他系统命令不影响此标识";
+		gl_systemStatus.SetExitingSystem(false);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnCalculateTodayRS) {
@@ -579,11 +578,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
-		gl_fExitingCalculatingRS = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_pMockMainFrame->OnAbortBuindingRS();
-		EXPECT_TRUE(gl_fExitingCalculatingRS);
+		EXPECT_TRUE(gl_systemStatus.IsExitingCalculatingRS());
 
-		gl_fExitingCalculatingRS = false;
+		gl_systemStatus.SetExitingCalculatingRS(false);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {

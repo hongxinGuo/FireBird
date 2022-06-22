@@ -7,7 +7,7 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"thread.h"
 #include"WorldMarket.h"
 

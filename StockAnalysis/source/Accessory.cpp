@@ -1,7 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
 #include "Accessory.h"
-#include"SystemMessage.h"
 
 using namespace std;
 #include<codecvt>
@@ -369,7 +368,7 @@ CString XferStandredToTengxun(CString strStandred) {
 
 CString GetSchemaConnect(CString strSchema)
 {
-	if (gl_fNormalMode) {
+	if (gl_systemStatus.IsNormalMode()) {
 		return _T("DSN=") + strSchema + _T(";UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // 运行时的DSN使用原schema名称
 	}
 	else {

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
 #include"Thread.h"
 #include"SemaphoreDef.h"
@@ -49,7 +49,7 @@ UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) 
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_SemaphoreBackGroundTaskThreads.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
-	if (!gl_fExitingSystem) pStock->BuildWeekLine(lStartDate);
+	if (!gl_systemStatus.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
 	gl_SemaphoreBackGroundTaskThreads.Signal();
