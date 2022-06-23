@@ -6,7 +6,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
-#include"globedef.h"
+
 #include"Thread.h"
 
 #include"ChinaMarket.h"
@@ -15,7 +15,7 @@ using namespace std;
 #include<thread>
 
 UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket) {
-  pMarket->SaveStockSection();
+	pMarket->SaveStockSection();
 
-  return 35;
+	return 35;
 }

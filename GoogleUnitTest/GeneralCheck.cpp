@@ -2,7 +2,6 @@
 
 using namespace testing;
 
-#include"globedef.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include"WebInquirer.h"

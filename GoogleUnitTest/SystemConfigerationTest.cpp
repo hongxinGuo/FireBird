@@ -1,12 +1,9 @@
 #include"pch.h"
 
-#include"globedef.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
 #include"GeneralCheck.h"
-
-#include"SystemConfigeration.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

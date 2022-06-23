@@ -2,7 +2,6 @@
 
 #include"afxinet.h"
 
-#include"globedef.h"
 #include"GeneralCheck.h"
 
 #include"VirtualWebInquiry.h"

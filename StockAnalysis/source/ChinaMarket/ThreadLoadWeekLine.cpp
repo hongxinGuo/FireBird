@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include"ChinaMarket.h"
 #include"Thread.h"
@@ -12,12 +11,12 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadLoadWeekLine(not_null<CChinaStock*> pStock) {
-  pStock->UnloadWeekLine();
-  // 装入周线数据
-  pStock->LoadWeekLine();
-  // 计算各相对强度（以指数相对强度为默认值）
-  pStock->CalculateWeekLineRSIndex();
-  pStock->SetWeekLineLoaded(true);
+	pStock->UnloadWeekLine();
+	// 装入周线数据
+	pStock->LoadWeekLine();
+	// 计算各相对强度（以指数相对强度为默认值）
+	pStock->CalculateWeekLineRSIndex();
+	pStock->SetWeekLineLoaded(true);
 
-  return 29;
+	return 29;
 }

@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"globedef.h"
 #include "DayLine.h"
 
 CDayLine::CDayLine() : CVirtualHistoryCandleExtend() {

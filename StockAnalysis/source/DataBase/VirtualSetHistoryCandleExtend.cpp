@@ -3,7 +3,7 @@
 // CVirtualSetHistoryCandleExtend й╣ож
 
 #include"pch.h"
-#include"globedef.h"
+
 #include"accessory.h"
 
 #include "VirtualSetHistoryCandleExtend.h"

@@ -1,5 +1,4 @@
 ﻿#include"pch.h"
-#include"globedef.h"
 
 #include "OutputWnd.h"
 #include "resource.h"

@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"globedef.h"
 #include"VirtualWebSocket.h"
 
 #include <ixwebsocket/IXNetSystem.h>

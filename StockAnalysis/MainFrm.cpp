@@ -1,10 +1,7 @@
 ﻿// MainFrm.cpp: CMainFrame 类的实现
 //
-
 #include"pch.h"
-#include"globedef.h"
 
-#include"SystemStatus.h"
 #include"ThreadStatus.h"
 
 #include "StockAnalysis.h"
@@ -22,7 +19,6 @@
 #include"SinaRTWebInquiry.h"
 
 #include"Thread.h"
-#include"SystemConfigeration.h"
 #include"SemaphoreDef.h"
 
 #include"WebInquirer.h"

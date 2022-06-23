@@ -1,7 +1,7 @@
 // CSetWorldStock.cpp : CSetWorldStock 类的实现
 
 #include"pch.h"
-#include"globedef.h"
+
 #include"GlobeSymbolDef.h"
 
 #include "SetWorldStock.h"

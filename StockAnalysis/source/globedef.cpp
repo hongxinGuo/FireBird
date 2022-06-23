@@ -5,7 +5,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"globedef.h"
 #include"SemaphoreDef.h"
 
 #include "ChinaMarket.h"
@@ -13,7 +12,6 @@
 
 #include"ThreadStatus.h"
 
-#include"SystemData.h"
 #include"WebInquirer.h"
 
 #include"SinaRTWebInquiry.h"
@@ -23,7 +21,6 @@
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
-#include"SystemConfigeration.h"
 
 #include"WebRTDataContainer.h"
 #include"HighPerformanceCounter.h"

@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "DataSource.h"
-#include"SystemConfigeration.h"
 
 CDataSource::CDataSource(void) {
 	m_pWebInquiry = nullptr;

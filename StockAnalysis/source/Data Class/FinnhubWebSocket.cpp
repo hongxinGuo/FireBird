@@ -1,11 +1,9 @@
 #include "pch.h"
 
-#include"globedef.h"
 #include"accessory.h"
 #include"JsonParse.h"
 
 #include"ThreadStatus.h"
-#include"SystemData.h"
 
 #include"WebInquirer.h"
 #include "FinnhubWebSocket.h"

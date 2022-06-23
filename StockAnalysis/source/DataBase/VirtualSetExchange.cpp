@@ -1,7 +1,7 @@
 // CVirtualSetExchange.cpp : CVirtualSetExchange 类的实现
 
 #include"pch.h"
-#include"globedef.h"
+
 #include"accessory.h"
 
 #include "VirtualSetExchange.h"

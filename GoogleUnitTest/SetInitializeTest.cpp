@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"

@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include"DayLine.h"
 #include"ChinaMarket.h"
@@ -13,7 +12,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadMaintainDayLineDataBase(void) {
-  //
+	//
 
-  return 17;
+	return 17;
 }

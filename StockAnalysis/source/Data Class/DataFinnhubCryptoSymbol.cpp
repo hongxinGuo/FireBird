@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include"globedef.h"
-
 #include "DataFinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"
 

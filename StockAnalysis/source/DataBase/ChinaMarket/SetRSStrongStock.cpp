@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include "SetRSStrongStock.h"
 

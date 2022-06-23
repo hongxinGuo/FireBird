@@ -1,12 +1,11 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
-#include"globedef.h"
+
 #include"accessory.h"
 #include"Thread.h"
 
 #include"ThreadStatus.h"
 #include"SemaphoreDef.h"
-#include"SystemConfigeration.h"
 
 #include"WebRTDataContainer.h"
 

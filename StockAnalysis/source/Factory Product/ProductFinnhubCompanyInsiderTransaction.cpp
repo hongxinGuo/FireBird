@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"globedef.h"
 #include"accessory.h"
 #include"WorldMarket.h"
 #include"WorldStock.h"

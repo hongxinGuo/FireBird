@@ -1,10 +1,5 @@
 #include"pch.h"
 
-#include"globedef.h"
-
-#include"SystemData.h"
-
-#include"SystemStatus.h"
 #include"ThreadStatus.h"
 
 #include "WorldMarket.h"
@@ -14,8 +9,6 @@
 #include"WebInquirer.h"
 
 #include"SetWorldMarketOption.h"
-
-#include"SystemConfigeration.h"
 
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>

@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"globedef.h"
 #include"WorldMarket.h"
 #include"SetWorldChoicedCrypto.h"
 #include "DataChoicedCrypto.h"

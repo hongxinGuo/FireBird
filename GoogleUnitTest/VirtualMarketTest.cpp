@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"globedef.h"
-
 #include"Accessory.h"
 #include"VirtualMarket.h"
 

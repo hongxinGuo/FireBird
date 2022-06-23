@@ -1,5 +1,5 @@
 ﻿#include"pch.h"
-#include"globedef.h"
+
 #include"GeneralCheck.h"
 
 #include"WeekLine.h"

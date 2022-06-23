@@ -1,7 +1,7 @@
 // VirtualSetStockSymbol.cpp : CVirtualSetStockSymbol 类的实现
 
 #include"pch.h"
-#include"globedef.h"
+
 #include"GlobeSymbolDef.h"
 
 #include "VirtualSetStockSymbol.h"

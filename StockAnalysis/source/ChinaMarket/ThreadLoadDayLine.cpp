@@ -1,5 +1,4 @@
 #include"pch.h"
-#include"globedef.h"
 
 #include"ChinaMarket.h"
 #include"Thread.h"
@@ -12,12 +11,12 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadLoadDayLine(not_null<CChinaStock*> pStock) {
-  pStock->UnloadDayLine();
-  // 装入日线数据
-  pStock->LoadDayLine(pStock->GetSymbol());
-  // 计算各相对强度（以指数相对强度为默认值）
-  pStock->CalculateDayLineRSIndex();
-  pStock->SetDayLineLoaded(true);
+	pStock->UnloadDayLine();
+	// 装入日线数据
+	pStock->LoadDayLine(pStock->GetSymbol());
+	// 计算各相对强度（以指数相对强度为默认值）
+	pStock->CalculateDayLineRSIndex();
+	pStock->SetDayLineLoaded(true);
 
-  return 16;
+	return 16;
 }

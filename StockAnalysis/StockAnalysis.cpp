@@ -9,7 +9,6 @@
 
 #include"pch.h"
 
-#include"globedef.h"
 #include"ThreadStatus.h"
 
 #include "StockAnalysis.h"

@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include "SetOption.h"
-#include"globedef.h"
 
 IMPLEMENT_DYNAMIC(CSetOption, CVirtualRecordset)
 

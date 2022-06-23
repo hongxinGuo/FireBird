@@ -7,7 +7,6 @@
 
 #define JSON_DIAGNOSTICS 1
 
-#include"globedef.h"
 #include"ThreadStatus.h"
 #include"HighPerformanceCounter.h"
 

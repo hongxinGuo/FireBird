@@ -2,8 +2,6 @@
 
 #include"afxinet.h"
 
-#include"globedef.h"
-
 #include"MockVirtualWebInquiry.h"
 
 #include"GeneralCheck.h"
