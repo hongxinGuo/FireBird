@@ -125,6 +125,7 @@
       <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -177,6 +178,7 @@
       <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>40971520</HeapReserveSize>
       <HeapCommitSize>40971520</HeapCommitSize>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

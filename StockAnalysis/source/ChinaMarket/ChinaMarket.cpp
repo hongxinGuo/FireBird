@@ -5,7 +5,6 @@
 #include"Thread.h"
 
 #include"ThreadStatus.h"
-#include"SemaphoreDef.h"
 
 #include"WebRTDataContainer.h"
 

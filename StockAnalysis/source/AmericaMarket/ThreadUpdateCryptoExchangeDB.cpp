@@ -2,7 +2,6 @@
 
 #include"ThreadStatus.h"
 
-#include"SemaphoreDef.h"
 #include"WorldMarket.h"
 
 UINT ThreadUpdateCryptoExchangeDB(not_null<CWorldMarket*> pMarket) {

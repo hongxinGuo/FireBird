@@ -3,6 +3,10 @@
 using namespace std;
 #include<atomic>
 
+#include"Semaphore.h"
+using namespace MyLib;
+extern Semaphore gl_SaveThreadPermitted;  // 此信号量用于生成日线历史数据库
+
 class CThreadStatus  final { // 各线程状态
 public:
 	CThreadStatus();

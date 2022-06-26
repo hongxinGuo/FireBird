@@ -287,7 +287,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <GenerateMapFile>false</GenerateMapFile>
       <MapExports>true</MapExports>
       <ShowProgress>NotSet</ShowProgress>

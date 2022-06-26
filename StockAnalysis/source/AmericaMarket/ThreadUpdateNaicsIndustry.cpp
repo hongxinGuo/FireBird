@@ -2,8 +2,6 @@
 
 #include"ThreadStatus.h"
 
-#include"SemaphoreDef.h"
-
 #include"WorldMarket.h"
 
 UINT ThreadUpdateNaicsIndustry(not_null<CWorldMarket*> pMarket) {

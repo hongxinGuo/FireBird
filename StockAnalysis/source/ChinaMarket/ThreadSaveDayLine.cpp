@@ -12,7 +12,7 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-#include"SemaphoreDef.h"
+
 #include"ChinaStock.h"
 
 UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {

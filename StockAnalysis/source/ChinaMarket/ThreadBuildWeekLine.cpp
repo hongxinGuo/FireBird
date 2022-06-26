@@ -3,7 +3,6 @@
 
 #include"ThreadStatus.h"
 #include"Thread.h"
-#include"SemaphoreDef.h"
 
 #include"ChinaMarket.h"
 

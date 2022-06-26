@@ -3,6 +3,7 @@
 // Finnhub√‹‘ø£∫
 // 1£∫"&token=bv985d748v6ujthqfke0"
 // 2£∫"&token=c1i57rv48v6vit20lrc0"
+// 3: "&token=bv4ac1n48v6tcp17l5cg"
 //
 // Tiingo√‹‘ø£∫
 // 1£∫"&token=c897a00b7cfc2adffc630d23befd5316a4683156"
@@ -17,7 +18,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"SemaphoreDef.h"
+#include"ThreadStatus.h"
 #include"ChinaMarket.h"
 
 #include"SystemConfigeration.h"

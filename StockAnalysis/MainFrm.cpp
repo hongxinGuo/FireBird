@@ -19,7 +19,6 @@
 #include"SinaRTWebInquiry.h"
 
 #include"Thread.h"
-#include"SemaphoreDef.h"
 
 #include"WebInquirer.h"
 #include"HighPerformanceCounter.h"

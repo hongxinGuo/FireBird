@@ -2,8 +2,6 @@
 
 #include"pch.h"
 
-#include"GlobeSymbolDef.h"
-
 #include "VirtualSetStockSymbol.h"
 
 IMPLEMENT_DYNAMIC(CVirtualSetStockSymbol, CVirtualRecordset)

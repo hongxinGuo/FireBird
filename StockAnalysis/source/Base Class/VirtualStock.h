@@ -1,6 +1,5 @@
 #pragma once
 
-#include"globeSymbolDef.h"
 #include"VirtualSetStockSymbol.h"
 
 using namespace std;

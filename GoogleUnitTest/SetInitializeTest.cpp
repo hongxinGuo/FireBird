@@ -24,7 +24,6 @@
 #include"SetSICIndustry.h"
 #include"SetTiingoIndustry.h"
 #include"SetTiingoStock.h"
-#include"SetWorldmarketOption.h"
 #include"SetWorldStock.h"
 
 #include"SetDayLineBasicInfo.h"

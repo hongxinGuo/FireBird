@@ -2,7 +2,6 @@
 
 #include"ThreadStatus.h"
 
-#include"SemaphoreDef.h"
 #include"WorldMarket.h"
 #include "Thread.h"
 

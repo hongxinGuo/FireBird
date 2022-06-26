@@ -20,7 +20,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_pSession->QueryOption(INTERNET_OPTION_SEND_TIMEOUT, dwValue);
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
 	m_pSession->QueryOption(INTERNET_OPTION_CONNECT_RETRIES, dwValue); // 查询重连次数
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 5次重试
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 5次重试
 	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 	m_pFile = nullptr;
 	m_strHeaders = _T("");
@@ -106,6 +106,8 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			sprintf_s(buffer, _T("%d"), exception->m_dwError);
 			strErrorNo = buffer;
 			strMessage = _T("Net Error #") + strErrorNo;
+			strMessage += _T("Message: ");
+			strMessage += m_strInquire;
 			SetWebError(true);
 			gl_systemMessage.PushErrorMessage(strMessage);
 		}
@@ -166,6 +168,8 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 				sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
 				strMessage += _T(" 用时:");
 				strMessage += buffer;
+				strMessage += _T(" message: ");
+				strMessage += m_strInquire;
 				SetWebError(true);
 				gl_systemMessage.PushErrorMessage(strMessage);
 				fStatus = false;

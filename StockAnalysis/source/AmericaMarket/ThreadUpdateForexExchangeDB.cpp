@@ -3,7 +3,6 @@
 #include"ThreadStatus.h"
 
 #include"WorldMarket.h"
-#include"SemaphoreDef.h"
 
 UINT ThreadUpdateForexExchangeDB(not_null<CWorldMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();

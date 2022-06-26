@@ -12,7 +12,6 @@
 #include"Accessory.h"
 
 #include"ThreadStatus.h"
-#include"SemaphoreDef.h"
 
 #include"ChinaMarket.h"
 

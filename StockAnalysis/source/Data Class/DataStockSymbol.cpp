@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"GlobeSymbolDef.h"
 #include "DataStockSymbol.h"
 
 CDataStockSymbol::CDataStockSymbol() {

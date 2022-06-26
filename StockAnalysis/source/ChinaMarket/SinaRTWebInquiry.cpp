@@ -64,7 +64,7 @@ void CSinaRTWebInquiry::ConfigerateSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 150); // 正常情况下sina实时数据接收时间不超过50毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 150); // 设置接收超时时间为150毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 50); // 设置发送超时时间为50毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 0); // 0次重试
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {

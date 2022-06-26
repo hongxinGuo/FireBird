@@ -98,6 +98,7 @@ protected:
 
 	// 以下为nlohmann制式的json数据，目前暂不使用
 	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者nholmann json库bug，两者必居其一）。
+	// VS17.2.4的bug，17.2.5已修正。
 	json m_js;
 };
 
