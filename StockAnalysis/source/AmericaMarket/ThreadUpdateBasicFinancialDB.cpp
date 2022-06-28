@@ -26,25 +26,25 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
 }
 
 UINT ThreadUpdateBasicFinancialAnnualDB(not_null<CWorldStock*> pStock) {
-	gl_SaveThreadPermitted.Wait();
+	gl_SaveBasicFinacialThreadPermitted.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		pStock->AppendBasicFinancialAnnual();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
-	gl_SaveThreadPermitted.Signal();
+	gl_SaveBasicFinacialThreadPermitted.Signal();
 
 	return 56;
 }
 
 UINT ThreadUpdateBasicFinancialQuarterlyDB(not_null<CWorldStock*> pStock) {
-	gl_SaveThreadPermitted.Wait();
+	gl_SaveBasicFinacialThreadPermitted.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		pStock->AppendBasicFinancialQuarter();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
-	gl_SaveThreadPermitted.Signal();
+	gl_SaveBasicFinacialThreadPermitted.Signal();
 
 	return 57;
 }
