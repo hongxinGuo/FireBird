@@ -1,5 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// 每个用户需要自己申请各自的密钥。
+//
 // Finnhub密钥：
 // 1："&token=bv985d748v6ujthqfke0"
 // 2："&token=c1i57rv48v6vit20lrc0"
@@ -59,6 +61,13 @@ std::string gl_sSystemConfigeration = R"(
 	"FinnhubInquiryTime" : 1200,
 	"TiingoInquiryTime" : 9000,
 	"QuandlInquiryTime" : 36000
+},
+
+"FinancialDataUpdateRate" : {
+	"StockProfile" : 365,
+	"BasicFinancial" : 45,
+	"InsideTransaction" : 30,
+	"StockPeer" : 90
 }
 })";
 
@@ -83,6 +92,11 @@ CSystemConfigeration::CSystemConfigeration() {
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 	m_iChinaMarketRealtimeInquiryTime = 200; // 默认实时数据查询时间间隔为200毫秒
+#ifdef DEBUG
+	m_bFastInquiringRTData = true; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
+#else
+	m_bFastInquiringRTData = false;
+#endif
 
 	// World Market
 	m_strFinnhubToken = "&token=bv985d748v6ujthqfke0"; // Finnhub token
@@ -98,12 +112,11 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_bUsingTiingoCryptoWebSocket = true; // 是否使用Tiingo的WebSocket
 	m_bUsingTiingoForexWebSocket = true; // 是否使用Tiingo的WebSocket
 
-	// ChinaMarket
-#ifdef DEBUG
-	m_bFastInquiringRTData = true; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
-#else
-	m_bFastInquiringRTData = false;
-#endif
+	// Data Update Rate
+	m_iStockProfileUpdateRate = 365; // 股票概况更新频率，单位为天。默认为365天。
+	m_iStockBasicFinancialUpdateRate = 45; // 基本财务更新频率，单位为天。默认为45天。
+	m_iInsideTransactionUpdateRate = 30; // 内部交易更新频率，单位为天。默认为30天。
+	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
 
 	ASSERT(m_strFileName.Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
 	if (LoadDB()) {
@@ -134,81 +147,97 @@ void CSystemConfigeration::Update() {
 		try {
 			m_iBackgroundThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
 			m_iSavingThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("SavingThreadPermittedNumber");
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// ChinaMarket
 		try {
 			m_iChinaMarketRealtimeServer = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			m_iChinaMarketRealtimeInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// WorldMarket
 		try {
 			sTemp = m_systemConfigeration.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 			m_strFinnhubToken = sTemp.c_str();
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			sTemp = m_systemConfigeration.at("WorldMarket").at("TiingoToken"); // Tiingo token
 			m_strTiingoToken = sTemp.c_str();
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			sTemp = m_systemConfigeration.at("WorldMarket").at("QuandlToken"); // Quandl token
 			m_strQuandlToken = sTemp.c_str();
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			m_iWorldMarketFinnhubInquiryTime = m_systemConfigeration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			m_iWorldMarketTiingoInquiryTime = m_systemConfigeration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
 			m_iWorldMarketQuandlInquiryTime = m_systemConfigeration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// WebSocket
 		try {
-			//m_bUsingFinnhubWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")); // 是否使用Finnhub的WebSocket
 			m_bUsingFinnhubWebSocket = m_systemConfigeration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
-			//m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")); // 是否使用Tiingo的WebSocket
 			m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
-			//m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")); // 是否使用Tiingo的WebSocket
 			m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		try {
-			//m_bUsingTiingoForexWebSocket = m_systemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")); // 是否使用Tiingo的WebSocket
 			m_bUsingTiingoForexWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 		}
-		catch (json::out_of_range&) {}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+
+		// Financial Data Update Rate
+		try {
+			m_iStockBasicFinancialUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockBasicFinancial");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+
+		try {
+			m_iStockProfileUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockProfile");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+
+		try {
+			m_iInsideTransactionUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("InsideTransaction");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_iStockPeerUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockPeer");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 	}
 	catch (json::type_error& e) {
 		ASSERT(0);
@@ -233,6 +262,11 @@ void CSystemConfigeration::UpdateJson(void) {
 	m_systemConfigeration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
 	m_systemConfigeration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
 	m_systemConfigeration["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
+
+	m_systemConfigeration["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
+	m_systemConfigeration["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
+	m_systemConfigeration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
+	m_systemConfigeration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
 }
 
 void CSystemConfigeration::UpdateSystem(void) {

@@ -149,8 +149,17 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_lStatementUpdateDate = setWorldStock.m_StatementUpdateDate;
 }
 
+void CWorldStock::CheckUpdateStatus(long lTodayDate) {
+	CheckProfileUpdateStatus(lTodayDate);
+	CheckBasicFinancialUpdateStatus(lTodayDate);
+	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
+	CheckEPSSurpriseStatus(lTodayDate);
+	CheckPeerStatus(lTodayDate);
+	CheckInsiderTransactionStatus(lTodayDate);
+}
+
 bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, 365)) {
+	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockProfileUpdateRate())) {
 		m_fProfileUpdated = false;
 	}
 	else {
@@ -165,7 +174,7 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, 45)) { // 系统每季更新一次数据，故查询两次即可。
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockBasicFinancialUpdateRate())) { // 系统每季更新一次数据，故查询两次即可。
 		m_fBasicFinancialUpdated = false;
 	}
 	else {
@@ -520,7 +529,7 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubPeerUpdated = true;
 	}
-	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, 90)) { // 有不早于90天的数据？
+	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfigeration.GetStockPeerUpdateRate())) { // 有不早于90天的数据？
 		m_fFinnhubPeerUpdated = true;
 	}
 	else {
@@ -544,7 +553,7 @@ bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	else if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
-	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, 30)) { // 有不早于30天的数据？
+	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideTransactionUpdateRate())) { // 有不早于30天的数据？
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
 	else {

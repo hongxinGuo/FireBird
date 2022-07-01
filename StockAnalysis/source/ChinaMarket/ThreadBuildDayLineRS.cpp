@@ -12,6 +12,7 @@
 #include"Thread.h"
 
 #include"ChinaMarket.h"
+#include"WorldMarket.h"
 
 using namespace std;
 #include<thread>

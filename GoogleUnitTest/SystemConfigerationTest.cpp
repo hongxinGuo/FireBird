@@ -40,6 +40,17 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
+
+		EXPECT_EQ(gl_systemConfigeration.GetInsideTransactionUpdateRate(), 30);
+		EXPECT_EQ(gl_systemConfigeration.GetStockProfileUpdateRate(), 365);
+		EXPECT_EQ(gl_systemConfigeration.GetStockPeerUpdateRate(), 90);
+		EXPECT_EQ(gl_systemConfigeration.GetStockBasicFinancialUpdateRate(), 45);
+
+		//	EXPECT_EQ(gl_systemConfigeration.)
+		//	EXPECT_EQ(gl_systemConfigeration.)
+	//		EXPECT_EQ(gl_systemConfigeration.)
+	//		EXPECT_EQ(gl_systemConfigeration.)
+	//		EXPECT_EQ(gl_systemConfigeration.)
 	}
 
 	TEST_F(CSystemConfigerationTest, TestUsingSinaRTServer) {

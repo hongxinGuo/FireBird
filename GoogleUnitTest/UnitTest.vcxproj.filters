@@ -106,9 +106,6 @@
     <Filter Include="Test源文件\China Market\基础数据类\NeteaseDayLineWebData">
       <UniqueIdentifier>{1362f335-5cd6-45f2-90d7-9701ae2fadef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\System Data">
-      <UniqueIdentifier>{ef7927e9-9116-46fc-8d78-25a99432f2cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Factory Product">
       <UniqueIdentifier>{6d8b6e28-d09f-4dda-be0f-331245a2b014}</UniqueIdentifier>
     </Filter>
@@ -154,6 +151,9 @@
     <Filter Include="Test源文件\Data Source">
       <UniqueIdentifier>{d40221f3-8292-408e-8c70-388a5df3f7a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\System">
+      <UniqueIdentifier>{ef7927e9-9116-46fc-8d78-25a99432f2cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -161,9 +161,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Test源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemMessageTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
@@ -239,9 +236,6 @@
     </ClCompile>
     <ClCompile Include="MockChinaMarketTest.cpp">
       <Filter>Test源文件\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="MockSystemMessageTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="MockMainFrmTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
@@ -394,7 +388,7 @@
       <Filter>Test源文件\China Market\基础数据类\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="SystemDataTest.cpp">
-      <Filter>Test源文件\System Data</Filter>
+      <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
@@ -522,9 +516,6 @@
     <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="SystemConfigerationTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="HighPerformanceCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -536,6 +527,15 @@
     </ClCompile>
     <ClCompile Include="TiingoDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemConfigerationTest.cpp">
+      <Filter>Test源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemMessageTest.cpp">
+      <Filter>Test源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="MockSystemMessageTest.cpp">
+      <Filter>Test源文件\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

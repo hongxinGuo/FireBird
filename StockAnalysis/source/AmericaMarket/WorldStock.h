@@ -33,6 +33,7 @@ public:
 
 public:
 	void Load(CSetWorldStock& setWorldStock);
+	void CheckUpdateStatus(long lTodayDate);
 	bool CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);

@@ -67,6 +67,16 @@ public:
 	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
 	void SetFastInquiringRTData(bool fFlag) noexcept { m_fUpdate = true; m_bFastInquiringRTData = fFlag; }
 
+	// data update rate
+	int GetStockProfileUpdateRate(void) noexcept { return m_iStockProfileUpdateRate; }
+	void SetStockProfileUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockProfileUpdateRate = iRate; }
+	int GetStockBasicFinancialUpdateRate(void) noexcept { return m_iStockBasicFinancialUpdateRate; }
+	void SetStockBasicFinancialUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockBasicFinancialUpdateRate = iRate; }
+	int GetInsideTransactionUpdateRate(void) noexcept { return m_iInsideTransactionUpdateRate; }
+	void SetInsideTransactionUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iInsideTransactionUpdateRate = iRate; }
+	int GetStockPeerUpdateRate(void) noexcept { return m_iStockPeerUpdateRate; }
+	void SetStockPeerUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockPeerUpdateRate = iRate; }
+
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
@@ -99,6 +109,12 @@ protected:
 
 	// ChinaMarket
 	bool m_bFastInquiringRTData;
+
+	// 网络数据更新频率（以天数记）
+	int m_iStockProfileUpdateRate; // 默认45天更新一次
+	int m_iInsideTransactionUpdateRate; // 默认45天更新一次
+	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
+	int m_iStockPeerUpdateRate; // 默认90天更新一次
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;

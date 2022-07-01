@@ -113,7 +113,7 @@ bool CDataWorldStock::LoadDB(void) {
 	CSetWorldStock setWorldStock;
 	CWorldStockPtr pWorldStock = nullptr;
 	CString str;
-	long lSymbolLength = 0;
+	long lMaxSymbolLength = 0;
 
 	setWorldStock.m_strSort = _T("[Symbol]");
 	setWorldStock.Open();
@@ -122,16 +122,11 @@ bool CDataWorldStock::LoadDB(void) {
 		pWorldStock = make_shared<CWorldStock>();
 		pWorldStock->Load(setWorldStock);
 		if (!IsStock(pWorldStock->GetSymbol())) {
-			pWorldStock->CheckProfileUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			pWorldStock->CheckBasicFinancialUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			pWorldStock->CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
-			pWorldStock->CheckEPSSurpriseStatus(gl_pWorldMarket->GetMarketDate());
-			pWorldStock->CheckPeerStatus(gl_pWorldMarket->GetMarketDate());
-			pWorldStock->CheckInsiderTransactionStatus(gl_pWorldMarket->GetMarketDate());
+			pWorldStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			m_mapWorldStock[pWorldStock->GetSymbol()] = m_vWorldStock.size();
 			m_vWorldStock.push_back(pWorldStock);
-			if (pWorldStock->GetCurrency().GetLength() > lSymbolLength) {
-				lSymbolLength = pWorldStock->GetCurrency().GetLength();
+			if (pWorldStock->GetCurrency().GetLength() > lMaxSymbolLength) {
+				lMaxSymbolLength = pWorldStock->GetCurrency().GetLength();
 			}
 		}
 		else {
@@ -151,10 +146,12 @@ bool CDataWorldStock::LoadDB(void) {
 	TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalWorldStock);
 
 	char buffer[100];
-	sprintf_s(buffer, _T("%d"), lSymbolLength);
+	sprintf_s(buffer, _T("%d"), lMaxSymbolLength);
 	str = _T("WorldMarket股票代码最长长度为");
 	str += buffer;
-	//gl_systemMessage.PushInnerSystemInformationMessage(str);
+#ifdef _DEBUG
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
+#endif
 
 	return true;
 }
