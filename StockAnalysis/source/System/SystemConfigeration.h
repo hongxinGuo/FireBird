@@ -64,6 +64,8 @@ public:
 	void SetUsingQuandlWebSocket(bool bUsingQuandlWebSocket) noexcept { m_fUpdate = true; m_bUsingQuandlWebSocket = bUsingQuandlWebSocket; }
 
 	// ChinaMarket
+	int GetSavingChinaMarketStockDayLineThread(void) noexcept { return m_iSavingChinaMarketStockDayLineThread; }
+	void SetSavingChinaMarketStockDayLineThread(int iSavingChinaMarketStockDayLineThread) noexcept { m_fUpdate = true; m_iSavingChinaMarketStockDayLineThread = iSavingChinaMarketStockDayLineThread; }
 	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
 	void SetFastInquiringRTData(bool fFlag) noexcept { m_fUpdate = true; m_bFastInquiringRTData = fFlag; }
 
@@ -108,6 +110,7 @@ protected:
 	bool m_bUsingQuandlWebSocket;
 
 	// ChinaMarket
+	int m_iSavingChinaMarketStockDayLineThread; // 存储日线历史数据时的并发线程数。
 	bool m_bFastInquiringRTData;
 
 	// 网络数据更新频率（以天数记）

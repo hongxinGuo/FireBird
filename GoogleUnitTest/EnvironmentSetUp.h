@@ -112,7 +112,7 @@ namespace StockAnalysisTest {
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
 			gl_pMockMainFrame = new CMockMainFrame;
-			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
+			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				auto pStock = gl_pChinaMarket->GetStock(i);

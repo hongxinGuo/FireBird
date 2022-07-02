@@ -45,12 +45,12 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 
 UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_SemaphoreBackGroundTaskThreads.Wait();
+	gl_BackGroundTaskThread.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 	if (!gl_systemStatus.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
-	gl_SemaphoreBackGroundTaskThreads.Signal();
+	gl_BackGroundTaskThread.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 26;
@@ -58,13 +58,13 @@ UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) 
 
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_SemaphoreBackGroundTaskThreads.Wait();
+	gl_BackGroundTaskThread.Wait();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 
 	pMarket->BuildWeekLineOfCurrentWeek();
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
-	gl_SemaphoreBackGroundTaskThreads.Signal();
+	gl_BackGroundTaskThread.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 32;

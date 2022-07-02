@@ -69,11 +69,12 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWebInquirerTest, TestGetNeteaseDayLineData) {
-		int iSaved = gl_iMaxSavingOneDayLineThreads;
+		int iSaved = gl_systemConfigeration.GetSavingChinaMarketStockDayLineThread();
 		EXPECT_FALSE(s_pMockNeteaseDayLineWebInquiry2->IsReadingWebData());
 		EXPECT_FALSE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData());
 
-		for (gl_iMaxSavingOneDayLineThreads = 2; gl_iMaxSavingOneDayLineThreads < 7; gl_iMaxSavingOneDayLineThreads++) {
+		for (int i = 2; i < 7; i++) {
+			gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(i);
 			EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
 				.Times(1)
 				.WillOnce(Return(true))
@@ -95,7 +96,7 @@ namespace StockAnalysisTest {
 			s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
 		}
 
-		gl_iMaxSavingOneDayLineThreads = 1;
+		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(1);
 		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
 			.Times(1)
 			.WillOnce(Return(true))
@@ -108,7 +109,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
 
-		gl_iMaxSavingOneDayLineThreads = 7;
+		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(7);
 		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringStr)
 			.Times(1)
 			.WillOnce(Return(true))
@@ -126,7 +127,7 @@ namespace StockAnalysisTest {
 		// 恢复原态
 		s_pMockNeteaseDayLineWebInquiry2->SetReadingWebData(false);
 		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-		gl_iMaxSavingOneDayLineThreads = iSaved;
+		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(iSaved);
 	}
 
 	TEST_F(CWebInquirerTest, TestPushPopFinnhubWebSocketData) {

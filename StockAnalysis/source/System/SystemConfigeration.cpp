@@ -22,6 +22,7 @@
 
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
+#include"WorldMarket.h"
 
 #include"SystemConfigeration.h"
 
@@ -51,6 +52,7 @@ std::string gl_sSystemConfigeration = R"(
 "ChinaMarket" : {
 	"RealtimeServer" : 0,
 	"RealtimeInquiryTime" : 200,
+	"SavingStockDayLineThreadNumber" : 4,
 	"FastInquiringRealtimeData" : false
 },
 
@@ -92,6 +94,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 	m_iChinaMarketRealtimeInquiryTime = 200; // 默认实时数据查询时间间隔为200毫秒
+	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
 	m_bFastInquiringRTData = true; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
 #else
@@ -158,9 +161,12 @@ void CSystemConfigeration::Update() {
 			m_iChinaMarketRealtimeServer = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iChinaMarketRealtimeInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_iSavingChinaMarketStockDayLineThread = m_systemConfigeration.at("ChinaMarket").at("SavingChinaMarketStockDayLineThread"); // 保存股票日线数据线程数量
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
@@ -250,6 +256,7 @@ void CSystemConfigeration::UpdateJson(void) {
 
 	m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = m_iChinaMarketRealtimeServer;
 	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
+	m_systemConfigeration["ChinaMarket"]["SavingChinaMarketStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
 
 	m_systemConfigeration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	m_systemConfigeration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
@@ -270,7 +277,7 @@ void CSystemConfigeration::UpdateJson(void) {
 }
 
 void CSystemConfigeration::UpdateSystem(void) {
-	gl_SemaphoreBackGroundTaskThreads.SetMaxCount(m_iBackgroundThreadPermittedNumber);
+	gl_BackGroundTaskThread.SetMaxCount(m_iBackgroundThreadPermittedNumber);
 	gl_SaveThreadPermitted.SetMaxCount(m_iSavingThreadPermittedNumber);
 }
 

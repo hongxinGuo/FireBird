@@ -42,7 +42,13 @@ using namespace std;
 
 #include"Semaphore.h"
 using namespace MyLib;
-extern Semaphore gl_UpdateWorldMarketDB;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_UpdateWorldMarketDB;  // 此信号量用于更新WorldMarket数据库
+
+#if _MSVC_LANG > 201703
+using namespace std;
+#include<semaphore>
+extern counting_semaphore<4> gl_UpdateWorldMarketDB2;  // 此信号量用于更新WorldMarket数据库
+#endif
 
 class CWorldMarket : public CVirtualMarket {
 public:

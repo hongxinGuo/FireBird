@@ -19,7 +19,7 @@ using namespace std;
 
 #include"Semaphore.h"
 using namespace MyLib;
-extern Semaphore gl_SemaphoreBackGroundTaskThreads; // 后台工作线程数。最大为8
+extern Semaphore gl_BackGroundTaskThread; // 后台工作线程数。最大为8
 
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）

@@ -9,8 +9,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-extern int gl_iMaxSavingOneDayLineThreads;
-
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"

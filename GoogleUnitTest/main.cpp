@@ -37,7 +37,7 @@
 #include"pch.h"
 
 #if _MSVC_LANG > 201703
-//#error _T("目前googleTest1.12不支持C17以上版本，故而必须使用C17及以下标准编译")
+//#error _T("目前codecoverage宏ExcludeSourceFromCodeCoverage, ExcludeFromCodeCoverage不支持C17以上版本，故而必须使用C17及以下标准编译")
 #endif //
 
 #ifndef _MBCS
@@ -51,10 +51,9 @@
 // 排除外部代码
 #include <CodeCoverage\CodeCoverage.h>
 #pragma managed(push, off)
-ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
-ExcludeSourceFromCodeCoverage(Exclude3, _T("")); // 排除VS2019系统库
-#if _MSVC_LANG <= 201703
+#if _MSVC_LANG <= 201703 // C17及以下版本？
 
+ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
 
 ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleUnitTest
@@ -271,9 +270,9 @@ ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThr
 ExcludeFromCodeCoverage(CFinnhubWebInquiry1, L"CFinnhubWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CQuandlWebInquiry1, L"CQuandlWebInquiry::StartReadingThread");
 
-#endif
 ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryCandleExtend::ShowData");
 
+#endif
 #pragma managed(pop)
 
 #include"EnvironmentSetUp.h"
