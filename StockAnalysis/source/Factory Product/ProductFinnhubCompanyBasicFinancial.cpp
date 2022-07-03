@@ -1,14 +1,11 @@
 #include "pch.h"
 
 #include"accessory.h"
+#include"jsonParse.h"
 #include"worldMarket.h"
 
 #include"FinnhubStockBasicFinancial.h"
 #include "ProductFinnhubCompanyBasicFinancial.h"
-
-#include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
 
 IMPLEMENT_DYNCREATE(CProductFinnhubCompanyBasicFinancial, CProductWebSourceData)
 

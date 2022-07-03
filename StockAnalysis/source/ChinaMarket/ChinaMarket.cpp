@@ -35,10 +35,6 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
-#include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

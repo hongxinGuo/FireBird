@@ -4,7 +4,7 @@
 
 #include<ixwebsocket/IXWebSocket.h>
 
-void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
+void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 
 class CFinnhubWebSocket : public CVirtualWebSocket {
 public:

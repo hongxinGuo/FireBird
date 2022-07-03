@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 每个用户需要自己申请各自的密钥。
+// 这里的密钥是用来测试的，用户需要自己申请各自的密钥。
 //
 // Finnhub密钥：
 // 1："&token=bv985d748v6ujthqfke0"
@@ -52,7 +52,7 @@ std::string gl_sSystemConfigeration = R"(
 "ChinaMarket" : {
 	"RealtimeServer" : 0,
 	"RealtimeInquiryTime" : 200,
-	"SavingStockDayLineThreadNumber" : 4,
+	"SavingStockDayLineThread" : 4,
 	"FastInquiringRealtimeData" : false
 },
 
@@ -166,7 +166,7 @@ void CSystemConfigeration::Update() {
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iSavingChinaMarketStockDayLineThread = m_systemConfigeration.at("ChinaMarket").at("SavingChinaMarketStockDayLineThread"); // 保存股票日线数据线程数量
+			m_iSavingChinaMarketStockDayLineThread = m_systemConfigeration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
@@ -256,7 +256,7 @@ void CSystemConfigeration::UpdateJson(void) {
 
 	m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = m_iChinaMarketRealtimeServer;
 	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
-	m_systemConfigeration["ChinaMarket"]["SavingChinaMarketStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
+	m_systemConfigeration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
 
 	m_systemConfigeration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	m_systemConfigeration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;

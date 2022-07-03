@@ -10,7 +10,7 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-void FunctionProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
+void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
@@ -75,7 +75,7 @@ bool CFinnhubWebSocket::Connect(void) {
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
 	string urlAndAuth = m_url + strToken.GetBuffer();
 
-	return Connecting(urlAndAuth, FunctionProcessFinnhubWebSocket);
+	return Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
 bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {

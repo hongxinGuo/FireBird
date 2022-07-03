@@ -3,7 +3,7 @@
 #include"VirtualWebSocket.h"
 #include <ixwebsocket/IXWebSocket.h>
 
-void FunctionProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
+void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 
 class CTiingoForexWebSocket : public CVirtualWebSocket {
 public:

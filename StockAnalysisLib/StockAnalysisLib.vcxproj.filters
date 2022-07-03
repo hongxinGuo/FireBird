@@ -690,6 +690,9 @@
     <ClInclude Include="..\StockAnalysis\source\globedef.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">

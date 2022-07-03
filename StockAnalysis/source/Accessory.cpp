@@ -442,39 +442,6 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	}
 }
 
-bool ConvertToWJSON(wptree& pt, string& s) {
-	wstring ws = to_wide_string(s);
-	wstringstream ss(ws);
-	try {
-		read_json(ss, pt);
-	}
-	catch (ptree_error& e) {
-		//ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error "), e);
-		return false;
-	}
-	return true;
-}
-
-wstring to_wide_string(const std::string& input) {
-	char* pBuffer;
-	long lLength = input.size();
-	pBuffer = new char[lLength + 1];
-	for (int i = 0; i < input.size(); i++) {
-		pBuffer[i] = input.at(i);
-	}
-	pBuffer[lLength] = 0x000;
-	WCHAR* pBufferW = new WCHAR[lLength * 2];
-
-	long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
-	pBufferW[lReturnSize] = 0x000;
-	wstring ws = pBufferW;
-
-	delete[]pBuffer;
-	delete[]pBufferW;
-
-	return ws;
-}
-
 string to_byte_string(const wstring& input) {
 	WCHAR* pBufferW;
 	long lLength = input.size();
@@ -540,108 +507,8 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone) {
 	gmtime_s(tm_, &tMarket);
 }
 
-void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
-	CString strError = strPrefix;
-	strError += e.what();
-	gl_systemMessage.PushErrorMessage(strError);
-}
-
 void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
 	CString strError = strPrefix;
 	strError += e.what();
 	gl_systemMessage.PushErrorMessage(strError);
-}
-
-string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
-	if (s.compare(_T("null")) == 0) return szDefault;
-	return s;
-}
-
-string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = ppt->get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
-	if (s.compare(_T("null")) == 0) return szDefault;
-	return s;
-}
-
-string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = ppt->get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
-	if (s.compare(_T("null")) == 0) return szDefault;
-	return s;
-}
-
-double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return dDefault;
-	}
-	if (s.compare(_T("null")) == 0) return dDefault;
-	else return stod(s);
-}
-
-int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return iDefault;
-	}
-	if (s.compare(_T("null")) == 0) return iDefault;
-	else return stoi(s);
-}
-
-long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return llDefault;
-	}
-	if (s.compare(_T("null")) == 0) return llDefault;
-	else return stoll(s);
-}
-
-long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return lDefault;
-	}
-	if (s.compare(_T("null")) == 0) return lDefault;
-	else return stol(s);
-}
-
-bool ptreeGetChild(ptree& inputPt, const char* szKey, ptree* outputPpt) {
-	try {
-		*outputPpt = inputPt.get_child(szKey);
-	}
-	catch (ptree_error&) {
-		return false;
-	}
-	return true;
 }

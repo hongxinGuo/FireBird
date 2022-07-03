@@ -26,8 +26,16 @@ namespace StockAnalysisTest {
 	TEST_F(CSystemConfigerationTest, TestGlobeVariable) {
 		json jsSystemConfigeration = json::parse(gl_sSystemConfigeration);
 
-		//EXPECT_EQ(jsSystemConfigeration.at("")
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/BackgroundThreadPermittedNumber")), 8);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/SavingThreadPermittedNumber")), 4);
+
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeServer")), 0);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 200);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
+
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubToken")), "&token=bv985d748v6ujthqfke0");
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/TiingoToken")), "&token=c897a00b7cfc2adffc630d23befd5316a4683156");
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/QuandlToken")), "&api_key=zBMXMyoTyiy_N3pMb3ex");
 
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
@@ -36,7 +44,13 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CSystemConfigerationTest, TestInitialize) {
+		EXPECT_EQ(gl_systemConfigeration.GetBackgroundThreadPermittedNumber(), 8);
+		EXPECT_EQ(gl_systemConfigeration.GetSavingThreadPermittedNumber(), 4);
+
+		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
 		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200秒";
+		EXPECT_EQ(gl_systemConfigeration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
+
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";

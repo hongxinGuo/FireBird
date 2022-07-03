@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"accessory.h"
+#include"jsonParse.h"
 
 #include"WorldMarket.h"
 #include"FinnhubForexSymbol.h"

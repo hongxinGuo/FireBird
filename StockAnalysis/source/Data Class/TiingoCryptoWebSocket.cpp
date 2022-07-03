@@ -7,7 +7,7 @@
 #include"WebInquirer.h"
 #include "TiingoCryptoWebSocket.h"
 
-void FunctionProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
+void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -65,7 +65,7 @@ CTiingoCryptoWebSocket::~CTiingoCryptoWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CTiingoCryptoWebSocket::Connect(void) {
-	Connecting(m_url, FunctionProcessTiingoCryptoWebSocket);
+	Connecting(m_url, ProcessTiingoCryptoWebSocket);
 
 	return true;
 }

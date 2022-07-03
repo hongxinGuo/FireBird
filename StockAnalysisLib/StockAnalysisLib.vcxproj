@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
+    <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.h" />

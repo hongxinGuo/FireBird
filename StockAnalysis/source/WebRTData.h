@@ -119,12 +119,6 @@ using namespace std;
 #include<array>
 #include<map>
 
-#include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
-#include"nlohmannJsonDeclaration.h"
-
 class CWebRTData;
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 

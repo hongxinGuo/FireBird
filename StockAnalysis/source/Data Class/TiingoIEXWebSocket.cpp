@@ -7,7 +7,7 @@
 #include"WebInquirer.h"
 #include "TiingoIEXWebSocket.h"
 
-void FunctionProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
+void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -65,7 +65,7 @@ CTiingoIEXWebSocket::~CTiingoIEXWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CTiingoIEXWebSocket::Connect(void) {
-	Connecting(m_url, FunctionProcessTiingoIEXWebSocket);
+	Connecting(m_url, ProcessTiingoIEXWebSocket);
 
 	return true;
 }
