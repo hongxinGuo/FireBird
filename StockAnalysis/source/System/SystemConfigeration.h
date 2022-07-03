@@ -29,6 +29,11 @@ public:
 	CString GetDefaultFileName(void) { return m_strFileName; }
 
 	// 获取系统配置参数
+	CString GetDatabaseAccountName(void) noexcept { return m_strDatabaseAccountName; }
+	void SetDatabaseAccountName(CString strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
+	CString GetDatabaseAccountPassword(void) noexcept { return m_strDatabaseAccountPassword; }
+	void SetDatabaseAccountPassword(CString strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
+
 	int GetBackgroundThreadPermittedNumber(void) noexcept { return m_iBackgroundThreadPermittedNumber; }
 	int GetSavingThreadPermittedNumber(void) noexcept { return m_iSavingThreadPermittedNumber; }
 
@@ -84,9 +89,11 @@ public:
 public:
 
 protected:
-	CString m_strFileName;
+	CString m_strFileName; // 配置文件名称
 
 	// 系统配置
+	CString m_strDatabaseAccountName; // 数据库账户名称
+	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
 	int m_iSavingThreadPermittedNumber; // 允许的最大存储线程数， 默认为4
 

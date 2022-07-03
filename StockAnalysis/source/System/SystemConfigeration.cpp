@@ -38,6 +38,8 @@ using namespace std;
 std::string gl_sSystemConfigeration = R"(
 {
 "SystemConfigeration": {
+  "DatabaseAccountName" : "hxguo",
+	"DatabaseAccountPassword" : "hxguo",
 	"BackgroundThreadPermittedNumber" : 8,
 	"SavingThreadPermittedNumber" : 4
 },
@@ -88,6 +90,8 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_strFileName = _T("C:\\StockAnalysis\\SystemConfigeration.json"); // json file name
 
 	// 系统配置
+	m_strDatabaseAccountName = _T("hxguo");
+	m_strDatabaseAccountPassword = _T("hxguo");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
 	m_iSavingThreadPermittedNumber = 4; // 默认存储线程数为4
 
@@ -147,6 +151,16 @@ void CSystemConfigeration::Update() {
 
 	try {
 		// 系统配置
+		try {
+			sTemp = m_systemConfigeration.at("SystemConfigeration").at("DatabaseAccountName");
+			m_strDatabaseAccountName = sTemp.c_str();
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			sTemp = m_systemConfigeration.at("SystemConfigeration").at("DatabaseAccountPassword");
+			m_strDatabaseAccountPassword = sTemp.c_str();
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
 			m_iBackgroundThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
 		}
@@ -251,6 +265,8 @@ void CSystemConfigeration::Update() {
 }
 
 void CSystemConfigeration::UpdateJson(void) {
+	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
+	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
 	m_systemConfigeration["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
 

@@ -25,6 +25,12 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSystemConfigerationTest, TestGlobeVariable) {
 		json jsSystemConfigeration = json::parse(gl_sSystemConfigeration);
+		string sTemp;
+
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/DatabaseAccountName"));
+		EXPECT_TRUE(sTemp.compare("hxguo") == 0);
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/DatabaseAccountPassword"));
+		EXPECT_TRUE(sTemp.compare("hxguo") == 0);
 
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/BackgroundThreadPermittedNumber")), 8);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/SavingThreadPermittedNumber")), 4);
@@ -33,9 +39,12 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 200);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 
-		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubToken")), "&token=bv985d748v6ujthqfke0");
-		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/TiingoToken")), "&token=c897a00b7cfc2adffc630d23befd5316a4683156");
-		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/QuandlToken")), "&api_key=zBMXMyoTyiy_N3pMb3ex");
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
+		EXPECT_TRUE(sTemp.compare("&token=bv985d748v6ujthqfke0") == 0);
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/TiingoToken"));
+		EXPECT_TRUE(sTemp.compare("&token=c897a00b7cfc2adffc630d23befd5316a4683156") == 0);
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/QuandlToken"));
+		EXPECT_TRUE(sTemp.compare("&api_key=zBMXMyoTyiy_N3pMb3ex") == 0);
 
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
@@ -44,6 +53,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CSystemConfigerationTest, TestInitialize) {
+		EXPECT_STREQ(gl_systemConfigeration.GetDatabaseAccountName(), _T("hxguo"));
+		EXPECT_STREQ(gl_systemConfigeration.GetDatabaseAccountPassword(), _T("hxguo"));
 		EXPECT_EQ(gl_systemConfigeration.GetBackgroundThreadPermittedNumber(), 8);
 		EXPECT_EQ(gl_systemConfigeration.GetSavingThreadPermittedNumber(), 4);
 
