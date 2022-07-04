@@ -190,29 +190,24 @@ void CSystemConfigeration::Update() {
 			m_strFinnhubToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			sTemp = m_systemConfigeration.at("WorldMarket").at("TiingoToken"); // Tiingo token
 			m_strTiingoToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			sTemp = m_systemConfigeration.at("WorldMarket").at("QuandlToken"); // Quandl token
 			m_strQuandlToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iWorldMarketFinnhubInquiryTime = m_systemConfigeration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iWorldMarketTiingoInquiryTime = m_systemConfigeration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iWorldMarketQuandlInquiryTime = m_systemConfigeration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 		}
@@ -223,17 +218,14 @@ void CSystemConfigeration::Update() {
 			m_bUsingFinnhubWebSocket = m_systemConfigeration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_bUsingTiingoForexWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 		}
@@ -244,12 +236,10 @@ void CSystemConfigeration::Update() {
 			m_iStockBasicFinancialUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockBasicFinancial");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iStockProfileUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockProfile");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
-
 		try {
 			m_iInsideTransactionUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("InsideTransaction");
 		}
@@ -260,6 +250,7 @@ void CSystemConfigeration::Update() {
 		catch (json::out_of_range&) { m_fUpdate = true; }
 	}
 	catch (json::type_error& e) {
+		TRACE("%s\n", e.what());
 		ASSERT(0);
 	}
 }

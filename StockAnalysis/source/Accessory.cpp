@@ -463,24 +463,6 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
-/*
-bool ParseWithNlohmannJSon(json* pjs, std::string& s) {
-	try {
-		*pjs = json::parse(s);
-	}
-	catch (json::parse_error& e) {
-		//#ifndef _DEBUG
-		CString str = s.c_str();
-		str = str.Left(80);
-		gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str + e.what());
-		//#endif
-		pjs = nullptr;
-		return false;
-	}
-	return true;
-}
-*/
-
 CString FormatToMK(long long iNumber) {
 	char buffer[100];
 	CString str;

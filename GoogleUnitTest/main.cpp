@@ -51,10 +51,9 @@
 // 排除外部代码
 #include <CodeCoverage\CodeCoverage.h>
 #pragma managed(push, off)
-#if _MSVC_LANG <= 201703 // C17及以下版本？
-
 ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
+#if _MSVC_LANG <= 201703 // C17及以下版本？
 
 ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleUnitTest
 ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\Packages\\*.*"); // 排除扩展程序包
@@ -270,9 +269,8 @@ ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThr
 ExcludeFromCodeCoverage(CFinnhubWebInquiry1, L"CFinnhubWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CQuandlWebInquiry1, L"CQuandlWebInquiry::StartReadingThread");
 
-ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryCandleExtend::ShowData");
-
 #endif
+ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryCandleExtend::ShowData");
 #pragma managed(pop)
 
 #include"EnvironmentSetUp.h"
