@@ -91,7 +91,7 @@ void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	gl_systemMessage.PushErrorMessage(_T("Quandl工作线程出错"));
 }
 
-void CQuandlWebInquiry::UpdateAfterReadingWebData(void) {
+void CQuandlWebInquiry::UpdateStatusAfterReadingWebData(void) {
 	gl_pDataSourceQuandl->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 

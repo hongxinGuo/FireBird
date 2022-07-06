@@ -75,7 +75,7 @@ void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	gl_systemMessage.PushErrorMessage(_T("Tiingo工作线程出错"));
 }
 
-void CTiingoWebInquiry::UpdateAfterReadingWebData(void) {
+void CTiingoWebInquiry::UpdateStatusAfterReadingWebData(void) {
 	gl_pWorldMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
 }
 

@@ -74,7 +74,7 @@ void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 }
 
-void CFinnhubWebInquiry::UpdateAfterReadingWebData(void) {
+void CFinnhubWebInquiry::UpdateStatusAfterReadingWebData(void) {
 	gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
 }
 

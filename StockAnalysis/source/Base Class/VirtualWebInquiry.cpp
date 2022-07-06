@@ -48,13 +48,75 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
-	if (m_pSession != nullptr) delete m_pSession;
+	if (m_pSession != nullptr) {
+		delete m_pSession;
+		m_pSession = nullptr;
+	}
 }
 
 void CVirtualWebInquiry::Reset(void) noexcept {
 	m_lByteRead = 0;
 	m_dwWebErrorCode = 0;
 	m_fWebError = false;
+}
+
+/////////////////////////////////////////////////////////////////////////
+//
+// 这是此类唯一的接口函数
+//
+//////////////////////////////////////////////////////////////////////////
+bool CVirtualWebInquiry::GetWebData(void) {
+	if (!IsReadingWebData()) { // 工作线程没有启动？
+		if (PrepareNextInquiringStr()) {
+			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+			StartReadingThread();
+			return true;
+		}
+		else return false;
+	}
+	else return false; // 工作线程已在执行接收数据的任务
+}
+
+void CVirtualWebInquiry::PrepareReadingWebData(void) {
+	ConfigerateSession();
+}
+
+void CVirtualWebInquiry::StartReadingThread(void) {
+	thread thread1(ThreadReadVirtualWebData, this);
+	thread1.detach();
+}
+
+UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
+	pVirtualWebInquiry->Read();
+	return 1;
+}
+
+void CVirtualWebInquiry::Read(void) {
+	CHighPerformanceCounter counter;
+
+	counter.Start();
+	ASSERT(IsReadingWebData());
+	PrepareReadingWebData();
+	if (ReadingWebData()) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		//counter.start();
+		TransferData(pWebData);
+		ResetBuffer();
+		ParseData(pWebData);
+
+		SetTime(pWebData);
+		UpdateStatusWhenSecceed(pWebData);
+		StoreWebData(pWebData);
+	}
+	else { // error handling
+		ClearUpIfReadingWebDataFailed();
+	}
+	UpdateStatusAfterReadingWebData();
+
+	counter.Stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond()); // 显示的是毫秒值
+
+	SetReadingWebData(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -184,65 +246,6 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 	pWebData->ResetCurrentPos();
 
 	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////
-//
-// 这是此类唯一的接口函数
-//
-//////////////////////////////////////////////////////////////////////////
-bool CVirtualWebInquiry::GetWebData(void) {
-	if (!IsReadingWebData()) { // 工作线程没有启动？
-		if (PrepareNextInquiringStr()) {
-			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-			StartReadingThread();
-			return true;
-		}
-		else return false;
-	}
-	else return false; // 工作线程已在执行接收数据的任务
-}
-
-void CVirtualWebInquiry::PrepareReadingWebData(void) {
-	ConfigerateSession();
-}
-
-void CVirtualWebInquiry::StartReadingThread(void) {
-	thread thread1(ThreadReadVirtualWebData, this);
-	thread1.detach();
-}
-
-UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
-	pVirtualWebInquiry->Read();
-	return 1;
-}
-
-void CVirtualWebInquiry::Read(void) {
-	CHighPerformanceCounter counter;
-
-	counter.Start();
-	ASSERT(IsReadingWebData());
-	PrepareReadingWebData();
-	if (ReadingWebData()) {
-		CWebDataPtr pWebData = make_shared<CWebData>();
-		//counter.start();
-		TransferData(pWebData);
-		ParseData(pWebData);
-		ResetBuffer();
-
-		SetTime(pWebData);
-		UpdateStatusWhenSecceed(pWebData);
-		StoreWebData(pWebData);
-	}
-	else { // error handling
-		ClearUpIfReadingWebDataFailed();
-	}
-	UpdateAfterReadingWebData();
-
-	counter.Stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond()); // 显示的是毫秒值
-
-	SetReadingWebData(false);
 }
 
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {

@@ -43,7 +43,7 @@ public:
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) { /* do nothing in default*/ } // 成功接收后更新系统状态。 默认无动作
 	virtual void ClearUpIfReadingWebDataFailed(void) { /* do nothing in default*/ } // 处理失败的接收过程
-	virtual void UpdateAfterReadingWebData(void) { /*default do nothing*/ } // 接收数据后更新系统状态。默认为不做任何事情。
+	virtual void UpdateStatusAfterReadingWebData(void) { /*default do nothing*/ } // 接收数据后更新系统状态。默认为不做任何事情。
 	virtual void SetTime(CWebDataPtr pData);
 	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) { ASSERT(0); } // 将网络上读取到的数据存入本地
 
