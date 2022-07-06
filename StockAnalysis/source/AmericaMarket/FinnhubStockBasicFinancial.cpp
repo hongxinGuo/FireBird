@@ -306,8 +306,8 @@ void CFinnhubStockBasicFinancial::LoadMetric(CSetFinnhubStockBasicFinancialMetri
 
 void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinancialQuarter& setBeSaved) {
 	CSetFinnhubStockBasicFinancialQuarter setQuarterly;
-	vector<strSeasonDBData> vData;
-	strSeasonDBData data;
+	vector<CItemOfBasicFinancialSeasonData> vData;
+	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
 	setQuarterly.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
@@ -327,8 +327,8 @@ void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinanci
 
 void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancialAnnual& setBeSaved) {
 	CSetFinnhubStockBasicFinancialAnnual setAnnual;
-	vector<strSeasonDBData> vData;
-	strSeasonDBData data;
+	vector<CItemOfBasicFinancialSeasonData> vData;
+	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
 	setAnnual.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
@@ -347,7 +347,7 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	SaveAllAnnualData(setBeSaved, vData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<strSeasonDBData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	SaveQuarterData(SetQuarterData, m_quarter.m_cashRatio, _T("cashRatio"), vDBData);
 	SaveQuarterData(SetQuarterData, m_quarter.m_currentRatio, _T("currentRatio"), vDBData);
 	SaveQuarterData(SetQuarterData, m_quarter.m_ebitPerShare, _T("ebitPerShare"), vDBData);
@@ -369,7 +369,7 @@ void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinanc
 	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<strValue>& vData, CString typeName, vector<strSeasonDBData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(SetQuarterData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -386,7 +386,7 @@ void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancial
 void CFinnhubStockBasicFinancial::LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData) {
 }
 
-void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<strSeasonDBData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	SaveAnnualData(setAnnualData, m_annual.m_cashRatio, _T("cashRatio"), vDBData);
 	SaveAnnualData(setAnnualData, m_annual.m_currentRatio, _T("currentRatio"), vDBData);
 	SaveAnnualData(setAnnualData, m_annual.m_ebitPerShare, _T("ebitPerShare"), vDBData);
@@ -408,7 +408,7 @@ void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinanci
 	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<strValue>& vData, CString typeName, vector<strSeasonDBData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(setAnnualData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -425,7 +425,7 @@ void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialA
 void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData) {
 }
 
-bool CFinnhubStockBasicFinancial::IsNewData(CString type, strValue vData, vector<strSeasonDBData>& vDBData) {
+bool CFinnhubStockBasicFinancial::IsNewData(CString type, CValueOfPeriod vData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	for (int i = 0; i < vDBData.size(); i++) {
 		if ((vDBData.at(i).m_type == type) && (vDBData.at(i).m_date == vData.m_period)) {
 			return false;

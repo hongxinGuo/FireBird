@@ -247,9 +247,9 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 		}
 	}
 
-	UpdateBasicFinancialAnnualDB(vStock);
-	UpdateBasicFinancialQuarterDB(vStock);
-	UpdateBasicFinancialMetricDB(vStock);
+	UpdateBasicFinancialAnnualDB(vStock); // 此函数使用线程来加速，要先执行
+	UpdateBasicFinancialQuarterDB(vStock); // 此函数使用线程来加速，要先执行
+	UpdateBasicFinancialMetricDB(vStock); // 此函数必须最后执行。
 
 	for (auto& pStock5 : vStock) {
 		pStock5->SetUpdateBasicFinancialDB(false);

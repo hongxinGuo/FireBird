@@ -74,45 +74,50 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	long lCurrentByteReaded = 0;
 	CString strMessage, strErrorNo;
 	char buffer[30];
+	CHighPerformanceCounter counter;
+	counter.Start();
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
 
-	if (OpenFile(GetInquiringString())) {
-		try {
-			do {
-				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
-					fReadingSuccess = false;
-					break;
-				}
-				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-
-				if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
-					m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
-				}
-			} while (lCurrentByteReaded > 0);
-			m_lTotalByteReaded += m_lByteRead;
-			if (m_pFile != nullptr) {
-				m_pFile->Close();
-				delete m_pFile;
-				m_pFile = nullptr;
+	try {
+		OpenFile(GetInquiringString());
+		do {
+			if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
+				fReadingSuccess = false;
+				break;
 			}
-		}
-		catch (CInternetException* exception) {
-			fReadingSuccess = false;
-			m_dwWebErrorCode = exception->m_dwError;
-			sprintf_s(buffer, _T("%d"), exception->m_dwError);
-			strErrorNo = buffer;
-			strMessage = _T("Net Error #") + strErrorNo;
-			strMessage += _T("Message: ");
-			strMessage += m_strInquire;
-			SetWebError(true);
-			gl_systemMessage.PushErrorMessage(strMessage);
+			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+
+			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
+				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
+			}
+		} while (lCurrentByteReaded > 0);
+		m_lTotalByteReaded += m_lByteRead;
+		ASSERT(m_pFile != nullptr);
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
 		}
 	}
-	else fReadingSuccess = false;
+	catch (CInternetException* exception) {
+		counter.Stop();
+		fReadingSuccess = false;
+		m_dwWebErrorCode = exception->m_dwError;
+		sprintf_s(buffer, _T("%d"), exception->m_dwError);
+		strErrorNo = buffer;
+		strMessage = _T("Net Error #") + strErrorNo;
+		sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
+		strMessage += _T(" 用时:");
+		strMessage += buffer;
+		strMessage += _T(" Message: ");
+		strMessage += m_strInquire;
+		SetWebError(true);
+		gl_systemMessage.PushErrorMessage(strMessage);
+	}
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 
@@ -120,73 +125,25 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 }
 
 /// <summary>
-/// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之
-/// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致巨大延时。
+/// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误
+/// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致连接错误--20220401
+///
+/// 调用函数需要处理exception。
 ///
 /// </summary>
 /// <param name="strInquiring"></param>
 /// <returns></returns>
-bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
-	bool fStatus = true;
-	int iCounter = 0;
-	bool fDone = false;
-	CString strMessage, strErrorNo;
-	char buffer[30];
+void CVirtualWebInquiry::OpenFile(CString strInquiring) {
+	CString str;
 	long lHeadersLength = m_strHeaders.GetLength();
-	CHighPerformanceCounter counter;
-
-	counter.Start();
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
-	do {
-		try {
-			// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
-			// 其他的数据尚未需要提供头验证数据。
-			if (gl_systemStatus.IsExitingSystem()) {
-				fStatus = false;
-				fDone = true;
-			}
-			else {
-				m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-				fDone = true;
-			}
-		}
-		catch (CInternetException* exception) {
-			ASSERT(m_pFile == nullptr);
-			if (m_pFile != nullptr) {
-				m_pFile->Close();
-				delete m_pFile;
-				m_pFile = nullptr;
-			}
-			if (iCounter++ >= 0) { // 如果重试次数超过0次，则报告错误
-				counter.Stop();
-				m_dwWebErrorCode = exception->m_dwError;
-				sprintf_s(buffer, _T("%d"), exception->m_dwError);
-				strErrorNo = buffer;
-				strMessage = _T("Net Error #") + strErrorNo;
-				sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
-				strMessage += _T(" 用时:");
-				strMessage += buffer;
-				strMessage += _T(" message: ");
-				strMessage += m_strInquire;
-				SetWebError(true);
-				gl_systemMessage.PushErrorMessage(strMessage);
-				fStatus = false;
-				fDone = true;
-			}
-			exception->Delete();
-		}
-	} while (!fDone);
-	if (fStatus) {
-		CString str;
-		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-		if (str.GetLength() > 0) {
-			m_lContentLength = atol(str.GetBuffer());
-		}
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+	if (str.GetLength() > 0) {
+		m_lContentLength = atol(str.GetBuffer());
 	}
-
-	return fStatus;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

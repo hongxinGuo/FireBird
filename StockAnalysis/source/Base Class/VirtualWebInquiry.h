@@ -18,7 +18,7 @@ public:
 	CVirtualWebInquiry();
 	virtual ~CVirtualWebInquiry(void);
 
-	virtual bool OpenFile(CString strInquiring);
+	virtual void OpenFile(CString strInquiring);
 	virtual bool ReadingWebData(void); // 网络实际读取函数
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 

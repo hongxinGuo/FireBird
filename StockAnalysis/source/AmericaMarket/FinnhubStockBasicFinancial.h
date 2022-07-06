@@ -7,34 +7,37 @@
 using namespace std;
 #include<memory>
 
-struct strValue {
+class CValueOfPeriod {
+public:
 	int m_period;
 	double m_value;
 };
 
-struct strSeasonData {
-	vector<strValue> m_cashRatio;
-	vector<strValue> m_currentRatio;
-	vector<strValue> m_ebitPerShare;
-	vector<strValue> m_eps;
-	vector<strValue> m_grossMargin;
-	vector<strValue> m_longtermDebtTotalAsset;
-	vector<strValue> m_longtermDebtTotalCapital;
-	vector<strValue> m_longtermDebtTotalEquity;
-	vector<strValue> m_netDebtToTotalCapital;
-	vector<strValue> m_netDebtToTotalEquity;
-	vector<strValue> m_netMargin;
-	vector<strValue> m_operatingMargin;
-	vector<strValue> m_pretaxMargin;
-	vector<strValue> m_salesPerShare;
-	vector<strValue> m_sgaToSale;
-	vector<strValue> m_totalDebtToEquity;
-	vector<strValue> m_totalDebtToTotalAsset;
-	vector<strValue> m_totalDebtToTotalCapital;
-	vector<strValue> m_totalRatio;
+class CBasicFinancialOfSeason {
+public:
+	vector<CValueOfPeriod> m_cashRatio;
+	vector<CValueOfPeriod> m_currentRatio;
+	vector<CValueOfPeriod> m_ebitPerShare;
+	vector<CValueOfPeriod> m_eps;
+	vector<CValueOfPeriod> m_grossMargin;
+	vector<CValueOfPeriod> m_longtermDebtTotalAsset;
+	vector<CValueOfPeriod> m_longtermDebtTotalCapital;
+	vector<CValueOfPeriod> m_longtermDebtTotalEquity;
+	vector<CValueOfPeriod> m_netDebtToTotalCapital;
+	vector<CValueOfPeriod> m_netDebtToTotalEquity;
+	vector<CValueOfPeriod> m_netMargin;
+	vector<CValueOfPeriod> m_operatingMargin;
+	vector<CValueOfPeriod> m_pretaxMargin;
+	vector<CValueOfPeriod> m_salesPerShare;
+	vector<CValueOfPeriod> m_sgaToSale;
+	vector<CValueOfPeriod> m_totalDebtToEquity;
+	vector<CValueOfPeriod> m_totalDebtToTotalAsset;
+	vector<CValueOfPeriod> m_totalDebtToTotalCapital;
+	vector<CValueOfPeriod> m_totalRatio;
 };
 
-struct strSeasonDBData {
+class CItemOfBasicFinancialSeasonData {
+public:
 	CString m_symbol;
 	CString m_type;
 	int m_date;
@@ -207,16 +210,16 @@ public:
 	void AppendQuarterData(CSetFinnhubStockBasicFinancialQuarter& setMetric);
 	void AppendAnnualData(CSetFinnhubStockBasicFinancialAnnual& setMetric);
 
-	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<strSeasonDBData>& vDBData);
-	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<strSeasonDBData>& vDBData);
+	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
-	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<strValue>& vData, CString typeName, vector<strSeasonDBData>& vDBData);
+	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData);
 
-	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<strValue>& vData, CString typeName, vector <strSeasonDBData>& vDBData);
+	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CValueOfPeriod>& vData, CString typeName, vector <CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData);
 
-	bool IsNewData(CString type, strValue vData, vector<strSeasonDBData>& vDBData);
+	bool IsNewData(CString type, CValueOfPeriod vData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
 public:
 	CString m_symbol;
@@ -370,8 +373,8 @@ public:
 	double m_yearToDatePriceReturnDaily;
 
 	// seasonal Financial data
-	strSeasonData m_annual;
-	strSeasonData m_quarter;
+	CBasicFinancialOfSeason m_annual;
+	CBasicFinancialOfSeason m_quarter;
 };
 
 typedef shared_ptr<CFinnhubStockBasicFinancial> CFinnhubStockBasicFinancialPtr;

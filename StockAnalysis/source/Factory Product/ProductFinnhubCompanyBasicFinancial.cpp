@@ -235,7 +235,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	string s;
 	shared_ptr<ptree> ppt;
 	ptree ptMetric, ptSeries, ptAnnual, ptQuarterly;
-	vector<strValue> vData;
+	vector<CValueOfPeriod> vData;
 	int year, month, day;
 
 	ASSERT(pWebData->IsJSonContentType());
@@ -457,9 +457,9 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	return false;
 }
 
-bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<strValue>& vData, const char* szMsg)
+bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<CValueOfPeriod>& vData, const char* szMsg)
 {
-	vector<strValue> vDataTemp;
+	vector<CValueOfPeriod> vDataTemp;
 	try {
 		ptree ptChild;
 		if (ptreeGetChild(pt, szMsg, &ptChild)) {
@@ -475,12 +475,12 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<strVa
 	return true;
 }
 
-bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<strValue>& vecData) {
+bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<CValueOfPeriod>& vecData) {
 	ptree pt2;
 
 	try {
 		for (ptree::iterator it = ptData.begin(); it != ptData.end(); ++it) {
-			strValue sv{ 0, 0 };
+			CValueOfPeriod sv{ 0, 0 };
 			string sDate;
 			int year{ 0 }, month{ 0 }, day{ 0 };
 			pt2 = it->second;

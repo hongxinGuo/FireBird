@@ -399,9 +399,9 @@ namespace StockAnalysisTest {
 	}
 
 	struct StrConvertDoubleToString {
-		StrConvertDoubleToString(double dValue, CString strValue, long lDividend) {
+		StrConvertDoubleToString(double dValue, CString CValueOfPeriod, long lDividend) {
 			m_dValue = dValue;
-			m_strValue = strValue;
+			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
 		}
 
@@ -425,7 +425,7 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
-			strValue = pData->m_strValue;
+			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
 		}
 
@@ -435,7 +435,7 @@ namespace StockAnalysisTest {
 
 	public:
 		double dValue;
-		CString strValue;
+		CString CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -444,13 +444,13 @@ namespace StockAnalysisTest {
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
 		CString str = ConvertValueToString(dValue, lDividend);
-		EXPECT_STREQ(str, strValue);
+		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertLongToString {
-		StrConvertLongToString(long lValue, CString strValue, long lDividend) {
+		StrConvertLongToString(long lValue, CString CValueOfPeriod, long lDividend) {
 			m_lValue = lValue;
-			m_strValue = strValue;
+			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
 		}
 
@@ -483,7 +483,7 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
-			strValue = pData->m_strValue;
+			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
 		}
 
@@ -493,7 +493,7 @@ namespace StockAnalysisTest {
 
 	public:
 		long lValue;
-		CString strValue;
+		CString CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -502,13 +502,13 @@ namespace StockAnalysisTest {
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
 		CString str = ConvertValueToString(lValue, lDividend);
-		EXPECT_STREQ(str, strValue);
+		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertIntegerToString {
-		StrConvertIntegerToString(int iValue, CString strValue, long lDividend) {
+		StrConvertIntegerToString(int iValue, CString CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
-			m_strValue = strValue;
+			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
 		}
 
@@ -541,7 +541,7 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
-			strValue = pData->m_strValue;
+			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
 		}
 
@@ -551,7 +551,7 @@ namespace StockAnalysisTest {
 
 	public:
 		int iValue;
-		CString strValue;
+		CString CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -560,13 +560,13 @@ namespace StockAnalysisTest {
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
 		CString str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str, strValue);
+		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertINT64ToString {
-		StrConvertINT64ToString(INT64 iValue, CString strValue, long lDividend) {
+		StrConvertINT64ToString(INT64 iValue, CString CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
-			m_strValue = strValue;
+			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
 		}
 
@@ -599,7 +599,7 @@ namespace StockAnalysisTest {
 			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
 			StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
-			strValue = pData->m_strValue;
+			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
 		}
 
@@ -609,7 +609,7 @@ namespace StockAnalysisTest {
 
 	public:
 		INT64 iValue;
-		CString strValue;
+		CString CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -618,7 +618,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
 		CString str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str, strValue);
+		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
 	class CRSReferenceTest : public ::testing::Test {

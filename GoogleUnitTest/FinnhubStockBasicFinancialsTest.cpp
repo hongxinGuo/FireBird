@@ -36,8 +36,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubStockBasicFinancialTest, TestIsNewData) {
 		CFinnhubStockBasicFinancial finnhubStockBasicFinancial;
-		vector<strSeasonDBData> vDBData;
-		strSeasonDBData data;
+		vector<CItemOfBasicFinancialSeasonData> vDBData;
+		CItemOfBasicFinancialSeasonData data;
 		data.m_symbol = _T("AAPL");
 		data.m_type = _T("currentRatio");
 		data.m_date = 20190101;
@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 		data.m_value = 3.0;
 		vDBData.push_back(data);
 
-		strValue valueData{ 20190101, 1.0 };
+		CValueOfPeriod valueData{ 20190101, 1.0 };
 		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData)) << "数据已存在于数据库中";
 		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
 		valueData.m_period = 20220101;
@@ -65,8 +65,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveQuarterData) {
 		CFinnhubStockBasicFinancial instance;
 		CSetFinnhubStockBasicFinancialQuarter setQuarter;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_quarter.m_cashRatio.push_back({ 20210630, 1.0 }); // 数据库中已有
@@ -114,8 +114,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAllQuarterData) {
 		CFinnhubStockBasicFinancial instance;
 		CSetFinnhubStockBasicFinancialQuarter setQuarter;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
@@ -243,8 +243,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestAppendQuarterData) {
 		CFinnhubStockBasicFinancial instance;
 		CSetFinnhubStockBasicFinancialQuarter setQuarter;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
@@ -379,8 +379,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAnnualData) {
 		CFinnhubStockBasicFinancial instance;
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_annual.m_cashRatio.push_back({ 20191231, 1.0 }); // 数据库中已有
@@ -428,8 +428,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestSaveAllAnnualData) {
 		CFinnhubStockBasicFinancial instance, instanceLoaded;
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
@@ -558,8 +558,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockBasicFinancialTest, TestAppendAnnualData) {
 		CFinnhubStockBasicFinancial instance, instanceLoaded;
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
-		vector<strSeasonDBData> seasonDBData;
-		strSeasonDBData dbData;
+		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
+		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
 		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
