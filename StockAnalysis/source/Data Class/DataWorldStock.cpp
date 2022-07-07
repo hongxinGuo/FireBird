@@ -229,9 +229,18 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 更新基本金融信息
+//
+// 为了加速函数的执行，UpdateBasicFinancialAnnualDB和UpdateBasicFinancialQuarterDB都生成独立的工作线程，传入的参数vStock
+// 在这些工作线程持续期间就必须保持有效，故而必须将vStock声明为static的，这样才能够保证，否则主函数UpdateBasicFinancialDB执行
+// 完毕后vStock的内存就释放了，而工作线程可能尚未执行完毕前，参数vStock就无效了。
+//
+////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	static bool sm_fInProcess = false;
-	vector<CWorldStockPtr> vStock;
+	static vector<CWorldStockPtr> vStock; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
 	CWorldStockPtr pStock = nullptr;
 
 	if (sm_fInProcess) {
@@ -241,6 +250,8 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	else {
 		sm_fInProcess = true;
 	}
+	vStock.clear();
+
 	for (auto& pStock4 : m_vWorldStock) {
 		if (pStock4->IsUpdateBasicFinancialDB()) {
 			vStock.push_back(pStock4);
