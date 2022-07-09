@@ -201,7 +201,7 @@ namespace StockAnalysisTest {
 		FinnhubForexSymbol.SetDayLineNeedSaving(true);
 		FinnhubForexSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
 		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);
@@ -246,7 +246,7 @@ namespace StockAnalysisTest {
 		FinnhubForexSymbol.SetDayLineNeedSaving(true);
 		FinnhubForexSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
 		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);

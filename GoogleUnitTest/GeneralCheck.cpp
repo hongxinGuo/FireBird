@@ -19,7 +19,7 @@ namespace StockAnalysisTest {
 	}
 
 	void EnvironmentCheck(void) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 
 		EXPECT_FALSE(gl_systemStatus.IsExitingSystem());
 	}

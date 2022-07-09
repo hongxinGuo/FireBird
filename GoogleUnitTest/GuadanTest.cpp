@@ -58,14 +58,14 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
 		static void TearDownTestSuite() {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
 		virtual void TearDown(void) override {

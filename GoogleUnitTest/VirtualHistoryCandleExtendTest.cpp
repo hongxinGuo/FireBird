@@ -38,7 +38,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDate) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetOpen) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetOpen(), 0);
 		dl.SetOpen(11100);
@@ -124,7 +124,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetChangeHandRate) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
 		dl.SetChangeHandRate(30.30);

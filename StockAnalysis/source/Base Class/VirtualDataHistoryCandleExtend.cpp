@@ -98,7 +98,7 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic) {
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 
-	if (gl_systemStatus.IsNormalMode()) ASSERT(!m_fLoadDataFirst);
+	if (gl_systemStatus.IsWorkingMode()) ASSERT(!m_fLoadDataFirst);
 	ASSERT(psetHistoryCandleBasic->IsOpen());
 
 	// 装入DayLine数据
@@ -123,7 +123,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	int iPosition = 0;
 
-	if (gl_systemStatus.IsNormalMode()) ASSERT(m_fLoadDataFirst);
+	if (gl_systemStatus.IsWorkingMode()) ASSERT(m_fLoadDataFirst);
 	ASSERT(psetHistoryCandleExtend->IsOpen());
 
 	while (!psetHistoryCandleExtend->IsEOF()) {

@@ -58,7 +58,7 @@ namespace StockAnalysisTest {
 		NaicsIndustry.m_strSubSector = _T("Beijing");
 		NaicsIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setNaicsIndustry.Open();
 		setNaicsIndustry.m_pDatabase->BeginTrans();
 		NaicsIndustry.Append(setNaicsIndustry);

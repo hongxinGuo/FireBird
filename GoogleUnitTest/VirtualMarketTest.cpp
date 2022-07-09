@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		time_t tUTC;
 		tm tm_, tmLocal;
 
@@ -336,7 +336,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		time_t tUTC;
 		tm tm_;
 		time(&tUTC);

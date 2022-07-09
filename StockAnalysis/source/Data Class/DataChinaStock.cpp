@@ -723,7 +723,7 @@ bool CDataChinaStock::UpdateTodayTempDB(void) {
 bool CDataChinaStock::DeleteTodayTempDB(void) {
 	CDatabase database;
 
-	if (!gl_systemStatus.IsNormalMode()) {
+	if (!gl_systemStatus.IsWorkingMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1); //退出系统
 	}

@@ -239,74 +239,35 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
-	static bool sm_fInProcess = false;
-	static vector<CWorldStockPtr> vStock; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
+	static bool s_fInProcess = false;
+	static vector<CWorldStockPtr> s_vStock{}; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
 	CWorldStockPtr pStock = nullptr;
 
-	if (sm_fInProcess) {
+	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
 		return false;
 	}
 	else {
-		sm_fInProcess = true;
+		s_fInProcess = true;
 	}
-	vStock.clear();
+	s_vStock.clear();
 
 	for (auto& pStock4 : m_vWorldStock) {
 		if (pStock4->IsUpdateBasicFinancialDB()) {
-			vStock.push_back(pStock4);
+			s_vStock.push_back(pStock4);
 		}
 	}
 
-	UpdateBasicFinancialAnnualDB(vStock); // 此函数使用线程来加速，要先执行
-	UpdateBasicFinancialQuarterDB(vStock); // 此函数使用线程来加速，要先执行
-	UpdateBasicFinancialMetricDB(vStock); // 此函数必须最后执行。
+	UpdateBasicFinancialAnnualDB(s_vStock); // 此函数使用线程来加速，要先执行
+	UpdateBasicFinancialQuarterDB(s_vStock); // 此函数使用线程来加速，要先执行
+	UpdateBasicFinancialMetricDBAndClearFlag(s_vStock); // 此函数必须最后执行。
 
-	for (auto& pStock5 : vStock) {
+	for (auto& pStock5 : s_vStock) {
+		ASSERT(!pStock5->IsUpdateBasicFinancialDB());
 		pStock5->SetUpdateBasicFinancialDB(false);
 	}
 
-	sm_fInProcess = false;
-	return true;
-}
-
-bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
-	CWorldStockPtr pStock = nullptr;
-	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	int iBasicFinancialNeedUpdate = 0;
-	int iCurrentUpdated = 0;
-
-	//更新原有的基本财务信息
-	if (IsBasicFinancialNeedUpdate()) {
-		iBasicFinancialNeedUpdate = vStock.size();
-		setBasicFinancialMetric.m_strSort = _T("[Symbol]");
-		setBasicFinancialMetric.Open();
-		setBasicFinancialMetric.m_pDatabase->BeginTrans();
-		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-			if (setBasicFinancialMetric.IsEOF()) break;
-			pStock = GetStock(setBasicFinancialMetric.m_symbol);
-			if (vStock.end() != find(vStock.begin(), vStock.end(), pStock)) {
-				iCurrentUpdated++;
-				pStock->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-			}
-			setBasicFinancialMetric.MoveNext();
-		}
-		if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-			ASSERT(setBasicFinancialMetric.IsEOF());
-			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveLast();
-			if (!setBasicFinancialMetric.IsEOF()) setBasicFinancialMetric.MoveNext();
-			for (int i = iCurrentUpdated; i < iBasicFinancialNeedUpdate; i++) {
-				auto& pStock3 = vStock.at(i);
-				ASSERT(pStock3->IsUpdateBasicFinancialDB());
-				iCurrentUpdated++;
-				pStock3->AppendBasicFinancialMetric(setBasicFinancialMetric);
-				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
-			}
-		}
-		setBasicFinancialMetric.m_pDatabase->CommitTrans();
-		setBasicFinancialMetric.Close();
-	}
-
+	s_fInProcess = false;
 	return true;
 }
 
@@ -323,6 +284,46 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock
 		thread thread1(ThreadUpdateBasicFinancialAnnualDB, pStock.get());
 		thread1.detach();
 	}
+	return true;
+}
+
+bool CDataWorldStock::UpdateBasicFinancialMetricDBAndClearFlag(vector<CWorldStockPtr> vStock) {
+	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
+	int iBasicFinancialNeedUpdate = vStock.size();
+	int iCurrentUpdated = 0;
+
+	ASSERT(IsBasicFinancialNeedUpdate());
+	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
+	setBasicFinancialMetric.Open();
+	setBasicFinancialMetric.m_pDatabase->BeginTrans();
+	//更新原有的基本财务信息
+	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+		if (setBasicFinancialMetric.IsEOF()) break;
+		auto pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
+		if (vStock.end() != find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
+			iCurrentUpdated++;
+			pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
+			pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
+		}
+		setBasicFinancialMetric.MoveNext();
+	}
+	// 添加新的基本财务数据
+	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+		ASSERT(setBasicFinancialMetric.IsEOF());
+		for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
+			auto& pStockNeedAppend = vStock.at(i);
+			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
+				iCurrentUpdated++;
+				pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
+				pStockNeedAppend->SetUpdateBasicFinancialDB(false);
+				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
+			}
+		}
+	}
+	setBasicFinancialMetric.m_pDatabase->CommitTrans();
+	setBasicFinancialMetric.Close();
+	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
+
 	return true;
 }
 

@@ -368,7 +368,7 @@ CString XferStandredToTengxun(CString strStandred) {
 
 CString GetSchemaConnect(CString strSchema)
 {
-	if (gl_systemStatus.IsNormalMode()) {
+	if (gl_systemStatus.IsWorkingMode()) {
 		return _T("DSN=") + strSchema + _T(";UID=") + gl_systemConfigeration.GetDatabaseAccountName() + _T(";PASSWORD=") +
 			gl_systemConfigeration.GetDatabaseAccountPassword() + _T(";charset=utf8mb4"); // 运行时的DSN使用原schema名称
 	}

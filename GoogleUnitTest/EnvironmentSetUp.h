@@ -56,7 +56,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT(!gl_systemStatus.IsNormalMode());
+			ASSERT(!gl_systemStatus.IsWorkingMode());
 
 			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
 

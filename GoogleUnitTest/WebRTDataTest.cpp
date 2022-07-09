@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CStockWebRTDataTest, TestInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
@@ -340,7 +340,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			SinaRTData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;

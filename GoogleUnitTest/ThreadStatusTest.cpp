@@ -33,7 +33,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
 		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());

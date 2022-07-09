@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		EPSSurprise.m_dEstimate = 1.0;
 		EPSSurprise.m_lDate = 20202020;
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setEPSSurprise.Open();
 		setEPSSurprise.m_pDatabase->BeginTrans();
 		EPSSurprise.Append(setEPSSurprise);

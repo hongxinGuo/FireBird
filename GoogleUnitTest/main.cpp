@@ -284,7 +284,7 @@ int main(int argc, char* argv[]) {
 	// gtest takes ownership of the TestEnvironment ptr - we don't delete it.
 	::testing::AddGlobalTestEnvironment(new TestEnvironment);
 
-	ASSERT(!gl_systemStatus.IsNormalMode());
+	ASSERT(!gl_systemStatus.IsWorkingMode());
 
 	return RUN_ALL_TESTS();
 }

@@ -38,9 +38,9 @@ public:
 	bool UpdateProfileDB(void);
 
 	bool UpdateBasicFinancialDB(void);
-	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
 	bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
 	bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
+	bool UpdateBasicFinancialMetricDBAndClearFlag(vector<CWorldStockPtr> vStock);
 
 	bool CheckStockSymbol(CWorldStockPtr pstock);
 

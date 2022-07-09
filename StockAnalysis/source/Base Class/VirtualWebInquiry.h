@@ -21,6 +21,7 @@ public:
 	virtual void OpenFile(CString strInquiring);
 	virtual bool ReadingWebData(void); // 网络实际读取函数
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
+	bool IncreaseBufferSizeIfNeeded(long lSize = 1024 * 1024);
 
 	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) { TRACE("调用了基类函数\n"); return false; }; // 解析接收到的数据。继承类必须实现此函数。

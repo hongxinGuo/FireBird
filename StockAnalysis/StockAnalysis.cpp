@@ -98,8 +98,8 @@ BOOL CStockAnalysisApp::InitInstance() {
 		return false;
 	}
 #endif // DEBUG
-	ASSERT(!gl_systemStatus.IsNormalMode()); // 确保此标识初始态为测试状态
-	gl_systemStatus.SetNormalMode(true); // 实际系统，测试状态为假。
+	ASSERT(!gl_systemStatus.IsWorkingMode()); // 确保此标识初始态为测试状态
+	gl_systemStatus.SetWorkingMode(true); // 实际系统，测试状态为假。
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，

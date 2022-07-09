@@ -202,7 +202,7 @@ namespace StockAnalysisTest {
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
 		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
@@ -247,7 +247,7 @@ namespace StockAnalysisTest {
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
 		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);

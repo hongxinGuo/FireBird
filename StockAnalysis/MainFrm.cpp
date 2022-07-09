@@ -162,7 +162,7 @@ void CMainFrame::Reset(void) {
 }
 
 CMainFrame::~CMainFrame() {
-	if (!gl_systemStatus.IsNormalMode()) TRACE("使用了Test驱动\n");
+	if (!gl_systemStatus.IsWorkingMode()) TRACE("使用了Test驱动\n");
 
 	gl_systemStatus.SetExitingSystem(true);
 
@@ -491,7 +491,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		s_iCounterforUpdateStatusBar = 0;
 	}
 
-	if (!gl_systemStatus.IsNormalMode()) {
+	if (!gl_systemStatus.IsWorkingMode()) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
 	}
 

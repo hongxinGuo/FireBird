@@ -93,7 +93,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->CalculateTime();

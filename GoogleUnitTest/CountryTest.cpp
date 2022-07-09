@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 
 		country.m_strCode2 = _T("AA");
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setCountry.Open();
 		setCountry.m_pDatabase->BeginTrans();
 		country.Append(setCountry);

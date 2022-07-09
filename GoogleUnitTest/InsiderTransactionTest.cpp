@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 
 		insiderTransaction.m_strSymbol = _T("AA.US");
 
-		ASSERT(!gl_systemStatus.IsNormalMode());
+		ASSERT(!gl_systemStatus.IsWorkingMode());
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		insiderTransaction.Append(setInsiderTransaction);

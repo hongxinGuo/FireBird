@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	TEST(CWebRTDataTest, TestTengxunInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsNormalMode());
+		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));

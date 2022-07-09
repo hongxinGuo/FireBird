@@ -1,3 +1,4 @@
+#include "VirtualWebInquiry.h"
 #include"pch.h"
 
 #include"ThreadStatus.h"
@@ -153,12 +154,9 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			}
 			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
 
-			if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
-				m_sBuffer.resize(m_sBuffer.size() + 1024 * 1024); // 扩大1M数据范围
-			}
+			IncreaseBufferSizeIfNeeded();
 		} while (lCurrentByteReaded > 0);
 		m_lTotalByteReaded += m_lByteRead;
-		ASSERT(m_pFile != nullptr);
 		if (m_pFile != nullptr) {
 			m_pFile->Close();
 			delete m_pFile;
@@ -222,6 +220,13 @@ UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	}
 
 	return uByteRead;
+}
+
+bool CVirtualWebInquiry::IncreaseBufferSizeIfNeeded(long lSize) {
+	if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
+		m_sBuffer.resize(m_sBuffer.size() + lSize); // 扩大lSize（默认为1M）数据范围
+	}
+	return true;
 }
 
 bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {

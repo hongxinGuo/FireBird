@@ -5,5 +5,5 @@
 CSystemStatus::CSystemStatus() {
 	m_fExitingSystem = false;
 	m_fExitingCalculatingRS = false;
-	m_fNormalMode = false;
+	m_fWorkingMode = false;
 }
