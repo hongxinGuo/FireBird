@@ -12,17 +12,8 @@
 atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
-	DWORD dwValue = 0;
-
 	m_pSession = new CInternetSession(_T("StockAnalysis")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
-	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
-	m_pSession->QueryOption(INTERNET_OPTION_SEND_TIMEOUT, dwValue);
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
-	m_pSession->QueryOption(INTERNET_OPTION_CONNECT_RETRIES, dwValue); // 查询重连次数
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 5次重试
-	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
+	SetDefaultSessionOption();
 	m_pFile = nullptr;
 	m_strHeaders = _T("");
 
@@ -53,6 +44,19 @@ CVirtualWebInquiry::~CVirtualWebInquiry(void) {
 		delete m_pSession;
 		m_pSession = nullptr;
 	}
+}
+
+void CVirtualWebInquiry::SetDefaultSessionOption(void) {
+	DWORD dwValue = 0;
+
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->QueryOption(INTERNET_OPTION_SEND_TIMEOUT, dwValue);
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->QueryOption(INTERNET_OPTION_CONNECT_RETRIES, dwValue); // 查询重连次数
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 5次重试
+	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 }
 
 void CVirtualWebInquiry::Reset(void) noexcept {
@@ -157,11 +161,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			IncreaseBufferSizeIfNeeded();
 		} while (lCurrentByteReaded > 0);
 		m_lTotalByteReaded += m_lByteRead;
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
-		}
+		counter.Stop();
 	}
 	catch (CInternetException* exception) {
 		counter.Stop();
@@ -177,6 +177,11 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 		strMessage += m_strInquire;
 		SetWebError(true);
 		gl_systemMessage.PushErrorMessage(strMessage);
+	}
+	if (m_pFile != nullptr) {
+		m_pFile->Close();
+		delete m_pFile;
+		m_pFile = nullptr;
 	}
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
