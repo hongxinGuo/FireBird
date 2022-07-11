@@ -11,6 +11,7 @@
 #include"HighPerformanceCounter.h"
 
 #include"GeneralCheck.h"
+#include"TimeConvert.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"

@@ -165,6 +165,7 @@
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="..\StockAnalysis\source\System\SystemStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
+    <ClInclude Include="..\StockAnalysis\source\TimeConvert.h" />
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
@@ -366,6 +368,7 @@
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp">

@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"TimeConvert.h"
+
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 

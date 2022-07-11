@@ -40,3 +40,6 @@ class CSinaRTWebInquiry;
 class CTengxunRTWebInquiry;
 class CNeteaseDayLineWebInquiry;
 class CNeteaseDayLineWebData;
+
+class CFinnhubForexSymbol;
+class CFinnhubCryptoSymbol;

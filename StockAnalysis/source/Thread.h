@@ -1,27 +1,18 @@
-#pragma once
-
-#include"Accessory.h"
-
-#include<gsl/gsl>
-using namespace gsl;
-
-class CVirtualWebInquiry;
-class CFinnhubForexSymbol;
-class CFinnhubCryptoSymbol;
-class CChinaStock;
-typedef shared_ptr<CChinaStock> CChinaStockPtr;
-class CChinaMarket;
-class CWorldMarket;
-class CWorldStock;
-class CNeteaseDayLineWebInquiry;
-
 // 各工作线程声明
 // 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。
 // 工作线程用于处理耗时任务。为了简化程序起见，目前只将两种任务作为线程：一种是处理数据库的任务，另一种是远程异步接收网络数据的任务。
 // 其他工作都放入主线程（以减少同步问题的发生）。
+#pragma once
+
+#include"RSReference.h"
+
+#include"ClassDeclaration.h"
+
+#include<gsl/gsl>
+using namespace gsl;
 
 // 网络读取任务
-
+//
 // VirtualWebInquiry线程。通用网络读取线程
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData); // 此线程返回值为1
 // 读取新浪实时数据线程。网址：http://hq.sinajs.cn/list=

@@ -1,6 +1,8 @@
 #include"pch.h"
 #include "globedef.h"
 
+#include"TimeConvert.h"
+
 #include"jsonParse.h"
 #include"WebRTData.h"
 #include"ChinaMarket.h"

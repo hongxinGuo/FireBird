@@ -14,6 +14,7 @@ enum {
 };
 
 #include"Accessory.h"
+#include"RSReference.h"
 
 #include"VirtualStock.h"
 

@@ -1,7 +1,8 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"accessory.h"
+//#include"accessory.h"
+#include"TimeConvert.h"
 #include"Thread.h"
 
 #include"ThreadStatus.h"

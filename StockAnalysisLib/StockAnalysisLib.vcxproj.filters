@@ -693,6 +693,12 @@
     <ClInclude Include="..\StockAnalysis\pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\RSReference.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\TimeConvert.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1210,6 +1216,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp">
       <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

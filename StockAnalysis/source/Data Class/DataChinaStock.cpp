@@ -1,10 +1,12 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
+#include"TimeConvert.h"
 
 #include"ChinaMarket.h"
 #include "DataChinaStock.h"
 #include"CallableFunction.h"
+#include"RSReference.h"
 #include"Thread.h"
 
 #include"SetRSStrongStock.h"
@@ -890,7 +892,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 	if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
 		setWeekLineBasicInfo.Close();
 		CString str = strDate;
-		str += _T("日数据集为空，没有计算相对强度");
+		str += _T("日数据集为空， 没有计算相对强度");
 		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}

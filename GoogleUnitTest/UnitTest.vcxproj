@@ -143,6 +143,7 @@
     <ClCompile Include="ProductTiingoStockDayLineTest.cpp" />
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
+    <ClCompile Include="TimeConvertTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

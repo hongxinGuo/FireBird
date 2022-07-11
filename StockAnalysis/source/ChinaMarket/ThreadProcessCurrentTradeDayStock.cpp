@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
+#include"TimeConvert.h"
 
 #include"DayLine.h"
 #include"ChinaMarket.h"

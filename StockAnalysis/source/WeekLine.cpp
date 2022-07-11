@@ -1,6 +1,8 @@
 #include"pch.h"
 
-#include"accessory.h"
+//#include"accessory.h"
+#include"TimeConvert.h"
+
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {

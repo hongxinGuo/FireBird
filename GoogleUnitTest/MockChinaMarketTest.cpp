@@ -8,6 +8,7 @@
 #include"ThreadStatus.h"
 
 #include"Thread.h"
+#include"TimeConvert.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
