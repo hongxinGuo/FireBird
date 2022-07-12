@@ -273,16 +273,18 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 
 bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
 	for (auto& pStock : vStock) {
-		thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, pStock.get());
-		thread1.detach();
+		//thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, pStock.get());
+		//thread1.detach();
+		pStock->AppendBasicFinancialQuarter();
 	}
 	return true;
 }
 
 bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 	for (auto& pStock : vStock) {
-		thread thread1(ThreadUpdateBasicFinancialAnnualDB, pStock.get());
-		thread1.detach();
+		//thread thread1(ThreadUpdateBasicFinancialAnnualDB, pStock.get());
+		//thread1.detach();
+		pStock->AppendBasicFinancialAnnual();
 	}
 	return true;
 }
