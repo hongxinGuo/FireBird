@@ -45,7 +45,8 @@ namespace StockAnalysisTest {
 		CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		InSequence seq;
 		EXPECT_CALL(m_VirtualWebInquiry, OpenFile(strInquiry))
-			.Times(1);
+			.Times(1)
+			.WillOnce(Return(true));
 		EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
 			.Times(6)
 			.WillOnce(Return(1024)) //第一次返回值为0
@@ -58,6 +59,21 @@ namespace StockAnalysisTest {
 		m_VirtualWebInquiry.SetInquiringString(strInquiry);
 		EXPECT_TRUE(m_VirtualWebInquiry.ReadingWebData());
 		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
+		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
+	}
+
+	TEST_F(CMockVirtualWebInquiryTest, TestReadWebData2) {
+		CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		InSequence seq;
+		EXPECT_CALL(m_VirtualWebInquiry, OpenFile(strInquiry))
+			.Times(1)
+			.WillOnce(Return(false));
+		EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
+			.Times(0); // 当打开网络文件失败时，不去读取该文件
+		m_VirtualWebInquiry.SetReadingWebData(true);
+		m_VirtualWebInquiry.SetInquiringString(strInquiry);
+		EXPECT_FALSE(m_VirtualWebInquiry.ReadingWebData()) << "打开网络文件失败时，函数报错";
+		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError()) << "Mock函数并没有设置此标识，真实情况下是设置了的";
 		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
 	}
 

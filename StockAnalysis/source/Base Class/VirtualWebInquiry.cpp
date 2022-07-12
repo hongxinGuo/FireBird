@@ -136,55 +136,52 @@ void CVirtualWebInquiry::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {
-	m_pFile = nullptr;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
 	CString strMessage, strErrorNo;
 	char buffer[30];
-	CHighPerformanceCounter counter;
-	counter.Start();
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetWebError(false);
 	SetByteReaded(0);
 
-	try {
-		OpenFile(GetInquiringString());
-		do {
-			if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
-				fReadingSuccess = false;
-				break;
-			}
-			lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+	ASSERT(m_pFile == nullptr);
+	if (OpenFile(GetInquiringString())) {
+		try {
+			do {
+				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
+					fReadingSuccess = false;
+					break;
+				}
+				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
 
-			IncreaseBufferSizeIfNeeded();
-		} while (lCurrentByteReaded > 0);
-		m_lTotalByteReaded += m_lByteRead;
-		counter.Stop();
+				IncreaseBufferSizeIfNeeded();
+			} while (lCurrentByteReaded > 0);
+			m_lTotalByteReaded += m_lByteRead;
+		}
+		catch (CInternetException* exception) {
+			fReadingSuccess = false;
+			m_dwWebErrorCode = exception->m_dwError;
+			sprintf_s(buffer, _T("%d"), exception->m_dwError);
+			strErrorNo = buffer;
+			strMessage = _T("Net Error #") + strErrorNo;
+			strMessage += _T(" Message: ");
+			strMessage += m_strInquire;
+			SetWebError(true);
+			gl_systemMessage.PushErrorMessage(strMessage);
+			exception->Delete();
+		}
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
 	}
-	catch (CInternetException* exception) {
-		counter.Stop();
-		fReadingSuccess = false;
-		m_dwWebErrorCode = exception->m_dwError;
-		sprintf_s(buffer, _T("%d"), exception->m_dwError);
-		strErrorNo = buffer;
-		strMessage = _T("Net Error #") + strErrorNo;
-		sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
-		strMessage += _T(" 用时:");
-		strMessage += buffer;
-		strMessage += _T(" Message: ");
-		strMessage += m_strInquire;
-		SetWebError(true);
-		gl_systemMessage.PushErrorMessage(strMessage);
-	}
-	if (m_pFile != nullptr) {
-		m_pFile->Close();
-		delete m_pFile;
-		m_pFile = nullptr;
-	}
+	else fReadingSuccess = false;
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
+	ASSERT(m_pFile == nullptr);
 
 	return fReadingSuccess;
 }
@@ -198,17 +195,58 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 /// </summary>
 /// <param name="strInquiring"></param>
 /// <returns></returns>
-void CVirtualWebInquiry::OpenFile(CString strInquiring) {
-	CString str;
+bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
+	bool fStatus = true;
+	CString strMessage, strErrorNo;
+	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
+	CHighPerformanceCounter counter;
+
+	counter.Start();
 
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-	if (str.GetLength() > 0) {
-		m_lContentLength = atol(str.GetBuffer());
+	try {
+		// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
+		// 其他的数据尚未需要提供头验证数据。
+		if (gl_systemStatus.IsExitingSystem()) {
+			fStatus = false;
+		}
+		else {
+			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+		}
 	}
+	catch (CInternetException* exception) {
+		ASSERT(m_pFile == nullptr);
+		if (m_pFile != nullptr) {
+			m_pFile->Close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
+		counter.Stop();
+		m_dwWebErrorCode = exception->m_dwError;
+		sprintf_s(buffer, _T("%d"), exception->m_dwError);
+		strErrorNo = buffer;
+		strMessage = _T("Net Error #") + strErrorNo;
+		sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
+		strMessage += _T(" 用时:");
+		strMessage += buffer;
+		strMessage += _T(" message: ");
+		strMessage += m_strInquire;
+		SetWebError(true);
+		gl_systemMessage.PushErrorMessage(strMessage);
+		fStatus = false;
+		exception->Delete();
+	}
+	if (fStatus) {
+		CString str;
+		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+		if (str.GetLength() > 0) {
+			m_lContentLength = atol(str.GetBuffer());
+		}
+	}
+
+	return fStatus;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

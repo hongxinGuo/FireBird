@@ -21,7 +21,7 @@ public:
 	void SetDefaultSessionOption(void);
 
 	virtual bool ReadingWebData(void); // 网络实际读取函数
-	virtual void OpenFile(CString strInquiring);
+	virtual bool OpenFile(CString strInquiring);
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	bool IncreaseBufferSizeIfNeeded(long lSize = 1024 * 1024);
 
