@@ -271,21 +271,39 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
-	//for (auto& pStock : vStock) {
-		//pStock->AppendBasicFinancialQuarter();
-	//}
-	thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, vStock);
-	thread1.detach();
+	if (gl_systemConfigeration.IsUsingFastCPU()) {
+		thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, vStock);
+		thread1.detach();
+	}
+	else {
+		for (auto& pStock : vStock) {
+			pStock->AppendBasicFinancialQuarter();
+		}
+	}
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
-	//for (auto& pStock : vStock) {
-		//pStock->AppendBasicFinancialAnnual();
-	//}
-	thread thread1(ThreadUpdateBasicFinancialAnnualDB, vStock);
-	thread1.detach();
+	if (gl_systemConfigeration.IsUsingFastCPU()) {
+		thread thread1(ThreadUpdateBasicFinancialAnnualDB, vStock);
+		thread1.detach();
+	}
+	else {
+		for (auto& pStock : vStock) {
+			pStock->AppendBasicFinancialAnnual();
+		}
+	}
 	return true;
 }
 

@@ -29,6 +29,8 @@ public:
 	CString GetDefaultFileName(void) { return m_strFileName; }
 
 	// 获取系统配置参数
+	bool IsUsingFastCPU(void) noexcept { return m_bUsingFastCPU; }
+	void SetUsingFastCPU(bool bUsingFastCPU) noexcept { m_bUsingFastCPU = bUsingFastCPU; }
 	CString GetDatabaseAccountName(void) noexcept { return m_strDatabaseAccountName; }
 	void SetDatabaseAccountName(CString strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
 	CString GetDatabaseAccountPassword(void) noexcept { return m_strDatabaseAccountPassword; }
@@ -92,6 +94,7 @@ protected:
 	CString m_strFileName; // 配置文件名称
 
 	// 系统配置
+	bool m_bUsingFastCPU; //  是否使用快速CPU
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值

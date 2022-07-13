@@ -27,6 +27,8 @@ namespace StockAnalysisTest {
 		json jsSystemConfigeration = json::parse(gl_sSystemConfigeration);
 		string sTemp;
 
+		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/UsingFastCPU")));
+
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/DatabaseAccountName"));
 		EXPECT_TRUE(sTemp.compare("hxguo") == 0);
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/DatabaseAccountPassword"));
@@ -53,6 +55,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CSystemConfigerationTest, TestInitialize) {
+		EXPECT_TRUE(gl_systemConfigeration.IsUsingFastCPU());
 		EXPECT_STREQ(gl_systemConfigeration.GetDatabaseAccountName(), _T("hxguo"));
 		EXPECT_STREQ(gl_systemConfigeration.GetDatabaseAccountPassword(), _T("hxguo"));
 		EXPECT_EQ(gl_systemConfigeration.GetBackgroundThreadPermittedNumber(), 8);

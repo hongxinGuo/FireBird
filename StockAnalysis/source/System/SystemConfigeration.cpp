@@ -38,6 +38,7 @@ using namespace std;
 std::string gl_sSystemConfigeration = R"(
 {
 "SystemConfigeration": {
+	"UsingFastCPU" : true,
   "DatabaseAccountName" : "hxguo",
 	"DatabaseAccountPassword" : "hxguo",
 	"BackgroundThreadPermittedNumber" : 8,
@@ -90,6 +91,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_strFileName = _T("C:\\StockAnalysis\\SystemConfigeration.json"); // json file name
 
 	// 系统配置
+	m_bUsingFastCPU = true; // 默认使用快速CPU
 	m_strDatabaseAccountName = _T("hxguo");
 	m_strDatabaseAccountPassword = _T("hxguo");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
@@ -151,6 +153,10 @@ void CSystemConfigeration::Update() {
 
 	try {
 		// 系统配置
+		try {
+			m_bUsingFastCPU = m_systemConfigeration.at("SystemConfigeration").at("UsingFastCPU");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
 			sTemp = m_systemConfigeration.at("SystemConfigeration").at("DatabaseAccountName");
 			m_strDatabaseAccountName = sTemp.c_str();
@@ -256,6 +262,7 @@ void CSystemConfigeration::Update() {
 }
 
 void CSystemConfigeration::UpdateJson(void) {
+	m_systemConfigeration["SystemConfigeration"]["UsingFastCPU"] = m_bUsingFastCPU;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
