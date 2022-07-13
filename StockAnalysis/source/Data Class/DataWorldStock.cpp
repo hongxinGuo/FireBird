@@ -240,7 +240,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	static bool s_fInProcess = false;
-	static vector<CWorldStockPtr> s_vStock{}; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
+	static vector<CWorldStockPtr> s_vStock{};
 	CWorldStockPtr pStock = nullptr;
 
 	if (s_fInProcess) {
@@ -250,17 +250,17 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	else {
 		s_fInProcess = true;
 	}
-	s_vStock.clear();
 
+	s_vStock.clear();
 	for (auto& pStock4 : m_vWorldStock) {
 		if (pStock4->IsUpdateBasicFinancialDB()) {
 			s_vStock.push_back(pStock4);
 		}
 	}
 
-	UpdateBasicFinancialAnnualDB(s_vStock); // 此函数使用线程来加速，要先执行
-	UpdateBasicFinancialQuarterDB(s_vStock); // 此函数使用线程来加速，要先执行
-	UpdateBasicFinancialMetricDBAndClearFlag(s_vStock); // 此函数必须最后执行。
+	UpdateBasicFinancialAnnualDB(s_vStock);
+	UpdateBasicFinancialQuarterDB(s_vStock);
+	UpdateBasicFinancialMetricDBAndClearFlag(s_vStock);
 
 	for (auto& pStock5 : s_vStock) {
 		ASSERT(!pStock5->IsUpdateBasicFinancialDB());
@@ -272,20 +272,20 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 }
 
 bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
-	for (auto& pStock : vStock) {
-		//thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, pStock.get());
-		//thread1.detach();
-		pStock->AppendBasicFinancialQuarter();
-	}
+	//for (auto& pStock : vStock) {
+		//pStock->AppendBasicFinancialQuarter();
+	//}
+	thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, vStock);
+	thread1.detach();
 	return true;
 }
 
 bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
-	for (auto& pStock : vStock) {
-		//thread thread1(ThreadUpdateBasicFinancialAnnualDB, pStock.get());
-		//thread1.detach();
-		pStock->AppendBasicFinancialAnnual();
-	}
+	//for (auto& pStock : vStock) {
+		//pStock->AppendBasicFinancialAnnual();
+	//}
+	thread thread1(ThreadUpdateBasicFinancialAnnualDB, vStock);
+	thread1.detach();
 	return true;
 }
 

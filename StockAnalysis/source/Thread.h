@@ -115,9 +115,9 @@ UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×
 // ¸üĞÂFinnhub basic financial
 UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª55
 // ¸üĞÂFinnhub basic financial annual data
-UINT ThreadUpdateBasicFinancialAnnualDB(not_null<CWorldStock*> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª56
+UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª56
 // ¸üĞÂFinnhub basic financial quarterly data
-UINT ThreadUpdateBasicFinancialQuarterlyDB(not_null<CWorldStock*> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª57
+UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª57
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©
