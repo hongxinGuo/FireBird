@@ -699,6 +699,15 @@
     <ClInclude Include="..\StockAnalysis\source\TimeConvert.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderSentiment.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSentiment.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1219,6 +1228,18 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderSentment.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSemtiment.cpp">
+      <Filter>源文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderSentimentDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

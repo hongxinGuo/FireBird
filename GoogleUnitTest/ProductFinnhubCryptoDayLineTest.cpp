@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCryptoDayLineTest : public ::testing::Test {
+	class CProductFinnhubCryptoDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -37,19 +37,19 @@ namespace StockAnalysisTest {
 		CProductFinnhubCryptoDayLine cryptoDayLine;
 	};
 
-	TEST_F(CFinnhubCryptoDayLineTest, TestInitialize) {
+	TEST_F(CProductFinnhubCryptoDayLineTest, TestInitialize) {
 		EXPECT_EQ(cryptoDayLine.GetIndex(), -1);
 		EXPECT_STREQ(cryptoDayLine.GetInquiringStr(), _T("https://finnhub.io/api/v1/crypto/candle?symbol="));
 	}
 
-	TEST_F(CFinnhubCryptoDayLineTest, TestCreatMessage) {
+	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreatMessage(),
 			cryptoDayLine.GetInquiringStr() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 	}
 
-	TEST_F(CFinnhubCryptoDayLineTest, TestProcessWebData) {
+	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {
 		// ”…MockWorldMarketTest∏∫‘≤‚ ‘
 	}
 

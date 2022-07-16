@@ -1,3 +1,4 @@
+#include "FinnhubDataSource.h"
 #include"pch.h"
 
 //#include"Accessory.h"
@@ -40,6 +41,7 @@ bool CFinnhubDataSource::Reset(void) {
 
 	m_fPeerUpdated = false;
 	m_fInsiderTransactionUpdated = false;
+	m_fInsiderSentimentUpdated = false;
 
 	if (GetDayOfWeek() == 6) { // 每周的星期六更新一次EPSSurprise
 		m_lCurrentUpdateEPSSurprisePos = 0;
@@ -179,6 +181,7 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 			InquiryCompanyBasicFinancial();
 			InquiryPeer();
 			InquiryInsiderTransaction();
+			InquiryInsiderSentiment();
 			InquiryCryptoDayLine();
 			InquiryStockDayLine();
 			//InquiryForexDayLine(); // Forex dayline目前只限于付费用户使用
@@ -417,6 +420,52 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 			SetInsiderTransactionUpdated(true);
 			TRACE("FinnhubInsider Transaction更新完毕\n");
 			str = _T("US Market Insider Transaction数据更新完毕");
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
+	static bool s_fInquiringFinnhubStockInsiderSentiment = false;
+	bool fFound = false;
+	CWorldStockPtr pStock;
+	CString str = _T("");
+	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	bool fHaveInquiry = false;
+	CProductWebSourceDataPtr p = nullptr;
+	long lCurrentUpdateInsiderSentimentPos = 0;
+
+	ASSERT(gl_pWorldMarket->IsSystemReady());
+	if (!IsInsiderSentimentUpdated() && !IsInquiring()) {
+		if (!s_fInquiringFinnhubStockInsiderSentiment) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider sentiment..."));
+			s_fInquiringFinnhubStockInsiderSentiment = true;
+		}
+		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
+			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
+			if (pStock->IsUSMarket()) {
+				if (pStock->IsInsiderSentimentNeedUpdate()) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_SENTIMENT__);
+			p->SetIndex(lCurrentUpdateInsiderSentimentPos);
+			StoreInquiry(p);
+			SetInquiring(true);
+			gl_pWorldMarket->SetCurrentFunction(_T("内部交易情绪:") + pStock->GetSymbol());
+			//TRACE("申请%s 内部交易情绪数据\n", pStock->GetSymbol().GetBuffer());
+		}
+		else {
+			s_fInquiringFinnhubStockInsiderSentiment = false;
+			fHaveInquiry = false;
+			SetInsiderSentimentUpdated(true);
+			TRACE("FinnhubInsider Sentiment更新完毕\n");
+			str = _T("US Market Insider Sentiment数据更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

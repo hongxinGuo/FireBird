@@ -23,6 +23,7 @@ public:
 	bool InquiryRTQuote(void);
 	bool InquiryPeer(void);
 	bool InquiryInsiderTransaction(void);
+	bool InquiryInsiderSentiment(void);
 	bool InquiryEconomicCalendar(void);
 	bool InquiryEPSSurprise(void);
 	bool InquiryForexExchange(void);
@@ -58,6 +59,8 @@ public:
 	void SetPeerUpdated(bool fFlag) noexcept { m_fPeerUpdated = fFlag; }
 	bool IsInsiderTransactionUpdated(void) noexcept { return m_fInsiderTransactionUpdated; }
 	void SetInsiderTransactionUpdated(bool fFlag) noexcept { m_fInsiderTransactionUpdated = fFlag; }
+	bool IsInsiderSentimentUpdated(void) noexcept { return m_fInsiderSentimentUpdated; }
+	void SetInsiderSentimentUpdated(bool fFlag) noexcept { m_fInsiderSentimentUpdated = fFlag; }
 	bool IsEconomicCalendarUpdated(void) noexcept { return m_fEconomicCalendarUpdated; }
 	void SetEconomicCalendarUpdated(bool fFlag) noexcept { m_fEconomicCalendarUpdated = fFlag; }
 	bool IsEPSSurpriseUpdated(void) noexcept { return m_fEPSSurpriseUpdated; }
@@ -80,6 +83,7 @@ protected:
 	bool m_fCryptoDayLineUpdated; // 每日更新Crypto日线数据
 	bool m_fPeerUpdated; // 每90天更新Peers数据
 	bool m_fInsiderTransactionUpdated; // 每30天更新InsiderTransaction数据
+	bool m_fInsiderSentimentUpdated; // 每30天更新InsiderSentiment数据
 	bool m_fEconomicCalendarUpdated; // 每日更新经济日历数据
 	bool m_fEPSSurpriseUpdated;
 

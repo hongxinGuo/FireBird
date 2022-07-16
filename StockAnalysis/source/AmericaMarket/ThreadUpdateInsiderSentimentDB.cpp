@@ -8,12 +8,12 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateInsiderSentimentDB(not_null<CWorldMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_UpdateWorldMarketDB.Wait();
-	pMarket->UpdateInsiderTransactionDB();
+	pMarket->UpdateInsiderSentimentDB();
 	gl_UpdateWorldMarketDB.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
 
-	return 48;
+	return 58;
 }

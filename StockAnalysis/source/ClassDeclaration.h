@@ -26,6 +26,8 @@ class CDayLine;
 typedef shared_ptr<CDayLine> CDayLinePtr;
 class CInsiderTransaction;
 typedef shared_ptr<CInsiderTransaction> CInsiderTransactionPtr;
+class CInsiderSentiment;
+typedef shared_ptr<CInsiderSentiment> CInsiderSentimentPtr;
 class CEPSSurprise;
 typedef shared_ptr<CEPSSurprise> CEPSSurprisePtr;
 

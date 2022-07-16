@@ -8,6 +8,7 @@
 #include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyBasicFinancial.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCompanyInsiderSentiment.h"
 #include"ProductFinnhubCryptoDayLine.h"
 #include"ProductFinnhubForexDayLine.h"
 #include"ProductFinnhubStockDayLine.h"
@@ -60,6 +61,9 @@ CProductWebSourceDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket,
 		break;
 	case __INSIDER_TRANSACTION__:
 		p = make_shared<CProductFinnhubCompanyInsiderTransaction>();
+		break;
+	case __INSIDER_SENTIMENT__:
+		p = make_shared<CProductFinnhubCompanyInsiderSentiment>();
 		break;
 	case __OWNERSHIP__: // Premium
 		break;

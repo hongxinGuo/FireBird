@@ -18,6 +18,7 @@
 #include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyBasicFinancial.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCompanyInsiderSentiment.h"
 #include"ProductFinnhubCryptoDayLine.h"
 #include"ProductFinnhubForexDayLine.h"
 #include"PRoductFinnhubStockPriceQuote.h"
@@ -68,6 +69,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __PEERS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __BASIC_FINANCIALS__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyBasicFinancial)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_SENTIMENT__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderSentiment)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoDayLine)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__)->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));

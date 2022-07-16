@@ -20,6 +20,7 @@
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
 #include"SetInsiderTransaction.h"
+#include"SetInsiderSentiment.h"
 #include"SetNaicsIndustry.h"
 #include"SetSICIndustry.h"
 #include"SetTiingoIndustry.h"
@@ -335,6 +336,18 @@ TEST(SetInitializeTest, TestInsiderTransactionInitialize) {
 	gl_systemStatus.SetWorkingMode(false);
 
 	EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[insider_transaction]"));
+}
+
+TEST(SetInitializeTest, TestInsiderSentimentInitialize) {
+	CSetInsiderSentiment setInsiderSentiment;
+
+	EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
+	EXPECT_STREQ(setInsiderSentiment.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	gl_systemStatus.SetWorkingMode(true);
+	EXPECT_STREQ(setInsiderSentiment.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	gl_systemStatus.SetWorkingMode(false);
+
+	EXPECT_STREQ(setInsiderSentiment.GetDefaultSQL(), _T("[insider_sentiment]"));
 }
 
 TEST(SetInitializeTest, TestNaicsIndustryInitialize) {

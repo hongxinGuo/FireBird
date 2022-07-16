@@ -99,6 +99,7 @@ public:
 	bool TaskUpdateEPSSurpriseDB(void);
 	bool TaskUpdateEconomicCalendarDB(void);
 	bool TaskUpdateInsiderTransactionDB(void);
+	bool TaskUpdateInsiderSentimentDB(void);
 	bool TaskUpdateTiingoStockDB(void);
 	bool TaskUpdateTiingoCryptoSymbolDB(void);
 
@@ -203,6 +204,7 @@ public:
 	bool IsNeedUpdateCryptoExchangeDB(void) noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
 	bool IsNeedUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsNeedUpdate(); }
 	bool IsNeedUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
+	bool IsNeedUpdateInsiderSentimentDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderSentiment(); }
 	bool IsNeedSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsNeedSaveDayLine(); }
 	bool IsNeedUpdateExonomicCalendarDB(void) noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 
@@ -226,6 +228,7 @@ public:
 	virtual bool UpdateFinnhubCryptoSymbolDB(void) { return m_dataFinnhubCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateCryptoExchangeDB(void) { return m_dataFinnhubCryptoExchange.UpdateDB(); }
 	virtual bool UpdateInsiderTransactionDB(void);
+	virtual bool UpdateInsiderSentimentDB(void);
 	virtual bool UpdateEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.UpdateDB(); }
 	virtual bool UpdateTiingoStockDB(void) { return m_dataTiingoStock.UpdateDB(); }
 	virtual bool UpdateTiingoCryptoSymbolDB(void) { return m_dataTiingoCryptoSymbol.UpdateDB(); }

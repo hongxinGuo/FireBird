@@ -45,6 +45,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_DayLineEndDate = 19800101;
 	m_PeerUpdateDate = 19800101;
 	m_InsiderTransactionUpdateDate = 19800101;
+	m_InsiderSentimentUpdateDate = 19800101;
 	m_LastRTDataUpdateDate = 19800101;
 	m_LastEPSSurpriseUpdateDate = 19800101;
 	m_IPOStatus = __STOCK_NOT_CHECKED__;
@@ -63,7 +64,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_DailyDataUpdateDate = 19800101;
 	m_StatementUpdateDate = 19800101;
 
-	m_nFields = 57;
+	m_nFields = 58;
 }
 
 void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
@@ -115,6 +116,7 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[LastRTDataUpdateDate]"), m_LastRTDataUpdateDate);
 	RFX_Long(pFX, _T("[PeerUpdateDate]"), m_PeerUpdateDate);
 	RFX_Long(pFX, _T("[InsiderTransactionUpdateDate]"), m_InsiderTransactionUpdateDate);
+	RFX_Long(pFX, _T("[InsiderSentimentUpdateDate]"), m_InsiderSentimentUpdateDate);
 	RFX_Long(pFX, _T("[LastEPSSurpriseUpdateDate]"), m_LastEPSSurpriseUpdateDate);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 	RFX_Text(pFX, _T("[TiingoPermaTicker]"), m_TiingoPermaTicker);

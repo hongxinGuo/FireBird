@@ -405,28 +405,28 @@
     <ClCompile Include="FinnhubEconomicCountryListTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCryptoExchangeTest.cpp">
+    <ClCompile Include="ProductFinnhubCryptoExchangeTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubForexExchangeTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyInsiderTransactionTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyInsiderTransactionTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyPeerTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyPeerTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyProfileTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyProfileTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyProfileConciseTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyProfileConciseTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubStockSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCryptoDayLineTest.cpp">
+    <ClCompile Include="ProductFinnhubCryptoDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubCryptoSymbolTest.cpp">
@@ -513,7 +513,7 @@
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCompanyBasicFinancialTest.cpp">
+    <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="HighPerformanceCounterTest.cpp">
@@ -542,6 +542,9 @@
     </ClCompile>
     <ClCompile Include="TimeConvertTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

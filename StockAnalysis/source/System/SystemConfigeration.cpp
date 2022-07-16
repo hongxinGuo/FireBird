@@ -72,6 +72,7 @@ std::string gl_sSystemConfigeration = R"(
 	"StockProfile" : 365,
 	"BasicFinancial" : 45,
 	"InsideTransaction" : 30,
+	"InsideSentiment" : 30,
 	"StockPeer" : 90
 }
 })";
@@ -125,6 +126,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_iStockProfileUpdateRate = 365; // 股票概况更新频率，单位为天。默认为365天。
 	m_iStockBasicFinancialUpdateRate = 45; // 基本财务更新频率，单位为天。默认为45天。
 	m_iInsideTransactionUpdateRate = 30; // 内部交易更新频率，单位为天。默认为30天。
+	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
 
 	ASSERT(m_strFileName.Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
@@ -251,6 +253,10 @@ void CSystemConfigeration::Update() {
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
+			m_iInsideSentimentUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("InsideSentiment");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
 			m_iStockPeerUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockPeer");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
@@ -287,6 +293,7 @@ void CSystemConfigeration::UpdateJson(void) {
 	m_systemConfigeration["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
 	m_systemConfigeration["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
 	m_systemConfigeration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
+	m_systemConfigeration["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
 	m_systemConfigeration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
 }
 

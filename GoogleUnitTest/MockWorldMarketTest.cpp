@@ -169,6 +169,12 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), (UINT)48);
 	}
 
+	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderSentimentDB) {
+		EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderSentimentDB)
+			.Times(1);
+		EXPECT_EQ(ThreadUpdateInsiderSentimentDB(gl_pMockWorldMarket.get()), (UINT)58);
+	}
+
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoStockDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoStockDB)
 			.Times(1);

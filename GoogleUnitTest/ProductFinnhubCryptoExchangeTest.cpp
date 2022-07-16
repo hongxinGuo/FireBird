@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubCryptoExchangeTest : public ::testing::Test {
+	class CProductFinnhubCryptoExchangeTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -37,16 +37,16 @@ namespace StockAnalysisTest {
 		CProductFinnhubCryptoExchange countryList;
 	};
 
-	TEST_F(CFinnhubCryptoExchangeTest, TestInitialize) {
+	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), -1);
 		EXPECT_STREQ(countryList.GetInquiringStr(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
-	TEST_F(CFinnhubCryptoExchangeTest, TestCreatMessage) {
+	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
 		EXPECT_STREQ(countryList.CreatMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
-	TEST_F(CFinnhubCryptoExchangeTest, TestProcessWebData) {
+	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {
 		// not implmented yet
 	}
 

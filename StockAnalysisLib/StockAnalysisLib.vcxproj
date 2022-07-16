@@ -25,6 +25,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderSentiment.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
@@ -118,6 +119,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetForexDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSentiment.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetSICIndustry.h" />
@@ -133,6 +135,7 @@
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.h" />
@@ -202,6 +205,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderSentment.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
@@ -218,6 +222,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderSentimentDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
@@ -310,6 +315,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSemtiment.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetSICIndustry.cpp" />
@@ -320,6 +326,7 @@
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyProfile.cpp" />

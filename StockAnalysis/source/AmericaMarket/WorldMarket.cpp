@@ -1,3 +1,4 @@
+#include "WorldMarket.h"
 #include"pch.h"
 
 #include"ThreadStatus.h"
@@ -231,6 +232,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
 		if (IsNeedUpdateCryptoSymbolDB())  TaskUpdateFinnhubCryptoSymbolDB();
 		if (IsNeedUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
+		if (IsNeedUpdateInsiderSentimentDB()) TaskUpdateInsiderSentimentDB();
 		TaskUpdateForexDayLineDB();
 		TaskUpdateCryptoDayLineDB();
 		if (IsNeedSaveStockDayLineDB()) TaskUpdateDayLineDB();
@@ -484,6 +486,12 @@ bool CWorldMarket::TaskUpdateInsiderTransactionDB(void) {
 	return true;
 }
 
+bool CWorldMarket::TaskUpdateInsiderSentimentDB(void) {
+	thread thread1(ThreadUpdateInsiderSentimentDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
+}
+
 bool CWorldMarket::TaskUpdateTiingoStockDB(void) {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -589,6 +597,27 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 			if (pStock->HaveInsiderTransaction()) {
 				pStock->SaveInsiderTransaction();
 				str = pStock->GetSymbol() + _T("内部交易资料更新完成");
+				gl_systemMessage.PushDayLineInfoMessage(str);
+				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
+			}
+		}
+		if (gl_systemStatus.IsExitingSystem()) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+	}
+	return true;
+}
+
+bool CWorldMarket::UpdateInsiderSentimentDB(void) {
+	CString str;
+	CWorldStockPtr pStock = nullptr;
+
+	for (long i = 0; i < GetStockSize(); i++) {
+		pStock = GetStock(i);
+		if (pStock->IsInsiderSentimentNeedSaveAndClearFlag()) {
+			if (pStock->HaveInsiderSentiment()) {
+				pStock->SaveInsiderSentiment();
+				str = pStock->GetSymbol() + _T("内部交易情绪资料更新完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
 				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
 			}

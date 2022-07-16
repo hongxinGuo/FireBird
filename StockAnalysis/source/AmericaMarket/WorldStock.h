@@ -42,6 +42,7 @@ public:
 	void Append(CSetWorldStock& setWorldStock);
 	void SaveDayLine(void) { m_dataDayLine.SaveDB(m_strSymbol); }
 	void SaveInsiderTransaction(void);
+	void SaveInsiderSentiment(void);
 	virtual bool UpdateEPSSurpriseDB(void);
 	virtual bool UpdateDayLineDB(void);
 
@@ -94,6 +95,16 @@ public:
 	bool IsInsiderTransactionNeedSave(void) const noexcept { return m_fFinnhubInsiderTransactionNeedSave; }
 	void SetInsiderTransactionNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
 	bool IsInsiderTransactionNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false); return fNeedSave; }
+
+	bool HaveInsiderSentiment(void) noexcept { if (m_vInsiderSentiment.size() > 0) return true; else return false; }
+	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
+	void UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment);
+	bool IsInsiderSentimentNeedUpdate(void) const noexcept { return m_fFinnhubInsiderSentimentNeedUpdate; }
+	void SetInsiderSentimentNeedUpdate(bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedUpdate = fFlag; }
+	bool CheckInsiderSentimentStatus(long lCurrentDate);
+	bool IsInsiderSentimentNeedSave(void) const noexcept { return m_fFinnhubInsiderSentimentNeedSave; }
+	void SetInsiderSentimentNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedSave = fFlag; }
+	bool IsInsiderSentimentNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderSentimentNeedSave.exchange(false); return fNeedSave; }
 
 	CString GetType(void) const { return m_strType; }
 	void SetType(CString strType) { m_strType = strType; }
@@ -172,6 +183,8 @@ public:
 	void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
 	long GetInsiderTransactionUpdateDate(void) const noexcept { return m_lInsiderTransactionUpdateDate; }
 	void SetInsiderTransactionUpdateDate(long lDate) noexcept { m_lInsiderTransactionUpdateDate = lDate; }
+	long GetInsiderSentimentUpdateDate(void) const noexcept { return m_lInsiderSentimentUpdateDate; }
+	void SetInsiderSentimentUpdateDate(long lDate) noexcept { m_lInsiderSentimentUpdateDate = lDate; }
 	long GetLastEPSSurpriseUpdateDate(void) const noexcept { return m_lLastEPSSurpriseUpdateDate; }
 	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
 
@@ -212,6 +225,9 @@ public:
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
 	long m_lInsiderTransactionStartDate;
+
+	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
+	long m_lInsiderSentimentStartDate;
 
 protected:
 	// Finnhub symbol信息
@@ -255,6 +271,7 @@ protected:
 	long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
 	long m_lPeerUpdateDate; // 最新竞争对手数据更新日期
 	long m_lInsiderTransactionUpdateDate; // 最新内部人员交易数据更新日期
+	long m_lInsiderSentimentUpdateDate; // 最新内部人员交易数据更新日期
 	long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
 
 	// Tiingo Symbol信息
@@ -281,8 +298,10 @@ protected:
 	bool m_fBasicFinancialUpdated; // 基本财务已更新
 	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 	bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
+	bool m_fFinnhubInsiderSentimentNeedUpdate; // 公司内部交易情绪数据已更新
 	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存
 	atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储
+	atomic_bool m_fFinnhubInsiderSentimentNeedSave; // 内部交易情绪数据需要存储
 };
 
 typedef shared_ptr<CWorldStock> CWorldStockPtr;

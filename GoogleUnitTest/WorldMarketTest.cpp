@@ -11,6 +11,7 @@
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
+#include"ProductFinnhubCompanyInsiderSentiment.h"
 #include"ProductFinnhubCryptoDayLine.h"
 #include"ProductFinnhubForexDayLine.h"
 #include"ProductFinnhubStockDayLine.h"
@@ -739,6 +740,59 @@ namespace StockAnalysisTest {
 		setInsiderTransaction.Delete();
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
+	}
+
+	TEST_F(CWorldMarketTest, TaskUpdateInsiderSentimentDB) {
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment());
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
+
+		CWorldStockPtr pStock;
+		vector<CInsiderSentimentPtr> vInsiderSentiment;
+		CInsiderSentimentPtr pInsiderSentiment;
+		CSetInsiderSentiment setInsiderSentiment;
+
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("B");// 这个股票代码不符，bu需要添加进数据库
+		pInsiderSentiment->m_lDate = 20200101;
+		vInsiderSentiment.push_back(pInsiderSentiment);
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_lDate = 20200101;// 这个数据库中有，无需添加
+		vInsiderSentiment.push_back(pInsiderSentiment);
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
+		vInsiderSentiment.push_back(pInsiderSentiment);
+
+		pStock = gl_pWorldMarket->GetStock(_T("A"));
+		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
+
+		pStock->SetInsiderSentimentNeedSave(true);
+		pStock->SetInsiderSentimentUpdateDate(20210101);
+		pStock->UpdateInsiderSentiment(vInsiderSentiment);
+
+		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
+
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
+		CString str = gl_systemMessage.PopDayLineInfoMessage();
+		EXPECT_STREQ(str, _T("A内部交易情绪资料更新完成"));
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderSentimentNeedSave());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
+
+		// 验证并恢复原状
+		setInsiderSentiment.m_strFilter = _T("[Symbol] = 'B'");
+		setInsiderSentiment.Open();
+		EXPECT_TRUE(setInsiderSentiment.IsEOF());
+		setInsiderSentiment.Close();
+
+		setInsiderSentiment.m_strFilter = _T("[Date] = '20210101'");
+		setInsiderSentiment.Open();
+		setInsiderSentiment.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setInsiderSentiment.IsEOF());
+		setInsiderSentiment.Delete();
+		setInsiderSentiment.m_pDatabase->CommitTrans();
+		setInsiderSentiment.Close();
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {

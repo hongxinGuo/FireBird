@@ -46,6 +46,7 @@ public:
 
 	bool IsNeedSaveDayLine(void);
 	bool IsNeedSaveInsiderTransaction(void);
+	bool IsNeedSaveInsiderSentiment(void);
 
 protected:
 	vector<CWorldStockPtr> m_vWorldStock;

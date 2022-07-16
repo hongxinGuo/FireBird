@@ -240,7 +240,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	static bool s_fInProcess = false;
-	static vector<CWorldStockPtr> s_vStock{};
+	static vector<CWorldStockPtr> s_vStock{}; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
 	CWorldStockPtr pStock = nullptr;
 
 	if (s_fInProcess) {
@@ -283,6 +283,7 @@ bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStoc
 	}
 	else {
 		for (auto& pStock : vStock) {
+			if (gl_systemStatus.IsExitingSystem()) break;
 			pStock->AppendBasicFinancialQuarter();
 		}
 	}
@@ -301,6 +302,7 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock
 	}
 	else {
 		for (auto& pStock : vStock) {
+			if (gl_systemStatus.IsExitingSystem()) break;
 			pStock->AppendBasicFinancialAnnual();
 		}
 	}
@@ -370,6 +372,13 @@ bool CDataWorldStock::IsNeedSaveDayLine(void) {
 bool CDataWorldStock::IsNeedSaveInsiderTransaction(void) {
 	for (auto& pStock : m_vWorldStock) {
 		if (pStock->IsInsiderTransactionNeedSave()) return true;
+	}
+	return false;
+}
+
+bool CDataWorldStock::IsNeedSaveInsiderSentiment(void) {
+	for (auto& pStock : m_vWorldStock) {
+		if (pStock->IsInsiderSentimentNeedSave()) return true;
 	}
 	return false;
 }

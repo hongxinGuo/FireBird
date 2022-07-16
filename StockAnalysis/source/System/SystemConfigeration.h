@@ -83,6 +83,8 @@ public:
 	void SetStockBasicFinancialUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockBasicFinancialUpdateRate = iRate; }
 	int GetInsideTransactionUpdateRate(void) noexcept { return m_iInsideTransactionUpdateRate; }
 	void SetInsideTransactionUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iInsideTransactionUpdateRate = iRate; }
+	int GetInsideSentimentUpdateRate(void) noexcept { return m_iInsideSentimentUpdateRate; }
+	void SetInsideSentimentUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iInsideSentimentUpdateRate = iRate; }
 	int GetStockPeerUpdateRate(void) noexcept { return m_iStockPeerUpdateRate; }
 	void SetStockPeerUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockPeerUpdateRate = iRate; }
 
@@ -126,6 +128,7 @@ protected:
 	// 网络数据更新频率（以天数记）
 	int m_iStockProfileUpdateRate; // 默认45天更新一次
 	int m_iInsideTransactionUpdateRate; // 默认45天更新一次
+	int m_iInsideSentimentUpdateRate; // 默认45天更新一次
 	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
 	int m_iStockPeerUpdateRate; // 默认90天更新一次
 

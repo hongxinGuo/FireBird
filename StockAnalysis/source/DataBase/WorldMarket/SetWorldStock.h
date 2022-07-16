@@ -62,6 +62,7 @@ public:
 	long m_LastRTDataUpdateDate; // 最新实时数据更新日期
 	long m_PeerUpdateDate; // 竞争对手信息更新日期
 	long m_InsiderTransactionUpdateDate; // 内部交易更新日期
+	long m_InsiderSentimentUpdateDate; // 内部交易更新日期
 	long m_LastEPSSurpriseUpdateDate;
 	long m_IPOStatus;
 

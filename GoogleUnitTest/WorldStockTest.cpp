@@ -3,7 +3,8 @@
 #include"GeneralCheck.h"
 #include"accessory.h"
 #include"TimeConvert.h"
-#include"GeneralCheck.h"
+
+#include"InsiderSentiment.h"
 
 #include"WorldStock.h"
 #include"WorldMarket.h"
@@ -366,6 +367,24 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.IsInsiderTransactionNeedSave());
 		EXPECT_TRUE(stock.IsInsiderTransactionNeedSaveAndClearFlag());
 		EXPECT_FALSE(stock.IsInsiderTransactionNeedSave());
+	}
+
+	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedUpdate) {
+		CWorldStock stock;
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
+		stock.SetInsiderSentimentNeedUpdate(false);
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate());
+		stock.SetInsiderSentimentNeedUpdate(true);
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
+	}
+
+	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedSave) {
+		CWorldStock stock;
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedSave());
+		stock.SetInsiderSentimentNeedSave(true);
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedSave());
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedSaveAndClearFlag());
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedSave());
 	}
 
 	TEST_F(CWorldStockTest, TestGetDescription) {
@@ -973,6 +992,46 @@ namespace StockAnalysisTest {
 		setInsiderTransaction.Close();
 	}
 
+	TEST_F(CWorldStockTest, TestSaveInsiderSentiment) {
+		//  测试数据库中只有4个数据，股票代码：A，
+		CWorldStock stock;
+		vector<CInsiderSentimentPtr> vInsiderSentiment;
+		CInsiderSentimentPtr pInsiderSentiment;
+		CSetInsiderSentiment setInsiderSentiment;
+
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("B"); // 这个股票代码不符，不可能出现此种情况，故而不需要添加进数据库
+		pInsiderSentiment->m_lDate = 20200101;
+		vInsiderSentiment.push_back(pInsiderSentiment);
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_lDate = 20200101; // 这个数据库中有，无需添加
+		vInsiderSentiment.push_back(pInsiderSentiment);
+		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		pInsiderSentiment->m_strSymbol = _T("A");
+		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
+		vInsiderSentiment.push_back(pInsiderSentiment);
+
+		stock.SetSymbol(_T("A"));
+		stock.SetInsiderSentimentUpdateDate(20210101);
+		stock.UpdateInsiderSentiment(vInsiderSentiment);
+
+		stock.SaveInsiderSentiment();
+
+		setInsiderSentiment.m_strFilter = _T("[Symbol] = 'B'");
+		setInsiderSentiment.Open();
+		EXPECT_TRUE(setInsiderSentiment.IsEOF()) << "股票B没有存储进了数据库";
+		setInsiderSentiment.Close();
+
+		setInsiderSentiment.m_strFilter = _T("[Date] = '20210101'");
+		setInsiderSentiment.Open();
+		setInsiderSentiment.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setInsiderSentiment.IsEOF()) << "新日期存储进了数据库";
+		setInsiderSentiment.Delete();
+		setInsiderSentiment.m_pDatabase->CommitTrans();
+		setInsiderSentiment.Close();
+	}
+
 	TEST_F(CWorldStockTest, TestUpdateDayLine) {
 		CWorldStock stock;
 		vector<CDayLinePtr> vDayLine;
@@ -1336,6 +1395,37 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "摘牌股票无需更新InsiderTransaction";
 	}
 
+	TEST_F(CWorldStockTest, TestHaveInsiderSentiment) {
+		CWorldStock stock;
+		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
+
+		EXPECT_FALSE(stock.HaveInsiderSentiment());
+		stock.m_vInsiderSentiment.push_back(pInsiderSentiment);
+		EXPECT_TRUE(stock.HaveInsiderSentiment());
+		stock.UnloadInsiderSentiment();
+		EXPECT_FALSE(stock.HaveInsiderSentiment());
+	}
+
+	TEST_F(CWorldStockTest, TestCheckInsiderSentimentStatus) {
+		CWorldStock stock;
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
+
+		stock.SetInsiderSentimentNeedUpdate(false);
+		stock.SetInsiderSentimentUpdateDate(20200101);
+		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.CheckInsiderSentimentStatus(20200201); // 31天
+		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate()) << "三十一天需更新";
+		stock.CheckInsiderSentimentStatus(20200131); // 30天
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate());
+
+		stock.SetInsiderSentimentNeedUpdate(true);
+		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.CheckInsiderSentimentStatus(20200131); // 30天
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate()) << "三十天内无需更新";
+		stock.CheckInsiderSentimentStatus(20200201); // 31天
+		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate()) << "摘牌股票无需更新InsiderSentiment";
+	}
+
 	TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryString) {
 		CWorldStock stock;
 		long lDate = 20200101;
@@ -1435,6 +1525,7 @@ namespace StockAnalysisTest {
 		stock.SetDayLineEndDate(19700102);
 		stock.SetPeerUpdateDate(20010101);
 		stock.SetInsiderTransactionUpdateDate(20000101);
+		stock.SetInsiderSentimentUpdateDate(20010101);
 		stock.SetDailyDataUpdateDate(20202020);
 		stock.SetStatementUpdateDate(10101010);
 
@@ -1502,6 +1593,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
 		EXPECT_EQ(stock.GetPeerUpdateDate(), stock2.GetPeerUpdateDate());
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), stock2.GetInsiderTransactionUpdateDate());
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), stock2.GetInsiderSentimentUpdateDate());
 		EXPECT_EQ(stock.GetDailyDataUpdateDate(), stock2.GetDailyDataUpdateDate());
 		EXPECT_EQ(stock.GetStatementUpdateDate(), stock2.GetStatementUpdateDate());
 	}
