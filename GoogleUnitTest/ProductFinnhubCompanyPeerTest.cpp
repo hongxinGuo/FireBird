@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		companyPeer.SetMarket(gl_pWorldMarket.get());
 		companyPeer.SetIndex(1);
 		EXPECT_STREQ(companyPeer.CreatMessage(), companyPeer.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);
 	}
@@ -146,6 +146,7 @@ namespace StockAnalysisTest {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		bool fSucceed = m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
+		EXPECT_TRUE(pStock->IsPeerUpdated());
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
 			EXPECT_TRUE(fSucceed);

@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
 		companyProfileConcise.SetIndex(1);
 		EXPECT_STREQ(companyProfileConcise.CreatMessage(), companyProfileConcise.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated());
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated()) << "处理接收到的数据后才设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
 	}
@@ -102,14 +102,14 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			EXPECT_FALSE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsProfileUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏address项
 			EXPECT_FALSE(fSucceed);
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
-			EXPECT_FALSE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsProfileUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;

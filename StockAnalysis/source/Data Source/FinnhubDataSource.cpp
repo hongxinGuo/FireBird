@@ -78,6 +78,8 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 		break;
 	case __INSIDER_TRANSACTION__:
 		break;
+	case __INSIDER_SENTIMENT__:
+		break;
 	case __OWNERSHIP__: // Premium
 		break;
 	case __FUND_OWNERSHIP__: // jPremium

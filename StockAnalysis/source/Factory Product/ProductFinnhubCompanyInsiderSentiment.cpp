@@ -26,7 +26,6 @@ CString CProductFinnhubCompanyInsiderSentiment::CreatMessage(void) {
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 	strCurrentDate = buffer;
 	CString strMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
-	pStock->SetInsiderSentimentNeedUpdate(false);
 
 	return strMessage;
 }
@@ -38,6 +37,7 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetInsiderSentimentNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
 	if (pvInsiderSentiment->size() > 0) {
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);

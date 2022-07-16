@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreatMessage(),
 			forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
-		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
 	}

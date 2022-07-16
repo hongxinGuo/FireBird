@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_STREQ(companyInsiderSentiment.CreatMessage(), companyInsiderSentiment.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate()) << "接收到的数处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
 	}
@@ -107,16 +107,19 @@ namespace StockAnalysisTest {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
+			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
 			EXPECT_TRUE(m_pStock->IsInsiderSentimentNeedSave());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2:
+			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
 			break;
 		case 3:
+			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());

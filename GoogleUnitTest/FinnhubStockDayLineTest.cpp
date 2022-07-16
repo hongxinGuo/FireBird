@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreatMessage(),
 			stockDayLine.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方重置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
 	}
@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
 		case 1: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2: // s项报告not ok
@@ -133,25 +133,25 @@ namespace StockAnalysisTest {
 			strMessage = _T("日线返回值不为ok");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // s项报告 no data
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4:
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 缺乏C项，为无效数据
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 6:
@@ -189,7 +189,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		default:

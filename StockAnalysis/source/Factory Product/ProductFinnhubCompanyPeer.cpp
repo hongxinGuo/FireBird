@@ -19,7 +19,6 @@ CString CProductFinnhubCompanyPeer::CreatMessage(void) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiringStr + pStock->GetSymbol();
-	pStock->SetPeerUpdated(true);
 
 	return strMessage;
 }
@@ -31,6 +30,7 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CString strPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(strPeer);
 	pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetPeerUpdated(true);
 	pStock->SetUpdateProfileDB(true);
 
 	return true;

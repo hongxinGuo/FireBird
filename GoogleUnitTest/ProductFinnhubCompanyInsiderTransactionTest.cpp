@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 		companyInsiderTransaction.SetIndex(1);
 		EXPECT_STREQ(companyInsiderTransaction.CreatMessage(), companyInsiderTransaction.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
 	}
@@ -99,6 +99,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
+		EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedUpdate());
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(m_pStock->IsInsiderTransactionNeedSave());

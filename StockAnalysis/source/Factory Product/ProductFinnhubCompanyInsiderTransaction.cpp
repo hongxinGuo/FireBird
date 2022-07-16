@@ -21,7 +21,6 @@ CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiringStr + pStock->GetSymbol();
-	pStock->SetInsiderTransactionNeedUpdate(false);
 
 	return strMessage;
 }
@@ -33,6 +32,7 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetInsiderTransactionNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
 	if (pvInsiderTransaction->size() > 0) {
 		pStock->UpdateInsiderTransaction(*pvInsiderTransaction);

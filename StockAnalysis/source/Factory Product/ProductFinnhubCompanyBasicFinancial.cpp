@@ -21,7 +21,6 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 	CString strMessage;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	strMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&metric=all");
-	pStock->SetBasicFinancialUpdated(true);
 
 	return strMessage;
 }
@@ -46,6 +45,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
 	pStock->SetBasicFinancialUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetBasicFinancialUpdated(true);
 	pStock->SetUpdateProfileDB(true);
 
 	return true;

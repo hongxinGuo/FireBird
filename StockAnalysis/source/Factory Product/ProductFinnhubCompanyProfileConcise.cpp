@@ -20,7 +20,6 @@ CString CProductFinnhubCompanyProfileConcise::CreatMessage(void) {
 	CString strMessage;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	strMessage = m_strInquiringStr + pStock->GetSymbol();
-	pStock->SetProfileUpdated(true);
 
 	return strMessage;
 }
@@ -29,9 +28,9 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	pStock->SetProfileUpdated(true);
 	if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
 		pStock->SetProfileUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
-		pStock->SetProfileUpdated(true);
 		pStock->SetUpdateProfileDB(true);
 		return true;
 	}

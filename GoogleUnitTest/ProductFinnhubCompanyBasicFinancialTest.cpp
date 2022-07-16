@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
 		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 		companyBasicFinancial.SetIndex(1);
 		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
-		EXPECT_TRUE(pStock->IsBasicFinancialUpdated());
+		EXPECT_FALSE(pStock->IsBasicFinancialUpdated()) << "处理接收到的数据后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetBasicFinancialUpdated(false);
 	}
@@ -352,6 +352,7 @@ namespace StockAnalysisTest {
 		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1:
+			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
@@ -360,6 +361,7 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(0, 0);
 			break;
 		case 2: // ADR
+			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());

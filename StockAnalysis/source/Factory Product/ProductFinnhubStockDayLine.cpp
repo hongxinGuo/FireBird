@@ -24,7 +24,6 @@ CString CProductFinnhubStockDayLine::CreatMessage(void) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
-	pStock->SetDayLineNeedUpdate(false);
 
 	return m_strInquiringStr + strMiddle;
 }
@@ -37,7 +36,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pvDayLine = ParseFinnhubStockCandle(pWebData);
-
+	pStock->SetDayLineNeedUpdate(false);
 	for (auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
@@ -48,7 +47,6 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pvDayLine->size() > 0) {
 		pStock->UpdateDayLine(*pvDayLine);
 		if (pStock->GetDayLineSize() > 0) { // 添加了新数据
-			pStock->SetDayLineNeedUpdate(false);
 			pStock->SetDayLineNeedSaving(true);
 			pStock->SetUpdateProfileDB(true);
 			long lSize = pStock->GetDayLineSize() - 1;
