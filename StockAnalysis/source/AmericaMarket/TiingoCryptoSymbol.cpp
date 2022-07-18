@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"accessory.h"
-
 #include"TiingoCryptoSymbol.h"
 
 CTiingoCryptoSymbol::CTiingoCryptoSymbol() : CObject() {

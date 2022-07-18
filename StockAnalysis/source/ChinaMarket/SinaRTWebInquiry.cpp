@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include"StockCodeConverter.h"
 #include"Thread.h"
 #include"ChinaMarket.h"
 

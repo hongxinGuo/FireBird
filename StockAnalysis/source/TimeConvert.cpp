@@ -5,18 +5,6 @@
 //using namespace std;
 //#include<codecvt>
 
-CString ConvertDateToString(long lDate) {
-	char buffer[30];
-	long year = lDate / 10000;
-	long month = lDate / 100 - year * 100;
-	long day = lDate - year * 10000 - month * 100;
-
-	sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
-	CString str;
-	str = buffer;
-	return(str);
-}
-
 long GetDayOfWeek(void) {
 	time_t tUTC = 0;
 	time(&tUTC);
@@ -214,4 +202,56 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
 	tMarket = tUTC - tTimeZone;
 	gmtime_s(tm_, &tMarket);
+}
+
+CString ConvertDateToString(long lDate) {
+	char buffer[30];
+	long year = lDate / 10000;
+	long month = lDate / 100 - year * 100;
+	long day = lDate - year * 10000 - month * 100;
+
+	sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
+	CString str;
+	str = buffer;
+	return(str);
+}
+
+time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time_t tTimeZoneOffset) {
+	time_t tt{ 0 };
+	tm tm_{ 0,0,0,0,0,0 };
+	int year, month, day, hour, minute, second;
+
+	sscanf_s(bufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	tm_.tm_year = year - 1900;
+	tm_.tm_mon = month - 1;
+	tm_.tm_mday = day;
+	tm_.tm_hour = hour;
+	tm_.tm_min = minute;
+	tm_.tm_sec = second;
+	tm_.tm_isdst = 0;
+	tt = _mkgmtime(&tm_); // 先变成GMT时间
+	if (tt > -1) {
+		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
+	}
+	return tt;
+}
+
+time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset) {
+	time_t tt{ 0 };
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
+	int year, month, day, hour, minute, second;
+
+	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	tm_.tm_year = year - 1900;
+	tm_.tm_mon = month - 1;
+	tm_.tm_mday = day;
+	tm_.tm_hour = hour;
+	tm_.tm_min = minute;
+	tm_.tm_sec = second;
+	tm_.tm_isdst = 0;
+	tt = _mkgmtime(&tm_);
+	if (tt > -1) {
+		tt += tTimeZoneOffset; //
+	}
+	return tt;
 }

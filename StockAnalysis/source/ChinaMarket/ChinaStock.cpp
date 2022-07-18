@@ -2,8 +2,8 @@
 
 #include "globedef.h"
 
-#include"Accessory.h"
 #include"TimeConvert.h"
+#include"StockCodeConverter.h"
 
 #include "ChinaStock.h"
 #include"ChinaMarket.h"

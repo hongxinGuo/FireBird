@@ -2,8 +2,6 @@
 
 #include"pch.h"
 
-#include"accessory.h"
-
 #include "VirtualSetExchange.h"
 
 IMPLEMENT_DYNAMIC(CVirtualSetExchange, CVirtualRecordset)

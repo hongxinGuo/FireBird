@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"Accessory.h"
+#include"ConvertToString.h"
 #include"VirtualHistoryCandleBasic.h"
 
 CVirtualHistoryCandleBasic::CVirtualHistoryCandleBasic() {

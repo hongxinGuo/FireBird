@@ -84,6 +84,26 @@ wstring to_wide_string(const std::string& input) {
 	return ws;
 }
 
+string to_byte_string(const wstring& input) {
+	WCHAR* pBufferW;
+	long lLength = input.size();
+	pBufferW = new WCHAR[lLength + 1];
+	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
+	for (int i = 0; i < input.size(); i++) {
+		pBufferW[i] = input.at(i);
+	}
+	char* pBuffer = new char[lLength * 2];
+
+	long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
+	pBuffer[lReturnSize] = 0x000;
+	string s = pBuffer;
+
+	delete[]pBuffer;
+	delete[]pBufferW;
+
+	return s;
+}
+
 void ReportJsonError(json::parse_error& e, std::string& s) {
 	char buffer[180]{}, buffer2[100];
 	int i = 0;

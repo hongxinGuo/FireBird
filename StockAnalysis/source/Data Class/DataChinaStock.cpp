@@ -1,7 +1,10 @@
 #include"pch.h"
 
+#include"ConvertToString.h"
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
+#include"StockCodeConverter.h"
+#include"InfoReport.h"
 
 #include"ChinaMarket.h"
 #include "DataChinaStock.h"

@@ -1,15 +1,24 @@
 // CVirtualRecordset.cpp : CVirtualRecordset 类的实现
 
 #include"pch.h"
-#include"accessory.h"
 
 #include "VirtualRecordset.h"
 
 IMPLEMENT_DYNAMIC(CVirtualRecordset, CRecordset)
 
+CString  CVirtualRecordset::GetSchemaConnect() {
+	if (gl_systemStatus.IsWorkingMode()) {
+		return _T("DSN=") + m_Schema + _T(";UID=") + gl_systemConfigeration.GetDatabaseAccountName() + _T(";PASSWORD=") +
+			gl_systemConfigeration.GetDatabaseAccountPassword() + _T(";charset=utf8mb4"); // 运行时的DSN使用原schema名称
+	}
+	else {
+		return _T("DSN=") + m_Schema + _T("Test;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作时DSN名称后要加上后缀Test
+	}
+}
+
 CString CVirtualRecordset::GetDefaultConnect() {
 	ASSERT(m_Schema.GetLength() > 0);
-	return GetSchemaConnect(m_Schema);
+	return GetSchemaConnect();
 }
 
 CString CVirtualRecordset::GetDefaultSQL() {

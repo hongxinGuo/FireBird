@@ -58,6 +58,8 @@ public:
 
 	bool UpdateHistoryDataContainer(CChinaStockPtr pStock);
 
+	void ZoomIn(vector<double>& vData, double dLevel, double dRate);
+
 	//系统包裹函数
 public:
 	virtual CSize SysCallGetTextExtent(CDC* pDC, CString str) { return(pDC->GetTextExtent(str)); }

@@ -70,7 +70,7 @@
     <LibraryPath>$(LibraryPath);C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="AccessoryTest.cpp" />
+    <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="DataChinaStockTest.cpp" />
     <ClCompile Include="DataChoicedCryptoTest.cpp" />
     <ClCompile Include="DataChoicedForexTest.cpp" />
@@ -81,6 +81,7 @@
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
+    <ClCompile Include="InfoReportTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp" />
     <ClCompile Include="FinnhubDataSourceTest.cpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
     <ClCompile Include="jsonParseTest.cpp" />
+    <ClCompile Include="StockCodeConverterTest.cpp" />
     <ClCompile Include="SystemConfigerationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
@@ -145,6 +147,7 @@
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="TimeConvertTest.cpp" />
+    <ClCompile Include="VirtualRecordsetTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

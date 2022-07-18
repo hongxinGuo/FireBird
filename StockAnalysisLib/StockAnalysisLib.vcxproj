@@ -15,7 +15,7 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
-    <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\ConvertToString.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
@@ -163,6 +163,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
+    <ClInclude Include="..\StockAnalysis\source\InfoReport.h" />
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemData.h" />
@@ -191,7 +193,7 @@
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
+    <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
@@ -353,6 +355,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\HighPerformanceCounter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\InfoReport.cpp" />
     <ClCompile Include="..\StockAnalysis\source\JsonParse.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
@@ -371,6 +374,7 @@
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />

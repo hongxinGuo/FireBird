@@ -4,8 +4,6 @@
 
 #include"pch.h"
 
-#include"Accessory.h"
-
 #include "VirtualSetChoicedStake.h"
 
 IMPLEMENT_DYNAMIC(CVirtualSetChoicedStake, CVirtualRecordset)

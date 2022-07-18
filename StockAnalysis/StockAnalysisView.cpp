@@ -603,6 +603,17 @@ bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
 	return true;
 }
 
+void CStockAnalysisView::ZoomIn(vector<double>& vData, double dLevel, double dRate) {
+	double d = 0;
+
+	for (int i = 0; i < vData.size(); i++) {
+		d = dLevel + (vData.at(i) - dLevel) * dRate;
+		if (d < 0) vData.at(i) = 0;
+		else if (d > 100) vData.at(i) = 100;
+		else vData.at(i) = d;
+	}
+}
+
 BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式

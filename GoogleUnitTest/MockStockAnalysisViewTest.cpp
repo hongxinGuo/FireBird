@@ -378,4 +378,15 @@ namespace StockAnalysisTest {
 
 		gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
 	}
+
+	TEST_F(CMockStockAnalysisViewTest, TestEnlarge) {
+		vector<double> vData{ 0, 100, 50, 49, 51 };
+
+		s_pStockAnalysisView->ZoomIn(vData, 50, 10);
+		EXPECT_EQ(vData.at(0), 0);
+		EXPECT_EQ(vData.at(1), 100);
+		EXPECT_EQ(vData.at(2), 50);
+		EXPECT_EQ(vData.at(3), 40);
+		EXPECT_EQ(vData.at(4), 60);
+	}
 }

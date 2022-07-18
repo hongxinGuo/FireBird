@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include"StockCodeConverter.h"
 #include "DataStockSymbol.h"
 
 CDataStockSymbol::CDataStockSymbol() {

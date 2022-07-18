@@ -165,7 +165,7 @@
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="AccessoryTest.cpp">
+    <ClCompile Include="ConvertToStringTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="AnalysisGuaDanTest.cpp">
@@ -545,6 +545,15 @@
     </ClCompile>
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoReportTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualRecordsetTest.cpp">
+      <Filter>Test源文件\Data Base</Filter>
+    </ClCompile>
+    <ClCompile Include="StockCodeConverterTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

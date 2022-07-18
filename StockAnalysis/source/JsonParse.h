@@ -22,5 +22,6 @@ bool ptreeGetChild(ptree& inputPt, const char* szKey, ptree* outputPpt);
 void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 bool ConvertToWJSON(wptree& pt, string& s); // 此函数用于解析带中文字符的json
 wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
+string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
 
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);

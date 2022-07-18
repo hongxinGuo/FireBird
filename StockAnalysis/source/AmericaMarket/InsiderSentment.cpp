@@ -1,5 +1,5 @@
 #include"pch.h"
-#include"accessory.h"
+
 #include"InsiderSentiment.h"
 
 CInsiderSentiment::CInsiderSentiment() : CObject() {

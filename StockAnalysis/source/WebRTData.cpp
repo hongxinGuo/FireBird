@@ -1,7 +1,10 @@
 #include"pch.h"
 #include "globedef.h"
 
+#include"ConvertToString.h"
 #include"TimeConvert.h"
+#include"StockCodeConverter.h"
+#include"InfoReport.h"
 
 #include"jsonParse.h"
 #include"WebRTData.h"

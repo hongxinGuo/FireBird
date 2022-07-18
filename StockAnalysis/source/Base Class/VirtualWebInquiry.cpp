@@ -4,6 +4,8 @@
 #include"ThreadStatus.h"
 #include"Thread.h"
 
+#include"InfoReport.h"
+
 #include"ChinaMarket.h"
 
 #include"VirtualWebInquiry.h"
@@ -105,6 +107,7 @@ void CVirtualWebInquiry::Read(void) {
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		//counter.start();
+		VerifyDataLength();
 		TransferData(pWebData);
 		ResetBuffer();
 		ParseData(pWebData);
@@ -155,7 +158,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 					break;
 				}
 				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
-
 				IncreaseBufferSizeIfNeeded();
 			} while (lCurrentByteReaded > 0);
 			m_lTotalByteReaded += m_lByteRead;
@@ -163,20 +165,11 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
 			m_dwWebErrorCode = exception->m_dwError;
-			sprintf_s(buffer, _T("%d"), exception->m_dwError);
-			strErrorNo = buffer;
-			strMessage = _T("Net Error #") + strErrorNo;
-			strMessage += _T(" Message: ");
-			strMessage += m_strInquire;
+			ReportWebError(m_dwWebErrorCode, m_strInquire);
 			SetWebError(true);
-			gl_systemMessage.PushErrorMessage(strMessage);
 			exception->Delete();
 		}
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
-		}
+		DeleteWebFile();
 	}
 	else fReadingSuccess = false;
 
@@ -196,7 +189,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 /// <param name="strInquiring"></param>
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
-	bool fStatus = true;
+	bool fSucceedOpen = true;
 	CString strMessage, strErrorNo;
 	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
@@ -207,10 +200,10 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
 	try {
-		// 由于新浪实时数据服务器需要提供头验证数据，故而OpenURL不再使用默认值，调用者需要设置m_strHeaders（默认为空）。
-		// 其他的数据尚未需要提供头验证数据。
+		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
+		// 其他的数据尚未需要提供头部验证数据。
 		if (gl_systemStatus.IsExitingSystem()) {
-			fStatus = false;
+			fSucceedOpen = false;
 		}
 		else {
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
@@ -218,35 +211,36 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	}
 	catch (CInternetException* exception) {
 		ASSERT(m_pFile == nullptr);
-		if (m_pFile != nullptr) {
-			m_pFile->Close();
-			delete m_pFile;
-			m_pFile = nullptr;
-		}
 		counter.Stop();
+		DeleteWebFile();
 		m_dwWebErrorCode = exception->m_dwError;
-		sprintf_s(buffer, _T("%d"), exception->m_dwError);
-		strErrorNo = buffer;
-		strMessage = _T("Net Error #") + strErrorNo;
-		sprintf_s(buffer, _T(" %lld毫秒"), counter.GetElapsedMilliSecond());
-		strMessage += _T(" 用时:");
-		strMessage += buffer;
-		strMessage += _T(" message: ");
-		strMessage += m_strInquire;
+		ReportWebError(m_dwWebErrorCode, counter.GetElapsedMilliSecond(), m_strInquire);
 		SetWebError(true);
-		gl_systemMessage.PushErrorMessage(strMessage);
-		fStatus = false;
+		fSucceedOpen = false;
 		exception->Delete();
 	}
-	if (fStatus) {
-		CString str;
-		m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-		if (str.GetLength() > 0) {
-			m_lContentLength = atol(str.GetBuffer());
-		}
+	if (fSucceedOpen) {
+		QueryDataLength();
 	}
 
-	return fStatus;
+	return fSucceedOpen;
+}
+
+void CVirtualWebInquiry::DeleteWebFile() {
+	if (m_pFile != nullptr) {
+		m_pFile->Close();
+		delete m_pFile;
+		m_pFile = nullptr;
+	}
+}
+
+long CVirtualWebInquiry::QueryDataLength() {
+	CString str;
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+	if (str.GetLength() > 0) {
+		m_lContentLength = atol(str.GetBuffer());
+	}
+	return m_lContentLength;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +266,7 @@ bool CVirtualWebInquiry::IncreaseBufferSizeIfNeeded(long lSize) {
 	return true;
 }
 
-bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
+bool CVirtualWebInquiry::VerifyDataLength() {
 	auto byteReaded = GetByteReaded();
 	char buffer[100];
 	CString str = _T("网络数据长度不符。预期长度：");
@@ -287,7 +281,14 @@ bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
 			str += m_strInquire.Left(120);
 			gl_systemMessage.PushErrorMessage(str);
 		}
+		return false;
 	}
+	return true;
+}
+
+bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
+	auto byteReaded = GetByteReaded();
+
 	m_sBuffer.resize(byteReaded);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	pWebData->SetBufferLength(byteReaded);

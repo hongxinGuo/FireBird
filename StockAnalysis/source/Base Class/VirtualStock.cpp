@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"accessory.h"
 #include "VirtualStock.h"
 
 CVirtualStock::CVirtualStock() : CObject() {

@@ -4,8 +4,6 @@
 
 #include"pch.h"
 
-#include"accessory.h"
-
 #include "VirtualSetHistoryCandleExtend.h"
 
 IMPLEMENT_DYNAMIC(CVirtualSetHistoryCandleExtend, CVirtualRecordset)

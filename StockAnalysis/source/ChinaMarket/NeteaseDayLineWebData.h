@@ -31,6 +31,9 @@ public:
 	bool SkipNeteaseDayLineInformationHeader(void);
 	void ReportDayLineDownLoaded(void);
 
+	// 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
+	bool ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos);
+
 	// 用于调试
 	void PushDayLine(CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
 

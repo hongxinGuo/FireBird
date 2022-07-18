@@ -2,6 +2,7 @@
 
 #include"ThreadStatus.h"
 #include"Thread.h"
+#include"StockCodeConverter.h"
 #include"ChinaMarket.h"
 
 #include "NeteaseDayLineWebInquiry.h"

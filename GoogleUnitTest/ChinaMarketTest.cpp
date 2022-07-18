@@ -2,6 +2,7 @@
 
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
+#include"StockCodeConverter.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"accessory.h"
+
 #include"TimeConvert.h"
 
 #include"InsiderSentiment.h"

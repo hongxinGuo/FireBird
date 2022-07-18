@@ -183,7 +183,7 @@
     <ClInclude Include="..\StockAnalysis\resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Accessory.h">
+    <ClInclude Include="..\StockAnalysis\source\ConvertToString.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h">
@@ -708,6 +708,12 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSentiment.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\InfoReport.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -716,7 +722,7 @@
     <ClCompile Include="..\StockAnalysis\pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
+    <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp">
@@ -1240,6 +1246,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderSentimentDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\InfoReport.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

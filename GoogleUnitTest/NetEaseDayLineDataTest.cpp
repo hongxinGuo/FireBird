@@ -225,6 +225,7 @@ namespace StockAnalysisTest {
 		int m_iCount;
 		string m_pData;
 		INT64 m_lCountPos = 0;
+		CNeteaseDayLineWebData NeteaseData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest2,
@@ -233,7 +234,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
 		char buffer[30];
-		bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pData, buffer, m_lCountPos);
+		bool fSucceed = NeteaseData.ReadOneValueOfNeteaseDayLine(m_pData, buffer, m_lCountPos);
 		CString str;
 		str = buffer;
 		switch (m_iCount) {
