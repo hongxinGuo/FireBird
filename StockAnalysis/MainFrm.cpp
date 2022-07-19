@@ -398,6 +398,15 @@ BOOL CMainFrame::CreateDockingWindows() {
 
 #ifdef _DEBUG
 
+void CMainFrame::AssertValid() const {
+	CFrameWndEx::AssertValid();
+}
+
+void CMainFrame::Dump(CDumpContext& dc) const {
+	CFrameWndEx::Dump(dc);
+}
+#endif //_DEBUG
+
 CString CMainFrame::FormatToMK(long long iNumber) {
 	char buffer[100];
 	CString str;
@@ -414,14 +423,6 @@ CString CMainFrame::FormatToMK(long long iNumber) {
 
 	return str;
 }
-void CMainFrame::AssertValid() const {
-	CFrameWndEx::AssertValid();
-}
-
-void CMainFrame::Dump(CDumpContext& dc) const {
-	CFrameWndEx::Dump(dc);
-}
-#endif //_DEBUG
 
 // CMainFrame 消息处理程序
 
@@ -639,7 +640,7 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(14, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-		str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
+		//str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
 		SysCallSetInnerSystemPaneText(15, (LPCTSTR)str);
 	}
 }

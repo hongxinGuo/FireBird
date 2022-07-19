@@ -162,7 +162,8 @@ function(cxx_library_with_type name type cxx_flags)
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
   # make PDBs match library name
   get_target_property(pdb_debug_postfix ${name} DEBUG_POSTFIX)
   set_target_properties(${name}
@@ -243,6 +244,12 @@ function(cxx_executable name dir libs)
   cxx_executable_with_flags(
     ${name} "${cxx_default}" "${libs}" "${dir}/${name}.cc" ${ARGN})
 endfunction()
+
+# CMP0094 policy enables finding a Python executable in the LOCATION order, as
+# specified by the PATH environment variable.
+if (POLICY CMP0094)
+  cmake_policy(SET CMP0094 NEW)
+endif()
 
 # Sets PYTHONINTERP_FOUND and PYTHON_EXECUTABLE.
 if ("${CMAKE_VERSION}" VERSION_LESS "3.12.0")
