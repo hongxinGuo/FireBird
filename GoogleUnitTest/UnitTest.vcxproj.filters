@@ -555,6 +555,9 @@
     <ClCompile Include="StockCodeConverterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubINquiryTypeTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

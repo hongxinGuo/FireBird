@@ -64,6 +64,8 @@ namespace StockAnalysisTest {
 	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T("{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 Symbol项
 	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T("{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	// 空数据
+	FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
 
 	class ProcessFinnhubInsiderSentimentTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
@@ -101,7 +103,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderSentiment1, ProcessFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143));
+		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
@@ -109,18 +111,24 @@ namespace StockAnalysisTest {
 		case 1: // 正确
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
 			EXPECT_TRUE(m_pStock->IsInsiderSentimentNeedSave());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2:
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
 			break;
 		case 3:
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
+			break;
+		case 4: // 空数据
+			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
 			break;
@@ -159,7 +167,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143));
+		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
@@ -176,6 +184,9 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
 		case 3: // 缺乏Symbol
+			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+			break;
+		case 4: //空数据
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
 		default:

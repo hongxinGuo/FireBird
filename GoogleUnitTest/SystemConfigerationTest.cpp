@@ -37,7 +37,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/BackgroundThreadPermittedNumber")), 8);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/SystemConfigeration/SavingThreadPermittedNumber")), 4);
 
-		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeServer")), 0);
+		sTemp = jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeServer"));
+		EXPECT_TRUE(sTemp.compare("sina") == 0);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 200);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 

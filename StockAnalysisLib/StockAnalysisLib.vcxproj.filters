@@ -609,9 +609,6 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSymbol.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
@@ -712,6 +709,9 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
