@@ -94,6 +94,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CSystemConfigerationTest, TestLoadSave) {
+		string sTemp;
 		json jsSystemConfigeration = json::parse(gl_sSystemConfigeration);
 
 		gl_systemConfigeration.UpdateJson();
@@ -104,6 +105,9 @@ namespace StockAnalysisTest {
 		try {
 			EXPECT_FALSE(jsSystemConfigeration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfigeration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocketÔ¤ÉèÎªfalse";
 			EXPECT_TRUE(jsSystemConfigeration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfigeration.IsUsingTiingoIEXWebSocket());
+
+			sTemp = jsSystemConfigeration[json::json_pointer("/ChinaMarket/RealtimeServer")];
+			EXPECT_TRUE(sTemp.compare(_T("sina")) == 0);
 		}
 		catch (json::type_error e) {
 			EXPECT_TRUE(FALSE);

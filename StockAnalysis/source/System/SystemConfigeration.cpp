@@ -180,12 +180,12 @@ void CSystemConfigeration::Update() {
 
 		// ChinaMarket
 		try {
-			string strDataServer = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer");// 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+			sTemp = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer");// 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 
-			if (strDataServer.compare(_T("sina")) == 0) {
+			if (sTemp.compare(_T("sina")) == 0) {
 				m_iChinaMarketRealtimeServer = 0;
 			}
-			else if (strDataServer.compare(_T("netease")) == 0) {
+			else if (sTemp.compare(_T("netease")) == 0) {
 				m_iChinaMarketRealtimeServer = 1;
 			}
 			else { // 非法服务器名称，使用默认sina服务器
