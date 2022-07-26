@@ -932,6 +932,9 @@ void CChinaMarket::ProcessTodayStock(void) {
 			SetTodayStockProcessed(false);
 		}
 	}
+	CString str = ConvertDateToString(lDate);
+	str += _T("的实时数据处理完毕");
+	gl_systemMessage.PushInformationMessage(str);
 }
 
 bool CChinaMarket::TaskCheckDayLineDB(void) {

@@ -299,6 +299,9 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
 			.Times(1)
 			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
+			.Times(1)
+			.WillOnce(Return(true));
 		gl_pMockChinaMarket->SetSystemReady(true);
 		EXPECT_EQ(ThreadProcessTodayStock(gl_pMockChinaMarket.get()), (UINT)14);
 		// 市场时间小于150400时
@@ -319,12 +322,19 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
 			.Times(1)
 			.WillOnce(Return(true));
+		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
+			.Times(1)
+			.WillOnce(Return(true));
 		gl_pMockChinaMarket->SetSystemReady(true);
 		EXPECT_EQ(ThreadProcessTodayStock(gl_pMockChinaMarket.get()), (UINT)14);
 		// 市场时间大于150400时
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), lDate);
 		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_TRUE(gl_pMockChinaMarket->IsTodayStockProcessed());
+
+		// 恢复原状
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2);
+		while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadCalculateDayLineRS) {

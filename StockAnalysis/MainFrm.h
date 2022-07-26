@@ -39,7 +39,7 @@ public:
 	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
 
 	virtual void CalculateTodayRS(void);
-	virtual void ProcessTodayStock(void);
+	virtual void ProcessChinaMarketStock(void);
 
 public:
 	// 重置系统（恢复系统的初始态，准备第二天继续工作。

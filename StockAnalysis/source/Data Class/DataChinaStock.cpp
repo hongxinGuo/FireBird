@@ -642,7 +642,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineExtendInfo.Close();
 
 	str = ConvertDateToString(lCurrentTradeDay);
-	str += _T("的实时数据处理完毕");
+	str += _T("的日线数据已生成");
 	gl_systemMessage.PushInformationMessage(str);
 
 	sprintf_s(buffer, _T("%d"), iCount);

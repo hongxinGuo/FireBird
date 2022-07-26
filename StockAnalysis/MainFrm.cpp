@@ -680,11 +680,11 @@ void CMainFrame::CalculateTodayRS(void) {
 void CMainFrame::OnProcessTodayStock() {
 	// TODO: 在此添加命令处理程序代码
 	if (gl_pChinaMarket->IsSystemReady()) {
-		ProcessTodayStock();
+		ProcessChinaMarketStock();
 	}
 }
 
-void CMainFrame::ProcessTodayStock() {
+void CMainFrame::ProcessChinaMarketStock() {
 	gl_pChinaMarket->CreatingThreadProcessTodayStock();
 }
 

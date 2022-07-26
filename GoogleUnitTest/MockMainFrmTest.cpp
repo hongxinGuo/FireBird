@@ -211,7 +211,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnProcessTodayStock) {
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*gl_pMockMainFrame, ProcessTodayStock)
+		EXPECT_CALL(*gl_pMockMainFrame, ProcessChinaMarketStock)
 			.Times(1);
 		gl_pMockMainFrame->OnProcessTodayStock();
 	}
