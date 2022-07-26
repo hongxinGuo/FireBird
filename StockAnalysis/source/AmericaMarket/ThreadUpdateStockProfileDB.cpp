@@ -14,11 +14,11 @@ UINT ThreadUpdateStockProfileDB(not_null<CWorldMarket*> pMarket) {
 	else {
 		sm_fInProcess = true;
 	}
-	gl_ThreadStatus.IncreaseSavingThread();
 	gl_UpdateWorldMarketDB.Wait();
+	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->UpdateStockProfileDB();
-	gl_UpdateWorldMarketDB.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateWorldMarketDB.Signal();
 	sm_fInProcess = false;
 
 	return 37;

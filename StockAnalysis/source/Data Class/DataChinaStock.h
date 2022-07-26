@@ -46,6 +46,8 @@ public:
 	bool IsDayLineDBUpdated(void) noexcept;
 	bool IsUpdateStockCodeDB(void);
 	bool IsDayLineNeedUpdate(void) const noexcept;
+	void SetAllDayLineNeedMaintain(void);
+	void SetAllDayLineNeedUpdate(void);
 	bool IsDayLineNeedSaving(void) const;
 
 	void ClearDayLineDBUpdatedFlag(void) noexcept;

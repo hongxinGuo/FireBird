@@ -38,6 +38,7 @@ CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 Semaphore gl_UpdateWorldMarketDB(1);  // 此信号量用于更新WorldMarket数据库
 counting_semaphore<4> gl_UpdateWorldMarketDB2{ 4 };  // 此信号量用于更新WorldMarket数据库
 Semaphore gl_SaveThreadPermitted(4);  // 此信号量用于生成日线历史数据库
+counting_semaphore<4> gl_SaveThreadPermitted2{ 4 };
 Semaphore gl_BackGroundTaskThread(8); // 后台工作线程数。最大默认为8
 
 CWebInquirer gl_WebInquirer;

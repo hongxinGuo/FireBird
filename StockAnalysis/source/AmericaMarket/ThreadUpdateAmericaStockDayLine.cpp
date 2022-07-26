@@ -16,13 +16,13 @@
 #include"WorldMarket.h"
 
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
 	gl_UpdateWorldMarketDB.Wait();
+	gl_ThreadStatus.IncreaseSavingThread();
 
 	pMarket->UpdateStockDayLineDB();
 
-	gl_UpdateWorldMarketDB.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateWorldMarketDB.Signal();
 
 	return 42;
 }

@@ -393,6 +393,19 @@ bool CDataChinaStock::IsDayLineNeedUpdate(void) const noexcept {
 	return false;
 }
 
+void CDataChinaStock::SetAllDayLineNeedMaintain(void) {
+	SetAllDayLineNeedUpdate();
+	for (auto& pStock : m_vStock) {
+		pStock->SetDayLineEndDate(19900101);
+	}
+}
+
+void CDataChinaStock::SetAllDayLineNeedUpdate(void) {
+	for (auto& pStock : m_vStock) {
+		pStock->SetDayLineNeedUpdate(true);
+	}
+}
+
 bool CDataChinaStock::IsDayLineNeedSaving(void) const {
 	for (auto& pStock : m_vStock) {
 		if (pStock->IsDayLineNeedSaving()) {

@@ -19,8 +19,8 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 	CString str;
 	bool fDataSaved = false;
 
+	gl_SaveThreadPermitted2.acquire(); //使用多线程模式。
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_SaveThreadPermitted.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
 	if (!gl_systemStatus.IsExitingSystem()) {
 		fDataSaved = pStock->SaveDayLineBasicInfo();
 		pStock->UpdateDayLineStartEndDate();
@@ -30,8 +30,8 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 		}
 		pStock->UnloadDayLine();
 	}
-	gl_SaveThreadPermitted.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
+	gl_SaveThreadPermitted2.release();
 
 	return 15;
 }

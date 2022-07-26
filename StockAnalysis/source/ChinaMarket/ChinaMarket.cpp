@@ -396,10 +396,13 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 	ASSERT(IsSystemReady());
-	if ((GetMarketTime() > 114500) && IsDayLineNeedUpdate() && IsDummyTime()) {
-		// 抓取日线数据.开始于11:45:01
-		// 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-		return(gl_WebInquirer.GetNeteaseDayLineData());
+	if (IsDayLineNeedUpdate() && IsDummyTime()) {
+#ifndef DEBUG
+		if (GetMarketTime() > 114500)
+			// 抓取日线数据.开始于11:45:01
+#endif // DEBUG
+		 // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+			return(gl_WebInquirer.GetNeteaseDayLineData());
 	}
 	else return false;
 }
@@ -904,6 +907,31 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 		return true;
 	}
 	return false;
+}
+
+void CChinaMarket::ProcessTodayStock(void) {
+	ASSERT(IsSystemReady()); // 调用本工作线程时必须设置好市场。
+
+	SetProcessingTodayStock();
+
+	const long lDate = TransferToMarketDate(GetNewestTransactionTime());
+	if (lDate == GetMarketDate()) {
+		BuildDayLine(lDate);
+		// 计算本日日线相对强度
+		BuildDayLineRS(lDate);
+		// 生成周线数据
+		BuildWeekLineOfCurrentWeek();
+		BuildWeekLineRS(GetCurrentMonday(lDate));
+		UpdateStockCodeDB();
+		if (GetMarketTime() > 150400) {   // 如果中国股市闭市了
+			SetRSEndDate(gl_pChinaMarket->GetMarketDate());
+			SetUpdateOptionDB(true);   // 更新状态
+			SetTodayStockProcessed(true);  // 设置今日已处理标识
+		}
+		else {
+			SetTodayStockProcessed(false);
+		}
+	}
 }
 
 bool CChinaMarket::TaskCheckDayLineDB(void) {
@@ -1881,7 +1909,7 @@ void CChinaMarket::LoadOptionDB(void) {
 				// 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
 				// 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
 				// 使用8.0.27测试，发现可以采用4个线程了（20211103）
-				gl_SaveThreadPermitted.SetMaxCount(1);
+				//gl_SaveThreadPermitted.SetMaxCount(1);
 			}
 		}
 		if (setOption.m_RSStartDate == 0) {

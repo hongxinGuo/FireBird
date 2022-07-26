@@ -102,6 +102,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
 	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
+	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayline)
+	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayline)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1130,4 +1132,19 @@ void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRebuildBasicFinancial() {
 	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildBasicFinancial();
+}
+
+void CMainFrame::OnMaintainDayline() {
+	// TODO: Add your command handler code here
+	gl_pChinaMarket->MaintainDayLine();
+}
+
+void CMainFrame::OnUpdateMaintainDayline(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
+	if (gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }

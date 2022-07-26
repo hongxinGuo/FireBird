@@ -6,11 +6,11 @@
 #include"WorldStock.h"
 
 UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStock) {
-	gl_ThreadStatus.IncreaseSavingThread();
 	gl_UpdateWorldMarketDB.Wait();
+	gl_ThreadStatus.IncreaseSavingThread();
 	pStock->UpdateEPSSurpriseDB();
-	gl_UpdateWorldMarketDB.Signal();
 	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateWorldMarketDB.Signal();
 
 	return 41;
 }

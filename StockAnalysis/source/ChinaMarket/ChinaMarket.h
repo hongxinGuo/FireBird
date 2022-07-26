@@ -71,6 +71,7 @@ public:
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
+	void ProcessTodayStock(void);
 	bool TaskCheckDayLineDB(void);
 	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
@@ -201,6 +202,8 @@ public:
 	virtual bool DeleteWeekLine(long lMonday);
 	bool DeleteWeekLineBasicInfo(long lMonday);
 	bool DeleteWeekLineExtendInfo(long lMonday);
+
+	void MaintainDayLine(void) { m_dataChinaStock.SetAllDayLineNeedMaintain(); }
 
 	bool DeleteDayLine(long lDate);
 	bool DeleteDayLineBasicInfo(long lDate);
