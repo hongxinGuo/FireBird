@@ -25,7 +25,7 @@ void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 	if (IsNullStock()) {
 		SetDayLineNeedUpdate(false);
 	}
-	else if ((IsDelisted() || IsNotYetList()) && (gl_pWorldMarket->GetDayOfWeek() != 2)) {
+	else if ((IsDelisted() || IsNotYetList()) && (gl_pWorldMarket->GetDayOfWeek() != 2)) { // 每星期二检查退市或未上市证券
 		SetDayLineNeedUpdate(false);
 	}
 	// 不再更新日线数据比上上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。

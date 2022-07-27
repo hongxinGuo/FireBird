@@ -155,18 +155,20 @@ namespace StockAnalysisTest {
 		p = gl_pWorldMarket->GetFinnhubInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
-		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
+		gl_pWorldMarket->GetStockExchange(1)->m_fUpdated = true;
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquiryCompanySymbol());
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
-		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated);
-		EXPECT_TRUE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		gl_pWorldMarket->GetStockExchange(10)->m_fUpdated = true;
 		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsSymbolUpdated()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
@@ -257,18 +259,19 @@ namespace StockAnalysisTest {
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), 3001) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquiryStockDayLine());
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), 3010) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(false);
 		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryStockDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsStockDayLineUpdated()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
@@ -529,18 +532,19 @@ namespace StockAnalysisTest {
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquiryForexDayLine());
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate());
-		EXPECT_FALSE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
+		gl_pWorldMarket->GetForexSymbol(10)->SetDayLineNeedUpdate(false);
 		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryForexDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsForexDayLineUpdated()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";

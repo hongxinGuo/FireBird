@@ -34,6 +34,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CDayLineVectorPtr pvDayLine = nullptr;
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 	pvDayLine = ParseFinnhubCryptoCandle(pWebData);
+	pCryptoSymbol->SetDayLineNeedUpdate(false);
 	if (pvDayLine->size() > 0) {
 		for (auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
@@ -49,12 +50,10 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		else {
 			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
 		}
-		pCryptoSymbol->SetDayLineNeedUpdate(false);
 		pCryptoSymbol->SetDayLineNeedSaving(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 	}
 	else {
-		pCryptoSymbol->SetDayLineNeedUpdate(false);
 		pCryptoSymbol->SetDayLineNeedSaving(false);
 		if (!pCryptoSymbol->IsDelisted()) {
 			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);

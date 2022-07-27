@@ -155,11 +155,9 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 
 bool CFinnhubDataSource::Inquiry(long lCurrentTime) {
 	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
-	int i = 0;
 	if (--s_iCountfinnhubLimit < 0) {
 		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) InquiryFinnhub(lCurrentTime);
 		if (IsInquiring()) {
-			i = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime();
 			s_iCountfinnhubLimit = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
 	}
@@ -237,7 +235,6 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 			StoreInquiry(p);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
 			SetInquiring(true);
-			pExchange->SetUpdated(true);
 			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
 		}
 		else {
@@ -364,7 +361,6 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 			p->SetIndex(m_lCurrentUpdateDayLinePos);
 			StoreInquiry(p);
 			SetInquiring(true);
-			pStock->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pStock->GetSymbol());
 			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
@@ -645,7 +641,6 @@ bool CFinnhubDataSource::InquiryForexDayLine(void) {
 			StoreInquiry(p);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetInquiring(true);
-			pForexSymbol->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pForexSymbol->GetSymbol());
 			TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
@@ -721,7 +716,6 @@ bool CFinnhubDataSource::InquiryCryptoDayLine(void) {
 			StoreInquiry(p);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub Crypto日线：") + pCryptoSymbol->GetSymbol());
 			SetInquiring(true);
-			pCryptoSymbol->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pCryptoSymbol->GetSymbol());
 			//TRACE("申请%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}

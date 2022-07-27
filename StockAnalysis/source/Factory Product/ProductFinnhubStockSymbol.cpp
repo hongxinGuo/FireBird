@@ -24,11 +24,14 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CString str;
 	CWorldStockVectorPtr  pvStock = nullptr;
 	CString strExchangeCode;
+	CFinnhubStockExchangePtr pExchange;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	strExchangeCode = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);
 	pvStock = ParseFinnhubStockSymbol(pWebData);
+	pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
+	pExchange->SetUpdated(true);
 	// 加上交易所代码。
 	for (auto& pStock3 : *pvStock) {
 		pStock3->SetExchangeCode(strExchangeCode);

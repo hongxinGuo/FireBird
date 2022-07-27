@@ -18,15 +18,15 @@ bool CDataSource::Reset(void) {
 
 void CDataSource::Run(long lCurrentTime) {
 	Inquiry(lCurrentTime);
-	if (ProcessWebDataReceived()) {
+	if (ProcessWebDataReceived()) { // 先处理接收到的网络数据
 		UpdateStatus();
 	}
-	ProcessInquiringMessage();
+	ProcessInquiringMessage(); // 然后再申请下一个网络数据
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// finnhub读取函数采用申请和接收轮换执行方式，故而至少调用两次才完成一个轮回。
+// DataSource读取函数采用申请和接收轮换执行方式，故而至少调用两次才完成一个轮回。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataSource::ProcessInquiringMessage(void) {
