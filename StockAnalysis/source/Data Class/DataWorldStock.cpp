@@ -260,12 +260,9 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 
 	UpdateBasicFinancialAnnualDB(s_vStock);
 	UpdateBasicFinancialQuarterDB(s_vStock);
-	UpdateBasicFinancialMetricDBAndClearFlag(s_vStock);
+	UpdateBasicFinancialMetricDB(s_vStock);
 
-	for (auto& pStock5 : s_vStock) {
-		ASSERT(!pStock5->IsUpdateBasicFinancialDB());
-		pStock5->SetUpdateBasicFinancialDB(false);
-	}
+	ClearUpdateBasicFinancialFlag(s_vStock);
 
 	s_fInProcess = false;
 	return true;
@@ -309,7 +306,7 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock
 	return true;
 }
 
-bool CDataWorldStock::UpdateBasicFinancialMetricDBAndClearFlag(vector<CWorldStockPtr> vStock) {
+bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
 	int iBasicFinancialNeedUpdate = vStock.size();
 	int iCurrentUpdated = 0;
@@ -347,6 +344,17 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDBAndClearFlag(vector<CWorldStoc
 	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
 
 	return true;
+}
+
+void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
+	for (auto& pStock5 : vStock) {
+		if (pStock5->IsUpdateBasicFinancialDB()) {
+			CString strMessage = _T("found stock") + pStock5->GetSymbol() + _T(" need update basic financial data");
+			TRACE(strMessage);
+			gl_systemMessage.PushErrorMessage(strMessage);
+		}
+		pStock5->SetUpdateBasicFinancialDB(false);
+	}
 }
 
 bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {

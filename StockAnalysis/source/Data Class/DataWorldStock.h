@@ -40,7 +40,8 @@ public:
 	bool UpdateBasicFinancialDB(void);
 	bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
 	bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
-	bool UpdateBasicFinancialMetricDBAndClearFlag(vector<CWorldStockPtr> vStock);
+	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
+	void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
 
 	bool CheckStockSymbol(CWorldStockPtr pstock);
 

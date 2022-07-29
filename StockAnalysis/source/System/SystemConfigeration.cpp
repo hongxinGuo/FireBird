@@ -103,7 +103,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_iChinaMarketRealtimeInquiryTime = 200; // 默认实时数据查询时间间隔为200毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
-	m_bFastInquiringRTData = true; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
+	m_bFastInquiringRTData = false; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
 #else
 	m_bFastInquiringRTData = false;
 #endif
