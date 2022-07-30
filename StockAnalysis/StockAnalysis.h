@@ -6,6 +6,10 @@
 #error "在包含此文件之前包含“pch.h”以生成 PCH 文件"
 #endif
 
+#if _MSVC_LANG <= 201703
+#error "本系统使用C++20及以上标准"
+#endif
+
 #include "resource.h"       // 主符号
 
 // CStockAnalysisApp:
