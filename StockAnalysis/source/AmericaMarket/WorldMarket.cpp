@@ -463,7 +463,7 @@ bool CWorldMarket::TaskUpdateDayLineDB() {
 }
 
 bool CWorldMarket::TaskUpdateStockProfileDB(void) {
-	thread thread1(ThreadUpdateStockProfileDB, this);
+	thread thread1(ThreadUpdateWorldMarketStockProfileDB, this);
 	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }

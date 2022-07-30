@@ -6,9 +6,9 @@
 
 UINT ThreadUpdateFinnhubCryptoSymbolDB(not_null<CWorldMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_UpdateWorldMarketDB.Wait();
+	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateFinnhubCryptoSymbolDB();
-	gl_UpdateWorldMarketDB.Signal();
+	gl_UpdateWorldMarketDB.release();
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 52;

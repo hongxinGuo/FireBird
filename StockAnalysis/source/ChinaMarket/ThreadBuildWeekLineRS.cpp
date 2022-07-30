@@ -70,7 +70,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
-	gl_BackGroundTaskThread.Wait();
+	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
@@ -84,7 +84,7 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 		pMarket->BuildWeekLineRS(lDate);
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
-	gl_BackGroundTaskThread.Signal();
+	gl_BackGroundTaskThread.release();
 
 	return 31;
 }

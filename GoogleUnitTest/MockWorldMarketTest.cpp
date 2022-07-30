@@ -130,7 +130,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockProfileDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockProfileDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateStockProfileDB(gl_pMockWorldMarket.get()), (UINT)37);
+		EXPECT_EQ(ThreadUpdateWorldMarketStockProfileDB(gl_pMockWorldMarket.get()), (UINT)37);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockDayLineDB) {

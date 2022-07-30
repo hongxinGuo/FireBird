@@ -707,7 +707,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckFastReceivingRTData) {
-		EXPECT_TRUE(gl_systemConfigeration.IsFastInquiringRTData()) << "DEBUG模式时默认为真";
+		EXPECT_FALSE(gl_systemConfigeration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
 		tm tm_;
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->__TEST_SetMarketTM(tm_);

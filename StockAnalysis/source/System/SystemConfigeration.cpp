@@ -322,8 +322,16 @@ void CSystemConfigeration::UpdateJson(void) {
 }
 
 void CSystemConfigeration::UpdateSystem(void) {
-	gl_BackGroundTaskThread.SetMaxCount(m_iBackgroundThreadPermittedNumber);
-	gl_SaveThreadPermitted.SetMaxCount(m_iSavingThreadPermittedNumber);
+	if (m_iBackgroundThreadPermittedNumber > 8) {
+		for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) {
+			gl_BackGroundTaskThread.release();
+		}
+	}
+	if (m_iSavingThreadPermittedNumber > 4) {
+		for (int i = 4; i < m_iSavingThreadPermittedNumber; i++) {
+			gl_SaveThreadPermitted.release();
+		}
+	}
 }
 
 bool CSystemConfigeration::LoadDB() {

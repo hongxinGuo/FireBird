@@ -45,20 +45,20 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 }
 
 UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) {
-	gl_BackGroundTaskThread.Wait();
+	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 	if (!gl_systemStatus.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
 	gl_ThreadStatus.DecreaseSavingThread();
-	gl_BackGroundTaskThread.Signal();
+	gl_BackGroundTaskThread.release();
 
 	return 26;
 }
 
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
-	gl_BackGroundTaskThread.Wait();
+	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 
@@ -66,7 +66,7 @@ UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
 	gl_ThreadStatus.DecreaseSavingThread();
-	gl_BackGroundTaskThread.Signal();
+	gl_BackGroundTaskThread.release();
 
 	return 32;
 }
