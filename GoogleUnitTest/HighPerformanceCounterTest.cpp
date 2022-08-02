@@ -15,7 +15,6 @@ namespace StockAnalysisTest {
 	{
 	protected:
 		static void SetUpTestSuite(void) {
-			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "在EnvironmentSetUp.h中已经初始化了";
 		}
 
 		static void TearDownTestSuite(void) {

@@ -30,7 +30,6 @@ CSystemConfigeration gl_systemConfigeration; // ÏµÍ³ÅäÖÃ²ÎÊıµÄ×Ü»ã.´ËÈ«¾Ö±äÁ¿ÒªÎ
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚ¶şÎ»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿£¨µ±±¨´íÊ±£©¡£
 CSystemStatus gl_systemStatus; // ÏµÍ³×´Ì¬¡£
 CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞ¹¤×÷Ïß³ÌµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
-CHighPerformanceCounter g_highPerformanceCounter;
 
 CWebRTDataContainer gl_WebRTDataContainer; // ÍøÂçÊµÊ±Êı¾İ´æ´¢ÈİÆ÷
 
@@ -52,7 +51,7 @@ CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.ioÖ¤È¯ĞÅÏ¢
 CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com¹ÉÆ±Êı¾İ
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com¹ÉÆ±Êı¾İ
 
-vector<CDataSourcePtr> gl_vDataSource;
+vector<CDataSourcePtr> gl_vWorldMarketDataSource;
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CDataSourcePtr gl_pDataSourceQuandl = nullptr;

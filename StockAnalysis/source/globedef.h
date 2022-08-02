@@ -4,6 +4,10 @@
 #error "在包含此文件之前必须先包含“stdafx.h”文件以生成 PCH 文件"
 #endif
 
+#if _MSVC_LANG <= 201703
+#error "本系统使用C++20及以上标准"
+#endif
+
 #include"SystemConstant.h"
 #include"SystemConfigeration.h"
 #include"SystemStatus.h"

@@ -26,8 +26,8 @@ void CWebInquirer::Initialize(void) {
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
 	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
 
-	gl_vDataSource.push_back(gl_pDataSourceFinnhub);
-	gl_vDataSource.push_back(gl_pDataSourceTiingo);
+	gl_vWorldMarketDataSource.push_back(gl_pDataSourceFinnhub);
+	gl_vWorldMarketDataSource.push_back(gl_pDataSourceTiingo);
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

@@ -23,5 +23,3 @@ protected:
 	LARGE_INTEGER m_start;
 	LARGE_INTEGER m_end;
 };
-
-extern CHighPerformanceCounter g_highPerformanceCounter;

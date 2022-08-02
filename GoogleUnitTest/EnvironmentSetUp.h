@@ -59,8 +59,6 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
-			EXPECT_TRUE(g_highPerformanceCounter.IsInitialized()) << "高精度计时器自动初始化";
-
 			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileName(), _T("C:\\StockAnalysis\\SystemConfigeration.json"));
 			gl_systemConfigeration.SetDefaultFileName(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
 			gl_systemConfigeration.LoadDB();

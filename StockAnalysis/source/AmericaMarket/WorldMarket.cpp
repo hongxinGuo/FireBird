@@ -114,7 +114,7 @@ void CWorldMarket::ResetMarket(void) {
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
 
-	for (auto& pDataSource : gl_vDataSource) {
+	for (auto& pDataSource : gl_vWorldMarketDataSource) {
 		pDataSource->Reset();
 	}
 
@@ -141,28 +141,10 @@ bool CWorldMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
 	static time_t s_lastTimeSchedulingTask = 0;
-	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
-	static int s_iCountTiingoLimit = 8000; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
 	const long lCurrentTime = GetMarketTime();
 
 	TaskCheckSystemReady();
-	/*
-	if (--s_iCountfinnhubLimit < 0) {
-		if (!IsFinnhubInquiring() && !gl_pFinnhubWebInquiry->IsWebError()) TaskInquiryFinnhub(lCurrentTime);
-		if (IsFinnhubInquiring()) {
-			s_iCountfinnhubLimit = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
-		}
-	}
 
-	if (--s_iCountTiingoLimit < 0) {
-		if (!IsTiingoInquiring()) TaskInquiryTiingo();
-		s_iCountTiingoLimit = gl_systemConfigeration.GetWorldMarketTiingoInquiryTime() / 100;
-		if (gl_pTiingoWebInquiry->IsWebError()) {
-			gl_pTiingoWebInquiry->SetWebError(false);
-			s_iCountTiingoLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
-		}
-	}
-	*/
 	ProcessMessageAndReceivedData(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
@@ -175,7 +157,7 @@ bool CWorldMarket::SchedulingTask(void) {
 }
 
 void CWorldMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
-	for (auto& pDataSource : gl_vDataSource) {
+	for (auto& pDataSource : gl_vWorldMarketDataSource) {
 		pDataSource->Run(lCurrentTime);
 	}
 }
