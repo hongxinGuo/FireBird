@@ -178,6 +178,12 @@
     <Filter Include="头文件\Web Data Source">
       <UniqueIdentifier>{2b47277a-47dc-488f-89f8-41d5e695fb38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Web Data Source\WorldMarket">
+      <UniqueIdentifier>{bfb23590-d931-4a45-b5fa-8d7509e1b3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Web Data Source\WorldMarket">
+      <UniqueIdentifier>{a3d7e92b-095d-43f0-9815-972fe4f5af3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
@@ -660,12 +666,6 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h">
       <Filter>头文件\Web Data Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h">
-      <Filter>头文件\Web Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
-      <Filter>头文件\Web Data Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
@@ -713,6 +713,12 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h">
+      <Filter>头文件\Web Data Source\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
+      <Filter>头文件\Web Data Source\WorldMarket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1214,12 +1220,6 @@
     <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp">
       <Filter>源文件\Web Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp">
-      <Filter>源文件\Web Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp">
-      <Filter>源文件\Web Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
@@ -1252,6 +1252,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp">
+      <Filter>源文件\Web Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp">
+      <Filter>源文件\Web Data Source\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
