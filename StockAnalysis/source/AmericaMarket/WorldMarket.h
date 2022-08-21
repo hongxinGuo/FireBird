@@ -47,7 +47,7 @@ extern binary_semaphore gl_UpdateWorldMarketDB;  // ´ËĞÅºÅÁ¿ÓÃÓÚ¸üĞÂWorldMarketÊ
 class CWorldMarket : public CVirtualMarket {
 public:
 	DECLARE_DYNCREATE(CWorldMarket)
-	CWorldMarket();
+		CWorldMarket();
 	// Ö»ÄÜÓĞÒ»¸öÊµÀı,²»ÔÊĞí¸³Öµ¡¢¿½±´
 	CWorldMarket(const CWorldMarket&) = delete;
 	CWorldMarket& operator=(const CWorldMarket&) = delete;

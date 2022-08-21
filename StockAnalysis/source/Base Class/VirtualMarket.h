@@ -1,12 +1,14 @@
 #pragma once
 
+#include"DataSource.h"
+
 using namespace std;
 #include<memory>
 
 class CVirtualMarket : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualMarket)
-	CVirtualMarket(void);
+		CVirtualMarket(void);
 	// 不允许赋值。
 	CVirtualMarket(const CVirtualMarket&) = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&) = delete;
@@ -80,6 +82,9 @@ public:
 
 	virtual bool PreparingExitMarket(void) { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
 
+	// 存储数据源
+	void StoreDataSource(CDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }
+
 public:
 	// 测试用函数
 	void __TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
@@ -88,6 +93,8 @@ public:
 	void __TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
 public:
+	vector<CDataSourcePtr> m_vDataSource;
+
 	// Finnhub.io提供的信息
 	CString m_strCode;
 	CString m_strName;

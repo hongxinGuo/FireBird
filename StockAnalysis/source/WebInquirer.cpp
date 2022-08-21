@@ -5,6 +5,7 @@
 #include"WebInquirer.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+#include"WorldMarket.h"
 
 CWebInquirer::CWebInquirer(void) : CObject() {
 }
@@ -26,8 +27,8 @@ void CWebInquirer::Initialize(void) {
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
 	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
 
-	gl_vWorldMarketDataSource.push_back(gl_pDataSourceFinnhub);
-	gl_vWorldMarketDataSource.push_back(gl_pDataSourceTiingo);
+	gl_pWorldMarket->StoreDataSource(gl_pDataSourceFinnhub);
+	gl_pWorldMarket->StoreDataSource(gl_pDataSourceTiingo);
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

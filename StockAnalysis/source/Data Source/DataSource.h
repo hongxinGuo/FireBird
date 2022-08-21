@@ -53,5 +53,4 @@ protected:
 
 typedef shared_ptr<CDataSource> CDataSourcePtr;
 
-extern vector<CDataSourcePtr> gl_vWorldMarketDataSource;
 extern CDataSourcePtr gl_pDataSourceQuandl;

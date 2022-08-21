@@ -114,7 +114,7 @@ void CWorldMarket::ResetMarket(void) {
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
 
-	for (auto& pDataSource : gl_vWorldMarketDataSource) {
+	for (auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
 	}
 
@@ -157,7 +157,7 @@ bool CWorldMarket::SchedulingTask(void) {
 }
 
 void CWorldMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
-	for (auto& pDataSource : gl_vWorldMarketDataSource) {
+	for (auto& pDataSource : m_vDataSource) {
 		pDataSource->Run(lCurrentTime);
 	}
 }

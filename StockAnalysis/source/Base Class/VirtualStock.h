@@ -98,7 +98,7 @@ public:
 protected:
 	CString m_strDescription; // 该证券的描述
 	CString m_strExchangeCode; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
-	CString m_strSymbol; // 股票代码。十位以内，前六位为数字代码，后两位为市场前缀。如600601.SS，000001.SZ
+	CString m_strSymbol; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL.US, RIG.US
 	CString m_strDisplaySymbol;
 
 	// 实时数据区
@@ -123,7 +123,7 @@ protected:
 	long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
 	long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
 	long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
-							 // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
+	// 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
 	atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。

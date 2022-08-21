@@ -8,6 +8,9 @@
 using namespace std;
 #include<memory>
 
+class CVirtualMarket;
+typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+
 // chinaMarket
 class CChinaStock;
 typedef shared_ptr<CChinaStock> CChinaStockPtr;

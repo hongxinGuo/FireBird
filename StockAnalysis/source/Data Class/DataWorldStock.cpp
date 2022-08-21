@@ -125,8 +125,8 @@ bool CDataWorldStock::LoadDB(void) {
 			pWorldStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			m_mapWorldStock[pWorldStock->GetSymbol()] = m_vWorldStock.size();
 			m_vWorldStock.push_back(pWorldStock);
-			if (pWorldStock->GetCurrency().GetLength() > lMaxSymbolLength) {
-				lMaxSymbolLength = pWorldStock->GetCurrency().GetLength();
+			if (pWorldStock->GetSymbol().GetLength() > lMaxSymbolLength) {
+				lMaxSymbolLength = pWorldStock->GetSymbol().GetLength();
 			}
 		}
 		else {
@@ -145,6 +145,7 @@ bool CDataWorldStock::LoadDB(void) {
 	m_lLastTotalWorldStock = m_vWorldStock.size();
 	TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalWorldStock);
 
+	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
 	char buffer[100];
 	sprintf_s(buffer, _T("%d"), lMaxSymbolLength);
 	str = _T("WorldMarket股票代码最长长度为");

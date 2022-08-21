@@ -55,5 +55,5 @@ namespace StockAnalysisTest {
 	REGISTER_TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest, TestReset, TestPushPopData);
 
 	using MyTypes = ::testing::Types<string, CWebData, CNeteaseDayLineWebData, int>;
-	INSTANTIATE_TYPED_TEST_SUITE_P(TestTemplateMutexAccessQueue1, CTemplateMutexAccessQueueTest, MyTypes);
+	INSTANTIATE_TYPED_TEST_SUITE_P(MyTestTemplateMutexAccessQueue, CTemplateMutexAccessQueueTest, MyTypes);
 }
