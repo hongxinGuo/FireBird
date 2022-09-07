@@ -327,11 +327,6 @@ void CSystemConfigeration::UpdateSystem(void) {
 			gl_BackGroundTaskThread.release();
 		}
 	}
-	if (m_iSavingThreadPermittedNumber > 4) {
-		for (int i = 4; i < m_iSavingThreadPermittedNumber; i++) {
-			gl_SaveThreadPermitted.release();
-		}
-	}
 }
 
 bool CSystemConfigeration::LoadDB() {

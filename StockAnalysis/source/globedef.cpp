@@ -35,7 +35,7 @@ CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 
 // 为了事先初始化，信号量必须声明为全局变量
 binary_semaphore gl_UpdateWorldMarketDB{ 1 };  // 此信号量用于更新WorldMarket数据库
-counting_semaphore<4> gl_SaveThreadPermitted{ 4 };
+counting_semaphore<4> gl_SaveDayLineThreadPermitted{ 1 }; // 当数据库中没有日线数据时，增加此信号量最大值至4
 counting_semaphore<8> gl_BackGroundTaskThread{ 8 };// 后台工作线程数。最大为8
 
 CWebInquirer gl_WebInquirer;
@@ -51,6 +51,7 @@ CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.io证券信息
 CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 
+// Data source
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CDataSourcePtr gl_pDataSourceQuandl = nullptr;
@@ -59,4 +60,4 @@ vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场
 
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr;
-CChinaMarketPtr gl_pChinaMarket = nullptr; //此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
+CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//

@@ -711,14 +711,14 @@
     <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h">
       <Filter>头文件\Web Data Source\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
       <Filter>头文件\Web Data Source\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
+      <Filter>头文件\命名声明</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

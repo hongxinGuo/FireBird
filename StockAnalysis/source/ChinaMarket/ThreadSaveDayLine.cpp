@@ -19,7 +19,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 	CString str;
 	bool fDataSaved = false;
 
-	gl_SaveThreadPermitted.acquire(); //使用多线程模式。
+	gl_SaveDayLineThreadPermitted.acquire(); //使用多线程模式。
 	gl_ThreadStatus.IncreaseSavingThread();
 	if (!gl_systemStatus.IsExitingSystem()) {
 		fDataSaved = pStock->SaveDayLineBasicInfo();
@@ -31,7 +31,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
 		pStock->UnloadDayLine();
 	}
 	gl_ThreadStatus.DecreaseSavingThread();
-	gl_SaveThreadPermitted.release();
+	gl_SaveDayLineThreadPermitted.release();
 
 	return 15;
 }
