@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 #include"FinnhubStockBasicFinancial.h"
 
-class CProductFinnhubCompanyBasicFinancial : public CProductWebSourceData {
+class CProductFinnhubCompanyBasicFinancial : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCompanyBasicFinancial)
-	CProductFinnhubCompanyBasicFinancial();
+		CProductFinnhubCompanyBasicFinancial();
 	~CProductFinnhubCompanyBasicFinancial() {}
 
 	virtual CString CreatMessage(void) override final;

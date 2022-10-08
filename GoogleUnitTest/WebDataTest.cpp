@@ -122,4 +122,30 @@ namespace StockAnalysisTest {
 		m_id.SetCurrentPosData('b');
 		EXPECT_EQ(m_id.GetCurrentPosData(), 'b');
 	}
+
+	TEST_F(CWebDataTest, TestIsErrorMessage1) {
+		m_id.__TEST_SetBuffer("{\"error\":\"you don't this resource\"}");
+		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.IsParsed());
+
+		EXPECT_TRUE(m_id.IsErrorMessage());
+	}
+
+	TEST_F(CWebDataTest, TestIsErrorMessage2) {
+		m_id.__TEST_SetBuffer("{\"error2\":\"you don't this resource\"}");
+		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.IsParsed());
+
+		EXPECT_FALSE(m_id.IsErrorMessage());
+		EXPECT_TRUE(m_id.IsErrorMessage("error2"));
+	}
+
+	TEST_F(CWebDataTest, TestIsErrorMessage3) {
+		m_id.__TEST_SetBuffer("{\"no error\":\"you don't this resource\"}");
+		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.IsParsed());
+
+		EXPECT_FALSE(m_id.IsErrorMessage());
+		EXPECT_FALSE(m_id.IsErrorMessage("haveError"));
+	}
 }

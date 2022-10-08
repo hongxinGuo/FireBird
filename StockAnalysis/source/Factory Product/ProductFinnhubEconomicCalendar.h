@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 #include"EconomicCalendar.h"
 
-class CProductFinnhubEconomicCalendar : public CProductWebSourceData {
+class CProductFinnhubEconomicCalendar : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubEconomicCalendar)
-	CProductFinnhubEconomicCalendar();
+		CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() {}
 
 	virtual CString CreatMessage(void) override final;

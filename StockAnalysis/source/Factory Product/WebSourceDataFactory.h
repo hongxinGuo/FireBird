@@ -6,7 +6,7 @@
 class CWebSourceDataFactory : public CObject {
 public:
 	CWebSourceDataFactory() {}
-	~CWebSourceDataFactory() {}
+	virtual ~CWebSourceDataFactory() {}
 
 	virtual CProductWebSourceDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) = 0;
 };

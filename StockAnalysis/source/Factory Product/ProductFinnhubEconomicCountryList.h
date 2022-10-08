@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 #include"Country.h"
 
-class CProductFinnhubEconomicCountryList : public CProductWebSourceData {
+class CProductFinnhubEconomicCountryList : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubEconomicCountryList)
-	CProductFinnhubEconomicCountryList();
+		CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() {}
 
 	virtual CString CreatMessage(void) override final;

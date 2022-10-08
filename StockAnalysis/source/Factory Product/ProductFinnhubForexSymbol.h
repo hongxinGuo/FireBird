@@ -1,12 +1,12 @@
 #pragma once
 
 #include"WorldMarket.h"
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 
-class CProductFinnhubForexSymbol : public CProductWebSourceData {
+class CProductFinnhubForexSymbol : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubForexSymbol)
-	CProductFinnhubForexSymbol();
+		CProductFinnhubForexSymbol();
 	~CProductFinnhubForexSymbol() {}
 
 	virtual CString CreatMessage(void) override final;

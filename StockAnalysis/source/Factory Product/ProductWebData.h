@@ -2,6 +2,7 @@
 
 using namespace std;
 #include<memory>
+#include<string>
 
 #include"ClassDeclaration.h"
 
@@ -11,7 +12,7 @@ class CProductWebSourceData : public CObject {
 public:
 	DECLARE_DYNCREATE(CProductWebSourceData)
 		CProductWebSourceData();
-	~CProductWebSourceData() {}
+	virtual ~CProductWebSourceData() {}
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreatMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreatMessage(void) { return _T(""); }

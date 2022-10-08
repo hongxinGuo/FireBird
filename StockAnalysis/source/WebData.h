@@ -71,6 +71,7 @@ public:
 	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed(void) noexcept { return m_fParsed; }
 	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
+	bool IsErrorMessage(string strError = "error");
 
 	// 使用boost Property tree将数据转换为json格式。
 	bool ParseWithPropertyTree(long lBeginPos = 0, long lEndPos = 0);
@@ -94,6 +95,8 @@ protected:
 
 	bool m_fJSonContentType;
 	bool m_fParsed;
+	bool m_fErrorMessage; // 该网络数据报告错误
+	CString m_strErrorMessage; // 错误信息
 	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用

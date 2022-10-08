@@ -12,6 +12,8 @@ CWebData::CWebData() : CObject() {
 
 	m_fJSonContentType = false;
 	m_fParsed = false;
+	m_fErrorMessage = false;
+	m_strErrorMessage = "";
 	m_ppt = nullptr;
 }
 
@@ -50,6 +52,22 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
 	return true;
+}
+
+bool CWebData::IsErrorMessage(string strError) {
+	string sMessage;
+	ASSERT(m_fParsed);
+	try {
+		sMessage = m_ppt->get<string>(strError);
+		m_strErrorMessage = sMessage.c_str();
+		m_fErrorMessage = true;
+		return true;
+	}
+	catch (ptree_error& e) {
+		m_fErrorMessage = false;
+		m_strErrorMessage = "";
+		return false;
+	}
 }
 
 bool CWebData::ParseWithPropertyTree(long lBeginPos, long lEndPos) {

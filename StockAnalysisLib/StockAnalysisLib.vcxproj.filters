@@ -720,6 +720,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
       <Filter>头文件\命名声明</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1258,6 +1261,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp">
       <Filter>源文件\Web Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

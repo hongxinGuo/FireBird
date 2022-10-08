@@ -241,6 +241,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (pWebData->IsParsed()) {
 		if (pWebData->IsVoidJSon()) return false;
+		if (pWebData->IsErrorMessage()) return false;
 		ppt = pWebData->GetPTree();
 		try {
 			s = ptreeGetString(*ppt, _T("symbol"));

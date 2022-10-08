@@ -18,7 +18,7 @@ using namespace std;
 class CVirtualHistoryCandleBasic : public CObject {
 public:
 	CVirtualHistoryCandleBasic();
-	~CVirtualHistoryCandleBasic();
+	virtual ~CVirtualHistoryCandleBasic();
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	bool SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic); // 存储基本数据
@@ -126,7 +126,7 @@ public:
 	double m_dRSIndex; // 相对强弱（最小为-50， 最大为150）
 	double m_dRSBackup; // 相对强弱（最小为0， 最大为100）
 	double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
-													// 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
+	// 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
 
 public:
 	// don't need to save

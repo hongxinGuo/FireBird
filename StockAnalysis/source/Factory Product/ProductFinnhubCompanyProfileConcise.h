@@ -1,11 +1,11 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 
-class CProductFinnhubCompanyProfileConcise : public CProductWebSourceData {
+class CProductFinnhubCompanyProfileConcise : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCompanyProfileConcise)
-	CProductFinnhubCompanyProfileConcise();
+		CProductFinnhubCompanyProfileConcise();
 	~CProductFinnhubCompanyProfileConcise() {}
 
 	virtual CString CreatMessage(void) override final;

@@ -1,11 +1,11 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"ProductFinnhub.h"
 
-class CProductFinnhubForexExchange : public CProductWebSourceData {
+class CProductFinnhubForexExchange : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubForexExchange)
-	CProductFinnhubForexExchange();
+		CProductFinnhubForexExchange();
 	~CProductFinnhubForexExchange() {}
 
 	virtual CString CreatMessage(void) override final;
