@@ -80,7 +80,7 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetProfileUpdated(false);
+			m_pStock->SetCompanyProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 
 			GeneralCheck();

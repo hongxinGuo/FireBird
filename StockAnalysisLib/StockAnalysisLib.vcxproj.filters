@@ -462,10 +462,10 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductWebData.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.h">
@@ -722,6 +722,15 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.h">
+      <Filter>头文件\World Market\类型</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.h">
+      <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1264,6 +1273,18 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.cpp">
+      <Filter>源文件\World Market\类型</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.cpp">
+      <Filter>源文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCompanyNewsDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

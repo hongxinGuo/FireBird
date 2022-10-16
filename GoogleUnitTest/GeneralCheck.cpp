@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 	void WorldMarketCheck(void) {
 		if (gl_pWorldMarket != nullptr) {
 			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
-			EXPECT_FALSE(pStock->IsProfileUpdated());
+			EXPECT_FALSE(pStock->IsCompanyProfileUpdated());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());

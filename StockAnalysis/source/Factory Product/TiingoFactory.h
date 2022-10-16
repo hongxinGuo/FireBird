@@ -1,8 +1,8 @@
 #pragma once
 
-#include"WebSourceDataFactory.h"
+#include"VirtualDataFactory.h"
 
-class CTiingoFactory : public CWebSourceDataFactory {
+class CTiingoFactory : public CVirtualDataFactory {
 public:
 	CTiingoFactory() {}
 	~CTiingoFactory() {}

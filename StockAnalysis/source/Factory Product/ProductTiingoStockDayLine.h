@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 #include"DayLine.h"
 
-class CProductTiingoStockDayLine : public CProductWebSourceData {
+class CProductTiingoStockDayLine : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductTiingoStockDayLine)
-	CProductTiingoStockDayLine();
+		CProductTiingoStockDayLine();
 	~CProductTiingoStockDayLine() {}
 
 	virtual CString CreatMessage(void) override final;

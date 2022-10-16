@@ -7,7 +7,7 @@
 
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise, CProductFinnhub)
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strClassName = _T("Finnhub estimates EPS surprise");

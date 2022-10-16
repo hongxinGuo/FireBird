@@ -226,6 +226,12 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
 	gl_systemMessage.PushErrorMessage(strError);
 }
 
+void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_error& e) {
+	CString strData = data.c_str();
+
+	ReportJSonErrorToSystemMessage(strPrefix + strData.Left(80) + _T(" "), e);
+}
+
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
 	try {
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);

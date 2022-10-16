@@ -330,9 +330,9 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestIsProfileUpdated) {
 		CWorldStock stock;
-		EXPECT_FALSE(stock.IsProfileUpdated());
-		stock.SetProfileUpdated(true);
-		EXPECT_TRUE(stock.IsProfileUpdated());
+		EXPECT_FALSE(stock.IsCompanyProfileUpdated());
+		stock.SetCompanyProfileUpdated(true);
+		EXPECT_TRUE(stock.IsCompanyProfileUpdated());
 	}
 
 	TEST_F(CWorldStockTest, TestIsEPSSurpriseUpdated) {
@@ -1030,6 +1030,45 @@ namespace StockAnalysisTest {
 		setInsiderSentiment.Delete();
 		setInsiderSentiment.m_pDatabase->CommitTrans();
 		setInsiderSentiment.Close();
+	}
+
+	TEST_F(CWorldStockTest, TestUpdateCompanyNewsDB) {
+		CWorldStock stock;
+		CCompanyNewsVectorPtr pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+		CCompanyNewsPtr pCompanyNews;
+		CSetCompanyNews setCompanyNews;
+
+		stock.SetSymbol(_T("RIG"));
+
+		pCompanyNews = make_shared<CFinnhubCompanyNews>();
+		pCompanyNews->m_strCompanySymbol = _T("RIG");
+		pCompanyNews->m_llDateTime = 19800101;
+		pCompanyNews->m_strCategory = _T("test");
+		pCompanyNews->m_iNewsID = 4;
+		pvCompanyNews->push_back(pCompanyNews);
+		pCompanyNews = make_shared<CFinnhubCompanyNews>();
+		pCompanyNews->m_strCompanySymbol = _T("RIG");
+		pCompanyNews->m_llDateTime = 20200101;
+		pCompanyNews->m_strCategory = _T("test");
+		pCompanyNews->m_iNewsID = 5;
+		pvCompanyNews->push_back(pCompanyNews);
+
+		stock.UpdateCompanyNews(pvCompanyNews);
+		stock.UpdateCompanyNewsDB();
+
+		int iCount = 0;
+		setCompanyNews.m_strFilter = _T("[category] = 'test'");
+		setCompanyNews.Open();
+		setCompanyNews.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setCompanyNews.IsEOF()) << "已经加入了两个category为test的数据";
+		while (!setCompanyNews.IsEOF()) {
+			setCompanyNews.Delete();
+			setCompanyNews.MoveNext();
+			iCount++;
+		}
+		setCompanyNews.m_pDatabase->CommitTrans();
+		setCompanyNews.Close();
+		EXPECT_EQ(iCount, 2);
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateDayLine) {

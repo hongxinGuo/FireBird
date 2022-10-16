@@ -5,7 +5,7 @@
 
 #include "ProductFinnhubCompanyProfile.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfile, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfile, CProductFinnhub)
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strClassName = _T("Finnhub company profile");
@@ -27,7 +27,7 @@ bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	pStock->SetProfileUpdated(true);
+	pStock->SetCompanyProfileUpdated(true);
 	if (ParseFinnhubStockProfile(pWebData, pStock)) {
 		pStock->SetProfileUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);

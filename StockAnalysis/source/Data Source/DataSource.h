@@ -2,7 +2,7 @@
 
 #include"TemplateMutexAccessQueue.h"
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 #include"VirtualWebInquiry.h"
 
 using namespace std;

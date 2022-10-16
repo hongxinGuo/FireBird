@@ -1,12 +1,12 @@
 #include"pch.h"
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 
-IMPLEMENT_DYNCREATE(CProductWebSourceData, CObject)
+IMPLEMENT_DYNCREATE(CVirtualProductWebData, CObject)
 
-CProductWebSourceData::CProductWebSourceData() : CObject() {
+CVirtualProductWebData::CVirtualProductWebData() : CObject() {
 	m_pMarket = nullptr;
 	m_lIndex = -1; // 设置为越界
 
-	m_strClassName = _T("ProductWebSourceData");
+	m_strClassName = _T("VirtualProductData");
 }

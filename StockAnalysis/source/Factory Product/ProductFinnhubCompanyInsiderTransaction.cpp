@@ -7,7 +7,7 @@
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderTransaction, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderTransaction, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strClassName = _T("Finnhub company insider transaction");

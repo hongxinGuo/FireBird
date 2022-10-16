@@ -5,7 +5,7 @@
 
 #include "ProductFinnhubCryptoExchange.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCryptoExchange, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCryptoExchange, CProductFinnhub)
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strClassName = _T("Finnhub crypto exchange");

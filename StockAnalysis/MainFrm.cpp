@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
 	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayline)
 	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayline)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -134,8 +135,8 @@ static UINT innerSystemIndicators[] =
 	ID_SHOW_FINNHUB_WEB,
 	ID_SHOW_TIINGO_WEB,
 	ID_SHOW_QUANDL_WEB,
-		ID_CURRENT_FINNHUB_STAKE,
-ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
+	ID_CURRENT_FINNHUB_STAKE,
+	ID_SHOW_FINNHUB_WEBSOCKET_DATASIZE,
 	ID_CURRENT_TIINGO_IEX,
 	ID_SHOW_TIINGO_IEX_WEBSOCKET_DATASIZE,
 	ID_CURRENT_TIINGO_FOREX,
@@ -209,6 +210,10 @@ bool CMainFrame::CreateMarketContainer(void) {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
+	// 更新系统显示高度和宽度
+	gl_systemConfigeration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
+	gl_systemConfigeration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
+
 	gl_systemConfigeration.LoadDB(); // 装入系统参数
 	gl_systemConfigeration.UpdateSystem(); // 更新系统参数
 
@@ -216,6 +221,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 	gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
 	gl_pDataSourceQuandl = make_shared<CDataSource>();
+	ASSERT(gl_pWorldMarket == nullptr);
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
@@ -805,7 +811,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetCurrentSelectedStock());
 			break;
 		case 33: // PAGE UP
-		 // last stock
+			// last stock
 			gl_pChinaMarket->ChangeToPrevStock();
 			break;
 		case 34: // PAGE DOWN
@@ -1147,4 +1153,12 @@ void CMainFrame::OnUpdateMaintainDayline(CCmdUI* pCmdUI) {
 	else {
 		SysCallCmdUISetCheck(pCmdUI, false);
 	}
+}
+
+void CMainFrame::OnSize(UINT nType, int cx, int cy)
+{
+	CFrameWndEx::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	gl_systemConfigeration.SetCurrentWindowRect(cx, cy);
 }

@@ -40,6 +40,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_State = _T(" ");
 
 	m_ProfileUpdateDate = 19800101;
+	m_CompanyNewsUpdateDate = 19800101;
 	m_BasicFinancialUpdateDate = 19800101;
 	m_DayLineStartDate = 29900101;
 	m_DayLineEndDate = 19800101;
@@ -64,7 +65,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_DailyDataUpdateDate = 19800101;
 	m_StatementUpdateDate = 19800101;
 
-	m_nFields = 58;
+	m_nFields = 59;
 }
 
 void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
@@ -110,6 +111,7 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
 	RFX_Text(pFX, _T("[Peer]"), m_Peer);
 	RFX_Long(pFX, _T("[ProfileUpdateDate]"), m_ProfileUpdateDate);
+	RFX_Long(pFX, _T("[CompanyNewsUpdateDate]"), m_CompanyNewsUpdateDate);
 	RFX_Long(pFX, _T("[BasicFinancialUpdateDate]"), m_BasicFinancialUpdateDate);
 	RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
 	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);

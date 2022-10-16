@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 #include"TiingoCryptoSymbol.h"
 
-class CProductTiingoCryptoSymbol : public CProductWebSourceData {
+class CProductTiingoCryptoSymbol : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCryptoSymbol)
-	CProductTiingoCryptoSymbol();
+		CProductTiingoCryptoSymbol();
 	~CProductTiingoCryptoSymbol() {}
 
 	virtual CString CreatMessage(void) override final;

@@ -23,6 +23,7 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.h" />
     <ClInclude Include="..\StockAnalysis\source\ConvertToString.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.h" />
@@ -168,8 +171,8 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\WebSourceDataFactory.h" />
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\InfoReport.h" />
@@ -202,6 +205,8 @@
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCompanyNewsDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Disabled</Optimization>
@@ -317,6 +322,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetRSStrongStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetStockSection.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
@@ -342,6 +348,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderTransaction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyPeer.cpp" />

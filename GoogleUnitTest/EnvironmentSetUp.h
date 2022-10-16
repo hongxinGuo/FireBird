@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			gl_pWorldMarket->GetStock(_T("AAPL"))->SetProfileUpdated(false);
+			gl_pWorldMarket->GetStock(_T("AAPL"))->SetCompanyProfileUpdated(false);
 
 			GeneralCheck();
 		}

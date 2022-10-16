@@ -6,7 +6,7 @@
 
 #include "ProductFinnhubEconomicCalendar.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCalendar, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCalendar, CProductFinnhub)
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strClassName = _T("Finnhub economic calendar");

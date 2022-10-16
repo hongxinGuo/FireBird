@@ -188,10 +188,10 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetProfileUpdated(true);
+			pStock->SetCompanyProfileUpdated(true);
 		}
-		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
-		gl_pWorldMarket->GetStock(10)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(10)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceFinnhub->SetStockProfileUpdated(true);
 		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryCompanyProfileConcise()) << "Stock Profile Updated";
 
@@ -205,18 +205,18 @@ namespace StockAnalysisTest {
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsProfileUpdated());
-		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(true);
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated());
+		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(true);
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquiryCompanyProfileConcise());
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		gl_pWorldMarket->GetStock(10)->SetProfileUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated());
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
+		gl_pWorldMarket->GetStock(10)->SetCompanyProfileUpdated(true);
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
@@ -229,7 +229,7 @@ namespace StockAnalysisTest {
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetProfileUpdated(false);
+			pStock->SetCompanyProfileUpdated(false);
 		}
 		gl_pDataSourceFinnhub->SetStockProfileUpdated(false);
 	}
@@ -629,7 +629,7 @@ namespace StockAnalysisTest {
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pDataSourceFinnhub->StoreInquiry(p);
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false); // 无论是否使用mock，被操作的都是gl_pWorldMarket
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false); // 无论是否使用mock，被操作的都是gl_pWorldMarket
 		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
 		gl_pDataSourceFinnhub->SetDataReceived(true);
 		gl_pDataSourceFinnhub->SetInquiring(true);
@@ -639,14 +639,14 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsProfileUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
 		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceFinnhub->SetInquiring(false);
 	}
 
@@ -655,7 +655,7 @@ namespace StockAnalysisTest {
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pDataSourceFinnhub->StoreInquiry(p);
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
 		gl_pDataSourceFinnhub->SetDataReceived(true);
 		gl_pDataSourceFinnhub->SetInquiring(true);
@@ -665,14 +665,14 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pDataSourceFinnhub->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringPrefix(),
 			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsProfileUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_TRUE(gl_pDataSourceFinnhub->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
 		EXPECT_FALSE(gl_pDataSourceFinnhub->IsDataReceived());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceFinnhub->SetInquiring(false);
 	}
 
@@ -680,7 +680,7 @@ namespace StockAnalysisTest {
 		CProductWebSourceDataPtr p = make_shared<CProductFinnhubStockSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceFinnhub->StoreInquiry(p);
 		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 1);
 		gl_pDataSourceFinnhub->SetDataReceived(true);

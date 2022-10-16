@@ -70,6 +70,12 @@ bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
 	return (lNewDate < lLatelyDate);
 }
 
+void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
+	year = lDate / 10000;
+	month = (lDate - year * 10000) / 100;
+	day = lDate - year * 10000 - month * 100;
+}
+
 const static CTimeSpan s_1Day(1, 0, 0, 0);
 const static CTimeSpan s_2Day(2, 0, 0, 0);
 const static CTimeSpan s_3Day(3, 0, 0, 0);

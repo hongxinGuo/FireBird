@@ -5,7 +5,7 @@
 
 #include "ProductFinnhubForexSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubForexSymbol, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubForexSymbol, CProductFinnhub)
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strClassName = _T("Finnhub forex symbols");

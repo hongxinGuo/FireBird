@@ -4,7 +4,7 @@
 
 #include "ProductFinnhubStockSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockSymbol, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubStockSymbol, CProductFinnhub)
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strClassName = _T("Finnhub company symbols");
@@ -92,40 +92,40 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvStock;
-		ppt = pWebData->GetPTree();
-		try {
-			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				pStock = make_shared<CWorldStock>();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("currency"));
-				if (s.size() > 0) pStock->SetCurrency(s.c_str());
-				s = pt2.get<string>(_T("description"));
-				if (s.size() > 0) pStock->SetDescription(s.c_str());
-				s = pt2.get<string>(_T("displaySymbol"));
-				pStock->SetDisplaySymbol(s.c_str());
-				s = pt2.get<string>(_T("figi"));
-				if (s.size() > 0) pStock->SetFigi(s.c_str());
-				s = pt2.get<string>(_T("isin"));
-				if (s.size() > 0) pStock->SetIsin(s.c_str());
-				s = pt2.get<string>(_T("mic"));
-				if (s.size() > 0) pStock->SetMic(s.c_str());
-				s = pt2.get<string>(_T("shareClassFIGI"));
-				if (s.size() > 0) pStock->SetShareClassFIGI(s.c_str());
-				s = pt2.get<string>(_T("symbol"));
-				pStock->SetSymbol(s.c_str());
-				s = pt2.get<string>(_T("symbol2"));
-				pStock->SetSymbol2(s.c_str());
-				s = pt2.get<string>(_T("type"));
-				if (s.size() > 0) pStock->SetType(s.c_str());
-				pvStock->push_back(pStock);
-			}
+	if (!pWebData->IsParsed()) return pvStock;
+	if (pWebData->IsVoidJSon()) return pvStock;
+	if (pWebData->IsErrorMessage()) return pvStock;
+	ppt = pWebData->GetPTree();
+	try {
+		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+			pStock = make_shared<CWorldStock>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("currency"));
+			if (s.size() > 0) pStock->SetCurrency(s.c_str());
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pStock->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pStock->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("figi"));
+			if (s.size() > 0) pStock->SetFigi(s.c_str());
+			s = pt2.get<string>(_T("isin"));
+			if (s.size() > 0) pStock->SetIsin(s.c_str());
+			s = pt2.get<string>(_T("mic"));
+			if (s.size() > 0) pStock->SetMic(s.c_str());
+			s = pt2.get<string>(_T("shareClassFIGI"));
+			if (s.size() > 0) pStock->SetShareClassFIGI(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pStock->SetSymbol(s.c_str());
+			s = pt2.get<string>(_T("symbol2"));
+			pStock->SetSymbol2(s.c_str());
+			s = pt2.get<string>(_T("type"));
+			if (s.size() > 0) pStock->SetType(s.c_str());
+			pvStock->push_back(pStock);
 		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
-			return pvStock;
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
+		return pvStock;
 	}
 	return pvStock;
 }

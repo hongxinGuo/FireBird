@@ -43,13 +43,13 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileTest, TestCreatMessage) {
-		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
 		companyProfile.SetMarket(gl_pWorldMarket.get());
 		companyProfile.SetIndex(1);
 		EXPECT_STREQ(companyProfile.CreatMessage(), companyProfile.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsProfileUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			m_pStock->SetProfileUpdated(false);
+			m_pStock->SetCompanyProfileUpdated(false);
 			m_pStock->SetProfileUpdateDate(19700101);
 			m_pStock->SetCity(_T(""));
 			m_pWebData = pData->m_pData;
@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdateDate(19800101);
-			m_pStock->SetProfileUpdated(false);
+			m_pStock->SetCompanyProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
 
 			GeneralCheck();
@@ -104,21 +104,21 @@ namespace StockAnalysisTest {
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏address项
 			EXPECT_FALSE(fSucceed);
 			EXPECT_STRNE(m_pStock->GetCity(), _T("slaughterer")) << "没有赋值此项";
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // dommy data
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_STREQ(m_pStock->GetCity(), _T("slaughterer"));
-			EXPECT_TRUE(m_pStock->IsProfileUpdated());
+			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;

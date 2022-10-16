@@ -5,7 +5,7 @@
 
 #include "ProductFinnhubCompanyPeer.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyPeer, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCompanyPeer, CProductFinnhub)
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strClassName = _T("Finnhub company peer");
@@ -42,18 +42,18 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 	string sError;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return strPeer;
-		for (i = 0; i < pWebData->GetBufferLength(); i++) {
-			buffer[i] = pWebData->GetData(i);
-		}
-		if (i > 200) {
-			buffer[200] = 0x000;
-		}
-		else {
-			buffer[pWebData->GetBufferLength()] = 0x000;
-		}
-		strPeer = buffer;
+	if (!pWebData->IsParsed()) return strPeer;
+	if (pWebData->IsVoidJSon()) return strPeer;
+	if (pWebData->IsErrorMessage()) return strPeer;
+	for (i = 0; i < pWebData->GetBufferLength(); i++) {
+		buffer[i] = pWebData->GetData(i);
 	}
+	if (i > 200) {
+		buffer[200] = 0x000;
+	}
+	else {
+		buffer[pWebData->GetBufferLength()] = 0x000;
+	}
+	strPeer = buffer;
 	return strPeer;
 }

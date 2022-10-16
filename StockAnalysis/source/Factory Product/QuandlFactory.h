@@ -2,9 +2,9 @@
 
 #include"VirtualMarket.h"
 
-#include"WebSourceDataFactory.h"
+#include"VirtualDataFactory.h"
 
-class CQuandlFactory : public CWebSourceDataFactory {
+class CQuandlFactory : public CVirtualDataFactory {
 public:
 	CQuandlFactory() {}
 	~CQuandlFactory() {}

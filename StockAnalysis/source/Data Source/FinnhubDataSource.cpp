@@ -177,6 +177,7 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
 			InquiryCompanyProfileConcise();
+			//InquiryCompanyNews(); // 暂时不执行次查询
 			InquiryCompanyBasicFinancial();
 			InquiryPeer();
 			InquiryInsiderTransaction();
@@ -265,7 +266,7 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 			s_fInquiringFinnhubStockProfile = true;
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
-			if (!gl_pWorldMarket->GetStock(lCurrentProfilePos)->IsProfileUpdated()) {
+			if (!gl_pWorldMarket->GetStock(lCurrentProfilePos)->IsCompanyProfileUpdated()) {
 				fFound = true;
 				break;
 			}
@@ -284,6 +285,48 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 			SetStockProfileUpdated(true);
 			TRACE("Finnhub股票简介更新完毕\n");
 			str = _T("Finnhub股票简介更新完毕");
+			gl_systemMessage.PushInformationMessage(str);
+			fHaveInquiry = false;
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CFinnhubDataSource::InquiryCompanyNews(void) {
+	static bool s_fInquiringFinnhubCompanyNews = false;
+	bool fFound = false;
+	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	CString str = _T("");
+	bool fHaveInquiry = false;
+	CProductWebSourceDataPtr p = nullptr;
+	long lCurrentCompanyNewsPos;
+
+	ASSERT(gl_pWorldMarket->IsSystemReady());
+	if (!IsCompanyNewsUpdated() && !IsInquiring()) {
+		if (!s_fInquiringFinnhubCompanyNews) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub company news..."));
+			s_fInquiringFinnhubCompanyNews = true;
+		}
+		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
+			if (!gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos)->IsCompanyNewsUpdated()) {
+				fFound = true;
+				break;
+			}
+		}
+		if (fFound) {
+			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_NEWS__);
+			p->SetIndex(lCurrentCompanyNewsPos);
+			StoreInquiry(p);
+			gl_pWorldMarket->SetCurrentFunction(_T("公司新闻:") + gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos)->GetSymbol());
+			//TRACE("更新%s公司新闻\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+			SetInquiring(true);
+			fHaveInquiry = true;
+		}
+		else {
+			s_fInquiringFinnhubCompanyNews = false;
+			SetCompanyNewsUpdated(true);
+			TRACE("Finnhub公司新闻更新完毕\n");
+			str = _T("Finnhub公司新闻更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}

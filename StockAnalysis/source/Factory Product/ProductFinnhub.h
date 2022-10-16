@@ -6,9 +6,9 @@ using namespace std;
 
 #include"ClassDeclaration.h"
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 
-class CProductFinnhub : public CProductWebSourceData {
+class CProductFinnhub : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductFinnhub)
 		CProductFinnhub() {}

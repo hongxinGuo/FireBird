@@ -1,9 +1,9 @@
 #pragma once
 
 #include"VirtualMarket.h"
-#include"WebSourceDataFactory.h"
+#include"virtualDataFactory.h"
 
-class CFinnhubFactory : public CWebSourceDataFactory {
+class CFinnhubFactory : public CVirtualDataFactory {
 public:
 	CFinnhubFactory() {}
 	~CFinnhubFactory() {}

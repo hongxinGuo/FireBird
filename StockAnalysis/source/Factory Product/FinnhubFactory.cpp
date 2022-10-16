@@ -5,6 +5,7 @@
 
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
+#include"ProductFinnhubCompanyNews.h"
 #include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyBasicFinancial.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
@@ -48,6 +49,7 @@ CProductWebSourceDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket,
 	case __MARKET_NEWS__:
 		break;
 	case __COMPANY_NEWS__:
+		p = make_shared<CProductFinnhubCompanyNews>();
 		break;
 	case __PRESS_RELEASE__: // Premium
 		break;

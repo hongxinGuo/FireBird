@@ -81,6 +81,7 @@ public:
 	virtual bool TaskUpdateNaicsIndustry(void);
 
 	bool TaskUpdateStockProfileDB(void);
+	bool TaskUpdateCompanyNewsDB(void);
 	bool TaskUpdateBasicFinancialDB(void);
 	bool TaskUpdateDayLineDB(void);
 	bool TaskUpdateForexExchangeDB(void);
@@ -132,6 +133,7 @@ public:
 	CWorldStockPtr GetStock(CString strSymbol) { return m_dataWorldStock.GetStock(strSymbol); }
 	long GetStockIndex(CString strSymbol) { return m_dataWorldStock.GetStockIndex(strSymbol); }
 
+	bool IsCompanyNewsNeedUpdate(void) { return m_dataWorldStock.IsCompanyNewsNeedUpdate(); }
 	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
 
 	CWorldStockPtr GetChoicedStock(long lIndex) { return m_dataChoicedStock.GetStock(lIndex); }

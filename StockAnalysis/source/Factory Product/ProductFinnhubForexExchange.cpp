@@ -5,7 +5,7 @@
 
 #include "ProductFinnhubForexExchange.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubForexExchange, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubForexExchange, CProductFinnhub)
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strClassName = _T("Finnhub forex exchange");

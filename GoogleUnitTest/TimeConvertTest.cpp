@@ -82,6 +82,14 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(lDateTime3, 20000105182030);
 	}
 
+	TEST_F(TimeConvertTest, TestXferDateToYearMonthDay) {
+		int year, month, day;
+		XferDateToYearMonthDay(20200101, year, month, day);
+		EXPECT_TRUE((year == 2020) && (month == 01) && (day == 01));
+		XferDateToYearMonthDay(20201230, year, month, day);
+		EXPECT_TRUE((year == 2020) && (month == 12) && (day == 30));
+	}
+
 	TEST_F(TimeConvertTest, TestGetNextMonday) {
 		EXPECT_EQ(20200727, GetNextMonday(20200720));
 		EXPECT_EQ(20200727, GetNextMonday(20200721));

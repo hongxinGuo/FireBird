@@ -4,7 +4,7 @@
 
 #include "ProductFinnhubCryptoSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCryptoSymbol, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCryptoSymbol, CProductFinnhub)
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strClassName = _T("Finnhub crypto symbols");

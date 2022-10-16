@@ -10,6 +10,7 @@ long TransferToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 long TransferToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 INT64 TransferToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
+void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
 
 long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值

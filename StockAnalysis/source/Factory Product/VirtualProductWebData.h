@@ -8,11 +8,11 @@ using namespace std;
 
 #include"WebData.h"
 
-class CProductWebSourceData : public CObject {
+class CVirtualProductWebData : public CObject {
 public:
-	DECLARE_DYNCREATE(CProductWebSourceData)
-		CProductWebSourceData();
-	virtual ~CProductWebSourceData() {}
+	DECLARE_DYNCREATE(CVirtualProductWebData)
+		CVirtualProductWebData();
+	virtual ~CVirtualProductWebData() {}
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreatMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreatMessage(void) { return _T(""); }
@@ -36,7 +36,7 @@ protected:
 	int m_iProductType;
 };
 
-typedef shared_ptr<CProductWebSourceData> CProductWebSourceDataPtr;
+typedef shared_ptr<CVirtualProductWebData> CProductWebSourceDataPtr;
 
 // 此结构只用于测试中
 struct FinnhubWebData {

@@ -18,6 +18,7 @@ public:
 	bool InquiryCountryList(void);
 	bool InquiryCompanySymbol(void);
 	bool InquiryCompanyProfileConcise(void);
+	bool InquiryCompanyNews(void);
 	bool InquiryCompanyBasicFinancial();
 	bool InquiryStockDayLine(void);
 	bool InquiryRTQuote(void);
@@ -39,6 +40,8 @@ public:
 	void SetSymbolUpdated(bool fFlag) noexcept { m_fSymbolUpdated = fFlag; }
 	bool IsStockProfileUpdated(void) noexcept { return m_fStockProfileUpdated; }
 	void SetStockProfileUpdated(bool fFlag) noexcept { m_fStockProfileUpdated = fFlag; }
+	bool IsCompanyNewsUpdated(void) noexcept { return m_fCompanyNewsUpdated; }
+	void SetCompanyNewsUpdated(bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
 	bool IsStockBasicFinancialUpdated(void) noexcept { return m_fStockBasicFinancialUpdated; }
 	void SetStockBasicFinancialUpdated(bool fFlag) noexcept { m_fStockBasicFinancialUpdated = fFlag; }
 	bool IsStockDayLineUpdated(void) noexcept { return m_fDayLineUpdated; }
@@ -73,6 +76,7 @@ protected:
 	bool m_fCountryListUpdated;
 	bool m_fSymbolUpdated; // 每日更新公司代码库
 	bool m_fStockProfileUpdated; // 每日更新公司简介
+	bool m_fCompanyNewsUpdated; // 每日更新公司新闻
 	bool m_fStockBasicFinancialUpdated; // 每日更新公司日线
 	bool m_fDayLineUpdated; // 每日更新公司日线数据
 	bool m_fForexExchangeUpdated; // 每日更新Forex交易所

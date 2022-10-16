@@ -120,6 +120,8 @@ UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock); // ´Ë¹¤×
 UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª57
 // ¸üĞÂInsiderSentiment
 UINT ThreadUpdateInsiderSentimentDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª58
+// ¸üĞÂ¹«Ë¾ĞÂÎÅ
+UINT ThreadUpdateCompanyNewsDB(not_null<CWorldStock*> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª59
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

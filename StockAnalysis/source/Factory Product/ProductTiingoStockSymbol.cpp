@@ -10,9 +10,9 @@ using namespace std;
 #include<algorithm>
 #include<string>
 
-IMPLEMENT_DYNCREATE(CProductTinngoStockSymbol, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductTinngoStockSymbol, CVirtualProductWebData)
 
-CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CProductWebSourceData() {
+CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CVirtualProductWebData() {
 	m_strClassName = _T("Tiingo stock symbols");
 	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }

@@ -643,8 +643,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
 	// create memory DC
 	if (!m_fCreateMemoryDC) {
 		m_MemoryDC.CreateCompatibleDC(pdc);
-		m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
-		m_MemoryDC.FillSolidRect(0, 0, 1920, 1200, crGray);
+		m_Bitmap.CreateCompatibleBitmap(pdc, gl_systemConfigeration.GetSystemDisplayWidth(), gl_systemConfigeration.GetSystemDisplayHeight());
+		m_MemoryDC.FillSolidRect(0, 0, gl_systemConfigeration.GetSystemDisplayWidth(), gl_systemConfigeration.GetSystemDisplayHeight(), crGray);
 		m_fCreateMemoryDC = true;
 	}
 
@@ -762,17 +762,6 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	return 0;
 }
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// 处理以下键盘输入:
-//   Page Down : 显示下一个股票．
-//   Page Up	 : 显示上一个股票．
-//   '1'--'9'  : 股票代码．
-//   Return		 : 处理当前缓冲区内的股票代码．
-//   BackSpace : 删除缓冲区内的一个数字．
-//
-//////////////////////////////////////////////////////////////////////////////////
 
 void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
 	SysCallOnSize(nType, cx, cy);

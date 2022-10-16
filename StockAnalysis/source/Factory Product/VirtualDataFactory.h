@@ -1,12 +1,12 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 #include"VirtualMarket.h"
 
-class CWebSourceDataFactory : public CObject {
+class CVirtualDataFactory : public CObject {
 public:
-	CWebSourceDataFactory() {}
-	virtual ~CWebSourceDataFactory() {}
+	CVirtualDataFactory() {}
+	virtual ~CVirtualDataFactory() {}
 
 	virtual CProductWebSourceDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) = 0;
 };

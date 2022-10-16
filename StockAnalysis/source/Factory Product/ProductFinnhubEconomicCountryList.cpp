@@ -7,7 +7,7 @@
 
 #include "ProductFinnhubEconomicCountryList.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCountryList, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCountryList, CProductFinnhub)
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strClassName = _T("Finnhub economic country list");

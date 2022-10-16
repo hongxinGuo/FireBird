@@ -7,7 +7,7 @@
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderSentiment, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderSentiment, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strClassName = _T("Finnhub company insider sentiment");
@@ -57,38 +57,38 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvInsiderSentiment;
-		ppt = pWebData->GetPTree();
-		try {
-			pt1 = ppt->get_child(_T("data"));
-			stockSymbol = ppt->get<string>(_T("symbol"));
-		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiringStr(), e);
-			return pvInsiderSentiment;
-		}
-
-		try {
-			for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-				pInsiderSentiment = make_shared<CInsiderSentiment>();
-				pInsiderSentiment->m_strSymbol = stockSymbol.c_str();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("symbol"));
-				if (s.size() > 0) pInsiderSentiment->m_strSymbol = s.c_str();
-				year = ptreeGetLongLong(pt2, _T("year"));
-				month = ptreeGetLongLong(pt2, _T("month"));
-				pInsiderSentiment->m_lDate = year * 10000 + month * 100 + 1; // 日期要有效，故而日子用每月的第一天
-				pInsiderSentiment->m_lChange = ptreeGetLongLong(pt2, _T("change"));
-				pInsiderSentiment->m_mspr = ptreeGetDouble(pt2, _T("mspr"));
-				pvInsiderSentiment->push_back(pInsiderSentiment);
-			}
-		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e);
-			return pvInsiderSentiment;
-		}
-		sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
+	if (!pWebData->IsParsed()) return pvInsiderSentiment;
+	if (pWebData->IsVoidJSon()) return pvInsiderSentiment;
+	if (pWebData->IsErrorMessage()) return pvInsiderSentiment;
+	ppt = pWebData->GetPTree();
+	try {
+		pt1 = ppt->get_child(_T("data"));
+		stockSymbol = ppt->get<string>(_T("symbol"));
 	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiringStr(), e);
+		return pvInsiderSentiment;
+	}
+
+	try {
+		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+			pInsiderSentiment = make_shared<CInsiderSentiment>();
+			pInsiderSentiment->m_strSymbol = stockSymbol.c_str();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("symbol"));
+			if (s.size() > 0) pInsiderSentiment->m_strSymbol = s.c_str();
+			year = ptreeGetLongLong(pt2, _T("year"));
+			month = ptreeGetLongLong(pt2, _T("month"));
+			pInsiderSentiment->m_lDate = year * 10000 + month * 100 + 1; // 日期要有效，故而日子用每月的第一天
+			pInsiderSentiment->m_lChange = ptreeGetLongLong(pt2, _T("change"));
+			pInsiderSentiment->m_mspr = ptreeGetDouble(pt2, _T("mspr"));
+			pvInsiderSentiment->push_back(pInsiderSentiment);
+		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e);
+		return pvInsiderSentiment;
+	}
+	sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
 	return pvInsiderSentiment;
 }

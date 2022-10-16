@@ -10,7 +10,7 @@
 
 #include "ProductFinnhubForexDayLine.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubForexDayLine, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubForexDayLine, CProductFinnhub)
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strClassName = _T("Finnhub forex dayline");

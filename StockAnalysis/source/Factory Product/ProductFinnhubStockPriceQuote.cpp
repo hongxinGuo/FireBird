@@ -6,7 +6,7 @@
 
 #include "ProductFinnhubStockPriceQuote.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockPriceQuote, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhubStockPriceQuote, CProductFinnhub)
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");

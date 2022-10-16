@@ -7,6 +7,8 @@
 #include "WorldStock.h"
 #include"WorldMarket.h"
 
+#include"FinnhubCompanyNews.h"
+
 #include"SetWorldStockDayLine.h"
 #include"SetInsiderSentiment.h"
 
@@ -53,6 +55,7 @@ void CWorldStock::Reset(void) {
 	m_strNaicsSubsector = _T(" ");
 	m_strState = _T(" ");
 	m_lProfileUpdateDate = 19800101;
+	m_lCompanyNewsUpdateDate = 19800101;
 	m_lBasicFinancialUpdateDate = 19800101;
 	m_lDayLineStartDate = 29900101;
 	m_lDayLineEndDate = 19800101;
@@ -80,7 +83,8 @@ void CWorldStock::Reset(void) {
 	m_dMarketCapitalization = 0;
 	m_dShareOutstanding = 0;
 
-	m_fProfileUpdated = false;
+	m_fCompanyProfileUpdated = false;
+	m_fCompanyNewsUpdated = false;
 	m_fBasicFinancialUpdated = false;
 	m_fEPSSurpriseUpdated = false;
 	m_fEPSSurpriseNeedSave = false;
@@ -132,6 +136,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
 	m_strPeer = setWorldStock.m_Peer;
 	m_lProfileUpdateDate = setWorldStock.m_ProfileUpdateDate;
+	m_lCompanyNewsUpdateDate = setWorldStock.m_CompanyNewsUpdateDate;
 	m_lBasicFinancialUpdateDate = setWorldStock.m_BasicFinancialUpdateDate;
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
@@ -169,12 +174,12 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 
 bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockProfileUpdateRate())) {
-		m_fProfileUpdated = false;
+		m_fCompanyProfileUpdated = false;
 	}
 	else {
-		m_fProfileUpdated = true;
+		m_fCompanyProfileUpdated = true;
 	}
-	return m_fProfileUpdated;
+	return m_fCompanyProfileUpdated;
 }
 
 /// <summary>
@@ -284,6 +289,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	setWorldStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
 	setWorldStock.m_Peer = m_strPeer.Left(200);
 	setWorldStock.m_ProfileUpdateDate = m_lProfileUpdateDate;
+	setWorldStock.m_CompanyNewsUpdateDate = m_lCompanyNewsUpdateDate;
 	setWorldStock.m_BasicFinancialUpdateDate = m_lBasicFinancialUpdateDate;
 	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
 	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
@@ -414,6 +420,43 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	setSaveInsiderSentiment.Close();
 }
 
+bool CWorldStock::UpdateCompanyNewsDB(void) {
+	CSetCompanyNews setCompanyNews;
+	size_t lSize = 0;
+	CCompanyNewsPtr pCompanyNews = nullptr;
+	long lCurrentPos = 0, lSizeOfOldCompanyNews = 0;
+	bool fNeedUpdate = false;
+
+	ASSERT(m_vCompanyNews.size() > 0);
+	lSize = m_vCompanyNews.size();
+	if (m_strSymbol.GetLength() > 0) {
+		setCompanyNews.m_strFilter = _T("[symbol] = '");
+		setCompanyNews.m_strFilter += m_strSymbol + _T("'");
+		setCompanyNews.m_strSort = _T("[date_time]");
+
+		setCompanyNews.Open();
+		setCompanyNews.m_pDatabase->BeginTrans();
+		while (!setCompanyNews.IsEOF()) {
+			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
+			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
+			if (setCompanyNews.IsEOF()) break;
+			if (atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime) {
+				pCompanyNews->Append(setCompanyNews);
+			}
+			lCurrentPos++;
+			if (lCurrentPos == lSize) break;;
+		}
+		for (int i = lCurrentPos; i < lSize; i++) {
+			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
+			pCompanyNews->Append(setCompanyNews);
+		}
+		setCompanyNews.m_pDatabase->CommitTrans();
+		setCompanyNews.Close();
+	}
+
+	return true;
+}
+
 bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	CSetEPSSurprise setEPSSurprise;
 
@@ -479,6 +522,13 @@ void CWorldStock::AppendBasicFinancialQuarter(void) {
 	m_pBasicFinancial->AppendQuarterData(setQuarter);
 	setQuarter.m_pDatabase->CommitTrans();
 	setQuarter.Close();
+}
+
+void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
+	m_vCompanyNews.resize(0);
+	for (auto& p : *pvCompanyNews) {
+		m_vCompanyNews.push_back(p);
+	}
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {

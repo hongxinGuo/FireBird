@@ -88,6 +88,17 @@ public:
 	int GetStockPeerUpdateRate(void) noexcept { return m_iStockPeerUpdateRate; }
 	void SetStockPeerUpdateRate(int iRate) noexcept { m_fUpdate = true; m_iStockPeerUpdateRate = iRate; }
 
+	void SetSystemDisplayRect(RECT rect) noexcept { m_rSystemDisplay = rect; }
+	void SetSystemDisplayRect(int cx, int cy) noexcept { m_rSystemDisplay.left = 0; m_rSystemDisplay.right = cx; m_rSystemDisplay.top = 0; m_rSystemDisplay.bottom = cy; }
+	RECT GetSystemDisplayRect(void) noexcept { return m_rSystemDisplay; }
+	int GetSystemDisplayHeight(void) noexcept { return m_rSystemDisplay.bottom - m_rSystemDisplay.top; }
+	int GetSystemDisplayWidth(void) noexcept { return m_rSystemDisplay.right - m_rSystemDisplay.left; }
+	void SetCurrentWindowRect(RECT rect) noexcept { m_rCurrentWindow = rect; }
+	void SetCurrentWindowRect(int cx, int cy) noexcept { m_rCurrentWindow.left = 0; m_rCurrentWindow.right = cx; m_rCurrentWindow.top = 0; m_rCurrentWindow.bottom = cy; }
+	RECT GetCurrentWindowRect(void) noexcept { return m_rCurrentWindow; }
+	int GetCurrentWindowHeight(void) noexcept { return m_rCurrentWindow.bottom - m_rCurrentWindow.top; }
+	int GetCurrentWindowWidth(void) noexcept { return m_rCurrentWindow.right - m_rCurrentWindow.left; }
+
 	bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
@@ -134,6 +145,12 @@ protected:
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;
+
+	// 以下为无需存储之系统参数
+	//
+	// 具体工作计算机的参数
+	RECT m_rSystemDisplay; // 显示器位素面积
+	RECT m_rCurrentWindow; // 当前窗口位素面积
 
 	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者nholmann json库bug，两者必居其一）。
 	// 是VS系统17.2.4的bug，17.2.5已经修正了这个bug。

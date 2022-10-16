@@ -130,6 +130,7 @@
     <LibraryPath>$(LibraryPath);C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="CompanyNewsTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="DataChinaStockTest.cpp" />
     <ClCompile Include="DataChoicedCryptoTest.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
+    <ClCompile Include="FinnhubCompanyNewsTest.cpp" />
     <ClCompile Include="FinnhubINquiryTypeTest.cpp" />
     <ClCompile Include="InfoReportTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp" />

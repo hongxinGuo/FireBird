@@ -1,11 +1,11 @@
 #pragma once
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 
-class CProductDummy : public CProductWebSourceData {
+class CProductDummy : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductDummy)
-	CProductDummy();
+		CProductDummy();
 	~CProductDummy() {}
 
 	virtual CString CreatMessage(void) override final;

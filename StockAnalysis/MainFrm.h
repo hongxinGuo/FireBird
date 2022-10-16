@@ -145,4 +145,5 @@ public:
 	afx_msg void OnRebuildBasicFinancial();
 	afx_msg void OnMaintainDayline();
 	afx_msg void OnUpdateMaintainDayline(CCmdUI* pCmdUI);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

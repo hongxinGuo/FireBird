@@ -136,6 +136,16 @@ CSystemConfigeration::CSystemConfigeration() {
 	else {
 		m_fUpdate = true;
 	}
+
+	// 具体工作计算机的初始参数
+	m_rSystemDisplay.left = 0;
+	m_rSystemDisplay.right = 2600;
+	m_rSystemDisplay.top = 0;
+	m_rSystemDisplay.bottom = 1600;
+	m_rCurrentWindow.left = 0;
+	m_rCurrentWindow.right = 2600;
+	m_rCurrentWindow.top = 0;
+	m_rCurrentWindow.bottom = 1600;
 }
 
 CSystemConfigeration::~CSystemConfigeration() {

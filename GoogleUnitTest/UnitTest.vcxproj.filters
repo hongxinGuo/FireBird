@@ -67,9 +67,6 @@
     <Filter Include="Test源文件\World Market\网络通信">
       <UniqueIdentifier>{ee72531c-5289-457d-94fe-334b87358474}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\World Market\类型和数据库">
-      <UniqueIdentifier>{87a59d1f-00e1-48f0-86e7-3fdf13d25f1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\World Market">
       <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,9 @@
     </Filter>
     <Filter Include="Test源文件\System">
       <UniqueIdentifier>{ef7927e9-9116-46fc-8d78-25a99432f2cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\World Market\类型">
+      <UniqueIdentifier>{87a59d1f-00e1-48f0-86e7-3fdf13d25f1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -277,19 +277,19 @@
       <Filter>Test源文件\World Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="CountryTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="EPSSurpriseTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="EconomicCalendarTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubExchangeTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubForexSymbolTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="ChinaStockTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
@@ -331,16 +331,16 @@
       <Filter>Test源文件\World Market\实现</Filter>
     </ClCompile>
     <ClCompile Include="SICIndustryTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="NaicsIndustryTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="TiingoIndustryTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="TiingoStockTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="SemaphoreTest.cpp">
       <Filter>Test源文件\MyLab</Filter>
@@ -349,7 +349,7 @@
       <Filter>Test源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="InsiderTransactionTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="StockSectionTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
@@ -364,7 +364,7 @@
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>
@@ -460,7 +460,7 @@
       <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
     <ClCompile Include="TiingoCryptoSymbolTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
@@ -511,7 +511,7 @@
       <Filter>Test源文件\Template</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp">
-      <Filter>Test源文件\World Market\类型和数据库</Filter>
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
@@ -557,6 +557,12 @@
     </ClCompile>
     <ClCompile Include="FinnhubINquiryTypeTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubCompanyNewsTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="CompanyNewsTest.cpp">
+      <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 
 #include "ProductDummy.h"
 
-IMPLEMENT_DYNCREATE(CProductDummy, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductDummy, CVirtualProductWebData)
 
 CProductDummy::CProductDummy() {
 	m_strClassName = _T("Dummy Product");

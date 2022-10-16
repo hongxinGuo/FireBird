@@ -160,7 +160,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
 		CProductWebSourceDataPtr p = make_shared<CProductTinngoStockSymbol>();
-		gl_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceTiingo->StoreInquiry(p);
 		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
 		gl_pDataSourceTiingo->SetDataReceived(true);

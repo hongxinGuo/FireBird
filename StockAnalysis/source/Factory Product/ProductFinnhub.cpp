@@ -2,4 +2,4 @@
 
 #include"ProductFinnhub.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhub, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductFinnhub, CVirtualProductWebData)

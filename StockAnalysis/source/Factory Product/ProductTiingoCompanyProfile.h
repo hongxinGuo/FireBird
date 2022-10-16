@@ -5,12 +5,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ProductWebData.h"
+#include"VirtualProductWebData.h"
 
-class CProductTiingoCompanyProfile : public CProductWebSourceData {
+class CProductTiingoCompanyProfile : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCompanyProfile)
-	CProductTiingoCompanyProfile();
+		CProductTiingoCompanyProfile();
 	~CProductTiingoCompanyProfile() {}
 
 	virtual CString CreatMessage(void) override final;

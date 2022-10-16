@@ -47,6 +47,14 @@ bool CDataWorldStock::IsStockProfileNeedUpdate(void) {
 	return false;
 }
 
+bool CDataWorldStock::IsCompanyNewsNeedUpdate(void) {
+	const int iTotal = m_vWorldStock.size();
+	for (int i = 0; i < iTotal; i++) {
+		if (m_vWorldStock.at(i)->IsUpdateCompanyNewsDB()) return true;
+	}
+	return false;
+}
+
 bool CDataWorldStock::IsBasicFinancialNeedUpdate(void) {
 	const int iTotal = m_vWorldStock.size();
 	for (int i = 0; i < iTotal; i++) {

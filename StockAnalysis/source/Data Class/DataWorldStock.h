@@ -24,6 +24,7 @@ public:
 	bool SortStock(void);
 
 	bool IsStockProfileNeedUpdate(void);
+	bool IsCompanyNewsNeedUpdate(void);
 	bool IsBasicFinancialNeedUpdate(void);
 
 	void ResetEPSSurprise(void);

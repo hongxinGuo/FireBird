@@ -9,9 +9,9 @@
 
 #include"HighPerformanceCounter.h"
 
-IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CProductWebSourceData)
+IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CVirtualProductWebData)
 
-CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CProductWebSourceData() {
+CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualProductWebData() {
 	m_strClassName = _T("Tiingo crypto symbols");
 	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/crypto?");
 }
