@@ -9,4 +9,5 @@ CVirtualProductWebData::CVirtualProductWebData() : CObject() {
 	m_lIndex = -1; // 设置为越界
 
 	m_strClassName = _T("VirtualProductData");
+	m_iReceivedDataStatus = 0;
 }

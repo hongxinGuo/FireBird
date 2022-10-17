@@ -33,13 +33,13 @@ void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) {
 	setCompanyNews.m_CompanySymbol = m_strCompanySymbol;
 	setCompanyNews.m_Category = m_strCategory;
 	setCompanyNews.m_DateTime = ConvertValueToString(m_llDateTime);
-	setCompanyNews.m_HeadLine = m_strHeadLine;
+	setCompanyNews.m_HeadLine = m_strHeadLine.Left(200);
 	setCompanyNews.m_NewsID = m_iNewsID;
-	setCompanyNews.m_Image = m_strImage;
+	setCompanyNews.m_Image = m_strImage.Left(100);
 	setCompanyNews.m_RelatedSymbol = m_strRelatedSymbol;
-	setCompanyNews.m_Source = m_strSource;
-	setCompanyNews.m_Summary = m_strSummary;
-	setCompanyNews.m_URL = m_strURL;
+	setCompanyNews.m_Source = m_strSource.Left(100);
+	setCompanyNews.m_Summary = m_strSummary.Left(1000);
+	setCompanyNews.m_URL = m_strURL.Left(100);
 }
 
 void CFinnhubCompanyNews::Load(CSetCompanyNews& setCompanyNews) {

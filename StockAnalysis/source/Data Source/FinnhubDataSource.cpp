@@ -28,6 +28,7 @@ bool CFinnhubDataSource::Reset(void) {
 	m_fCountryListUpdated = false;
 	m_fSymbolUpdated = false; // 每日需要更新代码
 	m_fStockProfileUpdated = false;
+	m_fCompanyNewsUpdated = false;
 	m_fStockBasicFinancialUpdated = false;
 	m_fDayLineUpdated = false;
 	m_fForexExchangeUpdated = false;
@@ -176,8 +177,8 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
+			InquiryCompanyNews(); // 暂时不执行次查询
 			InquiryCompanyProfileConcise();
-			//InquiryCompanyNews(); // 暂时不执行次查询
 			InquiryCompanyBasicFinancial();
 			InquiryPeer();
 			InquiryInsiderTransaction();
@@ -292,6 +293,11 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 	return fHaveInquiry;
 }
 
+/// <summary>
+/// 公司新闻。目前finnhub.io只提供北美公司的新闻
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
 bool CFinnhubDataSource::InquiryCompanyNews(void) {
 	static bool s_fInquiringFinnhubCompanyNews = false;
 	bool fFound = false;
@@ -308,7 +314,8 @@ bool CFinnhubDataSource::InquiryCompanyNews(void) {
 			s_fInquiringFinnhubCompanyNews = true;
 		}
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
-			if (!gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos)->IsCompanyNewsUpdated()) {
+			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos);
+			if ((pStock->IsUSMarket()) && (!pStock->IsCompanyNewsUpdated())) { // 目前只处理美国市场
 				fFound = true;
 				break;
 			}

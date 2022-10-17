@@ -34,6 +34,7 @@ protected:
 	CString m_strInquiringStr;
 	long m_lIndex;
 	int m_iProductType;
+	int m_iReceivedDataStatus; // 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
 typedef shared_ptr<CVirtualProductWebData> CProductWebSourceDataPtr;

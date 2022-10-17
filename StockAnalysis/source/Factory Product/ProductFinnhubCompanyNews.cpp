@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyNews, CProductFinnhub)
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strClassName = _T("Finnhub company news");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/company-news?symbol=");
+	m_strInquiringStr = _T("https://finnhub.io/api/v1/company-news?symbol=");
 	m_lIndex = -1;
 }
 
@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyNews::CreatMessage(void) {
 	strMessage += _T("&from=");
 	strMessage += strTemp;
 	iMarketDate = gl_pWorldMarket->GetMarketDate();
-	XferDateToYearMonthDay(iUpdateDate, year, month, day);
+	XferDateToYearMonthDay(iMarketDate, year, month, day);
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
 	strTemp = buffer;
 	strMessage += _T("&to=");
@@ -62,7 +62,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 /// <summary>
-/// 公司新闻，
+/// 公司新闻，目前只提供北美公司的新闻
 /// </summary>
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>

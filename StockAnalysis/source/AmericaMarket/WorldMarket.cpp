@@ -240,7 +240,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 
 	if (IsCompanyNewsNeedUpdate()) {
 		// 目前暂时不执行次存储功能。
-		//TaskUpdateCompanyNewsDB();
+		TaskUpdateCompanyNewsDB();
 	}
 
 	if (IsBasicFinancialNeedUpdate()) {
