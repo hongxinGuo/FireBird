@@ -55,30 +55,27 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvEPSSurprise;
-		ppt = pWebData->GetPTree();
-		try {
-			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				pEPSSurprise = make_shared<CEPSSurprise>();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("symbol"));
-				pEPSSurprise->m_strSymbol = s.c_str();
-				s = pt2.get<string>(_T("period"));
-				str = s.c_str();
-				sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-				pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
-				pEPSSurprise->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
-				pEPSSurprise->m_dActual = ptreeGetDouble(pt2, _T("actual"));
-				pvEPSSurprise->push_back(pEPSSurprise);
-			}
+	if (pWebData->IsInvalidData()) return pvEPSSurprise;
+	ppt = pWebData->GetPTree();
+	try {
+		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+			pEPSSurprise = make_shared<CEPSSurprise>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("symbol"));
+			pEPSSurprise->m_strSymbol = s.c_str();
+			s = pt2.get<string>(_T("period"));
+			str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
+			pEPSSurprise->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
+			pEPSSurprise->m_dActual = ptreeGetDouble(pt2, _T("actual"));
+			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e);
-			return pvEPSSurprise;
-		}
-		sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
 	}
-
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e);
+		return pvEPSSurprise;
+	}
+	sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

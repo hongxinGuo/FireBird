@@ -41,20 +41,18 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvExchange;
-		ppt = pWebData->GetPTree();
-		try {
-			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				pt2 = it->second;
-				s = pt2.get_value<string>();
-				str = s.c_str();
-				pvExchange->push_back(str);
-			}
+	if (pWebData->IsInvalidData()) return pvExchange;
+	ppt = pWebData->GetPTree();
+	try {
+		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+			pt2 = it->second;
+			s = pt2.get_value<string>();
+			str = s.c_str();
+			pvExchange->push_back(str);
 		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e);
 	}
 	return pvExchange;
 }

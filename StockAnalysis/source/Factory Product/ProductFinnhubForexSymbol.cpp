@@ -47,25 +47,23 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsJSonContentType() && pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvForexSymbol;
-		ppt = pWebData->GetPTree();
-		try {
-			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				pSymbol = make_shared<CFinnhubForexSymbol>();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("description"));
-				if (s.size() > 0) pSymbol->SetDescription(s.c_str());
-				s = pt2.get<string>(_T("displaySymbol"));
-				pSymbol->SetDisplaySymbol(s.c_str());
-				s = pt2.get<string>(_T("symbol"));
-				pSymbol->SetSymbol(s.c_str());
-				pvForexSymbol->push_back(pSymbol);
-			}
+	if (pWebData->IsInvalidData()) return pvForexSymbol;
+	ppt = pWebData->GetPTree();
+	try {
+		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+			pSymbol = make_shared<CFinnhubForexSymbol>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("description"));
+			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
+			s = pt2.get<string>(_T("displaySymbol"));
+			pSymbol->SetDisplaySymbol(s.c_str());
+			s = pt2.get<string>(_T("symbol"));
+			pSymbol->SetSymbol(s.c_str());
+			pvForexSymbol->push_back(pSymbol);
 		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e);
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e);
 	}
 
 	return pvForexSymbol;

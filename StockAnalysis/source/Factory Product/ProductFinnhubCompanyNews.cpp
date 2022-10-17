@@ -77,9 +77,7 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 	CCompanyNewsVectorPtr pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
-	if (pWebData->IsVoidJSon()) return pvFinnhubCompanyNews; // ÎÞÊý¾Ý
-	if (pWebData->IsErrorMessage()) return pvFinnhubCompanyNews;
+	if (pWebData->IsInvalidData()) return pvFinnhubCompanyNews;
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

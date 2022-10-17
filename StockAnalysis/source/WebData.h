@@ -72,6 +72,7 @@ public:
 	bool IsParsed(void) noexcept { return m_fParsed; }
 	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 	bool IsErrorMessage(string strError = "error");
+	bool IsInvalidData(void) { return !IsParsed() || IsVoidJSon() || IsErrorMessage(); }
 
 	// 使用boost Property tree将数据转换为json格式。
 	bool ParseWithPropertyTree(long lBeginPos = 0, long lEndPos = 0);

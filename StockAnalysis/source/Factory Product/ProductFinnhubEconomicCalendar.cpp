@@ -37,33 +37,31 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvEconomicCalendar;
-		ppt = pWebData->GetPTree();
-		try {
-			pt1 = ppt->get_child(_T("economicCalendar"));
-			for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-				pEconomicCalendar = make_shared<CEconomicCalendar>();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("country"));
-				if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
-				s = pt2.get<string>(_T("event"));
-				pEconomicCalendar->m_strEvent = s.c_str();
-				s = pt2.get<string>(_T("impact"));
-				pEconomicCalendar->m_strImpact = s.c_str();
-				pEconomicCalendar->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
-				pEconomicCalendar->m_dActual = ptreeGetDouble(pt2, _T("actual"));
-				pEconomicCalendar->m_dPrev = ptreeGetDouble(pt2, _T("prev"));
-				s = pt2.get<string>(_T("time"));
-				pEconomicCalendar->m_strTime = s.c_str();
-				s = pt2.get<string>(_T("unit"));
-				pEconomicCalendar->m_strUnit = s.c_str();
-				pvEconomicCalendar->push_back(pEconomicCalendar);
-			}
+	if (pWebData->IsInvalidData()) return pvEconomicCalendar;
+	ppt = pWebData->GetPTree();
+	try {
+		pt1 = ppt->get_child(_T("economicCalendar"));
+		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
+			pEconomicCalendar = make_shared<CEconomicCalendar>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("country"));
+			if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
+			s = pt2.get<string>(_T("event"));
+			pEconomicCalendar->m_strEvent = s.c_str();
+			s = pt2.get<string>(_T("impact"));
+			pEconomicCalendar->m_strImpact = s.c_str();
+			pEconomicCalendar->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
+			pEconomicCalendar->m_dActual = ptreeGetDouble(pt2, _T("actual"));
+			pEconomicCalendar->m_dPrev = ptreeGetDouble(pt2, _T("prev"));
+			s = pt2.get<string>(_T("time"));
+			pEconomicCalendar->m_strTime = s.c_str();
+			s = pt2.get<string>(_T("unit"));
+			pEconomicCalendar->m_strUnit = s.c_str();
+			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
-		catch (ptree_error& e) {
-			ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
-		}
+	}
+	catch (ptree_error& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
 	}
 	return pvEconomicCalendar;
 }

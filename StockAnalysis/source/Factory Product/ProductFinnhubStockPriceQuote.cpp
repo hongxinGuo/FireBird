@@ -47,28 +47,25 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return false;
-		ppt = pWebData->GetPTree();
-		try {
-			dTemp = ptreeGetDouble(*ppt, _T("c"));
-			pStock->SetNew(dTemp * 1000);
-			dTemp = ptreeGetDouble(*ppt, _T("h"));
-			pStock->SetHigh(dTemp * 1000);
-			dTemp = ptreeGetDouble(*ppt, _T("l"));
-			pStock->SetLow(dTemp * 1000);
-			dTemp = ptreeGetDouble(*ppt, _T("o"));
-			pStock->SetOpen(dTemp * 1000);
-			dTemp = ptreeGetDouble(*ppt, _T("pc"));
-			pStock->SetLastClose(dTemp * 1000);
-			tt = ppt->get<time_t>(_T("t"));
-			pStock->SetTransactionTime(tt);
-		}
-		catch (ptree_error& e) { // 数据格式不对，跳过。
-			ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
-			return false;
-		}
-		return true;
+	if (pWebData->IsInvalidData()) return false;
+	ppt = pWebData->GetPTree();
+	try {
+		dTemp = ptreeGetDouble(*ppt, _T("c"));
+		pStock->SetNew(dTemp * 1000);
+		dTemp = ptreeGetDouble(*ppt, _T("h"));
+		pStock->SetHigh(dTemp * 1000);
+		dTemp = ptreeGetDouble(*ppt, _T("l"));
+		pStock->SetLow(dTemp * 1000);
+		dTemp = ptreeGetDouble(*ppt, _T("o"));
+		pStock->SetOpen(dTemp * 1000);
+		dTemp = ptreeGetDouble(*ppt, _T("pc"));
+		pStock->SetLastClose(dTemp * 1000);
+		tt = ppt->get<time_t>(_T("t"));
+		pStock->SetTransactionTime(tt);
 	}
-	return false;
+	catch (ptree_error& e) { // 数据格式不对，跳过。
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
+		return false;
+	}
+	return true;
 }

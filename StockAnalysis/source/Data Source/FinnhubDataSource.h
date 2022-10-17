@@ -42,6 +42,8 @@ public:
 	void SetStockProfileUpdated(bool fFlag) noexcept { m_fStockProfileUpdated = fFlag; }
 	bool IsCompanyNewsUpdated(void) noexcept { return m_fCompanyNewsUpdated; }
 	void SetCompanyNewsUpdated(bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
+	bool IsCompanyPriceMetricsUpdated(void) noexcept { return m_fCompanyPriceMetricsUpdated; }
+	void SetCompanyPriceMetricsUpdated(bool fFlag) noexcept { m_fCompanyPriceMetricsUpdated = fFlag; }
 	bool IsStockBasicFinancialUpdated(void) noexcept { return m_fStockBasicFinancialUpdated; }
 	void SetStockBasicFinancialUpdated(bool fFlag) noexcept { m_fStockBasicFinancialUpdated = fFlag; }
 	bool IsStockDayLineUpdated(void) noexcept { return m_fDayLineUpdated; }
@@ -77,6 +79,7 @@ protected:
 	bool m_fSymbolUpdated; // 每日更新公司代码库
 	bool m_fStockProfileUpdated; // 每日更新公司简介
 	bool m_fCompanyNewsUpdated; // 每日更新公司新闻
+	bool m_fCompanyPriceMetricsUpdated;
 	bool m_fStockBasicFinancialUpdated; // 每日更新公司日线
 	bool m_fDayLineUpdated; // 每日更新公司日线数据
 	bool m_fForexExchangeUpdated; // 每日更新Forex交易所
