@@ -37,7 +37,9 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsInvalidData()) return pvEconomicCalendar;
+	if (!pWebData->IsParsed()) return pvEconomicCalendar;
+	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEconomicCalendar; }
+	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEconomicCalendar; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("economicCalendar"));

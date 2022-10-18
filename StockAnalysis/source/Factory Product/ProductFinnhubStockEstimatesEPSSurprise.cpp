@@ -55,7 +55,9 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsInvalidData()) return pvEPSSurprise;
+	if (!pWebData->IsParsed()) return pvEPSSurprise;
+	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEPSSurprise; }
+	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEPSSurprise; }
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

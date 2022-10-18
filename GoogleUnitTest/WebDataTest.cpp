@@ -148,39 +148,4 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_id.IsErrorMessage());
 		EXPECT_FALSE(m_id.IsErrorMessage("haveError"));
 	}
-
-	TEST_F(CWebDataTest, TestIsInvalidData1) {
-		m_id.__TEST_SetBuffer("{\"error\":\"you don't this resource\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
-		EXPECT_TRUE(m_id.IsParsed());
-		m_id.SetParsed(false);
-
-		EXPECT_TRUE(m_id.IsInvalidData()) << "not parsed";
-	}
-
-	TEST_F(CWebDataTest, TestIsInvalidData2) {
-		m_id.__TEST_SetBuffer("{}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
-		EXPECT_TRUE(m_id.IsParsed());
-		m_id.SetParsed(false);
-
-		EXPECT_TRUE(m_id.IsInvalidData()) << "void json string";
-	}
-
-	TEST_F(CWebDataTest, TestIsInvalidData3) {
-		m_id.__TEST_SetBuffer("{\"error\":\"you don't this resource\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
-		EXPECT_TRUE(m_id.IsParsed());
-		m_id.SetParsed(false);
-
-		EXPECT_TRUE(m_id.IsInvalidData()) << "error massage";
-	}
-
-	TEST_F(CWebDataTest, TestIsInvalidData4) {
-		m_id.__TEST_SetBuffer("{\"no error\":\"you don't this resource\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
-		EXPECT_TRUE(m_id.IsParsed());
-
-		EXPECT_FALSE(m_id.IsInvalidData());
-	}
 }

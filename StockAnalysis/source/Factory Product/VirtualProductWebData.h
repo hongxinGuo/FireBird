@@ -8,6 +8,11 @@ using namespace std;
 
 #include"WebData.h"
 
+enum {
+	__VOID_DATA__ = 1,
+	__NO_ACCESS_RIGHT__ = 2,
+};
+
 class CVirtualProductWebData : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualProductWebData)
@@ -27,6 +32,9 @@ public:
 
 	void SetProductType(int iProductType) { m_iProductType = iProductType; }
 	int GetProductType(void) { return m_iProductType; }
+
+	bool IsVoidData(void) noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
+	bool NoRightToAccess(void) noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
 
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场

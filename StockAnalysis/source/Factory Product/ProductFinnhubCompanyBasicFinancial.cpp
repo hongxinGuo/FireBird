@@ -239,7 +239,9 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 
 	ASSERT(pWebData->IsJSonContentType());
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
-	if (pWebData->IsInvalidData()) return false;
+	if (!pWebData->IsParsed()) return false;
+	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
+	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
 	ppt = pWebData->GetPTree();
 	try {
 		s = ptreeGetString(*ppt, _T("symbol"));

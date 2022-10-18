@@ -57,7 +57,9 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsInvalidData()) return pvInsiderSentiment;
+	if (!pWebData->IsParsed()) return pvInsiderSentiment;
+	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderSentiment; }
+	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderSentiment; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("data"));

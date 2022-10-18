@@ -52,7 +52,9 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsInvalidData()) return pvInsiderTransaction;
+	if (!pWebData->IsParsed()) return pvInsiderTransaction;
+	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderTransaction; }
+	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderTransaction; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("data"));
