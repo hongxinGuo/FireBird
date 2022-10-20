@@ -45,7 +45,7 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCryptoSymbol;
 	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvCryptoSymbol; }
-	if (pWebData->IsErrorMessage()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvCryptoSymbol; }
+	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvCryptoSymbol; }
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

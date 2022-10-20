@@ -12,7 +12,7 @@ CWebData::CWebData() : CObject() {
 
 	m_fJSonContentType = false;
 	m_fParsed = false;
-	m_fErrorMessage = false;
+	m_fNoRightToAccess = false;
 	m_strErrorMessage = "";
 	m_ppt = nullptr;
 }
@@ -54,17 +54,20 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
-bool CWebData::IsErrorMessage(string strError) {
+bool CWebData::NoRightToAccess() {
 	string sMessage;
 	ASSERT(m_fParsed);
 	try {
-		sMessage = m_ppt->get<string>(strError);
+		sMessage = m_ppt->get<string>(_T("error"));
 		m_strErrorMessage = sMessage.c_str();
-		m_fErrorMessage = true;
-		return true;
+		if (m_strErrorMessage.Compare(_T("\"You don't have access to this resource.\""))) {
+			m_fNoRightToAccess = true;
+			return true;
+		}
+		else return false;
 	}
 	catch (ptree_error& e) {
-		m_fErrorMessage = false;
+		m_fNoRightToAccess = false;
 		m_strErrorMessage = "";
 		return false;
 	}

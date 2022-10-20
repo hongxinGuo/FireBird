@@ -63,7 +63,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJSon()) return true; // 即使为空，也完成了查询。
-	if (pWebData->IsErrorMessage()) return true;
+	if (pWebData->NoRightToAccess()) return true;
 
 	ppt = pWebData->GetPTree();
 	try {

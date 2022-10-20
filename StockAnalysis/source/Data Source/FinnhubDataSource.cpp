@@ -177,7 +177,7 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
-			InquiryCompanyNews(); // 暂时不执行次查询
+			InquiryCompanyNews(); // 暂时不执行此查询
 			InquiryCompanyProfileConcise();
 			InquiryCompanyBasicFinancial();
 			InquiryPeer();

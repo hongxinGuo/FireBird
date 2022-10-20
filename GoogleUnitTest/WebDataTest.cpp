@@ -128,7 +128,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_id.ParseWithPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
-		EXPECT_TRUE(m_id.IsErrorMessage());
+		EXPECT_TRUE(m_id.NoRightToAccess());
 	}
 
 	TEST_F(CWebDataTest, TestIsErrorMessage2) {
@@ -136,8 +136,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_id.ParseWithPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
-		EXPECT_FALSE(m_id.IsErrorMessage());
-		EXPECT_TRUE(m_id.IsErrorMessage("error2"));
+		EXPECT_FALSE(m_id.NoRightToAccess());
 	}
 
 	TEST_F(CWebDataTest, TestIsErrorMessage3) {
@@ -145,7 +144,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_id.ParseWithPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
-		EXPECT_FALSE(m_id.IsErrorMessage());
-		EXPECT_FALSE(m_id.IsErrorMessage("haveError"));
+		EXPECT_FALSE(m_id.NoRightToAccess());
 	}
 }

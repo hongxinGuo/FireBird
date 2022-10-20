@@ -80,6 +80,8 @@ namespace StockAnalysisTest {
 	FinnhubWebData finnhubWebDataCompanyNews3(3, _T("AAPL"), _T("[{\"missing\":\"company news\",\"datetime\":1569550360,\"headline\":\"More\",\"id\":25286,\"image\":\"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg\",\"related\":\"AAPL\",\"source\":\"The Economic Times India\",\"summary\":\"NEW DELHI\",\"url\":\"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms\"}]"));
 	// 空数据
 	FinnhubWebData finnhubWebDataCompanyNews4(4, _T("AAPL"), _T("{}"));
+	// 无权利访问
+	FinnhubWebData finnhubWebDataCompanyNews5(5, _T("AAPL"), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
 	FinnhubWebData finnhubWebDataCompanyNews10(10, _T("AAPL"), _T("[{\"category\":\"company news\",\"datetime\":1,\"headline\":\"More\",\"id\":25286,\"image\":\"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg\",\"related\":\"AAPL\",\"source\":\"The Economic Times India\",\"summary\":\"NEW DELHI\",\"url\":\"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms\"},{\"category\":\"company news\",\"datetime\":1569550361,\"headline\":\"More2\",\"id\":25287,\"image\":\"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg\",\"related\":\"AAPL\",\"source\":\"The Economic Times India\",\"summary\":\"NEW DELHI2\",\"url\":\"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms\"}]"));
 
@@ -116,7 +118,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCompanyNews1, ProcessFinnhubStockCompanyNewsTest, testing::Values(&finnhubWebDataCompanyNews2,
-		&finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews10));
+		&finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
 		bool fSucceed = false;
@@ -140,6 +142,14 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_FinnhubCompanyNews.IsVoidData()) << "此标识已设置";
+			break;
+		case 5: // 无权利访问
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
+			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_FinnhubCompanyNews.NoRightToAccess()) << "无权利访问标识已设置";
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
