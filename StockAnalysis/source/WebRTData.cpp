@@ -60,17 +60,6 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 
 #endif //_DEBUG
 
-void CWebRTData::SetStockName(string& s) {
-	CString strName3;
-	wstring wsName;
-	CStringW strWName;
-
-	wsName = to_wide_string(s); // 将中文utf8转成宽字节字符串
-	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，
-	strName3 = strWName; // 将CStringW制式转换成CString
-	m_strStockName = strName3;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
@@ -884,7 +873,7 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
 		SetSymbol(strSymbol4);
 		sName = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码（系统使用多字节字符集，此处为utf-8字符集）
-		SetStockName(sName); // 将utf-8字符集转换为多字节字符集
+		m_strStockName = XferToCString(sName); // 将utf-8字符集转换为多字节字符集
 		strTime = pt1.get<string>(_T("time"));
 		strSymbol2 = pt1.get<string>(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
@@ -989,7 +978,7 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		strSymbol4 = XferNeteaseToStandred(symbolName.c_str());
 		SetSymbol(strSymbol4);
 		sName = js.at("name");
-		SetStockName(sName); // 将utf-8字符集转换为多字节字符集
+		m_strStockName = XferToCString(sName); // 将utf-8字符集转换为多字节字符集
 		strTime = js.at(_T("time"));
 		strSymbol2 = js.at(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());

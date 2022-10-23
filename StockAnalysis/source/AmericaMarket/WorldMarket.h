@@ -217,6 +217,7 @@ public:
 
 	virtual bool UpdateCountryListDB(void) { return m_dataFinnhubCountry.UpdateDB(); }
 	virtual bool UpdateStockProfileDB(void) { return m_dataWorldStock.UpdateProfileDB(); }
+	virtual bool UpdateCompanyNewsDB(void);
 	virtual bool UpdateBasicFinancialDB(void) { return m_dataWorldStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB(void);
 	virtual bool UpdateForexSymbolDB(void) { return m_dataFinnhubForexSymbol.UpdateDB(); }

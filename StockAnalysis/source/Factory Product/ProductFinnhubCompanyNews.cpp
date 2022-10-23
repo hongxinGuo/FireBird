@@ -2,6 +2,7 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
+#include"StockCodeConverter.h"
 #include"worldMarket.h"
 
 #include "ProductFinnhubCompanyNews.h"
@@ -67,8 +68,22 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
+/// {
+///"category": "company",
+///"datetime" : 1666012311,
+///"headline" : "Top 10 Stock Picks of William Von Mueffling¡¯s Cantillon Capital Management",
+///"id" : 116688201,
+///"image" : "https://s.yimg.com/uu/api/res/1.2/8bic0IrK7TXPlRFGOhnriQ--~B/aD02MDA7dz01OTQ7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/8c6d80ff8a0b3edee7be3c636143c877",
+///"related" : "A",
+///"source" : "Yahoo",
+///"summary" : "In this article, we discuss the top 10 stock picks of William Von Mueffling¡¯s Cantillon Capital Management. If you want to skip our detailed analysis of Mueffling¡¯s investment philosophy and performance, go directly to Top 5 Stock Picks of William Von Mueffling¡¯s Cantillon Capital Management. William Von Mueffling worked at Lazard Asset Management before launching [¡­]",
+///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
+///		}
 CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDataPtr pWebData) {
 	string s;
+	wstring ws;
+	CStringW strW;
+
 	shared_ptr<ptree> ppt;
 	ptree pt1, pt2;
 	CCompanyNewsPtr pCompanyNews = nullptr;
@@ -86,22 +101,23 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 			pt1 = it->second;
 			pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = pt1.get<string>(_T("category"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strCategory = XferToCString(s);
 			dateTime = pt1.get<INT64>(_T("datetime"));
 			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
 			s = pt1.get<string>(_T("headline"));
-			if (s.size() > 0) pCompanyNews->m_strHeadLine = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strHeadLine = XferToCString(s);
 			pCompanyNews->m_iNewsID = pt1.get<int>(_T("id"));
 			s = pt1.get<string>(_T("image"));
-			if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strImage = XferToCString(s);
+			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
 			s = pt1.get<string>(_T("related"));
-			if (s.size() > 0) pCompanyNews->m_strRelatedSymbol = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strRelatedSymbol = XferToCString(s);
 			s = pt1.get<string>(_T("source"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strSource = XferToCString(s);
 			s = pt1.get<string>(_T("summary"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strSummary = XferToCString(s);
 			s = pt1.get<string>(_T("url"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
+			if (s.size() > 0) pCompanyNews->m_strURL = XferToCString(s);
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	}

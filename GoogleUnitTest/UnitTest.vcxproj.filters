@@ -564,6 +564,9 @@
     <ClCompile Include="CompanyNewsTest.cpp">
       <Filter>Test源文件\World Market\类型</Filter>
     </ClCompile>
+    <ClCompile Include="InaccessibleExchangesTest.cpp">
+      <Filter>Test源文件\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

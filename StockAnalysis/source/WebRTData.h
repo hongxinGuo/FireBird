@@ -171,7 +171,6 @@ public:
 	void SetSymbol(CString str) { m_strSymbol = str; }
 	CString GetStockName(void) const { return m_strStockName; }
 	void SetStockName(CString str) { m_strStockName = str; }
-	void SetStockName(string& s);
 	long GetLastClose(void) const noexcept { return m_lLastClose; }
 	void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen(void) const noexcept { return m_lOpen; }
@@ -248,6 +247,6 @@ protected:
 	array<long, 5> m_lPSell;// 卖盘价1--5。单位：0.001元
 	array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
-// 非存储数据
+	// 非存储数据
 	bool m_fActive; // 本股票是否存在有效实时数据
 };

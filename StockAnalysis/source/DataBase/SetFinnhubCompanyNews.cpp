@@ -12,6 +12,15 @@ CSetCompanyNews::CSetCompanyNews(CString strSchema, CString strTable, CDatabase*
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_CompanySymbol = _T("");
+	m_Category = _T("");
+	m_DateTime = _T("");
+	m_HeadLine = _T("");
+	m_NewsID = 0;
+	m_Image = _T("");
+	m_RelatedSymbol = _T("");
+	m_Source = _T("");
+	m_Summary = _T("");
+	m_URL = _T("");
 	m_nFields = 11;
 }
 
@@ -24,13 +33,13 @@ void CSetCompanyNews::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("symbol"), m_CompanySymbol);
 	RFX_Text(pFX, _T("category"), m_Category);
 	RFX_Text(pFX, _T("date_time"), m_DateTime);
-	RFX_Text(pFX, _T("headline"), m_HeadLine);
+	RFX_Text(pFX, _T("headline"), m_HeadLine, 50000);
 	RFX_Int(pFX, _T("news_id"), m_NewsID);
-	RFX_Text(pFX, _T("image"), m_Image);
+	RFX_Text(pFX, _T("image"), m_Image, 50000);
 	RFX_Text(pFX, _T("related_symbol"), m_RelatedSymbol);
-	RFX_Text(pFX, _T("source"), m_Source);
-	RFX_Text(pFX, _T("summary"), m_Summary);
-	RFX_Text(pFX, _T("url"), m_URL);
+	RFX_Text(pFX, _T("source"), m_Source, 50000);
+	RFX_Text(pFX, _T("summary"), m_Summary, 50000);
+	RFX_Text(pFX, _T("url"), m_URL, 50000);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetCompanyNews ’Ô∂œ

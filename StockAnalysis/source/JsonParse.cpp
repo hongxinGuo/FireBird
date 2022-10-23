@@ -244,3 +244,15 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndP
 	}
 	return true;
 }
+
+// 将PTree中提取的utf-8字符串转化为CString
+CString XferToCString(string s) {
+	CString strName3;
+	wstring wsName;
+	CStringW strWName;
+
+	wsName = to_wide_string(s); // 将中文utf8转成宽字节字符串
+	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，
+	strName3 = strWName; // 将CStringW制式转换成CString
+	return strName3;
+}

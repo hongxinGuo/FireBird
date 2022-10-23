@@ -447,7 +447,9 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 			if (lCurrentPos == lSize) break;;
 		}
 		for (int i = lCurrentPos; i < lSize; i++) {
-			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
+			pCompanyNews = m_vCompanyNews.at(i);
+			//pCompanyNews->m_strHeadLine = _T("");
+			//pCompanyNews->m_strSummary = _T("");
 			pCompanyNews->Append(setCompanyNews);
 		}
 		setCompanyNews.m_pDatabase->CommitTrans();

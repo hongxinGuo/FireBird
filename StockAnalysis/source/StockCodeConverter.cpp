@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include "StockCodeConverter.h"
+#include"JsonParse.h"
 
 using namespace std;
 //#include<codecvt>

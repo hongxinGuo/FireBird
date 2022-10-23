@@ -184,6 +184,7 @@
     <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemData.h" />
@@ -409,6 +410,7 @@
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />

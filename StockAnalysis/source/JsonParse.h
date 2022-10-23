@@ -26,3 +26,6 @@ wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成u
 string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
 
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);
+
+// 将PTree中提取的utf-8字符串转化为CString
+CString XferToCString(string s);

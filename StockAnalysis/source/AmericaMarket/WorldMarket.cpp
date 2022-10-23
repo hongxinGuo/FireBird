@@ -209,6 +209,10 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}
+		if (IsCompanyNewsNeedUpdate()) {
+			TaskUpdateCompanyNewsDB();
+		}
+
 		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
 		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
@@ -239,8 +243,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	}
 
 	if (IsCompanyNewsNeedUpdate()) {
-		// 目前暂时不执行次存储功能。
-		TaskUpdateCompanyNewsDB();
+		//TaskUpdateCompanyNewsDB();
 	}
 
 	if (IsBasicFinancialNeedUpdate()) {
@@ -456,22 +459,9 @@ bool CWorldMarket::TaskUpdateStockProfileDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateCompanyNewsDB(void) {
-	CString str;
-
-	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
-		pStock = m_dataWorldStock.GetStock(l);
-		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			thread thread1(ThreadUpdateCompanyNewsDB, pStock.get());
-			thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-			TRACE("更新%s company news数据\n", pStock->GetSymbol().GetBuffer());
-		}
-		if (gl_systemStatus.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
-	}
-
-	return(true);
+	thread thread1(ThreadUpdateCompanyNewsDB, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
 }
 
 bool CWorldMarket::TaskUpdateBasicFinancialDB(void) {
@@ -591,6 +581,24 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 		}
 	}
 	return true;
+}
+
+bool CWorldMarket::UpdateCompanyNewsDB(void) {
+	CString str;
+
+	CWorldStockPtr pStock = nullptr;
+	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
+		pStock = m_dataWorldStock.GetStock(l);
+		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+			pStock->UpdateCompanyNewsDB();
+			TRACE("更新%s company news数据\n", pStock->GetSymbol().GetBuffer());
+		}
+		if (gl_systemStatus.IsExitingSystem()) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+	}
+
+	return(true);
 }
 
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {

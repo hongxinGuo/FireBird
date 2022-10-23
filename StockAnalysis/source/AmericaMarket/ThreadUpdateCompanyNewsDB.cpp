@@ -5,10 +5,10 @@
 
 #include"WorldStock.h"
 
-UINT ThreadUpdateCompanyNewsDB(not_null<CWorldStock*> pStock) {
+UINT ThreadUpdateCompanyNewsDB(not_null<CWorldMarket*> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	pStock->UpdateCompanyNewsDB();
+	pMarket->UpdateCompanyNewsDB();
 	gl_ThreadStatus.DecreaseSavingThread();
 	gl_UpdateWorldMarketDB.release();
 

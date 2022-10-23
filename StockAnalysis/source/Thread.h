@@ -121,7 +121,7 @@ UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock); // 此
 // 更新InsiderSentiment
 UINT ThreadUpdateInsiderSentimentDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为58
 // 更新公司新闻
-UINT ThreadUpdateCompanyNewsDB(not_null<CWorldStock*> pStock); // 此工作线程返回值为59
+UINT ThreadUpdateCompanyNewsDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为59
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

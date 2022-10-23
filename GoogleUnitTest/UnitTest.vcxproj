@@ -144,6 +144,7 @@
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubCompanyNewsTest.cpp" />
     <ClCompile Include="FinnhubINquiryTypeTest.cpp" />
+    <ClCompile Include="InaccessibleExchangesTest.cpp" />
     <ClCompile Include="InfoReportTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp" />
