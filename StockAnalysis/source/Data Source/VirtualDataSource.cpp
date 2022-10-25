@@ -1,22 +1,22 @@
 #include "pch.h"
 
-#include "DataSource.h"
+#include "VirtualDataSource.h"
 
-CDataSource::CDataSource(void) {
+CVirtualDataSource::CVirtualDataSource(void) {
 	m_pWebInquiry = nullptr;
 	m_pCurrentProduct = nullptr;
 
 	Reset();
 }
 
-bool CDataSource::Reset(void) {
+bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fDataReceived = true;
 
 	return true;
 }
 
-void CDataSource::Run(long lCurrentTime) {
+void CVirtualDataSource::Run(long lCurrentTime) {
 	Inquiry(lCurrentTime);
 	if (ProcessWebDataReceived()) { // 先处理接收到的网络数据
 		UpdateStatus();
@@ -29,7 +29,7 @@ void CDataSource::Run(long lCurrentTime) {
 // DataSource读取函数采用申请和接收轮换执行方式，故而至少调用两次才完成一个轮回。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataSource::ProcessInquiringMessage(void) {
+bool CVirtualDataSource::ProcessInquiringMessage(void) {
 	bool fDone = false;
 
 	if (m_qProduct.size() > 0) { // 有申请等待？
@@ -57,7 +57,7 @@ bool CDataSource::ProcessInquiringMessage(void) {
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
 //
 //////////////////////////////////////////////
-bool CDataSource::ProcessWebDataReceived(void) {
+bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
 	bool fDone = false;
 
@@ -69,6 +69,9 @@ bool CDataSource::ProcessWebDataReceived(void) {
 			pWebData = m_qReceivedData.PopData();
 
 			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
+			if (m_pCurrentProduct->NoRightToAccess()) { // 如果系统报告无权查询此类数据
+				m_pCurrentProduct->CheckInquiryStatus(); // 检查是否无权查询
+			}
 			m_pWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetInquiring(false);
 			fDone = true;

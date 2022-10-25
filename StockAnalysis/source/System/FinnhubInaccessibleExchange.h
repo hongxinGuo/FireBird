@@ -48,8 +48,15 @@ public:
 
 	void CreateDefaultVector(void);
 
+	void CreateFinnhubInquiryMap();
+
+	string GetFinnhubInquiryString(int iInquiryIndex) { return m_mapFinnhubInquiryString.at(iInquiryIndex); }
+	int GetFinnhubInquiryIndex(string sString) { return m_mapFinnhubInquiryIndex.at(sString); }
+
 protected:
 	vector<CInaccessibleExchangesPtr> vpInaccessibleExchange; //
+	map<int, string> m_mapFinnhubInquiryString;
+	map<string, int> m_mapFinnhubInquiryIndex;
 
 	json m_finnhubInaccessibleExange;
 };

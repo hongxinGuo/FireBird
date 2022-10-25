@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"DataSource.h"
+#include"VirtualDataSource.h"
 #include"WebInquirer.h"
 
 #include"WorldMarket.h"
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CDataSource dataSource;
+		CVirtualDataSource dataSource;
 	};
 
 	TEST_F(CDataSourceTest, Test_IsInquiry) {

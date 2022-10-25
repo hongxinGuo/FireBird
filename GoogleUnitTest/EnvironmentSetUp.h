@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
 
 			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
-			gl_pDataSourceQuandl = make_shared<CDataSource>();
+			gl_pDataSourceQuandl = make_shared<CVirtualDataSource>();
 
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();

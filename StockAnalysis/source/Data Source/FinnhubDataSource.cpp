@@ -22,7 +22,7 @@ CFinnhubDataSource::~CFinnhubDataSource(void) {
 }
 
 bool CFinnhubDataSource::Reset(void) {
-	CDataSource::Reset();
+	CVirtualDataSource::Reset();
 
 	// Finnhub各申请网络数据标识，每日需要重置。
 	m_fCountryListUpdated = false;
@@ -215,7 +215,7 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 	CString str = _T("");
 	long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentStockExchangePos = 0;
 
 	if (!IsSymbolUpdated() && !IsInquiring()) {
@@ -232,9 +232,9 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
-			p->SetIndex(lCurrentStockExchangePos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
+			product->SetIndex(lCurrentStockExchangePos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
 			SetInquiring(true);
 			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());

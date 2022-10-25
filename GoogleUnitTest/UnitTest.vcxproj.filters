@@ -519,7 +519,7 @@
     <ClCompile Include="HighPerformanceCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="DataSourceTest.cpp">
+    <ClCompile Include="VirtualDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubDataSourceTest.cpp">

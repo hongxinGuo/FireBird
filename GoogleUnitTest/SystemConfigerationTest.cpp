@@ -3,6 +3,8 @@
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
+#include"finnhubInquiryType.h"
+
 #include"GeneralCheck.h"
 
 #ifdef _DEBUG

@@ -184,6 +184,9 @@
     <Filter Include="源文件\Web Data Source\WorldMarket">
       <UniqueIdentifier>{a3d7e92b-095d-43f0-9815-972fe4f5af3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\System\finnhub">
+      <UniqueIdentifier>{a187a4e2-a406-4a76-adfe-59ade222ef08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
@@ -663,7 +666,7 @@
     <ClInclude Include="..\StockAnalysis\source\Thread.h">
       <Filter>头文件\命名声明</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h">
+    <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h">
       <Filter>头文件\Web Data Source</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h">
@@ -733,7 +736,7 @@
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h">
-      <Filter>头文件\System</Filter>
+      <Filter>头文件\System\finnhub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1175,7 +1178,7 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp">
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">
@@ -1232,7 +1235,7 @@
     <ClCompile Include="..\StockAnalysis\source\HighPerformanceCounter.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Source\VirtualDataSource.cpp">
       <Filter>源文件\Web Data Source</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp">

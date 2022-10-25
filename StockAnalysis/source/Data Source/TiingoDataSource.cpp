@@ -13,7 +13,7 @@ CTiingoDataSource::~CTiingoDataSource(void) {
 }
 
 bool CTiingoDataSource::Reset(void) {
-	CDataSource::Reset();
+	CVirtualDataSource::Reset();
 
 	m_fStockSymbolUpdated = false;
 	m_fCryptoSymbolUpdated = false;

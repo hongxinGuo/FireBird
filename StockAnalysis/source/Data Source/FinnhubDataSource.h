@@ -1,9 +1,9 @@
 #pragma once
 
-#include"DataSource.h"
+#include"VirtualDataSource.h"
 #include"FinnhubFactory.h"
 
-class CFinnhubDataSource : public CDataSource {
+class CFinnhubDataSource : public CVirtualDataSource {
 public:
 	CFinnhubDataSource(void);
 	~CFinnhubDataSource(void);

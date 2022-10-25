@@ -1,9 +1,9 @@
 #pragma once
 
-#include"DataSource.h"
+#include"VirtualDataSource.h"
 #include"TiingoFactory.h"
 
-class CTiingoDataSource : public CDataSource
+class CTiingoDataSource : public CVirtualDataSource
 {
 public:
 	CTiingoDataSource(void);

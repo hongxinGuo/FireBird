@@ -10,4 +10,5 @@ CVirtualProductWebData::CVirtualProductWebData() : CObject() {
 
 	m_strClassName = _T("VirtualProductData");
 	m_iReceivedDataStatus = 0;
+	m_iNumberOfNoRightToAccess = 0;
 }

@@ -91,7 +91,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Source\DataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h" />
@@ -313,7 +313,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Source\DataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp" />
@@ -369,7 +369,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />

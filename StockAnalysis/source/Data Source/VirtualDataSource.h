@@ -8,10 +8,10 @@
 using namespace std;
 #include<queue>
 
-class CDataSource : public CObject {
+class CVirtualDataSource : public CObject {
 public:
-	CDataSource(void);
-	virtual ~CDataSource(void) {}
+	CVirtualDataSource(void);
+	virtual ~CVirtualDataSource(void) {}
 
 	virtual bool Reset(void);
 
@@ -41,16 +41,20 @@ public:
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
+	int GetNumberOfNoRightToAccess(void) noexcept { return m_iNumberOfNoRightToAccess; }
+	void ClearNoRightToAccess(void) noexcept { m_iNumberOfNoRightToAccess = 0; }
+
 protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
 	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qProduct; // 网络查询命令队列
 	CProductWebSourceDataPtr m_pCurrentProduct;
 	bool m_fInquiring;
 	atomic_bool m_fDataReceived;
+	int m_iNumberOfNoRightToAccess;
 
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 };
 
-typedef shared_ptr<CDataSource> CDataSourcePtr;
+typedef shared_ptr<CVirtualDataSource> CDataSourcePtr;
 
 extern CDataSourcePtr gl_pDataSourceQuandl;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include"DataSource.h"
+#include"VirtualDataSource.h"
 
 using namespace std;
 #include<memory>
