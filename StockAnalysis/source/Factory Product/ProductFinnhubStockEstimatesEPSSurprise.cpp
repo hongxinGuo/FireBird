@@ -21,7 +21,8 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetSymbol();
 
-	return m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {

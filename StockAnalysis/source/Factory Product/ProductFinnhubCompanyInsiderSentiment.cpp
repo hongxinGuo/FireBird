@@ -24,9 +24,9 @@ CString CProductFinnhubCompanyInsiderSentiment::CreatMessage(void) {
 
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 	strCurrentDate = buffer;
-	CString strMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
+	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 
-	return strMessage;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -14,7 +14,8 @@ CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 }
 
 CString CProductFinnhubForexExchange::CreatMessage(void) {
-	return m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiringStr;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {

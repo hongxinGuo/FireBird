@@ -15,7 +15,8 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 CString CProductFinnhubCryptoSymbol::CreatMessage(void) {
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex);
 
-	return m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -15,7 +15,8 @@ CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 }
 
 CString CProductFinnhubEconomicCalendar::CreatMessage(void) {
-	return m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiringStr;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -18,7 +18,8 @@ CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CVirtualProductWebData(
 }
 
 CString CProductTinngoStockSymbol::CreatMessage(void) {
-	return m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiringStr;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductTinngoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -22,9 +22,9 @@ CString CProductFinnhubForexDayLine::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);
-	CString strMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
-	return strMessage;
+	m_strTotalInquiryMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

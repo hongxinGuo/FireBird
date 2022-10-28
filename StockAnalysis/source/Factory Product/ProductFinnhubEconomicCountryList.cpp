@@ -16,7 +16,8 @@ CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 }
 
 CString CProductFinnhubEconomicCountryList::CreatMessage(void) {
-	return m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiringStr;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {

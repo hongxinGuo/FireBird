@@ -38,7 +38,8 @@ CString CProductFinnhubCompanyNews::CreatMessage(void) {
 	strMessage += _T("&to=");
 	strMessage += strTemp;
 
-	return strMessage;
+	m_strTotalInquiryMessage = strMessage;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {

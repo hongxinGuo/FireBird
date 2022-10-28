@@ -18,9 +18,9 @@ CString CProductFinnhubCompanyProfileConcise::CreatMessage(void) {
 
 	CString strMessage;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	strMessage = m_strInquiringStr + pStock->GetSymbol();
 
-	return strMessage;
+	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {

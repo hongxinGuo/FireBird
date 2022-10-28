@@ -70,7 +70,9 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 
 			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 			if (m_pCurrentProduct->NoRightToAccess()) { // 如果系统报告无权查询此类数据
-				m_pCurrentProduct->CheckInquiryStatus(); // 检查是否无权查询
+				// 目前先在软件系统消息中报告
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access ") + m_pCurrentProduct->GetInquiringStr());
+				m_pCurrentProduct->CheckAccessibility(); // 检查是否无权查询
 			}
 			m_pWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetInquiring(false);

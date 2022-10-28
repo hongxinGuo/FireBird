@@ -28,12 +28,12 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
-CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange;
-
 CSystemConfigeration gl_systemConfigeration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
 CSystemStatus gl_systemStatus; // 系统状态。
 CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
+
+CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
 CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
 

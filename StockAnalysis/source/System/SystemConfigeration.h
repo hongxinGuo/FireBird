@@ -27,8 +27,12 @@ public:
 
 	void UpdateSystem(void); // 使用本参数去更新系统
 
+	void SetDefaultFileDirectory(CString fileDirectory) { m_strDirectory = fileDirectory; }
+	CString GetDefaultFileDirectory(void) { return m_strDirectory; }
+
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
 	CString GetDefaultFileName(void) { return m_strFileName; }
+	CString GetDefaultFileDirectoryAndName(void) { return m_strDirectory + m_strFileName; }
 
 	// 获取系统配置参数
 	bool IsUsingFastCPU(void) noexcept { return m_bUsingFastCPU; }
@@ -106,6 +110,7 @@ public:
 public:
 
 protected:
+	CString m_strDirectory; // 配置文件目录
 	CString m_strFileName; // 配置文件名称
 
 	// 系统配置

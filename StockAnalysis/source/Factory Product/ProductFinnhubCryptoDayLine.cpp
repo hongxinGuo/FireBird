@@ -21,9 +21,9 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
-	CString strMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
-	return strMessage;
+	m_strTotalInquiryMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

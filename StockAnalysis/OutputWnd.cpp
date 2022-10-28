@@ -86,12 +86,12 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)6);
-	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2);
+	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)7);
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)7); // 软件系统消息
 	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)8);
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)8);  // 错误消息
 
 	// 设置1000毫秒每次的软调度，用于接受处理实时网络数据
 	m_uIdTimer = SetTimer(3, 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。

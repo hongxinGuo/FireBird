@@ -24,7 +24,8 @@ CString CProductFinnhubStockDayLine::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
-	return m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

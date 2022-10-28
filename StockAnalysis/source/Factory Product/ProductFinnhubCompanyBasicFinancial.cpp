@@ -19,9 +19,9 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 
 	CString strMessage;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	strMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&metric=all");
 
-	return strMessage;
+	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&metric=all");
+	return m_strTotalInquiryMessage;
 }
 
 /// <summary>

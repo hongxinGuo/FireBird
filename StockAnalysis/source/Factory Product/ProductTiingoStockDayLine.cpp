@@ -26,7 +26,8 @@ CString CProductTiingoStockDayLine::CreatMessage(void) {
 	strMiddle = pStock->GetTiingoDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetDayLineNeedUpdate(false);
 
-	return m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

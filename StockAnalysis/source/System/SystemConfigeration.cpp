@@ -89,7 +89,8 @@ CSystemConfigeration::CSystemConfigeration() {
 
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
-	m_strFileName = _T("C:\\StockAnalysis\\SystemConfigeration.json"); // json file name
+	m_strDirectory = _T("C:\\StockAnalysis\\");
+	m_strFileName = _T("SystemConfigeration.json"); // json file name
 
 	// 系统配置
 	m_bUsingFastCPU = true; // 默认使用快速CPU
@@ -129,7 +130,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
 
-	ASSERT(m_strFileName.Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
+	ASSERT(GetDefaultFileDirectoryAndName().Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -153,8 +154,8 @@ CSystemConfigeration::~CSystemConfigeration() {
 	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
 	if (m_fUpdate) {
-		DeleteFile(strNew);
-		rename(strOld, strNew); // 保存备份
+		DeleteFile(GetDefaultFileDirectory() + strNew);
+		rename(GetDefaultFileDirectory() + strOld, GetDefaultFileDirectory() + strNew); // 保存备份
 	}
 	UpdateJson();
 	SaveDB();
@@ -340,16 +341,17 @@ void CSystemConfigeration::UpdateSystem(void) {
 }
 
 bool CSystemConfigeration::LoadDB() {
-	fstream f(m_strFileName, ios::in);
+	fstream f(GetDefaultFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
 		f >> m_systemConfigeration;
+		//m_systemConfigeration = json::parse(f); // 这种方式等价于 f >> m_systemConfigeration;
 		return true;
 	}
 	return false;
 }
 
 bool CSystemConfigeration::SaveDB() {
-	fstream f(m_strFileName, ios::out);
+	fstream f(GetDefaultFileDirectoryAndName(), ios::out);
 	f << m_systemConfigeration;
 	f.close();
 

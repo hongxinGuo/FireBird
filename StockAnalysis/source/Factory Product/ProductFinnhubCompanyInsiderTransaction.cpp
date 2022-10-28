@@ -19,9 +19,9 @@ CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strMessage = m_strInquiringStr + pStock->GetSymbol();
 
-	return strMessage;
+	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
+	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
