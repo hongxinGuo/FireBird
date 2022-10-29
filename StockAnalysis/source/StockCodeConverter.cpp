@@ -38,12 +38,7 @@ CString GetStockSymbol(CString strStockCode) {
 /// <param name="strStockCode"></param>
 /// <returns></returns>
 CString GetStockExchange(CString strStockCode) {
-	if (strStockCode.Find(_T('.'), 0) == -1) { // 股票代码中没有字符“.”的为美国上市的股票
-		return _T("US");
-	}
-	else {
-		return(strStockCode.Right(2));
-	}
+	return(strStockCode.Right(2));
 }
 
 /// <summary>

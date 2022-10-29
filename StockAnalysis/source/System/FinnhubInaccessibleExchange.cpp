@@ -131,17 +131,19 @@ void CFinnhubInaccessibleExchange::SaveDB(void) {
 void CFinnhubInaccessibleExchange::Update(void) {
 	CInaccessibleExchangesPtr pExchange = nullptr;
 	for (int i = 0; i < m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).size(); i++) {
-		pExchange = make_shared<CInaccessibleExchanges>();
-		string s2 = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-		pExchange->m_sFunction = s2.c_str();
-		pExchange->m_iFunction = gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction);
 		int size = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
-		for (int j = 0; j < size; j++) {
-			string s = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-			pExchange->m_vExchange.push_back(s.c_str());
-			pExchange->m_setExchange.insert(s.c_str());
+		if (size > 0) { // 有exchange数据的话才建立数据集
+			pExchange = make_shared<CInaccessibleExchanges>();
+			string s2 = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+			pExchange->m_sFunction = s2.c_str();
+			pExchange->m_iFunction = gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction);
+			for (int j = 0; j < size; j++) {
+				string s = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
+				pExchange->m_vExchange.push_back(s.c_str());
+				pExchange->m_setExchange.insert(s.c_str());
+			}
+			gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction)] = pExchange;
 		}
-		gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction)] = pExchange;
 	}
 }
 
@@ -150,12 +152,14 @@ void CFinnhubInaccessibleExchange::UpdateJson(void) {
 
 	for (auto& pExchange : m_mapInaccessibleExchange) {
 		json jsonExchange;
-		jsonExchange = json{ {"Function", pExchange.second->m_sFunction} };
-		for (auto& s : pExchange.second->m_vExchange) {
-			jsonExchange[_T("Exchange")].push_back(s);
-		}
+		if (pExchange.second->m_vExchange.size() > 0) {// 有exchange数据的话才建立数据集
+			jsonExchange = json{ {"Function", pExchange.second->m_sFunction} };
+			for (auto& s : pExchange.second->m_vExchange) {
+				jsonExchange[_T("Exchange")].push_back(s);
+			}
 
-		m_finnhubInaccessibleExange[_T("InaccessibleExchange")].push_back(jsonExchange);
+			m_finnhubInaccessibleExange[_T("InaccessibleExchange")].push_back(jsonExchange);
+		}
 	}
 }
 

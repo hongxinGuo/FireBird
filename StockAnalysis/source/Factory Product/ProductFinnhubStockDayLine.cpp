@@ -25,7 +25,7 @@ CString CProductFinnhubStockDayLine::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	CString strMiddle = pStock->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
-	m_strInquiringExchange = GetStockExchange(pStock->GetSymbol());
+	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
 	return m_strTotalInquiryMessage;
 }
