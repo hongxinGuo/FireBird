@@ -11,4 +11,8 @@ CVirtualProductWebData::CVirtualProductWebData() : CObject() {
 	m_strClassName = _T("VirtualProductData");
 	m_iReceivedDataStatus = 0;
 	m_iNumberOfNoRightToAccess = 0;
+
+	m_strInquiringStr = _T("");
+	m_strTotalInquiryMessage = _T("");
+	m_strInquiringExchange = _T("");
 }

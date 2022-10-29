@@ -22,6 +22,7 @@ CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
+	//m_strInquiringExchange = GetStockExchange(pCryptoSymbol->GetSymbol());
 	m_strTotalInquiryMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }

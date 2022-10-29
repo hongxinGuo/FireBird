@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"StockCodeConverter.h"
 #include"worldMarket.h"
 
 #include"FinnhubStockBasicFinancial.h"
@@ -19,6 +20,8 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 
 	CString strMessage;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+
+	m_strInquiringExchange = GetStockExchange(pStock->GetSymbol());
 
 	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&metric=all");
 	return m_strTotalInquiryMessage;

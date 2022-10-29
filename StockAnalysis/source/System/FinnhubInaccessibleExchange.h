@@ -16,24 +16,24 @@ using namespace std;
 class CInaccessibleExchanges : CObject {
 public:
 	CInaccessibleExchanges();
-	CInaccessibleExchanges(string sFunction, int iFunction, vector<string>& vExchange);
+	CInaccessibleExchanges(CString sFunction, int iFunction, vector<CString>& vExchange);
 	~CInaccessibleExchanges();
 
-	bool Assign(string sFunction, int iFunction, vector<string>& vExchange);
+	bool Assign(CString sFunction, int iFunction, vector<CString>& vExchange);
 
 	int GetFunction(void) noexcept { return m_iFunction; }
 	void SetFucntion(int iFunction) noexcept { m_iFunction = iFunction; }
 
-	bool AddExchange(string sExchangeName);
-	bool DeleteExchange(string sExchangeName);
+	bool AddExchange(CString sExchangeName);
+	bool DeleteExchange(CString sExchangeName);
 
-	bool HaveExchange(string sExchange);
+	bool HaveExchange(CString sExchange);
 
 public:
-	string m_sFunction; // 功能名称
+	CString m_sFunction; // 功能名称
 	int m_iFunction; // 功能名称的值
-	vector<string> m_vExchange; // 所禁止的各交易所名称的序列
-	set<string> m_setExchange; // 所禁止的交易所名称的集合
+	vector<CString> m_vExchange; // 所禁止的各交易所名称的序列
+	set<CString> m_setExchange; // 所禁止的交易所名称的集合
 };
 
 typedef shared_ptr<CInaccessibleExchanges> CInaccessibleExchangesPtr;
@@ -51,20 +51,18 @@ public:
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
 	CString GetDefaultFileName(void) { return m_strFileName; }
 
-	void CreateDefaultVector(void);
-
 	void CreateFinnhubInquiryIndexToStringMap();
 	void CreateFinnhubInquiryStringToIndexMap();
 
-	string GetFinnhubInquiryString(int iInquiryIndex) { return m_mapFinnhubInquiryIndexToString.at(iInquiryIndex); }
-	int GetFinnhubInquiryIndex(string sString) { return m_mapFinnhubInquiryStringToIndex.at(sString); }
+	CString GetFinnhubInquiryString(int iInquiryIndex) { return m_mapFinnhubInquiryIndexToString.at(iInquiryIndex); }
+	int GetFinnhubInquiryIndex(CString sString) { return m_mapFinnhubInquiryStringToIndex.at(sString); }
 
 public:
 	CString m_strFileName; // 配置文件名称
 
-	vector<CInaccessibleExchangesPtr> m_vpInaccessibleExchange; //
-	map<int, string> m_mapFinnhubInquiryIndexToString;
-	map<string, int> m_mapFinnhubInquiryStringToIndex;
+	map<int, CInaccessibleExchangesPtr> m_mapInaccessibleExchange; //
+	map<int, CString> m_mapFinnhubInquiryIndexToString;
+	map<CString, int> m_mapFinnhubInquiryStringToIndex;
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;

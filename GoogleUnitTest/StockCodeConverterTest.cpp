@@ -26,29 +26,29 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(StockCodeConverterTest, TestIsShanghaiExchange) {
-		EXPECT_TRUE(IsShanghaiExchange(_T("SS")));
+		EXPECT_FALSE(IsShanghaiExchange(_T("SS")));
 		EXPECT_TRUE(IsShanghaiExchange(_T("600001.SS")));
 		EXPECT_TRUE(IsShanghaiExchange(_T("000001.SS")));
 		EXPECT_TRUE(IsShanghaiExchange(_T("399399.SS")));
-		EXPECT_TRUE(IsShanghaiExchange(_T("abcSS")));
+		EXPECT_FALSE(IsShanghaiExchange(_T("abcSS")));
 		EXPECT_FALSE(IsShanghaiExchange(_T("SZ")));
 	}
 
 	TEST_F(StockCodeConverterTest, TestIsShenzhenExchange) {
-		EXPECT_TRUE(IsShenzhenExchange(_T("SZ")));
+		EXPECT_FALSE(IsShenzhenExchange(_T("SZ")));
 		EXPECT_TRUE(IsShenzhenExchange(_T("600001.SZ")));
 		EXPECT_TRUE(IsShenzhenExchange(_T("000001.SZ")));
 		EXPECT_TRUE(IsShenzhenExchange(_T("399399.SZ")));
-		EXPECT_TRUE(IsShenzhenExchange(_T("abcSZ")));
+		EXPECT_FALSE(IsShenzhenExchange(_T("abcSZ")));
 		EXPECT_FALSE(IsShenzhenExchange(_T("SS")));
 	}
 
 	TEST_F(StockCodeConverterTest, TestGetStockExchange) {
 		EXPECT_STREQ(GetStockExchange(_T("600000.SS")), _T("SS"));
 		EXPECT_STREQ(GetStockExchange(_T("600000.SZ")), _T("SZ"));
-		EXPECT_STREQ(GetStockExchange(_T("600SA")), _T("SA"));
-		EXPECT_STREQ(GetStockExchange(_T("SS")), _T("SS"));
-		EXPECT_STREQ(GetStockExchange(_T("S")), _T("S"));
+		EXPECT_STREQ(GetStockExchange(_T("600SA")), _T("US"));
+		EXPECT_STREQ(GetStockExchange(_T("SS")), _T("US"));
+		EXPECT_STREQ(GetStockExchange(_T("S")), _T("US"));
 	}
 
 	TEST_F(StockCodeConverterTest, TestGetStockSymbol) {

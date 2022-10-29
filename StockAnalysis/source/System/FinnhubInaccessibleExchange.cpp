@@ -29,7 +29,7 @@ CInaccessibleExchanges::CInaccessibleExchanges(void) {
 	m_setExchange.clear();
 }
 
-CInaccessibleExchanges::CInaccessibleExchanges(string sFunction, int iFunction, vector<string>& vExchange) {
+CInaccessibleExchanges::CInaccessibleExchanges(CString sFunction, int iFunction, vector<CString>& vExchange) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	for (auto& s : vExchange) {
@@ -41,7 +41,7 @@ CInaccessibleExchanges::CInaccessibleExchanges(string sFunction, int iFunction, 
 CInaccessibleExchanges::~CInaccessibleExchanges() {
 }
 
-bool CInaccessibleExchanges::Assign(string sFunction, int iFunction, vector<string>& vExchange) {
+bool CInaccessibleExchanges::Assign(CString sFunction, int iFunction, vector<CString>& vExchange) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	m_vExchange.clear();
@@ -53,18 +53,18 @@ bool CInaccessibleExchanges::Assign(string sFunction, int iFunction, vector<stri
 	return true;
 }
 
-bool CInaccessibleExchanges::AddExchange(string sExchangeName) {
+bool CInaccessibleExchanges::AddExchange(CString sExchangeName) {
 	m_vExchange.push_back(sExchangeName);
 	m_setExchange.insert(sExchangeName);
 	return true;
 }
 
-bool CInaccessibleExchanges::DeleteExchange(string sExchangeName) {
+bool CInaccessibleExchanges::DeleteExchange(CString sExchangeName) {
 	int position = 0;
 	if (m_setExchange.count(sExchangeName) > 0) { // 集合中存在此元素？
 		m_setExchange.erase(sExchangeName);
 		for (position = 0; position < m_vExchange.size(); position++) {
-			if (m_vExchange.at(position).compare(sExchangeName) == 0) {
+			if (m_vExchange.at(position).Compare(sExchangeName) == 0) {
 				m_vExchange.erase(m_vExchange.begin() + position);
 				break;
 			}
@@ -73,7 +73,7 @@ bool CInaccessibleExchanges::DeleteExchange(string sExchangeName) {
 	return true;
 }
 
-bool CInaccessibleExchanges::HaveExchange(string sExchange) {
+bool CInaccessibleExchanges::HaveExchange(CString sExchange) {
 	if (m_setExchange.count(sExchange) > 0) return true;
 	else return false;
 }
@@ -132,31 +132,31 @@ void CFinnhubInaccessibleExchange::Update(void) {
 	CInaccessibleExchangesPtr pExchange = nullptr;
 	for (int i = 0; i < m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).size(); i++) {
 		pExchange = make_shared<CInaccessibleExchanges>();
-		pExchange->m_sFunction = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function"));
+		string s2 = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+		pExchange->m_sFunction = s2.c_str();
+		pExchange->m_iFunction = gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction);
 		int size = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
 		for (int j = 0; j < size; j++) {
 			string s = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-			pExchange->m_vExchange.push_back(s);
+			pExchange->m_vExchange.push_back(s.c_str());
+			pExchange->m_setExchange.insert(s.c_str());
 		}
-		gl_finnhubInaccessibleExchange.m_vpInaccessibleExchange.push_back(pExchange);
+		gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction)] = pExchange;
 	}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson(void) {
 	m_finnhubInaccessibleExange.clear();
 
-	for (auto& pExchange : m_vpInaccessibleExchange) {
+	for (auto& pExchange : m_mapInaccessibleExchange) {
 		json jsonExchange;
-		jsonExchange = json{ {"Function", pExchange->m_sFunction} };
-		for (auto& s : pExchange->m_vExchange) {
+		jsonExchange = json{ {"Function", pExchange.second->m_sFunction} };
+		for (auto& s : pExchange.second->m_vExchange) {
 			jsonExchange[_T("Exchange")].push_back(s);
 		}
 
 		m_finnhubInaccessibleExange[_T("InaccessibleExchange")].push_back(jsonExchange);
 	}
-}
-
-void CFinnhubInaccessibleExchange::CreateDefaultVector(void) {
 }
 
 void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {

@@ -138,6 +138,7 @@
     <ClCompile Include="DataChoicedIEXTest.cpp" />
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
+    <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />

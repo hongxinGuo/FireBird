@@ -39,6 +39,7 @@ CString CProductFinnhubCompanyNews::CreatMessage(void) {
 	strMessage += strTemp;
 
 	m_strTotalInquiryMessage = strMessage;
+	m_strInquiringExchange = GetStockExchange(pStock->GetSymbol());
 	return m_strTotalInquiryMessage;
 }
 

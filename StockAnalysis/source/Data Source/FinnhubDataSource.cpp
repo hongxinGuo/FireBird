@@ -198,8 +198,8 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 
 bool CFinnhubDataSource::InquiryCountryList(void) {
 	if (!IsCountryListUpdated() && !IsInquiring()) {
-		CProductWebSourceDataPtr p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__);
-		StoreInquiry(p);
+		CProductWebSourceDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__);
+		StoreInquiry(product);
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub country List"));
 		SetInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub economic country List"));
@@ -257,7 +257,7 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	CString str = _T("");
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentProfilePos;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -273,9 +273,9 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 			}
 		}
 		if (fFound) {
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__);
-			p->SetIndex(lCurrentProfilePos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__);
+			product->SetIndex(lCurrentProfilePos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("简介:") + gl_pWorldMarket->GetStock(lCurrentProfilePos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
@@ -304,7 +304,7 @@ bool CFinnhubDataSource::InquiryCompanyNews(void) {
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	CString str = _T("");
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentCompanyNewsPos;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -321,9 +321,9 @@ bool CFinnhubDataSource::InquiryCompanyNews(void) {
 			}
 		}
 		if (fFound) {
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_NEWS__);
-			p->SetIndex(lCurrentCompanyNewsPos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_NEWS__);
+			product->SetIndex(lCurrentCompanyNewsPos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("公司新闻:") + gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos)->GetSymbol());
 			//TRACE("更新%s公司新闻\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
@@ -347,7 +347,7 @@ bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	CString str = _T("");
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentBasicFinncialsPos;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -363,9 +363,9 @@ bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
 			}
 		}
 		if (fFound) {
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __BASIC_FINANCIALS__);
-			p->SetIndex(lCurrentBasicFinncialsPos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __BASIC_FINANCIALS__);
+			product->SetIndex(lCurrentBasicFinncialsPos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("基本财务:") + gl_pWorldMarket->GetStock(lCurrentBasicFinncialsPos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
@@ -390,7 +390,7 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsStockDayLineUpdated() && !IsInquiring()) {
@@ -407,9 +407,9 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__);
-			p->SetIndex(m_lCurrentUpdateDayLinePos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__);
+			product->SetIndex(m_lCurrentUpdateDayLinePos);
+			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pStock->GetSymbol());
 			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
@@ -434,7 +434,7 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateInsiderTransactionPos = 0;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -454,9 +454,9 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__);
-			p->SetIndex(lCurrentUpdateInsiderTransactionPos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__);
+			product->SetIndex(lCurrentUpdateInsiderTransactionPos);
+			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("内部交易:") + pStock->GetSymbol());
 			//TRACE("申请%s 内部交易数据\n", pStock->GetSymbol().GetBuffer());
@@ -480,7 +480,7 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateInsiderSentimentPos = 0;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -500,9 +500,9 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_SENTIMENT__);
-			p->SetIndex(lCurrentUpdateInsiderSentimentPos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_SENTIMENT__);
+			product->SetIndex(lCurrentUpdateInsiderSentimentPos);
+			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("内部交易情绪:") + pStock->GetSymbol());
 			//TRACE("申请%s 内部交易情绪数据\n", pStock->GetSymbol().GetBuffer());
@@ -521,13 +521,13 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 
 bool CFinnhubDataSource::InquiryRTQuote(void) {
 	static long s_lCurrentRTDataQuotePos = 0;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__);
-		p->SetIndex(s_lCurrentRTDataQuotePos);
-		StoreInquiry(p);
+		product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_QUOTE__);
+		product->SetIndex(s_lCurrentRTDataQuotePos);
+		StoreInquiry(product);
 		SetInquiring(true);
 		s_lCurrentRTDataQuotePos++;
 		if (s_lCurrentRTDataQuotePos == gl_pWorldMarket->GetStockSize()) s_lCurrentRTDataQuotePos = 0;
@@ -545,7 +545,7 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdatePeerPos = 0;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -563,9 +563,9 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __PEERS__);
-			p->SetIndex(lCurrentUpdatePeerPos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __PEERS__);
+			product->SetIndex(lCurrentUpdatePeerPos);
+			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("Peer:") + gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos)->GetSymbol());
 			//TRACE("申请%s Peer数据\n", GetStock(lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
@@ -583,11 +583,11 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 }
 
 bool CFinnhubDataSource::InquiryEconomicCalendar(void) {
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 
 	if (!IsEconomicCalendarUpdated() && !IsInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__);
-		StoreInquiry(p);
+		product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__);
+		StoreInquiry(product);
 		SetInquiring(true);
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar"));
 		return true;
@@ -613,9 +613,9 @@ bool CFinnhubDataSource::InquiryEPSSurprise(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			CProductWebSourceDataPtr p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__);
-			p->SetIndex(m_lCurrentUpdateEPSSurprisePos);
-			StoreInquiry(p);
+			CProductWebSourceDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_ESTIMATES_EPS_SURPRISE__);
+			product->SetIndex(m_lCurrentUpdateEPSSurprisePos);
+			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
 			TRACE("申请%s EPS Surprise数据\n", gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
@@ -643,12 +643,12 @@ bool CFinnhubDataSource::InquiryForexExchange(void) {
 
 bool CFinnhubDataSource::InquiryForexSymbol(void) {
 	static long s_lCurrentForexExchangePos = 0;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 
 	if (!IsForexSymbolUpdated() && !IsInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__);
-		p->SetIndex(s_lCurrentForexExchangePos++);
-		StoreInquiry(p);
+		product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __FOREX_SYMBOLS__);
+		product->SetIndex(s_lCurrentForexExchangePos++);
+		StoreInquiry(product);
 		SetInquiring(true);
 		if (s_lCurrentForexExchangePos >= gl_pWorldMarket->GetForexExchangeSize()) {
 			SetForexSymbolUpdated(true);
@@ -668,7 +668,7 @@ bool CFinnhubDataSource::InquiryForexDayLine(void) {
 	CString str = _T("");
 	const long lStockSetSize = gl_pWorldMarket->GetForexSymbolSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateForexDayLinePos = 0;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -686,9 +686,9 @@ bool CFinnhubDataSource::InquiryForexDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__);
-			p->SetIndex(lCurrentUpdateForexDayLinePos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __FOREX_CANDLES__);
+			product->SetIndex(lCurrentUpdateForexDayLinePos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pForexSymbol->GetSymbol());
@@ -718,12 +718,12 @@ bool CFinnhubDataSource::InquiryCryptoExchange(void) {
 
 bool CFinnhubDataSource::InquiryCryptoSymbol(void) {
 	static long s_lCurrentCryptoExchangePos = 0;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 
 	if (!IsCryptoSymbolUpdated() && !IsInquiring()) {
-		p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__);
-		p->SetIndex(s_lCurrentCryptoExchangePos++);
-		StoreInquiry(p);
+		product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__);
+		product->SetIndex(s_lCurrentCryptoExchangePos++);
+		StoreInquiry(product);
 		SetInquiring(true);
 		if (s_lCurrentCryptoExchangePos >= gl_pWorldMarket->GetCryptoExchangeSize()) {
 			SetCryptoSymbolUpdated(true);
@@ -743,7 +743,7 @@ bool CFinnhubDataSource::InquiryCryptoDayLine(void) {
 	CString str = _T("");
 	const long lStockSetSize = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
 	bool fHaveInquiry = false;
-	CProductWebSourceDataPtr p = nullptr;
+	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateCryptoDayLinePos = 0;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -761,9 +761,9 @@ bool CFinnhubDataSource::InquiryCryptoDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			p = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__);
-			p->SetIndex(lCurrentUpdateCryptoDayLinePos);
-			StoreInquiry(p);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_CANDLES__);
+			product->SetIndex(lCurrentUpdateCryptoDayLinePos);
+			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub Crypto日线：") + pCryptoSymbol->GetSymbol());
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pCryptoSymbol->GetSymbol());

@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"StockCodeConverter.h"
+
 #include"WorldMarket.h"
 #include"WorldStock.h"
 #include"CallableFunction.h"
@@ -20,6 +22,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 
+	m_strInquiringExchange = GetStockExchange(pStock->GetSymbol());
 	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
 	return m_strTotalInquiryMessage;
 }

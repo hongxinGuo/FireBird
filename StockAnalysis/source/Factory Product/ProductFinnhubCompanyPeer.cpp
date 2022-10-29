@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"StockCodeConverter.h"
+
 #include"WorldMarket.h"
 #include"WorldStock.h"
 
@@ -18,6 +20,7 @@ CString CProductFinnhubCompanyPeer::CreatMessage(void) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 
+	m_strInquiringExchange = GetStockExchange(pStock->GetSymbol());
 	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
 	return m_strTotalInquiryMessage;
 }

@@ -567,6 +567,9 @@
     <ClCompile Include="InaccessibleExchangesTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubProductTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
