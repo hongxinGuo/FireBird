@@ -23,6 +23,7 @@ CString CProductFinnhubForexDayLine::CreatMessage(void) {
 
 	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);
 
+	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }

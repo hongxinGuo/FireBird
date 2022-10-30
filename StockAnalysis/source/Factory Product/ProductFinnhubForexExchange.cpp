@@ -14,6 +14,8 @@ CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 }
 
 CString CProductFinnhubForexExchange::CreatMessage(void) {
+	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
+	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strTotalInquiryMessage = m_strInquiringStr;
 	return m_strTotalInquiryMessage;
 }

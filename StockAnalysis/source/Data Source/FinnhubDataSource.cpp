@@ -274,9 +274,11 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos);
-			if (!pStock->IsCompanyProfileUpdated() && !gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
-				fFound = true;
-				break;
+			if (!pStock->IsCompanyProfileUpdated()) {
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
 			}
 		}
 		if (fFound) {
@@ -403,6 +405,7 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
+	int iInquiryType = __STOCK_PRICE_CANDLES__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsStockDayLineUpdated() && !IsInquiring()) {
@@ -413,13 +416,15 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 		for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStockSetSize; m_lCurrentUpdateDayLinePos++) {
 			pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateDayLinePos);
 			if (pStock->IsUSMarket() && pStock->IsDayLineNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
-				fFound = true;
-				break;
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_PRICE_CANDLES__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(m_lCurrentUpdateDayLinePos);
 			StoreInquiry(product);
 			SetInquiring(true);
@@ -442,12 +447,13 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 	static bool s_fInquiringFinnhubStockInsiderTransaction = false;
 	bool fFound = false;
-	CWorldStockPtr pStock;
+	CWorldStockPtr pStock = nullptr;
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateInsiderTransactionPos = 0;
+	int iInquiryType = __INSIDER_TRANSACTION__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInsiderTransactionUpdated() && !IsInquiring()) {
@@ -457,8 +463,8 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 		}
 		for (lCurrentUpdateInsiderTransactionPos = 0; lCurrentUpdateInsiderTransactionPos < lStockSetSize; lCurrentUpdateInsiderTransactionPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderTransactionPos);
-			if (pStock->IsUSMarket()) {
-				if (pStock->IsInsiderTransactionNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
+			if (pStock->IsInsiderTransactionNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -466,7 +472,7 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_TRANSACTION__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentUpdateInsiderTransactionPos);
 			StoreInquiry(product);
 			SetInquiring(true);
@@ -554,12 +560,13 @@ bool CFinnhubDataSource::InquiryRTQuote(void) {
 bool CFinnhubDataSource::InquiryPeer(void) {
 	static bool s_fInquiringFinnhubStockPeer = false;
 	bool fFound = false;
-	CWorldStockPtr pStock;
+	CWorldStockPtr pStock = nullptr;
 	CString str = _T("");
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdatePeerPos = 0;
+	int iInquiryType = __PEERS__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsPeerUpdated() && !IsInquiring()) {
@@ -568,15 +575,17 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 			s_fInquiringFinnhubStockPeer = true;
 		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
-			if (!gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos)->IsPeerUpdated()) {
-				pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
-				fFound = true;
-				break;
+			pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
+			if (!pStock->IsPeerUpdated()) {
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __PEERS__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentUpdatePeerPos);
 			StoreInquiry(product);
 			SetInquiring(true);

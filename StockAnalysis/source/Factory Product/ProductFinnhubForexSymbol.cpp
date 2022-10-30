@@ -18,6 +18,7 @@ CString CProductFinnhubForexSymbol::CreatMessage(void) {
 
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);
 
+	m_strInquiringExchange = strMiddle;
 	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
 	return m_strTotalInquiryMessage;
 }
