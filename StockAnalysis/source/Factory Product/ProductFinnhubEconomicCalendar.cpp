@@ -16,6 +16,7 @@ CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 
 CString CProductFinnhubEconomicCalendar::CreatMessage(void) {
 	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strTotalInquiryMessage;
 }
 

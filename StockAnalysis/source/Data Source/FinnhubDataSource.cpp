@@ -4,6 +4,7 @@
 #include"TimeConvert.h"
 
 #include"FinnhubInquiryType.h"
+#include"FinnhubInaccessibleExchange.h"
 
 #include "FinnhubDataSource.h"
 
@@ -482,6 +483,7 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentUpdateInsiderSentimentPos = 0;
+	int iInquiryType = __INSIDER_SENTIMENT__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInsiderSentimentUpdated() && !IsInquiring()) {
@@ -491,7 +493,7 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 		}
 		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
-			if (pStock->IsUSMarket()) {
+			if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 				if (pStock->IsInsiderSentimentNeedUpdate()) {
 					fFound = true;
 					break;
@@ -500,7 +502,7 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __INSIDER_SENTIMENT__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentUpdateInsiderSentimentPos);
 			StoreInquiry(product);
 			SetInquiring(true);

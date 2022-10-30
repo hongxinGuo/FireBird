@@ -7,6 +7,7 @@
 
 #define JSON_DIAGNOSTICS 1
 
+#include"FinnhubInaccessibleExchange.h"
 #include"ThreadStatus.h"
 #include"HighPerformanceCounter.h"
 
@@ -221,6 +222,9 @@ namespace StockAnalysisTest {
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;
 			gl_vMarketPtr.clear();
+
+			// 不更新finnhubInaccessibleExchange文件
+			gl_finnhubInaccessibleExchange.SetUpdate(false);
 		}
 	};
 }

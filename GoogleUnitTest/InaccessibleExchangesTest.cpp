@@ -322,40 +322,39 @@ namespace StockAnalysisTest {
 		json jsFinnhubInaccessibleExchange = json::parse(gl_sFinnhubInaccessibleExchange);
 		CInaccessibleExchanges exchange;
 		string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
-		exchange.m_sFunction = s2.c_str();
+		exchange.SetFunctionString(s2.c_str());
 		for (int i = 0; i < jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")].size(); i++) {
 			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];
-			exchange.m_vExchange.push_back(s.c_str());
+			exchange.AddExchange(s.c_str());
 		}
-		EXPECT_STREQ(exchange.m_sFunction, _T("StockFundamentalsCompanyProfileConcise"));
-		EXPECT_STREQ(exchange.m_vExchange.at(0), _T("US"));
-		EXPECT_STREQ(exchange.m_vExchange.at(1), _T("SS"));
-		EXPECT_STREQ(exchange.m_vExchange.at(2), _T("SZ"));
+		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
+		EXPECT_STREQ(exchange.GetExchange(0), _T("US"));
+		EXPECT_STREQ(exchange.GetExchange(1), _T("SS"));
+		EXPECT_STREQ(exchange.GetExchange(2), _T("SZ"));
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB) {
 		CInaccessibleExchangesPtr pExchange = make_shared<CInaccessibleExchanges>();
-		pExchange->m_sFunction = _T("WebSocketTrades");
-		pExchange->m_vExchange.push_back(_T("US"));
-		pExchange->m_vExchange.push_back(_T("SS"));
-		pExchange->m_vExchange.push_back(_T("SZ"));
+		pExchange->SetFunctionString(_T("WebSocketTrades"));
+		pExchange->AddExchange(_T("US"));
+		pExchange->AddExchange(_T("SS"));
+		pExchange->AddExchange(_T("SZ"));
 
 		DeleteFile(gl_systemConfigeration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
-		gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction)] = pExchange;
+		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
-		gl_finnhubInaccessibleExchange.m_finnhubInaccessibleExange.clear();
-		gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.clear();
+		gl_finnhubInaccessibleExchange.Clear();
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.size(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.at(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction))->m_sFunction, _T("WebSocketTrades"));
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.at(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction))->m_vExchange.size(), 3);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), _T("WebSocketTrades"));
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 3);
 		CString str;
-		str = gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.at(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction))->m_vExchange.at(0);
+		str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
 		EXPECT_STREQ(str, _T("US"));
 
 		// »Ö¸´Ô­×´

@@ -78,6 +78,11 @@ bool CInaccessibleExchanges::HaveExchange(CString sExchange) {
 	else return false;
 }
 
+bool CInaccessibleExchanges::HaveExchange(void) {
+	if (m_vExchange.size() > 0) return true;
+	else return false;
+}
+
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	static int siInstance = 0;
 
@@ -135,14 +140,13 @@ void CFinnhubInaccessibleExchange::Update(void) {
 		if (size > 0) { // 有exchange数据的话才建立数据集
 			pExchange = make_shared<CInaccessibleExchanges>();
 			string s2 = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-			pExchange->m_sFunction = s2.c_str();
-			pExchange->m_iFunction = gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction);
+			pExchange->SetFunctionString(s2.c_str());
+			pExchange->SetFunction(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()));
 			for (int j = 0; j < size; j++) {
 				string s = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-				pExchange->m_vExchange.push_back(s.c_str());
-				pExchange->m_setExchange.insert(s.c_str());
+				pExchange->AddExchange(s.c_str());
 			}
-			gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->m_sFunction)] = pExchange;
+			gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString())] = pExchange;
 		}
 	}
 }
@@ -152,9 +156,10 @@ void CFinnhubInaccessibleExchange::UpdateJson(void) {
 
 	for (auto& pExchange : m_mapInaccessibleExchange) {
 		json jsonExchange;
-		if (pExchange.second->m_vExchange.size() > 0) {// 有exchange数据的话才建立数据集
-			jsonExchange = json{ {"Function", pExchange.second->m_sFunction} };
-			for (auto& s : pExchange.second->m_vExchange) {
+		if (pExchange.second->HaveExchange()) {// 有exchange数据的话才建立数据集
+			jsonExchange = json{ {"Function", pExchange.second->GetFunctionString()} };
+			for (int i = 0; i < pExchange.second->ExchangeSize(); i++) {
+				auto s = pExchange.second->GetExchange(i);
 				jsonExchange[_T("Exchange")].push_back(s);
 			}
 
@@ -375,4 +380,23 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicCalendar")] = __ECONOMIC_CALENDAR__; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicCodes")] = __ECONOMIC_CODES__; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicEconomic")] = __ECONOMIC_ECONOMIC__; //Premium
+}
+
+CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(int iInquiryType) {
+	return m_mapInaccessibleExchange.at(iInquiryType);
+}
+
+bool CFinnhubInaccessibleExchange::IsInaccessible(int iInquiryType, CString strExchangeCode) {
+	try {
+		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	catch (json::out_of_range&) {
+		return false;
+	}
+	return false;
 }

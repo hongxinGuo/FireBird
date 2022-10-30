@@ -22,14 +22,22 @@ public:
 	bool Assign(CString sFunction, int iFunction, vector<CString>& vExchange);
 
 	int GetFunction(void) noexcept { return m_iFunction; }
-	void SetFucntion(int iFunction) noexcept { m_iFunction = iFunction; }
+	void SetFunction(int iFunction) noexcept { m_iFunction = iFunction; }
+	CString GetFunctionString(void) noexcept { return m_sFunction; }
+	void SetFunctionString(CString sFunction) noexcept { m_sFunction = sFunction; }
 
 	bool AddExchange(CString sExchangeName);
 	bool DeleteExchange(CString sExchangeName);
 
 	bool HaveExchange(CString sExchange);
+	bool HaveExchange(void);
+
+	size_t ExchangeSize(void) noexcept { return m_vExchange.size(); }
+	CString GetExchange(int iIndex) { return m_vExchange.at(iIndex); }
 
 public:
+
+protected:
 	CString m_sFunction; // 功能名称
 	int m_iFunction; // 功能名称的值
 	vector<CString> m_vExchange; // 所禁止的各交易所名称的序列
@@ -48,6 +56,8 @@ public:
 	void Update(void);
 	void UpdateJson(void);
 
+	void Clear(void) noexcept { m_mapInaccessibleExchange.clear(); m_finnhubInaccessibleExange.clear(); }
+
 	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
 	CString GetDefaultFileName(void) { return m_strFileName; }
 
@@ -56,16 +66,26 @@ public:
 
 	CString GetFinnhubInquiryString(int iInquiryIndex) { return m_mapFinnhubInquiryIndexToString.at(iInquiryIndex); }
 	int GetFinnhubInquiryIndex(CString sString) { return m_mapFinnhubInquiryStringToIndex.at(sString); }
+	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);
+	void SetInaccessibleExchange(int iInquiryType, CInaccessibleExchangesPtr pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
+	size_t GetInaccessibleExchangeSize(void) noexcept { return m_mapInaccessibleExchange.size(); }
+
+	bool IsNeedUpdate(void) noexcept { return m_fUpdate; }
+	void SetUpdate(bool fUpdate) noexcept { m_fUpdate = fUpdate; }
+
+	bool IsInaccessible(int iInquiryType, CString strExchangeCode);
 
 public:
+
+protected:
 	CString m_strFileName; // 配置文件名称
 
 	map<int, CInaccessibleExchangesPtr> m_mapInaccessibleExchange; //
 	map<int, CString> m_mapFinnhubInquiryIndexToString;
 	map<CString, int> m_mapFinnhubInquiryStringToIndex;
 
-	bool m_fUpdate;
 	bool m_fInitialized = false;
+	bool m_fUpdate;
 
 	json m_finnhubInaccessibleExange;
 };

@@ -6,21 +6,24 @@
 
 IMPLEMENT_DYNCREATE(CProductFinnhub, CVirtualProductWebData)
 
-bool CProductFinnhub::AddInaccessibleExchange(void) {
-	gl_finnhubInaccessibleExchange.m_fUpdate = true;
+bool CProductFinnhub::AddInaccessibleExchangeIfNeeded(void) {
+	gl_finnhubInaccessibleExchange.SetUpdate(true);
 	try {
-		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange.at(m_iProductType);
-		pExchange->AddExchange(m_strInquiringExchange);
-
-		return true;
+		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(m_iProductType);
+		if (!pExchange->HaveExchange(m_strInquiringExchange)) { // 如果是新的交易所代码
+			pExchange->AddExchange(m_strInquiringExchange);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	catch (out_of_range&) {
+	catch (out_of_range&) { // 新的数据
 		CInaccessibleExchangesPtr pNewExchange = make_shared<CInaccessibleExchanges>();
-		pNewExchange->m_iFunction = m_iProductType;
-		pNewExchange->m_sFunction = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(m_iProductType);
-		pNewExchange->m_vExchange.push_back(m_strInquiringExchange);
-		pNewExchange->m_setExchange.insert(m_strInquiringExchange);
-		gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[m_iProductType] = pNewExchange;
+		pNewExchange->SetFunction(m_iProductType);
+		pNewExchange->SetFunctionString(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(m_iProductType));
+		pNewExchange->AddExchange(m_strInquiringExchange);
+		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(m_iProductType, pNewExchange);
 		return true;
 	}
 }
