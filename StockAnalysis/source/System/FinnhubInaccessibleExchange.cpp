@@ -395,7 +395,7 @@ bool CFinnhubInaccessibleExchange::IsInaccessible(int iInquiryType, CString strE
 			return false;
 		}
 	}
-	catch (json::out_of_range&) {
+	catch (out_of_range&) {
 		return false;
 	}
 	return false;

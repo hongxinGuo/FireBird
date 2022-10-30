@@ -218,6 +218,7 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentStockExchangePos = 0;
+	int iInquiryType = __STOCK_SYMBOLS__;
 
 	if (!IsSymbolUpdated() && !IsInquiring()) {
 		if (!s_fInquiringFinnhubStockSymbol) {
@@ -227,13 +228,15 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsUpdated()) {
 				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
-				fFound = true;
-				break;
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+					fFound = true;
+					break;
+				}
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentStockExchangePos);
 			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
@@ -260,6 +263,8 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentProfilePos;
+	CWorldStockPtr pStock = nullptr;
+	int iInquiryType = __COMPANY_PROFILE_CONCISE__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsStockProfileUpdated() && !IsInquiring()) {
@@ -268,13 +273,14 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 			s_fInquiringFinnhubStockProfile = true;
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
-			if (!gl_pWorldMarket->GetStock(lCurrentProfilePos)->IsCompanyProfileUpdated()) {
+			pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos);
+			if (!pStock->IsCompanyProfileUpdated() && !gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 				fFound = true;
 				break;
 			}
 		}
 		if (fFound) {
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __COMPANY_PROFILE_CONCISE__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentProfilePos);
 			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("简介:") + gl_pWorldMarket->GetStock(lCurrentProfilePos)->GetSymbol());
@@ -350,6 +356,8 @@ bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
 	bool fHaveInquiry = false;
 	CProductWebSourceDataPtr product = nullptr;
 	long lCurrentBasicFinncialsPos;
+	CWorldStockPtr pStock = nullptr;
+	int iInquiryType = __BASIC_FINANCIALS__;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsStockBasicFinancialUpdated() && !IsInquiring()) {
@@ -358,13 +366,16 @@ bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
 			s_fInquiringFinnhubCompanyBasicFinancial = true;
 		}
 		for (lCurrentBasicFinncialsPos = 0; lCurrentBasicFinncialsPos < lStockSetSize; lCurrentBasicFinncialsPos++) {
-			if (!gl_pWorldMarket->GetStock(lCurrentBasicFinncialsPos)->IsBasicFinancialUpdated()) {
-				fFound = true;
-				break;
+			pStock = gl_pWorldMarket->GetStock(lCurrentBasicFinncialsPos);
+			if (!pStock->IsBasicFinancialUpdated()) {
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
 			}
 		}
 		if (fFound) {
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __BASIC_FINANCIALS__);
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentBasicFinncialsPos);
 			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("基本财务:") + gl_pWorldMarket->GetStock(lCurrentBasicFinncialsPos)->GetSymbol());
@@ -586,11 +597,17 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 
 bool CFinnhubDataSource::InquiryEconomicCalendar(void) {
 	CProductWebSourceDataPtr product = nullptr;
+	int iInquiryType = __ECONOMIC_CALENDAR__;
 
 	if (!IsEconomicCalendarUpdated() && !IsInquiring()) {
-		product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_CALENDAR__);
-		StoreInquiry(product);
-		SetInquiring(true);
+		if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, _T("ALL"))) {
+			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			StoreInquiry(product);
+			SetInquiring(true);
+		}
+		else {
+			SetEconomicCalendarUpdated(true);
+		}
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar"));
 		return true;
 	}

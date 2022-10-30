@@ -17,7 +17,7 @@ public:
 	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:
-	CString m_strCode;
+	CString m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。
 	CString m_strName;
 	CString m_strMic;
 	CString m_strTimeZone;
