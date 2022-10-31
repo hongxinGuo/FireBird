@@ -35,6 +35,7 @@ public:
 
 	void SetInquiringExchange(CString exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange(void) noexcept { return m_strInquiringExchange; }
+	bool IsUSMarket(void); // 如果是美国市场
 
 	void SetProductType(int iProductType) { m_iProductType = iProductType; }
 	int GetProductType(void) { return m_iProductType; }
