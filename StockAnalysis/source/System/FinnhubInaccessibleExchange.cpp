@@ -54,6 +54,7 @@ bool CInaccessibleExchanges::Assign(CString sFunction, int iFunction, vector<CSt
 }
 
 bool CInaccessibleExchanges::AddExchange(CString sExchangeName) {
+	ASSERT(sExchangeName.Compare(_T("US")) != 0); // 系统中不存储美国市场代码（US)。
 	m_vExchange.push_back(sExchangeName);
 	m_setExchange.insert(sExchangeName);
 	return true;

@@ -281,17 +281,15 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 //
 // 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
 //
+// 发现使用并行处理方式时，数据库偶尔会出现故障，估计是MySQL数据库的同步问题，目前不容易找到问题之所在。
+// 决定还是使用串行方式，不再生成线程。--20221101
+//
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
-	if (gl_systemConfigeration.IsUsingFastCPU()) {
-		thread thread1(ThreadUpdateBasicFinancialQuarterlyDB, vStock);
-		thread1.detach();
-	}
-	else {
-		for (auto& pStock : vStock) {
-			if (gl_systemStatus.IsExitingSystem()) break;
-			pStock->AppendBasicFinancialQuarter();
-		}
+	for (auto& pStock : vStock) {
+		if (gl_systemStatus.IsExitingSystem()) break;
+		pStock->AppendBasicFinancialQuarter();
 	}
 	return true;
 }
@@ -300,17 +298,14 @@ bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStoc
 //
 // 这个函数比较占用CPU的计算能力，故而当使用较慢的CPU时，不使用工作线程做并行处理
 //
+// 发现使用并行处理方式时，数据库偶尔会出现故障，估计是MySQL数据库的同步问题，目前不容易找到问题之所在。
+// 决定还是使用串行方式，不再生成线程。--20221101
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
-	if (gl_systemConfigeration.IsUsingFastCPU()) {
-		thread thread1(ThreadUpdateBasicFinancialAnnualDB, vStock);
-		thread1.detach();
-	}
-	else {
-		for (auto& pStock : vStock) {
-			if (gl_systemStatus.IsExitingSystem()) break;
-			pStock->AppendBasicFinancialAnnual();
-		}
+	for (auto& pStock : vStock) {
+		if (gl_systemStatus.IsExitingSystem()) break;
+		pStock->AppendBasicFinancialAnnual();
 	}
 	return true;
 }
