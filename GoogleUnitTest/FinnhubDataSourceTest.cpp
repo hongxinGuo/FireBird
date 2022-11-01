@@ -377,14 +377,23 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
 		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
-		EXPECT_EQ(p->GetIndex(), 2500) << "第一个待查询股票为中国股票，故而无需查询；第二个待查询股票为美国股票";
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票为中国股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票为中国股票，没有复原";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(false);
+
+		gl_pDataSourceFinnhub->SetInquiring(false);
+		EXPECT_TRUE(gl_pDataSourceFinnhub->InquiryInsiderTransaction());
+		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
+		p = gl_pDataSourceFinnhub->GetInquiry();
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
+		EXPECT_EQ(p->GetIndex(), 2500) << "第二次待查询股票为美国股票，位于2500";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票已复原";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
 		gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionNeedUpdate(false);
 
 		gl_pDataSourceFinnhub->SetInquiring(false);
-		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryInsiderTransaction()) << "第二次查询时没有找到待查询的股票";
+		EXPECT_FALSE(gl_pDataSourceFinnhub->InquiryInsiderTransaction()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInsiderTransactionUpdated()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();

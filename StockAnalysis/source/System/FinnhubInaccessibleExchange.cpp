@@ -14,11 +14,11 @@ std::string gl_sFinnhubInaccessibleExchange = R"(
 [
 {
 	"Function" : "StockFundamentalsCompanyProfileConcise",
-	"Exchange" : [ "US", "SS", "SZ"]
+	"Exchange" : ["SS", "SZ"]
 },
 {
 	"Function" : "StockFundamentalsBasicFinancials",
-	"Exchange" : [ "US", "SS", "SZ"]
+	"Exchange" : ["SS", "SZ"]
 }
 ]})";
 

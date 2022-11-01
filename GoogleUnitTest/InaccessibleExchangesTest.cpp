@@ -328,15 +328,13 @@ namespace StockAnalysisTest {
 			exchange.AddExchange(s.c_str());
 		}
 		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
-		EXPECT_STREQ(exchange.GetExchange(0), _T("US"));
-		EXPECT_STREQ(exchange.GetExchange(1), _T("SS"));
-		EXPECT_STREQ(exchange.GetExchange(2), _T("SZ"));
+		EXPECT_STREQ(exchange.GetExchange(0), _T("SS"));
+		EXPECT_STREQ(exchange.GetExchange(1), _T("SZ"));
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB) {
 		CInaccessibleExchangesPtr pExchange = make_shared<CInaccessibleExchanges>();
 		pExchange->SetFunctionString(_T("WebSocketTrades"));
-		pExchange->AddExchange(_T("US"));
 		pExchange->AddExchange(_T("SS"));
 		pExchange->AddExchange(_T("SZ"));
 
@@ -352,10 +350,10 @@ namespace StockAnalysisTest {
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), _T("WebSocketTrades"));
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 3);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
 		CString str;
 		str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
-		EXPECT_STREQ(str, _T("US"));
+		EXPECT_STREQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´
 		DeleteFile(gl_systemConfigeration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));

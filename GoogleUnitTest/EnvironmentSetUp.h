@@ -170,6 +170,9 @@ namespace StockAnalysisTest {
 
 			gl_pWorldMarket->GetStock(_T("AAPL"))->SetCompanyProfileUpdated(false);
 
+			// Çå¿ÕfinnhubInaccessibleExchange
+			gl_finnhubInaccessibleExchange.Clear();
+
 			GeneralCheck();
 		}
 
