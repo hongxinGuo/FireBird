@@ -738,6 +738,9 @@
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h">
       <Filter>头文件\System\finnhub</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1205,7 +1208,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStockDayLine.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChinaMarketBackground.cpp">
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadParseRTData.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp">
@@ -1295,6 +1298,7 @@
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

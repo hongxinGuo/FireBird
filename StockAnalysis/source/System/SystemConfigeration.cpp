@@ -345,6 +345,7 @@ bool CSystemConfigeration::LoadDB() {
 	if (f.is_open()) {
 		f >> m_systemConfigeration;
 		//m_systemConfigeration = json::parse(f); // 这种方式等价于 f >> m_systemConfigeration;
+		f.close();
 		return true;
 	}
 	return false;

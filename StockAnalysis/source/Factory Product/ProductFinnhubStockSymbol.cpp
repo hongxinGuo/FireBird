@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SaveAndLoad.h"
+
 #include"jsonParse.h"
 
 #include "ProductFinnhubStockSymbol.h"
@@ -29,6 +31,9 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CFinnhubStockExchangePtr pExchange;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+
+	// 临时输出数据至文件中。
+	// SaveToFile(_T("C:\\StockAnalysis\\StockSymbol.json"), pWebData->GetDataBuffer());
 
 	strExchangeCode = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);
 	pvStock = ParseFinnhubStockSymbol(pWebData);

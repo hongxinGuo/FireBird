@@ -182,6 +182,7 @@
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
+    <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h" />
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
@@ -278,7 +279,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChinaMarketBackground.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadParseRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />
@@ -409,6 +410,7 @@
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />

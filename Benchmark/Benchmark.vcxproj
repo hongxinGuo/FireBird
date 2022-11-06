@@ -157,7 +157,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Benchmark.cpp" />
-    <ClCompile Include="JsonParseBenchmark.cpp" />
+    <ClCompile Include="BenchmarkJsonParse.cpp" />
+    <ClCompile Include="BenchmarkThreadParseRTData.cpp" />
+    <ClCompile Include="BenchmarkWebRTData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

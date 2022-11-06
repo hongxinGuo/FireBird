@@ -7,6 +7,7 @@
 #include"RSReference.h"
 
 #include"ClassDeclaration.h"
+#include"WebRTData.h"
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -140,4 +141,9 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 // 后台处理线程
 // 处理实时数据等耗时任务的后台线程
 UINT ThreadChinaMarketBackground(void); // 中国市场后台数据处理线程，此线程返回值为201
+void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData);
+void ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebData);
+bool ParseNeteaseRTDataWithNlohmannJSon(void);
+bool ParseNeteaseRTDataWithPTree(void);
+
 UINT ThreadWorldMarketBackground(void); // 美国市场后台数据处理线程，此线程返回值为202
