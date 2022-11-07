@@ -91,7 +91,7 @@ CString CTiingoForexWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	CString strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
 	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。

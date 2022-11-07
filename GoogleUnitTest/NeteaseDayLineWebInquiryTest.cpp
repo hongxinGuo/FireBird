@@ -56,8 +56,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CNeteaseDayLineWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
-		EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+		EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetInquiryToken(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
 		EXPECT_STREQ(m_MockNeteaseDayLineWebInquiry.GetConnectionName(), _T("NeteaseDayLine"));
 	}
 

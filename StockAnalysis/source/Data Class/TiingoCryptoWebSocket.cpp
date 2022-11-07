@@ -96,7 +96,7 @@ CString CTiingoCryptoWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	CString strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 	vSymbol.push_back(_T("dkaeth")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。

@@ -99,7 +99,6 @@ namespace StockAnalysisTest {
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 			s_pMockQuandlWebInquiry->SetReadingWebData(false);
 
-			s_pMockTiingoWebInquiry->SetInquiryingStringMiddle(_T(""));
 			gl_pMockWorldMarket->SetSystemReady(true);
 
 			GeneralCheck();
@@ -107,17 +106,17 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
-		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryToken(), _T("&token=bv985d748v6ujthqfke0"));
+		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryToken(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiryToken(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 
-		s_pMockFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
-		s_pMockTiingoWebInquiry->SetInquiryingStringSuffix(_T(""));
-		s_pMockQuandlWebInquiry->SetInquiryingStringSuffix(_T(""));
+		s_pMockFinnhubWebInquiry->SetInquiryToken(_T(""));
+		s_pMockTiingoWebInquiry->SetInquiryToken(_T(""));
+		s_pMockQuandlWebInquiry->SetInquiryToken(_T(""));
 		gl_pMockWorldMarket->UpdateToken();
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiringStringSuffix(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
-		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryToken(), _T("&token=bv985d748v6ujthqfke0"));
+		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryToken(), _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiryToken(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {

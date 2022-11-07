@@ -22,8 +22,9 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_lByteRead = 0;
 	m_fWebError = false;
 	m_dwWebErrorCode = 0;
-	m_strInquire = _T("");
-	m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+	m_strInquiry = _T("");
+	m_strInquiryFunction = _T("");
+	m_strInquiryToken = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
@@ -165,7 +166,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
 			m_dwWebErrorCode = exception->m_dwError;
-			ReportWebError(m_dwWebErrorCode, m_strInquire);
+			ReportWebError(m_dwWebErrorCode, m_strInquiry);
 			SetWebError(true);
 			exception->Delete();
 		}
@@ -214,7 +215,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		counter.Stop();
 		DeleteWebFile();
 		m_dwWebErrorCode = exception->m_dwError;
-		ReportWebError(m_dwWebErrorCode, counter.GetElapsedMilliSecond(), m_strInquire);
+		ReportWebError(m_dwWebErrorCode, counter.GetElapsedMilliSecond(), m_strInquiry);
 		SetWebError(true);
 		fSucceedOpen = false;
 		exception->Delete();
@@ -278,7 +279,7 @@ bool CVirtualWebInquiry::VerifyDataLength() {
 			str += _T("，实际长度：");
 			sprintf_s(buffer, _T("%I64d"), byteReaded);
 			str += buffer;
-			str += m_strInquire.Left(120);
+			str += m_strInquiry.Left(120);
 			gl_systemMessage.PushErrorMessage(str);
 		}
 		return false;
@@ -303,7 +304,7 @@ bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
 }
 
 void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
+	m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken;
 }
 
 void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {

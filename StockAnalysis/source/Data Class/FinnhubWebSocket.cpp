@@ -70,7 +70,7 @@ CFinnhubWebSocket::~CFinnhubWebSocket(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CFinnhubWebSocket::Connect(void) {
-	CString strToken = gl_pFinnhubWebInquiry->GetInquiringStringSuffix();
+	CString strToken = gl_pFinnhubWebInquiry->GetInquiryToken();
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
 	string urlAndAuth = m_url + strToken.GetBuffer();
 
@@ -149,7 +149,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				}
 			}
 			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
-			//
+				//
 			}
 			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = ptreeGetString(pt, _T("msg"));

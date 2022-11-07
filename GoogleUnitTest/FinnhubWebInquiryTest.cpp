@@ -41,8 +41,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CFinnhubWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringPrefix(), _T(""));
-		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T(""));
+		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_STREQ(m_FinnhubWebInquiry.GetConnectionName(), _T("Finnhub"));
 		EXPECT_THAT(m_FinnhubWebInquiry.GetInquiringNumber(), 1) << "默认每次一个数据";
 	}

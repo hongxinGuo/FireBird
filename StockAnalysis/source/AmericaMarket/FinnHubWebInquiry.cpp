@@ -10,8 +10,8 @@ using namespace std;
 #include<thread>
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
-	m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
-	m_strWebDataInquireSuffix = _T("");
+	m_strInquiryFunction = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Finnhub");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 
@@ -22,18 +22,8 @@ CFinnhubWebInquiry::~CFinnhubWebInquiry() {
 }
 
 bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
-	CWebRTDataPtr pRTData = nullptr;
-
-	CString strMiddle = _T("");
-
-	// 申请下一批次股票实时数据。 此网络数据提取器使用FinnhubMarket
 	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
-
-	// 1 准备前缀字符串
-	// 2. 准备中间字符串
-	// 3. 准备后缀字符串
-	//
-	CreateTotalInquiringString(m_strWebDataInquireMiddle);
+	CreateTotalInquiringString(_T(""));
 
 	return true;
 }

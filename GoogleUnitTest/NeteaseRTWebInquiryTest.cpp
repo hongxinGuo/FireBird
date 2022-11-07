@@ -43,8 +43,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringPrefix(), _T("http://api.money.126.net/data/feed/"));
-		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringSuffix(), _T(""));
+		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiryFunction(), _T("http://api.money.126.net/data/feed/"));
+		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_STREQ(m_NeteaseRTWebInquiry.GetConnectionName(), _T("NeteaseRT"));
 		EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 900) << _T("DEBUG模式下网易默认值");
 	}

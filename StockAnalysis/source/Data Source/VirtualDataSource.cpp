@@ -38,7 +38,7 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 			m_pCurrentProduct = m_qProduct.front();
 			m_qProduct.pop();
 
-			m_pWebInquiry->SetInquiryingStringPrefix(m_pCurrentProduct->CreatMessage()); // 设置前缀
+			m_pWebInquiry->SetInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置前缀
 
 			SetDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			m_pWebInquiry->GetWebData();
@@ -74,7 +74,6 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiringStr() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
-			m_pWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
 			SetInquiring(false);
 			fDone = true;
 		}

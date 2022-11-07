@@ -549,19 +549,19 @@ bool CWorldMarket::UpdateToken(void) {
 	ASSERT(gl_systemConfigeration.IsInitialized());
 
 	if (gl_systemConfigeration.GetFinnhubToken().GetLength() > 5) {
-		gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetFinnhubToken());
+		gl_pFinnhubWebInquiry->SetInquiryToken(gl_systemConfigeration.GetFinnhubToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
 	}
 	if (gl_systemConfigeration.GetTiingoToken().GetLength() > 5) {
-		gl_pTiingoWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetTiingoToken());
+		gl_pTiingoWebInquiry->SetInquiryToken(gl_systemConfigeration.GetTiingoToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
 	}
 	if (gl_systemConfigeration.GetQuandlToken().GetLength() > 5) {
-		gl_pQuandlWebInquiry->SetInquiryingStringSuffix(gl_systemConfigeration.GetQuandlToken());
+		gl_pQuandlWebInquiry->SetInquiryToken(gl_systemConfigeration.GetQuandlToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));

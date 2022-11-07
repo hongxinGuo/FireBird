@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringPrefix(), _T(""));
-		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T(""));
+		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(m_TiingoWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_STREQ(m_TiingoWebInquiry.GetConnectionName(), _T("Tiingo"));
 		EXPECT_THAT(m_TiingoWebInquiry.GetInquiringNumber(), 1) << "默认每次一个数据";
 	}

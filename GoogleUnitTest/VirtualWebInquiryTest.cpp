@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualWebInquiryTest, TestInitialize) {
 		EXPECT_STREQ(m_VirtualWebInquiry.GetHeaders(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T(""));
-		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T(""));
-		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringSuffix(), _T(""));
+		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
@@ -66,21 +66,15 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringPrefix) {
-		m_VirtualWebInquiry.SetInquiryingStringPrefix(_T("abcdefghigh"));
-		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T("abcdefghigh"));
-		m_VirtualWebInquiry.SetInquiryingStringPrefix(_T(""));
-	}
-
-	TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringMiddle) {
-		m_VirtualWebInquiry.SetInquiryingStringMiddle(_T("bcdefghigh"));
-		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringMiddle(), _T("bcdefghigh"));
-		m_VirtualWebInquiry.SetInquiryingStringMiddle(_T(""));
+		m_VirtualWebInquiry.SetInquiryFunction(_T("abcdefghigh"));
+		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryFunction(), _T("abcdefghigh"));
+		m_VirtualWebInquiry.SetInquiryFunction(_T(""));
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringSuffix) {
-		m_VirtualWebInquiry.SetInquiryingStringSuffix(_T("cdefghigh"));
-		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringSuffix(), _T("cdefghigh"));
-		m_VirtualWebInquiry.SetInquiryingStringSuffix(_T(""));
+		m_VirtualWebInquiry.SetInquiryToken(_T("cdefghigh"));
+		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryToken(), _T("cdefghigh"));
+		m_VirtualWebInquiry.SetInquiryToken(_T(""));
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestReportStatus) {

@@ -34,8 +34,8 @@ using namespace std;
 #include<thread>
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
-	m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
-	m_strWebDataInquireSuffix = _T("");
+	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
+	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
 #ifdef _DEBUG

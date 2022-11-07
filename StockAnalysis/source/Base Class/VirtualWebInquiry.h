@@ -55,9 +55,9 @@ public:
 
 	// 以下为实现函数
 	void CreateTotalInquiringString(CString strMIddle);
-	CString GetInquiringString(void) const { return m_strInquire; }
-	void SetInquiringString(CString str) { m_strInquire = str; }
-	void AppendInquiringString(CString str) { m_strInquire += str; }
+	CString GetInquiringString(void) const { return m_strInquiry; }
+	void SetInquiringString(CString str) { m_strInquiry = str; }
+	void AppendInquiringString(CString str) { m_strInquiry += str; }
 
 	CString GetHeaders(void) { return m_strHeaders; }
 	void SetHeaders(CString strHeaders) { m_strHeaders = strHeaders; }
@@ -70,12 +70,10 @@ public:
 	void AddByteReaded(INT64 lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
 
-	CString GetInquiringStringPrefix(void) const { return m_strWebDataInquirePrefix; }
-	void SetInquiryingStringPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
-	CString GetInquiringStringSuffix(void) const { return m_strWebDataInquireSuffix; }
-	void SetInquiryingStringSuffix(CString strSuffix) { m_strWebDataInquireSuffix = strSuffix; }
-	CString GetInquiringStringMiddle(void) const { return m_strWebDataInquireMiddle; }
-	void SetInquiryingStringMiddle(CString strSuffix) { m_strWebDataInquireMiddle = strSuffix; }
+	CString GetInquiryFunction(void) const { return m_strInquiryFunction; }
+	void SetInquiryFunction(CString strPrefix) { m_strInquiryFunction = strPrefix; }
+	CString GetInquiryToken(void) const { return m_strInquiryToken; }
+	void SetInquiryToken(CString strToken) { m_strInquiryToken = strToken; }
 
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
@@ -107,13 +105,12 @@ protected:
 	CHttpFile* m_pFile; // 网络文件指针
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 	DWORD m_dwWebErrorCode; //网络读取错误代码
-	CString m_strInquire;// 查询所需的字符串
 	string m_sBuffer; // 接收到数据的缓冲区
 	INT64 m_lByteRead; // 接收到的字符数.
 
-	CString m_strWebDataInquireMiddle; // 查询字符串中间字段
-	CString m_strWebDataInquirePrefix; // 查询字符串前缀
-	CString m_strWebDataInquireSuffix; // 查询字符串后缀
+	CString m_strInquiry;// 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
+	CString m_strInquiryFunction; // 查询字符串功能部分
+	CString m_strInquiryToken; // 查询字符串令牌
 
 	atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
 	atomic_bool m_fWebError; // 读取网络数据时是否出现错误标识

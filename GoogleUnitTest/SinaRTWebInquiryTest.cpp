@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSinaRTWebInquiryTest, TestInitialize) {
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetHeaders(), _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
-		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringPrefix(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
-		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringSuffix(), _T(""));
+		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiryFunction(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
+		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_FALSE(m_SinaRTWebInquiry.IsReportStatus());
 		EXPECT_EQ(m_SinaRTWebInquiry.GetInquiringNumber(), 850) << _T("新浪默认值");
 	}

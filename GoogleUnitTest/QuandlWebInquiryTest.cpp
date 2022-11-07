@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
 		CMockQuandlWebInquiry m_QuandlWebInquiry; // 网易日线历史数据
 	};
 	TEST_F(CQuandlWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiringStringPrefix(), _T(""));
-		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryToken(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 		EXPECT_STREQ(m_QuandlWebInquiry.GetConnectionName(), _T("Quandl"));
 	}
 

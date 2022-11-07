@@ -19,8 +19,8 @@ CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
 	// User-Agent部分只用于说明格式,即报头皆以\r\n（CRLF)结束
 	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
 
-	m_strWebDataInquirePrefix = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
-	m_strWebDataInquireSuffix = _T("");
+	m_strInquiryFunction = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
+	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("SinaRT");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 

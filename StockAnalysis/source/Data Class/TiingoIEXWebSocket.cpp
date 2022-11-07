@@ -89,7 +89,7 @@ CString CTiingoIEXWebSocket::CreateMessage(vector<CString> vSymbol) {
 	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
 	CString strSuffix = _T("]}}");
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiringStringSuffix();
+	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
 	vSymbol.push_back(_T("rig")); // 多加一个Tiingo制式的代码。

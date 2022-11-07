@@ -13,9 +13,9 @@
 //
 // Quandl密钥：
 //  api_key=zBMXMyoTyiy_N3pMb3ex
-// m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+// m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 // 下面的是第二个,用于dell240工作机。
-// m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
+// m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
