@@ -68,18 +68,18 @@ namespace StockAnalysisTest {
 		gl_pDataSourceTiingo->SetCryptoSymbolUpdated(false);
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquiryTiingoCompanySymbol) {
+	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
 		CProductWebSourceDataPtr p = nullptr;
 
 		gl_pDataSourceTiingo->SetStockSymbolUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryCompanySymbol()) << "TiingoCompanySymbol Updated";
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
 
 		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
 		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryCompanySymbol()) << "其他TiingoInquiry正在进行";
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol()) << "其他TiingoInquiry正在进行";
 
 		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryCompanySymbol());
+		EXPECT_TRUE(gl_pDataSourceTiingo->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
 		p = gl_pDataSourceTiingo->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
@@ -88,7 +88,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquiryTiingoDayLine) {
+	TEST_F(CTiingoDataSourceTest, TestInquireTiingoDayLine) {
 		CWorldStockPtr pStock;
 		CProductWebSourceDataPtr p = nullptr;
 		long lStockIndex = 0;
@@ -101,14 +101,14 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(true);
 		gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(true);
 		gl_pDataSourceTiingo->SetDayLineUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "DayLine Updated";
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "DayLine Updated";
 
 		gl_pDataSourceTiingo->SetDayLineUpdated(false);
 		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "其他TiingoInquiry正在进行";
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "其他TiingoInquiry正在进行";
 
 		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryDayLine());
+		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
 		p = gl_pDataSourceTiingo->GetInquiry();
@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 
 		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquiryDayLine());
+		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
 		p = gl_pDataSourceTiingo->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 
 		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquiryDayLine()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsDayLineUpdated()) << "股票都查询完了";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));

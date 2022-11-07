@@ -155,10 +155,10 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CFinnhubDataSource::Inquiry(long lCurrentTime) {
+bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
 	if (--s_iCountfinnhubLimit < 0) {
-		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) InquiryFinnhub(lCurrentTime);
+		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) InquireFinnhub(lCurrentTime);
 		if (IsInquiring()) {
 			s_iCountfinnhubLimit = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
 		}
@@ -166,30 +166,30 @@ bool CFinnhubDataSource::Inquiry(long lCurrentTime) {
 	return true;
 }
 
-bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
+bool CFinnhubDataSource::InquireFinnhub(long lCurrentTime) {
 	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) { // 下午五时重启系统，故而此时不允许接收网络信息。
-		InquiryCountryList();
-		InquiryForexExchange();
-		InquiryCryptoExchange();
-		InquiryCompanySymbol(); // 第一个动作，首先申请当日证券代码
-		InquiryForexSymbol();
-		InquiryCryptoSymbol();
-		InquiryEconomicCalendar();
+		InquireCountryList();
+		InquireForexExchange();
+		InquireCryptoExchange();
+		InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
+		InquireForexSymbol();
+		InquireCryptoSymbol();
+		InquireEconomicCalendar();
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
 			//InquiryCompanyNews(); // 由于mysql字符集的问题，导致有些数据无法存储， 目前未找到解决的方法。故暂时不执行此查询
-			InquiryCompanyProfileConcise();
-			InquiryCompanyBasicFinancial();
-			InquiryPeer();
-			InquiryInsiderTransaction();
-			InquiryInsiderSentiment();
-			InquiryCryptoDayLine();
-			InquiryStockDayLine();
-			InquiryForexDayLine(); // Forex dayline目前只限于付费用户使用
-			//InquiryEPSSurprise(); // 这个现在没什么用，暂时停止更新。
+			InquireCompanyProfileConcise();
+			InquireCompanyBasicFinancial();
+			InquirePeer();
+			InquireInsiderTransaction();
+			InquireInsiderSentiment();
+			InquireCryptoDayLine();
+			InquireStockDayLine();
+			InquireForexDayLine(); // Forex dayline目前只限于付费用户使用
+			//InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。
 			if (!IsStockDayLineUpdated()) {
-				//InquiryRTQuote();
+				//InquireRTQuote();
 			}
 		}
 		return true;
@@ -197,7 +197,7 @@ bool CFinnhubDataSource::InquiryFinnhub(long lCurrentTime) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryCountryList(void) {
+bool CFinnhubDataSource::InquireCountryList(void) {
 	if (!IsCountryListUpdated() && !IsInquiring()) {
 		CProductWebSourceDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __ECONOMIC_COUNTRY_LIST__);
 		StoreInquiry(product);
@@ -209,7 +209,7 @@ bool CFinnhubDataSource::InquiryCountryList(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryCompanySymbol(void) {
+bool CFinnhubDataSource::InquireCompanySymbol(void) {
 	static bool s_fInquiringFinnhubStockSymbol = false;
 	bool fFound = false;
 	CFinnhubStockExchangePtr pExchange;
@@ -255,7 +255,7 @@ bool CFinnhubDataSource::InquiryCompanySymbol(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
+bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 	static bool s_fInquiringFinnhubStockProfile = false;
 	bool fFound = false;
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
@@ -307,7 +307,7 @@ bool CFinnhubDataSource::InquiryCompanyProfileConcise(void) {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool CFinnhubDataSource::InquiryCompanyNews(void) {
+bool CFinnhubDataSource::InquireCompanyNews(void) {
 	static bool s_fInquiringFinnhubCompanyNews = false;
 	bool fFound = false;
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
@@ -350,7 +350,7 @@ bool CFinnhubDataSource::InquiryCompanyNews(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
+bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 	static bool s_fInquiringFinnhubCompanyBasicFinancial = false;
 	bool fFound = false;
 	long lStockSetSize = gl_pWorldMarket->GetStockSize();
@@ -397,7 +397,7 @@ bool CFinnhubDataSource::InquiryCompanyBasicFinancial(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryStockDayLine(void) {
+bool CFinnhubDataSource::InquireStockDayLine(void) {
 	static bool s_fInquiringFinnhubStockDayLine = false;
 	bool fFound = false;
 	CWorldStockPtr pStock;
@@ -444,7 +444,7 @@ bool CFinnhubDataSource::InquiryStockDayLine(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
+bool CFinnhubDataSource::InquireInsiderTransaction(void) {
 	static bool s_fInquiringFinnhubStockInsiderTransaction = false;
 	bool fFound = false;
 	CWorldStockPtr pStock = nullptr;
@@ -491,7 +491,7 @@ bool CFinnhubDataSource::InquiryInsiderTransaction(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
+bool CFinnhubDataSource::InquireInsiderSentiment(void) {
 	static bool s_fInquiringFinnhubStockInsiderSentiment = false;
 	bool fFound = false;
 	CWorldStockPtr pStock = nullptr;
@@ -538,7 +538,7 @@ bool CFinnhubDataSource::InquiryInsiderSentiment(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryRTQuote(void) {
+bool CFinnhubDataSource::InquireRTQuote(void) {
 	static long s_lCurrentRTDataQuotePos = 0;
 	CProductWebSourceDataPtr product = nullptr;
 
@@ -557,7 +557,7 @@ bool CFinnhubDataSource::InquiryRTQuote(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryPeer(void) {
+bool CFinnhubDataSource::InquirePeer(void) {
 	static bool s_fInquiringFinnhubStockPeer = false;
 	bool fFound = false;
 	CWorldStockPtr pStock = nullptr;
@@ -604,7 +604,7 @@ bool CFinnhubDataSource::InquiryPeer(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryEconomicCalendar(void) {
+bool CFinnhubDataSource::InquireEconomicCalendar(void) {
 	CProductWebSourceDataPtr product = nullptr;
 	int iInquiryType = __ECONOMIC_CALENDAR__;
 
@@ -623,7 +623,7 @@ bool CFinnhubDataSource::InquiryEconomicCalendar(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryEPSSurprise(void) {
+bool CFinnhubDataSource::InquireEPSSurprise(void) {
 	bool fFound = false;
 	CWorldStockPtr pStock = nullptr;
 	CString str = _T("");
@@ -661,7 +661,7 @@ bool CFinnhubDataSource::InquiryEPSSurprise(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryForexExchange(void) {
+bool CFinnhubDataSource::InquireForexExchange(void) {
 	if (!IsForexExchangeUpdated() && !IsInquiring()) {
 		StoreInquiry(m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __FOREX_EXCHANGE__));
 		SetInquiring(true);
@@ -672,7 +672,7 @@ bool CFinnhubDataSource::InquiryForexExchange(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryForexSymbol(void) {
+bool CFinnhubDataSource::InquireForexSymbol(void) {
 	static long s_lCurrentForexExchangePos = 0;
 	CProductWebSourceDataPtr product = nullptr;
 
@@ -692,7 +692,7 @@ bool CFinnhubDataSource::InquiryForexSymbol(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryForexDayLine(void) {
+bool CFinnhubDataSource::InquireForexDayLine(void) {
 	static bool s_fInquiringFinnhubForexDayLine = false;
 	bool fFound = false;
 	CForexSymbolPtr pForexSymbol = nullptr;
@@ -739,7 +739,7 @@ bool CFinnhubDataSource::InquiryForexDayLine(void) {
 	return fHaveInquiry;
 }
 
-bool CFinnhubDataSource::InquiryCryptoExchange(void) {
+bool CFinnhubDataSource::InquireCryptoExchange(void) {
 	if (!IsCryptoExchangeUpdated() && !IsInquiring()) {
 		StoreInquiry(m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_EXCHANGE__));
 		SetInquiring(true);
@@ -750,7 +750,7 @@ bool CFinnhubDataSource::InquiryCryptoExchange(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryCryptoSymbol(void) {
+bool CFinnhubDataSource::InquireCryptoSymbol(void) {
 	static long s_lCurrentCryptoExchangePos = 0;
 	CProductWebSourceDataPtr product = nullptr;
 
@@ -770,7 +770,7 @@ bool CFinnhubDataSource::InquiryCryptoSymbol(void) {
 	return false;
 }
 
-bool CFinnhubDataSource::InquiryCryptoDayLine(void) {
+bool CFinnhubDataSource::InquireCryptoDayLine(void) {
 	static bool s_fInquiringFinnhubCryptoDayLine = false;
 	bool fFound = false;
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;

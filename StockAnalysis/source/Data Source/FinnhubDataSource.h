@@ -11,28 +11,28 @@ public:
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
 
-	virtual bool Inquiry(long lCurrentTime) override final;
+	virtual bool Inquire(long lCurrentTime) override final;
 
-	bool InquiryFinnhub(long lCurrentTime);
+	bool InquireFinnhub(long lCurrentTime);
 
-	bool InquiryCountryList(void);
-	bool InquiryCompanySymbol(void);
-	bool InquiryCompanyProfileConcise(void);
-	bool InquiryCompanyNews(void);
-	bool InquiryCompanyBasicFinancial();
-	bool InquiryStockDayLine(void);
-	bool InquiryRTQuote(void);
-	bool InquiryPeer(void);
-	bool InquiryInsiderTransaction(void);
-	bool InquiryInsiderSentiment(void);
-	bool InquiryEconomicCalendar(void);
-	bool InquiryEPSSurprise(void);
-	bool InquiryForexExchange(void);
-	bool InquiryForexSymbol(void);
-	bool InquiryForexDayLine(void);
-	bool InquiryCryptoExchange(void);
-	bool InquiryCryptoSymbol(void);
-	bool InquiryCryptoDayLine(void);
+	bool InquireCountryList(void);
+	bool InquireCompanySymbol(void);
+	bool InquireCompanyProfileConcise(void);
+	bool InquireCompanyNews(void);
+	bool InquireCompanyBasicFinancial();
+	bool InquireStockDayLine(void);
+	bool InquireRTQuote(void);
+	bool InquirePeer(void);
+	bool InquireInsiderTransaction(void);
+	bool InquireInsiderSentiment(void);
+	bool InquireEconomicCalendar(void);
+	bool InquireEPSSurprise(void);
+	bool InquireForexExchange(void);
+	bool InquireForexSymbol(void);
+	bool InquireForexDayLine(void);
+	bool InquireCryptoExchange(void);
+	bool InquireCryptoSymbol(void);
+	bool InquireCryptoDayLine(void);
 
 	bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
 	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }

@@ -16,7 +16,7 @@ public:
 	virtual bool Reset(void);
 
 	void Run(long lCurrentTime);
-	virtual bool Inquiry(long lCurrentTime) { return true; } // 继承类实现各自的查询任务
+	virtual bool Inquire(long lCurrentTime) { return true; } // 继承类实现各自的查询任务
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual bool UpdateStatus(void) { ASSERT(0); return true; }

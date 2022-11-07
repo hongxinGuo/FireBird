@@ -12,12 +12,12 @@ public:
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
 
-	virtual bool Inquiry(long lCurrentTime) override final;
+	virtual bool Inquire(long lCurrentTime) override final;
 
-	bool InquiryTiingo(void);
-	bool InquiryCompanySymbol(void);
-	bool InquiryCryptoSymbol(void);
-	bool InquiryDayLine(void);
+	bool InquireTiingo(void);
+	bool InquireCompanySymbol(void);
+	bool InquireCryptoSymbol(void);
+	bool InquireDayLine(void);
 
 	bool IsStockSymbolUpdated(void) noexcept { return m_fStockSymbolUpdated; }
 	void SetStockSymbolUpdated(bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }

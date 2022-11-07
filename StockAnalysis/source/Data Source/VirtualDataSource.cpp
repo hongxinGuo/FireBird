@@ -17,7 +17,7 @@ bool CVirtualDataSource::Reset(void) {
 }
 
 void CVirtualDataSource::Run(long lCurrentTime) {
-	Inquiry(lCurrentTime);
+	Inquire(lCurrentTime);
 	if (ProcessWebDataReceived()) { // 先处理接收到的网络数据
 		UpdateStatus();
 	}

@@ -82,11 +82,11 @@ bool CTiingoDataSource::UpdateStatus(void)
 	return true;
 }
 
-bool CTiingoDataSource::Inquiry(long lCurrentTime) {
+bool CTiingoDataSource::Inquire(long lCurrentTime) {
 	static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
 
 	if (--s_iCountTiingoLimit < 0) {
-		if (!IsInquiring()) InquiryTiingo();
+		if (!IsInquiring()) InquireTiingo();
 		s_iCountTiingoLimit = gl_systemConfigeration.GetWorldMarketTiingoInquiryTime() / 100;
 		if (m_pWebInquiry->IsWebError()) {
 			m_pWebInquiry->SetWebError(false);
@@ -96,18 +96,18 @@ bool CTiingoDataSource::Inquiry(long lCurrentTime) {
 	return true;
 }
 
-bool CTiingoDataSource::InquiryTiingo(void) {
+bool CTiingoDataSource::InquireTiingo(void) {
 	if (gl_pWorldMarket->IsSystemReady()) {
-		InquiryCompanySymbol();
-		InquiryCryptoSymbol();
+		InquireCompanySymbol();
+		InquireCryptoSymbol();
 		// 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
-		InquiryDayLine(); // 初步测试完毕。
+		InquireDayLine(); // 初步测试完毕。
 		return true;
 	}
 	return false;
 }
 
-bool CTiingoDataSource::InquiryCompanySymbol(void) {
+bool CTiingoDataSource::InquireCompanySymbol(void) {
 	if (!IsStockSymbolUpdated() && !IsInquiring()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
 		m_qProduct.push(p);
@@ -120,7 +120,7 @@ bool CTiingoDataSource::InquiryCompanySymbol(void) {
 	return false;
 }
 
-bool CTiingoDataSource::InquiryCryptoSymbol(void) {
+bool CTiingoDataSource::InquireCryptoSymbol(void) {
 	if (!IsCryptoSymbolUpdated() && !IsInquiring()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__);
 		m_qProduct.push(p);
@@ -140,7 +140,7 @@ bool CTiingoDataSource::InquiryCryptoSymbol(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoDataSource::InquiryDayLine(void) {
+bool CTiingoDataSource::InquireDayLine(void) {
 	bool fFound = false;
 	CWorldStockPtr pStock;
 	CString str = _T("");
