@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyBasicFinancial, CProductFinnhub)
 
 CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	m_strClassName = _T("Finnhub company basic financials");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,7 +23,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
-	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&metric=all");
+	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol() + _T("&metric=all");
 	return m_strTotalInquiryMessage;
 }
 
@@ -243,7 +243,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	ASSERT(pWebData->IsJSonContentType());
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
 	ppt = pWebData->GetPTree();
 	try {

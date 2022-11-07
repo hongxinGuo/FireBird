@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfileConcise, CProductFinnhub)
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strClassName = _T("Finnhub company profile concise");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
 	m_lIndex = -1;
 }
 
@@ -21,7 +21,7 @@ CString CProductFinnhubCompanyProfileConcise::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
+	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
 	return m_strTotalInquiryMessage;
 }
 
@@ -64,7 +64,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJSon()) return true; // 即使为空，也完成了查询。
+	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
 	if (pWebData->NoRightToAccess()) return true;
 
 	ppt = pWebData->GetPTree();

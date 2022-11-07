@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfile, CProductFinnhub)
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strClassName = _T("Finnhub company profile");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
 	m_lIndex = -1;
 }
 
@@ -21,7 +21,7 @@ CString CProductFinnhubCompanyProfile::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
+	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
 	return m_strTotalInquiryMessage;
 }
 
@@ -50,7 +50,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return true; // 无数据
+		if (pWebData->IsVoidJson()) return true; // 无数据
 		if (pWebData->NoRightToAccess()) return true;
 		ppt = pWebData->GetPTree();
 		try {

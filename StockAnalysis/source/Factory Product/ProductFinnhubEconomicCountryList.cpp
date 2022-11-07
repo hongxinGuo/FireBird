@@ -11,12 +11,12 @@ IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCountryList, CProductFinnhub)
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strClassName = _T("Finnhub economic country list");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/country?");
+	m_strInquiry = _T("https://finnhub.io/api/v1/country?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCountryList::CreatMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }
 
@@ -44,7 +44,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCountry;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvCountry; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvCountry; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvCountry; }
 	ppt = pWebData->GetPTree();
 	try {

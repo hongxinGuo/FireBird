@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCryptoDayLine, CProductFinnhub)
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strClassName = _T("Finnhub crypto dayline");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	m_strTotalInquiryMessage = m_strInquiry + pCryptoSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }
 
@@ -83,7 +83,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
 
 	ppt = pWebData->GetPTree();

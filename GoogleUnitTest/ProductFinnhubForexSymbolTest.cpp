@@ -38,13 +38,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
 		EXPECT_EQ(productForexSymbol.GetIndex(), -1);
-		EXPECT_STREQ(productForexSymbol.GetInquiringStr(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
+		EXPECT_STREQ(productForexSymbol.GetInquiry(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
 		productForexSymbol.SetMarket(gl_pWorldMarket.get());
 		productForexSymbol.SetIndex(1);
-		EXPECT_STREQ(productForexSymbol.CreatMessage(), productForexSymbol.GetInquiringStr() + gl_pWorldMarket->GetForexExchange(1));
+		EXPECT_STREQ(productForexSymbol.CreatMessage(), productForexSymbol.GetInquiry() + gl_pWorldMarket->GetForexExchange(1));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {

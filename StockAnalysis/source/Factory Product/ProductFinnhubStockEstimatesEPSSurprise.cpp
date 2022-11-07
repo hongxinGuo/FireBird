@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise, CProductFinnhub)
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strClassName = _T("Finnhub estimates EPS surprise");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,7 +23,7 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreatMessage(void) {
 	CString strMiddle = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -59,7 +59,7 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEPSSurprise;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEPSSurprise; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEPSSurprise; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEPSSurprise; }
 	ppt = pWebData->GetPTree();
 	try {

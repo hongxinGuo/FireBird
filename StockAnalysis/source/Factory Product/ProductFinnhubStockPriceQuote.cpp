@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubStockPriceQuote, CProductFinnhub)
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/quote?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/quote?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,7 +23,7 @@ CString CProductFinnhubStockPriceQuote::CreatMessage(void) {
 	CString strMiddle = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -52,7 +52,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
 	ppt = pWebData->GetPTree();
 	try {

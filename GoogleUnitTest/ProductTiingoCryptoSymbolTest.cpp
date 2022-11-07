@@ -39,11 +39,11 @@ namespace StockAnalysisTest {
 
 	TEST_F(CProductTiingoCryptoSymbolsTest, TestInitialize) {
 		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiringStr(), _T("https://api.tiingo.com/tiingo/crypto?"));
+		EXPECT_STREQ(stockSymbols.GetInquiry(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
 	TEST_F(CProductTiingoCryptoSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiringStr());
+		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiry());
 	}
 
 	// 格式不对，缺乏'{'

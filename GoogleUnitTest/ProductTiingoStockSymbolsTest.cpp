@@ -40,11 +40,11 @@ namespace StockAnalysisTest {
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestInitialize) {
 		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiringStr(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+		EXPECT_STREQ(stockSymbols.GetInquiry(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiringStr());
+		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiry());
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestProcessWebData) {

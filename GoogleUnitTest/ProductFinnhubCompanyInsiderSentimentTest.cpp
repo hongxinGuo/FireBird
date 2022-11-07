@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestInitialize) {
 		EXPECT_EQ(companyInsiderSentiment.GetIndex(), -1);
-		EXPECT_STREQ(companyInsiderSentiment.GetInquiringStr(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
+		EXPECT_STREQ(companyInsiderSentiment.GetInquiry(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
-		EXPECT_STREQ(companyInsiderSentiment.CreatMessage(), companyInsiderSentiment.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
+		EXPECT_STREQ(companyInsiderSentiment.CreatMessage(), companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate()) << "接收到的数处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);

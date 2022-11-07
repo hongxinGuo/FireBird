@@ -8,7 +8,7 @@ IMPLEMENT_DYNCREATE(CProductDummy, CVirtualProductWebData)
 
 CProductDummy::CProductDummy() {
 	m_strClassName = _T("Dummy Product");
-	m_strInquiringStr = _T("");
+	m_strInquiry = _T("");
 	m_lIndex = -1;
 }
 

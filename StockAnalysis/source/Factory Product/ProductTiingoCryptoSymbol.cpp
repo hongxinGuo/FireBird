@@ -13,11 +13,11 @@ IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CVirtualProductWebData)
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualProductWebData() {
 	m_strClassName = _T("Tiingo crypto symbols");
-	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/crypto?");
+	m_strInquiry = _T("https://api.tiingo.com/tiingo/crypto?");
 }
 
 CString CProductTiingoCryptoSymbol::CreatMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }
 
@@ -93,7 +93,7 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvTiingoCrypto;
+		if (pWebData->IsVoidJson()) return pvTiingoCrypto;
 		ppt = pWebData->GetPTree();
 		try {
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

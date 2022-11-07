@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubCompanyNewsTest, TestInitialize) {
 		EXPECT_EQ(companyNews.GetIndex(), -1);
-		EXPECT_STREQ(companyNews.GetInquiringStr(), _T("https://finnhub.io/api/v1/company-news?symbol="));
+		EXPECT_STREQ(companyNews.GetInquiry(), _T("https://finnhub.io/api/v1/company-news?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		companyNews.SetMarket(gl_pWorldMarket.get());
 		companyNews.SetIndex(1);
 		CWorldStockPtr pStock = ((CWorldMarket*)(companyNews.GetMarket()))->GetStock(1);
-		strMessage = companyNews.GetInquiringStr() + pStock->GetSymbol();
+		strMessage = companyNews.GetInquiry() + pStock->GetSymbol();
 		iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);

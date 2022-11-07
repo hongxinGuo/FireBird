@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestInitialize) {
 		EXPECT_EQ(companyBasicFinancial.GetIndex(), -1);
-		EXPECT_STREQ(companyBasicFinancial.GetInquiringStr(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
+		EXPECT_STREQ(companyBasicFinancial.GetInquiry(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		pStock->SetBasicFinancialUpdated(false);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
+		EXPECT_STREQ(companyBasicFinancial.CreatMessage(), companyBasicFinancial.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
 		EXPECT_FALSE(pStock->IsBasicFinancialUpdated()) << "处理接收到的数据后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetBasicFinancialUpdated(false);

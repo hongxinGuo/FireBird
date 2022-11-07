@@ -24,8 +24,18 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; }; // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	CString GetClassNameString(void) { return m_strClassName; }
-	CString GetInquiringStr(void) { return m_strInquiringStr; }
+	bool IsParsed(CWebDataPtr pWebData) { return pWebData->IsParsed(); }
+	bool IsVoidJson(CWebDataPtr pWebData) {
+		if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return true; }
+		else return false;
+	}
+	bool NoRightToAccess(CWebDataPtr pWebData) {
+		if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
+		else return false;
+	}
+
+	CString GetClassName(void) { return m_strClassName; }
+	CString GetInquiry(void) { return m_strInquiry; }
 
 	long GetIndex(void) { return m_lIndex; }
 	void SetIndex(long lIndex) { m_lIndex = lIndex; }
@@ -46,7 +56,7 @@ public:
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场
 	CString m_strClassName;
-	CString m_strInquiringStr;
+	CString m_strInquiry;
 	CString m_strTotalInquiryMessage;
 	CString m_strInquiringExchange; // 目前查询的交易所代码
 	long m_lIndex;

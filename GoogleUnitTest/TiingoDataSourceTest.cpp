@@ -195,7 +195,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pDataSourceTiingo->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryFunction(),
-			p->GetInquiringStr() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
+			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_TRUE(gl_pDataSourceTiingo->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));

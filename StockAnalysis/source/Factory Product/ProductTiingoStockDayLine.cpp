@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(CProductTiingoStockDayLine, CVirtualProductWebData)
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualProductWebData() {
 	m_strClassName = _T("Tiingo stock price candle");
-	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/daily/");
+	m_strInquiry = _T("https://api.tiingo.com/tiingo/daily/");
 	m_lIndex = -1;
 }
 
@@ -26,7 +26,7 @@ CString CProductTiingoStockDayLine::CreatMessage(void) {
 	strMiddle = pStock->GetTiingoDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetDayLineNeedUpdate(false);
 
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -111,7 +111,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvDayLine;
+		if (pWebData->IsVoidJson()) return pvDayLine;
 		ppt = pWebData->GetPTree();
 		try {
 			s = ppt->get<string>(_T("detail")); // 是否有报错信息

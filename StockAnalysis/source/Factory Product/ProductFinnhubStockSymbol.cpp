@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubStockSymbol, CProductFinnhub)
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strClassName = _T("Finnhub company symbols");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -20,7 +20,7 @@ CString CProductFinnhubStockSymbol::CreatMessage(void) {
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -100,7 +100,7 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvStock;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvStock; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvStock; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvStock; }
 	ppt = pWebData->GetPTree();
 	try {

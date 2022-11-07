@@ -70,7 +70,7 @@ public:
 	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
 	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed(void) noexcept { return m_fParsed; }
-	bool IsVoidJSon(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
+	bool IsVoidJson(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
 	bool NoRightToAccess(void);
 
 	// 使用boost Property tree将数据转换为json格式。

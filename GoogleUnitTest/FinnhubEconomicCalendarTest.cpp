@@ -39,13 +39,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
 		EXPECT_EQ(economicCalendar.GetIndex(), -1);
-		EXPECT_STREQ(economicCalendar.GetInquiringStr(), _T("https://finnhub.io/api/v1/calendar/economic?"));
+		EXPECT_STREQ(economicCalendar.GetInquiry(), _T("https://finnhub.io/api/v1/calendar/economic?"));
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
 		economicCalendar.SetMarket(gl_pWorldMarket.get());
 		economicCalendar.SetIndex(1);
-		EXPECT_STREQ(economicCalendar.CreatMessage(), economicCalendar.GetInquiringStr());
+		EXPECT_STREQ(economicCalendar.CreatMessage(), economicCalendar.GetInquiry());
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {

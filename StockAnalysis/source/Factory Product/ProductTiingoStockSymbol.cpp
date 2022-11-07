@@ -14,11 +14,11 @@ IMPLEMENT_DYNCREATE(CProductTinngoStockSymbol, CVirtualProductWebData)
 
 CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CVirtualProductWebData() {
 	m_strClassName = _T("Tiingo stock symbols");
-	m_strInquiringStr = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
+	m_strInquiry = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
 CString CProductTinngoStockSymbol::CreatMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }
 
@@ -102,7 +102,7 @@ CTiingoStockVectorPtr CProductTinngoStockSymbol::ParseTiingoStockSymbol(CWebData
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJSon()) return pvTiingoStock;
+		if (pWebData->IsVoidJson()) return pvTiingoStock;
 		ppt = pWebData->GetPTree();
 		try {
 			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

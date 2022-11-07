@@ -39,14 +39,14 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestInitialize) {
 		EXPECT_EQ(companyInsiderTransaction.GetIndex(), -1);
-		EXPECT_STREQ(companyInsiderTransaction.GetInquiringStr(), _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol="));
+		EXPECT_STREQ(companyInsiderTransaction.GetInquiry(), _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_STREQ(companyInsiderTransaction.CreatMessage(), companyInsiderTransaction.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyInsiderTransaction.CreatMessage(), companyInsiderTransaction.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);

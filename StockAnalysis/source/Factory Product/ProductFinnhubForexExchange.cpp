@@ -9,14 +9,14 @@ IMPLEMENT_DYNCREATE(CProductFinnhubForexExchange, CProductFinnhub)
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strClassName = _T("Finnhub forex exchange");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/exchange?");
+	m_strInquiry = _T("https://finnhub.io/api/v1/forex/exchange?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubForexExchange::CreatMessage(void) {
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
-	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }
 
@@ -45,7 +45,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvExchange; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvExchange; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvExchange; }
 	ppt = pWebData->GetPTree();
 	try {

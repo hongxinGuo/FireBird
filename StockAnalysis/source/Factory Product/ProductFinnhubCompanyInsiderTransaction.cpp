@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderTransaction, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strClassName = _T("Finnhub company insider transaction");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,7 +23,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol();
+	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
 	return m_strTotalInquiryMessage;
 }
 
@@ -56,7 +56,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderTransaction;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderTransaction; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderTransaction; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderTransaction; }
 	ppt = pWebData->GetPTree();
 	try {
@@ -64,7 +64,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		stockSymbol = ppt->get<string>(_T("symbol"));
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiringStr(), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiry(), e);
 		return pvInsiderTransaction;
 	}
 

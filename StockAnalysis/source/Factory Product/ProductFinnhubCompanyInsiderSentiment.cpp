@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderSentiment, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strClassName = _T("Finnhub company insider sentiment");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 	m_lIndex = -1;
 }
 
@@ -25,7 +25,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreatMessage(void) {
 
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 	strCurrentDate = buffer;
-	m_strTotalInquiryMessage = m_strInquiringStr + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
+	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
 	return m_strTotalInquiryMessage;
@@ -60,7 +60,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderSentiment;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderSentiment; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderSentiment; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderSentiment; }
 	ppt = pWebData->GetPTree();
 	try {
@@ -68,7 +68,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		stockSymbol = ppt->get<string>(_T("symbol"));
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiringStr(), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiry(), e);
 		return pvInsiderSentiment;
 	}
 

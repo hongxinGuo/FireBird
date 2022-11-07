@@ -15,7 +15,7 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strClassName = _T("Finnhub company profile concise");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -26,7 +26,7 @@ CString CProductFinnhubStockDayLine::CreatMessage(void) {
 	CString strMiddle = pStock->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -78,7 +78,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
 
 	ppt = pWebData->GetPTree();
@@ -93,7 +93,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		}
 	}
 	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiringStr(), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e);
 		return pvDayLine;
 	}
 
@@ -108,7 +108,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		}
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiringStr(), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiry(), e);
 		return pvDayLine;
 	}
 	try {
@@ -154,7 +154,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		}
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiringStr(), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e);
 	}
 	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 

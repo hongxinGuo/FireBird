@@ -39,14 +39,14 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestInitialize) {
 		EXPECT_EQ(companyProfileConcise.GetIndex(), -1);
-		EXPECT_STREQ(companyProfileConcise.GetInquiringStr(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
+		EXPECT_STREQ(companyProfileConcise.GetInquiry(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
 		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreatMessage(), companyProfileConcise.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyProfileConcise.CreatMessage(), companyProfileConcise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "处理接收到的数据后才设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);

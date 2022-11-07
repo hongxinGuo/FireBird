@@ -10,12 +10,12 @@ IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCalendar, CProductFinnhub)
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strClassName = _T("Finnhub economic calendar");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/calendar/economic?");
+	m_strInquiry = _T("https://finnhub.io/api/v1/calendar/economic?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCalendar::CreatMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiringStr;
+	m_strTotalInquiryMessage = m_strInquiry;
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strTotalInquiryMessage;
@@ -41,7 +41,7 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEconomicCalendar;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEconomicCalendar; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEconomicCalendar; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEconomicCalendar; }
 	ppt = pWebData->GetPTree();
 	try {

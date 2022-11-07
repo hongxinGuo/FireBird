@@ -9,7 +9,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubForexSymbol, CProductFinnhub)
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strClassName = _T("Finnhub forex symbols");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -19,7 +19,7 @@ CString CProductFinnhubForexSymbol::CreatMessage(void) {
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -50,7 +50,7 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvForexSymbol;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvForexSymbol; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvForexSymbol; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvForexSymbol; }
 	ppt = pWebData->GetPTree();
 	try {

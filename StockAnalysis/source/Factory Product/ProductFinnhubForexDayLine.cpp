@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubForexDayLine, CProductFinnhub)
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strClassName = _T("Finnhub forex dayline");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -24,7 +24,7 @@ CString CProductFinnhubForexDayLine::CreatMessage(void) {
 	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiringStr + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }
 
@@ -74,7 +74,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
 	ppt = pWebData->GetPTree();
 	try {

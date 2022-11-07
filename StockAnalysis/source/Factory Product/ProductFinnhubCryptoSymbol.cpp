@@ -8,7 +8,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCryptoSymbol, CProductFinnhub)
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strClassName = _T("Finnhub crypto symbols");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -16,7 +16,7 @@ CString CProductFinnhubCryptoSymbol::CreatMessage(void) {
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;
-	m_strTotalInquiryMessage = m_strInquiringStr + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
 	return m_strTotalInquiryMessage;
 }
 
@@ -46,7 +46,7 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCryptoSymbol;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvCryptoSymbol; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvCryptoSymbol; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvCryptoSymbol; }
 	ppt = pWebData->GetPTree();
 	try {

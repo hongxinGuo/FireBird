@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubForexDayLineTest, TestInitialize) {
 		EXPECT_EQ(forexDayLine.GetIndex(), -1);
-		EXPECT_STREQ(forexDayLine.GetInquiringStr(), _T("https://finnhub.io/api/v1/forex/candle?symbol="));
+		EXPECT_STREQ(forexDayLine.GetInquiry(), _T("https://finnhub.io/api/v1/forex/candle?symbol="));
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		forexDayLine.SetMarket(gl_pWorldMarket.get());
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreatMessage(),
-			forexDayLine.GetInquiringStr() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+			forexDayLine.GetInquiry() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);

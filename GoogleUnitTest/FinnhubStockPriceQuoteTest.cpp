@@ -39,13 +39,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
 		EXPECT_EQ(stockPriceQuote.GetIndex(), -1);
-		EXPECT_STREQ(stockPriceQuote.GetInquiringStr(), _T("https://finnhub.io/api/v1/quote?symbol="));
+		EXPECT_STREQ(stockPriceQuote.GetInquiry(), _T("https://finnhub.io/api/v1/quote?symbol="));
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetMarket(gl_pWorldMarket.get());
 		stockPriceQuote.SetIndex(1);
-		EXPECT_STREQ(stockPriceQuote.CreatMessage(), stockPriceQuote.GetInquiringStr() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(stockPriceQuote.CreatMessage(), stockPriceQuote.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {

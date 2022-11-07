@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockPriceCandle.GetIndex(), -1);
-		EXPECT_STREQ(stockPriceCandle.GetInquiringStr(), _T("https://api.tiingo.com/tiingo/daily/"));
+		EXPECT_STREQ(stockPriceCandle.GetInquiry(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage) {

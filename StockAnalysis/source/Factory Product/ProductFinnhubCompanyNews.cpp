@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubCompanyNews, CProductFinnhub)
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strClassName = _T("Finnhub company news");
-	m_strInquiringStr = _T("https://finnhub.io/api/v1/company-news?symbol=");
+	m_strInquiry = _T("https://finnhub.io/api/v1/company-news?symbol=");
 	m_lIndex = -1;
 }
 
@@ -24,7 +24,7 @@ CString CProductFinnhubCompanyNews::CreatMessage(void) {
 	int year = 0, month = 0, day = 0;
 	CString strTemp;
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	strMessage = m_strInquiringStr + pStock->GetSymbol();
+	strMessage = m_strInquiry + pStock->GetSymbol();
 	iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 	XferDateToYearMonthDay(iUpdateDate, year, month, day);
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
@@ -95,7 +95,7 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
-	if (pWebData->IsVoidJSon()) { m_iReceivedDataStatus = __VOID_DATA__; return pvFinnhubCompanyNews; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvFinnhubCompanyNews; }
 	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvFinnhubCompanyNews; }
 	ppt = pWebData->GetPTree();
 	try {
