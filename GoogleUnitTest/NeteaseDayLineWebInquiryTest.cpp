@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_MockNeteaseDayLineWebInquiry.GetWebData());
 		m_MockNeteaseDayLineWebInquiry.SetReadingWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
+		EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, PrepareNextInquiringString())
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();
@@ -99,7 +99,7 @@ namespace StockAnalysisTest {
 		CString str;
 		gl_pChinaMarket->SetSystemReady(true);
 		for (int i = 0; i < 4; i++) {
-			if (m_NeteaseDayLineWebInquiry.PrepareNextInquiringStr()) {
+			if (m_NeteaseDayLineWebInquiry.PrepareNextInquiringString()) {
 				str = m_NeteaseDayLineWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Left(54), _T("http://quotes.money.163.com/service/chddata.html?code="));
 			}

@@ -75,7 +75,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
 	if (!IsReadingWebData()) { // 工作线程没有启动？
-		if (PrepareNextInquiringStr()) {
+		if (PrepareNextInquiringString()) {
 			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
 			StartReadingThread();
 			return true;

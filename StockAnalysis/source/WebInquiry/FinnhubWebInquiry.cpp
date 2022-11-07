@@ -21,20 +21,11 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 CFinnhubWebInquiry::~CFinnhubWebInquiry() {
 }
 
-bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
+bool CFinnhubWebInquiry::PrepareNextInquiringString(void) {
 	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
 	CreateTotalInquiringString(_T(""));
 
 	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-	// do nothing
-	return _T("");
 }
 
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {

@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_VirtualWebInquiry.GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");
 
 		m_VirtualWebInquiry.SetReadingWebData(false);
-		EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
+		EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringString())
 			.WillOnce(Return(false));
 		EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
 			.Times(0);
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 
 		m_VirtualWebInquiry.SetReadingWebData(false);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
-		EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
+		EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringString())
 			.WillOnce(Return(true));
 		EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
 			.Times(1);

@@ -19,8 +19,8 @@ public:
 	CFinnhubWebInquiry();
 	virtual ~CFinnhubWebInquiry();
 
-	virtual bool PrepareNextInquiringStr(void) override;
-	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override final;
+	virtual bool PrepareNextInquiringString(void) override;
+	virtual CString GetNextInquiringMiddleString(long, bool) override final { return _T(""); }
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual void ConfigerateSession(void) override final;
 	virtual bool ParseData(CWebDataPtr pWebData); // 数据为JSon格式, 需要解析

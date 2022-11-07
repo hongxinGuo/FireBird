@@ -6,19 +6,19 @@
 using namespace std;
 #include<memory>
 
-class CTiingoWebInquiry : public CVirtualWebInquiry {
+class CQuandlWebInquiry : public CVirtualWebInquiry {
 public:
-	CTiingoWebInquiry();
-	virtual ~CTiingoWebInquiry();
+	CQuandlWebInquiry();
+	virtual ~CQuandlWebInquiry();
 
-	virtual bool PrepareNextInquiringStr(void) override;
-	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override final;
+	virtual bool PrepareNextInquiringString(void) override;
+	virtual CString GetNextInquiringMiddleString(long, bool) override { return _T(""); }
 	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void ConfigerateSession(void) override final; // 设置m_pSession状态。
+	virtual void ConfigerateSession(void) override final;
 	virtual bool ParseData(CWebDataPtr pWebData); // 数据为JSon格式, 需要解析
 	virtual void ClearUpIfReadingWebDataFailed(void) override final; // 处理失败的接收过程
 	virtual void UpdateStatusAfterReadingWebData(void) override final;
 	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) override final;
 };
 
-typedef shared_ptr<CTiingoWebInquiry> CTiingoWebInquiryPtr;
+typedef shared_ptr<CQuandlWebInquiry> CQuandlWebInquiryPtr;

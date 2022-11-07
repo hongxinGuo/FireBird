@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
 		CString str;
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < 4; i++) {
-			if (m_QuandlWebInquiry.PrepareNextInquiringStr()) {
+			if (m_QuandlWebInquiry.PrepareNextInquiringString()) {
 				str = m_QuandlWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Right(29), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 			}
@@ -78,6 +78,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CQuandlWebInquiryTest, TestGetNextInquiringMiddleStr) {
-		EXPECT_STREQ(m_QuandlWebInquiry.GetNextInquiringMiddleStr(), _T("")) << "此函数不执行任何动作";
+		EXPECT_STREQ(m_QuandlWebInquiry.GetNextInquiringMiddleString(1, true), _T("")) << "此函数不执行任何动作";
 	}
 }

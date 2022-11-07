@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
 		CString str;
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < 4; i++) {
-			if (m_FinnhubWebInquiry.PrepareNextInquiringStr()) {
+			if (m_FinnhubWebInquiry.PrepareNextInquiringString()) {
 				str = m_FinnhubWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Right(27), _T(""));
 			}
@@ -75,6 +75,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubWebInquiryTest, TestGetNextInquiringMiddleStr) {
-		EXPECT_STREQ(m_FinnhubWebInquiry.GetNextInquiringMiddleStr(), _T("")) << "此函数不执行任何动作";
+		EXPECT_STREQ(m_FinnhubWebInquiry.GetNextInquiringMiddleString(1, true), _T("")) << "此函数不执行任何动作";
 	}
 }

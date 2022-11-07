@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(m_NeteaseRTWebInquiry.PrepareNextInquiringStr());
+		EXPECT_TRUE(m_NeteaseRTWebInquiry.PrepareNextInquiringString());
 		CString str = m_NeteaseRTWebInquiry.GetInquiringString();
 		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
 	}

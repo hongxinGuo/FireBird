@@ -36,21 +36,11 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 CQuandlWebInquiry::~CQuandlWebInquiry() {
 }
 
-bool CQuandlWebInquiry::PrepareNextInquiringStr(void) {
+bool CQuandlWebInquiry::PrepareNextInquiringString(void) {
 	// 由于Quandl提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
 	CreateTotalInquiringString(_T(""));
 
 	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CQuandlWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-	// do nothing
-	return _T("");
 }
 
 bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {

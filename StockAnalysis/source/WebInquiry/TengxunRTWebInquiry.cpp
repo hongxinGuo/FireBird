@@ -21,18 +21,18 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
 }
 
-bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
+bool CTengxunRTWebInquiry::PrepareNextInquiringString(void) {
 	CString strMiddle = _T("");
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	// 申请下一批次股票实时数据。
 	// 申请腾讯实时数据时，如果遇到不存在的股票代码，服务器会返回v_pv_none_match="1";，导致系统故障，
 	// 故而现在只使用有效股票代码。
-	strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber); // 使用活跃股票池
+	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber); // 使用活跃股票池
 	CreateTotalInquiringString(strMiddle);
 	return true;
 }
 
-CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
+CString CTengxunRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) {
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }

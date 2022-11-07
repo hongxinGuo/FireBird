@@ -68,11 +68,11 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
+bool CNeteaseRTWebInquiry::PrepareNextInquiringString(void) {
 	CString strMiddle = _T("");
 	CString strNeteaseStockCode;
 	// 申请下一批次股票实时数据
-	strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
+	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
 	strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandred(strNeteaseStockCode));
 	CreateTotalInquiringString(strMiddle);
@@ -80,7 +80,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
 	return true;
 }
 
-CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
+CString CNeteaseRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) {
 	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, fUsingTotalStockSet);
 }
 

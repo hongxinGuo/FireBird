@@ -61,13 +61,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
 		gl_pChinaMarket->SetSystemReady(true);
-		CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1);
+		CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleString(1);
 		EXPECT_STREQ(str, _T("sh000001"));
 	}
 
 	TEST_F(CTengxunRTWebInquiryTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringStr());
+		EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringString());
 		CString str = m_TengxunRTWebInquiry.GetInquiringString();
 		EXPECT_STREQ(str.Left(21), _T("http://qt.gtimg.cn/q="));
 		gl_pChinaMarket->SetSystemReady(false);

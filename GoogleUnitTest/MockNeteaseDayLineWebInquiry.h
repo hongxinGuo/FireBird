@@ -4,7 +4,7 @@
 namespace testing {
 	class CMockNeteaseDayLineWebInquiry : public CNeteaseDayLineWebInquiry {
 	public:
-		MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));
+		MOCK_METHOD(bool, PrepareNextInquiringString, (), (override));
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};

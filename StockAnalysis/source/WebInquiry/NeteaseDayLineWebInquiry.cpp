@@ -28,7 +28,7 @@ CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
+bool CNeteaseDayLineWebInquiry::PrepareNextInquiringString(void) {
 	CString strMiddle = _T("");
 	char buffer2[200];
 	CString strStockCode;

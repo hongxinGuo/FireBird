@@ -233,11 +233,11 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(114501);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringStr())
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringString())
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, PrepareNextInquiringStr())
+		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, PrepareNextInquiringString())
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();

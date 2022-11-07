@@ -16,17 +16,11 @@
     <Filter Include="头文件\World Market">
       <UniqueIdentifier>{9f06f5c2-d029-4368-811d-72c29bb47e61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\World Market\网络通信">
-      <UniqueIdentifier>{765aea51-ddfd-4f0c-8460-e4768dada099}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\World Market\类型">
       <UniqueIdentifier>{c313669d-8363-4057-bf49-9b6900547071}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\China Market">
       <UniqueIdentifier>{e2dc640b-5f01-4c76-9fac-2b03e454382b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Market\网络通信">
-      <UniqueIdentifier>{1ffcfe06-396c-424a-a462-5f4d3d6b2b36}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\China Market\基础数据类">
       <UniqueIdentifier>{216e664f-2899-404d-a8e5-581d05a0883a}</UniqueIdentifier>
@@ -46,9 +40,6 @@
     <Filter Include="源文件\China Market">
       <UniqueIdentifier>{8a803185-2520-4215-bcf0-1d461de24aec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\China Market\网络通信">
-      <UniqueIdentifier>{d4878e71-1936-4c51-92f0-62c556a5fab0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\China Market\工作线程">
       <UniqueIdentifier>{69cf5cfc-0d97-422d-a244-b1673436baee}</UniqueIdentifier>
     </Filter>
@@ -60,9 +51,6 @@
     </Filter>
     <Filter Include="源文件\World Market\工作线程">
       <UniqueIdentifier>{5a0d4619-7510-4feb-a30e-9bbfda47f02c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\World Market\网络通信">
-      <UniqueIdentifier>{b882437e-11c3-4551-a9a2-9e680c7e524d}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\World Market\类型">
       <UniqueIdentifier>{c7c8d26e-0cb2-4560-ad3d-e714a7b6bb46}</UniqueIdentifier>
@@ -187,6 +175,12 @@
     <Filter Include="头文件\System\finnhub">
       <UniqueIdentifier>{a187a4e2-a406-4a76-adfe-59ade222ef08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\WebInquiry">
+      <UniqueIdentifier>{942f3990-931b-404b-903b-2e72b8a77d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\WebInquiry">
+      <UniqueIdentifier>{d24c6780-283a-4207-99d5-eb0ab25d03b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
@@ -234,15 +228,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h">
       <Filter>头文件\World Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h">
-      <Filter>头文件\World Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h">
-      <Filter>头文件\World Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h">
-      <Filter>头文件\World Market\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h">
       <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
@@ -279,18 +264,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
       <Filter>头文件\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
@@ -316,9 +289,6 @@
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h">
-      <Filter>头文件\Virtual Class</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
@@ -741,6 +711,30 @@
     <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\QuandlWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\SinaRTWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h">
+      <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -784,18 +778,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp">
       <Filter>源文件\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
@@ -902,15 +884,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp">
-      <Filter>源文件\World Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp">
-      <Filter>源文件\World Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp">
-      <Filter>源文件\World Market\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp">
       <Filter>源文件\World Market\类型</Filter>
     </ClCompile>
@@ -948,9 +921,6 @@
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp">
-      <Filter>源文件\Virtual Class</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebInquiry.cpp">
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
@@ -1299,6 +1269,30 @@
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\QuandlWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\SinaRTWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp">
+      <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

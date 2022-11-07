@@ -262,8 +262,8 @@ ExcludeFromCodeCoverage(CWebInquiry2, L"CWebInquiry::~CWebInquirer");
 
 ExcludeFromCodeCoverage(CWebInquirer1, L"CWebInquirer::Initialize");
 
-ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::PrepareNextInquiringStr");
-ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::GetNextInquiringMiddleStr");
+ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::PrepareNextInquiringString");
+ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::GetNextInquiringMiddleString");
 ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFileOneTime");
 ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThread");
