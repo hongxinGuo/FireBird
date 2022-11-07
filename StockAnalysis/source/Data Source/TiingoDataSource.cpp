@@ -86,7 +86,9 @@ bool CTiingoDataSource::Inquire(long lCurrentTime) {
 	static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
 
 	if (--s_iCountTiingoLimit < 0) {
-		if (!IsInquiring()) InquireTiingo();
+		if (!IsInquiring()) {
+			InquireTiingo();
+		}
 		s_iCountTiingoLimit = gl_systemConfigeration.GetWorldMarketTiingoInquiryTime() / 100;
 		if (m_pWebInquiry->IsWebError()) {
 			m_pWebInquiry->SetWebError(false);
@@ -97,6 +99,7 @@ bool CTiingoDataSource::Inquire(long lCurrentTime) {
 }
 
 bool CTiingoDataSource::InquireTiingo(void) {
+	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
@@ -108,7 +111,7 @@ bool CTiingoDataSource::InquireTiingo(void) {
 }
 
 bool CTiingoDataSource::InquireCompanySymbol(void) {
-	if (!IsStockSymbolUpdated() && !IsInquiring()) {
+	if (!IsStockSymbolUpdated()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -121,7 +124,7 @@ bool CTiingoDataSource::InquireCompanySymbol(void) {
 }
 
 bool CTiingoDataSource::InquireCryptoSymbol(void) {
-	if (!IsCryptoSymbolUpdated() && !IsInquiring()) {
+	if (!IsCryptoSymbolUpdated()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -148,7 +151,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsDayLineUpdated() && !IsInquiring()) {
+	if (!IsDayLineUpdated()) {
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			if (gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
 				pStock = gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos);

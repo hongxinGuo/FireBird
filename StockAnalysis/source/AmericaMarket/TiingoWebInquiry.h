@@ -12,7 +12,7 @@ public:
 	virtual ~CTiingoWebInquiry();
 
 	virtual bool PrepareNextInquiringStr(void) override;
-	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override;
+	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override final;
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual void ConfigerateSession(void) override final; // 设置m_pSession状态。
 	virtual bool ParseData(CWebDataPtr pWebData); // 数据为JSon格式, 需要解析

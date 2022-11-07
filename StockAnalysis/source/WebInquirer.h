@@ -47,8 +47,6 @@ public:
 	bool IsReadingNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->IsReadingWebData(); }
 	bool IsReadingTengxunRTData(void) { return gl_pTengxunRTWebInquiry->IsReadingWebData(); }
 
-	bool GetQuandlData(void) { return gl_pQuandlWebInquiry->GetWebData(); }
-	bool GetFinnhubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
 	bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
 	bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
 	bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }

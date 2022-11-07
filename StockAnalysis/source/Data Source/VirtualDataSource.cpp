@@ -30,23 +30,20 @@ void CVirtualDataSource::Run(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
-	bool fDone = false;
-
 	if (m_qProduct.size() > 0) { // 有申请等待？
 		ASSERT(IsInquiring());
 		if (IsDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
-			m_pCurrentProduct = m_qProduct.front();
-			m_qProduct.pop();
+			GetInquiry();
 
-			m_pWebInquiry->SetInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置前缀
+			m_pWebInquiry->SetInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
 
 			SetDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			m_pWebInquiry->GetWebData();
-			fDone = true;
+			return true;
 		}
 	}
 
-	return fDone;
+	return false;
 }
 
 //////////////////////////////////////////////
@@ -59,25 +56,23 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
-	bool fDone = false;
-
 	if (m_pCurrentProduct == nullptr) return false;
 
 	if (IsDataReceived()) { // 如果网络数据接收完成
 		if (m_qReceivedData.Size() > 0) {  // 处理当前网络数据
 			ASSERT(IsInquiring());
 			pWebData = m_qReceivedData.PopData();
-
-			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 			if (m_pCurrentProduct->NoRightToAccess()) { // 如果系统报告无权查询此类数据
 				// 目前先在软件系统消息中报告
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
+			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）
+			// 故而需要考虑将下面这个函数线程化。
+			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 			SetInquiring(false);
-			fDone = true;
+			return true;
 		}
 	}
-
-	return fDone;
+	return false;
 }

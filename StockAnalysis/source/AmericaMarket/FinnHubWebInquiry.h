@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////
+//
+// CFinnhuaWebInquiry应该被定义为final。由于测试的需要, CMockFinnhubWebInquiry要继承该类，
+// 故而不将此类定义为final，只是将需要的虚函数定义为final。
+//
+// 其他相似的类也同样处理。
+//
+//////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include "VirtualWebInquiry.h"
@@ -12,7 +20,7 @@ public:
 	virtual ~CFinnhubWebInquiry();
 
 	virtual bool PrepareNextInquiringStr(void) override;
-	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override;
+	virtual CString GetNextInquiringMiddleStr(long lTotalNumer = 1, bool fSkipUnactiveStock = true) override final;
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual void ConfigerateSession(void) override final;
 	virtual bool ParseData(CWebDataPtr pWebData); // 数据为JSon格式, 需要解析

@@ -16,7 +16,7 @@ public:
 	virtual bool Reset(void);
 
 	void Run(long lCurrentTime);
-	virtual bool Inquire(long lCurrentTime) { return true; } // 继承类实现各自的查询任务
+	virtual bool Inquire(long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
@@ -41,17 +41,12 @@ public:
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
-	int GetNumberOfNoRightToAccess(void) noexcept { return m_iNumberOfNoRightToAccess; }
-	void ClearNoRightToAccess(void) noexcept { m_iNumberOfNoRightToAccess = 0; }
-
 protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
 	queue<CProductWebSourceDataPtr, list<CProductWebSourceDataPtr>> m_qProduct; // 网络查询命令队列
 	CProductWebSourceDataPtr m_pCurrentProduct;
 	bool m_fInquiring;
 	atomic_bool m_fDataReceived;
-	int m_iNumberOfNoRightToAccess;
-
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 };
 
