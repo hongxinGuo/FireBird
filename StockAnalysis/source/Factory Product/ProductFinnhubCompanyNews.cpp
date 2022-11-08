@@ -103,23 +103,23 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 			pt1 = it->second;
 			pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = pt1.get<string>(_T("category"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
 			dateTime = pt1.get<INT64>(_T("datetime"));
 			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
 			s = pt1.get<string>(_T("headline"));
-			if (s.size() > 0) pCompanyNews->m_strHeadLine = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strHeadLine = s.c_str();
 			pCompanyNews->m_iNewsID = pt1.get<int>(_T("id"));
 			s = pt1.get<string>(_T("image"));
-			if (s.size() > 0) pCompanyNews->m_strImage = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
 			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
 			s = pt1.get<string>(_T("related"));
-			if (s.size() > 0) pCompanyNews->m_strRelatedSymbol = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strRelatedSymbol = s.c_str();
 			s = pt1.get<string>(_T("source"));
-			if (s.size() > 0) pCompanyNews->m_strSource = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strSource = s.c_str();
 			s = pt1.get<string>(_T("summary"));
-			if (s.size() > 0) pCompanyNews->m_strSummary = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strSummary = s.c_str();
 			s = pt1.get<string>(_T("url"));
-			if (s.size() > 0) pCompanyNews->m_strURL = XferToCString(s);
+			if (s.size() > 0) pCompanyNews->m_strURL = s.c_str();
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	}
