@@ -424,38 +424,32 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 	CSetCompanyNews setCompanyNews;
 	size_t lSize = 0;
 	CCompanyNewsPtr pCompanyNews = nullptr;
-	long lCurrentPos = 0, lSizeOfOldCompanyNews = 0;
+	long lCurrentPos = 0;
 	bool fNeedUpdate = false;
 
 	ASSERT(m_vCompanyNews.size() > 0);
 	lSize = m_vCompanyNews.size();
 	if (m_strSymbol.GetLength() > 0) {
-		setCompanyNews.m_strFilter = _T("[symbol] = '");
+		setCompanyNews.m_strFilter = _T("[Symbol] = '");
 		setCompanyNews.m_strFilter += m_strSymbol + _T("'");
-		setCompanyNews.m_strSort = _T("[date_time]");
+		setCompanyNews.m_strSort = _T("[DateTime]");
 
 		setCompanyNews.Open();
 		setCompanyNews.m_pDatabase->BeginTrans();
 		while (!setCompanyNews.IsEOF()) {
 			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
-			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
+			while ((atoll(setCompanyNews.m_DateTime) <= pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			if (atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime) {
-				pCompanyNews->Append(setCompanyNews);
-			}
-			lCurrentPos++;
-			if (lCurrentPos == lSize) break;;
+			pCompanyNews->Append(setCompanyNews);
+			if (++lCurrentPos == lSize) break;;
 		}
 		for (int i = lCurrentPos; i < lSize; i++) {
 			pCompanyNews = m_vCompanyNews.at(i);
-			//pCompanyNews->m_strHeadLine = _T("");
-			//pCompanyNews->m_strSummary = _T("");
 			pCompanyNews->Append(setCompanyNews);
 		}
 		setCompanyNews.m_pDatabase->CommitTrans();
 		setCompanyNews.Close();
 	}
-
 	return true;
 }
 

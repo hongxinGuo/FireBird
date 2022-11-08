@@ -75,6 +75,9 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
 
 		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
+		gl_pDataSourceTiingo->SetInquiring(true);
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol());
+
 		gl_pDataSourceTiingo->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceTiingo->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
@@ -101,6 +104,9 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "DayLine Updated";
 
 		gl_pDataSourceTiingo->SetDayLineUpdated(false);
+		gl_pDataSourceTiingo->SetInquiring(true);
+		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine());
+
 		gl_pDataSourceTiingo->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());

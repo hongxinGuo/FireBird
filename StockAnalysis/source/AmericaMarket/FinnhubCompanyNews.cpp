@@ -33,32 +33,17 @@ void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) {
 
 void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) {
 	char buffer[30]{ 0 };
-	setCompanyNews.m_CompanySymbol = m_strCompanySymbol;
-	setCompanyNews.m_Category = m_strCategory;
+	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.Left(45);
+	setCompanyNews.m_Category = m_strCategory.Left(100);
 	sprintf_s(buffer, _T("%lld"), m_llDateTime);
 	setCompanyNews.m_DateTime = buffer;
-	setCompanyNews.m_HeadLine = m_strHeadLine;
+	setCompanyNews.m_HeadLine = m_strHeadLine.Left(1000);
 	setCompanyNews.m_NewsID = m_iNewsID;
-	setCompanyNews.m_Image = m_strImage;
-	setCompanyNews.m_RelatedSymbol = m_strRelatedSymbol;
-	setCompanyNews.m_Source = m_strSource;
-	setCompanyNews.m_Summary = m_strSummary;
-	setCompanyNews.m_URL = m_strURL;
-	if (m_strHeadLine.GetLength() > 400) {
-		TRACE("company news overflow\n");
-	}
-	if (m_strSummary.GetLength() > 2000) {
-		TRACE("company news overflow\n");
-	}
-	if (m_strURL.GetLength() > 500) {
-		TRACE("company news overflow\n");
-	}
-	if (m_strSource.GetLength() > 1000) {
-		TRACE("company news overflow\n");
-	}
-	if (m_strImage.GetLength() > 500) {
-		TRACE("company news overflow\n");
-	}
+	setCompanyNews.m_Image = m_strImage.Left(1000);
+	setCompanyNews.m_RelatedSymbol = m_strRelatedSymbol.Left(45);
+	setCompanyNews.m_Source = m_strSource.Left(500);
+	setCompanyNews.m_Summary = m_strSummary.Left(10000);
+	setCompanyNews.m_URL = m_strURL.Left(1000);
 }
 
 void CFinnhubCompanyNews::Load(CSetCompanyNews& setCompanyNews) {

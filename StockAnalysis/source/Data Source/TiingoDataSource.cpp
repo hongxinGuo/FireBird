@@ -111,7 +111,7 @@ bool CTiingoDataSource::InquireTiingo(void) {
 }
 
 bool CTiingoDataSource::InquireCompanySymbol(void) {
-	if (!IsStockSymbolUpdated()) {
+	if (!IsInquiring() && !IsStockSymbolUpdated()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __STOCK_SYMBOLS__);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -124,7 +124,7 @@ bool CTiingoDataSource::InquireCompanySymbol(void) {
 }
 
 bool CTiingoDataSource::InquireCryptoSymbol(void) {
-	if (!IsCryptoSymbolUpdated()) {
+	if (!IsInquiring() && !IsCryptoSymbolUpdated()) {
 		CProductWebSourceDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), __CRYPTO_SYMBOLS__);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -151,7 +151,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsDayLineUpdated()) {
+	if (!IsInquiring() && !IsDayLineUpdated()) {
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			if (gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
 				pStock = gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos);

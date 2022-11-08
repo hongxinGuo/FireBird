@@ -30,16 +30,16 @@ void CSetCompanyNews::DoFieldExchange(CFieldExchange* pFX) {
 	// 成员变量的类型，而不是数据库字段的类型。
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
-	RFX_Text(pFX, _T("symbol"), m_CompanySymbol);
-	RFX_Text(pFX, _T("category"), m_Category);
-	RFX_Text(pFX, _T("date_time"), m_DateTime);
-	RFX_Text(pFX, _T("headline"), m_HeadLine, 50000);
-	RFX_Int(pFX, _T("news_id"), m_NewsID);
-	RFX_Text(pFX, _T("image"), m_Image, 50000);
-	RFX_Text(pFX, _T("related_symbol"), m_RelatedSymbol);
-	RFX_Text(pFX, _T("source"), m_Source, 50000);
-	RFX_Text(pFX, _T("summary"), m_Summary, 50000);
-	RFX_Text(pFX, _T("url"), m_URL, 50000);
+	RFX_Text(pFX, _T("Symbol"), m_CompanySymbol);
+	RFX_Text(pFX, _T("Category"), m_Category, 50000);
+	RFX_Text(pFX, _T("DateTime"), m_DateTime);
+	RFX_Text(pFX, _T("Headline"), m_HeadLine, 50000);
+	RFX_Int(pFX, _T("NewsID"), m_NewsID);
+	RFX_Text(pFX, _T("Image"), m_Image, 50000);
+	RFX_Text(pFX, _T("RelatedSymbol"), m_RelatedSymbol);
+	RFX_Text(pFX, _T("Source"), m_Source, 50000);
+	RFX_Text(pFX, _T("Summary"), m_Summary, 50000);
+	RFX_Text(pFX, _T("URL"), m_URL, 50000);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetCompanyNews 诊断

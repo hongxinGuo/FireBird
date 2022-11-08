@@ -42,7 +42,6 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 			return true;
 		}
 	}
-
 	return false;
 }
 
