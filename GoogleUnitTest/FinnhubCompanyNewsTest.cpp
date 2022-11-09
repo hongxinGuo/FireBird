@@ -149,7 +149,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
-			EXPECT_TRUE(m_FinnhubCompanyNews.NoRightToAccess()) << "无权利访问标识已设置";
+			EXPECT_TRUE(m_FinnhubCompanyNews.IsNoRightToAccess()) << "无权利访问标识已设置";
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

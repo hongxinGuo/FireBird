@@ -242,7 +242,9 @@ namespace StockAnalysisTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
 		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
 		CWebDataPtr pData = make_shared<CWebData>();
-		pData->SetStockCode(_T("1010"));
+		pData->SetStockCode(_T("{}"));
+		pData->ParseWithPropertyTree();
+		pData->SetParsed(true);
 
 		gl_pDataSourceTiingo->StoreReceivedData(pData);
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);

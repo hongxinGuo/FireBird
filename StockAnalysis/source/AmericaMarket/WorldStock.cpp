@@ -1,4 +1,7 @@
+#include "WorldStock.h"
 #include"pch.h"
+
+#include"CallableFunction.h"
 
 #include"ConvertToString.h"
 #include"TimeConvert.h"
@@ -165,6 +168,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 	CheckProfileUpdateStatus(lTodayDate);
 	CheckBasicFinancialUpdateStatus(lTodayDate);
+	CheckCompanyNewsUpdateStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
 	CheckEPSSurpriseStatus(lTodayDate);
 	CheckPeerStatus(lTodayDate);
@@ -180,6 +184,18 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 		m_fCompanyProfileUpdated = true;
 	}
 	return m_fCompanyProfileUpdated;
+}
+
+/// <summary>
+/// 默认状态为每周更新一次
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
+	if (IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 7)) { // 每星期更新一次公司新闻
+		m_fCompanyNewsUpdated = true;
+	}
+	return m_fCompanyNewsUpdated;
 }
 
 /// <summary>
@@ -364,7 +380,7 @@ void CWorldStock::SaveInsiderTransaction(void) {
 		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
 			[pInsiderTransaction](CInsiderTransactionPtr& p) {
 				return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-					&& (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+				&& (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
 					&& (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
 					&& (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
 			}) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
@@ -438,9 +454,11 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 		setCompanyNews.m_pDatabase->BeginTrans();
 		while (!setCompanyNews.IsEOF()) {
 			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
-			while ((atoll(setCompanyNews.m_DateTime) <= pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
+			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			pCompanyNews->Append(setCompanyNews);
+			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) { // 没有这个时间点的新闻？
+				pCompanyNews->Append(setCompanyNews);
+			}
 			if (++lCurrentPos == lSize) break;;
 		}
 		for (int i = lCurrentPos; i < lSize; i++) {
@@ -525,6 +543,7 @@ void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
+	sort(m_vCompanyNews.begin(), m_vCompanyNews.end(), CompareFinnhubCompanyNews); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {

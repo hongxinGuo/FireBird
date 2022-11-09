@@ -61,7 +61,8 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 		if (m_qReceivedData.Size() > 0) {  // 处理当前网络数据
 			ASSERT(IsInquiring());
 			pWebData = m_qReceivedData.PopData();
-			if (m_pCurrentProduct->NoRightToAccess()) { // 如果系统报告无权查询此类数据
+			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
+			if (m_pCurrentProduct->IsNoRightToAccess()) { // 如果系统报告无权查询此类数据
 				// 目前先在软件系统消息中报告
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询

@@ -33,6 +33,8 @@ class CInsiderSentiment;
 typedef shared_ptr<CInsiderSentiment> CInsiderSentimentPtr;
 class CEPSSurprise;
 typedef shared_ptr<CEPSSurprise> CEPSSurprisePtr;
+class CFinnhubCompanyNews;
+typedef shared_ptr<CFinnhubCompanyNews> CCompanyNewsPtr;
 
 class CSystemMessage;
 class CThreadStatus;

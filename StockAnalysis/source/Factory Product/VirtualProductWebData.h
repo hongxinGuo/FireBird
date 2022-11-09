@@ -29,10 +29,12 @@ public:
 		if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return true; }
 		else return false;
 	}
-	bool NoRightToAccess(CWebDataPtr pWebData) {
+	bool IsVoidData(void) noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
+	bool CheckNoRightToAccess(CWebDataPtr pWebData) {
 		if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
 		else return false;
 	}
+	bool IsNoRightToAccess(void) noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
 
 	CString GetClassName(void) { return m_strClassName; }
 	CString GetInquiry(void) { return m_strInquiry; }
@@ -49,9 +51,6 @@ public:
 
 	void SetProductType(int iProductType) { m_iProductType = iProductType; }
 	int GetProductType(void) { return m_iProductType; }
-
-	bool IsVoidData(void) noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
-	bool NoRightToAccess(void) noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
 
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场
