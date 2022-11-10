@@ -835,7 +835,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {
-		CProductWebSourceDataPtr p = nullptr, p2 = nullptr;
+		CVirtualProductWebDataPtr p = nullptr, p2 = nullptr;
 
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 		p = make_shared<CProductFinnhubCompanyPeer>();

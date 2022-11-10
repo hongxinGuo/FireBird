@@ -27,5 +27,10 @@ string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字
 
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);
 
+void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData);
+void ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebData);
+bool ParseNeteaseRTDataWithNlohmannJSon(void);
+bool ParseNeteaseRTDataWithPTree(void);
+
 // 将PTree中提取的utf-8字符串转化为CString
 CString XferToCString(string s);

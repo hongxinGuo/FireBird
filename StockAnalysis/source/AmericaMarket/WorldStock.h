@@ -73,6 +73,8 @@ public:
 
 	bool IsCompanyNewsUpdated(void) const noexcept { return m_fCompanyNewsUpdated; }
 	void SetCompanyNewsUpdated(bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
+	size_t GetCompanyNewsSize(void) noexcept { return m_vCompanyNews.size(); }
+	long long GetCompanyNewsDateTime(int iIndex) { return m_vCompanyNews.at(iIndex)->m_llDateTime; }
 
 	bool IsBasicFinancialUpdated(void) const noexcept { return m_fBasicFinancialUpdated; }
 	void SetBasicFinancialUpdated(bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
@@ -228,7 +230,6 @@ public:
 	bool IsUSMarket(void);
 
 public:
-	vector<CCompanyNewsPtr> m_vCompanyNews;
 
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
 	bool m_fEPSSurpriseUpdated;
@@ -302,6 +303,8 @@ protected:
 
 	// 系统生成信息
 	CDataWorldStockDayLine m_dataDayLine;
+
+	vector<CCompanyNewsPtr> m_vCompanyNews;
 
 	CFinnhubStockBasicFinancialPtr m_pBasicFinancial;
 

@@ -124,9 +124,9 @@ protected:
 	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器
 	int m_iChinaMarketRealtimeInquiryTime; // 中国市场实时数据查询间隔时间
 
-	int m_iWorldMarketFinnhubInquiryTime;
-	int m_iWorldMarketTiingoInquiryTime;
-	int m_iWorldMarketQuandlInquiryTime;
+	int m_iWorldMarketFinnhubInquiryTime; // 每次查询间隔时间，单位为毫秒
+	int m_iWorldMarketTiingoInquiryTime; // 每次查询间隔时间，单位为毫秒
+	int m_iWorldMarketQuandlInquiryTime; // 每次查询间隔时间，单位为毫秒
 
 	CString m_strFinnhubToken;
 	CString m_strTiingoToken;

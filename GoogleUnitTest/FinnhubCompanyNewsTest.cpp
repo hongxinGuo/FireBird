@@ -106,6 +106,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetCompanyNewsUpdateDate(19800101);
 			m_pStock->SetCompanyNewsUpdated(false);
 			m_pStock->SetUpdateCompanyNewsDB(false);
+			m_pStock->SetUpdateProfileDB(false);
 
 			GeneralCheck();
 		}
@@ -129,6 +130,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
 			EXPECT_TRUE(fSucceed);
@@ -136,6 +138,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4: // 空数据
 			EXPECT_TRUE(fSucceed);
@@ -143,6 +146,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_FinnhubCompanyNews.IsVoidData()) << "此标识已设置";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 无权利访问
 			EXPECT_TRUE(fSucceed);
@@ -150,15 +154,17 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_FinnhubCompanyNews.IsNoRightToAccess()) << "无权利访问标识已设置";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
-			EXPECT_EQ(m_pStock->m_vCompanyNews.size(), 2);
-			EXPECT_EQ(m_pStock->m_vCompanyNews.at(0)->m_llDateTime, 19700101000001);
+			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
+			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), 19700101000001);
 			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		default:
 			break;

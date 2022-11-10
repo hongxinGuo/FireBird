@@ -9,5 +9,5 @@ public:
 	CQuandlFactory() {}
 	~CQuandlFactory() {}
 
-	virtual CProductWebSourceDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
+	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
 };

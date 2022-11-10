@@ -13,6 +13,11 @@
 
 #include "JsonParse.h"
 
+#include"WebRTData.h"
+#include"WebInquirer.h"
+#include"ChinaMarket.h"
+#include"WebRTDataContainer.h"
+
 using namespace std;
 #include<string>
 
@@ -32,7 +37,7 @@ bool ParseWithPTree(ptree& pt, string& s) {
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-	}
+}
 	return true;
 }
 
@@ -49,7 +54,7 @@ bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-	}
+}
 	return true;
 }
 
@@ -244,6 +249,130 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndP
 		pjs = nullptr;
 		return false;
 	}
+	return true;
+}
+
+void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
+	for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
+		if (gl_systemStatus.IsExitingSystem()) return;
+		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+		if (pRTData->ParseNeteaseDataWithNlohmannJSon(it)) {
+			vWebData.push_back(pRTData);
+		}
+	}
+}
+
+void ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
+	for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+		if (pRTData->ParseNeteaseDataWithPTree(it)) {
+			vWebData.push_back(pRTData);
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+bool ParseNeteaseRTDataWithPTree(void) {
+	CWebDataPtr pWebDataReceived = nullptr;
+	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
+	string ss;
+	shared_ptr<ptree> ppt = nullptr;
+	int iTotal = 0;
+	bool fProcess = true;
+	vector<CWebRTDataPtr> vWebRTData;
+	ptree* ppt2 = nullptr;
+
+	for (int i = 0; i < lTotalData; i++) {
+		fProcess = true;
+		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
+		if (!pWebDataReceived->IsParsed()) {
+			if (!pWebDataReceived->CreatePropertyTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+				fProcess = false;
+			}
+		}
+		else {
+			ASSERT(pWebDataReceived->GetJSon() == nullptr);
+		}
+		if (fProcess && pWebDataReceived->IsParsed()) {
+			ppt = pWebDataReceived->GetPTree();
+			ppt2 = ppt.get();
+			ParseNeteaseRTData(ppt2, vWebRTData);
+			for (auto& pRTData : vWebRTData) {
+				gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+			}
+			iTotal = vWebRTData.size();
+		}
+	}
+	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
+	pWebDataReceived = nullptr;
+
+	return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+bool ParseNeteaseRTDataWithNlohmannJSon(void) {
+	CWebDataPtr pWebDataReceived = nullptr;
+	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
+	string ss;
+	json* pjs = nullptr;
+	int iTotalActive = 0;
+	bool fProcess = true;
+	vector<CWebRTDataPtr> vWebRTData;
+
+	if (lTotalData == 0) return false;
+	for (int i = 0; i < lTotalData; i++) {
+		fProcess = true;
+		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
+		if (!pWebDataReceived->IsParsed()) {
+			// 截取网易实时数据时用。
+			//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pWebDataReceived->GetDataBuffer());
+			if (!pWebDataReceived->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+				fProcess = false;
+			}
+		}
+		if (fProcess && pWebDataReceived->IsParsed()) {
+			pjs = pWebDataReceived->GetJSon();
+			ParseNeteaseRTData(pjs, vWebRTData);
+			for (auto& pRTData : vWebRTData) {
+				gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+			}
+			iTotalActive = vWebRTData.size();
+		}
+	}
+	gl_pChinaMarket->IncreaseRTDataReceived(iTotalActive);
+
 	return true;
 }
 

@@ -630,12 +630,6 @@
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
       <Filter>头文件\命名声明</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
-      <Filter>头文件\命名声明</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Thread.h">
-      <Filter>头文件\命名声明</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h">
       <Filter>头文件\Web Data Source</Filter>
     </ClInclude>
@@ -655,9 +649,6 @@
       <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\globedef.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\pch.h">
@@ -734,6 +725,15 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h">
       <Filter>头文件\WebInquiry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\globedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Thread.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

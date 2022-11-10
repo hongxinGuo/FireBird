@@ -192,7 +192,8 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 7)) { // 每星期更新一次公司新闻
+	ASSERT(!m_fCompanyNewsUpdated);
+	if (!IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 7)) { // 每星期更新一次公司新闻
 		m_fCompanyNewsUpdated = true;
 	}
 	return m_fCompanyNewsUpdated;
@@ -436,6 +437,12 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	setSaveInsiderSentiment.Close();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将接收到的新闻存储入数库中。
+// 接收到的新闻事先已经按时间顺序存于vector中，只存储数据库中没有的时间点的新闻。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldStock::UpdateCompanyNewsDB(void) {
 	CSetCompanyNews setCompanyNews;
 	size_t lSize = 0;

@@ -48,5 +48,20 @@ class CTengxunRTWebInquiry;
 class CNeteaseDayLineWebInquiry;
 class CNeteaseDayLineWebData;
 
+// Web data source
+class CVirtualDataSource;
+
+// Product
+class CVirtualProductWebData;
+typedef shared_ptr<CVirtualProductWebData> CVirtualProductWebDataPtr;
+
+// Web data
+class CWebData;
+typedef shared_ptr<CWebData> CWebDataPtr;
+
+// Web RT Data
+class CWebRTData;
+typedef shared_ptr<CWebRTData> CWebRTDataPtr;
+
 class CFinnhubForexSymbol;
 class CFinnhubCryptoSymbol;

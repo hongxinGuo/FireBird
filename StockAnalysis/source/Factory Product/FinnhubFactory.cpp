@@ -31,8 +31,8 @@
 
 #include "FinnhubFactory.h"
 
-CProductWebSourceDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
-	CProductWebSourceDataPtr p = nullptr;
+CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
+	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iIndex) {
 	case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。

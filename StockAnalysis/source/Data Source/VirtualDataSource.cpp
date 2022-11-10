@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "VirtualDataSource.h"
+#include"Thread.h"
 
 CVirtualDataSource::CVirtualDataSource(void) {
 	m_pWebInquiry = nullptr;
@@ -55,6 +56,9 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
+	vector<CWebDataPtr> vWebData;
+	vector<CVirtualProductWebDataPtr> vProductWebData;
+
 	if (m_pCurrentProduct == nullptr) return false;
 
 	if (IsDataReceived()) { // 如果网络数据接收完成
@@ -71,8 +75,23 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 			// 故而需要考虑将下面这个函数线程化。
 			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 			SetInquiring(false);
+			// 下面是线程实现方式
+			// vWebData[0] = pWebData;
+			// vProductWebData[0] = m_pCurrentProduct;
+			// thread thread1(ThreadWebSourceParseAndStoreWebData, this, vProductWebData, vWebData);
+			// thread1.detach();
 			return true;
 		}
 	}
 	return false;
+}
+
+UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, vector<CVirtualProductWebDataPtr> vProductWebData, vector<CWebDataPtr> vWebData) {
+	CVirtualProductWebDataPtr pProductWebData = vProductWebData.at(0);
+	CWebDataPtr pWebData = vWebData.at(0);
+
+	pProductWebData->ParseAndStoreWebData(pWebData);
+	pDataSource->SetInquiring(false);
+
+	return 203;
 }

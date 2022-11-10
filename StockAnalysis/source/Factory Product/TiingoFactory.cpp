@@ -12,8 +12,8 @@
 
 #include"ProductDummy.h"
 
-CProductWebSourceDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
-	CProductWebSourceDataPtr p = nullptr;
+CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iIndex) {
+	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iIndex) {
 	case __STOCK_SYMBOLS__:

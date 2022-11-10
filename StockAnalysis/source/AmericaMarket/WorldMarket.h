@@ -189,8 +189,8 @@ public:
 	CCountryPtr GetCountry(CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
 
 	size_t GetFinnhubInquiryQueueSize(void) noexcept { return gl_pDataSourceFinnhub->GetInquiryQueueSize(); }
-	void StoreFinnhubInquiry(CProductWebSourceDataPtr p) { gl_pDataSourceFinnhub->StoreInquiry(p); }
-	CProductWebSourceDataPtr GetFinnhubInquiry(void) { return gl_pDataSourceFinnhub->GetInquiry(); }
+	void StoreFinnhubInquiry(CVirtualProductWebDataPtr p) { gl_pDataSourceFinnhub->StoreInquiry(p); }
+	CVirtualProductWebDataPtr GetFinnhubInquiry(void) { return gl_pDataSourceFinnhub->GetInquiry(); }
 
 	CString GetCurrentFunction(void) { return m_strCurrentFunction; }
 	void SetCurrentFunction(CString str) { m_strCurrentFunction = str; }

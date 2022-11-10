@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
-		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);
 
 		p->SetProductType(__STOCK_SYMBOLS__);
@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
-		CProductWebSourceDataPtr p = nullptr;
+		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pDataSourceTiingo->SetStockSymbolUpdated(true);
 		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoDayLine) {
 		CWorldStockPtr pStock;
-		CProductWebSourceDataPtr p = nullptr;
+		CVirtualProductWebDataPtr p = nullptr;
 		long lStockIndex = 0;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -145,7 +145,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
-		CProductWebSourceDataPtr p = make_shared<CProductTinngoStockSymbol>();
+		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pDataSourceTiingo->StoreInquiry(p);
 		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
 		gl_pDataSourceTiingo->SetDataReceived(false);
@@ -159,7 +159,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
-		CProductWebSourceDataPtr p = make_shared<CProductTinngoStockSymbol>();
+		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pDataSourceTiingo->StoreInquiry(p);
 		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
@@ -181,7 +181,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
-		CProductWebSourceDataPtr p = make_shared<CProductTiingoStockDayLine>();
+		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
 
 		p->SetMarket(gl_pWorldMarket.get());
@@ -215,7 +215,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
-		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
 		gl_pDataSourceTiingo->SetDataReceived(false);
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);
@@ -227,7 +227,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
-		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
 		gl_pDataSourceTiingo->SetDataReceived(false);
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);
@@ -240,7 +240,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
-		CProductWebSourceDataPtr p = make_shared<CProductDummy>();
+		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		CWebDataPtr pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
 		pData->ParseWithPropertyTree();
