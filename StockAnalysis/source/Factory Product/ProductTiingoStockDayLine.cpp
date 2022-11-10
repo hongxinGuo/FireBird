@@ -110,49 +110,49 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (pWebData->IsParsed()) {
-		if (pWebData->IsVoidJson()) return pvDayLine;
-		ppt = pWebData->GetPTree();
-		try {
-			s = ppt->get<string>(_T("detail")); // 是否有报错信息
-			CString strMessage = _T("Tiingo stock dayLine ");
-			strMessage += s.c_str();
-			gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
-			return pvDayLine;
-		}
-		catch (ptree_error&) {
-			// 正确， do nothing，继续执行
-		}
-		try {
-			for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-				pDayLine = make_shared<CDayLine>();
-				pt2 = it->second;
-				s = pt2.get<string>(_T("date"));
-				str = s.c_str();
-				sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-				lTemp = year * 10000 + month * 100 + day;
-				pDayLine->SetDate(lTemp);
-				dTemp = ptreeGetDouble(pt2, _T("close"));
-				pDayLine->SetClose(dTemp * 1000);
-				dTemp = ptreeGetDouble(pt2, _T("high"));
-				pDayLine->SetHigh(dTemp * 1000);
-				dTemp = ptreeGetDouble(pt2, _T("low"));
-				pDayLine->SetLow(dTemp * 1000);
-				dTemp = ptreeGetDouble(pt2, _T("open"));
-				pDayLine->SetOpen(dTemp * 1000);
-				lTemp = pt2.get<long>(_T("volume"));
-				pDayLine->SetVolume(lTemp);
-				pvDayLine->push_back(pDayLine);
-			}
-		}
-		catch (ptree_error& e) {
-			CString str3 = pWebData->GetDataBuffer().c_str();
-			str3 = str3.Left(120);
-			ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e);
-			return pvDayLine; // 数据解析出错的话，则放弃。
-		}
-		sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	if (!pWebData->IsParsed()) return pvDayLine;
+	if (pWebData->IsVoidJson()) return pvDayLine;
+
+	ppt = pWebData->GetPTree();
+	try {
+		s = ppt->get<string>(_T("detail")); // 是否有报错信息
+		CString strMessage = _T("Tiingo stock dayLine ");
+		strMessage += s.c_str();
+		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
+		return pvDayLine;
 	}
+	catch (ptree_error&) {
+		// 正确， do nothing，继续执行
+	}
+	try {
+		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
+			pDayLine = make_shared<CDayLine>();
+			pt2 = it->second;
+			s = pt2.get<string>(_T("date"));
+			str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			lTemp = year * 10000 + month * 100 + day;
+			pDayLine->SetDate(lTemp);
+			dTemp = ptreeGetDouble(pt2, _T("close"));
+			pDayLine->SetClose(dTemp * 1000);
+			dTemp = ptreeGetDouble(pt2, _T("high"));
+			pDayLine->SetHigh(dTemp * 1000);
+			dTemp = ptreeGetDouble(pt2, _T("low"));
+			pDayLine->SetLow(dTemp * 1000);
+			dTemp = ptreeGetDouble(pt2, _T("open"));
+			pDayLine->SetOpen(dTemp * 1000);
+			lTemp = pt2.get<long>(_T("volume"));
+			pDayLine->SetVolume(lTemp);
+			pvDayLine->push_back(pDayLine);
+		}
+	}
+	catch (ptree_error& e) {
+		CString str3 = pWebData->GetDataBuffer().c_str();
+		str3 = str3.Left(120);
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e);
+		return pvDayLine; // 数据解析出错的话，则放弃。
+	}
+	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

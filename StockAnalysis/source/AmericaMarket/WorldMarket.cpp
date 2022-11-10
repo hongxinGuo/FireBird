@@ -209,10 +209,6 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}
-		if (IsCompanyNewsNeedUpdate()) {
-			TaskUpdateCompanyNewsDB();
-		}
-
 		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
 		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
@@ -238,24 +234,14 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 		gl_pFinnhubWebInquiry->SetWebError(false);
 	}
 
+	if (IsCompanyNewsNeedUpdate()) TaskUpdateCompanyNewsDB();
+	if (IsBasicFinancialNeedUpdate())	TaskUpdateBasicFinancialDB();
+	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
+	if (IsNeedUpdateTiingoCryptoSymbol())	TaskUpdateTiingoCryptoSymbolDB();
+
+	// 更新股票基本情况最好放在最后。
 	if (gl_pDataSourceFinnhub->IsSymbolUpdated() && IsStockProfileNeedUpdate()) {
 		TaskUpdateStockProfileDB();
-	}
-
-	if (IsCompanyNewsNeedUpdate()) {
-		//TaskUpdateCompanyNewsDB();
-	}
-
-	if (IsBasicFinancialNeedUpdate()) {
-		TaskUpdateBasicFinancialDB();
-	}
-
-	if (IsNeedUpdateTiingoStock()) {
-		TaskUpdateTiingoStockDB();
-	}
-
-	if (IsNeedUpdateTiingoCryptoSymbol()) {
-		TaskUpdateTiingoCryptoSymbolDB();
 	}
 
 	return true;

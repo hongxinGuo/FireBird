@@ -56,8 +56,6 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
-	vector<CWebDataPtr> vWebData;
-	vector<CVirtualProductWebDataPtr> vProductWebData;
 
 	if (m_pCurrentProduct == nullptr) return false;
 
@@ -72,26 +70,18 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
 			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）
-			// 故而需要考虑将下面这个函数线程化。
-			m_pCurrentProduct->ParseAndStoreWebData(pWebData);
-			SetInquiring(false);
-			// 下面是线程实现方式
-			// vWebData[0] = pWebData;
-			// vProductWebData[0] = m_pCurrentProduct;
-			// thread thread1(ThreadWebSourceParseAndStoreWebData, this, vProductWebData, vWebData);
-			// thread1.detach();
+			// 故而需要将下面这个函数线程化。
+			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
+			thread1.detach();
 			return true;
 		}
 	}
 	return false;
 }
 
-UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, vector<CVirtualProductWebDataPtr> vProductWebData, vector<CWebDataPtr> vWebData) {
-	CVirtualProductWebDataPtr pProductWebData = vProductWebData.at(0);
-	CWebDataPtr pWebData = vWebData.at(0);
-
+UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
 	pProductWebData->ParseAndStoreWebData(pWebData);
-	pDataSource->SetInquiring(false);
+	pDataSource->SetInquiring(false); // 重置此标识要位于最后一步。
 
 	return 203;
 }

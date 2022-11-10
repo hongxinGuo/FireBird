@@ -153,4 +153,4 @@ UINT ThreadChinaMarketBackground(void); // ÖĞ¹úÊĞ³¡ºóÌ¨Êı¾İ´¦ÀíÏß³Ì£¬´ËÏß³Ì·µ»ØÖ
 
 UINT ThreadWorldMarketBackground(void); // ÃÀ¹úÊĞ³¡ºóÌ¨Êı¾İ´¦ÀíÏß³Ì£¬´ËÏß³Ì·µ»ØÖµÎª202
 // WebSource ParseAndSaveWebDataÏß³Ì¡£ ÕâÀïÊ¹ÓÃvectorÀ´¼ä½Ó´«µİÒ»¸öÖÇÄÜÖ¸Õë£¬·ÀÖ¹Ö±½Ó´«µİÖÇÄÜÖ¸ÕëÊ§Ğ§µÄÎÊÌâ¡£´ËÏß³ÌµÄ·µ»ØÖµÎª203
-UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, vector<CVirtualProductWebDataPtr> vProductWebData, vector<CWebDataPtr> vWebData);
+UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData);
