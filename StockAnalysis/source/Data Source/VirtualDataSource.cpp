@@ -33,12 +33,9 @@ void CVirtualDataSource::Run(long lCurrentTime) {
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
 	if (m_qProduct.size() > 0) { // 有申请等待？
 		ASSERT(IsInquiring());
-		if (IsDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
+		if (IsDataReceivedAndClearFlag()) { //已经发出了数据申请且Finnhub数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
-
 			m_pWebInquiry->SetInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
-
-			SetDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			m_pWebInquiry->GetWebData();
 			return true;
 		}
@@ -70,7 +67,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
 			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）
-			// 故而需要将下面这个函数线程化。
+			// 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
 			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
 			thread1.detach();
 			return true;
@@ -81,7 +78,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
 	pProductWebData->ParseAndStoreWebData(pWebData);
-	pDataSource->SetInquiring(false); // 重置此标识要位于最后一步。
+	pDataSource->SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
 
 	return 203;
 }

@@ -34,8 +34,10 @@ public:
 
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
+	bool IsInquiringAndClearFlag(void) noexcept { const bool fInquiring = m_fInquiring.exchange(false); return fInquiring; }
 	void SetDataReceived(bool fFlag) noexcept { m_fDataReceived = fFlag; }
 	bool IsDataReceived(void) noexcept { const bool f = m_fDataReceived; return f; }
+	bool IsDataReceivedAndClearFlag(void) noexcept { const bool fDataReceived = m_fDataReceived.exchange(false); return fDataReceived; }
 
 	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
@@ -45,7 +47,7 @@ protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	bool m_fInquiring;
+	atomic_bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 };

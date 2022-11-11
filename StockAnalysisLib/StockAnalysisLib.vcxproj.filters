@@ -181,6 +181,21 @@
     <Filter Include="头文件\WebInquiry">
       <UniqueIdentifier>{d24c6780-283a-4207-99d5-eb0ab25d03b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\工作线程\ChinaMarket">
+      <UniqueIdentifier>{6b4efd52-36ca-4adf-9943-5db279c2bc8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\工作线程\WorldMarket">
+      <UniqueIdentifier>{7e0e5cf0-8fd5-403f-acad-109945b23a2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data type">
+      <UniqueIdentifier>{ca250c18-8fb5-4b17-a070-2764d5a0bd5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data type\ChinaMarket">
+      <UniqueIdentifier>{ce4d52e7-a9c1-40f7-9f56-b1c8652f3ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data type\WorldMarket">
+      <UniqueIdentifier>{2924d55e-40dc-4b9c-bfcf-afa3b5c333f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">

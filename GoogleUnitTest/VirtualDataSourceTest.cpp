@@ -47,12 +47,29 @@ namespace StockAnalysisTest {
 		ASSERT_FALSE(dataSource.IsInquiring());
 	}
 
+	TEST_F(CDataSourceTest, Test_IsInquiringAndClearFlag) {
+		ASSERT_FALSE(dataSource.IsInquiring());
+		dataSource.SetInquiring(true);
+		dataSource.IsInquiringAndClearFlag();
+		ASSERT_FALSE(dataSource.IsInquiring());
+		dataSource.IsInquiringAndClearFlag();
+		ASSERT_FALSE(dataSource.IsInquiring());
+	}
+
 	TEST_F(CDataSourceTest, Test_IsDataReceived) {
 		ASSERT_TRUE(dataSource.IsDataReceived());
 		dataSource.SetDataReceived(false);
 		ASSERT_FALSE(dataSource.IsDataReceived());
 		dataSource.SetDataReceived(true);
 		ASSERT_TRUE(dataSource.IsDataReceived());
+	}
+
+	TEST_F(CDataSourceTest, Test_IsDataReceivedAndClearFlag) {
+		ASSERT_TRUE(dataSource.IsDataReceived());
+		dataSource.IsDataReceivedAndClearFlag();
+		ASSERT_FALSE(dataSource.IsDataReceived());
+		dataSource.IsDataReceivedAndClearFlag();
+		ASSERT_FALSE(dataSource.IsDataReceived());
 	}
 
 	TEST_F(CDataSourceTest, Test_SetInquiry) {
