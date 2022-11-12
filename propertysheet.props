@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
 		<AnalysisInclude>$(MSBuildStartupDirectory);$(MSBuildStartupDirectory)\StockAnalysis;$(MSBuildStartupDirectory)\StockAnalysis\source;$(MSBuildStartupDirectory)\StockAnalysis\source\System;$(MSBuildStartupDirectory)\StockAnalysis\source\WebInquiry;$(MSBuildStartupDirectory)\StockAnalysis\source\Utilities;$(MSBuildStartupDirectory)\StockAnalysis\source\Base Class;$(MSBuildStartupDirectory)\StockAnalysis\source\Data Source;$(MSBuildStartupDirectory)\StockAnalysis\source\AmericaMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\ChinaMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase;$(MSBuildStartupDirectory)\StockAnalysis\source\AmericaMarket\DataBase;$(MSBuildStartupDirectory)\GoogleUnitTest;$(MSBuildStartupDirectory)\googletest\googletest\include;$(MSBuildStartupDirectory)\googletest\googlemock\include;$(MSBuildStartupDirectory)\googletest\googletest;$(MSBuildStartupDirectory)\googletest\googlemock;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase\ChinaMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase\WorldMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\Factory Product;$(MSBuildStartupDirectory)\vld;$(MSBuildStartupDirectory)\StockAnalysis\source\Data Class</AnalysisInclude>
-		<PackageInclude>$(MSBuildStartupDirectory)\packages\nlohmann.json.3.10.5\build\native\include</PackageInclude>
+		<PackageInclude>$(MSBuildStartupDirectory)\packages\nlohmann.json.3.11.2\build\native\include</PackageInclude>
 	</PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

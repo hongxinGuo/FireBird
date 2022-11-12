@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 #include "globedef.h"
 
 #include"ConvertToString.h"
@@ -62,44 +62,44 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´ÓÍøÂçÎÄ¼şfileÖĞ¶ÁÈ¡ĞÂÀËÖÆÊ½ÊµÊ±Êı¾İ£¬·µ»ØÖµÊÇËù¶ÁÊı¾İÊÇ·ñ³öÏÖ¸ñÊ½´íÎó¡£
+// ä»ç½‘ç»œæ–‡ä»¶fileä¸­è¯»å–æ–°æµªåˆ¶å¼å®æ—¶æ•°æ®ï¼Œè¿”å›å€¼æ˜¯æ‰€è¯»æ•°æ®æ˜¯å¦å‡ºç°æ ¼å¼é”™è¯¯ã€‚
 //
-//  ĞÂÀËÊµÊ±ĞĞÇéÕ¾µã£ºhttps://hq.sinajs.cn/list=sh601006
-// OpenURLÊ±£¬ĞèÒªÉèÖÃ	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
+//  æ–°æµªå®æ—¶è¡Œæƒ…ç«™ç‚¹ï¼šhttps://hq.sinajs.cn/list=sh601006
+// OpenURLæ—¶ï¼Œéœ€è¦è®¾ç½®	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
 //
-// var hq_str_sh601006="´óÇØÌúÂ·,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
+// var hq_str_sh601006="å¤§ç§¦é“è·¯,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00";
 //
-// ÎŞĞ§Êı¾İ¸ñÊ½Îª£ºvar hq_str_sh688801="";
+// æ— æ•ˆæ•°æ®æ ¼å¼ä¸ºï¼švar hq_str_sh688801="";
 //
-// Õâ¸ö×Ö·û´®ÓÉĞí¶àÊı¾İÆ´½ÓÔÚÒ»Æğ£¬²»Í¬º¬ÒåµÄÊı¾İÓÃ¶ººÅ¸ô¿ªÁË£¬°´ÕÕ³ÌĞòÔ±µÄË¼Â·£¬Ë³ĞòºÅ´Ó0¿ªÊ¼¡£
-// 0£º¡±´óÇØÌúÂ·¡±£¬¹ÉÆ±Ãû×Ö£»
-// 1£º¡±27.55¡å£¬½ñÈÕ¿ªÅÌ¼Û£»
-// 2£º¡±27.25¡å£¬×òÈÕÊÕÅÌ¼Û£»
-// 3£º¡±26.91¡å£¬µ±Ç°¼Û¸ñ£»
-// 4£º¡±27.55¡å£¬½ñÈÕ×î¸ß¼Û£»
-// 5£º¡±26.20¡å£¬½ñÈÕ×îµÍ¼Û£»
-// 6£º¡±26.91¡å£¬¾ºÂò¼Û£¬¼´¡°ÂòÒ»¡±±¨¼Û£»
-// 7£º¡±26.92¡å£¬¾ºÂô¼Û£¬¼´¡°ÂôÒ»¡±±¨¼Û£»
-// 8£º¡±22114263¡å£¬³É½»µÄ¹ÉÆ±Êı£¬ÓÉÓÚ¹ÉÆ±½»Ò×ÒÔÒ»°Ù¹ÉÎª»ù±¾µ¥Î»£¬ËùÒÔÔÚÊ¹ÓÃÊ±£¬Í¨³£°Ñ¸ÃÖµ³ıÒÔÒ»°Ù£»
-// 9£º¡±589824680¡å£¬³É½»½ğ¶î£¬µ¥Î»Îª¡°Ôª¡±£¬ÎªÁËÒ»Ä¿ÁËÈ»£¬Í¨³£ÒÔ¡°ÍòÔª¡±Îª³É½»½ğ¶îµÄµ¥Î»£¬ËùÒÔÍ¨³£°Ñ¸ÃÖµ³ıÒÔÒ»Íò£»
-// 10£º¡±4695¡å£¬¡°ÂòÒ»¡±ÉêÇë4695¹É£¬¼´47ÊÖ£»
-// 11£º¡±26.91¡å£¬¡°ÂòÒ»¡±±¨¼Û£»
-// 12£º¡±57590¡å£¬¡°Âò¶ş¡±
-// 13£º¡±26.90¡å£¬¡°Âò¶ş¡±
-// 14£º¡±14700¡å£¬¡°ÂòÈı¡±
-// 15£º¡±26.89¡å£¬¡°ÂòÈı¡±
-// 16£º¡±14300¡å£¬¡°ÂòËÄ¡±
-// 17£º¡±26.88¡å£¬¡°ÂòËÄ¡±
-// 18£º¡±15100¡å£¬¡°ÂòÎå¡±
-// 19£º¡±26.87¡å£¬¡°ÂòÎå¡±
-// 20£º¡±3100¡å£¬¡°ÂôÒ»¡±Éê±¨3100¹É£¬¼´31ÊÖ£»
-// 21£º¡±26.92¡å£¬¡°ÂôÒ»¡±±¨¼Û
-// (22, 23), (24, 25), (26, 27), (28, 29)·Ö±ğÎª¡°Âô¶ş¡±ÖÁ¡°ÂôËÄµÄÇé¿ö¡±
-// 30£º¡±2008 - 01 - 11¡å£¬ÈÕÆÚ£»£¨´ËÈÕÆÚÎªµ±µØÊĞ³¡µÄÈÕÆÚ£©
-// 31£º¡±15:05:32¡å£¬Ê±¼ä£»£¨´ËÊ±¼äÎªµ±µØÊĞ³¡µÄÊ±¼ä£¬´Ë´¦Îª¶«°ËÇø±±¾©±ê×¼Ê±¼ä£©
-// 32£º¡±00¡±£¬  ²»Ã÷Êı¾İ
+// è¿™ä¸ªå­—ç¬¦ä¸²ç”±è®¸å¤šæ•°æ®æ‹¼æ¥åœ¨ä¸€èµ·ï¼Œä¸åŒå«ä¹‰çš„æ•°æ®ç”¨é€—å·éš”å¼€äº†ï¼ŒæŒ‰ç…§ç¨‹åºå‘˜çš„æ€è·¯ï¼Œé¡ºåºå·ä»0å¼€å§‹ã€‚
+// 0ï¼šâ€å¤§ç§¦é“è·¯â€ï¼Œè‚¡ç¥¨åå­—ï¼›
+// 1ï¼šâ€27.55â€³ï¼Œä»Šæ—¥å¼€ç›˜ä»·ï¼›
+// 2ï¼šâ€27.25â€³ï¼Œæ˜¨æ—¥æ”¶ç›˜ä»·ï¼›
+// 3ï¼šâ€26.91â€³ï¼Œå½“å‰ä»·æ ¼ï¼›
+// 4ï¼šâ€27.55â€³ï¼Œä»Šæ—¥æœ€é«˜ä»·ï¼›
+// 5ï¼šâ€26.20â€³ï¼Œä»Šæ—¥æœ€ä½ä»·ï¼›
+// 6ï¼šâ€26.91â€³ï¼Œç«ä¹°ä»·ï¼Œå³â€œä¹°ä¸€â€æŠ¥ä»·ï¼›
+// 7ï¼šâ€26.92â€³ï¼Œç«å–ä»·ï¼Œå³â€œå–ä¸€â€æŠ¥ä»·ï¼›
+// 8ï¼šâ€22114263â€³ï¼Œæˆäº¤çš„è‚¡ç¥¨æ•°ï¼Œç”±äºè‚¡ç¥¨äº¤æ˜“ä»¥ä¸€ç™¾è‚¡ä¸ºåŸºæœ¬å•ä½ï¼Œæ‰€ä»¥åœ¨ä½¿ç”¨æ—¶ï¼Œé€šå¸¸æŠŠè¯¥å€¼é™¤ä»¥ä¸€ç™¾ï¼›
+// 9ï¼šâ€589824680â€³ï¼Œæˆäº¤é‡‘é¢ï¼Œå•ä½ä¸ºâ€œå…ƒâ€ï¼Œä¸ºäº†ä¸€ç›®äº†ç„¶ï¼Œé€šå¸¸ä»¥â€œä¸‡å…ƒâ€ä¸ºæˆäº¤é‡‘é¢çš„å•ä½ï¼Œæ‰€ä»¥é€šå¸¸æŠŠè¯¥å€¼é™¤ä»¥ä¸€ä¸‡ï¼›
+// 10ï¼šâ€4695â€³ï¼Œâ€œä¹°ä¸€â€ç”³è¯·4695è‚¡ï¼Œå³47æ‰‹ï¼›
+// 11ï¼šâ€26.91â€³ï¼Œâ€œä¹°ä¸€â€æŠ¥ä»·ï¼›
+// 12ï¼šâ€57590â€³ï¼Œâ€œä¹°äºŒâ€
+// 13ï¼šâ€26.90â€³ï¼Œâ€œä¹°äºŒâ€
+// 14ï¼šâ€14700â€³ï¼Œâ€œä¹°ä¸‰â€
+// 15ï¼šâ€26.89â€³ï¼Œâ€œä¹°ä¸‰â€
+// 16ï¼šâ€14300â€³ï¼Œâ€œä¹°å››â€
+// 17ï¼šâ€26.88â€³ï¼Œâ€œä¹°å››â€
+// 18ï¼šâ€15100â€³ï¼Œâ€œä¹°äº”â€
+// 19ï¼šâ€26.87â€³ï¼Œâ€œä¹°äº”â€
+// 20ï¼šâ€3100â€³ï¼Œâ€œå–ä¸€â€ç”³æŠ¥3100è‚¡ï¼Œå³31æ‰‹ï¼›
+// 21ï¼šâ€26.92â€³ï¼Œâ€œå–ä¸€â€æŠ¥ä»·
+// (22, 23), (24, 25), (26, 27), (28, 29)åˆ†åˆ«ä¸ºâ€œå–äºŒâ€è‡³â€œå–å››çš„æƒ…å†µâ€
+// 30ï¼šâ€2008 - 01 - 11â€³ï¼Œæ—¥æœŸï¼›ï¼ˆæ­¤æ—¥æœŸä¸ºå½“åœ°å¸‚åœºçš„æ—¥æœŸï¼‰
+// 31ï¼šâ€15:05:32â€³ï¼Œæ—¶é—´ï¼›ï¼ˆæ­¤æ—¶é—´ä¸ºå½“åœ°å¸‚åœºçš„æ—¶é—´ï¼Œæ­¤å¤„ä¸ºä¸œå…«åŒºåŒ—äº¬æ ‡å‡†æ—¶é—´ï¼‰
+// 32ï¼šâ€00â€ï¼Œ  ä¸æ˜æ•°æ®
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	char buffer1[100];
@@ -128,27 +128,27 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	bufferTest[i] = 0x000;
 	if (fBadData) {
 		CString strTest = bufferTest;
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("SinaRTDataÕûÌåÊı¾İ³öÎÊÌâ£¬Å×µô²»ÓÃ"));
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("SinaRTDataæ•´ä½“æ•°æ®å‡ºé—®é¢˜ï¼ŒæŠ›æ‰ä¸ç”¨"));
 		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
-		return false; // Õû¸öÊı¾İ³öÏÖ´íÎó£¬ºóÃæµÄ½ÔÅ×µô
+		return false; // æ•´ä¸ªæ•°æ®å‡ºç°é”™è¯¯ï¼Œåé¢çš„çš†æŠ›æ‰
 	}
 
 	try {
-		m_fActive = false;    // ³õÊ¼×´Ì¬ÎªÎŞĞ§Êı¾İ
-		pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // ¶ÁÈë¡°var hq_str_s"
+		m_fActive = false;    // åˆå§‹çŠ¶æ€ä¸ºæ— æ•ˆæ•°æ®
+		pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // è¯»å…¥â€œvar hq_str_s"
 		buffer1[12] = 0x000;
 		CString str1;
 		str1 = buffer1;
-		if (strHeader.Compare(str1) != 0) { // Êı¾İ¸ñÊ½³ö´í
+		if (strHeader.Compare(str1) != 0) { // æ•°æ®æ ¼å¼å‡ºé”™
 			throw exception();
 		}
 		pSinaWebRTData->IncreaseCurrentPos(12);
 
-		if (pSinaWebRTData->GetCurrentPosData() == 'h') { // ÉÏº£¹ÉÆ±
-			wMarket = __SHANGHAI_MARKET__; // ÉÏº£¹ÉÆ±±êÊ¶
+		if (pSinaWebRTData->GetCurrentPosData() == 'h') { // ä¸Šæµ·è‚¡ç¥¨
+			wMarket = __SHANGHAI_MARKET__; // ä¸Šæµ·è‚¡ç¥¨æ ‡è¯†
 		}
 		else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
-			wMarket = __SHENZHEN_MARKET__; // ÉîÛÚ¹ÉÆ±±êÊ¶
+			wMarket = __SHENZHEN_MARKET__; // æ·±åœ³è‚¡ç¥¨æ ‡è¯†
 		}
 		else {
 			throw exception();
@@ -160,10 +160,10 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		strStockSymbol = buffer2;
 		switch (wMarket) {
 		case __SHANGHAI_MARKET__:
-			strSinaStockCode = _T("sh") + strStockSymbol; // ÓÉÓÚÉÏº£ÉîÛÚ¹ÉÆ±´úÂëÓĞÖØµş£¬¹Ê¶øËùÓĞµÄ¹ÉÆ±´úÂë¶¼´øÉÏÊĞ³¡Ç°×º¡£ÉÏº£Îªsh
+			strSinaStockCode = _T("sh") + strStockSymbol; // ç”±äºä¸Šæµ·æ·±åœ³è‚¡ç¥¨ä»£ç æœ‰é‡å ï¼Œæ•…è€Œæ‰€æœ‰çš„è‚¡ç¥¨ä»£ç éƒ½å¸¦ä¸Šå¸‚åœºå‰ç¼€ã€‚ä¸Šæµ·ä¸ºsh
 			break;
 		case __SHENZHEN_MARKET__:
-			strSinaStockCode = _T("sz") + strStockSymbol;// ÓÉÓÚÉÏº£ÉîÛÚ¹ÉÆ±´úÂëÓĞÖØµş£¬¹Ê¶øËùÓĞµÄ¹ÉÆ±´úÂë¶¼´øÉÏÊĞ³¡Ç°×º¡£ÉîÛÚÎªsz
+			strSinaStockCode = _T("sz") + strStockSymbol;// ç”±äºä¸Šæµ·æ·±åœ³è‚¡ç¥¨ä»£ç æœ‰é‡å ï¼Œæ•…è€Œæ‰€æœ‰çš„è‚¡ç¥¨ä»£ç éƒ½å¸¦ä¸Šå¸‚åœºå‰ç¼€ã€‚æ·±åœ³ä¸ºsz
 			break;
 		default:
 			throw exception();
@@ -172,13 +172,13 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		lStockCode = static_cast<long>(atof(buffer2));
 		pSinaWebRTData->IncreaseCurrentPos(6);
 
-		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // ¶ÁÈë'="'
+		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // è¯»å…¥'="'
 		if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
 			throw exception();
 		}
 		pSinaWebRTData->IncreaseCurrentPos(2);
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos());
-		if (buffer1[0] == '"') { // Ã»ÓĞÊı¾İ?
+		if (buffer1[0] == '"') { // æ²¡æœ‰æ•°æ®?
 			if (buffer1[1] != ';') {
 				throw exception();
 			}
@@ -189,7 +189,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			pSinaWebRTData->IncreaseCurrentPos();
 			m_fActive = false;
 			SetDataSource(__SINA_RT_WEB_DATA__);
-			return true;  // ·Ç»îÔ¾¹ÉÆ±Ã»ÓĞÊµÊ±Êı¾İ£¬ÔÚ´Ë·µ»Ø¡£
+			return true;  // éæ´»è·ƒè‚¡ç¥¨æ²¡æœ‰å®æ—¶æ•°æ®ï¼Œåœ¨æ­¤è¿”å›ã€‚
 		}
 		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) {
 			throw exception();
@@ -200,7 +200,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		pSinaWebRTData->IncreaseCurrentPos(2);
 
 		i = 2;
-		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // ¶ÁÈëÊ£ÏÂµÄÖĞÎÄÃû×Ö£¨µÚÒ»¸ö×ÖÔÚbuffer1ÖĞ£©
+		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // è¯»å…¥å‰©ä¸‹çš„ä¸­æ–‡åå­—ï¼ˆç¬¬ä¸€ä¸ªå­—åœ¨buffer1ä¸­ï¼‰
 			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) {
 				throw exception();
 			}
@@ -208,108 +208,108 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			pSinaWebRTData->IncreaseCurrentPos();
 		}
 		buffer1[i] = 0x000;
-		m_strStockName = buffer1; // ÉèÖÃ¹ÉÆ±Ãû³Æ
+		m_strStockName = buffer1; // è®¾ç½®è‚¡ç¥¨åç§°
 
 		pSinaWebRTData->IncreaseCurrentPos();
 
-		// ¶ÁÈë¿ªÅÌ¼Û¡£·Å´óÒ»Ç§±¶ºó´æ´¢Îª³¤ÕûĞÍ¡£ÆäËû¼Û¸ñÒàÈç´Ë¡£
+		// è¯»å…¥å¼€ç›˜ä»·ã€‚æ”¾å¤§ä¸€åƒå€åå­˜å‚¨ä¸ºé•¿æ•´å‹ã€‚å…¶ä»–ä»·æ ¼äº¦å¦‚æ­¤ã€‚
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈëÇ°ÊÕÅÌ¼Û
+		// è¯»å…¥å‰æ”¶ç›˜ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈëµ±Ç°¼Û
+		// è¯»å…¥å½“å‰ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈë×î¸ß¼Û
+		// è¯»å…¥æœ€é«˜ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈë×îµÍ¼Û
+		// è¯»å…¥æœ€ä½ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈë¾ºÂò¼Û
+		// è¯»å…¥ç«ä¹°ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈë¾ºÂô¼Û
+		// è¯»å…¥ç«å–ä»·
 		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 			throw exception();
 		}
 		m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¶ÁÈë³É½»¹ÉÊı¡£³É½»¹ÉÊı´æ´¢Êµ¼ÊÖµ
+		// è¯»å…¥æˆäº¤è‚¡æ•°ã€‚æˆäº¤è‚¡æ•°å­˜å‚¨å®é™…å€¼
 		if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
 			throw exception();
 		}
-		// ¶ÁÈë³É½»½ğ¶î
+		// è¯»å…¥æˆäº¤é‡‘é¢
 		if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) {
 			throw exception();
 		}
-		// ¶ÁÈëÂòÒ»--ÂòÎåµÄ¹ÉÊıºÍ¼Û¸ñ
+		// è¯»å…¥ä¹°ä¸€--ä¹°äº”çš„è‚¡æ•°å’Œä»·æ ¼
 		for (int j = 0; j < 5; j++) {
-			// ¶ÁÈëÊıÁ¿
+			// è¯»å…¥æ•°é‡
 			if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) {
 				throw exception();
 			}
-			// ¶ÁÈë¼Û¸ñ
+			// è¯»å…¥ä»·æ ¼
 			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 				throw exception();
 			}
 			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 		}
-		// ¶ÁÈëÂôÒ»--ÂôÎåµÄ¹ÉÊıºÍ¼Û¸ñ
+		// è¯»å…¥å–ä¸€--å–äº”çš„è‚¡æ•°å’Œä»·æ ¼
 		for (int j = 0; j < 5; j++) {
-			// ¶ÁÈëÊıÁ¿
+			// è¯»å…¥æ•°é‡
 			if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) {
 				throw exception();
 			}
-			// ¶ÁÈë¼Û¸ñ
+			// è¯»å…¥ä»·æ ¼
 			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
 				throw exception();
 			}
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 		}
-		// ¶ÁÈë³É½»ÈÕÆÚºÍÊ±¼ä¡£´ËÊ±¼äÎª¶«°ËÇø£¨±±¾©±ê×¼Ê±¼ä£©¡£
+		// è¯»å…¥æˆäº¤æ—¥æœŸå’Œæ—¶é—´ã€‚æ­¤æ—¶é—´ä¸ºä¸œå…«åŒºï¼ˆåŒ—äº¬æ ‡å‡†æ—¶é—´ï¼‰ã€‚
 		if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
 			throw exception();
 		}
 		CString strTime;
 		strTime = buffer1;
-		strTime += ' '; //Ìí¼ÓÒ»¸ö¿Õ¸ñ£¬ÒÔÀûÓÚÏÂÃæµÄ×ª»»
+		strTime += ' '; //æ·»åŠ ä¸€ä¸ªç©ºæ ¼ï¼Œä»¥åˆ©äºä¸‹é¢çš„è½¬æ¢
 		if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 			throw exception();
 		}
 		strTime += buffer3;
-		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer()); // ×ª³ÉUTCÊ±¼ä¡£ĞÂÀËÊµÊ±Êı¾İµÄÊ±ÇøÓëÄ¬ÈÏµÄ¶«°ËÇøÏàÍ¬£¬¹Ê¶øÎŞĞèÌí¼ÓÊ±ÇøÆ«ÀëÁ¿
+		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer()); // è½¬æˆUTCæ—¶é—´ã€‚æ–°æµªå®æ—¶æ•°æ®çš„æ—¶åŒºä¸é»˜è®¤çš„ä¸œå…«åŒºç›¸åŒï¼Œæ•…è€Œæ— éœ€æ·»åŠ æ—¶åŒºåç¦»é‡
 
-		// ºóÃæµÄÊı¾İ½ÔÎªÎŞĞ§Êı¾İ£¬¶ÁÖÁ´ËÊı¾İµÄ½áÎ²´¦¼´¿É¡£
-		while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // Ñ°ÕÒ×Ö·û'\n'£¨»Ø³µ·û£©
+		// åé¢çš„æ•°æ®çš†ä¸ºæ— æ•ˆæ•°æ®ï¼Œè¯»è‡³æ­¤æ•°æ®çš„ç»“å°¾å¤„å³å¯ã€‚
+		while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // å¯»æ‰¾å­—ç¬¦'\n'ï¼ˆå›è½¦ç¬¦ï¼‰
 			pSinaWebRTData->IncreaseCurrentPos();
 			if ((pSinaWebRTData->GetCurrentPos() >= pSinaWebRTData->GetBufferLength())) {
 				throw exception();
 			}
 		}
-		pSinaWebRTData->IncreaseCurrentPos(); // ¶Á¹ı×Ö·û'\n'
-		// ÅĞ¶Ï´ËÊµÊ±Êı¾İÊÇ·ñÓĞĞ§£¬¿ÉÒÔÔÚ´ËÅĞ¶Ï£¬½á¹û¾ÍÊÇ½ñÈÕÓĞĞ§¹ÉÆ±Êı»á¼õÉÙ£¨ÍËÊĞµÄ¹ÉÆ±ÓĞÊı¾İ£¬µ«ÆäÖµ½ÔÎªÁã£¬¶øÉú³É½ñÈÕ»î¶¯¹ÉÆ±³ØÊ±ĞèÒªÊµÊ±Êı¾İÊÇÓĞĞ§µÄ£©¡£
-		// 0.03°æ±¾ºÍÆäÖ®Ç°µÄ¶¼Ã»ÓĞ×öÅĞ¶Ï£¬0.04°æ±¾»¹ÊÇÊ¹ÓÃ²»ÅĞ¶ÏµÄÕâÖÖ°É¡£
-		// ÔÚÏµÍ³×¼±¸Íê±ÏÇ°¾ÍÅĞ¶ÏĞÂÀË»îÔ¾¹ÉÆ±Êı£¬Ö»Ê¹ÓÃ³É½»Ê±¼äÒ»Ïî£¬¹Ê¶øÒÀÈ»´æÔÚ·Ç»îÔ¾¹ÉÆ±ÔÚÆäÖĞ¡£
-		// 0.07°æºó£¬²ÉÓÃÊ®ËÄÌìÄÚµÄÊµÊ±Êı¾İÎª»îÔ¾¹ÉÆ±Êı¾İ£¨×î³¤µÄ´º½Ú·Å¼ÙÆßÌì£¬¼ÓÉÏÇ°ºóµÄĞİÏ¢ÈÕ£¬¹²Ê®Ìì£¬¿íÏŞËÄÌì£©
+		pSinaWebRTData->IncreaseCurrentPos(); // è¯»è¿‡å­—ç¬¦'\n'
+		// åˆ¤æ–­æ­¤å®æ—¶æ•°æ®æ˜¯å¦æœ‰æ•ˆï¼Œå¯ä»¥åœ¨æ­¤åˆ¤æ–­ï¼Œç»“æœå°±æ˜¯ä»Šæ—¥æœ‰æ•ˆè‚¡ç¥¨æ•°ä¼šå‡å°‘ï¼ˆé€€å¸‚çš„è‚¡ç¥¨æœ‰æ•°æ®ï¼Œä½†å…¶å€¼çš†ä¸ºé›¶ï¼Œè€Œç”Ÿæˆä»Šæ—¥æ´»åŠ¨è‚¡ç¥¨æ± æ—¶éœ€è¦å®æ—¶æ•°æ®æ˜¯æœ‰æ•ˆçš„ï¼‰ã€‚
+		// 0.03ç‰ˆæœ¬å’Œå…¶ä¹‹å‰çš„éƒ½æ²¡æœ‰åšåˆ¤æ–­ï¼Œ0.04ç‰ˆæœ¬è¿˜æ˜¯ä½¿ç”¨ä¸åˆ¤æ–­çš„è¿™ç§å§ã€‚
+		// åœ¨ç³»ç»Ÿå‡†å¤‡å®Œæ¯•å‰å°±åˆ¤æ–­æ–°æµªæ´»è·ƒè‚¡ç¥¨æ•°ï¼Œåªä½¿ç”¨æˆäº¤æ—¶é—´ä¸€é¡¹ï¼Œæ•…è€Œä¾ç„¶å­˜åœ¨éæ´»è·ƒè‚¡ç¥¨åœ¨å…¶ä¸­ã€‚
+		// 0.07ç‰ˆåï¼Œé‡‡ç”¨åå››å¤©å†…çš„å®æ—¶æ•°æ®ä¸ºæ´»è·ƒè‚¡ç¥¨æ•°æ®ï¼ˆæœ€é•¿çš„æ˜¥èŠ‚æ”¾å‡ä¸ƒå¤©ï¼ŒåŠ ä¸Šå‰åçš„ä¼‘æ¯æ—¥ï¼Œå…±åå¤©ï¼Œå®½é™å››å¤©ï¼‰
 		CheckSinaRTDataActive();
 		SetDataSource(__SINA_RT_WEB_DATA__);
 		return true;
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadSinaDataÒì³£ "), e);
+		ReportErrorToSystemMessage(_T("ReadSinaDataå¼‚å¸¸ "), e);
 		return false;
 	}
 }
@@ -323,7 +323,7 @@ bool CWebRTData::CheckSinaRTDataActive(void) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸öINT64Öµ£¬Óöµ½¶ººÅ½áÊø¡£·µ»ØÖµÔÚllReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªINT64å€¼ï¼Œé‡åˆ°é€—å·ç»“æŸã€‚è¿”å›å€¼åœ¨llReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +342,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnVal
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸öÖµ£¬Óöµ½¶ººÅ½áÊø¡£·µ»ØÖµÔÚlReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªå€¼ï¼Œé‡åˆ°é€—å·ç»“æŸã€‚è¿”å›å€¼åœ¨lReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,7 +361,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸öÖµ£¬Óöµ½¶ººÅ½áÊø¡£·µ»ØÖµÔÚlReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªå€¼ï¼Œé‡åˆ°é€—å·ç»“æŸã€‚è¿”å›å€¼åœ¨lReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,7 +377,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnVal
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸öÖµ£¬Óöµ½¶ººÅ½áÊø¡£
+// è¯»å…¥ä¸€ä¸ªå€¼ï¼Œé‡åˆ°é€—å·ç»“æŸã€‚
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -391,68 +391,68 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 			pSinaWebRTData->IncreaseCurrentPos();
 		}
 		buffer[i] = 0x000;
-		// ¿ç¹ı','ºÅ¡£
+		// è·¨è¿‡','å·ã€‚
 		pSinaWebRTData->IncreaseCurrentPos();
 
 		return true;
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadSinaDataOneValueÒì³£ "), e);
+		ReportErrorToSystemMessage(_T("ReadSinaDataOneValueå¼‚å¸¸ "), e);
 		return false;
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´ÓÍøÂçÎÄ¼şfileÖĞ¶ÁÈ¡ÌÚÑ¶ÖÆÊ½ÊµÊ±Êı¾İ£¬·µ»ØÖµÊÇËù¶ÁÊı¾İÊÇ·ñ³öÏÖ¸ñÊ½´íÎó¡£
+// ä»ç½‘ç»œæ–‡ä»¶fileä¸­è¯»å–è…¾è®¯åˆ¶å¼å®æ—¶æ•°æ®ï¼Œè¿”å›å€¼æ˜¯æ‰€è¯»æ•°æ®æ˜¯å¦å‡ºç°æ ¼å¼é”™è¯¯ã€‚
 //
-// Òª»ñÈ¡×îĞÂĞĞÇé£¬·ÃÎÊÊı¾İ½Ó¿Ú£ºhttp://qt.gtimg.cn/q=sz002818
+// è¦è·å–æœ€æ–°è¡Œæƒ…ï¼Œè®¿é—®æ•°æ®æ¥å£ï¼šhttp://qt.gtimg.cn/q=sz002818
 //
-// v_sz000001="51~Æ½°²ÒøĞĞ~000001~15.59~15.90~15.75~1046363~518391~527971~
+// v_sz000001="51~å¹³å®‰é“¶è¡Œ~000001~15.59~15.90~15.75~1046363~518391~527971~
 //             15.58~2365~15.57~802~15.56~1855~15.55~2316~15.54~320~15.59~661~15.60~15381~15.61~3266~15.62~450~15.63~520~~
 //             20190930154003~-0.31~-1.95~15.89~15.57~15.59/1046363/1645828527~1046363~164583~0.54~11.27~~
 //             15.89~15.57~2.01~3025.36~3025.38~1.15~17.49~14.31~
 //             0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP-A~68.91~~0.82";\n
 //
-// 0: ÊĞ³¡£¨ÉÏº£Îª1£¬ÉîÛÚÎª51£©¡£
-// 1 : Ãû×Ö
-// 2 : ´úÂë
-// 3 : ÏÖ¼Û
-// 4 : ×òÊÕ
-// 5 : ½ñ¿ª
-// 6 : ³É½»Á¿£¨ÊÖ£©
-// 7 : ÍâÅÌ
-// 8 : ÄÚÅÌ £¨µÚÒ»ĞĞ½áÊø£©
-// 9 : ÂòÒ»
-// 10 : ÂòÒ»Á¿£¨ÊÖ£©
-// 11 - 18 : Âò¶ş - ÂòÎå
-// 19 : ÂôÒ»
-// 20 : ÂôÒ»Á¿
-// 21 - 28 : Âô¶ş - ÂôÎå
-// 29 : ×î½üÖğ±Ê³É½» ( µÚ¶şĞĞ½áÊø£©
-// 30 : Ê±¼ä£¨´ËÊ±¼äÎªµ±µØÊĞ³¡Ê±¼ä£¬´Ë´¦Îª¶«°ËÇø±±¾©±ê×¼Ê±¼ä£©
-// 31 : ÕÇµø
-// 32 : ÕÇµø %
-// 33 : ×î¸ß
-// 34 : ×îµÍ
-// 35 : ¼Û¸ñ / ³É½»Á¿£¨ÊÖ£© / ³É½»¶î£¨Ôª£©¡£ ¿ÉÒÔÊ¹ÓÃ´Ë´¦µÄÊı¾İ´úÌæ36¡¢37´¦µÄÊı¾İ£¬ÕâÑù¾Í¿ÉÒÔÊ¹ÓÃÌÚÑ¶ÊµÊ±Êı¾İÁË¡£
-// 36 : ³É½»Á¿£¨ÊÖ£©
-// 37 : ³É½»¶î£¨Íò£©
-// 38 : »»ÊÖÂÊ
-// 39 : ÊĞÓ¯ÂÊ
-// 40 : /       (µÚÈıĞĞ½áÊø£©
-// 41 : ×î¸ß
-// 42 : ×îµÍ
-// 43 : Õñ·ù
-// 44 : Á÷Í¨ÊĞÖµ(µ¥Î»Îª£ºÒÚ£©
-// 45 : ×ÜÊĞÖµ£¨µ¥Î»Îª£ºÒÚ£©
-// 46 : ÊĞ¾»ÂÊ
-// 47 : ÕÇÍ£¼Û
-// 48 : µøÍ£¼Û   £¨µÚËÄĞĞ½áÊø£©
-// 49 £º        Ö®ºóµÄÕâĞ©Êı×Ö²»Çå³şÆäº¬Òå
+// 0: å¸‚åœºï¼ˆä¸Šæµ·ä¸º1ï¼Œæ·±åœ³ä¸º51ï¼‰ã€‚
+// 1 : åå­—
+// 2 : ä»£ç 
+// 3 : ç°ä»·
+// 4 : æ˜¨æ”¶
+// 5 : ä»Šå¼€
+// 6 : æˆäº¤é‡ï¼ˆæ‰‹ï¼‰
+// 7 : å¤–ç›˜
+// 8 : å†…ç›˜ ï¼ˆç¬¬ä¸€è¡Œç»“æŸï¼‰
+// 9 : ä¹°ä¸€
+// 10 : ä¹°ä¸€é‡ï¼ˆæ‰‹ï¼‰
+// 11 - 18 : ä¹°äºŒ - ä¹°äº”
+// 19 : å–ä¸€
+// 20 : å–ä¸€é‡
+// 21 - 28 : å–äºŒ - å–äº”
+// 29 : æœ€è¿‘é€ç¬”æˆäº¤ ( ç¬¬äºŒè¡Œç»“æŸï¼‰
+// 30 : æ—¶é—´ï¼ˆæ­¤æ—¶é—´ä¸ºå½“åœ°å¸‚åœºæ—¶é—´ï¼Œæ­¤å¤„ä¸ºä¸œå…«åŒºåŒ—äº¬æ ‡å‡†æ—¶é—´ï¼‰
+// 31 : æ¶¨è·Œ
+// 32 : æ¶¨è·Œ %
+// 33 : æœ€é«˜
+// 34 : æœ€ä½
+// 35 : ä»·æ ¼ / æˆäº¤é‡ï¼ˆæ‰‹ï¼‰ / æˆäº¤é¢ï¼ˆå…ƒï¼‰ã€‚ å¯ä»¥ä½¿ç”¨æ­¤å¤„çš„æ•°æ®ä»£æ›¿36ã€37å¤„çš„æ•°æ®ï¼Œè¿™æ ·å°±å¯ä»¥ä½¿ç”¨è…¾è®¯å®æ—¶æ•°æ®äº†ã€‚
+// 36 : æˆäº¤é‡ï¼ˆæ‰‹ï¼‰
+// 37 : æˆäº¤é¢ï¼ˆä¸‡ï¼‰
+// 38 : æ¢æ‰‹ç‡
+// 39 : å¸‚ç›ˆç‡
+// 40 : /       (ç¬¬ä¸‰è¡Œç»“æŸï¼‰
+// 41 : æœ€é«˜
+// 42 : æœ€ä½
+// 43 : æŒ¯å¹…
+// 44 : æµé€šå¸‚å€¼(å•ä½ä¸ºï¼šäº¿ï¼‰
+// 45 : æ€»å¸‚å€¼ï¼ˆå•ä½ä¸ºï¼šäº¿ï¼‰
+// 46 : å¸‚å‡€ç‡
+// 47 : æ¶¨åœä»·
+// 48 : è·Œåœä»·   ï¼ˆç¬¬å››è¡Œç»“æŸï¼‰
+// 49 ï¼š        ä¹‹åçš„è¿™äº›æ•°å­—ä¸æ¸…æ¥šå…¶å«ä¹‰
 //
 //
-// ÌÚÑ¶ÊµÊ±Êı¾İÖĞ£¬³É½»Á¿µÄµ¥Î»ÎªÊÖ£¬ÎŞ·¨´ïµ½¼ÆËãËùĞèµÄ¾«¶È£¨¹É£©£¬¹Ê¶øÖ»ÄÜ×÷ÎªÊı¾İ²¹³äÖ®ÓÃ¡£
+// è…¾è®¯å®æ—¶æ•°æ®ä¸­ï¼Œæˆäº¤é‡çš„å•ä½ä¸ºæ‰‹ï¼Œæ— æ³•è¾¾åˆ°è®¡ç®—æ‰€éœ€çš„ç²¾åº¦ï¼ˆè‚¡ï¼‰ï¼Œæ•…è€Œåªèƒ½ä½œä¸ºæ•°æ®è¡¥å……ä¹‹ç”¨ã€‚
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
@@ -469,261 +469,261 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 	CString strStockSymbol, strTengxunStockCode;
 
 	try {
-		m_fActive = false;    // ³õÊ¼×´Ì¬ÎªÎŞĞ§Êı¾İ
-		pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // ¶ÁÈë¡°v_s"
+		m_fActive = false;    // åˆå§‹çŠ¶æ€ä¸ºæ— æ•ˆæ•°æ®
+		pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // è¯»å…¥â€œv_s"
 		buffer1[3] = 0x000;
 		CString str1;
 		str1 = buffer1;
-		if (strHeader.Compare(str1) != 0) { // Êı¾İ¸ñÊ½³ö´í
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData¸ñÊ½³ö´í"));
+		if (strHeader.Compare(str1) != 0) { // æ•°æ®æ ¼å¼å‡ºé”™
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataæ ¼å¼å‡ºé”™"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(3);
-		if (pTengxunWebRTData->GetCurrentPosData() == 'h') { // ÉÏº£¹ÉÆ±
-			wMarket = __SHANGHAI_MARKET__; // ÉÏº£¹ÉÆ±±êÊ¶
+		if (pTengxunWebRTData->GetCurrentPosData() == 'h') { // ä¸Šæµ·è‚¡ç¥¨
+			wMarket = __SHANGHAI_MARKET__; // ä¸Šæµ·è‚¡ç¥¨æ ‡è¯†
 		}
 		else if (pTengxunWebRTData->GetCurrentPosData() == 'z') {
-			wMarket = __SHENZHEN_MARKET__; // ÉîÛÚ¹ÉÆ±±êÊ¶
+			wMarket = __SHENZHEN_MARKET__; // æ·±åœ³è‚¡ç¥¨æ ‡è¯†
 		}
 		else {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÎŞĞ§ÊĞ³¡´úÂë"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ— æ•ˆå¸‚åœºä»£ç "));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
 
-		// ÁùÎ»¹ÉÆ±´úÂë
+		// å…­ä½è‚¡ç¥¨ä»£ç 
 		pTengxunWebRTData->GetData(buffer2, 6, pTengxunWebRTData->GetCurrentPos());
 		buffer2[6] = 0x000;
 		strStockSymbol = buffer2;
 		switch (wMarket) {
 		case __SHANGHAI_MARKET__:
-			strTengxunStockCode = _T("sh") + strStockSymbol; // ÓÉÓÚÉÏº£ÉîÛÚ¹ÉÆ±´úÂëÓĞÖØµş£¬¹Ê¶øËùÓĞµÄ¹ÉÆ±´úÂë¶¼´øÉÏÊĞ³¡Ç°×º¡£ÉÏº£Îªsh
+			strTengxunStockCode = _T("sh") + strStockSymbol; // ç”±äºä¸Šæµ·æ·±åœ³è‚¡ç¥¨ä»£ç æœ‰é‡å ï¼Œæ•…è€Œæ‰€æœ‰çš„è‚¡ç¥¨ä»£ç éƒ½å¸¦ä¸Šå¸‚åœºå‰ç¼€ã€‚ä¸Šæµ·ä¸ºsh
 			break;
 		case __SHENZHEN_MARKET__:
-			strTengxunStockCode = _T("sz") + strStockSymbol;// ÓÉÓÚÉÏº£ÉîÛÚ¹ÉÆ±´úÂëÓĞÖØµş£¬¹Ê¶øËùÓĞµÄ¹ÉÆ±´úÂë¶¼´øÉÏÊĞ³¡Ç°×º¡£ÉîÛÚÎªsz
+			strTengxunStockCode = _T("sz") + strStockSymbol;// ç”±äºä¸Šæµ·æ·±åœ³è‚¡ç¥¨ä»£ç æœ‰é‡å ï¼Œæ•…è€Œæ‰€æœ‰çš„è‚¡ç¥¨ä»£ç éƒ½å¸¦ä¸Šå¸‚åœºå‰ç¼€ã€‚æ·±åœ³ä¸ºsz
 			break;
 		default:
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÎŞĞ§ÊĞ³¡´úÂë"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ— æ•ˆå¸‚åœºä»£ç "));
 			return false;
 		}
 		m_strSymbol = XferTengxunToStandred(strTengxunStockCode);
 		lStockCode = atoi(buffer2);
 		pTengxunWebRTData->IncreaseCurrentPos(6);
 
-		pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // ¶ÁÈë'="'
+		pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // è¯»å…¥'="'
 		if (buffer1[0] != '=') {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºĞèÒª'='"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šéœ€è¦'='"));
 			return false;
 		}
 		if (buffer1[1] != '"') {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºĞèÒª'\"'"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šéœ€è¦'\"'"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(2);
 
-		// ÊĞ³¡±êÊ¶´úÂë£¨51ÎªÉîÊĞ£¬1Îª»¦ÊĞ£©
+		// å¸‚åœºæ ‡è¯†ä»£ç ï¼ˆ51ä¸ºæ·±å¸‚ï¼Œ1ä¸ºæ²ªå¸‚ï¼‰
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÊĞ³¡±êÊ¶´úÂë"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå¸‚åœºæ ‡è¯†ä»£ç "));
 			return false;
 		}
 #ifdef DEBUG
 		if (lTemp == 1) ASSERT(wMarket == __SHANGHAI_MARKET__);
 		else if (lTemp == 51) ASSERT(wMarket == __SHENZHEN_MARKET__);
-		else ASSERT(0); // ±¨´í
+		else ASSERT(0); // æŠ¥é”™
 #endif
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º¹ÉÆ±Ãû³Æ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šè‚¡ç¥¨åç§°"));
 			return false;
 		}
-		m_strStockName = buffer1; // ÉèÖÃ¹ÉÆ±Ãû³Æ
-		// ÁùÎ»¹ÉÆ±´úÂë
+		m_strStockName = buffer1; // è®¾ç½®è‚¡ç¥¨åç§°
+		// å…­ä½è‚¡ç¥¨ä»£ç 
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º¹ÉÆ±´úÂë"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šè‚¡ç¥¨ä»£ç "));
 			return false;
 		}
 		if (lTemp != lStockCode) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º¹ÉÆ±´úÂë²»·û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šè‚¡ç¥¨ä»£ç ä¸ç¬¦"));
 			return false;
 		}
 
-		// ÏÖÔÚ³É½»¼Û¡£·Å´óÒ»Ç§±¶ºó´æ´¢Îª³¤ÕûĞÍ¡£ÆäËû¼Û¸ñÒàÈç´Ë¡£
+		// ç°åœ¨æˆäº¤ä»·ã€‚æ”¾å¤§ä¸€åƒå€åå­˜å‚¨ä¸ºé•¿æ•´å‹ã€‚å…¶ä»–ä»·æ ¼äº¦å¦‚æ­¤ã€‚
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤ä»·"));
 			return false;
 		}
 		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
-		// Ç°ÊÕÅÌ¼Û
+		// å‰æ”¶ç›˜ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÇ°ÊÕÅÌ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå‰æ”¶ç›˜"));
 			return false;
 		}
 		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ¿ªÅÌ¼Û
+		// å¼€ç›˜ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º¿ªÅÌ¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå¼€ç›˜ä»·"));
 			return false;
 		}
 		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ³É½»ÊÖÊı¡£³É½»¹ÉÊı´æ´¢Êµ¼ÊÖµ
-		// ²»Ê¹ÓÃ´Ë´¦µÄ³É½»Á¿£¬¶øÊÇÊ¹ÓÃµÚÈıÊ®ÎåÏî´¦µÄ³É½»Á¿¡£
+		// æˆäº¤æ‰‹æ•°ã€‚æˆäº¤è‚¡æ•°å­˜å‚¨å®é™…å€¼
+		// ä¸ä½¿ç”¨æ­¤å¤„çš„æˆäº¤é‡ï¼Œè€Œæ˜¯ä½¿ç”¨ç¬¬ä¸‰åäº”é¡¹å¤„çš„æˆäº¤é‡ã€‚
 		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»ÊÖÊı"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤æ‰‹æ•°"));
 			return false;
 		}
-		// ÍâÅÌ
+		// å¤–ç›˜
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÍâÅÌ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå¤–ç›˜"));
 			return false;
 		}
-		// ÄÚÅÌ
+		// å†…ç›˜
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÄÚÅÌ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå†…ç›˜"));
 			return false;
 		}
-		// ¶ÁÈëÂòÒ»ÖÁÂòÎåµÄ¼Û¸ñºÍÊÖÊı
+		// è¯»å…¥ä¹°ä¸€è‡³ä¹°äº”çš„ä»·æ ¼å’Œæ‰‹æ•°
 		for (int j = 0; j < 5; j++) {
-			// ÂòÅÌ¼Û¸ñ
+			// ä¹°ç›˜ä»·æ ¼
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÂòÅÌ¼Û¸ñ"));
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šä¹°ç›˜ä»·æ ¼"));
 				return false;
 			}
 			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 
-			// ÂòÅÌÊıÁ¿£¨ÊÖ£©
+			// ä¹°ç›˜æ•°é‡ï¼ˆæ‰‹ï¼‰
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÂòÅÌÊıÁ¿"));
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šä¹°ç›˜æ•°é‡"));
 				return false;
 			}
 			m_lVBuy.at(j) = lTemp * 100;
 		}
-		// ¶ÁÈëÂôÒ»ÖÁÂôÎåµÄ¼Û¸ñºÍÊÖÊı
+		// è¯»å…¥å–ä¸€è‡³å–äº”çš„ä»·æ ¼å’Œæ‰‹æ•°
 		for (int j = 0; j < 5; j++) {
-			//¶ÁÈëÂôÅÌ¼Û¸ñ
+			//è¯»å…¥å–ç›˜ä»·æ ¼
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÂòÅÌ¼Û¸ñ"));
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šä¹°ç›˜ä»·æ ¼"));
 				return false;
 			}
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
-			// ÂôÅÌÊıÁ¿£¨ÊÖ£©
+			// å–ç›˜æ•°é‡ï¼ˆæ‰‹ï¼‰
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-				gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÂòÅÌÊıÁ¿"));
+				gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šä¹°ç›˜æ•°é‡"));
 				return false;
 			}
 			m_lVSell.at(j) = lTemp * 100;
 		}
-		// ×î½üÖğ±Ê³É½»
+		// æœ€è¿‘é€ç¬”æˆäº¤
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×î½üÖğ±Ê³É½»"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæœ€è¿‘é€ç¬”æˆäº¤"));
 			return false;
 		}
-		// ³É½»ÈÕÆÚºÍÊ±¼ä.¸ñÊ½Îª£ºyyyymmddhhmmss. ´ËÊ±¼ä²ÉÓÃµÄÊ±ÇøÎª¶«°ËÇø£¨±±¾©±ê×¼Ê±¼ä£©
+		// æˆäº¤æ—¥æœŸå’Œæ—¶é—´.æ ¼å¼ä¸ºï¼šyyyymmddhhmmss. æ­¤æ—¶é—´é‡‡ç”¨çš„æ—¶åŒºä¸ºä¸œå…«åŒºï¼ˆåŒ—äº¬æ ‡å‡†æ—¶é—´ï¼‰
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»ÈÕÆÚºÍÊ±¼ä"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤æ—¥æœŸå’Œæ—¶é—´"));
 			return false;
 		}
-		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3); // ×ª³ÉUTCÊ±¼ä¡£ÌÚÑ¶ÊµÊ±Êı¾İµÄÊ±ÇøÓëÄ¬ÈÏµÄ¶«°ËÇøÏàÍ¬£¬¹Ê¶øÎŞĞèÌí¼ÓÊ±ÇøÆ«ÀëÁ¿
-		// ÕÇµø
+		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3); // è½¬æˆUTCæ—¶é—´ã€‚è…¾è®¯å®æ—¶æ•°æ®çš„æ—¶åŒºä¸é»˜è®¤çš„ä¸œå…«åŒºç›¸åŒï¼Œæ•…è€Œæ— éœ€æ·»åŠ æ—¶åŒºåç¦»é‡
+		// æ¶¨è·Œ
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÕÇµø"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ¶¨è·Œ"));
 			return false;
 		}
-		// ÕÇµøÂÊ
+		// æ¶¨è·Œç‡
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÕÇµøÂÊ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ¶¨è·Œç‡"));
 			return false;
 		}
-		// ×î¸ß¼Û
+		// æœ€é«˜ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×î¸ß¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæœ€é«˜ä»·"));
 			return false;
 		}
 		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
-		// ×îµÍ¼Û
+		// æœ€ä½ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×îµÍ¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæœ€ä½ä»·"));
 			return false;
 		}
 		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
-		// µÚÈıÊ®ÎåÏî£¬³É½»¼Û/³É½»Á¿£¨ÊÖ£©/³É½»½ğ¶î£¨Ôª£©
-		// ³É½»Á¿ºÍ³É½»½ğ¶îÊ¹ÓÃ´Ë´¦µÄÊı¾İ£¬ÕâÑù¾Í¿ÉÒÔÊ¹ÓÃÌÚÑ¶ÊµÊ±Êı¾İÁË
+		// ç¬¬ä¸‰åäº”é¡¹ï¼Œæˆäº¤ä»·/æˆäº¤é‡ï¼ˆæ‰‹ï¼‰/æˆäº¤é‡‘é¢ï¼ˆå…ƒï¼‰
+		// æˆäº¤é‡å’Œæˆäº¤é‡‘é¢ä½¿ç”¨æ­¤å¤„çš„æ•°æ®ï¼Œè¿™æ ·å°±å¯ä»¥ä½¿ç”¨è…¾è®¯å®æ—¶æ•°æ®äº†
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»¼Û¡¢³É½»ÊÖÊı¡¢³É½»¶î"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤ä»·ã€æˆäº¤æ‰‹æ•°ã€æˆäº¤é¢"));
 			return false;
 		}
 		sscanf_s(buffer3, _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
-		m_llVolume = lTemp * 100; // ÌÚÑ¶³É½»Á¿Êı¾İµ¥Î»ÎªÊÖ£¨100¹É£©¡£
-		// ³É½»ÊÖÊı
-		// ²»Ê¹ÓÃ´Ë´¦µÄ³É½»Á¿¡£ÕâÀïµÄ³É½»Á¿»á´óÓÚµÚÈıÊ®Îå´¦µÄ³É½»Á¿¡£
+		m_llVolume = lTemp * 100; // è…¾è®¯æˆäº¤é‡æ•°æ®å•ä½ä¸ºæ‰‹ï¼ˆ100è‚¡ï¼‰ã€‚
+		// æˆäº¤æ‰‹æ•°
+		// ä¸ä½¿ç”¨æ­¤å¤„çš„æˆäº¤é‡ã€‚è¿™é‡Œçš„æˆäº¤é‡ä¼šå¤§äºç¬¬ä¸‰åäº”å¤„çš„æˆäº¤é‡ã€‚
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»Á¿"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤é‡"));
 			return false;
 		}
-		// ³É½»½ğ¶î£¨ÍòÔª£©
+		// æˆäº¤é‡‘é¢ï¼ˆä¸‡å…ƒï¼‰
 		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º³É½»½ğ¶î"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæˆäº¤é‡‘é¢"));
 			return false;
 		}
-		// »»ÊÖÂÊ
+		// æ¢æ‰‹ç‡
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º»»ÊÖÂÊ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ¢æ‰‹ç‡"));
 			return false;
 		}
-		// ÊĞÓ¯ÂÊ
+		// å¸‚ç›ˆç‡
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÊĞÓ¯ÂÊ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå¸‚ç›ˆç‡"));
 			return false;
 		}
-		// ÎŞÃû
+		// æ— å
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÎŞÃû"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ— å"));
 			return false;
 		}
-		// ×î¸ß¼Û
+		// æœ€é«˜ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×î¸ß¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæœ€é«˜ä»·"));
 			return false;
 		}
-		// ×îµÍ¼Û
+		// æœ€ä½ä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×îµÍ¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæœ€ä½ä»·"));
 			return false;
 		}
-		// Õñ·ù
+		// æŒ¯å¹…
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÕñ·ù"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæŒ¯å¹…"));
 			return false;
 		}
-		// Á÷Í¨ÊĞÖµ£¨µ¥Î»Îª£ºÒÚÔª£©
+		// æµé€šå¸‚å€¼ï¼ˆå•ä½ä¸ºï¼šäº¿å…ƒï¼‰
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÁ÷Í¨ÊĞÖµ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæµé€šå¸‚å€¼"));
 			return false;
 		}
 		m_llCurrentValue = static_cast<INT64>(dTemp * 100000000);
-		// ×ÜÊĞÖµ£¨µ¥Î»Îª£ºÒÚÔª£©
+		// æ€»å¸‚å€¼ï¼ˆå•ä½ä¸ºï¼šäº¿å…ƒï¼‰
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£º×ÜÊĞÖµ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ€»å¸‚å€¼"));
 			return false;
 		}
 		m_llTotalValue = static_cast<INT64>(dTemp * 100000000);
-		// ÊĞ¾»ÂÊ
+		// å¸‚å‡€ç‡
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÊĞ¾»ÂÊ"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šå¸‚å‡€ç‡"));
 			return false;
 		}
-		// ÕÇÍ£¼Û
+		// æ¶¨åœä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºÕÇÍ£¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šæ¶¨åœä»·"));
 			return false;
 		}
 		if (dTemp > 0.01) m_lHighLimit = static_cast<long>((dTemp + 0.000001) * 1000);
-		// µøÍ£¼Û
+		// è·Œåœä»·
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData´íÎó£ºµøÍ£¼Û"));
+			gl_systemMessage.PushErrorMessage(_T("ReadTengxunDataé”™è¯¯ï¼šè·Œåœä»·"));
 			return false;
 		}
 		if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 
-		// ºóÃæµÄÊı¾İ¾ßÌåÄÚÈİ²»Çå³ş£¬ÔİÊ±·ÅÆú½âÂë¡£
+		// åé¢çš„æ•°æ®å…·ä½“å†…å®¹ä¸æ¸…æ¥šï¼Œæš‚æ—¶æ”¾å¼ƒè§£ç ã€‚
 		while (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
 			pTengxunWebRTData->IncreaseCurrentPos();
 			if (pTengxunWebRTData->OutOfRange()) {
@@ -736,17 +736,17 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		return true;
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadTengxunDataÒì³£ "), e);
+		ReportErrorToSystemMessage(_T("ReadTengxunDataå¼‚å¸¸ "), e);
 		return false;
 	}
 }
 
 bool CWebRTData::CheckTengxunRTDataActive() {
-	if (!IsValidTime(14)) { // Èç¹û½»Ò×Ê±¼äÔÚ14ÌìÇ°
+	if (!IsValidTime(14)) { // å¦‚æœäº¤æ˜“æ—¶é—´åœ¨14å¤©å‰
 		m_fActive = false;
 	}
-	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // ÌÚÑ¶·Ç»îÔ¾¹ÉÆ±µÄm_lNew²»ÎªÁã£¬¹Ê¶ø²»ÄÜÊ¹ÓÃÆä×÷ÎªÅĞ¶ÏÒÀ¾İ
-		m_fActive = false; // ÌÚÑ¶·Ç»îÔ¾¹ÉÆ±µÄÊµÊ±Êı¾İÒ²¾ßÓĞËùÓĞµÄ×Ö¶Î£¬¹Ê¶øÔÚ´ËÈ·ÈÏÆäÎª·Ç»îÔ¾
+	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // è…¾è®¯éæ´»è·ƒè‚¡ç¥¨çš„m_lNewä¸ä¸ºé›¶ï¼Œæ•…è€Œä¸èƒ½ä½¿ç”¨å…¶ä½œä¸ºåˆ¤æ–­ä¾æ®
+		m_fActive = false; // è…¾è®¯éæ´»è·ƒè‚¡ç¥¨çš„å®æ—¶æ•°æ®ä¹Ÿå…·æœ‰æ‰€æœ‰çš„å­—æ®µï¼Œæ•…è€Œåœ¨æ­¤ç¡®è®¤å…¶ä¸ºéæ´»è·ƒ
 	}
 	else m_fActive = true;
 
@@ -755,7 +755,7 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸öINT64Öµ£¬Óöµ½~ºÅ½áÊø¡£·µ»ØÖµÔÚllReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªINT64å€¼ï¼Œé‡åˆ°~å·ç»“æŸã€‚è¿”å›å€¼åœ¨llReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -774,7 +774,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llRet
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸ö¸¡µãĞÍÖµ£¬Óöµ½~ºÅ½áÊø¡£·µ»ØÖµÔÚdReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªæµ®ç‚¹å‹å€¼ï¼Œé‡åˆ°~å·ç»“æŸã€‚è¿”å›å€¼åœ¨dReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -792,7 +792,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dRet
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸ö³¤ÕûĞÍÖµ£¬Óöµ½~ºÅ½áÊø¡£·µ»ØÖµÔÚlReturnValueÖĞ
+// è¯»å…¥ä¸€ä¸ªé•¿æ•´å‹å€¼ï¼Œé‡åˆ°~å·ç»“æŸã€‚è¿”å›å€¼åœ¨lReturnValueä¸­
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -811,7 +811,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturn
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ¶ÁÈëÒ»¸ö×Ö·û´®£¬Óöµ½~ºÅ½áÊø£¬½á¹ûÔÚbufferÖĞ¡£
+// è¯»å…¥ä¸€ä¸ªå­—ç¬¦ä¸²ï¼Œé‡åˆ°~å·ç»“æŸï¼Œç»“æœåœ¨bufferä¸­ã€‚
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -829,7 +829,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 	}
 	catch (exception& e) {
 		buffer[i] = 0x000;
-		CString errorMessage = pWebDataReceived->GetStockCode() + _T(" ReadTengxunOnValueÒì³£:");
+		CString errorMessage = pWebDataReceived->GetStockCode() + _T(" ReadTengxunOnValueå¼‚å¸¸:");
 		errorMessage += buffer;
 		ReportErrorToSystemMessage(errorMessage, e);
 		return false;
@@ -838,10 +838,10 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´ÓÍøÂçÎÄ¼şfileÖĞ¶ÁÈ¡ÍøÒ×ÖÆÊ½ÊµÊ±Êı¾İ£¬·µ»ØÖµÊÇËù¶ÁÊı¾İÊÇ·ñ³öÏÖ¸ñÊ½´íÎó¡£
-// ¿ªÊ¼´¦ÎªµÚÒ»¸ö{£¬½áÊø´¦Îªµ¹ÊıµÚ¶ş¸ö}¡£Èç¹ûÉĞÓĞÊı¾İĞè´¦Àí£¬Ôò±»´¦ÀíµÄ×Ö·ûÎª','£»Èç¹ûÃ»ÓĞÊı¾İÁË£¬Ôò±»´¦ÀíµÄ×Ö·ûÎª' '¡£
+// ä»ç½‘ç»œæ–‡ä»¶fileä¸­è¯»å–ç½‘æ˜“åˆ¶å¼å®æ—¶æ•°æ®ï¼Œè¿”å›å€¼æ˜¯æ‰€è¯»æ•°æ®æ˜¯å¦å‡ºç°æ ¼å¼é”™è¯¯ã€‚
+// å¼€å§‹å¤„ä¸ºç¬¬ä¸€ä¸ª{ï¼Œç»“æŸå¤„ä¸ºå€’æ•°ç¬¬äºŒä¸ª}ã€‚å¦‚æœå°šæœ‰æ•°æ®éœ€å¤„ç†ï¼Œåˆ™è¢«å¤„ç†çš„å­—ç¬¦ä¸º','ï¼›å¦‚æœæ²¡æœ‰æ•°æ®äº†ï¼Œåˆ™è¢«å¤„ç†çš„å­—ç¬¦ä¸º' 'ã€‚
 //
-// Òª»ñÈ¡×îĞÂĞĞÇé£¬·ÃÎÊÊı¾İ½Ó¿Ú£ºhttp://api.money.126.net/data/feed/0601872
+// è¦è·å–æœ€æ–°è¡Œæƒ…ï¼Œè®¿é—®æ•°æ®æ¥å£ï¼šhttp://api.money.126.net/data/feed/0601872
 //
 // _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
 //                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
@@ -851,11 +851,11 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-// ÍøÒ×ÊµÊ±Êı¾İÈ±ÉÙ¹Ø¼üĞÔµÄ³É½»½ğ¶îÒ»Ïî£¬¹Ê¶øÎŞ·¨×÷Îª»ù±¾Êı¾İ£¬Ö»ÄÜ×÷Îª²¹³äÓÃ¡£
-// £¨turnover¼´Îª³É½»½ğ¶î£¬¿ÉÒÔÊ¹ÓÃÖ®¡£05/12/2020£©
+// ç½‘æ˜“å®æ—¶æ•°æ®ç¼ºå°‘å…³é”®æ€§çš„æˆäº¤é‡‘é¢ä¸€é¡¹ï¼Œæ•…è€Œæ— æ³•ä½œä¸ºåŸºæœ¬æ•°æ®ï¼Œåªèƒ½ä½œä¸ºè¡¥å……ç”¨ã€‚
+// ï¼ˆturnoverå³ä¸ºæˆäº¤é‡‘é¢ï¼Œå¯ä»¥ä½¿ç”¨ä¹‹ã€‚05/12/2020ï¼‰
 //
-//  ÍøÒ×ÖĞÎÄ¹ÉÆ±Ãû³ÆµÄÖÆÊ½²»Ã÷£¬ÔİÊ±²»Ê¹ÓÃ£¨ÓÉÓÚboost ptree¶ÔÖĞÎÄµÄÖ§³Ö²»×ã£¬ÆäÖ»Ö§³Öutf8ÖÆÊ½£¬µ¼ÖÂÌáÈ¡ÖĞÎÄ×Ö·ûÊ±³öÏÖÂÒÂë£©¡£
-// ÏÖÔÚ²ÉÓÃwstringºÍCStringWÁ½´Î¹ı¶É£¬¾Í¿ÉÒÔÕı³£ÏÔÊ¾ÁË¡£
+//  ç½‘æ˜“ä¸­æ–‡è‚¡ç¥¨åç§°çš„åˆ¶å¼ä¸æ˜ï¼Œæš‚æ—¶ä¸ä½¿ç”¨ï¼ˆç”±äºboost ptreeå¯¹ä¸­æ–‡çš„æ”¯æŒä¸è¶³ï¼Œå…¶åªæ”¯æŒutf8åˆ¶å¼ï¼Œå¯¼è‡´æå–ä¸­æ–‡å­—ç¬¦æ—¶å‡ºç°ä¹±ç ï¼‰ã€‚
+// ç°åœ¨é‡‡ç”¨wstringå’ŒCStringWä¸¤æ¬¡è¿‡æ¸¡ï¼Œå°±å¯ä»¥æ­£å¸¸æ˜¾ç¤ºäº†ã€‚
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
@@ -872,13 +872,13 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		strSymbol = it->first;
 		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
 		SetSymbol(strSymbol4);
-		sName = pt1.get<string>(_T("name")); // ´Ë´¦µÄÖĞÎÄ¹ÉÆ±Ãû³ÆÎªÂÒÂë£¨ÏµÍ³Ê¹ÓÃ¶à×Ö½Ú×Ö·û¼¯£¬´Ë´¦Îªutf-8×Ö·û¼¯£©
-		m_strStockName = XferToCString(sName); // ½«utf-8×Ö·û¼¯×ª»»Îª¶à×Ö½Ú×Ö·û¼¯
+		sName = pt1.get<string>(_T("name")); // æ­¤å¤„çš„ä¸­æ–‡è‚¡ç¥¨åç§°ä¸ºä¹±ç ï¼ˆç³»ç»Ÿä½¿ç”¨å¤šå­—èŠ‚å­—ç¬¦é›†ï¼Œæ­¤å¤„ä¸ºutf-8å­—ç¬¦é›†ï¼‰
+		m_strStockName = XferToCString(sName); // å°†utf-8å­—ç¬¦é›†è½¬æ¢ä¸ºå¤šå­—èŠ‚å­—ç¬¦é›†
 		strTime = pt1.get<string>(_T("time"));
 		strSymbol2 = pt1.get<string>(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
-	catch (ptree_error& e) { // ½á¹¹²»ÍêÕû
+	catch (ptree_error& e) { // ç»“æ„ä¸å®Œæ•´
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -934,7 +934,7 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (ptree_error&) { // ·Ç»îÔ¾¹ÉÆ±£¨ÒÑÏÂÊĞµÈ£©
+	catch (ptree_error&) { // éæ´»è·ƒè‚¡ç¥¨ï¼ˆå·²ä¸‹å¸‚ç­‰ï¼‰
 		SetActive(false);
 		fSucceed = true;
 	}
@@ -945,10 +945,10 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ´ÓÍøÂçÎÄ¼şfileÖĞ¶ÁÈ¡ÍøÒ×ÖÆÊ½ÊµÊ±Êı¾İ£¬·µ»ØÖµÊÇËù¶ÁÊı¾İÊÇ·ñ³öÏÖ¸ñÊ½´íÎó¡£
-// ¿ªÊ¼´¦ÎªµÚÒ»¸ö{£¬½áÊø´¦Îªµ¹ÊıµÚ¶ş¸ö}¡£Èç¹ûÉĞÓĞÊı¾İĞè´¦Àí£¬Ôò±»´¦ÀíµÄ×Ö·ûÎª','£»Èç¹ûÃ»ÓĞÊı¾İÁË£¬Ôò±»´¦ÀíµÄ×Ö·ûÎª' '¡£
+// ä»ç½‘ç»œæ–‡ä»¶fileä¸­è¯»å–ç½‘æ˜“åˆ¶å¼å®æ—¶æ•°æ®ï¼Œè¿”å›å€¼æ˜¯æ‰€è¯»æ•°æ®æ˜¯å¦å‡ºç°æ ¼å¼é”™è¯¯ã€‚
+// å¼€å§‹å¤„ä¸ºç¬¬ä¸€ä¸ª{ï¼Œç»“æŸå¤„ä¸ºå€’æ•°ç¬¬äºŒä¸ª}ã€‚å¦‚æœå°šæœ‰æ•°æ®éœ€å¤„ç†ï¼Œåˆ™è¢«å¤„ç†çš„å­—ç¬¦ä¸º','ï¼›å¦‚æœæ²¡æœ‰æ•°æ®äº†ï¼Œåˆ™è¢«å¤„ç†çš„å­—ç¬¦ä¸º' 'ã€‚
 //
-// Òª»ñÈ¡×îĞÂĞĞÇé£¬·ÃÎÊÊı¾İ½Ó¿Ú£ºhttp://api.money.126.net/data/feed/0601872
+// è¦è·å–æœ€æ–°è¡Œæƒ…ï¼Œè®¿é—®æ•°æ®æ¥å£ï¼šhttp://api.money.126.net/data/feed/0601872
 //
 // _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
 //                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
@@ -959,8 +959,8 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
 //
-//  ÍøÒ×ÖĞÎÄ¹ÉÆ±Ãû³ÆµÄÖÆÊ½²»Ã÷£¬ÔİÊ±²»Ê¹ÓÃ£¨ÓÉÓÚboost ptree¶ÔÖĞÎÄµÄÖ§³Ö²»×ã£¬ÆäÖ»Ö§³Öutf8ÖÆÊ½£¬µ¼ÖÂÌáÈ¡ÖĞÎÄ×Ö·ûÊ±³öÏÖÂÒÂë£©¡£
-// ÏÖÔÚ²ÉÓÃwstringºÍCStringWÁ½´Î¹ı¶É£¬¾Í¿ÉÒÔÕı³£ÏÔÊ¾ÁË¡£
+//  ç½‘æ˜“ä¸­æ–‡è‚¡ç¥¨åç§°çš„åˆ¶å¼ä¸æ˜ï¼Œæš‚æ—¶ä¸ä½¿ç”¨ï¼ˆç”±äºboost ptreeå¯¹ä¸­æ–‡çš„æ”¯æŒä¸è¶³ï¼Œå…¶åªæ”¯æŒutf8åˆ¶å¼ï¼Œå¯¼è‡´æå–ä¸­æ–‡å­—ç¬¦æ—¶å‡ºç°ä¹±ç ï¼‰ã€‚
+// ç°åœ¨é‡‡ç”¨wstringå’ŒCStringWä¸¤æ¬¡è¿‡æ¸¡ï¼Œå°±å¯ä»¥æ­£å¸¸æ˜¾ç¤ºäº†ã€‚
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
@@ -978,12 +978,12 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		strSymbol4 = XferNeteaseToStandred(symbolName.c_str());
 		SetSymbol(strSymbol4);
 		sName = js.at("name");
-		m_strStockName = XferToCString(sName); // ½«utf-8×Ö·û¼¯×ª»»Îª¶à×Ö½Ú×Ö·û¼¯
+		m_strStockName = XferToCString(sName); // å°†utf-8å­—ç¬¦é›†è½¬æ¢ä¸ºå¤šå­—èŠ‚å­—ç¬¦é›†
 		strTime = js.at(_T("time"));
 		strSymbol2 = js.at(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
-	catch (json::out_of_range& e) { // ½á¹¹²»ÍêÕû
+	catch (json::out_of_range& e) { // ç»“æ„ä¸å®Œæ•´
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -1039,7 +1039,7 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (json::out_of_range&) { // ·Ç»îÔ¾¹ÉÆ±£¨ÒÑÏÂÊĞµÈ£©
+	catch (json::out_of_range&) { // éæ´»è·ƒè‚¡ç¥¨ï¼ˆå·²ä¸‹å¸‚ç­‰ï¼‰
 		SetActive(false);
 		fSucceed = true;
 	}
@@ -1050,10 +1050,10 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
 	m_fActive = false;
-	if (!IsValidTime(14)) { // ·Ç»îÔ¾¹ÉÆ±µÄupdateÊ±¼äÎª0£¬×ª»»Îªtime_tÊ±Îª-1.
+	if (!IsValidTime(14)) { // éæ´»è·ƒè‚¡ç¥¨çš„updateæ—¶é—´ä¸º0ï¼Œè½¬æ¢ä¸ºtime_tæ—¶ä¸º-1.
 		return m_fActive;
 	}
-	if ((m_lOpen == 0) || (m_lNew == 0)) {// ÍøÒ×·Ç»îÔ¾¹ÉÆ±µÄÊµÊ±Êı¾İÒ²¾ßÓĞËùÓĞµÄ×Ö¶Î£¬¹Ê¶øÔÚ´ËÈ·ÈÏÆäÎª·Ç»îÔ¾
+	if ((m_lOpen == 0) || (m_lNew == 0)) {// ç½‘æ˜“éæ´»è·ƒè‚¡ç¥¨çš„å®æ—¶æ•°æ®ä¹Ÿå…·æœ‰æ‰€æœ‰çš„å­—æ®µï¼Œæ•…è€Œåœ¨æ­¤ç¡®è®¤å…¶ä¸ºéæ´»è·ƒ
 		return m_fActive;
 	}
 	m_fActive = true;
@@ -1063,12 +1063,12 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ÊµÊ±Êı¾İµÄÓĞĞ§Ê±¼ä·¶Î§Îª×î½üÁ½ÖÜÄÚ¡£µ±¹ÉÊĞ·Å¼ÙÊ±£¬Æä×îĞÂÊı¾İÊÇ·Å¼ÙÇ°µÄ×îºóÒ»ÌìÊı¾İ¡£´º½Ú·Å¼ÙÊ±¼ä×î³¤£¬ÓĞÊ®Ò»ÌìÊ±¼ä£¬¼ÓÉÏÈıÌì¸»Ô££¬
-// ¹Ê¶øÊ®ËÄÌìÄÚµÄÊı¾İ¶¼±»ÈÏÎªÊÇÓĞĞ§Ê±¼äÊı¾İ£¬ÕâÑùÄÜ¹»±£Ö¤Éú³Éµ±ÈÕ»î¶¯¹ÉÆ±¼¯¡£
+// å®æ—¶æ•°æ®çš„æœ‰æ•ˆæ—¶é—´èŒƒå›´ä¸ºæœ€è¿‘ä¸¤å‘¨å†…ã€‚å½“è‚¡å¸‚æ”¾å‡æ—¶ï¼Œå…¶æœ€æ–°æ•°æ®æ˜¯æ”¾å‡å‰çš„æœ€åä¸€å¤©æ•°æ®ã€‚æ˜¥èŠ‚æ”¾å‡æ—¶é—´æœ€é•¿ï¼Œæœ‰åä¸€å¤©æ—¶é—´ï¼ŒåŠ ä¸Šä¸‰å¤©å¯Œè£•ï¼Œ
+// æ•…è€Œåå››å¤©å†…çš„æ•°æ®éƒ½è¢«è®¤ä¸ºæ˜¯æœ‰æ•ˆæ—¶é—´æ•°æ®ï¼Œè¿™æ ·èƒ½å¤Ÿä¿è¯ç”Ÿæˆå½“æ—¥æ´»åŠ¨è‚¡ç¥¨é›†ã€‚
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	if (m_time < (gl_pChinaMarket->GetUTCTime() - lDays * 24 * 3600)) { // È·±£ÊµÊ±Êı¾İ²»ÔçÓÚµ±Ç°Ê±¼äµÄ14ÌìÇ°£¨´º½Ú·Å¼Ù×î³¤Îª7Ìì£¬¼ÓÉÏÇ°ºóµÄĞİÏ¢ÈÕ£¬¹²Ê®Ò»Ìì£©
+	if (m_time < (gl_pChinaMarket->GetUTCTime() - lDays * 24 * 3600)) { // ç¡®ä¿å®æ—¶æ•°æ®ä¸æ—©äºå½“å‰æ—¶é—´çš„14å¤©å‰ï¼ˆæ˜¥èŠ‚æ”¾å‡æœ€é•¿ä¸º7å¤©ï¼ŒåŠ ä¸Šå‰åçš„ä¼‘æ¯æ—¥ï¼Œå…±åä¸€å¤©ï¼‰
 		return false;
 	}
 	else if (m_time > gl_pChinaMarket->GetUTCTime()) {
