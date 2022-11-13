@@ -25,24 +25,6 @@ using namespace gsl;
 //
 // VirtualWebInquiry线程。通用网络读取线程
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebData); // 此线程返回值为1
-// 读取新浪实时数据线程。网址：http://hq.sinajs.cn/list=
-//UINT ThreadReadSinaRTData(not_null<CSinaRTWebInquiry*> pSinaRTWebData);    // 此工作线程返回值为10，参数为pSinaWebRTData
-// 读取腾讯实时数据线程。网址：http://qt.gtimg.cn/q=
-//UINT ThreadReadTengxunRTData(not_null<CTengxunRTWebInquiry*> pTengxunRTWebData);    // 此工作线程返回值为2，参数为pTengxunWebRTData
-// 读取网易实时数据线程，网址：http://api.money.126.net/data/feed/
-//UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData); // 此线程返回值为3，参数为pNeteaseWebRTData
-// 读取网易日线历史数据线程, pParam为调用此线程的变量的指针。网址：http://quotes.money.163.com/service/chddata.html?code=
-//UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
-// 读取crweber.com网站上的油运指数线程。网址：http://www.crweber.com
-//UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
-// 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
-//UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
-// 读取Finnhub.io网络数据线程。 网址：https://finnhub.io/api/v1/
-//UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
-// 读取api.tiingo.com.网址：https://api.tiingo.com/
-//UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pTiingoWebData); // 此工作线程的返回值为8
-// 读取quandl
-//UINT ThreadReadQuandlData(not_null<CQuandlWebInquiry*> pQuandlWebData); // 此工作线程的返回值为9
 
 // 数据库处理任务
 

@@ -47,7 +47,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文�
 	ProjectSection(SolutionItems) = preProject
 		StockAnalysis\source\NetError.txt = StockAnalysis\source\NetError.txt
 		propertysheet.props = propertysheet.props
-		StockAanlysis.props = StockAanlysis.props
 		..\..\..\..\..\StockAnalysis\SystemConfigeration.json = ..\..\..\..\..\StockAnalysis\SystemConfigeration.json
 	EndProjectSection
 EndProject

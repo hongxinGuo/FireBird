@@ -840,6 +840,7 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 //
 // 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
 // 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
+// 从第22个字符开始至倒数第3个字符结束，为json制式的文件。采用json解析器去解析即可。
 //
 // 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
 //

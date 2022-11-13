@@ -13,18 +13,6 @@
     <Filter Include="头文件\网络数据提取器">
       <UniqueIdentifier>{981ca3e0-3ae5-4c79-8fc8-0ea6f8debf62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\World Market">
-      <UniqueIdentifier>{9f06f5c2-d029-4368-811d-72c29bb47e61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\World Market\类型">
-      <UniqueIdentifier>{c313669d-8363-4057-bf49-9b6900547071}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Market">
-      <UniqueIdentifier>{e2dc640b-5f01-4c76-9fac-2b03e454382b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Market\基础数据类">
-      <UniqueIdentifier>{216e664f-2899-404d-a8e5-581d05a0883a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件">
       <UniqueIdentifier>{4663b185-3a9c-45e2-a0f2-aef45b8b19d8}</UniqueIdentifier>
     </Filter>
@@ -36,24 +24,6 @@
     </Filter>
     <Filter Include="源文件\网络数据提取器">
       <UniqueIdentifier>{3981220c-4662-435a-a721-45d95b4d2dcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\China Market">
-      <UniqueIdentifier>{8a803185-2520-4215-bcf0-1d461de24aec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\China Market\工作线程">
-      <UniqueIdentifier>{69cf5cfc-0d97-422d-a244-b1673436baee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\China Market\基础数据类">
-      <UniqueIdentifier>{c5eb2e9c-3344-415a-8fd7-bb3cc7e85426}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\World Market">
-      <UniqueIdentifier>{51cfe0a3-c9aa-4c41-bee2-bf50ca399d2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\World Market\工作线程">
-      <UniqueIdentifier>{5a0d4619-7510-4feb-a30e-9bbfda47f02c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\World Market\类型">
-      <UniqueIdentifier>{c7c8d26e-0cb2-4560-ad3d-e714a7b6bb46}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Factory-Product">
       <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
@@ -87,9 +57,6 @@
     </Filter>
     <Filter Include="头文件\Template">
       <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\工作线程">
-      <UniqueIdentifier>{005a6b40-baa6-4d29-9184-49b4931f38cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\命名声明">
       <UniqueIdentifier>{acdd2f2c-14a6-4293-b212-e6295a355a6f}</UniqueIdentifier>
@@ -130,9 +97,6 @@
     <Filter Include="头文件\Data container\Choiced">
       <UniqueIdentifier>{237ef972-1915-4cf5-a62b-f1fef65ddc84}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Data container\WebSocket">
-      <UniqueIdentifier>{d5b8aca2-d6cf-4bc3-a0f4-d2d41140edc1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Data container\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
@@ -150,9 +114,6 @@
     </Filter>
     <Filter Include="源文件\Data container\Choiced">
       <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Data container\WebSocket">
-      <UniqueIdentifier>{96a3150a-ffc4-4080-a5ea-e8c3b885ad89}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Data container\China Market">
       <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
@@ -181,12 +142,6 @@
     <Filter Include="头文件\WebInquiry">
       <UniqueIdentifier>{d24c6780-283a-4207-99d5-eb0ab25d03b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\工作线程\ChinaMarket">
-      <UniqueIdentifier>{6b4efd52-36ca-4adf-9943-5db279c2bc8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\工作线程\WorldMarket">
-      <UniqueIdentifier>{7e0e5cf0-8fd5-403f-acad-109945b23a2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Data type">
       <UniqueIdentifier>{ca250c18-8fb5-4b17-a070-2764d5a0bd5d}</UniqueIdentifier>
     </Filter>
@@ -195,6 +150,45 @@
     </Filter>
     <Filter Include="头文件\Data type\WorldMarket">
       <UniqueIdentifier>{2924d55e-40dc-4b9c-bfcf-afa3b5c333f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Type">
+      <UniqueIdentifier>{b294b92d-0cb6-4f5b-8947-5d49ad7f6ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Working thread">
+      <UniqueIdentifier>{10b8cd5c-c7af-4a74-8cba-19c0853276d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Working thread\China market">
+      <UniqueIdentifier>{bd52023c-87e1-4db2-adb7-37c22efb81d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Working thread\America market">
+      <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Type">
+      <UniqueIdentifier>{70d8ca58-0e4f-43e4-834b-f64ff16e361d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Type\China market">
+      <UniqueIdentifier>{fe52d73c-aa6c-4cfd-b623-099b2983c084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Type\America market">
+      <UniqueIdentifier>{79e1e93a-7b63-4191-9da5-231d14886c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Type\China market">
+      <UniqueIdentifier>{2452158e-07ba-4983-838a-2e482eb7aada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Type\America market">
+      <UniqueIdentifier>{89320398-5e1a-480c-ba8a-528c209f1cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\WebSocket">
+      <UniqueIdentifier>{4770675b-0e3b-4450-9a7f-a04e94192386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\WebSocket">
+      <UniqueIdentifier>{341d2226-0fda-4739-8404-5796deb51dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Market">
+      <UniqueIdentifier>{e2dc640b-5f01-4c76-9fac-2b03e454382b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Market">
+      <UniqueIdentifier>{8a803185-2520-4215-bcf0-1d461de24aec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -237,66 +231,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h">
-      <Filter>头文件\World Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h">
-      <Filter>头文件\World Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h">
-      <Filter>头文件\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
-      <Filter>头文件\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Guadan.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DayLine.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\OneDeal.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WebRTData.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WeekLine.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
@@ -308,9 +242,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
       <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h">
-      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h">
       <Filter>头文件\辅助类和函数</Filter>
@@ -447,9 +378,6 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.h">
       <Filter>头文件\Virtual Class</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
@@ -564,23 +492,8 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h">
-      <Filter>头文件\Data container\WebSocket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.h">
-      <Filter>头文件\Data container\WebSocket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.h">
-      <Filter>头文件\Data container\WebSocket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.h">
-      <Filter>头文件\Data container\WebSocket</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.h">
-      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoCrypto.h">
       <Filter>头文件\database\WorldMarket</Filter>
@@ -623,9 +536,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.h">
-      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.h">
       <Filter>头文件\database\WorldMarket</Filter>
@@ -678,9 +588,6 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderSentiment.h">
-      <Filter>头文件\World Market\类型</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSentiment.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
@@ -704,9 +611,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.h">
-      <Filter>头文件\World Market\类型</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.h">
       <Filter>头文件\database\WorldMarket</Filter>
@@ -750,6 +654,91 @@
     <ClInclude Include="..\StockAnalysis\source\Thread.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\DayLine.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\Guadan.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\NeteaseDayLineWebData.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\OneDeal.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WebData.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WebRTData.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WeekLine.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\Country.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\EPSSurprise.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubCompanyNews.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubCryptoSymbol.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubForexSymbol.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubStockBasicFinancial.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubStockExchange.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\InsiderSentiment.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\InsiderTransaction.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\NaicsIndustry.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\SICIndustry.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoCryptoSymbol.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoIndustry.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoStock.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\StockSection.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.h">
+      <Filter>头文件\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h">
+      <Filter>头文件\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.h">
+      <Filter>头文件\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.h">
+      <Filter>头文件\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -762,9 +751,6 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp">
@@ -788,147 +774,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp">
-      <Filter>源文件\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp">
-      <Filter>源文件\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Guadan.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DayLine.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
-      <Filter>源文件\World Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
-      <Filter>源文件\World Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp">
       <Filter>源文件\Virtual Class</Filter>
     </ClCompile>
@@ -940,18 +785,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoExchangeDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoSymbolDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -1033,9 +866,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp">
       <Filter>源文件\Virtual Class</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\FinnhubFactory.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
@@ -1136,32 +966,14 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp">
       <Filter>源文件\Data container\Choiced</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp">
-      <Filter>源文件\Data container\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp">
-      <Filter>源文件\Data container\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.cpp">
-      <Filter>源文件\Data container\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp">
-      <Filter>源文件\Data container\WebSocket</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoCrypto.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoCryptoDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp">
       <Filter>源文件\Virtual Class</Filter>
@@ -1193,23 +1005,11 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStockDayLine.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadParseRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateBasicFinancialDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
@@ -1244,14 +1044,8 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderSentment.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSemtiment.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderSentimentDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\InfoReport.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -1271,14 +1065,8 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyNews.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.cpp">
-      <Filter>源文件\World Market\类型</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCompanyNewsDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp">
       <Filter>源文件\System</Filter>
@@ -1307,6 +1095,207 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp">
       <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildDayLineRS.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLine.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLineRS.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadDayLine.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadWeekLine.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadMaintainDayLineDB.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadParseRTData.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadProcessCurrentTradeDayStock.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveActiveStockCode.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveDayLine.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveRTData.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveTempRTData.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadUpdateStockCodeDB.cpp">
+      <Filter>源文件\Working thread\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCountryList.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoDayLineDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoExchangeDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoSymbolDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateDayLineStartEndDate.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateEconomicCalendarDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateEPSSurpriseDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexDayLineDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexExchangeDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexSymbolDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateInsiderSentimentDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateInsiderTransactionDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateNaicsIndustry.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateSICIndustry.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateStockProfileDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoCryptoDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoIndustry.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoStockDB.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadWorldMarketBackground.cpp">
+      <Filter>源文件\Working thread\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\DayLine.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\Guadan.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\NeteaseDayLineWebData.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\OneDeal.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\Country.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\EPSSurprise.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubCompanyNews.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubCryptoSymbol.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubForexSymbol.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubStockBasicFinancial.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubStockExchange.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\InsiderSentment.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\InsiderTransaction.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\NaicesIndustry.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\SICIndustry.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoCryptoSymbol.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoIndustry.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoStock.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\StockSection.cpp">
+      <Filter>源文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.cpp">
+      <Filter>源文件\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.cpp">
+      <Filter>源文件\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.cpp">
+      <Filter>源文件\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.cpp">
+      <Filter>源文件\WebSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Market\ChinaMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Market\ChinaStock.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Market\WorldMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Market\WorldStock.cpp">
+      <Filter>源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

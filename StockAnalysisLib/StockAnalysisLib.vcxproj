@@ -23,25 +23,8 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.h" />
     <ClInclude Include="..\StockAnalysis\source\ConvertToString.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderSentiment.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\NaicsIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
@@ -51,10 +34,6 @@
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
@@ -73,13 +52,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataForexDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStockDayline.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataNaicsIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataSICIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
@@ -133,7 +108,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h" />
@@ -169,9 +143,11 @@
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\InfoReport.h" />
     <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
-    <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
-    <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h" />
@@ -186,6 +162,29 @@
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\TimeConvert.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\Country.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\EPSSurprise.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubCompanyNews.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubStockBasicFinancial.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\FinnhubStockExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\InsiderSentiment.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\InsiderTransaction.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\NaicsIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\SICIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoCryptoSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoIndustry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\America market\TiingoStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\DayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\Guadan.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\NeteaseDayLineWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\OneDeal.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\StockSection.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\China market\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h" />
@@ -196,9 +195,11 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
@@ -207,8 +208,6 @@
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCompanyNewsDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Disabled</Optimization>
@@ -219,43 +218,6 @@
       <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
       <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</IntrinsicFunctions>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockBasicFinancial.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubStockExchange.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderSentment.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\InsiderTransaction.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\NaicesIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SICIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateBasicFinancialDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoDayLineDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoExchangeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCryptoSymbolDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEconomicCalendarDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLineDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexExchangeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderSentimentDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateInsiderTransactionDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateNaicsIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateSICIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoCryptoDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateTiingoStockDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadWorldMarketBackground.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoIndustry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp" />
@@ -264,24 +226,6 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadParseRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
@@ -299,11 +243,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStockDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoCryptoWebSocket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoForexWebSocket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\VirtualDataSource.cpp" />
@@ -338,7 +278,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.cpp" />
@@ -399,8 +338,10 @@
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableParallelCodeGeneration>
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</EnableParallelCodeGeneration>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Market\ChinaMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Market\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Market\WorldMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Market\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp" />
@@ -410,7 +351,29 @@
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\Country.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\EPSSurprise.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubCompanyNews.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubCryptoSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubStockBasicFinancial.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\FinnhubStockExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\InsiderSentment.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\InsiderTransaction.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\NaicesIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\SICIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\America market\TiingoStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\Guadan.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\NeteaseDayLineWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\OneDeal.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\StockSection.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp" />
@@ -420,28 +383,53 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Disabled</Optimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</WholeProgramOptimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Default</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Neither</FavorSizeOrSpeed>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCountryList.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoExchangeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCryptoSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateDayLineStartEndDate.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateEconomicCalendarDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateEPSSurpriseDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexExchangeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateForexSymbolDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateInsiderSentimentDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateInsiderTransactionDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateNaicsIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateSICIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateStockProfileDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoCryptoDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoIndustry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoStockDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadWorldMarketBackground.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildDayLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadMaintainDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadParseRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadProcessCurrentTradeDayStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveActiveStockCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveTempRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">NotUsing</PrecompiledHeader>
