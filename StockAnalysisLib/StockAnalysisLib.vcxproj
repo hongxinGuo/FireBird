@@ -139,6 +139,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
     <ClInclude Include="..\StockAnalysis\source\InfoReport.h" />
@@ -186,7 +187,6 @@
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.h" />
@@ -195,6 +195,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebInquiry\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h" />
@@ -374,7 +375,6 @@
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp" />
@@ -383,6 +383,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
