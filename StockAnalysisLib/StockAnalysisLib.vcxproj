@@ -35,13 +35,6 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualRecordset.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
@@ -86,6 +79,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualRecordset.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h" />
@@ -149,10 +143,12 @@
     <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Market\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\pch.h" />
+    <ClInclude Include="..\StockAnalysis\source\Stock\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Stock\VirtualStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Stock\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
@@ -183,6 +179,9 @@
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WeekLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\VirtualDataHistoryCandleExtend.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\VirtualHistoryCandleBasic.h" />
+    <ClInclude Include="..\StockAnalysis\source\Type\VirtualHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.h" />
@@ -196,6 +195,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebSocket\VirtualWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\Windows interface\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\source\Windows interface\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysis.h" />
@@ -214,13 +214,6 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\WebRTDataContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
@@ -254,6 +247,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubCompanyNews.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetImplementationDeclare.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.cpp" />
@@ -304,15 +298,17 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Market\ChinaMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Market\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Market\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Market\WorldMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Market\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Stock\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Stock\VirtualStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Stock\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
@@ -340,6 +336,9 @@
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\VirtualDataHistoryCandleExtend.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\VirtualHistoryCandleBasic.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp" />
@@ -353,6 +352,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebSocket\VirtualWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Windows interface\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Windows interface\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysis.cpp" />

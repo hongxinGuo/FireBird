@@ -218,10 +218,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfigeration.UpdateSystem(); // 更新系统参数
 
 	// 此三个要在gl_pWorldMarket前生成
+	ASSERT(gl_pWorldMarket == nullptr);
 	gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 	gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
 	gl_pDataSourceQuandl = make_shared<CVirtualDataSource>();
-	ASSERT(gl_pWorldMarket == nullptr);
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();

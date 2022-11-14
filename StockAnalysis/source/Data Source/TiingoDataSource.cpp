@@ -84,17 +84,17 @@ bool CTiingoDataSource::UpdateStatus(void)
 
 bool CTiingoDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
-	long long llThisTimeTickCount = GetTickCount64();
+	long long llCurrentTickCount = GetTickCount64();
 
-	if (llThisTimeTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketTiingoInquiryTime())) {
-		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) {
+	if (m_pWebInquiry->IsWebError()) {
+		m_pWebInquiry->SetWebError(false);
+		sllLastTimeTickCount += 3000; // 如果出现错误，则延迟5分钟再重新申请。
+	}
+	if (llCurrentTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketTiingoInquiryTime())) {
+		if (!IsInquiring()) {
 			InquireTiingo();
 		}
-		if (IsInquiring()) sllLastTimeTickCount = llThisTimeTickCount;
-		if (m_pWebInquiry->IsWebError()) {
-			m_pWebInquiry->SetWebError(false);
-			sllLastTimeTickCount += 6000; // 如果出现错误，则延迟10分钟再重新申请。
-		}
+		if (IsInquiring()) sllLastTimeTickCount = llCurrentTickCount;
 	}
 	return true;
 }
