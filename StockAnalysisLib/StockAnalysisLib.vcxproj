@@ -19,11 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\StockAnalysis\MainFrm.h" />
-    <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
-    <ClInclude Include="..\StockAnalysis\pch.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
-    <ClInclude Include="..\StockAnalysis\source\ConvertToString.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\CallableFunction.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\ConvertToString.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\InfoReport.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\JsonParse.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\RSReference.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
@@ -108,7 +117,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\CallableFunction.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
@@ -141,19 +149,12 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
-    <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h" />
-    <ClInclude Include="..\StockAnalysis\source\InfoReport.h" />
-    <ClInclude Include="..\StockAnalysis\source\JsonParse.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
-    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\RSReference.h" />
-    <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h" />
-    <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
-    <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h" />
+    <ClInclude Include="..\StockAnalysis\source\pch.h" />
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
@@ -161,8 +162,6 @@
     <ClInclude Include="..\StockAnalysis\source\System\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
-    <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
-    <ClInclude Include="..\StockAnalysis\source\TimeConvert.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\America market\Country.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\America market\EPSSurprise.h" />
@@ -186,7 +185,6 @@
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Type\China market\WeekLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.h" />
@@ -196,29 +194,28 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\WebInquirer.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.h" />
-    <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
-    <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
-    <ClInclude Include="..\StockAnalysis\StockAnalysisView.h" />
-    <ClInclude Include="..\StockAnalysis\targetver.h" />
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\MainFrm.h" />
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\OutputWnd.h" />
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysis.h" />
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysisDoc.h" />
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysisView.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
-    <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Disabled</Optimization>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</IntrinsicFunctions>
-    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\CallableFunction.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\ConvertToString.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\InfoReport.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\JsonParse.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualDataHistoryCandleExtend.cpp" />
@@ -226,7 +223,6 @@
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualRecordset.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualWebSocket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
@@ -309,49 +305,20 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\HighPerformanceCounter.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\InfoReport.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\JsonParse.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">MaxSpeed</Optimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">true</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Speed</FavorSizeOrSpeed>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Default</BasicRuntimeChecks>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">NotUsing</PrecompiledHeader>
-      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
-      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">ProgramDatabase</DebugInformationFormat>
-      <SupportJustMyCode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</SupportJustMyCode>
-      <SupportJustMyCode Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">true</SupportJustMyCode>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</FunctionLevelLinking>
-      <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">true</FunctionLevelLinking>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">true</WholeProgramOptimization>
-      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableParallelCodeGeneration>
-      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">false</EnableParallelCodeGeneration>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Market\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Market\ChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Market\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Market\WorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\America market\Country.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\America market\EPSSurprise.cpp" />
@@ -384,17 +351,15 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\WebInquirer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\MainFrm.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\OutputWnd.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysis.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysisDoc.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysisView.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp" />
@@ -431,14 +396,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='D-Asan|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R-Asan|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
-    <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">

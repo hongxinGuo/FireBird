@@ -4,20 +4,8 @@
     <Filter Include="头文件">
       <UniqueIdentifier>{3a8a3fb9-f8ec-418b-a620-00520805fcbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\辅助类和函数">
-      <UniqueIdentifier>{20a3bb10-5dc0-40f6-a95b-eb54382daaeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Windows界面">
-      <UniqueIdentifier>{1fe83dfa-39e1-44e3-9183-c0796652af23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件">
       <UniqueIdentifier>{4663b185-3a9c-45e2-a0f2-aef45b8b19d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\辅助类和函数">
-      <UniqueIdentifier>{02663a33-ff82-44e9-9b6b-033d545e007d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\windows界面">
-      <UniqueIdentifier>{de9fbc39-40f7-4ea7-aed5-2e6802298abd}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Factory-Product">
       <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
@@ -175,43 +163,22 @@
     <Filter Include="头文件\Web inquiry">
       <UniqueIdentifier>{d24c6780-283a-4207-99d5-eb0ab25d03b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Accessory">
+      <UniqueIdentifier>{41a95767-0fae-4bdb-9deb-a148393038c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Accessory">
+      <UniqueIdentifier>{7f85d622-7785-44a6-b36a-041722b580ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Windows interface">
+      <UniqueIdentifier>{1fe83dfa-39e1-44e3-9183-c0796652af23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\windows interface">
+      <UniqueIdentifier>{de9fbc39-40f7-4ea7-aed5-2e6802298abd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ConvertToString.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WebData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Semaphore.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\MainFrm.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\OutputWnd.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\StockAnalysisView.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\targetver.h">
-      <Filter>头文件\Windows界面</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h">
       <Filter>头文件\Virtual Class</Filter>
@@ -221,12 +188,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualStock.h">
       <Filter>头文件\Virtual Class</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\StockAnalysis.h">
-      <Filter>头文件\Windows界面</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\CallableFunction.h">
-      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h">
       <Filter>头文件\database\ChinaMarket</Filter>
@@ -528,12 +489,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\JsonParse.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\HighPerformanceCounter.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
       <Filter>头文件\命名声明</Filter>
     </ClInclude>
@@ -558,26 +513,11 @@
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\RSReference.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\TimeConvert.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSentiment.h">
       <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\InfoReport.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\StockCodeConverter.h">
-      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h">
       <Filter>头文件\Web Data Source\WorldMarket</Filter>
@@ -599,9 +539,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h">
       <Filter>头文件\System\finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SaveAndLoad.h">
-      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.h">
       <Filter>头文件\Web inquiry</Filter>
@@ -717,47 +654,85 @@
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoIEXWebSocket.h">
       <Filter>头文件\WebSocket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\WebInquirer.h">
       <Filter>头文件\Web inquiry</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\CallableFunction.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\ConvertToString.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\InfoReport.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\JsonParse.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\RSReference.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\Semaphore.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\MainFrm.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\OutputWnd.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysisDoc.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysisView.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Windows interface\StockAnalysis.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ConvertToString.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\MainFrm.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\OutputWnd.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp">
-      <Filter>源文件\windows界面</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.cpp">
       <Filter>源文件\Virtual Class</Filter>
@@ -767,12 +742,6 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Base Class\VirtualStock.cpp">
       <Filter>源文件\Virtual Class</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
-      <Filter>源文件\windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\CallableFunction.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetOption.cpp">
       <Filter>源文件\database\ChinaMarket</Filter>
@@ -1002,12 +971,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\JsonParse.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\HighPerformanceCounter.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\VirtualDataSource.cpp">
       <Filter>源文件\Web Data Source</Filter>
     </ClCompile>
@@ -1023,20 +986,11 @@
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\TimeConvert.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyInsiderSentiment.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\WorldMarket\SetInsiderSemtiment.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\InfoReport.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\StockCodeConverter.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp">
       <Filter>源文件\Web Data Source\WorldMarket</Filter>
@@ -1056,7 +1010,6 @@
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SaveAndLoad.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp">
       <Filter>源文件\WebInquiry</Filter>
     </ClCompile>
@@ -1284,6 +1237,57 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\WebInquirer.cpp">
       <Filter>源文件\WebInquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\CallableFunction.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\ConvertToString.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\InfoReport.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\JsonParse.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\WebRTDataContainer.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\MainFrm.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\OutputWnd.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysisDoc.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysisView.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\pch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Windows interface\StockAnalysis.cpp">
+      <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

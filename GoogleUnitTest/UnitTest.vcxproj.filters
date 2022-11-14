@@ -357,9 +357,6 @@
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Test源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadCalculateRSTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
@@ -569,6 +566,9 @@
     </ClCompile>
     <ClCompile Include="FinnhubProductTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\pch.cpp">
+      <Filter>Test源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

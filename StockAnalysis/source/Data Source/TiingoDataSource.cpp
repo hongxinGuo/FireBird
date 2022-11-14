@@ -83,16 +83,17 @@ bool CTiingoDataSource::UpdateStatus(void)
 }
 
 bool CTiingoDataSource::Inquire(long lCurrentTime) {
-	static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
+	static long long sllLastTimeTickCount = 0;
+	long long llThisTimeTickCount = GetTickCount64();
 
-	if (--s_iCountTiingoLimit < 0) {
-		if (!IsInquiring()) {
+	if (llThisTimeTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketTiingoInquiryTime())) {
+		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) {
 			InquireTiingo();
 		}
-		s_iCountTiingoLimit = gl_systemConfigeration.GetWorldMarketTiingoInquiryTime() / 100;
+		if (IsInquiring()) sllLastTimeTickCount = llThisTimeTickCount;
 		if (m_pWebInquiry->IsWebError()) {
 			m_pWebInquiry->SetWebError(false);
-			s_iCountTiingoLimit = 6000; // 如果出现错误，则每10分钟重新申请一次。
+			sllLastTimeTickCount += 6000; // 如果出现错误，则延迟10分钟再重新申请。
 		}
 	}
 	return true;

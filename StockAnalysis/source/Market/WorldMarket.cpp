@@ -230,10 +230,6 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	// 建立WebSocket连接
 	StartWebSocket();
 
-	if (gl_pFinnhubWebInquiry->IsWebError()) { // finnhub.io有时被屏蔽，故而出现错误时暂停一会儿。每五分钟清除标志一次
-		gl_pFinnhubWebInquiry->SetWebError(false);
-	}
-
 	if (IsCompanyNewsNeedUpdate()) TaskUpdateCompanyNewsDB();
 	if (IsBasicFinancialNeedUpdate())	TaskUpdateBasicFinancialDB();
 	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();

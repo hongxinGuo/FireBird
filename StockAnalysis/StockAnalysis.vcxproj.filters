@@ -54,14 +54,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StockAnalysis.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="StockAnalysis.h">
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="source\Windows interface\StockAnalysis.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\Windows interface\StockAnalysis.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
