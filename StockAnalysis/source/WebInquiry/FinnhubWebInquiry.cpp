@@ -55,6 +55,10 @@ void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 }
 
+/// <summary>
+/// Finnhub.io在顺利读取后，会报告当前系统状态。如果报告的状态码为429时，说明读取频率超速，系统拒绝回答。
+/// </summary>
+/// <param name=""></param>
 void CFinnhubWebInquiry::UpdateStatusAfterReadingWebData(void) {
 	gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
 }

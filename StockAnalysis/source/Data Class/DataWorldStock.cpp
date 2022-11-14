@@ -58,7 +58,9 @@ bool CDataWorldStock::IsCompanyNewsNeedUpdate(void) {
 bool CDataWorldStock::IsBasicFinancialNeedUpdate(void) {
 	const int iTotal = m_vWorldStock.size();
 	for (int i = 0; i < iTotal; i++) {
-		if (m_vWorldStock.at(i)->IsUpdateBasicFinancialDB()) return true;
+		if (m_vWorldStock.at(i)->IsUpdateBasicFinancialDB()) {
+			return true;
+		}
 	}
 	return false;
 }

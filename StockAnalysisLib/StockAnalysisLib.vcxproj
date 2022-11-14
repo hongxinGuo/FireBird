@@ -33,7 +33,6 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\VirtualHistoryCandleBasic.h" />
@@ -153,7 +152,6 @@
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\pch.h" />
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />

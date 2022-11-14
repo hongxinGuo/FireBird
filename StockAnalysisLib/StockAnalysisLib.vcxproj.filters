@@ -40,9 +40,6 @@
     <Filter Include="头文件\Template">
       <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\命名声明">
-      <UniqueIdentifier>{acdd2f2c-14a6-4293-b212-e6295a355a6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\System">
       <UniqueIdentifier>{ea741a88-b3c4-434f-ba47-7a69edbe7a7e}</UniqueIdentifier>
     </Filter>
@@ -489,9 +486,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
-      <Filter>头文件\命名声明</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h">
       <Filter>头文件\Web Data Source</Filter>
     </ClInclude>
@@ -524,9 +518,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h">
       <Filter>头文件\Web Data Source\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubInquiryType.h">
-      <Filter>头文件\命名声明</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhub.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>

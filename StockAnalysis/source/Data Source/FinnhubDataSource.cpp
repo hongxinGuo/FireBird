@@ -154,7 +154,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 	}
 	return true;
 }
-
 /*
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -163,7 +162,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::Inquire(long lCurrentTime) {
-	static long long sllLastTimeTickCount = 0; // 使用GetTickCount64()来确定的版本
 	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
 	if (--s_iCountfinnhubLimit < 0) {
 		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) {
@@ -176,6 +174,7 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 	return true;
 }
 */
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 由系统调度器调度，采用GetTickCount64()来确定当前时间。
