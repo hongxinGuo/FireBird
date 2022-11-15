@@ -193,9 +193,11 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 /// <returns></returns>
 bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 	ASSERT(!m_fCompanyNewsUpdated);
-	if (!IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 7)) { // 每星期更新一次公司新闻
+	if (!IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 6)) { // 每星期更新一次公司新闻
 		m_fCompanyNewsUpdated = true;
 	}
+	else m_fCompanyNewsUpdated = false;
+
 	return m_fCompanyNewsUpdated;
 }
 

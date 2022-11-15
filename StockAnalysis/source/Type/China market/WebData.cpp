@@ -54,13 +54,13 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
-bool CWebData::NoRightToAccess() {
-	string sMessage;
+bool CWebData::NoRightToAccess(string sCode, string sMessage) {
+	string s;
 	ASSERT(m_fParsed);
 	try {
-		sMessage = m_ppt->get<string>(_T("error"));
-		m_strErrorMessage = sMessage.c_str();
-		if (m_strErrorMessage.Compare(_T("\"You don't have access to this resource.\""))) {
+		s = m_ppt->get<string>(sCode);
+		m_strErrorMessage = s.c_str();
+		if (s.compare(sMessage) == 0) {
 			m_fNoRightToAccess = true;
 			return true;
 		}

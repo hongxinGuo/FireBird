@@ -30,9 +30,8 @@ public:
 		else return false;
 	}
 	bool IsVoidData(void) noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
-	bool CheckNoRightToAccess(CWebDataPtr pWebData) {
-		if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
-		else return false;
+	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) {
+		return false;
 	}
 	bool IsNoRightToAccess(void) noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
 

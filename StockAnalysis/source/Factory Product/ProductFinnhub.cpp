@@ -6,6 +6,11 @@
 
 IMPLEMENT_DYNCREATE(CProductFinnhub, CVirtualProductWebData)
 
+bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
+	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
+	else return false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 目前finnhub对其免费账户只提供部分内容数据。为了加速轮询速度，受限制的数据(交易所）将不再申请。

@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(CProductFinnhubStockDayLine, CProductFinnhub)
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
-	m_strClassName = _T("Finnhub company profile concise");
+	m_strClassName = _T("Finnhub stock dayline");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 	m_lIndex = -1;
 }

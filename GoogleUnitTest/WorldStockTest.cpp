@@ -1641,8 +1641,11 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 		stock.SetCompanyNewsUpdateDate(20220101);
 		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220102));
+		stock.SetCompanyNewsUpdated(false);
 		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220107)) << "只有六天";
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220110));
+		stock.SetCompanyNewsUpdated(false);
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
+		stock.SetCompanyNewsUpdated(false);
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220110));
 	}
 }

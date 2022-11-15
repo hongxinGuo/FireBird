@@ -70,8 +70,8 @@ public:
 	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
 	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed(void) noexcept { return m_fParsed; }
-	bool IsVoidJson(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.size() == 2)) return true; else return false; }
-	bool NoRightToAccess(void);
+	bool IsVoidJson(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.compare(_T("{}")) == 0)) return true; else return false; }
+	bool NoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用boost Property tree将数据转换为json格式。
 	bool ParseWithPropertyTree(long lBeginPos = 0, long lEndPos = 0);
