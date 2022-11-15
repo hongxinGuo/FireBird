@@ -173,7 +173,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackBuyAmount(), 0);
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackSellAmount(), 0);
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
-		EXPECT_EQ(gl_pChinaMarket->GetCountDownSlowReadingRTData(), 3);
 		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
 		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 		pStock = gl_pChinaMarket->GetStock(0);

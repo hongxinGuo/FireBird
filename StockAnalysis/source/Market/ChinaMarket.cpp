@@ -146,8 +146,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fCheckActiveStock = true;  //检查当日活跃股票，必须为真。
 
-	m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
-
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 默认状态下不读取腾讯实时行情
 	m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
@@ -614,16 +612,17 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 bool CChinaMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
+	static long long sllLastTimeTickCount = 0;
 	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
-	// 抓取实时数据(新浪、腾讯和网易）。每100毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-	if (--m_iCountDownSlowReadingRTData < 0) {
+	// 抓取实时数据(新浪、腾讯和网易）。每300毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
+	if (GetCurrentTickCount() >= (sllLastTimeTickCount + 300)) {// 每次读取网络数据的时间在100毫秒以内，故延迟300毫秒即可
 		TaskGetRTDataFromWeb();
 		// 解析新浪实时数据的任务移至线程ThreadChinaMarketBackground中，解析网易实时数据的任务由NeteaseWebInquiry负责。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-		if (!m_fFastReceivingRTData && IsSystemReady()) m_iCountDownSlowReadingRTData = 600; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		else m_iCountDownSlowReadingRTData = 2;  // 每次读取网络数据的时间在100毫秒以内，故等待3次（300毫秒左右）。
+		if (!m_fFastReceivingRTData && IsSystemReady()) sllLastTimeTickCount = GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		else sllLastTimeTickCount = GetCurrentTickCount();
 	}
 
 	//根据时间，调度各项定时任务.每秒调度一次

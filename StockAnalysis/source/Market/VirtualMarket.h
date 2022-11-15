@@ -34,6 +34,8 @@ public:
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000); // 将市场时间结构转化为UTC时间
 	long TransferToMarketDate(time_t tUTC = sm_tUTC); // 得到本市场的日期
 
+	long long GetCurrentTickCount(void) noexcept { return m_llTickCount; }
+
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const { return m_strMarketId; }
 	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
@@ -110,6 +112,7 @@ protected:
 	CString m_strMarketId; // 该市场标识字符串
 
 	static time_t sm_tUTC; // 软件运行时的UTC时间。所有的市场都使用同一个UTC时间，故而为静态数据。
+	long long m_llTickCount; // GetTickCount64()函数得到的在启动至当前的计数时间（单位为毫秒）
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate; //本市场的日期

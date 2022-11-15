@@ -22,6 +22,8 @@ CVirtualMarket::CVirtualMarket(void) : CObject() {
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 
+	m_llTickCount = 0;
+
 	m_i10SecondCounter = 9;  // 十秒一次的计数器
 	m_i1MinuteCounter = 59;  // 一分钟一次的计数器
 	m_i5MinuteCounter = 299;  // 五分钟一次的计数器
@@ -90,6 +92,7 @@ long CVirtualMarket::TransferToMarketDate(time_t tUTC) {
 
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
+	m_llTickCount = GetTickCount64();
 
 	m_tmMarket = TransferToMarketTime();
 	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;

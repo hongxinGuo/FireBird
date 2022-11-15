@@ -26,7 +26,7 @@ constexpr int c_10DaysRSStockSetStartPosition = 10; // Ê®ÈÕÏà¶ÔÇ¿¶È¹ÉÆ±¼¯ÆğÊ¼Î»Ö
 class CChinaMarket : public CVirtualMarket {
 public:
 	DECLARE_DYNCREATE(CChinaMarket)
-	CChinaMarket(void);
+		CChinaMarket(void);
 	// Ö»ÄÜÓĞÒ»¸öÊµÀı,²»ÔÊĞí¸³Öµ¡£
 	CChinaMarket(const CChinaMarket&) = delete;
 	CChinaMarket& operator=(const CChinaMarket&) = delete;
@@ -314,7 +314,6 @@ public:
 	bool IsSavingTempData(void) const noexcept { return m_fSaveTempData; }
 	void SetSavingTempData(bool fFlag) noexcept { m_fSaveTempData = fFlag; }
 
-	int GetCountDownSlowReadingRTData(void) const noexcept { return m_iCountDownSlowReadingRTData; }
 	bool IsCurrentEditStockChanged(void) const noexcept { return m_fCurrentEditStockChanged; }
 	void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
@@ -407,7 +406,6 @@ protected:
 	int m_iMarketOpenOffset; // ¿ªÊĞµÄÆ«ÒÆÁ¿¡£ÒÔ·ÖÖÓÎªµ¥Î»£¬0930 = 0£¬1129 = 120£¬ 1300 = 121£¬ 1459 = 240¡£
 
 	bool m_fCurrentEditStockChanged;
-	int m_iCountDownSlowReadingRTData; // ÂıËÙ¶ÁÈ¡ÊµÊ±Êı¾İ¼ÆÊıÆ÷
 	bool m_fMarketOpened; // ÊÇ·ñ¿ªÊĞ
 	bool m_fFastReceivingRTData; // ÊÇ·ñ¿ªÊ¼½ÓÊÕÊµÊ±Êı¾İ
 	bool m_fSaveDayLine; // ½«¶ÁÈ¡µÄÈÕÏß´æÈëÊı¾İ¿â±êÊ¶

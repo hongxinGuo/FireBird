@@ -151,5 +151,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.NoRightToAccess());
+		EXPECT_TRUE(m_id.NoRightToAccess(_T("no error"), _T("You don't have access to this resource."))) << "使用参数的模式，内容与参数相符即可";
+		EXPECT_FALSE(m_id.NoRightToAccess(_T("no error"), _T("You don't have access to that resource."))) << "使用参数的模式，内容与参数不相符：报错";
 	}
 }
