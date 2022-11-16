@@ -70,6 +70,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
 	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+	CDayLineVectorPtr pvDayLineReturn = make_shared<vector<CDayLinePtr>>();
 	ptree pt2, pt3;
 	string s;
 	double dTemp = 0;
@@ -162,6 +163,10 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
-
-	return pvDayLine;
+	for (auto& pDayLine : *pvDayLine) {
+		if (pDayLine->m_time > 0) { // 清除掉交易日期为零的无效数据
+			pvDayLineReturn->push_back(pDayLine);
+		}
+	}
+	return pvDayLineReturn;
 }

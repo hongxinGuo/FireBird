@@ -502,7 +502,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	static int s_iCounterforUpdateStatusBar = 0;
+	static long long s_llCounterforUpdateStatusBar = 0;
 	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
@@ -512,9 +512,9 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	//CMainFrame只执行更新状态任务
 	UpdateStatus();
-	if (--s_iCounterforUpdateStatusBar < 0) {
+	if (gl_pWorldMarket->GetCurrentTickCount() >= (s_llCounterforUpdateStatusBar + 100)) {
 		UpdateInnerSystemStatus();
-		s_iCounterforUpdateStatusBar = 0;
+		s_llCounterforUpdateStatusBar = gl_pWorldMarket->GetCurrentTickCount();
 	}
 
 	if (!gl_systemStatus.IsWorkingMode()) {

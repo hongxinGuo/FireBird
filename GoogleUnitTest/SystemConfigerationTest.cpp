@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeServer"));
 		EXPECT_TRUE(sTemp.compare("sina") == 0);
-		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 200);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
@@ -50,6 +50,10 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(sTemp.compare("&token=c897a00b7cfc2adffc630d23befd5316a4683156") == 0);
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/QuandlToken"));
 		EXPECT_TRUE(sTemp.compare("&api_key=zBMXMyoTyiy_N3pMb3ex") == 0);
+
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
 
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
 		EXPECT_TRUE(jsSystemConfigeration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
@@ -65,7 +69,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_systemConfigeration.GetSavingThreadPermittedNumber(), 4);
 
 		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
-		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200秒";
+		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfigeration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";

@@ -54,7 +54,7 @@ std::string gl_sSystemConfigeration = R"(
 
 "ChinaMarket" : {
 	"RealtimeServer" : "sina",
-	"RealtimeInquiryTime" : 200,
+	"RealtimeInquiryTime" : 250,
 	"SavingStockDayLineThread" : 4,
 	"FastInquiringRealtimeData" : false
 },
@@ -63,7 +63,7 @@ std::string gl_sSystemConfigeration = R"(
 	"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
 	"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
 	"QuandlToken" : "&api_key=zBMXMyoTyiy_N3pMb3ex",
-	"FinnhubInquiryTime" : 1200,
+	"FinnhubInquiryTime" : 1100,
 	"TiingoInquiryTime" : 9000,
 	"QuandlInquiryTime" : 36000
 },
@@ -101,7 +101,7 @@ CSystemConfigeration::CSystemConfigeration() {
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-	m_iChinaMarketRealtimeInquiryTime = 200; // 默认实时数据查询时间间隔为200毫秒
+	m_iChinaMarketRealtimeInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
 	m_bFastInquiringRTData = false; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
@@ -113,7 +113,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_strFinnhubToken = "&token=bv985d748v6ujthqfke0"; // Finnhub token
 	m_strTiingoToken = "&token=c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
 	m_strQuandlToken = "&api_key=zBMXMyoTyiy_N3pMb3ex"; // Quandl token
-	m_iWorldMarketFinnhubInquiryTime = 3600000 / 3600; // 默认每小时最多查询3600次
+	m_iWorldMarketFinnhubInquiryTime = 1100; // 默认每小时最多查询3300次
 	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
 	m_iWorldMarketQuandlInquiryTime = 3600000 / 100; // 默认每小时最多查询100次
 
