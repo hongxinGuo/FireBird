@@ -58,7 +58,7 @@ CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 // Data source
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
-CDataSourcePtr gl_pDataSourceQuandl = nullptr;
+CVirtualDataSourcePtr gl_pDataSourceQuandl = nullptr;
 
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

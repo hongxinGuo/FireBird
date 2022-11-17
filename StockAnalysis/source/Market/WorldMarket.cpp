@@ -145,6 +145,7 @@ bool CWorldMarket::SchedulingTask(void) {
 
 	TaskCheckSystemReady();
 
+	// 调用各Web data source，进行网络数据的接收和处理。
 	ProcessMessageAndReceivedData(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
@@ -257,10 +258,10 @@ bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 ///
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	if (IsPermitResetMarket()) { // 如果允许重置系统
+	if (HaveResetMarketPerssion()) { // 如果允许重置系统
 		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
 			SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-			SetPermitResetMarket(false); // 今天不再允许重启系统。
+			SetResetMarketPerssion(false); // 今天不再允许重启系统。
 			SetSystemReady(false);
 			return true;
 		}

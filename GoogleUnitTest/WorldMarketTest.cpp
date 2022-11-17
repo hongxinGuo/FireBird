@@ -68,22 +68,22 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldMarketTest, TestTaskResetMarket) {
 		gl_pWorldMarket->SetSystemReady(true);
-		gl_pWorldMarket->SetPermitResetMarket(false);
+		gl_pWorldMarket->SetResetMarketPerssion(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(101010)) << "不允许重置系统时，永远返回假";
 
-		gl_pWorldMarket->SetPermitResetMarket(true);
+		gl_pWorldMarket->SetResetMarketPerssion(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170000));
-		gl_pWorldMarket->SetPermitResetMarket(true);
+		gl_pWorldMarket->SetResetMarketPerssion(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170101));
-		gl_pWorldMarket->SetPermitResetMarket(true);
+		gl_pWorldMarket->SetResetMarketPerssion(true);
 		EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170001));
-		gl_pWorldMarket->SetPermitResetMarket(true);
+		gl_pWorldMarket->SetResetMarketPerssion(true);
 		EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170100));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
-		EXPECT_FALSE(gl_pWorldMarket->IsPermitResetMarket());
+		EXPECT_FALSE(gl_pWorldMarket->HaveResetMarketPerssion());
 		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
 
-		gl_pWorldMarket->SetPermitResetMarket(true);
+		gl_pWorldMarket->SetResetMarketPerssion(true);
 		gl_pWorldMarket->SetSystemReady(true);
 		gl_pWorldMarket->SetResetMarket(false);
 	}

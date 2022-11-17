@@ -980,7 +980,7 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-	if (IsPermitResetMarket()) { // 如果允许重置系统
+	if (HaveResetMarketPerssion()) { // 如果允许重置系统
 		if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
 			if (!TooManyStockDayLineNeedUpdate()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
 				SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
@@ -993,13 +993,13 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 	// 九点二十五分再次重启系统
-	if (IsPermitResetMarket()) { // 如果允许重置系统
+	if (HaveResetMarketPerssion()) { // 如果允许重置系统
 		if ((lCurrentTime >= 92500)) {
 			if ((lCurrentTime <= 92700) && IsWorkingDay()) { // 交易日九点二十五分再次重启系统
 				SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 				SetSystemReady(false);
 			}
-			SetPermitResetMarket(false); // 今天不再允许重启系统。
+			SetResetMarketPerssion(false); // 今天不再允许重启系统。
 		}
 	}
 	return true;

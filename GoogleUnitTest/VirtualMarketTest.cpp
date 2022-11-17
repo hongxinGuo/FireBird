@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			gl_pVirtualMarket->SetPermitResetMarket(true);
+			gl_pVirtualMarket->SetResetMarketPerssion(true);
 			gl_pVirtualMarket->SetReadyToRun(true);
 			gl_pVirtualMarket->SetResetMarket(true);
 		}
@@ -50,11 +50,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsPermitResetMarket) {
-		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket()) << "PermitResetMarket should be true\n";
-		gl_pVirtualMarket->SetPermitResetMarket(false);
-		EXPECT_FALSE(gl_pVirtualMarket->IsPermitResetMarket());
-		gl_pVirtualMarket->SetPermitResetMarket(true);
-		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket());
+		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPerssion()) << "PermitResetMarket should be true\n";
+		gl_pVirtualMarket->SetResetMarketPerssion(false);
+		EXPECT_FALSE(gl_pVirtualMarket->HaveResetMarketPerssion());
+		gl_pVirtualMarket->SetResetMarketPerssion(true);
+		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPerssion());
 	}
 
 	TEST_F(CVirtualMarketTest, TestMarketReady) {
@@ -348,15 +348,15 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) { // 这个其实是测试的CVirtualMarket类中的函数。
-		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket());
-		gl_pVirtualMarket->SetPermitResetMarket(false);
+		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPerssion());
+		gl_pVirtualMarket->SetResetMarketPerssion(false);
 		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(0);
-		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket());
-		gl_pVirtualMarket->SetPermitResetMarket(false);
+		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPerssion());
+		gl_pVirtualMarket->SetResetMarketPerssion(false);
 		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(1501);
-		EXPECT_FALSE(gl_pVirtualMarket->IsPermitResetMarket());
+		EXPECT_FALSE(gl_pVirtualMarket->HaveResetMarketPerssion());
 		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(1500);
-		EXPECT_TRUE(gl_pVirtualMarket->IsPermitResetMarket());
+		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPerssion());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);
 		gl_systemMessage.PopInformationMessage();

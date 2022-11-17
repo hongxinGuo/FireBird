@@ -73,8 +73,8 @@ public:
 
 	bool IsReadyToRun(void) const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
-	bool IsPermitResetMarket(void) const noexcept { return m_fPermitResetMarket; }
-	void SetPermitResetMarket(bool fFlag) noexcept { m_fPermitResetMarket = fFlag; } // 此函数只用于测试时使用
+	bool HaveResetMarketPerssion(void) const noexcept { return m_fResetMarketPerssion; }
+	void SetResetMarketPerssion(bool fFlag) noexcept { m_fResetMarketPerssion = fFlag; }
 	bool IsResetMarket(void) const noexcept { return m_fResetMarket; }
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
@@ -85,7 +85,7 @@ public:
 	virtual bool PreparingExitMarket(void) { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
-	void StoreDataSource(CDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }
+	void StoreDataSource(CVirtualDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 public:
 	// 测试用函数
@@ -94,9 +94,7 @@ public:
 	void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
 	void __TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
-public:
-	vector<CDataSourcePtr> m_vDataSource;
-
+protected:
 	// Finnhub.io提供的信息
 	CString m_strCode;
 	CString m_strName;
@@ -107,12 +105,13 @@ public:
 	CString m_strCountry;
 	CString m_strSource;
 
-protected:
+	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。（目前CWorldMarket使用这种方式来申请接收处理数据，CChinaMarket尚未使用此方式）。
+
 	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 	CString m_strMarketId; // 该市场标识字符串
 
 	static time_t sm_tUTC; // 软件运行时的UTC时间。所有的市场都使用同一个UTC时间，故而为静态数据。
-	static long long sm_llTickCount; // GetTickCount64()函数得到的在启动至当前的计数时间（单位为毫秒）。所有的市场都是用同一个TickCount。
+	static long long sm_llTickCount; // GetTickCount64()函数得到的在启动至当前的计数时间（单位为毫秒）。所有的市场都使用同一个TickCount。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate; //本市场的日期
@@ -125,15 +124,13 @@ protected:
 
 private:
 	bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
-	bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
+	bool m_fResetMarketPerssion; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
 	bool m_fResetMarket; // 重启系统标识
 
 	int m_i10SecondCounter;  // 十秒一次的计数器
 	int m_i1MinuteCounter;  // 一分钟一次的计数器
 	int m_i5MinuteCounter;  // 五分钟一次的计数器
 	int m_i1HourCounter;  // 一小时一次的计数器
-
-	time_t m_timeLast; // 上次运行时的市场时间
 };
 
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;

@@ -52,6 +52,6 @@ protected:
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 };
 
-typedef shared_ptr<CVirtualDataSource> CDataSourcePtr;
+typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 
-extern CDataSourcePtr gl_pDataSourceQuandl;
+extern CVirtualDataSourcePtr gl_pDataSourceQuandl;

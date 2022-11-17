@@ -11,7 +11,7 @@ long long CVirtualMarket::sm_llTickCount = 0;
 IMPLEMENT_DYNCREATE(CVirtualMarket, CObject)
 
 CVirtualMarket::CVirtualMarket(void) : CObject() {
-	m_fPermitResetMarket = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
+	m_fResetMarketPerssion = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
 	m_fReadyToRun = true;
 	m_fSystemReady = true; // 默认为真
@@ -27,7 +27,6 @@ CVirtualMarket::CVirtualMarket(void) : CObject() {
 	m_i1MinuteCounter = 59;  // 一分钟一次的计数器
 	m_i5MinuteCounter = 299;  // 五分钟一次的计数器
 	m_i1HourCounter = 3599;  // 一小时一次的计数器
-	m_timeLast = 0;
 }
 
 CVirtualMarket::~CVirtualMarket(void) {
@@ -44,13 +43,15 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
+	static time_t stLastTime = 0;
+
 	CalculateTime();
 
-	time_t timeDiffer = GetUTCTime() - m_timeLast;
+	time_t tDiffer = sm_tUTC - stLastTime;
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (timeDiffer > 0) {
-		SchedulingTaskPerSecond(timeDiffer);
-		m_timeLast = GetUTCTime();
+	if (tDiffer > 0) {
+		SchedulingTaskPerSecond(tDiffer);
+		stLastTime = sm_tUTC;
 		return true;
 	}
 	else return false;
@@ -223,8 +224,8 @@ CString CVirtualMarket::GetStringOfMarketDate(void) const {
 
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 	// 午夜过后重置各种标识
-	if (lCurrentTime <= 1500 && !IsPermitResetMarket()) {  // 在零点到零点十五分，重置系统标识
-		m_fPermitResetMarket = true;
+	if (lCurrentTime <= 1500 && !HaveResetMarketPerssion()) {  // 在零点到零点十五分，重置系统标识
+		m_fResetMarketPerssion = true;
 		CString str;
 		str = m_strMarketId + _T("重置系统重置标识");
 		TRACE(_T("%S \n"), str.GetBuffer());
@@ -234,7 +235,6 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
 	const long lCurrentTime = GetMarketTime();
-	//long lCurrentTime2 = GetMarketTime();
 
 	// 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
 	SchedulingTaskPerMinute(lSecond, lCurrentTime);
