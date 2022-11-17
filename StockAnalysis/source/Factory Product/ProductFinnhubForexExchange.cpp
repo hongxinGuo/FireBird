@@ -46,7 +46,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvExchange;
 	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvExchange; }
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvExchange; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvExchange; }
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

@@ -43,10 +43,9 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
-	static time_t stLastTime = 0;
-
 	CalculateTime();
 
+	static time_t stLastTime = 0;
 	time_t tDiffer = sm_tUTC - stLastTime;
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (tDiffer > 0) {

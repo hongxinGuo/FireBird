@@ -32,6 +32,8 @@ public:
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) noexcept { return m_pCurrentProduct; }
 	void SetCurrentInquiry(CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
 
+	bool IsPermitToConcurrentProceed(void) noexcept { return m_fPermitToConcurrentProceed; }
+
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
 	bool IsInquiringAndClearFlag(void) noexcept { const bool fInquiring = m_fInquiring.exchange(false); return fInquiring; }
@@ -47,6 +49,7 @@ protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
+	bool m_fPermitToConcurrentProceed; // 是否允许并行处理接收道德数据。
 	atomic_bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列

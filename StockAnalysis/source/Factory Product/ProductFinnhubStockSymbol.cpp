@@ -101,7 +101,7 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvStock;
 	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvStock; }
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvStock; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvStock; }
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

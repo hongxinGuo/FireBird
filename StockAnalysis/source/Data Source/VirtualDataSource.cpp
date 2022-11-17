@@ -13,6 +13,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fDataReceived = true;
+	m_fPermitToConcurrentProceed = false; // 默认不允许并行处理接收到的数据，工作线程必须在处理完数据后，方可重置Inquiry标识。
 
 	return true;
 }
@@ -79,8 +80,13 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 }
 
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData);
-	pDataSource->SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
-
+	if (pDataSource->IsPermitToConcurrentProceed()) { // 如果允许并行处理数据的话
+		pDataSource->SetInquiring(false); // 允许系统继续申请新的数据，然后再处理接收到的数据
+		pProductWebData->ParseAndStoreWebData(pWebData);
+	}
+	else { // 如果不允许并行处理数据的话，
+		pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
+		pDataSource->SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
+	}
 	return 203;
 }

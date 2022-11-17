@@ -61,7 +61,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderSentiment;
 	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderSentiment; }
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderSentiment; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderSentiment; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("data"));

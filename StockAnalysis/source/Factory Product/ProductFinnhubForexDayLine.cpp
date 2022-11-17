@@ -75,7 +75,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
 	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
 	ppt = pWebData->GetPTree();
 	try {
 		s = ppt->get<string>(_T("s"));

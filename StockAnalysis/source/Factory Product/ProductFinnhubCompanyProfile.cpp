@@ -51,7 +51,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	ASSERT(pWebData->IsJSonContentType());
 	if (pWebData->IsParsed()) {
 		if (pWebData->IsVoidJson()) return true; // ÎŞÊı¾İ
-		if (pWebData->NoRightToAccess()) return true;
+		if (pWebData->CheckNoRightToAccess()) return true;
 		ppt = pWebData->GetPTree();
 		try {
 			s = ppt->get<string>(_T("address"));

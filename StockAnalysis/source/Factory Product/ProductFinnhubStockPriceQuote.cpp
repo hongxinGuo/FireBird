@@ -53,7 +53,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
 	ppt = pWebData->GetPTree();
 	try {
 		dTemp = ptreeGetDouble(*ppt, _T("c"));

@@ -54,7 +54,7 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
-bool CWebData::NoRightToAccess(string sCode, string sMessage) {
+bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	string s;
 	ASSERT(m_fParsed);
 	try {

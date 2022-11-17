@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(CProductFinnhub, CVirtualProductWebData)
 
 bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
-	if (pWebData->NoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return true; }
 	else return false;
 }
 
