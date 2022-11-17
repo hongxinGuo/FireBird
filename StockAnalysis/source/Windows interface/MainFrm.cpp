@@ -511,8 +511,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	SchedulingTask();
 
 	//CMainFrame只执行更新状态任务
-	UpdateStatus();
 	if (gl_pWorldMarket->GetCurrentTickCount() >= (s_llCounterforUpdateStatusBar + 100)) {
+		UpdateStatus();
 		UpdateInnerSystemStatus();
 		s_llCounterforUpdateStatusBar = gl_pWorldMarket->GetCurrentTickCount();
 	}

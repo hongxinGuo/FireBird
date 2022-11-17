@@ -163,8 +163,9 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	// 清除掉交易日期为零的无效数据
 	for (auto& pDayLine : *pvDayLine) {
-		if (pDayLine->m_time > 0) { // 清除掉交易日期为零的无效数据
+		if (pDayLine->m_time > 0) {
 			pvDayLineReturn->push_back(pDayLine);
 		}
 	}

@@ -2075,9 +2075,7 @@ class GTEST_API_ ScopedTrace {
 
   ScopedTrace(const ScopedTrace&) = delete;
   ScopedTrace& operator=(const ScopedTrace&) = delete;
-} GTEST_ATTRIBUTE_UNUSED_;  // A ScopedTrace object does its job in its
-                            // c'tor and d'tor.  Therefore it doesn't
-                            // need to be used otherwise.
+};
 
 // Causes a trace (including the source file path, the current line
 // number, and the given message) to be included in every test failure
@@ -2201,9 +2199,16 @@ constexpr bool StaticAssertTypeEq() noexcept {
 #define TEST_F(test_fixture, test_name) GTEST_TEST_F(test_fixture, test_name)
 #endif
 
-// Returns a path to temporary directory.
-// Tries to determine an appropriate directory for the platform.
+// Returns a path to a temporary directory, which should be writable. It is
+// implementation-dependent whether or not the path is terminated by the
+// directory-separator character.
 GTEST_API_ std::string TempDir();
+
+// Returns a path to a directory that contains ancillary data files that might
+// be used by tests. It is implementation dependent whether or not the path is
+// terminated by the directory-separator character. The directory and the files
+// in it should be considered read-only.
+GTEST_API_ std::string SrcDir();
 
 #ifdef _MSC_VER
 #pragma warning(pop)
