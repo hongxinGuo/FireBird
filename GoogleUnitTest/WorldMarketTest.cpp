@@ -58,7 +58,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			gl_pWorldMarket->SetFinnhubInquiring(false);
+			gl_pDataSourceFinnhub->SetInquiring(false);
 
 			GeneralCheck();
 		}

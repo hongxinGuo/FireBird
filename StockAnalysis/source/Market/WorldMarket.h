@@ -106,11 +106,6 @@ public:
 	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// ¸÷ÖÖ×´Ì¬
-	bool IsFinnhubInquiring(void) noexcept { return gl_pDataSourceFinnhub->IsInquiring(); }
-	void SetFinnhubInquiring(bool fFlag) noexcept { gl_pDataSourceFinnhub->SetInquiring(fFlag); }
-	void SetFinnhubDataReceived(bool fFlag) noexcept { gl_pDataSourceFinnhub->SetDataReceived(fFlag); }
-	bool IsFinnhubDataReceived(void) noexcept { return gl_pDataSourceFinnhub->IsDataReceived(); }
-
 	bool IsTiingoInquiring(void) noexcept { return gl_pDataSourceTiingo->IsInquiring(); }
 	void SetTiingoInquiring(bool fFlag) noexcept { gl_pDataSourceTiingo->SetInquiring(fFlag); }
 	void SetTiingoDataReceived(bool fFlag) noexcept { gl_pDataSourceTiingo->SetDataReceived(fFlag); }

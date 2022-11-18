@@ -10,6 +10,7 @@ using namespace std;
 #include<thread>
 
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
+	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("TengxunRT");

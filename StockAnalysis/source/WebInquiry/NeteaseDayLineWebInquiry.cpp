@@ -12,6 +12,7 @@ using namespace std;
 #include<thread>
 
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
+	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
 	m_strInquiryToken = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strConnectionName = _T("NeteaseDayLine");

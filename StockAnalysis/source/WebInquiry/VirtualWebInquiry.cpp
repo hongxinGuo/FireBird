@@ -43,6 +43,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
+	m_pDataSource = nullptr;
 	if (m_pSession != nullptr) {
 		delete m_pSession;
 		m_pSession = nullptr;

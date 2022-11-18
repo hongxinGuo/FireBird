@@ -11,7 +11,7 @@ using namespace std;
 class CVirtualDataSource : public CObject {
 public:
 	CVirtualDataSource(void);
-	virtual ~CVirtualDataSource(void) {}
+	virtual ~CVirtualDataSource(void);
 
 	virtual bool Reset(void);
 
@@ -21,9 +21,8 @@ public:
 	virtual bool ProcessWebDataReceived(void);
 	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
 
-	void SetWebInquiringPtr(CVirtualWebInquiryPtr p) {
-		m_pWebInquiry = p;
-	}
+	void SetWebInquiringPtr(CVirtualWebInquiryPtr p) noexcept { m_pWebInquiry = p; }
+	CVirtualWebInquiryPtr GetWebInquiryPtr(void) noexcept { return m_pWebInquiry; }
 
 	size_t GetInquiryQueueSize(void) noexcept { return m_qProduct.size(); }
 	void StoreInquiry(CVirtualProductWebDataPtr p) { m_qProduct.push(p); }
@@ -46,7 +45,7 @@ public:
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
 protected:
-	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器
+	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器中也包含一个唯一的Data source，就是本Data source。以确保不会滥用。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 	bool m_fPermitToConcurrentProceed; // 是否允许并行处理接收道德数据。

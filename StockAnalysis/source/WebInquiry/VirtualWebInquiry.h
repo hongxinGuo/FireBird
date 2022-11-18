@@ -9,6 +9,8 @@
 #include"afxinet.h"
 #include"WebData.h"
 
+#include"ClassDeclaration.h"
+
 using namespace std;
 #include<atomic>
 #include<string>
@@ -54,6 +56,9 @@ public:
 	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) { ASSERT(0); } // 将网络上读取到的数据存入本地
 
 	// 以下为实现函数
+	void SetDataSource(CVirtualDataSourcePtr pDataSource) noexcept { m_pDataSource = pDataSource; }
+	CVirtualDataSourcePtr GetDataSource(void) noexcept { return m_pDataSource; }
+
 	void CreateTotalInquiringString(CString strMIddle);
 	CString GetInquiringString(void) const { return m_strInquiry; }
 	void SetInquiringString(CString str) { m_strInquiry = str; }
@@ -101,6 +106,7 @@ public:
 	void __TESTSetBuffer(CString str);
 
 protected:
+	CVirtualDataSourcePtr m_pDataSource;// 数据源。一个查询器中包含一个唯一的Data source，一个Data source也包含一个唯一的查询器。就是本WebInquiry。以确保不会滥用。
 	CInternetSession* m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")

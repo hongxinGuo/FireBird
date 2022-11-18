@@ -10,6 +10,8 @@ using namespace std;
 #include<thread>
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
+	m_pDataSource = nullptr;
+
 	m_strInquiryFunction = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Finnhub");
@@ -52,8 +54,8 @@ bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_pDataSourceFinnhub->GetReceivedDataSize() > 0) gl_pDataSourceFinnhub->GetReceivedData();
-	gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Finnhub数据申请标志。
 }
 
 /// <summary>
@@ -61,9 +63,9 @@ void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 /// </summary>
 /// <param name=""></param>
 void CFinnhubWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
+	m_pDataSource->SetDataReceived(true);// 接收完网络数据后，清除状态。
 }
 
 void CFinnhubWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_pDataSourceFinnhub->StoreReceivedData(pWebDataReceived);
+	m_pDataSource->StoreReceivedData(pWebDataReceived);
 }

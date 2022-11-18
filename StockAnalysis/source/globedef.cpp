@@ -21,6 +21,7 @@
 #include"HighPerformanceCounter.h"
 
 #include"SinaRTDataSource.h"
+#include"TengxunRTDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
@@ -58,6 +59,8 @@ CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com¹ÉÆ±Êý¾Ý
 
 // Data source
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
+CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
+
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CVirtualDataSourcePtr gl_pDataSourceQuandl = nullptr;

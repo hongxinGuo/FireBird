@@ -16,6 +16,7 @@ using namespace std;
 // 下面的是第二个,用于dell240工作机。
 //m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
+	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
 	// finnhub不允许一个账户同时用于两个机器上，故而使用两个账户，看看能否避开速度限制。

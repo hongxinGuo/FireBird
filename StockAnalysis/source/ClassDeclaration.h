@@ -46,10 +46,10 @@ class CNeteaseRTWebInquiry;
 class CSinaRTWebInquiry;
 class CTengxunRTWebInquiry;
 class CNeteaseDayLineWebInquiry;
-class CNeteaseDayLineWebData;
 
 // Web data source
 class CVirtualDataSource;
+typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 
 // Product
 class CVirtualProductWebData;
@@ -58,6 +58,8 @@ typedef shared_ptr<CVirtualProductWebData> CVirtualProductWebDataPtr;
 // Web data
 class CWebData;
 typedef shared_ptr<CWebData> CWebDataPtr;
+
+class CNeteaseDayLineWebData;
 
 // Web RT Data
 class CWebRTData;

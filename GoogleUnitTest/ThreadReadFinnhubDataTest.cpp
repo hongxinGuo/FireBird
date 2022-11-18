@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadFinnhubDataTest, TestThreadReadFinnhubData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pWorldMarket->SetFinnhubDataReceived(false);
+		gl_pDataSourceFinnhub->SetDataReceived(false);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pWorldMarket->SetFinnhubDataReceived(false);
+		gl_pDataSourceFinnhub->SetDataReceived(false);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

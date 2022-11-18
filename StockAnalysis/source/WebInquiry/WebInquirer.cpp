@@ -5,6 +5,7 @@
 #include"WebInquirer.h"
 
 #include"SinaRTDataSource.h"
+#include"TengxunRTDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
@@ -27,16 +28,31 @@ void CWebInquirer::Initialize(void) {
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 
+	// 查询器和数据源要一一对应、互相包含
 	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
+	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
+	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
+	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 
+	// 查询器和数据源要一一对应、互相包含
 	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
+	gl_pFinnhubWebInquiry->SetDataSource(gl_pDataSourceFinnhub);
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
+	gl_pTiingoWebInquiry->SetDataSource(gl_pDataSourceTiingo);
 	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+	gl_pQuandlWebInquiry->SetDataSource(gl_pDataSourceQuandl);
 
 	gl_pWorldMarket->StoreDataSource(gl_pDataSourceFinnhub);
 	gl_pWorldMarket->StoreDataSource(gl_pDataSourceTiingo);
+
+	ASSERT(gl_pSinaRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CSinaRTDataSource)));
+	ASSERT(gl_pTengxunRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CTengxunRTDataSource)));
+
+	ASSERT(gl_pDataSourceFinnhub->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CFinnhubDataSource)));
+	ASSERT(gl_pDataSourceTiingo->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CTiingoDataSource)));
+	//ASSERT(gl_pDataSourceQuandl->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CQuandlDataSource)));
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

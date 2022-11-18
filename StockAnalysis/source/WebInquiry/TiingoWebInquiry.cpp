@@ -10,6 +10,7 @@ using namespace std;
 #include<thread>
 
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
+	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Tiingo");

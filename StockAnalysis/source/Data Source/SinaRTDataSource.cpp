@@ -6,6 +6,7 @@
 #include"ChinaMarket.h"
 
 CSinaRTDataSource::CSinaRTDataSource() {
+	m_pWebInquiry = nullptr;
 	Reset();
 }
 

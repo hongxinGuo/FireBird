@@ -6,6 +6,7 @@
 #include"WorldMarket.h"
 
 CTiingoDataSource::CTiingoDataSource(void) {
+	m_pWebInquiry = nullptr;
 	Reset();
 }
 

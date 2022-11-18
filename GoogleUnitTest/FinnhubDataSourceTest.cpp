@@ -294,7 +294,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->SetSystemReady(true);
 
 		gl_pDataSourceFinnhub->SetDayLineUpdated(false);
-		gl_pWorldMarket->SetFinnhubInquiring(false);
+		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquireRTQuote());
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
 		p = gl_pDataSourceFinnhub->GetInquiry();

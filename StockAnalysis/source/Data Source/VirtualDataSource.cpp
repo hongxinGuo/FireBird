@@ -10,6 +10,10 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	Reset();
 }
 
+CVirtualDataSource::~CVirtualDataSource(void) {
+	m_pWebInquiry = nullptr;
+}
+
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fDataReceived = true;

@@ -15,6 +15,7 @@
 #include"TimeConvert.h"
 
 #include"SinaRTDataSource.h"
+#include"TengxunRTDataSource.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
@@ -90,10 +91,23 @@ namespace StockAnalysisTest {
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
+			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 
 			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
 			gl_pDataSourceQuandl = make_shared<CVirtualDataSource>();
+
+			// 查询器和数据源要一一对应、互相包含
+			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
+			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
+			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
+			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
+			gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
+			gl_pFinnhubWebInquiry->SetDataSource(gl_pDataSourceFinnhub);
+			gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
+			gl_pTiingoWebInquiry->SetDataSource(gl_pDataSourceTiingo);
+			gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+			gl_pQuandlWebInquiry->SetDataSource(gl_pDataSourceQuandl);
 
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();
