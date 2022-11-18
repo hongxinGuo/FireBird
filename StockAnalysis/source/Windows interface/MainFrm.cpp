@@ -18,6 +18,8 @@
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include"SinaRTWebInquiry.h"
 
@@ -223,6 +225,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 此四个要在gl_pChinaMarket前生成
 	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 	gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
+	gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
+	gl_pNeteaseDaylineDataSource = make_shared<CNeteaseDaylineDataSource>();
 
 	// 此三个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);

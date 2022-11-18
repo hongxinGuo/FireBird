@@ -78,8 +78,8 @@ bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 }
 
 void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_pSinaRTDataSource->GetReceivedDataSize() > 0) gl_pSinaRTDataSource->GetReceivedData();
-	gl_pSinaRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 }
 
 /// <summary>
@@ -87,10 +87,9 @@ void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 /// </summary>
 /// <param name=""></param>
 void CSinaRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	gl_pSinaRTDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
+	m_pDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushSinaRTData(pWebDataBeStored);
-	gl_pSinaRTDataSource->StoreReceivedData(pWebDataBeStored);
+	m_pDataSource->StoreReceivedData(pWebDataBeStored);
 }

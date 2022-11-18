@@ -6,6 +6,7 @@
 #include"MockTengxunRTWebInquiry.h"
 
 #include"thread.h"
+#include"TengxunRTDataSource.h"
 
 using namespace testing;
 
@@ -27,6 +28,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			TengxunRTWebInquiry.SetDataSource(gl_pTengxunRTDataSource);
 			TengxunRTWebInquiry.SetReadingWebData(true);
 		}
 
@@ -52,9 +54,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&TengxunRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
-		EXPECT_EQ(gl_WebInquirer.TengxunRTDataSize(), 1);
+		EXPECT_EQ(gl_pTengxunRTDataSource->GetReceivedDataSize(), 1);
 
 		// »Ö¸´Ô­×´
-		gl_WebInquirer.PopTengxunRTData();
+		gl_pTengxunRTDataSource->GetReceivedData();
 	}
 }

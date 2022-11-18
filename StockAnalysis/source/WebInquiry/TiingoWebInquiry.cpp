@@ -50,15 +50,15 @@ bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_pDataSourceTiingo->GetReceivedDataSize() > 0) gl_pDataSourceTiingo->GetReceivedData();
-	gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。
+	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("Tiingo工作线程出错"));
 }
 
 void CTiingoWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	gl_pWorldMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
+	m_pDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CTiingoWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_pDataSourceTiingo->StoreReceivedData(pWebDataBeStored);
+	m_pDataSource->StoreReceivedData(pWebDataBeStored);
 }

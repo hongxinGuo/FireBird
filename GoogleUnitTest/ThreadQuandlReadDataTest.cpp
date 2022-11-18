@@ -31,6 +31,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			QuandlWebInquiry.SetDataSource(gl_pDataSourceQuandl);
 			QuandlWebInquiry.SetReadingWebData(true);
 		}
 

@@ -6,6 +6,9 @@
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
+
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
@@ -33,8 +36,14 @@ void CWebInquirer::Initialize(void) {
 	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
 	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
 	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
+	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
+	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource);
+	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
+	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource);
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDaylineDataSource);
 
 	// 查询器和数据源要一一对应、互相包含
 	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
@@ -48,6 +57,8 @@ void CWebInquirer::Initialize(void) {
 	gl_pWorldMarket->StoreDataSource(gl_pDataSourceTiingo);
 
 	ASSERT(gl_pSinaRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CSinaRTDataSource)));
+	ASSERT(gl_pNeteaseRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CNeteaseRTDataSource)));
+	ASSERT(gl_pNeteaseDaylineDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CNeteaseDaylineDataSource)));
 	ASSERT(gl_pTengxunRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CTengxunRTDataSource)));
 
 	ASSERT(gl_pDataSourceFinnhub->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CFinnhubDataSource)));

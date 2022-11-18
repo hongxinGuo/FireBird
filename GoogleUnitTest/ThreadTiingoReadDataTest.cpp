@@ -31,6 +31,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			TiingoWebInquiry.SetDataSource(gl_pDataSourceTiingo);
 			TiingoWebInquiry.SetReadingWebData(true);
 		}
 
@@ -42,7 +43,7 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pWorldMarket->SetTiingoDataReceived(false);
+		gl_pDataSourceTiingo->SetDataReceived(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -55,7 +56,7 @@ namespace StockAnalysisTest {
 		gl_systemMessage.PopErrorMessage();
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pWorldMarket->SetTiingoDataReceived(false);
+		gl_pDataSourceTiingo->SetDataReceived(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

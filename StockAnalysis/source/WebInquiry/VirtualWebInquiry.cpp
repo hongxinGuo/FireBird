@@ -100,6 +100,11 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 	return 1;
 }
 
+void CVirtualWebInquiry::ClearUpIfReadingWebDataFailed(void) {
+	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
+}
+
 void CVirtualWebInquiry::Read(void) {
 	CHighPerformanceCounter counter;
 

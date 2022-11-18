@@ -99,5 +99,5 @@ void CNeteaseRTWebInquiry::ConfigerateSession(void) {
 }
 
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushNeteaseRTData(pWebDataBeStored);
+	m_pDataSource->StoreReceivedData(pWebDataBeStored);
 }

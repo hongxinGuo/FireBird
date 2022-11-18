@@ -74,5 +74,6 @@ bool CTengxunRTWebInquiry::IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 }
 
 void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
+	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	//gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
 }

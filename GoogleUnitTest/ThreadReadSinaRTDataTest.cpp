@@ -4,6 +4,8 @@
 #include"GeneralCheck.h"
 #include"WebInquirer.h"
 
+#include"SinaRTDataSource.h"
+
 #include"MockSinaRTWebInquiry.h"
 
 #include"thread.h"
@@ -28,6 +30,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource);
 			SinaRTWebInquiry.SetReadingWebData(true);
 		}
 
@@ -52,9 +55,9 @@ namespace StockAnalysisTest {
 		SinaRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&SinaRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.SinaRTDataSize(), 1);
-		for (int i = 0; i < 1; i++) {
-			CWebDataPtr pRTData = gl_WebInquirer.PopSinaRTData();
-		}
+		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 1);
+
+		// »Ö¸´Ô­×´
+		CWebDataPtr pRTData = gl_pSinaRTDataSource->GetReceivedData();
 	}
 }

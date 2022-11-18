@@ -16,6 +16,8 @@
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
@@ -92,6 +94,8 @@ namespace StockAnalysisTest {
 
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
+			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
+			gl_pNeteaseDaylineDataSource = make_shared<CNeteaseDaylineDataSource>();
 
 			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
@@ -102,6 +106,10 @@ namespace StockAnalysisTest {
 			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
 			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
+			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
+			gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource);
+			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
+			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource);
 			gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
 			gl_pFinnhubWebInquiry->SetDataSource(gl_pDataSourceFinnhub);
 			gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
@@ -225,6 +233,22 @@ namespace StockAnalysisTest {
 			gl_systemStatus.SetExitingSystem(false);
 			delete gl_pMockMainFrame;
 			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
+
+			// 解除Data source与WebInquiry之间的关联
+			gl_pSinaRTDataSource->SetWebInquiringPtr(nullptr);
+			gl_pSinaRTWebInquiry->SetDataSource(nullptr);
+			gl_pTengxunRTDataSource->SetWebInquiringPtr(nullptr);
+			gl_pTengxunRTWebInquiry->SetDataSource(nullptr);
+			gl_pNeteaseRTDataSource->SetWebInquiringPtr(nullptr);
+			gl_pNeteaseRTWebInquiry->SetDataSource(nullptr);
+			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(nullptr);
+			gl_pNeteaseDayLineWebInquiry->SetDataSource(nullptr);
+			gl_pDataSourceFinnhub->SetWebInquiringPtr(nullptr);
+			gl_pFinnhubWebInquiry->SetDataSource(nullptr);
+			gl_pDataSourceTiingo->SetWebInquiringPtr(nullptr);
+			gl_pTiingoWebInquiry->SetDataSource(nullptr);
+			gl_pDataSourceQuandl->SetWebInquiringPtr(nullptr);
+			gl_pQuandlWebInquiry->SetDataSource(nullptr);
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pSinaRTWebInquiry = nullptr;

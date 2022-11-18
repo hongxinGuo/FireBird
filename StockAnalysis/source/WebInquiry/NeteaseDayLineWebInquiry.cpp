@@ -71,7 +71,7 @@ void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_WebInquirer.PushNeteaseDayLineData(pWebDataBeStored);
+	m_pDataSource->StoreReceivedData(pWebDataBeStored);
 }
 
 /// <summary>

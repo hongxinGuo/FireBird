@@ -2,11 +2,13 @@
 
 #include"ProductTengxunRT.h"
 
+#include"WebInquirer.h"
+
 IMPLEMENT_DYNCREATE(CProductTengxunRT, CVirtualProductWebData)
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiry = _T("https://hq.sinajs.cn/list=");
+	m_strInquiry = _T("http://qt.gtimg.cn/q=");
 }
 
 CString CProductTengxunRT::CreatMessage(void) {
@@ -16,9 +18,8 @@ CString CProductTengxunRT::CreatMessage(void) {
 }
 
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	int i = 0;
-	i++;
-	return false;
+	gl_WebInquirer.PushTengxunRTData(pWebData);
+	return true;
 }
 
 bool CProductTengxunRT::ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {

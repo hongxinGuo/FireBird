@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 #include"WebInquirer.h"
 #include"MockNeteaseRTWebInquiry.h"
+#include"NeteaseRTDataSource.h"
 
 #include"thread.h"
 
@@ -28,6 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			NeteaseRTWebInquiry.SetDataSource(gl_pNeteaseRTDataSource);
 			NeteaseRTWebInquiry.SetReadingWebData(true);
 		}
 
@@ -56,9 +58,9 @@ namespace StockAnalysisTest {
 		NeteaseRTWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_WebInquirer.NeteaseRTDataSize(), 1);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->GetReceivedDataSize(), 1);
 
 		// »Ö¸´Ô­×´
-		gl_WebInquirer.PopNeteaseRTData();
+		gl_pNeteaseRTDataSource->GetReceivedData();
 	}
 }
