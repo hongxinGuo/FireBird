@@ -28,7 +28,6 @@ namespace StockAnalysisTest {
 	extern CMockChinaMarketPtr gl_pMockChinaMarket;
 
 	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
-	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry2;
 	class CMockChinaMarketTest : public ::testing::Test
 	{
 	protected:
@@ -42,8 +41,6 @@ namespace StockAnalysisTest {
 
 			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
 			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
-			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry2, NotNull());
-			s_pMockNeteaseDayLineWebInquiry2 = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry2);
 
 			GeneralCheck();
 		}
@@ -57,7 +54,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			s_pMockNeteaseDayLineWebInquiry = nullptr;
-			s_pMockNeteaseDayLineWebInquiry2 = nullptr;
 
 			GeneralCheck();
 		}
@@ -229,7 +225,6 @@ namespace StockAnalysisTest {
 		gl_pMockChinaMarket->SetSystemReady(true);
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92559);
 		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(0);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, StartReadingThread()).Times(0);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 
 		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(114501);
@@ -237,19 +232,13 @@ namespace StockAnalysisTest {
 			.Times(1)
 			.WillOnce(Return(true))
 			.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, PrepareNextInquiringString())
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
 		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry2, StartReadingThread()).Times(1);
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 		}
-		s_pMockNeteaseDayLineWebInquiry2->SetReadingWebData(false);
 		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
 	}
 

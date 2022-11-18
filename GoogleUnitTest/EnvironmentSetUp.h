@@ -76,7 +76,6 @@ namespace StockAnalysisTest {
 			gl_pTengxunRTWebInquiry = nullptr;
 			gl_pNeteaseRTWebInquiry = nullptr;
 			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pTiingoWebInquiry = nullptr;
@@ -87,7 +86,6 @@ namespace StockAnalysisTest {
 			gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
 			gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
 			gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
-			gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
 			gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
@@ -234,7 +232,7 @@ namespace StockAnalysisTest {
 			delete gl_pMockMainFrame;
 			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
-			// 解除Data source与WebInquiry之间的关联
+			// 解除Data source与WebInquiry之间的关联,这样才能解析各MockWebInquiry的智能指针，以验证Mock object是否正确地解析。
 			gl_pSinaRTDataSource->SetWebInquiringPtr(nullptr);
 			gl_pSinaRTWebInquiry->SetDataSource(nullptr);
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(nullptr);
@@ -255,7 +253,6 @@ namespace StockAnalysisTest {
 			gl_pTengxunRTWebInquiry = nullptr;
 			gl_pNeteaseRTWebInquiry = nullptr;
 			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-			gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pFinnhubWebInquiry = nullptr;
 			gl_pTiingoWebInquiry = nullptr;

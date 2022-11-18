@@ -26,7 +26,6 @@ void CWebInquirer::Initialize(void) {
 	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
 	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
 	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
-	gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
@@ -76,9 +75,6 @@ bool CWebInquirer::GetNeteaseDayLineData(void) {
 	case 4:
 	case 3:
 	case 2:
-		if (!gl_pNeteaseDayLineWebInquiry2->IsReadingWebData()) {
-			gl_pNeteaseDayLineWebInquiry2->GetWebData();
-		}
 	case 1:
 		if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
 			gl_pNeteaseDayLineWebInquiry->GetWebData();
