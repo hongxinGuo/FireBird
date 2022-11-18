@@ -20,6 +20,7 @@
 #include"WebRTDataContainer.h"
 #include"HighPerformanceCounter.h"
 
+#include"SinaRTDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
@@ -56,6 +57,7 @@ CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 
 // Data source
+CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CVirtualDataSourcePtr gl_pDataSourceQuandl = nullptr;

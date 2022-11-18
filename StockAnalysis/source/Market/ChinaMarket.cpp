@@ -617,13 +617,17 @@ bool CChinaMarket::SchedulingTask(void) {
 	const long lCurrentTime = GetMarketTime();
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-	if (GetCurrentTickCount() >= (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRealtimeInquiryTime())) {// 每次读取网络数据的时间在100毫秒以内，故延迟250毫秒(默认值）即可
-		TaskGetRTDataFromWeb();
+	if (GetCurrentTickCount() >= (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {// 每次读取网络数据的时间在100毫秒以内，故延迟250毫秒(默认值）即可
+		//TaskGetRTDataFromWeb();
 		// 解析新浪实时数据的任务移至线程ThreadChinaMarketBackground中，解析网易实时数据的任务由NeteaseWebInquiry负责。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
 		if (!m_fFastReceivingRTData && IsSystemReady()) sllLastTimeTickCount = GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		else sllLastTimeTickCount = GetCurrentTickCount();
 	}
+
+	// 调用各Web data source，进行网络数据的接收和处理。
+	// 这个函数代替了上面TaskGetRTDataFromWeb()的功能。
+	ProcessMessageAndReceivedData(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_lastTimeSchedulingTask) {
@@ -680,6 +684,12 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 		}
 	}
 	return true;
+}
+
+void CChinaMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
+	for (auto& pDataSource : m_vDataSource) {
+		pDataSource->Run(lCurrentTime);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

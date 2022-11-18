@@ -16,6 +16,8 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
+#include"SinaRTDataSource.h"
+
 #include"SinaRTWebInquiry.h"
 
 #include"Thread.h"
@@ -216,6 +218,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	gl_systemConfigeration.LoadDB(); // 装入系统参数
 	gl_systemConfigeration.UpdateSystem(); // 更新系统参数
+
+	// 此四个要在gl_pChinaMarket前生成
+	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 
 	// 此三个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);

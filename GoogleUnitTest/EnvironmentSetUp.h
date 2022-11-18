@@ -14,6 +14,8 @@
 #include"GeneralCheck.h"
 #include"TimeConvert.h"
 
+#include"SinaRTDataSource.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -86,6 +88,8 @@ namespace StockAnalysisTest {
 			gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
 			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
+
+			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 
 			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();

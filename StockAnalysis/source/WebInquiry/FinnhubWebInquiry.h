@@ -32,3 +32,4 @@ protected:
 };
 
 typedef shared_ptr<CFinnhubWebInquiry> CFinnhubWebInquiryPtr;
+extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io÷§»Ø–≈œ¢

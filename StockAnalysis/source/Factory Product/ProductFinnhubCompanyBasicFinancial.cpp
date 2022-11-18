@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 /// Basic financials最新日期的更新，需要判断此基本金融数据是否存在。如果不存在的话，则每次查询后即自动更新日期，这样能够减少无效查询次数；
 /// 如果存在有效数据的话，则为了能够及时提供最新数据，需要检查是否有新数据出现，有的话才更新日期，否则留待明日继续查询。
 ///
-/// 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。
+/// 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。如申请BVDRF,回复的股票代码为MBWS.PA。
 ///
 ///
 bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {

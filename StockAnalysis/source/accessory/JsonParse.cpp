@@ -37,7 +37,7 @@ bool ParseWithPTree(ptree& pt, string& s) {
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-}
+	}
 	return true;
 }
 
@@ -54,7 +54,7 @@ bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
 		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
 #endif
 		return false;
-}
+	}
 	return true;
 }
 
@@ -319,11 +319,39 @@ bool ParseNeteaseRTDataWithPTree(void) {
 			}
 			iTotal = vWebRTData.size();
 		}
+		pWebDataReceived = nullptr;
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
-	pWebDataReceived = nullptr;
 
 	return true;
+}
+
+int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
+	string ss;
+	shared_ptr<ptree> ppt = nullptr;
+	int iTotal = 0;
+	bool fProcess = true;
+	vector<CWebRTDataPtr> vWebRTData;
+	ptree* ppt2 = nullptr;
+
+	fProcess = true;
+	if (!pData->IsParsed()) {
+		if (!pData->CreatePropertyTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			fProcess = false;
+		}
+	}
+	else {
+		ASSERT(pData->GetJSon() == nullptr);
+	}
+	if (fProcess && pData->IsParsed()) {
+		ppt = pData->GetPTree();
+		ppt2 = ppt.get();
+		ParseNeteaseRTData(ppt2, vWebRTData);
+		for (auto& pRTData : vWebRTData) {
+			gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+		}
+	}
+	return vWebRTData.size();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -351,7 +379,6 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 	bool fProcess = true;
 	vector<CWebRTDataPtr> vWebRTData;
 
-	if (lTotalData == 0) return false;
 	for (int i = 0; i < lTotalData; i++) {
 		fProcess = true;
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
@@ -370,10 +397,35 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 			}
 			iTotalActive = vWebRTData.size();
 		}
+		vWebRTData.clear();
 	}
 	gl_pChinaMarket->IncreaseRTDataReceived(iTotalActive);
 
 	return true;
+}
+
+int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
+	string ss;
+	json* pjs = nullptr;
+	bool fProcess = true;
+	vector<CWebRTDataPtr> vWebRTData;
+
+	fProcess = true;
+	if (!pData->IsParsed()) {
+		// 截取网易实时数据时用。
+		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pWebDataReceived->GetDataBuffer());
+		if (!pData->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+			fProcess = false;
+		}
+	}
+	if (fProcess && pData->IsParsed()) {
+		pjs = pData->GetJSon();
+		ParseNeteaseRTData(pjs, vWebRTData);
+		for (auto& pRTData : vWebRTData) {
+			gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
+		}
+	}
+	return vWebRTData.size();
 }
 
 // 将PTree中提取的utf-8字符串转化为CString

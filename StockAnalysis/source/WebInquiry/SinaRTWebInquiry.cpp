@@ -4,6 +4,8 @@
 #include"Thread.h"
 #include"ChinaMarket.h"
 
+#include"SinaRTDataSource.h"
+
 #include "SinaRTWebInquiry.h"
 #include"WebInquirer.h"
 
@@ -73,6 +75,20 @@ bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
+void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
+	while (gl_pSinaRTDataSource->GetReceivedDataSize() > 0) gl_pSinaRTDataSource->GetReceivedData();
+	gl_pSinaRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+}
+
+/// <summary>
+/// Finnhub.io在顺利读取后，会报告当前系统状态。如果报告的状态码为429时，说明读取频率超速，系统拒绝回答。
+/// </summary>
+/// <param name=""></param>
+void CSinaRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
+	gl_pSinaRTDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
+}
+
 void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
 	gl_WebInquirer.PushSinaRTData(pWebDataBeStored);
+	gl_pSinaRTDataSource->StoreReceivedData(pWebDataBeStored);
 }

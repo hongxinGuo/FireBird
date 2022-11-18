@@ -56,7 +56,10 @@ std::string gl_sSystemConfigeration = R"(
 	"RealtimeServer" : "sina",
 	"RealtimeInquiryTime" : 250,
 	"SavingStockDayLineThread" : 4,
-	"FastInquiringRealtimeData" : false
+	"FastInquiringRealtimeData" : false,
+	"SinaRTDataInquiryPerTime" : 850,
+	"NeteaseRTDataInquiryPerTime" : 900,
+	"TengxunRTDataInquiryPerTime" : 900
 },
 
 "WorldMarket" : {
@@ -101,13 +104,16 @@ CSystemConfigeration::CSystemConfigeration() {
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-	m_iChinaMarketRealtimeInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
+	m_iChinaMarketRTDataInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
 	m_bFastInquiringRTData = false; // 主要用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。
 #else
 	m_bFastInquiringRTData = false;
 #endif
+	m_iSinaRTDataInquiryPerTime = 850;
+	m_iNeteaseRTDataInquiryPerTime = 900;
+	m_iTengxunRTDataInquiryPerTime = 900;
 
 	// World Market
 	m_strFinnhubToken = "&token=bv985d748v6ujthqfke0"; // Finnhub token
@@ -192,7 +198,6 @@ void CSystemConfigeration::Update() {
 		// ChinaMarket
 		try {
 			sTemp = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer");// 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-
 			if (sTemp.compare(_T("sina")) == 0) {
 				m_iChinaMarketRealtimeServer = 0;
 			}
@@ -206,11 +211,23 @@ void CSystemConfigeration::Update() {
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iChinaMarketRealtimeInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+			m_iChinaMarketRTDataInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
 			m_iSavingChinaMarketStockDayLineThread = m_systemConfigeration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_iSinaRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_iNeteaseRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_iTengxunRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
@@ -290,12 +307,14 @@ void CSystemConfigeration::Update() {
 }
 
 void CSystemConfigeration::UpdateJson(void) {
+	// system
 	m_systemConfigeration["SystemConfigeration"]["UsingFastCPU"] = m_bUsingFastCPU;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
 	m_systemConfigeration["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
 
+	// China market
 	switch (m_iChinaMarketRealtimeServer) {
 	case 0:
 		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("sina");
@@ -310,9 +329,13 @@ void CSystemConfigeration::UpdateJson(void) {
 		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("sina");
 		break;
 	}
-	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRealtimeInquiryTime;
+	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
 	m_systemConfigeration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
+	m_systemConfigeration["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
+	m_systemConfigeration["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
+	m_systemConfigeration["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
 
+	// World market
 	m_systemConfigeration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	m_systemConfigeration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
 	m_systemConfigeration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
@@ -320,6 +343,7 @@ void CSystemConfigeration::UpdateJson(void) {
 	m_systemConfigeration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
 	m_systemConfigeration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
+	// Web socket
 	m_systemConfigeration["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
 	m_systemConfigeration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
 	m_systemConfigeration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;

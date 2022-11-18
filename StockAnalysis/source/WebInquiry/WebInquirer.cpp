@@ -3,8 +3,12 @@
 #include "ChinaStock.h"
 
 #include"WebInquirer.h"
+
+#include"SinaRTDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+
+#include"ChinaMarket.h"
 #include"WorldMarket.h"
 
 CWebInquirer::CWebInquirer(void) : CObject() {
@@ -22,6 +26,10 @@ void CWebInquirer::Initialize(void) {
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
+
+	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
+
+	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 
 	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);

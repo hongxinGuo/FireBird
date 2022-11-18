@@ -29,8 +29,10 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long l
 
 void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData);
 void ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebData);
-bool ParseNeteaseRTDataWithNlohmannJSon(void);
-bool ParseNeteaseRTDataWithPTree(void);
+bool ParseNeteaseRTDataWithNlohmannJSon(void);// 此函数解析gl_WebInquirer中暂存的所有web Data
+int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 这个解析一个WebData
+bool ParseNeteaseRTDataWithPTree(void); // 此函数解析gl_WebInquirer中暂存的所有web Data
+int ParseNeteaseRTDataWithPTree(CWebDataPtr pData); // 此函数解析一个web Data
 
 // 将PTree中提取的utf-8字符串转化为CString
 CString XferToCString(string s);

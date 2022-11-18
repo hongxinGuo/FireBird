@@ -43,6 +43,9 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(sTemp.compare("sina") == 0);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
 		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
+		EXPECT_EQ(jsSystemConfigeration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
 
 		sTemp = jsSystemConfigeration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
 		EXPECT_TRUE(sTemp.compare("&token=bv985d748v6ujthqfke0") == 0);
@@ -69,8 +72,11 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_systemConfigeration.GetSavingThreadPermittedNumber(), 4);
 
 		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
-		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRealtimeInquiryTime(), 200) << "默认查询时间为200毫秒";
+		EXPECT_EQ(gl_systemConfigeration.GetChinaMarketRTDataInquiryTime(), 200) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfigeration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
+		EXPECT_EQ(gl_systemConfigeration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
+		EXPECT_EQ(gl_systemConfigeration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
+		EXPECT_EQ(gl_systemConfigeration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";
 		EXPECT_EQ(gl_systemConfigeration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";

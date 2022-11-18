@@ -48,8 +48,8 @@ public:
 	// 全局参数
 	int GetChinaMarketRealtimeServer(void) noexcept { return m_iChinaMarketRealtimeServer; }
 	void SetChinaMarketRealtimeServer(int iChinaMarketRealtimeServer) noexcept { m_fUpdate = true; m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer; }
-	int GetChinaMarketRealtimeInquiryTime(void) noexcept { return m_iChinaMarketRealtimeInquiryTime; }
-	void SetChinaMarketRealtimeInquiryTime(int iChinaMarketRealtimeInquiryTime) noexcept { m_fUpdate = true; m_iChinaMarketRealtimeInquiryTime = iChinaMarketRealtimeInquiryTime; }
+	int GetChinaMarketRTDataInquiryTime(void) noexcept { return m_iChinaMarketRTDataInquiryTime; }
+	void SetChinaMarketRTDataInquiryTime(int iChinaMarketRTDataInquiryTime) noexcept { m_fUpdate = true; m_iChinaMarketRTDataInquiryTime = iChinaMarketRTDataInquiryTime; }
 
 	CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
 	CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
@@ -81,6 +81,12 @@ public:
 	void SetSavingChinaMarketStockDayLineThread(int iSavingChinaMarketStockDayLineThread) noexcept { m_fUpdate = true; m_iSavingChinaMarketStockDayLineThread = iSavingChinaMarketStockDayLineThread; }
 	bool IsFastInquiringRTData(void) noexcept { return m_bFastInquiringRTData; }
 	void SetFastInquiringRTData(bool fFlag) noexcept { m_fUpdate = true; m_bFastInquiringRTData = fFlag; }
+	int GetSinaRTDataInquiryPerTime(void) noexcept { return m_iSinaRTDataInquiryPerTime; }
+	void SetSinaRTDataInquiryPerTime(int iNumber) noexcept { m_iSinaRTDataInquiryPerTime = iNumber; }
+	int GetNeteaseRTDataInquiryPerTime(void) noexcept { return m_iNeteaseRTDataInquiryPerTime; }
+	void SetNeteaseRTDataInquiryPerTime(int iNumber) noexcept { m_iNeteaseRTDataInquiryPerTime = iNumber; }
+	int GetTengxunRTDataInquiryPerTime(void) noexcept { return m_iTengxunRTDataInquiryPerTime; }
+	void SetTengxunRTDataInquiryPerTime(int iNumber) noexcept { m_iTengxunRTDataInquiryPerTime = iNumber; }
 
 	// data update rate
 	int GetStockProfileUpdateRate(void) noexcept { return m_iStockProfileUpdateRate; }
@@ -122,7 +128,7 @@ protected:
 
 	// 系统参数
 	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器
-	int m_iChinaMarketRealtimeInquiryTime; // 中国市场实时数据查询间隔时间
+	int m_iChinaMarketRTDataInquiryTime; // 中国市场实时数据查询间隔时间
 
 	int m_iWorldMarketFinnhubInquiryTime; // 每次查询间隔时间，单位为毫秒
 	int m_iWorldMarketTiingoInquiryTime; // 每次查询间隔时间，单位为毫秒
@@ -142,6 +148,9 @@ protected:
 	// ChinaMarket
 	int m_iSavingChinaMarketStockDayLineThread; // 存储日线历史数据时的并发线程数。
 	bool m_bFastInquiringRTData;
+	int m_iSinaRTDataInquiryPerTime; // 新浪实时数据每次查询股票数
+	int m_iNeteaseRTDataInquiryPerTime; // 网易实时数据每次查询股票数
+	int m_iTengxunRTDataInquiryPerTime; // 腾讯实时数据每次查询股票数
 
 	// 网络数据更新频率（以天数记）
 	int m_iStockProfileUpdateRate; // 默认45天更新一次

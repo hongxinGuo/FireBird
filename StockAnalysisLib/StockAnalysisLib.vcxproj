@@ -51,6 +51,10 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\SinaRTDataSource.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h" />
@@ -124,6 +128,10 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductNeteaseDayline.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductNeteaseRT.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductSinaRT.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTengxunRT.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.h" />
@@ -226,6 +234,10 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\SinaRTDataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\TiingoDataSource.cpp" />
@@ -281,6 +293,10 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductNeteaseDayline.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductNeteaseRT.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductSinaRT.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTengxunRT.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />

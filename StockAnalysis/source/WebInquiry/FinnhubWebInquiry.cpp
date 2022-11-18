@@ -22,7 +22,8 @@ CFinnhubWebInquiry::~CFinnhubWebInquiry() {
 }
 
 bool CFinnhubWebInquiry::PrepareNextInquiringString(void) {
-	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
+	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此处解析申请字符串，只是将解析后的字符串组装起来。
+	// 具体的解析由各Product具体执行。
 	CreateTotalInquiringString(_T(""));
 
 	return true;
