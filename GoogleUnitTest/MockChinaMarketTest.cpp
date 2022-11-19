@@ -220,28 +220,6 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsChoiced10RSStrongStockSet()) << _T("休息日不处理");
 	}
 
-	TEST_F(CMockChinaMarketTest, TestTaskGetNeteaseDayLineFromWeb) {
-		EXPECT_TRUE(gl_pMockChinaMarket->IsDayLineNeedUpdate());
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(92559);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
-
-		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(114501);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringString())
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread()).Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskGetNeteaseDayLineFromWeb());
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-
-		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
-		}
-		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-	}
-
 	TEST_F(CMockChinaMarketTest, TestProcessTodayStock) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一

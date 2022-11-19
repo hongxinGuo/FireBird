@@ -63,9 +63,6 @@ public:
 	bool SchedulingTaskPerHour(long lCurrentTime); // 每小时调度一次
 
 	// 各种任务
-	bool TaskGetRTDataFromWeb(void);
-	bool TaskGetNeteaseDayLineFromWeb(void);
-
 	bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);

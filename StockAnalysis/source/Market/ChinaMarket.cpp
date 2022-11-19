@@ -385,23 +385,6 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 	return(lIndex);
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 抓取网易历史日线数据
-// 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
-// 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
-	ASSERT(IsSystemReady());
-	if (IsDayLineNeedUpdate() && IsDummyTime() && (GetMarketTime() > 114500)) {
-		// 抓取日线数据.开始于11:45:01
-	 // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-		return(gl_WebInquirer.GetNeteaseDayLineData());
-	}
-	else return false;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
@@ -618,7 +601,6 @@ bool CChinaMarket::SchedulingTask(void) {
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
 	if (GetCurrentTickCount() >= (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {// 每次读取网络数据的时间在100毫秒以内，故延迟250毫秒(默认值）即可
-		//TaskGetRTDataFromWeb();
 		// 解析新浪实时数据的任务移至线程ThreadChinaMarketBackground中，解析网易实时数据的任务由NeteaseWebInquiry负责。
 		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
 		if (!m_fFastReceivingRTData && IsSystemReady()) sllLastTimeTickCount = GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
@@ -641,48 +623,8 @@ bool CChinaMarket::SchedulingTask(void) {
 			LoadTodayTempDB(GetMarketDate());
 			m_fTodayTempDataLoaded = true;
 		}
-		// 解析腾讯实时数据的任务移至线程ThreadChinaMarketBackground中。
-		//TaskGetNeteaseDayLineFromWeb();
 	}
 
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// 从新浪、网易或者腾讯实时行情数据服务器读取实时数据。使用其中之一即可。
-// 新浪读取时间为200-300毫秒；网易读取时间为500-1000毫秒；腾讯读取时间为2000-3000毫秒。
-// 由于腾讯读取时间超长，故需要多个提取器（8-10个）同时申请方可。
-//
-/////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskGetRTDataFromWeb(void) {
-	switch (gl_systemConfigeration.GetChinaMarketRealtimeServer()) {
-	case 0: // 使用新浪实时数据服务器
-		if (IsUsingSinaRTDataReceiver()) {
-			if (!gl_WebInquirer.IsReadingSinaRTData()) gl_WebInquirer.GetSinaRTData(); //新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-		}
-		break;
-	case 1: // 使用网易实时数据服务器
-		if (IsUsingNeteaseRTDataReceiver()) {
-			// 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。网易的响应时间为50-200毫秒，偶尔有数据错误。
-			if (!gl_WebInquirer.IsReadingNeteaseRTData()) gl_WebInquirer.GetNeteaseRTData();
-		}
-		break;
-	default: // 错误
-		break;
-	}
-
-	if (IsSystemReady()) {
-		// 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
-		if (IsUsingTengxunRTDataReceiver()) {
-			if (m_iCountDownTengxunNumber <= 0) {
-				// 腾讯实时数据接收时间为2000-3000毫秒
-				if (!gl_WebInquirer.IsReadingTengxunRTData()) gl_WebInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。
-				m_iCountDownTengxunNumber = 10; //
-			}
-			else m_iCountDownTengxunNumber--;
-		}
-	}
 	return true;
 }
 
