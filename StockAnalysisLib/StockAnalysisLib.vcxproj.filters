@@ -1049,9 +1049,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadParseRTData.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadProcessCurrentTradeDayStock.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>

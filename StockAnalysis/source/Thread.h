@@ -131,8 +131,6 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 
 // 后台处理线程
 // 处理实时数据等耗时任务的后台线程
-UINT ThreadChinaMarketBackground(void); // 中国市场后台数据处理线程，此线程返回值为201
-
 UINT ThreadWorldMarketBackground(void); // 美国市场后台数据处理线程，此线程返回值为202
-// WebSource ParseAndSaveWebData线程。 这里使用vector来间接传递一个智能指针，防止直接传递智能指针失效的问题。此线程的返回值为203
+// WebSource ParseAndSaveWebData线程。 此线程的返回值为203
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData);

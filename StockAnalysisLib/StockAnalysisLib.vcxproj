@@ -398,7 +398,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadMaintainDayLineDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadParseRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveDayLine.cpp" />

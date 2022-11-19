@@ -59,11 +59,6 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_aRSStrongOption.resize(10);
 
 	Reset();
-
-	if (!gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) {
-		thread thread1(ThreadChinaMarketBackground);
-		thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
