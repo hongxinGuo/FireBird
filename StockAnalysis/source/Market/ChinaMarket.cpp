@@ -642,7 +642,7 @@ bool CChinaMarket::SchedulingTask(void) {
 			m_fTodayTempDataLoaded = true;
 		}
 		// 解析腾讯实时数据的任务移至线程ThreadChinaMarketBackground中。
-		TaskGetNeteaseDayLineFromWeb();
+		//TaskGetNeteaseDayLineFromWeb();
 	}
 
 	return true;

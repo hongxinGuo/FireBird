@@ -16,7 +16,6 @@ using namespace std;
 // 下面的是第二个,用于dell240工作机。
 //m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
 	// finnhub不允许一个账户同时用于两个机器上，故而使用两个账户，看看能否避开速度限制。
@@ -67,15 +66,15 @@ bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
+	while (gl_pDataSourceQuandl->GetReceivedDataSize() > 0) gl_pDataSourceQuandl->GetReceivedData();
+	gl_pDataSourceQuandl->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("Quandl工作线程出错"));
 }
 
 void CQuandlWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	m_pDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
+	gl_pDataSourceQuandl->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CQuandlWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	gl_pDataSourceQuandl->StoreReceivedData(pWebDataBeStored);
 }

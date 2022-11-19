@@ -22,3 +22,4 @@ public:
 };
 
 typedef shared_ptr<CQuandlWebInquiry> CQuandlWebInquiryPtr;
+extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;

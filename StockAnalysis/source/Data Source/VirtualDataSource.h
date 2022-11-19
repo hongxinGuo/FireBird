@@ -44,6 +44,9 @@ public:
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
+	bool IsEnable(void) noexcept { return m_fEnable; }
+	void SetEanble(bool fFlag) noexcept { m_fEnable = fFlag; }
+
 protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器中也包含一个唯一的Data source，就是本Data source。以确保不会滥用。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
@@ -52,6 +55,8 @@ protected:
 	atomic_bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
+
+	bool m_fEnable; // 允许执行标识
 };
 
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;

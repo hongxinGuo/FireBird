@@ -29,7 +29,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			NeteaseRTWebInquiry.SetDataSource(gl_pNeteaseRTDataSource);
 			NeteaseRTWebInquiry.SetReadingWebData(true);
 		}
 

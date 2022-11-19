@@ -26,7 +26,7 @@ bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 	if (m_pWebInquiry->IsWebError()) {
 		m_pWebInquiry->SetWebError(false);
 	}
-	if (gl_pChinaMarket->GetCurrentTickCount() > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime() * 5)) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->GetCurrentTickCount() > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime() * 5)) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}

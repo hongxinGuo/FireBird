@@ -32,37 +32,31 @@ void CWebInquirer::Initialize(void) {
 
 	// 查询器和数据源要一一对应、互相包含
 	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
-	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
 	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
-	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
 	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
-	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource);
 	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
-	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource);
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDaylineDataSource);
+
+	if (gl_systemConfigeration.GetChinaMarketRealtimeServer() == 0) { // 使用新浪实时数据服务器
+		gl_pSinaRTDataSource->SetEanble(true);
+		gl_pNeteaseRTDataSource->SetEanble(false);
+	}
+	else {
+		gl_pSinaRTDataSource->SetEanble(false);
+		gl_pNeteaseRTDataSource->SetEanble(true);
+	}
 
 	// 查询器和数据源要一一对应、互相包含
 	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-	gl_pFinnhubWebInquiry->SetDataSource(gl_pDataSourceFinnhub);
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-	gl_pTiingoWebInquiry->SetDataSource(gl_pDataSourceTiingo);
 	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
-	gl_pQuandlWebInquiry->SetDataSource(gl_pDataSourceQuandl);
 
 	gl_pWorldMarket->StoreDataSource(gl_pDataSourceFinnhub);
 	gl_pWorldMarket->StoreDataSource(gl_pDataSourceTiingo);
-
-	ASSERT(gl_pSinaRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CSinaRTDataSource)));
-	ASSERT(gl_pNeteaseRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CNeteaseRTDataSource)));
-	ASSERT(gl_pNeteaseDaylineDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CNeteaseDaylineDataSource)));
-	ASSERT(gl_pTengxunRTDataSource->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CTengxunRTDataSource)));
-
-	ASSERT(gl_pDataSourceFinnhub->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CFinnhubDataSource)));
-	ASSERT(gl_pDataSourceTiingo->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CTiingoDataSource)));
-	//ASSERT(gl_pDataSourceQuandl->GetWebInquiryPtr()->GetDataSource()->IsKindOf(RUNTIME_CLASS(CQuandlDataSource)));
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

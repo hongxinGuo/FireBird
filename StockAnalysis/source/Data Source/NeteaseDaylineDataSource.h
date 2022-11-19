@@ -12,8 +12,6 @@ public:
 
 	virtual bool Inquire(long lCurrentTime) override final;
 
-	bool InquireRTData(long lCurrentTime);
-
 protected:
 };
 

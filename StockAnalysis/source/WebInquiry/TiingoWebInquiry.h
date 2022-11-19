@@ -22,3 +22,4 @@ public:
 };
 
 typedef shared_ptr<CTiingoWebInquiry> CTiingoWebInquiryPtr;
+extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;

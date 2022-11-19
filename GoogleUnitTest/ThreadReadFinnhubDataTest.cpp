@@ -32,7 +32,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			FinnhubWebInquiry.SetDataSource(gl_pDataSourceFinnhub);
 			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 

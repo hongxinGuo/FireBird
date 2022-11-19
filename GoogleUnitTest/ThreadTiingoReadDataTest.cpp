@@ -31,7 +31,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			TiingoWebInquiry.SetDataSource(gl_pDataSourceTiingo);
 			TiingoWebInquiry.SetReadingWebData(true);
 		}
 

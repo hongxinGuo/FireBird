@@ -20,3 +20,4 @@ public:
 };
 
 typedef shared_ptr<CSinaRTWebInquiry> CSinaRTWebInquiryPtr;
+extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集

@@ -28,7 +28,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			TengxunRTWebInquiry.SetDataSource(gl_pTengxunRTDataSource);
 			TengxunRTWebInquiry.SetReadingWebData(true);
 		}
 

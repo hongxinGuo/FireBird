@@ -10,7 +10,6 @@ using namespace std;
 #include<thread>
 
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Tiingo");
@@ -50,15 +49,15 @@ bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
 }
 
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。
+	while (gl_pDataSourceTiingo->GetReceivedDataSize() > 0) gl_pDataSourceTiingo->GetReceivedData();
+	gl_pDataSourceTiingo->SetInquiring(false); // 当工作线程出现故障时，需要清除Tiingo数据申请标志。
 	gl_systemMessage.PushErrorMessage(_T("Tiingo工作线程出错"));
 }
 
 void CTiingoWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	m_pDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
+	gl_pDataSourceTiingo->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CTiingoWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	gl_pDataSourceTiingo->StoreReceivedData(pWebDataBeStored);
 }

@@ -6,13 +6,14 @@
 #include"ChinaMarket.h"
 
 #include "NeteaseDayLineWebInquiry.h"
+#include"NeteaseDaylineDataSource.h"
+
 #include"WebInquirer.h"
 
 using namespace std;
 #include<thread>
 
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
 	m_strInquiryToken = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strConnectionName = _T("NeteaseDayLine");
@@ -61,6 +62,7 @@ void CNeteaseDayLineWebInquiry::ConfigerateSession(void)
 
 void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
+	gl_pNeteaseDaylineDataSource->SetDataReceived(true);
 }
 
 void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
@@ -71,7 +73,7 @@ void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	gl_pNeteaseDaylineDataSource->StoreReceivedData(pWebDataBeStored);
 }
 
 /// <summary>

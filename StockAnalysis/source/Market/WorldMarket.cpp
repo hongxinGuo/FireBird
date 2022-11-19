@@ -146,7 +146,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	TaskCheckSystemReady();
 
 	// 调用各Web data source，进行网络数据的接收和处理。
-	//ProcessMessageAndReceivedData(lCurrentTime);
+	ProcessMessageAndReceivedData(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_lastTimeSchedulingTask) {

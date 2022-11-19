@@ -21,27 +21,16 @@ bool CNeteaseDaylineDataSource::UpdateStatus(void) {
 	return true;
 }
 
+// 抓取日线数据.开始于11:45:01
+// 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
 bool CNeteaseDaylineDataSource::Inquire(long lCurrentTime) {
-	static long long sllLastTimeTickCount = 0;
-
-	if (m_pWebInquiry->IsWebError()) {
-		m_pWebInquiry->SetWebError(false);
-	}
-	if (gl_pChinaMarket->GetCurrentTickCount() > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
+			CVirtualProductWebDataPtr product = make_shared<CProductNeteaseDayline>();
+			StoreInquiry(product);
+			SetInquiring(true);
+			return true;
 		}
-		if (IsInquiring())	sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount();
 	}
 	return true;
-}
-
-bool CNeteaseDaylineDataSource::InquireRTData(long lCurrentTime) {
-	if (!IsInquiring()) {
-		CVirtualProductWebDataPtr product = make_shared<CProductNeteaseDayline>();
-		StoreInquiry(product);
-		SetInquiring(true);
-		return true;
-	}
-	return false;
 }

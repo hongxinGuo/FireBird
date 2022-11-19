@@ -43,7 +43,6 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
-	m_pDataSource = nullptr;
 	if (m_pSession != nullptr) {
 		delete m_pSession;
 		m_pSession = nullptr;
@@ -98,11 +97,6 @@ void CVirtualWebInquiry::StartReadingThread(void) {
 UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) {
 	pVirtualWebInquiry->Read();
 	return 1;
-}
-
-void CVirtualWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
 }
 
 void CVirtualWebInquiry::Read(void) {

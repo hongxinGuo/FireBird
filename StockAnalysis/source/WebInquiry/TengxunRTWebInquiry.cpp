@@ -4,13 +4,14 @@
 
 #include"Thread.h"
 #include "TengxunRTWebInquiry.h"
+#include"TengxunRTDataSource.h"
+
 #include"WebInquirer.h"
 
 using namespace std;
 #include<thread>
 
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("TengxunRT");
@@ -74,6 +75,14 @@ bool CTengxunRTWebInquiry::IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 }
 
 void CTengxunRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
-	//gl_WebInquirer.PushTengxunRTData(pWebDataBeStored);
+	gl_pTengxunRTDataSource->StoreReceivedData(pWebDataBeStored);
+}
+
+void CTengxunRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
+	while (gl_pTengxunRTDataSource->GetReceivedDataSize() > 0) gl_pTengxunRTDataSource->GetReceivedData();
+	gl_pTengxunRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+}
+
+void CTengxunRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
+	gl_pTengxunRTDataSource->SetDataReceived(true);
 }

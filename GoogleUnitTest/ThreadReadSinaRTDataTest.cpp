@@ -30,7 +30,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource);
 			SinaRTWebInquiry.SetReadingWebData(true);
 		}
 

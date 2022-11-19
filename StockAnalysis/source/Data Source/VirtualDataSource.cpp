@@ -6,6 +6,7 @@
 CVirtualDataSource::CVirtualDataSource(void) {
 	m_pWebInquiry = nullptr;
 	m_pCurrentProduct = nullptr;
+	m_fEnable = true; // 默认为允许执行
 
 	Reset();
 }
@@ -23,6 +24,7 @@ bool CVirtualDataSource::Reset(void) {
 }
 
 void CVirtualDataSource::Run(long lCurrentTime) {
+	if (!m_fEnable) return; // 不允许执行的话，直接返回
 	Inquire(lCurrentTime);
 	if (ProcessWebDataReceived()) { // 先处理接收到的网络数据
 		UpdateStatus();

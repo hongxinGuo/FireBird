@@ -101,19 +101,12 @@ namespace StockAnalysisTest {
 
 			// 查询器和数据源要一一对应、互相包含
 			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
-			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource);
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
-			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource);
 			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
-			gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource);
 			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
-			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource);
 			gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-			gl_pFinnhubWebInquiry->SetDataSource(gl_pDataSourceFinnhub);
 			gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-			gl_pTiingoWebInquiry->SetDataSource(gl_pDataSourceTiingo);
 			gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
-			gl_pQuandlWebInquiry->SetDataSource(gl_pDataSourceQuandl);
 
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();
@@ -231,22 +224,6 @@ namespace StockAnalysisTest {
 			gl_systemStatus.SetExitingSystem(false);
 			delete gl_pMockMainFrame;
 			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
-
-			// 解除Data source与WebInquiry之间的关联,这样才能解析各MockWebInquiry的智能指针，以验证Mock object是否正确地解析。
-			gl_pSinaRTDataSource->SetWebInquiringPtr(nullptr);
-			gl_pSinaRTWebInquiry->SetDataSource(nullptr);
-			gl_pTengxunRTDataSource->SetWebInquiringPtr(nullptr);
-			gl_pTengxunRTWebInquiry->SetDataSource(nullptr);
-			gl_pNeteaseRTDataSource->SetWebInquiringPtr(nullptr);
-			gl_pNeteaseRTWebInquiry->SetDataSource(nullptr);
-			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(nullptr);
-			gl_pNeteaseDayLineWebInquiry->SetDataSource(nullptr);
-			gl_pDataSourceFinnhub->SetWebInquiringPtr(nullptr);
-			gl_pFinnhubWebInquiry->SetDataSource(nullptr);
-			gl_pDataSourceTiingo->SetWebInquiringPtr(nullptr);
-			gl_pTiingoWebInquiry->SetDataSource(nullptr);
-			gl_pDataSourceQuandl->SetWebInquiringPtr(nullptr);
-			gl_pQuandlWebInquiry->SetDataSource(nullptr);
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			gl_pSinaRTWebInquiry = nullptr;

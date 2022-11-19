@@ -30,7 +30,6 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
-			NeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDaylineDataSource);
 		}
 
 		virtual void TearDown(void) override {

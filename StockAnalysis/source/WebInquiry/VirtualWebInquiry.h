@@ -50,14 +50,10 @@ public:
 	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) { /* do nothing in default*/ } // 成功接收后更新系统状态。 默认无动作
-	virtual void ClearUpIfReadingWebDataFailed(void); // 处理失败的接收过程
+	virtual void ClearUpIfReadingWebDataFailed(void) { /* do nothing in default*/ } // 处理失败的接收过程
 	virtual void UpdateStatusAfterReadingWebData(void) { /*default do nothing*/ } // 接收数据后更新系统状态。默认为不做任何事情。
 	virtual void SetTime(CWebDataPtr pData);
 	virtual void StoreWebData(CWebDataPtr pWebDataBeStored) { ASSERT(0); } // 将网络上读取到的数据存入本地
-
-	// 以下为实现函数
-	void SetDataSource(CVirtualDataSourcePtr pDataSource) noexcept { m_pDataSource = pDataSource; }
-	CVirtualDataSourcePtr GetDataSource(void) noexcept { return m_pDataSource; }
 
 	void CreateTotalInquiringString(CString strMIddle);
 	CString GetInquiringString(void) const { return m_strInquiry; }
@@ -106,7 +102,6 @@ public:
 	void __TESTSetBuffer(CString str);
 
 protected:
-	CVirtualDataSourcePtr m_pDataSource;// 数据源。一个查询器中包含一个唯一的Data source，一个Data source也包含一个唯一的查询器。就是本WebInquiry。以确保不会滥用。
 	CInternetSession* m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")

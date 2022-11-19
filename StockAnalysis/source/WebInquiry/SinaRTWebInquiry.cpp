@@ -17,8 +17,6 @@ using namespace std;
 ///
 /// </summary>
 CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
-
 	// 2022年1月20日后，新浪实时数据服务器需要添加报头验证数据，格式为： Referer:https://finance.sina.com.cn
 	// User-Agent部分只用于说明格式,即报头皆以\r\n（CRLF)结束
 	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
@@ -78,8 +76,8 @@ bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 }
 
 void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-	m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+	while (gl_pSinaRTDataSource->GetReceivedDataSize() > 0) gl_pSinaRTDataSource->GetReceivedData();
+	gl_pSinaRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
 }
 
 /// <summary>
@@ -87,9 +85,9 @@ void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 /// </summary>
 /// <param name=""></param>
 void CSinaRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	m_pDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
+	gl_pSinaRTDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
 }
 
 void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	gl_pSinaRTDataSource->StoreReceivedData(pWebDataBeStored);
 }

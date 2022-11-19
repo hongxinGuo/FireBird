@@ -27,6 +27,7 @@
 
 #include"Thread.h"
 #include "NeteaseRTWebInquiry.h"
+#include"NeteaseRTDataSource.h"
 
 #include"WebInquirer.h"
 
@@ -34,7 +35,6 @@ using namespace std;
 #include<thread>
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
-	m_pDataSource = nullptr;
 	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("NeteaseRT");
@@ -98,6 +98,15 @@ void CNeteaseRTWebInquiry::ConfigerateSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 重试一次。
 }
 
+void CNeteaseRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
+	while (gl_pNeteaseRTDataSource->GetReceivedDataSize() > 0) gl_pNeteaseRTDataSource->GetReceivedData();
+	gl_pNeteaseRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
+}
+
+void CNeteaseRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
+	gl_pNeteaseRTDataSource->SetDataReceived(true);
+}
+
 void CNeteaseRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	gl_pNeteaseRTDataSource->StoreReceivedData(pWebDataBeStored);
 }
