@@ -2,7 +2,7 @@
 
 #include"ProductNeteaseDayline.h"
 
-#include"WebInquirer.h"
+#include"JsonParse.h"
 
 IMPLEMENT_DYNCREATE(CProductNeteaseDayline, CVirtualProductWebData)
 
@@ -18,7 +18,7 @@ CString CProductNeteaseDayline::CreatMessage(void) {
 }
 
 bool CProductNeteaseDayline::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushNeteaseDayLineData(pWebData);
+	ParseNeteaseDayLine(pWebData);
 	return true;
 }
 

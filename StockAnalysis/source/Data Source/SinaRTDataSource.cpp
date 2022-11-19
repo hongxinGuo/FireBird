@@ -31,11 +31,13 @@ bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}
-		if (gl_pChinaMarket->IsSystemReady()) {
-			sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		}
-		else {
-			sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount();
+		if (IsInquiring()) {
+			if (gl_pChinaMarket->IsSystemReady()) {
+				sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+			}
+			else {
+				sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount();
+			}
 		}
 	}
 	return true;

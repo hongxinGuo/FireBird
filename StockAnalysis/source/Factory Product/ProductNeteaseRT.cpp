@@ -2,7 +2,8 @@
 
 #include"ProductNeteaseRT.h"
 
-#include"WebInquirer.h"
+#include"JsonParse.h"
+#include"ChinaMarket.h"
 
 IMPLEMENT_DYNCREATE(CProductNeteaseRT, CVirtualProductWebData)
 
@@ -18,7 +19,8 @@ CString CProductNeteaseRT::CreatMessage(void) {
 }
 
 bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushNeteaseRTData(pWebData);
+	int iTotal = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
+	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
 	return true;
 }
 

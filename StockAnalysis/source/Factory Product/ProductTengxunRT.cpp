@@ -2,7 +2,7 @@
 
 #include"ProductTengxunRT.h"
 
-#include"WebInquirer.h"
+#include"JsonParse.h"
 
 IMPLEMENT_DYNCREATE(CProductTengxunRT, CVirtualProductWebData)
 
@@ -18,7 +18,7 @@ CString CProductTengxunRT::CreatMessage(void) {
 }
 
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushTengxunRTData(pWebData);
+	ParseTengxunRTData(pWebData);
 	return true;
 }
 

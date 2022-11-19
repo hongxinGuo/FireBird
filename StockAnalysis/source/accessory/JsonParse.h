@@ -27,10 +27,17 @@ string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字
 
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);
 
+int ParseSinaRTData(CWebDataPtr pWebData);
+void ParseSinaData(void);
+bool ParseTengxunRTData(CWebDataPtr pWebData);
+bool ParseTengxunRTData(void);
+void ParseNeteaseDayLine(CWebDataPtr pWebData);
+bool ParseDayLineGetFromNeteaseServer(void);
+
 void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData);
 void ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebData);
 bool ParseNeteaseRTDataWithNlohmannJSon(void);// 此函数解析gl_WebInquirer中暂存的所有web Data
-int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 这个解析一个WebData
+int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 解析一个WebData
 bool ParseNeteaseRTDataWithPTree(void); // 此函数解析gl_WebInquirer中暂存的所有web Data
 int ParseNeteaseRTDataWithPTree(CWebDataPtr pData); // 此函数解析一个web Data
 

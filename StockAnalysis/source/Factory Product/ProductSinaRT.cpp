@@ -2,7 +2,8 @@
 
 #include"ProductSinaRT.h"
 
-#include"WebInquirer.h"
+#include"JsonParse.h"
+#include"ChinaMarket.h"
 
 IMPLEMENT_DYNCREATE(CProductSinaRT, CVirtualProductWebData)
 
@@ -18,7 +19,8 @@ CString CProductSinaRT::CreatMessage(void) {
 }
 
 bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_WebInquirer.PushSinaRTData(pWebData); // 目前只是将数据存储于暂存队列中。今后将数据的解析处理过程移至此处。
+	int iTotal = ParseSinaRTData(pWebData);
+	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
 	return true;
 }
 
