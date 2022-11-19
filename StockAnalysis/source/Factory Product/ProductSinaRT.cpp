@@ -19,8 +19,7 @@ CString CProductSinaRT::CreatMessage(void) {
 }
 
 bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	int iTotal = ParseSinaRTData(pWebData);
-	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
+	ParseSinaRTData(pWebData);
 	return true;
 }
 

@@ -19,8 +19,7 @@ CString CProductNeteaseRT::CreatMessage(void) {
 }
 
 bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	int iTotal = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
-	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
+	ParseNeteaseRTDataWithNlohmannJSon(pWebData);
 	return true;
 }
 

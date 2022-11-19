@@ -7,6 +7,7 @@
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	m_pWebInquiry = nullptr;
+	m_fPermitToConcurrentProceed = true;// 网易实时数据源采用并行处理模式，在解析数据之前就允许再次申请数据，以保持数据的申请速度。
 	Reset();
 }
 

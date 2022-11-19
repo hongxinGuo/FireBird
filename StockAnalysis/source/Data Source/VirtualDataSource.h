@@ -51,7 +51,7 @@ protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器中也包含一个唯一的Data source，就是本Data source。以确保不会滥用。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	bool m_fPermitToConcurrentProceed; // 是否允许并行处理接收道德数据。
+	bool m_fPermitToConcurrentProceed; // 是否允许并行处理接收到的数据（即在解析数据之前就允许再次申请数据，SinaRT和NeteaseRT采用这种方式，其他数据源不采用）。
 	atomic_bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列

@@ -397,6 +397,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		pRTData = gl_WebRTDataContainer.PopSinaData();
@@ -464,6 +465,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	CString strVolume;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
