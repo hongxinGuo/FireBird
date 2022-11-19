@@ -118,6 +118,7 @@ public:
 
 public:
 	// 系统状态区
+	bool IsFastReceivingRTData(void) noexcept { return m_fFastReceivingRTData; }
 
 	// 初始化市场
 

@@ -585,25 +585,15 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// 大约每100毫秒调度一次
-// 新浪实时数据服务器的读取时间大致为200毫秒，网易的读取时间最大为1000毫秒，故而需要不断地读，无需等待400毫秒了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
-	static long long sllLastTimeTickCount = 0;
 	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-	if (GetCurrentTickCount() >= (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {// 每次读取网络数据的时间在100毫秒以内，故延迟250毫秒(默认值）即可
-		// 解析新浪实时数据的任务移至线程ThreadChinaMarketBackground中，解析网易实时数据的任务由NeteaseWebInquiry负责。
-		// 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-		if (!m_fFastReceivingRTData && IsSystemReady()) sllLastTimeTickCount = GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-		else sllLastTimeTickCount = GetCurrentTickCount();
-	}
-
 	// 调用各Web data source，进行网络数据的接收和处理。
 	// 这个函数代替了上面TaskGetRTDataFromWeb()的功能。
 	ProcessMessageAndReceivedData(lCurrentTime);
