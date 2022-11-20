@@ -1,12 +1,9 @@
 #include"pch.h"
 
-#include"Thread.h"
-#include"ThreadStatus.h"
-
 #include"WorldMarket.h"
 
 #include "QuandlWebInquiry.h"
-#include"WebInquirer.h"
+//#include"QuandlDataSource.h"
 
 using namespace std;
 #include<thread>

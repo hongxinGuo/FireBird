@@ -105,7 +105,7 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
-	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。（目前CWorldMarket使用这种方式来申请接收处理数据，CChinaMarket尚未使用此方式）。
+	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。
 
 	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 	CString m_strMarketId; // 该市场标识字符串

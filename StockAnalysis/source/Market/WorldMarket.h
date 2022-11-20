@@ -31,9 +31,6 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-
 using namespace std;
 #include<map>
 #include<vector>
@@ -177,10 +174,6 @@ public:
 	void AddCountry(CCountryPtr pCountry) { m_dataFinnhubCountry.Add(pCountry); }
 	bool DeleteCountry(CCountryPtr pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
 	CCountryPtr GetCountry(CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
-
-	size_t GetFinnhubInquiryQueueSize(void) noexcept { return gl_pDataSourceFinnhub->GetInquiryQueueSize(); }
-	void StoreFinnhubInquiry(CVirtualProductWebDataPtr p) { gl_pDataSourceFinnhub->StoreInquiry(p); }
-	CVirtualProductWebDataPtr GetFinnhubInquiry(void) { return gl_pDataSourceFinnhub->GetInquiry(); }
 
 	CString GetCurrentFunction(void) { return m_strCurrentFunction; }
 	void SetCurrentFunction(CString str) { m_strCurrentFunction = str; }

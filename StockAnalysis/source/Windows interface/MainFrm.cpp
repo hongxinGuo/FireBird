@@ -21,6 +21,9 @@
 #include"NeteaseRTDataSource.h"
 #include"NeteaseDaylineDataSource.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
 #include"SinaRTWebInquiry.h"
 
 #include"Thread.h"

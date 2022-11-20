@@ -22,14 +22,10 @@
 #include"pch.h"
 
 #include"StockCodeConverter.h"
-#include"ThreadStatus.h"
 #include"ChinaMarket.h"
 
-#include"Thread.h"
 #include "NeteaseRTWebInquiry.h"
 #include"NeteaseRTDataSource.h"
-
-#include"WebInquirer.h"
 
 using namespace std;
 #include<thread>

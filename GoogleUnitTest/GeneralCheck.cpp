@@ -6,6 +6,9 @@ using namespace testing;
 #include"ChinaMarket.h"
 #include"WebInquirer.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
 #include"WebRTDataContainer.h"
 
 #include "GeneralCheck.h"

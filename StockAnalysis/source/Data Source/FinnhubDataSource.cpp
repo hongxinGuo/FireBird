@@ -1,4 +1,3 @@
-#include "FinnhubDataSource.h"
 #include"pch.h"
 
 #include"TimeConvert.h"

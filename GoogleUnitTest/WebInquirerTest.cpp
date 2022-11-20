@@ -64,55 +64,6 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(pWebData2->GetStockCode(), _T("abcdefg"));
 	}
 
-	TEST_F(CWebInquirerTest, TestGetNeteaseDayLineData) {
-		int iSaved = gl_systemConfigeration.GetSavingChinaMarketStockDayLineThread();
-		EXPECT_FALSE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData());
-
-		for (int i = 2; i < 7; i++) {
-			gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(i);
-			EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringString)
-				.Times(1)
-				.WillOnce(Return(true))
-				.RetiresOnSaturation();
-			EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread())
-				.Times(1)
-				.RetiresOnSaturation();
-			EXPECT_TRUE(gl_WebInquirer.GetNeteaseDayLineData());
-			EXPECT_TRUE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-			s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-		}
-
-		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(1);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringString)
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread())
-			.Times(1)
-			.RetiresOnSaturation();
-		EXPECT_TRUE(gl_WebInquirer.GetNeteaseDayLineData());
-		EXPECT_TRUE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-
-		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(7);
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, PrepareNextInquiringString)
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockNeteaseDayLineWebInquiry, StartReadingThread())
-			.Times(1)
-			.RetiresOnSaturation();
-		EXPECT_TRUE(gl_WebInquirer.GetNeteaseDayLineData());
-		EXPECT_TRUE(s_pMockNeteaseDayLineWebInquiry->IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock()) << "采用Mock类，没有真正修改";
-
-		// 恢复原态
-		s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
-		gl_systemConfigeration.SetSavingChinaMarketStockDayLineThread(iSaved);
-	}
-
 	TEST_F(CWebInquirerTest, TestPushPopFinnhubWebSocketData) {
 		shared_ptr<string> pData = make_shared<string>(_T("abc"));
 		shared_ptr<string> pData2;

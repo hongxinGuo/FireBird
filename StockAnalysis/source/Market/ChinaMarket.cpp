@@ -595,7 +595,6 @@ bool CChinaMarket::SchedulingTask(void) {
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
 	// 调用各Web data source，进行网络数据的接收和处理。
-	// 这个函数代替了上面TaskGetRTDataFromWeb()的功能。
 	ProcessMessageAndReceivedData(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次

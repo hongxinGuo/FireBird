@@ -1,10 +1,7 @@
 #include"pch.h"
 
-#include"Thread.h"
-
 #include "TiingoWebInquiry.h"
-#include"WorldMarket.h"
-#include"WebInquirer.h"
+#include"TiingoDataSource.h"
 
 using namespace std;
 #include<thread>

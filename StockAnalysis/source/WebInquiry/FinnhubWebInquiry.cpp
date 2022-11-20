@@ -3,8 +3,7 @@
 #include"Thread.h"
 
 #include "FinnhubWebInquiry.h"
-#include"WorldMarket.h"
-#include"WebInquirer.h"
+#include"FinnhubDataSource.h"
 
 using namespace std;
 #include<thread>

@@ -32,16 +32,6 @@ public:
 	virtual ~CWebInquirer(void);
 
 	void Initialize(void);
-public:
-	// 网络数据查询器
-	bool IsReadingSinaRTData(void) { return gl_pSinaRTWebInquiry->IsReadingWebData(); }
-	bool IsReadingNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->IsReadingWebData(); }
-	bool IsReadingTengxunRTData(void) { return gl_pTengxunRTWebInquiry->IsReadingWebData(); }
-
-	bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
-	bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
-	bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }
-	bool GetNeteaseDayLineData(void);
 
 public:
 	// 新浪实时股票数据。从网站上查询到的原始数据，每个数据都是存储的网站提供的原始数据。下同

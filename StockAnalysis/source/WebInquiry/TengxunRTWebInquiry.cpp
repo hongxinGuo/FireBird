@@ -2,11 +2,8 @@
 
 #include"ChinaMarket.h"
 
-#include"Thread.h"
 #include "TengxunRTWebInquiry.h"
 #include"TengxunRTDataSource.h"
-
-#include"WebInquirer.h"
 
 using namespace std;
 #include<thread>

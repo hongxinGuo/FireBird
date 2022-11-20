@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
-		p = gl_pWorldMarket->GetFinnhubInquiry();
+		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
@@ -476,7 +476,7 @@ namespace StockAnalysisTest {
 		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquireForexExchange());
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
-		p = gl_pWorldMarket->GetFinnhubInquiry();
+		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub forex exchange"));
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
@@ -495,7 +495,7 @@ namespace StockAnalysisTest {
 			gl_pDataSourceFinnhub->SetInquiring(false);
 			EXPECT_TRUE(gl_pDataSourceFinnhub->InquireForexSymbol());
 			EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
-			p = gl_pWorldMarket->GetFinnhubInquiry();
+			p = gl_pDataSourceFinnhub->GetInquiry();
 			EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
 			EXPECT_EQ(p->GetIndex(), i);
 			EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());
@@ -506,7 +506,7 @@ namespace StockAnalysisTest {
 		gl_pDataSourceFinnhub->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->InquireForexSymbol());
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsInquiring());
-		p = gl_pWorldMarket->GetFinnhubInquiry();
+		p = gl_pDataSourceFinnhub->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_TRUE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());

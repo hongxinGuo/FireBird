@@ -38,6 +38,10 @@
 #include "ProductTiingoStockSymbol.h"
 #include"ProductTiingoStockDayLine.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
+
 using namespace std;
 using namespace testing;
 #include<memory>
@@ -93,7 +97,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_EQ(gl_pMockWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+			EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
 
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);

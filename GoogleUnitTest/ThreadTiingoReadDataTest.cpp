@@ -4,6 +4,8 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
 
 #include"WebInquirer.h"
 #include"MockTiingoWebInquiry.h"

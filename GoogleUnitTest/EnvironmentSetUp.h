@@ -38,6 +38,10 @@
 
 #include"WebInquirer.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
+
 using namespace testing;
 
 using namespace std;

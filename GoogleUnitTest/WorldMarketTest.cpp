@@ -33,6 +33,9 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -832,22 +835,6 @@ namespace StockAnalysisTest {
 		}
 		setEconomicCalendar.m_pDatabase->CommitTrans();
 		setEconomicCalendar.Close();
-	}
-
-	TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {
-		CVirtualProductWebDataPtr p = nullptr, p2 = nullptr;
-
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
-		p = make_shared<CProductFinnhubCompanyPeer>();
-		p->SetIndex(2);
-		p->SetMarket(gl_pWorldMarket.get());
-		gl_pWorldMarket->StoreFinnhubInquiry(p);
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
-		p2 = gl_pWorldMarket->GetFinnhubInquiry();
-		EXPECT_TRUE(p2->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
-		EXPECT_EQ(p2->GetIndex(), 2);
-		EXPECT_TRUE(p2->GetMarket()->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {

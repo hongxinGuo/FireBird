@@ -1,7 +1,8 @@
 #include"pch.h"
 
-#include "TiingoDataSource.h"
 #include"FinnhubInquiryType.h"
+
+#include "TiingoDataSource.h"
 
 #include"WorldMarket.h"
 

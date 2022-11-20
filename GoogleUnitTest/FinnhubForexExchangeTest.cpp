@@ -4,6 +4,10 @@
 
 #include"WorldMarket.h"
 
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
+
+
 #include"ProductFinnhubForexExchange.h"
 
 using namespace testing;

@@ -1,14 +1,10 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"Thread.h"
 #include"StockCodeConverter.h"
 #include"ChinaMarket.h"
 
 #include "NeteaseDayLineWebInquiry.h"
 #include"NeteaseDaylineDataSource.h"
-
-#include"WebInquirer.h"
 
 using namespace std;
 #include<thread>

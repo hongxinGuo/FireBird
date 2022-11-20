@@ -5,9 +5,14 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
 
 #include"WebInquirer.h"
 #include"MockFinnhubWebInquiry.h"
+
+#include"FinnhubDataSource.h"
+#include"TiingoDataSource.h"
 
 #include"thread.h"
 

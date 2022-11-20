@@ -1,13 +1,10 @@
 #include"pch.h"
 
 #include"StockCodeConverter.h"
-#include"Thread.h"
 #include"ChinaMarket.h"
 
-#include"SinaRTDataSource.h"
-
 #include "SinaRTWebInquiry.h"
-#include"WebInquirer.h"
+#include"SinaRTDataSource.h"
 
 using namespace std;
 #include<thread>

@@ -5,6 +5,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"TiingoDataSource.h"
+
 #include"ProductTiingoStockSymbol.h"
 
 using namespace testing;
