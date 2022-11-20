@@ -45,15 +45,15 @@ void CWebInquirer::Initialize(void) {
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDaylineDataSource);
 
 	if (gl_systemConfigeration.GetChinaMarketRealtimeServer() == 0) { // 使用新浪实时数据服务器
-		gl_pSinaRTDataSource->SetEanble(true);
-		gl_pNeteaseRTDataSource->SetEanble(false);
+		gl_pSinaRTDataSource->Enable(true);
+		gl_pNeteaseRTDataSource->Enable(false);
 	}
 	else {
-		gl_pSinaRTDataSource->SetEanble(false);
-		gl_pNeteaseRTDataSource->SetEanble(true);
+		gl_pSinaRTDataSource->Enable(false);
+		gl_pNeteaseRTDataSource->Enable(true);
 	}
 
-	// 查询器和数据源要一一对应、互相包含
+	// 查询器和数据源要一一对应
 	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
 	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
 	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);

@@ -6,7 +6,6 @@
 
 // 所有的市场使用同一个当地时间。
 time_t CVirtualMarket::sm_tUTC = 0;
-long long CVirtualMarket::sm_llTickCount = 0;
 
 IMPLEMENT_DYNCREATE(CVirtualMarket, CObject)
 
@@ -91,7 +90,6 @@ long CVirtualMarket::TransferToMarketDate(time_t tUTC) {
 
 void CVirtualMarket::CalculateTime(void) noexcept {
 	time(&sm_tUTC);
-	sm_llTickCount = GetTickCount64();
 
 	m_tmMarket = TransferToMarketTime();
 	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;

@@ -24,20 +24,22 @@ bool CSinaRTDataSource::UpdateStatus(void) {
 
 bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
+	long long llTickCount = 0;
 
 	if (m_pWebInquiry->IsWebError()) {
 		m_pWebInquiry->SetWebError(false);
 	}
-	if (gl_pChinaMarket->GetCurrentTickCount() > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {
+	llTickCount = GetTickCount64();
+	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}
 		if (IsInquiring()) {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
-				sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount() + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
 			else {
-				sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount();
+				sllLastTimeTickCount = llTickCount;
 			}
 		}
 	}

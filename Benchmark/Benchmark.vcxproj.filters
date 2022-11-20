@@ -24,9 +24,6 @@
     <ClCompile Include="BenchmarkWebRTData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BenchmarkThreadParseRTData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

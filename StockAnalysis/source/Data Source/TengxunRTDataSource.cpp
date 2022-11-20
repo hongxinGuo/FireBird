@@ -22,15 +22,17 @@ bool CTengxunRTDataSource::UpdateStatus(void) {
 
 bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
+	long long llTickCount = 0;
 
 	if (m_pWebInquiry->IsWebError()) {
 		m_pWebInquiry->SetWebError(false);
 	}
-	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->GetCurrentTickCount() > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime() * 5)) {
+	llTickCount = GetTickCount64();
+	if (gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime() * 5)) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}
-		if (IsInquiring())	sllLastTimeTickCount = gl_pChinaMarket->GetCurrentTickCount();
+		if (IsInquiring())	sllLastTimeTickCount = llTickCount;
 	}
 	return true;
 }

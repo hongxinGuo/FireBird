@@ -517,6 +517,8 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	static long long s_llCounterforUpdateStatusBar = 0;
+	long long llTickCount = 0;
+
 	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
@@ -525,10 +527,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	SchedulingTask();
 
 	//CMainFrame只执行更新状态任务
-	if (gl_pWorldMarket->GetCurrentTickCount() >= (s_llCounterforUpdateStatusBar + 100)) {
+	llTickCount = GetTickCount64();
+	if (llTickCount >= (s_llCounterforUpdateStatusBar + 100)) {
 		UpdateStatus();
 		UpdateInnerSystemStatus();
-		s_llCounterforUpdateStatusBar = gl_pWorldMarket->GetCurrentTickCount();
+		s_llCounterforUpdateStatusBar = llTickCount;
 	}
 
 	if (!gl_systemStatus.IsWorkingMode()) {
@@ -963,11 +966,15 @@ void CMainFrame::OnStopUpdateDayLine() {
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	// TODO: Add your command handler code here
 	gl_systemConfigeration.SetChinaMarketRealtimeServer(1);
+	gl_pNeteaseRTDataSource->Enable(true);
+	gl_pSinaRTDataSource->Enable(false);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	// TODO: Add your command handler code here
 	gl_systemConfigeration.SetChinaMarketRealtimeServer(0);
+	gl_pNeteaseRTDataSource->Enable(false);
+	gl_pSinaRTDataSource->Enable(false);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {

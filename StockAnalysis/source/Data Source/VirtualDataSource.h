@@ -45,7 +45,7 @@ public:
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
 	bool IsEnable(void) noexcept { return m_fEnable; }
-	void SetEanble(bool fFlag) noexcept { m_fEnable = fFlag; }
+	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
 protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。
