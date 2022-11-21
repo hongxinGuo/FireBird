@@ -331,9 +331,12 @@ BENCHMARK_F(CWithPTreeBenchmark, ParseNeteaseRTDataBenchmark2)(benchmark::State&
 class CTengxunRTDataParseBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.json"), s);
+		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.txt"), s);
+		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
-		pWebData->__TEST_SetBuffer(s.c_str());
+		long lStringLength = str.GetLength();
+		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
+		pWebData->Resize(lStringLength);
 	}
 
 	void TearDown(const ::benchmark::State& state) {
@@ -346,6 +349,7 @@ public:
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CTengxunRTDataParseBenchmark, ParseTengxunRTDataBenchmark1)(benchmark::State& state) {
 	for (auto _ : state) {
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseTengxunRTData(pWebData);
 	}
 }

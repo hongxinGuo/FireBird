@@ -412,7 +412,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 //             15.58~2365~15.57~802~15.56~1855~15.55~2316~15.54~320~15.59~661~15.60~15381~15.61~3266~15.62~450~15.63~520~~
 //             20190930154003~-0.31~-1.95~15.89~15.57~15.59/1046363/1645828527~1046363~164583~0.54~11.27~~
 //             15.89~15.57~2.01~3025.36~3025.38~1.15~17.49~14.31~
-//             0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP-A~68.91~~0.82";\n
+//             0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP-A~68.91~~0.82";\r
 //
 // 0: 市场（上海为1，深圳为51）。
 // 1 : 名字
@@ -724,13 +724,24 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 
 		// 后面的数据具体内容不清楚，暂时放弃解码。
-		while (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
+		// 腾讯实时数据的结束符是分号（；），然后跟随一个回车符\r。但将该数据存入txt文件后，回车符消失了。
+		// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
+		while (pTengxunWebRTData->GetCurrentPosData() != '"') { // 寻找本段数据的结束符（“"”）。
 			pTengxunWebRTData->IncreaseCurrentPos();
 			if (pTengxunWebRTData->OutOfRange()) {
 				return false;
 			}
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
+		if (pTengxunWebRTData->GetCurrentPosData() != ';') { // 字符'"'后面应该跟随字符';'
+			return false;
+		}
+		pTengxunWebRTData->IncreaseCurrentPos();
+		if (!pTengxunWebRTData->OutOfRange()) { // 最后一个数据时，如果没有回车符，则已到达数据的末尾，就不用测试是否存在回车符了。
+			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
+				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\r存在则跨过去。
+			}
+		}
 		CheckTengxunRTDataActive();
 		SetDataSource(__TENGXUN_RT_WEB_DATA__);
 		return true;

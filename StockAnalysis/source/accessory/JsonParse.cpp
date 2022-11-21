@@ -431,8 +431,8 @@ bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	bool fSucceed = true;
 	static int i = 0;
 	// 截取新浪实时数据时用。
-	if (i < pWebData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.json"), pWebData->GetDataBuffer());
+	if (i <= pWebData->GetBufferLength()) {
+		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.txt"), pWebData->GetDataBuffer());
 		i = pWebData->GetBufferLength();
 	}
 

@@ -10,22 +10,22 @@ CString sSinaWebData = _T("var hq_str_sh600000=\"ÆÖ·¢ÒøÐÐ,11.510,11.490,11.560,1
 class CWebRTDataBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
-		m_pSinaWebRTData = make_shared<CWebData>();
+		m_pSinaWebData = make_shared<CWebData>();
 		long lStringLength = sSinaWebData.GetLength();
-		m_pSinaWebRTData->SetData(sSinaWebData.GetBuffer(), lStringLength, 0);
-		m_pSinaWebRTData->Resize(lStringLength);
+		m_pSinaWebData->SetData(sSinaWebData.GetBuffer(), lStringLength, 0);
+		m_pSinaWebData->Resize(lStringLength);
 	}
 
 	void TearDown(const ::benchmark::State& state) {
 	}
-	CWebDataPtr m_pSinaWebRTData;
+	CWebDataPtr m_pSinaWebData;
 	CWebRTData m_RTData;
 };
 
 BENCHMARK_F(CWebRTDataBenchmark, ReadSinaDataBenchmark)(benchmark::State& state) {
 	for (auto _ : state) {
-		m_pSinaWebRTData->ResetCurrentPos();
-		m_RTData.ReadSinaData(m_pSinaWebRTData);
+		m_pSinaWebData->ResetCurrentPos();
+		m_RTData.ReadSinaData(m_pSinaWebData);
 	}
 }
 
