@@ -79,8 +79,8 @@ public:
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-	bool IsWebError(void) const noexcept { return m_fWebError; }
-	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+	bool IsWebError(void) const noexcept { if (m_dwWebErrorCode == 0) return false; else return true; }
+	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
 

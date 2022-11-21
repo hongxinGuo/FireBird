@@ -42,9 +42,7 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		gl_ThreadStatus.IncreaseSavingThread();
 		pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
-		gl_ThreadStatus.DecreaseSavingThread();
 		s_fConnecting = false;
 	}
 

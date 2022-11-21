@@ -385,7 +385,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoCryptoDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoStockDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadWorldMarketBackground.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadBuildWeekLineRS.cpp" />

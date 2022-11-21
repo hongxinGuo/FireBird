@@ -59,7 +59,6 @@ namespace StockAnalysisTest {
 
 	TEST_F(CVirtualWebInquiryTest, TestReset) {
 		m_VirtualWebInquiry.SetByteReaded(1000);
-		m_VirtualWebInquiry.SetWebError(true);
 		m_VirtualWebInquiry.Reset();
 		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
@@ -93,14 +92,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData());
 		m_VirtualWebInquiry.SetReadingWebData(false);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
-	}
-
-	TEST_F(CVirtualWebInquiryTest, TestIsWebError) {
-		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
-		m_VirtualWebInquiry.SetWebError(true);
-		EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
-		m_VirtualWebInquiry.SetWebError(false);
-		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestGetByteReaded) {

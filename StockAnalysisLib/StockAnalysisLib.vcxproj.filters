@@ -1130,9 +1130,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadUpdateTiingoStockDB.cpp">
       <Filter>源文件\Working thread\America market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Working thread\America market\ThreadWorldMarketBackground.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Type\China market\DayLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>

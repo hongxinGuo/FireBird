@@ -341,8 +341,6 @@ public:
 	}
 	string s;
 	CWebDataPtr pWebData;
-	vector<CWebRTDataPtr> vWebRTDataReceived;
-	bool fDone;
 };
 
 // 测试nlohmann json解析NeteaseRTData的速度

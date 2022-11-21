@@ -48,9 +48,7 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		gl_ThreadStatus.IncreaseSavingThread();
 		pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
-		gl_ThreadStatus.DecreaseSavingThread();
 		s_fConnecting = false;
 	}
 	return 70;

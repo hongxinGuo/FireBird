@@ -26,9 +26,6 @@ bool CNeteaseRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	long long llTickCount = 0;
 
-	if (m_pWebInquiry->IsWebError()) {
-		m_pWebInquiry->SetWebError(false);
-	}
 	llTickCount = GetTickCount64();
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime())) {
 		if (!IsInquiring()) {

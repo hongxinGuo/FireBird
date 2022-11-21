@@ -42,9 +42,7 @@ UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		gl_ThreadStatus.IncreaseSavingThread();
 		pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
-		gl_ThreadStatus.DecreaseSavingThread();
 		s_fConnecting = false;
 	}
 

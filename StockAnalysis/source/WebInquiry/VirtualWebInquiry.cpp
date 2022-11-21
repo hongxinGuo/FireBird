@@ -147,7 +147,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
-	SetWebError(false);
+	m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）
 	SetByteReaded(0);
 
 	ASSERT(m_pFile == nullptr);
@@ -162,12 +162,12 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 				IncreaseBufferSizeIfNeeded();
 			} while (lCurrentByteReaded > 0);
 			m_lTotalByteReaded += m_lByteRead;
+			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）
 		}
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
 			m_dwWebErrorCode = exception->m_dwError;
 			ReportWebError(m_dwWebErrorCode, m_strInquiry);
-			SetWebError(true);
 			exception->Delete();
 		}
 		DeleteWebFile();
@@ -216,7 +216,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		DeleteWebFile();
 		m_dwWebErrorCode = exception->m_dwError;
 		ReportWebError(m_dwWebErrorCode, counter.GetElapsedMilliSecond(), m_strInquiry);
-		SetWebError(true);
 		fSucceedOpen = false;
 		exception->Delete();
 	}
