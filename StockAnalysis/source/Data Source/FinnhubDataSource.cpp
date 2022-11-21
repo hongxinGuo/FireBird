@@ -189,7 +189,7 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 
 	if (m_pWebInquiry->IsWebError()) {
 		m_pWebInquiry->SetWebError(false);
-		sllLastTimeTickCount += 3000; // 如果出现错误，则延迟5分钟再重新申请。
+		sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 	}
 	llTickCount = GetTickCount64();
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {

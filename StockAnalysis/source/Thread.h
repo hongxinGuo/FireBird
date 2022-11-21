@@ -130,7 +130,5 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为106
 
 // 后台处理线程
-// 处理实时数据等耗时任务的后台线程
-UINT ThreadWorldMarketBackground(void); // 美国市场后台数据处理线程，此线程返回值为202
 // WebSource ParseAndSaveWebData线程。 此线程的返回值为203
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData);

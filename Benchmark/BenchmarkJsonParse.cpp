@@ -8,6 +8,7 @@
 #include"JsonParse.h"
 #include"WebData.h"
 #include"WebRTData.h"
+#include"WebRTDataContainer.h"
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
@@ -324,5 +325,29 @@ public:
 BENCHMARK_F(CWithPTreeBenchmark, ParseNeteaseRTDataBenchmark2)(benchmark::State& state) {
 	for (auto _ : state) {
 		ParseNeteaseRTData(&pt, vWebRTDataReceived);
+	}
+}
+
+class CTengxunRTDataParseBenchmark : public benchmark::Fixture {
+public:
+	void SetUp(const ::benchmark::State& state) {
+		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.json"), s);
+		pWebData = make_shared<CWebData>();
+		pWebData->__TEST_SetBuffer(s.c_str());
+	}
+
+	void TearDown(const ::benchmark::State& state) {
+		while (gl_WebRTDataContainer.TengxunDataSize() > 0) gl_WebRTDataContainer.PopTengxunData();
+	}
+	string s;
+	CWebDataPtr pWebData;
+	vector<CWebRTDataPtr> vWebRTDataReceived;
+	bool fDone;
+};
+
+// 测试nlohmann json解析NeteaseRTData的速度
+BENCHMARK_F(CTengxunRTDataParseBenchmark, ParseTengxunRTDataBenchmark1)(benchmark::State& state) {
+	for (auto _ : state) {
+		ParseTengxunRTData(pWebData);
 	}
 }

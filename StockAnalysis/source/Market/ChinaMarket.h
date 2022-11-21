@@ -271,9 +271,6 @@ public:
 
 	long GetStockOffset(CString str) { return m_dataChinaStock.GetIndex(str); }
 
-	void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
-	clock_t GetReadingTengxunRTDataTime(void) const noexcept { return m_ReadingTengxunRTDataTime; }
-
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
 
 	bool TaskDiscardNeteaseRTData(void);
@@ -446,9 +443,6 @@ protected:
 	bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
 	bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 	long m_lTotalActiveStock;
-
-	// 多线程读取之变量
-	clock_t m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
 
 	// 更新股票代码数据库标识
 	atomic_bool m_fUpdateOptionDB;

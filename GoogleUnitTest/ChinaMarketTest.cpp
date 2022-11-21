@@ -837,12 +837,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), 10101010);
 	}
 
-	TEST_F(CChinaMarketTest, TestGetReadingTengxunRTDataTime) {
-		time_t tt = 1010101010;
-		gl_pChinaMarket->SetReadingTengxunRTDataTime(tt);
-		EXPECT_EQ(gl_pChinaMarket->GetReadingTengxunRTDataTime(), tt);
-	}
-
 	TEST_F(CChinaMarketTest, TesstIsTodayTempRTDataLoaded) {
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 		gl_pChinaMarket->SetTodayTempRTDataLoaded(true);

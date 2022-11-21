@@ -15,11 +15,3 @@
 #include"thread.h"
 #include"WebInquirer.h"
 
-UINT ThreadWorldMarketBackground(void) {
-	gl_ThreadStatus.SetWorldMarketBackground(true);
-	while (!gl_systemStatus.IsExitingSystem()) {
-		Sleep(50); // ×îÉÙ¼ä¸ô50ms
-	}
-	gl_ThreadStatus.SetWorldMarketBackground(false);
-	return 201;
-}

@@ -71,11 +71,9 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 CChinaMarket::~CChinaMarket() {
 	if (!gl_systemStatus.IsExitingSystem()) { // 此种情况为运行单元测试，此时没有设置gl_systemStatus.IsExitingSystem()
 		gl_systemStatus.SetExitingSystem(true);
-		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
 		gl_systemStatus.SetExitingSystem(false);
 	}
 	else {
-		while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1);
 	}
 }
 
@@ -84,7 +82,7 @@ void CChinaMarket::ResetMarket(void) {
 	CString str = _T("重置中国股市于北京标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
-	while (gl_ThreadStatus.IsBackGroundthreadsWorking() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
+	while (gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
 		|| gl_ThreadStatus.IsSavingThreadRunning()) {
 		Sleep(1);
 	}
@@ -161,7 +159,6 @@ void CChinaMarket::Reset(void) {
 
 bool CChinaMarket::PreparingExitMarket(void) {
 	ASSERT(gl_systemStatus.IsExitingSystem());
-	while (gl_ThreadStatus.IsChinaMarketBackgroundThreadRunning()) Sleep(1); // 退出后台工作线程
 
 	return true;
 }

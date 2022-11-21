@@ -43,22 +43,10 @@ CWorldMarket::CWorldMarket() {
 	CalculateTime();
 
 	Reset();
-
-	//thread thread1(ThreadWorldMarketBackground);
-	//thread1.detach();
 }
 
 CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
-
-	if (!gl_systemStatus.IsExitingSystem()) {
-		gl_systemStatus.SetExitingSystem(true);
-		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
-		gl_systemStatus.SetExitingSystem(false);
-	}
-	else {
-		while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
-	}
 }
 
 void CWorldMarket::Reset(void) {
@@ -130,7 +118,6 @@ bool CWorldMarket::PreparingExitMarket(void)
 {
 	ASSERT(gl_systemStatus.IsExitingSystem());
 	DeconnectingAllWebSocket();
-	while (gl_ThreadStatus.IsWorldMarketBackgroundThreadRunning()) Sleep(1);
 
 	return true;
 }

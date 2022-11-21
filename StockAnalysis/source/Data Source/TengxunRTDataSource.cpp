@@ -32,7 +32,12 @@ bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}
-		if (IsInquiring())	sllLastTimeTickCount = llTickCount;
+		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
+			sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		}
+		else {
+			sllLastTimeTickCount = llTickCount;
+		}
 	}
 	return true;
 }

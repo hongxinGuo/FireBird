@@ -16,11 +16,6 @@ public:
 	CThreadStatus& operator=(const CThreadStatus&&) noexcept = delete;
 	~CThreadStatus();
 
-	void SetChinaMarketBackground(bool fFlag) noexcept { m_ChinaMarketBackground = fFlag; }
-	bool IsChinaMarketBackgroundThreadRunning(void) noexcept { return m_ChinaMarketBackground; }
-	void SetWorldMarketBackground(bool fFlag) noexcept { m_WorldMarketBackground = fFlag; }
-	bool IsWorldMarketBackgroundThreadRunning(void) noexcept { return m_WorldMarketBackground; }
-
 	// 计算若干天日线相对强度与否和设置
 	void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRS = fFlag; }
 	bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRS; }
@@ -62,8 +57,6 @@ public:
 	bool IsWebInquiringThreadRunning(void) noexcept { if (GetNumberOfWebInquiringThread() > 0) return true; else return false; }
 
 protected:
-	atomic_bool m_ChinaMarketBackground;
-	atomic_bool m_WorldMarketBackground;
 
 	atomic_bool m_CalculatingDayLineRS;
 	atomic_bool m_CalculatingWeekLineRS;

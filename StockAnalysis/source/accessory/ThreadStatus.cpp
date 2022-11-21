@@ -9,9 +9,6 @@ CThreadStatus::CThreadStatus() {
 		gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
 	}
 
-	m_ChinaMarketBackground = false;
-	m_WorldMarketBackground = false;
-
 	m_NumberOfBackGroundWorkingThreads = 0;
 	m_NumberOfSavingThread = 0;
 	m_NumberOfWebInquiringThread = 0;

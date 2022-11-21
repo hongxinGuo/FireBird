@@ -18,6 +18,8 @@
 #include"ChinaMarket.h"
 #include"WebRTDataContainer.h"
 
+#include"SaveAndLoad.h"
+
 using namespace std;
 #include<string>
 
@@ -295,9 +297,12 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndP
 //////////////////////////////////////////////////////////////////////////////////////////////////
 int ParseSinaRTData(CWebDataPtr pWebData) {
 	int iTotal = 0;
-
+	static int i = 0;
 	// 截取新浪实时数据时用。
-	//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.json"), pWebData->GetDataBuffer());
+	if (i < pWebData->GetBufferLength()) {
+		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.json"), pWebData->GetDataBuffer());
+		i = pWebData->GetBufferLength();
+	}
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsProcessedAllTheData()) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
@@ -424,6 +429,12 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	bool fSucceed = true;
+	static int i = 0;
+	// 截取新浪实时数据时用。
+	if (i < pWebData->GetBufferLength()) {
+		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.json"), pWebData->GetDataBuffer());
+		i = pWebData->GetBufferLength();
+	}
 
 	pWebData->ResetCurrentPos();
 	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
@@ -589,10 +600,14 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	bool fProcess = true;
 	vector<CWebRTDataPtr> vWebRTData;
 
+	static int i = 0;
+	// 截取实时数据时用。
+	if (i < pData->GetBufferLength()) {
+		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
+		i = pData->GetBufferLength();
+	}
 	fProcess = true;
 	if (!pData->IsParsed()) {
-		// 截取网易实时数据时用。
-		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pWebDataReceived->GetDataBuffer());
 		if (!pData->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
 			fProcess = false;
 		}
