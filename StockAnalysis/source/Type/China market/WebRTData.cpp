@@ -293,13 +293,25 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer()); // 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 
 		// 后面的数据皆为无效数据，读至此数据的结尾处即可。
-		while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
+		// 新浪实时数据的结束符是'"',然后跟着分号';'，然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
+		// 故而要先判断'"'和';'，然后用换行符作为附加判断，有否都认可。
+		while (pSinaWebRTData->GetCurrentPosData() != '"') { // 寻找本段数据的结束符（“"”）。
 			pSinaWebRTData->IncreaseCurrentPos();
-			if ((pSinaWebRTData->GetCurrentPos() >= pSinaWebRTData->GetBufferLength())) {
+			if (pSinaWebRTData->OutOfRange()) {
 				throw exception();
 			}
 		}
-		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'\n'
+		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'"'
+		if (pSinaWebRTData->GetCurrentPosData() != ';') { // 字符'"'后面应该跟随字符';'
+			throw exception();
+		}
+		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符';'
+		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
+		if (!pSinaWebRTData->OutOfRange()) {
+			if (pSinaWebRTData->GetCurrentPosData() == 0x00a) {
+				pSinaWebRTData->IncreaseCurrentPos(); // 如果有\n或者\r存在则跨过去。
+			}
+		}
 		// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 		// 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
 		// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -724,8 +736,9 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 
 		// 后面的数据具体内容不清楚，暂时放弃解码。
-		// 腾讯实时数据的结束符是分号（；），然后跟随一个回车符\r。但将该数据存入txt文件后，回车符消失了。
+		// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
 		// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
+		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		while (pTengxunWebRTData->GetCurrentPosData() != '"') { // 寻找本段数据的结束符（“"”）。
 			pTengxunWebRTData->IncreaseCurrentPos();
 			if (pTengxunWebRTData->OutOfRange()) {
@@ -737,9 +750,10 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
-		if (!pTengxunWebRTData->OutOfRange()) { // 最后一个数据时，如果没有回车符，则已到达数据的末尾，就不用测试是否存在回车符了。
+		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
+		if (!pTengxunWebRTData->OutOfRange()) {
 			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
-				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\r存在则跨过去。
+				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n或者\r存在则跨过去。
 			}
 		}
 		CheckTengxunRTDataActive();

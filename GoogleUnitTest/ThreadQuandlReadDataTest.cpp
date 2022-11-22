@@ -8,6 +8,7 @@
 
 #include"WebInquirer.h"
 #include"MockQuandlWebInquiry.h"
+#include"QuandlDataSource.h"
 
 #include"thread.h"
 

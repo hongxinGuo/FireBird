@@ -11,7 +11,7 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-//#include"QuandlDataSource.h"
+#include"QuandlDataSource.h"
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"

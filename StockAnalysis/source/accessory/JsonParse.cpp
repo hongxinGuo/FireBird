@@ -300,7 +300,8 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	static int i = 0;
 	// 截取新浪实时数据时用。
 	if (i < pWebData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.json"), pWebData->GetDataBuffer());
+		string s = pWebData->GetDataBuffer();
+		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.dat"), s.c_str());
 		i = pWebData->GetBufferLength();
 	}
 	pWebData->ResetCurrentPos();
@@ -318,7 +319,7 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	return iTotal;
 }
 
-void ParseSinaData(void) {
+void ParseSinaRTDataParseSinaData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
 	int iTotal = 0;
@@ -432,7 +433,8 @@ bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	static int i = 0;
 	// 截取新浪实时数据时用。
 	if (i <= pWebData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.txt"), pWebData->GetDataBuffer());
+		string s = pWebData->GetDataBuffer();
+		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.dat"), s.c_str());
 		i = pWebData->GetBufferLength();
 	}
 

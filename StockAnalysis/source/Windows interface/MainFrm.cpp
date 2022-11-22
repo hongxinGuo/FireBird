@@ -23,6 +23,7 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+#include"QuandlDataSource.h"
 
 #include"SinaRTWebInquiry.h"
 
@@ -235,7 +236,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ASSERT(gl_pWorldMarket == nullptr);
 	gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 	gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
-	gl_pDataSourceQuandl = make_shared<CVirtualDataSource>();
+	gl_pDataSourceQuandl = make_shared<CQuandlDataSource>();
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();

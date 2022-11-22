@@ -80,6 +80,7 @@ public:
 	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
 	bool IsWebError(void) const noexcept { if (m_dwWebErrorCode == 0) return false; else return true; }
+	void ClearWebError(void) noexcept { m_dwWebErrorCode = 0; }
 	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }

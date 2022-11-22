@@ -5,22 +5,24 @@ using namespace std;
 
 #include "SaveAndLoad.h"
 
-void SaveToFile(CString strFileName, string s) {
-	fstream f(strFileName, ios::out);
-	f << s;
-	f.close();
+void SaveToFile(CString strFileName, CString s) {
+	CFile f;
+	if (f.Open(strFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
+		f.Write(s.GetBuffer(), s.GetLength());
+		f.Close();
+	}
 }
 
 bool LoadFromFile(CString strFileName, string& s) {
-	string sLine;
-	fstream f(strFileName, ios::in);
-	if (f.is_open()) {
-		while (f.good()) {
-			f >> sLine;
-			s += sLine;
-		}
-		f.close();
-		return true;
-	}
-	return false;
+	char buffer[1025]{};
+	int iRead = 0;
+	CFile f(strFileName, CFile::modeRead | CFile::typeBinary);
+
+	do {
+		iRead = f.Read(buffer, 1024);
+		buffer[iRead] = 0x000;
+		s += buffer;
+	} while (iRead == 1024);
+	f.Close();
+	return true;
 }

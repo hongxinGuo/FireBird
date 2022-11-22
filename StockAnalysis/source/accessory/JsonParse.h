@@ -28,7 +28,7 @@ string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字
 bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);
 
 int ParseSinaRTData(CWebDataPtr pWebData);
-void ParseSinaData(void);
+void ParseSinaRTData(void);
 bool ParseTengxunRTData(CWebDataPtr pWebData);
 bool ParseTengxunRTData(void);
 void ParseNeteaseDayLine(CWebDataPtr pWebData);

@@ -60,5 +60,3 @@ protected:
 };
 
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
-
-extern CVirtualDataSourcePtr gl_pDataSourceQuandl;

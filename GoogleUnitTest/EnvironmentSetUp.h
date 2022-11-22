@@ -40,7 +40,7 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-
+#include"QuandlDataSource.h"
 
 using namespace testing;
 
@@ -101,7 +101,7 @@ namespace StockAnalysisTest {
 
 			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
 			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
-			gl_pDataSourceQuandl = make_shared<CVirtualDataSource>();
+			gl_pDataSourceQuandl = make_shared<CQuandlDataSource>();
 
 			// 查询器和数据源要一一对应、互相包含
 			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);

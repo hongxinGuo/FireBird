@@ -26,6 +26,7 @@
 #include"NeteaseDaylineDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+#include"QuandlDataSource.h"
 
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
@@ -66,7 +67,7 @@ CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource = nullptr;
 
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
-CVirtualDataSourcePtr gl_pDataSourceQuandl = nullptr;
+CQuandlDataSourcePtr gl_pDataSourceQuandl = nullptr;
 
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

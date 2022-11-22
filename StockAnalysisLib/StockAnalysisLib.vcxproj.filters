@@ -744,6 +744,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.h">
       <Filter>头文件\Web Data Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\QuandlDataSource.h">
+      <Filter>头文件\Web Data Source\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1321,6 +1324,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.cpp">
       <Filter>源文件\Web Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Source\CQuandlDataSource.cpp">
+      <Filter>源文件\Web Data Source\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

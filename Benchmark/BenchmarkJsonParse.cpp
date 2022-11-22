@@ -212,14 +212,6 @@ string sData101 = _T("{\
 		\"symbol\":\"AAPL\"\
 }");
 
-static void ParseWithPTree(benchmark::State& state) {
-	ptree pt;
-	for (auto _ : state) {
-		ParseWithPTree(pt, sData101);
-	}
-}
-
-BENCHMARK(ParseWithPTree);
 
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
@@ -227,10 +219,17 @@ static void ParseWithNlohmannJSon(benchmark::State& state) {
 		ParseWithNlohmannJSon(&j, sData101);
 	}
 }
-
 BENCHMARK(ParseWithNlohmannJSon);
 
-class CJsonParseBenchmark : public benchmark::Fixture {
+static void ParseWithPTree(benchmark::State& state) {
+	ptree pt;
+	for (auto _ : state) {
+		ParseWithPTree(pt, sData101);
+	}
+}
+BENCHMARK(ParseWithPTree);
+
+class CJsonParse : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\StockSymbol.json"), sUSExchangeStockCode);
@@ -249,35 +248,36 @@ public:
 	string sNeteaseRTDataForPTree;
 };
 
-BENCHMARK_F(CJsonParseBenchmark, ParseWithNlohmannJSonBenchmark)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		ParseWithNlohmannJSon(&j, sUSExchangeStockCode);
 	}
 }
 
-BENCHMARK_F(CJsonParseBenchmark, ParseWithPTreeBenchmark)(benchmark::State& state) {
+
+BENCHMARK_F(CJsonParse, StockSymbolParseWithPTree)(benchmark::State& state) {
 	ptree pt;
 	for (auto _ : state) {
 		ParseWithPTree(pt, sUSExchangeStockCode);
 	}
 }
 
-BENCHMARK_F(CJsonParseBenchmark, ParseWithNlohmannJSonBenchmark2)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		ParseWithNlohmannJSon(&j, sNeteaseRTData, 21, 2);
 	}
 }
 
-BENCHMARK_F(CJsonParseBenchmark, ParseWithPTreeBenchmark2)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithPTree)(benchmark::State& state) {
 	ptree pt;
 	for (auto _ : state) {
 		ParseWithPTree(pt, sNeteaseRTDataForPTree);
 	}
 }
 
-class CWithNlohmannJsonBenchmark : public benchmark::Fixture {
+class CWithNlohmannJson : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
@@ -298,13 +298,13 @@ public:
 };
 
 // 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJsonBenchmark, ParseNeteaseRTDataBenchmark1)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
 	for (auto _ : state) {
 		ParseNeteaseRTData(&js, vWebRTDataReceived);
 	}
 }
 
-class CWithPTreeBenchmark : public benchmark::Fixture {
+class CWithPTree : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
@@ -322,21 +322,23 @@ public:
 };
 
 // 测试boost ptree解析NeteaseRTData的速度
-BENCHMARK_F(CWithPTreeBenchmark, ParseNeteaseRTDataBenchmark2)(benchmark::State& state) {
+BENCHMARK_F(CWithPTree, ParseNeteaseRTData2)(benchmark::State& state) {
 	for (auto _ : state) {
 		ParseNeteaseRTData(&pt, vWebRTDataReceived);
 	}
 }
 
-class CTengxunRTDataParseBenchmark : public benchmark::Fixture {
+class CTengxunRTData : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.txt"), s);
+		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.dat"), s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
 		long lStringLength = str.GetLength();
-		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
+		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
 	void TearDown(const ::benchmark::State& state) {
@@ -347,9 +349,38 @@ public:
 };
 
 // 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CTengxunRTDataParseBenchmark, ParseTengxunRTDataBenchmark1)(benchmark::State& state) {
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
 	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseTengxunRTData(pWebData);
 	}
 }
+
+class CSinaRTData : public benchmark::Fixture {
+public:
+	void SetUp(const ::benchmark::State& state) {
+		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\SinaRTData.dat"), s);
+		CString str = s.c_str();
+		pWebData = make_shared<CWebData>();
+		long lStringLength = str.GetLength();
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		pWebData->SetBufferLength(lStringLength);
+		pWebData->Resize(lStringLength);
+		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
+	}
+
+	void TearDown(const ::benchmark::State& state) {
+		while (gl_WebRTDataContainer.TengxunDataSize() > 0) gl_WebRTDataContainer.PopTengxunData();
+	}
+	string s;
+	CWebDataPtr pWebData;
+};
+
+// 测试nlohmann json解析NeteaseRTData的速度
+BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
+	for (auto _ : state) {
+		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		ParseSinaRTData(pWebData);
+	}
+}
+

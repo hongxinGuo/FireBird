@@ -3,7 +3,7 @@
 #include"WorldMarket.h"
 
 #include "QuandlWebInquiry.h"
-//#include"QuandlDataSource.h"
+#include"QuandlDataSource.h"
 
 using namespace std;
 #include<thread>
