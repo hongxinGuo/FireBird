@@ -101,8 +101,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Benchmark.cpp" />
-    <ClCompile Include="BenchmarkJsonParse.cpp" />
-    <ClCompile Include="BenchmarkWebRTData.cpp" />
+    <ClCompile Include="JsonParseBenchmark.cpp" />
+    <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

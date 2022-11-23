@@ -243,7 +243,7 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		CWebDataPtr pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
-		pData->ParseWithPropertyTree();
+		pData->ParseUsingPropertyTree();
 		pData->SetParsed(true);
 
 		gl_pDataSourceTiingo->StoreReceivedData(pData);

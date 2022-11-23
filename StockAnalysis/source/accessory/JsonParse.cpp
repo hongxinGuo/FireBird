@@ -319,7 +319,7 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	return iTotal;
 }
 
-void ParseSinaRTDataParseSinaData(void) {
+void ParseSinaRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
 	int iTotal = 0;

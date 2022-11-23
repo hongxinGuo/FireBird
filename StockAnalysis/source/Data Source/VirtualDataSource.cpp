@@ -18,7 +18,6 @@ CVirtualDataSource::~CVirtualDataSource(void) {
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fDataReceived = true;
-	m_fPermitToConcurrentProceed = false; // 默认不允许并行处理接收到的数据，工作线程必须在处理完数据后，方可重置Inquiry标识。
 
 	return true;
 }
@@ -56,7 +55,7 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 //
 // 只允许同时处理一条信息。即信息从申请至处理完之前，不允许处理下一条信息。这样能够保证同一性。且由于Finnhub网站有速度限制，
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
-// 
+//
 // 目前已将中国市场的SinaRT、NeteaseRT、TengxunRT和NeteaseDayline的数据使用此数据源实现了。由于SinaRT和NeteaseRT要求的实时性比较强，
 // 故而该两个数据源采用先返回后处理数据的模式。--20221120
 //
@@ -78,8 +77,9 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 					m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 				}
 			}
-			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）
-			// 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
+			ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
+			// 本线程必须位于本函数的最后，因其调用SetInquiry(false)，用于启动下次申请
 			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
 			thread1.detach();
 			return true;
@@ -89,13 +89,17 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 }
 
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
-	if (pDataSource->IsPermitToConcurrentProceed()) { // 如果允许并行处理数据的话
-		pDataSource->SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
-		pProductWebData->ParseAndStoreWebData(pWebData);
-	}
-	else { // 如果不允许并行处理数据的话，
-		pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
-		pDataSource->SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
-	}
+	pDataSource->ParseAndStoreData(pProductWebData, pWebData);
+
 	return 203;
+}
+
+/// <summary>
+/// 默认是在处理完本次数据后方允许接收下次数据，这样能够减少线程间的同步问题
+/// </summary>
+/// <param name="pProductWebData"></param>
+/// <param name="pWebData"></param>
+void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
+	pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
+	SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
 }

@@ -42,7 +42,7 @@ void CTiingoWebInquiry::ConfigerateSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseWithPropertyTree(0, 0);
+	return pWebData->ParseUsingPropertyTree(0, 0);
 }
 
 void CTiingoWebInquiry::ClearUpIfReadingWebDataFailed(void) {

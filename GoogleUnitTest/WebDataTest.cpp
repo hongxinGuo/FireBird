@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage1) {
 		m_id.__TEST_SetBuffer("{\"error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_TRUE(m_id.CheckNoRightToAccess());
@@ -133,13 +133,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage2) {
 		m_id.__TEST_SetBuffer("{\"error2\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());
 
 		m_id.__TEST_SetBuffer("{\"error\":\"You don't have access to this resour\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());
@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage3) {
 		m_id.__TEST_SetBuffer("{\"no error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseWithPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());

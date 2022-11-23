@@ -47,7 +47,7 @@ void CFinnhubWebInquiry::ConfigerateSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseWithPropertyTree(0, 0);
+	return pWebData->ParseUsingPropertyTree(0, 0);
 }
 
 void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {

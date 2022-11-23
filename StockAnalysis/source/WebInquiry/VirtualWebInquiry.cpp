@@ -100,9 +100,8 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	CHighPerformanceCounter counter;
+	ULONG64 llCurrentTickCount = GetTickCount64();
 
-	counter.Start();
 	ASSERT(IsReadingWebData());
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
@@ -122,8 +121,7 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateStatusAfterReadingWebData();
 
-	counter.Stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond()); // 显示的是毫秒值
+	SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
 
 	SetReadingWebData(false);
 }
@@ -142,12 +140,9 @@ void CVirtualWebInquiry::Read(void) {
 bool CVirtualWebInquiry::ReadingWebData(void) {
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
-	CString strMessage, strErrorNo;
-	char buffer[30];
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
-	m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）
 	SetByteReaded(0);
 
 	ASSERT(m_pFile == nullptr);
@@ -162,7 +157,8 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 				IncreaseBufferSizeIfNeeded();
 			} while (lCurrentByteReaded > 0);
 			m_lTotalByteReaded += m_lByteRead;
-			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）
+			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
+			ClearWebError();// 清除错误代码（如果有的话）
 		}
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
@@ -191,13 +187,9 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	bool fSucceedOpen = true;
-	CString strMessage, strErrorNo;
-	char buffer[30];
 	long lHeadersLength = m_strHeaders.GetLength();
-	CHighPerformanceCounter counter;
 
-	counter.Start();
-
+	ULONG64 llCurrentTickCount = GetTickCount64();
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
 	try {
@@ -212,10 +204,9 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	}
 	catch (CInternetException* exception) {
 		ASSERT(m_pFile == nullptr);
-		counter.Stop();
 		DeleteWebFile();
 		m_dwWebErrorCode = exception->m_dwError;
-		ReportWebError(m_dwWebErrorCode, counter.GetElapsedMilliSecond(), m_strInquiry);
+		ReportWebError(m_dwWebErrorCode, GetTickCount64() - llCurrentTickCount, m_strInquiry);
 		fSucceedOpen = false;
 		exception->Delete();
 	}

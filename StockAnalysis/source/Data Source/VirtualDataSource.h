@@ -19,6 +19,7 @@ public:
 	virtual bool Inquire(long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
+	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
 
 	void SetWebInquiringPtr(CVirtualWebInquiryPtr p) noexcept { m_pWebInquiry = p; }
@@ -30,8 +31,6 @@ public:
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) noexcept { return m_pCurrentProduct; }
 	void SetCurrentInquiry(CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
-
-	bool IsPermitToConcurrentProceed(void) noexcept { return m_fPermitToConcurrentProceed; }
 
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
@@ -51,7 +50,6 @@ protected:
 	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	bool m_fPermitToConcurrentProceed; // 是否允许并行处理接收到的数据（即在解析数据之前就允许再次申请数据，SinaRT和NeteaseRT采用这种方式，其他数据源不采用）。
 	atomic_bool m_fInquiring;
 	atomic_bool m_fDataReceived;
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列

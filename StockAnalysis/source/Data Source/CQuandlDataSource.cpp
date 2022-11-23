@@ -79,13 +79,22 @@ bool CQuandlDataSource::UpdateStatus(void)
 
 bool CQuandlDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
+	static bool sbWebError = false;
 	long long llTickCount = 0;
 
-	if (m_pWebInquiry->IsWebError()) {
-		sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
-		m_pWebInquiry->ClearWebError();
-	}
 	llTickCount = GetTickCount64();
+	if (!sbWebError) {
+		if (m_pWebInquiry->IsWebError()) {
+			sbWebError = true;
+			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
+		}
+	}
+	else {
+		if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {
+			sbWebError = false;
+		}
+	}
+
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketQuandlInquiryTime())) {
 		if (!IsInquiring()) {
 		}

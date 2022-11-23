@@ -59,7 +59,7 @@ void CQuandlWebInquiry::ConfigerateSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseWithPropertyTree(0, 0);
+	return pWebData->ParseUsingPropertyTree(0, 0);
 }
 
 void CQuandlWebInquiry::ClearUpIfReadingWebDataFailed(void) {

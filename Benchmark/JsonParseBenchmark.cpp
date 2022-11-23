@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// StockAnalysis中比较费时的函数是各个数据的解析工作。
+// 目前最繁重的解析工作，时US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
+// 解析时，release模式用时320毫秒。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
 #include<benchmark/benchmark.h>
@@ -12,9 +20,7 @@
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
-// 使用下面的数据，nlohmann json的release版本用时大致为80微秒；PTree用时大致为130微秒。
-// 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时20毫秒，PTree用时100毫秒；
-// Debug模式，两者用时皆为1秒钟。
+// 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
 string sData101 = _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
@@ -212,7 +218,6 @@ string sData101 = _T("{\
 		\"symbol\":\"AAPL\"\
 }");
 
-
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
@@ -248,13 +253,13 @@ public:
 	string sNeteaseRTDataForPTree;
 };
 
+// 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		ParseWithNlohmannJSon(&j, sUSExchangeStockCode);
 	}
 }
-
 
 BENCHMARK_F(CJsonParse, StockSymbolParseWithPTree)(benchmark::State& state) {
 	ptree pt;
@@ -263,6 +268,7 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithPTree)(benchmark::State& state) {
 	}
 }
 
+// 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
@@ -284,7 +290,7 @@ public:
 		try {
 			js = json::parse(s.begin() + 21, s.end() - 2);
 		}
-		catch (json::parse_error& e) {
+		catch (json::parse_error&) {
 			fDone = false;
 		}
 	}
@@ -379,8 +385,7 @@ public:
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	for (auto _ : state) {
-		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseSinaRTData(pWebData);
 	}
 }
-

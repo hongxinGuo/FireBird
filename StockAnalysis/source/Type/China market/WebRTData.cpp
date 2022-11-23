@@ -309,7 +309,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		if (!pSinaWebRTData->OutOfRange()) {
 			if (pSinaWebRTData->GetCurrentPosData() == 0x00a) {
-				pSinaWebRTData->IncreaseCurrentPos(); // 如果有\n或者\r存在则跨过去。
+				pSinaWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
 			}
 		}
 		// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
@@ -753,7 +753,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		if (!pTengxunWebRTData->OutOfRange()) {
 			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
-				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n或者\r存在则跨过去。
+				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
 			}
 		}
 		CheckTengxunRTDataActive();

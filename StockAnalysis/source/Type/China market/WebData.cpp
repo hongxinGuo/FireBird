@@ -73,7 +73,7 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	}
 }
 
-bool CWebData::ParseWithPropertyTree(long lBeginPos, long lEndPos) {
+bool CWebData::ParseUsingPropertyTree(long lBeginPos, long lEndPos) {
 	m_fParsed = CreatePropertyTree(lBeginPos, lEndPos);
 	SetJSonContentType(true);
 	return m_fParsed;
@@ -87,7 +87,7 @@ bool CWebData::CreatePropertyTree(long lBeginPos, long lEndPos) {
 	return m_fParsed;
 }
 
-bool CWebData::ParseWithNlohmannJson(long lBeginPos, long lEndPos) {
+bool CWebData::ParseUsingNlohmannJson(long lBeginPos, long lEndPos) {
 	m_fParsed = CreateNlohmannJSon(lBeginPos, lEndPos);
 	SetJSonContentType(true);
 	return m_fParsed;

@@ -7,7 +7,6 @@
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	m_pWebInquiry = nullptr;
-	m_fPermitToConcurrentProceed = true;// 网易实时数据源采用并行处理模式，在解析数据之前就允许再次申请数据，以保持数据的申请速度。
 	Reset();
 }
 
@@ -20,6 +19,16 @@ bool CNeteaseRTDataSource::Reset(void) {
 
 bool CNeteaseRTDataSource::UpdateStatus(void) {
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 网易实时数据先允许接收下次的数据，然后再开始处理本次数据。这样优先保证查询的速度。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CNeteaseRTDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
+	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
+	pProductWebData->ParseAndStoreWebData(pWebData);
 }
 
 bool CNeteaseRTDataSource::Inquire(long lCurrentTime) {

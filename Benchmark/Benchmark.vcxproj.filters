@@ -18,10 +18,10 @@
     <ClCompile Include="Benchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BenchmarkJsonParse.cpp">
+    <ClCompile Include="JsonParseBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BenchmarkWebRTData.cpp">
+    <ClCompile Include="WebRTDataBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\pch.cpp">
