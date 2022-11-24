@@ -41,3 +41,5 @@ public:
 };
 
 typedef shared_ptr<CTiingoForexSocket> CTiingoForexSocketPtr;
+
+extern CTiingoForexWebSocket gl_tiingoForexWebSocket;

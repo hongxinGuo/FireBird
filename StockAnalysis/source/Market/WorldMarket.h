@@ -26,11 +26,6 @@
 #include"DataSICIndustry.h"
 #include"DataNaicsIndustry.h"
 
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-
 using namespace std;
 #include<map>
 #include<vector>
@@ -285,12 +280,6 @@ protected:
 	CDataChoicedCrypto m_dataChoicedCrypto;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
-
-	// WebSocket数据
-	//CFinnhubWebSocket gl_finnhubWebSocket;
-	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
-	CTiingoForexWebSocket m_tiingoForexWebSocket;
-	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
 
 	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
 	string m_strMessage;

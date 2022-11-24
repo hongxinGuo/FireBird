@@ -51,3 +51,5 @@ public:
 };
 
 typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
+
+extern 	CTiingoIEXWebSocket gl_tiingoIEXWebSocket;

@@ -72,7 +72,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			EXPECT_FALSE(m_tiingoForexWebSocket.IsReceivingData());
+			EXPECT_FALSE(gl_tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoForexWebSocket m_tiingoForexWebSocket;
+		CTiingoForexWebSocket gl_tiingoForexWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
@@ -100,11 +100,11 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoForexSocketPtr pForex;
-		fSucceed = m_tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
+		fSucceed = gl_tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_tiingoForexWebSocket.IsReceivingData());
+			EXPECT_TRUE(gl_tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_STREQ(pForex->m_strSymbol, _T("eurnok"));
@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_tiingoForexWebSocket.IsReceivingData());
+			EXPECT_TRUE(gl_tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
 		case 6: //
@@ -139,11 +139,11 @@ namespace StockAnalysisTest {
 			break;
 		case 12: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(0), _T("*"));
-			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(1), _T("FXCM:EUR/USD"));
-			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(2), _T("IC MARKETS:2"));
-			EXPECT_STREQ(m_tiingoForexWebSocket.m_vCurrentSymbol.at(3), _T("OANDA:USD_JPY"));
+			EXPECT_EQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(1), _T("FXCM:EUR/USD"));
+			EXPECT_STREQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(2), _T("IC MARKETS:2"));
+			EXPECT_STREQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(3), _T("OANDA:USD_JPY"));
 			break;
 		default:
 			break;
@@ -172,7 +172,7 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			EXPECT_FALSE(m_tiingoCryptoWebSocket.IsReceivingData());
+			EXPECT_FALSE(gl_tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -190,7 +190,7 @@ namespace StockAnalysisTest {
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
+		CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
@@ -200,11 +200,11 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoCryptoSocketPtr pCrypto;
-		fSucceed = m_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
+		fSucceed = gl_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_tiingoCryptoWebSocket.IsReceivingData());
+			EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("bitfinex"));
@@ -219,7 +219,7 @@ namespace StockAnalysisTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_tiingoCryptoWebSocket.IsReceivingData());
+			EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_STREQ(pCrypto->m_strExchange, _T("binance"));
@@ -252,11 +252,11 @@ namespace StockAnalysisTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(0), _T("*"));
-			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(1), _T("BINANCE:IDEXBUSD"));
-			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(2), _T("BITTREX:USDT-ADA"));
-			EXPECT_STREQ(m_tiingoCryptoWebSocket.m_vCurrentSymbol.at(3), _T("HITBTC:XRPEOS"));
+			EXPECT_EQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(1), _T("BINANCE:IDEXBUSD"));
+			EXPECT_STREQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(2), _T("BITTREX:USDT-ADA"));
+			EXPECT_STREQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(3), _T("HITBTC:XRPEOS"));
 			break;
 		default:
 			break;
@@ -288,13 +288,13 @@ namespace StockAnalysisTest {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			EXPECT_FALSE(m_tiingoIEXWebSocket.IsReceivingData());
+			EXPECT_FALSE(gl_tiingoIEXWebSocket.IsReceivingData());
 
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
-			EXPECT_EQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
+			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
 		}
 		virtual void TearDown(void) override {
 			// clearup
@@ -307,7 +307,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoIEXWebSocket m_tiingoIEXWebSocket;
+		CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
@@ -317,11 +317,11 @@ namespace StockAnalysisTest {
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
-		fSucceed = m_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
+		fSucceed = gl_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_tiingoIEXWebSocket.IsReceivingData());
+			EXPECT_TRUE(gl_tiingoIEXWebSocket.IsReceivingData());
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_STREQ(pTiingoIEX->m_strSymbol, _T("vym"));
@@ -378,11 +378,11 @@ namespace StockAnalysisTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(0), _T("*"));
-			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(1), _T("uso"));
-			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(2), _T("msft"));
-			EXPECT_STREQ(m_tiingoIEXWebSocket.m_vCurrentSymbol.at(3), _T("tnk"));
+			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_STREQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(0), _T("*"));
+			EXPECT_STREQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(1), _T("uso"));
+			EXPECT_STREQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(2), _T("msft"));
+			EXPECT_STREQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(3), _T("tnk"));
 			break;
 		default:
 			break;

@@ -30,6 +30,9 @@
 #include"QuandlDataSource.h"
 
 #include"FinnhubWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+#include"TiingoForexWebSocket.h"
+#include"TiingoCryptoWebSocket.h"
 
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
@@ -73,6 +76,9 @@ CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CQuandlDataSourcePtr gl_pDataSourceQuandl = nullptr;
 
 CFinnhubWebSocket gl_finnhubWebSocket;
+CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
+CTiingoForexWebSocket gl_tiingoForexWebSocket;
+CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
 
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

@@ -45,3 +45,5 @@ public:
 };
 
 typedef shared_ptr<CTiingoCryptoSocket> CTiingoCryptoSocketPtr;
+
+extern CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;

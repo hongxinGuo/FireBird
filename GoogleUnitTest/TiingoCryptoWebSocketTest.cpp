@@ -32,11 +32,11 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;
+		CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
 	};
 
 	TEST_F(CDataTiingoCryptoWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(m_tiingoCryptoWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
+		EXPECT_STREQ(gl_tiingoCryptoWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
 	}
 
 	TEST_F(CDataTiingoCryptoWebSocketTest, TestCreateTiingoCryptoWebSocketSymbolString) {
@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		CString strSymbols = m_tiingoCryptoWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
+		CString strSymbols = gl_tiingoCryptoWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
 		EXPECT_STREQ(strSymbols, _T("\"A\",\"AA\",\"AAL\",\"AAPL\""));
 	}
 
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		CString strSymbols = m_tiingoCryptoWebSocket.CreateMessage(vSymbol);
+		CString strSymbols = gl_tiingoCryptoWebSocket.CreateMessage(vSymbol);
 		EXPECT_STREQ(strSymbols, _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"dkaeth\",\"ksmust\"]}}")) << "最后两个代码是为了测试手工加上的";
 	}
 }
