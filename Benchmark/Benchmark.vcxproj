@@ -49,11 +49,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\hxguo\source\repos\benchmark\include;$(GoogletestInclude);$(AnalysisInclude)</IncludePath>
-    <LibraryPath>C:\Users\hxguo\source\repos\benchmark\build\src;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\hxguo\source\repos\benchmark\build\src;C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\hxguo\source\repos\benchmark\include;$(GoogletestInclude);$(AnalysisInclude)</IncludePath>
-    <LibraryPath>C:\Users\hxguo\source\repos\benchmark\build\src;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\hxguo\source\repos\benchmark\build\src;C:\Program Files\OpenSSL-Win64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,9 +110,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
       <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GoogleUnitTest\UnitTest.vcxproj">
-      <Project>{b59e4fff-9041-490e-96bf-e492c1dd7c23}</Project>
     </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>

@@ -53,6 +53,10 @@ namespace StockAnalysisTest {
 	protected:
 	};
 
+	TEST_F(CTiingoDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(gl_pDataSourceTiingo->GetWebInquiryPtr()->GetConnectionName(), _T("Tiingo"));
+	}
+
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pDataSourceTiingo->SetCurrentInquiry(p);

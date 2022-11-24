@@ -38,3 +38,5 @@ public:
 };
 
 typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;
+
+extern CFinnhubWebSocket gl_finnhubWebSocket;

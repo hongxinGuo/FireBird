@@ -149,7 +149,7 @@ bool CWorldMarket::SchedulingTask(void) {
 
 void CWorldMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
 	for (auto& pDataSource : m_vDataSource) {
-		pDataSource->Run(lCurrentTime);
+		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
 	}
 }
 
@@ -505,14 +505,14 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
-	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnecting();
 	if (!gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
 	if (!gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
 	if (!gl_systemConfigeration.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
 }
 
 void CWorldMarket::DeconnectingAllWebSocket(void) {
-	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) m_finnhubWebSocket.Deconnecting();
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnecting();
 	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) m_tiingoIEXWebSocket.Deconnecting();
 	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) m_tiingoCryptoWebSocket.Deconnecting();
 	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) m_tiingoForexWebSocket.Deconnecting();
@@ -793,12 +793,12 @@ bool CWorldMarket::RestartWebSocket(void) {
 
 void CWorldMarket::RestartFinnhubWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) {
-		if (!m_finnhubWebSocket.IsReceivingData()) {
-			m_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
+		if (!gl_finnhubWebSocket.IsReceivingData()) {
+			gl_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
 		}
 		else {
-			m_finnhubWebSocket.SetReceivingData(false);
+			gl_finnhubWebSocket.SetReceivingData(false);
 		}
 	}
 }
@@ -843,8 +843,8 @@ bool CWorldMarket::StartWebSocket(void) {
 
 void CWorldMarket::StartFinnhubWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) {
-		if (m_finnhubWebSocket.IsClosed()) {
-			m_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		if (gl_finnhubWebSocket.IsClosed()) {
+			gl_finnhubWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
 		}
 	}
@@ -891,7 +891,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
-		m_finnhubWebSocket.ParseFinnhubWebSocketData(pString);
+		gl_finnhubWebSocket.ParseFinnhubWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedFinnhubWebSocket(iTotalDataSize);
 

@@ -298,7 +298,7 @@ bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndP
 int ParseSinaRTData(CWebDataPtr pWebData) {
 	int iTotal = 0;
 	static int i = 0;
-	// 截取新浪实时数据时用。
+	// 截取实时数据时用。为了测试解析速度
 	if (i < pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
 		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.dat"), s.c_str());
@@ -431,7 +431,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	bool fSucceed = true;
 	static int i = 0;
-	// 截取新浪实时数据时用。
+	// 截取实时数据时用。为了测试解析速度
 	if (i <= pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
 		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.dat"), s.c_str());
@@ -603,7 +603,7 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	vector<CWebRTDataPtr> vWebRTData;
 
 	static int i = 0;
-	// 截取实时数据时用。
+	// 截取实时数据时用。为了测试解析速度
 	if (i < pData->GetBufferLength()) {
 		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
 		i = pData->GetBufferLength();

@@ -79,7 +79,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 			}
 			ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
-			// 本线程必须位于本函数的最后，因其调用SetInquiry(false)，用于启动下次申请
+			// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
 			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
 			thread1.detach();
 			return true;

@@ -5,9 +5,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include<ixwebsocket/IXWebSocket.h>
+
 #include"ThreadStatus.h"
 
 #include"WebInquirer.h"
+#include"WebRTDataContainer.h"
+#include"HighPerformanceCounter.h"
 
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
@@ -17,9 +21,6 @@
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 
-#include"WebRTDataContainer.h"
-#include"HighPerformanceCounter.h"
-
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
@@ -27,6 +28,8 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
+
+#include"FinnhubWebSocket.h"
 
 #include "ChinaMarket.h"
 #include"WorldMarket.h"
@@ -68,6 +71,8 @@ CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
 CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
 CQuandlDataSourcePtr gl_pDataSourceQuandl = nullptr;
+
+CFinnhubWebSocket gl_finnhubWebSocket;
 
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

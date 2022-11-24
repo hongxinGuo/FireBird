@@ -68,6 +68,10 @@ namespace StockAnalysisTest {
 	protected:
 	};
 
+	TEST_F(CFinnhubDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(gl_pDataSourceFinnhub->GetWebInquiryPtr()->GetConnectionName(), _T("Finnhub"));
+	}
+
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus) {
 		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCountryListUpdated());
 

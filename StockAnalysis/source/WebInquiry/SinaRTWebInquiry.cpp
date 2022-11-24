@@ -78,7 +78,7 @@ void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
 }
 
 /// <summary>
-/// Finnhub.io在顺利读取后，会报告当前系统状态。如果报告的状态码为429时，说明读取频率超速，系统拒绝回答。
+///
 /// </summary>
 /// <param name=""></param>
 void CSinaRTWebInquiry::UpdateStatusAfterReadingWebData(void) {

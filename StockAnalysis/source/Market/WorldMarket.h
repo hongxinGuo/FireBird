@@ -287,7 +287,7 @@ protected:
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 
 	// WebSocket数据
-	CFinnhubWebSocket m_finnhubWebSocket;
+	//CFinnhubWebSocket gl_finnhubWebSocket;
 	CTiingoIEXWebSocket m_tiingoIEXWebSocket;
 	CTiingoForexWebSocket m_tiingoForexWebSocket;
 	CTiingoCryptoWebSocket m_tiingoCryptoWebSocket;

@@ -6,6 +6,7 @@
 
 #include"WebInquirer.h"
 #include "FinnhubWebSocket.h"
+#include"FinnhubWebInquiry.h"
 
 #include <ixwebsocket/IXWebSocket.h>
 
@@ -23,6 +24,9 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		str = _T("Finnhub WebSocket Error: ");
 		str += msg->errorInfo.reason.c_str();
 		gl_systemMessage.PushErrorMessage(str);
+		if (gl_pFinnhubWebInquiry->GetErrorCode() == 12002) { // 数据源不工作？
+			gl_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
+		}
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));

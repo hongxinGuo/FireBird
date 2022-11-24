@@ -613,7 +613,7 @@ bool CChinaMarket::SchedulingTask(void) {
 
 void CChinaMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
 	for (auto& pDataSource : m_vDataSource) {
-		pDataSource->Run(lCurrentTime);
+		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
 	}
 }
 
