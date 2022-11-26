@@ -14,7 +14,7 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
-	Deconnecting();
+	Deconnect();
 }
 
 void CVirtualWebSocket::Reset(void) {
@@ -25,7 +25,7 @@ void CVirtualWebSocket::Reset(void) {
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
-		Deconnecting();
+		Deconnect();
 		while (!IsClosed()) Sleep(1);
 		ASSERT(IsClosed());
 		Reset();
@@ -116,7 +116,7 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 	return true;
 }
 
-bool CVirtualWebSocket::Deconnecting(void) {
+bool CVirtualWebSocket::Deconnect(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
@@ -127,7 +127,7 @@ bool CVirtualWebSocket::Deconnecting(void) {
 	return true;
 }
 
-bool CVirtualWebSocket::DeconnectingWithoutWaitingSucceed(void) {
+bool CVirtualWebSocket::DeconnectWithoutWaitingSucceed(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
@@ -136,7 +136,7 @@ bool CVirtualWebSocket::DeconnectingWithoutWaitingSucceed(void) {
 	return true;
 }
 
-bool CVirtualWebSocket::Sending(string message)
+bool CVirtualWebSocket::SendMessage(string message)
 {
 	m_webSocket.send(message);
 

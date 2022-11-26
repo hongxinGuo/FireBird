@@ -100,8 +100,10 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	ULONG64 llCurrentTickCount = GetTickCount64();
+	CHighPerformanceCounter counter;
+	//ULONG64 llCurrentTickCount = GetTickCount64();
 
+	counter.Start();
 	ASSERT(IsReadingWebData());
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
@@ -121,7 +123,9 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateStatusAfterReadingWebData();
 
-	SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
+	counter.Stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	//SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
 
 	SetReadingWebData(false);
 }

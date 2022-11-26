@@ -55,6 +55,17 @@ bool CVirtualMarket::SchedulingTask(void) {
 	else return false;
 }
 
+/// <summary>
+/// 申请并处理Data source的数据，由最终衍生类的SchedlingTask调度。
+/// 此函数在VirtualMarket中定义，但由最终衍生类来调用，应为lCurrentTime必须为该衍生类的当前市场时间。
+/// </summary>
+/// <param name="lCurrentTime"></param>
+void CVirtualMarket::InquireAndProcessDataSource(long lCurrentTime) {
+	for (auto& pDataSource : m_vDataSource) {
+		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
+	}
+}
+
 void CVirtualMarket::ResetMarket(void) {
 	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }

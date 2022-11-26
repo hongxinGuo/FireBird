@@ -122,7 +122,7 @@ void CWorldMarket::ResetMarket(void) {
 bool CWorldMarket::PreparingExitMarket(void)
 {
 	ASSERT(gl_systemStatus.IsExitingSystem());
-	DeconnectingAllWebSocket();
+	DeconnectAllWebSocket();
 
 	return true;
 }
@@ -141,7 +141,7 @@ bool CWorldMarket::SchedulingTask(void) {
 	TaskCheckSystemReady();
 
 	// 调用各Web data source，进行网络数据的接收和处理。
-	ProcessMessageAndReceivedData(lCurrentTime);
+	InquireAndProcessDataSource(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (GetUTCTime() > s_lastTimeSchedulingTask) {
@@ -150,12 +150,6 @@ bool CWorldMarket::SchedulingTask(void) {
 	}
 
 	return true;
-}
-
-void CWorldMarket::ProcessMessageAndReceivedData(long lCurrentTime) {
-	for (auto& pDataSource : m_vDataSource) {
-		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
-	}
 }
 
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
@@ -510,17 +504,17 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 }
 
 void CWorldMarket::StopReceivingWebSocket(void) {
-	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnecting();
-	if (!gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnecting();
-	if (!gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnecting();
-	if (!gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnecting();
+	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnect();
+	if (!gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnect();
+	if (!gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnect();
+	if (!gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnect();
 }
 
-void CWorldMarket::DeconnectingAllWebSocket(void) {
-	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnecting();
-	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnecting();
-	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnecting();
-	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnecting();
+void CWorldMarket::DeconnectAllWebSocket(void) {
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnect();
 }
 
 bool CWorldMarket::UpdateToken(void) {
@@ -799,7 +793,7 @@ bool CWorldMarket::RestartWebSocket(void) {
 void CWorldMarket::RestartFinnhubWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) {
 		if (!gl_finnhubWebSocket.IsReceivingData()) {
-			gl_finnhubWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_finnhubWebSocket.DeconnectWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Finnhub web socket服务"));
 		}
 		else {
@@ -811,7 +805,7 @@ void CWorldMarket::RestartFinnhubWebSocket(void) {
 void CWorldMarket::RestartTiingoWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) {
 		if (!gl_tiingoIEXWebSocket.IsReceivingData()) {
-			gl_tiingoIEXWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_tiingoIEXWebSocket.DeconnectWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo IEX web socket服务"));
 		}
 		else {
@@ -820,7 +814,7 @@ void CWorldMarket::RestartTiingoWebSocket(void) {
 	}
 	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) {
 		if (!gl_tiingoCryptoWebSocket.IsReceivingData()) {
-			gl_tiingoCryptoWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_tiingoCryptoWebSocket.DeconnectWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Crypto web socket服务"));
 		}
 		else {
@@ -829,7 +823,7 @@ void CWorldMarket::RestartTiingoWebSocket(void) {
 	}
 	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) {
 		if (!gl_tiingoForexWebSocket.IsReceivingData()) {
-			gl_tiingoForexWebSocket.DeconnectingWithoutWaitingSucceed();
+			gl_tiingoForexWebSocket.DeconnectWithoutWaitingSucceed();
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("停止Tiingo Forex web socket服务"));
 		}
 		else {

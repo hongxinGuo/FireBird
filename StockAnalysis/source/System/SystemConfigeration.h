@@ -37,6 +37,8 @@ public:
 	// 获取系统配置参数
 	bool IsUsingFastCPU(void) noexcept { return m_bUsingFastCPU; }
 	void SetUsingFastCPU(bool bUsingFastCPU) noexcept { m_bUsingFastCPU = bUsingFastCPU; }
+	bool IsDebugMode(void) noexcept { return m_bDebugMode; }
+	void SetDebugMode(bool bFlag) noexcept { m_bDebugMode = bFlag; }
 	CString GetDatabaseAccountName(void) noexcept { return m_strDatabaseAccountName; }
 	void SetDatabaseAccountName(CString strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
 	CString GetDatabaseAccountPassword(void) noexcept { return m_strDatabaseAccountPassword; }
@@ -121,6 +123,7 @@ protected:
 
 	// 系统配置
 	bool m_bUsingFastCPU; //  是否使用快速CPU
+	bool m_bDebugMode; // 系统是否是测试状态
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值

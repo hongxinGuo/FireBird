@@ -78,7 +78,7 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 	ASSERT(IsOpen());
 
 	string messageAuth(CreateMessage(vSymbol));
-	ix::WebSocketSendInfo info = Sending(messageAuth);
+	ix::WebSocketSendInfo info = SendMessage(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;

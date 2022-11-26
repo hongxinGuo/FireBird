@@ -39,6 +39,7 @@ std::string gl_sSystemConfigeration = R"(
 {
 "SystemConfigeration": {
 	"UsingFastCPU" : true,
+	"DebugMode" : false,
   "DatabaseAccountName" : "hxguo",
 	"DatabaseAccountPassword" : "hxguo",
 	"BackgroundThreadPermittedNumber" : 8,
@@ -97,6 +98,7 @@ CSystemConfigeration::CSystemConfigeration() {
 
 	// 系统配置
 	m_bUsingFastCPU = true; // 默认使用快速CPU
+	m_bDebugMode = false;
 	m_strDatabaseAccountName = _T("hxguo");
 	m_strDatabaseAccountPassword = _T("hxguo");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
@@ -174,6 +176,10 @@ void CSystemConfigeration::Update() {
 		// 系统配置
 		try {
 			m_bUsingFastCPU = m_systemConfigeration.at("SystemConfigeration").at("UsingFastCPU");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_bDebugMode = m_systemConfigeration.at("SystemConfigeration").at("DebugMode");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
@@ -309,6 +315,7 @@ void CSystemConfigeration::Update() {
 void CSystemConfigeration::UpdateJson(void) {
 	// system
 	m_systemConfigeration["SystemConfigeration"]["UsingFastCPU"] = m_bUsingFastCPU;
+	m_systemConfigeration["SystemConfigeration"]["DebugMode"] = m_bDebugMode;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;

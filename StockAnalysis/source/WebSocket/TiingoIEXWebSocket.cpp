@@ -75,7 +75,7 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 
 	ASSERT(IsOpen());
 
-	info = Sending(messageAuth);
+	info = SendMessage(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;

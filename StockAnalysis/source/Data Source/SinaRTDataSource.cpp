@@ -42,7 +42,9 @@ bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 		}
 		if (IsInquiring()) {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
-				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+				if (!gl_systemConfigeration.IsDebugMode()) { // 系统配置为：测试系统时，不降低轮询速度
+					sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+				}
 			}
 			else {
 				sllLastTimeTickCount = llTickCount;

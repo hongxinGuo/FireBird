@@ -58,8 +58,6 @@ public:
 	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final { if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true; else return false; }
 
 	virtual bool SchedulingTask(void) override final;
-	// 由程序的定时器调度，大约每100毫秒一次
-	void ProcessMessageAndReceivedData(long lCurrentTime);
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -244,7 +242,7 @@ public:
 	void RestartFinnhubWebSocket(void);
 	void RestartTiingoWebSocket(void);
 	void StopReceivingWebSocket(void);
-	void DeconnectingAllWebSocket(void);
+	void DeconnectAllWebSocket(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

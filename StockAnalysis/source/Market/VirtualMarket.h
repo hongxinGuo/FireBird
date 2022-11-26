@@ -23,6 +23,10 @@ public:
 
 public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
+	// 申请并处理Data source的数据，被最终衍生类的SchedlingTask函数来调度。
+	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
+	void InquireAndProcessDataSource(long lCurrentTime);
+
 	bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
 	virtual void ResetMarket(void);
@@ -49,11 +53,11 @@ public:
 	bool IsWorkingDay(long lDate) const noexcept;
 
 	virtual bool IsOrdinaryTradeTime(void) { return true; } // 日常交易时间
-	virtual bool IsOrdinaryTradeTime(long) { return true; }
+	virtual bool IsOrdinaryTradeTime(long) { return true; } // 参数为市场当前时间hhmmss
 	virtual bool IsWorkingTime(void) { return true; } // 工作时间（日常交易时间 + 延长的交易时间）
-	virtual bool IsWorkingTime(long) { return true; }
+	virtual bool IsWorkingTime(long) { return true; } // 参数为市场当前时间hhmmss
 	virtual bool IsDummyTime(void) { return false; } // 空闲时间
-	virtual bool IsDummyTime(long) { return false; }
+	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
 	bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;
 	long GetNextDay(long lDate, long lTimeSpanDays = 1) const noexcept;

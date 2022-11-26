@@ -52,9 +52,9 @@ public:
 
 	// 实现
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool Deconnecting(void); // 用于系统退出时。
-	bool DeconnectingWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
-	bool Sending(string message);
+	bool Deconnect(void); // 用于系统退出时。
+	bool DeconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
+	bool SendMessage(string message);
 
 	vector<CString> m_vCurrentSymbol;
 

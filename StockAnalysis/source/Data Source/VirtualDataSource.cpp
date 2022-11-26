@@ -2,6 +2,7 @@
 
 #include "VirtualDataSource.h"
 #include"Thread.h"
+#include"ThreadStatus.h"
 
 CVirtualDataSource::CVirtualDataSource(void) {
 	m_pWebInquiry = nullptr;
@@ -88,8 +89,16 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	return false;
 }
 
+// 此信号量用于解析WebSource中的数据。
+// 将ParseAndStoreData线程限制至最多2-3个，这样既能保证足够的计算速度，也不会发生系统颠簸。
+counting_semaphore<3> gl_WebSourceParseAndStoreData{ 3 };
+
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
+	gl_WebSourceParseAndStoreData.acquire();
+	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 	pDataSource->ParseAndStoreData(pProductWebData, pWebData);
+	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
+	gl_WebSourceParseAndStoreData.release();
 
 	return 203;
 }

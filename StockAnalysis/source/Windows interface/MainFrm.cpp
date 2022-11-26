@@ -3,6 +3,7 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
+#include"HighPerformanceCounter.h"
 
 #include "StockAnalysis.h"
 
@@ -518,9 +519,14 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	static long long s_llCounterforUpdateStatusBar = 0;
+	static long long s_llHighPerformanceCounter = 0;
 	long long llTickCount = 0;
+	CHighPerformanceCounter counter;
+	char buffer[50]{};
+	CString str;
 
 	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
+	counter.Start();
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
 
@@ -529,10 +535,20 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	//CMainFrame只执行更新状态任务
 	llTickCount = GetTickCount64();
-	if (llTickCount >= (s_llCounterforUpdateStatusBar + 100)) {
+	if (llTickCount >= (s_llCounterforUpdateStatusBar + 70)) {
 		UpdateStatus();
 		UpdateInnerSystemStatus();
 		s_llCounterforUpdateStatusBar = llTickCount;
+	}
+
+	counter.Stop();
+	long lCurrentPeriod = counter.GetElapsedMilliSecond();
+	if (lCurrentPeriod > 20) {
+		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
+		//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
+		sprintf_s(buffer, _T("%d"), lCurrentPeriod);
+		str = buffer;
+		SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 	}
 
 	if (!gl_systemStatus.IsWorkingMode()) {
@@ -593,7 +609,8 @@ void CMainFrame::UpdateStatus(void) {
 	}
 
 	// 更新当前工作线程数
-	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
+	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
+	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	str = buffer;
 	SysCallSetPaneText(11, (LPCTSTR)str);
 

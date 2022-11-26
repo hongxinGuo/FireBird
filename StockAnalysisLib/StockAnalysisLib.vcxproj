@@ -208,7 +208,14 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\InfoReport.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\accessory\JsonParse.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\JsonParse.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Full</Optimization>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp" />
@@ -341,7 +348,15 @@
     <ClCompile Include="..\StockAnalysis\source\Type\China market\NeteaseDayLineWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\OneDeal.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\StockSection.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Type\China market\WebData.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <DiagnosticsFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Column</DiagnosticsFormat>
+    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\VirtualDataHistoryCandleExtend.cpp" />
@@ -402,6 +417,9 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadUpdateStockCodeDB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
@@ -456,13 +474,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(AnalysisInclude);$(PackageInclude);$(GoogletestInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(nlohmannJsonInclude);$(GoogletestInclude)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)StockAnalysis\Source\;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(AnalysisInclude);$(PackageInclude);$(GoogletestInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(nlohmannJsonInclude);$(GoogletestInclude)</IncludePath>
     <SourcePath>$(SolutionDir)StockAnalysis\Source\;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -521,7 +539,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
-    <Import Project="..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" />
     <Import Project="..\packages\boost.1.80.0\build\boost.targets" Condition="Exists('..\packages\boost.1.80.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -529,7 +546,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
-    <Error Condition="!Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets'))" />
     <Error Condition="!Exists('..\packages\boost.1.80.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.80.0\build\boost.targets'))" />
   </Target>
 </Project>
