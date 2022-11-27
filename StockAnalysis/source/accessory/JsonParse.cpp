@@ -11,54 +11,16 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+using namespace std;
+#include<string>
+
 #include "JsonParse.h"
 
 #include"WebRTData.h"
 #include"WebInquirer.h"
-#include"ChinaMarket.h"
 #include"WebRTDataContainer.h"
 
 #include"SaveAndLoad.h"
-
-using namespace std;
-#include<string>
-
-bool ParseWithPTree(ptree& pt, string& s) {
-	stringstream ss(s);
-	try {
-		read_json(ss, pt);
-	}
-	catch (ptree_error& e) {
-#ifndef _DEBUG
-		char buffer[180];
-		for (int i = 0; i < 80; i++) {
-			buffer[i] = s.at(i);
-		}
-		buffer[80] = 0x000;
-		CString str = buffer;
-		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
-#endif
-		return false;
-	}
-	return true;
-}
-
-bool ParseWithPTree(shared_ptr<ptree>& ppt, string& s) {
-	ASSERT(ppt != nullptr);
-	stringstream ss(s);
-	try {
-		read_json(ss, *ppt);
-	}
-	catch (ptree_error& e) {
-#ifndef _DEBUG
-		CString str = s.c_str();
-		str = str.Left(160);
-		ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error ") + str + _T(" "), e);
-#endif
-		return false;
-	}
-	return true;
-}
 
 bool ConvertToWJSON(wptree& pt, string& s) {
 	wstring ws = to_wide_string(s);
@@ -241,19 +203,6 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_e
 	ReportJSonErrorToSystemMessage(strPrefix + strData.Left(80) + _T(" "), e);
 }
 
-bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
-	try {
-		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	}
-	catch (json::parse_error& e) {
-		gl_systemMessage.PushErrorMessage("nlohmann json parse error");
-		//ReportJsonError(e, s);
-		pjs = nullptr;
-		return false;
-	}
-	return true;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
@@ -319,7 +268,7 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	return iTotal;
 }
 
-void ParseSinaRTData(void) {
+int ParseSinaRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
 	int iTotal = 0;
@@ -327,10 +276,9 @@ void ParseSinaRTData(void) {
 		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
 		iTotal += ParseSinaRTData(pWebDataReceived);
 	}
-	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
 	pWebDataReceived = nullptr;
 
-	return;
+	return iTotal;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -505,7 +453,8 @@ void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
 		if (gl_systemStatus.IsExitingSystem()) return;
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
-		if (pRTData->ParseNeteaseDataWithNlohmannJSon(it)) {
+		if (ParseNeteaseDataWithNlohmannJSon(it, pRTData)) {
+			pRTData->CheckNeteaseRTDataActive();
 			vWebData.push_back(pRTData);
 		}
 	}
@@ -565,7 +514,7 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 	return vWebRTData.size();
 }
 
-bool ParseNeteaseRTDataWithPTree(void) {
+int ParseNeteaseRTDataWithPTree(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	shared_ptr<ptree> ppt = nullptr;
@@ -575,9 +524,8 @@ bool ParseNeteaseRTDataWithPTree(void) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		iTotal += ParseNeteaseRTDataWithPTree(pWebDataReceived);
 	}
-	gl_pChinaMarket->IncreaseRTDataReceived(iTotal);
 
-	return true;
+	return iTotal;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -629,7 +577,7 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool ParseNeteaseRTDataWithNlohmannJSon(void) {
+int ParseNeteaseRTDataWithNlohmannJSon(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	int iTotalActive = 0;
@@ -638,9 +586,8 @@ bool ParseNeteaseRTDataWithNlohmannJSon(void) {
 		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
 		iTotalActive += ParseNeteaseRTDataWithNlohmannJSon(pWebDataReceived);
 	}
-	gl_pChinaMarket->IncreaseRTDataReceived(iTotalActive);
 
-	return true;
+	return iTotalActive;
 }
 
 // 将PTree中提取的utf-8字符串转化为CString

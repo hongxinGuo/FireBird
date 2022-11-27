@@ -146,6 +146,7 @@
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\VirtualMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\pch.h" />
     <ClInclude Include="..\StockAnalysis\source\Stock\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Stock\VirtualStock.h" />
@@ -209,12 +210,35 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\InfoReport.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\JsonParse.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Full</Optimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <DiagnosticsFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Classic</DiagnosticsFormat>
+      <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BufferSecurityCheck>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\NlohmannJsonParser.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <BufferSecurityCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BufferSecurityCheck>
+      <FunctionLevelLinking Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</FunctionLevelLinking>
+      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EnableParallelCodeGeneration>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebugDLL</RuntimeLibrary>
+      <DiagnosticsFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Column</DiagnosticsFormat>
+      <SupportJustMyCode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</SupportJustMyCode>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </CompileAsManaged>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp" />
@@ -355,7 +379,8 @@
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
       <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
-      <DiagnosticsFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Column</DiagnosticsFormat>
+      <DiagnosticsFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Classic</DiagnosticsFormat>
+      <SupportJustMyCode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</SupportJustMyCode>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\China market\WeekLine.cpp" />

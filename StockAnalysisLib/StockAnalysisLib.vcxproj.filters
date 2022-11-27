@@ -750,6 +750,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\QuandlDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1330,6 +1333,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\NlohmannJsonParser.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

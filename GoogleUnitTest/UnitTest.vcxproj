@@ -292,7 +292,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <GenerateMapFile>false</GenerateMapFile>
       <MapExports>true</MapExports>
       <ShowProgress>NotSet</ShowProgress>
@@ -334,7 +334,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackCommitSize>40971520</StackCommitSize>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <AdditionalDependencies>\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

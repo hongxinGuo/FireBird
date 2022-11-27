@@ -90,7 +90,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 }
 
 // 此信号量用于解析WebSource中的数据。
-// 将ParseAndStoreData线程限制至最多2-3个，这样既能保证足够的计算速度，也不会发生系统颠簸。
+// 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
 counting_semaphore<3> gl_WebSourceParseAndStoreData{ 3 };
 
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
