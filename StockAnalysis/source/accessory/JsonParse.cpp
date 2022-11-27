@@ -448,19 +448,20 @@ bool ParseDayLineGetFromNeteaseServer(void) {
 	return true;
 }
 
-void ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
+int ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
 	for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
-		if (gl_systemStatus.IsExitingSystem()) return;
+		if (gl_systemStatus.IsExitingSystem()) return 0;
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
-		if (ParseNeteaseDataWithNlohmannJSon(it, pRTData)) {
+		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
 			pRTData->CheckNeteaseRTDataActive();
 			vWebData.push_back(pRTData);
 		}
 	}
+	return vWebData.size();
 }
 
-void ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
+int ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
 	for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
@@ -468,6 +469,7 @@ void ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
 			vWebData.push_back(pRTData);
 		}
 	}
+	return vWebData.size();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

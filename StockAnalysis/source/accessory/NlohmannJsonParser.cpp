@@ -14,23 +14,23 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include"stdafx.h"
-#include"NlohmannJsonDeclaration.h"
 #include"StockCodeConverter.h"
 #include"TimeConvert.h"
+#include"SystemMessage.h"
+#include"WebRTData.h"
 
 #include<boost/property_tree/ptree.hpp>
 #include<boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
 
-#include"SystemMessage.h"
-#include"WebRTData.h"
+#include"NlohmannJsonDeclaration.h"
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 
 using namespace std;
 #include<string>
 
-bool ParseWithNlohmannJSon(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
+bool CreateNlohmannJson(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
 	try {
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}
@@ -65,7 +65,7 @@ CString XferToCString(string s);
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData) {
+bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData) {
 	bool fSucceed = true;
 	string symbolName, strSymbol2, strTime, strUpdateTime, strName;
 	double dHigh, dLow, dNew, dOpen, dLastClose;

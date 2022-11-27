@@ -984,15 +984,15 @@ void CMainFrame::OnStopUpdateDayLine() {
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	// TODO: Add your command handler code here
 	gl_systemConfigeration.SetChinaMarketRealtimeServer(1);
-	gl_pNeteaseRTDataSource->Enable(true);
 	gl_pSinaRTDataSource->Enable(false);
+	gl_pNeteaseRTDataSource->Enable(true);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	// TODO: Add your command handler code here
 	gl_systemConfigeration.SetChinaMarketRealtimeServer(0);
 	gl_pNeteaseRTDataSource->Enable(false);
-	gl_pSinaRTDataSource->Enable(false);
+	gl_pSinaRTDataSource->Enable(true);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {

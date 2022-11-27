@@ -221,7 +221,7 @@ string sData101 = _T("{\
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		ParseWithNlohmannJSon(&j, sData101);
+		CreateNlohmannJson(&j, sData101);
 	}
 }
 BENCHMARK(ParseWithNlohmannJSon);
@@ -257,7 +257,7 @@ public:
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		ParseWithNlohmannJSon(&j, sUSExchangeStockCode);
+		CreateNlohmannJson(&j, sUSExchangeStockCode);
 	}
 }
 
@@ -269,17 +269,28 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithPTree)(benchmark::State& state) {
 }
 
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJSon)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
+
 	for (auto _ : state) {
-		ParseWithNlohmannJSon(&j, sNeteaseRTData, 21, 2);
+		CreateNlohmannJson(&j, sNeteaseRTData, 21, 2);
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithPTree)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataCreatePTreeWithBoostPTree)(benchmark::State& state) {
 	ptree pt;
 	for (auto _ : state) {
 		ParseWithPTree(pt, sNeteaseRTDataForPTree);
+	}
+}
+
+// 解析并处理netease实时数据。NeteaseRTData的解析只实现了nlohmann json部分，不使用boost ptree来解析。
+json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
+	vector<CWebRTDataPtr> vWebRTDataReceived;
+	for (auto _ : state) {
+		CreateNlohmannJson(&j, sNeteaseRTData, 21, 2);
+		ParseNeteaseRTData(&j, vWebRTDataReceived);
 	}
 }
 

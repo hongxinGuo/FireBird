@@ -94,7 +94,7 @@ bool CWebData::ParseUsingNlohmannJson(long lBeginPos, long lEndPos) {
 }
 
 bool CWebData::CreateNlohmannJSon(long lBeginPos, long lEndPos) {
-	m_fParsed = ParseWithNlohmannJSon(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
+	m_fParsed = CreateNlohmannJson(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
 
 	return m_fParsed;
 }

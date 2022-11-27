@@ -42,23 +42,23 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(ParseWithPTree(ppt, s));
 	}
 
-	TEST_F(jsonParseTest, TestConvertToNlohmannJson) {
+	TEST_F(jsonParseTest, TestCreateNlohmannJson) {
 		json* pjs = new json;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
-		EXPECT_TRUE(ParseWithNlohmannJSon(pjs, s));
+		EXPECT_TRUE(CreateNlohmannJson(pjs, s));
 		string sSubscribe = pjs->at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"); // abcdefg之前缺少字符':'
-		EXPECT_FALSE(ParseWithNlohmannJSon(pjs, s));
+		EXPECT_FALSE(CreateNlohmannJson(pjs, s));
 
 		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 		delete pjs;
 	}
 
-	TEST_F(jsonParseTest, TestConvertToNlohmannJson2) {
+	TEST_F(jsonParseTest, TestCreateNlohmannJson2) {
 		json* pjs = new json;
 		string s{ _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo") };
-		EXPECT_TRUE(ParseWithNlohmannJSon(pjs, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
+		EXPECT_TRUE(CreateNlohmannJson(pjs, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		string sSubscribe = pjs->at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 
