@@ -29,17 +29,17 @@ bool CreateNlohmannJson(json* pjs, std::string& s, long lBeginPos = 0, long lEnd
 bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData);
 
 int ParseSinaRTData(CWebDataPtr pWebData);
-int ParseSinaRTData(void);
+int ParseAllSinaRTData(void);
 bool ParseTengxunRTData(CWebDataPtr pWebData);
-bool ParseTengxunRTData(void);
+bool ParseAllTengxunRTData(void);
 void ParseNeteaseDayLine(CWebDataPtr pWebData);
 bool ParseDayLineGetFromNeteaseServer(void);
 
 int ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData);
 int ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebData);
-int ParseNeteaseRTDataWithNlohmannJSon(void);// 此函数解析gl_WebInquirer中暂存的所有web Data
+int ParseAllNeteaseRTDataWithNlohmannJSon(void);// 此函数解析gl_WebInquirer中暂存的所有web Data
 int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 解析一个WebData
-int ParseNeteaseRTDataWithPTree(void); // 此函数解析gl_WebInquirer中暂存的所有web Data
+int ParseAllNeteaseRTDataWithPTree(void); // 此函数解析gl_WebInquirer中暂存的所有web Data
 int ParseNeteaseRTDataWithPTree(CWebDataPtr pData); // 此函数解析一个web Data
 
 // 将PTree中提取的utf-8字符串转化为CString

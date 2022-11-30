@@ -7,9 +7,11 @@
 //
 // 为了保证本文件能够单独优化，本文件不使用预先编译的pch.h，而是把实际头文件放在本文件中。这样能够保证单独优化的完成。
 //
-// 在DEBUG模式下，boost PTree速度比Nlohmann json快，但Release模式下nlohmann json的速度比boost ptree快50%左右。
-// 解析900个NeteaseRTData，nlohmann json耗时16毫秒，PTree耗时35毫秒。
+// 在DEBUG模式下，boost PTree速度比Nlohmann json快，但Release模式下nlohmann json的速度比boost ptree快50%以上。
+// debug模式下，解析900个NeteaseRTData，nlohmann json耗时160毫秒，PTree耗时120毫秒。
+// release模式下，解析900个NeteaseRTData，nlohmann json耗时16毫秒，PTree耗时35毫秒。
 //
+// 在Debug模式下，无论怎样调整编译参数，由于连接的动态系统库是debug模式（/MDd），且该json库使用的std库为调试模式，故而其解析速度无法与release模式相比。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -100,17 +100,17 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	CHighPerformanceCounter counter;
-	//ULONG64 llCurrentTickCount = GetTickCount64();
+	//CHighPerformanceCounter counter;
+	ULONG64 llCurrentTickCount = GetTickCount64();
 
-	counter.Start();
+	//counter.Start();
 	ASSERT(IsReadingWebData());
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		//counter.start();
 		VerifyDataLength();
-		TransferData(pWebData);
+		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 		ResetBuffer();
 		ParseData(pWebData);
 
@@ -123,9 +123,9 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateStatusAfterReadingWebData();
 
-	counter.Stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
-	//SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
+	//counter.Stop();
+	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
 
 	SetReadingWebData(false);
 }
@@ -281,12 +281,10 @@ bool CVirtualWebInquiry::VerifyDataLength() {
 	return true;
 }
 
-bool CVirtualWebInquiry::TransferData(CWebDataPtr pWebData) {
-	auto byteReaded = GetByteReaded();
-
-	m_sBuffer.resize(byteReaded);
+bool CVirtualWebInquiry::TransferDataToWebData(CWebDataPtr pWebData) {
+	m_sBuffer.resize(m_lByteRead);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
-	pWebData->SetBufferLength(byteReaded);
+	pWebData->SetBufferLength(m_lByteRead);
 	pWebData->ResetCurrentPos();
 
 	return true;

@@ -268,7 +268,7 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	return iTotal;
 }
 
-int ParseSinaRTData(void) {
+int ParseAllSinaRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
 	int iTotal = 0;
@@ -402,7 +402,7 @@ bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	return fSucceed;
 }
 
-bool ParseTengxunRTData(void) {
+bool ParseAllTengxunRTData(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	bool fSucceed = true;
 
@@ -516,7 +516,7 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 	return vWebRTData.size();
 }
 
-int ParseNeteaseRTDataWithPTree(void) {
+int ParseAllNeteaseRTDataWithPTree(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	shared_ptr<ptree> ppt = nullptr;
@@ -579,7 +579,7 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-int ParseNeteaseRTDataWithNlohmannJSon(void) {
+int ParseAllNeteaseRTDataWithNlohmannJSon(void) {
 	CWebDataPtr pWebDataReceived = nullptr;
 	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
 	int iTotalActive = 0;

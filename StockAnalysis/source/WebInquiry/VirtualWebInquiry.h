@@ -30,7 +30,7 @@ public:
 	bool IncreaseBufferSizeIfNeeded(long lSize = 1024 * 1024);
 
 	bool VerifyDataLength();
-	virtual bool TransferData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
+	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) { TRACE("调用了基类函数\n"); return false; }; // 解析接收到的数据。继承类必须实现此函数。
 	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); }
 
