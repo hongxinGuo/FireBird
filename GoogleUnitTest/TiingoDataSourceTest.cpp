@@ -118,18 +118,19 @@ namespace StockAnalysisTest {
 		p = gl_pDataSourceTiingo->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 
+		gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(false);
 		gl_pDataSourceTiingo->SetInquiring(false);
 		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
 		p = gl_pDataSourceTiingo->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
-		EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
+		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
+		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 
+		gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(false);
 		gl_pDataSourceTiingo->SetInquiring(false);
 		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pDataSourceTiingo->IsDayLineUpdated()) << "股票都查询完了";

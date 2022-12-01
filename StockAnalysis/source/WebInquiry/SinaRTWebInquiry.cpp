@@ -61,9 +61,9 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bool 
 /// <param name=""></param>
 void CSinaRTWebInquiry::ConfigerateSession(void) {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 100); // 设置发送超时时间为100毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下sina实时数据接收时间不超过50毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为500毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 200); // 设置发送超时时间为100毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 

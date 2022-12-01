@@ -185,23 +185,18 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
-	static bool sbWebError = false;
-	long long llTickCount = 0;
+	static bool sbWebErrorOccured = false;
+	long long llTickCount = GetTickCount64();;
 
-	llTickCount = GetTickCount64();
-	if (!sbWebError) {
+	if (!sbWebErrorOccured) {
 		if (m_pWebInquiry->IsWebError()) {
-			sbWebError = true;
+			sbWebErrorOccured = true;
 			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
-		}
-	}
-	else {
-		if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {
-			sbWebError = false;
 		}
 	}
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {
+		sbWebErrorOccured = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireFinnhub(lCurrentTime);
 		}

@@ -38,6 +38,7 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
 	pvDayLine = ParseTiingoStockDayLine(pWebData);
+	pStock->SetDayLineNeedUpdate(false);
 	if (pvDayLine->size() > 0) {
 		for (auto& pDayLine2 : *pvDayLine) {
 			pDayLine2->SetExchange(pStock->GetExchangeCode());
@@ -45,19 +46,19 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
 		}
 		pStock->UpdateDayLine(*pvDayLine);
-		pStock->SetDayLineNeedUpdate(false);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetUpdateProfileDB(true);
 		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		return true;
 	}
 	else {
-		pStock->SetDayLineNeedUpdate(false);
 		pStock->SetDayLineNeedSaving(false);
 		pStock->SetUpdateProfileDB(false);
 		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		return false;
 	}
+
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
