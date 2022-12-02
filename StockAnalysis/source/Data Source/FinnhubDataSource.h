@@ -98,4 +98,4 @@ protected:
 };
 
 typedef shared_ptr<CFinnhubDataSource> CFinnhubDataSourcePtr;
-extern CFinnhubDataSourcePtr gl_pDataSourceFinnhub;
+extern CFinnhubDataSourcePtr gl_pFinnhubDataSource;

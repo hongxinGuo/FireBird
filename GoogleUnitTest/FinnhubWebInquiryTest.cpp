@@ -3,6 +3,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
+#include"FinnhubDataSource.h"
 #include"MockFinnhubWebInquiry.h"
 
 using namespace std;
@@ -28,6 +29,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 

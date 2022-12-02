@@ -36,4 +36,4 @@ protected:
 
 typedef shared_ptr<CTiingoDataSource> CTiingoDataSourcePtr;
 
-extern CTiingoDataSourcePtr gl_pDataSourceTiingo;
+extern CTiingoDataSourcePtr gl_pTiingoDataSource;

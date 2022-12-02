@@ -1,11 +1,8 @@
 #pragma once
-#include"pch.h"
 
 #ifndef __GOOGLEMOCK__
 #error _T("本测试系统必须使用GOOGLE MOCK")
 #endif
-
-#define JSON_DIAGNOSTICS 1
 
 #include"FinnhubInaccessibleExchange.h"
 #include"ThreadStatus.h"
@@ -99,18 +96,26 @@ namespace StockAnalysisTest {
 			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
 			gl_pNeteaseDaylineDataSource = make_shared<CNeteaseDaylineDataSource>();
 
-			gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
-			gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
-			gl_pDataSourceQuandl = make_shared<CQuandlDataSource>();
+			gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
+			gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
+			gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
 
 			// 查询器和数据源要一一对应、互相包含
 			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
 			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
 			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
-			gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-			gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-			gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+			gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
+			gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry);
+			gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+
+			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
+			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
+			gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
+			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource.get());
+			gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
+			gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
+			gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());
 
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();

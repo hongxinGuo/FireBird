@@ -57,7 +57,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld;$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>

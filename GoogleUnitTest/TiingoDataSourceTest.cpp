@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
-			gl_pDataSourceTiingo->SetWebInquiringPtr(s_pMockTiingoWebInquiry);
+			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry);
 		}
 
 		virtual void TearDown(void) override {
@@ -54,40 +54,40 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(gl_pDataSourceTiingo->GetWebInquiryPtr()->GetConnectionName(), _T("Tiingo"));
+		EXPECT_STREQ(gl_pTiingoDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Tiingo"));
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		gl_pDataSourceTiingo->SetCurrentInquiry(p);
+		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
 		p->SetProductType(__STOCK_SYMBOLS__);
-		gl_pDataSourceTiingo->UpdateStatus();
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsStockSymbolUpdated());
-		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
+		gl_pTiingoDataSource->UpdateStatus();
+		EXPECT_TRUE(gl_pTiingoDataSource->IsStockSymbolUpdated());
+		gl_pTiingoDataSource->SetStockSymbolUpdated(false);
 
 		p->SetProductType(__CRYPTO_SYMBOLS__);
-		gl_pDataSourceTiingo->UpdateStatus();
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated());
-		gl_pDataSourceTiingo->SetCryptoSymbolUpdated(false);
+		gl_pTiingoDataSource->UpdateStatus();
+		EXPECT_TRUE(gl_pTiingoDataSource->IsCryptoSymbolUpdated());
+		gl_pTiingoDataSource->SetCryptoSymbolUpdated(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
 		CVirtualProductWebDataPtr p = nullptr;
 
-		gl_pDataSourceTiingo->SetStockSymbolUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
+		gl_pTiingoDataSource->SetStockSymbolUpdated(true);
+		EXPECT_FALSE(gl_pTiingoDataSource->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
 
-		gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
-		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquireCompanySymbol());
+		gl_pTiingoDataSource->SetStockSymbolUpdated(false);
+		gl_pTiingoDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pTiingoDataSource->InquireCompanySymbol());
 
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquireCompanySymbol());
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
-		p = gl_pDataSourceTiingo->GetInquiry();
+		gl_pTiingoDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pTiingoDataSource->InquireCompanySymbol());
+		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
+		p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
+		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
 	}
@@ -104,36 +104,36 @@ namespace StockAnalysisTest {
 		}
 		gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(true);
 		gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(true);
-		gl_pDataSourceTiingo->SetDayLineUpdated(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "DayLine Updated";
+		gl_pTiingoDataSource->SetDayLineUpdated(true);
+		EXPECT_FALSE(gl_pTiingoDataSource->InquireDayLine()) << "DayLine Updated";
 
-		gl_pDataSourceTiingo->SetDayLineUpdated(false);
-		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine());
+		gl_pTiingoDataSource->SetDayLineUpdated(false);
+		gl_pTiingoDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pTiingoDataSource->InquireDayLine());
 
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring());
+		gl_pTiingoDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pTiingoDataSource->InquireDayLine());
+		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
-		p = gl_pDataSourceTiingo->GetInquiry();
+		p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置";
+		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
 
 		gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(false);
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_TRUE(gl_pDataSourceTiingo->InquireDayLine());
+		gl_pTiingoDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pTiingoDataSource->InquireDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
-		p = gl_pDataSourceTiingo->GetInquiry();
+		p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 
 		gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(false);
-		gl_pDataSourceTiingo->SetInquiring(false);
-		EXPECT_FALSE(gl_pDataSourceTiingo->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsDayLineUpdated()) << "股票都查询完了";
+		gl_pTiingoDataSource->SetInquiring(false);
+		EXPECT_FALSE(gl_pTiingoDataSource->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_TRUE(gl_pTiingoDataSource->IsDayLineUpdated()) << "股票都查询完了";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
 
@@ -145,44 +145,44 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage01) {
-		while (gl_pDataSourceTiingo->GetInquiryQueueSize() > 0) gl_pDataSourceTiingo->GetInquiry();
-		EXPECT_FALSE(gl_pDataSourceTiingo->ProcessInquiringMessage());
+		while (gl_pTiingoDataSource->GetInquiryQueueSize() > 0) gl_pTiingoDataSource->GetInquiry();
+		EXPECT_FALSE(gl_pTiingoDataSource->ProcessInquiringMessage());
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
-		gl_pDataSourceTiingo->StoreInquiry(p);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
-		gl_pDataSourceTiingo->SetDataReceived(false);
-		gl_pDataSourceTiingo->SetInquiring(true);
-		EXPECT_FALSE(gl_pDataSourceTiingo->ProcessInquiringMessage()) << "Tiingo web data尚未接受到";
-		EXPECT_TRUE(gl_pDataSourceTiingo->IsInquiring()) << "没有处理，故此标识没有重置";
+		gl_pTiingoDataSource->StoreInquiry(p);
+		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
+		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pTiingoDataSource->ProcessInquiringMessage()) << "Tiingo web data尚未接受到";
+		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring()) << "没有处理，故此标识没有重置";
 
 		// 恢复原状
-		gl_pDataSourceTiingo->GetInquiry();
-		gl_pDataSourceTiingo->SetInquiring(false);
+		gl_pTiingoDataSource->GetInquiry();
+		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
-		gl_pDataSourceTiingo->StoreInquiry(p);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
-		gl_pDataSourceTiingo->SetDataReceived(true);
-		gl_pDataSourceTiingo->SetInquiring(true);
+		gl_pTiingoDataSource->StoreInquiry(p);
+		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
+		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetInquiring(true);
 		s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
 			.Times(1);
-		EXPECT_TRUE(gl_pDataSourceTiingo->ProcessInquiringMessage());
+		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pDataSourceTiingo->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsDataReceived());
+		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
+		EXPECT_FALSE(gl_pTiingoDataSource->IsDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pDataSourceTiingo->SetInquiring(false);
+		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
@@ -191,57 +191,57 @@ namespace StockAnalysisTest {
 
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
-		gl_pDataSourceTiingo->StoreInquiry(p);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 1);
-		gl_pDataSourceTiingo->SetDataReceived(true);
-		gl_pDataSourceTiingo->SetInquiring(true);
+		gl_pTiingoDataSource->StoreInquiry(p);
+		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
+		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
 			.Times(1);
-		EXPECT_TRUE(gl_pDataSourceTiingo->ProcessInquiringMessage());
+		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryFunction(),
 			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pDataSourceTiingo->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsDataReceived());
+		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_FALSE(gl_pTiingoDataSource->IsDataReceived());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
-		gl_pDataSourceTiingo->SetInquiring(false);
+		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
-		gl_pDataSourceTiingo->SetDataReceived(false);
-		gl_pDataSourceTiingo->SetCurrentInquiry(nullptr);
+		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 
-		EXPECT_FALSE(gl_pDataSourceTiingo->ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
+		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pDataSourceTiingo->SetDataReceived(false);
-		gl_pDataSourceTiingo->SetCurrentInquiry(p);
+		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
-		EXPECT_FALSE(gl_pDataSourceTiingo->ProcessWebDataReceived()) << "DataReceived标识为假";
+		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "DataReceived标识为假";
 
 		// 恢复原状
-		gl_pDataSourceTiingo->SetCurrentInquiry(nullptr);
+		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pDataSourceTiingo->SetDataReceived(false);
-		gl_pDataSourceTiingo->SetCurrentInquiry(p);
-		while (gl_pDataSourceTiingo->GetReceivedDataSize() > 0) gl_pDataSourceTiingo->GetReceivedData();
+		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetCurrentInquiry(p);
+		while (gl_pTiingoDataSource->GetReceivedDataSize() > 0) gl_pTiingoDataSource->GetReceivedData();
 
-		EXPECT_FALSE(gl_pDataSourceTiingo->ProcessWebDataReceived()) << "Received队列为空";
+		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "Received队列为空";
 
 		// 恢复原状
-		gl_pDataSourceTiingo->SetCurrentInquiry(nullptr);
+		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
@@ -251,13 +251,13 @@ namespace StockAnalysisTest {
 		pData->ParseUsingPropertyTree();
 		pData->SetParsed(true);
 
-		gl_pDataSourceTiingo->StoreReceivedData(pData);
-		gl_pDataSourceTiingo->SetCurrentInquiry(p);
-		gl_pDataSourceTiingo->SetDataReceived(true);
-		gl_pDataSourceTiingo->SetInquiring(true);
+		gl_pTiingoDataSource->StoreReceivedData(pData);
+		gl_pTiingoDataSource->SetCurrentInquiry(p);
+		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetInquiring(true);
 
-		EXPECT_TRUE(gl_pDataSourceTiingo->ProcessWebDataReceived());
+		EXPECT_TRUE(gl_pTiingoDataSource->ProcessWebDataReceived());
 		// 恢复原状
-		gl_pDataSourceTiingo->SetCurrentInquiry(nullptr);
+		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 	}
 }

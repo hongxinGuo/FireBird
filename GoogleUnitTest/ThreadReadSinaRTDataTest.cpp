@@ -30,6 +30,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource.get());
 			SinaRTWebInquiry.SetReadingWebData(true);
 		}
 
@@ -40,6 +41,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+
 		EXPECT_CALL(SinaRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));

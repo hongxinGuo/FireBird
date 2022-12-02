@@ -49,35 +49,35 @@ namespace StockAnalysisTest {
 	}
 
 	void WebInquirerCheck(void) {
-		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetReceivedDataSize(), 0);
+		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
 		EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);
 
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCountryListUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoDayLineUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexDayLineUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockDayLineUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoSymbolUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoDayLineUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexDayLineUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockDayLineUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsSymbolUpdated());
 
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoSymbolUpdated());
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
 
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsStockSymbolUpdated());
-		EXPECT_FALSE(gl_pDataSourceTiingo->IsCryptoSymbolUpdated());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsCryptoSymbolUpdated());
 
-		EXPECT_EQ(gl_pDataSourceTiingo->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 	}
 
 	void DataContainerCheck(void) {

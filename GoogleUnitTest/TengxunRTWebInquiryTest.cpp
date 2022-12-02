@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
+#include"TengxunRTDataSource.h"
 #include"MockTengxunRTWebInquiry.h"
 
 using namespace std;
@@ -29,6 +30,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_TengxunRTWebInquiry.SetDataSource(gl_pTengxunRTDataSource.get());
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 		}
 

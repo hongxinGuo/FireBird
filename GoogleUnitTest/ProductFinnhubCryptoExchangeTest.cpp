@@ -114,12 +114,12 @@ namespace StockAnalysisTest {
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket.get());
-			EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
+			EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			gl_pDataSourceFinnhub->SetCryptoExchangeUpdated(false);
+			gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
 
 			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
@@ -150,6 +150,6 @@ namespace StockAnalysisTest {
 		default:
 			break;
 		}
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsCryptoExchangeUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 	}
 }

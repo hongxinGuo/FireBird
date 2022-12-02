@@ -117,12 +117,12 @@ namespace StockAnalysisTest {
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket.get());
-			EXPECT_FALSE(gl_pDataSourceFinnhub->IsForexExchangeUpdated());
+			EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
 		virtual void TearDown(void) override {
 			// clearup
-			gl_pDataSourceFinnhub->SetForexExchangeUpdated(false);
+			gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
 
 			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";

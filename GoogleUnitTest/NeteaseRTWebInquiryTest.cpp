@@ -3,6 +3,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
+#include"NeteaseRTDataSource.h"
 #include"MockNeteaseRTWebInquiry.h"
 
 using namespace std;
@@ -31,6 +32,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
+			m_NeteaseRTWebInquiry.SetDataSource(gl_pNeteaseRTDataSource.get());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		}
 

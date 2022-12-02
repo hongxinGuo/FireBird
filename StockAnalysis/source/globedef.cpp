@@ -71,9 +71,9 @@ CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
 CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
 CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource = nullptr;
 
-CFinnhubDataSourcePtr gl_pDataSourceFinnhub = nullptr;
-CTiingoDataSourcePtr gl_pDataSourceTiingo = nullptr;
-CQuandlDataSourcePtr gl_pDataSourceQuandl = nullptr;
+CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
+CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
+CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
 
 CFinnhubWebSocket gl_finnhubWebSocket;
 CTiingoIEXWebSocket gl_tiingoIEXWebSocket;

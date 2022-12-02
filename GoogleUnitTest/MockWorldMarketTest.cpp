@@ -91,13 +91,13 @@ namespace StockAnalysisTest {
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 			s_pMockQuandlWebInquiry->SetReadingWebData(false);
-			gl_pDataSourceFinnhub->SetStockProfileUpdated(false);
-			EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
+			gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_EQ(gl_pDataSourceFinnhub->GetInquiryQueueSize(), 0);
+			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);

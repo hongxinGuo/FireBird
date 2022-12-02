@@ -2,6 +2,7 @@
 
 #include"WorldMarket.h"
 
+#include"QuandlDataSource.h"
 #include"MockQuandlWebInquiry.h"
 
 #include"GeneralCheck.h"
@@ -33,6 +34,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 

@@ -30,6 +30,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			NeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDaylineDataSource.get());
 		}
 
 		virtual void TearDown(void) override {
@@ -48,8 +49,6 @@ namespace StockAnalysisTest {
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1) << gl_systemMessage.PopErrorMessage();
-		gl_systemMessage.PopErrorMessage();
 
 		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);

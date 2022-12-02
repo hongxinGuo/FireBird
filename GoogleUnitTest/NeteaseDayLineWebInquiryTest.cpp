@@ -3,6 +3,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
+#include"NeteaseDaylineDataSource.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 
 using namespace std;
@@ -30,6 +31,9 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+
+			m_NeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDaylineDataSource.get());
+			m_MockNeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDaylineDataSource.get());
 			gl_pChinaMarket->CalculateTime();
 			m_MockNeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());

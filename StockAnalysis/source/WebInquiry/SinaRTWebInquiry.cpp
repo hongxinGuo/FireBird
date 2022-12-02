@@ -62,29 +62,12 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bool 
 void CSinaRTWebInquiry::ConfigerateSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 200); // 设置发送超时时间为100毫秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 200); // 设置发送超时时间为200毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) const {
 	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;
-}
-
-void CSinaRTWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_pSinaRTDataSource->GetReceivedDataSize() > 0) gl_pSinaRTDataSource->GetReceivedData();
-	gl_pSinaRTDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
-}
-
-/// <summary>
-///
-/// </summary>
-/// <param name=""></param>
-void CSinaRTWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	gl_pSinaRTDataSource->SetDataReceived(true); // 接收完网络数据后，清除状态。
-}
-
-void CSinaRTWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_pSinaRTDataSource->StoreReceivedData(pWebDataBeStored);
 }

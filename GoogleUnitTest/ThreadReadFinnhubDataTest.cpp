@@ -37,6 +37,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
 			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 
@@ -48,17 +49,17 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadFinnhubDataTest, TestThreadReadFinnhubData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pDataSourceFinnhub->SetDataReceived(false);
+		gl_pFinnhubDataSource->SetDataReceived(false);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
 		FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 0);
+		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pDataSourceFinnhub->SetDataReceived(false);
+		gl_pFinnhubDataSource->SetDataReceived(false);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
@@ -66,8 +67,8 @@ namespace StockAnalysisTest {
 		FinnhubWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_THAT(gl_pDataSourceFinnhub->GetReceivedDataSize(), 1);
-		CWebDataPtr pWebData = gl_pDataSourceFinnhub->GetReceivedData();
+		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 1);
+		CWebDataPtr pWebData = gl_pFinnhubDataSource->GetReceivedData();
 		EXPECT_EQ(FinnhubWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_TRUE(pWebData->IsParsed());

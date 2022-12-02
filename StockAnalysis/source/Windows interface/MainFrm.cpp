@@ -235,9 +235,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	// 此三个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);
-	gl_pDataSourceFinnhub = make_shared<CFinnhubDataSource>();
-	gl_pDataSourceTiingo = make_shared<CTiingoDataSource>();
-	gl_pDataSourceQuandl = make_shared<CQuandlDataSource>();
+	gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
+	gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
+	gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();

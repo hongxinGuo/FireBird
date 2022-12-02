@@ -49,20 +49,3 @@ void CFinnhubWebInquiry::ConfigerateSession(void) {
 bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
 	return pWebData->ParseUsingPropertyTree(0, 0);
 }
-
-void CFinnhubWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	while (gl_pDataSourceFinnhub->GetReceivedDataSize() > 0) gl_pDataSourceFinnhub->GetReceivedData();
-	gl_pDataSourceFinnhub->SetInquiring(false); // 当工作线程出现故障时，需要清除Finnhub数据申请标志。
-}
-
-/// <summary>
-/// Finnhub.io在顺利读取后，会报告当前系统状态。如果报告的状态码为429时，说明读取频率超速，系统拒绝回答。
-/// </summary>
-/// <param name=""></param>
-void CFinnhubWebInquiry::UpdateStatusAfterReadingWebData(void) {
-	gl_pDataSourceFinnhub->SetDataReceived(true);// 接收完网络数据后，清除状态。
-}
-
-void CFinnhubWebInquiry::StoreWebData(CWebDataPtr pWebDataReceived) {
-	gl_pDataSourceFinnhub->StoreReceivedData(pWebDataReceived);
-}

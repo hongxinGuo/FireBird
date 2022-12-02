@@ -33,6 +33,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void SetUp(void) override {
+			TiingoWebInquiry.SetDataSource(gl_pTiingoDataSource.get());
 			TiingoWebInquiry.SetReadingWebData(true);
 		}
 
@@ -44,7 +45,7 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pDataSourceTiingo->SetDataReceived(false);
+		gl_pTiingoDataSource->SetDataReceived(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -52,12 +53,10 @@ namespace StockAnalysisTest {
 		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetReceivedDataSize(), 0);
-		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1) << "Tiingo工作线程报告出错";
-		gl_systemMessage.PopErrorMessage();
+		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pDataSourceTiingo->SetDataReceived(false);
+		gl_pTiingoDataSource->SetDataReceived(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
@@ -65,8 +64,8 @@ namespace StockAnalysisTest {
 		TiingoWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
-		EXPECT_EQ(gl_pDataSourceTiingo->GetReceivedDataSize(), 1);
-		CWebDataPtr pWebData = gl_pDataSourceTiingo->GetReceivedData();
+		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 1);
+		CWebDataPtr pWebData = gl_pTiingoDataSource->GetReceivedData();
 		EXPECT_EQ(TiingoWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_TRUE(pWebData->IsParsed());

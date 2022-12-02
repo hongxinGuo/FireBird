@@ -61,7 +61,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 			// clearup
-			gl_pDataSourceFinnhub->SetInquiring(false);
+			gl_pFinnhubDataSource->SetInquiring(false);
 
 			GeneralCheck();
 		}
@@ -844,7 +844,7 @@ namespace StockAnalysisTest {
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
 			pStock->m_fEPSSurpriseUpdated = true;
 		}
-		gl_pDataSourceFinnhub->SetEPSSurpriseUpdated(true);
+		gl_pFinnhubDataSource->SetEPSSurpriseUpdated(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildEPSSurprise());
 
@@ -853,7 +853,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
 		}
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsEPSSurpriseUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsEPSSurpriseUpdated());
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
@@ -864,7 +864,7 @@ namespace StockAnalysisTest {
 			pStock->SetPeerUpdated(true);
 			pStock->SetUpdateProfileDB(false);
 		}
-		gl_pDataSourceFinnhub->SetPeerUpdated(true);
+		gl_pFinnhubDataSource->SetPeerUpdated(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildPeer());
 
@@ -874,7 +874,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pStock->IsPeerUpdated());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsPeerUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -893,7 +893,7 @@ namespace StockAnalysisTest {
 			pStock->SetDayLineNeedUpdate(false);
 			pStock->SetUpdateProfileDB(false);
 		}
-		gl_pDataSourceFinnhub->SetStockProfileUpdated(true);
+		gl_pFinnhubDataSource->SetStockProfileUpdated(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildStockDayLineDB());
 
@@ -904,7 +904,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
-		EXPECT_FALSE(gl_pDataSourceFinnhub->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);

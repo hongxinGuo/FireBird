@@ -156,7 +156,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockSymbolProduct.SetIndex(0);
-			gl_pDataSourceTiingo->SetStockSymbolUpdated(false);
+			gl_pTiingoDataSource->SetStockSymbolUpdated(false);
 		}
 		virtual void TearDown(void) override {
 			// clearup

@@ -156,27 +156,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 	return true;
 }
 
-/*
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 由系统调度器调度，大约100毫秒调度一次。
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::Inquire(long lCurrentTime) {
-	static int s_iCountfinnhubLimit = 100; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。初始值设为程序启动10秒后才开始。
-	if (--s_iCountfinnhubLimit < 0) {
-		if (!IsInquiring() && !m_pWebInquiry->IsWebError()) {
-			InquireFinnhub(lCurrentTime);
-		}
-		if (IsInquiring()) {
-			s_iCountfinnhubLimit = gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime() / 100; // 如果申请了网络数据，则重置计数器，以便申请下一次。
-		}
-	}
-	return true;
-}
-*/
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 由系统调度器调度，采用GetTickCount64()来确定当前时间。

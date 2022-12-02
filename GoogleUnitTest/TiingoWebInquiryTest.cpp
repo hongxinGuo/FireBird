@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 
+#include"TiingoDataSource.h"
 #include"MockTiingoWebInquiry.h"
 
 using namespace std;
@@ -32,6 +33,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_TiingoWebInquiry.SetDataSource(gl_pTiingoDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 

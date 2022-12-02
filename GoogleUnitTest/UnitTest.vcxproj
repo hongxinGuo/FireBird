@@ -47,7 +47,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -61,7 +61,7 @@
     <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld;$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude)</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>

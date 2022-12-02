@@ -20,4 +20,4 @@ protected:
 
 typedef shared_ptr<CQuandlDataSource> CQuandlDataSourcePtr;
 
-extern CQuandlDataSourcePtr gl_pDataSourceQuandl;
+extern CQuandlDataSourcePtr gl_pQuandlDataSource;

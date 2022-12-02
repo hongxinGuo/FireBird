@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
+#include"SinaRTDataSource.h"
 #include"MockSinaRTWebInquiry.h"
 
 using namespace std;
@@ -32,6 +33,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource.get());
 		}
 
 		virtual void TearDown(void) override {

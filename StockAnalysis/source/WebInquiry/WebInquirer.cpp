@@ -39,6 +39,11 @@ void CWebInquirer::Initialize(void) {
 	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
 	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
 
+	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
+	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
+	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
+	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource.get());
+
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
@@ -54,10 +59,14 @@ void CWebInquirer::Initialize(void) {
 	}
 
 	// 查询器和数据源要一一对应
-	gl_pDataSourceFinnhub->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-	gl_pDataSourceTiingo->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-	gl_pDataSourceQuandl->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+	gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
+	gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry);
+	gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry);
 
-	gl_pWorldMarket->StoreDataSource(gl_pDataSourceFinnhub);
-	gl_pWorldMarket->StoreDataSource(gl_pDataSourceTiingo);
+	gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
+	gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
+	gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());
+
+	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
+	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
 }

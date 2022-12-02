@@ -14,6 +14,8 @@
 atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
+	m_pDataSource = nullptr;
+
 	m_pSession = new CInternetSession(_T("StockAnalysis")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	SetDefaultSessionOption();
 	m_pFile = nullptr;
@@ -43,6 +45,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 }
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
+	m_pDataSource = nullptr;
 	if (m_pSession != nullptr) {
 		delete m_pSession;
 		m_pSession = nullptr;
@@ -74,6 +77,8 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 //
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
+	ASSERT(m_pDataSource != nullptr);
+
 	if (!IsReadingWebData()) { // 工作线程没有启动？
 		if (PrepareNextInquiringString()) {
 			SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
@@ -100,15 +105,13 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	//CHighPerformanceCounter counter;
 	ULONG64 llCurrentTickCount = GetTickCount64();
 
-	//counter.Start();
 	ASSERT(IsReadingWebData());
+	ASSERT(m_pDataSource != nullptr);
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		//counter.start();
 		VerifyDataLength();
 		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 		ResetBuffer();
@@ -123,8 +126,6 @@ void CVirtualWebInquiry::Read(void) {
 	}
 	UpdateStatusAfterReadingWebData();
 
-	//counter.Stop();
-	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 	SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
 
 	SetReadingWebData(false);
@@ -301,6 +302,37 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 
 void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
 	pData->SetTime(gl_pChinaMarket->GetUTCTime());
+}
+
+void CVirtualWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
+#ifdef _DEBUG
+	ASSERT(m_pDataSource != nullptr);
+#endif
+	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->SetDataReceived(true);
+}
+
+void CVirtualWebInquiry::ClearUpIfReadingWebDataFailed(void) {
+#ifdef _DEBUG
+	ASSERT(m_pDataSource != nullptr);
+#endif
+	if (!gl_systemStatus.IsExitingSystem()) {
+		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
+	}
+}
+
+void CVirtualWebInquiry::UpdateStatusAfterReadingWebData(void) {
+#ifdef _DEBUG
+	ASSERT(m_pDataSource != nullptr);
+#endif
+	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->SetDataReceived(true);
+}
+
+void CVirtualWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
+#ifdef _DEBUG
+	ASSERT(m_pDataSource != nullptr);
+#endif
+	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->StoreReceivedData(pWebDataBeStored);
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {

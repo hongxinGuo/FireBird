@@ -2,6 +2,7 @@
 
 #include"afxinet.h"
 
+#include"FinnhubDataSource.h"
 #include"MockVirtualWebInquiry.h"
 
 #include"GeneralCheck.h"
@@ -27,6 +28,8 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
+
+			m_VirtualWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
 			EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 		}
 

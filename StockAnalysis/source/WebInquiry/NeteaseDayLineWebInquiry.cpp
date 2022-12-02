@@ -58,18 +58,6 @@ void CNeteaseDayLineWebInquiry::ConfigerateSession(void)
 
 void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
-	gl_pNeteaseDaylineDataSource->SetDataReceived(true);
-}
-
-void CNeteaseDayLineWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-	CString strErrorMessage;
-	strErrorMessage = GetDownLoadingStockCode();
-	strErrorMessage += _T(" 网易日线读取线程出错");
-	gl_systemMessage.PushErrorMessage(strErrorMessage);
-}
-
-void CNeteaseDayLineWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-	gl_pNeteaseDaylineDataSource->StoreReceivedData(pWebDataBeStored);
 }
 
 /// <summary>
