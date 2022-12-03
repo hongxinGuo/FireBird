@@ -101,13 +101,13 @@ namespace StockAnalysisTest {
 			gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
 
 			// 查询器和数据源要一一对应、互相包含
-			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
-			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
-			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
-			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
-			gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-			gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-			gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
+			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
+			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
+			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
+			gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
+			gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
+			gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
 
 			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
 			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());

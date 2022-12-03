@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
-			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry);
+			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry.get());
 		}
 
 		virtual void TearDown(void) override {

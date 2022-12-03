@@ -56,7 +56,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 
-			gl_pFinnhubDataSource->SetWebInquiringPtr(s_pMockFinnhubWebInquiry);
+			gl_pFinnhubDataSource->SetWebInquiringPtr(s_pMockFinnhubWebInquiry.get());
 		}
 
 		virtual void TearDown(void) override {

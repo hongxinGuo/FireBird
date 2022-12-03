@@ -6,7 +6,6 @@
 #include"ChinaMarket.h"
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
-	m_pWebInquiry = nullptr;
 	Reset();
 }
 

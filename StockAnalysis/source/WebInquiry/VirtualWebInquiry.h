@@ -49,11 +49,7 @@ public:
 	virtual void PrepareReadingWebData(void);// 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void SetTime(CWebDataPtr pData);
 	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData); // 成功接收后更新系统状态。
-	virtual void ClearUpIfReadingWebDataFailed(void); // 处理失败的接收过程
-	virtual void UpdateStatusAfterReadingWebData(void); // 接收数据后更新系统状态。
-	virtual void StoreWebData(CWebDataPtr pWebDataBeStored); // 将网络上读取到的数据存入本地
 
 	void CreateTotalInquiringString(CString strMIddle);
 	CString GetInquiringString(void) const { return m_strInquiry; }
@@ -105,7 +101,7 @@ public:
 	void __TESTSetBuffer(CString str);
 
 protected:
-	CVirtualDataSource* m_pDataSource; //
+	CVirtualDataSource* m_pDataSource; // 指向包含自己的数据源。此指针必须使用裸指针，不能使用智能指针，否则解析时会出现循环，导致不可知的结果。
 
 	CInternetSession* m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针

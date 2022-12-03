@@ -34,10 +34,10 @@ void CWebInquirer::Initialize(void) {
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 
 	// 查询器和数据源要一一对应、互相包含
-	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry);
-	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry);
-	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry);
-	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry);
+	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
+	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
+	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
+	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
 
 	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
 	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
@@ -59,9 +59,9 @@ void CWebInquirer::Initialize(void) {
 	}
 
 	// 查询器和数据源要一一对应
-	gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry);
-	gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry);
-	gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry);
+	gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
+	gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
+	gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
 
 	gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
 	gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());

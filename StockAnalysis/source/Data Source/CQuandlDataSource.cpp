@@ -7,7 +7,6 @@
 #include"WorldMarket.h"
 
 CQuandlDataSource::CQuandlDataSource(void) {
-	m_pWebInquiry = nullptr;
 	Reset();
 }
 

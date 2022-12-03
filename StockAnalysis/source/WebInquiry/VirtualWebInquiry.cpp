@@ -116,16 +116,16 @@ void CVirtualWebInquiry::Read(void) {
 		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 		ResetBuffer();
 		ParseData(pWebData);
-
-		SetTime(pWebData);
 		UpdateStatusWhenSecceed(pWebData);
-		StoreWebData(pWebData);
+
+		pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
+		m_pDataSource->StoreReceivedData(pWebData);
+		m_pDataSource->SetDataReceived(true);
 	}
 	else { // error handling
-		ClearUpIfReadingWebDataFailed();
+		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	UpdateStatusAfterReadingWebData();
-
 	SetCurrentInquiryTime(GetTickCount64() - llCurrentTickCount); // 这种是使用GetTickCount()函数版本，应该占用的时间少。
 
 	SetReadingWebData(false);
@@ -300,39 +300,8 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 	m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken;
 }
 
-void CVirtualWebInquiry::SetTime(CWebDataPtr pData) {
-	pData->SetTime(gl_pChinaMarket->GetUTCTime());
-}
-
 void CVirtualWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
-#ifdef _DEBUG
-	ASSERT(m_pDataSource != nullptr);
-#endif
-	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->SetDataReceived(true);
-}
-
-void CVirtualWebInquiry::ClearUpIfReadingWebDataFailed(void) {
-#ifdef _DEBUG
-	ASSERT(m_pDataSource != nullptr);
-#endif
-	if (!gl_systemStatus.IsExitingSystem()) {
-		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，需要清除数据申请标志。
-	}
-}
-
-void CVirtualWebInquiry::UpdateStatusAfterReadingWebData(void) {
-#ifdef _DEBUG
-	ASSERT(m_pDataSource != nullptr);
-#endif
-	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->SetDataReceived(true);
-}
-
-void CVirtualWebInquiry::StoreWebData(CWebDataPtr pWebDataBeStored) {
-#ifdef _DEBUG
-	ASSERT(m_pDataSource != nullptr);
-#endif
-	if (!gl_systemStatus.IsExitingSystem()) m_pDataSource->StoreReceivedData(pWebDataBeStored);
+	m_pDataSource->SetDataReceived(true);
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {

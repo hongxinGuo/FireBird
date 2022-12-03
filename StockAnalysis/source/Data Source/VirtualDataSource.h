@@ -22,8 +22,8 @@ public:
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
 
-	void SetWebInquiringPtr(CVirtualWebInquiryPtr p) noexcept { m_pWebInquiry = p; }
-	CVirtualWebInquiryPtr GetWebInquiryPtr(void) noexcept { return m_pWebInquiry; }
+	void SetWebInquiringPtr(CVirtualWebInquiry* p) noexcept { m_pWebInquiry = p; }
+	CVirtualWebInquiry* GetWebInquiryPtr(void) noexcept { return m_pWebInquiry; }
 
 	size_t GetInquiryQueueSize(void) noexcept { return m_qProduct.size(); }
 	void StoreInquiry(CVirtualProductWebDataPtr p) { m_qProduct.push(p); }
@@ -47,7 +47,7 @@ public:
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
 protected:
-	CVirtualWebInquiryPtr m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。
+	CVirtualWebInquiry* m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。此处使用裸指针，防止解析。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 	atomic_bool m_fInquiring;

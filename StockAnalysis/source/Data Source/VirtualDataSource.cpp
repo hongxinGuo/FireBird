@@ -5,7 +5,6 @@
 #include"ThreadStatus.h"
 
 CVirtualDataSource::CVirtualDataSource(void) {
-	m_pWebInquiry = nullptr;
 	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
@@ -13,7 +12,6 @@ CVirtualDataSource::CVirtualDataSource(void) {
 }
 
 CVirtualDataSource::~CVirtualDataSource(void) {
-	m_pWebInquiry = nullptr;
 }
 
 bool CVirtualDataSource::Reset(void) {
