@@ -871,21 +871,21 @@ void CWorldMarket::StartTiingoWebSocket(void) {
 }
 
 bool CWorldMarket::TaskProcessWebSocketData(void) {
-	if (gl_WebInquirer.FinnhubWebSocketDataSize() > 0) ProcessFinnhubWebSocketData();
-	if (gl_WebInquirer.TiingoIEXWebSocketDataSize() > 0) ProcessTiingoIEXWebSocketData();
-	if (gl_WebInquirer.TiingoCryptoWebSocketDataSize() > 0) ProcessTiingoCryptoWebSocketData();
-	if (gl_WebInquirer.TiingoForexWebSocketDataSize() > 0) ProcessTiingoForexWebSocketData();
+	if (gl_finnhubWebSocket.DataSize() > 0) ProcessFinnhubWebSocketData();
+	if (gl_tiingoIEXWebSocket.DataSize() > 0) ProcessTiingoIEXWebSocketData();
+	if (gl_tiingoCryptoWebSocket.DataSize() > 0) ProcessTiingoCryptoWebSocketData();
+	if (gl_tiingoForexWebSocket.DataSize() > 0) ProcessTiingoForexWebSocketData();
 
 	return true;
 }
 
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
-	auto total = gl_WebInquirer.FinnhubWebSocketDataSize();
+	auto total = gl_finnhubWebSocket.DataSize();
 	CString strMessage;
 	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		pString = gl_WebInquirer.PopFinnhubWebSocketData();
+		pString = gl_finnhubWebSocket.PopData();
 		strMessage = _T("Finnhub: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
@@ -898,12 +898,12 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 }
 
 bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
-	auto total = gl_WebInquirer.TiingoIEXWebSocketDataSize();
+	auto total = gl_tiingoIEXWebSocket.DataSize();
 	CString strMessage;
 	shared_ptr<std::string> pString;
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
+		pString = gl_tiingoIEXWebSocket.PopData();
 		strMessage = _T("Tiingo IEX: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
@@ -915,13 +915,13 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 }
 
 bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
-	auto total = gl_WebInquirer.TiingoCryptoWebSocketDataSize();
+	auto total = gl_tiingoCryptoWebSocket.DataSize();
 	CString strMessage;
 
 	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+		pString = gl_tiingoCryptoWebSocket.PopData();
 		strMessage = _T("Tiingo Crypto: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
@@ -933,12 +933,12 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 }
 
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
-	auto total = gl_WebInquirer.TiingoForexWebSocketDataSize();
+	auto total = gl_tiingoForexWebSocket.DataSize();
 	CString strMessage;
 	shared_ptr<std::string> pString;
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		pString = gl_WebInquirer.PopTiingoForexWebSocketData();
+		pString = gl_tiingoForexWebSocket.PopData();
 		strMessage = _T("Tiingo Forex: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);

@@ -5,22 +5,6 @@
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoForexWebSocket : public CVirtualWebSocket {
-public:
-	CTiingoForexWebSocket();
-	~CTiingoForexWebSocket(void);
-
-	virtual bool Connect(void);
-	virtual bool Send(vector<CString> vSymbol) override;
-
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
-
-	CString CreateMessage(vector<CString> vSymbol);
-	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
-};
-
-typedef shared_ptr<CTiingoForexWebSocket> CTiingoForexWebSocketPtr;
-
 class CTiingoForexSocket : public CObject {
 public:
 	CTiingoForexSocket() {
@@ -41,5 +25,21 @@ public:
 };
 
 typedef shared_ptr<CTiingoForexSocket> CTiingoForexSocketPtr;
+
+class CTiingoForexWebSocket : public CVirtualWebSocket {
+public:
+	CTiingoForexWebSocket();
+	~CTiingoForexWebSocket(void);
+
+	virtual bool Connect(void);
+	virtual bool Send(vector<CString> vSymbol) override;
+
+	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+
+	CString CreateMessage(vector<CString> vSymbol);
+	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
+};
+
+typedef shared_ptr<CTiingoForexWebSocket> CTiingoForexWebSocketPtr;
 
 extern CTiingoForexWebSocket gl_tiingoForexWebSocket;

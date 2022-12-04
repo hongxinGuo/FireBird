@@ -268,19 +268,6 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 	return iTotal;
 }
 
-int ParseAllSinaRTData(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.SinaRTDataSize();
-	int iTotal = 0;
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopSinaRTData();
-		iTotal += ParseSinaRTData(pWebDataReceived);
-	}
-	pWebDataReceived = nullptr;
-
-	return iTotal;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
@@ -402,20 +389,6 @@ bool ParseTengxunRTData(CWebDataPtr pWebData) {
 	return fSucceed;
 }
 
-bool ParseAllTengxunRTData(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	bool fSucceed = true;
-
-	const size_t lTotalData = gl_WebInquirer.TengxunRTDataSize();
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
-		fSucceed = ParseTengxunRTData(pWebDataReceived);
-		if (!fSucceed) break;
-	}
-
-	return fSucceed;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理从网易日线服务器上读取的股票日线数据。
@@ -433,19 +406,6 @@ void ParseNeteaseDayLine(CWebDataPtr pWebData) {
 	gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 
 	return;
-}
-
-bool ParseDayLineGetFromNeteaseServer(void) {
-	CNeteaseDayLineWebDataPtr pData = nullptr;
-	CWebDataPtr pWebData = nullptr;
-
-	while (gl_WebInquirer.NeteaseDayLineDataSize() > 0) {
-		pWebData = gl_WebInquirer.PopNeteaseDayLineData();
-		ParseNeteaseDayLine(pWebData);
-	}
-	pWebData = nullptr;
-
-	return true;
 }
 
 int ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
@@ -516,20 +476,6 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 	return vWebRTData.size();
 }
 
-int ParseAllNeteaseRTDataWithPTree(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
-	shared_ptr<ptree> ppt = nullptr;
-	int iTotal = 0;
-
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		iTotal += ParseNeteaseRTDataWithPTree(pWebDataReceived);
-	}
-
-	return iTotal;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -572,24 +518,6 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 		}
 	}
 	return vWebRTData.size();
-}
-
-/// <summary>
-/// 解析gl_WebInquirer中暂存的所有数据
-/// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-int ParseAllNeteaseRTDataWithNlohmannJSon(void) {
-	CWebDataPtr pWebDataReceived = nullptr;
-	const size_t lTotalData = gl_WebInquirer.NeteaseRTDataSize();
-	int iTotalActive = 0;
-
-	for (int i = 0; i < lTotalData; i++) {
-		pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-		iTotalActive += ParseNeteaseRTDataWithNlohmannJSon(pWebDataReceived);
-	}
-
-	return iTotalActive;
 }
 
 // 将PTree中提取的utf-8字符串转化为CString

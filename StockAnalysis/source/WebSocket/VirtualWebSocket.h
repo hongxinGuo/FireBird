@@ -13,6 +13,8 @@ using namespace std;
 
 #include <ixwebsocket/IXWebSocket.h>
 
+#include"TemplateMutexAccessQueue.h"
+
 class CVirtualWebSocket : public CObject {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
@@ -58,6 +60,11 @@ public:
 
 	vector<CString> m_vCurrentSymbol;
 
+	size_t DataSize(void) { return m_qWebSocketData.Size(); }
+	void PushData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qWebSocketData.PushData(pData); }
+	void PushData(shared_ptr<string> pData) { m_qWebSocketData.PushData(pData); }
+	shared_ptr<string> PopData(void) { return m_qWebSocketData.PopData(); }
+
 protected:
 	ix::WebSocket m_webSocket;
 	string m_url;
@@ -70,4 +77,5 @@ protected:
 	string m_inputMessage;
 
 	bool m_fReveivingData; // 正在接收数据
+	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
 };

@@ -27,7 +27,7 @@ public:
 	void DeleteWebFile();
 	long QueryDataLength();
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
-	bool IncreaseBufferSizeIfNeeded(long lSize = 1024 * 1024);
+	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
 	bool VerifyDataLength();
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
@@ -64,9 +64,9 @@ public:
 	char GetData(long lIndex) const { return m_sBuffer.at(lIndex); }
 	void SetData(long lIndex, char value) { m_sBuffer.at(lIndex) = value; }
 
-	INT64 GetByteReaded(void) const noexcept { return m_lByteRead; }
-	void SetByteReaded(INT64 lValue) noexcept { m_lByteRead = lValue; }
-	void AddByteReaded(INT64 lValue) noexcept { m_lByteRead += lValue; }
+	long GetByteReaded(void) const noexcept { return m_lByteRead; }
+	void SetByteReaded(long lValue) noexcept { m_lByteRead = lValue; }
+	void AddByteReaded(long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
 
 	CString GetInquiryFunction(void) const { return m_strInquiryFunction; }
@@ -78,15 +78,14 @@ public:
 	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
 	bool IsWebError(void) const noexcept { if (m_dwWebErrorCode == 0) return false; else return true; }
-	void ClearWebError(void) noexcept { m_dwWebErrorCode = 0; }
 	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
 
 	CString GetConnectionName(void) const { return m_strConnectionName; }
 
-	INT64 GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
-	void SetInquiringNumber(INT64 lValue) noexcept { m_lInquiringNumber = lValue; }
+	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
+	void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
 
 	INT64 GetTotalByteReaded(void) const noexcept { return m_lTotalByteReaded; }
 	void SetTotalByteReaded(INT64 lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
@@ -108,20 +107,18 @@ protected:
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 	DWORD m_dwWebErrorCode; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer; // 接收到数据的缓冲区
-	INT64 m_lByteRead; // 接收到的字符数.
+	long m_lByteRead; // 接收到的字符数.
 
 	CString m_strInquiry;// 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
 	CString m_strInquiryFunction; // 查询字符串功能部分
 	CString m_strInquiryToken; // 查询字符串令牌
 
 	atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
-	atomic_bool m_fWebError; // 读取网络数据时是否出现错误标识
 
 	bool m_fReportStatus; //
-	bool m_fFSonContentType; // 数据格式是否为JSon
 	long m_lContentLength; // 数据长度
 
-	INT64 m_lInquiringNumber; // 每次查询数量
+	long m_lInquiringNumber; // 每次查询数量
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	CString m_strConnectionName; // 此网络读取器的名称

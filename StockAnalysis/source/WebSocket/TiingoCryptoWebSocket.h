@@ -5,22 +5,6 @@
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoCryptoWebSocket : public CVirtualWebSocket {
-public:
-	CTiingoCryptoWebSocket();
-	~CTiingoCryptoWebSocket(void);
-
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
-
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
-
-	CString CreateMessage(vector<CString> vSymbol);
-	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
-};
-
-typedef shared_ptr<CTiingoCryptoWebSocket> CTiingoCryptoWebSocketPtr;
-
 class CTiingoCryptoSocket : public CObject {
 public:
 	CTiingoCryptoSocket() {
@@ -43,7 +27,22 @@ public:
 	double m_dLastPrice;
 	double m_dLastSize;
 };
-
 typedef shared_ptr<CTiingoCryptoSocket> CTiingoCryptoSocketPtr;
+
+class CTiingoCryptoWebSocket : public CVirtualWebSocket {
+public:
+	CTiingoCryptoWebSocket();
+	~CTiingoCryptoWebSocket(void);
+
+	virtual bool Connect(void) override;
+	virtual bool Send(vector<CString> vSymbol) override;
+
+	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+
+	CString CreateMessage(vector<CString> vSymbol);
+	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
+};
+
+typedef shared_ptr<CTiingoCryptoWebSocket> CTiingoCryptoWebSocketPtr;
 
 extern CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;

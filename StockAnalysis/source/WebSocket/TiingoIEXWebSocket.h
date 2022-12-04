@@ -5,22 +5,6 @@
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoIEXWebSocket : public CVirtualWebSocket {
-public:
-	CTiingoIEXWebSocket();
-	~CTiingoIEXWebSocket(void);
-
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
-
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
-
-	CString CreateMessage(vector<CString> vSymbol);
-	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
-};
-
-typedef shared_ptr<CTiingoIEXWebSocket> CTiingoIEXWebSocketPtr;
-
 class CTiingoIEXSocket : public CObject {
 public:
 	CTiingoIEXSocket() {
@@ -51,5 +35,21 @@ public:
 };
 
 typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
+
+class CTiingoIEXWebSocket : public CVirtualWebSocket {
+public:
+	CTiingoIEXWebSocket();
+	~CTiingoIEXWebSocket(void);
+
+	virtual bool Connect(void) override;
+	virtual bool Send(vector<CString> vSymbol) override;
+
+	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+
+	CString CreateMessage(vector<CString> vSymbol);
+	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
+};
+
+typedef shared_ptr<CTiingoIEXWebSocket> CTiingoIEXWebSocketPtr;
 
 extern 	CTiingoIEXWebSocket gl_tiingoIEXWebSocket;

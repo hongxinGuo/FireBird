@@ -88,13 +88,9 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 		}
 	}
-	else {
-		if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {
-			sbWebError = false;
-		}
-	}
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketQuandlInquiryTime())) {
+		sbWebError = false;
 		if (!IsInquiring()) {
 		}
 		if (IsInquiring()) sllLastTimeTickCount = llTickCount;

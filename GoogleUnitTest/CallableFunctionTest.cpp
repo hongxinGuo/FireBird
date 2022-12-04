@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
-			EXPECT_THAT(gl_WebInquirer.FinnhubWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -91,8 +91,8 @@ namespace StockAnalysisTest {
 		ProcessFinnhubWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_WebInquirer.FinnhubWebSocketDataSize(), 1) << "成功接收了一个数据";
-			pString = gl_WebInquirer.PopFinnhubWebSocketData();
+			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_finnhubWebSocket.PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_WebInquirer.FinnhubWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}
@@ -140,7 +140,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
-			EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -167,8 +167,8 @@ namespace StockAnalysisTest {
 		ProcessTiingoIEXWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 1) << "成功接收了一个数据";
-			pString = gl_WebInquirer.PopTiingoIEXWebSocketData();
+			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_tiingoIEXWebSocket.PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -196,7 +196,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_WebInquirer.TiingoIEXWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0);
 			break;
 		}
@@ -216,7 +216,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
-			EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -243,8 +243,8 @@ namespace StockAnalysisTest {
 		ProcessTiingoCryptoWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 1) << "成功接收了一个数据";
-			pString = gl_WebInquirer.PopTiingoCryptoWebSocketData();
+			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_tiingoCryptoWebSocket.PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -272,7 +272,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_WebInquirer.TiingoCryptoWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}
@@ -292,7 +292,7 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
-			EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -319,8 +319,8 @@ namespace StockAnalysisTest {
 		ProcessTiingoForexWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 1) << "成功接收了一个数据";
-			pString = gl_WebInquirer.PopTiingoForexWebSocketData();
+			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_tiingoForexWebSocket.PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -348,7 +348,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_WebInquirer.TiingoForexWebSocketDataSize(), 0);
+			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}

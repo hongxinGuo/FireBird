@@ -6,21 +6,6 @@
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CFinnhubWebSocket : public CVirtualWebSocket {
-public:
-	CFinnhubWebSocket();
-	~CFinnhubWebSocket(void);
-
-	virtual bool Connect(void);
-	virtual bool Send(vector<CString> vSymbol) override;
-	string CreateFinnhubWebSocketString(CString strSymbol);
-
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
-
-	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
-};
-typedef shared_ptr<CFinnhubWebSocket> CFinnhubWebSocketPtr;
-
 class CFinnhubSocket : public CObject {
 public:
 	CFinnhubSocket() {
@@ -36,7 +21,21 @@ public:
 	double m_dLastVolume;
 	CString m_strCode; // trade conditions
 };
-
 typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;
+
+class CFinnhubWebSocket : public CVirtualWebSocket {
+public:
+	CFinnhubWebSocket();
+	~CFinnhubWebSocket(void);
+
+	virtual bool Connect(void);
+	virtual bool Send(vector<CString> vSymbol) override;
+	string CreateFinnhubWebSocketString(CString strSymbol);
+
+	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+
+	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
+};
+typedef shared_ptr<CFinnhubWebSocket> CFinnhubWebSocketPtr;
 
 extern CFinnhubWebSocket gl_finnhubWebSocket;

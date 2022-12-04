@@ -70,11 +70,11 @@ CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
 CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
 CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource = nullptr;
-
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
 
+// Web socket
 CFinnhubWebSocket gl_finnhubWebSocket;
 CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
 CTiingoForexWebSocket gl_tiingoForexWebSocket;
