@@ -24,7 +24,7 @@ CString CProductFinnhubStockSymbol::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	CString str;
 	CWorldStockVectorPtr  pvStock = nullptr;
 	CString strExchangeCode;

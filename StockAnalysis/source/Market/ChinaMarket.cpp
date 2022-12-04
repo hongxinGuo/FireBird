@@ -1432,7 +1432,6 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CNeteaseDayLineWebDataPtr pData;
 	CChinaStockPtr pStock = nullptr;
 
-	// 网易日线的Parse由ThreadChinaMarketBackground工作线程完成。
 	while (gl_WebInquirer.GetParsedNeteaseDayLineDataSize() > 0) {
 		pData = gl_WebInquirer.PopParsedNeteaseDayLineData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));

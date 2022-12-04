@@ -43,7 +43,7 @@ CString CProductFinnhubCompanyNews::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CCompanyNewsVectorPtr pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);

@@ -21,7 +21,7 @@ CString CProductTiingoCryptoSymbol::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	CTiingoCryptoVectorPtr pvTiingoCrypto = nullptr;
 	char buffer[100];
 	CString strNumber, str;

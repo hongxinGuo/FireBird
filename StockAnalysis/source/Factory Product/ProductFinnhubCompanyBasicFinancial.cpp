@@ -34,7 +34,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
 /// 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。如申请BVDRF,回复的股票代码为MBWS.PA。
 ///
 ///
-bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;

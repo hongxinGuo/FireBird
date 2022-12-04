@@ -21,7 +21,7 @@ CString CProductFinnhubEconomicCalendar::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	CEconomicCalendarVectorPtr pvEconomicCalendar;
 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));

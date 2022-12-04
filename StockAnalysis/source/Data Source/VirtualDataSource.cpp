@@ -107,6 +107,6 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 /// <param name="pProductWebData"></param>
 /// <param name="pWebData"></param>
 void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
+	pProductWebData->ParseAndStoreWebData(pWebData, this); // 在处理完数据后，方允许系统申请新的数据。
 	SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
 }

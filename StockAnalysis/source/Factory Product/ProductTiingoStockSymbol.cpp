@@ -22,7 +22,7 @@ CString CProductTinngoStockSymbol::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductTinngoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductTinngoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	CTiingoStockVectorPtr pvTiingoStock = nullptr;
 	CWorldStockPtr pStock = nullptr;
 	char buffer[100];

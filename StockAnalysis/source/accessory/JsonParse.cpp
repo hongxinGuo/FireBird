@@ -244,7 +244,7 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_e
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseSinaRTData(CWebDataPtr pWebData) {
+int ParseSinaRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebData) {
 	int iTotal = 0;
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
@@ -258,7 +258,7 @@ int ParseSinaRTData(CWebDataPtr pWebData) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		if (pRTData->ReadSinaData(pWebData)) {
 			iTotal++;
-			gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
+			vWebData.push_back(pRTData);
 		}
 		else {
 			gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
@@ -363,7 +363,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseTengxunRTData(CWebDataPtr pWebData) {
+bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData) {
 	bool fSucceed = true;
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
@@ -378,7 +378,7 @@ bool ParseTengxunRTData(CWebDataPtr pWebData) {
 		while (!pWebData->IsProcessedAllTheData()) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {
-				gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
+				vWebRTData.push_back(pRTData);
 			}
 			else {
 				fSucceed = false;
@@ -448,12 +448,11 @@ int ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
+int ParseNeteaseRTDataWithPTree(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData) {
 	string ss;
 	shared_ptr<ptree> ppt = nullptr;
 	int iTotal = 0;
 	bool fProcess = true;
-	vector<CWebRTDataPtr> vWebRTData;
 	ptree* ppt2 = nullptr;
 
 	fProcess = true;
@@ -469,9 +468,6 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 		ppt = pData->GetPTree();
 		ppt2 = ppt.get();
 		ParseNeteaseRTData(ppt2, vWebRTData);
-		for (auto& pRTData : vWebRTData) {
-			gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
-		}
 	}
 	return vWebRTData.size();
 }
@@ -492,11 +488,10 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
+int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData) {
 	string ss;
 	json* pjs = nullptr;
 	bool fProcess = true;
-	vector<CWebRTDataPtr> vWebRTData;
 
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
@@ -513,9 +508,6 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	if (fProcess && pData->IsParsed()) {
 		pjs = pData->GetJSon();
 		ParseNeteaseRTData(pjs, vWebRTData);
-		for (auto& pRTData : vWebRTData) {
-			gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
-		}
 	}
 	return vWebRTData.size();
 }

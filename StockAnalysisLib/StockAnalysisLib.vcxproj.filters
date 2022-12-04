@@ -175,6 +175,12 @@
     <Filter Include="源文件\Data Source\China market">
       <UniqueIdentifier>{3defefa3-b137-4390-8e74-74bbfdbac703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Web Inquiry\China market">
+      <UniqueIdentifier>{bc8bfe47-ace4-4aab-9791-9d460a82e89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Web Inquiry\World market">
+      <UniqueIdentifier>{04b7abed-f107-450d-bf34-24f02f191a01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
@@ -1013,27 +1019,6 @@
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\QuandlWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\SinaRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp">
       <Filter>源文件\Web Inquiry</Filter>
     </ClCompile>
@@ -1336,6 +1321,27 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\NlohmannJsonParser.cpp">
       <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\SinaRTWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\World market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\QuandlWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\World market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\World market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

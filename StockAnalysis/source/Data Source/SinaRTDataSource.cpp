@@ -27,7 +27,7 @@ bool CSinaRTDataSource::UpdateStatus(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CSinaRTDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
 	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
-	pProductWebData->ParseAndStoreWebData(pWebData);
+	pProductWebData->ParseAndStoreWebData(pWebData, this);
 }
 
 bool CSinaRTDataSource::Inquire(long lCurrentTime) {

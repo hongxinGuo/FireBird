@@ -1,6 +1,7 @@
 #pragma once
 
 #include"TemplateMutexAccessQueue.h"
+#include"PriorityQueueWebRTData.h"
 
 #include"VirtualProductWebData.h"
 #include"VirtualWebInquiry.h"
@@ -46,6 +47,11 @@ public:
 	bool IsEnable(void) noexcept { return m_fEnable; }
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
+	size_t ChinaMarketRTDataSize(void) { return m_qChinaMarketRTData.Size(); }
+	void PushData(CWebRTDataPtr pData) { m_qChinaMarketRTData.PushData(pData); }
+	//size_t NeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.Size()); }
+	//void PushData(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+
 protected:
 	CVirtualWebInquiry* m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。此处使用裸指针，防止解析。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
@@ -55,6 +61,10 @@ protected:
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识
+
+	// 处理后的各种数据
+	CPriorityQueueWebRTData m_qChinaMarketRTData; // 中国市场实时数据队列。
+	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
 };
 
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;

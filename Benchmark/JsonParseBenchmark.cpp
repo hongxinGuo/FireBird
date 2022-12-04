@@ -368,8 +368,10 @@ public:
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
 	for (auto _ : state) {
+		vector<CWebRTDataPtr> vWebRTData;
 		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseTengxunRTData(pWebData);
+		ParseTengxunRTData(pWebData, vWebRTData);
+		vWebRTData.clear();
 	}
 }
 
@@ -396,7 +398,9 @@ public:
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	for (auto _ : state) {
+		vector<CWebRTDataPtr> vWebData;
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseSinaRTData(pWebData);
+		ParseSinaRTData(pWebData, vWebData);
+		vWebData.clear();
 	}
 }

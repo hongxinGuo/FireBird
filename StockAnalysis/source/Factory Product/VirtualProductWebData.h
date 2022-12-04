@@ -21,7 +21,7 @@ public:
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreatMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreatMessage(void) { return _T(""); }
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource = nullptr) { return true; }
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; }; // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	bool IsParsed(CWebDataPtr pWebData) { return pWebData->IsParsed(); }

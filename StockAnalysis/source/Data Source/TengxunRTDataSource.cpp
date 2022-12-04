@@ -20,6 +20,11 @@ bool CTengxunRTDataSource::UpdateStatus(void) {
 	return true;
 }
 
+void CTengxunRTDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
+	pProductWebData->ParseAndStoreWebData(pWebData, this);
+	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
+}
+
 bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	long long llTickCount = 0;

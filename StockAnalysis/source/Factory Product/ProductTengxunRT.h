@@ -17,7 +17,7 @@ public:
 	~CProductTengxunRT() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) override final;
 
 public:
 	bool ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

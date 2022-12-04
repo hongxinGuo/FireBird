@@ -28,7 +28,7 @@ CString CProductFinnhubForexDayLine::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CDayLineVectorPtr pvDayLine = nullptr;

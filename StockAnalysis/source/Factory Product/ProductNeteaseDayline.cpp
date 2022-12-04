@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"ProductNeteaseDayline.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include"JsonParse.h"
 
@@ -17,7 +18,9 @@ CString CProductNeteaseDayline::CreatMessage(void) {
 	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseDaylineWebInquiry类完成，本Product无需动作。
 }
 
-bool CProductNeteaseDayline::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductNeteaseDayline::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+	ASSERT(pDataSource != nullptr);
+	ASSERT(pDataSource->IsKindOf(RUNTIME_CLASS(CNeteaseDaylineDataSource)));
 	ParseNeteaseDayLine(pWebData);
 	return true;
 }

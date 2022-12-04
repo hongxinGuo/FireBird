@@ -27,7 +27,7 @@ bool CNeteaseRTDataSource::UpdateStatus(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CNeteaseRTDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
 	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
-	pProductWebData->ParseAndStoreWebData(pWebData);
+	pProductWebData->ParseAndStoreWebData(pWebData, this);
 }
 
 bool CNeteaseRTDataSource::Inquire(long lCurrentTime) {
