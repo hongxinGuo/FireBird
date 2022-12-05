@@ -547,10 +547,6 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTask(void) {
-	static long slCounter = 0;
-	if (slCounter++ < 100) return false;
-	else slCounter = 100;
-
 	CVirtualMarket::SchedulingTask();
 
 	static time_t s_lastTimeSchedulingTask = 0;
