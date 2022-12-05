@@ -27,7 +27,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CInsiderTransactionVectorPtr pvInsiderTransaction = nullptr;

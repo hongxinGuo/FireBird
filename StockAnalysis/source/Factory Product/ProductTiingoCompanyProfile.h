@@ -14,7 +14,7 @@ public:
 	~CProductTiingoCompanyProfile() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pData, CVirtualDataSource* pDataSource = nullptr) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pData) override final;
 };
 
 typedef shared_ptr<CProductTiingoCompanyProfile> CTiingoCompanyProfilePtr;

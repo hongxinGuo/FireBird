@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"ProductTengxunRT.h"
-#include"TengxunRTDataSource.h"
+#include"ChinaMarket.h"
 
 #include"JsonParse.h"
 
@@ -18,14 +18,12 @@ CString CProductTengxunRT::CreatMessage(void) {
 	return m_strInquiry; // 新浪实时数据的申请字符串由CTengxunRTWebInquiry类完成，本Product无需动作。
 }
 
-bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 
-	ASSERT(pDataSource != nullptr);
-	ASSERT(pDataSource->IsKindOf(RUNTIME_CLASS(CTengxunRTDataSource)));
 	pvWebRTData = ParseTengxunRTData(pWebData);
 	for (auto& pRTData : *pvWebRTData) {
-		static_cast<CTengxunRTDataSource*>(pDataSource)->PushData(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_pChinaMarket->PushTengxunRT(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 
 	return true;

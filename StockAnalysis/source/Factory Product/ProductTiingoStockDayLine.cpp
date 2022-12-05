@@ -30,7 +30,7 @@ CString CProductTiingoStockDayLine::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 

@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CInsiderSentimentVectorPtr pvInsiderSentiment = nullptr;

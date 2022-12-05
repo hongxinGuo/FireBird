@@ -23,7 +23,7 @@ CString CProductFinnhubForexSymbol::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CForexSymbolVectorPtr pvForexSymbol = nullptr;

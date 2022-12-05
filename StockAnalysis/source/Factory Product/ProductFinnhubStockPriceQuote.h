@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubStockPriceQuote() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource = nullptr) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 

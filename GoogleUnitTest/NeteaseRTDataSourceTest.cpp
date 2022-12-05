@@ -4,9 +4,9 @@
 
 #include"NeteaseRTDataSource.h"
 #include"WorldMarket.h"
+#include"ChinaMarket.h"
 
 #include "ProductNeteaseRT.h"
-#include"NeteaseRTDataSource.h"
 
 #include"MockNeteaseRTWebInquiry.h"
 
@@ -51,40 +51,40 @@ namespace StockAnalysisTest {
 
 	TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
-		gl_pNeteaseRTDataSource->PushData(pRTData);
+		gl_pChinaMarket->PushNeteaseRT(pRTData);
 		CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(200200200);
 		pRTData2->SetBuy(1);
-		gl_pNeteaseRTDataSource->PushData(pRTData2);
+		gl_pChinaMarket->PushNeteaseRT(pRTData2);
 		CWebRTDataPtr pRTData3 = make_shared<CWebRTData>();
 		pRTData3->SetTransactionTime(200200);
-		gl_pNeteaseRTDataSource->PushData(pRTData3);
+		gl_pChinaMarket->PushNeteaseRT(pRTData3);
 		CWebRTDataPtr pRTData4 = make_shared<CWebRTData>();
 		pRTData4->SetTransactionTime(200);
-		gl_pNeteaseRTDataSource->PushData(pRTData4);
+		gl_pChinaMarket->PushNeteaseRT(pRTData4);
 		CWebRTDataPtr pRTData5 = make_shared<CWebRTData>();
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
-		gl_pNeteaseRTDataSource->PushData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 5);
-		CWebRTDataPtr p2 = gl_pNeteaseRTDataSource->PopData();
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 4);
+		gl_pChinaMarket->PushNeteaseRT(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 5);
+		CWebRTDataPtr p2 = gl_pChinaMarket->PopNeteaseRT();
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 4);
 		EXPECT_EQ(p2->GetTransactionTime(), 200);
-		p2 = gl_pNeteaseRTDataSource->PopData();
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 3);
+		p2 = gl_pChinaMarket->PopNeteaseRT();
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 3);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200);
-		p2 = gl_pNeteaseRTDataSource->PopData();
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 2);
+		p2 = gl_pChinaMarket->PopNeteaseRT();
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 2);
 		EXPECT_EQ(p2->GetTransactionTime(), 100100100);
-		p2 = gl_pNeteaseRTDataSource->PopData();
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 1);
+		p2 = gl_pChinaMarket->PopNeteaseRT();
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 1);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 		EXPECT_EQ(p2->GetBuy(), 1);
-		p2 = gl_pNeteaseRTDataSource->PopData();
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 0);
+		p2 = gl_pChinaMarket->PopNeteaseRT();
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
 		EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 	}

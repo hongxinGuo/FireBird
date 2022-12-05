@@ -413,7 +413,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
 	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。
-	m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 50, nullptr);
+	m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);
 	if (m_uIdTimer == 0) {
 		TRACE(_T("生成100ms时钟时失败\n"));
 	}

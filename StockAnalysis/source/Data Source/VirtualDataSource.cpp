@@ -107,5 +107,5 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 /// <param name="pProductWebData"></param>
 /// <param name="pWebData"></param>
 void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData, this); // 在处理完数据后，方允许系统申请新的数据。
+	pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
 }

@@ -47,10 +47,6 @@ public:
 	bool IsEnable(void) noexcept { return m_fEnable; }
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
-	size_t DataSize(void) { return m_qChinaMarketRTData.Size(); }
-	void PushData(CWebRTDataPtr pData) { m_qChinaMarketRTData.PushData(pData); }
-	CWebRTDataPtr PopData(void) { return m_qChinaMarketRTData.PopData(); }
-
 protected:
 	CVirtualWebInquiry* m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。此处使用裸指针，防止解析。
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
@@ -60,9 +56,6 @@ protected:
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识
-
-	// 处理后的各种数据
-	CPriorityQueueWebRTData m_qChinaMarketRTData; // 中国市场实时数据队列。
 };
 
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;

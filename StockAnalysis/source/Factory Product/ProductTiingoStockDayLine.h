@@ -10,7 +10,7 @@ public:
 	~CProductTiingoStockDayLine() {}
 
 	virtual CString CreatMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource = nullptr) override final;
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);
 };
 

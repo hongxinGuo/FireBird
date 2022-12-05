@@ -83,10 +83,10 @@ namespace StockAnalysisTest {
 	}
 
 	void DataContainerCheck(void) {
-		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 0);
-		EXPECT_EQ(gl_pTengxunRTDataSource->DataSize(), 0);
-		EXPECT_EQ(gl_pSinaRTDataSource->DataSize(), 0);
-		EXPECT_EQ(gl_pNeteaseDaylineDataSource->DataSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->NeteaseDayLineSize(), 0);
 	}
 
 	void GeneralCheck(void) {

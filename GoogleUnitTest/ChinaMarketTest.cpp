@@ -438,11 +438,11 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
 		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
-		gl_pNeteaseDaylineDataSource->PushData(pData);
+		gl_pChinaMarket->PushNeteaseDayLine(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_pNeteaseDaylineDataSource->PopData();
+		gl_pChinaMarket->PopNeteaseDayLine();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 
@@ -452,7 +452,7 @@ namespace StockAnalysisTest {
 		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
-		gl_pNeteaseDaylineDataSource->PushData(pData);
+		gl_pChinaMarket->PushNeteaseDayLine(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
 	}
@@ -1413,7 +1413,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
-		EXPECT_THAT(gl_pTengxunRTDataSource->DataSize(), Eq(0));
+		EXPECT_THAT(gl_pChinaMarket->TengxunRTSize(), Eq(0));
 
 		pRTData->SetActive(true);
 		pRTData->SetSymbol(_T("600000.SS"));
@@ -1422,7 +1422,7 @@ namespace StockAnalysisTest {
 		pRTData->SetHighLimit(10101010);
 		pRTData->SetLowLimit(1010);
 
-		gl_pTengxunRTDataSource->PushData(pRTData);
+		gl_pChinaMarket->PushTengxunRT(pRTData);
 
 		pRTData = make_shared<CWebRTData>();
 
@@ -1433,7 +1433,7 @@ namespace StockAnalysisTest {
 		pRTData->SetHighLimit(10101010);
 		pRTData->SetLowLimit(1010);
 
-		gl_pTengxunRTDataSource->PushData(pRTData);
+		gl_pChinaMarket->PushTengxunRT(pRTData);
 
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		EXPECT_THAT(pStock->GetTotalValue(), 0);
@@ -1461,7 +1461,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(pStock->GetHighLimit(), 0);
 		EXPECT_THAT(pStock->GetLowLimit(), 0);
 
-		EXPECT_THAT(gl_pTengxunRTDataSource->DataSize(), Eq(0));
+		EXPECT_THAT(gl_pChinaMarket->TengxunRTSize(), Eq(0));
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {

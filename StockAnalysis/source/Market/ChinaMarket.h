@@ -4,6 +4,8 @@
 
 #include"StockSection.h"
 
+#include"NeteaseDayLineWebData.h"
+
 #include"DataStockSymbol.h"
 #include"DataChinaStock.h"
 
@@ -230,7 +232,7 @@ public:
 	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) { return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex); }
 
 	bool IsDayLineNeedUpdate(void) const noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
-	bool IsDayLineNeedProcess(void) const noexcept;
+	bool IsDayLineNeedProcess(void);
 	bool IsDayLineNeedSaving(void) const { return m_dataChinaStock.IsDayLineNeedSaving(); }
 	long GetDayLineNeedUpdateNumber(void) { return m_dataChinaStock.GetDayLineNeedUpdateNumber(); }
 	long GetDayLineNeedSaveNumber(void) { return m_dataChinaStock.GetDayLineNeedSaveNumber(); }
@@ -308,6 +310,19 @@ public:
 
 	bool IsCurrentEditStockChanged(void) const noexcept { return m_fCurrentEditStockChanged; }
 	void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
+
+	size_t SinaRTSize(void) { return m_qSinaRT.Size(); }
+	void PushSinaRT(CWebRTDataPtr pData) { m_qSinaRT.PushData(pData); }
+	CWebRTDataPtr PopSinaRT(void) { return m_qSinaRT.PopData(); }
+	size_t NeteaseRTSize(void) { return m_qNeteaseRT.Size(); }
+	void PushNeteaseRT(CWebRTDataPtr pData) { m_qNeteaseRT.PushData(pData); }
+	CWebRTDataPtr PopNeteaseRT(void) { return m_qNeteaseRT.PopData(); }
+	size_t TengxunRTSize(void) { return m_qTengxunRT.Size(); }
+	void PushTengxunRT(CWebRTDataPtr pData) { m_qTengxunRT.PushData(pData); }
+	CWebRTDataPtr PopTengxunRT(void) { return m_qTengxunRT.PopData(); }
+	size_t NeteaseDayLineSize(void) { return m_qNeteaseDayLine.Size(); }
+	void PushNeteaseDayLine(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	CNeteaseDayLineWebDataPtr PopNeteaseDayLine(void) { return m_qNeteaseDayLine.PopData(); }
 
 	bool AddChoicedStock(CChinaStockPtr pStock);
 	bool DeleteChoicedStock(CChinaStockPtr pStock);
@@ -391,6 +406,12 @@ protected:
 	long m_lNewRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的新实时数据数量
 
 	long m_lStockDayLineNeedUpdate; // 股票历史日线今日需要更新数
+
+	// 处理后的各种数据
+	CPriorityQueueWebRTData m_qSinaRT; // 中国市场实时数据队列。
+	CPriorityQueueWebRTData m_qNeteaseRT; // 中国市场实时数据队列。
+	CPriorityQueueWebRTData m_qTengxunRT; // 中国市场实时数据队列。
+	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
 
 	queue<CWebRTDataPtr> m_qRTData;
 	bool m_fSaveRTData;

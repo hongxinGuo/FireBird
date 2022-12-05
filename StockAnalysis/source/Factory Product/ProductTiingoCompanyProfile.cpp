@@ -13,6 +13,6 @@ CString CProductTiingoCompanyProfile::CreatMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pData, CVirtualDataSource* pDataSource) {
+bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pData) {
 	return false;
 }
