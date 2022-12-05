@@ -136,6 +136,10 @@ bool CWorldMarket::PreparingExitMarket(void)
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SchedulingTask(void) {
+	static long slCounter = 0;
+	if (slCounter++ < 50) return false;
+	else slCounter = 50;
+
 	CVirtualMarket::SchedulingTask();
 
 	static time_t s_lastTimeSchedulingTask = 0;

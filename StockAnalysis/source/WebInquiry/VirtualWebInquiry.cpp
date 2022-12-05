@@ -105,7 +105,7 @@ void CVirtualWebInquiry::Read(void) {
 
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
-	counter.Start();
+	//counter.Start();
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
@@ -123,8 +123,8 @@ void CVirtualWebInquiry::Read(void) {
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	counter.Stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	//counter.Stop();
+	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
 }
@@ -141,9 +141,11 @@ void CVirtualWebInquiry::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {
+	CHighPerformanceCounter counter;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
 
+	counter.Start();
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteReaded(0);
@@ -175,6 +177,8 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(m_pFile == nullptr);
+	counter.Stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fReadingSuccess;
 }
@@ -189,12 +193,14 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 /// <param name="strInquiring"></param>
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
+	//CHighPerformanceCounter counter;
 	bool fSucceedOpen = true;
 	long lHeadersLength = m_strHeaders.GetLength();
 
 	ULONG64 llCurrentTickCount = GetTickCount64();
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
+	//counter.Start();
 	try {
 		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 		// 其他的数据尚未需要提供头部验证数据。
@@ -216,6 +222,8 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	if (fSucceedOpen) {
 		QueryDataLength();
 	}
+	//counter.Stop();
+	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fSucceedOpen;
 }
