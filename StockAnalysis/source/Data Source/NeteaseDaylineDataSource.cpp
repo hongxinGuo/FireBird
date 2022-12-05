@@ -20,11 +20,6 @@ bool CNeteaseDaylineDataSource::UpdateStatus(void) {
 	return true;
 }
 
-void CNeteaseDaylineDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData, this);
-	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
-}
-
 // 抓取日线数据.开始于11:45:01
 // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
 //

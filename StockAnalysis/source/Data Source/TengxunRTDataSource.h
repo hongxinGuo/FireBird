@@ -9,7 +9,6 @@ public:
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
-	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) override final;
 
 	virtual bool Inquire(long lCurrentTime) override final;
 

@@ -108,7 +108,6 @@ void CVirtualWebInquiry::Read(void) {
 	counter.Start();
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
-		counter.Stop();
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		VerifyDataLength();
 		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
@@ -124,6 +123,7 @@ void CVirtualWebInquiry::Read(void) {
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
+	counter.Stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
@@ -141,18 +141,15 @@ void CVirtualWebInquiry::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {
-	CHighPerformanceCounter counter;
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
 
 	ASSERT(IsReadingWebData());
-	//counter.Start();
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteReaded(0);
 
 	ASSERT(m_pFile == nullptr);
 	if (OpenFile(GetInquiringString())) {
-		//counter.Stop();
 		try {
 			do {
 				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
@@ -178,8 +175,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(m_pFile == nullptr);
-
-	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fReadingSuccess;
 }
@@ -275,7 +270,7 @@ bool CVirtualWebInquiry::VerifyDataLength() {
 			sprintf_s(buffer, _T("%d"), m_lContentLength);
 			str += buffer;
 			str += _T("，实际长度：");
-			sprintf_s(buffer, _T("%I64d"), byteReaded);
+			sprintf_s(buffer, _T("%d"), byteReaded);
 			str += buffer;
 			str += m_strInquiry.Left(120);
 			gl_systemMessage.PushErrorMessage(str);

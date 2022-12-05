@@ -400,9 +400,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
-	CNeteaseDayLineWebDataPtr pData = nullptr;
+	CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
 
-	pData = make_shared<CNeteaseDayLineWebData>();
 	pData->TransferWebDataToBuffer(pWebData);
 	pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
 
@@ -459,7 +458,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData)
 	int iTotal = 0;
 	bool fProcess = true;
 	ptree* ppt2 = nullptr;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	fProcess = true;
 	if (!pData->IsParsed()) {
@@ -498,7 +497,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	string ss;
 	json* pjs = nullptr;
 	bool fProcess = true;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度

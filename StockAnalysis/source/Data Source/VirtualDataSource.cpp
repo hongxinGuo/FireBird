@@ -66,7 +66,6 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 
 	if (IsDataReceived()) { // 如果网络数据接收完成
 		if (m_qReceivedData.Size() > 0) {  // 处理当前网络数据
-			ASSERT(IsInquiring());
 			pWebData = m_qReceivedData.PopData();
 			if (pWebData->IsParsed()) {
 				m_pCurrentProduct->CheckNoRightToAccess(pWebData);
@@ -81,6 +80,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 			// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
 			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
 			thread1.detach();
+			SetInquiring(false); // 此标识的重置需要位于位于最后一步
 			return true;
 		}
 	}
@@ -108,5 +108,4 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 /// <param name="pWebData"></param>
 void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
 	pProductWebData->ParseAndStoreWebData(pWebData, this); // 在处理完数据后，方允许系统申请新的数据。
-	SetInquiring(false); // 此标识的重置需要位于该工作线程中。 且位于最后一步，以保证再次申请数据时已处理完了上一次接收到的数据。
 }

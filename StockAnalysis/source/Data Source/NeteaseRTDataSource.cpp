@@ -20,16 +20,6 @@ bool CNeteaseRTDataSource::UpdateStatus(void) {
 	return true;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 网易实时数据先允许接收下次的数据，然后再开始处理本次数据。这样优先保证查询的速度。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CNeteaseRTDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	SetInquiring(false); // 允许系统继续申请新的数据，随后再处理接收到的数据
-	pProductWebData->ParseAndStoreWebData(pWebData, this);
-}
-
 bool CNeteaseRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	long long llTickCount = 0;
