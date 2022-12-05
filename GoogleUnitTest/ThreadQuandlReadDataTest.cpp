@@ -6,7 +6,6 @@
 
 #include"WorldMarket.h"
 
-#include"WebInquirer.h"
 #include"MockQuandlWebInquiry.h"
 #include"QuandlDataSource.h"
 

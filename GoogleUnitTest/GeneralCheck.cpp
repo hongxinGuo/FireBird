@@ -4,12 +4,14 @@ using namespace testing;
 
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
-#include"WebInquirer.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-#include"WebRTDataContainer.h"
+#include"SinaRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"TengxunRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include "GeneralCheck.h"
 
@@ -81,10 +83,10 @@ namespace StockAnalysisTest {
 	}
 
 	void DataContainerCheck(void) {
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
-		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
-		EXPECT_EQ(gl_WebInquirer.GetParsedNeteaseDayLineDataSize(), 0);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 0);
+		EXPECT_EQ(gl_pTengxunRTDataSource->DataSize(), 0);
+		EXPECT_EQ(gl_pSinaRTDataSource->DataSize(), 0);
+		EXPECT_EQ(gl_pNeteaseDaylineDataSource->DataSize(), 0);
 	}
 
 	void GeneralCheck(void) {

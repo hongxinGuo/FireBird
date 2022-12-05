@@ -4,7 +4,6 @@
 #include"FinnhubInquiryType.h"
 
 #include"TiingoDataSource.h"
-#include"WebInquirer.h"
 #include"WorldMarket.h"
 
 #include "ProductTiingoStockSymbol.h"

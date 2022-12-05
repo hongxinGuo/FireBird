@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include"WebRTDataContainer.h"
+#include"NeteaseRTDataSource.h"
 
 using namespace std;
 using namespace testing;
@@ -107,10 +107,10 @@ namespace StockAnalysisTest {
 		long lTotalStock = gl_pChinaMarket->GetTotalStock();
 		CString strSymbol;
 
-		gl_WebRTDataContainer.PushNeteaseData(pRTData);
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 1);
+		gl_pNeteaseRTDataSource->PushData(pRTData);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 1);
 		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeNeteaseRTDataToStock());
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->DataSize(), 0);
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:

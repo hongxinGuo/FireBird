@@ -9,8 +9,6 @@
 
 #include"Thread.h"
 
-#include"WebInquirer.h"
-
 #include"MockWorldMarket.h"
 #include"MockFinnhubWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
@@ -40,7 +38,6 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-
 
 using namespace std;
 using namespace testing;

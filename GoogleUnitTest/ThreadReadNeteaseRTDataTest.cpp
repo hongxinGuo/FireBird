@@ -2,7 +2,6 @@
 
 #include"ThreadStatus.h"
 #include"GeneralCheck.h"
-#include"WebInquirer.h"
 #include"MockNeteaseRTWebInquiry.h"
 #include"NeteaseRTDataSource.h"
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include"WebData.h"
 #include"ProductFinnhub.h"
 
 class CProductFinnhubStockDayLine : public CProductFinnhub {

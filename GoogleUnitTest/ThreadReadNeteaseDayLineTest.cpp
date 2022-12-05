@@ -4,7 +4,6 @@
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
-#include"WebInquirer.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"NeteaseDaylineDataSource.h"
 

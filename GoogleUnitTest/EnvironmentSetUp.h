@@ -33,8 +33,6 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockChinaMarket.h"
 
-#include"WebInquirer.h"
-
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"

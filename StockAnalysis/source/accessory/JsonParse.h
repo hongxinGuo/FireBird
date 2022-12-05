@@ -9,6 +9,8 @@ using namespace boost::property_tree;
 
 #include"nlohmannJsonDeclaration.h"
 
+#include"NeteaseDaylineWebData.h"
+
 bool ParseWithPTree(ptree& pt, std::string& s);
 bool ParseWithPTree(shared_ptr<ptree>& ppt, std::string& s);
 string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault = _T(""));
@@ -28,14 +30,14 @@ string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字
 bool CreateNlohmannJson(json* pjs, std::string& s, long lBeginPos = 0, long lEndPos = 0);
 bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData);
 
-int ParseSinaRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData);
-bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData);
-void ParseNeteaseDayLine(CWebDataPtr pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData);
+CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData);
 
-int ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebRTData);
-int ParseNeteaseRTData(ptree* pt, vector<CWebRTDataPtr>& vWebRTData);
-int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData); // 解析一个WebData
-int ParseNeteaseRTDataWithPTree(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData); // 此函数解析一个web Data
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* pt);
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 解析一个WebData
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData); // 此函数解析一个web Data
 
 // 将PTree中提取的utf-8字符串转化为CString
 CString XferToCString(string s);

@@ -4,7 +4,6 @@
 
 #include"FinnhubInquiryType.h"
 #include"FinnhubDataSource.h"
-#include"WebInquirer.h"
 
 #include"MockFinnhubWebInquiry.h"
 

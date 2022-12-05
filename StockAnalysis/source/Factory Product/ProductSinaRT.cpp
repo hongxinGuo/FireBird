@@ -2,7 +2,6 @@
 
 #include"ProductSinaRT.h"
 #include"SinaRTDataSource.h"
-#include"WebRTDataContainer.h"
 
 #include"JsonParse.h"
 #include"ChinaMarket.h"
@@ -21,13 +20,13 @@ CString CProductSinaRT::CreatMessage(void) {
 }
 
 bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
-	vector<CWebRTDataPtr> vWebRTData;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 
 	ASSERT(pDataSource != nullptr);
 	ASSERT(pDataSource->IsKindOf(RUNTIME_CLASS(CSinaRTDataSource)));
-	ParseSinaRTData(pWebData, vWebRTData);
-	for (auto& pRTData : vWebRTData) {
-		gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
+	pvWebRTData = ParseSinaRTData(pWebData);
+	for (auto& pRTData : *pvWebRTData) {
+		static_cast<CSinaRTDataSource*>(pDataSource)->PushData(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 
 	return true;

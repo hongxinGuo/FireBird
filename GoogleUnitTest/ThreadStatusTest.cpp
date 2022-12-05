@@ -4,7 +4,6 @@
 
 #include"ThreadStatus.h"
 
-#include"WebInquirer.h"
 using namespace testing;
 
 #ifdef _DEBUG

@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"VirtualDataSource.h"
-#include"WebInquirer.h"
 
 #include"WorldMarket.h"
 

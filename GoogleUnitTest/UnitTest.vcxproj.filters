@@ -183,9 +183,6 @@
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="WebRTDataContainerTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="CallableFunctionTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
     </ClCompile>
@@ -563,6 +560,15 @@
     </ClCompile>
     <ClCompile Include="WebInquirerTest.cpp">
       <Filter>Test源文件\Web Inquiry</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

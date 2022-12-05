@@ -11,9 +11,8 @@
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChoicedStock.h"
 
-#include"WebInquirer.h"
-
-#include"WebRTDataContainer.h"
+#include"TengxunRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
@@ -439,11 +438,11 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
 		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
-		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
+		gl_pNeteaseDaylineDataSource->PushData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_WebInquirer.PopParsedNeteaseDayLineData();
+		gl_pNeteaseDaylineDataSource->PopData();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 
@@ -453,7 +452,7 @@ namespace StockAnalysisTest {
 		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
-		gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
+		gl_pNeteaseDaylineDataSource->PushData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
 	}
@@ -857,42 +856,6 @@ namespace StockAnalysisTest {
 		CChinaStockPtr pStock = nullptr;
 		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
-	}
-
-	TEST_F(CChinaMarketTest, TestTaskDiscardNeteaseRTData) {
-		CWebRTDataPtr prtData1, prtData2;
-		prtData1 = make_shared<CWebRTData>();
-		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
-		gl_WebRTDataContainer.PushNeteaseData(prtData1);
-		gl_WebRTDataContainer.PushNeteaseData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 2);
-		gl_pChinaMarket->TaskDiscardNeteaseRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.NeteaseDataSize(), 0);
-	}
-
-	TEST_F(CChinaMarketTest, TestTaskDiscardSinaRTData) {
-		CWebRTDataPtr prtData1, prtData2;
-		prtData1 = make_shared<CWebRTData>();
-		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
-		gl_WebRTDataContainer.PushSinaData(prtData1);
-		gl_WebRTDataContainer.PushSinaData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 2);
-		gl_pChinaMarket->TaskDiscardSinaRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
-	}
-
-	TEST_F(CChinaMarketTest, TestTaskDiscardTengxunRTData) {
-		CWebRTDataPtr prtData1, prtData2;
-		prtData1 = make_shared<CWebRTData>();
-		prtData2 = make_shared<CWebRTData>();
-		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
-		gl_WebRTDataContainer.PushTengxunData(prtData1);
-		gl_WebRTDataContainer.PushTengxunData(prtData2);
-		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 2);
-		gl_pChinaMarket->TaskDiscardTengxunRTData();
-		EXPECT_EQ(gl_WebRTDataContainer.TengxunDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {
@@ -1450,7 +1413,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
-		EXPECT_THAT(gl_WebRTDataContainer.TengxunDataSize(), Eq(0));
+		EXPECT_THAT(gl_pTengxunRTDataSource->DataSize(), Eq(0));
 
 		pRTData->SetActive(true);
 		pRTData->SetSymbol(_T("600000.SS"));
@@ -1459,7 +1422,7 @@ namespace StockAnalysisTest {
 		pRTData->SetHighLimit(10101010);
 		pRTData->SetLowLimit(1010);
 
-		gl_WebRTDataContainer.PushTengxunData(pRTData);
+		gl_pTengxunRTDataSource->PushData(pRTData);
 
 		pRTData = make_shared<CWebRTData>();
 
@@ -1470,7 +1433,7 @@ namespace StockAnalysisTest {
 		pRTData->SetHighLimit(10101010);
 		pRTData->SetLowLimit(1010);
 
-		gl_WebRTDataContainer.PushTengxunData(pRTData);
+		gl_pTengxunRTDataSource->PushData(pRTData);
 
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		EXPECT_THAT(pStock->GetTotalValue(), 0);
@@ -1498,7 +1461,7 @@ namespace StockAnalysisTest {
 		EXPECT_THAT(pStock->GetHighLimit(), 0);
 		EXPECT_THAT(pStock->GetLowLimit(), 0);
 
-		EXPECT_THAT(gl_WebRTDataContainer.TengxunDataSize(), Eq(0));
+		EXPECT_THAT(gl_pTengxunRTDataSource->DataSize(), Eq(0));
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {

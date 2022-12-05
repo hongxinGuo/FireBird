@@ -7,10 +7,13 @@
 #include"FinnhubInquiryType.h"
 #include"thread.h"
 #include"Callablefunction.h"
-#include"WebInquirer.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+
+#include"FinnhubWebInquiry.h"
+#include"TiingoWebInquiry.h"
+#include"QuandlWebInquiry.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"

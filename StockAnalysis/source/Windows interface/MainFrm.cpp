@@ -1,4 +1,5 @@
-﻿// MainFrm.cpp: CMainFrame 类的实现
+﻿#include "MainFrm.h"
+// MainFrm.cpp: CMainFrame 类的实现
 //
 #include"pch.h"
 
@@ -27,10 +28,14 @@
 #include"QuandlDataSource.h"
 
 #include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+#include"NeteaseRTWebInquiry.h"
+#include"FinnhubWebInquiry.h"
+#include"TiingoWebInquiry.h"
+#include"QuandlWebInquiry.h"
 
 #include"Thread.h"
 
-#include"WebInquirer.h"
 #include"HighPerformanceCounter.h"
 
 #include"SetFinnhubStockExchange.h"
@@ -217,6 +222,55 @@ bool CMainFrame::CreateMarketContainer(void) {
 	return true;
 }
 
+void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
+	ASSERT(gl_pChinaMarket != nullptr);
+	ASSERT(gl_pWorldMarket != nullptr);
+	gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
+	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
+	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
+	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
+	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
+	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
+
+	// 查询器和数据源要一一对应、互相包含
+	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
+	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
+	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
+	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
+
+	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
+	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
+	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
+	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource.get());
+
+	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDaylineDataSource);
+
+	if (gl_systemConfigeration.GetChinaMarketRealtimeServer() == 0) { // 使用新浪实时数据服务器
+		gl_pSinaRTDataSource->Enable(true);
+		gl_pNeteaseRTDataSource->Enable(false);
+	}
+	else {
+		gl_pSinaRTDataSource->Enable(false);
+		gl_pNeteaseRTDataSource->Enable(true);
+	}
+
+	// 查询器和数据源要一一对应
+	gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
+	gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
+	gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
+
+	gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
+	gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
+	gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());
+
+	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
+	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
+}
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
@@ -241,7 +295,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
-	gl_WebInquirer.Initialize();
+
+	InitializeDataSourceAndWebInquiry();
 
 	//生成市场容器Vector
 	CreateMarketContainer();

@@ -17,8 +17,6 @@ using namespace std;
 #include "JsonParse.h"
 
 #include"WebRTData.h"
-#include"WebInquirer.h"
-#include"WebRTDataContainer.h"
 
 #include"SaveAndLoad.h"
 
@@ -244,9 +242,11 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_e
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseSinaRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 	int iTotal = 0;
 	static int i = 0;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
 	// 截取实时数据时用。为了测试解析速度
 	if (i < pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
@@ -258,14 +258,14 @@ int ParseSinaRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebData) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		if (pRTData->ReadSinaData(pWebData)) {
 			iTotal++;
-			vWebData.push_back(pRTData);
+			pvWebRTData->push_back(pRTData);
 		}
 		else {
 			gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
 			break;  // 后面的数据出问题，抛掉不用。
 		}
 	}
-	return iTotal;
+	return pvWebRTData;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,9 +363,11 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 	bool fSucceed = true;
 	static int i = 0;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
 	// 截取实时数据时用。为了测试解析速度
 	if (i <= pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
@@ -378,7 +380,7 @@ bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData)
 		while (!pWebData->IsProcessedAllTheData()) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {
-				vWebRTData.push_back(pRTData);
+				pvWebRTData->push_back(pRTData);
 			}
 			else {
 				fSucceed = false;
@@ -386,7 +388,7 @@ bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData)
 			}
 		}
 	}
-	return fSucceed;
+	return pvWebRTData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -397,39 +399,42 @@ bool ParseTengxunRTData(CWebDataPtr pWebData, vector<CWebRTDataPtr>& vWebRTData)
 // 日线数据是逆序的，最新日期的在前面。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseNeteaseDayLine(CWebDataPtr pWebData) {
+CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
 	CNeteaseDayLineWebDataPtr pData = nullptr;
 
 	pData = make_shared<CNeteaseDayLineWebData>();
 	pData->TransferWebDataToBuffer(pWebData);
 	pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
-	gl_WebInquirer.PushParsedNeteaseDayLineData(pData);
 
-	return;
+	return pData;
 }
 
-int ParseNeteaseRTData(json* pjs, vector<CWebRTDataPtr>& vWebData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
 	for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
 		if (gl_systemStatus.IsExitingSystem()) return 0;
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
 			pRTData->CheckNeteaseRTDataActive();
-			vWebData.push_back(pRTData);
+			pvWebRTData->push_back(pRTData);
 		}
 	}
-	return vWebData.size();
+	return pvWebRTData;
 }
 
-int ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* ppt) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
 	for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 		if (pRTData->ParseNeteaseDataWithPTree(it)) {
-			vWebData.push_back(pRTData);
+			pvWebRTData->push_back(pRTData);
 		}
 	}
-	return vWebData.size();
+	return pvWebRTData;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -448,12 +453,13 @@ int ParseNeteaseRTData(ptree* ppt, vector<CWebRTDataPtr>& vWebData) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseNeteaseRTDataWithPTree(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
 	string ss;
 	shared_ptr<ptree> ppt = nullptr;
 	int iTotal = 0;
 	bool fProcess = true;
 	ptree* ppt2 = nullptr;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 
 	fProcess = true;
 	if (!pData->IsParsed()) {
@@ -467,9 +473,9 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRT
 	if (fProcess && pData->IsParsed()) {
 		ppt = pData->GetPTree();
 		ppt2 = ppt.get();
-		ParseNeteaseRTData(ppt2, vWebRTData);
+		pvWebRTData = ParseNeteaseRTData(ppt2);
 	}
-	return vWebRTData.size();
+	return pvWebRTData;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -488,10 +494,11 @@ int ParseNeteaseRTDataWithPTree(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRT
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData, vector<CWebRTDataPtr>& vWebRTData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	string ss;
 	json* pjs = nullptr;
 	bool fProcess = true;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
@@ -507,9 +514,9 @@ int ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData, vector<CWebRTDataPtr>&
 	}
 	if (fProcess && pData->IsParsed()) {
 		pjs = pData->GetJSon();
-		ParseNeteaseRTData(pjs, vWebRTData);
+		pvWebRTData = ParseNeteaseRTData(pjs);
 	}
-	return vWebRTData.size();
+	return pvWebRTData;
 }
 
 // 将PTree中提取的utf-8字符串转化为CString

@@ -9,8 +9,6 @@
 
 #include"ThreadStatus.h"
 
-#include"WebInquirer.h"
-#include"WebRTDataContainer.h"
 #include"HighPerformanceCounter.h"
 
 #include"SinaRTWebInquiry.h"
@@ -46,14 +44,11 @@ CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
-CWebRTDataContainer gl_WebRTDataContainer; // 网络实时数据存储容器
-
 // 为了事先初始化，信号量必须声明为全局变量
 binary_semaphore gl_UpdateWorldMarketDB{ 1 };  // 此信号量用于更新WorldMarket数据库
 counting_semaphore<4> gl_SaveDayLineThreadPermitted{ 1 }; // 当数据库中没有日线数据时，增加此信号量最大值至4
 counting_semaphore<8> gl_BackGroundTaskThread{ 8 };// 后台工作线程数。最大为8
 
-CWebInquirer gl_WebInquirer;
 CSystemData gl_SystemData;
 
 // 网络数据提取器

@@ -2,7 +2,6 @@
 
 #include"ChinaMarket.h"
 
-#include"WebInquirer.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 
 #include"GeneralCheck.h"
@@ -51,18 +50,6 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 	};
-
-	TEST_F(CWebInquirerTest, TestPushPopParseNeteaseDayLine) {
-		CNeteaseDayLineWebDataPtr pWebData = make_shared<CNeteaseDayLineWebData>();
-		CNeteaseDayLineWebDataPtr pWebData2;
-		pWebData->SetStockCode(_T("abcdefg"));
-
-		EXPECT_EQ(gl_WebInquirer.GetParsedNeteaseDayLineDataSize(), 0);
-		gl_WebInquirer.PushParsedNeteaseDayLineData(pWebData);
-		EXPECT_EQ(gl_WebInquirer.GetParsedNeteaseDayLineDataSize(), 1);
-		pWebData2 = gl_WebInquirer.PopParsedNeteaseDayLineData();
-		EXPECT_STREQ(pWebData2->GetStockCode(), _T("abcdefg"));
-	}
 
 	TEST_F(CWebInquirerTest, TestPushPopWebSocketData) {
 		shared_ptr<string> pData = make_shared<string>(_T("abc"));

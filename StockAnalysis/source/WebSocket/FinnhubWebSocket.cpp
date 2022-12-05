@@ -4,7 +4,6 @@
 
 #include"ThreadStatus.h"
 
-#include"WebInquirer.h"
 #include "FinnhubWebSocket.h"
 #include"FinnhubWebInquiry.h"
 

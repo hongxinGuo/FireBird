@@ -47,10 +47,9 @@ public:
 	bool IsEnable(void) noexcept { return m_fEnable; }
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
-	size_t ChinaMarketRTDataSize(void) { return m_qChinaMarketRTData.Size(); }
+	size_t DataSize(void) { return m_qChinaMarketRTData.Size(); }
 	void PushData(CWebRTDataPtr pData) { m_qChinaMarketRTData.PushData(pData); }
-	//size_t NeteaseDayLineDataSize(void) { return(m_qNeteaseDayLine.Size()); }
-	//void PushData(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	CWebRTDataPtr PopData(void) { return m_qChinaMarketRTData.PopData(); }
 
 protected:
 	CVirtualWebInquiry* m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。此处使用裸指针，防止解析。
@@ -64,7 +63,6 @@ protected:
 
 	// 处理后的各种数据
 	CPriorityQueueWebRTData m_qChinaMarketRTData; // 中国市场实时数据队列。
-	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
 };
 
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;

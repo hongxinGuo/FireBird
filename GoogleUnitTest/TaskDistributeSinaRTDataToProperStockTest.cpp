@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include"WebRTDataContainer.h"
+#include"SinaRTDataSource.h"
 
 #include"GeneralCheck.h"
 
@@ -114,10 +114,10 @@ namespace StockAnalysisTest {
 		long lTotalStock = gl_pChinaMarket->GetTotalStock();
 		CString strSymbol;
 
-		gl_WebRTDataContainer.PushSinaData(pRTData);
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 1);
+		gl_pSinaRTDataSource->PushData(pRTData);
+		EXPECT_EQ(gl_pSinaRTDataSource->DataSize(), 1);
 		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToStock());
-		EXPECT_EQ(gl_WebRTDataContainer.SinaDataSize(), 0);
+		EXPECT_EQ(gl_pSinaRTDataSource->DataSize(), 0);
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:

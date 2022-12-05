@@ -9,8 +9,6 @@
 #include"ChinaStock.h"
 #include"WorldStock.h"
 
-#include"WebInquirer.h"
-
 #include"Callablefunction.h"
 
 #include"FinnhubWebSocket.h"

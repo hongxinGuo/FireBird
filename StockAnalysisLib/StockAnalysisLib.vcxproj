@@ -24,7 +24,6 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
-    <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
     <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h" />
@@ -192,7 +191,6 @@
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebInquiry\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.h" />
     <ClInclude Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.h" />
@@ -249,7 +247,6 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\accessory\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
@@ -399,7 +396,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\VirtualWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\FinnhubWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoCryptoWebSocket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebSocket\TiingoForexWebSocket.cpp" />

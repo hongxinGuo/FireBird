@@ -11,8 +11,6 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-#include"WebInquirer.h"
-
 #include"MockFinnhubCryptoSymbol.h"
 using namespace std;
 using namespace testing;

@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"WebInquirer.h"
 
 #include"WorldStock.h"
 

@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WebInquirer.h"
+#include"WebData.h"
 
 #include"WorldStock.h"
 

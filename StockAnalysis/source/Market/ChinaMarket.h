@@ -272,10 +272,6 @@ public:
 
 	void StoreChoiceRTData(CWebRTDataPtr pRTData);
 
-	bool TaskDiscardNeteaseRTData(void);
-	bool TaskDiscardSinaRTData(void);
-	bool TaskDiscardTengxunRTData(void);
-
 	//处理实时股票变化等
 	bool TaskDistributeSinaRTDataToStock(void);
 	bool TaskDistributeNeteaseRTDataToStock(void);

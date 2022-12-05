@@ -1,5 +1,8 @@
 #pragma once
 
+#include"WebData.h"
+#include"Dayline.h"
+
 #include"ProductFinnhub.h"
 
 class CProductFinnhubCryptoDayLine : public CProductFinnhub {

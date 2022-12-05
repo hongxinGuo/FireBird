@@ -11,8 +11,6 @@
 
 #include"FinnhubForexSymbol.h"
 
-#include"WebInquirer.h"
-
 #include"MockFinnhubForexSymbol.h"
 using namespace std;
 using namespace testing;

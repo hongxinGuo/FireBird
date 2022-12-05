@@ -636,9 +636,6 @@
     <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\WebInquiry\WebInquirer.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Market\WorldMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
@@ -679,9 +676,6 @@
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\accessory\WebRTDataContainer.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Windows interface\MainFrm.h">
@@ -1211,9 +1205,6 @@
     <ClCompile Include="..\StockAnalysis\source\Market\WorldMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\WebInquiry\WebInquirer.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\CallableFunction.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
@@ -1242,9 +1233,6 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\accessory\WebRTDataContainer.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Windows interface\MainFrm.cpp">

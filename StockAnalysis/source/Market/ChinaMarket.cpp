@@ -8,9 +8,10 @@
 
 #include"ThreadStatus.h"
 
-#include"WebRTDataContainer.h"
-
-#include"WebInquirer.h"
+#include"SinaRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"TengxunRTDataSource.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -387,7 +388,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
-	const size_t lTotalNumber = gl_WebRTDataContainer.SinaDataSize();
+	const size_t lTotalNumber = gl_pSinaRTDataSource->DataSize();
 	CString strVolume;
 	CString strStandredStockCode;
 	CWebRTDataPtr pRTData = nullptr;
@@ -397,7 +398,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		pRTData = gl_WebRTDataContainer.PopSinaData();
+		pRTData = gl_pSinaRTDataSource->PopData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
 			continue;
@@ -458,14 +459,14 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 	CChinaStockPtr pStock;
-	const size_t lTotalNumber = gl_WebRTDataContainer.NeteaseDataSize();
+	const size_t lTotalNumber = gl_pNeteaseRTDataSource->DataSize();
 	CString strVolume;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
+		CWebRTDataPtr pRTData = gl_pNeteaseRTDataSource->PopData();
 		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
 			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
 			continue;
@@ -522,51 +523,12 @@ void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
 	m_qRTData.push(pRTData);
 }
 
-bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
-	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.NeteaseDataSize();
-
-	for (int i = 0; i < lTotalData; i++) {
-		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-		pRTData = gl_WebRTDataContainer.PopNeteaseData();
-		pRTData = nullptr;
-	}
-
-	return true;
-}
-
-bool CChinaMarket::TaskDiscardSinaRTData(void) {
-	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.SinaDataSize();
-
-	for (int i = 0; i < lTotalData; i++) {
-		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-		pRTData = gl_WebRTDataContainer.PopSinaData();
-		pRTData = nullptr;
-	}
-
-	return true;
-}
-
-bool CChinaMarket::TaskDiscardTengxunRTData(void) {
-	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.TengxunDataSize();
-
-	for (int i = 0; i < lTotalData; i++) {
-		// 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-		pRTData = gl_WebRTDataContainer.PopTengxunData();
-		pRTData = nullptr;
-	}
-
-	return true;
-}
-
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
-	const size_t lTotalData = gl_WebRTDataContainer.TengxunDataSize();
+	const size_t lTotalData = gl_pTengxunRTDataSource->DataSize();
 
 	for (int i = 0; i < lTotalData; i++) {
-		pRTData = gl_WebRTDataContainer.PopTengxunData();
+		pRTData = gl_pTengxunRTDataSource->PopData();
 		if (pRTData->IsActive()) {
 			ASSERT(IsStock(pRTData->GetSymbol()));
 			auto pStock = GetStock(pRTData->GetSymbol());
@@ -1424,7 +1386,7 @@ bool CChinaMarket::SaveRTData(void) {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) const noexcept {
-	if (gl_WebInquirer.GetParsedNeteaseDayLineDataSize() > 0) return true;
+	if (gl_pNeteaseDaylineDataSource->DataSize() > 0) return true;
 	else return false;
 }
 
@@ -1432,8 +1394,8 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 	CNeteaseDayLineWebDataPtr pData;
 	CChinaStockPtr pStock = nullptr;
 
-	while (gl_WebInquirer.GetParsedNeteaseDayLineDataSize() > 0) {
-		pData = gl_WebInquirer.PopParsedNeteaseDayLineData();
+	while (gl_pNeteaseDaylineDataSource->DataSize() > 0) {
+		pData = gl_pNeteaseDaylineDataSource->PopData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。

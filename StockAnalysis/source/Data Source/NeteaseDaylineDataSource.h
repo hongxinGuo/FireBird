@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
+#include"NeteaseDaylineWebData.h"
 
 class CNeteaseDaylineDataSource : public CVirtualDataSource {
 public:
@@ -13,7 +14,12 @@ public:
 
 	virtual bool Inquire(long lCurrentTime) override final;
 
+	size_t DataSize(void) { return(m_qNeteaseDayLine.Size()); }
+	void PushData(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	CNeteaseDayLineWebDataPtr PopData(void) { return m_qNeteaseDayLine.PopData(); }
+
 protected:
+	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
 };
 
 typedef shared_ptr<CNeteaseDaylineDataSource> CNeteaseDaylineDataSourcePtr;

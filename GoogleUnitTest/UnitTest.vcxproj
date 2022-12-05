@@ -82,6 +82,9 @@
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
+    <ClCompile Include="NeteaseRTDataSourceTest.cpp" />
+    <ClCompile Include="SinaRTDataSourceTest.cpp" />
+    <ClCompile Include="TengxunRTDataSourceTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
@@ -203,7 +206,6 @@
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
-    <ClCompile Include="WebRTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunWebRTDataTest.cpp" />

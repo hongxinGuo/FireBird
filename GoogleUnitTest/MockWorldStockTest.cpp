@@ -10,7 +10,6 @@
 #include"Thread.h"
 
 #include"WorldStock.h"
-#include"WebInquirer.h"
 #include"MockWorldStock.h"
 
 using namespace std;

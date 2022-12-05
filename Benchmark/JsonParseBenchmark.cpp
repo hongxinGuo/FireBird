@@ -16,7 +16,7 @@
 #include"JsonParse.h"
 #include"WebData.h"
 #include"WebRTData.h"
-#include"WebRTDataContainer.h"
+#include"TengxunRTDataSource.h"
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
@@ -287,10 +287,10 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreatePTreeWithBoostPTree)(benchmark::State
 // 解析并处理netease实时数据。NeteaseRTData的解析只实现了nlohmann json部分，不使用boost ptree来解析。
 json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
-	vector<CWebRTDataPtr> vWebRTDataReceived;
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
 		CreateNlohmannJson(&j, sNeteaseRTData, 21, 2);
-		ParseNeteaseRTData(&j, vWebRTDataReceived);
+		pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
 
@@ -316,8 +316,9 @@ public:
 
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
-		ParseNeteaseRTData(&js, vWebRTDataReceived);
+		pvWebRTData = ParseNeteaseRTData(&js);
 	}
 }
 
@@ -340,8 +341,9 @@ public:
 
 // 测试boost ptree解析NeteaseRTData的速度
 BENCHMARK_F(CWithPTree, ParseNeteaseRTData2)(benchmark::State& state) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
-		ParseNeteaseRTData(&pt, vWebRTDataReceived);
+		pvWebRTData = ParseNeteaseRTData(&pt);
 	}
 }
 
@@ -359,7 +361,7 @@ public:
 	}
 
 	void TearDown(const ::benchmark::State& state) {
-		while (gl_WebRTDataContainer.TengxunDataSize() > 0) gl_WebRTDataContainer.PopTengxunData();
+		while (gl_pTengxunRTDataSource->DataSize() > 0) gl_pTengxunRTDataSource->PopData();
 	}
 	string s;
 	CWebDataPtr pWebData;
@@ -367,11 +369,10 @@ public:
 
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 	for (auto _ : state) {
-		vector<CWebRTDataPtr> vWebRTData;
 		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseTengxunRTData(pWebData, vWebRTData);
-		vWebRTData.clear();
+		pvWebRTData = ParseTengxunRTData(pWebData);
 	}
 }
 
@@ -389,7 +390,7 @@ public:
 	}
 
 	void TearDown(const ::benchmark::State& state) {
-		while (gl_WebRTDataContainer.TengxunDataSize() > 0) gl_WebRTDataContainer.PopTengxunData();
+		while (gl_pTengxunRTDataSource->DataSize() > 0) gl_pTengxunRTDataSource->PopData();
 	}
 	string s;
 	CWebDataPtr pWebData;
@@ -397,10 +398,9 @@ public:
 
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebData = nullptr;
 	for (auto _ : state) {
-		vector<CWebRTDataPtr> vWebData;
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseSinaRTData(pWebData, vWebData);
-		vWebData.clear();
+		pvWebData = ParseSinaRTData(pWebData);
 	}
 }

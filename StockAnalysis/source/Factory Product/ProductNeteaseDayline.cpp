@@ -19,9 +19,13 @@ CString CProductNeteaseDayline::CreatMessage(void) {
 }
 
 bool CProductNeteaseDayline::ParseAndStoreWebData(CWebDataPtr pWebData, CVirtualDataSource* pDataSource) {
+	CNeteaseDayLineWebDataPtr pDaylineWebData = nullptr;
+
 	ASSERT(pDataSource != nullptr);
 	ASSERT(pDataSource->IsKindOf(RUNTIME_CLASS(CNeteaseDaylineDataSource)));
-	ParseNeteaseDayLine(pWebData);
+	pDaylineWebData = ParseNeteaseDayLine(pWebData);
+	static_cast<CNeteaseDaylineDataSource*>(pDataSource)->PushData(pDaylineWebData);
+
 	return true;
 }
 

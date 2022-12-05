@@ -3,7 +3,7 @@
 #include"JsonParse.h"
 #include"ThreadStatus.h"
 
-#include"WebInquirer.h"
+#include"TiingoWebInquiry.h"
 #include "TiingoForexWebSocket.h"
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
