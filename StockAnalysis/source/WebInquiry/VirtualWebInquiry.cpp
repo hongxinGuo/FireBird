@@ -105,7 +105,7 @@ void CVirtualWebInquiry::Read(void) {
 
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
-	//counter.Start();
+	counter.Start();
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
@@ -123,9 +123,9 @@ void CVirtualWebInquiry::Read(void) {
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	m_pDataSource->SetWebInquiryHaveRun(true); // 无论成功与否，都要设置此标识
-	//counter.Stop();
-	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
+	counter.Stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
 }
@@ -153,7 +153,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	ASSERT(m_pFile == nullptr);
 	if (OpenFile(GetInquiringString())) {
 		try {
-			counter.Start();
+			//counter.Start();
 			do {
 				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 					fReadingSuccess = false;
@@ -165,7 +165,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			m_lTotalByteReaded += m_lByteRead;
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0;// 清除错误代码（如果有的话）。只在此处重置该错误代码。
-			counter.Stop();
+			//counter.Stop();
 		}
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
@@ -179,7 +179,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(m_pFile == nullptr);
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fReadingSuccess;
 }
@@ -308,7 +308,7 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 }
 
 void CVirtualWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
-	m_pDataSource->SetWebInquiryHaveRun(true);
+	m_pDataSource->SetWebInquiryFinished(true);
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {

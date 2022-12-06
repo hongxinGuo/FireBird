@@ -40,9 +40,10 @@ public:
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
 	bool IsInquiringAndClearFlag(void) noexcept { const bool fInquiring = m_fInquiring.exchange(false); return fInquiring; }
-	void SetWebInquiryHaveRun(bool fFlag) noexcept { m_fWebInquiryHaveRun = fFlag; }
-	bool IsWebInquiryHaveRun(void) noexcept { const bool f = m_fWebInquiryHaveRun; return f; }
-	bool IsWebInquiryHaveRunAndClearFlag(void) noexcept { const bool fInquiryFinished = m_fWebInquiryHaveRun.exchange(false); return fInquiryFinished; }
+
+	void SetWebInquiryFinished(bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
+	bool IsWebInquiryFinished(void) noexcept { const bool f = m_fWebInquiryFinished; return f; }
+	bool IsWebInquiryFinishedAndClearFlag(void) noexcept { const bool fWebInquiryFinished = m_fWebInquiryFinished.exchange(false); return fWebInquiryFinished; }
 
 	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
@@ -57,7 +58,7 @@ protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 	atomic_bool m_fInquiring;
-	atomic_bool m_fWebInquiryHaveRun;
+	atomic_bool m_fWebInquiryFinished; // WebInquiry已经执行完毕
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识

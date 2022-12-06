@@ -16,7 +16,7 @@ CVirtualDataSource::~CVirtualDataSource(void) {
 
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
-	m_fWebInquiryHaveRun = true;
+	m_fWebInquiryFinished = true;
 
 	return true;
 }
@@ -37,7 +37,7 @@ void CVirtualDataSource::Run(long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
 	if (HaveInquiry()) { // 有申请等待？
-		if (IsWebInquiryHaveRunAndClearFlag()) { //已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+		if (IsWebInquiryFinishedAndClearFlag()) { //已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
 			SetCurrentInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
 			StartThreadGetWebData();

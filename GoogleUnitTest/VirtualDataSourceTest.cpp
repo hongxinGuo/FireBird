@@ -56,19 +56,19 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CDataSourceTest, Test_IsDataReceived) {
-		ASSERT_TRUE(dataSource.IsWebInquiryHaveRun());
-		dataSource.SetWebInquiryHaveRun(false);
-		ASSERT_FALSE(dataSource.IsWebInquiryHaveRun());
-		dataSource.SetWebInquiryHaveRun(true);
-		ASSERT_TRUE(dataSource.IsWebInquiryHaveRun());
+		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
+		dataSource.SetWebInquiryFinished(false);
+		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
+		dataSource.SetWebInquiryFinished(true);
+		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
 	}
 
 	TEST_F(CDataSourceTest, Test_IsWebInquiryHaveRunAndClearFlag) {
-		ASSERT_TRUE(dataSource.IsWebInquiryHaveRun());
-		dataSource.IsWebInquiryHaveRunAndClearFlag();
-		ASSERT_FALSE(dataSource.IsWebInquiryHaveRun());
-		dataSource.IsWebInquiryHaveRunAndClearFlag();
-		ASSERT_FALSE(dataSource.IsWebInquiryHaveRun());
+		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
+		dataSource.IsWebInquiryFinishedAndClearFlag();
+		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
+		dataSource.IsWebInquiryFinishedAndClearFlag();
+		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
 	}
 
 	TEST_F(CDataSourceTest, Test_SetInquiry) {
