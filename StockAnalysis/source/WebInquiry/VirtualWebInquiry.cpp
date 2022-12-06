@@ -307,10 +307,6 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 	m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken;
 }
 
-void CVirtualWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
-	m_pDataSource->SetWebInquiryFinished(true);
-}
-
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) {

@@ -49,7 +49,7 @@ public:
 	virtual void PrepareReadingWebData(void);// 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData); // 成功接收后更新系统状态。
+	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) {} // 成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString(CString strMIddle);
 	CString GetInquiringString(void) const { return m_strInquiry; }
