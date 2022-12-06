@@ -33,9 +33,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
 		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-		EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
 		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
@@ -73,22 +71,6 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		gl_ThreadStatus.SetRTDataNeedCalculate(false);
 		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsCalculatingRTData) {
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
-		gl_ThreadStatus.SetCalculatingRTData(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRTData());
-		gl_ThreadStatus.SetCalculatingRTData(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsSavingTempData) {
-		EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
-		gl_ThreadStatus.SetSavingTempData(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
-		gl_ThreadStatus.SetSavingTempData(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
 	}
 
 	TEST_F(ThreadStatusTest, TestIsCreateWeekLine) {

@@ -48,6 +48,7 @@ CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½
 binary_semaphore gl_UpdateWorldMarketDB{ 1 };  // ´ËĞÅºÅÁ¿ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â
 counting_semaphore<4> gl_SaveDayLineThreadPermitted{ 1 }; // µ±Êı¾İ¿âÖĞÃ»ÓĞÈÕÏßÊı¾İÊ±£¬Ôö¼Ó´ËĞÅºÅÁ¿×î´óÖµÖÁ4
 counting_semaphore<8> gl_BackGroundTaskThread{ 8 };// ºóÌ¨¹¤×÷Ïß³ÌÊı¡£×î´óÎª8
+binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // ´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
 
 CSystemData gl_SystemData;
 

@@ -328,7 +328,6 @@ long CDataChinaStock::GetNextIndex(long& lIndex) {
 }
 
 bool CDataChinaStock::TaskProcessRTData(void) {
-	ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate() && !gl_ThreadStatus.IsSavingTempData());// 此两个线程互斥
 	for (auto& pStock : m_vStock) {
 		if (pStock->IsActive()) {
 			pStock->ProcessRTData();

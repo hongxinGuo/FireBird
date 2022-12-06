@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		gl_pTiingoDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessInquiringMessage()) << "Tiingo web data尚未接受到";
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring()) << "没有处理，故此标识没有重置";
@@ -167,7 +167,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(true);
 		gl_pTiingoDataSource->SetInquiring(true);
 		s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
@@ -177,7 +177,7 @@ namespace StockAnalysisTest {
 
 		// 顺便测试一下
 		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
-		EXPECT_FALSE(gl_pTiingoDataSource->IsDataReceived());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryHaveRun());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
@@ -192,7 +192,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(true);
 		gl_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
@@ -203,7 +203,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
 		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
-		EXPECT_FALSE(gl_pTiingoDataSource->IsDataReceived());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryHaveRun());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
@@ -212,7 +212,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
@@ -221,7 +221,7 @@ namespace StockAnalysisTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "DataReceived标识为假";
@@ -233,7 +233,7 @@ namespace StockAnalysisTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 		while (gl_pTiingoDataSource->GetReceivedDataSize() > 0) gl_pTiingoDataSource->GetReceivedData();
 
@@ -252,7 +252,7 @@ namespace StockAnalysisTest {
 
 		gl_pTiingoDataSource->StoreReceivedData(pData);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
-		gl_pTiingoDataSource->SetDataReceived(true);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(true);
 		gl_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessWebDataReceived());

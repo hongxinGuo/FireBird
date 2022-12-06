@@ -83,10 +83,11 @@ void CChinaMarket::ResetMarket(void) {
 	CString str = _T("重置中国股市于北京标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
-	while (gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
-		|| gl_ThreadStatus.IsSavingThreadRunning()) {
+	gl_ProcessChinaMarketRTData.acquire();
+	while (gl_ThreadStatus.IsSavingThreadRunning()) {
 		Sleep(1);
 	}
+
 	Reset();
 
 	LoadStockCodeDB();
@@ -96,6 +97,7 @@ void CChinaMarket::ResetMarket(void) {
 	Load10DaysRSStrong2StockSet();
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
+	gl_ProcessChinaMarketRTData.release();
 }
 
 void CChinaMarket::Reset(void) {
@@ -643,12 +645,11 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDitributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
-	if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) {
+	if (IsSystemReady() && IsTodayTempRTDataLoaded()) {
 		if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
-			gl_ThreadStatus.SetCalculatingRTData(true);
-			TaskProcessRTData();
+			thread thread1(ThreadProcessRTData, this);
+			thread1.detach();
 			gl_ThreadStatus.SetRTDataNeedCalculate(false);
-			gl_ThreadStatus.SetCalculatingRTData(false);
 		}
 	}
 
@@ -684,7 +685,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
-	if (IsSystemReady() && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+	if (IsSystemReady() && m_fMarketOpened) {
 		if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
 			CString str;
 			str = _T("存储临时数据");
@@ -1588,7 +1589,7 @@ bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 	CWebRTDataPtr pRTData;
 
 	ASSERT(!m_fTodayTempDataLoaded);
-	ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
+	gl_ProcessChinaMarketRTData.acquire();
 	// 读取今日生成的数据于DayLineToday表中。
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
@@ -1604,7 +1605,7 @@ bool CChinaMarket::LoadTodayTempDB(long lTheDay) {
 		}
 	}
 	setDayLineTemp.Close();
-
+	gl_ProcessChinaMarketRTData.release();
 	return true;
 }
 
@@ -1887,11 +1888,7 @@ void CChinaMarket::LoadChoicedStockDB(void) {
 }
 
 bool CChinaMarket::UpdateTempRTData(void) {
-	if (!gl_ThreadStatus.IsSavingTempData()) {
-		gl_ThreadStatus.SetSavingTempData(true);
-		thread thread1(ThreadSaveTempRTData, this);
-		thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-		return true;
-	}
-	return false;
+	thread thread1(ThreadSaveTempRTData, this);
+	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	return true;
 }

@@ -21,6 +21,7 @@ using namespace std;
 #include<semaphore>
 
 extern counting_semaphore<8> gl_BackGroundTaskThread;// 后台工作线程数。最大为8
+extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
 
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）

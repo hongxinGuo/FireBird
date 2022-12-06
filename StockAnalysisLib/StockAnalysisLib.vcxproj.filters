@@ -1292,7 +1292,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTengxunRT.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Source\CQuandlDataSource.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Data Source\QuandlDataSource.cpp">
       <Filter>源文件\Data Source\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.cpp">

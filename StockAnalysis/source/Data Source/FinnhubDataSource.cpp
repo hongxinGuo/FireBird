@@ -176,9 +176,7 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 		sbWebErrorOccured = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireFinnhub(lCurrentTime);
-		}
-		if (IsInquiring()) {
-			sllLastTimeTickCount = llTickCount;
+			if (IsInquiring()) sllLastTimeTickCount = llTickCount;
 		}
 	}
 	return true;

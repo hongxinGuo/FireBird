@@ -267,7 +267,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Source\CQuandlDataSource.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Source\QuandlDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\SinaRTDataSource.cpp" />

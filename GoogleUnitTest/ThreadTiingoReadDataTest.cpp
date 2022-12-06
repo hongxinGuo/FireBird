@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pTiingoDataSource->SetDataReceived(false);
+		gl_pTiingoDataSource->SetWebInquiryHaveRun(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

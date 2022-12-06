@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 	TEST_F(CThreadReadQuandlDataTest, TestThreadReadQuandlData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pQuandlDataSource->SetDataReceived(false);
+		gl_pQuandlDataSource->SetWebInquiryHaveRun(false);
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pQuandlDataSource->GetReceivedDataSize(), 0);
 
 		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pQuandlDataSource->SetDataReceived(false);
+		gl_pQuandlDataSource->SetWebInquiryHaveRun(false);
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

@@ -83,7 +83,6 @@ namespace StockAnalysisTest {
 			gl_pMockChinaMarket->SetTodayStockProcessed(false);
 			gl_pMockChinaMarket->SetRSEndDate(19900101);
 			gl_pMockChinaMarket->SetUpdateOptionDB(false);
-			gl_ThreadStatus.SetSavingTempData(false);
 
 			GeneralCheck();
 		}
@@ -352,7 +351,6 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
 			.Times(1);
 		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_ThreadStatus.SetCalculatingRTData(false);
 		EXPECT_EQ(ThreadUpdateStockCodeDB(gl_pMockChinaMarket.get()), (UINT)18);
 	}
 

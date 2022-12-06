@@ -16,7 +16,7 @@ CVirtualDataSource::~CVirtualDataSource(void) {
 
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
-	m_fDataReceived = true;
+	m_fWebInquiryHaveRun = true;
 
 	return true;
 }
@@ -36,12 +36,11 @@ void CVirtualDataSource::Run(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
-	if (m_qProduct.size() > 0) { // 有申请等待？
-		ASSERT(IsInquiring());
-		if (IsDataReceivedAndClearFlag()) { //已经发出了数据申请且Finnhub数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+	if (HaveInquiry()) { // 有申请等待？
+		if (IsWebInquiryHaveRunAndClearFlag()) { //已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
-			m_pWebInquiry->SetInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
-			m_pWebInquiry->GetWebData();
+			SetCurrentInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
+			StartThreadGetWebData();
 			return true;
 		}
 	}
@@ -62,27 +61,24 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
 
-	if (m_pCurrentProduct == nullptr) return false;
-
-	if (IsDataReceived()) { // 如果网络数据接收完成
-		if (m_qReceivedData.Size() > 0) {  // 处理当前网络数据
-			pWebData = m_qReceivedData.PopData();
-			if (pWebData->IsParsed()) {
-				m_pCurrentProduct->CheckNoRightToAccess(pWebData);
-				if (m_pCurrentProduct->IsNoRightToAccess()) { // 如果系统报告无权查询此类数据
-					// 目前先在软件系统消息中报告
-					gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
-					m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
-				}
+	if (HaveReceiviedData()) {  // 处理当前网络数据
+		ASSERT(m_pCurrentProduct != nullptr);
+		pWebData = GetReceivedData();
+		if (pWebData->IsParsed()) {
+			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
+			if (m_pCurrentProduct->IsNoRightToAccess()) { // 如果系统报告无权查询此类数据
+				// 目前先在软件系统消息中报告
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
-			ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-			// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
-			// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
-			thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
-			thread1.detach();
-			SetInquiring(false); // 此标识的重置需要位于位于最后一步
-			return true;
 		}
+		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+		SetInquiring(false); // 此标识的重置需要位于位于最后一步
+		// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
+		// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
+		thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
+		thread1.detach();
+		return true;
 	}
 	return false;
 }
@@ -102,10 +98,10 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 }
 
 /// <summary>
-/// 默认是在处理完本次数据后方允许接收下次数据，这样能够减少线程间的同步问题
+///
 /// </summary>
 /// <param name="pProductWebData"></param>
 /// <param name="pWebData"></param>
 void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData); // 在处理完数据后，方允许系统申请新的数据。
+	pProductWebData->ParseAndStoreWebData(pWebData);
 }

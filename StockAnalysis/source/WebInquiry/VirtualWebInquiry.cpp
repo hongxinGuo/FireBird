@@ -117,12 +117,13 @@ void CVirtualWebInquiry::Read(void) {
 
 		pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
 		m_pDataSource->StoreReceivedData(pWebData);
-		m_pDataSource->SetDataReceived(true);
+		ASSERT(m_pDataSource->IsInquiring());
 	}
 	else { // error handling
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
+	m_pDataSource->SetWebInquiryHaveRun(true); // 无论成功与否，都要设置此标识
 	//counter.Stop();
 	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
@@ -145,7 +146,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	bool fReadingSuccess = true;
 	long lCurrentByteReaded = 0;
 
-	counter.Start();
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteReaded(0);
@@ -153,6 +153,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	ASSERT(m_pFile == nullptr);
 	if (OpenFile(GetInquiringString())) {
 		try {
+			counter.Start();
 			do {
 				if (gl_systemStatus.IsExitingSystem()) { // 当系统退出时，要立即中断此进程，以防止内存泄露。
 					fReadingSuccess = false;
@@ -164,6 +165,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			m_lTotalByteReaded += m_lByteRead;
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0;// 清除错误代码（如果有的话）。只在此处重置该错误代码。
+			counter.Stop();
 		}
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
@@ -177,7 +179,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(m_pFile == nullptr);
-	counter.Stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fReadingSuccess;
@@ -200,7 +201,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	ULONG64 llCurrentTickCount = GetTickCount64();
 	ASSERT(m_pSession != nullptr);
 	ASSERT(m_pFile == nullptr);
-	//counter.Start();
 	try {
 		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 		// 其他的数据尚未需要提供头部验证数据。
@@ -208,7 +208,9 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			fSucceedOpen = false;
 		}
 		else {
+			//counter.Start();
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+			//counter.Stop();
 		}
 	}
 	catch (CInternetException* exception) {
@@ -222,7 +224,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	if (fSucceedOpen) {
 		QueryDataLength();
 	}
-	//counter.Stop();
 	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fSucceedOpen;
@@ -252,8 +253,8 @@ long CVirtualWebInquiry::QueryDataLength() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
-	char buffer[1024];
-	const UINT uByteRead = m_pFile->Read(buffer, 1024);
+	char buffer[1024 * 4];
+	const UINT uByteRead = m_pFile->Read(buffer, 1024 * 4);
 	for (int i = 0; i < uByteRead; i++) {
 		m_sBuffer.at(m_lByteRead++) = buffer[i];
 	}
@@ -307,7 +308,7 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 }
 
 void CVirtualWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
-	m_pDataSource->SetDataReceived(true);
+	m_pDataSource->SetWebInquiryHaveRun(true);
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {

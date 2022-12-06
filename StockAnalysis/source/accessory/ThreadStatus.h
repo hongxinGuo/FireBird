@@ -28,14 +28,6 @@ public:
 	void SetRTDataNeedCalculate(bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
 	bool IsRTDataNeedCalculate(void) noexcept { return m_RTDataNeedCalculate; }
 
-	// 实时数据计算中与否和设置
-	void SetCalculatingRTData(bool fFlag) noexcept { m_CalculatingRTData = fFlag; }
-	bool IsCalculatingRTData(void) noexcept { return m_CalculatingRTData; }
-
-	// 临时数据存储中与否和设置
-	void SetSavingTempData(bool fFlag) noexcept { m_SavingTempData = fFlag; }
-	bool IsSavingTempData(void) noexcept { return m_SavingTempData; }
-
 	// 生成周线历史数据
 	void SetCreatingWeekLine(bool fFlag) noexcept { m_CreatingWeekLine = fFlag; }
 	bool IsCreatingWeekLine(void) noexcept { return m_CreatingWeekLine; }
