@@ -94,6 +94,24 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 	}
 
+	TEST_F(CVirtualWebInquiryTest, TestIsWebError) {
+		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
+		m_VirtualWebInquiry.SetErrorCode(102);
+		EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
+		EXPECT_EQ(m_VirtualWebInquiry.GetErrorCode(), 102);
+		m_VirtualWebInquiry.SetErrorCode(0);
+		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
+		EXPECT_EQ(m_VirtualWebInquiry.GetErrorCode(), 0);
+	}
+
+	TEST_F(CVirtualWebInquiryTest, TestIsTimeout) {
+		EXPECT_FALSE(m_VirtualWebInquiry.IsTimeout());
+		m_VirtualWebInquiry.SetErrorCode(12002);
+		EXPECT_TRUE(m_VirtualWebInquiry.IsTimeout());
+		m_VirtualWebInquiry.SetErrorCode(12000);
+		EXPECT_FALSE(m_VirtualWebInquiry.IsTimeout());
+	}
+
 	TEST_F(CVirtualWebInquiryTest, TestGetByteReaded) {
 		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
 		m_VirtualWebInquiry.SetByteReaded(10000);

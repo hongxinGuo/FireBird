@@ -49,6 +49,16 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 	return 73;
 }
 
+UINT ThreadDeconnectTiingoCryptoWebSocket(not_null<CTiingoCryptoWebSocket*> pWebSocket) {
+	static bool s_bDeconnecting = false;
+	if (!s_bDeconnecting) {
+		s_bDeconnecting = true;
+		pWebSocket->Deconnect();
+		s_bDeconnecting = false;
+	}
+	return 74;
+}
+
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
 	m_url = _T("wss://api.tiingo.com/crypto");
 }
@@ -106,8 +116,15 @@ CString CTiingoCryptoWebSocket::CreateMessage(vector<CString> vSymbol) {
 	return str;
 }
 
-bool CTiingoCryptoWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
+	thread1.detach();
+
+	return true;
+}
+
+bool CTiingoCryptoWebSocket::CreateThreadDeconnectWebSocket(void) {
+	thread thread1(ThreadDeconnectTiingoCryptoWebSocket, this);
 	thread1.detach();
 
 	return true;

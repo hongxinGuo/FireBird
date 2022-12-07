@@ -9,12 +9,6 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-UINT ThreadDeconnectFinnhubWebSocket(void) {
-	Sleep(1); // 等待1毫秒。由于此线程是被本WebSocket的处理函数所调用，故而需要等待该处理函数结束后方可。
-	gl_finnhubWebSocket.Deconnect();
-	return 303;
-}
-
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
 	switch (msg->type) {
@@ -29,10 +23,6 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		str = _T("Finnhub WebSocket Error: ");
 		str += msg->errorInfo.reason.c_str();
 		gl_systemMessage.PushErrorMessage(str);
-		if (gl_pFinnhubWebInquiry->GetErrorCode() == 12002) { // 数据源不工作？
-			thread thread1(ThreadDeconnectFinnhubWebSocket);
-			thread1.detach();
-		}
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));
@@ -112,7 +102,7 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
 	return sPreffix + sSymbol + sSuffix;
 }
 
-bool CFinnhubWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 

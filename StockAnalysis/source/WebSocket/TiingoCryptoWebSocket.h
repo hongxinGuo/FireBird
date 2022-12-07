@@ -37,7 +37,8 @@ public:
 	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
 
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreateThreadDeconnectWebSocket(void);
 
 	CString CreateMessage(vector<CString> vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);

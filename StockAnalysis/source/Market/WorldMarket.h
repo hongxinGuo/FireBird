@@ -238,11 +238,13 @@ public:
 	bool StartWebSocket(void);
 	void StartFinnhubWebSocket(void);
 	void StartTiingoWebSocket(void);
-	bool RestartWebSocket(void);
-	void RestartFinnhubWebSocket(void);
-	void RestartTiingoWebSocket(void);
 	void StopReceivingWebSocket(void);
 	void DeconnectAllWebSocket(void);
+	void StopWebSocket(void);
+	void StopFinnhubWebSocket(void);
+	void StopTiingoIEXWebSocket(void);
+	void StopTiingoCryptoWebSocket(void);
+	void StopTiingoForexWebSocket(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

@@ -79,6 +79,8 @@ public:
 
 	bool IsWebError(void) const noexcept { if (m_dwWebErrorCode == 0) return false; else return true; }
 	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
+	void SetErrorCode(DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
+	bool IsTimeout(void) noexcept { if (m_dwWebErrorCode == 12002) return true; else return false; }
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
 

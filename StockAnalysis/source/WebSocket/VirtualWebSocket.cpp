@@ -4,6 +4,9 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include<gsl/gsl>
+using namespace gsl;
+
 CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_url = _T("");
@@ -123,6 +126,23 @@ bool CVirtualWebSocket::Deconnect(void) {
 	while (m_webSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
 
 	m_iSubscriptionId = 0;
+
+	return true;
+}
+
+UINT ThreadDeconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
+		s_fConnecting = true;
+		pWebSocket->Deconnect();
+		s_fConnecting = false;
+	}
+	return 70;
+}
+
+bool CVirtualWebSocket::CreateThreadDeconnectWebSocket(void) {
+	thread thread1(ThreadDeconnectWebSocket, this);
+	thread1.detach();
 
 	return true;
 }
