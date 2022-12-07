@@ -325,6 +325,16 @@ public:
 	void PushNeteaseDayLine(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
 	CNeteaseDayLineWebDataPtr PopNeteaseDayLine(void) { return m_qNeteaseDayLine.PopData(); }
 
+	// 实时数据需要计算与否和设置
+	void SetRTDataNeedCalculate(bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
+	bool IsRTDataNeedCalculate(void) noexcept { return m_RTDataNeedCalculate; }
+	// 计算若干天日线相对强度与否和设置
+	void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRS = fFlag; }
+	bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRS; }
+	// 计算若干天周线相对强度与否和设置
+	void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
+	bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRS; }
+
 	bool AddChoicedStock(CChinaStockPtr pStock);
 	bool DeleteChoicedStock(CChinaStockPtr pStock);
 	size_t GetChoicedStockSize(void) const { return m_avChoicedStock.at(0).size(); }
@@ -413,6 +423,10 @@ protected:
 	CPriorityQueueWebRTData m_qNeteaseRT; // 中国市场实时数据队列。
 	CPriorityQueueWebRTData m_qTengxunRT; // 中国市场实时数据队列。
 	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
+
+	bool m_RTDataNeedCalculate;
+	bool m_CalculatingDayLineRS;
+	bool m_CalculatingWeekLineRS;
 
 	queue<CWebRTDataPtr> m_qRTData;
 	bool m_fSaveRTData;

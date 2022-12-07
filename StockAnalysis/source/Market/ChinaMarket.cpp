@@ -55,6 +55,9 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
 	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
+	m_RTDataNeedCalculate = false;
+	m_CalculatingDayLineRS = false;
+	m_CalculatingWeekLineRS = false;
 
 	m_avChoicedStock.resize(30);
 	m_aRSStrongOption.resize(10);
@@ -407,7 +410,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 		}
 		DistributeRTDataToStock(pRTData);
 	}
-	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	// 由于使用线程Parse新浪实时数据，故此处不再检测队列为零
 	//ASSERT(gl_WebRTDataContainer.SinaDataSize() == 0); // 必须一次处理全体数据。
 
@@ -475,7 +478,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 		}
 		DistributeRTDataToStock(pRTData);
 	}
-	gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 	// 由于使用线程Parse网易实时数据，故此处不再检测队列为零
 	//ASSERT(gl_WebRTDataContainer.NeteaseDataSize() == 0); // 必须一次处理全体数据。
 
@@ -646,10 +649,10 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDitributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
 	if (IsSystemReady() && IsTodayTempRTDataLoaded()) {
-		if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
+		if (IsRTDataNeedCalculate()) {
 			thread thread1(ThreadProcessRTData, this);
 			thread1.detach();
-			gl_ThreadStatus.SetRTDataNeedCalculate(false);
+			SetRTDataNeedCalculate(false);
 		}
 	}
 

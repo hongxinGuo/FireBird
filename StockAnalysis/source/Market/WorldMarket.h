@@ -235,12 +235,13 @@ public:
 	vector<CString> GetTiingoCryptoWebSocketSymbolVector(void);
 	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
 
-	bool StartWebSocket(void);
+	bool StartAllWebSocket(void);
 	void StartFinnhubWebSocket(void);
-	void StartTiingoWebSocket(void);
-	void StopReceivingWebSocket(void);
-	void DeconnectAllWebSocket(void);
-	void StopWebSocket(void);
+	void StartTiingoIEXWebSocket(void);
+	void StartTiingoCryptoWebSocket(void);
+	void StartTiingoForexWebSocket(void);
+	void DeconnectAllWebSocket(void); // // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+	void StopAllWebSocket(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 	void StopFinnhubWebSocket(void);
 	void StopTiingoIEXWebSocket(void);
 	void StopTiingoCryptoWebSocket(void);

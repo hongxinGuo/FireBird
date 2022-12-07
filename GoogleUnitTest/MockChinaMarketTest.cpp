@@ -308,7 +308,7 @@ namespace StockAnalysisTest {
 		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
 		long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_systemStatus.SetExitingCalculatingRS(true); // 中间被打断
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		gl_pMockChinaMarket->SetRSEndDate(0);
 		gl_pMockChinaMarket->SetUpdateOptionDB(false);
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildDayLineRSOfDate(_))
@@ -318,19 +318,19 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), 0);
 		EXPECT_FALSE(gl_systemStatus.IsExitingCalculatingRS());
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
 
 		tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildDayLineRSOfDate(_))
 			.Times(5);
 		EXPECT_EQ(ThreadBuildDayLineRS(gl_pMockChinaMarket.get(), lStartDate), (UINT)11);
 		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), gl_pMockChinaMarket->GetMarketDate());
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 4); // 共两次调用，有四个信息
 		gl_systemMessage.PopInformationMessage();
@@ -438,17 +438,14 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {
-		gl_ThreadStatus.SetCreatingWeekLine(true);
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1).RetiresOnSaturation();
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1).RetiresOnSaturation();
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1).RetiresOnSaturation();
 		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), (UINT)25);
-		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine2) {
-		gl_ThreadStatus.SetCreatingWeekLine(true);
 		gl_pMockChinaMarket->CalculateTime();
 		long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetMarketDate());
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine(lCurrentMonday)).Times(1);
@@ -456,6 +453,5 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
 		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), (UINT)25);
-		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
 	}
 }

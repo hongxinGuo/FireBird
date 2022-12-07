@@ -20,7 +20,7 @@ using namespace std;
 #include<thread>
 
 UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
-	gl_ThreadStatus.SetCalculatingWeekLineRS(true);
+	pMarket->SetCalculatingWeekLineRS(true);
 	long lToday = GetPrevMonday(startCalculatingDate);
 
 	const long year = lToday / 10000;
@@ -58,7 +58,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
-	gl_ThreadStatus.SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
+	pMarket->SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
 
 	return 30;
 }

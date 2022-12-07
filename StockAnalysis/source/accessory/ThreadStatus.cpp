@@ -12,13 +12,6 @@ CThreadStatus::CThreadStatus() {
 	m_NumberOfBackGroundWorkingThreads = 0;
 	m_NumberOfSavingThread = 0;
 	m_NumberOfWebInquiringThread = 0;
-
-	m_CalculatingDayLineRS = false;
-	m_CalculatingWeekLineRS = false;
-	m_RTDataNeedCalculate = false;
-	m_CalculatingRTData = false;
-	m_SavingTempData = false;
-	m_CreatingWeekLine = false;
 }
 
 CThreadStatus::~CThreadStatus() {

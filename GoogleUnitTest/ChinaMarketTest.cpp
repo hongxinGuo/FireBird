@@ -762,9 +762,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessRTData) {
-		gl_ThreadStatus.SetRTDataNeedCalculate(true);
+		gl_pChinaMarket->SetRTDataNeedCalculate(true);
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessRTData());
-		gl_ThreadStatus.SetRTDataNeedCalculate(false);
+		gl_pChinaMarket->SetRTDataNeedCalculate(false);
 	}
 
 	TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag1) {
@@ -1573,5 +1573,29 @@ namespace StockAnalysisTest {
 
 		EXPECT_EQ(pStock->GetUnknownVolume(), 10517770);
 		EXPECT_EQ(pStock->GetTransactionNumber(), 2183);
+	}
+
+	TEST_F(CChinaMarketTest, TestIsRTDataNeedCalculate) {
+		EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
+		gl_pChinaMarket->SetRTDataNeedCalculate(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
+		gl_pChinaMarket->SetRTDataNeedCalculate(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
+	}
+
+	TEST_F(CChinaMarketTest, TestIsCalculatingDayLineRS) {
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsCalculatingDayLineRS());
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
+	}
+
+	TEST_F(CChinaMarketTest, TestIsCalculatingWeekLineRS) {
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingWeekLineRS());
+		gl_pChinaMarket->SetCalculatingWeekLineRS(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsCalculatingWeekLineRS());
+		gl_pChinaMarket->SetCalculatingWeekLineRS(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingWeekLineRS());
 	}
 }

@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();
-			gl_ThreadStatus.SetCalculatingDayLineRS(false);
+			gl_pChinaMarket->SetCalculatingDayLineRS(false);
 			gl_systemStatus.SetExitingSystem(false);
 
 			GeneralCheck();
@@ -231,25 +231,25 @@ namespace StockAnalysisTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRS) {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->SetSystemReady(false);
-		gl_ThreadStatus.SetCalculatingDayLineRS(false);
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(true);
-		gl_ThreadStatus.SetCalculatingDayLineRS(false);
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(false);
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(true);
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false));
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 	}
@@ -565,12 +565,12 @@ namespace StockAnalysisTest {
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
 		gl_pChinaMarket->__TEST_SetFormatedMarketTime((long)83000);
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
 		gl_pChinaMarket->__TEST_SetFormatedMarketTime((long)83000);
-		gl_ThreadStatus.SetCalculatingDayLineRS(false);
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
@@ -598,12 +598,12 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {
 		CCmdUI cmdUI;
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
+		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
-		gl_ThreadStatus.SetCalculatingDayLineRS(false);
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();

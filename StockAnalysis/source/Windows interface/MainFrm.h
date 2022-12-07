@@ -1,6 +1,8 @@
 ﻿// MainFrm.h: CMainFrame 类的接口
 //
 #pragma once
+
+#include"stdafx.h"
 #include "OutputWnd.h"
 
 constexpr int __STOCK_ANALYSIS_TIMER__ = 1;

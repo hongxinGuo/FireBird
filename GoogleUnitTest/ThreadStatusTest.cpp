@@ -18,25 +18,20 @@ namespace StockAnalysisTest {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 		}
 		virtual void SetUp(void) override {
-			EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 			GeneralCheck();
 		}
 
 		virtual void TearDown(void) override {
 			// clearup
-			EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 		}
 	};
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
 
@@ -47,38 +42,6 @@ namespace StockAnalysisTest {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
 		}
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
-	}
-
-	TEST_F(ThreadStatusTest, TestIsCalculatingDayLineRS) {
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-		gl_ThreadStatus.SetCalculatingDayLineRS(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsCalculatingDayLineRS());
-		gl_ThreadStatus.SetCalculatingDayLineRS(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsCalculatingWeekLineRS) {
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingWeekLineRS());
-		gl_ThreadStatus.SetCalculatingWeekLineRS(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsCalculatingWeekLineRS());
-		gl_ThreadStatus.SetCalculatingWeekLineRS(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsCalculatingWeekLineRS());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsRTDataNeedCalculate) {
-		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-		gl_ThreadStatus.SetRTDataNeedCalculate(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
-		gl_ThreadStatus.SetRTDataNeedCalculate(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsCreateWeekLine) {
-		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
-		gl_ThreadStatus.SetCreatingWeekLine(true);
-		EXPECT_TRUE(gl_ThreadStatus.IsCreatingWeekLine());
-		gl_ThreadStatus.SetCreatingWeekLine(false);
-		EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
 	}
 
 	TEST_F(ThreadStatusTest, TestIsCalculatingRS) {

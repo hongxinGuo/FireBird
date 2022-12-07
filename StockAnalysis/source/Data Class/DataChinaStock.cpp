@@ -487,7 +487,7 @@ bool CDataChinaStock::Choice10RSStrong2StockSet(void) {
 	vector<CChinaStockPtr> v10RSStrongStock;
 
 	for (auto& pStock : m_vStock) {
-		thread thread1(ThreadCalculate10RSStrong1Stock, &v10RSStrongStock, pStock);
+		thread thread1(ThreadCalculate10RSStrong2Stock, &v10RSStrongStock, pStock);
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {

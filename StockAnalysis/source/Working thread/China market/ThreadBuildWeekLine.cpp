@@ -9,7 +9,6 @@
 
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.SetCreatingWeekLine(true);
 
 	long lStartMonday = GetCurrentMonday(lStartDate);
 	long year = lStartMonday / 10000;
@@ -38,7 +37,6 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 	// 生成新的当前周周线
 	pMarket->BuildCurrentWeekWeekLineTable();
 
-	gl_ThreadStatus.SetCreatingWeekLine(false);
 	gl_ThreadStatus.DecreaseSavingThread();
 
 	return 25;

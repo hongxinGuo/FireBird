@@ -18,7 +18,7 @@ using namespace std;
 #include<thread>
 
 UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
-	gl_ThreadStatus.SetCalculatingDayLineRS(true);
+	pMarket->SetCalculatingDayLineRS(true);
 	long lToday = startCalculatingDate;
 
 	const long year = lToday / 10000;
@@ -61,7 +61,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
-	gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
+	pMarket->SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
 
 	return 11;
 }

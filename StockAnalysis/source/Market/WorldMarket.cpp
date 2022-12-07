@@ -191,13 +191,13 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	StopWebSocket();
+	StopAllWebSocket();
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
-	StartWebSocket();
+	StartAllWebSocket();
 
 	TaskResetMarket(lCurrentTime);
 
@@ -505,20 +505,6 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 	return true;
 }
 
-void CWorldMarket::StopReceivingWebSocket(void) {
-	if (!gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnect();
-	if (!gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnect();
-	if (!gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnect();
-	if (!gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnect();
-}
-
-void CWorldMarket::DeconnectAllWebSocket(void) {
-	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnect();
-	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnect();
-	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnect();
-	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnect();
-}
-
 bool CWorldMarket::UpdateToken(void) {
 	ASSERT(gl_systemConfigeration.IsInitialized());
 
@@ -784,10 +770,14 @@ vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	return vSymbol;
 }
 
-bool CWorldMarket::StartWebSocket(void) {
+bool CWorldMarket::StartAllWebSocket(void) {
 	if (IsSystemReady()) {
 		if (!gl_pFinnhubWebInquiry->IsWebError()) StartFinnhubWebSocket();
-		if (!gl_pTiingoWebInquiry->IsWebError()) StartTiingoWebSocket();
+		if (!gl_pTiingoWebInquiry->IsWebError()) {
+			StartTiingoIEXWebSocket();
+			StartTiingoCryptoWebSocket();
+			StartTiingoForexWebSocket();
+		}
 	}
 	return true;
 }
@@ -801,19 +791,23 @@ void CWorldMarket::StartFinnhubWebSocket(void) {
 	}
 }
 
-void CWorldMarket::StartTiingoWebSocket(void) {
+void CWorldMarket::StartTiingoIEXWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) {
 		if (gl_tiingoIEXWebSocket.IsClosed()) {
 			gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
 		}
 	}
+}
+void CWorldMarket::StartTiingoCryptoWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) {
 		if (gl_tiingoCryptoWebSocket.IsClosed()) {
 			gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
 		}
 	}
+}
+void CWorldMarket::StartTiingoForexWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) {
 		if (gl_tiingoForexWebSocket.IsClosed()) {
 			gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
@@ -822,7 +816,23 @@ void CWorldMarket::StartTiingoWebSocket(void) {
 	}
 }
 
-void CWorldMarket::StopWebSocket(void) {
+/// <summary>
+/// // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+/// </summary>
+/// <param name=""></param>
+void CWorldMarket::DeconnectAllWebSocket(void) {
+	ASSERT(gl_systemStatus.IsExitingSystem()); //本函数只在系统退出时调用
+	if (gl_systemConfigeration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Deconnect();
+	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Deconnect();
+}
+
+/// <summary>
+/// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+/// </summary>
+/// <param name=""></param>
+void CWorldMarket::StopAllWebSocket(void) {
 	if (IsSystemReady()) {
 		StopFinnhubWebSocket();
 		StopTiingoIEXWebSocket();

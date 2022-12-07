@@ -70,7 +70,7 @@ namespace StockAnalysisTest {
 
 		virtual void SetUp(void) override {
 			GeneralCheck();
-			EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
+			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			SinaRTData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			if (gl_pChinaMarket->IsStock(pData->m_strSymbol)) {
@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			gl_ThreadStatus.SetRTDataNeedCalculate(false);
+			gl_pChinaMarket->SetRTDataNeedCalculate(false);
 			pStock->ClearRTDataDeque();
 
 			GeneralCheck();
@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 1);
 		EXPECT_TRUE(gl_pChinaMarket->TaskDistributeSinaRTDataToStock());
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
-		EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
+		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << _T("无效实时数据，报错后直接返回");
