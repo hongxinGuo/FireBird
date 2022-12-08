@@ -32,13 +32,12 @@ typedef shared_ptr<CTiingoCryptoSocket> CTiingoCryptoSocketPtr;
 class CTiingoCryptoWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoCryptoWebSocket();
-	~CTiingoCryptoWebSocket(void);
+	~CTiingoCryptoWebSocket(void) override = default;
 
 	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
-	bool CreateThreadDeconnectWebSocket(void);
 
 	CString CreateMessage(vector<CString> vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);

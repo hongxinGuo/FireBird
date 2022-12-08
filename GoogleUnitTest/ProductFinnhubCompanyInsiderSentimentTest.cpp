@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
-		EXPECT_STREQ(companyInsiderSentiment.CreatMessage(), companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
+		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(), companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate()) << "接收到的数处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);

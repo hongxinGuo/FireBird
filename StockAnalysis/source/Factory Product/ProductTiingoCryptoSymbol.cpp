@@ -16,7 +16,7 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualProductWebDat
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/crypto?");
 }
 
-CString CProductTiingoCryptoSymbol::CreatMessage(void) {
+CString CProductTiingoCryptoSymbol::CreateMessage(void) {
 	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }

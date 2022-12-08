@@ -16,7 +16,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualProductWebDat
 	m_lIndex = -1;
 }
 
-CString CProductTiingoStockDayLine::CreatMessage(void) {
+CString CProductTiingoStockDayLine::CreateMessage(void) {
 	CWorldStockPtr pStock = nullptr;
 	CString strMiddle;
 

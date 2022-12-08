@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
-		EXPECT_STREQ(countryList.CreatMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_STREQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {

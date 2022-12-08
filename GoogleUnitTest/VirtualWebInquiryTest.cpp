@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryToken(), _T(""));
-		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
+		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
 	}
@@ -58,9 +58,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestReset) {
-		m_VirtualWebInquiry.SetByteReaded(1000);
+		m_VirtualWebInquiry.SetByteRead(1000);
 		m_VirtualWebInquiry.Reset();
-		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
+		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
 	}
 
@@ -112,12 +112,12 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_VirtualWebInquiry.IsTimeout());
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestGetByteReaded) {
-		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
-		m_VirtualWebInquiry.SetByteReaded(10000);
-		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 10000);
-		m_VirtualWebInquiry.AddByteReaded(10000);
-		EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 20000);
+	TEST_F(CVirtualWebInquiryTest, TestGetByteRead) {
+		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 0);
+		m_VirtualWebInquiry.SetByteRead(10000);
+		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 10000);
+		m_VirtualWebInquiry.AddByteRead(10000);
+		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 20000);
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestGetInquiringString) {
@@ -136,12 +136,12 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 800);
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestGetTotalByteReaded) {
-		m_VirtualWebInquiry.ClearTotalByteReaded();
-		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 0);
-		m_VirtualWebInquiry.SetTotalByteReaded(1000);
-		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 1000);
-		m_VirtualWebInquiry.ClearTotalByteReaded();
-		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteReaded(), 0);
+	TEST_F(CVirtualWebInquiryTest, TestGetTotalByteRead) {
+		m_VirtualWebInquiry.ClearTotalByteRead();
+		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteRead(), 0);
+		m_VirtualWebInquiry.SetTotalByteRead(1000);
+		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteRead(), 1000);
+		m_VirtualWebInquiry.ClearTotalByteRead();
+		EXPECT_EQ(m_VirtualWebInquiry.GetTotalByteRead(), 0);
 	}
 }

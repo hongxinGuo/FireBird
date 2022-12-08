@@ -56,7 +56,7 @@ void CNeteaseDayLineWebInquiry::ConfigerateSession(void)
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1´ÎÖØÊÔ
 }
 
-void CNeteaseDayLineWebInquiry::UpdateStatusWhenSecceed(CWebDataPtr pData) {
+void CNeteaseDayLineWebInquiry::UpdateStatusAfterSucceed(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetMarket(gl_pWorldMarket.get());
 		companySymbolProduct.SetIndex(1);
-		EXPECT_STREQ(companySymbolProduct.CreatMessage(), companySymbolProduct.GetInquiry() + gl_pWorldMarket->GetStockExchangeCode(1));
+		EXPECT_STREQ(companySymbolProduct.CreateMessage(), companySymbolProduct.GetInquiry() + gl_pWorldMarket->GetStockExchangeCode(1));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {

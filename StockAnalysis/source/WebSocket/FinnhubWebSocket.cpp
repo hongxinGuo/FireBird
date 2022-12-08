@@ -2,8 +2,6 @@
 
 #include"JsonParse.h"
 
-#include"ThreadStatus.h"
-
 #include "FinnhubWebSocket.h"
 #include"FinnhubWebInquiry.h"
 
@@ -48,7 +46,9 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("¿ªÆôFinnhub web socket·þÎñ"));
+		}
 		s_fConnecting = false;
 	}
 	return 70;
@@ -95,11 +95,11 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 /// <param name="strSymbol"></param>
 /// <returns></returns>
 string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
-	string sPreffix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
+	string sPrefix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
 	string sSuffix = _T("\"}");
 	string sSymbol = strSymbol.GetBuffer();
 
-	return sPreffix + sSymbol + sSuffix;
+	return sPrefix + sSymbol + sSuffix;
 }
 
 bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {

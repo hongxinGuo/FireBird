@@ -5,6 +5,7 @@
 #include"ThreadStatus.h"
 
 CVirtualDataSource::CVirtualDataSource(void) {
+	m_pWebInquiry = nullptr;
 	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
@@ -39,7 +40,7 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 	if (HaveInquiry()) { // 有申请等待？
 		if (IsWebInquiryFinishedAndClearFlag()) { //已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
-			SetCurrentInquiryFunction(m_pCurrentProduct->CreatMessage()); // 设置功能字符串
+			SetCurrentInquiryFunction(m_pCurrentProduct->CreateMessage()); // 设置功能字符串
 			StartThreadGetWebData();
 			return true;
 		}
@@ -89,9 +90,9 @@ counting_semaphore<3> gl_WebSourceParseAndStoreData{ 3 };
 
 UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
 	gl_WebSourceParseAndStoreData.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	pDataSource->ParseAndStoreData(pProductWebData, pWebData);
-	gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 	gl_WebSourceParseAndStoreData.release();
 
 	return 203;

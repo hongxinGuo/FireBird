@@ -39,7 +39,7 @@ typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
 class CTiingoIEXWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
-	~CTiingoIEXWebSocket(void);
+	~CTiingoIEXWebSocket(void) override;
 
 	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;

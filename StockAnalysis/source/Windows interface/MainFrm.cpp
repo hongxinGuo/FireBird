@@ -581,7 +581,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	CString str;
 
 	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
-	counter.Start();
+	counter.start();
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
 
@@ -596,7 +596,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		s_llCounterforUpdateStatusBar = llTickCount;
 	}
 
-	counter.Stop();
+	counter.stop();
 	long lCurrentPeriod = counter.GetElapsedMilliSecond();
 	if (lCurrentPeriod > 20) {
 		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
@@ -656,9 +656,9 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((gl_pSinaRTWebInquiry->GetTotalByteReaded() > 0) && ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0)) { // 每秒更新一次
-		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteReaded());
-		gl_pSinaRTWebInquiry->ClearTotalByteReaded();
+	if ((gl_pSinaRTWebInquiry->GetTotalByteRead() > 0) && ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0)) { // 每秒更新一次
+		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteRead());
+		gl_pSinaRTWebInquiry->ClearTotalByteRead();
 		m_timeLast = gl_pChinaMarket->GetUTCTime();
 		m_wndStatusBar.SetPaneText(10, (LPCTSTR)str);
 	}

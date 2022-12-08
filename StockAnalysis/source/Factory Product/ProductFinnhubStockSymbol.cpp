@@ -14,7 +14,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubStockSymbol::CreatMessage(void) {
+CString CProductFinnhubStockSymbol::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetStockExchangeCode(m_lIndex);

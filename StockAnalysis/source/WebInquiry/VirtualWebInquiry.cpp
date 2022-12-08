@@ -8,10 +8,9 @@
 
 #include"ChinaMarket.h"
 
-#include"VirtualWebInquiry.h"
 #include"HighPerformanceCounter.h"
 
-atomic_llong CVirtualWebInquiry::m_lTotalByteReaded = 0;
+atomic_llong CVirtualWebInquiry::sm_lTotalByteRead = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_pDataSource = nullptr;
@@ -105,7 +104,7 @@ void CVirtualWebInquiry::Read(void) {
 
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
-	counter.Start();
+	counter.start();
 	PrepareReadingWebData();
 	if (ReadingWebData()) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
@@ -113,7 +112,7 @@ void CVirtualWebInquiry::Read(void) {
 		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 		ResetBuffer();
 		ParseData(pWebData);
-		UpdateStatusWhenSecceed(pWebData);
+		UpdateStatusAfterSucceed(pWebData);
 
 		pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
 		m_pDataSource->StoreReceivedData(pWebData);
@@ -124,7 +123,7 @@ void CVirtualWebInquiry::Read(void) {
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
-	counter.Stop();
+	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
@@ -144,11 +143,11 @@ void CVirtualWebInquiry::Read(void) {
 bool CVirtualWebInquiry::ReadingWebData(void) {
 	CHighPerformanceCounter counter;
 	bool fReadingSuccess = true;
-	long lCurrentByteReaded = 0;
+	long lCurrentByteRead = 0;
 
 	ASSERT(IsReadingWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
-	SetByteReaded(0);
+	SetByteRead(0);
 
 	ASSERT(m_pFile == nullptr);
 	if (OpenFile(GetInquiringString())) {
@@ -159,10 +158,10 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 					fReadingSuccess = false;
 					break;
 				}
-				lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+				lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
 				IncreaseBufferSizeIfNeeded();
-			} while (lCurrentByteReaded > 0);
-			m_lTotalByteReaded += m_lByteRead;
+			} while (lCurrentByteRead > 0);
+			sm_lTotalByteRead += m_lByteRead;
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0;// 清除错误代码（如果有的话）。只在此处重置该错误代码。
 			//counter.Stop();
@@ -270,16 +269,16 @@ bool CVirtualWebInquiry::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 }
 
 bool CVirtualWebInquiry::VerifyDataLength() {
-	auto byteReaded = GetByteReaded();
+	auto byteRead = GetByteRead();
 	char buffer[100];
 	CString str = _T("网络数据长度不符。预期长度：");
 
 	if (m_lContentLength > 0) {
-		if (m_lContentLength != byteReaded) {
+		if (m_lContentLength != byteRead) {
 			sprintf_s(buffer, _T("%d"), m_lContentLength);
 			str += buffer;
 			str += _T("，实际长度：");
-			sprintf_s(buffer, _T("%d"), byteReaded);
+			sprintf_s(buffer, _T("%d"), byteRead);
 			str += buffer;
 			str += m_strInquiry.Left(120);
 			gl_systemMessage.PushErrorMessage(str);

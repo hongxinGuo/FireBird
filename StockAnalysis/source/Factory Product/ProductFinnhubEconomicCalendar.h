@@ -9,7 +9,7 @@ public:
 		CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
 };

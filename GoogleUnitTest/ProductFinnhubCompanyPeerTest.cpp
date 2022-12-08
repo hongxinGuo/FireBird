@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);
 		companyPeer.SetMarket(gl_pWorldMarket.get());
 		companyPeer.SetIndex(1);
-		EXPECT_STREQ(companyPeer.CreatMessage(), companyPeer.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyPeer.CreateMessage(), companyPeer.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);

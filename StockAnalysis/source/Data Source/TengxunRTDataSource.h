@@ -5,7 +5,7 @@
 class CTengxunRTDataSource : public CVirtualDataSource {
 public:
 	CTengxunRTDataSource();
-	~CTengxunRTDataSource();
+	virtual ~CTengxunRTDataSource();
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

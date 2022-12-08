@@ -12,7 +12,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCryptoSymbol::CreatMessage(void) {
+CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;

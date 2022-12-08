@@ -17,7 +17,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyInsiderTransaction::CreatMessage(void) {
+CString CProductFinnhubCompanyInsiderTransaction::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);

@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
 		productForexSymbol.SetMarket(gl_pWorldMarket.get());
 		productForexSymbol.SetIndex(1);
-		EXPECT_STREQ(productForexSymbol.CreatMessage(), productForexSymbol.GetInquiry() + gl_pWorldMarket->GetForexExchange(1));
+		EXPECT_STREQ(productForexSymbol.CreateMessage(), productForexSymbol.GetInquiry() + gl_pWorldMarket->GetForexExchange(1));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {

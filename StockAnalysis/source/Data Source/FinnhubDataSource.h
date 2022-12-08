@@ -6,7 +6,7 @@
 class CFinnhubDataSource : public CVirtualDataSource {
 public:
 	CFinnhubDataSource(void);
-	~CFinnhubDataSource(void);
+	virtual ~CFinnhubDataSource(void);
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

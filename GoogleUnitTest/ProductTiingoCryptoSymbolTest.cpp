@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CProductTiingoCryptoSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiry());
+		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiry());
 	}
 
 	// 格式不对，缺乏'{'

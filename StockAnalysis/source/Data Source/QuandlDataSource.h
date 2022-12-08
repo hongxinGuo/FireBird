@@ -7,7 +7,7 @@ class CQuandlDataSource : public CVirtualDataSource
 {
 public:
 	CQuandlDataSource(void);
-	~CQuandlDataSource(void);
+	virtual ~CQuandlDataSource(void) override;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

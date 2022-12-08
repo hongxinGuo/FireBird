@@ -9,7 +9,7 @@ public:
 		CProductFinnhubStockSymbol();
 	~CProductFinnhubStockSymbol() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	bool IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode);
 	CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);

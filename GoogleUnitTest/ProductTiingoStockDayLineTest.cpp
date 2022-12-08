@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		CString strMessage, strTest;
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
-		strMessage = stockPriceCandle.CreatMessage();
+		strMessage = stockPriceCandle.CreateMessage();
 		long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		long year = lMarketDate / 10000;
 		long month = lMarketDate / 100 - year * 100;

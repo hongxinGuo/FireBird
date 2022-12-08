@@ -25,11 +25,11 @@ void CNeteaseDayLineWebData::Reset(void) {
 
 bool CNeteaseDayLineWebData::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-	m_sDataBuffer.resize(pNeteaseWebDayLineData->GetByteReaded());
-	for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded(); i++) {
+	m_sDataBuffer.resize(pNeteaseWebDayLineData->GetByteRead());
+	for (int i = 0; i < pNeteaseWebDayLineData->GetByteRead(); i++) {
 		m_sDataBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
 	}
-	m_lBufferLength = pNeteaseWebDayLineData->GetByteReaded();
+	m_lBufferLength = pNeteaseWebDayLineData->GetByteRead();
 	m_strStockCode = pNeteaseWebDayLineData->GetDownLoadingStockCode();
 	m_lCurrentPos = 0;
 

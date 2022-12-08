@@ -9,7 +9,7 @@ public:
 		CProductFinnhubCompanyBasicFinancial();
 	~CProductFinnhubCompanyBasicFinancial() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	bool ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData);
 	bool GetSeasonData(ptree& pt, vector<CValueOfPeriod>& vData, const char* szMsg);

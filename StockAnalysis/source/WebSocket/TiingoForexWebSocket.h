@@ -31,7 +31,7 @@ public:
 	CTiingoForexWebSocket();
 	~CTiingoForexWebSocket(void);
 
-	virtual bool Connect(void);
+	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
 
 	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);

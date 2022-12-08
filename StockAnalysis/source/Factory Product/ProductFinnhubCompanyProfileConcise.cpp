@@ -14,7 +14,7 @@ CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyProfileConcise::CreatMessage(void) {
+CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMessage;

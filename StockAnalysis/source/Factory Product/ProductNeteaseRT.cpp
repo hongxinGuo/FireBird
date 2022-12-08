@@ -13,7 +13,7 @@ CProductNeteaseRT::CProductNeteaseRT() {
 	m_strInquiry = _T("http://api.money.126.net/data/feed/");
 }
 
-CString CProductNeteaseRT::CreatMessage(void) {
+CString CProductNeteaseRT::CreateMessage(void) {
 	static long slCurrentStockPosition = 0;
 
 	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作。

@@ -6,7 +6,7 @@
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CFinnhubSocket : public CObject {
+class CFinnhubSocket final : public CObject {
 public:
 	CFinnhubSocket() {
 		m_strSymbol = _T("");
@@ -23,12 +23,16 @@ public:
 };
 typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;
 
-class CFinnhubWebSocket : public CVirtualWebSocket {
+class CFinnhubWebSocket final : public  CVirtualWebSocket {
 public:
 	CFinnhubWebSocket();
-	~CFinnhubWebSocket(void);
+	CFinnhubWebSocket(const CFinnhubWebSocket&) = delete;
+	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&) = delete;
+	CFinnhubWebSocket(const CFinnhubWebSocket&&) noexcept = delete;
+	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
+	~CFinnhubWebSocket(void) override;
 
-	virtual bool Connect(void);
+	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
 	string CreateFinnhubWebSocketString(CString strSymbol);
 

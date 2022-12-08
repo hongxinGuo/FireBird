@@ -49,30 +49,30 @@ public:
 	virtual void PrepareReadingWebData(void);// 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusWhenSecceed(CWebDataPtr pData) {} // 成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {} // 成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString(CString strMIddle);
-	CString GetInquiringString(void) const { return m_strInquiry; }
-	void SetInquiringString(CString str) { m_strInquiry = str; }
-	void AppendInquiringString(CString str) { m_strInquiry += str; }
+	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
+	void SetInquiringString(CString const str) noexcept { m_strInquiry = str; }
+	void AppendInquiringString(CString const str) noexcept { m_strInquiry += str; }
 
 	void SetDataSource(CVirtualDataSource* pDataSource) { m_pDataSource = pDataSource; }
 
-	CString GetHeaders(void) { return m_strHeaders; }
-	void SetHeaders(CString strHeaders) { m_strHeaders = strHeaders; }
+	CString GetHeaders(void) const noexcept { return m_strHeaders; }
+	void SetHeaders(CString const strHeaders) noexcept { m_strHeaders = strHeaders; }
 
 	char GetData(long lIndex) const { return m_sBuffer.at(lIndex); }
 	void SetData(long lIndex, char value) { m_sBuffer.at(lIndex) = value; }
 
-	long GetByteReaded(void) const noexcept { return m_lByteRead; }
-	void SetByteReaded(long lValue) noexcept { m_lByteRead = lValue; }
-	void AddByteReaded(long lValue) noexcept { m_lByteRead += lValue; }
+	long GetByteRead(void) const noexcept { return m_lByteRead; }
+	void SetByteRead(long lValue) noexcept { m_lByteRead = lValue; }
+	void AddByteRead(long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
 
-	CString GetInquiryFunction(void) const { return m_strInquiryFunction; }
-	void SetInquiryFunction(CString strPrefix) { m_strInquiryFunction = strPrefix; }
-	CString GetInquiryToken(void) const { return m_strInquiryToken; }
-	void SetInquiryToken(CString strToken) { m_strInquiryToken = strToken; }
+	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
+	void SetInquiryFunction(CString const strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
+	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
+	void SetInquiryToken(CString const strToken) noexcept { m_strInquiryToken = strToken; }
 
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
@@ -89,9 +89,9 @@ public:
 	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
 
-	INT64 GetTotalByteReaded(void) const noexcept { return m_lTotalByteReaded; }
-	void SetTotalByteReaded(INT64 lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
-	void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
+	static INT64 GetTotalByteRead(void) noexcept { return sm_lTotalByteRead; }
+	static void SetTotalByteRead(INT64 lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
+	static void ClearTotalByteRead(void) noexcept { sm_lTotalByteRead = 0; }
 
 	void SetCurrentInquiryTime(time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
@@ -124,7 +124,7 @@ protected:
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	CString m_strConnectionName; // 此网络读取器的名称
-	static atomic_llong m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic_llong sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 };
 
 typedef shared_ptr<CVirtualWebInquiry> CVirtualWebInquiryPtr;

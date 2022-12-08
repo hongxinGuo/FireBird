@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_STREQ(companyInsiderTransaction.CreatMessage(), companyInsiderTransaction.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);

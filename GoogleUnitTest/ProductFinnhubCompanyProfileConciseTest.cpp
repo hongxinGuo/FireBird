@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
 		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreatMessage(), companyProfileConcise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "处理接收到的数据后才设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);

@@ -15,7 +15,7 @@ public:
 		CProductFinnhubCompanyNews();
 	~CProductFinnhubCompanyNews() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CCompanyNewsVectorPtr ParseFinnhubCompanyNews(CWebDataPtr pWebData);
 };

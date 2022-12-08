@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 			CChinaStockPtr pStock;
@@ -319,24 +319,27 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), 0);
 		EXPECT_FALSE(gl_systemStatus.IsExitingCalculatingRS());
 		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
 
 		tStart = gl_pMockChinaMarket->GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_pChinaMarket->SetCalculatingDayLineRS(true);
+		gl_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildDayLineRSOfDate(_))
 			.Times(5);
 		EXPECT_EQ(ThreadBuildDayLineRS(gl_pMockChinaMarket.get(), lStartDate), (UINT)11);
 		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), gl_pMockChinaMarket->GetMarketDate());
 		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
+		EXPECT_FALSE(gl_pChinaMarket->IsCalculatingDayLineRS());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 4); // 共两次调用，有四个信息
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
 		gl_systemMessage.PopInformationMessage();
+		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateOptionDB) {

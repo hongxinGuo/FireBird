@@ -13,7 +13,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubForexSymbol::CreatMessage(void) {
+CString CProductFinnhubForexSymbol::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);

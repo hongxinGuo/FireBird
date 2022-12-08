@@ -42,7 +42,9 @@ UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
@@ -71,30 +73,25 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 	ASSERT(IsOpen());
 
 	string messageAuth(CreateMessage(vSymbol));
-	ix::WebSocketSendInfo info;
+	ix::WebSocketSendInfo info = SendMessage(messageAuth);
 
-	ASSERT(IsOpen());
-
-	info = SendMessage(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }
 
 CString CTiingoIEXWebSocket::CreateMessage(vector<CString> vSymbol) {
-	CString str;
-	CString strSymbols;
-	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
-	CString strSuffix = _T("]}}");
+	CString const strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	CString const strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
+	CString const strSuffix = _T("]}}");
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
-	vSymbol.push_back(_T("rig")); // 多加一个Tiingo制式的代码。
-	vSymbol.push_back(_T("aapl")); // 多加一个Tiingo制式的代码。
-	strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
+	vSymbol.emplace_back(_T("rig")); // 多加一个Tiingo制式的代码。
+	vSymbol.emplace_back(_T("aapl")); // 多加一个Tiingo制式的代码。
+	CString const strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
 
-	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
+	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	return str;
 }
@@ -146,77 +143,77 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				pIEXData->m_chMessageType = chType;
 				switch (chType) {
 				case 'Q':// top-of-book update message
-					it++;
+					++it;
 					pt3 = it->second;
 					sDatetime = pt3.get_value<string>();
-					it++;
+					++it;
 					pt3 = it->second;
 					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
-					it++;
+					++it;
 					pt3 = it->second;
 					sTicker = pt3.get_value<string>();
 					pIEXData->m_strSymbol = sTicker.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dBidSize = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dBidPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dMidPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dAskPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dAskSize = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dLastPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dLastSize = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					pIEXData->m_iHalted = pt3.get_value<int>();
-					it++;
+					++it;
 					pt3 = it->second;
 					pIEXData->m_iAfterHour = pt3.get_value<int>();
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_iISO = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_iOddlot = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
@@ -224,77 +221,77 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					}
 					break;
 				case 'T':// 'T' last trade message
-					it++;
+					++it;
 					pt3 = it->second;
 					sDatetime = pt3.get_value<string>();
-					it++;
+					++it;
 					pt3 = it->second;
 					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
-					it++;
+					++it;
 					pt3 = it->second;
 					sTicker = pt3.get_value<string>();
 					pIEXData->m_strSymbol = sTicker.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dBidSize = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dBidPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dMidPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dAskPrice = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dAskSize = atof(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dLastPrice = pt3.get_value<double>();
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_dLastSize = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_iHalted = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_iISO = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {
 						pIEXData->m_iOddlot = atoi(sValue.c_str());
 					}
-					it++;
+					++it;
 					pt3 = it->second;
 					sValue = pt3.get_value<string>();
 					if (sValue.compare(_T("null")) != 0) {

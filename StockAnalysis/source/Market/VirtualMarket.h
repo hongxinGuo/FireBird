@@ -23,7 +23,7 @@ public:
 
 public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
-	// 申请并处理Data source的数据，被最终衍生类的SchedlingTask函数来调度。
+	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void InquireAndProcessDataSource(long lCurrentTime);
 
@@ -39,8 +39,8 @@ public:
 	long TransferToMarketDate(time_t tUTC = sm_tUTC); // 得到本市场的日期
 
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
-	CString GetMarketID(void) const { return m_strMarketId; }
-	time_t GetUTCTime(void) const noexcept { return sm_tUTC; }
+	CString GetMarketID(void) const noexcept { return m_strMarketId; }
+	static time_t GetUTCTime(void) noexcept { return sm_tUTC; }
 	long GetMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]

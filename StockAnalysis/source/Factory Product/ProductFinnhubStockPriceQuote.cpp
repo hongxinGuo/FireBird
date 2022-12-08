@@ -16,7 +16,7 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubStockPriceQuote::CreatMessage(void) {
+CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);

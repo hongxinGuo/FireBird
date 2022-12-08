@@ -17,7 +17,7 @@ CProductTinngoStockSymbol::CProductTinngoStockSymbol() : CVirtualProductWebData(
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
-CString CProductTinngoStockSymbol::CreatMessage(void) {
+CString CProductTinngoStockSymbol::CreateMessage(void) {
 	m_strTotalInquiryMessage = m_strInquiry;
 	return m_strTotalInquiryMessage;
 }

@@ -18,7 +18,7 @@ using namespace std;
 class CVirtualWebSocket : public CObject {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
-	virtual ~CVirtualWebSocket();
+	~CVirtualWebSocket() override;
 	void Reset(void);
 
 	virtual bool Connect(void) = 0;
@@ -35,30 +35,30 @@ public:
 	size_t GetSymbolSize(void) noexcept { return m_vSymbol.size(); }
 
 	// 状态
-	ix::ReadyState GetState(void) { return m_webSocket.getReadyState(); }
-	bool IsClosed(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
-	bool IsOpen(void) { return m_webSocket.getReadyState() == ix::ReadyState::Open; }
-	bool IsClosing(void) { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
-	bool IsConnecting(void) { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
+	ix::ReadyState GetState(void) const { return m_webSocket.getReadyState(); }
+	bool IsClosed(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
+	bool IsOpen(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Open; }
+	bool IsClosing(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
+	bool IsConnecting(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
 	string GetURL(void) noexcept { return m_url; }
-	void SetURL(string url) noexcept { m_url = url; }
+	void SetURL(string const url) noexcept { m_url = url; }
 
 	void SetSubscriptionStatus(bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
-	bool IsSubscriptable(void) noexcept { return m_fHaveSubscriptionId; }
+	bool IsSubscriptable(void) const noexcept { return m_fHaveSubscriptionId; }
 	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
 	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
-	bool IsReceivingData(void) noexcept { return m_fReveivingData; }
+	bool IsReceivingData(void) const noexcept { return m_fReveivingData; }
 	void SetReceivingData(bool fFlag) noexcept { m_fReveivingData = fFlag; }
 
 	// 实现
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool Deconnect(void);
-	bool CreateThreadDeconnectWebSocket(void);
+	bool Disconnect(void);
+	bool CreateThreadDisconnectWebSocket(void);
 	// 用于系统退出时。
-	bool DeconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
-	bool SendMessage(string message);
+	bool DisconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
+	bool SendMessage(const string& message);
 
 	vector<CString> m_vCurrentSymbol;
 

@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetMarket(gl_pWorldMarket.get());
 		stockPriceQuote.SetIndex(1);
-		EXPECT_STREQ(stockPriceQuote.CreatMessage(), stockPriceQuote.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(stockPriceQuote.CreateMessage(), stockPriceQuote.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {

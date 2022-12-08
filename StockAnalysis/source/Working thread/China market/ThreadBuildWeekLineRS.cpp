@@ -39,7 +39,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
 	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
-	while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
+	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
 	if (!gl_systemStatus.IsExitingCalculatingRS()) { // 如果顺利完成了计算任务
 		// 显示花费的时间
@@ -71,7 +71,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;
@@ -83,7 +83,7 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	if (!gl_systemStatus.IsExitingSystem() && !gl_systemStatus.IsExitingCalculatingRS()) {
 		pMarket->BuildWeekLineRS(lDate);
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
 	gl_BackGroundTaskThread.release();
 
 	return 31;

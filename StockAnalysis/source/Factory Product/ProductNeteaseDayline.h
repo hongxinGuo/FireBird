@@ -16,7 +16,7 @@ public:
 		CProductNeteaseDayline();
 	~CProductNeteaseDayline() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 
 public:

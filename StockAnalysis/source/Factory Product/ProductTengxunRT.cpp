@@ -12,7 +12,7 @@ CProductTengxunRT::CProductTengxunRT() {
 	m_strInquiry = _T("http://qt.gtimg.cn/q=");
 }
 
-CString CProductTengxunRT::CreatMessage(void) {
+CString CProductTengxunRT::CreateMessage(void) {
 	static long slCurrentStockPosition = 0;
 
 	return m_strInquiry; // 新浪实时数据的申请字符串由CTengxunRTWebInquiry类完成，本Product无需动作。

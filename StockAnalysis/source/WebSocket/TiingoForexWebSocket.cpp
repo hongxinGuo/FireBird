@@ -42,7 +42,9 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
@@ -162,26 +164,26 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pt3 = it->second;
 				sMessageType = pt3.get_value<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
-				it++;
+				++it;
 				pt3 = it->second;
 				sTickers = pt3.get_value<string>(); // 证券名称
 				pForexData->m_strSymbol = sTickers.c_str();
-				it++;
+				++it;
 				pt3 = it->second;
 				sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
-				it++;
+				++it;
 				pt3 = it->second;
 				pForexData->m_dBidSize = pt3.get_value<double>(); // 买价数量
-				it++;
+				++it;
 				pt3 = it->second;
 				pForexData->m_dBidPrice = pt3.get_value<double>(); // 买价
-				it++;
+				++it;
 				pt3 = it->second;
 				pForexData->m_dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
-				it++;
+				++it;
 				pt3 = it->second;
 				pForexData->m_dAskSize = pt3.get_value<double>(); // 卖价数量
-				it++;
+				++it;
 				pt3 = it->second;
 				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价
 				gl_SystemData.PushTiingoForexSocket(pForexData);

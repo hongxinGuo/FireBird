@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSinaRTWebInquiryTest, TestStartReadingThread) {
 		EXPECT_FALSE(m_SinaRTWebInquiry.IsReadingWebData());
-		EXPECT_EQ(m_SinaRTWebInquiry.GetByteReaded(), 0);
+		EXPECT_EQ(m_SinaRTWebInquiry.GetByteRead(), 0);
 	}
 
 	TEST_F(CSinaRTWebInquiryTest, TestGetWebData) {

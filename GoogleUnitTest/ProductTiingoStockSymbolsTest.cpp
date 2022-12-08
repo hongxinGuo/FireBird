@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreatMessage(), stockSymbols.GetInquiry());
+		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiry());
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestProcessWebData) {

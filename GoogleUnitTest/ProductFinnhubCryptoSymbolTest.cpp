@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
 		cryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
 		cryptoSymbolProduct.SetIndex(1);
-		EXPECT_STREQ(cryptoSymbolProduct.CreatMessage(), cryptoSymbolProduct.GetInquiry() + gl_pWorldMarket->GetCryptoExchange(1));
+		EXPECT_STREQ(cryptoSymbolProduct.CreateMessage(), cryptoSymbolProduct.GetInquiry() + gl_pWorldMarket->GetCryptoExchange(1));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestProcessWebData) {

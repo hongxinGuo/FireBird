@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
 		economicCalendar.SetMarket(gl_pWorldMarket.get());
 		economicCalendar.SetIndex(1);
-		EXPECT_STREQ(economicCalendar.CreatMessage(), economicCalendar.GetInquiry());
+		EXPECT_STREQ(economicCalendar.CreateMessage(), economicCalendar.GetInquiry());
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {

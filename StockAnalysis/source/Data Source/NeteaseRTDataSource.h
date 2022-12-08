@@ -5,7 +5,7 @@
 class CNeteaseRTDataSource : public CVirtualDataSource {
 public:
 	CNeteaseRTDataSource();
-	~CNeteaseRTDataSource();
+	virtual ~CNeteaseRTDataSource();
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

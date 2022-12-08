@@ -42,28 +42,17 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol);
+		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
 	return 73;
 }
 
-UINT ThreadDeconnectTiingoCryptoWebSocket(not_null<CTiingoCryptoWebSocket*> pWebSocket) {
-	static bool s_bDeconnecting = false;
-	if (!s_bDeconnecting) {
-		s_bDeconnecting = true;
-		pWebSocket->Deconnect();
-		s_bDeconnecting = false;
-	}
-	return 74;
-}
-
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
 	m_url = _T("wss://api.tiingo.com/crypto");
-}
-
-CTiingoCryptoWebSocket::~CTiingoCryptoWebSocket(void) {
 }
 
 /// <summary>
@@ -118,13 +107,6 @@ CString CTiingoCryptoWebSocket::CreateMessage(vector<CString> vSymbol) {
 
 bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
-	thread1.detach();
-
-	return true;
-}
-
-bool CTiingoCryptoWebSocket::CreateThreadDeconnectWebSocket(void) {
-	thread thread1(ThreadDeconnectTiingoCryptoWebSocket, this);
 	thread1.detach();
 
 	return true;
@@ -187,50 +169,50 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				sMessageType = pt3.get_value<string>(); // ‘Q’或者‘T’
 				if (sMessageType.at(0) == 'T') { //last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
-					it++;
+					++it;
 					pt3 = it->second;
 					sTickers = pt3.get_value<string>(); // 证券名称
 					pCryptoData->m_strSymbol = sTickers.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
-					it++;
+					++it;
 					pt3 = it->second;
 					sExchange = pt3.get_value<string>(); // 交易所
 					pCryptoData->m_strExchange = sExchange.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dLastSize = pt3.get_value<double>(); // 最新数量
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dLastPrice = pt3.get_value<double>(); // 最新价格
 				}
 				else if (sMessageType.at(0) == 'Q') { // 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
-					it++;
+					++it;
 					pt3 = it->second;
 					sTickers = pt3.get_value<string>(); // 证券名称
 					pCryptoData->m_strSymbol = sTickers.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
-					it++;
+					++it;
 					pt3 = it->second;
 					sExchange = pt3.get_value<string>(); // 交易所
 					pCryptoData->m_strExchange = sExchange.c_str();
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dBidSize = pt3.get_value<double>(); // 买价数量
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dBidPrice = pt3.get_value<double>(); // 买价
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dAskSize = pt3.get_value<double>(); // 卖价数量
-					it++;
+					++it;
 					pt3 = it->second;
 					pCryptoData->m_dAskPrice = pt3.get_value<double>(); // 卖价
 				}

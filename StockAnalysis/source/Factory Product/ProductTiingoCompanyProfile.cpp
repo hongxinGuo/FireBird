@@ -8,7 +8,7 @@ CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 	ASSERT(0); // ипн╢й╣ож
 }
 
-CString CProductTiingoCompanyProfile::CreatMessage(void) {
+CString CProductTiingoCompanyProfile::CreateMessage(void) {
 	m_strTotalInquiryMessage = _T("");
 	return m_strTotalInquiryMessage;
 }

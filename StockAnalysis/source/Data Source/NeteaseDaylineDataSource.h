@@ -6,7 +6,7 @@
 class CNeteaseDaylineDataSource : public CVirtualDataSource {
 public:
 	CNeteaseDaylineDataSource();
-	~CNeteaseDaylineDataSource();
+	virtual ~CNeteaseDaylineDataSource();
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

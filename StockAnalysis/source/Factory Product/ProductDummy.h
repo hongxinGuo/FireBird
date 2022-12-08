@@ -6,9 +6,9 @@ class CProductDummy : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductDummy)
 		CProductDummy();
-	~CProductDummy() {}
+	~CProductDummy() = default;
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 };
 

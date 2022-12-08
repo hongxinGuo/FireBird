@@ -18,7 +18,7 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCryptoDayLine::CreatMessage(void) {
+CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 	CFinnhubCryptoSymbolPtr pCryptoSymbol = ((CWorldMarket*)m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 

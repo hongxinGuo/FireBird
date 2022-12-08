@@ -3,23 +3,27 @@
 class CHighPerformanceCounter {
 public:
 	CHighPerformanceCounter();
-	~CHighPerformanceCounter() {}
-	void Start() { QueryPerformanceCounter(&m_start); }
-	void Stop() { QueryPerformanceCounter(&m_end); }
+	CHighPerformanceCounter(const CHighPerformanceCounter&) = delete;
+	CHighPerformanceCounter& operator=(const CHighPerformanceCounter&) = delete;
+	CHighPerformanceCounter(const CHighPerformanceCounter&&) noexcept = delete;
+	CHighPerformanceCounter& operator=(const CHighPerformanceCounter&&) noexcept = delete;
+	~CHighPerformanceCounter() = default;
+	void start() { QueryPerformanceCounter(&m_start); }
+	void stop() { QueryPerformanceCounter(&m_end); }
 
-	void SetPerformanceFrequency(long long freq) { s_performanceFrequency = freq; }
+	static void SetPerformanceFrequency(long long const freq) { s_performanceFrequency = freq; }
 
-	bool IsInitialized(void) noexcept { return s_isInitialized; }
+	static bool IsInitialized(void) noexcept { return s_isInitialized; }
 
-	long long GetElapseTick(void) { ASSERT(s_isInitialized); return (long long)(m_end.QuadPart - m_start.QuadPart); }
-	long long GetElapsedSecond(void) { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) / s_performanceFrequency; }
-	long long GetElapsedMilliSecond(void) { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000 / s_performanceFrequency; }
-	long long GetElapsedMicroSecond(void) { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000 / s_performanceFrequency; }
-	long long GetElapsedNanoSecond(void) { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000000 / s_performanceFrequency; }
+	long long GetElapseTick(void) const { ASSERT(s_isInitialized); return (long long)(m_end.QuadPart - m_start.QuadPart); }
+	long long GetElapsedSecond(void) const { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) / s_performanceFrequency; }
+	long long GetElapsedMilliSecond(void) const { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000 / s_performanceFrequency; }
+	long long GetElapsedMicroSecond(void)const { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000 / s_performanceFrequency; }
+	long long GetElapsedNanoSecond(void) const { ASSERT(s_isInitialized); return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000000 / s_performanceFrequency; }
 protected:
 	static long long  s_performanceFrequency;
 	static bool s_isInitialized;
 
-	LARGE_INTEGER m_start;
-	LARGE_INTEGER m_end;
+	LARGE_INTEGER m_start{ 0, 0 };
+	LARGE_INTEGER m_end{ 0, 0 };
 };

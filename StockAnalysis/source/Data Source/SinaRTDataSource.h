@@ -5,7 +5,7 @@
 class CSinaRTDataSource : public CVirtualDataSource {
 public:
 	CSinaRTDataSource();
-	~CSinaRTDataSource();
+	virtual ~CSinaRTDataSource();
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

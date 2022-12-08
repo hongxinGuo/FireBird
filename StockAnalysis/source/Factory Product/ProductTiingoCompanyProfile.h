@@ -13,7 +13,7 @@ public:
 		CProductTiingoCompanyProfile();
 	~CProductTiingoCompanyProfile() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pData) override final;
 };
 

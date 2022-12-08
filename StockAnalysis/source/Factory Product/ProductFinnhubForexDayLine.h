@@ -9,7 +9,7 @@ public:
 		CProductFinnhubForexDayLine();
 	~CProductFinnhubForexDayLine() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
 };

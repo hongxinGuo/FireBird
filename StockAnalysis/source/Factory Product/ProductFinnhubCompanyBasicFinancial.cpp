@@ -15,7 +15,7 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyBasicFinancial::CreatMessage(void) {
+CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMessage;

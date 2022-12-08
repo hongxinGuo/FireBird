@@ -78,7 +78,7 @@ UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReferenc
 UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -94,7 +94,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 			}
 		}
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
 	gl_ThreadStatus.DecreaseSavingThread();
 	gl_BackGroundTaskThread.release();
 	return 104;
@@ -103,7 +103,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -119,7 +119,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 			}
 		}
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
 	gl_ThreadStatus.DecreaseSavingThread();
 	gl_BackGroundTaskThread.release();
 	return 105;
@@ -128,7 +128,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -144,7 +144,7 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 			}
 		}
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
 	gl_ThreadStatus.DecreaseSavingThread();
 	gl_BackGroundTaskThread.release();
 	return 106;

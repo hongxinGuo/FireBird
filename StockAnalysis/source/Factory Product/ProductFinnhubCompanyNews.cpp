@@ -15,7 +15,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyNews::CreatMessage(void) {
+CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMessage;

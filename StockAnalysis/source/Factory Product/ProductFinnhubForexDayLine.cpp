@@ -18,7 +18,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubForexDayLine::CreatMessage(void) {
+CString CProductFinnhubForexDayLine::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CForexSymbolPtr pForexSymbol = ((CWorldMarket*)m_pMarket)->GetForexSymbol(m_lIndex);

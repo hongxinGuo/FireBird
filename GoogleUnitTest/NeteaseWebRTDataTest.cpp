@@ -113,7 +113,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();
@@ -185,7 +185,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed); // 第一个数据没有错误
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime3);
-			it++;
+			++it;
 			fSucceed = m_RTData.ParseNeteaseDataWithPTree(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -229,7 +229,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS")); // 股票代码已设置
 			EXPECT_EQ(m_RTData.GetHigh(), 0) << "此位置出错，使用默认值0";
-			it++;
+			++it;
 			fSucceed = m_RTData.ParseNeteaseDataWithPTree(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
 			EXPECT_TRUE(m_RTData.IsActive());

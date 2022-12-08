@@ -9,7 +9,7 @@ public:
 		CProductTinngoStockSymbol();
 	~CProductTinngoStockSymbol() {}
 
-	virtual CString CreatMessage(void) override final;
+	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
 };

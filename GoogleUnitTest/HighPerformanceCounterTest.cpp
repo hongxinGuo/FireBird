@@ -25,7 +25,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			GeneralCheck();
 		}
 	};
@@ -39,9 +39,9 @@ namespace StockAnalysisTest {
 	TEST_F(CHighPerformanceCounterTest, TestGetElapsedSecond) {
 		CHighPerformanceCounter counter;
 
-		counter.Start();
+		counter.start();
 		Sleep(10);
-		counter.Stop();
+		counter.stop();
 		EXPECT_GT(counter.GetElapseTick(), 0);
 		EXPECT_LE(counter.GetElapsedMilliSecond() * 1000, counter.GetElapsedMicroSecond()) << "变成毫秒时去掉了小数部分";
 		EXPECT_GE(counter.GetElapsedNanoSecond(), counter.GetElapsedMicroSecond() * 1000) << "变成微秒时去掉了小数部分";

@@ -24,13 +24,13 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 		}
 	};
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
@@ -45,16 +45,16 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
-		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber(); i++) {  // 目前采用最多8个线程
-			gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 		}
 		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber() - 1; i++) {
-			gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
-			EXPECT_TRUE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			EXPECT_TRUE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		}
-		gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
-		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+		gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 	}
 
 	TEST_F(ThreadStatusTest, TestIsSavThreadRunning) {

@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
-		EXPECT_STREQ(cryptoDayLine.CreatMessage(),
+		EXPECT_STREQ(cryptoDayLine.CreateMessage(),
 			cryptoDayLine.GetInquiry() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 	}
 

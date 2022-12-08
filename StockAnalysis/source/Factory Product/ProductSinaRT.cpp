@@ -13,7 +13,7 @@ CProductSinaRT::CProductSinaRT() {
 	m_strInquiry = _T("https://hq.sinajs.cn/list=");
 }
 
-CString CProductSinaRT::CreatMessage(void) {
+CString CProductSinaRT::CreateMessage(void) {
 	static long slCurrentStockPosition = 0;
 
 	return m_strInquiry; // 新浪实时数据的申请字符串由CSinaRTWebInquiry类完成，本Product无需动作。

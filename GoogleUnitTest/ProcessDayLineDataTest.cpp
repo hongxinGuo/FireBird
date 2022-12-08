@@ -58,7 +58,7 @@ namespace StockAnalysisTest {
 			NeteaseDayLineData* pData = GetParam();
 			CNeteaseDayLineWebInquiry DayLineWebInquiry;
 			DayLineWebInquiry.SetDownLoadingStockCode(pData->m_strSymbol);
-			DayLineWebInquiry.SetByteReaded(pData->m_strData.GetLength());
+			DayLineWebInquiry.SetByteRead(pData->m_strData.GetLength());
 			for (int i = 0; i < pData->m_strData.GetLength(); i++) {
 				DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i));
 			}

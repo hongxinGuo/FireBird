@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		strMessage += _T("&to=");
 		strMessage += strTemp;
 
-		EXPECT_STREQ(companyNews.CreatMessage(), strMessage);
+		EXPECT_STREQ(companyNews.CreateMessage(), strMessage);
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyNewsUpdated()) << "处理接收到的数据后才设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetCompanyNewsUpdated(false);

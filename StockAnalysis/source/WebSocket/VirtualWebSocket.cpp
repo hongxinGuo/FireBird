@@ -9,6 +9,7 @@ using namespace gsl;
 
 CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	m_fHaveSubscriptionId = fHaveSubscription;
+	m_iSubscriptionId = 0;
 	m_url = _T("");
 	m_vSymbol.resize(0);
 	m_mapSymbol.clear();
@@ -17,7 +18,7 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
-	Deconnect();
+	Disconnect();
 }
 
 void CVirtualWebSocket::Reset(void) {
@@ -28,7 +29,7 @@ void CVirtualWebSocket::Reset(void) {
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
-		Deconnect();
+		Disconnect();
 		while (!IsClosed()) Sleep(1);
 		ASSERT(IsClosed());
 		Reset();
@@ -83,10 +84,9 @@ void CVirtualWebSocket::ClearSymbol(void) {
 CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol)
 {
 	CString strSymbols;
-	CString strSymbol;
 
-	for (long l = 0; l < vSymbol.size(); l++) {
-		strSymbol = _T("\"") + vSymbol.at(l) + _T("\"") + _T(",");
+	for (auto& s : vSymbol) {
+		CString strSymbol = _T("\"") + s + _T("\"") + _T(",");
 		strSymbols += strSymbol;
 	}
 	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
@@ -119,7 +119,7 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 	return true;
 }
 
-bool CVirtualWebSocket::Deconnect(void) {
+bool CVirtualWebSocket::Disconnect(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
@@ -130,24 +130,24 @@ bool CVirtualWebSocket::Deconnect(void) {
 	return true;
 }
 
-UINT ThreadDeconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
+UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		pWebSocket->Deconnect();
+		pWebSocket->Disconnect();
 		s_fConnecting = false;
 	}
 	return 70;
 }
 
-bool CVirtualWebSocket::CreateThreadDeconnectWebSocket(void) {
-	thread thread1(ThreadDeconnectWebSocket, this);
+bool CVirtualWebSocket::CreateThreadDisconnectWebSocket(void) {
+	thread thread1(ThreadDisconnectWebSocket, this);
 	thread1.detach();
 
 	return true;
 }
 
-bool CVirtualWebSocket::DeconnectWithoutWaitingSucceed(void) {
+bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
 	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
 		m_webSocket.stop();
 	}
@@ -156,7 +156,7 @@ bool CVirtualWebSocket::DeconnectWithoutWaitingSucceed(void) {
 	return true;
 }
 
-bool CVirtualWebSocket::SendMessage(string message)
+bool CVirtualWebSocket::SendMessage(const string& message)
 {
 	m_webSocket.send(message);
 

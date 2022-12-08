@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestCreatMessage) {
-		EXPECT_STREQ(countryList.CreatMessage(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_STREQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/forex/exchange?"));
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestProcessWebData) {

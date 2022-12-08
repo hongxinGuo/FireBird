@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 
 		CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteReaded(str.GetLength());
+		DayLineWebInquiry.SetByteRead(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 
 		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\n"); // 缺少\r
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteReaded(str.GetLength());
+		DayLineWebInquiry.SetByteRead(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 
 		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r"); // 缺少\n
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteReaded(str.GetLength());
+		DayLineWebInquiry.SetByteRead(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
 
 		str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值"); // 缺少\r
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteReaded(str.GetLength());
+		DayLineWebInquiry.SetByteRead(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 		CString str = _T("abcedfg\r\n");
 		EXPECT_EQ(DayLine.GetBufferLength(), 0);
 		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteReaded(str.GetLength());
+		DayLineWebInquiry.SetByteRead(str.GetLength());
 		for (int i = 0; i < str.GetLength(); i++) {
 			DayLineWebInquiry.SetData(i, str.GetAt(i));
 		}

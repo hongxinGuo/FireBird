@@ -15,7 +15,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyPeer::CreatMessage(void) {
+CString CProductFinnhubCompanyPeer::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
