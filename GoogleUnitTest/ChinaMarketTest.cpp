@@ -9,10 +9,10 @@
 
 #include"SetOption.h"
 #include"SetCurrentWeekLine.h"
-#include"SetChinaChoicedStock.h"
+#include"SetChinaChosenStock.h"
 
 #include"TengxunRTDataSource.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
@@ -37,8 +37,7 @@ namespace StockAnalysisTest {
 	static CMockTengxunRTWebInquiryPtr s_pMockTengxunRTWebInquiry;
 	static CMockNeteaseRTWebInquiryPtr s_pMockNeteaseRTWebInquiry;
 
-	class CChinaMarketTest : public ::testing::Test
-	{
+	class CChinaMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -51,16 +50,16 @@ namespace StockAnalysisTest {
 			s_pMockNeteaseRTWebInquiry = static_pointer_cast<CMockNeteaseRTWebInquiry>(gl_pNeteaseRTWebInquiry);
 
 			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(10) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(11) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(12) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(13) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(14) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(15) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(16) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(17) == 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(18) > 0);
-			EXPECT_TRUE(gl_pChinaMarket->GetChoicedStockSize(19) > 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(11) > 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(12) > 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(13) == 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(14) == 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(15) == 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(16) == 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(17) == 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(18) > 0);
+			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(19) > 0);
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
@@ -114,7 +113,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
-			gl_pChinaMarket->ClearChoicedRTDataQueue();
+			gl_pChinaMarket->ClearChosenRTDataQueue();
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
@@ -171,7 +170,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackBuyAmount(), 0);
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackSellAmount(), 0);
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
-		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
+		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0); // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
 		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 		pStock = gl_pChinaMarket->GetStock(0);
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
@@ -392,24 +391,25 @@ namespace StockAnalysisTest {
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 	}
 
-	TEST_F(CChinaMarketTest, TestIsChoiced10RSStrongStockSet) {
-		gl_pChinaMarket->SetChoiced10RSStrongStockSet(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsChoiced10RSStrongStockSet());
-		gl_pChinaMarket->SetChoiced10RSStrongStockSet(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrongStockSet());
+	TEST_F(CChinaMarketTest, TestIsChosen10RSStrongStockSet) {
+		gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsChosen10RSStrongStockSet());
+		gl_pChinaMarket->SetChosen10RSStrongStockSet(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrongStockSet());
 	}
 
-	TEST_F(CChinaMarketTest, TestIsChoiced10RSStrong1StockSet) {
-		gl_pChinaMarket->SetChoiced10RSStrong1StockSet(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
-		gl_pChinaMarket->SetChoiced10RSStrong1StockSet(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
+	TEST_F(CChinaMarketTest, TestIsChosen10RSStrong1StockSet) {
+		gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
+		gl_pChinaMarket->SetChosen10RSStrong1StockSet(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 	}
-	TEST_F(CChinaMarketTest, TestIsChoiced10RSStrong2StockSet) {
-		gl_pChinaMarket->SetChoiced10RSStrong2StockSet(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
-		gl_pChinaMarket->SetChoiced10RSStrong2StockSet(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
+
+	TEST_F(CChinaMarketTest, TestIsChosen10RSStrong2StockSet) {
+		gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
+		gl_pChinaMarket->SetChosen10RSStrong2StockSet(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedSaving) {
@@ -453,7 +453,7 @@ namespace StockAnalysisTest {
 		pData->SetStockCode(_T("600666.SS"));
 		gl_pChinaMarket->PushNeteaseDayLine(pData);
 
-		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeeteaseServer());
+		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeteaseServer());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsLoadSelectedStock) {
@@ -480,12 +480,12 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsUpdateOptionDB());
 	}
 
-	TEST_F(CChinaMarketTest, TestSetUpdateChoicedStockDB) {
-		EXPECT_FALSE(gl_pChinaMarket->IsUpdateChoicedStockDB());
-		gl_pChinaMarket->SetUpdateChoicedStockDB(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsUpdateChoicedStockDB());
-		gl_pChinaMarket->SetUpdateChoicedStockDB(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsUpdateChoicedStockDB());
+	TEST_F(CChinaMarketTest, TestSetUpdateChosenStockDB) {
+		EXPECT_FALSE(gl_pChinaMarket->IsUpdateChosenStockDB());
+		gl_pChinaMarket->SetUpdateChosenStockDB(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsUpdateChosenStockDB());
+		gl_pChinaMarket->SetUpdateChosenStockDB(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsUpdateChosenStockDB());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsSaveDayLine) {
@@ -637,11 +637,11 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 	}
 
-	TEST_F(CChinaMarketTest, TestTaskClearChoicedRTDataSet) {
+	TEST_F(CChinaMarketTest, TestTaskClearChosenRTDataSet) {
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
-		gl_pChinaMarket->TaskClearChoicedRTDataSet(92900);
+		gl_pChinaMarket->TaskClearChosenRTDataSet(92900);
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
-		gl_pChinaMarket->TaskClearChoicedRTDataSet(92901);
+		gl_pChinaMarket->TaskClearChosenRTDataSet(92901);
 		EXPECT_TRUE(gl_pChinaMarket->IsRTDataSetCleared());
 	}
 
@@ -653,31 +653,31 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentEditStockChanged());
 	}
 
-	TEST_F(CChinaMarketTest, TestAddChoicedStock) {
+	TEST_F(CChinaMarketTest, TestAddChosenStock) {
 		auto pStock = gl_pChinaMarket->GetStock(1);
-		gl_pChinaMarket->AddChoicedStock(pStock);
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 1);
+		gl_pChinaMarket->AddChosenStock(pStock);
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 1);
 		pStock = gl_pChinaMarket->GetStock(2);
-		EXPECT_TRUE(gl_pChinaMarket->AddChoicedStock(pStock));
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 2);
+		EXPECT_TRUE(gl_pChinaMarket->AddChosenStock(pStock));
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 2);
 		pStock = gl_pChinaMarket->GetStock(1);
-		EXPECT_FALSE(gl_pChinaMarket->AddChoicedStock(pStock));
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 2);
+		EXPECT_FALSE(gl_pChinaMarket->AddChosenStock(pStock));
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 2);
 
-		EXPECT_TRUE(gl_pChinaMarket->DeleteChoicedStock(pStock));
+		EXPECT_TRUE(gl_pChinaMarket->DeleteChosenStock(pStock));
 		pStock = gl_pChinaMarket->GetStock(5);
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 1);
-		EXPECT_FALSE(gl_pChinaMarket->DeleteChoicedStock(pStock));
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 1);
+		EXPECT_FALSE(gl_pChinaMarket->DeleteChosenStock(pStock));
 		gl_pChinaMarket->ClearChoiceStockContainer();
 	}
 
-	TEST_F(CChinaMarketTest, TestAddChoicedStock2) {
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 0);
+	TEST_F(CChinaMarketTest, TestAddChosenStock2) {
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 0);
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
-		gl_pChinaMarket->AddChoicedStock(pStock);
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 1);
+		gl_pChinaMarket->AddChosenStock(pStock);
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 1);
 		gl_pChinaMarket->ClearChoiceStockContainer();
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedStockSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckMarketOpen) {
@@ -857,13 +857,13 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedRTDataSize(), 0);
+	TEST_F(CChinaMarketTest, TestStoreChosenRTData) {
+		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 0);
 		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		gl_pChinaMarket->StoreChoiceRTData(pRTData);
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedRTDataSize(), 1);
-		gl_pChinaMarket->ClearChoicedRTDataQueue();
-		EXPECT_EQ(gl_pChinaMarket->GetChoicedRTDataSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 1);
+		gl_pChinaMarket->ClearChosenRTDataQueue();
+		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 0);
 	}
 
 	TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {
@@ -1005,7 +1005,8 @@ namespace StockAnalysisTest {
 		gl_pChinaMarket->ChangeToPrevStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是上证指数");
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), gl_pChinaMarket->GetTotalStock() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
+		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), gl_pChinaMarket->GetTotalStock() - 1) << _T(
+			"上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 	}
@@ -1124,9 +1125,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20200202);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19990101);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19990202);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 
 		gl_pChinaMarket->SetRSStartDate(20100101);
 		gl_pChinaMarket->SetRSEndDate(20100202);
@@ -1148,9 +1149,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20100202);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << _T("永远是当前日期\n");
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19980101);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19980202);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 
 		setOption.Open();
 		setOption.m_pDatabase->BeginTrans();
@@ -1166,9 +1167,9 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DATE__);
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), __CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong1StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), __CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_FALSE(gl_pChinaMarket->IsChoiced10RSStrong2StockSet());
+		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 	}
 
 	TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {
@@ -1289,7 +1290,7 @@ namespace StockAnalysisTest {
 
 		CString strSQL;
 		CString strDate;
-		char  pch[30];
+		char pch[30];
 		CTime ctTime;
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
@@ -1505,60 +1506,61 @@ namespace StockAnalysisTest {
 		}
 	}
 
-	TEST_F(CChinaMarketTest, TestAppendChoicedStock) { // 也测试UpdateChoicedStock和LoadChoicedStock
+	TEST_F(CChinaMarketTest, TestAppendChosenStock) {
+		// 也测试UpdateChosenStock和LoadChosenStock
 		CChinaStockPtr pStock = nullptr;
 
 		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
-		pStock->SetChoiced(true);
-		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock->SetChosen(true);
+		gl_pChinaMarket->AddChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
-		pStock->SetChoiced(true);
-		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock->SetChosen(true);
+		gl_pChinaMarket->AddChosenStock(pStock);
 
-		gl_pChinaMarket->AppendChoicedStockDB();
+		gl_pChinaMarket->AppendChosenStockDB();
 
 		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		gl_pChinaMarket->DeleteChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
-		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChoiced());
-		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChoiced());
+		gl_pChinaMarket->DeleteChosenStock(pStock);
+		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChosen());
+		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChosen());
 
-		gl_pChinaMarket->LoadChoicedStockDB();
-		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChoiced());
-		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChoiced());
+		gl_pChinaMarket->LoadChosenStockDB();
+		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("600601.SS"))->IsChosen());
+		EXPECT_TRUE(gl_pChinaMarket->GetStock(_T("000001.SZ"))->IsChosen());
 
 		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		gl_pChinaMarket->DeleteChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		gl_pChinaMarket->DeleteChosenStock(pStock);
 
 		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
-		pStock->SetChoiced(true);
-		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock->SetChosen(true);
+		gl_pChinaMarket->AddChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
-		pStock->SetChoiced(true);
-		gl_pChinaMarket->AddChoicedStock(pStock);
+		pStock->SetChosen(true);
+		gl_pChinaMarket->AddChosenStock(pStock);
 
-		gl_pChinaMarket->UpdateChoicedStockDB();
+		gl_pChinaMarket->UpdateChosenStockDB();
 
 		// 恢复原状
 		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		gl_pChinaMarket->DeleteChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
-		gl_pChinaMarket->DeleteChoicedStock(pStock);
+		gl_pChinaMarket->DeleteChosenStock(pStock);
 
-		CSetChinaChoicedStock setChinaChoicedStock;
-		setChinaChoicedStock.Open();
-		setChinaChoicedStock.m_pDatabase->BeginTrans();
-		setChinaChoicedStock.MoveLast();
-		EXPECT_STREQ(setChinaChoicedStock.m_Symbol, _T("000002.SZ"));
-		setChinaChoicedStock.Delete();
-		setChinaChoicedStock.MovePrev();
-		EXPECT_STREQ(setChinaChoicedStock.m_Symbol, _T("600000.SS"));
-		setChinaChoicedStock.Delete();
-		setChinaChoicedStock.m_pDatabase->CommitTrans();
-		setChinaChoicedStock.Close();
+		CSetChinaChosenStock setChinaChosenStock;
+		setChinaChosenStock.Open();
+		setChinaChosenStock.m_pDatabase->BeginTrans();
+		setChinaChosenStock.MoveLast();
+		EXPECT_STREQ(setChinaChosenStock.m_Symbol, _T("000002.SZ"));
+		setChinaChosenStock.Delete();
+		setChinaChosenStock.MovePrev();
+		EXPECT_STREQ(setChinaChosenStock.m_Symbol, _T("600000.SS"));
+		setChinaChosenStock.Delete();
+		setChinaChosenStock.m_pDatabase->CommitTrans();
+		setChinaChosenStock.Close();
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadTodayTempDB) {

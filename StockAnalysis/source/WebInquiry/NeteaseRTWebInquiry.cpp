@@ -71,7 +71,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringString(void) {
 	// 申请下一批次股票实时数据
 	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
 	strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
-	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandred(strNeteaseStockCode));
+	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
 	CreateTotalInquiringString(strMiddle);
 
 	return true;

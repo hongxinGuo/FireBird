@@ -168,7 +168,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		default:
 			throw exception();
 		}
-		m_strSymbol = XferSinaToStandred(strSinaStockCode);
+		m_strSymbol = XferSinaToStandard(strSinaStockCode);
 		lStockCode = static_cast<long>(atof(buffer2));
 		pSinaWebRTData->IncreaseCurrentPos(6);
 
@@ -518,7 +518,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无效市场代码"));
 			return false;
 		}
-		m_strSymbol = XferTengxunToStandred(strTengxunStockCode);
+		m_strSymbol = XferTengxunToStandard(strTengxunStockCode);
 		lStockCode = atoi(buffer2);
 		pTengxunWebRTData->IncreaseCurrentPos(6);
 
@@ -896,7 +896,7 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 	try {
 		pt1 = it->second;
 		strSymbol = it->first;
-		strSymbol4 = XferNeteaseToStandred(strSymbol.c_str());
+		strSymbol4 = XferNeteaseToStandard(strSymbol.c_str());
 		SetSymbol(strSymbol4);
 		sName = pt1.get<string>(_T("name")); // 此处的中文股票名称为乱码（系统使用多字节字符集，此处为utf-8字符集）
 		m_strStockName = XferToCString(sName); // 将utf-8字符集转换为多字节字符集
@@ -1001,7 +1001,7 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 	try {
 		symbolName = it.key();
 		js = it.value();
-		strSymbol4 = XferNeteaseToStandred(symbolName.c_str());
+		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
 		SetSymbol(strSymbol4);
 		sName = js.at("name");
 		m_strStockName = XferToCString(sName); // 将utf-8字符集转换为多字节字符集

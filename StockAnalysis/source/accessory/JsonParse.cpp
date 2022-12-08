@@ -17,7 +17,6 @@ using namespace std;
 #include "JsonParse.h"
 
 #include"WebRTData.h"
-
 #include"SaveAndLoad.h"
 
 bool ConvertToWJSON(wptree& pt, string& s) {
@@ -34,16 +33,16 @@ bool ConvertToWJSON(wptree& pt, string& s) {
 }
 
 wstring to_wide_string(const std::string& input) {
-	char* pBuffer;
-	long lLength = input.size();
-	pBuffer = new char[lLength + 1];
+	long const lLength = input.size();
+	auto const pBuffer = new char[lLength + 1];
+
 	for (int i = 0; i < input.size(); i++) {
 		pBuffer[i] = input.at(i);
 	}
 	pBuffer[lLength] = 0x000;
-	WCHAR* pBufferW = new WCHAR[lLength * 2];
+	auto const pBufferW = new WCHAR[lLength * 2];
 
-	long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
+	const long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
 	pBufferW[lReturnSize] = 0x000;
 	wstring ws = pBufferW;
 
@@ -54,16 +53,16 @@ wstring to_wide_string(const std::string& input) {
 }
 
 string to_byte_string(const wstring& input) {
-	WCHAR* pBufferW;
-	long lLength = input.size();
-	pBufferW = new WCHAR[lLength + 1];
+	long const lLength = input.size();
+	auto const pBufferW = new WCHAR[lLength + 1];
+
 	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
 	for (int i = 0; i < input.size(); i++) {
 		pBufferW[i] = input.at(i);
 	}
-	char* pBuffer = new char[lLength * 2];
+	auto const pBuffer = new char[lLength * 2];
 
-	long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
+	long const lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
 	pBuffer[lReturnSize] = 0x000;
 	string s = pBuffer;
 
@@ -103,7 +102,7 @@ string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
 	catch (ptree_error&) {
 		s = szDefault;
 	}
-	if (s.compare(_T("null")) == 0) return szDefault;
+	if (s == _T("null")) return szDefault;
 	return s;
 }
 
@@ -115,7 +114,7 @@ string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
 	catch (ptree_error&) {
 		s = szDefault;
 	}
-	if (s.compare(_T("null")) == 0) return szDefault;
+	if (s != _T("null")) return szDefault;
 	return s;
 }
 
@@ -127,7 +126,7 @@ string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDe
 	catch (ptree_error&) {
 		s = szDefault;
 	}
-	if (s.compare(_T("null")) == 0) return szDefault;
+	if (s == _T("null")) return szDefault;
 	return s;
 }
 
@@ -139,7 +138,7 @@ double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
 	catch (ptree_error&) {
 		return dDefault;
 	}
-	if (s.compare(_T("null")) == 0) return dDefault;
+	if (s == _T("null")) return dDefault;
 	else return stod(s);
 }
 
@@ -151,7 +150,7 @@ int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
 	catch (ptree_error&) {
 		return iDefault;
 	}
-	if (s.compare(_T("null")) == 0) return iDefault;
+	if (s == _T("null")) return iDefault;
 	else return stoi(s);
 }
 
@@ -163,7 +162,7 @@ long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
 	catch (ptree_error&) {
 		return llDefault;
 	}
-	if (s.compare(_T("null")) == 0) return llDefault;
+	if (s == _T("null")) return llDefault;
 	else return stoll(s);
 }
 
@@ -175,7 +174,7 @@ long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
 	catch (ptree_error&) {
 		return lDefault;
 	}
-	if (s.compare(_T("null")) == 0) return lDefault;
+	if (s == _T("null")) return lDefault;
 	else return stol(s);
 }
 
@@ -196,7 +195,7 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
 }
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_error& e) {
-	CString strData = data.c_str();
+	CString const strData = data.c_str();
 
 	ReportJSonErrorToSystemMessage(strPrefix + strData.Left(80) + _T(" "), e);
 }
@@ -245,7 +244,7 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_e
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 	int iTotal = 0;
 	static int i = 0;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	// 截取实时数据时用。为了测试解析速度
 	if (i < pWebData->GetBufferLength()) {
@@ -262,7 +261,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 		}
 		else {
 			gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
-			break;  // 后面的数据出问题，抛掉不用。
+			break; // 后面的数据出问题，抛掉不用。
 		}
 	}
 	return pvWebRTData;
@@ -364,9 +363,8 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
-	bool fSucceed = true;
 	static int i = 0;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	// 截取实时数据时用。为了测试解析速度
 	if (i <= pWebData->GetBufferLength()) {
@@ -376,15 +374,15 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 	}
 
 	pWebData->ResetCurrentPos();
-	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+	if (!IsTengxunRTDataInvalid(*pWebData)) {
+		// 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsProcessedAllTheData()) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {
 				pvWebRTData->push_back(pRTData);
 			}
 			else {
-				fSucceed = false;
-				break;// 后面的数据出问题，抛掉不用。
+				break; // 后面的数据出问题，抛掉不用。
 			}
 		}
 	}
@@ -403,17 +401,17 @@ CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
 	CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
-	pData->ProcessNeteaseDayLineData();// pData的日线数据是逆序的，最新日期的在前面。
+	pData->ProcessNeteaseDayLineData(); // pData的日线数据是逆序的，最新日期的在前面。
 
 	return pData;
 }
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	for (json::iterator it = pjs->begin(); it != pjs->end(); ++it) {
+	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 		if (gl_systemStatus.IsExitingSystem()) return 0;
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
 			pRTData->CheckNeteaseRTDataActive();
@@ -424,10 +422,10 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 }
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* ppt) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+	for (auto it = ppt->begin(); it != ppt->end(); ++it) {
+		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 		if (pRTData->ParseNeteaseDataWithPTree(it)) {
 			pvWebRTData->push_back(pRTData);
@@ -458,11 +456,12 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData)
 	int iTotal = 0;
 	bool fProcess = true;
 	ptree* ppt2 = nullptr;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreatePropertyTree(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+		if (!pData->CreatePropertyTree(21, 2)) {
+			// 网易数据前21位为前缀，后两位为后缀
 			fProcess = false;
 		}
 	}
@@ -497,7 +496,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	string ss;
 	json* pjs = nullptr;
 	bool fProcess = true;
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
@@ -507,7 +506,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	}
 	fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJSon(21, 2)) { // 网易数据前21位为前缀，后两位为后缀
+		if (!pData->CreateNlohmannJSon(21, 2)) {
+			// 网易数据前21位为前缀，后两位为后缀
 			fProcess = false;
 		}
 	}

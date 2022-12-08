@@ -82,7 +82,7 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 	try {
 		symbolName = it.key();
 		js = it.value();
-		strSymbol4 = XferNeteaseToStandred(symbolName.c_str());
+		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
 		pWebRTData->SetSymbol(strSymbol4);
 		sName = js.at("name");
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集

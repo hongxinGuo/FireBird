@@ -14,7 +14,7 @@
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
@@ -92,7 +92,7 @@ namespace StockAnalysisTest {
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-			gl_pNeteaseDaylineDataSource = make_shared<CNeteaseDaylineDataSource>();
+			gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 
 			gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 			gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
@@ -102,7 +102,7 @@ namespace StockAnalysisTest {
 			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
 			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
-			gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
+			gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
 			gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
 			gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
 			gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
@@ -110,7 +110,7 @@ namespace StockAnalysisTest {
 			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
 			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
 			gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
-			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource.get());
+			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDayLineDataSource.get());
 			gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
 			gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
 			gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());

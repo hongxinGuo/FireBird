@@ -11,7 +11,7 @@ using namespace testing;
 #include"SinaRTDataSource.h"
 #include"NeteaseRTDataSource.h"
 #include"TengxunRTDataSource.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 
 #include "GeneralCheck.h"
 

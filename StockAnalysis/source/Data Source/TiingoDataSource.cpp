@@ -156,14 +156,14 @@ bool CTiingoDataSource::InquireDayLine(void) {
 	bool fFound = false;
 	CWorldStockPtr pStock;
 	CString str = _T("");
-	long lStockSetSize = gl_pWorldMarket->GetChoicedStockSize();
+	long lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsDayLineUpdated()) {
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			if (gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-				pStock = gl_pWorldMarket->GetChoicedStock(lCurrentUpdateDayLinePos);
+			if (gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
+				pStock = gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos);
 				fFound = true;
 				break;
 			}

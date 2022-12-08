@@ -1,7 +1,7 @@
 #pragma once
 
 #include"WebData.h"
-#include"Dayline.h"
+#include"DayLine.h"
 
 #include"ProductFinnhub.h"
 

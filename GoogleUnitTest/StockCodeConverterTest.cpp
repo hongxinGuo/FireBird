@@ -65,11 +65,11 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(CreateStockCode(_T("SZ"), _T("")), _T(".SZ"));
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferSinaToStandred) {
-		EXPECT_STREQ(XferSinaToStandred(_T("sh600001")), _T("600001.SS"));
-		EXPECT_STREQ(XferSinaToStandred(_T("sz000001")), _T("000001.SZ"));
-		EXPECT_STREQ(XferSinaToStandred(_T("sh60001")), _T("h60001.SS"));
-		EXPECT_STREQ(XferSinaToStandred(_T("sz00001")), _T("z00001.SZ"));
+	TEST_F(StockCodeConverterTest, TestXferSinaToStandard) {
+		EXPECT_STREQ(XferSinaToStandard(_T("sh600001")), _T("600001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(_T("sz000001")), _T("000001.SZ"));
+		EXPECT_STREQ(XferSinaToStandard(_T("sh60001")), _T("h60001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(_T("sz00001")), _T("z00001.SZ"));
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferSinaToNetease) {
@@ -79,11 +79,11 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(XferSinaToNetease(_T("sz00001")), _T("1z00001"));
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandred) {
-		EXPECT_STREQ(XferNeteaseToStandred(_T("0600001")), _T("600001.SS"));
-		EXPECT_STREQ(XferNeteaseToStandred(_T("1000001")), _T("000001.SZ"));
-		EXPECT_STREQ(XferNeteaseToStandred(_T("060001")), _T("060001.SS"));
-		EXPECT_STREQ(XferNeteaseToStandred(_T("100001")), _T("100001.SZ"));
+	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard) {
+		EXPECT_STREQ(XferNeteaseToStandard(_T("0600001")), _T("600001.SS"));
+		EXPECT_STREQ(XferNeteaseToStandard(_T("1000001")), _T("000001.SZ"));
+		EXPECT_STREQ(XferNeteaseToStandard(_T("060001")), _T("060001.SS"));
+		EXPECT_STREQ(XferNeteaseToStandard(_T("100001")), _T("100001.SZ"));
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferNeteaseToSina) {
@@ -93,24 +93,24 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(XferNeteaseToSina(_T("100001")), _T("sz100001"));
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferStandredToSina) {
-		EXPECT_STREQ(XferStandredToSina(_T("600001.SS")), _T("sh600001"));
-		EXPECT_STREQ(XferStandredToSina(_T("000001.SZ")), _T("sz000001"));
-		EXPECT_STREQ(XferStandredToSina(_T("60001.SS")), _T("sh60001."));
-		EXPECT_STREQ(XferStandredToSina(_T("00001.SZ")), _T("sz00001."));
+	TEST_F(StockCodeConverterTest, TestXferStandardToSina) {
+		EXPECT_STREQ(XferStandardToSina(_T("600001.SS")), _T("sh600001"));
+		EXPECT_STREQ(XferStandardToSina(_T("000001.SZ")), _T("sz000001"));
+		EXPECT_STREQ(XferStandardToSina(_T("60001.SS")), _T("sh60001."));
+		EXPECT_STREQ(XferStandardToSina(_T("00001.SZ")), _T("sz00001."));
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferStandredToNetease) {
-		EXPECT_STREQ(XferStandredToNetease(_T("600001.SS")), _T("0600001"));
-		EXPECT_STREQ(XferStandredToNetease(_T("000001.SZ")), _T("1000001"));
-		EXPECT_STREQ(XferStandredToNetease(_T("60001.SS")), _T("060001."));
-		EXPECT_STREQ(XferStandredToNetease(_T("00001.SZ")), _T("100001."));
+	TEST_F(StockCodeConverterTest, TestXferStandardToNetease) {
+		EXPECT_STREQ(XferStandardToNetease(_T("600001.SS")), _T("0600001"));
+		EXPECT_STREQ(XferStandardToNetease(_T("000001.SZ")), _T("1000001"));
+		EXPECT_STREQ(XferStandardToNetease(_T("60001.SS")), _T("060001."));
+		EXPECT_STREQ(XferStandardToNetease(_T("00001.SZ")), _T("100001."));
 	}
 
-	TEST_F(StockCodeConverterTest, TestXferStandredToTengxun) {
-		EXPECT_STREQ(XferStandredToTengxun(_T("600001.SS")), _T("sh600001"));
-		EXPECT_STREQ(XferStandredToTengxun(_T("000001.SZ")), _T("sz000001"));
-		EXPECT_STREQ(XferStandredToTengxun(_T("60001.SS")), _T("sh60001."));
-		EXPECT_STREQ(XferStandredToTengxun(_T("00001.SZ")), _T("sz00001."));
+	TEST_F(StockCodeConverterTest, TestXferStandardToTengxun) {
+		EXPECT_STREQ(XferStandardToTengxun(_T("600001.SS")), _T("sh600001"));
+		EXPECT_STREQ(XferStandardToTengxun(_T("000001.SZ")), _T("sz000001"));
+		EXPECT_STREQ(XferStandardToTengxun(_T("60001.SS")), _T("sh60001."));
+		EXPECT_STREQ(XferStandardToTengxun(_T("00001.SZ")), _T("sz00001."));
 	}
 }

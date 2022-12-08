@@ -21,7 +21,7 @@
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
@@ -56,7 +56,7 @@ bool CMainFrame::sm_fInitIxWebSocket = false;
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
-constexpr int  iMaxUserToolbars = 10;
+constexpr int iMaxUserToolbars = 10;
 constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
@@ -101,13 +101,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
+	                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
 	ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
-	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
-	ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
+	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayLine)
+	ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDayLineStartEnd)
 	ON_COMMAND(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnRecordFinnhubWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnUpdateRecordFinnhubWebSocket)
 	ON_COMMAND(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnRecordTiingoCryptoWebSocket)
@@ -117,14 +118,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
 	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
-	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayline)
-	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayline)
+	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
+	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // 状态行指示器
+	ID_SEPARATOR, // 状态行指示器
 	ID_CURRENT_INPUT,
 	ID_CURRENT_SELECT_STOCK,
 	ID_CURRENT_SELECT_STOCKNAME,
@@ -142,7 +143,7 @@ static UINT indicators[] =
 
 static UINT innerSystemIndicators[] =
 {
-	ID_SEPARATOR,           // 状态行指示器
+	ID_SEPARATOR, // 状态行指示器
 	ID_SHOW_SINA_RT,
 	ID_SHOW_NETEASE_DAYLINE,
 	ID_SHOW_NETEASE_RT,
@@ -165,7 +166,7 @@ static UINT innerSystemIndicators[] =
 CMainFrame::CMainFrame() {
 	// TODO: 在此添加成员初始化代码
 	if (!sm_fInitIxWebSocket) {
-		sm_fInitIxWebSocket = true;// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
+		sm_fInitIxWebSocket = true; // 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 		ix::initNetSystem();
 	}
 
@@ -180,7 +181,8 @@ void CMainFrame::Reset(void) {
 }
 
 CMainFrame::~CMainFrame() {
-	if (!gl_systemStatus.IsWorkingMode()) TRACE("使用了Test驱动\n");
+	if (!gl_systemStatus.IsWorkingMode())
+		TRACE("使用了Test驱动\n");
 
 	gl_systemStatus.SetExitingSystem(true);
 
@@ -193,8 +195,8 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateOptionDB();
 	}
 
-	if (gl_pChinaMarket->IsUpdateChoicedStockDB()) {
-		gl_pChinaMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+	if (gl_pChinaMarket->IsUpdateChosenStockDB()) {
+		gl_pChinaMarket->UpdateChosenStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
 	gl_pChinaMarket->SaveCalculatingRSOption();
@@ -237,19 +239,20 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
 	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
 	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
-	gl_pNeteaseDaylineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
+	gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
 
 	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
 	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
 	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
-	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDaylineDataSource.get());
+	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDayLineDataSource.get());
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDaylineDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
 
-	if (gl_systemConfigeration.GetChinaMarketRealtimeServer() == 0) { // 使用新浪实时数据服务器
+	if (gl_systemConfigeration.GetChinaMarketRealtimeServer() == 0) {
+		// 使用新浪实时数据服务器
 		gl_pSinaRTDataSource->Enable(true);
 		gl_pNeteaseRTDataSource->Enable(false);
 	}
@@ -285,7 +288,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 	gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 	gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-	gl_pNeteaseDaylineDataSource = make_shared<CNeteaseDaylineDataSource>();
+	gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 
 	// 此三个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);
@@ -310,12 +313,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	BOOL bNameValid{ true };
+	BOOL bNameValid{true};
 
-	if (!m_wndMenuBar.Create(this))
-	{
+	if (!m_wndMenuBar.Create(this)) {
 		TRACE0("未能创建菜单栏\n");
-		return -1;      // 未能创建
+		return -1; // 未能创建
 	}
 
 	m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
@@ -323,11 +325,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 防止菜单栏在激活时获得焦点
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
-	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
-	{
+	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT,
+	                           WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY |
+	                           CBRS_SIZE_DYNAMIC) ||
+		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME)) {
 		TRACE0("Failed to create toolbar\n");
-		return -1;      // fail to create
+		return -1; // fail to create
 	}
 
 	CString strToolBarName;
@@ -343,17 +346,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// Allow user-defined toolbars operations:
 	InitUserToolbars(nullptr, uiFirstUserToolBarId, uiLastUserToolBarId);
 
-	if (!m_wndStatusBar.Create(this))
-	{
+	if (!m_wndStatusBar.Create(this)) {
 		TRACE0("Failed to create status bar\n");
-		return -1;      // fail to create
+		return -1; // fail to create
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
-	if (!m_wndInnerSystemBar.Create(this))
-	{
+	if (!m_wndInnerSystemBar.Create(this)) {
 		TRACE0("未能创建状态栏\n");
-		return -1;      // 未能创建
+		return -1; // 未能创建
 	}
 	m_wndInnerSystemBar.SetIndicators(innerSystemIndicators, sizeof(innerSystemIndicators) / sizeof(UINT));
 
@@ -363,8 +364,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
 	// 创建停靠窗口
-	if (!CreateDockingWindows())
-	{
+	if (!CreateDockingWindows()) {
 		TRACE0("未能创建停靠窗口\n");
 		return -1;
 	}
@@ -381,11 +381,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 启用快速(按住 Alt 拖动)工具栏自定义
 	CMFCToolBar::EnableQuickCustomization();
 
-	if (CMFCToolBar::GetUserImages() == nullptr)
-	{
+	if (CMFCToolBar::GetUserImages() == nullptr) {
 		// 加载用户定义的工具栏图像
-		if (m_UserImages.Load(_T(".\\UserImages.bmp")))
-		{
+		if (m_UserImages.Load(_T(".\\UserImages.bmp"))) {
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
 	}
@@ -420,9 +418,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
-{
-	HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
+	HICON hOutputBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(),
+	                                          MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
+	                                          IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
+	                                          ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
 
@@ -463,8 +463,8 @@ BOOL CMainFrame::CreateDockingWindows() {
 	CString strOutputWnd;
 	bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
 	ASSERT(bNameValid);
-	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
-	{
+	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND,
+	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
 		return FALSE; // 未能创建
 	}
@@ -489,10 +489,12 @@ void CMainFrame::Dump(CDumpContext& dc) const {
 CString CMainFrame::FormatToMK(long long iNumber) {
 	char buffer[100];
 	CString str;
-	if (iNumber > 1024 * 1024) { // 1M以上的流量？
+	if (iNumber > 1024 * 1024) {
+		// 1M以上的流量？
 		sprintf_s(buffer, _T("%4lldM"), iNumber / (1024 * 1024));
 	}
-	else if (iNumber > 1024) { // 1K以上的流量？
+	else if (iNumber > 1024) {
+		// 1K以上的流量？
 		sprintf_s(buffer, _T("%4lldK"), iNumber / 1024);
 	}
 	else {
@@ -517,8 +519,7 @@ void CMainFrame::OnViewCustomize() {
 
 LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp, lp);
-	if (lres == 0)
-	{
+	if (lres == 0) {
 		return 0;
 	}
 
@@ -537,8 +538,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
 	// 基类将执行真正的工作
 
-	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
-	{
+	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) {
 		return FALSE;
 	}
 
@@ -548,11 +548,9 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
-	for (int i = 0; i < iMaxUserToolbars; i++)
-	{
+	for (int i = 0; i < iMaxUserToolbars; i++) {
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
-		if (pUserToolbar != nullptr)
-		{
+		if (pUserToolbar != nullptr) {
 			pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 		}
 	}
@@ -615,7 +613,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 void CMainFrame::UpdateStatus(void) {
 	CString str;
-	char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	char buffer[30]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
@@ -656,7 +654,8 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((gl_pSinaRTWebInquiry->GetTotalByteRead() > 0) && ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0)) { // 每秒更新一次
+	if ((gl_pSinaRTWebInquiry->GetTotalByteRead() > 0) && ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0)) {
+		// 每秒更新一次
 		str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteRead());
 		gl_pSinaRTWebInquiry->ClearTotalByteRead();
 		m_timeLast = gl_pChinaMarket->GetUTCTime();
@@ -674,7 +673,8 @@ void CMainFrame::UpdateStatus(void) {
 
 	double dRatio = 0;
 	if (gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime() > 0) {
-		dRatio = (double)(gl_pChinaMarket->GetNewRTDataReveivedInOrdinaryTradeTime()) / gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime();
+		dRatio = (double)(gl_pChinaMarket->GetNewRTDataReveivedInOrdinaryTradeTime()) / gl_pChinaMarket->
+			GetRTDataReceivedInOrdinaryTradeTime();
 	}
 	sprintf_s(buffer, _T("%1.3f"), dRatio);
 	str = buffer;
@@ -752,7 +752,8 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
+	if ((nID & 0Xfff0) == SC_CLOSE) {
+		// 如果是退出系统
 		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
 		for (auto& pMarket : gl_vMarketPtr) {
@@ -786,7 +787,8 @@ void CMainFrame::ProcessChinaMarketStock() {
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 	// TODO: 在此添加命令更新用户界面处理程序代码
-	if (gl_pChinaMarket->IsSystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
+	if (gl_pChinaMarket->IsSystemReady()) {
+		// 系统自动更新日线数据时，不允许处理当日的实时数据。
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else SysCallCmdUIEnable(pCmdUI, false);
@@ -909,15 +911,15 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			gl_pChinaMarket->ChangeToNextStock();
 			break;
 		case 45: // Ins, 加入自选股票
-			pCurrentStock->SetChoiced(true);
-			if (gl_pChinaMarket->AddChoicedStock(pCurrentStock)) {
-				gl_pChinaMarket->SetUpdateChoicedStockDB(true);
+			pCurrentStock->SetChosen(true);
+			if (gl_pChinaMarket->AddChosenStock(pCurrentStock)) {
+				gl_pChinaMarket->SetUpdateChosenStockDB(true);
 			}
 			break;
 		case 46: // delete,从自选股票池中删除
-			pCurrentStock->SetChoiced(false);
-			if (gl_pChinaMarket->DeleteChoicedStock(pCurrentStock)) {
-				gl_pChinaMarket->SetUpdateChoicedStockDB(true);
+			pCurrentStock->SetChosen(false);
+			if (gl_pChinaMarket->DeleteChosenStock(pCurrentStock)) {
+				gl_pChinaMarket->SetUpdateChosenStockDB(true);
 			}
 			break;
 		default:
@@ -992,19 +994,19 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
 void CMainFrame::OnCalculate10dayRS1() {
 	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrong1StockSet();
-	gl_pChinaMarket->SetChoiced10RSStrong1StockSet(true);
+	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
 	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrong2StockSet();
-	gl_pChinaMarket->SetChoiced10RSStrong2StockSet(true);
+	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS() {
 	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrongStockSet();
-	gl_pChinaMarket->SetChoiced10RSStrongStockSet(true);
+	gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
@@ -1095,7 +1097,7 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-//#ifndef _DEBUG
+	//#ifndef _DEBUG
 	if ((gl_pChinaMarket->GetMarketTime() > 151000)) {
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
@@ -1144,12 +1146,12 @@ void CMainFrame::OnRebuildPeer() {
 	gl_pWorldMarket->RebuildPeer();
 }
 
-void CMainFrame::OnRebuildDayline() {
+void CMainFrame::OnRebuildDayLine() {
 	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildStockDayLineDB();
 }
 
-void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {
+void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
 	// TODO: Add your command handler code here
 	gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
 }
@@ -1176,8 +1178,7 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnRecordTiingoCryptoWebSocket()
-{
+void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	// TODO: Add your command handler code here
 	if (gl_systemConfigeration.IsUsingTiingoCryptoWebSocket()) {
 		gl_systemConfigeration.SetUsingTiingoCryptoWebSocket(false);
@@ -1199,8 +1200,7 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnRecordTiingoForexWebSocket()
-{
+void CMainFrame::OnRecordTiingoForexWebSocket() {
 	// TODO: Add your command handler code here
 	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket()) {
 		gl_systemConfigeration.SetUsingTiingoForexWebSocket(false);
@@ -1222,8 +1222,7 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnRecordTiingoIexWebSocket()
-{
+void CMainFrame::OnRecordTiingoIexWebSocket() {
 	// TODO: Add your command handler code here
 	if (gl_systemConfigeration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfigeration.SetUsingTiingoIEXWebSocket(false);
@@ -1250,12 +1249,12 @@ void CMainFrame::OnRebuildBasicFinancial() {
 	gl_pWorldMarket->RebuildBasicFinancial();
 }
 
-void CMainFrame::OnMaintainDayline() {
+void CMainFrame::OnMaintainDayLine() {
 	// TODO: Add your command handler code here
 	gl_pChinaMarket->MaintainDayLine();
 }
 
-void CMainFrame::OnUpdateMaintainDayline(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		SysCallCmdUISetCheck(pCmdUI, true);
@@ -1265,8 +1264,7 @@ void CMainFrame::OnUpdateMaintainDayline(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnSize(UINT nType, int cx, int cy)
-{
+void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 	CFrameWndEx::OnSize(nType, cx, cy);
 
 	// TODO: Add your message handler code here

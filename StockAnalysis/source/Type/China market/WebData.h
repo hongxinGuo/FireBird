@@ -37,14 +37,25 @@ public:
 	CWebData& operator=(const CWebData&) = delete;
 	CWebData(const CWebData&&) noexcept = delete;
 	CWebData& operator=(const CWebData&&) noexcept = delete;
-	~CWebData();
+	~CWebData() override;
 
-	bool IsProcessedAllTheData(void) const noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }
+	bool IsProcessedAllTheData(void) const noexcept {
+		if (m_lCurrentPos < m_lBufferLength) return false;
+		else return true;
+	}
 
 	void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
-	bool OutOfRange(void) { if (m_lCurrentPos >= m_lBufferLength) return true; else return false; }
-	void Resize(long lSize) { m_sDataBuffer.resize(lSize); m_lBufferLength = lSize; }
+
+	bool OutOfRange(void) const noexcept {
+		if (m_lCurrentPos >= m_lBufferLength) return true;
+		else return false;
+	}
+
+	void Resize(long lSize) {
+		m_sDataBuffer.resize(lSize);
+		m_lBufferLength = lSize;
+	}
 
 	time_t GetTime(void) const noexcept { return m_tTime; }
 	void SetTime(time_t tTime) noexcept { m_tTime = tTime; }
@@ -59,7 +70,7 @@ public:
 	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
 	bool GetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始拷贝
 	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
-	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrenPos开始填充。
+	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
 
 	char GetData(INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
 	void SetData(INT64 lIndex, char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
@@ -67,11 +78,18 @@ public:
 	void SetCurrentPosData(char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
 	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
-	bool IsJSonContentType(void) noexcept { return m_fJSonContentType; }
+	bool IsJSonContentType(void) const noexcept { return m_fJSonContentType; }
 	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
-	bool IsParsed(void) noexcept { return m_fParsed; }
-	bool IsVoidJson(void) noexcept { if (IsJSonContentType() && (m_sDataBuffer.compare(_T("{}")) == 0)) return true; else return false; }
-	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
+	bool IsParsed(void) const noexcept { return m_fParsed; }
+
+	bool IsVoidJson(void) const noexcept {
+		if (IsJSonContentType() && (m_sDataBuffer == _T("{}"))) return true;
+		else return false;
+	}
+
+	bool CheckNoRightToAccess(string sCode = _T("error"),
+	                          string sMessage = _T("You don't have access to this resource."));
+	// 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用boost Property tree将数据转换为json格式。
 	bool ParseUsingPropertyTree(long lBeginPos = 0, long lEndPos = 0);
@@ -84,7 +102,7 @@ public:
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数
-	void __TEST_SetBuffer(CString strBuffer);
+	void __Test_SetBuffer__(CString strBuffer);
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
@@ -100,7 +118,7 @@ protected:
 	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用
-	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者nholmann json库bug，两者必居其一）。
+	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者Nholmann json库bug，两者必居其一）。
 	// VS17.2.4的bug，17.2.5已修正。
 	json m_js;
 };

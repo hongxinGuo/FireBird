@@ -10,17 +10,14 @@ using namespace std;
 
 #include"VirtualProductWebData.h"
 
-class CProductNeteaseDayline : public CVirtualProductWebData {
+class CProductNeteaseDayLine : public CVirtualProductWebData {
 public:
-	DECLARE_DYNCREATE(CProductNeteaseDayline)
-		CProductNeteaseDayline();
-	~CProductNeteaseDayline() {}
+	DECLARE_DYNCREATE(CProductNeteaseDayLine)
+		CProductNeteaseDayLine();
+	~CProductNeteaseDayLine() {}
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
-
-public:
-	bool ParseNeteaseDayline(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

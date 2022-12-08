@@ -22,7 +22,7 @@
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
@@ -65,7 +65,7 @@ CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com¹ÉÆ±Êý¾Ý
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
 CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
-CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource = nullptr;
+CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;

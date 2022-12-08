@@ -3,9 +3,6 @@
 #include "StockCodeConverter.h"
 #include"JsonParse.h"
 
-using namespace std;
-//#include<codecvt>
-
 bool IsShanghaiExchange(CString strStockCode) {
 	CString str = GetStockExchange(strStockCode);
 	if (str.Compare(_T("SS")) == 0) return true;
@@ -38,7 +35,7 @@ CString GetStockSymbol(CString strStockCode) {
 /// <param name="strStockCode"></param>
 /// <returns></returns>
 CString GetStockExchange(CString strStockCode) {
-	return(strStockCode.Right(2));
+	return (strStockCode.Right(2));
 }
 
 /// <summary>
@@ -52,7 +49,7 @@ CString CreateStockCode(CString strStockExchange, CString strStockSymbol) {
 	return strStockSymbol + _T(".") + strStockExchange;
 }
 
-CString XferSinaToStandred(CString strSina) {
+CString XferSinaToStandard(CString strSina) {
 	CString strSymbol = strSina.Right(6);
 	if (strSina.Left(2).Compare(_T("sh")) == 0) {
 		return strSymbol + _T(".") + _T("SS");
@@ -74,7 +71,7 @@ CString XferSinaToNetease(CString strSina) {
 	}
 }
 
-CString XferNeteaseToStandred(CString strNetease) {
+CString XferNeteaseToStandard(CString strNetease) {
 	CString strSymbol = strNetease.Right(6);
 	if (strNetease.GetAt(0) == '0') {
 		return strSymbol + _T(".") + _T("SS");
@@ -96,32 +93,32 @@ CString XferNeteaseToSina(CString strNetease) {
 	}
 }
 
-CString XferTengxunToStandred(CString strTengxun) {
-	return XferSinaToStandred(strTengxun);
+CString XferTengxunToStandard(CString strTengxun) {
+	return XferSinaToStandard(strTengxun);
 }
 
-CString XferStandredToSina(CString strStandred) {
-	CString strSymbol = strStandred.Left(6);
-	if (IsShanghaiExchange(strStandred)) {
+CString XferStandardToSina(CString strStandard) {
+	CString strSymbol = strStandard.Left(6);
+	if (IsShanghaiExchange(strStandard)) {
 		return _T("sh") + strSymbol;
 	}
 	else {
-		ASSERT(strStandred.GetAt(strStandred.GetLength() - 1) == 'Z');
+		ASSERT(strStandard.GetAt(strStandard.GetLength() - 1) == 'Z');
 		return _T("sz") + strSymbol;
 	}
 }
 
-CString XferStandredToNetease(CString strStandred) {
-	CString strSymbol = strStandred.Left(6);
-	if (IsShanghaiExchange(strStandred)) {
+CString XferStandardToNetease(CString strStandard) {
+	CString strSymbol = strStandard.Left(6);
+	if (IsShanghaiExchange(strStandard)) {
 		return _T("0") + strSymbol;
 	}
 	else {
-		ASSERT(strStandred.GetAt(strStandred.GetLength() - 1) == 'Z');
+		ASSERT(strStandard.GetAt(strStandard.GetLength() - 1) == 'Z');
 		return _T("1") + strSymbol;
 	}
 }
 
-CString XferStandredToTengxun(CString strStandred) {
-	return XferStandredToSina(strStandred);
+CString XferStandardToTengxun(CString strStandard) {
+	return XferStandardToSina(strStandard);
 }

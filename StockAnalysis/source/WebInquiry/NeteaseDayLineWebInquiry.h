@@ -11,7 +11,7 @@ public:
 	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
 
 	virtual bool PrepareNextInquiringString(void) override;
-	virtual void ConfigerateSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Netease Dayline的m_pSession状态。
+	virtual void ConfigerateSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。
 
 	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) override final; // 成功接收后更新系统状态, 此处更新其股票代码
 

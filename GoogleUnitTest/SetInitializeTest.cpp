@@ -33,10 +33,10 @@
 #include"SetWorldStockDayLine.h"
 #include"SetForexDayLine.h"
 
-#include"SetChinaChoicedStock.h"
-#include"SetWorldChoicedForex.h"
-#include"SetWorldChoicedCrypto.h"
-#include"SetWorldChoicedStock.h"
+#include"SetChinaChosenStock.h"
+#include"SetWorldChosenForex.h"
+#include"SetWorldChosenCrypto.h"
+#include"SetWorldChosenStock.h"
 
 TEST(SetInitializeTest, TestChinaStockSymbolInitialize) {
 	CSetChinaStockSymbol setChinaStockSymbol;
@@ -242,52 +242,52 @@ TEST(SetInitializeTest, TestForexDayLineInitialize) {
 	EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[forex_dayline]"));
 }
 
-TEST(SetInitializeTest, TestChinaChoicedStockInitialize) {
-	CSetChinaChoicedStock setChinaChoicedStock;
+TEST(SetInitializeTest, TestChinaChosenStockInitialize) {
+	CSetChinaChosenStock setChinaChosenStock;
 
 	EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
-	EXPECT_STREQ(setChinaChoicedStock.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(true);
-	EXPECT_STREQ(setChinaChoicedStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(false);
 
-	EXPECT_STREQ(setChinaChoicedStock.GetDefaultSQL(), _T("[choiced_stock]"));
+	EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[choiced_stock]"));
 }
 
-TEST(SetInitializeTest, TestWorldChoicedForexInitialize) {
-	CSetWorldChoicedForex setWorldChoicedForex;
+TEST(SetInitializeTest, TestWorldChosenForexInitialize) {
+	CSetWorldChosenForex setWorldChosenForex;
 
 	EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
-	EXPECT_STREQ(setWorldChoicedForex.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(true);
-	EXPECT_STREQ(setWorldChoicedForex.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(false);
 
-	EXPECT_STREQ(setWorldChoicedForex.GetDefaultSQL(), _T("[choiced_forex]"));
+	EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[choiced_forex]"));
 }
 
-TEST(SetInitializeTest, TestWorldChoicedCryptoInitialize) {
-	CSetWorldChoicedCrypto setWorldChoicedCrypto;
+TEST(SetInitializeTest, TestWorldChosenCryptoInitialize) {
+	CSetWorldChosenCrypto setWorldChosenCrypto;
 
 	EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
-	EXPECT_STREQ(setWorldChoicedCrypto.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(true);
-	EXPECT_STREQ(setWorldChoicedCrypto.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(false);
 
-	EXPECT_STREQ(setWorldChoicedCrypto.GetDefaultSQL(), _T("[choiced_crypto]"));
+	EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[choiced_crypto]"));
 }
 
-TEST(SetInitializeTest, TestWorldChoicedStockInitialize) {
-	CSetWorldChoicedStock setWorldChoicedStock;
+TEST(SetInitializeTest, TestWorldChosenStockInitialize) {
+	CSetWorldChosenStock setWorldChosenStock;
 
 	EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
-	EXPECT_STREQ(setWorldChoicedStock.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(true);
-	EXPECT_STREQ(setWorldChoicedStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 	gl_systemStatus.SetWorkingMode(false);
 
-	EXPECT_STREQ(setWorldChoicedStock.GetDefaultSQL(), _T("[choiced_stock]"));
+	EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[choiced_stock]"));
 }
 
 TEST(SetInitializeTest, TestCountryInitialize) {

@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
-//³É½»µÄ¾ßÌåÇé¿ö£¬·ÖÎªÈıÖÖ£ºÂò£¬½ø¹¥ĞÔÂò£¬Ç¿Âò£¬¡£ÂòÊÇ¼ÛÎ»ÎªÂôÒ»Î»ÖÃ£»½ø¹¥ĞÔÂò¼ÛÎ»ÊÇÖÁÉÙÂô¶ş£¬ÇÒ³É½»¼ÛÎ»¸ßÓÚÂôÒ»µÍÓÚÂô¶ş£»
-//Ç¿Âò¼ÛÎ»ÖÁÉÙÂôÈı£¬ÇÒ³É½»¼ÛÎ»ÖÁÉÙ¸ßÓÚÂô¶ş¡£ÅĞ¶ÏÂôÓëÖ®ÏàÀàËÆ¡£
+//æˆäº¤çš„å…·ä½“æƒ…å†µï¼Œåˆ†ä¸ºä¸‰ç§ï¼šä¹°ï¼Œè¿›æ”»æ€§ä¹°ï¼Œå¼ºä¹°ï¼Œã€‚ä¹°æ˜¯ä»·ä½ä¸ºå–ä¸€ä½ç½®ï¼›è¿›æ”»æ€§ä¹°ä»·ä½æ˜¯è‡³å°‘å–äºŒï¼Œä¸”æˆäº¤ä»·ä½é«˜äºå–ä¸€ä½äºå–äºŒï¼›
+//å¼ºä¹°ä»·ä½è‡³å°‘å–ä¸‰ï¼Œä¸”æˆäº¤ä»·ä½è‡³å°‘é«˜äºå–äºŒã€‚åˆ¤æ–­å–ä¸ä¹‹ç›¸ç±»ä¼¼ã€‚
 enum {
 	__ATTACK_BUY__ = 1,
 	__STRONG_BUY__ = 2,
@@ -44,23 +44,23 @@ using namespace std;
 class CChinaStock;
 typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
-// Ö¤È¯Ãû³ÆÊı¾İ°ü
+// è¯åˆ¸åç§°æ•°æ®åŒ…
 class CChinaStock : public CVirtualStock {
 public:
 	CChinaStock(void);
-	// ²»ÔÊĞí¸³Öµ¡£
+	// ä¸å…è®¸èµ‹å€¼ã€‚
 	CChinaStock(const CChinaStock&) = delete;
 	CChinaStock& operator=(const CChinaStock&) = delete;
 	CChinaStock(const CChinaStock&&) noexcept = delete;
 	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
-	virtual ~CChinaStock(void);
+	~CChinaStock(void) override;
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }
 
 public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
 
-	// ±¾¹ÉÆ±¸÷±äÁ¿×´Ì¬
+	// æœ¬è‚¡ç¥¨å„å˜é‡çŠ¶æ€
 	long GetOffset(void) const noexcept { return m_lOffsetInContainer; }
 	void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
@@ -117,7 +117,7 @@ public:
 	void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
 	void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
-	int  GetCurrentTransactionType(void) const noexcept { return m_nCurrentTransactionType; }
+	int GetCurrentTransactionType(void) const noexcept { return m_nCurrentTransactionType; }
 	void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
 	INT64 GetCurrentTransationVolume(void) const noexcept { return m_lCurrentGuadanTransactionVolume; }
 	void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
@@ -126,11 +126,11 @@ public:
 	INT64 GetAttackSellAmount(void) const noexcept { return m_lAttackSellAmount; }
 	INT64 GetOrdinaryBuyVolume(void) const noexcept { return m_lOrdinaryBuyVolume; }
 	INT64 GetOrdinarySellVolume(void) const noexcept { return m_lOrdinarySellVolume; }
-	INT64 GetAttackBuyVolume(void) const noexcept { return m_lAttackBuyVolume; } // ÏòÉÏÂòÈë¡£³É½»¼Û¸ßÓÚÂôÒ»¼Ûµ«µÍÓÚÂô¶ş¼Û¡£´ÎÊıÁ¿°üÀ¨ÏÂÃæµÄÇ¿ÂòÁ¿¡£
-	INT64 GetStrongBuyVolume(void) const noexcept { return m_lStrongBuyVolume; } // ÏòÉÏÇ¿Á¦ÂòÈë,³É½»¼Û³¬¹ıÖ®Ç°µÄÂô¶ş±¨¼Û
+	INT64 GetAttackBuyVolume(void) const noexcept { return m_lAttackBuyVolume; } // å‘ä¸Šä¹°å…¥ã€‚æˆäº¤ä»·é«˜äºå–ä¸€ä»·ä½†ä½äºå–äºŒä»·ã€‚æ¬¡æ•°é‡åŒ…æ‹¬ä¸‹é¢çš„å¼ºä¹°é‡ã€‚
+	INT64 GetStrongBuyVolume(void) const noexcept { return m_lStrongBuyVolume; } // å‘ä¸Šå¼ºåŠ›ä¹°å…¥,æˆäº¤ä»·è¶…è¿‡ä¹‹å‰çš„å–äºŒæŠ¥ä»·
 	INT64 GetCurrentAttackBuy(void) const noexcept { return m_lCurrentAttackBuy; }
 	INT64 GetCurrentStrongBuy(void) const noexcept { return m_lCurrentStrongBuy; }
-	INT64 GetAttackSellVolume(void) const noexcept { return m_lAttackSellVolume; } // ÏòÏÂÂô³ö¡£³É½»¼ÛµÍÓÚÂòÒ»¼Ûµ«¸ßÓÚÂò¶ş¼Û¡£
+	INT64 GetAttackSellVolume(void) const noexcept { return m_lAttackSellVolume; } // å‘ä¸‹å–å‡ºã€‚æˆäº¤ä»·ä½äºä¹°ä¸€ä»·ä½†é«˜äºä¹°äºŒä»·ã€‚
 	INT64 GetStrongSellVolume(void) const noexcept { return m_lStrongSellVolume; }
 	INT64 GetCurrentAttackSell(void) const noexcept { return m_lCurrentAttackSell; }
 	INT64 GetCurrentStrongSell(void) const noexcept { return m_lCurrentStrongSell; }
@@ -213,11 +213,11 @@ public:
 	void SetAttackSellAmount(INT64 value) noexcept { m_lAttackSellAmount = value; }
 	void SetOrdinaryBuyVolume(INT64 value) noexcept { m_lOrdinaryBuyVolume = value; }
 	void SetOrdinarySellVolume(INT64 value) noexcept { m_lOrdinarySellVolume = value; }
-	void SetAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume = value; } // ÏòÉÏÂòÈë¡£³É½»¼Û¸ßÓÚÂôÒ»¼Ûµ«µÍÓÚÂô¶ş¼Û¡£´ÎÊıÁ¿°üÀ¨ÏÂÃæµÄÇ¿ÂòÁ¿¡£
-	void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; } // ÏòÉÏÇ¿Á¦ÂòÈë,³É½»¼Û³¬¹ıÖ®Ç°µÄÂô¶ş±¨¼Û
+	void SetAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume = value; } // å‘ä¸Šä¹°å…¥ã€‚æˆäº¤ä»·é«˜äºå–ä¸€ä»·ä½†ä½äºå–äºŒä»·ã€‚æ¬¡æ•°é‡åŒ…æ‹¬ä¸‹é¢çš„å¼ºä¹°é‡ã€‚
+	void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; } // å‘ä¸Šå¼ºåŠ›ä¹°å…¥,æˆäº¤ä»·è¶…è¿‡ä¹‹å‰çš„å–äºŒæŠ¥ä»·
 	void SetCurrentAttackBuy(INT64 value) noexcept { m_lCurrentAttackBuy = value; }
 	void SetCurrentStrongBuy(INT64 value) noexcept { m_lCurrentStrongBuy = value; }
-	void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; } // ÏòÏÂÂô³ö¡£³É½»¼ÛµÍÓÚÂòÒ»¼Ûµ«¸ßÓÚÂò¶ş¼Û¡£
+	void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; } // å‘ä¸‹å–å‡ºã€‚æˆäº¤ä»·ä½äºä¹°ä¸€ä»·ä½†é«˜äºä¹°äºŒä»·ã€‚
 	void SetStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume = value; }
 	void SetCurrentAttackSell(INT64 value) noexcept { m_lCurrentAttackSell = value; }
 	void SetCurrentStrongSell(INT64 value) noexcept { m_lCurrentStrongSell = value; }
@@ -239,21 +239,27 @@ public:
 	void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
 	void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
 
-	// ¸üĞÂµ±Ç°¸÷±äÁ¿×´Ì¬
+	// æ›´æ–°å½“å‰å„å˜é‡çŠ¶æ€
 	void SetLastSavedVolume(INT64 llVolume) noexcept { m_llLastSavedVolume = llVolume; }
 	INT64 GetLastSavedVolume(void) const noexcept { return m_llLastSavedVolume; }
 
-	// ¸÷ÖÖ×´Ì¬±êÊ¶ÌáÈ¡ºÍÉèÖÃ
-	bool IsChoiced(void) const noexcept { return m_fChoiced; }
-	void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
-	bool IsSaveToChoicedStockDB(void) const noexcept { return m_fSaveToChoicedStockDB; }
-	void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
+	// å„ç§çŠ¶æ€æ ‡è¯†æå–å’Œè®¾ç½®
+	bool IsChosen(void) const noexcept { return m_fChosen; }
+	void SetChosen(bool fChosen) noexcept { m_fChosen = fChosen; }
+	bool IsSaveToChosenStockDB(void) const noexcept { return m_fSaveToChosenStockDB; }
+	void SetSaveToChosenStockDB(bool fSaved) noexcept { m_fSaveToChosenStockDB = fSaved; }
 
 	bool IsSameStock(CChinaStockPtr pStock);
 
-	// µÚÒ»¸öÊµÊ±Êı¾İÅĞ¶ÏºÍÉèÖÃ
+	// ç¬¬ä¸€ä¸ªå®æ—¶æ•°æ®åˆ¤æ–­å’Œè®¾ç½®
 	bool HaveFirstRTData(void) const noexcept { return m_fHaveFirstRTData; }
-	bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
+
+	bool SetHavingFirstRTData(bool fFlag) noexcept {
+		if (m_fHaveFirstRTData || !fFlag) return false;
+		m_fHaveFirstRTData = fFlag;
+		return true;
+	}
+
 	void SetNeedProcessRTData(bool fFlag) noexcept { m_fNeedProcessRTData = fFlag; }
 	bool IsNeedProcessRTData(void) const noexcept { return m_fNeedProcessRTData; }
 	void SetRTDataCalculated(bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
@@ -262,42 +268,50 @@ public:
 	void SetRecordRTData(bool fFlag) noexcept { m_fRecordRTData = fFlag; }
 	bool IsRecordRTData(void) const noexcept { return m_fRecordRTData; }
 
-	bool IsTodayDataActive(void) const; //²ÉÓÃ×î¸ß¼Û¡¢×îµÍ¼Û¡¢³É½»Á¿ºÍ³É½»¶îÀ´ÅĞ¶Ï£¬Èç¹û¶¼ÎªÁã£¬ÔòÈÏÎª´Ë¹É½ñÈÕÃ»ÓĞÓĞĞ§Êı¾İ¡£µ±È»ÔÚm_fActiveÎªÕæ×´Ì¬ÏÂ¡£
-	bool IsTodayDataChanged(void) const; // Èç¹û×î¸ß¼Û¡¢×îµÍ¼Û¡¢³É½»Á¿ºÍ³É½»¶îÖĞÓĞÊı¾İ²»ÎªÁã£¬Ôò·µ»ØÕæ¡£
+	bool IsTodayDataActive(void) const; //é‡‡ç”¨æœ€é«˜ä»·ã€æœ€ä½ä»·ã€æˆäº¤é‡å’Œæˆäº¤é¢æ¥åˆ¤æ–­ï¼Œå¦‚æœéƒ½ä¸ºé›¶ï¼Œåˆ™è®¤ä¸ºæ­¤è‚¡ä»Šæ—¥æ²¡æœ‰æœ‰æ•ˆæ•°æ®ã€‚å½“ç„¶åœ¨m_fActiveä¸ºçœŸçŠ¶æ€ä¸‹ã€‚
+	bool IsTodayDataChanged(void) const; // å¦‚æœæœ€é«˜ä»·ã€æœ€ä½ä»·ã€æˆäº¤é‡å’Œæˆäº¤é¢ä¸­æœ‰æ•°æ®ä¸ä¸ºé›¶ï¼Œåˆ™è¿”å›çœŸã€‚
 
-	// Êı¾İ¿âµÄÌáÈ¡ºÍ´æ´¢
-	// ÈÕÏß×°ÔØº¯Êı£¬ÓÉ¹¤×÷Ïß³ÌThreadLoadDayLineµ÷ÓÃ
+	// æ•°æ®åº“çš„æå–å’Œå­˜å‚¨
+	// æ—¥çº¿è£…è½½å‡½æ•°ï¼Œç”±å·¥ä½œçº¿ç¨‹ThreadLoadDayLineè°ƒç”¨
 	virtual bool LoadDayLine(CString strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
 	virtual bool SaveDayLineBasicInfo(void) { return m_dataDayLine.SaveDB(GetSymbol()); }
-	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(psetDayLineBasicInfo); }
-	void AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // ´æ´¢µ±ÈÕ»ù±¾Êı¾İ
+
+	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+		return m_dataDayLine.LoadBasicDB(psetDayLineBasicInfo);
+	}
+
+	void AppendTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // å­˜å‚¨å½“æ—¥åŸºæœ¬æ•°æ®
 	void AppendTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
-	void SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp); // ´æ´¢µ±ÈÕ¼ÆËã³öµÄÊı¾İ
-	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdatedData); // ÓÃµ±Ç°×´Ì¬¸üĞÂÀúÊ·Êı¾İ
+	void SaveTempInfo(CSetDayLineTodaySaved* psetDayLineTemp); // å­˜å‚¨å½“æ—¥è®¡ç®—å‡ºçš„æ•°æ®
+	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdatedData); // ç”¨å½“å‰çŠ¶æ€æ›´æ–°å†å²æ•°æ®
 	void UpdateDayLineStartEndDate(void);
 	void LoadTodaySavedInfo(CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	bool CheckDayLineStatus(void);
-	//ÖÜÏßÀúÊ·Êı¾İ´æÈ¡
+	//å‘¨çº¿å†å²æ•°æ®å­˜å–
 	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
-	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(psetWeekLineBasicInfo); }
+
+	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
+		return m_dataWeekLine.LoadBasicDB(psetWeekLineBasicInfo);
+	}
+
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
-	// ¹Òµ¥Çé¿ö
+	// æŒ‚å•æƒ…å†µ
 	double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
 	void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
 	INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
 	void SetGuadan(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
 	bool HaveGuadan(INT64 lPrice);
 
-	// ÅĞ¶Ï10ÈÕÇ¿ÊÆ¹ÉÆ±
+	// åˆ¤æ–­10æ—¥å¼ºåŠ¿è‚¡ç¥¨
 	virtual bool Calculate10RSStrong1StockSet(void);
 	virtual bool Calculate10RSStrong2StockSet(void);
 
 	virtual bool Calculate10RSStrongStockSet(const CRSReference* pRef);
 
-	// ¼ÆËãÊµÊ±Êı¾İ¸÷º¯Êı, ÓÉ¹¤×÷Ïß³ÌThreadCalculateRTDataµ÷ÓÃ
+	// è®¡ç®—å®æ—¶æ•°æ®å„å‡½æ•°, ç”±å·¥ä½œçº¿ç¨‹ThreadCalculateRTDataè°ƒç”¨
 	bool ProcessRTData(void);
 	bool ProcessOneRTData(CWebRTDataPtr pRTData);
 	void CalculateHighLowLimit(CWebRTDataPtr pRTData);
@@ -319,7 +333,8 @@ public:
 	void InitializeCalculatingRTDataEnvionment(CWebRTDataPtr pRTData);
 
 	bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
-	void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
+	void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice,
+	                                     array<bool, 10>& fNeedCheck);
 	void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
 	void CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
 	void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
@@ -336,13 +351,13 @@ public:
 	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
 	CWebRTDataPtr GetRTDataAtHead(void) { return m_qRTData.GetHead(); }
 	INT64 GetRTDataQueueSize(void) { return m_qRTData.Size(); }
-	// Çå¿Õ´æ´¢ÊµÊ±Êı¾İµÄ¶ÓÁĞ
+	// æ¸…ç©ºå­˜å‚¨å®æ—¶æ•°æ®çš„é˜Ÿåˆ—
 	void ClearRTDataDeque(void);
 
 	bool IsVolumeConsistence(void) noexcept;
 
-	//ÈÕÏßÏà¹Øº¯Êı
-	// ÈÕÏßÀúÊ·Êı¾İ
+	//æ—¥çº¿ç›¸å…³å‡½æ•°
+	// æ—¥çº¿å†å²æ•°æ®
 	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
 	bool HaveNewDayLineData(void);
 	void UnloadDayLine(void) noexcept { m_dataDayLine.Unload(); }
@@ -360,7 +375,7 @@ public:
 	void Get60DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS60(vRS); }
 	void Get120DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS120(vRS); }
 
-	// ÈÕÏßÏà¶ÔÇ¿¶È¼ÆËã
+	// æ—¥çº¿ç›¸å¯¹å¼ºåº¦è®¡ç®—
 	bool CalculateDayLineRS(void) { return m_dataDayLine.CalculateRS0(); }
 	bool CalculateDayLineRSIndex(void) { return m_dataDayLine.CalculateRSIndex0(); }
 	bool CalculateDayLineRSLogarithm(void) { return m_dataDayLine.CalculateRSLogarithm0(); }
@@ -370,13 +385,17 @@ public:
 	bool IsDayLineLoaded(void) const noexcept { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
 
-	// ÌáÈ¡ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ¸÷º¯Êı
+	// æå–ç½‘æ˜“æ—¥çº¿å†å²æ•°æ®å„å‡½æ•°
 	void UpdateStatusByDownloadedDayLine(void);
 	void SetTodayActive(CString strStockCode, CString strStockName);
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) { m_dataDayLine.UpdateData(vTempDayLine, fRevertSave); }
+
+	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) {
+		m_dataDayLine.UpdateData(vTempDayLine, fRevertSave);
+	}
+
 	void ReportDayLineDownLoaded(void);
 
-	// ÖÜÏßÏà¹Øº¯Êı
+	// å‘¨çº¿ç›¸å…³å‡½æ•°
 	size_t GetWeekLineSize(void) noexcept { return m_dataWeekLine.Size(); }
 	CWeekLinePtr GetWeekLine(long lIndex) { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
 	void UnloadWeekLine(void) noexcept { m_dataWeekLine.Unload(); }
@@ -384,78 +403,77 @@ public:
 	bool StoreWeekLine(CWeekLinePtr pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
 	bool IsWeekLineLoaded(void) noexcept { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
-	// ÖÜÏßÏà¶ÔÇ¿¶È¼ÆËã
+	// å‘¨çº¿ç›¸å¯¹å¼ºåº¦è®¡ç®—
 	bool CalculateWeekLineRS(void) { return m_dataWeekLine.CalculateRS0(); }
 	bool CalculateWeekLineRSIndex(void) { return m_dataWeekLine.CalculateRSIndex0(); }
 	bool CalculateWeekLineRSLogarithm(void) { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
-	// µ±Ç°±»´¦ÀíÀúÊ·Êı¾İÈİÆ÷
+	// å½“å‰è¢«å¤„ç†å†å²æ•°æ®å®¹å™¨
 	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine(void) noexcept { return &m_dataDayLine; }
 	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine(void) noexcept { return &m_dataWeekLine; }
 
 #ifdef _DEBUG
-	virtual	void AssertValid() const;
-	virtual	void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
 #endif
 
 public:
-	// ²âÊÔ×¨ÓÃº¯Êı
-	void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // Ô¤ÏÈÉèÖÃ¹Òµ¥¡£
+	// æµ‹è¯•ä¸“ç”¨å‡½æ•°
+	void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // é¢„å…ˆè®¾ç½®æŒ‚å•ã€‚
 public:
-
 protected:
-	long m_lOffsetInContainer;	// ÔÚÈİÆ÷ÖĞµÄÆ«ÒÆÁ¿
-	short	m_nHand;	// Ã¿ÊÖ¹ÉÊı
+	long m_lOffsetInContainer; // åœ¨å®¹å™¨ä¸­çš„åç§»é‡
+	short m_nHand; // æ¯æ‰‹è‚¡æ•°
 
-	long m_lHighLimit; // ÕÇÍ£¼Û¡££¨´ËÊı¾İÄ¿Ç°Ö»ÓĞÌÚÑ¶ÊµÊ±Êı¾İÄÜ¹»Ìá¹©£©
-	long m_lLowLimit; // µøÍ£¼Û¡££¨´ËÊı¾İÄ¿Ç°Ö»ÓĞÌÚÑ¶ÊµÊ±Êı¾İÄÜ¹»Ìá¹©£©
-	long m_lHighLimit2; // ÕÇÍ£¼Û¡££¨µ±¹ÉÆ±³öÏÖÕÇµøÍ£°åÊ±£¬´ËÊı¾İÓÉÏµÍ³¼ÆËã³öÀ´£¬·ñÔòÎªÁã£©
-	long m_lLowLimit2; // µøÍ£¼Û¡££¨µ±¹ÉÆ±³öÏÖÕÇµøÍ£°åÊ±£¬´ËÊı¾İÓÉÏµÍ³¼ÆËã³öÀ´£¬·ñÔòÎªÁã£©
-	array<long, 5> m_lPBuy;	// ÂòÅÌ¼Û¡£µ¥Î»£º0.001Ôª
-	array<long, 5> m_lVBuy;	// ÂòÅÌÁ¿¡£µ¥Î»£º¹É
-	array<long, 5> m_lPSell; // ÂôÅÌ¼Û¡£µ¥Î»£º0.001Ôª
-	array<long, 5> m_lVSell; // ÂôÅÌÁ¿¡£µ¥Î»£º¹É
-	double m_dRealtimeRS; // µ±ÈÕÊµÊ±Ïà¶ÔÇ¿¶È µ¥Î»£º1%
-	double m_dRealtimeRSIndex; // µ±ÈÕÊµÊ±Ïà¶ÔÇ¿¶È£¨Ïà¶ÔÓÚÖ¸Êı£©µ¥Î»£º1%
+	long m_lHighLimit; // æ¶¨åœä»·ã€‚ï¼ˆæ­¤æ•°æ®ç›®å‰åªæœ‰è…¾è®¯å®æ—¶æ•°æ®èƒ½å¤Ÿæä¾›ï¼‰
+	long m_lLowLimit; // è·Œåœä»·ã€‚ï¼ˆæ­¤æ•°æ®ç›®å‰åªæœ‰è…¾è®¯å®æ—¶æ•°æ®èƒ½å¤Ÿæä¾›ï¼‰
+	long m_lHighLimit2; // æ¶¨åœä»·ã€‚ï¼ˆå½“è‚¡ç¥¨å‡ºç°æ¶¨è·Œåœæ¿æ—¶ï¼Œæ­¤æ•°æ®ç”±ç³»ç»Ÿè®¡ç®—å‡ºæ¥ï¼Œå¦åˆ™ä¸ºé›¶ï¼‰
+	long m_lLowLimit2; // è·Œåœä»·ã€‚ï¼ˆå½“è‚¡ç¥¨å‡ºç°æ¶¨è·Œåœæ¿æ—¶ï¼Œæ­¤æ•°æ®ç”±ç³»ç»Ÿè®¡ç®—å‡ºæ¥ï¼Œå¦åˆ™ä¸ºé›¶ï¼‰
+	array<long, 5> m_lPBuy; // ä¹°ç›˜ä»·ã€‚å•ä½ï¼š0.001å…ƒ
+	array<long, 5> m_lVBuy; // ä¹°ç›˜é‡ã€‚å•ä½ï¼šè‚¡
+	array<long, 5> m_lPSell; // å–ç›˜ä»·ã€‚å•ä½ï¼š0.001å…ƒ
+	array<long, 5> m_lVSell; // å–ç›˜é‡ã€‚å•ä½ï¼šè‚¡
+	double m_dRealtimeRS; // å½“æ—¥å®æ—¶ç›¸å¯¹å¼ºåº¦ å•ä½ï¼š1%
+	double m_dRealtimeRSIndex; // å½“æ—¥å®æ—¶ç›¸å¯¹å¼ºåº¦ï¼ˆç›¸å¯¹äºæŒ‡æ•°ï¼‰å•ä½ï¼š1%
 
-	// ÒÔÏÂ±äÁ¿ÓÃÓÚ·ÖÎöÂòÈëÂô³ö¾ßÌåÇé¿ö
-	INT64 m_lAttackBuyAmount; // ÏòÉÏÂòÈë½ğ¶î
-	INT64 m_lAttackSellAmount; // ÏòÏÂÂô³ö½ğ¶î
+	// ä»¥ä¸‹å˜é‡ç”¨äºåˆ†æä¹°å…¥å–å‡ºå…·ä½“æƒ…å†µ
+	INT64 m_lAttackBuyAmount; // å‘ä¸Šä¹°å…¥é‡‘é¢
+	INT64 m_lAttackSellAmount; // å‘ä¸‹å–å‡ºé‡‘é¢
 	INT64 m_lCurrentAttackBuy;
 	INT64 m_lCurrentStrongBuy;
 	INT64 m_lCurrentAttackSell;
 	INT64 m_lCurrentStrongSell;
 
-	INT64 m_lOrdinaryBuyNumberBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³É½»±ÊÊı
-	INT64 m_lOrdinaryBuyNumberBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³É½»±ÊÊı
-	INT64 m_lOrdinaryBuyNumberBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³É½»±ÊÊı
+	INT64 m_lOrdinaryBuyNumberBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æˆäº¤ç¬”æ•°
+	INT64 m_lOrdinaryBuyNumberBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æˆäº¤ç¬”æ•°
+	INT64 m_lOrdinaryBuyNumberBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æˆäº¤ç¬”æ•°
 	INT64 m_lOrdinaryBuyNumberBelow50000; //
-	INT64 m_lOrdinaryBuyNumberBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³É½»±ÊÊı
+	INT64 m_lOrdinaryBuyNumberBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æˆäº¤ç¬”æ•°
 	INT64 m_lOrdinaryBuyNumberBelow200000; //
 	INT64 m_lOrdinaryBuyNumberAbove200000; //
-	INT64 m_lOrdinarySellNumberBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³É½»±ÊÊı
-	INT64 m_lOrdinarySellNumberBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³É½»±ÊÊı
-	INT64 m_lOrdinarySellNumberBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³É½»±ÊÊı
+	INT64 m_lOrdinarySellNumberBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æˆäº¤ç¬”æ•°
+	INT64 m_lOrdinarySellNumberBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æˆäº¤ç¬”æ•°
+	INT64 m_lOrdinarySellNumberBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æˆäº¤ç¬”æ•°
 	INT64 m_lOrdinarySellNumberBelow50000; //
-	INT64 m_lOrdinarySellNumberBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³É½»±ÊÊı
+	INT64 m_lOrdinarySellNumberBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æˆäº¤ç¬”æ•°
 	INT64 m_lOrdinarySellNumberBelow200000; //
 	INT64 m_lOrdinarySellNumberAbove200000; //
-	INT64 m_lOrdinaryBuyVolumeBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³É½»¹ÉÊı
-	INT64 m_lOrdinaryBuyVolumeBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³É½»¹ÉÊı
-	INT64 m_lOrdinaryBuyVolumeBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³É½»¹ÉÊı
+	INT64 m_lOrdinaryBuyVolumeBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æˆäº¤è‚¡æ•°
+	INT64 m_lOrdinaryBuyVolumeBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æˆäº¤è‚¡æ•°
+	INT64 m_lOrdinaryBuyVolumeBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æˆäº¤è‚¡æ•°
 	INT64 m_lOrdinaryBuyVolumeBelow50000; //
-	INT64 m_lOrdinaryBuyVolumeBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³É½»¹ÉÊı
+	INT64 m_lOrdinaryBuyVolumeBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æˆäº¤è‚¡æ•°
 	INT64 m_lOrdinaryBuyVolumeBelow200000; //
 	INT64 m_lOrdinaryBuyVolumeAbove200000; //
-	INT64 m_lOrdinarySellVolumeBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³É½»¹ÉÊı
-	INT64 m_lOrdinarySellVolumeBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³É½»¹ÉÊı
-	INT64 m_lOrdinarySellVolumeBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³É½»¹ÉÊı
+	INT64 m_lOrdinarySellVolumeBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æˆäº¤è‚¡æ•°
+	INT64 m_lOrdinarySellVolumeBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æˆäº¤è‚¡æ•°
+	INT64 m_lOrdinarySellVolumeBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æˆäº¤è‚¡æ•°
 	INT64 m_lOrdinarySellVolumeBelow50000; //
-	INT64 m_lOrdinarySellVolumeBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³É½»¹ÉÊı
+	INT64 m_lOrdinarySellVolumeBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æˆäº¤è‚¡æ•°
 	INT64 m_lOrdinarySellVolumeBelow200000; //
 	INT64 m_lOrdinarySellVolumeAbove200000; //
 
-	// µ±ÈÕ·ÖÖÓÊı¾İ ½ÔÎª240¸ö£¨60 * 4£©
+	// å½“æ—¥åˆ†é’Ÿæ•°æ® çš†ä¸º240ä¸ªï¼ˆ60 * 4ï¼‰
 	vector<INT64> m_vOrdinaryBuy5000;
 	vector<INT64> m_vOrdinaryBuy10000;
 	vector<INT64> m_vOrdinaryBuy20000;
@@ -471,23 +489,23 @@ protected:
 	vector<INT64> m_vOrdinarySell200000;
 	vector<INT64> m_vOrdinarySellAbove200000;
 
-	// ÒÔÏÂÎªĞè´æ´¢Ïî
-	INT64 m_lTransactionNumber; // ±¾½»Ò×ÈÕµÄ³É½»±ÊÊı
-	INT64 m_lTransactionNumberBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³É½»±ÊÊı
+	// ä»¥ä¸‹ä¸ºéœ€å­˜å‚¨é¡¹
+	INT64 m_lTransactionNumber; // æœ¬äº¤æ˜“æ—¥çš„æˆäº¤ç¬”æ•°
+	INT64 m_lTransactionNumberBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æˆäº¤ç¬”æ•°
 	INT64 m_lTransactionNumberBelow50000; //
 	INT64 m_lTransactionNumberBelow200000; //
 	INT64 m_lTransactionNumberAbove200000; //
 
 	INT64 m_lOrdinaryBuyVolume;
 	INT64 m_lOrdinarySellVolume;
-	INT64 m_lAttackBuyVolume;	// ÏòÉÏÂòÈë¡£³É½»¼Û¸ßÓÚÂôÒ»¼Ûµ«µÍÓÚÂô¶ş¼Û¡£´ËÊıÁ¿°üÀ¨ÏÂÃæµÄÇ¿ÂòÁ¿¡£
-	INT64 m_lStrongBuyVolume;	// ÏòÉÏÇ¿Á¦ÂòÈë,³É½»¼Û³¬¹ıÖ®Ç°µÄÂô¶ş±¨¼Û
-	INT64 m_lAttackSellVolume; // ÏòÏÂÂô³ö¡£³É½»¼ÛµÍÓÚÂòÒ»¼Ûµ«¸ßÓÚÂò¶ş¼Û¡£
-	INT64 m_lStrongSellVolume; // ÏòÏÂÇ¿Á¦Âô³ö,³É½»¼ÛµÍÓÚÖ®Ç°µÄÂò¶ş±¨¼Û
-	INT64 m_lUnknownVolume; // ²»Ã÷×´Ì¬µÄ³É½»Á¿
-	INT64 m_lCurrentUnknown; // µ±Ç°³É½»Á¿ÖĞµÄ²»Ã÷×´Ì¬³É½»Á¿
-	INT64 m_lCanceledBuyVolume;	// Âòµ¥³·µ¥Á¿
-	INT64 m_lCanceledSellVolume; // Âôµ¥³·µ¥Á¿
+	INT64 m_lAttackBuyVolume; // å‘ä¸Šä¹°å…¥ã€‚æˆäº¤ä»·é«˜äºå–ä¸€ä»·ä½†ä½äºå–äºŒä»·ã€‚æ­¤æ•°é‡åŒ…æ‹¬ä¸‹é¢çš„å¼ºä¹°é‡ã€‚
+	INT64 m_lStrongBuyVolume; // å‘ä¸Šå¼ºåŠ›ä¹°å…¥,æˆäº¤ä»·è¶…è¿‡ä¹‹å‰çš„å–äºŒæŠ¥ä»·
+	INT64 m_lAttackSellVolume; // å‘ä¸‹å–å‡ºã€‚æˆäº¤ä»·ä½äºä¹°ä¸€ä»·ä½†é«˜äºä¹°äºŒä»·ã€‚
+	INT64 m_lStrongSellVolume; // å‘ä¸‹å¼ºåŠ›å–å‡º,æˆäº¤ä»·ä½äºä¹‹å‰çš„ä¹°äºŒæŠ¥ä»·
+	INT64 m_lUnknownVolume; // ä¸æ˜çŠ¶æ€çš„æˆäº¤é‡
+	INT64 m_lCurrentUnknown; // å½“å‰æˆäº¤é‡ä¸­çš„ä¸æ˜çŠ¶æ€æˆäº¤é‡
+	INT64 m_lCanceledBuyVolume; // ä¹°å•æ’¤å•é‡
+	INT64 m_lCanceledSellVolume; // å–å•æ’¤å•é‡
 
 	INT64 m_lAttackBuyBelow50000;
 	INT64 m_lAttackBuyBelow200000;
@@ -496,50 +514,50 @@ protected:
 	INT64 m_lAttackSellBelow200000;
 	INT64 m_lAttackSellAbove200000;
 
-	INT64 m_llLastSavedVolume; // Èç¹û½»Ò×ÖĞÍ¾ÏµÍ³ÍË³ö£¬ÔòÔÙ´ÎµÇÈëÊ±ÉÏ´ÎµÄ½»Ò×ÊıÁ¿
+	INT64 m_llLastSavedVolume; // å¦‚æœäº¤æ˜“ä¸­é€”ç³»ç»Ÿé€€å‡ºï¼Œåˆ™å†æ¬¡ç™»å…¥æ—¶ä¸Šæ¬¡çš„äº¤æ˜“æ•°é‡
 
-	bool m_fHaveFirstRTData; // ÊµÊ±Êı¾İ¿ªÊ¼¼ÆËã±êÊ¶¡£µÚÒ»¸öÊµÊ±Êı¾İÖ»ÄÜÓÃÀ´³õÊ¼»¯ÏµÍ³£¬²»ÄÜÓÃÓÚ¼ÆËã¡£´ÓµÚ¶ş¸öÊı¾İ¿ªÊ¼¼ÆËã²ÅÓĞĞ§¡£
-	bool m_fNeedProcessRTData; //Ö¸ÊıÀà¹ÉÆ±ÎŞĞè¼ÆËã½»Ò×ºÍ¹Òµ¥Çé¿ö
-	bool m_fRTDataCalculated; // ÊµÊ±Êı¾İÏÔÊ¾ĞèÒª¸üĞÂ
-	bool m_fRecordRTData; // ¼ÇÂ¼´Ë¹ÉÆ±ÊµÊ±Êı¾İ½øÊı¾İ¿âµÄ±êÊ¶¡£
+	bool m_fHaveFirstRTData; // å®æ—¶æ•°æ®å¼€å§‹è®¡ç®—æ ‡è¯†ã€‚ç¬¬ä¸€ä¸ªå®æ—¶æ•°æ®åªèƒ½ç”¨æ¥åˆå§‹åŒ–ç³»ç»Ÿï¼Œä¸èƒ½ç”¨äºè®¡ç®—ã€‚ä»ç¬¬äºŒä¸ªæ•°æ®å¼€å§‹è®¡ç®—æ‰æœ‰æ•ˆã€‚
+	bool m_fNeedProcessRTData; //æŒ‡æ•°ç±»è‚¡ç¥¨æ— éœ€è®¡ç®—äº¤æ˜“å’ŒæŒ‚å•æƒ…å†µ
+	bool m_fRTDataCalculated; // å®æ—¶æ•°æ®æ˜¾ç¤ºéœ€è¦æ›´æ–°
+	bool m_fRecordRTData; // è®°å½•æ­¤è‚¡ç¥¨å®æ—¶æ•°æ®è¿›æ•°æ®åº“çš„æ ‡è¯†ã€‚
 
-	bool m_fChoiced;// ´Ë¹ÉÆ±ÊÇ·ñÊÇ×ÔÑ¡¹ÉÆ±.
-	bool m_fSaveToChoicedStockDB; // ÊÇ·ñ´æ´¢ÖÁ×ÔÑ¡¹ÉÆ±³Ø¡£
-	bool m_fMinLineUpdated; // ½ñÌìµÄ·ÖÖÓ×ÊÁÏÊÇ·ñ¸üĞÂ¹ı.
+	bool m_fChosen; // æ­¤è‚¡ç¥¨æ˜¯å¦æ˜¯è‡ªé€‰è‚¡ç¥¨.
+	bool m_fSaveToChosenStockDB; // æ˜¯å¦å­˜å‚¨è‡³è‡ªé€‰è‚¡ç¥¨æ± ã€‚
+	bool m_fMinLineUpdated; // ä»Šå¤©çš„åˆ†é’Ÿèµ„æ–™æ˜¯å¦æ›´æ–°è¿‡.
 
-	// ¹Òµ¥µÄ¾ßÌåÇé¿ö¡£
-	map<INT64, INT64> m_mapGuadan;// ²ÉÓÃmap½á¹¹´æ´¢¹Òµ¥µÄ¾ßÌåÇé¿ö¡£Ë÷ÒıÎª¼ÛÎ»£¬ÄÚÈİÎª¹Òµ¥Á¿¡£
-	CWebRTDataPtr m_pLastRTData; // ´Óm_qRTData¶Á³öµÄÉÏÒ»¸öÊµÊ±Êı¾İ¡£
-	INT64 m_lCurrentGuadanTransactionVolume; // µ±Ç°¹Òµ¥½»Ò×Á¿£¨²»ÊÇÄ¿Ç°Ê±¼äµÄ½»Ò×Á¿£¬¶øÊÇÊµÊ±Êı¾İ¶ÓÁĞ×îÇ°ÃæÊı¾İµÄÊ±¼äµÄ½»Ò×Á¿£©
-	double m_dCurrentGuadanTransactionPrice; // µ±Ç°³É½»¼Û¸ñ
-	int m_nCurrentTransactionType; // µ±Ç°½»Ò×ÀàĞÍ£¨Ç¿Âò¡¢½ø¹¥ĞÍÂòÈë¡£¡£¡£¡££©
+	// æŒ‚å•çš„å…·ä½“æƒ…å†µã€‚
+	map<INT64, INT64> m_mapGuadan; // é‡‡ç”¨mapç»“æ„å­˜å‚¨æŒ‚å•çš„å…·ä½“æƒ…å†µã€‚ç´¢å¼•ä¸ºä»·ä½ï¼Œå†…å®¹ä¸ºæŒ‚å•é‡ã€‚
+	CWebRTDataPtr m_pLastRTData; // ä»m_qRTDataè¯»å‡ºçš„ä¸Šä¸€ä¸ªå®æ—¶æ•°æ®ã€‚
+	INT64 m_lCurrentGuadanTransactionVolume; // å½“å‰æŒ‚å•äº¤æ˜“é‡ï¼ˆä¸æ˜¯ç›®å‰æ—¶é—´çš„äº¤æ˜“é‡ï¼Œè€Œæ˜¯å®æ—¶æ•°æ®é˜Ÿåˆ—æœ€å‰é¢æ•°æ®çš„æ—¶é—´çš„äº¤æ˜“é‡ï¼‰
+	double m_dCurrentGuadanTransactionPrice; // å½“å‰æˆäº¤ä»·æ ¼
+	int m_nCurrentTransactionType; // å½“å‰äº¤æ˜“ç±»å‹ï¼ˆå¼ºä¹°ã€è¿›æ”»å‹ä¹°å…¥ã€‚ã€‚ã€‚ã€‚ï¼‰
 	INT64 m_lCurrentCanceledSellVolume;
 	INT64 m_lCurrentCanceledBuyVolume;
 
-	INT64 m_lCanceledBuyVolumeBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³·µ¥¹ÉÊı
-	INT64 m_lCanceledBuyVolumeBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³·µ¥¹ÉÊı
-	INT64 m_lCanceledBuyVolumeBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³·µ¥¹ÉÊı
+	INT64 m_lCanceledBuyVolumeBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æ’¤å•è‚¡æ•°
+	INT64 m_lCanceledBuyVolumeBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æ’¤å•è‚¡æ•°
+	INT64 m_lCanceledBuyVolumeBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æ’¤å•è‚¡æ•°
 	INT64 m_lCanceledBuyVolumeBelow50000; //
-	INT64 m_lCanceledBuyVolumeBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³·µ¥¹ÉÊı
+	INT64 m_lCanceledBuyVolumeBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æ’¤å•è‚¡æ•°
 	INT64 m_lCanceledBuyVolumeBelow200000; //
 	INT64 m_lCanceledBuyVolumeAbove200000; //
-	INT64 m_lCanceledSellVolumeBelow5000; // ±¾½»Ò×ÈÕµÍÓÚ5000¹ÉµÄ³·µ¥¹ÉÊı
-	INT64 m_lCanceledSellVolumeBelow10000; // ±¾½»Ò×ÈÕµÍÓÚ10000¹ÉµÄ³·µ¥¹ÉÊı
-	INT64 m_lCanceledSellVolumeBelow20000; // ±¾½»Ò×ÈÕµÍÓÚ20000¹ÉµÄ³·µ¥¹ÉÊı
+	INT64 m_lCanceledSellVolumeBelow5000; // æœ¬äº¤æ˜“æ—¥ä½äº5000è‚¡çš„æ’¤å•è‚¡æ•°
+	INT64 m_lCanceledSellVolumeBelow10000; // æœ¬äº¤æ˜“æ—¥ä½äº10000è‚¡çš„æ’¤å•è‚¡æ•°
+	INT64 m_lCanceledSellVolumeBelow20000; // æœ¬äº¤æ˜“æ—¥ä½äº20000è‚¡çš„æ’¤å•è‚¡æ•°
 	INT64 m_lCanceledSellVolumeBelow50000; //
-	INT64 m_lCanceledSellVolumeBelow100000; // ±¾½»Ò×ÈÕµÍÓÚ100000¹ÉµÄ³·µ¥¹ÉÊı
+	INT64 m_lCanceledSellVolumeBelow100000; // æœ¬äº¤æ˜“æ—¥ä½äº100000è‚¡çš„æ’¤å•è‚¡æ•°
 	INT64 m_lCanceledSellVolumeBelow200000; //
 	INT64 m_lCanceledSellVolumeAbove200000; //
 
-	queue<COneDealPtr> m_qDeal; // ¾ßÌå³É½»ĞÅÏ¢¶ÓÁĞ£¨Ä¿Ç°ÉĞÎ´Ê¹ÓÃ£©¡£
+	queue<COneDealPtr> m_qDeal; // å…·ä½“æˆäº¤ä¿¡æ¯é˜Ÿåˆ—ï¼ˆç›®å‰å°šæœªä½¿ç”¨ï¼‰ã€‚
 
-	CPriorityQueueWebRTData m_qRTData; // ²ÉÓÃÓÅÏÈ¶ÓÁĞ´æ´¢ÊµÊ±Êı¾İ£¬ÕâÑù¿ÉÒÔ±£Ö¤¶àÔ´¡£
-	CCriticalSection m_RTDataLock; // ÊµÊ±Êı¾İ¶ÓÁĞµÄÍ¬²½Ëø
+	CPriorityQueueWebRTData m_qRTData; // é‡‡ç”¨ä¼˜å…ˆé˜Ÿåˆ—å­˜å‚¨å®æ—¶æ•°æ®ï¼Œè¿™æ ·å¯ä»¥ä¿è¯å¤šæºã€‚
+	CCriticalSection m_RTDataLock; // å®æ—¶æ•°æ®é˜Ÿåˆ—çš„åŒæ­¥é”
 
-	// ÈÕÏßÈİÆ÷
+	// æ—¥çº¿å®¹å™¨
 	CDataChinaDayLine m_dataDayLine;
-	// ÖÜÏßÈİÆ÷
+	// å‘¨çº¿å®¹å™¨
 	CDataChinaWeekLine m_dataWeekLine;
 
-	bool m_fDayLineDBUpdated; // ÈÕÏßÀúÊ·Êı¾İ¿â¸üĞÂ±êÊ¶
+	bool m_fDayLineDBUpdated; // æ—¥çº¿å†å²æ•°æ®åº“æ›´æ–°æ ‡è¯†
 };

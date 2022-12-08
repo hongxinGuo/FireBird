@@ -16,7 +16,7 @@ enum {
 class CVirtualProductWebData : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualProductWebData)
-		CVirtualProductWebData();
+	CVirtualProductWebData();
 	virtual ~CVirtualProductWebData() override = default;
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreateMessage和ParseAndStoreWebData声明为纯虚函数。
@@ -25,10 +25,15 @@ public:
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; }; // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	bool IsParsed(CWebDataPtr pWebData) { return pWebData->IsParsed(); }
+
 	bool IsVoidJson(CWebDataPtr pWebData) {
-		if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return true; }
+		if (pWebData->IsVoidJson()) {
+			m_iReceivedDataStatus = __VOID_DATA__;
+			return true;
+		}
 		else return false;
 	}
+
 	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
 	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
@@ -57,7 +62,8 @@ protected:
 	CString m_strInquiringExchange; // 目前查询的交易所代码
 	long m_lIndex;
 	int m_iProductType;
-	int m_iReceivedDataStatus; // 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
+	int m_iReceivedDataStatus;
+	// 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
 typedef shared_ptr<CVirtualProductWebData> CVirtualProductWebDataPtr;
@@ -68,7 +74,7 @@ struct FinnhubWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__TEST_SetBuffer(strData);
+		m_pData->__Test_SetBuffer__(strData);
 	}
 
 	~FinnhubWebData() = default;
@@ -85,7 +91,7 @@ struct TiingoWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__TEST_SetBuffer(strData);
+		m_pData->__Test_SetBuffer__(strData);
 	}
 
 	~TiingoWebData() {

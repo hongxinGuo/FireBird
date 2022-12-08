@@ -52,7 +52,7 @@
     <Filter Include="Test源文件\Data Class\WebSocket">
       <UniqueIdentifier>{01fdd977-2ec6-4fde-9a3d-b50494a9c813}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Data Class\Chioced">
+    <Filter Include="Test源文件\Data Class\Chosen">
       <UniqueIdentifier>{554077ac-bba7-4a24-ba28-1986b6009468}</UniqueIdentifier>
     </Filter>
     <Filter Include="Test源文件\Data Class\Finnhub">
@@ -282,14 +282,14 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Class\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedCryptoTest.cpp">
-      <Filter>Test源文件\Data Class\Chioced</Filter>
+    <ClCompile Include="DataChosenCryptoTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedForexTest.cpp">
-      <Filter>Test源文件\Data Class\Chioced</Filter>
+    <ClCompile Include="DataChosenForexTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedIEXTest.cpp">
-      <Filter>Test源文件\Data Class\Chioced</Filter>
+    <ClCompile Include="DataChosenIEXTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="DataChinaStockTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>

@@ -1,22 +1,22 @@
 #include"pch.h"
 
-#include"NeteaseDaylineDataSource.h"
-#include"ProductNeteaseDayline.h"
+#include"NeteaseDayLineDataSource.h"
+#include"ProductNeteaseDayLine.h"
 
 #include"ChinaMarket.h"
 
-CNeteaseDaylineDataSource::CNeteaseDaylineDataSource() {
+CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	Reset();
 }
 
-CNeteaseDaylineDataSource::~CNeteaseDaylineDataSource() {
+CNeteaseDayLineDataSource::~CNeteaseDayLineDataSource() {
 }
 
-bool CNeteaseDaylineDataSource::Reset(void) {
+bool CNeteaseDayLineDataSource::Reset(void) {
 	return true;
 }
 
-bool CNeteaseDaylineDataSource::UpdateStatus(void) {
+bool CNeteaseDayLineDataSource::UpdateStatus(void) {
 	return true;
 }
 
@@ -28,10 +28,10 @@ bool CNeteaseDaylineDataSource::UpdateStatus(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CNeteaseDaylineDataSource::Inquire(long lCurrentTime) {
+bool CNeteaseDayLineDataSource::Inquire(long lCurrentTime) {
 	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
-			CVirtualProductWebDataPtr product = make_shared<CProductNeteaseDayline>();
+			CVirtualProductWebDataPtr product = make_shared<CProductNeteaseDayLine>();
 			StoreInquiry(product);
 			SetInquiring(true);
 			return true;

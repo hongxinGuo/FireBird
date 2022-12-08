@@ -4,7 +4,7 @@
 #include"ChinaMarket.h"
 
 #include "NeteaseDayLineWebInquiry.h"
-#include"NeteaseDaylineDataSource.h"
+#include"NeteaseDayLineDataSource.h"
 
 using namespace std;
 #include<thread>
@@ -33,7 +33,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringString(void) {
 
 	// 准备网易日线数据申请格式
 	if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle)) {
-		strStockCode = XferNeteaseToStandred(strMiddle);
+		strStockCode = XferNeteaseToStandard(strMiddle);
 		SetDownLoadingStockCode(strStockCode);
 		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
 		strMiddle += _T("&start=19900101&end=");

@@ -7,11 +7,11 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CVirtualSetChoicedStake : public CVirtualRecordset
+class CVirtualSetChosenStake : public CVirtualRecordset
 {
 public:
-	CVirtualSetChoicedStake(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetChoicedStake)
+	CVirtualSetChosenStake(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
+	DECLARE_DYNAMIC(CVirtualSetChosenStake)
 
 	// 字段/参数数据
 

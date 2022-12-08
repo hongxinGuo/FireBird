@@ -1,8 +1,5 @@
 #include "pch.h"
 
-using namespace std;
-#include<fstream>
-
 #include "SaveAndLoad.h"
 
 void SaveToFile(CString strFileName, CString s) {
@@ -22,7 +19,8 @@ bool LoadFromFile(CString strFileName, string& s) {
 		iRead = f.Read(buffer, 1024);
 		buffer[iRead] = 0x000;
 		s += buffer;
-	} while (iRead == 1024);
+	}
+	while (iRead == 1024);
 	f.Close();
 	return true;
 }

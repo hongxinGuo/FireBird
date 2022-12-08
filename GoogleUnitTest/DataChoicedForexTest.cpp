@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"DataChoicedForex.h"
+#include"DataChosenForex.h"
 
 using namespace testing;
 
@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CDataChoicedForexTest : public ::testing::Test {
+	class CDataChosenForexTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -32,20 +32,20 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CDataChoicedForex m_dataChoicedForex;
+		CDataChosenForex m_dataChosenForex;
 	};
 
-	TEST_F(CDataChoicedForexTest, TestInitialize) {
-		EXPECT_EQ(m_dataChoicedForex.GetSize(), 0);
+	TEST_F(CDataChosenForexTest, TestInitialize) {
+		EXPECT_EQ(m_dataChosenForex.GetSize(), 0);
 	}
 
-	TEST_F(CDataChoicedForexTest, TestLoad) {
-		EXPECT_EQ(m_dataChoicedForex.GetSize(), 0) << "初始未装载Forex代码";
+	TEST_F(CDataChosenForexTest, TestLoad) {
+		EXPECT_EQ(m_dataChosenForex.GetSize(), 0) << "初始未装载Forex代码";
 
-		m_dataChoicedForex.LoadDB();
-		EXPECT_EQ(m_dataChoicedForex.GetSize(), 3) << "默认状态下装载3个代码";
+		m_dataChosenForex.LoadDB();
+		EXPECT_EQ(m_dataChosenForex.GetSize(), 3) << "默认状态下装载3个代码";
 
-		CForexSymbolPtr pForex = m_dataChoicedForex.GetForex(2);
+		CForexSymbolPtr pForex = m_dataChosenForex.GetForex(2);
 		EXPECT_STREQ(pForex->GetSymbol(), _T("OANDA:AUD_SGD")) << "装载时没有排序，使用的是原始位置";
 	}
 }

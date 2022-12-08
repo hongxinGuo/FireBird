@@ -119,8 +119,8 @@ void CChinaStock::Reset(void) {
 	m_dCurrentGuadanTransactionPrice = 0;
 	m_nCurrentTransactionType = 0;
 
-	m_fChoiced = false;
-	m_fSaveToChoicedStockDB = false;
+	m_fChosen = false;
+	m_fSaveToChosenStockDB = false;
 
 	m_fDayLineDBUpdated = false;
 

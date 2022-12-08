@@ -2,8 +2,6 @@
 
 #include"VirtualMarket.h"
 
-#include"StockSection.h"
-
 #include"NeteaseDayLineWebData.h"
 
 #include"DataStockSymbol.h"
@@ -14,13 +12,12 @@ using namespace gsl;
 
 using namespace std;
 #include<vector>
-#include<map>
 #include<atomic>
 #include<queue>
 #include<set>
 #include<semaphore>
 
-extern counting_semaphore<8> gl_BackGroundTaskThread;// ºóÌ¨¹¤×÷Ïß³ÌÊı¡£×î´óÎª8
+extern counting_semaphore<8> gl_BackGroundTaskThread; // ºóÌ¨¹¤×÷Ïß³ÌÊı¡£×î´óÎª8
 extern binary_semaphore gl_ProcessChinaMarketRTData; // ´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
 
 constexpr int c_SelectedStockStartPosition = 0;
@@ -29,7 +26,7 @@ constexpr int c_10DaysRSStockSetStartPosition = 10; // Ê®ÈÕÏà¶ÔÇ¿¶È¹ÉÆ±¼¯ÆğÊ¼Î»Ö
 class CChinaMarket : public CVirtualMarket {
 public:
 	DECLARE_DYNCREATE(CChinaMarket)
-		CChinaMarket(void);
+	CChinaMarket(void);
 	// Ö»ÄÜÓĞÒ»¸öÊµÀı,²»ÔÊĞí¸³Öµ¡£
 	CChinaMarket(const CChinaMarket&) = delete;
 	CChinaMarket& operator=(const CChinaMarket&) = delete;
@@ -41,7 +38,7 @@ public:
 
 	virtual bool PreparingExitMarket(void) override final;
 
-	virtual bool IsTimeToResetSystem(long lCurrentTime)  override final;
+	virtual bool IsTimeToResetSystem(long lCurrentTime) override final;
 
 	virtual bool IsOrdinaryTradeTime(void) override final; // ÈÕ³£½»Ò×Ê±¼ä
 	virtual bool IsOrdinaryTradeTime(long) override final;
@@ -51,8 +48,8 @@ public:
 	virtual bool IsDummyTime(long lTime) override final;
 
 #ifdef _DEBUG
-	virtual	void AssertValid() const;
-	virtual	void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
 #endif
 public:
 	// ¶¨Ê±¸üĞÂ£¬Íê³É¾ßÌåµ÷¶ÈÈÎÎñ¡£ÓÉÖ÷Ïß³ÌCMainFrameµÄOnTimerº¯Êıµ÷ÓÃ¡£Æäºó¸úËæ¸÷±»µ÷¶Èº¯Êı
@@ -65,7 +62,7 @@ public:
 	bool SchedulingTaskPerHour(long lCurrentTime); // Ã¿Ğ¡Ê±µ÷¶ÈÒ»´Î
 
 	// ¸÷ÖÖÈÎÎñ
-	bool TaskProcessTengxunRTData(void);  // ´¦ÀíÌÚÑ¶ÊµÊ±Êı¾İ
+	bool TaskProcessTengxunRTData(void); // ´¦ÀíÌÚÑ¶ÊµÊ±Êı¾İ
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
@@ -80,12 +77,12 @@ public:
 
 	bool TaskUpdateStockCodeDB(void);
 	bool TaskUpdateOptionDB(void);
-	bool TaskUpdateChoicedStockDB(void);
+	bool TaskUpdateChosenStockDB(void);
 
 	bool TaskShowCurrentTransaction(void);
 
-	bool TaskSaveChoicedRTData(void);
-	bool TaskClearChoicedRTDataSet(long lCurrentTime);
+	bool TaskSaveChosenRTData(void);
+	bool TaskClearChosenRTDataSet(long lCurrentTime);
 
 	bool TaskSaveStockSection(void); //
 
@@ -95,7 +92,7 @@ public:
 	bool TaskProcessRTData(void) { return m_dataChinaStock.TaskProcessRTData(); }
 
 	// ÊÇ·ñËùÓĞ¹ÉÆ±µÄÀúÊ·ÈÕÏßÊı¾İ¶¼²éÑ¯¹ıÒ»±éÁË
-	bool TaskProcessDayLineGetFromNeeteaseServer(void);
+	bool TaskProcessDayLineGetFromNeteaseServer(void);
 
 	// ×°ÔØµ±Ç°¹ÉÆ±ÈÕÏßÈÎÎñ
 	bool TaskLoadCurrentStockHistoryData(void);
@@ -127,19 +124,39 @@ public:
 	// ÊµÊ±Êı¾İ¶ÁÈ¡
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
-	CString	GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
+
+	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
+		return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
+	}
+
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber); }
+
+	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) {
+		return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
+	}
+
+	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) {
+		return m_dataStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
+	}
+
+	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
+		return m_dataChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
+	}
+
+	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) {
+		return m_dataChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
+	}
+
 	//ÈÕÏßÀúÊ·Êı¾İ¶ÁÈ¡
-	bool CreateNeteaseDayLineInquiringStr(CString& strReturn) { return m_dataChinaStock.CreateNeteaseDayLineInquiringStr(strReturn); }
+	bool CreateNeteaseDayLineInquiringStr(CString& strReturn) {
+		return m_dataChinaStock.CreateNeteaseDayLineInquiringStr(strReturn);
+	}
+
 	long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
 	bool IsAStock(not_null<CChinaStockPtr> pStock) { return m_dataChinaStock.IsAStock(pStock); } // ÊÇ·ñÎª»¦ÉîA¹É
 	bool IsAStock(CString strStockCode) { return m_dataChinaStock.IsAStock(strStockCode); } // ÊÇ·ñÎª»¦ÉîA¹É
-	bool IsStock(CString strStockCode) { return m_dataChinaStock.IsStock(strStockCode); }	// ÊÇ·ñÎªÕıÈ·µÄ¹ÉÆ±´úÂë
+	bool IsStock(CString strStockCode) { return m_dataChinaStock.IsStock(strStockCode); } // ÊÇ·ñÎªÕıÈ·µÄ¹ÉÆ±´úÂë
 
 	CString GetStockName(CString strStockCode) { return m_dataChinaStock.GetStockName(strStockCode); }
 
@@ -157,11 +174,27 @@ public:
 
 	long GetMinLineOffset(time_t tUTC);
 
-	bool IsTodayStockNotProcessed(void) const noexcept { if (m_iTodayStockProcessed == 0) return true; else return false; }
-	bool IsProcessingTodayStock(void) const noexcept { if (m_iTodayStockProcessed == 1) return true; else return false; }
-	bool IsTodayStockProcessed(void) const noexcept { if (m_iTodayStockProcessed == 0) return false; else return true; }
+	bool IsTodayStockNotProcessed(void) const noexcept {
+		if (m_iTodayStockProcessed == 0) return true;
+		else return false;
+	}
+
+	bool IsProcessingTodayStock(void) const noexcept {
+		if (m_iTodayStockProcessed == 1) return true;
+		else return false;
+	}
+
+	bool IsTodayStockProcessed(void) const noexcept {
+		if (m_iTodayStockProcessed == 0) return false;
+		else return true;
+	}
+
 	void SetProcessingTodayStock(void) noexcept { m_iTodayStockProcessed = 1; }
-	void SetTodayStockProcessed(bool fFlag) noexcept { if (fFlag) m_iTodayStockProcessed = 2; else m_iTodayStockProcessed = 0; }
+
+	void SetTodayStockProcessed(bool fFlag) noexcept {
+		if (fFlag) m_iTodayStockProcessed = 2;
+		else m_iTodayStockProcessed = 0;
+	}
 
 	long GetCurrentSelectedPosition(void) const noexcept { return m_lCurrentSelectedPosition; }
 	void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
@@ -169,33 +202,33 @@ public:
 	void SetCurrentSelectedStockSet(long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
 	CChinaStockPtr GetCurrentSelectedStock(void);
 
-	bool IsChoiced10RSStrong1StockSet(void) const noexcept { return m_fChoiced10RSStrong1StockSet; }
-	void SetChoiced10RSStrong1StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong1StockSet = fFlag; }
-	bool IsChoiced10RSStrong2StockSet(void) const noexcept { return m_fChoiced10RSStrong2StockSet; }
-	void SetChoiced10RSStrong2StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong2StockSet = fFlag; }
-	bool IsChoiced10RSStrongStockSet(void) const noexcept { return m_fChoiced10RSStrongStockSet; }
-	void SetChoiced10RSStrongStockSet(bool fFlag) noexcept { m_fChoiced10RSStrongStockSet = fFlag; }
-	bool IsCalculateChoiced10RS(void) const noexcept { return m_fCalculateChoiced10RS; }
-	void SetCalculateChoiced10RS(bool fFlag) noexcept { m_fCalculateChoiced10RS = fFlag; }
+	bool IsChosen10RSStrong1StockSet(void) const noexcept { return m_fChosen10RSStrong1StockSet; }
+	void SetChosen10RSStrong1StockSet(bool fFlag) noexcept { m_fChosen10RSStrong1StockSet = fFlag; }
+	bool IsChosen10RSStrong2StockSet(void) const noexcept { return m_fChosen10RSStrong2StockSet; }
+	void SetChosen10RSStrong2StockSet(bool fFlag) noexcept { m_fChosen10RSStrong2StockSet = fFlag; }
+	bool IsChosen10RSStrongStockSet(void) const noexcept { return m_fChosen10RSStrongStockSet; }
+	void SetChosen10RSStrongStockSet(bool fFlag) noexcept { m_fChosen10RSStrongStockSet = fFlag; }
+	bool IsCalculateChosen10RS(void) const noexcept { return m_fCalculateChosen10RS; }
+	void SetCalculateChosen10RS(bool fFlag) noexcept { m_fCalculateChosen10RS = fFlag; }
 
 	// Êı¾İ¿â¶ÁÈ¡´æ´¢²Ù×÷
-	virtual bool SaveRTData(void);  // ÊµÊ±Êı¾İ´¦Àíº¯Êı£¬½«¶ÁÈ¡µ½µÄÊµÊ±Êı¾İ´æÈëÊı¾İ¿âÖĞ
-	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); }  // ÈÕÏßÀúÊ·Êı¾İ´¦Àíº¯Êı£¬½«¶ÁÈ¡µ½µÄÈÕÏßÀúÊ·Êı¾İ´æÈëÊı¾İ¿âÖĞ
+	virtual bool SaveRTData(void); // ÊµÊ±Êı¾İ´¦Àíº¯Êı£¬½«¶ÁÈ¡µ½µÄÊµÊ±Êı¾İ´æÈëÊı¾İ¿âÖĞ
+	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); } // ÈÕÏßÀúÊ·Êı¾İ´¦Àíº¯Êı£¬½«¶ÁÈ¡µ½µÄÈÕÏßÀúÊ·Êı¾İ´æÈëÊı¾İ¿âÖĞ
 	virtual bool UpdateStockCodeDB(void) { return m_dataChinaStock.UpdateStockCodeDB(); }
 	void LoadStockCodeDB(void) { m_lStockDayLineNeedUpdate = m_dataChinaStock.LoadStockCodeDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
-	bool UpdateChoicedStockDB(void);
-	virtual bool AppendChoicedStockDB(void);
-	void LoadChoicedStockDB(void);
+	bool UpdateChosenStockDB(void);
+	virtual bool AppendChosenStockDB(void);
+	void LoadChosenStockDB(void);
 	bool UpdateTempRTData(void);
 	virtual bool UpdateTodayTempDB(void) { return m_dataChinaStock.UpdateTodayTempDB(); }
 	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate);
 	virtual bool SaveStockSection(void) { return m_dataStockSymbol.UpdateStockSectionDB(); }
 
-	bool ChangeDayLineStockCodeToStandred(void);
+	bool ChangeDayLineStockCodeToStandard(void);
 
 	virtual bool DeleteWeekLine(void);
 	bool DeleteWeekLineBasicInfo(void);
@@ -228,9 +261,13 @@ public:
 	virtual bool BuildCurrentWeekWeekLineTable(void); // Ê¹ÓÃÖÜÏß±í¹¹½¨µ±Ç°ÖÜÖÜÏß±í
 
 	// ¹ÉÆ±ÀúÊ·Êı¾İ´¦Àí
-	virtual bool Choice10RSStrong2StockSet(void) { return m_dataChinaStock.Choice10RSStrong2StockSet(); } // Ñ¡Ôñ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯£¨Á½´Î·åÖµ£©
-	virtual bool Choice10RSStrong1StockSet(void) { return m_dataChinaStock.Choice10RSStrong1StockSet(); } // Ñ¡Ôñ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯£¨Ò»´Î·åÖµ£©
-	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) { return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex); }
+	virtual bool Choice10RSStrong2StockSet(void) { return m_dataChinaStock.Choice10RSStrong2StockSet(); }
+	// Ñ¡Ôñ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯£¨Á½´Î·åÖµ£©
+	virtual bool Choice10RSStrong1StockSet(void) { return m_dataChinaStock.Choice10RSStrong1StockSet(); }
+	// Ñ¡Ôñ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯£¨Ò»´Î·åÖµ£©
+	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
+		return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex);
+	}
 
 	bool IsDayLineNeedUpdate(void) const noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess(void);
@@ -335,31 +372,50 @@ public:
 	void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
 	bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRS; }
 
-	bool AddChoicedStock(CChinaStockPtr pStock);
-	bool DeleteChoicedStock(CChinaStockPtr pStock);
-	size_t GetChoicedStockSize(void) const { return m_avChoicedStock.at(0).size(); }
-	size_t GetChoicedStockSize(long lIndex) const { return m_avChoicedStock.at(lIndex).size(); }
-	void ClearChoiceStockContainer(void) { m_avChoicedStock.at(0).clear(); }
-	size_t GetChoicedRTDataSize(void) const noexcept { return m_qRTData.size(); }
-	void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
+	bool AddChosenStock(CChinaStockPtr pStock);
+	bool DeleteChosenStock(CChinaStockPtr pStock);
+	size_t GetChosenStockSize(void) const { return m_avChosenStock.at(0).size(); }
+	size_t GetChosenStockSize(long lIndex) const { return m_avChosenStock.at(lIndex).size(); }
+	void ClearChoiceStockContainer(void) { m_avChosenStock.at(0).clear(); }
+	size_t GetChosenRTDataSize(void) const noexcept { return m_qRTData.size(); }
+	void ClearChosenRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
 	void SetSinaStockRTDataInquiringIndex(long lIndex) noexcept { m_dataChinaStock.SetSinaRTDataInquiringIndex(lIndex); }
 	long GetSinaStockRTDataInquiringIndex(void) noexcept { return m_dataChinaStock.GetSinaRTDataInquiringIndex(); }
 	void SetTengxunRTDataInquiringIndex(long lIndex) noexcept { m_dataChinaStock.SetTengxunRTDataInquiringIndex(lIndex); }
 	long GetTengxunRTDataInquiringIndex(void) noexcept { return m_dataChinaStock.GetTengxunRTDataInquiringIndex(); }
-	void SetNeteaseDayLineDataInquiringIndex(long lIndex) noexcept { m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex); }
-	long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex(); }
+
+	void SetNeteaseDayLineDataInquiringIndex(long lIndex) noexcept {
+		m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex);
+	}
+
+	long GetNeteaseDayLineDataInquiringIndex(void) noexcept {
+		return m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex();
+	}
 
 	void ClearDayLineNeedUpdateStatus(void) { m_dataChinaStock.ClearDayLineNeedUpdateStatus(); }
 
 	void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
-	bool IsRecordingRTData(void) const noexcept { if (m_fSaveRTData) return true; else return false; }
+
+	bool IsRecordingRTData(void) const noexcept {
+		if (m_fSaveRTData) return true;
+		else return false;
+	}
 
 	bool IsUpdateStockCodeDB(void) { return m_dataChinaStock.IsUpdateStockCodeDB(); }
 	void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
-	bool IsUpdateOptionDB(void) const noexcept { const bool fFlag = m_fUpdateOptionDB; return fFlag; }
-	void SetUpdateChoicedStockDB(bool fFlag) noexcept { m_fUpdateChoicedStockDB = fFlag; }
-	bool IsUpdateChoicedStockDB(void) const noexcept { const bool fFlag = m_fUpdateChoicedStockDB; return fFlag; }
+
+	bool IsUpdateOptionDB(void) const noexcept {
+		const bool fFlag = m_fUpdateOptionDB;
+		return fFlag;
+	}
+
+	void SetUpdateChosenStockDB(bool fFlag) noexcept { m_fUpdateChosenStockDB = fFlag; }
+
+	bool IsUpdateChosenStockDB(void) const noexcept {
+		const bool fFlag = m_fUpdateChosenStockDB;
+		return fFlag;
+	}
 
 	INT64 GetRTDataReceived(void) const noexcept { return m_llRTDataReceived; }
 	void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
@@ -371,11 +427,20 @@ public:
 	bool ChangeToPrevStock(void);
 	bool ChangeToPrevStockSet(void);
 	bool ChangeToNextStockSet(void);
-	bool IsTotalStockSetSelected(void) const noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
+
+	bool IsTotalStockSetSelected(void) const noexcept {
+		if (m_lCurrentSelectedStockSet == -1) return true;
+		else return false;
+	}
+
 	size_t GetCurrentStockSetSize(void);
 
 	void SetStockDayLineNeedUpdate(long lValue) noexcept { m_lStockDayLineNeedUpdate = lValue; }
-	bool TooManyStockDayLineNeedUpdate(void) const noexcept { if (m_lStockDayLineNeedUpdate > 1000) return true; else return false; }
+
+	bool TooManyStockDayLineNeedUpdate(void) const noexcept {
+		if (m_lStockDayLineNeedUpdate > 1000) return true;
+		else return false;
+	}
 
 	void SetUpdateStockSection(bool fFlag) noexcept { m_dataStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection(void) noexcept { return m_dataStockSymbol.IsUpdateStockSection(); }
@@ -395,7 +460,7 @@ public:
 protected:
 	// ±¾ÊĞ³¡¸÷Ñ¡Ïî
 
-// ±äÁ¿Çø
+	// ±äÁ¿Çø
 protected:
 	CDataChinaStock m_dataChinaStock;
 	CDataStockSymbol m_dataStockSymbol;
@@ -403,14 +468,14 @@ protected:
 	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯
 	vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯
 	vector<CRSReference> m_aRSStrongOption; // ÓÃÓÚ¼ÆËãRSµÄ²ÎÊı£¬×î¶àÊ®¸ö¡£
-	vector<vector<CChinaStockPtr> > m_avChoicedStock; // ¸÷ÖÖÑ¡ÔñµÄ¹ÉÆ±¼¯¡£0-9£º×ÔÑ¡¹ÉÆ±¼¯£»10-19£º10ÈÕRS¹ÉÆ±¼¯£»20-29£º¹É¼Û±ä»¯¹ÉÆ±¼¯
+	vector<vector<CChinaStockPtr>> m_avChosenStock; // ¸÷ÖÖÑ¡ÔñµÄ¹ÉÆ±¼¯¡£0-9£º×ÔÑ¡¹ÉÆ±¼¯£»10-19£º10ÈÕRS¹ÉÆ±¼¯£»20-29£º¹É¼Û±ä»¯¹ÉÆ±¼¯
 	long m_lCurrentSelectedPosition; // µ±Ç°¹ÉÆ±¼¯µÄÎ»ÖÃ
 	long m_lCurrentRSStrongIndex; // ½öÓÃÓÚ´«µİµ±Ç°µÄÎ»ÖÃ£¬ÒÔÓÃÓÚÑ¡ÔñÕıÈ·µÄÊı¾İ±í
 	long m_lCurrentSelectedStockSet; // µ±Ç°Ñ¡ÔñµÄ¹ÉÆ±¼¯£¨-1ÎªÕûÌå¹ÉÆ±¼¯£¬1-10Îª10ÈÕRSÌØĞÔ¹ÉÆ±¼¯£¬ÒÔ´ËÀàÍÆ£©¡£
-	bool m_fChoiced10RSStrong1StockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
-	bool m_fChoiced10RSStrong2StockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
-	bool m_fChoiced10RSStrongStockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
-	bool m_fCalculateChoiced10RS;
+	bool m_fChosen10RSStrong1StockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
+	bool m_fChosen10RSStrong2StockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
+	bool m_fChosen10RSStrongStockSet; // ±¾ÈÕµÄ10ÈÕÇ¿ÊÆ¹ÉÆ±¼¯ÒÑ¼ÆËãÍê³É
+	bool m_fCalculateChosen10RS;
 
 	atomic_uint64_t m_llRTDataReceived; // ½ÓÊÕµ½µÄÊµÊ±Êı¾İÊıÁ¿
 	long m_lRTDataReceivedInOrdinaryTradeTime; // ±¾ÈÕÕı³£½»Ò×Ê±¼äÄÚ½ÓÊÕµ½µÄÊµÊ±Êı¾İÊıÁ¿
@@ -477,7 +542,7 @@ protected:
 
 	// ¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿â±êÊ¶
 	atomic_bool m_fUpdateOptionDB;
-	bool m_fUpdateChoicedStockDB;
+	bool m_fUpdateChosenStockDB;
 
 private:
 };

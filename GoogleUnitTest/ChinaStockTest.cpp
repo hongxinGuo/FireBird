@@ -1077,22 +1077,22 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
 	}
 
-	TEST_F(CChinaStockTest, TestIsSaveToChoicedStockDB) {
+	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
 		CChinaStock stock;
-		EXPECT_FALSE(stock.IsSaveToChoicedStockDB());
-		stock.SetSaveToChoicedStockDB(true);
-		EXPECT_TRUE(stock.IsSaveToChoicedStockDB());
-		stock.SetSaveToChoicedStockDB(false);
-		EXPECT_FALSE(stock.IsSaveToChoicedStockDB());
+		EXPECT_FALSE(stock.IsSaveToChosenStockDB());
+		stock.SetSaveToChosenStockDB(true);
+		EXPECT_TRUE(stock.IsSaveToChosenStockDB());
+		stock.SetSaveToChosenStockDB(false);
+		EXPECT_FALSE(stock.IsSaveToChosenStockDB());
 	}
 
-	TEST_F(CChinaStockTest, TestIsChoiced) {
+	TEST_F(CChinaStockTest, TestIsChosen) {
 		CChinaStock stock;
-		EXPECT_FALSE(stock.IsChoiced());
-		stock.SetChoiced(true);
-		EXPECT_TRUE(stock.IsChoiced());
-		stock.SetChoiced(false);
-		EXPECT_FALSE(stock.IsChoiced());
+		EXPECT_FALSE(stock.IsChosen());
+		stock.SetChosen(true);
+		EXPECT_TRUE(stock.IsChosen());
+		stock.SetChosen(false);
+		EXPECT_FALSE(stock.IsChosen());
 	}
 
 	TEST_F(CChinaStockTest, TestIsDayLineDBUpdated) {

@@ -20,7 +20,6 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h" />
-    <ClInclude Include="..\StockAnalysis\source\accessory\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
@@ -30,9 +29,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h" />
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenCrypto.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenForex.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.h" />
@@ -58,7 +57,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\TiingoDataSource.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChosenStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetDayLineExtendInfo.h" />
@@ -79,7 +78,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandle.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleExtend.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetStockSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChosenStake.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetHistoryCandleBasic.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetCountry.h" />
@@ -101,9 +100,9 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoCrypto.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedCrypto.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedForex.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenForex.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h" />
@@ -250,9 +249,9 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaWeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenCrypto.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenForex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataCryptoDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataFinnhubCryptoExchange.cpp" />

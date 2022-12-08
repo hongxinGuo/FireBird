@@ -155,7 +155,7 @@ ExcludeFromCodeCoverage(CVirtualMarket3, L"CVirtualMarket::ResetMarket");
 
 ExcludeFromCodeCoverage(CChinaMarket1, L"CChinaMarket::AssertValid");
 ExcludeFromCodeCoverage(CChinaMarket2, L"CChinaMarket::Dump");
-ExcludeFromCodeCoverage(CChinaMarket3, L"CChinaMarket::CreatingThreadAppendChoicedStockDB");
+ExcludeFromCodeCoverage(CChinaMarket3, L"CChinaMarket::CreatingThreadAppendChosenStockDB");
 ExcludeFromCodeCoverage(CChinaMarket4, L"CChinaMarket::CreatingThreadCalculateRS");
 ExcludeFromCodeCoverage(CChinaMarket5, L"CChinaMarket::CreatingThreadCalculateThisDaysRS");
 ExcludeFromCodeCoverage(CChinaMarket6, L"CChinaMarket::CreatingThreadChoice10RSStrong1StockSet");
@@ -163,7 +163,7 @@ ExcludeFromCodeCoverage(CChinaMarket7, L"CChinaMarket::CreatingThreadChoice10RSS
 ExcludeFromCodeCoverage(CChinaMarket8, L"CChinaMarket::CreatingThreadChoice10RSStrongStockSet");
 ExcludeFromCodeCoverage(CChinaMarket9, L"CChinaMarket::CreatingThreadLoadDayLine");
 ExcludeFromCodeCoverage(CChinaMarket10, L"CChinaMarket::CreatingThreadProcessTodayStock");
-ExcludeFromCodeCoverage(CChinaMarket11, L"CChinaMarket::CreatingThreadSaveChoicedRTData");
+ExcludeFromCodeCoverage(CChinaMarket11, L"CChinaMarket::CreatingThreadSaveChosenRTData");
 ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::CreatingThreadSaveDayLineOfOneStock");
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::CreatingThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::CreatingThreadUpdateOptionDB");

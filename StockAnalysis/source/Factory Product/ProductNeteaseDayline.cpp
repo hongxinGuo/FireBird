@@ -1,32 +1,28 @@
 #include"pch.h"
 
-#include"ProductNeteaseDayline.h"
+#include"ProductNeteaseDayLine.h"
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductNeteaseDayline, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductNeteaseDayLine, CVirtualProductWebData)
 
-CProductNeteaseDayline::CProductNeteaseDayline() {
+CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiry = _T("http://quotes.money.163.com/service/chddata.html?code=");
 }
 
-CString CProductNeteaseDayline::CreateMessage(void) {
+CString CProductNeteaseDayLine::CreateMessage(void) {
 	static long slCurrentStockPosition = 0;
 
-	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseDaylineWebInquiry类完成，本Product无需动作。
+	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseDayLineWebInquiry类完成，本Product无需动作。
 }
 
-bool CProductNeteaseDayline::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CNeteaseDayLineWebDataPtr pDaylineWebData = nullptr;
+bool CProductNeteaseDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	CNeteaseDayLineWebDataPtr pDayLineWebData = nullptr;
 
-	pDaylineWebData = ParseNeteaseDayLine(pWebData);
-	gl_pChinaMarket->PushNeteaseDayLine(pDaylineWebData);
+	pDayLineWebData = ParseNeteaseDayLine(pWebData);
+	gl_pChinaMarket->PushNeteaseDayLine(pDayLineWebData);
 
 	return true;
-}
-
-bool CProductNeteaseDayline::ParseNeteaseDayline(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {
-	return false;
 }

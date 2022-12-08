@@ -89,9 +89,9 @@ void CWorldMarket::ResetDataClass(void) {
 	m_dataWorldStock.Reset();
 	m_dataTiingoStock.Reset();
 
-	m_dataChoicedStock.Reset();
-	m_dataChoicedForex.Reset();
-	m_dataChoicedCrypto.Reset();
+	m_dataChosenStock.Reset();
+	m_dataChosenForex.Reset();
+	m_dataChosenCrypto.Reset();
 }
 
 void CWorldMarket::ResetMarket(void) {
@@ -102,13 +102,13 @@ void CWorldMarket::ResetMarket(void) {
 	LoadWorldExchangeDB(); // 装入世界交易所信息
 	LoadCountryDB();
 	LoadStockDB();
-	LoadWorldChoicedStock();
+	LoadWorldChosenStock();
 	LoadForexExchange();
 	LoadFinnhubForexSymbol();
-	LoadWorldChoicedForex();
+	LoadWorldChosenForex();
 	LoadCryptoExchange();
 	LoadFinnhubCryptoSymbol();
-	LoadWorldChoicedCrypto();
+	LoadWorldChosenCrypto();
 	LoadEconomicCalendarDB();
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
@@ -122,8 +122,7 @@ void CWorldMarket::ResetMarket(void) {
 	gl_systemMessage.PushInformationMessage(str);
 }
 
-bool CWorldMarket::PreparingExitMarket(void)
-{
+bool CWorldMarket::PreparingExitMarket(void) {
 	ASSERT(gl_systemStatus.IsExitingSystem());
 	DisconnectAllWebSocket();
 
@@ -182,7 +181,8 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
-	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+	if (!IsTimeToResetSystem(lCurrentTime)) {
+		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 		TaskProcessWebSocketData();
 		TaskUpdateWorldStockFromWebSocket();
 	}
@@ -202,14 +202,15 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskResetMarket(lCurrentTime);
 
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
-	if (!IsTimeToResetSystem(lCurrentTime)) { // 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+	if (!IsTimeToResetSystem(lCurrentTime)) {
+		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 			TaskUpdateCountryListDB();
 		}
 		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
 		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
-		if (IsNeedUpdateCryptoSymbolDB())  TaskUpdateFinnhubCryptoSymbolDB();
+		if (IsNeedUpdateCryptoSymbolDB()) TaskUpdateFinnhubCryptoSymbolDB();
 		if (IsNeedUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
 		if (IsNeedUpdateInsiderSentimentDB()) TaskUpdateInsiderSentimentDB();
 		TaskUpdateForexDayLineDB();
@@ -225,9 +226,9 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	if (IsCompanyNewsNeedUpdate()) TaskUpdateCompanyNewsDB();
-	if (IsBasicFinancialNeedUpdate())	TaskUpdateBasicFinancialDB();
+	if (IsBasicFinancialNeedUpdate()) TaskUpdateBasicFinancialDB();
 	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
-	if (IsNeedUpdateTiingoCryptoSymbol())	TaskUpdateTiingoCryptoSymbolDB();
+	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
 	// 更新股票基本情况最好放在最后。
 	if (gl_pFinnhubDataSource->IsSymbolUpdated() && IsStockProfileNeedUpdate()) {
@@ -249,9 +250,11 @@ bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 ///
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	if (HaveResetMarketPerssion()) { // 如果允许重置系统
-		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
-			SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+	if (HaveResetMarketPerssion()) {
+		// 如果允许重置系统
+		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) {
+			// 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
+			SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 			SetResetMarketPerssion(false); // 今天不再允许重启系统。
 			SetSystemReady(false);
 			return true;
@@ -263,7 +266,7 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
 		thread thread1(ThreadUpdateTiingoIndustry, this);
-		thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
 	return false;
@@ -272,7 +275,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 bool CWorldMarket::TaskUpdateSICIndustry(void) {
 	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
 		thread thread1(ThreadUpdateSICIndustry, this);
-		thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
 	return false;
@@ -281,7 +284,7 @@ bool CWorldMarket::TaskUpdateSICIndustry(void) {
 bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
 	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
 		thread thread1(ThreadUpdateNaicsIndustry, this);
-		thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
 	return false;
@@ -308,17 +311,19 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubForexSymbol.GetForexSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
+			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
-					thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+					thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else { // 此种情况为有股票代码，但此代码尚未上市
+			else {
+				// 此种情况为有股票代码，但此代码尚未上市
 				pSymbol->SetIPOStatus(__STOCK_NOT_YET_LIST__);
 				CString str1 = pSymbol->GetSymbol();
 				str1 += _T(" 为未上市股票代码");
@@ -327,7 +332,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 		}
 	}
 
-	return(fUpdated);
+	return (fUpdated);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -351,22 +356,26 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubCryptoSymbol.GetCryptoSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
+			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
-					thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+					thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 					fUpdated = true;
 					//TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else { // 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
-				if (pSymbol->GetDayLineEndDate() > 19800101) { // 已退市
+			else {
+				// 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
+				if (pSymbol->GetDayLineEndDate() > 19800101) {
+					// 已退市
 					pSymbol->SetIPOStatus(__STOCK_DELISTED__);
 					pSymbol->SetUpdateProfileDB(true);
 				}
-				else { // 此种情况为有股票代码，但此代码尚未上市
+				else {
+					// 此种情况为有股票代码，但此代码尚未上市
 					pSymbol->SetIPOStatus(__STOCK_NOT_YET_LIST__);
 					CString str1 = pSymbol->GetSymbol();
 					str1 += _T(" 为未上市股票代码");
@@ -376,7 +385,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 		}
 	}
 
-	return(fUpdated);
+	return (fUpdated);
 }
 
 bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
@@ -385,9 +394,10 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
 		pStock = m_dataWorldStock.GetStock(l);
-		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {
+			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
-			thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_systemStatus.IsExitingSystem()) {
@@ -395,14 +405,15 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 		}
 	}
 
-	return(true);
+	return (true);
 }
 
 bool CWorldMarket::TaskCheckSystemReady(void) {
 	CString str = _T("");
 
 	if (!IsSystemReady()) {
-		if (gl_pFinnhubDataSource->IsSymbolUpdated() && gl_pFinnhubDataSource->IsForexExchangeUpdated() && gl_pFinnhubDataSource->IsForexSymbolUpdated()
+		if (gl_pFinnhubDataSource->IsSymbolUpdated() && gl_pFinnhubDataSource->IsForexExchangeUpdated() &&
+			gl_pFinnhubDataSource->IsForexSymbolUpdated()
 			&& gl_pFinnhubDataSource->IsCryptoExchangeUpdated() && gl_pFinnhubDataSource->IsCryptoSymbolUpdated()) {
 			str = _T("世界市场初始化完毕");
 			gl_systemMessage.PushInformationMessage(str);
@@ -416,85 +427,85 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 
 bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
 	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateDayLineDB() {
 	thread thread1(ThreadUpdateWorldStockDayLineDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateWorldMarketStockProfileDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateCompanyNewsDB(void) {
 	thread thread1(ThreadUpdateCompanyNewsDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateBasicFinancialDB(void) {
 	thread thread1(ThreadUpdateBasicFinancialDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateCountryListDB(void) {
 	thread thread1(ThreadUpdateCountryListDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateInsiderTransactionDB(void) {
 	thread thread1(ThreadUpdateInsiderTransactionDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateInsiderSentimentDB(void) {
 	thread thread1(ThreadUpdateInsiderSentimentDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateTiingoStockDB(void) {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateTiingoCryptoSymbolDB(void) {
 	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
 	thread thread1(ThreadUpdateForexExchangeDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateForexSymbolDB() {
 	thread thread1(ThreadUpdateForexSymbolDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
 	thread thread1(ThreadUpdateCryptoExchangeDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
 bool CWorldMarket::TaskUpdateFinnhubCryptoSymbolDB() {
 	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, this);
-	thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;
 }
 
@@ -549,7 +560,8 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
 		pStock = m_dataWorldStock.GetStock(l);
-		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
+			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
 			TRACE("更新%s company news数据\n", pStock->GetSymbol().GetBuffer());
 		}
@@ -558,7 +570,7 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 		}
 	}
 
-	return(true);
+	return (true);
 }
 
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {
@@ -684,20 +696,20 @@ vector<CString> CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 	vector<CString> vSymbol;
 
 	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataChoicedStock.GetSize(); l++) {
-		pStock = m_dataChoicedStock.GetStock(l);
+	for (long l = 0; l < m_dataChosenStock.GetSize(); l++) {
+		pStock = m_dataChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol());
 	}
 
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
-	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
-		pCrypto = m_dataChoicedCrypto.GetCrypto(l);
+	for (long l = 0; l < m_dataChosenCrypto.GetSize(); l++) {
+		pCrypto = m_dataChosenCrypto.GetCrypto(l);
 		vSymbol.push_back(pCrypto->GetSymbol());
 	}
 
 	CForexSymbolPtr pForex = nullptr;
-	for (long l = 0; l < m_dataChoicedForex.GetSize(); l++) {
-		pForex = m_dataChoicedForex.GetForex(l);
+	for (long l = 0; l < m_dataChosenForex.GetSize(); l++) {
+		pForex = m_dataChosenForex.GetForex(l);
 		vSymbol.push_back(pForex->GetSymbol());
 	}
 
@@ -724,8 +736,8 @@ vector<CString> CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 vector<CString> CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 	CWorldStockPtr pStock = nullptr;
 	vector<CString> vSymbol;
-	for (long l = 0; l < m_dataChoicedStock.GetSize(); l++) {
-		pStock = m_dataChoicedStock.GetStock(l);
+	for (long l = 0; l < m_dataChosenStock.GetSize(); l++) {
+		pStock = m_dataChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol());
 	}
 
@@ -743,8 +755,8 @@ vector<CString> CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 vector<CString> CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 	vector<CString> vSymbol;
-	for (long l = 0; l < m_dataChoicedCrypto.GetSize(); l++) {
-		pCrypto = m_dataChoicedCrypto.GetCrypto(l);
+	for (long l = 0; l < m_dataChosenCrypto.GetSize(); l++) {
+		pCrypto = m_dataChosenCrypto.GetCrypto(l);
 		vSymbol.push_back(pCrypto->GetSymbol());
 	}
 
@@ -762,8 +774,8 @@ vector<CString> CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 vector<CString> CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	CForexSymbolPtr pForex = nullptr;
 	vector<CString> vSymbol;
-	for (long l = 0; l < m_dataChoicedForex.GetSize(); l++) {
-		pForex = m_dataChoicedForex.GetForex(l);
+	for (long l = 0; l < m_dataChosenForex.GetSize(); l++) {
+		pForex = m_dataChosenForex.GetForex(l);
 		vSymbol.push_back(pForex->GetSymbol());
 	}
 
@@ -805,6 +817,7 @@ void CWorldMarket::StartTiingoCryptoWebSocket(void) {
 		}
 	}
 }
+
 void CWorldMarket::StartTiingoForexWebSocket(void) {
 	if (gl_systemConfigeration.IsUsingTiingoForexWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
 		if (gl_tiingoForexWebSocket.IsClosed()) {

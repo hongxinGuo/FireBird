@@ -136,8 +136,8 @@ public:
 	afx_msg void OnUpdateStockCode();
 	afx_msg void OnRebuildEpsSurprise();
 	afx_msg void OnRebuildPeer();
-	afx_msg void OnRebuildDayline();
-	afx_msg void OnUpdateWorldStockDaylineStartEnd();
+	afx_msg void OnRebuildDayLine();
+	afx_msg void OnUpdateWorldStockDayLineStartEnd();
 	afx_msg void OnRecordFinnhubWebSocket();
 	afx_msg void OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRecordTiingoCryptoWebSocket();
@@ -147,7 +147,7 @@ public:
 	afx_msg void OnRecordTiingoIexWebSocket();
 	afx_msg void OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRebuildBasicFinancial();
-	afx_msg void OnMaintainDayline();
-	afx_msg void OnUpdateMaintainDayline(CCmdUI* pCmdUI);
+	afx_msg void OnMaintainDayLine();
+	afx_msg void OnUpdateMaintainDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

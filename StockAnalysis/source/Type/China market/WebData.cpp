@@ -99,7 +99,7 @@ bool CWebData::CreateNlohmannJSon(long lBeginPos, long lEndPos) {
 	return m_fParsed;
 }
 
-void CWebData::__TEST_SetBuffer(CString strBuffer) {
+void CWebData::__Test_SetBuffer__(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
 	char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_sDataBuffer.at(i) = pBuffer[i]; }

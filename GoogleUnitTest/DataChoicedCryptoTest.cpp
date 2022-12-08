@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"DataChoicedCrypto.h"
+#include"DataChosenCrypto.h"
 
 using namespace testing;
 
@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CDataChoicedCryptoTest : public ::testing::Test {
+	class CDataChosenCryptoTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -32,20 +32,20 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CDataChoicedCrypto m_dataChoicedCrypto;
+		CDataChosenCrypto m_dataChosenCrypto;
 	};
 
-	TEST_F(CDataChoicedCryptoTest, TestInitialize) {
-		EXPECT_EQ(m_dataChoicedCrypto.GetSize(), 0);
+	TEST_F(CDataChosenCryptoTest, TestInitialize) {
+		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 0);
 	}
 
-	TEST_F(CDataChoicedCryptoTest, TestLoad) {
-		EXPECT_EQ(m_dataChoicedCrypto.GetSize(), 0) << "初始未装载Crypto代码";
+	TEST_F(CDataChosenCryptoTest, TestLoad) {
+		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 0) << "初始未装载Crypto代码";
 
-		m_dataChoicedCrypto.LoadDB();
-		EXPECT_EQ(m_dataChoicedCrypto.GetSize(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
+		m_dataChosenCrypto.LoadDB();
+		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
 
-		CFinnhubCryptoSymbolPtr pCrypto = m_dataChoicedCrypto.GetCrypto(2);
+		CFinnhubCryptoSymbolPtr pCrypto = m_dataChosenCrypto.GetCrypto(2);
 		EXPECT_STREQ(pCrypto->GetSymbol(), _T("BINANCE:OCEANBTC")) << "装载时没有排序，使用的是原始位置";
 	}
 }

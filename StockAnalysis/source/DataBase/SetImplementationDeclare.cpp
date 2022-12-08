@@ -10,10 +10,10 @@
 #include "SetFinnhubCryptoExchange.h"
 #include "SetFinnhubForexExchange.h"
 
-#include "SetWorldChoicedStock.h"
-#include "SetWorldChoicedCrypto.h"
-#include "SetWorldChoicedForex.h"
-#include "SetChinaChoicedStock.h"
+#include "SetWorldChosenStock.h"
+#include "SetWorldChosenCrypto.h"
+#include "SetWorldChosenForex.h"
+#include "SetChinaChosenStock.h"
 
 #include "SetDayLineBasicInfo.h"
 #include "SetWeekLineBasicInfo.h"
@@ -35,11 +35,11 @@ IMPLEMENT_DYNAMIC(CSetFinnhubStockExchange, CVirtualSetExchange)
 IMPLEMENT_DYNAMIC(CSetFinnhubCryptoExchange, CVirtualSetExchange)
 IMPLEMENT_DYNAMIC(CSetFinnhubForexExchange, CVirtualSetExchange)
 
-IMPLEMENT_DYNAMIC(CSetWorldChoicedStock, CVirtualSetChoicedStake)
-IMPLEMENT_DYNAMIC(CSetWorldChoicedCrypto, CVirtualSetChoicedStake)
-IMPLEMENT_DYNAMIC(CSetWorldChoicedForex, CVirtualSetChoicedStake)
+IMPLEMENT_DYNAMIC(CSetWorldChosenStock, CVirtualSetChosenStake)
+IMPLEMENT_DYNAMIC(CSetWorldChosenCrypto, CVirtualSetChosenStake)
+IMPLEMENT_DYNAMIC(CSetWorldChosenForex, CVirtualSetChosenStake)
 
-IMPLEMENT_DYNAMIC(CSetChinaChoicedStock, CVirtualSetChoicedStake)
+IMPLEMENT_DYNAMIC(CSetChinaChosenStock, CVirtualSetChosenStake)
 
 IMPLEMENT_DYNAMIC(CSetDayLineBasicInfo, CVirtualSetHistoryCandleBasic)
 IMPLEMENT_DYNAMIC(CSetWeekLineBasicInfo, CVirtualSetHistoryCandleBasic)

@@ -275,7 +275,7 @@ bool CDataChinaStock::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
 	ASSERT(!pStock->IsDayLineNeedSaving());
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	pStock->SetDayLineNeedUpdate(false);
-	strReturn += XferStandredToNetease(pStock->GetSymbol());
+	strReturn += XferStandardToNetease(pStock->GetSymbol());
 	GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
 	return true;
 }
@@ -285,14 +285,14 @@ CString CDataChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CStri
 	CString strStockCode, strStockExchange, strStockSymbol;
 
 	if (m_vStock.size() == 0) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandredToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
+	strReturn = XferStandardToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
 	GetNextIndex(iStockIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
 	while (iCount < lTotalNumber) { // 每次最大查询量为lTotalNumber个股票
 		if (m_vStock.at(iStockIndex)->IsActive() || m_vStock.at(iStockIndex)->IsIPOed()) {
 			iCount++;
 			strReturn += strPostfix;
-			strReturn += XferStandredToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
+			strReturn += XferStandardToSina(m_vStock.at(iStockIndex)->GetSymbol());  // 得到第一个股票代码
 		}
 		GetNextIndex(iStockIndex);
 	}
@@ -304,7 +304,7 @@ CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber
 	CString strStockCode, strRight6, strLeft2, strPrefix;
 	CString strNeteaseRTDataInquiringStr = _T("");
 
-	strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
+	strNeteaseRTDataInquiringStr = XferStandardToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
 	GetNextIndex(m_lNeteaseRTDataInquiringIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
 	while (iCount < lTotalNumber) { // 每次最大查询量为lTotalNumber个股票
@@ -312,7 +312,7 @@ CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber
 			//if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive()) {
 			iCount++;
 			strNeteaseRTDataInquiringStr += _T(",");
-			strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
+			strNeteaseRTDataInquiringStr += XferStandardToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
 		}
 		GetNextIndex(m_lNeteaseRTDataInquiringIndex);
 	}

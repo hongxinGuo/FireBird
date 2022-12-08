@@ -67,9 +67,6 @@
     <Filter Include="头文件\Data container\Tiingo">
       <UniqueIdentifier>{bc91b495-7b4a-4ba3-9aa1-a4270def5934}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Data container\Choiced">
-      <UniqueIdentifier>{237ef972-1915-4cf5-a62b-f1fef65ddc84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Data container\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
@@ -84,9 +81,6 @@
     </Filter>
     <Filter Include="源文件\Data container\Tiingo">
       <UniqueIdentifier>{bcb4b930-521d-410c-a40a-ba064df92c84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Data container\Choiced">
-      <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Data container\China Market">
       <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
@@ -181,12 +175,18 @@
     <Filter Include="源文件\Web Inquiry\World market">
       <UniqueIdentifier>{04b7abed-f107-450d-bf34-24f02f191a01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Data container\Chosen">
+      <UniqueIdentifier>{237ef972-1915-4cf5-a62b-f1fef65ddc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Data container\Chosen">
+      <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChoicedStock.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetChinaChosenStock.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\ChinaMarket\SetCurrentWeekLine.h">
@@ -276,13 +276,13 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetTiingoStock.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedCrypto.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenCrypto.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedForex.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenForex.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChoicedStock.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldChosenStock.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStock.h">
@@ -291,7 +291,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\WorldMarket\SetWorldStockDayLine.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChoicedStake.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetChosenStake.h">
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\VirtualSetExchange.h">
@@ -405,14 +405,14 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.h">
-      <Filter>头文件\Data container\Choiced</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenCrypto.h">
+      <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedForex.h">
-      <Filter>头文件\Data container\Choiced</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenForex.h">
+      <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChoicedStock.h">
-      <Filter>头文件\Data container\Choiced</Filter>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\DataChosenStock.h">
+      <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h">
       <Filter>头文件\Data container</Filter>
@@ -666,9 +666,6 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\accessory\Semaphore.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -917,14 +914,14 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedStock.cpp">
-      <Filter>源文件\Data container\Choiced</Filter>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenStock.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedCrypto.cpp">
-      <Filter>源文件\Data container\Choiced</Filter>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenCrypto.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChoicedForex.cpp">
-      <Filter>源文件\Data container\Choiced</Filter>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\DataChosenForex.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>

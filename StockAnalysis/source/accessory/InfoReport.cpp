@@ -11,24 +11,22 @@ void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
 }
 
 void ReportWebError(DWORD dwErrorNo, CString strInputMessage) {
-	CString strMessage, strErrorNo;
 	char buffer[30];
 
 	sprintf_s(buffer, _T("%d"), dwErrorNo);
-	strErrorNo = buffer;
-	strMessage = _T("Net Error #") + strErrorNo;
+	CString const strErrorNo = buffer;
+	CString strMessage = _T("Net Error #") + strErrorNo;
 	strMessage += _T(" message: ");
 	strMessage += strInputMessage;
 	gl_systemMessage.PushErrorMessage(strMessage);
 }
 
 void ReportWebError(DWORD dwErrorNo, long long llTime, CString strInputMessage) {
-	CString strMessage, strErrorNo;
 	char buffer[30];
 
 	sprintf_s(buffer, _T("%d"), dwErrorNo);
-	strErrorNo = buffer;
-	strMessage = _T("Net Error #") + strErrorNo;
+	CString const strErrorNo = buffer;
+	CString strMessage = _T("Net Error #") + strErrorNo;
 	sprintf_s(buffer, _T(" %lld∫¡√Î"), llTime);
 	strMessage += _T(" ”√ ±:");
 	strMessage += buffer;

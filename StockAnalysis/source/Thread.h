@@ -49,7 +49,7 @@ UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为19
 // 更新选项数据库
 UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为20
 // 更新选项数据库
-UINT ThreadAppendChoicedStockDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为22
+UINT ThreadAppendChosenStockDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为22
 // 生成周线历史数据
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate); // 此线程的返回值为25
 // 生成股票的周线历史数据

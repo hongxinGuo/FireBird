@@ -13,6 +13,3 @@ CThreadStatus::CThreadStatus() {
 	m_NumberOfSavingThread = 0;
 	m_NumberOfWebInquiringThread = 0;
 }
-
-CThreadStatus::~CThreadStatus() {
-}

@@ -1,21 +1,21 @@
-// VirtualSetChoicedStake.h : VirtualSetChoicedStake 类的实现
+// VirtualSetChosenStake.h : VirtualSetChosenStake 类的实现
 
-// VirtualSetChoicedStake 实现
+// VirtualSetChosenStake 实现
 
 #include"pch.h"
 
-#include "VirtualSetChoicedStake.h"
+#include "VirtualSetChosenStake.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetChoicedStake, CVirtualRecordset)
+IMPLEMENT_DYNAMIC(CVirtualSetChosenStake, CVirtualRecordset)
 
-CVirtualSetChoicedStake::CVirtualSetChoicedStake(CString strSchema, CString strTable, CDatabase* pdb)
-	: CVirtualRecordset(strSchema, strTable, pdb) {
+CVirtualSetChosenStake::CVirtualSetChosenStake(CString strSchema, CString strTable, CDatabase* pDatabase)
+	: CVirtualRecordset(strSchema, strTable, pDatabase) {
 	m_ID = 0;
 	m_Symbol = _T("");
 	m_nFields = 2;
 }
 
-void CVirtualSetChoicedStake::DoFieldExchange(CFieldExchange* pFX) {
+void CVirtualSetChosenStake::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。
@@ -23,15 +23,16 @@ void CVirtualSetChoicedStake::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
 }
+
 /////////////////////////////////////////////////////////////////////////////
-// CVirtualSetChoicedStake 诊断
+// CVirtualSetChosenStake 诊断
 
 #ifdef _DEBUG
-void CVirtualSetChoicedStake::AssertValid() const {
+void CVirtualSetChosenStake::AssertValid() const {
 	CVirtualRecordset::AssertValid();
 }
 
-void CVirtualSetChoicedStake::Dump(CDumpContext& dc) const {
+void CVirtualSetChosenStake::Dump(CDumpContext& dc) const {
 	CVirtualRecordset::Dump(dc);
 }
 #endif //_DEBUG

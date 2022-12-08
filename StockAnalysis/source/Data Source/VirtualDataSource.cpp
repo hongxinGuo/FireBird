@@ -55,7 +55,7 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 // 只允许同时处理一条信息。即信息从申请至处理完之前，不允许处理下一条信息。这样能够保证同一性。且由于Finnhub网站有速度限制，
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
 //
-// 目前已将中国市场的SinaRT、NeteaseRT、TengxunRT和NeteaseDayline的数据使用此数据源实现了。由于SinaRT和NeteaseRT要求的实时性比较强，
+// 目前已将中国市场的SinaRT、NeteaseRT、TengxunRT和NeteaseDayLine的数据使用此数据源实现了。由于SinaRT和NeteaseRT要求的实时性比较强，
 // 故而该两个数据源采用先返回后处理数据的模式。--20221120
 //
 //////////////////////////////////////////////

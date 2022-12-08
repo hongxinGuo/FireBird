@@ -1,12 +1,12 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"NeteaseDaylineWebData.h"
+#include"NeteaseDayLineWebData.h"
 
-class CNeteaseDaylineDataSource : public CVirtualDataSource {
+class CNeteaseDayLineDataSource : public CVirtualDataSource {
 public:
-	CNeteaseDaylineDataSource();
-	virtual ~CNeteaseDaylineDataSource();
+	CNeteaseDayLineDataSource();
+	virtual ~CNeteaseDayLineDataSource();
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
@@ -16,5 +16,5 @@ public:
 protected:
 };
 
-typedef shared_ptr<CNeteaseDaylineDataSource> CNeteaseDaylineDataSourcePtr;
-extern CNeteaseDaylineDataSourcePtr gl_pNeteaseDaylineDataSource;
+typedef shared_ptr<CNeteaseDayLineDataSource> CNeteaseDayLineDataSourcePtr;
+extern CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource;

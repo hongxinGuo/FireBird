@@ -28,9 +28,9 @@ UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket) {
 	return 20;
 }
 
-UINT ThreadAppendChoicedStockDB(not_null<CChinaMarket*> pMarket) {
+UINT ThreadAppendChosenStockDB(not_null<CChinaMarket*> pMarket) {
 	gl_ThreadStatus.IncreaseSavingThread();
-	pMarket->AppendChoicedStockDB();
+	pMarket->AppendChosenStockDB();
 	gl_ThreadStatus.DecreaseSavingThread();
 	return 22;
 }

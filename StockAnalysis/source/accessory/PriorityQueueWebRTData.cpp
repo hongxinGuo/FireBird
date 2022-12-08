@@ -10,32 +10,31 @@ CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {
 
 void CPriorityQueueWebRTData::Reset(void) {
 	m_MutexAccessData.lock();
-	const size_t lTotal = m_priorityqueueStockData.size();
-	for (int i = 0; i < lTotal; i++) { // 清空队列
-		m_priorityqueueStockData.pop();
+	const size_t lTotal = m_priorityQueueWebRTData.size();
+	for (int i = 0; i < lTotal; i++) {
+		// 清空队列
+		m_priorityQueueWebRTData.pop();
 	}
 	m_MutexAccessData.unlock();
 }
 
 void CPriorityQueueWebRTData::PushData(CWebRTDataPtr pData) {
 	m_MutexAccessData.lock();
-	m_priorityqueueStockData.push(pData);
+	m_priorityQueueWebRTData.push(pData);
 	m_MutexAccessData.unlock();
 }
 
 CWebRTDataPtr CPriorityQueueWebRTData::PopData(void) {
-	CWebRTDataPtr pData;
 	m_MutexAccessData.lock();
-	pData = m_priorityqueueStockData.top();
-	m_priorityqueueStockData.pop();
+	CWebRTDataPtr pData = m_priorityQueueWebRTData.top();
+	m_priorityQueueWebRTData.pop();
 	m_MutexAccessData.unlock();
 	return pData;
 }
 
 size_t CPriorityQueueWebRTData::Size(void) {
-	size_t size = 0;
 	m_MutexAccessData.lock();
-	size = m_priorityqueueStockData.size();
+	size_t const size = m_priorityQueueWebRTData.size();
 	m_MutexAccessData.unlock();
 	return size;
 }
