@@ -6,9 +6,6 @@
 CDataWorldStockDayLine::CDataWorldStockDayLine() {
 }
 
-CDataWorldStockDayLine::~CDataWorldStockDayLine() {
-}
-
 bool CDataWorldStockDayLine::SaveDB(CString strStockSymbol) {
 	CSetWorldStockDayLine setWorldStockDayLineBasic;
 	UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);

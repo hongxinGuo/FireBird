@@ -60,12 +60,12 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
-		p->SetProductType(__STOCK_SYMBOLS__);
+		p->SetProductType(_STOCK_SYMBOLS_);
 		gl_pTiingoDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pTiingoDataSource->IsStockSymbolUpdated());
 		gl_pTiingoDataSource->SetStockSymbolUpdated(false);
 
-		p->SetProductType(__CRYPTO_SYMBOLS__);
+		p->SetProductType(_CRYPTO_SYMBOLS_);
 		gl_pTiingoDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pTiingoDataSource->IsCryptoSymbolUpdated());
 		gl_pTiingoDataSource->SetCryptoSymbolUpdated(false);
@@ -162,7 +162,7 @@ namespace StockAnalysisTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_SYMBOLS__) {
+	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pTiingoDataSource->StoreInquiry(p);
@@ -184,7 +184,7 @@ namespace StockAnalysisTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage__STOCK_CANDLES__) {
+	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_CANDLES_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
 

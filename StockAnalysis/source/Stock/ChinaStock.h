@@ -3,14 +3,14 @@
 //成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 enum {
-	__ATTACK_BUY__ = 1,
-	__STRONG_BUY__ = 2,
-	__ORDINARY_BUY__ = 3,
-	__UNKNOWN_BUYSELL__ = 4,
-	__ORDINARY_SELL__ = 5,
-	__STRONG_SELL__ = 6,
-	__ATTACK_SELL__ = 7,
-	__NO_TRANSACTION__ = 8
+	_ATTACK_BUY_ = 1,
+	_STRONG_BUY_ = 2,
+	_ORDINARY_BUY_ = 3,
+	_UNKNOWN_BUYSELL_ = 4,
+	_ORDINARY_SELL_ = 5,
+	_STRONG_SELL_ = 6,
+	_ATTACK_SELL_ = 7,
+	_NO_TRANSACTION_ = 8
 };
 
 #include"RSReference.h"
@@ -419,7 +419,7 @@ public:
 
 public:
 	// 测试专用函数
-	void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
+	void _TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 public:
 protected:
 	long m_lOffsetInContainer; // 在容器中的偏移量

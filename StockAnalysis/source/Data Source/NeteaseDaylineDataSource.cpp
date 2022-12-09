@@ -9,9 +9,6 @@ CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	Reset();
 }
 
-CNeteaseDayLineDataSource::~CNeteaseDayLineDataSource() {
-}
-
 bool CNeteaseDayLineDataSource::Reset(void) {
 	return true;
 }
@@ -29,9 +26,10 @@ bool CNeteaseDayLineDataSource::UpdateStatus(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CNeteaseDayLineDataSource::Inquire(long lCurrentTime) {
-	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (
+		gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
-			CVirtualProductWebDataPtr product = make_shared<CProductNeteaseDayLine>();
+			const auto product = make_shared<CProductNeteaseDayLine>();
 			StoreInquiry(product);
 			SetInquiring(true);
 			return true;

@@ -3,10 +3,10 @@
 #include"VirtualDataSource.h"
 #include"NeteaseDayLineWebData.h"
 
-class CNeteaseDayLineDataSource : public CVirtualDataSource {
+class CNeteaseDayLineDataSource final : public CVirtualDataSource {
 public:
 	CNeteaseDayLineDataSource();
-	virtual ~CNeteaseDayLineDataSource();
+	~CNeteaseDayLineDataSource() override = default;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

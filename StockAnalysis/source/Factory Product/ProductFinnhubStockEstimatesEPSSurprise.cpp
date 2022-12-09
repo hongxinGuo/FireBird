@@ -59,8 +59,8 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEPSSurprise;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEPSSurprise; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEPSSurprise; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvEPSSurprise; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvEPSSurprise; }
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {

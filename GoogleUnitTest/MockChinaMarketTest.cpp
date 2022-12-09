@@ -139,7 +139,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong2StockSet) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetSystemReady(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
@@ -156,7 +156,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrong2StockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		gl_pMockChinaMarket->SetChosen10RSStrong2StockSet(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
@@ -166,7 +166,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong1StockSet) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetSystemReady(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
@@ -183,7 +183,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrong1StockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		gl_pMockChinaMarket->SetChosen10RSStrong1StockSet(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
@@ -193,7 +193,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrongStockSet) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetSystemReady(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
@@ -210,7 +210,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrongStockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		gl_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
@@ -220,7 +220,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockChinaMarketTest, TestProcessTodayStock) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetSystemReady(false);
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskProcessTodayStock(150359));
@@ -240,7 +240,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsTodayStockProcessed()) << _T("此标志由工作线程负责设置，故而此时尚未设置");
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pMockChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskProcessTodayStock(150400));
 		EXPECT_FALSE(gl_pMockChinaMarket->IsTodayStockProcessed()) << _T("休息日不处理");
@@ -251,7 +251,7 @@ namespace StockAnalysisTest {
 		gl_pMockChinaMarket->CalculateTime();
 		gl_pMockChinaMarket->SetNewestTransactionTime(gl_pMockChinaMarket->GetUTCTime());
 		long lDate = TransferToDate(gl_pMockChinaMarket->GetNewestTransactionTime());
-		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
+		gl_pMockChinaMarket->_TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
 			.Times(1)
 			.WillOnce(Return(4000));
@@ -274,7 +274,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_FALSE(gl_pMockChinaMarket->IsTodayStockProcessed());
 
-		gl_pMockChinaMarket->__TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
+		gl_pMockChinaMarket->_TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
 			.Times(1)
 			.WillOnce(Return(4000));

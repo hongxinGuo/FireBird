@@ -49,7 +49,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_InsiderSentimentUpdateDate = 19800101;
 	m_LastRTDataUpdateDate = 19800101;
 	m_LastEPSSurpriseUpdateDate = 19800101;
-	m_IPOStatus = __STOCK_NOT_CHECKED__;
+	m_IPOStatus = _STOCK_NOT_CHECKED_;
 
 	// Tiingo Symbol–≈œ¢
 	m_TiingoPermaTicker = _T("");

@@ -12,9 +12,6 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	Reset();
 }
 
-CVirtualDataSource::~CVirtualDataSource(void) {
-}
-
 bool CVirtualDataSource::Reset(void) {
 	m_fInquiring = false;
 	m_fWebInquiryFinished = true;
@@ -25,7 +22,8 @@ bool CVirtualDataSource::Reset(void) {
 void CVirtualDataSource::Run(long lCurrentTime) {
 	if (!m_fEnable) return; // 不允许执行的话，直接返回
 	Inquire(lCurrentTime);
-	if (ProcessWebDataReceived()) { // 先处理接收到的网络数据
+	if (ProcessWebDataReceived()) {
+		// 先处理接收到的网络数据
 		UpdateStatus();
 	}
 	ProcessInquiringMessage(); // 然后再申请下一个网络数据
@@ -37,8 +35,10 @@ void CVirtualDataSource::Run(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
-	if (HaveInquiry()) { // 有申请等待？
-		if (IsWebInquiryFinishedAndClearFlag()) { //已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+	if (HaveInquiry()) {
+		// 有申请等待？
+		if (IsWebInquiryFinishedAndClearFlag()) {
+			//已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
 			SetCurrentInquiryFunction(m_pCurrentProduct->CreateMessage()); // 设置功能字符串
 			StartThreadGetWebData();
@@ -62,14 +62,18 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	CWebDataPtr pWebData = nullptr;
 
-	if (HaveReceiviedData()) {  // 处理当前网络数据
+	if (HaveReceivedData()) {
+		// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
 		pWebData = GetReceivedData();
 		if (pWebData->IsParsed()) {
 			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
-			if (m_pCurrentProduct->IsNoRightToAccess()) { // 如果系统报告无权查询此类数据
+			if (m_pCurrentProduct->IsNoRightToAccess()) {
+				// 如果系统报告无权查询此类数据
 				// 目前先在软件系统消息中报告
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+				gl_systemMessage.PushInnerSystemInformationMessage(
+					_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->
+					GetInquiringExchange());
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
 		}
@@ -86,9 +90,11 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 
 // 此信号量用于解析WebSource中的数据。
 // 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
-counting_semaphore<3> gl_WebSourceParseAndStoreData{ 3 };
+counting_semaphore<3> gl_WebSourceParseAndStoreData{3};
 
-UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData) {
+UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource,
+                                         not_null<CVirtualProductWebDataPtr> pProductWebData,
+                                         not_null<CWebDataPtr> pWebData) {
 	gl_WebSourceParseAndStoreData.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	pDataSource->ParseAndStoreData(pProductWebData, pWebData);

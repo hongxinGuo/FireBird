@@ -5,9 +5,6 @@
 CDataCryptoDayLine::CDataCryptoDayLine() {
 }
 
-CDataCryptoDayLine::~CDataCryptoDayLine() {
-}
-
 bool CDataCryptoDayLine::SaveDB(CString strCryptoSymbol) {
 	CSetCryptoDayLine setCryptoDayLineBasic;
 	UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);

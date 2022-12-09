@@ -23,7 +23,6 @@
 
 #include"SetCurrentWeekLine.h"
 
-
 #include<thread>
 #include<algorithm>
 #include<set>
@@ -122,9 +121,9 @@ void CChinaMarket::Reset(void) {
 	}
 	else SetTodayStockProcessed(false);
 
-	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = __CHINA_MARKET_BEGIN_DATE__;
+	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = _CHINA_MARKET_BEGIN_DATE_;
 	m_lLastLoginTime = 0;
-	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = __CHINA_MARKET_BEGIN_DATE__;
+	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = _CHINA_MARKET_BEGIN_DATE_;
 
 	m_fSaveDayLine = false;
 	m_fMarketOpened = false;
@@ -333,7 +332,7 @@ bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool 
 	pStock->SetTodayNewStock(true);
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
-	pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
+	pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 	pStock->SetOffset(GetTotalStock());
 	pStock->SetDayLineEndDate(19900101);
 	pStock->SetDayLineStartDate(19900101);
@@ -436,7 +435,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 			// 这里在发行版运行时出现错误，原因待查。
 			if (pRTData->IsValidTime(14)) {
 				pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
-				pStock->SetIPOStatus(__STOCK_IPOED__);
+				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) {
@@ -1521,7 +1520,7 @@ bool CChinaMarket::CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long 
 }
 
 bool CChinaMarket::CreatingThreadBuildWeekLineRS(void) {
-	thread thread1(ThreadBuildWeekLineRS, this, __CHINA_MARKET_BEGIN_DATE__);
+	thread thread1(ThreadBuildWeekLineRS, this, _CHINA_MARKET_BEGIN_DATE_);
 	thread1.detach();
 
 	return true;
@@ -1791,19 +1790,19 @@ void CChinaMarket::LoadOptionDB(void) {
 	CSetOption setOption;
 	setOption.Open();
 	if (setOption.IsEOF()) {
-		SetRSStartDate(__CHINA_MARKET_BEGIN_DATE__);
-		SetRSEndDate(__CHINA_MARKET_BEGIN_DATE__);
-		SetLastLoginDate(__CHINA_MARKET_BEGIN_DATE__);
-		SetUpdatedDateFor10DaysRS1(__CHINA_MARKET_BEGIN_DATE__);
-		SetUpdatedDateFor10DaysRS2(__CHINA_MARKET_BEGIN_DATE__);
+		SetRSStartDate(_CHINA_MARKET_BEGIN_DATE_);
+		SetRSEndDate(_CHINA_MARKET_BEGIN_DATE_);
+		SetLastLoginDate(_CHINA_MARKET_BEGIN_DATE_);
+		SetUpdatedDateFor10DaysRS1(_CHINA_MARKET_BEGIN_DATE_);
+		SetUpdatedDateFor10DaysRS2(_CHINA_MARKET_BEGIN_DATE_);
 	}
 	else {
 		if (setOption.m_RSEndDate == 0) {
-			SetRSEndDate(__CHINA_MARKET_BEGIN_DATE__);
+			SetRSEndDate(_CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetRSEndDate(setOption.m_RSEndDate);
-			if (GetRSEndDate() == __CHINA_MARKET_BEGIN_DATE__) {
+			if (GetRSEndDate() == _CHINA_MARKET_BEGIN_DATE_) {
 				// 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
 				// 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
 				// 使用8.0.27测试，发现可以采用4个线程了（20211103）
@@ -1814,13 +1813,13 @@ void CChinaMarket::LoadOptionDB(void) {
 			}
 		}
 		if (setOption.m_RSStartDate == 0) {
-			SetRSStartDate(__CHINA_MARKET_BEGIN_DATE__);
+			SetRSStartDate(_CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetRSStartDate(setOption.m_RSStartDate);
 		}
 		if (setOption.m_LastLoginDate == 0) {
-			SetLastLoginDate(__CHINA_MARKET_BEGIN_DATE__);
+			SetLastLoginDate(_CHINA_MARKET_BEGIN_DATE_);
 		}
 		else {
 			SetLastLoginDate(setOption.m_LastLoginDate);

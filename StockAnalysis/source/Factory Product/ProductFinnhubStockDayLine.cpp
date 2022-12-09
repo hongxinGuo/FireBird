@@ -54,7 +54,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			long lSize = pStock->GetDayLineSize() - 1;
 			CDayLinePtr pDayLine = pStock->GetDayLine(lSize);
 			if (!IsEarlyThen(pDayLine->GetMarketDate(), ((CWorldMarket*)m_pMarket)->GetMarketDate(), 100)) {
-				pStock->SetIPOStatus(__STOCK_IPOED__);
+				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 			return true;
 		}
@@ -78,8 +78,8 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvDayLine; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvDayLine; }
 
 	ppt = pWebData->GetPTree();
 	try {

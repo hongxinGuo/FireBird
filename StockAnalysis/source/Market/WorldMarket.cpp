@@ -324,7 +324,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 			}
 			else {
 				// 此种情况为有股票代码，但此代码尚未上市
-				pSymbol->SetIPOStatus(__STOCK_NOT_YET_LIST__);
+				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 				CString str1 = pSymbol->GetSymbol();
 				str1 += _T(" 为未上市股票代码");
 				gl_systemMessage.PushDayLineInfoMessage(str1);
@@ -371,12 +371,12 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 				// 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
 				if (pSymbol->GetDayLineEndDate() > 19800101) {
 					// 已退市
-					pSymbol->SetIPOStatus(__STOCK_DELISTED__);
+					pSymbol->SetIPOStatus(_STOCK_DELISTED_);
 					pSymbol->SetUpdateProfileDB(true);
 				}
 				else {
 					// 此种情况为有股票代码，但此代码尚未上市
-					pSymbol->SetIPOStatus(__STOCK_NOT_YET_LIST__);
+					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 					CString str1 = pSymbol->GetSymbol();
 					str1 += _T(" 为未上市股票代码");
 					gl_systemMessage.PushDayLineInfoMessage(str1);

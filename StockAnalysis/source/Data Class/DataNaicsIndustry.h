@@ -5,10 +5,10 @@
 #include<vector>
 #include<map>
 
-class CDataNaicsIndustry : public CObject {
+class CDataNaicsIndustry final : public CObject {
 public:
 	CDataNaicsIndustry();
-	~CDataNaicsIndustry();
+	~CDataNaicsIndustry() override = default;
 	void Reset(void);
 
 	size_t GetTotalNaicsIndustry(void) noexcept { return m_vNaicsIndustry.size(); }

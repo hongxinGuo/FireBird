@@ -7,7 +7,6 @@
 #include"NeteaseDayLineWebData.h"
 #include"WebData.h"
 
-
 #include<string>
 
 #ifdef _DEBUG
@@ -27,10 +26,11 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			m_qDataTest.Reset();
 			GeneralCheck();
 		}
+
 		shared_ptr<T> m_data1;
 		shared_ptr<T> m_data2;
 		CTemplateMutexAccessQueue<T> m_qDataTest;
@@ -47,9 +47,19 @@ namespace StockAnalysisTest {
 	}
 
 	TYPED_TEST_P(CTemplateMutexAccessQueueTest, TestPushPopData) {
+		EXPECT_TRUE(this->m_qDataTest.Empty()) << "初始时队列是空的";
 		this->m_qDataTest.PushData(this->m_data1);
+		EXPECT_FALSE(this->m_qDataTest.Empty()) << "此时队列中有一个数据";
+		EXPECT_EQ(this->m_qDataTest.Size(), 1);
 		this->m_qDataTest.PushData(this->m_data2);
+		EXPECT_FALSE(this->m_qDataTest.Empty()) << "此时队列中有两个数据";
+		EXPECT_EQ(this->m_qDataTest.Size(), 2);
 		EXPECT_EQ(this->m_qDataTest.PopData(), this->m_data1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
+
+		EXPECT_EQ(this->m_qDataTest.Size(), 1);
+		EXPECT_FALSE(this->m_qDataTest.Empty()) << "此时队列中有一个数据";
+		this->m_qDataTest.PopData();
+		EXPECT_TRUE(this->m_qDataTest.Empty()) << "此时队列是空的";
 	}
 
 	REGISTER_TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest, TestReset, TestPushPopData);

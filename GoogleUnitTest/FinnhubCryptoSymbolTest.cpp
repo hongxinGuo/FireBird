@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetExchangeCode(), _T(" "));
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsDayLineNeedUpdate());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsDayLineNeedSaving());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateProfileDB());
@@ -92,8 +92,8 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetIPOStatus) {
 		CFinnhubCryptoSymbol symbol;
 
-		symbol.SetIPOStatus(__STOCK_IPOED__);
-		EXPECT_EQ(symbol.GetIPOStatus(), __STOCK_IPOED__);
+		symbol.SetIPOStatus(_STOCK_IPOED_);
+		EXPECT_EQ(symbol.GetIPOStatus(), _STOCK_IPOED_);
 	}
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineNeedSaving) {
 		CFinnhubCryptoSymbol symbol;
@@ -109,12 +109,12 @@ namespace StockAnalysisTest {
 		CFinnhubCryptoSymbol symbol;
 
 		EXPECT_TRUE(symbol.IsDayLineNeedUpdate());
-		symbol.SetIPOStatus(__STOCK_NULL__);
+		symbol.SetIPOStatus(_STOCK_NULL_);
 		symbol.SetCheckingDayLineStatus();
 		EXPECT_FALSE(symbol.IsDayLineNeedUpdate());
 
 		symbol.SetDayLineNeedUpdate(true);
-		symbol.SetIPOStatus(__STOCK_IPOED__);
+		symbol.SetIPOStatus(_STOCK_IPOED_);
 		symbol.SetDayLineEndDate(gl_pWorldMarket->GetLastTradeDate());
 		symbol.SetCheckingDayLineStatus();
 		EXPECT_FALSE(symbol.IsDayLineNeedUpdate());
@@ -197,7 +197,7 @@ namespace StockAnalysisTest {
 		FinnhubCryptoSymbol.SetExchangeCode(_T("US"));
 		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
-		FinnhubCryptoSymbol.SetIPOStatus(__STOCK_DELISTED__);
+		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
 		FinnhubCryptoSymbol.SetDayLineNeedUpdate(false);
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
@@ -219,7 +219,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetExchangeCode(), _T("US"));
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 20000101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 10000101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), __STOCK_DELISTED__);
+		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_DELISTED_);
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsDayLineNeedUpdate());
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsDayLineNeedSaving());
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsUpdateProfileDB());
@@ -242,7 +242,7 @@ namespace StockAnalysisTest {
 		FinnhubCryptoSymbol.SetExchangeCode(_T("US"));
 		FinnhubCryptoSymbol.SetDayLineStartDate(20000101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(10000101);
-		FinnhubCryptoSymbol.SetIPOStatus(__STOCK_DELISTED__);
+		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_DELISTED_);
 		FinnhubCryptoSymbol.SetDayLineNeedUpdate(false);
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
@@ -261,7 +261,7 @@ namespace StockAnalysisTest {
 		FinnhubCryptoSymbol.SetExchangeCode(_T("US changed"));
 		FinnhubCryptoSymbol.SetDayLineStartDate(101);
 		FinnhubCryptoSymbol.SetDayLineEndDate(101);
-		FinnhubCryptoSymbol.SetIPOStatus(__STOCK_IPOED__);
+		FinnhubCryptoSymbol.SetIPOStatus(_STOCK_IPOED_);
 		FinnhubCryptoSymbol.SetDayLineNeedUpdate(TRUE);
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(FALSE);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(FALSE);
@@ -283,7 +283,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetExchangeCode(), _T("US changed"));
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 101);
-		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_IPOED_);
 		EXPECT_TRUE(FinnhubCryptoSymbol.IsDayLineNeedUpdate());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsDayLineNeedSaving());
 		EXPECT_FALSE(FinnhubCryptoSymbol.IsUpdateProfileDB());

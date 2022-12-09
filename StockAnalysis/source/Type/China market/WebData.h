@@ -20,7 +20,7 @@ using namespace boost::property_tree;
 
 #include"nlohmannJsonDeclaration.h"
 
-constexpr int __DefaultWebDataBufferSize__ = 1024 * 1024;
+constexpr int _DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData final : public CObject {
 public:
@@ -102,7 +102,7 @@ public:
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数
-	void __Test_SetBuffer__(CString strBuffer);
+	void _Test_SetBuffer_(CString strBuffer);
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式

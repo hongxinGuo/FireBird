@@ -411,7 +411,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
 	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。
-	m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);
+	m_uIdTimer = SetTimer(_STOCK_ANALYSIS_TIMER_, 100, nullptr);
 	if (m_uIdTimer == 0) {
 		TRACE(_T("生成100ms时钟时失败\n"));
 	}
@@ -578,7 +578,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	char buffer[50]{};
 	CString str;
 
-	ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
+	ASSERT(nIDEvent == _STOCK_ANALYSIS_TIMER_);
 	counter.start();
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
@@ -939,7 +939,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDayLineRS() {
 	// TODO: Add your command handler code here
-	gl_pChinaMarket->CreatingThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DATE__);
+	gl_pChinaMarket->CreatingThreadBuildDayLineRS(_CHINA_MARKET_BEGIN_DATE_);
 }
 
 void CMainFrame::OnBuildResetMarket() {

@@ -91,10 +91,10 @@ public:
 
 public:
 	// 测试用函数
-	void __TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
-	void __TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
-	void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
-	void __TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
+	void _TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
+	void _TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
+	void _TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
+	void _TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
 	// Finnhub.io提供的信息

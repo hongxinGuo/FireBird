@@ -5,7 +5,7 @@
 #include"stdafx.h"
 #include "OutputWnd.h"
 
-constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
+constexpr int _STOCK_ANALYSIS_TIMER_ = 1;
 
 class CMainFrame : public CFrameWndEx
 {

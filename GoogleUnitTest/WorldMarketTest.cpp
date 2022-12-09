@@ -502,18 +502,18 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
 		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
-		EXPECT_EQ(pForexSymbol->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_EQ(pForexSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pForexSymbol->SetUpdateProfileDB(true);
-		pForexSymbol->SetIPOStatus(__STOCK_DELISTED__);
+		pForexSymbol->SetIPOStatus(_STOCK_DELISTED_);
 		gl_pWorldMarket->UpdateForexSymbolDB();
 
 		CSetFinnhubForexSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'OANDA:GBP_ZAR'");
 		setCryptoSymbol.Open();
-		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, __STOCK_DELISTED__);
+		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, _STOCK_DELISTED_);
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		setCryptoSymbol.Edit();
-		setCryptoSymbol.m_IPOStatus = __STOCK_IPOED__;
+		setCryptoSymbol.m_IPOStatus = _STOCK_IPOED_;
 		setCryptoSymbol.Update();
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
@@ -540,18 +540,18 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
 		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
-		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pCryptoSymbol->SetUpdateProfileDB(true);
-		pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+		pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 		gl_pWorldMarket->UpdateFinnhubCryptoSymbolDB();
 
 		CSetFinnhubCryptoSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
 		setCryptoSymbol.Open();
-		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, __STOCK_DELISTED__) << "状态已被修改为摘牌";
+		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, _STOCK_DELISTED_) << "状态已被修改为摘牌";
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		setCryptoSymbol.Edit();
-		setCryptoSymbol.m_IPOStatus = __STOCK_IPOED__;
+		setCryptoSymbol.m_IPOStatus = _STOCK_IPOED_;
 		setCryptoSymbol.Update();
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
@@ -886,7 +886,7 @@ namespace StockAnalysisTest {
 		CWorldStockPtr pStock = nullptr;
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetIPOStatus(__STOCK_IPOED__);
+			pStock->SetIPOStatus(_STOCK_IPOED_);
 			pStock->SetDayLineStartDate(20200101);
 			pStock->SetDayLineEndDate(20200101);
 			pStock->SetDayLineNeedUpdate(false);

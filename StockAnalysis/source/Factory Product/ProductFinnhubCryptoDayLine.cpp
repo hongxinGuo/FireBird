@@ -46,10 +46,10 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pCryptoSymbol->UpdateDayLine(*pvDayLine);
 		pCryptoSymbol->UpdateDayLineStartEndDate();
 		if (gl_pWorldMarket->GetLastTradeDate() <= pCryptoSymbol->GetDayLineEndDate()) {
-			pCryptoSymbol->SetIPOStatus(__STOCK_IPOED__);
+			pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
 		}
 		else {
-			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 		}
 		pCryptoSymbol->SetDayLineNeedSaving(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);
@@ -57,7 +57,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	else {
 		pCryptoSymbol->SetDayLineNeedSaving(false);
 		if (!pCryptoSymbol->IsDelisted()) {
-			pCryptoSymbol->SetIPOStatus(__STOCK_DELISTED__);
+			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 			pCryptoSymbol->SetUpdateProfileDB(true);
 			fStatus = true;
 		}
@@ -84,8 +84,8 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvDayLine; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvDayLine; }
 
 	ppt = pWebData->GetPTree();
 	try {

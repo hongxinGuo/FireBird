@@ -56,7 +56,7 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		time_t tt2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->__TEST_SetUTCTime(tt);
+		gl_pChinaMarket->_TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt2);
 		EXPECT_FALSE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";

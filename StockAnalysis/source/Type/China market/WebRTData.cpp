@@ -147,10 +147,10 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 
 		if (pSinaWebRTData->GetCurrentPosData() == 'h') {
 			// 上海股票
-			wMarket = __SHANGHAI_MARKET__; // 上海股票标识
+			wMarket = _SHANGHAI_MARKET_; // 上海股票标识
 		}
 		else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
-			wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
+			wMarket = _SHENZHEN_MARKET_; // 深圳股票标识
 		}
 		else {
 			throw exception();
@@ -161,10 +161,10 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		buffer2[6] = 0x000;
 		strStockSymbol = buffer2;
 		switch (wMarket) {
-		case __SHANGHAI_MARKET__:
+		case _SHANGHAI_MARKET_:
 			strSinaStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
 			break;
-		case __SHENZHEN_MARKET__:
+		case _SHENZHEN_MARKET_:
 			strSinaStockCode = _T("sz") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
 			break;
 		default:
@@ -501,10 +501,10 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		pTengxunWebRTData->IncreaseCurrentPos(3);
 		if (pTengxunWebRTData->GetCurrentPosData() == 'h') {
 			// 上海股票
-			wMarket = __SHANGHAI_MARKET__; // 上海股票标识
+			wMarket = _SHANGHAI_MARKET_; // 上海股票标识
 		}
 		else if (pTengxunWebRTData->GetCurrentPosData() == 'z') {
-			wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
+			wMarket = _SHENZHEN_MARKET_; // 深圳股票标识
 		}
 		else {
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无效市场代码"));
@@ -517,10 +517,10 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		buffer2[6] = 0x000;
 		strStockSymbol = buffer2;
 		switch (wMarket) {
-		case __SHANGHAI_MARKET__:
+		case _SHANGHAI_MARKET_:
 			strTengxunStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
 			break;
-		case __SHENZHEN_MARKET__:
+		case _SHENZHEN_MARKET_:
 			strTengxunStockCode = _T("sz") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
 			break;
 		default:
@@ -549,9 +549,9 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		}
 #ifdef DEBUG
 		if (lTemp == 1)
-			ASSERT(wMarket == __SHANGHAI_MARKET__);
+			ASSERT(wMarket == _SHANGHAI_MARKET_);
 		else if (lTemp == 51)
-			ASSERT(wMarket == __SHENZHEN_MARKET__);
+			ASSERT(wMarket == _SHENZHEN_MARKET_);
 		else
 			ASSERT(0); // 报错
 #endif

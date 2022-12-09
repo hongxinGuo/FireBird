@@ -77,37 +77,37 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pFinnhubDataSource->SetCurrentInquiry(p);
 
-		p->SetProductType(__ECONOMIC_COUNTRY_LIST__);
+		p->SetProductType(_ECONOMIC_COUNTRY_LIST_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsCountryListUpdated());
 		gl_pFinnhubDataSource->SetCountryListUpdated(false);
 
-		p->SetProductType(__COMPANY_PROFILE__);
+		p->SetProductType(_COMPANY_PROFILE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
-		p->SetProductType(__COMPANY_PROFILE_CONCISE__);
+		p->SetProductType(_COMPANY_PROFILE_CONCISE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
-		p->SetProductType(__PEERS__);
+		p->SetProductType(_PEERS_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsPeerUpdated());
 		gl_pFinnhubDataSource->SetPeerUpdated(false);
 
-		p->SetProductType(__FOREX_EXCHANGE__);
+		p->SetProductType(_FOREX_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
 		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
 
-		p->SetProductType(__CRYPTO_EXCHANGE__);
+		p->SetProductType(_CRYPTO_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
 
-		p->SetProductType(__ECONOMIC_CALENDAR__);
+		p->SetProductType(_ECONOMIC_CALENDAR_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
 		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(false);
@@ -633,7 +633,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_COMPANY_PROFILE_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyProfile>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -659,7 +659,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE_CONCISE__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_COMPANY_PROFILE_CONCISE_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -685,7 +685,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_SYMBOLS__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_STOCK_SYMBOLS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubStockSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -710,7 +710,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__PEERS__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_PEERS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -736,7 +736,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_EPS_SURPRISE__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_STOCK_EPS_SURPRISE_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -759,7 +759,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_QUOTE__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_STOCK_QUOTE_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubStockPriceQuote>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -782,7 +782,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_STOCK_CANDLES_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -808,7 +808,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__FOREX_SYMBOLS__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_FOREX_SYMBOLS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubForexSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -831,7 +831,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__FOREX_CANDLES__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_FOREX_CANDLES_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubForexDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -856,7 +856,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__CRYPTO_SYMBOLS__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_CRYPTO_SYMBOLS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCryptoSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
@@ -879,7 +879,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage__CRYPTO_CANDLES__) {
+	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage_CRYPTO_CANDLES_) {
 		CFinnhubCryptoDayLinePtr p = make_shared<CProductFinnhubCryptoDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());

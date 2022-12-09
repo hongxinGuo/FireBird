@@ -14,7 +14,7 @@ CVirtualSetStockSymbol::CVirtualSetStockSymbol(CString strSchema, CString strTab
 	m_DisplaySymbol = _T(" ");
 	m_DayLineStartDate = 29900101;
 	m_DayLineEndDate = 19800101;
-	m_IPOStatus = __STOCK_NOT_CHECKED__;
+	m_IPOStatus = _STOCK_NOT_CHECKED_;
 
 	m_nFields = 8;
 }

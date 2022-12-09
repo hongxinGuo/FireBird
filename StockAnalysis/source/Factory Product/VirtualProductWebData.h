@@ -8,8 +8,8 @@
 #include"WebData.h"
 
 enum {
-	__VOID_DATA__ = 1,
-	__NO_ACCESS_RIGHT__ = 2,
+	_VOID_DATA_ = 1,
+	_NO_ACCESS_RIGHT_ = 2,
 };
 
 class CVirtualProductWebData : public CObject {
@@ -27,15 +27,15 @@ public:
 
 	bool IsVoidJson(CWebDataPtr pWebData) {
 		if (pWebData->IsVoidJson()) {
-			m_iReceivedDataStatus = __VOID_DATA__;
+			m_iReceivedDataStatus = _VOID_DATA_;
 			return true;
 		}
 		else return false;
 	}
 
-	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == __VOID_DATA__; }
+	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == _VOID_DATA_; }
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
-	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == __NO_ACCESS_RIGHT__; }
+	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == _NO_ACCESS_RIGHT_; }
 
 	CString GetClassName(void) { return m_strClassName; }
 	CString GetInquiry(void) { return m_strInquiry; }
@@ -73,7 +73,7 @@ struct FinnhubWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__Test_SetBuffer__(strData);
+		m_pData->_Test_SetBuffer_(strData);
 	}
 
 	~FinnhubWebData() = default;
@@ -90,7 +90,7 @@ struct TiingoWebData {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
-		m_pData->__Test_SetBuffer__(strData);
+		m_pData->_Test_SetBuffer_(strData);
 	}
 
 	~TiingoWebData() {

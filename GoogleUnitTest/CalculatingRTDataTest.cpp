@@ -208,12 +208,12 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);
 		switch (iCount) {
 		case 0: // 成交1万股@10.00
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_SELL__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _ORDINARY_SELL_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 10);
 
 			break;
 		case 1: // 成交10万股@10.01，出现新的挂单位置：1025，1014， 987， 986，挂单量同时变化。
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_BUY__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _ORDINARY_BUY_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 10.01);
 			for (int i = 9980; i <= 10030; i += 10) {
 				EXPECT_EQ(m_stock.GetGuadan(i), 10000);
@@ -230,7 +230,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(9860), 10000);
 			break;
 		case 2: // 成交20万股@10.02，出现新的挂单量
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_BUY__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _ATTACK_BUY_);
 			EXPECT_EQ(m_stock.GetCurrentTransationVolume(), 200000);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 10.019);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 11600);
@@ -245,7 +245,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 10100);
 			break;
 		case 3: // 无成交，出现撤单。
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_BUY__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _STRONG_BUY_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 10.029);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
@@ -259,7 +259,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 4:
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_SELL__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _ATTACK_SELL_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 9.991);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
@@ -273,7 +273,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 5:
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_SELL__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _STRONG_SELL_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 9.971);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
@@ -287,7 +287,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 6:
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __NO_TRANSACTION__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _NO_TRANSACTION_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 0);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
@@ -301,7 +301,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
 			break;
 		case 7:
-			EXPECT_EQ(m_stock.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+			EXPECT_EQ(m_stock.GetCurrentTransactionType(), _UNKNOWN_BUYSELL_);
 			EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuadanTransactionPrice(), 10.005);
 			EXPECT_EQ(m_stock.GetGuadan(9960), 8400);
 			EXPECT_EQ(m_stock.GetGuadan(9970), 9200);
@@ -416,16 +416,16 @@ namespace StockAnalysisTest {
 		id.SetLastRTData(pLastRTData);
 		id.SetCurrentTransationVolume(10000);
 		id.CalculateOrdinaryBuySell(99998); //
-		EXPECT_EQ(id.GetCurrentTransactionType(), __ORDINARY_BUY__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _ORDINARY_BUY_);
 		EXPECT_EQ(id.GetOrdinaryBuyVolume(), 10000);
 		id.CalculateOrdinaryBuySell(99992); //
-		EXPECT_EQ(id.GetCurrentTransactionType(), __ORDINARY_SELL__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _ORDINARY_SELL_);
 		EXPECT_EQ(id.GetOrdinarySellVolume(), 10000);
 		id.CalculateOrdinaryBuySell(99997); //
-		EXPECT_EQ(id.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _UNKNOWN_BUYSELL_);
 		EXPECT_EQ(id.GetUnknownVolume(), 10000);
 		id.CalculateOrdinaryBuySell(99993); //
-		EXPECT_EQ(id.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _UNKNOWN_BUYSELL_);
 		EXPECT_EQ(id.GetUnknownVolume(), 20000); // 加了两次10000
 	}
 
@@ -534,7 +534,7 @@ namespace StockAnalysisTest {
 		CChinaStock id;
 		id.SetCurrentTransationVolume(10000);
 		id.CalculateAttackBuy();
-		EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_BUY__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _ATTACK_BUY_);
 		EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
 		EXPECT_EQ(id.GetAttackBuyVolume(), 10000);
 		id.SetCurrentTransationVolume(100000);
@@ -554,7 +554,7 @@ namespace StockAnalysisTest {
 		CChinaStock id;
 		id.SetCurrentTransationVolume(10000);
 		id.CalculateStrongBuy();
-		EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_BUY__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _STRONG_BUY_);
 		EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
 		EXPECT_EQ(id.GetStrongBuyVolume(), 10000);
 		id.SetCurrentTransationVolume(100000);
@@ -593,7 +593,7 @@ namespace StockAnalysisTest {
 		CChinaStock id;
 		id.SetCurrentTransationVolume(10000);
 		id.CalculateAttackSell();
-		EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_SELL__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _ATTACK_SELL_);
 		EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
 		EXPECT_EQ(id.GetAttackSellVolume(), 10000);
 		id.SetCurrentTransationVolume(100000);
@@ -613,7 +613,7 @@ namespace StockAnalysisTest {
 		CChinaStock id;
 		id.SetCurrentTransationVolume(10000);
 		id.CalculateStrongSell();
-		EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_SELL__);
+		EXPECT_EQ(id.GetCurrentTransactionType(), _STRONG_SELL_);
 		EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
 		EXPECT_EQ(id.GetStrongSellVolume(), 10000);
 		id.SetCurrentTransationVolume(100000);

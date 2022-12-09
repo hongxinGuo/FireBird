@@ -38,8 +38,8 @@ namespace StockAnalysisTest {
 	TEST_F(CWeekLineTest, TestGetDate) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWeekLine dl;
-		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CWeekLineTest, TestGetTime) {
@@ -870,7 +870,7 @@ namespace StockAnalysisTest {
 	TEST_F(CWeekLineTest, TestLoadWeekLine) {
 		CWeekLine id, id2;
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
-		id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
+		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol(_T("600000.SS"));
 		id.SetDisplaySymbol(_T("ÆÖ·¢ÒøÐÐ"));
 		id.SetLastClose(1010);

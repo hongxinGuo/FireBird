@@ -63,7 +63,7 @@ END_MESSAGE_MAP()
 
 CStockAnalysisView::CStockAnalysisView() {
 	// TODO: 在此处添加构造代码
-	m_iCurrentShowType = __SHOW_DAY_LINE_DATA__; // 显示日线数据
+	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
 	}
@@ -589,10 +589,10 @@ bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
 	if (pStock != nullptr) {
 		switch (m_iCurrentShowType) {
-		case __SHOW_DAY_LINE_DATA__:
+		case _SHOW_DAY_LINE_DATA_:
 			m_pCurrentDataHistoryCandle = pStock->GetDataChinaDayLine();
 			break;
-		case __SHOW_WEEK_LINE_DATA__:
+		case _SHOW_WEEK_LINE_DATA_:
 			m_pCurrentDataHistoryCandle = pStock->GetDataChinaWeekLine();
 			break;
 		default:
@@ -663,15 +663,15 @@ void CStockAnalysisView::Show(CDC* pdc) {
 	ASSERT(gl_pChinaMarket->GetCurrentStock() != nullptr);
 	ASSERT(gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded());
 	switch (m_iCurrentShowType) {
-	case __SHOW_DAY_LINE_DATA__: // show day line(or week line) stock data
-	case __SHOW_WEEK_LINE_DATA__:
+	case _SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
+	case _SHOW_WEEK_LINE_DATA_:
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowStockHistoryDataLine(&m_MemoryDC);
 		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
 		if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
 		break;
-	case __SHOW_REAL_TIME_DATA__:	// show realtime stock data
+	case _SHOW_REAL_TIME_DATA_:	// show realtime stock data
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowRealtimeData(&m_MemoryDC);
@@ -914,7 +914,7 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 
 void CStockAnalysisView::OnShowDayLine() {
 	// TODO: Add your command handler code here
-	m_iCurrentShowType = __SHOW_DAY_LINE_DATA__;
+	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
 	}
@@ -922,24 +922,24 @@ void CStockAnalysisView::OnShowDayLine() {
 
 void CStockAnalysisView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (m_iCurrentShowType == __SHOW_DAY_LINE_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == _SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowRealTime() {
 	// TODO: Add your command handler code here
-	m_iCurrentShowType = __SHOW_REAL_TIME_DATA__;
+	m_iCurrentShowType = _SHOW_REAL_TIME_DATA_;
 }
 
 void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (m_iCurrentShowType == __SHOW_REAL_TIME_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == _SHOW_REAL_TIME_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowWeekLine() {
 	// TODO: Add your command handler code here
-	m_iCurrentShowType = __SHOW_WEEK_LINE_DATA__;
+	m_iCurrentShowType = _SHOW_WEEK_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaWeekLine();
 	}
@@ -947,6 +947,6 @@ void CStockAnalysisView::OnShowWeekLine() {
 
 void CStockAnalysisView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (m_iCurrentShowType == __SHOW_WEEK_LINE_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
+	if (m_iCurrentShowType == _SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

@@ -16,54 +16,54 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iIndex) {
-	case __STOCK_SYMBOLS__:
+	case _STOCK_SYMBOLS_:
 		p = make_shared<CProductTinngoStockSymbol>();
 		break;
-	case __STOCK_PRICE_CANDLES__:
+	case _STOCK_PRICE_CANDLES_:
 		p = make_shared<CProductTiingoStockDayLine>();
 		break;
-	case __COMPANY_PROFILE__:
-	case __COMPANY_PROFILE_CONCISE__:
-	case __COMPANY_EXECTIVE__: // Premium
-	case __MARKET_NEWS__:
-	case __COMPANY_NEWS__:
-	case __PRESS_RELEASE__: // Premium
-	case __NEWS_SENTIMENT__:
-	case __PEERS__:
-	case __BASIC_FINANCIALS__:
-	case __INSIDER_TRANSACTION__:
-	case __OWNERSHIP__: // Premium
-	case __FUND_OWNERSHIP__: // jPremium
-	case __FINANCIAL__: // Premium
-	case __FINAICIAL_AS_REPORTED__:
-	case __SEC_FILINGS__:
-	case __INTERNATIONAL_FILINGS__: // Premium
-	case __SEC_SENTIMENT_ANALYSIS__: // Premium
-	case __SIMILARITY_INDEX__: // Premium
-	case __IPO_CALENDAR__:
-	case __DIVIDENDS__: // Premium
-	case __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__:
-	case __STOCK_ESTIMATES_PRICE_TARGET__:
-	case __STOCK_ESTIMATES_UPGRADE_DOWNGRADE__: // Premium
-	case __STOCK_ESTIMATES_REVENUE_EXTIMATES__: // Premium
-	case __STOCK_ESTIMATES_EPS_EXTIMATES__:// Premium
-	case __STOCK_ESTIMATES_EPS_SURPRISE__:
-	case __STOCK_ESTIMATES_EARNING_CALENDAR__:
-	case __STOCK_PRICE_QUOTE__:
-	case __STOCK_PRICE_TICK_DATA__: // Premium
-	case __STOCK_PRICE_LAST_BID_ASK__: // Premium
-	case __STOCK_PRICE_SPLITS__:
-	case __FOREX_EXCHANGE__:
-	case __FOREX_SYMBOLS__:
-	case __FOREX_CANDLES__:
-	case __FOREX_ALL_RATES__:
-	case __CRYPTO_EXCHANGE__:
-	case __CRYPTO_SYMBOLS__:
+	case _COMPANY_PROFILE_:
+	case _COMPANY_PROFILE_CONCISE_:
+	case _COMPANY_EXECTIVE_: // Premium
+	case _MARKET_NEWS_:
+	case _COMPANY_NEWS_:
+	case _PRESS_RELEASE_: // Premium
+	case _NEWS_SENTIMENT_:
+	case _PEERS_:
+	case _BASIC_FINANCIALS_:
+	case _INSIDER_TRANSACTION_:
+	case _OWNERSHIP_: // Premium
+	case _FUND_OWNERSHIP_: // jPremium
+	case _FINANCIAL_: // Premium
+	case _FINAICIAL_AS_REPORTED_:
+	case _SEC_FILINGS_:
+	case _INTERNATIONAL_FILINGS_: // Premium
+	case _SEC_SENTIMENT_ANALYSIS_: // Premium
+	case _SIMILARITY_INDEX_: // Premium
+	case _IPO_CALENDAR_:
+	case _DIVIDENDS_: // Premium
+	case _STOCK_ESTIMATES_RECOMMENDATION_TRENDS_:
+	case _STOCK_ESTIMATES_PRICE_TARGET_:
+	case _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
+	case _STOCK_ESTIMATES_REVENUE_EXTIMATES_: // Premium
+	case _STOCK_ESTIMATES_EPS_EXTIMATES_:// Premium
+	case _STOCK_ESTIMATES_EPS_SURPRISE_:
+	case _STOCK_ESTIMATES_EARNING_CALENDAR_:
+	case _STOCK_PRICE_QUOTE_:
+	case _STOCK_PRICE_TICK_DATA_: // Premium
+	case _STOCK_PRICE_LAST_BID_ASK_: // Premium
+	case _STOCK_PRICE_SPLITS_:
+	case _FOREX_EXCHANGE_:
+	case _FOREX_SYMBOLS_:
+	case _FOREX_CANDLES_:
+	case _FOREX_ALL_RATES_:
+	case _CRYPTO_EXCHANGE_:
+	case _CRYPTO_SYMBOLS_:
 		p = make_shared<CProductTiingoCryptoSymbol>();
 		break;
-	case __CRYPTO_CANDLES__:
-	case __ECONOMIC_COUNTRY_LIST__:
-	case __ECONOMIC_CALENDAR__:
+	case _CRYPTO_CANDLES_:
+	case _ECONOMIC_COUNTRY_LIST_:
+	case _ECONOMIC_CALENDAR_:
 	default:
 		// not impliment yet.
 		p = make_shared<CProductDummy>();

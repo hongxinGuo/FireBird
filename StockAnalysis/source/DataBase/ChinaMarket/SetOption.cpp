@@ -7,13 +7,13 @@ IMPLEMENT_DYNAMIC(CSetOption, CVirtualRecordset)
 CSetOption::CSetOption(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_RSStartDate = __CHINA_MARKET_BEGIN_DATE__;
-	m_RSEndDate = __CHINA_MARKET_BEGIN_DATE__;
-	m_LastLoginDate = __CHINA_MARKET_BEGIN_DATE__;
+	m_RSStartDate = _CHINA_MARKET_BEGIN_DATE_;
+	m_RSEndDate = _CHINA_MARKET_BEGIN_DATE_;
+	m_LastLoginDate = _CHINA_MARKET_BEGIN_DATE_;
 	m_LastLoginTime = 0;
-	m_UpdatedDateFor10DaysRS1 = __CHINA_MARKET_BEGIN_DATE__;
-	m_UpdatedDateFor10DaysRS2 = __CHINA_MARKET_BEGIN_DATE__;
-	m_UpdatedDateFor10DaysRS = __CHINA_MARKET_BEGIN_DATE__;
+	m_UpdatedDateFor10DaysRS1 = _CHINA_MARKET_BEGIN_DATE_;
+	m_UpdatedDateFor10DaysRS2 = _CHINA_MARKET_BEGIN_DATE_;
+	m_UpdatedDateFor10DaysRS = _CHINA_MARKET_BEGIN_DATE_;
 	m_nFields = 7;
 }
 

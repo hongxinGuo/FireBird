@@ -6,8 +6,8 @@
 CWebData::CWebData() : CObject() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
-	m_sDataBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
-	m_lBufferLength = __DefaultWebDataBufferSize__;
+	m_sDataBuffer.resize(_DefaultWebDataBufferSize_); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
+	m_lBufferLength = _DefaultWebDataBufferSize_;
 	m_lCurrentPos = 0;
 
 	m_fJSonContentType = false;
@@ -99,7 +99,7 @@ bool CWebData::CreateNlohmannJSon(long lBeginPos, long lEndPos) {
 	return m_fParsed;
 }
 
-void CWebData::__Test_SetBuffer__(CString strBuffer) {
+void CWebData::_Test_SetBuffer_(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
 	char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_sDataBuffer.at(i) = pBuffer[i]; }

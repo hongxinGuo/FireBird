@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				auto pStock = gl_pChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
-				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 					if (pStock->GetDayLineEndDate() == 20210430) {
@@ -160,7 +160,7 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
 				auto pStock = gl_pMockChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
-				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(__STOCK_IPOED__); // 修改活跃股票的IPO状态
+				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pMockChinaMarket->GetMarketDate(), 30)) {
 					if (pStock->GetDayLineEndDate() == 20210430) {

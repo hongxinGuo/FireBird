@@ -44,7 +44,7 @@ bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			lTemp = TransferToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
-		pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
+		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pForexSymbol->UpdateDayLine(*pvDayLine);
 		pForexSymbol->SetDayLineNeedSaving(true);
 		pForexSymbol->SetUpdateProfileDB(true);
@@ -74,8 +74,8 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvDayLine; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvDayLine; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvDayLine; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvDayLine; }
 	ppt = pWebData->GetPTree();
 	try {
 		s = ppt->get<string>(_T("s"));

@@ -460,7 +460,7 @@ bool CDataChinaStock::TaskSaveDayLineData(void) {
 			}
 			else {
 				// 此种情况为有股票代码，但此代码尚未上市
-				pStock->SetIPOStatus(__STOCK_NOT_YET_LIST__);
+				pStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 				CString str1 = pStock->GetSymbol();
 				str1 += _T(" 为未上市股票代码");
 				gl_systemMessage.PushDayLineInfoMessage(str1);
@@ -625,7 +625,7 @@ long CDataChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		}
 		iCount++;
 		pStock->SetDayLineEndDate(lCurrentTradeDay);
-		pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+		pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
 		pStock->SetUpdateProfileDB(true);
 		pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
 	}

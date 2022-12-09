@@ -234,41 +234,41 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestIsNullStock) {
 		CWorldStock stock;
-		stock.SetIPOStatus(__STOCK_NULL__);
+		stock.SetIPOStatus(_STOCK_NULL_);
 		EXPECT_TRUE(stock.IsNullStock());
-		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsNullStock());
 	}
 
 	TEST_F(CWorldStockTest, TestIsIPOed) {
 		CWorldStock stock;
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_TRUE(stock.IsIPOed());
-		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsIPOed());
 	}
 
 	TEST_F(CWorldStockTest, TestIsNotChecked) {
 		CWorldStock stock;
-		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_TRUE(stock.IsNotChecked());
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		EXPECT_FALSE(stock.IsNotChecked());
 	}
 
 	TEST_F(CWorldStockTest, TestIsDelisted) {
 		CWorldStock stock;
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		EXPECT_TRUE(stock.IsDelisted());
-		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsDelisted());
 	}
 
 	TEST_F(CWorldStockTest, TestIsNotYetList) {
 		CWorldStock stock;
-		stock.SetIPOStatus(__STOCK_NOT_YET_LIST__);
+		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		EXPECT_TRUE(stock.IsNotYetList());
-		stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsNotYetList());
 	}
 
@@ -641,7 +641,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_NULL__);
+		stock.SetIPOStatus(_STOCK_NULL_);
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
 	}
 
@@ -649,7 +649,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		for (int i = 0; i < 7; i++) {
 			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
@@ -661,7 +661,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
 		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
@@ -675,7 +675,7 @@ namespace StockAnalysisTest {
 		long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		for (int i = 1; i < 6; i++) {
@@ -694,7 +694,7 @@ namespace StockAnalysisTest {
 		long lPrevDay = gl_pWorldMarket->GetPrevDay(lCurrentDay);
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		for (int i = 1; i < 6; i++) {
@@ -713,7 +713,7 @@ namespace StockAnalysisTest {
 		long lPrevMonday = GetPrevMonday(lCurrentDate);
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetPrevDay(lPrevMonday, 2), gl_pWorldMarket->GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
@@ -725,7 +725,7 @@ namespace StockAnalysisTest {
 		CWorldStock stock;
 
 		stock.SetDayLineNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_NOT_YET_LIST__);
+		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		for (int i = 0; i < 7; i++) {
 			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
@@ -738,41 +738,41 @@ namespace StockAnalysisTest {
 		long lCurrentDate = 20200101;
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_NULL__);
+		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(19700101);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20190819); // 不早于135天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20190818); // 早于135天， 不早于225天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20190521); // 早于135天， 不早于225天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20190520); // 早于135天， 不早于225天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
@@ -1389,14 +1389,14 @@ namespace StockAnalysisTest {
 
 		stock.SetPeerUpdated(true);
 		stock.SetPeerUpdateDate(20200101);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckPeerStatus(20200401); // 91天
 		EXPECT_FALSE(stock.IsPeerUpdated()) << "九十一天需更新";
 		stock.CheckPeerStatus(20200331); // 90天
 		EXPECT_TRUE(stock.IsPeerUpdated());
 
 		stock.SetPeerUpdated(false);
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckPeerStatus(20200331); // 90天
 		EXPECT_TRUE(stock.IsPeerUpdated()) << "九十天内无需更新";
 		stock.CheckPeerStatus(20200401); // 91天
@@ -1420,14 +1420,14 @@ namespace StockAnalysisTest {
 
 		stock.SetInsiderTransactionNeedUpdate(false);
 		stock.SetInsiderTransactionUpdateDate(20200101);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderTransactionStatus(20200201); // 31天
 		EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate()) << "三十一天需更新";
 		stock.CheckInsiderTransactionStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
 
 		stock.SetInsiderTransactionNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckInsiderTransactionStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "三十天内无需更新";
 		stock.CheckInsiderTransactionStatus(20200201); // 31天
@@ -1451,14 +1451,14 @@ namespace StockAnalysisTest {
 
 		stock.SetInsiderSentimentNeedUpdate(false);
 		stock.SetInsiderSentimentUpdateDate(20200101);
-		stock.SetIPOStatus(__STOCK_IPOED__);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderSentimentStatus(20200201); // 31天
 		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate()) << "三十一天需更新";
 		stock.CheckInsiderSentimentStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate());
 
 		stock.SetInsiderSentimentNeedUpdate(true);
-		stock.SetIPOStatus(__STOCK_DELISTED__);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckInsiderSentimentStatus(20200131); // 30天
 		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate()) << "三十天内无需更新";
 		stock.CheckInsiderSentimentStatus(20200201); // 31天

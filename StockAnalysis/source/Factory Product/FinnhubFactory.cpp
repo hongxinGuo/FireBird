@@ -35,109 +35,109 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iIndex) {
-	case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
+	case _COMPANY_PROFILE_: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
 		p = make_shared<CProductFinnhubCompanyProfile>();
 		break;
-	case __COMPANY_PROFILE_CONCISE__:
+	case _COMPANY_PROFILE_CONCISE_:
 		p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		break;
-	case  __STOCK_SYMBOLS__:
+	case  _STOCK_SYMBOLS_:
 		p = make_shared<CProductFinnhubStockSymbol>();
 		break;
-	case __COMPANY_EXECTIVE__: // Premium
+	case _COMPANY_EXECTIVE_: // Premium
 		break;
-	case __MARKET_NEWS__:
+	case _MARKET_NEWS_:
 		break;
-	case __COMPANY_NEWS__:
+	case _COMPANY_NEWS_:
 		p = make_shared<CProductFinnhubCompanyNews>();
 		break;
-	case __PRESS_RELEASE__: // Premium
+	case _PRESS_RELEASE_: // Premium
 		break;
-	case __NEWS_SENTIMENT__:
+	case _NEWS_SENTIMENT_:
 		break;
-	case __PEERS__:
+	case _PEERS_:
 		p = make_shared<CProductFinnhubCompanyPeer>();
 		break;
-	case __BASIC_FINANCIALS__:
+	case _BASIC_FINANCIALS_:
 		p = make_shared<CProductFinnhubCompanyBasicFinancial>();
 		break;
-	case __INSIDER_TRANSACTION__:
+	case _INSIDER_TRANSACTION_:
 		p = make_shared<CProductFinnhubCompanyInsiderTransaction>();
 		break;
-	case __INSIDER_SENTIMENT__:
+	case _INSIDER_SENTIMENT_:
 		p = make_shared<CProductFinnhubCompanyInsiderSentiment>();
 		break;
-	case __OWNERSHIP__: // Premium
+	case _OWNERSHIP_: // Premium
 		break;
-	case __FUND_OWNERSHIP__: // jPremium
+	case _FUND_OWNERSHIP_: // jPremium
 		break;
-	case __FINANCIAL__: // Premium
+	case _FINANCIAL_: // Premium
 		break;
-	case __FINAICIAL_AS_REPORTED__:
+	case _FINAICIAL_AS_REPORTED_:
 		break;
-	case __SEC_FILINGS__:
+	case _SEC_FILINGS_:
 		break;
-	case __INTERNATIONAL_FILINGS__: // Premium
+	case _INTERNATIONAL_FILINGS_: // Premium
 		break;
-	case __SEC_SENTIMENT_ANALYSIS__: // Premium
+	case _SEC_SENTIMENT_ANALYSIS_: // Premium
 		break;
-	case __SIMILARITY_INDEX__: // Premium
+	case _SIMILARITY_INDEX_: // Premium
 		break;
-	case __IPO_CALENDAR__:
+	case _IPO_CALENDAR_:
 		break;
-	case __DIVIDENDS__: // Premium
+	case _DIVIDENDS_: // Premium
 		break;
-	case __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__:
+	case _STOCK_ESTIMATES_RECOMMENDATION_TRENDS_:
 		break;
-	case __STOCK_ESTIMATES_PRICE_TARGET__:
+	case _STOCK_ESTIMATES_PRICE_TARGET_:
 		break;
-	case __STOCK_ESTIMATES_UPGRADE_DOWNGRADE__: // Premium
+	case _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
 		break;
-	case __STOCK_ESTIMATES_REVENUE_EXTIMATES__: // Premium
+	case _STOCK_ESTIMATES_REVENUE_EXTIMATES_: // Premium
 		break;
-	case __STOCK_ESTIMATES_EPS_EXTIMATES__:// Premium
+	case _STOCK_ESTIMATES_EPS_EXTIMATES_:// Premium
 		break;
-	case __STOCK_ESTIMATES_EPS_SURPRISE__:
+	case _STOCK_ESTIMATES_EPS_SURPRISE_:
 		p = make_shared<CProductFinnhubStockEstimatesEPSSurprise>();
 		break;
-	case __STOCK_ESTIMATES_EARNING_CALENDAR__:
+	case _STOCK_ESTIMATES_EARNING_CALENDAR_:
 		break;
-	case __STOCK_PRICE_QUOTE__:
+	case _STOCK_PRICE_QUOTE_:
 		p = make_shared<CProductFinnhubStockPriceQuote>();
 		break;
-	case __STOCK_PRICE_CANDLES__:
+	case _STOCK_PRICE_CANDLES_:
 		p = make_shared<CProductFinnhubStockDayLine>();
 		break;
-	case __STOCK_PRICE_TICK_DATA__: // Premium
+	case _STOCK_PRICE_TICK_DATA_: // Premium
 		break;
-	case __STOCK_PRICE_LAST_BID_ASK__: // Premium
+	case _STOCK_PRICE_LAST_BID_ASK_: // Premium
 		break;
-	case __STOCK_PRICE_SPLITS__:
+	case _STOCK_PRICE_SPLITS_:
 		break;
-	case __FOREX_EXCHANGE__:
+	case _FOREX_EXCHANGE_:
 		p = make_shared<CProductFinnhubForexExchange>();
 		break;
-	case __FOREX_SYMBOLS__:
+	case _FOREX_SYMBOLS_:
 		p = make_shared<CProductFinnhubForexSymbol>();
 		break;
-	case __FOREX_CANDLES__:
+	case _FOREX_CANDLES_:
 		p = make_shared<CProductFinnhubForexDayLine>();
 		break;
-	case __FOREX_ALL_RATES__:
+	case _FOREX_ALL_RATES_:
 		break;
-	case __CRYPTO_EXCHANGE__:
+	case _CRYPTO_EXCHANGE_:
 		p = make_shared<CProductFinnhubCryptoExchange>();
 		break;
-	case __CRYPTO_SYMBOLS__:
+	case _CRYPTO_SYMBOLS_:
 		p = make_shared<CProductFinnhubCryptoSymbol>();
 		break;
-	case __CRYPTO_CANDLES__:
+	case _CRYPTO_CANDLES_:
 		p = make_shared<CProductFinnhubCryptoDayLine>();
 		break;
-	case __ECONOMIC_COUNTRY_LIST__:
+	case _ECONOMIC_COUNTRY_LIST_:
 		p = make_shared<CProductFinnhubEconomicCountryList>();
 		break;
-	case __ECONOMIC_CALENDAR__:
+	case _ECONOMIC_CALENDAR_:
 		p = make_shared<CProductFinnhubEconomicCalendar>();
 		break;
 	default:

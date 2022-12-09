@@ -56,8 +56,8 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderTransaction;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvInsiderTransaction; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvInsiderTransaction; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvInsiderTransaction; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvInsiderTransaction; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("data"));

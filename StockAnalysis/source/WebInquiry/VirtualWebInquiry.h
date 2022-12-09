@@ -32,7 +32,7 @@ public:
 	bool VerifyDataLength();
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) { TRACE("调用了基类函数\n"); return false; }; // 解析接收到的数据。继承类必须实现此函数。
-	void ResetBuffer(void) { m_sBuffer.resize(__DefaultWebDataBufferSize__); }
+	void ResetBuffer(void) { m_sBuffer.resize(_DefaultWebDataBufferSize_); }
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
@@ -98,8 +98,8 @@ public:
 
 public:
 	// 以下为测试用函数
-	void __TESTSetBuffer(char* buffer, INT64 lTotalNumber);
-	void __TESTSetBuffer(CString str);
+	void _TESTSetBuffer(char* buffer, INT64 lTotalNumber);
+	void _TESTSetBuffer(CString str);
 
 protected:
 	CVirtualDataSource* m_pDataSource; // 指向包含自己的数据源。此指针必须使用裸指针，不能使用智能指针，否则解析时会出现循环，导致不可知的结果。

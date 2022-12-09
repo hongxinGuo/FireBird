@@ -35,7 +35,7 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 		if ((pStock->GetTransactionTime() + 3600 * 12 - ((CWorldMarket*)m_pMarket)->GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
 			if (!pStock->IsIPOed()) {
-				pStock->SetIPOStatus(__STOCK_IPOED__);
+				pStock->SetIPOStatus(_STOCK_IPOED_);
 				pStock->SetUpdateProfileDB(true);
 			}
 		}
@@ -52,8 +52,8 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return false; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return false; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return false; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return false; }
 	ppt = pWebData->GetPTree();
 	try {
 		dTemp = ptreeGetDouble(*ppt, _T("c"));

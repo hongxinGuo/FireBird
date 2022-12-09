@@ -83,7 +83,7 @@ namespace StockAnalysisTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
-			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
+			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
@@ -93,7 +93,7 @@ namespace StockAnalysisTest {
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(__STOCK_IPOED__);
+			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 
 			GeneralCheck();
 		}
@@ -163,7 +163,7 @@ namespace StockAnalysisTest {
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			lIPOStatus = gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->GetIPOStatus();
-			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(__STOCK_IPOED__);
+			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
@@ -200,7 +200,7 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
-			EXPECT_EQ(pCrypto->GetIPOStatus(), __STOCK_DELISTED__);
+			EXPECT_EQ(pCrypto->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 2: // sÏî±¨¸ænot ok

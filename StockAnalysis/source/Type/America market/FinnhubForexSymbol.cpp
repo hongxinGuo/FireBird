@@ -23,7 +23,7 @@ void CFinnhubForexSymbol::Reset(void) {
 
 void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-	if (m_lIPOStatus == __STOCK_NULL__) {
+	if (m_lIPOStatus == _STOCK_NULL_) {
 		SetDayLineNeedUpdate(false);
 	}
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。

@@ -23,7 +23,7 @@ namespace StockAnalysisTest {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
 			m_pData = make_shared<CWebData>();
-			m_pData->__Test_SetBuffer__(strData);
+			m_pData->_Test_SetBuffer_(strData);
 		}
 
 		~FinnhubWebData() {

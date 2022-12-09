@@ -40,8 +40,8 @@ namespace StockAnalysisTest {
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDate) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
-		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetTime) {

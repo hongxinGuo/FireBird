@@ -5,7 +5,7 @@
 // 成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 // 强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 //
-// 挂单的变化，以类型__TYPE_CANCELED_BUY__和__TYPE_CANCELED_SELL__标识。撤掉的买单为canceled sell；撤掉的买单为canceled buy。
+// 挂单的变化，以类型_TYPE_CANCELED_BUY_和_TYPE_CANCELED_SELL_标识。撤掉的买单为canceled sell；撤掉的买单为canceled buy。
 //
 // 循序渐进地增加函数功能。
 //
@@ -16,15 +16,15 @@
 #include<memory>
 
 enum {
-  __TYPE_UNKNOWN__ = 0,
-  __TYPE_BUY__ = 1,
-  __TYPE_ATTACK_BUY__ = 2,
-  __TYPE_STRONG_BUY__ = 3,
-  __TYPE_CANCELED_BUY__ = 4,
-  __TYPE_SELL__ = 11,
-  __TYPE_STRONG_SELL__ = 12,
-  __TYPE_ATTACK_SELL__ = 13,
-  __TYPE_CANCELED_SELL = 14,
+  _TYPE_UNKNOWN_ = 0,
+  _TYPE_BUY_ = 1,
+  _TYPE_ATTACK_BUY_ = 2,
+  _TYPE_STRONG_BUY_ = 3,
+  _TYPE_CANCELED_BUY_ = 4,
+  _TYPE_SELL_ = 11,
+  _TYPE_STRONG_SELL_ = 12,
+  _TYPE_ATTACK_SELL_ = 13,
+  _TYPE_CANCELED_SELL = 14,
 };
 
 class COneDeal

@@ -2,10 +2,10 @@
 
 #include"VirtualDataSource.h"
 
-class CSinaRTDataSource : public CVirtualDataSource {
+class CSinaRTDataSource final : public CVirtualDataSource {
 public:
 	CSinaRTDataSource();
-	virtual ~CSinaRTDataSource();
+	~CSinaRTDataSource() override = default;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

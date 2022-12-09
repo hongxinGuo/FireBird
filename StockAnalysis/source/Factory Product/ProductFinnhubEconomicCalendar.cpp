@@ -41,8 +41,8 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEconomicCalendar;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return pvEconomicCalendar; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return pvEconomicCalendar; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvEconomicCalendar; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvEconomicCalendar; }
 	ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("economicCalendar"));

@@ -8,8 +8,8 @@ CDataStockSymbol::CDataStockSymbol() {
 	for (int i = 0; i < 2000; i++) {
 		const auto pStockSection = make_shared<CStockSection>();
 		pStockSection->SetIndexNumber(i);
-		if (i < 1000) pStockSection->SetMarket(__SHANGHAI_MARKET__);
-		else pStockSection->SetMarket(__SHENZHEN_MARKET__);
+		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
+		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
 		m_vStockSection.at(i) = pStockSection;
 	}
 

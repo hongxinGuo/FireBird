@@ -36,8 +36,8 @@ namespace StockAnalysisTest {
 
 	TEST_F(CStockDayLineTest, TestGetDate) {
 		CDayLine dl;
-		dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(dl.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetTime) {
@@ -677,7 +677,7 @@ namespace StockAnalysisTest {
 	TEST_F(CStockDayLineTest, TestLoadChinaMarketStockDayLine) {
 		CDayLine id, id2;
 		CSetDayLineBasicInfo setDayLineBasicInfo;
-		id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
+		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol(_T("600000.SS"));
 		id.SetDisplaySymbol(_T("ÆÖ·¢ÒøÐÐ"));
 		id.SetLastClose(1010);
@@ -698,7 +698,7 @@ namespace StockAnalysisTest {
 		setDayLineBasicInfo.m_strSort = _T("[Date]");
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
-		EXPECT_EQ(id2.GetMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(id2.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_STREQ(id.GetStockSymbol(), id2.GetStockSymbol());
 		EXPECT_EQ(id2.GetOpen(), 1100);
 		EXPECT_EQ(id2.GetClose(), 1150);

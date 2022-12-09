@@ -2,10 +2,11 @@
 
 #include "VirtualDataHistoryCandleExtend.h"
 
-class CDataCryptoDayLine : public CVirtualDataHistoryCandleExtend {
+class CDataCryptoDayLine final : public CVirtualDataHistoryCandleExtend {
 public:
 	CDataCryptoDayLine();
-	virtual ~CDataCryptoDayLine();
+	~CDataCryptoDayLine() override = default;
+
 public:
 	virtual bool SaveDB(CString strCryptoSymbol) override final;
 	virtual bool LoadDB(CString strCryptoSymbol) override final;

@@ -25,7 +25,7 @@
 #include <thread>
 
 // mingw build quirks
-#if defined(_WIN32) && defined(__GNUC__)
+#if defined(_WIN32) && defined(_GNUC_)
 #define AI_NUMERICSERV NI_NUMERICSERV
 #define AI_ADDRCONFIG LUP_ADDRCONFIG
 #endif

@@ -5,9 +5,6 @@
 CDataForexDayLine::CDataForexDayLine() {
 }
 
-CDataForexDayLine::~CDataForexDayLine() {
-}
-
 bool CDataForexDayLine::SaveDB(CString strCryptoSymbol) {
 	CSetForexDayLine setForexDayLineBasic;
 	UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);

@@ -3,8 +3,8 @@
 // Header for standard system include files.
 //
 
-#ifndef __PCH_H__
-#define __PCH_H__
+#ifndef _PCH_H_INCLUDE_
+#define _PCH_H_INCLUDE_
 
 #include"stdafx.h"
 #include"gtest/gtest.h"

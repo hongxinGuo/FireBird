@@ -6,9 +6,9 @@
 #include"ChinaStock.h"
 
 enum {
-	__SHOW_DAY_LINE_DATA__ = 1,
-	__SHOW_REAL_TIME_DATA__ = 2,
-	__SHOW_WEEK_LINE_DATA__ = 3,
+	_SHOW_DAY_LINE_DATA_ = 1,
+	_SHOW_REAL_TIME_DATA_ = 2,
+	_SHOW_WEEK_LINE_DATA_ = 3,
 };
 
 class CStockAnalysisView : public CView

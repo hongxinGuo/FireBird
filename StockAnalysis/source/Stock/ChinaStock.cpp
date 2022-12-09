@@ -32,8 +32,8 @@ void CChinaStock::Reset(void) {
 	CVirtualStock::Reset();
 
 	m_lOffsetInContainer = -1;
-	m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
-	m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
+	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
+	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;
 
 	m_lHighLimit = m_lLowLimit = 0;
@@ -149,10 +149,10 @@ bool CChinaStock::HaveNewDayLineData(void) {
 void CChinaStock::UpdateStatusByDownloadedDayLine(void) {
 	if (m_dataDayLine.Size() == 0) return;
 	if (gl_pChinaMarket->IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
-		SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
+		SetIPOStatus(_STOCK_DELISTED_); // 已退市或暂停交易。
 	}
 	else {
-		SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
+		SetIPOStatus(_STOCK_IPOED_); // 正常交易股票
 	}
 }
 
@@ -765,13 +765,13 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
 	if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
 		// 检查挂单情况
 		lCurrentGuadanTransactionPrice = 0;
-		m_nCurrentTransactionType = __NO_TRANSACTION__;
+		m_nCurrentTransactionType = _NO_TRANSACTION_;
 	}
 	else {
 		lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
 		if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) { // 涨跌停板时，成交量属于未知成交量。
 			IncreaseTransactionNumber();
-			m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+			m_nCurrentTransactionType = _UNKNOWN_BUYSELL_;
 			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 		}
 		else {
@@ -837,16 +837,16 @@ void CChinaStock::IncreaseTransactionNumber(void) {
 void CChinaStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
 	if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) { //一般性买入
 		m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
-		m_nCurrentTransactionType = __ORDINARY_BUY__;
+		m_nCurrentTransactionType = _ORDINARY_BUY_;
 		CalculateOrdinaryBuyVolume();
 	}
 	else if ((lCurrentGuadanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
-		m_nCurrentTransactionType = __ORDINARY_SELL__;
+		m_nCurrentTransactionType = _ORDINARY_SELL_;
 		m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
 		CalculateOrdinarySellVolume();
 	}
 	else { // 买卖混杂，不分析。
-		m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+		m_nCurrentTransactionType = _UNKNOWN_BUYSELL_;
 		m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 	}
 }
@@ -914,13 +914,13 @@ void CChinaStock::CalculateOrdinarySellVolume(void) {
 }
 
 void CChinaStock::CalculateAttackBuy(void) {
-	m_nCurrentTransactionType = __ATTACK_BUY__;
+	m_nCurrentTransactionType = _ATTACK_BUY_;
 	m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackBuyVolume();
 }
 
 void CChinaStock::CalculateStrongBuy(void) {
-	m_nCurrentTransactionType = __STRONG_BUY__;
+	m_nCurrentTransactionType = _STRONG_BUY_;
 	m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackBuyVolume();
 }
@@ -938,13 +938,13 @@ void CChinaStock::CalculateAttackBuyVolume(void) {
 }
 
 void CChinaStock::CalculateAttackSell(void) {
-	m_nCurrentTransactionType = __ATTACK_SELL__;
+	m_nCurrentTransactionType = _ATTACK_SELL_;
 	m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackSellVolume();
 }
 
 void CChinaStock::CalculateStrongSell(void) {
-	m_nCurrentTransactionType = __STRONG_SELL__;
+	m_nCurrentTransactionType = _STRONG_SELL_;
 	m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
 	CalculateAttackSellVolume();
 }
@@ -996,14 +996,14 @@ bool CChinaStock::AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTra
 void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
 	// 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
 	switch (m_nCurrentTransactionType) {
-	case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
+	case _NO_TRANSACTION_: // 没有成交，则减少的量就是相应价位上的撤单。
 		ASSERT(lCurrentTransactionPrice == 0);
 		break;
-	case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
+	case _ATTACK_BUY_: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
 		fNeedCheck.at(3) = false;
 		fNeedCheck.at(4) = fNeedCheck.at(5) = false;
 		break;
-	case __STRONG_BUY__: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
+	case _STRONG_BUY_: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
 		if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) { // 卖单4和卖单5尚存
 			fNeedCheck.at(2) = false;
 		}
@@ -1020,15 +1020,15 @@ void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, 
 		fNeedCheck.at(4) = false;
 		fNeedCheck.at(5) = false;
 		break;
-	case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
-	case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
-	case __ORDINARY_SELL__: // 买单一被影响。计算其他八个挂单。
+	case _ORDINARY_BUY_: // 卖单一被影响。计算其他八个挂单。
+	case _UNKNOWN_BUYSELL_: // 卖单一和买单一被影响。计算其他八个挂单。
+	case _ORDINARY_SELL_: // 买单一被影响。计算其他八个挂单。
 		fNeedCheck.at(4) = fNeedCheck.at(5) = false;
 		break;
-	case __ATTACK_SELL__: // 买单一消失，买单二被影响。计算其他七个挂单。
+	case _ATTACK_SELL_: // 买单一消失，买单二被影响。计算其他七个挂单。
 		fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
 		break;
-	case __STRONG_SELL__: // 买单一和买单二消失，其他买单需要计算。
+	case _STRONG_SELL_: // 买单一和买单二消失，其他买单需要计算。
 		if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) { // 所有买单都受影响
 			fNeedCheck.at(7) = false;
 			fNeedCheck.at(8) = false;
@@ -1198,31 +1198,31 @@ void CChinaStock::ReportGuadanTransaction(void) {
 	str += buffer;
 	CString str1;
 	switch (m_nCurrentTransactionType) {
-	case __STRONG_BUY__:
+	case _STRONG_BUY_:
 		str1 = _T(" STRONG BUY");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetStrongBuyVolume());
 		break;
-	case __STRONG_SELL__:
+	case _STRONG_SELL_:
 		str1 = _T(" STRONG SELL");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetStrongSellVolume());
 		break;
-	case __ATTACK_BUY__:
+	case _ATTACK_BUY_:
 		str1 = _T(" ATTACK BUY");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetAttackBuyVolume());
 		break;
-	case __ATTACK_SELL__:
+	case _ATTACK_SELL_:
 		str1 = _T(" ATTACK SELL");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetAttackSellVolume());
 		break;
-	case __ORDINARY_BUY__:
+	case _ORDINARY_BUY_:
 		str1 = _T(" ORDINARY BUY");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetOrdinaryBuyVolume());
 		break;
-	case __ORDINARY_SELL__:
+	case _ORDINARY_SELL_:
 		str1 = _T(" ORDINARY SELL");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetOrdinarySellVolume());
 		break;
-	case __UNKNOWN_BUYSELL__:
+	case _UNKNOWN_BUYSELL_:
 		str1 = _T(" UNKNOWN BUYSELL");
 		sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, GetUnknownVolume());
 		break;
@@ -1277,7 +1277,7 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 	}
 	if (!IsDelisted()) {
 		if (IsEarlyThen(GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-			SetIPOStatus(__STOCK_DELISTED__);
+			SetIPOStatus(_STOCK_DELISTED_);
 			SetUpdateProfileDB(true);
 		}
 	}
@@ -1292,7 +1292,7 @@ bool CChinaStock::CheckDayLineStatus(void) {
 		SetDayLineNeedUpdate(false); // 日线数据不需要更新
 	}
 	else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
+		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) {
 			SetDayLineNeedUpdate(false);
 		}
 	}

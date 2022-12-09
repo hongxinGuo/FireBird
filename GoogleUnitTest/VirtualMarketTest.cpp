@@ -199,8 +199,8 @@ namespace StockAnalysisTest {
 			tUTC += i * 60 * 60 * 24;
 			GetMarketTimeStruct(&tm2, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 			tm_ = tm2;
-			gl_pVirtualMarket->__TEST_SetUTCTime(tUTC);
-			gl_pVirtualMarket->__TEST_SetMarketTM(tm2);
+			gl_pVirtualMarket->_TEST_SetUTCTime(tUTC);
+			gl_pVirtualMarket->_TEST_SetMarketTM(tm2);
 
 			switch (tm_.tm_wday) {
 			case 1: // ĞÇÆÚÒ»

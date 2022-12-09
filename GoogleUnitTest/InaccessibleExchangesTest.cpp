@@ -87,19 +87,19 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGetFinnhubInquiryString1) {
 		string s;
-		for (int i = __WEBSOCKET__TRADES__; i <= __WEBSOCKET__NEWS__; i++) {
+		for (int i = _WEBSOCKET_TRADES_; i <= _WEBSOCKET_NEWS_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
 			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
 		}
-		for (int i = __SYMBOL_LOOKUP__; i <= __DIVIDENDS__; i++) {
+		for (int i = _SYMBOL_LOOKUP_; i <= _DIVIDENDS_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
 			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
 		}
-		for (int i = __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__; i <= __STOCK_ESTIMATES_EARNING_CALENDAR__; i++) {
+		for (int i = _STOCK_ESTIMATES_RECOMMENDATION_TRENDS_; i <= _STOCK_ESTIMATES_EARNING_CALENDAR_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
 			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
 		}
-		for (int i = __STOCK_PRICE_QUOTE__; i <= __STOCK_PRICE_DIVIDEND2__; i++) {
+		for (int i = _STOCK_PRICE_QUOTE_; i <= _STOCK_PRICE_DIVIDEND2_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
 			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
 		}
@@ -107,216 +107,216 @@ namespace StockAnalysisTest {
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGetFinnhubInquiryString2) {
 		// Web Socket
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__WEBSOCKET__TRADES__), _T("WebSocketTrades"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__WEBSOCKET__NEWS__), _T("WebSocketNews"));// Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_WEBSOCKET_TRADES_), _T("WebSocketTrades"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_WEBSOCKET_NEWS_), _T("WebSocketNews"));// Premium
 
 		// Stock Fundamentals
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__SYMBOL_LOOKUP__), _T("StockFundamentalsSymolLookup"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_SYMBOLS__), _T("StockFundamentalsSymbols"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__COMPANY_PROFILE__), _T("StockFundamentalsCompanyProfile")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__COMPANY_PROFILE_CONCISE__), _T("StockFundamentalsCompanyProfileConcise"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__COMPANY_EXECTIVE__), _T("StockFundamentalsCompanyExective")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__MARKET_NEWS__), _T("StockFundamentalsMarketNews"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__COMPANY_NEWS__), _T("StockFundamentalsCompanyNews"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__PRESS_RELEASE__), _T("StockFundamentalsPressRelease")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__NEWS_SENTIMENT__), _T("StockFundamentalsNewsSentiment"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__PEERS__), _T("StockFundamentalsPeer"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__BASIC_FINANCIALS__), _T("StockFundamentalsBasicFinancials"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__OWNERSHIP__), _T("StockFundamentalsOwnership")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FUND_OWNERSHIP__), _T("StockFundamentalsFundOwnership")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__INSIDER_TRANSACTION__), _T("StockFundamentalsInsiderTransaction"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__INSIDER_SENTIMENT__), _T("StockFundamentalsInsiderSentiment"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FINANCIAL__), _T("StockFundamentalsFiniacial")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FINAICIAL_AS_REPORTED__), _T("StockFundamentalsFinaicialAsReported"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__REVENUE_BREAKDOWN__), _T("StockFundamentalsRevenueBreakdown"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__SEC_FILINGS__), _T("StockFundamentalsSECFilings"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__INTERNATIONAL_FILINGS__), _T("StockFundamentalsInternationalFilings")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__SEC_SENTIMENT_ANALYSIS__), _T("StockFundamentalsSECSentimentAnalysis")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__SIMILARITY_INDEX__), _T("StockFundamentalsSemilarityIndex")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__IPO_CALENDAR__), _T("StockFundamentalsIPOCanlendar"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__DIVIDENDS__), _T("StockFundamentalsDividends")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SYMBOL_LOOKUP_), _T("StockFundamentalsSymolLookup"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_SYMBOLS_), _T("StockFundamentalsSymbols"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_COMPANY_PROFILE_), _T("StockFundamentalsCompanyProfile")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_COMPANY_PROFILE_CONCISE_), _T("StockFundamentalsCompanyProfileConcise"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_COMPANY_EXECTIVE_), _T("StockFundamentalsCompanyExective")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MARKET_NEWS_), _T("StockFundamentalsMarketNews"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_COMPANY_NEWS_), _T("StockFundamentalsCompanyNews"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_PRESS_RELEASE_), _T("StockFundamentalsPressRelease")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_NEWS_SENTIMENT_), _T("StockFundamentalsNewsSentiment"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_PEERS_), _T("StockFundamentalsPeer"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_BASIC_FINANCIALS_), _T("StockFundamentalsBasicFinancials"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_OWNERSHIP_), _T("StockFundamentalsOwnership")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FUND_OWNERSHIP_), _T("StockFundamentalsFundOwnership")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INSIDER_TRANSACTION_), _T("StockFundamentalsInsiderTransaction"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INSIDER_SENTIMENT_), _T("StockFundamentalsInsiderSentiment"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FINANCIAL_), _T("StockFundamentalsFiniacial")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FINAICIAL_AS_REPORTED_), _T("StockFundamentalsFinaicialAsReported"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_REVENUE_BREAKDOWN_), _T("StockFundamentalsRevenueBreakdown"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SEC_FILINGS_), _T("StockFundamentalsSECFilings"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INTERNATIONAL_FILINGS_), _T("StockFundamentalsInternationalFilings")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SEC_SENTIMENT_ANALYSIS_), _T("StockFundamentalsSECSentimentAnalysis")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SIMILARITY_INDEX_), _T("StockFundamentalsSemilarityIndex")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_IPO_CALENDAR_), _T("StockFundamentalsIPOCanlendar"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_DIVIDENDS_), _T("StockFundamentalsDividends")); //Premium
 
 		// Stock Estimates
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_RECOMMENDATION_TRENDS__), _T("StockExtimatesRecommendationTrend"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_PRICE_TARGET__), _T("StockExtimatesPriceTarget"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_UPGRADE_DOWNGRADE__), _T("StockExtimatesUpgradeDownGrade")); // Primium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_REVENUE_EXTIMATES__), _T("StockExtimatesRevenueExtimates")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_EPS_EXTIMATES__), _T("StockExtimatesEPSExtimates")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_EXTIMATES_EBITDA_EXTIMATES__), _T("StockExtimatesEBITDAExtimates")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_EXTIMATES_EBIT_EXTIMATES__), _T("StockExtimatesEBITExtimates")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_EPS_SURPRISE__), _T("StockExtimatesEPSSurprise"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_ESTIMATES_EARNING_CALENDAR__), _T("StockExtimatesEarningCalendar"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_RECOMMENDATION_TRENDS_), _T("StockExtimatesRecommendationTrend"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_PRICE_TARGET_), _T("StockExtimatesPriceTarget"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_UPGRADE_DOWNGRADE_), _T("StockExtimatesUpgradeDownGrade")); // Primium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_REVENUE_EXTIMATES_), _T("StockExtimatesRevenueExtimates")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_EPS_EXTIMATES_), _T("StockExtimatesEPSExtimates")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_EXTIMATES_EBITDA_EXTIMATES_), _T("StockExtimatesEBITDAExtimates")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_EXTIMATES_EBIT_EXTIMATES_), _T("StockExtimatesEBITExtimates")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_EPS_SURPRISE_), _T("StockExtimatesEPSSurprise"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_ESTIMATES_EARNING_CALENDAR_), _T("StockExtimatesEarningCalendar"));
 
 		// Stock Price
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_QUOTE__), _T("StockPriceQuote")); // 实时数据优先级最低
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_CANDLES__), _T("StockPriceCandles")); // 历史数据优先级低
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_TICK_DATA__), _T("StockPriceTickData")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_HISTORICAL_NBBO__), _T("StockPriceHistoricalNBBO")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_LAST_BID_ASK__), _T("StockPriceLastBidAsk")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_SPLITS__), _T("StockPriceSplits")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__STOCK_PRICE_DIVIDEND2__), _T("StockPriceDividend")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_QUOTE_), _T("StockPriceQuote")); // 实时数据优先级最低
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_CANDLES_), _T("StockPriceCandles")); // 历史数据优先级低
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_TICK_DATA_), _T("StockPriceTickData")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_HISTORICAL_NBBO_), _T("StockPriceHistoricalNBBO")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_LAST_BID_ASK_), _T("StockPriceLastBidAsk")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_SPLITS_), _T("StockPriceSplits")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_STOCK_PRICE_DIVIDEND2_), _T("StockPriceDividend")); // Premium
 
 		// ETF & Indices
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_INDICES_CONSTITUENTS__), _T("ETFSIndicesConstituents"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_HISTORY_CONSTITUENTS__), _T("ETFSIndicesHistoryConstitunets")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_PROFILE__), _T("ETFSIndicesProfile")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_HOLDINGS__), _T("ETFSIndicesHoldings")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_SECTOR__), _T("ETFSIndicesSector")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ETFS_COUNTRY__), _T("ETFSIndicesCountry")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_INDICES_CONSTITUENTS_), _T("ETFSIndicesConstituents"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_HISTORY_CONSTITUENTS_), _T("ETFSIndicesHistoryConstitunets")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_PROFILE_), _T("ETFSIndicesProfile")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_HOLDINGS_), _T("ETFSIndicesHoldings")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_SECTOR_), _T("ETFSIndicesSector")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ETFS_COUNTRY_), _T("ETFSIndicesCountry")); //Premium
 
 		// Mutual funds
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__MUTUAL_FUND_PROFILE__), _T("MutualFundProfile")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__MUTUAL_FUND_HOLDINGS__), _T("MutualFundHoldings"));// Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__MUTUAL_FUND_SECTOR__), _T("MutualFundSector")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__MUTUAL_FUND_COUNTRY__), _T("MutualFundCountry")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_PROFILE_), _T("MutualFundProfile")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_HOLDINGS_), _T("MutualFundHoldings"));// Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_SECTOR_), _T("MutualFundSector")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_COUNTRY_), _T("MutualFundCountry")); // Premium
 
 		// Bonds
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__BOND_PROFILE__), _T("BondProfile")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__BOND_PRICE__), _T("BondPrice")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_BOND_PROFILE_), _T("BondProfile")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_BOND_PRICE_), _T("BondPrice")); // Premium
 
 		// Forex
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FOREX_EXCHANGE__), _T("ForexExchange"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FOREX_SYMBOLS__), _T("ForexSymbols"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FOREX_CANDLES__), _T("ForexCandles")); // 历史数据优先级低 Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__FOREX_ALL_RATES__), _T("ForexAllRates"));  // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_EXCHANGE_), _T("ForexExchange"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_SYMBOLS_), _T("ForexSymbols"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_CANDLES_), _T("ForexCandles")); // 历史数据优先级低 Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_ALL_RATES_), _T("ForexAllRates"));  // Premium
 
 		// Crypto
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__CRYPTO_EXCHANGE__), _T("CryptoExchange"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__CRYPTO_SYMBOLS__), _T("CryptoSymbols"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__CRYPTO_PROFILE__), _T("CryptoProfile")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__CRYPTO_CANDLES__), _T("CryptoCandles"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_CRYPTO_EXCHANGE_), _T("CryptoExchange"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_CRYPTO_SYMBOLS_), _T("CryptoSymbols"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_CRYPTO_PROFILE_), _T("CryptoProfile")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_CRYPTO_CANDLES_), _T("CryptoCandles"));
 
 		// Technical Analysis
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__TECHNICAL_ANALYSIS_PATTERN_RECOGNITION__), _T("TechnicalAnalysisPatternRecognition")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__TECHNICAL_ANALYSIS_SURPORT_RESISTANCE__), _T("TechnicalAnalysisSurportResistance")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS__), _T("TechnicalAnalysisAggregateIndicators")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS__), _T("TechnicalAnalysisTechnicalIndicators"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_), _T("TechnicalAnalysisPatternRecognition")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_TECHNICAL_ANALYSIS_SURPORT_RESISTANCE_), _T("TechnicalAnalysisSurportResistance")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_), _T("TechnicalAnalysisAggregateIndicators")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_), _T("TechnicalAnalysisTechnicalIndicators"));
 
 		// Alternative Data
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_TRANSCRIPT_LIST__), _T("AlternativeDataTranscriptList")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_TRANSCRIPT__), _T("AlternativeDataTranscript")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_SOCIAL_SETIMENT__), _T("AlternativeDataSetiment"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_INVEST_THEMES__), _T("AlternativeDataInvestThemes")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_SUPPLY_CHAIN__), _T("AlternativeDataSupplyChain"));  // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_COMPANY_ESG__), _T("AlternativeDataCompanyESG")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_EARNING_QUALITY_SCORE__), _T("AlternativeDataQualityScore")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_USPTO_PATENTS__), _T("AlternativeDataUSPTOpatents"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_VISA_APPLICATION__), _T("AlternativeDataVISAApplication")); //
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_COVID_19__), _T("AlternativeDataCOVID_19"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ALTERNATIVE_DATA_FDA_CALENDAR__), _T("AlternativeDataFDACalendar"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_TRANSCRIPT_LIST_), _T("AlternativeDataTranscriptList")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_TRANSCRIPT_), _T("AlternativeDataTranscript")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_SOCIAL_SETIMENT_), _T("AlternativeDataSetiment"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_INVEST_THEMES_), _T("AlternativeDataInvestThemes")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_SUPPLY_CHAIN_), _T("AlternativeDataSupplyChain"));  // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_COMPANY_ESG_), _T("AlternativeDataCompanyESG")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_), _T("AlternativeDataQualityScore")); // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_USPTO_PATENTS_), _T("AlternativeDataUSPTOpatents"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_VISA_APPLICATION_), _T("AlternativeDataVISAApplication")); //
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_COVID_19_), _T("AlternativeDataCOVID_19"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_FDA_CALENDAR_), _T("AlternativeDataFDACalendar"));
 
 		// Econimic
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ECONOMIC_COUNTRY_LIST__), _T("EconomicCountryList"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ECONOMIC_CALENDAR__), _T("EconomicCalendar")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ECONOMIC_CODES__), _T("EconomicCodes")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(__ECONOMIC_ECONOMIC__), _T("EconomicEconomic")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ECONOMIC_COUNTRY_LIST_), _T("EconomicCountryList"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ECONOMIC_CALENDAR_), _T("EconomicCalendar")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ECONOMIC_CODES_), _T("EconomicCodes")); //Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ECONOMIC_ECONOMIC_), _T("EconomicEconomic")); //Premium
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGetFinnhubInquiryIndex) {
 		// Web Socket
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketTrades")), __WEBSOCKET__TRADES__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketNews")), __WEBSOCKET__NEWS__);// Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketTrades")), _WEBSOCKET_TRADES_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketNews")), _WEBSOCKET_NEWS_);// Premium
 
 		// Stock Fundamentals
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSymolLookup")), __SYMBOL_LOOKUP__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSymbols")), __STOCK_SYMBOLS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyProfile")), __COMPANY_PROFILE__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyProfileConcise")), __COMPANY_PROFILE_CONCISE__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyExective")), __COMPANY_EXECTIVE__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsMarketNews")), __MARKET_NEWS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyNews")), __COMPANY_NEWS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsPressRelease")), __PRESS_RELEASE__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsNewsSentiment")), __NEWS_SENTIMENT__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsPeer")), __PEERS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsBasicFinancials")), __BASIC_FINANCIALS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsOwnership")), __OWNERSHIP__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFundOwnership")), __FUND_OWNERSHIP__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderTransaction")), __INSIDER_TRANSACTION__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderSentiment")), __INSIDER_SENTIMENT__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFiniacial")), __FINANCIAL__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFinaicialAsReported")), __FINAICIAL_AS_REPORTED__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsRevenueBreakdown")), __REVENUE_BREAKDOWN__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSECFilings")), __SEC_FILINGS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInternationalFilings")), __INTERNATIONAL_FILINGS__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSECSentimentAnalysis")), __SEC_SENTIMENT_ANALYSIS__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSemilarityIndex")), __SIMILARITY_INDEX__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsIPOCanlendar")), __IPO_CALENDAR__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsDividends")), __DIVIDENDS__); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSymolLookup")), _SYMBOL_LOOKUP_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSymbols")), _STOCK_SYMBOLS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyProfile")), _COMPANY_PROFILE_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyProfileConcise")), _COMPANY_PROFILE_CONCISE_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyExective")), _COMPANY_EXECTIVE_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsMarketNews")), _MARKET_NEWS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsCompanyNews")), _COMPANY_NEWS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsPressRelease")), _PRESS_RELEASE_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsNewsSentiment")), _NEWS_SENTIMENT_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsPeer")), _PEERS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsBasicFinancials")), _BASIC_FINANCIALS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsOwnership")), _OWNERSHIP_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFundOwnership")), _FUND_OWNERSHIP_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderTransaction")), _INSIDER_TRANSACTION_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderSentiment")), _INSIDER_SENTIMENT_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFiniacial")), _FINANCIAL_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFinaicialAsReported")), _FINAICIAL_AS_REPORTED_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsRevenueBreakdown")), _REVENUE_BREAKDOWN_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSECFilings")), _SEC_FILINGS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInternationalFilings")), _INTERNATIONAL_FILINGS_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSECSentimentAnalysis")), _SEC_SENTIMENT_ANALYSIS_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSemilarityIndex")), _SIMILARITY_INDEX_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsIPOCanlendar")), _IPO_CALENDAR_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsDividends")), _DIVIDENDS_); //Premium
 
 		// Stock Estimates
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesRecommendationTrend")), __STOCK_ESTIMATES_RECOMMENDATION_TRENDS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesPriceTarget")), __STOCK_ESTIMATES_PRICE_TARGET__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesUpgradeDownGrade")), __STOCK_ESTIMATES_UPGRADE_DOWNGRADE__); // Primium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesRevenueExtimates")), __STOCK_ESTIMATES_REVENUE_EXTIMATES__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEPSExtimates")), __STOCK_ESTIMATES_EPS_EXTIMATES__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEBITDAExtimates")), __STOCK_EXTIMATES_EBITDA_EXTIMATES__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEBITExtimates")), __STOCK_EXTIMATES_EBIT_EXTIMATES__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEPSSurprise")), __STOCK_ESTIMATES_EPS_SURPRISE__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEarningCalendar")), __STOCK_ESTIMATES_EARNING_CALENDAR__);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesRecommendationTrend")), _STOCK_ESTIMATES_RECOMMENDATION_TRENDS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesPriceTarget")), _STOCK_ESTIMATES_PRICE_TARGET_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesUpgradeDownGrade")), _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_); // Primium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesRevenueExtimates")), _STOCK_ESTIMATES_REVENUE_EXTIMATES_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEPSExtimates")), _STOCK_ESTIMATES_EPS_EXTIMATES_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEBITDAExtimates")), _STOCK_EXTIMATES_EBITDA_EXTIMATES_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEBITExtimates")), _STOCK_EXTIMATES_EBIT_EXTIMATES_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEPSSurprise")), _STOCK_ESTIMATES_EPS_SURPRISE_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockExtimatesEarningCalendar")), _STOCK_ESTIMATES_EARNING_CALENDAR_);
 
 		// Stock Price
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceQuote")), __STOCK_PRICE_QUOTE__); // 实时数据优先级最低
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceCandles")), __STOCK_PRICE_CANDLES__); // 历史数据优先级低
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceTickData")), __STOCK_PRICE_TICK_DATA__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceHistoricalNBBO")), __STOCK_PRICE_HISTORICAL_NBBO__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceLastBidAsk")), __STOCK_PRICE_LAST_BID_ASK__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceSplits")), __STOCK_PRICE_SPLITS__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceDividend")), __STOCK_PRICE_DIVIDEND2__); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceQuote")), _STOCK_PRICE_QUOTE_); // 实时数据优先级最低
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceCandles")), _STOCK_PRICE_CANDLES_); // 历史数据优先级低
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceTickData")), _STOCK_PRICE_TICK_DATA_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceHistoricalNBBO")), _STOCK_PRICE_HISTORICAL_NBBO_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceLastBidAsk")), _STOCK_PRICE_LAST_BID_ASK_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceSplits")), _STOCK_PRICE_SPLITS_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockPriceDividend")), _STOCK_PRICE_DIVIDEND2_); // Premium
 
 		// ETF & Indices
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesConstituents")), __ETFS_INDICES_CONSTITUENTS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesHistoryConstitunets")), __ETFS_HISTORY_CONSTITUENTS__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesProfile")), __ETFS_PROFILE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesHoldings")), __ETFS_HOLDINGS__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesSector")), __ETFS_SECTOR__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesCountry")), __ETFS_COUNTRY__); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesConstituents")), _ETFS_INDICES_CONSTITUENTS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesHistoryConstitunets")), _ETFS_HISTORY_CONSTITUENTS_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesProfile")), _ETFS_PROFILE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesHoldings")), _ETFS_HOLDINGS_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesSector")), _ETFS_SECTOR_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ETFSIndicesCountry")), _ETFS_COUNTRY_); //Premium
 
 		// Mutual funds
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundProfile")), __MUTUAL_FUND_PROFILE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundHoldings")), __MUTUAL_FUND_HOLDINGS__);// Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundSector")), __MUTUAL_FUND_SECTOR__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundCountry")), __MUTUAL_FUND_COUNTRY__); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundProfile")), _MUTUAL_FUND_PROFILE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundHoldings")), _MUTUAL_FUND_HOLDINGS_);// Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundSector")), _MUTUAL_FUND_SECTOR_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundCountry")), _MUTUAL_FUND_COUNTRY_); // Premium
 
 		// Bonds
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("BondProfile")), __BOND_PROFILE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("BondPrice")), __BOND_PRICE__); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("BondProfile")), _BOND_PROFILE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("BondPrice")), _BOND_PRICE_); // Premium
 
 		// Forex
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexExchange")), __FOREX_EXCHANGE__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexSymbols")), __FOREX_SYMBOLS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexCandles")), __FOREX_CANDLES__); // 历史数据优先级低 Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexAllRates")), __FOREX_ALL_RATES__);  // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexExchange")), _FOREX_EXCHANGE_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexSymbols")), _FOREX_SYMBOLS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexCandles")), _FOREX_CANDLES_); // 历史数据优先级低 Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexAllRates")), _FOREX_ALL_RATES_);  // Premium
 
 		// Crypto
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoExchange")), __CRYPTO_EXCHANGE__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoSymbols")), __CRYPTO_SYMBOLS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoProfile")), __CRYPTO_PROFILE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoCandles")), __CRYPTO_CANDLES__);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoExchange")), _CRYPTO_EXCHANGE_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoSymbols")), _CRYPTO_SYMBOLS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoProfile")), _CRYPTO_PROFILE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoCandles")), _CRYPTO_CANDLES_);
 
 		// Technical Analysis
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisPatternRecognition")), __TECHNICAL_ANALYSIS_PATTERN_RECOGNITION__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisSurportResistance")), __TECHNICAL_ANALYSIS_SURPORT_RESISTANCE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisAggregateIndicators")), __TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisTechnicalIndicators")), __TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS__);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisPatternRecognition")), _TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisSurportResistance")), _TECHNICAL_ANALYSIS_SURPORT_RESISTANCE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisAggregateIndicators")), _TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("TechnicalAnalysisTechnicalIndicators")), _TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_);
 
 		// Alternative Data
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataTranscriptList")), __ALTERNATIVE_DATA_TRANSCRIPT_LIST__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataTranscript")), __ALTERNATIVE_DATA_TRANSCRIPT__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSetiment")), __ALTERNATIVE_DATA_SOCIAL_SETIMENT__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataInvestThemes")), __ALTERNATIVE_DATA_INVEST_THEMES__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSupplyChain")), __ALTERNATIVE_DATA_SUPPLY_CHAIN__);  // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCompanyESG")), __ALTERNATIVE_DATA_COMPANY_ESG__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataQualityScore")), __ALTERNATIVE_DATA_EARNING_QUALITY_SCORE__); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataUSPTOpatents")), __ALTERNATIVE_DATA_USPTO_PATENTS__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataVISAApplication")), __ALTERNATIVE_DATA_VISA_APPLICATION__); //
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCOVID_19")), __ALTERNATIVE_DATA_COVID_19__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataFDACalendar")), __ALTERNATIVE_DATA_FDA_CALENDAR__);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataTranscriptList")), _ALTERNATIVE_DATA_TRANSCRIPT_LIST_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataTranscript")), _ALTERNATIVE_DATA_TRANSCRIPT_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSetiment")), _ALTERNATIVE_DATA_SOCIAL_SETIMENT_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataInvestThemes")), _ALTERNATIVE_DATA_INVEST_THEMES_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSupplyChain")), _ALTERNATIVE_DATA_SUPPLY_CHAIN_);  // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCompanyESG")), _ALTERNATIVE_DATA_COMPANY_ESG_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataQualityScore")), _ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_); // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataUSPTOpatents")), _ALTERNATIVE_DATA_USPTO_PATENTS_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataVISAApplication")), _ALTERNATIVE_DATA_VISA_APPLICATION_); //
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCOVID_19")), _ALTERNATIVE_DATA_COVID_19_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataFDACalendar")), _ALTERNATIVE_DATA_FDA_CALENDAR_);
 
 		// Econimic
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCountryList")), __ECONOMIC_COUNTRY_LIST__);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCalendar")), __ECONOMIC_CALENDAR__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCodes")), __ECONOMIC_CODES__); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicEconomic")), __ECONOMIC_ECONOMIC__); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCountryList")), _ECONOMIC_COUNTRY_LIST_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCalendar")), _ECONOMIC_CALENDAR_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCodes")), _ECONOMIC_CODES_); //Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicEconomic")), _ECONOMIC_ECONOMIC_); //Premium
 	}
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
 		json jsFinnhubInaccessibleExchange = json::parse(gl_sFinnhubInaccessibleExchange);

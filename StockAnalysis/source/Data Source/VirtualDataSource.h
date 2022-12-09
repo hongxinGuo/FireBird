@@ -11,7 +11,12 @@
 class CVirtualDataSource : public CObject {
 public:
 	CVirtualDataSource(void);
-	virtual ~CVirtualDataSource(void);
+	// 只能有一个实例,不允许赋值。
+	CVirtualDataSource(const CVirtualDataSource&) = delete;
+	CVirtualDataSource& operator=(const CVirtualDataSource&) = delete;
+	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
+	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
+	~CVirtualDataSource(void) override = default;
 
 	virtual bool Reset(void);
 
@@ -26,13 +31,13 @@ public:
 		return true;
 	}
 
-	void SetCurrentInquiryFunction(CString strFunctionName) { m_pWebInquiry->SetInquiryFunction(strFunctionName); }
-	void StartThreadGetWebData(void) { m_pWebInquiry->GetWebData(); }
+	void SetCurrentInquiryFunction(CString strFunctionName) const { m_pWebInquiry->SetInquiryFunction(strFunctionName); }
+	void StartThreadGetWebData(void) const { m_pWebInquiry->GetWebData(); }
 
 	void SetWebInquiringPtr(CVirtualWebInquiry* p) noexcept { m_pWebInquiry = p; }
-	CVirtualWebInquiry* GetWebInquiryPtr(void) noexcept { return m_pWebInquiry; }
+	CVirtualWebInquiry* GetWebInquiryPtr(void) const noexcept { return m_pWebInquiry; }
 
-	size_t GetInquiryQueueSize(void) noexcept { return m_qProduct.size(); }
+	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
 	void StoreInquiry(CVirtualProductWebDataPtr p) { m_qProduct.push(p); }
 
 	CVirtualProductWebDataPtr GetInquiry(void) {
@@ -41,15 +46,15 @@ public:
 		return m_pCurrentProduct;
 	}
 
-	bool HaveInquiry(void) {
-		if (m_qProduct.size() > 0) return true;
-		else return false;
+	bool HaveInquiry(void) const {
+		if (m_qProduct.empty()) return false;
+		else return true;
 	}
 
-	CVirtualProductWebDataPtr GetCurrentInquiry(void) noexcept { return m_pCurrentProduct; }
+	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
 	void SetCurrentInquiry(CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
 
-	bool IsInquiring(void) noexcept { return m_fInquiring; }
+	bool IsInquiring(void) const noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
 
 	bool IsInquiringAndClearFlag(void) noexcept {
@@ -59,10 +64,7 @@ public:
 
 	void SetWebInquiryFinished(bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
 
-	bool IsWebInquiryFinished(void) noexcept {
-		const bool f = m_fWebInquiryFinished;
-		return f;
-	}
+	bool IsWebInquiryFinished(void) const noexcept { return m_fWebInquiryFinished; }
 
 	bool IsWebInquiryFinishedAndClearFlag(void) noexcept {
 		const bool fWebInquiryFinished = m_fWebInquiryFinished.exchange(false);
@@ -73,12 +75,12 @@ public:
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
-	bool HaveReceiviedData(void) {
-		if (m_qReceivedData.Size() > 0) return true;
-		else return false;
+	bool HaveReceivedData(void) {
+		if (m_qReceivedData.Empty()) return false;
+		else return true;
 	}
 
-	bool IsEnable(void) noexcept { return m_fEnable; }
+	bool IsEnable(void) const noexcept { return m_fEnable; }
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
 
 protected:

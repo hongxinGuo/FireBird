@@ -9,9 +9,6 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	Reset();
 }
 
-CTengxunRTDataSource::~CTengxunRTDataSource() {
-}
-
 bool CTengxunRTDataSource::Reset(void) {
 	return true;
 }
@@ -19,12 +16,14 @@ bool CTengxunRTDataSource::Reset(void) {
 bool CTengxunRTDataSource::UpdateStatus(void) {
 	return true;
 }
+
 bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	long long llTickCount = 0;
 
 	llTickCount = GetTickCount64();
-	if (gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetChinaMarketRTDataInquiryTime() * 5)) {
+	if (gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.
+		GetChinaMarketRTDataInquiryTime() * 5)) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
 		}
@@ -40,7 +39,7 @@ bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 
 bool CTengxunRTDataSource::InquireRTData(long lCurrentTime) {
 	if (!IsInquiring()) {
-		CVirtualProductWebDataPtr product = make_shared<CProductTengxunRT>();
+		const auto product = make_shared<CProductTengxunRT>();
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

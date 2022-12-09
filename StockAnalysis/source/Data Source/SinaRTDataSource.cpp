@@ -9,9 +9,6 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	Reset();
 }
 
-CSinaRTDataSource::~CSinaRTDataSource() {
-}
-
 bool CSinaRTDataSource::Reset(void) {
 	return true;
 }
@@ -30,7 +27,9 @@ bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 			InquireRTData(lCurrentTime);
 		}
 		if (IsInquiring()) {
-			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfigeration.IsDebugMode()) {// 系统配置为：测试系统时，不降低轮询速度
+			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfigeration.
+				IsDebugMode()) {
+				// 系统配置为：测试系统时，不降低轮询速度
 				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
 			else {
@@ -45,7 +44,7 @@ bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 
 bool CSinaRTDataSource::InquireRTData(long lCurrentTime) {
 	if (!IsInquiring()) {
-		CVirtualProductWebDataPtr product = make_shared<CProductSinaRT>();
+		const auto product = make_shared<CProductSinaRT>();
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

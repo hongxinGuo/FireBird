@@ -46,8 +46,8 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return strPeer;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = __VOID_DATA__; return strPeer; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = __NO_ACCESS_RIGHT__; return strPeer; }
+	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return strPeer; }
+	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return strPeer; }
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {
 		buffer[i] = pWebData->GetData(i);
 	}

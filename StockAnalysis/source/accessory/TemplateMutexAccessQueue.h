@@ -26,6 +26,13 @@ public:
 		m_MutexAccessData.unlock();
 	}
 
+	bool Empty() {
+		m_MutexAccessData.lock();
+		bool fEmpty = m_qData.empty();
+		m_MutexAccessData.unlock();
+		return fEmpty;
+	}
+
 	// 通用接口函数
 	void PushData(shared_ptr<T> pData) {
 		m_MutexAccessData.lock();

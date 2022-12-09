@@ -45,8 +45,8 @@ namespace StockAnalysisTest {
 	NeteaseData rtData5(5, _T("600008.SS"), _SINA_RT_WEB_DATA_, true, -5);
 	// 新股票代码
 	NeteaseData rtData6(6, _T("000000.NT"), _SINA_RT_WEB_DATA_, true, 0);
-	//NeteaseData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
-	//NeteaseData rtData8(8, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
+	//NeteaseData rtData7(7, _T("140000")_SINA_RT_WEB_DATA_, true, 10101010);
+	//NeteaseData rtData8(8, _T("1400000")_SINA_RT_WEB_DATA_, true, 10101010);
 
 	static time_t s_tCurrentMarketTime;
 
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 		static void SetUpTestSuite(void) {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
-			pStock->SetIPOStatus(__STOCK_NULL__); // 故意将此股票状态设置为未上市。
+			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = gl_pChinaMarket->GetUTCTime();
 		}
 

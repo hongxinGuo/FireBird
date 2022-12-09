@@ -90,7 +90,7 @@ void CDataWorldStock::ResetBasicFinancial(void) {
 
 void CDataWorldStock::ResetDayLine(void) {
 	for (const auto& pStock : m_vWorldStock) {
-		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
+		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
 		pStock->SetDayLineNeedUpdate(true);

@@ -2,10 +2,10 @@
 
 #include"VirtualDataSource.h"
 
-class CTengxunRTDataSource : public CVirtualDataSource {
+class CTengxunRTDataSource final : public CVirtualDataSource {
 public:
 	CTengxunRTDataSource();
-	virtual ~CTengxunRTDataSource();
+	~CTengxunRTDataSource() override = default;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

@@ -105,11 +105,11 @@ public:
 
 	long GetIPOStatus(void) const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
-	bool IsDelisted(void) const noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
-	bool IsNotYetList(void) const noexcept { return (m_lIPOStatus == __STOCK_NOT_YET_LIST__); }
-	bool IsNullStock(void) const noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
-	bool IsIPOed(void) const noexcept { return (m_lIPOStatus == __STOCK_IPOED__); }
-	bool IsNotChecked(void) const noexcept { return (m_lIPOStatus == __STOCK_NOT_CHECKED__); }
+	bool IsDelisted(void) const noexcept { return (m_lIPOStatus == _STOCK_DELISTED_); }
+	bool IsNotYetList(void) const noexcept { return (m_lIPOStatus == _STOCK_NOT_YET_LIST_); }
+	bool IsNullStock(void) const noexcept { return (m_lIPOStatus == _STOCK_NULL_); }
+	bool IsIPOed(void) const noexcept { return (m_lIPOStatus == _STOCK_IPOED_); }
+	bool IsNotChecked(void) const noexcept { return (m_lIPOStatus == _STOCK_NOT_CHECKED_); }
 
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsDayLineNeedUpdate(void) const noexcept { return m_fDayLineNeedUpdate; }
@@ -151,7 +151,7 @@ protected:
 	long m_lDayLineStartDate; // 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
 	long m_lDayLineEndDate; // 日线数据更新日。这个是处理日线历史数据时得到的最新日，
 	long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
-	// 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
+	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
 	atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。

@@ -523,7 +523,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskResetMarket1) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPerssion());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		gl_pChinaMarket->SetSystemReady(true);
@@ -549,7 +549,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
 		tm tm_;
 		tm_.tm_wday = 0; // 星期日, 休息日
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPerssion());
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetResetMarket(false);
@@ -566,7 +566,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskResetMarket3) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPerssion());
@@ -589,7 +589,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestTaskResetMarket4) {
 		tm tm_;
 		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPerssion());
@@ -616,7 +616,7 @@ namespace StockAnalysisTest {
 		tm tm_;
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->SetSystemReady(false);
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPerssion());
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
@@ -683,7 +683,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestCheckMarketOpen) {
 		tm tm_;
 		tm_.tm_wday = 1;
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckMarketOpen(92800));
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 		EXPECT_TRUE(gl_pChinaMarket->TaskCheckMarketOpen(92801));
@@ -692,7 +692,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketOpened());
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckMarketOpen(150600));
 		tm_.tm_wday = 0;
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckMarketOpen(92859));
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckMarketOpen(92900));
@@ -707,7 +707,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_systemConfigeration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
 		tm tm_;
 		tm_.tm_wday = 1;
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		gl_systemConfigeration.SetFastInquiringRTData(false);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(91159));
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
@@ -725,7 +725,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsFastReceivingRTData());
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(150631));
 		tm_.tm_wday = 0;
-		gl_pChinaMarket->__TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(91459));
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(91500));
@@ -1163,12 +1163,12 @@ namespace StockAnalysisTest {
 		setOption.Close();
 		gl_pChinaMarket->LoadOptionDB();
 
-		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), __CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), __CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DATE__);
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
-		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), __CHINA_MARKET_BEGIN_DATE__);
+		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong2StockSet());
 	}
 
@@ -1340,18 +1340,18 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol())); // 确保是一个新股票代码
 		gl_pChinaMarket->AddStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
-		EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
-		pStock->SetIPOStatus(__STOCK_DELISTED__);
+		pStock->SetIPOStatus(_STOCK_DELISTED_);
 		gl_pChinaMarket->UpdateStockCodeDB();
 
 		CSetChinaStockSymbol setChinaStock;
 		setChinaStock.m_strFilter = _T("[Symbol] = '000001.SS'");
 		setChinaStock.Open();
-		EXPECT_EQ(setChinaStock.m_IPOStatus, __STOCK_DELISTED__);
+		EXPECT_EQ(setChinaStock.m_IPOStatus, _STOCK_DELISTED_);
 		setChinaStock.m_pDatabase->BeginTrans();
 		setChinaStock.Edit();
-		setChinaStock.m_IPOStatus = __STOCK_IPOED__;
+		setChinaStock.m_IPOStatus = _STOCK_IPOED_;
 		setChinaStock.Update();
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
@@ -1368,7 +1368,7 @@ namespace StockAnalysisTest {
 		setChinaStock.Close();
 
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
-		pStock->SetIPOStatus(__STOCK_IPOED__); // 恢复原状
+		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状
 		pStock = gl_pChinaMarket->GetStock(_T("SS.SS.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		gl_pChinaMarket->DeleteStock(pStock); // 恢复原状

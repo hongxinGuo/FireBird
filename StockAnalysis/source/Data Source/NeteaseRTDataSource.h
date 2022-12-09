@@ -2,10 +2,10 @@
 
 #include"VirtualDataSource.h"
 
-class CNeteaseRTDataSource : public CVirtualDataSource {
+class CNeteaseRTDataSource final : public CVirtualDataSource {
 public:
 	CNeteaseRTDataSource();
-	virtual ~CNeteaseRTDataSource();
+	~CNeteaseRTDataSource() override = default;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

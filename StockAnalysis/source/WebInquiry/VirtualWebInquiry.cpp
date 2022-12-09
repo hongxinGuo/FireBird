@@ -26,7 +26,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_strInquiryFunction = _T("");
 	m_strInquiryToken = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
-	m_sBuffer.resize(__DefaultWebDataBufferSize__); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
+	m_sBuffer.resize(_DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
@@ -306,7 +306,7 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 	m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken;
 }
 
-void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
+void CVirtualWebInquiry::_TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
@@ -314,7 +314,7 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_lByteRead = lTotalNumber;
 }
 
-void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
+void CVirtualWebInquiry::_TESTSetBuffer(CString str) {
 	INT64 lTotalNumber = str.GetLength();
 	char* buffer = str.GetBuffer();
 
