@@ -2,7 +2,7 @@
 
 #include "InfoReport.h"
 
-using namespace std;
+
 
 void ReportErrorToSystemMessage(CString strPrefix, exception& e) {
 	CString strError = strPrefix;

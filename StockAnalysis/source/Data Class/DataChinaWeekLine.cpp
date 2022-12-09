@@ -1,16 +1,12 @@
 #include"pch.h"
 
 #include "DataChinaWeekLine.h"
-#include"WeekLine.h"
 
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
 CDataChinaWeekLine::CDataChinaWeekLine() {
-}
-
-CDataChinaWeekLine::~CDataChinaWeekLine() {
 }
 
 bool CDataChinaWeekLine::SaveDB(CString strStockSymbol) {
@@ -26,12 +22,12 @@ bool CDataChinaWeekLine::SaveCurrentWeekLine(void) {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 	CWeekLinePtr pWeekLine = nullptr;
 
-	ASSERT(m_vHistoryData.size() > 0);
+	ASSERT(!m_vHistoryData.empty());
 
 	setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	for (auto pData : m_vHistoryData) {
+	for (const auto& pData : m_vHistoryData) {
 		pData->Append(&setCurrentWeekLineInfo);
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
@@ -90,7 +86,7 @@ bool CDataChinaWeekLine::LoadCurrentWeekLine(void) {
 }
 
 bool CDataChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
-	for (auto pWeekLine : vWeekLine) {
+	for (const auto& pWeekLine : vWeekLine) {
 		StoreData(pWeekLine);
 	}
 	SetDataLoaded(true);
@@ -106,15 +102,16 @@ bool CDataChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
 void CDataChinaWeekLine::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (auto pWeekLine : vTempWeekLine) {
+	for (const auto& pWeekLine : vTempWeekLine) {
 		StoreData(pWeekLine);
 	}
 	SetDataLoaded(true);
 }
 
 bool CDataChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) {
-	for (auto pData : m_vHistoryData) {
-		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) { //
+	for (const auto& pData : m_vHistoryData) {
+		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) {
+			//
 			static_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pHistoryCandleExtend);
 			break;
 		}

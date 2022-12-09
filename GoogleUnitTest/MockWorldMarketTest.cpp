@@ -39,7 +39,7 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-using namespace std;
+
 using namespace testing;
 #include<memory>
 

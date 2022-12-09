@@ -3,7 +3,7 @@
 #include"SetWorldStock.h"
 #include"SetTiingoStock.h"
 
-using namespace std;
+
 #include<memory>
 #include<atomic>
 #include<vector>

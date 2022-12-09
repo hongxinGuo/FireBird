@@ -6,7 +6,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 
-using namespace std;
+
 #include<algorithm>
 #include<string>
 

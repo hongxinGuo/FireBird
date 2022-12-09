@@ -5,7 +5,7 @@
 #include "TengxunRTWebInquiry.h"
 #include"TengxunRTDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {

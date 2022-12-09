@@ -39,7 +39,6 @@
 
 using namespace testing;
 
-using namespace std;
 #include<memory>
 
 #ifdef _DEBUG
@@ -54,20 +53,25 @@ namespace StockAnalysisTest {
 	CMockChinaMarketPtr gl_pMockChinaMarket;
 	CMockMainFrame* gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
-	class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
+	class TestEnvironment : public::testing::Environment {
+		// 全局初始化，由main()函数调用。
 	public:
 		TestEnvironment(void) {
 		}
+
 		virtual ~TestEnvironment() {
 		}
 
 		virtual void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
-			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(), _T("C:\\StockAnalysis\\SystemConfigeration.json"));
-			gl_systemConfigeration.SetDefaultFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\"));
+			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(),
+			             _T("C:\\StockAnalysis\\SystemConfigeration.json"));
+			gl_systemConfigeration.SetDefaultFileDirectory(
+				_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\"));
 			gl_systemConfigeration.SetDefaultFileName(_T("systemConfigerationTest.json"));
-			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(), _T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
+			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(),
+			             _T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
 			gl_systemConfigeration.LoadDB();
 			gl_systemConfigeration.Update();
 
@@ -136,7 +140,7 @@ namespace StockAnalysisTest {
 
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
+			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL); //
 			gl_pMockMainFrame = new CMockMainFrame;
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
@@ -166,8 +170,10 @@ namespace StockAnalysisTest {
 				}
 			}
 
-			if (gl_pChinaMarket->GetMarketDate() >= 20210531) { // 目前测试数据库的日线结束日期为20210430
-				if (gl_pChinaMarket->GetDayOfWeek() == 1) { // 如果是星期一
+			if (gl_pChinaMarket->GetMarketDate() >= 20210531) {
+				// 目前测试数据库的日线结束日期为20210430
+				if (gl_pChinaMarket->GetDayOfWeek() == 1) {
+					// 如果是星期一
 					EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
 					EXPECT_TRUE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
 				}
@@ -224,7 +230,8 @@ namespace StockAnalysisTest {
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				auto pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
-				pStock->SetUpdateProfileDB(false); // gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
+				pStock->SetUpdateProfileDB(false);
+				// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
 			}
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 

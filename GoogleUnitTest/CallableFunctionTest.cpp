@@ -18,7 +18,7 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-using namespace std;
+
 #include<string>
 
 using namespace testing;
@@ -56,8 +56,7 @@ namespace StockAnalysisTest {
 	WebSocketMessageData finnhubWebSocketMessage6((long)ix::WebSocketMessageType::Close, _T("abcdefg"), _T(""));
 	WebSocketMessageData finnhubWebSocketMessage7((long)ix::WebSocketMessageType::Fragment, _T("abcdefg"), _T(""));
 
-	class ProcessFinnhubWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*>
-	{
+	class ProcessFinnhubWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -81,8 +80,10 @@ namespace StockAnalysisTest {
 		ix::WebSocketMessagePtr m_pMsg;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubWebSocket1, ProcessFinnhubWebSocketTest, testing::Values(&finnhubWebSocketMessage1,
-		&finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
+	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubWebSocket1, ProcessFinnhubWebSocketTest,
+	                         testing::Values(&finnhubWebSocketMessage1,
+		                         &finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &
+		                         finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
 
 	TEST_P(ProcessFinnhubWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -132,8 +133,7 @@ namespace StockAnalysisTest {
 	WebSocketMessageData tiingoIEXWebSocketMessage6((long)ix::WebSocketMessageType::Close, _T("abcdefg"), _T(""));
 	WebSocketMessageData tiingoIEXWebSocketMessage7((long)ix::WebSocketMessageType::Fragment, _T("abcdefg"), _T(""));
 
-	class ProcessTiingoIEXWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*>
-	{
+	class ProcessTiingoIEXWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -157,8 +157,10 @@ namespace StockAnalysisTest {
 		ix::WebSocketMessagePtr m_pMsg;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoIEXWebSocket1, ProcessTiingoIEXWebSocketTest, testing::Values(&tiingoIEXWebSocketMessage1,
-		&tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
+	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoIEXWebSocket1, ProcessTiingoIEXWebSocketTest,
+	                         testing::Values(&tiingoIEXWebSocketMessage1,
+		                         &tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &
+		                         tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
 
 	TEST_P(ProcessTiingoIEXWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -208,8 +210,7 @@ namespace StockAnalysisTest {
 	WebSocketMessageData tiingoCryptoWebSocketMessage6((long)ix::WebSocketMessageType::Close, _T("abcdefg"), _T(""));
 	WebSocketMessageData tiingoCryptoWebSocketMessage7((long)ix::WebSocketMessageType::Fragment, _T("abcdefg"), _T(""));
 
-	class ProcessTiingoCryptoWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*>
-	{
+	class ProcessTiingoCryptoWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -233,8 +234,11 @@ namespace StockAnalysisTest {
 		ix::WebSocketMessagePtr m_pMsg;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCryptoWebSocket1, ProcessTiingoCryptoWebSocketTest, testing::Values(&tiingoCryptoWebSocketMessage1,
-		&tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
+	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCryptoWebSocket1, ProcessTiingoCryptoWebSocketTest,
+	                         testing::Values(&tiingoCryptoWebSocketMessage1,
+		                         &tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &
+		                         tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &
+		                         tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
 
 	TEST_P(ProcessTiingoCryptoWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -284,8 +288,7 @@ namespace StockAnalysisTest {
 	WebSocketMessageData tiingoForexWebSocketMessage6((long)ix::WebSocketMessageType::Close, _T("abcdefg"), _T(""));
 	WebSocketMessageData tiingoForexWebSocketMessage7((long)ix::WebSocketMessageType::Fragment, _T("abcdefg"), _T(""));
 
-	class ProcessTiingoForexWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*>
-	{
+	class ProcessTiingoForexWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -309,8 +312,11 @@ namespace StockAnalysisTest {
 		ix::WebSocketMessagePtr m_pMsg;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoForexWebSocket1, ProcessTiingoForexWebSocketTest, testing::Values(&tiingoForexWebSocketMessage1,
-		&tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4, &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &tiingoForexWebSocketMessage7));
+	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoForexWebSocket1, ProcessTiingoForexWebSocketTest,
+	                         testing::Values(&tiingoForexWebSocketMessage1,
+		                         &tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4
+		                         , &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &
+		                         tiingoForexWebSocketMessage7));
 
 	TEST_P(ProcessTiingoForexWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;

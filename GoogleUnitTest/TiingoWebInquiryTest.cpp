@@ -6,7 +6,7 @@
 #include"TiingoDataSource.h"
 #include"MockTiingoWebInquiry.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG

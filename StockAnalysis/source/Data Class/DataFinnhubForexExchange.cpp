@@ -7,9 +7,6 @@ CDataFinnhubForexExchange::CDataFinnhubForexExchange() {
 	Reset();
 }
 
-CDataFinnhubForexExchange::~CDataFinnhubForexExchange() {
-}
-
 void CDataFinnhubForexExchange::Reset(void) {
 	m_vForexExchange.resize(0);
 	m_mapForexExchange.clear();

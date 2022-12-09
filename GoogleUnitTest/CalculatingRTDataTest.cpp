@@ -5,7 +5,7 @@
 
 #include"ChinaStock.h"
 
-using namespace std;
+
 #include<memory>
 
 #ifdef _DEBUG
@@ -15,39 +15,61 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	struct RTData { // 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
+	struct RTData {
+		// 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
 		RTData(int count, INT64 llAmount, long lVolume,
-			long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
-			long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
-			INT64 llAmountLast, long lVolumeLast,
-			long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
-			long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
+		       long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
+		       long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
+		       INT64 llAmountLast, long lVolumeLast,
+		       long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
+		       long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l,
+		       long lB5l) {
 			iCount = count;
 			CurrentData.SetAmount(llAmount);
 			CurrentData.SetVolume(lVolume);
-			CurrentData.SetPSell(4, dS5); CurrentData.SetVSell(4, lS5);
-			CurrentData.SetPSell(3, dS4); CurrentData.SetVSell(3, lS4);
-			CurrentData.SetPSell(2, dS3); CurrentData.SetVSell(2, lS3);
-			CurrentData.SetPSell(1, dS2); CurrentData.SetVSell(1, lS2);
-			CurrentData.SetPSell(0, dS1); CurrentData.SetVSell(0, lS1);
-			CurrentData.SetPBuy(4, dB5); CurrentData.SetVBuy(4, lB5);
-			CurrentData.SetPBuy(3, dB4); CurrentData.SetVBuy(3, lB4);
-			CurrentData.SetPBuy(2, dB3); CurrentData.SetVBuy(2, lB3);
-			CurrentData.SetPBuy(1, dB2); CurrentData.SetVBuy(1, lB2);
-			CurrentData.SetPBuy(0, dB1); CurrentData.SetVBuy(0, lB1);
+			CurrentData.SetPSell(4, dS5);
+			CurrentData.SetVSell(4, lS5);
+			CurrentData.SetPSell(3, dS4);
+			CurrentData.SetVSell(3, lS4);
+			CurrentData.SetPSell(2, dS3);
+			CurrentData.SetVSell(2, lS3);
+			CurrentData.SetPSell(1, dS2);
+			CurrentData.SetVSell(1, lS2);
+			CurrentData.SetPSell(0, dS1);
+			CurrentData.SetVSell(0, lS1);
+			CurrentData.SetPBuy(4, dB5);
+			CurrentData.SetVBuy(4, lB5);
+			CurrentData.SetPBuy(3, dB4);
+			CurrentData.SetVBuy(3, lB4);
+			CurrentData.SetPBuy(2, dB3);
+			CurrentData.SetVBuy(2, lB3);
+			CurrentData.SetPBuy(1, dB2);
+			CurrentData.SetVBuy(1, lB2);
+			CurrentData.SetPBuy(0, dB1);
+			CurrentData.SetVBuy(0, lB1);
 
 			LastData.SetAmount(llAmountLast);
 			LastData.SetVolume(lVolumeLast);
-			LastData.SetPSell(4, dS5l); LastData.SetVSell(4, lS5l);
-			LastData.SetPSell(3, dS4l); LastData.SetVSell(3, lS4l);
-			LastData.SetPSell(2, dS3l); LastData.SetVSell(2, lS3l);
-			LastData.SetPSell(1, dS2l); LastData.SetVSell(1, lS2l);
-			LastData.SetPSell(0, dS1l); LastData.SetVSell(0, lS1l);
-			LastData.SetPBuy(4, dB5l); LastData.SetVBuy(4, lB5l);
-			LastData.SetPBuy(3, dB4l); LastData.SetVBuy(3, lB4l);
-			LastData.SetPBuy(2, dB3l); LastData.SetVBuy(2, lB3l);
-			LastData.SetPBuy(1, dB2l); LastData.SetVBuy(1, lB2l);
-			LastData.SetPBuy(0, dB1l); LastData.SetVBuy(0, lB1l);
+			LastData.SetPSell(4, dS5l);
+			LastData.SetVSell(4, lS5l);
+			LastData.SetPSell(3, dS4l);
+			LastData.SetVSell(3, lS4l);
+			LastData.SetPSell(2, dS3l);
+			LastData.SetVSell(2, lS3l);
+			LastData.SetPSell(1, dS2l);
+			LastData.SetVSell(1, lS2l);
+			LastData.SetPSell(0, dS1l);
+			LastData.SetVSell(0, lS1l);
+			LastData.SetPBuy(4, dB5l);
+			LastData.SetVBuy(4, lB5l);
+			LastData.SetPBuy(3, dB4l);
+			LastData.SetVBuy(3, lB4l);
+			LastData.SetPBuy(2, dB3l);
+			LastData.SetVBuy(2, lB3l);
+			LastData.SetPBuy(1, dB2l);
+			LastData.SetVBuy(1, lB2l);
+			LastData.SetPBuy(0, dB1l);
+			LastData.SetVBuy(0, lB1l);
 		}
 
 	public:
@@ -58,77 +80,76 @@ namespace StockAnalysisTest {
 
 	// 成交1万股@10.00
 	RTData RT1(0, 200000, 20000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 成交10万股@10.01，出现新的挂单位置
 	RTData RT2(1, 1101000, 110000,
-		10250, 10000, 10140, 20000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9870, 20000, 9860, 10000,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10250, 10000, 10140, 20000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9870, 20000, 9860, 10000,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 成交20万股@10.02，出现新的挂单量
 	RTData RT3(2, 2103800, 210000,
-		10050, 10100, 10040, 10200, 10030, 10400, 10020, 10800, 10010, 11600,
-		10000, 10100, 9990, 10200, 9980, 10400, 9970, 10800, 9960, 11600,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 10100, 10040, 10200, 10030, 10400, 10020, 10800, 10010, 11600,
+	           10000, 10100, 9990, 10200, 9980, 10400, 9970, 10800, 9960, 11600,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 无成交，出现撤单
 	RTData RT4(3, 200290, 20000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 有成交，一般型买入（比卖一价低），买卖单出现撤单。
 	RTData RT5(4, 199910, 20000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 有成交，进攻型买入（比卖二价低），卖单出现撤单，买单增单。
 	RTData RT6(5, 199710, 20000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 无成交，卖单出现撤单，买单也出现撤单。
 	RTData RT7(6, 100000, 10000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 成交4000股@10.005，买入卖出无法确定，买卖单出现撤单。
 	RTData RT8(7, 140020, 14000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 有成交，进攻型买入（比买二价高），买卖单出现撤单，。
 	RTData RT9(8, 200000, 20000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	           10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	           10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	           100000, 10000,
+	           10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	           10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 	// 有成交，强买入（比买二价低，此例低于买三），买卖单出现撤单。
 	RTData RT10(9, 200000, 20000,
-		10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-		10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-		100000, 10000,
-		10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-		10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+	            10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+	            10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+	            100000, 10000,
+	            10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+	            10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
-	class CStockTest2 : public::testing::TestWithParam<RTData*>
-	{
+	class CStockTest2 : public::testing::TestWithParam<RTData*> {
 	protected:
 		virtual void SetUp(void) override {
 			GeneralCheck();
@@ -167,7 +188,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestRTData, CStockTest2, testing::Values(&RT1, &RT2, &RT3,
-		&RT4, &RT5, &RT6, &RT7, &RT8, &RT9, &RT10));
+		                         &RT4, &RT5, &RT6, &RT7, &RT8, &RT9, &RT10));
 
 	TEST_P(CStockTest2, TestRTData) {
 		EXPECT_TRUE(m_stock.IsVolumeConsistence());
@@ -182,7 +203,8 @@ namespace StockAnalysisTest {
 		m_stock.ProcessOneRTData(pCurrentData);
 		//EXPECT_TRUE(m_stock.IsVolumeConsistence());
 		INT64 lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
-			+ m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.GetStrongSellVolume();
+			+ m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.
+			GetStrongSellVolume();
 		EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);
 		switch (iCount) {
 		case 0: // 成交1万股@10.00

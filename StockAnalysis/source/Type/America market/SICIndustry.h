@@ -2,7 +2,7 @@
 
 #include"SetSICIndustry.h"
 
-using namespace std;
+
 #include<memory>
 
 class CSICIndustry : public CObject {

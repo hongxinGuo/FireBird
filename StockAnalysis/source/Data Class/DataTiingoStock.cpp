@@ -5,9 +5,6 @@ CDataTiingoStock::CDataTiingoStock() {
 	Reset();
 }
 
-CDataTiingoStock::~CDataTiingoStock() {
-}
-
 void CDataTiingoStock::Reset(void) {
 	m_vTiingoStock.resize(0);
 	m_mapTiingoStock.clear();

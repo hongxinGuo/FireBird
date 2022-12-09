@@ -6,7 +6,6 @@
 #include"VirtualProductWebData.h"
 #include"VirtualWebInquiry.h"
 
-using namespace std;
 #include<queue>
 
 class CVirtualDataSource : public CObject {
@@ -20,8 +19,12 @@ public:
 	virtual bool Inquire(long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
-	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
-	virtual bool UpdateStatus(void) { ASSERT(0); return true; }
+	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData);
+	// 默认是在处理完本次数据后方才允许再次接收。
+	virtual bool UpdateStatus(void) {
+		ASSERT(0);
+		return true;
+	}
 
 	void SetCurrentInquiryFunction(CString strFunctionName) { m_pWebInquiry->SetInquiryFunction(strFunctionName); }
 	void StartThreadGetWebData(void) { m_pWebInquiry->GetWebData(); }
@@ -31,24 +34,49 @@ public:
 
 	size_t GetInquiryQueueSize(void) noexcept { return m_qProduct.size(); }
 	void StoreInquiry(CVirtualProductWebDataPtr p) { m_qProduct.push(p); }
-	CVirtualProductWebDataPtr GetInquiry(void) { m_pCurrentProduct = m_qProduct.front(); m_qProduct.pop(); return m_pCurrentProduct; }
-	bool HaveInquiry(void) { if (m_qProduct.size() > 0) return true; else return false; }
+
+	CVirtualProductWebDataPtr GetInquiry(void) {
+		m_pCurrentProduct = m_qProduct.front();
+		m_qProduct.pop();
+		return m_pCurrentProduct;
+	}
+
+	bool HaveInquiry(void) {
+		if (m_qProduct.size() > 0) return true;
+		else return false;
+	}
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) noexcept { return m_pCurrentProduct; }
 	void SetCurrentInquiry(CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
 
 	bool IsInquiring(void) noexcept { return m_fInquiring; }
 	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
-	bool IsInquiringAndClearFlag(void) noexcept { const bool fInquiring = m_fInquiring.exchange(false); return fInquiring; }
+
+	bool IsInquiringAndClearFlag(void) noexcept {
+		const bool fInquiring = m_fInquiring.exchange(false);
+		return fInquiring;
+	}
 
 	void SetWebInquiryFinished(bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
-	bool IsWebInquiryFinished(void) noexcept { const bool f = m_fWebInquiryFinished; return f; }
-	bool IsWebInquiryFinishedAndClearFlag(void) noexcept { const bool fWebInquiryFinished = m_fWebInquiryFinished.exchange(false); return fWebInquiryFinished; }
+
+	bool IsWebInquiryFinished(void) noexcept {
+		const bool f = m_fWebInquiryFinished;
+		return f;
+	}
+
+	bool IsWebInquiryFinishedAndClearFlag(void) noexcept {
+		const bool fWebInquiryFinished = m_fWebInquiryFinished.exchange(false);
+		return fWebInquiryFinished;
+	}
 
 	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
-	bool HaveReceiviedData(void) { if (m_qReceivedData.Size() > 0) return true; else return false; }
+
+	bool HaveReceiviedData(void) {
+		if (m_qReceivedData.Size() > 0) return true;
+		else return false;
+	}
 
 	bool IsEnable(void) noexcept { return m_fEnable; }
 	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }

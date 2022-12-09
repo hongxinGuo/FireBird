@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"VirtualDataHistoryCandleExtend.h"
+#include"DayLine.h"
 
 CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() : CObject() {
 	Reset();
@@ -18,7 +19,8 @@ CVirtualDataHistoryCandleExtend::~CVirtualDataHistoryCandleExtend() {
 //  具体操作的数据表由第一个参数传入，
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol) {
+bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic,
+                                                    CString strStockSymbol) {
 	size_t lSize = 0;
 	vector<CVirtualHistoryCandleExtendPtr> vHistoryCandle;
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
@@ -47,14 +49,19 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	psetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
 	psetHistoryCandleBasic->Open();
 	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
-	if (lSizeOfOldDayLine > 0) { // 有旧数据
-		for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+	if (lSizeOfOldDayLine > 0) {
+		// 有旧数据
+		for (int i = 0; i < lSize; i++) {
+			// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
-			if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) { // 有更早的新数据？
+			if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) {
+				// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 			}
 			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
+				while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->
+					GetMarketDate()))
+					lCurrentPos++;
 				if (lCurrentPos < lSizeOfOldDayLine) {
 					if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
 						pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
@@ -68,8 +75,10 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			}
 		}
 	}
-	else { // 没有旧数据
-		for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+	else {
+		// 没有旧数据
+		for (int i = 0; i < lSize; i++) {
+			// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
 			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
 		}
@@ -98,7 +107,8 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic) {
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 
-	if (gl_systemStatus.IsWorkingMode()) ASSERT(!m_fLoadDataFirst);
+	if (gl_systemStatus.IsWorkingMode())
+		ASSERT(!m_fLoadDataFirst);
 	ASSERT(psetHistoryCandleBasic->IsOpen());
 
 	// 装入DayLine数据
@@ -123,7 +133,8 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	int iPosition = 0;
 
-	if (gl_systemStatus.IsWorkingMode()) ASSERT(m_fLoadDataFirst);
+	if (gl_systemStatus.IsWorkingMode())
+		ASSERT(m_fLoadDataFirst);
 	ASSERT(psetHistoryCandleExtend->IsOpen());
 
 	while (!psetHistoryCandleExtend->IsEOF()) {
@@ -152,15 +163,14 @@ void CVirtualDataHistoryCandleExtend::UpdateData(vector<CVirtualHistoryCandleExt
 	CVirtualHistoryCandleExtendPtr pData = nullptr;
 	Unload(); // 清除已载入的数据（如果有的话）
 	if (fRevertSave) {
-		for (int i = vTempData.size() - 1; i >= 0; i--) {
+		for (int i = vTempData.size() - 1; i > -1; i--) {
 			pData = vTempData.at(i);
-			if (pData->IsActive())	StoreData(pData);
+			if (pData->IsActive()) StoreData(pData);
 		}
 	}
 	else {
-		for (int i = 0; i < vTempData.size(); i++) {
-			pData = vTempData.at(i);
-			if (pData->IsActive())	StoreData(pData);
+		for (auto& p : vTempData) {
+			if (p->IsActive()) StoreData(p);
 		}
 	}
 	SetDataLoaded(true);
@@ -197,15 +207,16 @@ void CVirtualDataHistoryCandleExtend::UpdateData(vector<CDayLinePtr>& vTempDayLi
 }
 
 void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
-	constexpr COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
+	constexpr COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
+	                   crRed(RGB(255, 0, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	long lHigh = 0;
-	long lDate{ 0 };
-	vector<CVirtualHistoryCandleExtendPtr>::iterator it = m_vHistoryData.end();
-	it--;
+	long lDate{0};
+	auto it = m_vHistoryData.end();
+	--it;
 	int i = 0, y = 0;
 	long lLow = (*it)->GetLow();
-	for (; it != m_vHistoryData.begin(); it--) {
+	for (; it != m_vHistoryData.begin(); --it) {
 		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
 		if ((*it)->GetLow() > 0) {
 			if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
@@ -216,11 +227,11 @@ void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
 	}
 
 	it = m_vHistoryData.end();
-	it--;
+	--it;
 	i = 0;
 	long x = 0;
 	pDC->SelectObject(&penRed1);
-	for (; it != m_vHistoryData.begin(); it--) {
+	for (; it != m_vHistoryData.begin(); --it) {
 		x = rectClient.right - 2 - i * 3;
 		y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
 		pDC->MoveTo(x, y);

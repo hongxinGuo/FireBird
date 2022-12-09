@@ -10,9 +10,6 @@
 CDataChinaDayLine::CDataChinaDayLine() {
 }
 
-CDataChinaDayLine::~CDataChinaDayLine() {
-}
-
 bool CDataChinaDayLine::SaveDB(CString strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasic;
 	UpdateBasicDB(&setDayLineBasic, strStockSymbol);
@@ -60,7 +57,8 @@ bool CDataChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	do {
 		pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
 		vWeekLine.push_back(pWeekLine);
-	} while (lCurrentDayLinePos < Size());
+	}
+	while (lCurrentDayLinePos < Size());
 
 	return true;
 }
@@ -72,12 +70,14 @@ CWeekLinePtr CDataChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetMarketDate());
 	long lNewestDay = GetData(Size() - 1)->GetMarketDate();
 	CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-	if (lNextMonday < lNewestDay) { // 中间数据
+	if (lNextMonday < lNewestDay) {
+		// 中间数据
 		while (GetData(lCurrentDayLinePos)->GetMarketDate() < lNextMonday) {
 			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}
 	}
-	else { // 最后一组数据
+	else {
+		// 最后一组数据
 		while (lCurrentDayLinePos <= (Size() - 1)) {
 			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}

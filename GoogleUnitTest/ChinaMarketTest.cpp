@@ -23,7 +23,7 @@
 
 using namespace testing;
 
-using namespace std;
+
 #include<memory>
 
 #ifdef _DEBUG

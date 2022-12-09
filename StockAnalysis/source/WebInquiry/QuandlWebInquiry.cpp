@@ -5,7 +5,7 @@
 #include "QuandlWebInquiry.h"
 #include"QuandlDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 //  api_key=zBMXMyoTyiy_N3pMb3ex

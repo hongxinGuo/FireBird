@@ -2,18 +2,17 @@
 
 #include"FinnhubForexSymbol.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataChosenForex : public CObject {
+class CDataChosenForex final : public CObject {
 public:
 	CDataChosenForex();
-	~CDataChosenForex();
+	~CDataChosenForex() override = default;
 	void Reset(void);
 
 	CForexSymbolPtr GetForex(long lIndex) { return m_vWorldChosenForex.at(lIndex); }
-	size_t GetSize(void) { return m_vWorldChosenForex.size(); }
+	size_t GetSize(void) const noexcept { return m_vWorldChosenForex.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

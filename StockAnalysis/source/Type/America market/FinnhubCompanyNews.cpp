@@ -4,7 +4,7 @@
 
 #include"FinnhubCompanyNews.h"
 
-using namespace std;
+
 
 CFinnhubCompanyNews::CFinnhubCompanyNews() : CObject() {
 	m_llDateTime = 0;

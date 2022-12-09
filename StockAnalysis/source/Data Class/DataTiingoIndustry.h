@@ -2,7 +2,6 @@
 
 #include"TiingoIndustry.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
@@ -14,8 +13,16 @@ public:
 
 	size_t GetTotalTiingoIndustry(void) noexcept { return m_vTiingoIndustry.size(); }
 	long GetLastTotalTiingoIndustry(void) noexcept { return m_lLastTotalTiingoIndustry; }
-	bool IsTiingoIndustry(CString strTiingoIndustry) { if (m_mapTiingoIndustry.find(strTiingoIndustry) == m_mapTiingoIndustry.end()) return false;	else return true; }
-	bool IsTiingoIndustry(CTiingoIndustryPtr pTiingoIndustry) { return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector); }
+
+	bool IsTiingoIndustry(CString strTiingoIndustry) {
+		if (m_mapTiingoIndustry.find(strTiingoIndustry) == m_mapTiingoIndustry.end()) return false;
+		else return true;
+	}
+
+	bool IsTiingoIndustry(CTiingoIndustryPtr pTiingoIndustry) {
+		return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector);
+	}
+
 	void Add(CTiingoIndustryPtr pTiingoIndustry);
 	bool Delete(CTiingoIndustryPtr pTiingoIndustry);
 

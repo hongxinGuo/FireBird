@@ -7,7 +7,8 @@
 class CDataChinaDayLine : public CVirtualDataHistoryCandleExtend {
 public:
 	CDataChinaDayLine();
-	virtual ~CDataChinaDayLine();
+	virtual ~CDataChinaDayLine() override = default;
+
 public:
 	virtual bool SaveDB(CString strStockSymbol) override final;
 	virtual bool LoadDB(CString strStockSymbol) override final;

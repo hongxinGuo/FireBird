@@ -1,6 +1,6 @@
 #include"pch.h"
 
-using namespace std;
+
 
 CString ConvertValueToString(long lValue, int iDividend) {
 	char buffer[50]{0};

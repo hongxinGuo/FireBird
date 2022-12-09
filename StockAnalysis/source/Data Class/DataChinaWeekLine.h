@@ -2,12 +2,11 @@
 
 #include "VirtualDataHistoryCandleExtend.h"
 #include"WeekLine.h"
-//#include"DayLine.h"
 
 class CDataChinaWeekLine : public CVirtualDataHistoryCandleExtend {
 public:
 	CDataChinaWeekLine();
-	virtual ~CDataChinaWeekLine();
+	~CDataChinaWeekLine() override = default;
 
 	virtual bool LoadDB(CString strStockSymbol = _T("")) override final;
 	virtual bool SaveDB(CString strStockSymbol = _T("")) override final;

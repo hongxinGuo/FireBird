@@ -5,7 +5,7 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-using namespace std;
+
 #include<memory>
 
 class CDayLine;

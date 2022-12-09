@@ -2,18 +2,17 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataChosenCrypto : public CObject {
+class CDataChosenCrypto final : public CObject {
 public:
 	CDataChosenCrypto();
-	~CDataChosenCrypto();
+	~CDataChosenCrypto() override = default;
 	void Reset(void);
 
 	CFinnhubCryptoSymbolPtr GetCrypto(long lIndex) { return m_vWorldChosenCrypto.at(lIndex); }
-	size_t GetSize(void) { return m_vWorldChosenCrypto.size(); }
+	size_t GetSize(void) const noexcept { return m_vWorldChosenCrypto.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

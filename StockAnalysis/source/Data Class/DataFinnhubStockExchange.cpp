@@ -13,16 +13,12 @@ CDataFinnhubStockExchange::CDataFinnhubStockExchange() {
 	Reset();
 }
 
-CDataFinnhubStockExchange::~CDataFinnhubStockExchange() {
-}
-
 void CDataFinnhubStockExchange::Reset() {
 	m_vFinnhubStockExchange.resize(0);
 	m_mapFinnhubStockExchange.clear();
 }
 
-bool CDataFinnhubStockExchange::LoadDB(void)
-{
+bool CDataFinnhubStockExchange::LoadDB(void) {
 	CSetFinnhubStockExchange setExchange;
 	CFinnhubStockExchangePtr pExchange = nullptr;
 

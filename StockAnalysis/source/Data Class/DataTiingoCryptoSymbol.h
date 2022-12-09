@@ -3,29 +3,39 @@
 //#include"WorldStock.h"
 #include <TiingoCryptoSymbol.h>
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataTiingoCryptoSymbol : public CObject {
+class CDataTiingoCryptoSymbol final : public CObject {
 public:
 	CDataTiingoCryptoSymbol();
-	~CDataTiingoCryptoSymbol();
+	~CDataTiingoCryptoSymbol() override = default;
 	void Reset(void);
 
 	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);
 	bool Delete(CTiingoCryptoSymbolPtr pCrypto);
-	size_t GetCryptoSymbolSize(void) noexcept { return m_vTiingoCrypto.size(); }
-	long GetLastCryptoSymbolSize(void) noexcept { return m_lLastTotalTiingoCrypto; }
-	bool IsTiingoCryptoSymbol(CString strSymbol) { if (m_mapTiingoCrypto.find(strSymbol) == m_mapTiingoCrypto.end()) return false; else return true; }
-	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCrypto) { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
-	CTiingoCryptoSymbolPtr GetCryptoSymbol(long lIndex) { return m_vTiingoCrypto.at(lIndex); }
-	CTiingoCryptoSymbolPtr GetCryptoSymbol(CString strTicker) { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
+	size_t GetCryptoSymbolSize(void) const noexcept { return m_vTiingoCrypto.size(); }
+	long GetLastCryptoSymbolSize(void) const noexcept { return m_lLastTotalTiingoCrypto; }
+
+	bool IsTiingoCryptoSymbol(CString strSymbol) const {
+		if (m_mapTiingoCrypto.contains(strSymbol)) return true;
+		else return false;
+	}
+
+	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
+	CTiingoCryptoSymbolPtr GetCryptoSymbol(long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
+
+	CTiingoCryptoSymbolPtr GetCryptoSymbol(CString strTicker) const {
+		return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker));
+	}
 
 	bool UpdateDB(void);
 	bool LoadDB(void);
 
-	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalTiingoCrypto < m_vTiingoCrypto.size()) return true; else return false; }
+	bool IsNeedUpdate(void) const noexcept {
+		if (m_lLastTotalTiingoCrypto < m_vTiingoCrypto.size()) return true;
+		else return false;
+	}
 
 protected:
 	vector<CTiingoCryptoSymbolPtr> m_vTiingoCrypto;

@@ -5,9 +5,8 @@
 
 CDataStockSymbol::CDataStockSymbol() {
 	m_vStockSection.resize(2000); // 沪深各1000个段。
-	CStockSectionPtr pStockSection;
 	for (int i = 0; i < 2000; i++) {
-		pStockSection = make_shared<CStockSection>();
+		const auto pStockSection = make_shared<CStockSection>();
 		pStockSection->SetIndexNumber(i);
 		if (i < 1000) pStockSection->SetMarket(__SHANGHAI_MARKET__);
 		else pStockSection->SetMarket(__SHENZHEN_MARKET__);
@@ -15,10 +14,6 @@ CDataStockSymbol::CDataStockSymbol() {
 	}
 
 	Reset();
-}
-
-CDataStockSymbol::~CDataStockSymbol()
-{
 }
 
 void CDataStockSymbol::Reset(void) {
@@ -94,7 +89,8 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	setStockSection.m_strSort = _T("[ID]");
 	setStockSection.Open();
 	setStockSection.m_pDatabase->BeginTrans();
-	if (setStockSection.IsEOF()) {// 空表
+	if (setStockSection.IsEOF()) {
+		// 空表
 		for (int i = 0; i < 2000; i++) {
 			pStockSection = m_vStockSection.at(i);
 			setStockSection.AddNew();
@@ -106,7 +102,8 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 			setStockSection.Update();
 		}
 	}
-	else { // 表已存在
+	else {
+		// 表已存在
 		while (!setStockSection.IsEOF()) {
 			if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
 				setStockSection.Edit();
@@ -129,26 +126,27 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 
 void CDataStockSymbol::CreateStockSection(CString strFirstStockCode) {
 	CString strCode = GetStockSymbol(strFirstStockCode);
-	CString strStockCode, strStockSymbol, strExchange;
 	CString str = _T("");
 	int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
 	char buffer[10];
 	CChinaStockPtr pStock = nullptr;
 
-	if (IsShanghaiExchange(strFirstStockCode)) { // 上海市场
+	if (IsShanghaiExchange(strFirstStockCode)) {
+		// 上海市场
 		iMarket = 0;
 	}
-	else if (IsShenzhenExchange(strFirstStockCode)) { // 深圳市场
+	else if (IsShenzhenExchange(strFirstStockCode)) {
+		// 深圳市场
 		iMarket = 1000;
 	}
 	if (m_vStockSection.at((iCode / 1000) + iMarket)->IsBuildStockPtr()) return; // 已经在证券池中建立了
 	// 生成上海股票代码
 	for (int i = iCode; i < (iCode + 1000); i++) {
-		strExchange = GetStockExchange(strFirstStockCode);
+		const CString strExchange = GetStockExchange(strFirstStockCode);
 		sprintf_s(buffer, _T("%06d"), i);
-		strStockSymbol = buffer;
-		strStockCode = CreateStockCode(strExchange, strStockSymbol);
+		const CString strStockSymbol = buffer;
+		const CString strStockCode = CreateStockCode(strExchange, strStockSymbol);
 		Add(strStockCode);
 	}
 	if (UpdateStockSection(iCode / 1000 + iMarket)) {
@@ -162,10 +160,12 @@ bool CDataStockSymbol::UpdateStockSection(CString strStockCode) {
 	int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
 
-	if (IsShanghaiExchange(strStockCode)) { // 上海市场
+	if (IsShanghaiExchange(strStockCode)) {
+		// 上海市场
 		iMarket = 0;
 	}
-	else if (IsShenzhenExchange(strStockCode)) { // 深圳市场
+	else if (IsShenzhenExchange(strStockCode)) {
+		// 深圳市场
 		iMarket = 1000;
 	}
 	return UpdateStockSection(iCode / 1000 + iMarket);
@@ -197,33 +197,35 @@ CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) 
 	CString strReturn = _T("");
 	CString strSuffix = _T(",");
 
-	if (m_vStockSymbol.size() == 0) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));  // 得到第一个股票代码
+	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
+	strReturn = XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex)); // 得到第一个股票代码
 	GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) {
+		// 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strSuffix;
 		strReturn += XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));
 		GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	}
-	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
+	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--;
+	// 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
 
 CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
-	CString strReturn;
 	CString strPostfix = _T(",");
 
-	if (m_vStockSymbol.size() == 0) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex));  // 得到第一个股票代码
+	if (m_vStockSymbol.empty()) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
+	CString strReturn = XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex)); // 得到第一个股票代码
 	GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) {
+		// 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strPostfix;
-		strReturn += XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex));  // 得到第一个股票代码
+		strReturn += XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex)); // 得到第一个股票代码
 		GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	}
 	if (m_lNeteaseRTDataInquiryIndex > 0) m_lNeteaseRTDataInquiryIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）

@@ -2,7 +2,7 @@
 
 #include"SetInsiderTransaction.h"
 
-using namespace std;
+
 #include<memory>
 
 class CInsiderTransaction : public CObject {

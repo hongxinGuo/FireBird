@@ -2,7 +2,7 @@
 
 #include"VirtualSetStockSymbol.h"
 
-using namespace std;
+
 #include<memory>
 #include<atomic>
 #include<vector>

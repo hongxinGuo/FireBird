@@ -2,7 +2,7 @@
 
 #include"SetCountry.h"
 
-using namespace std;
+
 #include<memory>
 
 class CCountry : public CObject {

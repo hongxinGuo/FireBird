@@ -6,7 +6,7 @@
 #include "SinaRTWebInquiry.h"
 #include"SinaRTDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 /// <summary>

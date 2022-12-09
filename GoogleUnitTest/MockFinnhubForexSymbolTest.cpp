@@ -12,7 +12,7 @@
 #include"FinnhubForexSymbol.h"
 
 #include"MockFinnhubForexSymbol.h"
-using namespace std;
+
 using namespace testing;
 #include<memory>
 

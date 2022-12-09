@@ -4,7 +4,7 @@
 #include"SetFinnhubStockBasicFinancialQuarter.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 
-using namespace std;
+
 #include<memory>
 
 class CValueOfPeriod {

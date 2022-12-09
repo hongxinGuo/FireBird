@@ -5,9 +5,6 @@ CDataFinnhubCountry::CDataFinnhubCountry() {
 	Reset();
 }
 
-CDataFinnhubCountry::~CDataFinnhubCountry() {
-}
-
 void CDataFinnhubCountry::Reset(void) {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();

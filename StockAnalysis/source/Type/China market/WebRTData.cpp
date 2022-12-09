@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 void CWebRTData::Reset(void) {
-	m_lDataSource = __INVALID_RT_WEB_DATA__;
+	m_lDataSource = _INVALID_RT_WEB_DATA_;
 	m_time = 0;
 	m_strSymbol = _T("");
 	m_strStockName = _T("");
@@ -134,17 +134,19 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	}
 
 	try {
-		m_fActive = false;    // 初始状态为无效数据
+		m_fActive = false; // 初始状态为无效数据
 		pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // 读入“var hq_str_s"
 		buffer1[12] = 0x000;
 		CString str1;
 		str1 = buffer1;
-		if (strHeader.Compare(str1) != 0) { // 数据格式出错
+		if (strHeader.Compare(str1) != 0) {
+			// 数据格式出错
 			throw exception();
 		}
 		pSinaWebRTData->IncreaseCurrentPos(12);
 
-		if (pSinaWebRTData->GetCurrentPosData() == 'h') { // 上海股票
+		if (pSinaWebRTData->GetCurrentPosData() == 'h') {
+			// 上海股票
 			wMarket = __SHANGHAI_MARKET__; // 上海股票标识
 		}
 		else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
@@ -163,7 +165,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			strSinaStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
 			break;
 		case __SHENZHEN_MARKET__:
-			strSinaStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+			strSinaStockCode = _T("sz") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
 			break;
 		default:
 			throw exception();
@@ -178,7 +180,8 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		}
 		pSinaWebRTData->IncreaseCurrentPos(2);
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos());
-		if (buffer1[0] == '"') { // 没有数据?
+		if (buffer1[0] == '"') {
+			// 没有数据?
 			if (buffer1[1] != ';') {
 				throw exception();
 			}
@@ -188,8 +191,8 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			}
 			pSinaWebRTData->IncreaseCurrentPos();
 			m_fActive = false;
-			SetDataSource(__SINA_RT_WEB_DATA__);
-			return true;  // 非活跃股票没有实时数据，在此返回。
+			SetDataSource(_SINA_RT_WEB_DATA_);
+			return true; // 非活跃股票没有实时数据，在此返回。
 		}
 		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) {
 			throw exception();
@@ -200,7 +203,8 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		pSinaWebRTData->IncreaseCurrentPos(2);
 
 		i = 2;
-		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
+		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) {
+			// 读入剩下的中文名字（第一个字在buffer1中）
 			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) {
 				throw exception();
 			}
@@ -290,19 +294,22 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			throw exception();
 		}
 		strTime += buffer3;
-		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer()); // 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
+		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
+		// 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 
 		// 后面的数据皆为无效数据，读至此数据的结尾处即可。
 		// 新浪实时数据的结束符是'"',然后跟着分号';'，然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
 		// 故而要先判断'"'和';'，然后用换行符作为附加判断，有否都认可。
-		while (pSinaWebRTData->GetCurrentPosData() != '"') { // 寻找本段数据的结束符（“"”）。
+		while (pSinaWebRTData->GetCurrentPosData() != '"') {
+			// 寻找本段数据的结束符（“"”）。
 			pSinaWebRTData->IncreaseCurrentPos();
 			if (pSinaWebRTData->OutOfRange()) {
 				throw exception();
 			}
 		}
 		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'"'
-		if (pSinaWebRTData->GetCurrentPosData() != ';') { // 字符'"'后面应该跟随字符';'
+		if (pSinaWebRTData->GetCurrentPosData() != ';') {
+			// 字符'"'后面应该跟随字符';'
 			throw exception();
 		}
 		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符';'
@@ -317,7 +324,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
 		// 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
 		CheckSinaRTDataActive();
-		SetDataSource(__SINA_RT_WEB_DATA__);
+		SetDataSource(_SINA_RT_WEB_DATA_);
 		return true;
 	}
 	catch (exception& e) {
@@ -481,17 +488,19 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 	CString strStockSymbol, strTengxunStockCode;
 
 	try {
-		m_fActive = false;    // 初始状态为无效数据
+		m_fActive = false; // 初始状态为无效数据
 		pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // 读入“v_s"
 		buffer1[3] = 0x000;
 		CString str1;
 		str1 = buffer1;
-		if (strHeader.Compare(str1) != 0) { // 数据格式出错
+		if (strHeader.Compare(str1) != 0) {
+			// 数据格式出错
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData格式出错"));
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(3);
-		if (pTengxunWebRTData->GetCurrentPosData() == 'h') { // 上海股票
+		if (pTengxunWebRTData->GetCurrentPosData() == 'h') {
+			// 上海股票
 			wMarket = __SHANGHAI_MARKET__; // 上海股票标识
 		}
 		else if (pTengxunWebRTData->GetCurrentPosData() == 'z') {
@@ -512,7 +521,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			strTengxunStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
 			break;
 		case __SHENZHEN_MARKET__:
-			strTengxunStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+			strTengxunStockCode = _T("sz") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
 			break;
 		default:
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：无效市场代码"));
@@ -539,9 +548,12 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			return false;
 		}
 #ifdef DEBUG
-		if (lTemp == 1) ASSERT(wMarket == __SHANGHAI_MARKET__);
-		else if (lTemp == 51) ASSERT(wMarket == __SHENZHEN_MARKET__);
-		else ASSERT(0); // 报错
+		if (lTemp == 1)
+			ASSERT(wMarket == __SHANGHAI_MARKET__);
+		else if (lTemp == 51)
+			ASSERT(wMarket == __SHENZHEN_MARKET__);
+		else
+			ASSERT(0); // 报错
 #endif
 		if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：股票名称"));
@@ -739,14 +751,16 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
 		// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		while (pTengxunWebRTData->GetCurrentPosData() != '"') { // 寻找本段数据的结束符（“"”）。
+		while (pTengxunWebRTData->GetCurrentPosData() != '"') {
+			// 寻找本段数据的结束符（“"”）。
 			pTengxunWebRTData->IncreaseCurrentPos();
 			if (pTengxunWebRTData->OutOfRange()) {
 				return false;
 			}
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
-		if (pTengxunWebRTData->GetCurrentPosData() != ';') { // 字符'"'后面应该跟随字符';'
+		if (pTengxunWebRTData->GetCurrentPosData() != ';') {
+			// 字符'"'后面应该跟随字符';'
 			return false;
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
@@ -757,7 +771,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			}
 		}
 		CheckTengxunRTDataActive();
-		SetDataSource(__TENGXUN_RT_WEB_DATA__);
+		SetDataSource(_TENGXUN_RT_WEB_DATA_);
 		return true;
 	}
 	catch (exception& e) {
@@ -767,10 +781,12 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 }
 
 bool CWebRTData::CheckTengxunRTDataActive() {
-	if (!IsValidTime(14)) { // 如果交易时间在14天前
+	if (!IsValidTime(14)) {
+		// 如果交易时间在14天前
 		m_fActive = false;
 	}
-	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
+	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
+		// 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
 		m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
 	}
 	else m_fActive = true;
@@ -889,7 +905,7 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 	bool fSucceed = true;
 	string strSymbol, strSymbol2, strTime, strUpdateTime, strName;
 	double dHigh, dLow, dNew, dOpen, dLastClose;
-	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
+	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
 	string sName;
 
@@ -904,7 +920,8 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		strSymbol2 = pt1.get<string>(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
-	catch (ptree_error& e) { // 结构不完整
+	catch (ptree_error& e) {
+		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -960,7 +977,8 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (ptree_error&) { // 非活跃股票（已下市等）
+	catch (ptree_error&) {
+		// 非活跃股票（已下市等）
 		SetActive(false);
 		fSucceed = true;
 	}
@@ -993,7 +1011,7 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 	bool fSucceed = true;
 	string symbolName, strSymbol2, strTime, strUpdateTime, strName;
 	double dHigh, dLow, dNew, dOpen, dLastClose;
-	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
+	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
 	string sName;
 	json js;
@@ -1009,7 +1027,8 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		strSymbol2 = js.at(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
-	catch (json::out_of_range& e) { // 结构不完整
+	catch (json::out_of_range& e) {
+		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -1065,7 +1084,8 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (json::out_of_range&) { // 非活跃股票（已下市等）
+	catch (json::out_of_range&) {
+		// 非活跃股票（已下市等）
 		SetActive(false);
 		fSucceed = true;
 	}
@@ -1076,10 +1096,12 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
 	m_fActive = false;
-	if (!IsValidTime(14)) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+	if (!IsValidTime(14)) {
+		// 非活跃股票的update时间为0，转换为time_t时为-1.
 		return m_fActive;
 	}
-	if ((m_lOpen == 0) || (m_lNew == 0)) {// 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+	if ((m_lOpen == 0) || (m_lNew == 0)) {
+		// 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
 		return m_fActive;
 	}
 	m_fActive = true;
@@ -1094,13 +1116,14 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	if (m_time < (gl_pChinaMarket->GetUTCTime() - lDays * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+	if (m_time < (gl_pChinaMarket->GetUTCTime() - lDays * 24 * 3600)) {
+		// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
 	else if (m_time > gl_pChinaMarket->GetUTCTime()) {
 		return false;
 	}
-	else  return true;
+	else return true;
 }
 
 void CWebRTData::SaveData(CSetRealTimeData& setRTData) {

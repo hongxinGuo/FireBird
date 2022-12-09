@@ -9,10 +9,10 @@
 
 #include"ClassDeclaration.h"
 
-using namespace std;
+
 #include<memory>
-#include<vector>
 #include<string>
+using std::string;
 
 #include<boost/property_tree/ptree.hpp>
 #include<boost/property_tree/json_parser.hpp>

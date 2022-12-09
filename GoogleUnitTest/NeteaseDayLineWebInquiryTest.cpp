@@ -6,7 +6,7 @@
 #include"NeteaseDayLineDataSource.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG

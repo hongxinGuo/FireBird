@@ -1,6 +1,5 @@
 #pragma once
 
-using namespace std;
 #include<atomic>
 #include<semaphore>
 

@@ -2,6 +2,8 @@
 
 #include"GeneralCheck.h"
 
+#include"DayLine.h"
+
 #include"DataForexDayLine.h"
 #include"SetForexDayLine.h"
 

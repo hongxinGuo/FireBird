@@ -2,7 +2,7 @@
 
 #include"SetFinnhubStockExchange.h"
 
-using namespace std;
+
 #include<memory>
 
 class CFinnhubStockExchange : public CObject {

@@ -5,7 +5,7 @@
 #include"DataForexDayLine.h"
 #include"SetForexDayLine.h"
 
-using namespace std;
+
 #include<memory>
 #include<vector>
 

@@ -6,7 +6,7 @@
 #include "NeteaseDayLineWebInquiry.h"
 #include"NeteaseDayLineDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {

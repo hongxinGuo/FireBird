@@ -11,7 +11,7 @@
 
 #include"ChinaMarket.h"
 
-using namespace std;
+
 #include<semaphore>
 
 binary_semaphore gl_ChoiceRSStrong{ 1 };//由于各种选择股票集的工作线程都操作日线历史数据，故而同一时间只允许一个线程执行，这样能够减少同步问题。

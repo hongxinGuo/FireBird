@@ -1,25 +1,31 @@
 #pragma once
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataFinnhubForexExchange : public CObject {
+class CDataFinnhubForexExchange final : public CObject {
 public:
 	CDataFinnhubForexExchange();
-	~CDataFinnhubForexExchange();
+	~CDataFinnhubForexExchange() override = default;
 	void Reset(void);
 
-	bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
-	size_t GetForexExchangeSize(void) noexcept { return m_vForexExchange.size(); }
-	CString GetForexExchange(long lIndex) { return m_vForexExchange.at(lIndex); }
-	bool Delete(CString strforexExchange);
+	bool IsForexExchange(CString strExchange) const noexcept {
+		if (m_mapForexExchange.contains(strExchange)) return true;
+		else return false;
+	}
+
+	size_t GetForexExchangeSize(void) const noexcept { return m_vForexExchange.size(); }
+	CString GetForexExchange(long lIndex) const { return m_vForexExchange.at(lIndex); }
+	bool Delete(CString strForexExchange);
 	void Add(CString strForexExchange);
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
-	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalForexExchange < m_vForexExchange.size()) return true; else return false; }
+	bool IsNeedUpdate(void) const noexcept {
+		if (m_lLastTotalForexExchange < m_vForexExchange.size()) return true;
+		else return false;
+	}
 
 protected:
 	vector<CString> m_vForexExchange;

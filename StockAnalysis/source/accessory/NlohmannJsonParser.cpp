@@ -32,8 +32,9 @@ using namespace boost::property_tree;
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 
-using namespace std;
+#include<sstream>
 #include<string>
+using std::stringstream;
 
 bool CreateNlohmannJson(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
 	try {
@@ -74,7 +75,7 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 	bool fSucceed = true;
 	string symbolName, strSymbol2, strTime, strUpdateTime, strName;
 	double dHigh, dLow, dNew, dOpen, dLastClose;
-	array<double, 5> aAsk{ 0,0,0,0,0 }, aBid{ 0,0,0,0,0 };
+	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
 	string sName;
 	json js;
@@ -90,7 +91,8 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		strSymbol2 = js.at(_T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 	}
-	catch (json::out_of_range& e) { // 结构不完整
+	catch (json::out_of_range& e) {
+		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -146,7 +148,8 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (json::out_of_range&) { // 非活跃股票（已下市等）
+	catch (json::out_of_range&) {
+		// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 		fSucceed = true;
 	}

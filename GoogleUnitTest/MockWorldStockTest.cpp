@@ -12,7 +12,7 @@
 #include"WorldStock.h"
 #include"MockWorldStock.h"
 
-using namespace std;
+
 using namespace testing;
 #include<memory>
 

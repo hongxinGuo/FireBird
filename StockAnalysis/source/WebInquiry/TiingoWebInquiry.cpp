@@ -3,7 +3,7 @@
 #include "TiingoWebInquiry.h"
 #include"TiingoDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {

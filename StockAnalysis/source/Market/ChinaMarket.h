@@ -10,7 +10,7 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-using namespace std;
+
 #include<vector>
 #include<atomic>
 #include<queue>
@@ -51,6 +51,7 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+
 public:
 	// 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
 	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次

@@ -5,8 +5,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-using namespace std;
 #include<memory>
+using std::shared_ptr;
 
 class CVirtualMarket;
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;

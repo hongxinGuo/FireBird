@@ -7,9 +7,6 @@ CDataFinnhubCryptoSymbol::CDataFinnhubCryptoSymbol() {
 	Reset();
 }
 
-CDataFinnhubCryptoSymbol::~CDataFinnhubCryptoSymbol() {
-}
-
 void CDataFinnhubCryptoSymbol::Reset(void) {
 	m_vCryptoSymbol.resize(0);
 	m_mapCryptoSymbol.clear();
@@ -43,7 +40,7 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapCryptoSymbol.find(pSymbol->GetSymbol()) != m_mapCryptoSymbol.end()) {
+			if (m_mapCryptoSymbol.contains(pSymbol->GetSymbol())) {
 				gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol());
 			}
 			Add(pSymbol);
@@ -78,7 +75,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 		m_lLastTotalCryptoSymbol = lTotalCryptoSymbol;
 	}
 
-	for (auto& pSymbol2 : m_vCryptoSymbol) {
+	for (const auto& pSymbol2 : m_vCryptoSymbol) {
 		if (pSymbol2->IsUpdateProfileDB()) {
 			fUpdateSymbol = true;
 			break;
@@ -88,7 +85,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapCryptoSymbol.find(setCryptoSymbol.m_Symbol) != m_mapCryptoSymbol.end()) {
+			if (m_mapCryptoSymbol.contains(setCryptoSymbol.m_Symbol)) {
 				pSymbol = m_vCryptoSymbol.at(m_mapCryptoSymbol.at(setCryptoSymbol.m_Symbol));
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setCryptoSymbol);
@@ -104,8 +101,9 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 	return true;
 }
 
+
 bool CDataFinnhubCryptoSymbol::IsNeedUpdate(void) {
-	for (auto& pCrypto : m_vCryptoSymbol) {
+	for (const auto& pCrypto : m_vCryptoSymbol) {
 		if (pCrypto->IsUpdateProfileDB()) {
 			return true;
 		}

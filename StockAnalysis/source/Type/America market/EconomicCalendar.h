@@ -2,7 +2,7 @@
 
 #include"SetEconomicCalendar.h"
 
-using namespace std;
+
 #include<memory>
 
 class CEconomicCalendar : public CObject {

@@ -14,7 +14,7 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-using namespace std;
+
 #include<thread>
 
 UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {

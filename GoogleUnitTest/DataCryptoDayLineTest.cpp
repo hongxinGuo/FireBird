@@ -2,6 +2,7 @@
 
 #include"GeneralCheck.h"
 
+#include"DayLine.h"
 #include"DataCryptoDayLine.h"
 #include"SetCryptoDayLine.h"
 

@@ -11,7 +11,7 @@
 
 #include"ChinaMarket.h"
 
-using namespace std;
+
 #include<thread>
 
 UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket) {

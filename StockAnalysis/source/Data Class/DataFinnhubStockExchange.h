@@ -2,19 +2,18 @@
 
 #include"FinnhubStockExchange.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataFinnhubStockExchange : public CObject {
+class CDataFinnhubStockExchange final : public CObject {
 public:
 	CDataFinnhubStockExchange();
-	~CDataFinnhubStockExchange();
+	~CDataFinnhubStockExchange() override = default;
 	void Reset();
 
-	CFinnhubStockExchangePtr GetExchange(long lIndex) { return m_vFinnhubStockExchange.at(lIndex); }
-	CString GetExchangeCode(long lIndex) { return m_vFinnhubStockExchange.at(lIndex)->m_strCode; }
-	size_t GetExchangeSize(void) noexcept { return m_mapFinnhubStockExchange.size(); }
+	CFinnhubStockExchangePtr GetExchange(long lIndex) const { return m_vFinnhubStockExchange.at(lIndex); }
+	CString GetExchangeCode(long lIndex) const { return m_vFinnhubStockExchange.at(lIndex)->m_strCode; }
+	size_t GetExchangeSize(void) const noexcept { return m_mapFinnhubStockExchange.size(); }
 
 	bool LoadDB(void);
 

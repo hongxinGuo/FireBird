@@ -1,6 +1,5 @@
 #pragma once
 
-using namespace std;
 #include<string>
 
 #include<boost/property_tree/ptree.hpp>

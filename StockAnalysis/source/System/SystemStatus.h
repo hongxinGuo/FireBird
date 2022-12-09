@@ -1,12 +1,14 @@
 #pragma once
 
-using namespace std;
+
 #include<atomic>
 
 class CSystemStatus : public CObject {
 public:
 	CSystemStatus();
-	virtual ~CSystemStatus() {}
+
+	virtual ~CSystemStatus() {
+	}
 
 	void SetExitingSystem(bool bExit) { m_fExitingSystem = bExit; }
 	bool IsExitingSystem() { return m_fExitingSystem; }
@@ -16,7 +18,7 @@ public:
 	bool IsWorkingMode() { return m_fWorkingMode; }
 
 protected:
-	atomic_bool m_fExitingSystem; //  系统退出标识，用于终止其他线程。
+	std::atomic_bool m_fExitingSystem; //  系统退出标识，用于终止其他线程。
 	bool m_fExitingCalculatingRS; // 用于通知工作线程退出的信号
 	bool m_fWorkingMode; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 };

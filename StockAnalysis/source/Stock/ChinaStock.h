@@ -32,7 +32,7 @@ enum {
 #include"DataChinaWeekLine.h"
 #include"DataChinaDayLine.h"
 
-using namespace std;
+
 #include<vector>
 #include<memory>
 #include<queue>

@@ -2,20 +2,24 @@
 
 #include"FinnhubForexSymbol.h"
 
-using namespace std;
+
 #include<vector>
 #include<map>
 
-class CDataFinnhubForexSymbol : public CObject {
+class CDataFinnhubForexSymbol final : public CObject {
 public:
 	CDataFinnhubForexSymbol();
-	~CDataFinnhubForexSymbol();
+	~CDataFinnhubForexSymbol() override = default;
 	void Reset(void);
 
-	bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
-	size_t GetForexSymbolSize(void) noexcept { return m_vForexSymbol.size(); }
-	CForexSymbolPtr GetForexSymbol(long lIndex) { return m_vForexSymbol.at(lIndex); }
-	CForexSymbolPtr GetForexSymbol(CString strSymbol) { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
+	bool IsForexSymbol(CString strSymbol) const {
+		if (m_mapForexSymbol.contains(strSymbol)) return true;
+		else return false;
+	}
+
+	size_t GetForexSymbolSize(void) const noexcept { return m_vForexSymbol.size(); }
+	CForexSymbolPtr GetForexSymbol(long lIndex) const { return m_vForexSymbol.at(lIndex); }
+	CForexSymbolPtr GetForexSymbol(CString strSymbol) const { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
 	bool Delete(CForexSymbolPtr pSymbol);
 	void Add(CForexSymbolPtr pSymbol);
 

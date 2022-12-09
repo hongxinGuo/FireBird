@@ -26,7 +26,7 @@
 #include"DataSICIndustry.h"
 #include"DataNaicsIndustry.h"
 
-using namespace std;
+
 #include<map>
 #include<vector>
 #include<queue>

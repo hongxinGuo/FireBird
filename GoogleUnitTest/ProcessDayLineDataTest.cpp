@@ -6,7 +6,7 @@
 
 #include"NeteaseDayLineWebData.h"
 
-using namespace std;
+
 #include<vector>
 
 #ifdef _DEBUG

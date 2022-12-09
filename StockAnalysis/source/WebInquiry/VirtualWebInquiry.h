@@ -11,7 +11,7 @@
 
 #include"ClassDeclaration.h"
 
-using namespace std;
+
 #include<atomic>
 #include<string>
 

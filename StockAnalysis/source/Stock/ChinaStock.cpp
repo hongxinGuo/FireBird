@@ -11,7 +11,7 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-using namespace std;
+
 #include<string>
 #include<algorithm>
 

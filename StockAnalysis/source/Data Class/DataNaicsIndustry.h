@@ -2,7 +2,6 @@
 
 #include"NaicsIndustry.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
@@ -14,7 +13,12 @@ public:
 
 	size_t GetTotalNaicsIndustry(void) noexcept { return m_vNaicsIndustry.size(); }
 	long GetLastTotalNaicsIndustry(void) noexcept { return m_lLastTotalNaicsIndustry; }
-	bool IsNaicsIndustry(CString strNaicsIndustry) { if (m_mapNaicsIndustry.find(strNaicsIndustry) == m_mapNaicsIndustry.end()) return false;	else return true; }
+
+	bool IsNaicsIndustry(CString strNaicsIndustry) {
+		if (m_mapNaicsIndustry.find(strNaicsIndustry) == m_mapNaicsIndustry.end()) return false;
+		else return true;
+	}
+
 	bool IsNaicsIndustry(CNaicsIndustryPtr pNaicsIndustry) { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
 	void Add(CNaicsIndustryPtr pNaicsIndustry);
 	bool Delete(CNaicsIndustryPtr pNaicsIndustry);

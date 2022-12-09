@@ -7,9 +7,8 @@
 #pragma once
 
 #include"VirtualHistoryCandleExtend.h"
-#include"DayLine.h"
 
-using namespace std;
+
 #include<vector>
 #include<memory>
 #include<atomic>
@@ -17,19 +16,26 @@ using namespace std;
 class CVirtualDataHistoryCandleExtend : public CObject {
 public:
 	CVirtualDataHistoryCandleExtend();
-	virtual ~CVirtualDataHistoryCandleExtend();
+	virtual ~CVirtualDataHistoryCandleExtend() override;
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-	virtual bool SaveDB(CString strStockSymbol) { TRACE(_T("调用了基类SaveDB\n")); return false; }
-	virtual bool LoadDB(CString strStockSymbol) { TRACE(_T("调用了基类LoadDB\n")); return false; }
+	virtual bool SaveDB(CString strStockSymbol) {
+		TRACE(_T("调用了基类SaveDB\n"));
+		return false;
+	}
+
+	virtual bool LoadDB(CString strStockSymbol) {
+		TRACE(_T("调用了基类LoadDB\n"));
+		return false;
+	}
 
 	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
 	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
 	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
 
-	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempLine, bool fRevertSave = false);
+	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData, bool fRevertSave = false);
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false);
 
 	void ShowData(CDC* pDC, CRect rectClient);
@@ -40,11 +46,20 @@ protected:
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
-	long Size(void) const noexcept { return (long)(m_vHistoryData.size()); }
+	long Size(void) const noexcept { return static_cast<long>(m_vHistoryData.size()); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate);
-	void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
+
+	void Unload(void) noexcept {
+		m_vHistoryData.clear();
+		m_fDataLoaded = false;
+	}
+
 	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
-	bool StoreData(CVirtualHistoryCandleExtendPtr pData) { m_vHistoryData.push_back(pData); return true; }
+
+	bool StoreData(CVirtualHistoryCandleExtendPtr pData) {
+		m_vHistoryData.push_back(pData);
+		return true;
+	}
 
 	bool IsDatabaseTodayUpdated(void) const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }

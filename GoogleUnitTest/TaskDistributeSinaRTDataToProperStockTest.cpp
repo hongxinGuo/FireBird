@@ -25,6 +25,7 @@ namespace StockAnalysisTest {
 			m_fActive = fActive;
 			m_tt = tt;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strSymbol;
@@ -34,17 +35,17 @@ namespace StockAnalysisTest {
 	};
 
 	// 无效实时数据标识
-	SinaRTData rtData1(1, _T("600000.SS"), __INVALID_RT_WEB_DATA__, false, -10);
+	SinaRTData rtData1(1, _T("600000.SS"), _INVALID_RT_WEB_DATA_, false, -10);
 	// 正常实时数据，但时间比较旧（一样）
-	SinaRTData rtData2(2, _T("000001.SZ"), __SINA_RT_WEB_DATA__, true, -10);
+	SinaRTData rtData2(2, _T("000001.SZ"), _SINA_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
-	SinaRTData rtData3(3, _T("600601.SS"), __SINA_RT_WEB_DATA__, true, 0);
+	SinaRTData rtData3(3, _T("600601.SS"), _SINA_RT_WEB_DATA_, true, 0);
 	// 非活跃股票，更新的时间
-	SinaRTData rtData4(4, _T("600000.SS"), __SINA_RT_WEB_DATA__, true, 0);
+	SinaRTData rtData4(4, _T("600000.SS"), _SINA_RT_WEB_DATA_, true, 0);
 	// 在本测试集的开始，故意设置sh600008的状态为非活跃
-	SinaRTData rtData5(5, _T("600008.SS"), __SINA_RT_WEB_DATA__, true, -5);
+	SinaRTData rtData5(5, _T("600008.SS"), _SINA_RT_WEB_DATA_, true, -5);
 	// 新股票代码
-	SinaRTData rtData6(6, _T("000000.SN"), __SINA_RT_WEB_DATA__, true, 0);
+	SinaRTData rtData6(6, _T("000000.SN"), _SINA_RT_WEB_DATA_, true, 0);
 	//SinaRTData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
 	//SinaRTData rtData8(8, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
 
@@ -104,8 +105,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
-		testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
-		));
+	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
+	                         ));
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;
@@ -137,7 +138,7 @@ namespace StockAnalysisTest {
 			break;
 		case 4:
 			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
-			//EXPECT_FALSE(pStock->IsActive());
+		//EXPECT_FALSE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			break;

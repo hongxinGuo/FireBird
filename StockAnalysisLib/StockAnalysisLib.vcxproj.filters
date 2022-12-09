@@ -750,6 +750,9 @@
     <ClInclude Include="..\StockAnalysis\source\nlohmannJsonDeclaration.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Class\NewClass1.h">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1327,6 +1330,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\TiingoWebInquiry.cpp">
       <Filter>源文件\Web Inquiry\World market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Data Class\NewClass1.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

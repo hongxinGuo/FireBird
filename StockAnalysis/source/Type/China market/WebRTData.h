@@ -105,22 +105,25 @@
 #pragma once
 
 enum {
-	__INVALID_RT_WEB_DATA__ = 0,
-	__SINA_RT_WEB_DATA__ = 1,
-	__TENGXUN_RT_WEB_DATA__ = 2,
-	__NETEASE_RT_WEB_DATA__ = 3,
+	_INVALID_RT_WEB_DATA_ = 0,
+	_SINA_RT_WEB_DATA_ = 1,
+	_TENGXUN_RT_WEB_DATA_ = 2,
+	_NETEASE_RT_WEB_DATA_ = 3,
 };
 
 #include"WebData.h"
 #include"SetRealTimeData.h"
 
-using namespace std;
-#include<memory>
-#include<array>
-#include<map>
+using std::array;
+using std::shared_ptr;
 
 class CWebRTData;
-typedef shared_ptr<CWebRTData> CWebRTDataPtr;
+typedef std::shared_ptr<CWebRTData> CWebRTDataPtr;
+
+#include<boost/property_tree/ptree.hpp>
+using namespace boost::property_tree;
+
+#include"NlohmannJsonDeclaration.h"
 
 class CWebRTData final : public CObject {
 public:
@@ -131,7 +134,8 @@ public:
 	CWebRTData& operator=(const CWebRTData&) = delete;
 	CWebRTData(const CWebRTData&&) noexcept = delete;
 	CWebRTData& operator=(const CWebRTData&&) noexcept = delete;
-	virtual ~CWebRTData(void) {}
+
+	virtual ~CWebRTData(void) override = default;
 
 	void Reset(void);
 
@@ -188,7 +192,7 @@ public:
 	void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
 	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
 	void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-	INT64 GetCurrentValue(void) const  noexcept { return m_llCurrentValue; }
+	INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
 	long GetBuy(void) const noexcept { return m_lBuy; }
 	void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
 	long GetSell(void) const noexcept { return m_lSell; }
@@ -213,11 +217,14 @@ public:
 	bool CheckTengxunRTDataActive(void);
 	bool IsValidTime(long lDays) const;
 	//void SetActive(bool fFlag)  { m_fActive = fFlag; }
-	bool IsValidDataSource(void) const noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
+	bool IsValidDataSource(void) const noexcept {
+		if (m_lDataSource != _INVALID_RT_WEB_DATA_) return true;
+		else return false;
+	}
 
 #ifdef _DEBUG
-	virtual	void AssertValid() const;
-	virtual	void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
 #endif
 
 	// 数据
@@ -226,13 +233,13 @@ public:
 protected:
 	long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
 	// Serialized data
-	time_t m_time;	// 交易发生时的UTC时间
-	CString m_strSymbol;// 证券代码, 600001.SS，002389.SZ，
+	time_t m_time; // 交易发生时的UTC时间
+	CString m_strSymbol; // 证券代码, 600001.SS，002389.SZ，
 	CString m_strStockName; // 证券名称
-	long m_lOpen;	// 今日开盘。单位：0.001元
-	long m_lLastClose;// 昨日收盘。单位：0.001元
+	long m_lOpen; // 今日开盘。单位：0.001元
+	long m_lLastClose; // 昨日收盘。单位：0.001元
 	long m_lNew; // 今日最新。单位：0.001元
-	long m_lHigh;	// 今日最高。单位：0.001元
+	long m_lHigh; // 今日最高。单位：0.001元
 	long m_lLow; // 今日最低。单位：0.001元
 	long m_lBuy; // 竞买价。单位：0.001元
 	long m_lSell; // 竞卖价。单位：0.001元
@@ -240,12 +247,12 @@ protected:
 	long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
 	INT64 m_llVolume; // 总成交量。单位：股
 	INT64 m_llAmount; // 总成交金额。单位：元
-	INT64 m_llTotalValue;	// 总市值。单位：万元
-	INT64 m_llCurrentValue;	// 流通市值。单位：万元
+	INT64 m_llTotalValue; // 总市值。单位：万元
+	INT64 m_llCurrentValue; // 流通市值。单位：万元
 	array<long, 5> m_lPBuy; // 买盘价1--5。单位：0.001元
-	array<long, 5> m_lVBuy;	// 买盘量1--5。单位：股
-	array<long, 5> m_lPSell;// 卖盘价1--5。单位：0.001元
-	array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
+	array<long, 5> m_lVBuy; // 买盘量1--5。单位：股
+	array<long, 5> m_lPSell; // 卖盘价1--5。单位：0.001元
+	array<long, 5> m_lVSell; // 卖盘量1--5。单位: 股
 
 	// 非存储数据
 	bool m_fActive; // 本股票是否存在有效实时数据

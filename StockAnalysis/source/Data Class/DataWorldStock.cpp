@@ -18,21 +18,17 @@ CDataWorldStock::CDataWorldStock() {
 	Reset();
 }
 
-CDataWorldStock::~CDataWorldStock() {
-}
-
 void CDataWorldStock::Reset(void) {
 	m_vWorldStock.resize(0);
 	m_mapWorldStock.clear();
 	m_lLastTotalWorldStock = 0;
 }
 
-bool CDataWorldStock::SortStock(void)
-{
+bool CDataWorldStock::SortStock(void) {
 	sort(m_vWorldStock.begin(), m_vWorldStock.end(), CompareWorldStock);
 	m_mapWorldStock.clear();
 	int j = 0;
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		m_mapWorldStock[pStock->GetSymbol()] = j++;
 	}
 
@@ -73,7 +69,7 @@ void CDataWorldStock::ResetEPSSurprise(void) {
 }
 
 void CDataWorldStock::ResetPeer(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->GetPeerUpdateDate() != 19800101) {
 			pStock->SetPeerUpdateDate(19800101);
 			pStock->SetPeerUpdated(false);
@@ -83,7 +79,7 @@ void CDataWorldStock::ResetPeer(void) {
 }
 
 void CDataWorldStock::ResetBasicFinancial(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
 			pStock->SetBasicFinancialUpdateDate(19800101);
 			pStock->SetBasicFinancialUpdated(false);
@@ -93,7 +89,7 @@ void CDataWorldStock::ResetBasicFinancial(void) {
 }
 
 void CDataWorldStock::ResetDayLine(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
@@ -190,7 +186,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 
 	//更新原有的代码集状态
 	if (IsStockProfileNeedUpdate()) {
-		for (auto& pStock2 : m_vWorldStock) {
+		for (const auto& pStock2 : m_vWorldStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
 		setWorldStock.m_strSort = _T("[Symbol]");
@@ -209,7 +205,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 		if (iCurrentUpdated < iStockNeedUpdate) {
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
-			for (auto& pStock3 : m_vWorldStock) {
+			for (const auto& pStock3 : m_vWorldStock) {
 				if (pStock3->IsUpdateProfileDB()) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
 					iCurrentUpdated++;
@@ -289,7 +285,7 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
-	for (auto& pStock : vStock) {
+	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
 	}
@@ -305,7 +301,7 @@ bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStoc
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
-	for (auto& pStock : vStock) {
+	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
@@ -336,7 +332,7 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock
 	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		ASSERT(setBasicFinancialMetric.IsEOF());
 		for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
-			auto& pStockNeedAppend = vStock.at(i);
+			const auto& pStockNeedAppend = vStock.at(i);
 			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
 				iCurrentUpdated++;
 				pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
@@ -353,23 +349,23 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock
 }
 
 void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
-	for (auto& pStock5 : vStock) {
-		if (pStock5->IsUpdateBasicFinancialDB()) {
-			CString strMessage = _T("found stock") + pStock5->GetSymbol() + _T(" need update basic financial data");
+	for (const auto& pStock : vStock) {
+		if (pStock->IsUpdateBasicFinancialDB()) {
+			CString strMessage = _T("found stock") + pStock->GetSymbol() + _T(" need update basic financial data");
 			TRACE(strMessage);
 			gl_systemMessage.PushErrorMessage(strMessage);
 		}
-		pStock5->SetUpdateBasicFinancialDB(false);
+		pStock->SetUpdateBasicFinancialDB(false);
 	}
 }
 
 bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	CString strSymbol = pStock->GetSymbol();
-	CString strExhangeCode = pStock->GetExchangeCode();
+	CString strExchangeCode = pStock->GetExchangeCode();
 
-	if (strExhangeCode.Compare(_T("US")) == 0) return true;
-	int pos = strSymbol.Find(_T(".") + strExhangeCode);
-	if ((pos + 1) < (strSymbol.GetLength() - strExhangeCode.GetLength())) {
+	if (strExchangeCode.Compare(_T("US")) == 0) return true;
+	int pos = strSymbol.Find(_T(".") + strExchangeCode);
+	if ((pos + 1) < (strSymbol.GetLength() - strExchangeCode.GetLength())) {
 		gl_systemMessage.PushErrorMessage(_T("stock sysmbol Error: ") + strSymbol);
 		return false;
 	}
@@ -377,22 +373,24 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 }
 
 bool CDataWorldStock::IsNeedSaveDayLine(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->IsDayLineNeedSaving()) return true;
 	}
 	return false;
 }
 
 bool CDataWorldStock::IsNeedSaveInsiderTransaction(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->IsInsiderTransactionNeedSave()) return true;
 	}
 	return false;
 }
 
 bool CDataWorldStock::IsNeedSaveInsiderSentiment(void) {
-	for (auto& pStock : m_vWorldStock) {
+	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->IsInsiderSentimentNeedSave()) return true;
 	}
+	//CWorldStockPtr pStock;
+	//pStock = ranges::any_of(m_vWorldStock.begin(), m_vWorldStock.end(), true);
 	return false;
 }

@@ -13,7 +13,7 @@
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-using namespace std;
+
 #include<queue>
 
 class CSystemData : public CObject {

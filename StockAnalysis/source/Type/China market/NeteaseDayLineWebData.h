@@ -3,7 +3,7 @@
 #include"NeteaseDayLineWebInquiry.h"
 #include"DayLine.h"
 
-using namespace std;
+
 #include<vector>
 #include<memory>
 

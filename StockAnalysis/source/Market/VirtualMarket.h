@@ -2,7 +2,7 @@
 
 #include"VirtualDataSource.h"
 
-using namespace std;
+
 #include<memory>
 
 class CVirtualMarket : public CObject {

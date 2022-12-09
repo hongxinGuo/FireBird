@@ -6,7 +6,7 @@
 #include"NeteaseRTDataSource.h"
 #include"MockNeteaseRTWebInquiry.h"
 
-using namespace std;
+
 #include<atomic>
 
 using namespace testing;

@@ -12,7 +12,7 @@
 #include"FinnhubCryptoSymbol.h"
 
 #include"MockFinnhubCryptoSymbol.h"
-using namespace std;
+
 using namespace testing;
 #include<memory>
 

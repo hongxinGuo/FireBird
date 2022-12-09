@@ -2,7 +2,7 @@
 
 #include"SetInsiderSentiment.h"
 
-using namespace std;
+
 #include<memory>
 
 class CInsiderSentiment : public CObject {

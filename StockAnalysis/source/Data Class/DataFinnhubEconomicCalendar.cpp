@@ -6,9 +6,6 @@ CDataFinnhubEconomicCalendar::CDataFinnhubEconomicCalendar() {
 	Reset();
 }
 
-CDataFinnhubEconomicCalendar::~CDataFinnhubEconomicCalendar() {
-}
-
 void CDataFinnhubEconomicCalendar::Reset(void) {
 	m_lLastTotalEconomicCalendar = 0;
 	m_mapEconomicCalendar.clear();
@@ -60,7 +57,8 @@ bool CDataFinnhubEconomicCalendar::Update(vector<CEconomicCalendarPtr> vEconomic
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
 		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		if (m_mapEconomicCalendar.find(strSymbol) == m_mapEconomicCalendar.end()) { // 新事件？
+		if (!m_mapEconomicCalendar.contains(strSymbol)) {
+			// 新事件？
 			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 			m_vEconomicCalendar.push_back(pEconomicCalendar);
 		}

@@ -6,10 +6,8 @@
 #include "DataChosenStock.h"
 
 CDataChosenStock::CDataChosenStock() {
+	m_lChosenStockPos = 0;
 	Reset();
-}
-
-CDataChosenStock::~CDataChosenStock() {
 }
 
 void CDataChosenStock::Reset(void) {

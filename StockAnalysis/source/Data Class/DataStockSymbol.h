@@ -4,12 +4,11 @@
 #include"ChinaStock.h"
 #include"SetStockSection.h"
 
-using namespace std;
 #include<memory>
 #include<vector>
 #include<map>
 
-class CDataStockSymbol : public CObject {
+class CDataStockSymbol final : public CObject {
 public:
 	CDataStockSymbol();
 	// 只能有一个实例,不允许赋值。
@@ -17,13 +16,17 @@ public:
 	CDataStockSymbol& operator=(const CDataStockSymbol&) = delete;
 	CDataStockSymbol(const CDataStockSymbol&&) noexcept = delete;
 	CDataStockSymbol& operator=(const CDataStockSymbol&&) noexcept = delete;
-	~CDataStockSymbol();
+	~CDataStockSymbol() override = default;
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
 
-	long GetIndex(CString strSymbol) { return m_mapStockSymbol.at(strSymbol); }
-	size_t GetStockSize(void) noexcept { return m_vStockSymbol.size(); }
-	bool IsStockSymbol(CString strSymbol) { if (m_mapStockSymbol.find(strSymbol) == m_mapStockSymbol.end()) return false; else return true; }
+	long GetIndex(const CString strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
+	size_t GetStockSize(void) const noexcept { return m_vStockSymbol.size(); }
+
+	bool IsStockSymbol(const CString strSymbol) const {
+		if (m_mapStockSymbol.contains(strSymbol)) return true;
+		else return false;
+	}
 
 	bool Delete(CString strSymbol);
 	void Add(CString strSymbol);
@@ -36,7 +39,11 @@ public:
 
 	void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
-	void SetStockSectionActiveFlag(long lIndex, bool fFlag) noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
+
+	void SetStockSectionActiveFlag(long lIndex, bool fFlag) const noexcept {
+		m_vStockSection.at(lIndex)->SetActive(fFlag);
+	}
+
 	bool IsStockSectionActive(long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
 
 	void CreateStockSection(CString strFirstStockCode);

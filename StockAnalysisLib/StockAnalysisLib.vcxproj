@@ -49,6 +49,7 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoIndustry.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\Data Class\NewClass1.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Source\QuandlDataSource.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Data Class\NewClass1.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\QuandlDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.cpp" />

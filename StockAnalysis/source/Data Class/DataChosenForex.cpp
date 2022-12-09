@@ -6,10 +6,8 @@
 #include "DataChosenForex.h"
 
 CDataChosenForex::CDataChosenForex() {
+	m_lChosenForexPos = 0;
 	Reset();
-}
-
-CDataChosenForex::~CDataChosenForex() {
 }
 
 void CDataChosenForex::Reset(void) {

@@ -7,7 +7,7 @@
 
 #include"GeneralCheck.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG

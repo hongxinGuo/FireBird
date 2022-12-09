@@ -2,9 +2,11 @@
 
 class COutputList;
 
-using namespace std;
+
 #include<deque>
 #include<mutex>
+using std::deque;
+using std::mutex;
 
 class CSystemDeque {
 public:
@@ -37,12 +39,18 @@ public:
 	void PushInformationMessage(CString str) { m_SystemInformation.PushMessage(str); }
 	CString PopInformationMessage(void) { return m_SystemInformation.PopMessage(); }
 	size_t InformationSize(void) { return m_SystemInformation.Size(); }
-	void DisplayInformation(COutputList* pOutputList, CString strTime) { m_SystemInformation.Display(pOutputList, strTime); }
+
+	void DisplayInformation(COutputList* pOutputList, CString strTime) {
+		m_SystemInformation.Display(pOutputList, strTime);
+	}
 
 	void PushDayLineInfoMessage(CString str) { m_DayLineInformation.PushMessage(str); }
 	CString PopDayLineInfoMessage(void) { return m_DayLineInformation.PopMessage(); }
 	size_t DayLineInfoSize(void) { return m_DayLineInformation.Size(); }
-	void DisplayDayLineInfo(COutputList* pOutputList, CString strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
+
+	void DisplayDayLineInfo(COutputList* pOutputList, CString strTime) {
+		m_DayLineInformation.Display(pOutputList, strTime);
+	}
 
 	void PushTransactionMessage(CString str) { m_Transaction.PushMessage(str); }
 	CString PopTransactionMessage(void) { return m_Transaction.PopMessage(); }
@@ -67,12 +75,18 @@ public:
 	void PushWebSocketInfoMessage(CString str) { m_WebSocketInfo.PushMessage(str); }
 	CString PopWebSocketInfoMessage(void) { return m_WebSocketInfo.PopMessage(); }
 	size_t WebSocketInfoSize(void) { return m_WebSocketInfo.Size(); }
-	void DisplayWebSocketInfo(COutputList* pOutputList, CString strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
+
+	void DisplayWebSocketInfo(COutputList* pOutputList, CString strTime) {
+		m_WebSocketInfo.Display(pOutputList, strTime);
+	}
 
 	void PushInnerSystemInformationMessage(CString str) { m_InnerSystemInformation.PushMessage(str); }
 	CString PopInnerSystemInformationMessage(void) { return m_InnerSystemInformation.PopMessage(); }
 	size_t InnerSystemInfoSize(void) { return m_InnerSystemInformation.Size(); }
-	void DisplayInnerSystemInformation(COutputList* pOutputList, CString strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
+
+	void DisplayInnerSystemInformation(COutputList* pOutputList, CString strTime) {
+		m_InnerSystemInformation.Display(pOutputList, strTime);
+	}
 
 	void PushErrorMessage(CString str) { m_ErrorMessage.PushMessage(str); }
 	CString PopErrorMessage(void) { return m_ErrorMessage.PopMessage(); }
@@ -94,7 +108,11 @@ public:
 
 	void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
 	CString GetStockCodeForInquiringRTData(void) const { return m_strStockCodeForInquiringRTData; }
-	void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+
+	void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) {
+		m_strStockCodeForInquiringNeteaseDayLine = strStockCode;
+	}
+
 	CString GetStockCodeForInquiringNeteaseDayLine(void) const { return m_strStockCodeForInquiringNeteaseDayLine; }
 
 	void SetCurrentFinnhubWebSocketStake(CString s) { m_strCurrentFinnhubWebSocketStake = s; }

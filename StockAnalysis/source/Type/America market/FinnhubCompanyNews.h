@@ -2,7 +2,7 @@
 
 #include"SetFinnhubCompanyNews.h"
 
-using namespace std;
+
 #include<memory>
 
 //[

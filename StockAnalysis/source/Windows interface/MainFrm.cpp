@@ -42,7 +42,7 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
-using namespace std;
+
 #include<string>
 #include<thread>
 

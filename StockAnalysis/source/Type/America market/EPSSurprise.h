@@ -2,7 +2,7 @@
 
 #include"SetEPSSurprise.h"
 
-using namespace std;
+
 #include<memory>
 
 class CEPSSurprise : public CObject {

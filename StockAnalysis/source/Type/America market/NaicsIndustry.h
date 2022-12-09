@@ -2,7 +2,7 @@
 
 #include"SetNaicsIndustry.h"
 
-using namespace std;
+
 #include<memory>
 
 class CNaicsIndustry : public CObject {

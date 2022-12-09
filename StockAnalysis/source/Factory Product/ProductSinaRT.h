@@ -1,6 +1,5 @@
 #pragma once
 
-using namespace std;
 #include<memory>
 #include<string>
 
@@ -13,8 +12,10 @@ using namespace std;
 class CProductSinaRT : public CVirtualProductWebData {
 public:
 	DECLARE_DYNCREATE(CProductSinaRT)
-		CProductSinaRT();
-	~CProductSinaRT() {}
+	CProductSinaRT();
+
+	~CProductSinaRT() {
+	}
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

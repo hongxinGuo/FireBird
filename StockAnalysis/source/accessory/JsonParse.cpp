@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-using namespace std;
+
 #include<string>
 
 #include "JsonParse.h"
@@ -412,7 +412,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 		if (gl_systemStatus.IsExitingSystem()) return 0;
 		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+		pRTData->SetDataSource(_NETEASE_RT_WEB_DATA_);
 		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
 			pRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pRTData);
@@ -426,7 +426,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* ppt) {
 
 	for (auto it = ppt->begin(); it != ppt->end(); ++it) {
 		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+		pRTData->SetDataSource(_NETEASE_RT_WEB_DATA_);
 		if (pRTData->ParseNeteaseDataWithPTree(it)) {
 			pvWebRTData->push_back(pRTData);
 		}

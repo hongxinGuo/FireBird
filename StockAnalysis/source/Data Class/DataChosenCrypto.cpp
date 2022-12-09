@@ -5,10 +5,8 @@
 #include "DataChosenCrypto.h"
 
 CDataChosenCrypto::CDataChosenCrypto() {
+	m_lChosenCryptoPos = 0;
 	Reset();
-}
-
-CDataChosenCrypto::~CDataChosenCrypto() {
 }
 
 void CDataChosenCrypto::Reset(void) {

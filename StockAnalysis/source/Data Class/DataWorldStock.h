@@ -2,24 +2,27 @@
 
 #include"WorldStock.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
 class CDataWorldStock : public CObject {
 public:
 	CDataWorldStock();
-	~CDataWorldStock();
+	~CDataWorldStock() override = default;
 	void Reset(void);
 
-	bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
-	bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
-	CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
-	CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
-	long GetIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
-	long GetStockIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
-	size_t GetStockSize(void) noexcept { return m_vWorldStock.size(); }
-	long GetLastStockSize(void) noexcept { return m_lLastTotalWorldStock; }
+	bool IsStock(CString strSymbol) const {
+		if (m_mapWorldStock.contains(strSymbol)) return true;
+		else return false;
+	}
+
+	bool IsStock(CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
+	CWorldStockPtr GetStock(long lIndex) const { return m_vWorldStock.at(lIndex); }
+	CWorldStockPtr GetStock(CString strSymbol) const { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
+	long GetIndex(CString strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	long GetStockIndex(CString strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	size_t GetStockSize(void) const noexcept { return m_vWorldStock.size(); }
+	long GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 
 	bool SortStock(void);
 
@@ -44,7 +47,7 @@ public:
 	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
 	void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
 
-	bool CheckStockSymbol(CWorldStockPtr pstock);
+	bool CheckStockSymbol(CWorldStockPtr pStock);
 
 	bool IsNeedSaveDayLine(void);
 	bool IsNeedSaveInsiderTransaction(void);

@@ -7,7 +7,7 @@
 #include"TengxunRTDataSource.h"
 #include"MockTengxunRTWebInquiry.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG

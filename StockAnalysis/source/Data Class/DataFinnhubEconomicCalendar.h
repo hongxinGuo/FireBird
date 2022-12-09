@@ -2,21 +2,23 @@
 
 #include"EconomicCalendar.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
-class CDataFinnhubEconomicCalendar : public CObject {
+class CDataFinnhubEconomicCalendar final : public CObject {
 public:
 	CDataFinnhubEconomicCalendar();
-	~CDataFinnhubEconomicCalendar();
+	~CDataFinnhubEconomicCalendar() override = default;
 	void Reset(void);
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
 	bool Update(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
-	bool IsNeedUpdate(void) noexcept { if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) return true; return false; }
+	bool IsNeedUpdate(void) const noexcept {
+		if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) return true;
+		return false;
+	}
 
 protected:
 	vector<CEconomicCalendarPtr> m_vEconomicCalendar;

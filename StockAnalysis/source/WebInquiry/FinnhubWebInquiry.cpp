@@ -5,7 +5,7 @@
 #include "FinnhubWebInquiry.h"
 #include"FinnhubDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {

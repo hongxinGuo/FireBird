@@ -4,7 +4,7 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
-using namespace std;
+
 #include<string>
 #include<iostream>
 #include<fstream>

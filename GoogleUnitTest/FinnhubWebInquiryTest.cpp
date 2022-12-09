@@ -6,7 +6,7 @@
 #include"FinnhubDataSource.h"
 #include"MockFinnhubWebInquiry.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG

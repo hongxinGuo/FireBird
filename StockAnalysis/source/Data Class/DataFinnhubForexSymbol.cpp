@@ -7,9 +7,6 @@ CDataFinnhubForexSymbol::CDataFinnhubForexSymbol() {
 	Reset();
 }
 
-CDataFinnhubForexSymbol::~CDataFinnhubForexSymbol() {
-}
-
 void CDataFinnhubForexSymbol::Reset(void) {
 	m_vForexSymbol.resize(0);
 	m_mapForexSymbol.clear();
@@ -33,7 +30,6 @@ void CDataFinnhubForexSymbol::Add(CForexSymbolPtr pForexSymbol) {
 
 bool CDataFinnhubForexSymbol::LoadDB(void) {
 	CSetFinnhubForexSymbol setForexSymbol;
-	CForexSymbolPtr pSymbol = nullptr;
 	int i = 0;
 
 	setForexSymbol.m_strSort = _T("[Symbol]");
@@ -41,7 +37,7 @@ bool CDataFinnhubForexSymbol::LoadDB(void) {
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
 		if (!IsForexSymbol(setForexSymbol.m_Symbol)) {
-			pSymbol = make_shared<CFinnhubForexSymbol>();
+			const auto pSymbol = make_shared<CFinnhubForexSymbol>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);

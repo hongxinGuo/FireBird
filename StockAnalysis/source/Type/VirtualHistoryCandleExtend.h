@@ -10,7 +10,7 @@
 #include"VirtualSetHistoryCandleExtend.h"
 #include"VirtualSetHistoryCandle.h"
 
-using namespace std;
+
 #include<memory>
 
 class CVirtualHistoryCandleExtend;

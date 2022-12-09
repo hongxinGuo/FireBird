@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-using namespace std;
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
 			m_fActive = fActive;
 			m_tt = tt;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strSymbol;
@@ -33,17 +34,17 @@ namespace StockAnalysisTest {
 	};
 
 	// 无效实时数据标识
-	NeteaseData rtData1(1, _T("600000.SS"), __INVALID_RT_WEB_DATA__, false, -10);
+	NeteaseData rtData1(1, _T("600000.SS"), _INVALID_RT_WEB_DATA_, false, -10);
 	// 正常实时数据，但时间比较旧（一样）
-	NeteaseData rtData2(2, _T("000001.SZ"), __SINA_RT_WEB_DATA__, true, -10);
+	NeteaseData rtData2(2, _T("000001.SZ"), _SINA_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
-	NeteaseData rtData3(3, _T("600601.SS"), __SINA_RT_WEB_DATA__, true, 0);
+	NeteaseData rtData3(3, _T("600601.SS"), _SINA_RT_WEB_DATA_, true, 0);
 	// 非活跃股票，更新的时间
-	NeteaseData rtData4(4, _T("600000.SS"), __SINA_RT_WEB_DATA__, true, 0);
+	NeteaseData rtData4(4, _T("600000.SS"), _SINA_RT_WEB_DATA_, true, 0);
 	// 在本测试集的开始，故意设置sh600008的状态为非活跃
-	NeteaseData rtData5(5, _T("600008.SS"), __SINA_RT_WEB_DATA__, true, -5);
+	NeteaseData rtData5(5, _T("600008.SS"), _SINA_RT_WEB_DATA_, true, -5);
 	// 新股票代码
-	NeteaseData rtData6(6, _T("000000.NT"), __SINA_RT_WEB_DATA__, true, 0);
+	NeteaseData rtData6(6, _T("000000.NT"), _SINA_RT_WEB_DATA_, true, 0);
 	//NeteaseData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
 	//NeteaseData rtData8(8, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
 
@@ -57,10 +58,12 @@ namespace StockAnalysisTest {
 			pStock->SetIPOStatus(__STOCK_NULL__); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = gl_pChinaMarket->GetUTCTime();
 		}
+
 		static void TearDownTestSuite(void) {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(true);
 		}
+
 		virtual void SetUp(void) override {
 			GeneralCheck();
 
@@ -97,8 +100,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeNeteaseRTDataToProperStockTest,
-		testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //&Data7, &Data8
-		));
+	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //&Data7, &Data8
+	                         ));
 
 	TEST_P(TaskDistributeNeteaseRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;
@@ -128,7 +131,7 @@ namespace StockAnalysisTest {
 			break;
 		case 4:
 			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime() - s_tCurrentMarketTime, 0);
-			//EXPECT_FALSE(pStock->IsActive());
+		//EXPECT_FALSE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			break;

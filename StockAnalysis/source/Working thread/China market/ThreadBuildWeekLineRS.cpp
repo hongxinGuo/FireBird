@@ -16,7 +16,7 @@
 
 #include"ChinaMarket.h"
 
-using namespace std;
+
 #include<thread>
 
 UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {

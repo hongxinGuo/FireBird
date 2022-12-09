@@ -7,7 +7,7 @@
 #include"SinaRTDataSource.h"
 #include"MockSinaRTWebInquiry.h"
 
-using namespace std;
+
 #include<atomic>
 
 using namespace testing;

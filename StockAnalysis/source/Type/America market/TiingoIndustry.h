@@ -2,7 +2,7 @@
 
 #include"SetTiingoIndustry.h"
 
-using namespace std;
+
 #include<memory>
 
 class CTiingoIndustry : public CObject {

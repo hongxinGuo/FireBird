@@ -6,7 +6,7 @@
 
 #include"FinnhubWebSocket.h"
 
-using namespace std;
+
 #include<string>
 
 using namespace testing;

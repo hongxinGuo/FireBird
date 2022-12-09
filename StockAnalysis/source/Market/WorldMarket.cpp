@@ -25,7 +25,7 @@
 #include <ixwebsocket/IXUserAgent.h>
 #include<ixwebsocket/IXWebSocketMessage.h>
 
-using namespace std;
+
 #include<algorithm>
 
 #ifdef _DEBUG

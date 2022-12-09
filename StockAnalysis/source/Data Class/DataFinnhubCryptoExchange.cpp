@@ -7,9 +7,6 @@ CDataFinnhubCryptoExchange::CDataFinnhubCryptoExchange() {
 	Reset();
 }
 
-CDataFinnhubCryptoExchange::~CDataFinnhubCryptoExchange() {
-}
-
 void CDataFinnhubCryptoExchange::Reset(void) {
 	m_vCryptoExchange.resize(0);
 	m_mapCryptoExchange.clear();

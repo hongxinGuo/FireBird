@@ -6,7 +6,7 @@
 #include"DataCryptoDayLine.h"
 #include"SetCryptoDayLine.h"
 
-using namespace std;
+
 #include<memory>
 #include<vector>
 

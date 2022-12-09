@@ -23,7 +23,7 @@
 
 #include"SetCurrentWeekLine.h"
 
-using namespace std;
+
 #include<thread>
 #include<algorithm>
 #include<set>
@@ -401,7 +401,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		pRTData = PopSinaRT();
-		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
+		if (pRTData->GetDataSource() == _INVALID_RT_WEB_DATA_) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
 			continue;
 		}
@@ -472,7 +472,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		CWebRTDataPtr pRTData = PopNeteaseRT();
-		if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
+		if (pRTData->GetDataSource() == _INVALID_RT_WEB_DATA_) {
 			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
 			continue;
 		}

@@ -27,7 +27,7 @@
 #include "NeteaseRTWebInquiry.h"
 #include"NeteaseRTDataSource.h"
 
-using namespace std;
+
 #include<thread>
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {

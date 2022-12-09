@@ -2,7 +2,6 @@
 
 #include"SICIndustry.h"
 
-using namespace std;
 #include<vector>
 #include<map>
 
@@ -14,7 +13,12 @@ public:
 
 	size_t GetTotalSICIndustry(void) noexcept { return m_vSICIndustry.size(); }
 	long GetLastTotalSICIndustry(void) noexcept { return m_lLastTotalSICIndustry; }
-	bool IsSICIndustry(long lSICCode) { if (m_mapSICIndustry.find(lSICCode) == m_mapSICIndustry.end()) return false;	else return true; }
+
+	bool IsSICIndustry(long lSICCode) {
+		if (m_mapSICIndustry.find(lSICCode) == m_mapSICIndustry.end()) return false;
+		else return true;
+	}
+
 	bool IsSICIndustry(CSICIndustryPtr pSICIndustry) { return IsSICIndustry(pSICIndustry->m_lCode); }
 	void Add(CSICIndustryPtr pSICIndustry);
 	bool Delete(CSICIndustryPtr pSICIndustry);

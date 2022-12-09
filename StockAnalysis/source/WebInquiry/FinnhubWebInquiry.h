@@ -11,7 +11,7 @@
 #include "VirtualWebInquiry.h"
 #include"WebRTData.h"
 
-using namespace std;
+
 #include<memory>
 
 class CFinnhubWebInquiry : public CVirtualWebInquiry {
