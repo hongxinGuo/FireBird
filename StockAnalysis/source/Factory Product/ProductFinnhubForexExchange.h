@@ -2,11 +2,11 @@
 
 #include"ProductFinnhub.h"
 
-class CProductFinnhubForexExchange : public CProductFinnhub {
+class CProductFinnhubForexExchange final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubForexExchange)
-		CProductFinnhubForexExchange();
-	~CProductFinnhubForexExchange() {}
+	CProductFinnhubForexExchange();
+	~CProductFinnhubForexExchange() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

@@ -4,9 +4,8 @@
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
-#include"ChinaMarket.h"
 
-IMPLEMENT_DYNCREATE(CProductNeteaseRT, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductNeteaseRT, CVirtualWebProduct)
 
 CProductNeteaseRT::CProductNeteaseRT() {
 	m_lCurrentStockPosition = 0;
@@ -20,11 +19,10 @@ CString CProductNeteaseRT::CreateMessage(void) {
 }
 
 bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
+	const auto pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
 
-	pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
-	for (auto& pRTData : *pvWebRTData) {
-		gl_pChinaMarket->PushNeteaseRT(pRTData);// 将此实时数据指针存入实时数据队列
+	for (const auto& pRTData : *pvWebRTData) {
+		gl_pChinaMarket->PushNeteaseRT(pRTData); // 将此实时数据指针存入实时数据队列
 	}
 	return true;
 }

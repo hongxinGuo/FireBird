@@ -8,9 +8,9 @@
 
 #include "ProductTiingoStockDayLine.h"
 
-IMPLEMENT_DYNCREATE(CProductTiingoStockDayLine, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductTiingoStockDayLine, CVirtualWebProduct)
 
-CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualProductWebData() {
+CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo stock price candle");
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/daily/");
 	m_lIndex = -1;

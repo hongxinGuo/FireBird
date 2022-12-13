@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 #include"WorldMarket.h"
 #include"WorldStock.h"
 #include"CallableFunction.h"
@@ -18,8 +17,8 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
-	long lCurrentDate = ((CWorldMarket*)m_pMarket)->GetMarketDate();
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	long lCurrentDate = m_pMarket->GetMarketDate();
+	CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	char buffer[100];
 	CString strCurrentDate;
 
@@ -35,12 +34,12 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CInsiderSentimentVectorPtr pvInsiderSentiment = nullptr;
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	CWorldStockPtr pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetInsiderSentimentNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
-	if (pvInsiderSentiment->size() > 0) {
+	if (!pvInsiderSentiment->empty()) {
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
 		pStock->SetInsiderSentimentNeedSave(true);
 	}
@@ -56,13 +55,18 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	string stockSymbol;
 	long year, month, day;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderSentiment;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvInsiderSentiment; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvInsiderSentiment; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvInsiderSentiment;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvInsiderSentiment;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		pt1 = ppt->get_child(_T("data"));
 		stockSymbol = ppt->get<string>(_T("symbol"));
@@ -78,7 +82,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 			pInsiderSentiment->m_strSymbol = stockSymbol.c_str();
 			pt2 = it->second;
 			s = pt2.get<string>(_T("symbol"));
-			if (s.size() > 0) pInsiderSentiment->m_strSymbol = s.c_str();
+			if (!s.empty()) pInsiderSentiment->m_strSymbol = s.c_str();
 			year = ptreeGetLongLong(pt2, _T("year"));
 			month = ptreeGetLongLong(pt2, _T("month"));
 			pInsiderSentiment->m_lDate = year * 10000 + month * 100 + 1; // 日期要有效，故而日子用每月的第一天
@@ -88,9 +92,10 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		}
 	}
 	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e);
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "),
+		                               e);
 		return pvInsiderSentiment;
 	}
-	sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
+	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
 	return pvInsiderSentiment;
 }

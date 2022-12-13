@@ -3,7 +3,7 @@
 #include"TemplateMutexAccessQueue.h"
 #include"PriorityQueueWebRTData.h"
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 #include"VirtualWebInquiry.h"
 
 #include<queue>

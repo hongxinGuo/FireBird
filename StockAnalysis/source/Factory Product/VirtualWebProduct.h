@@ -12,18 +12,18 @@ enum {
 	_NO_ACCESS_RIGHT_ = 2,
 };
 
-class CVirtualProductWebData : public CObject {
+class CVirtualWebProduct : public CObject {
 public:
-	DECLARE_DYNCREATE(CVirtualProductWebData)
-	CVirtualProductWebData();
-	virtual ~CVirtualProductWebData() override = default;
+	DECLARE_DYNCREATE(CVirtualWebProduct)
+	CVirtualWebProduct();
+	virtual ~CVirtualWebProduct() override = default;
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreateMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreateMessage(void) { return _T(""); }
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
-	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; }; // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	bool IsParsed(CWebDataPtr pWebData) { return pWebData->IsParsed(); }
+	bool IsParsed(CWebDataPtr pWebData) const { return pWebData->IsParsed(); }
 
 	bool IsVoidJson(CWebDataPtr pWebData) {
 		if (pWebData->IsVoidJson()) {
@@ -37,20 +37,20 @@ public:
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
 	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == _NO_ACCESS_RIGHT_; }
 
-	CString GetClassName(void) { return m_strClassName; }
-	CString GetInquiry(void) { return m_strInquiry; }
+	CString GetClassName(void) const noexcept { return m_strClassName; }
+	CString GetInquiry(void) const noexcept { return m_strInquiry; }
 
 	long GetIndex(void) const noexcept { return m_lIndex; }
-	void SetIndex(long const lIndex) { m_lIndex = lIndex; }
+	void SetIndex(long const lIndex) noexcept { m_lIndex = lIndex; }
 
-	CVirtualMarket* GetMarket(void) const { return m_pMarket; }
-	void SetMarket(CVirtualMarket* pMarket) { m_pMarket = pMarket; }
+	[[nodiscard]] CVirtualMarket* GetMarket(void) const noexcept { return m_pMarket; }
+	void SetMarket(CVirtualMarket* pMarket) noexcept { m_pMarket = pMarket; }
 
 	void SetInquiringExchange(CString exchange) noexcept { m_strInquiringExchange = exchange; }
-	CString GetInquiringExchange(void) noexcept { return m_strInquiringExchange; }
+	CString GetInquiringExchange(void) const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket(void); // 如果是美国市场
 
-	void SetProductType(int iProductType) { m_iProductType = iProductType; }
+	void SetProductType(int iProductType) noexcept { m_iProductType = iProductType; }
 	int GetProductType(void) const noexcept { return m_iProductType; }
 
 protected:
@@ -65,7 +65,7 @@ protected:
 	// 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
-typedef shared_ptr<CVirtualProductWebData> CVirtualProductWebDataPtr;
+typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
 // 此结构只用于测试中
 struct FinnhubWebData {

@@ -3,11 +3,11 @@
 #include"ProductFinnhub.h"
 #include"EconomicCalendar.h"
 
-class CProductFinnhubEconomicCalendar : public CProductFinnhub {
+class CProductFinnhubEconomicCalendar final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubEconomicCalendar)
-		CProductFinnhubEconomicCalendar();
-	~CProductFinnhubEconomicCalendar() {}
+	CProductFinnhubEconomicCalendar();
+	~CProductFinnhubEconomicCalendar() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

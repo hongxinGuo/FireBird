@@ -10,9 +10,6 @@ CTiingoDataSource::CTiingoDataSource(void) {
 	Reset();
 }
 
-CTiingoDataSource::~CTiingoDataSource(void) {
-}
-
 bool CTiingoDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
 
@@ -23,8 +20,7 @@ bool CTiingoDataSource::Reset(void) {
 	return true;
 }
 
-bool CTiingoDataSource::UpdateStatus(void)
-{
+bool CTiingoDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case _STOCK_SYMBOLS_:
 		m_fStockSymbolUpdated = true;
@@ -55,7 +51,7 @@ bool CTiingoDataSource::UpdateStatus(void)
 	case _STOCK_ESTIMATES_PRICE_TARGET_:
 	case _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
 	case _STOCK_ESTIMATES_REVENUE_EXTIMATES_: // Premium
-	case _STOCK_ESTIMATES_EPS_EXTIMATES_:// Premium
+	case _STOCK_ESTIMATES_EPS_EXTIMATES_: // Premium
 	case _STOCK_ESTIMATES_EPS_SURPRISE_:
 	case _STOCK_ESTIMATES_EARNING_CALENDAR_:
 	case _STOCK_PRICE_QUOTE_:
@@ -75,9 +71,9 @@ bool CTiingoDataSource::UpdateStatus(void)
 	case _ECONOMIC_COUNTRY_LIST_:
 	case _ECONOMIC_CALENDAR_:
 	default:
-		// error. not impliment yet.
+		// error. not implement yet.
 		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
-		//ASSERT(0);
+	//ASSERT(0);
 		break;
 	}
 	return true;
@@ -85,18 +81,18 @@ bool CTiingoDataSource::UpdateStatus(void)
 
 bool CTiingoDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
-	static bool sbWebErrorOccured = false;
+	static bool sbWebErrorOccurred = false;
 	long long llTickCount = GetTickCount64();
 
-	if (!sbWebErrorOccured) {
+	if (!sbWebErrorOccurred) {
 		if (m_pWebInquiry->IsWebError()) {
-			sbWebErrorOccured = true;
+			sbWebErrorOccurred = true;
 			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 		}
 	}
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketTiingoInquiryTime())) {
-		sbWebErrorOccured = false; // 申请时清除错误标识
+		sbWebErrorOccurred = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireTiingo();
 		}

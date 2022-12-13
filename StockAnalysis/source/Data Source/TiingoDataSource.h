@@ -3,11 +3,10 @@
 #include"VirtualDataSource.h"
 #include"TiingoFactory.h"
 
-class CTiingoDataSource : public CVirtualDataSource
-{
+class CTiingoDataSource final : public CVirtualDataSource {
 public:
 	CTiingoDataSource(void);
-	~CTiingoDataSource(void);
+	~CTiingoDataSource(void) override = default;;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;
@@ -19,11 +18,11 @@ public:
 	bool InquireCryptoSymbol(void);
 	bool InquireDayLine(void);
 
-	bool IsStockSymbolUpdated(void) noexcept { return m_fStockSymbolUpdated; }
+	bool IsStockSymbolUpdated(void) const noexcept { return m_fStockSymbolUpdated; }
 	void SetStockSymbolUpdated(bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }
-	bool IsCryptoSymbolUpdated(void) noexcept { return m_fCryptoSymbolUpdated; }
+	bool IsCryptoSymbolUpdated(void) const noexcept { return m_fCryptoSymbolUpdated; }
 	void SetCryptoSymbolUpdated(bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
-	bool IsDayLineUpdated(void) noexcept { return m_fDayLineUpdated; }
+	bool IsDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
 	void SetDayLineUpdated(bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
 
 protected:

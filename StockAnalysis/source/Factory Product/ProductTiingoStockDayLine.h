@@ -1,9 +1,9 @@
 #pragma once
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 #include"DayLine.h"
 
-class CProductTiingoStockDayLine : public CVirtualProductWebData {
+class CProductTiingoStockDayLine : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoStockDayLine)
 		CProductTiingoStockDayLine();

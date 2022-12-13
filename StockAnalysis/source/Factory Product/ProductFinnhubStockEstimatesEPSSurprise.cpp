@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 #include"WorldMarket.h"
 #include"WorldStock.h"
 #include"CallableFunction.h"
@@ -19,8 +18,8 @@ CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurpri
 CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strMiddle = pStock->GetSymbol();
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto strMiddle = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -30,11 +29,9 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage(void) {
 bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CEPSSurpriseVectorPtr pvEPSSurprise;
-
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
-	if (pvEPSSurprise->size() > 0) {
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
+	if (!pvEPSSurprise->empty()) {
 		pStock->UpdateEPSSurprise(*pvEPSSurprise);
 	}
 	else {
@@ -49,27 +46,30 @@ bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 
 CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(CWebDataPtr pWebData) {
 	CEPSSurpriseVectorPtr pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
-	ptree pt2;
 	string s;
 	CEPSSurprisePtr pEPSSurprise = nullptr;
 	long year = 0, month = 0, day = 0;
-	CString str;
 	string sError;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEPSSurprise;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvEPSSurprise; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvEPSSurprise; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvEPSSurprise;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvEPSSurprise;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 			pEPSSurprise = make_shared<CEPSSurprise>();
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("symbol"));
 			pEPSSurprise->m_strSymbol = s.c_str();
 			s = pt2.get<string>(_T("period"));
-			str = s.c_str();
+			CString str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
 			pEPSSurprise->m_dEstimate = ptreeGetDouble(pt2, _T("estimate"));
@@ -81,6 +81,6 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e);
 		return pvEPSSurprise;
 	}
-	sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

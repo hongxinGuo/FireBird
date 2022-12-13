@@ -1,12 +1,13 @@
 #pragma once
 
-#include"VirtualMarket.h"
 #include"virtualDataFactory.h"
 
-class CFinnhubFactory : public CVirtualDataFactory {
+class CFinnhubFactory final : public CVirtualDataFactory {
 public:
-	CFinnhubFactory() {}
-	~CFinnhubFactory() {}
+	CFinnhubFactory() {
+	}
+
+	~CFinnhubFactory() override = default;
 
 	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
 };

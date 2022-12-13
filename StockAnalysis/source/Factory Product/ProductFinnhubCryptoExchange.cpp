@@ -21,14 +21,12 @@ CString CProductFinnhubCryptoExchange::CreateMessage(void) {
 }
 
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	shared_ptr<vector<CString>> pvCryptoExchange = nullptr;
-
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
+	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
-		if (!((CWorldMarket*)m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
-			((CWorldMarket*)m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
 		}
 	}
 
@@ -36,21 +34,25 @@ bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
-	ptree pt2;
 	string s;
 	CString str = _T("");
 	string sError;
-	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
-	shared_ptr<ptree> ppt;
+	auto pvExchange = make_shared<vector<CString>>();
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvExchange; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvExchange; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvExchange;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvExchange;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get_value<string>();
 			str = s.c_str();
 			pvExchange->push_back(str);

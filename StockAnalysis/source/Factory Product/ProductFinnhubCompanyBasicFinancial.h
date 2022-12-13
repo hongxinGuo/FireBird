@@ -3,11 +3,11 @@
 #include"ProductFinnhub.h"
 #include"FinnhubStockBasicFinancial.h"
 
-class CProductFinnhubCompanyBasicFinancial : public CProductFinnhub {
+class CProductFinnhubCompanyBasicFinancial final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCompanyBasicFinancial)
-		CProductFinnhubCompanyBasicFinancial();
-	~CProductFinnhubCompanyBasicFinancial() {}
+	CProductFinnhubCompanyBasicFinancial();
+	~CProductFinnhubCompanyBasicFinancial() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

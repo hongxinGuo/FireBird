@@ -26,11 +26,13 @@ namespace StockAnalysisTest {
 			vExchanges.push_back(_T("SZ"));
 			inaccessibleExchange.Assign(_T("COMPANY_NEWS"), 1, vExchanges);
 		}
+
 		virtual void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();
 		}
+
 	protected:
 		vector<CString> vExchanges;
 		CInaccessibleExchanges inaccessibleExchange;
@@ -41,7 +43,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SZ"))) << "默认包括US";
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SS"))) << "默认包括US";
 		EXPECT_FALSE(inaccessibleExchange.HaveExchange(_T("FA"))) << "默认不包括FA";
-		vector<CString> v{ _T("US2"), _T("SZ2"), _T("SS2") };
+		vector<CString> v{_T("US2"), _T("SZ2"), _T("SS2")};
 		inaccessibleExchange.Assign(_T("Another"), 2, v);
 
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("US2")));
@@ -77,11 +79,13 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			GeneralCheck();
 		}
+
 		virtual void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();
 		}
+
 	protected:
 	};
 
@@ -89,26 +93,26 @@ namespace StockAnalysisTest {
 		string s;
 		for (int i = _WEBSOCKET_TRADES_; i <= _WEBSOCKET_NEWS_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
-			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
+			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 		}
 		for (int i = _SYMBOL_LOOKUP_; i <= _DIVIDENDS_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
-			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
+			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 		}
 		for (int i = _STOCK_ESTIMATES_RECOMMENDATION_TRENDS_; i <= _STOCK_ESTIMATES_EARNING_CALENDAR_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
-			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
+			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 		}
 		for (int i = _STOCK_PRICE_QUOTE_; i <= _STOCK_PRICE_DIVIDEND2_; i++) {
 			s = gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(i);
-			EXPECT_TRUE(s.size() > 0) << "确保所有的索引都有对应的字符串";
+			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 		}
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGetFinnhubInquiryString2) {
 		// Web Socket
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_WEBSOCKET_TRADES_), _T("WebSocketTrades"));
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_WEBSOCKET_NEWS_), _T("WebSocketNews"));// Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_WEBSOCKET_NEWS_), _T("WebSocketNews")); // Premium
 
 		// Stock Fundamentals
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SYMBOL_LOOKUP_), _T("StockFundamentalsSymolLookup"));
@@ -166,7 +170,7 @@ namespace StockAnalysisTest {
 
 		// Mutual funds
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_PROFILE_), _T("MutualFundProfile")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_HOLDINGS_), _T("MutualFundHoldings"));// Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_HOLDINGS_), _T("MutualFundHoldings")); // Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_SECTOR_), _T("MutualFundSector")); // Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_MUTUAL_FUND_COUNTRY_), _T("MutualFundCountry")); // Premium
 
@@ -178,7 +182,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_EXCHANGE_), _T("ForexExchange"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_SYMBOLS_), _T("ForexSymbols"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_CANDLES_), _T("ForexCandles")); // 历史数据优先级低 Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_ALL_RATES_), _T("ForexAllRates"));  // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FOREX_ALL_RATES_), _T("ForexAllRates")); // Premium
 
 		// Crypto
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_CRYPTO_EXCHANGE_), _T("CryptoExchange"));
@@ -197,7 +201,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_TRANSCRIPT_), _T("AlternativeDataTranscript")); //Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_SOCIAL_SETIMENT_), _T("AlternativeDataSetiment"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_INVEST_THEMES_), _T("AlternativeDataInvestThemes")); // Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_SUPPLY_CHAIN_), _T("AlternativeDataSupplyChain"));  // Premium
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_SUPPLY_CHAIN_), _T("AlternativeDataSupplyChain")); // Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_COMPANY_ESG_), _T("AlternativeDataCompanyESG")); // Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_), _T("AlternativeDataQualityScore")); // Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_ALTERNATIVE_DATA_USPTO_PATENTS_), _T("AlternativeDataUSPTOpatents"));
@@ -215,7 +219,7 @@ namespace StockAnalysisTest {
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGetFinnhubInquiryIndex) {
 		// Web Socket
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketTrades")), _WEBSOCKET_TRADES_);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketNews")), _WEBSOCKET_NEWS_);// Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("WebSocketNews")), _WEBSOCKET_NEWS_); // Premium
 
 		// Stock Fundamentals
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSymolLookup")), _SYMBOL_LOOKUP_);
@@ -273,7 +277,7 @@ namespace StockAnalysisTest {
 
 		// Mutual funds
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundProfile")), _MUTUAL_FUND_PROFILE_); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundHoldings")), _MUTUAL_FUND_HOLDINGS_);// Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundHoldings")), _MUTUAL_FUND_HOLDINGS_); // Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundSector")), _MUTUAL_FUND_SECTOR_); // Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("MutualFundCountry")), _MUTUAL_FUND_COUNTRY_); // Premium
 
@@ -285,7 +289,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexExchange")), _FOREX_EXCHANGE_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexSymbols")), _FOREX_SYMBOLS_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexCandles")), _FOREX_CANDLES_); // 历史数据优先级低 Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexAllRates")), _FOREX_ALL_RATES_);  // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("ForexAllRates")), _FOREX_ALL_RATES_); // Premium
 
 		// Crypto
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("CryptoExchange")), _CRYPTO_EXCHANGE_);
@@ -304,7 +308,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataTranscript")), _ALTERNATIVE_DATA_TRANSCRIPT_); //Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSetiment")), _ALTERNATIVE_DATA_SOCIAL_SETIMENT_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataInvestThemes")), _ALTERNATIVE_DATA_INVEST_THEMES_); // Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSupplyChain")), _ALTERNATIVE_DATA_SUPPLY_CHAIN_);  // Premium
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataSupplyChain")), _ALTERNATIVE_DATA_SUPPLY_CHAIN_); // Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCompanyESG")), _ALTERNATIVE_DATA_COMPANY_ESG_); // Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataQualityScore")), _ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_); // Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataUSPTOpatents")), _ALTERNATIVE_DATA_USPTO_PATENTS_);
@@ -318,6 +322,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCodes")), _ECONOMIC_CODES_); //Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicEconomic")), _ECONOMIC_ECONOMIC_); //Premium
 	}
+
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
 		json jsFinnhubInaccessibleExchange = json::parse(gl_sFinnhubInaccessibleExchange);
 		CInaccessibleExchanges exchange;
@@ -349,7 +354,8 @@ namespace StockAnalysisTest {
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), _T("WebSocketTrades"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
+		             _T("WebSocketTrades"));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
 		CString str;
 		str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);

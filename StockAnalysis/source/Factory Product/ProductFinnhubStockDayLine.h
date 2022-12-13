@@ -3,11 +3,11 @@
 #include"WebData.h"
 #include"ProductFinnhub.h"
 
-class CProductFinnhubStockDayLine : public CProductFinnhub {
+class CProductFinnhubStockDayLine final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubStockDayLine)
-		CProductFinnhubStockDayLine();
-	~CProductFinnhubStockDayLine() {}
+	CProductFinnhubStockDayLine();
+	~CProductFinnhubStockDayLine() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

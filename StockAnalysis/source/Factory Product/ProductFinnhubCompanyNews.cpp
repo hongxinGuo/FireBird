@@ -2,7 +2,6 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 #include"worldMarket.h"
 
 #include "ProductFinnhubCompanyNews.h"
@@ -18,17 +17,15 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CString strMessage;
 	char buffer[50]{};
 	int iUpdateDate = 0, iMarketDate = 0;
 	int year = 0, month = 0, day = 0;
-	CString strTemp;
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	strMessage = m_strInquiry + pStock->GetSymbol();
+	auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	CString strMessage = m_strInquiry + pStock->GetSymbol();
 	iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 	XferDateToYearMonthDay(iUpdateDate, year, month, day);
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-	strTemp = buffer;
+	CString strTemp = buffer;
 	strMessage += _T("&from=");
 	strMessage += strTemp;
 	iMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -46,13 +43,13 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CCompanyNewsVectorPtr pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
-	if (pvFinnhubCompanyNews->size() > 0) {
+	if (!pvFinnhubCompanyNews->empty()) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
-		for (auto& pFinnhubCompanyNews : *pvFinnhubCompanyNews) {
+		for (const auto& pFinnhubCompanyNews : *pvFinnhubCompanyNews) {
 			pFinnhubCompanyNews->m_strCompanySymbol = pStock->GetSymbol();
 		}
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
@@ -92,35 +89,41 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 	CCompanyNewsPtr pCompanyNews = nullptr;
 	INT64 dateTime = 0;
 
-	CCompanyNewsVectorPtr pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvFinnhubCompanyNews; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvFinnhubCompanyNews; }
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvFinnhubCompanyNews;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvFinnhubCompanyNews;
+	}
 	ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 			pt1 = it->second;
 			pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = pt1.get<string>(_T("category"));
-			if (s.size() > 0) pCompanyNews->m_strCategory = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
 			dateTime = pt1.get<INT64>(_T("datetime"));
 			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
 			s = pt1.get<string>(_T("headline"));
-			if (s.size() > 0) pCompanyNews->m_strHeadLine = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();
 			pCompanyNews->m_iNewsID = pt1.get<int>(_T("id"));
 			s = pt1.get<string>(_T("image"));
-			if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strImage = s.c_str();
 			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
 			s = pt1.get<string>(_T("related"));
-			if (s.size() > 0) pCompanyNews->m_strRelatedSymbol = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s.c_str();
 			s = pt1.get<string>(_T("source"));
-			if (s.size() > 0) pCompanyNews->m_strSource = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strSource = s.c_str();
 			s = pt1.get<string>(_T("summary"));
-			if (s.size() > 0) pCompanyNews->m_strSummary = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strSummary = s.c_str();
 			s = pt1.get<string>(_T("url"));
-			if (s.size() > 0) pCompanyNews->m_strURL = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	}

@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include"StockCodeConverter.h"
-
 #include"WorldMarket.h"
 #include"WorldStock.h"
 
@@ -18,7 +16,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 CString CProductFinnhubCompanyPeer::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
@@ -28,8 +26,8 @@ CString CProductFinnhubCompanyPeer::CreateMessage(void) {
 bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strPeer = ParseFinnhubStockPeer(pWebData);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CString strPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(strPeer);
 	pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetPeerUpdated(true);
@@ -41,13 +39,19 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
 	CString strPeer = _T("{}"); // 默认的空状态（没有竞争对手)
 	char buffer[1000]{};
-	int i = 0;
+	int i;
 	string sError;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return strPeer;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return strPeer; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return strPeer; }
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return strPeer;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return strPeer;
+	}
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {
 		buffer[i] = pWebData->GetData(i);
 	}

@@ -3,11 +3,10 @@
 #include"VirtualDataSource.h"
 #include"QuandlFactory.h"
 
-class CQuandlDataSource : public CVirtualDataSource
-{
+class CQuandlDataSource final : public CVirtualDataSource {
 public:
 	CQuandlDataSource(void);
-	virtual ~CQuandlDataSource(void) override;
+	~CQuandlDataSource(void) override = default;
 
 	virtual bool Reset(void) override final;
 	virtual bool UpdateStatus(void) override final;

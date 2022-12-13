@@ -52,18 +52,22 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
-		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(), companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
+		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(),
+		             companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate()) << "接收到的数处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
 	}
 
 	// 正确数据
-	FinnhubWebData finnhubWebData141(1, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	FinnhubWebData finnhubWebData141(1, _T("AAPL"), _T(
+		                                 "{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 data项
-	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T("{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T(
+		                                 "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 Symbol项
-	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T("{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
+		                                 "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 空数据
 	FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
 
@@ -85,8 +89,9 @@ namespace StockAnalysisTest {
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
+
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetInsiderSentimentNeedSave(false);
@@ -103,7 +108,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderSentiment1, ProcessFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
@@ -150,6 +155,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
 		}
+
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -167,18 +173,18 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_STREQ(m_pvInsiderSentiment->at(0)->m_strSymbol, _T("TSLA"));
-			EXPECT_EQ(m_pvInsiderSentiment->at(0)->m_lDate, 20210301) << "使用有效日期：每月的第一天，故而要加一";
-			EXPECT_EQ(m_pvInsiderSentiment->at(0)->m_lChange, 5540);
-			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(0)->m_mspr, 12.209097);
-			EXPECT_TRUE(m_pvInsiderSentiment->at(0)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "此序列按交易日期顺序排列";
+			EXPECT_STREQ(m_pvInsiderSentiment->at(1)->m_strSymbol, _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
+			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);
+			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "此序列按交易日期顺序排列";
 			break;
 		case 2: // 缺乏data项
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);

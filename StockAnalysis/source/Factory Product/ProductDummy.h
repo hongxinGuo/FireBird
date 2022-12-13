@@ -1,12 +1,12 @@
 #pragma once
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 
-class CProductDummy : public CVirtualProductWebData {
+class CProductDummy final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductDummy)
-		CProductDummy();
-	~CProductDummy() = default;
+	CProductDummy();
+	~CProductDummy() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

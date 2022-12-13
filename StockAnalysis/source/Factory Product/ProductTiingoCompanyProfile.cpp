@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ProductTiingoCompanyProfile.h"
 
-IMPLEMENT_DYNCREATE(CProductTiingoCompanyProfile, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductTiingoCompanyProfile, CVirtualWebProduct)
 
 CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 	m_strClassName = _T("Tiingo company profile");

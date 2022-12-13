@@ -139,7 +139,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoStockSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h" />
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualWebProduct.h" />
     <ClInclude Include="..\StockAnalysis\source\FinnhubInquiryType.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Market\ChinaMarket.h" />
@@ -333,7 +333,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductSinaRT.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTengxunRT.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCryptoSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualWebProduct.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Factory Product\TiingoFactory.cpp" />

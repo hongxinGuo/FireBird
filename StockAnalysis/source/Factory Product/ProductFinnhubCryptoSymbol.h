@@ -3,11 +3,12 @@
 #include"WorldMarket.h"
 #include"ProductFinnhub.h"
 
-class CProductFinnhubCryptoSymbol : public CProductFinnhub {
+class CProductFinnhubCryptoSymbol final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCryptoSymbol)
-		CProductFinnhubCryptoSymbol();
-	~CProductFinnhubCryptoSymbol() {}
+	CProductFinnhubCryptoSymbol();
+
+	~CProductFinnhubCryptoSymbol() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

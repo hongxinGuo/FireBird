@@ -5,11 +5,11 @@
 
 #include"ProductFinnhub.h"
 
-class CProductFinnhubCryptoDayLine : public CProductFinnhub {
+class CProductFinnhubCryptoDayLine final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCryptoDayLine)
-		CProductFinnhubCryptoDayLine();
-	~CProductFinnhubCryptoDayLine() {}
+	CProductFinnhubCryptoDayLine();
+	~CProductFinnhubCryptoDayLine() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

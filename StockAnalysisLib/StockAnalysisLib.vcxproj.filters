@@ -181,6 +181,9 @@
     <Filter Include="源文件\Data container\Chosen">
       <UniqueIdentifier>{631fa874-ea26-40a2-b29e-39ec0aea5c8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Data Source\China market">
+      <UniqueIdentifier>{d6ae6ebf-aa91-4881-a6ac-2fb919c6240f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\resource.h">
@@ -312,7 +315,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualDataFactory.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.h">
+    <ClInclude Include="..\StockAnalysis\source\Factory Product\VirtualWebProduct.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductTiingoCompanyProfile.h">
@@ -732,18 +735,6 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductNeteaseDayline.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\SinaRTDataSource.h">
-      <Filter>头文件\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.h">
-      <Filter>头文件\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.h">
-      <Filter>头文件\Data Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.h">
-      <Filter>头文件\Data Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Source\QuandlDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
@@ -752,6 +743,18 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\NewClass1.h">
       <Filter>源文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseDaylineDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\NeteaseRTDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\SinaRTDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -935,7 +938,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualProductWebData.cpp">
+    <ClCompile Include="..\StockAnalysis\source\Factory Product\VirtualWebProduct.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataWorldStock.cpp">

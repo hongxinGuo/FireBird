@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 
 #include"WorldMarket.h"
 #include"WorldStock.h"
@@ -19,8 +18,8 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strMiddle = pStock->GetSymbol();
+	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto strMiddle = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -30,9 +29,10 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
-		if ((pStock->GetTransactionTime() + 3600 * 12 - ((CWorldMarket*)m_pMarket)->GetUTCTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
+		if ((pStock->GetTransactionTime() + 3600 * 12 - ((CWorldMarket*)m_pMarket)->GetUTCTime()) > 0) {
+			// 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
 			if (!pStock->IsIPOed()) {
 				pStock->SetIPOStatus(_STOCK_IPOED_);
@@ -45,18 +45,19 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
-	string s;
-	double dTemp = 0;
-	time_t tt = 0;
-	shared_ptr<ptree> ppt;
-
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return false; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return false; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return false;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return false;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
-		dTemp = ptreeGetDouble(*ppt, _T("c"));
+		double dTemp = ptreeGetDouble(*ppt, _T("c"));
 		pStock->SetNew(dTemp * 1000);
 		dTemp = ptreeGetDouble(*ppt, _T("h"));
 		pStock->SetHigh(dTemp * 1000);
@@ -66,10 +67,11 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 		pStock->SetOpen(dTemp * 1000);
 		dTemp = ptreeGetDouble(*ppt, _T("pc"));
 		pStock->SetLastClose(dTemp * 1000);
-		tt = ppt->get<time_t>(_T("t"));
+		const auto tt = ppt->get<time_t>(_T("t"));
 		pStock->SetTransactionTime(tt);
 	}
-	catch (ptree_error& e) { // 数据格式不对，跳过。
+	catch (ptree_error& e) {
+		// 数据格式不对，跳过。
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
 		return false;
 	}

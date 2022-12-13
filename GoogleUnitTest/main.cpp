@@ -51,20 +51,29 @@
 #endif
 
 // 排除外部代码
-#include <CodeCoverage\CodeCoverage.h>
+#include<CodeCoverage\CodeCoverage.h>
 #pragma managed(push, off)
+//ExcludeSourceFromCodeCoverage("Exclude1", _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
+//ExcludeSourceFromCodeCoverage("Exclude103", L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");
+//ExcludeFromCodeCoverage("CMainFrame2", L"CMainFrame::Dump", "abc");
+
 #if _MSVC_LANG <= 201703 // C17及以下版本？
-
-ExcludeSourceFromCodeCoverage(Exclude1, L"C:\\Program Files (x86)\\*.*"); // 排除VS2019系统库
+ExcludeSourceFromCodeCoverage("Exclude1", _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
+ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*");
 
-ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*"); // 排除GoogleUnitTest
+// 排除GoogleUnitTest
 ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\Packages\\*.*"); // 排除扩展程序包
 ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
-ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\googletest\\*.*"); // 排除GoogleTest
-ExcludeSourceFromCodeCoverage(Exclude13, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
+ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\googletest\\*.*");
+
+// 排除GoogleTest
+ExcludeSourceFromCodeCoverage(
+	Exclude13, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
 ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除所有的数据库类
-ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*"); // 排除ixWebSocket库
+ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*");
+
+// 排除ixWebSocket库
 ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\vld\\*.*"); // 排除vld库
 ExcludeSourceFromCodeCoverage(Exclude22, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\OPenSSL\\*.*"); // 排除OpenSSL库
 ExcludeSourceFromCodeCoverage(Exclude24, L"d:\\cfiles\\projects\\winssl\\*.*"); // 排除OpenSSL库
@@ -75,10 +84,9 @@ ExcludeSourceFromCodeCoverage(Exclude105, L"C:\\users\\hxguo\\source\\repos\\Sto
 ExcludeSourceFromCodeCoverage(Exclude106, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.h");
 ExcludeSourceFromCodeCoverage(Exclude107, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.cpp");
 ExcludeSourceFromCodeCoverage(Exclude108, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.h");
-
-ExcludeSourceFromCodeCoverage(Exclude109, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataFinnhubWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude109,	L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataFinnhubWebSocket.cpp");
 ExcludeSourceFromCodeCoverage(Exclude110, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoIEXWebSocket.cpp");
-ExcludeSourceFromCodeCoverage(Exclude111, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoCryptoWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude111,	L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoCryptoWebSocket.cpp");
 ExcludeSourceFromCodeCoverage(Exclude112, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoForexWebSocket.cpp");
 ExcludeSourceFromCodeCoverage(Exclude113, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\semaphore.h");
 
@@ -109,7 +117,6 @@ ExcludeFromCodeCoverage(CMainFrame23, L"CMainFrame::SetDockingWindowIcons");
 ExcludeFromCodeCoverage(CMainFrame26, L"CMainFrame::CreateDockingWindows");
 ExcludeFromCodeCoverage(CMainFrame27, L"CMainFrame::SysCallSetInnerSystemPaneText");
 ExcludeFromCodeCoverage(CMainFrame28, L"CMainFrame::SysCallOnSysCommand");
-
 ExcludeFromCodeCoverage(CStockAnalysisView1, L"CStockAnalysisView::AssertValid");
 ExcludeFromCodeCoverage(CStockAnalysisView2, L"CStockAnalysisView::CreateObject");
 ExcludeFromCodeCoverage(CStockAnalysisView3, L"CStockAnalysisView::Dump");
@@ -148,11 +155,9 @@ ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp"
 ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
 ExcludeFromCodeCoverage(CStockAnalysisView37, L"CStockAnalysisView::SysCallBitBlt");
 ExcludeFromCodeCoverage(CStockAnalysisView38, L"CStockAnalysisView::ShowStockHistoryDayLine");
-
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");
 ExcludeFromCodeCoverage(CVirtualMarket3, L"CVirtualMarket::ResetMarket");
-
 ExcludeFromCodeCoverage(CChinaMarket1, L"CChinaMarket::AssertValid");
 ExcludeFromCodeCoverage(CChinaMarket2, L"CChinaMarket::Dump");
 ExcludeFromCodeCoverage(CChinaMarket3, L"CChinaMarket::CreatingThreadAppendChosenStockDB");
@@ -210,13 +215,11 @@ ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDayLine");
 ExcludeFromCodeCoverage(CChinaStock15, L"CChinaStock::Calculate10RSStrong1StockSet");
 ExcludeFromCodeCoverage(CChinaStock16, L"CChinaStock::Calculate10RSStrong2StockSet");
 ExcludeFromCodeCoverage(CChinaStock17, L"CChinaStock::Calculate10RSStrongStockSet");
-
 ExcludeFromCodeCoverage(CCrweberIndexMarket1, L"CCrweberIndexMarket::CreatingThreadMaintainDB");
 ExcludeFromCodeCoverage(CCrweberIndexMarket2, L"CCrweberIndexMarket::CreatingThreadSaveCrweberDB");
 ExcludeFromCodeCoverage(CCrweberIndexMarket3, L"CCrweberIndexMarket::ShedulingTaskPer1Hour");
 ExcludeFromCodeCoverage(CCrweberIndexMarket4, L"CCrweberIndexMarket::ShedulingTaskPerSecond");
 ExcludeFromCodeCoverage(CCrweberIndexMarket5, L"CCrweberIndexMarket::ShedulingTask");
-
 ExcludeFromCodeCoverage(CWorldMarket1, L"CWorldMarket::RunningthreadUpdateDayLneStartEndDate");
 ExcludeFromCodeCoverage(CWorldMarket2, L"CWorldMarket::CreatingThreadUpdateDayLineDB");
 ExcludeFromCodeCoverage(CWorldMarket3, L"CWorldMarket::CreatingThreadUpdateStockProfileDB");
@@ -236,23 +239,35 @@ ExcludeFromCodeCoverage(CWorldMarket16, L"CWorldMarket::CreatingThreadUpdateCryp
 ExcludeFromCodeCoverage(CWorldMarket17, L"CWorldMarket::CreatingThreadUpdateCryptoDayLineDB");
 
 ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
+
 ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
 
 ExcludeFromCodeCoverage(CRTData1, L"CWebRTData::AssertValid");
+
 ExcludeFromCodeCoverage(CRTData2, L"CWebRTData::Dump");
 
 ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
+
 ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");
+
 ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDayLineInfo");
+
 ExcludeFromCodeCoverage(CSystemMessage5, L"CSystemMessage::DisplayInformation");
+
 ExcludeFromCodeCoverage(CSystemMessage6, L"CSystemMessage::DisplayInnerSystemInformation");
+
 ExcludeFromCodeCoverage(CSystemMessage7, L"CSystemMessage::DisplayTrace2");
+
 ExcludeFromCodeCoverage(CSystemMessage8, L"CSystemMessage::DisplayTransaction");
 
 ExcludeFromCodeCoverage(CNeteaseRTWebInquiry1, L"CNeteaseRTWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CTengxunRTWebInquiry1, L"CTengxunRTWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CSinaRTWebInquiry1, L"CSinaRTWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CCrweberIndexWebInquiry1, L"CCrweberIndexWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CNeteaseDayLineWebInquiry1, L"CNeteaseDayLineWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry1, L"CPotenDailyBriefingWebInquiry::StartReadingThread");
@@ -260,16 +275,23 @@ ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry1, L"CPotenDailyBriefingWeb
 ExcludeFromCodeCoverage(CSystemDeque1, L"CSystemDeque::SysCallOutputListAddString");
 
 ExcludeFromCodeCoverage(CWebInquiry1, L"CWebInquiry::Initialize");
+
 ExcludeFromCodeCoverage(CWebInquiry2, L"CWebInquiry::~CWebInquirer");
 
 ExcludeFromCodeCoverage(CWebInquirer1, L"CWebInquirer::Initialize");
 
 ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::PrepareNextInquiringString");
+
 ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::GetNextInquiringMiddleString");
+
 ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFileOneTime");
+
 ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CTiingoWebInquiry1, L"CTiingoWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CFinnhubWebInquiry1, L"CFinnhubWebInquiry::StartReadingThread");
+
 ExcludeFromCodeCoverage(CQuandlWebInquiry1, L"CQuandlWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryCandleExtend::ShowData");

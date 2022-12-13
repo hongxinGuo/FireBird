@@ -7,15 +7,14 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 
-class CProductTengxunRT : public CVirtualProductWebData {
+class CProductTengxunRT final: public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTengxunRT)
 	CProductTengxunRT();
 
-	~CProductTengxunRT() {
-	}
+	~CProductTengxunRT() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

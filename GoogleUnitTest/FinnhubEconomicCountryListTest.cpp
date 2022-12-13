@@ -49,15 +49,30 @@ namespace StockAnalysisTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData92(
+		2, _T(""),
+		_T(
+			"{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第一个数据缺乏CodeNo
-	FinnhubWebData finnhubWebData93(3, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData93(
+		3, _T(""),
+		_T(
+			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第二个数据缺乏Code2
-	FinnhubWebData finnhubWebData94(4, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData94(
+		4, _T(""),
+		_T(
+			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 数据缺乏symbol
-	FinnhubWebData finnhubWebData95(5, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData95(
+		5, _T(""),
+		_T(
+			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData100(
+		10, _T(""),
+		_T(
+			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
 	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
@@ -70,6 +85,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvCountry = nullptr;
 		}
+
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -84,8 +100,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
-		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-			&finnhubWebData95, &finnhubWebData100));
+	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+		                         &finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
@@ -108,10 +124,12 @@ namespace StockAnalysisTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
-			EXPECT_STREQ(m_pvCountry->at(1)->m_strCode2, _T("MF"));
-			EXPECT_STREQ(m_pvCountry->at(1)->m_strCurrencyCode, _T("ANG"));
+			EXPECT_STREQ(m_pvCountry->at(1)->m_strCountry, _T("Zero")) << "以国家名称排序，位于第二个位置";
+			EXPECT_STREQ(m_pvCountry->at(1)->m_strCode2, _T("NR"));
+			EXPECT_STREQ(m_pvCountry->at(1)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCountry, _T("Saint Martin (French part)")) << "以国家名称排序，位于第一个位置";
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("MF"));
+			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("ANG"));
 			break;
 		default:
 			break;
@@ -129,10 +147,11 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}
+
 		virtual void TearDown(void) override {
-			// clearup
-			if (gl_pWorldMarket->IsCountry(_T("New Country"))) {
-				auto pCountry = gl_pWorldMarket->GetCountry(_T("New Country"));
+			// clearUp
+			if (gl_pWorldMarket->IsCountry(_T("Zero"))) {
+				auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));
 				gl_pWorldMarket->DeleteCountry(pCountry);
 			}
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -146,8 +165,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
-		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-			&finnhubWebData95, &finnhubWebData100));
+	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+		                         &finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		long l = gl_pWorldMarket->GetTotalCountry();

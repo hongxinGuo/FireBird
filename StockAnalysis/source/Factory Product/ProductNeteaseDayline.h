@@ -7,15 +7,14 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 
-class CProductNeteaseDayLine : public CVirtualProductWebData {
+class CProductNeteaseDayLine final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductNeteaseDayLine)
 	CProductNeteaseDayLine();
 
-	~CProductNeteaseDayLine() {
-	}
+	~CProductNeteaseDayLine() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

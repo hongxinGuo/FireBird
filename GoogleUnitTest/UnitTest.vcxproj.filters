@@ -282,15 +282,6 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Class\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="DataChosenCryptoTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="DataChosenForexTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="DataChosenIEXTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
-    </ClCompile>
     <ClCompile Include="DataChinaStockTest.cpp">
       <Filter>Test源文件\Data Class\China Market</Filter>
     </ClCompile>
@@ -570,6 +561,9 @@
     <ClCompile Include="TengxunRTDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="DataChoicedCryptoTest.cpp" />
+    <ClCompile Include="DataChoicedForexTest.cpp" />
+    <ClCompile Include="DataChoicedIEXTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

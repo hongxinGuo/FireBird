@@ -2,7 +2,6 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 
 #include"WorldMarket.h"
 #include"WorldStock.h"
@@ -22,8 +21,8 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 CString CProductFinnhubStockDayLine::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	CString strMiddle = pStock->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto strMiddle = pStock->GetFinnhubDayLineInquiryString(CVirtualMarket::GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -33,27 +32,25 @@ CString CProductFinnhubStockDayLine::CreateMessage(void) {
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CDayLineVectorPtr pvDayLine = nullptr;
-	long lTemp = 0;
-
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
-	pvDayLine = ParseFinnhubStockCandle(pWebData);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
-	for (auto& pDayLine : *pvDayLine) {
+	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
 		pDayLine->SetDisplaySymbol(pStock->GetTicker());
-		lTemp = TransferToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
+		const auto lTemp = TransferToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
 		pDayLine->SetDate(lTemp);
 	}
-	if (pvDayLine->size() > 0) {
+	if (!pvDayLine->empty()) {
 		pStock->UpdateDayLine(*pvDayLine);
-		if (pStock->GetDayLineSize() > 0) { // 添加了新数据
+		if (pStock->GetDayLineSize() > 0) {
+			// 添加了新数据
 			pStock->SetDayLineNeedSaving(true);
 			pStock->SetUpdateProfileDB(true);
-			long lSize = pStock->GetDayLineSize() - 1;
-			CDayLinePtr pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetMarketDate(), ((CWorldMarket*)m_pMarket)->GetMarketDate(), 100)) {
+			const long lSize = pStock->GetDayLineSize() - 1;
+			const auto pDayLine = pStock->GetDayLine(lSize);
+			if (!IsEarlyThen(pDayLine->GetMarketDate(), m_pMarket->GetMarketDate(), 100)) {
 				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 			return true;
@@ -65,39 +62,42 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
-	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	ptree pt2, pt3;
-	string s;
-	double dTemp = 0;
-	INT64 llTemp = 0;
-	time_t tTemp = 0;
 	CDayLinePtr pDayLine = nullptr;
-	int i = 0;
 	string sError;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvDayLine; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvDayLine; }
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvDayLine;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvDayLine;
+	}
 
-	ppt = pWebData->GetPTree();
+	const auto ppt = pWebData->GetPTree();
 	try {
-		s = ppt->get<string>(_T("s"));
-		if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+		auto s = ppt->get<string>(_T("s"));
+		if (s == _T("no_data")) {
+			// 没有日线数据，无需检查此股票的日线和实时数据
 			return pvDayLine;
 		}
-		if (s.compare(_T("ok")) != 0) {
+		if (s != _T("ok")) {
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
 	}
-	catch (ptree_error& e) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+	catch (ptree_error& e) {
+		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e);
 		return pvDayLine;
 	}
 
 	try {
+		time_t tTemp;
 		pt2 = ppt->get_child(_T("t"));
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 			pt3 = it->second;
@@ -112,6 +112,9 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		return pvDayLine;
 	}
 	try {
+		int i;
+		INT64 llTemp;
+		double dTemp;
 		pt2 = ppt->get_child(_T("c"));
 		i = 0;
 		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -156,7 +159,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e);
 	}
-	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

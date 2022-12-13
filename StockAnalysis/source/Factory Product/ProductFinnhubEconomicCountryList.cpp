@@ -21,14 +21,12 @@ CString CProductFinnhubEconomicCountryList::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CCountryVectorPtr pvCountry;
-
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvCountry = ParseFinnhubCountryList(pWebData);
-	for (auto& pCountry : *pvCountry) {
-		if (!((CWorldMarket*)m_pMarket)->IsCountry(pCountry)) {
-			((CWorldMarket*)m_pMarket)->AddCountry(pCountry);
+	const auto pvCountry = ParseFinnhubCountryList(pWebData);
+	for (const auto& pCountry : *pvCountry) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) {
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry);
 		}
 	}
 
@@ -36,23 +34,27 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 }
 
 CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CWebDataPtr pWebData) {
-	CCountryVectorPtr pvCountry = make_shared<vector<CCountryPtr>>();
+	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
-	ptree pt2;
 	string s;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCountry;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvCountry; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvCountry; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvCountry;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvCountry;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 			pCountry = make_shared<CCountry>();
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("code2"));
-			if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
+			if (!s.empty()) pCountry->m_strCode2 = s.c_str();
 			s = pt2.get<string>(_T("code3"));
 			pCountry->m_strCode3 = s.c_str();
 			s = pt2.get<string>(_T("codeNo"));
@@ -70,6 +72,6 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e);
 		return pvCountry;
 	}
-	sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
+	ranges::sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
 	return pvCountry;
 }

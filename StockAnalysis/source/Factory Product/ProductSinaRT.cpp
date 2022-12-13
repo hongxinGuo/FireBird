@@ -6,7 +6,7 @@
 #include"JsonParse.h"
 #include"ChinaMarket.h"
 
-IMPLEMENT_DYNCREATE(CProductSinaRT, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductSinaRT, CVirtualWebProduct)
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;

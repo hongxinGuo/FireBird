@@ -16,7 +16,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 CString CProductFinnhubForexSymbol::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex);
+	const auto strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -26,14 +26,12 @@ CString CProductFinnhubForexSymbol::CreateMessage(void) {
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	CForexSymbolVectorPtr pvForexSymbol = nullptr;
-
-	pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
-	if (pvForexSymbol->size() == 0) return false;
-	for (auto& pSymbol : *pvForexSymbol) {
-		if (!((CWorldMarket*)m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetForexExchange(m_lIndex));
-			((CWorldMarket*)m_pMarket)->AddForexSymbol(pSymbol);
+	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
+	if (pvForexSymbol->empty()) return false;
+	for (const auto& pSymbol : *pvForexSymbol) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex));
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddForexSymbol(pSymbol);
 		}
 	}
 
@@ -41,24 +39,28 @@ bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDataPtr pWebData) {
-	CForexSymbolVectorPtr pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
+	auto pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
 	CForexSymbolPtr pSymbol = nullptr;
-	ptree pt2;
 	string s;
 	string sError;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvForexSymbol;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvForexSymbol; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvForexSymbol; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvForexSymbol;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvForexSymbol;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 			pSymbol = make_shared<CFinnhubForexSymbol>();
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
-			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
+			if (!s.empty()) pSymbol->SetDescription(s.c_str());
 			s = pt2.get<string>(_T("displaySymbol"));
 			pSymbol->SetDisplaySymbol(s.c_str());
 			s = pt2.get<string>(_T("symbol"));

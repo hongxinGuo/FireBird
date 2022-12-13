@@ -5,7 +5,7 @@
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductTengxunRT, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductTengxunRT, CVirtualWebProduct)
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;

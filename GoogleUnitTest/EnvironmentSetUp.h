@@ -56,11 +56,9 @@ namespace StockAnalysisTest {
 	class TestEnvironment : public::testing::Environment {
 		// 全局初始化，由main()函数调用。
 	public:
-		TestEnvironment(void) {
-		}
+		TestEnvironment(void) = default;
 
-		virtual ~TestEnvironment() {
-		}
+		~TestEnvironment() override = default;
 
 		virtual void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
@@ -223,7 +221,7 @@ namespace StockAnalysisTest {
 			gl_pMockChinaMarket = nullptr;
 			gl_pMockWorldMarket = nullptr;
 
-			if (CMFCVisualManager::GetInstance() != NULL) {
+			if (CMFCVisualManager::GetInstance() != nullptr) {
 				delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
 			}
 

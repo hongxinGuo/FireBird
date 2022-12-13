@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 //
-// finnhub company news. availble in North America only.
+// finnhub company news. available in North America only.
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -9,11 +9,11 @@
 #include"FinnhubCompanyNews.h"
 #include"ProductFinnhub.h"
 
-class CProductFinnhubCompanyNews : public CProductFinnhub {
+class CProductFinnhubCompanyNews final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCompanyNews)
-		CProductFinnhubCompanyNews();
-	~CProductFinnhubCompanyNews() {}
+	CProductFinnhubCompanyNews();
+	~CProductFinnhubCompanyNews() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

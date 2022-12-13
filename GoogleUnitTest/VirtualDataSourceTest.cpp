@@ -72,7 +72,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CDataSourceTest, Test_SetInquiry) {
-		CVirtualProductWebDataPtr p = std::make_shared<CVirtualProductWebData>();
+		CVirtualProductWebDataPtr p = std::make_shared<CVirtualWebProduct>();
 		p->SetIndex(10000);
 
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);

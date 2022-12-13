@@ -23,12 +23,10 @@ CString CProductFinnhubForexExchange::CreateMessage(void) {
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	shared_ptr<vector<CString>> pvForexExchange = nullptr;
-
-	pvForexExchange = ParseFinnhubForexExchange(pWebData);
+	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
-		if (!((CWorldMarket*)m_pMarket)->IsForexExchange(pvForexExchange->at(i))) {
-			((CWorldMarket*)m_pMarket)->AddForexExchange(pvForexExchange->at(i));
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsForexExchange(pvForexExchange->at(i))) {
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddForexExchange(pvForexExchange->at(i));
 		}
 	}
 
@@ -36,21 +34,25 @@ bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(CWebDataPtr pWebData) {
-	shared_ptr<vector<CString>> pvExchange = make_shared<vector<CString>>();
-	ptree pt2;
+	auto pvExchange = make_shared<vector<CString>>();
 	string s;
 	CString str = _T("");
 	string sError;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvExchange; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvExchange; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvExchange;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvExchange;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get_value<string>();
 			str = s.c_str();
 			pvExchange->push_back(str);

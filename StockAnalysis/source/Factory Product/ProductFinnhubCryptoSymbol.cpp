@@ -13,7 +13,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 }
 
 CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
-	CString strMiddle = ((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex);
+	const CString strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strMiddle;
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -21,15 +21,13 @@ CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CFinnhubCryptoSymbolVectorPtr pvCryptoSymbol;
-
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
-	for (auto& pSymbol : *pvCryptoSymbol) {
-		if (!((CWorldMarket*)m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(((CWorldMarket*)m_pMarket)->GetCryptoExchange(m_lIndex));
-			((CWorldMarket*)m_pMarket)->AddFinnhubCryptoSymbol(pSymbol);
+	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
+	for (const auto& pSymbol : *pvCryptoSymbol) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex));
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddFinnhubCryptoSymbol(pSymbol);
 		}
 	}
 
@@ -37,24 +35,27 @@ bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
-	CFinnhubCryptoSymbolVectorPtr pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
-	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
-	ptree pt2;
+	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
 	string s;
 	string sError;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCryptoSymbol;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvCryptoSymbol; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvCryptoSymbol; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvCryptoSymbol;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvCryptoSymbol;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pSymbol = make_shared<CFinnhubCryptoSymbol>();
-			pt2 = it->second;
+			auto pSymbol = make_shared<CFinnhubCryptoSymbol>();
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("description"));
-			if (s.size() > 0) pSymbol->SetDescription(s.c_str());
+			if (!s.empty()) pSymbol->SetDescription(s.c_str());
 			s = pt2.get<string>(_T("displaySymbol"));
 			pSymbol->SetDisplaySymbol(s.c_str());
 			s = pt2.get<string>(_T("symbol"));

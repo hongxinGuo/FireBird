@@ -2,7 +2,6 @@
 
 #include"jsonParse.h"
 #include"WorldMarket.h"
-#include"WorldStock.h"
 
 #include "ProductFinnhubEconomicCalendar.h"
 
@@ -22,35 +21,37 @@ CString CProductFinnhubEconomicCalendar::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CEconomicCalendarVectorPtr pvEconomicCalendar;
-
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	((CWorldMarket*)m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
+	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
+	dynamic_cast<CWorldMarket*>(m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
 
 	return true;
 }
 
 CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData) {
-	CEconomicCalendarVectorPtr pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
+	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	ptree pt1, pt2;
 	string s;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEconomicCalendar;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return pvEconomicCalendar; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return pvEconomicCalendar; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvEconomicCalendar;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvEconomicCalendar;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
-		pt1 = ppt->get_child(_T("economicCalendar"));
+		ptree pt1 = ppt->get_child(_T("economicCalendar"));
 		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("country"));
-			if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
+			if (!s.empty()) pEconomicCalendar->m_strCountry = s.c_str();
 			s = pt2.get<string>(_T("event"));
 			pEconomicCalendar->m_strEvent = s.c_str();
 			s = pt2.get<string>(_T("impact"));

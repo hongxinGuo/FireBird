@@ -19,7 +19,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMessage;
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	CWorldStockPtr pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -38,7 +38,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	CWorldStockPtr pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockBasicFinancial(pFinnhubStockBasicFinancial, pWebData)) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
@@ -190,52 +190,52 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 //    "metricType": "PerShare",
 //      "series" : {
 //				"annual":{
- //"cashRatio": [{"period":"2020-12-31", "v" : 0.7634660421545667}, { "period":"2019-12-31","v" : 0.11672683513838748 }],
- //"currentRatio":[{"period":"2020-12-31", "v" : 2.7471}, { "period":"2019-12-31","v" : 1.2804 }, { "period":"2018-12-31","v" : 2.4764 }],
- //"ebitPerShare":[{"period":"2020-12-31","v":-57.636},{"period":"2019-12-31","v":-8.9067}],
- //"eps":[{"period":"2020-12-31","v":-64.74},{"period":"2019-12-31","v":-2.64}],
- //"grossMargin":[],
- //"longtermDebtTotalAsset":[{"period":"2019-12-31","v":0.3499},{"period":"2018-12-31","v":0.3572}],
- //"longtermDebtTotalCapital":[{"period":"2019-12-31","v":0.3857},{"period":"2018-12-31","v":0.3824}],
- //"longtermDebtTotalEquity":[{"period":"2019-12-31","v":0.6362},{"period":"2018-12-31","v":0.6192}],
- //"netDebtToTotalCapital":[{"period":"2020-12-31","v":-0.0745},{"period":"2019-12-31","v":0.3875}],
- //"netDebtToTotalEquity":[{"period":"2020-12-31","v":-0.0745},{"period":"2019-12-31","v":0.6391}],
- //"netMargin":[{"period":"2020-12-31","v":-3.4021},{"period":"2019-12-31","v":-0.0964}],
- //"operatingMargin":[{"period":"2020-12-31","v":-3.0288},{"period":"2019-12-31","v":-0.3253}],
- //"pretaxMargin":[{"period":"2020-12-31","v":-3.5853},{"period":"2019-12-31","v":-0.0311}],
- //"salesPerShare":[{"period":"2020-12-31","v":19.0293},{"period":"2019-12-31","v" : 27.376 }] ,
- //"sgaToSale" : [] , "totalDebtToEquity" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.6496 }] ,
- //"totalDebtToTotalAsset" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.3572 }] ,
- //"totalDebtToTotalCapital" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.3938 }] ,
- //"totalRatio" : [{"period":"2020-12-31", "v" : 1.5146}, { "period":"2019-12-31","v" : 2.2219 }] },
-	//			"quarterly" : {
- //"cashRatio": [{"period":"2021-03-31", "v" : 0.6252676659528907}, { "period":"2020-12-31","v" : 0.7634660421545667 }],
- //"currentRatio" : [{"period":"2021-03-31", "v" : 2.409}, { "period":"2020-12-31","v" : 2.7471 }],
- //"ebitPerShare" : [{"period":"2021-03-31", "v" : -11.2813}, { "period":"2020-12-31","v" : -2.0973 }],
- //"eps" : [{"period":"2021-03-31", "v" : -12.1333}, { "period":"2020-12-31","v" : -0.9453 }],
- //"grossMargin" : [] ,
- //"longtermDebtTotalAsset" : [{"period":"2020-06-30", "v" : 0.3138}],
- //"longtermDebtTotalCapital" : [{"period":"2020-06-30", "v" : 0.3468}, { "period":"2020-03-31","v" : 0.4853 }],
- //"longtermDebtTotalEquity" : [{"period":"2020-06-30", "v" : 0.7884}, { "period":"2020-03-31","v" : 0.9763 }],
- //"netDebtToTotalCapital" : [{"period":"2021-03-31", "v" : -0.0843}, { "period":"2020-12-31","v" : -0.0745 }] ,
- //"netDebtToTotalEquity" : [{"period":"2021-03-31", "v" : -0.0843}, { "period":"2020-12-31","v" : -0.0745 }] ,
- //"netMargin" : [{"period":"2021-03-31", "v" : -2.9632}, { "period":"2020-12-31","v" : -0.2391 }],
- //"operatingMargin" : [{"period":"2021-03-31", "v" : -2.7551}, { "period":"2020-12-31","v" : -0.5305 }],
- //"pretaxMargin" : [{"period":"2021-03-31", "v" : -2.8522}, { "period":"2020-12-31","v" : -0.6159 }],
- //"salesPerShare" : [{"period":"2021-03-31", "v" : 4.0947}, { "period":"2020-12-31","v" : 3.9533 }],
- //"sgaToSale" : [] ,
- //"totalDebtToEquity" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }] ,
- //"totalDebtToTotalAsset" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }],
- //"totalDebtToTotalCapital" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }] ,
- //"totalRatio" : [{"period":"2021-03-31", "v" : 1.4082}, { "period":"2020-12-31","v" : 1.5146 }] }},
+//"cashRatio": [{"period":"2020-12-31", "v" : 0.7634660421545667}, { "period":"2019-12-31","v" : 0.11672683513838748 }],
+//"currentRatio":[{"period":"2020-12-31", "v" : 2.7471}, { "period":"2019-12-31","v" : 1.2804 }, { "period":"2018-12-31","v" : 2.4764 }],
+//"ebitPerShare":[{"period":"2020-12-31","v":-57.636},{"period":"2019-12-31","v":-8.9067}],
+//"eps":[{"period":"2020-12-31","v":-64.74},{"period":"2019-12-31","v":-2.64}],
+//"grossMargin":[],
+//"longtermDebtTotalAsset":[{"period":"2019-12-31","v":0.3499},{"period":"2018-12-31","v":0.3572}],
+//"longtermDebtTotalCapital":[{"period":"2019-12-31","v":0.3857},{"period":"2018-12-31","v":0.3824}],
+//"longtermDebtTotalEquity":[{"period":"2019-12-31","v":0.6362},{"period":"2018-12-31","v":0.6192}],
+//"netDebtToTotalCapital":[{"period":"2020-12-31","v":-0.0745},{"period":"2019-12-31","v":0.3875}],
+//"netDebtToTotalEquity":[{"period":"2020-12-31","v":-0.0745},{"period":"2019-12-31","v":0.6391}],
+//"netMargin":[{"period":"2020-12-31","v":-3.4021},{"period":"2019-12-31","v":-0.0964}],
+//"operatingMargin":[{"period":"2020-12-31","v":-3.0288},{"period":"2019-12-31","v":-0.3253}],
+//"pretaxMargin":[{"period":"2020-12-31","v":-3.5853},{"period":"2019-12-31","v":-0.0311}],
+//"salesPerShare":[{"period":"2020-12-31","v":19.0293},{"period":"2019-12-31","v" : 27.376 }] ,
+//"sgaToSale" : [] , "totalDebtToEquity" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.6496 }] ,
+//"totalDebtToTotalAsset" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.3572 }] ,
+//"totalDebtToTotalCapital" : [{"period":"2020-12-31", "v" : 0}, { "period":"2019-12-31","v" : 0.3938 }] ,
+//"totalRatio" : [{"period":"2020-12-31", "v" : 1.5146}, { "period":"2019-12-31","v" : 2.2219 }] },
+//			"quarterly" : {
+//"cashRatio": [{"period":"2021-03-31", "v" : 0.6252676659528907}, { "period":"2020-12-31","v" : 0.7634660421545667 }],
+//"currentRatio" : [{"period":"2021-03-31", "v" : 2.409}, { "period":"2020-12-31","v" : 2.7471 }],
+//"ebitPerShare" : [{"period":"2021-03-31", "v" : -11.2813}, { "period":"2020-12-31","v" : -2.0973 }],
+//"eps" : [{"period":"2021-03-31", "v" : -12.1333}, { "period":"2020-12-31","v" : -0.9453 }],
+//"grossMargin" : [] ,
+//"longtermDebtTotalAsset" : [{"period":"2020-06-30", "v" : 0.3138}],
+//"longtermDebtTotalCapital" : [{"period":"2020-06-30", "v" : 0.3468}, { "period":"2020-03-31","v" : 0.4853 }],
+//"longtermDebtTotalEquity" : [{"period":"2020-06-30", "v" : 0.7884}, { "period":"2020-03-31","v" : 0.9763 }],
+//"netDebtToTotalCapital" : [{"period":"2021-03-31", "v" : -0.0843}, { "period":"2020-12-31","v" : -0.0745 }] ,
+//"netDebtToTotalEquity" : [{"period":"2021-03-31", "v" : -0.0843}, { "period":"2020-12-31","v" : -0.0745 }] ,
+//"netMargin" : [{"period":"2021-03-31", "v" : -2.9632}, { "period":"2020-12-31","v" : -0.2391 }],
+//"operatingMargin" : [{"period":"2021-03-31", "v" : -2.7551}, { "period":"2020-12-31","v" : -0.5305 }],
+//"pretaxMargin" : [{"period":"2021-03-31", "v" : -2.8522}, { "period":"2020-12-31","v" : -0.6159 }],
+//"salesPerShare" : [{"period":"2021-03-31", "v" : 4.0947}, { "period":"2020-12-31","v" : 3.9533 }],
+//"sgaToSale" : [] ,
+//"totalDebtToEquity" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }] ,
+//"totalDebtToTotalAsset" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }],
+//"totalDebtToTotalCapital" : [{"period":"2021-03-31", "v" : 0}, { "period":"2020-12-31","v" : 0 }] ,
+//"totalRatio" : [{"period":"2021-03-31", "v" : 1.4082}, { "period":"2020-12-31","v" : 1.5146 }] }},
 //			"symbol":"AAPL"
 // }
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
+bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(
+	CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
 	string s;
-	shared_ptr<ptree> ppt;
 	ptree ptMetric, ptSeries, ptAnnual, ptQuarterly;
 	vector<CValueOfPeriod> vData;
 	int year, month, day;
@@ -243,9 +243,15 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	ASSERT(pWebData->IsJSonContentType());
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJson()) { m_iReceivedDataStatus = _VOID_DATA_; return false; }
-	if (pWebData->CheckNoRightToAccess()) { m_iReceivedDataStatus = _NO_ACCESS_RIGHT_; return false; }
-	ppt = pWebData->GetPTree();
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return false;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return false;
+	}
+	const auto ppt = pWebData->GetPTree();
 	try {
 		s = ptreeGetString(*ppt, _T("symbol"));
 		pBasicFinancial->m_symbol = s.c_str();
@@ -258,12 +264,12 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			pBasicFinancial->m_52WeekHigh = ptreeGetDouble(ptMetric, _T("52WeekHigh"));
 			pBasicFinancial->m_52WeekLow = ptreeGetDouble(ptMetric, _T("52WeekLow"));
 			s = ptreeGetString(ptMetric, _T("52WeekHighDate"));
-			if (s.size() > 0) {
+			if (!s.empty()) {
 				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 				pBasicFinancial->m_52WeekHighDate = year * 10000 + month * 100 + day;
 			}
 			s = ptreeGetString(ptMetric, _T("52WeekLowDate"));
-			if (s.size() > 0) {
+			if (!s.empty()) {
 				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 				pBasicFinancial->m_52WeekLowDate = year * 10000 + month * 100 + day;
 			}
@@ -315,8 +321,10 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			pBasicFinancial->m_freeCashFlowAnnual = ptreeGetDouble(ptMetric, _T("freeCashFlowAnnual"));
 			pBasicFinancial->m_freeCashFlowPerShareTTM = ptreeGetDouble(ptMetric, _T("freeCashFlowPerShareTTM"));
 			pBasicFinancial->m_freeCashFlowTTM = ptreeGetDouble(ptMetric, _T("freeCashFlowTTM"));
-			pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = ptreeGetDouble(ptMetric, _T("freeOperatingCashFlow/revenue5Y"));
-			pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = ptreeGetDouble(ptMetric, _T("freeOperatingCashFlow/revenueTTM"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = ptreeGetDouble(
+				ptMetric, _T("freeOperatingCashFlow/revenue5Y"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = ptreeGetDouble(
+				ptMetric, _T("freeOperatingCashFlow/revenueTTM"));
 
 			pBasicFinancial->m_grossMargin5Y = ptreeGetDouble(ptMetric, _T("grossMargin5Y"));
 			pBasicFinancial->m_grossMarginAnnual = ptreeGetDouble(ptMetric, _T("grossMarginAnnual"));
@@ -393,17 +401,20 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			pBasicFinancial->m_roiAnnual = ptreeGetDouble(ptMetric, _T("roiAnnual"));
 			pBasicFinancial->m_roiTTM = ptreeGetDouble(ptMetric, _T("roiTTM"));
 
-			pBasicFinancial->m_tangibleBookValuePerShareAnnual = ptreeGetDouble(ptMetric, _T("tangibleBookValuePerShareAnnual"));
-			pBasicFinancial->m_tangibleBookValuePerShareQuarterly = ptreeGetDouble(ptMetric, _T("tangibleBookValuePerShareQuarterly"));
+			pBasicFinancial->m_tangibleBookValuePerShareAnnual = ptreeGetDouble(
+				ptMetric, _T("tangibleBookValuePerShareAnnual"));
+			pBasicFinancial->m_tangibleBookValuePerShareQuarterly = ptreeGetDouble(
+				ptMetric, _T("tangibleBookValuePerShareQuarterly"));
 			pBasicFinancial->m_tbvCagr5Y = ptreeGetDouble(ptMetric, _T("tbvCagr5Y"));
 			pBasicFinancial->m_totalDebtCagr5Y = ptreeGetDouble(ptMetric, _T("totalDebtCagr5Y"));
 			pBasicFinancial->m_totalDebt_totalEquityAnnual = ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityAnnual"));
-			pBasicFinancial->m_totalDebt_totalEquityQuarterly = ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly"));
+			pBasicFinancial->m_totalDebt_totalEquityQuarterly =
+				ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly"));
 
 			pBasicFinancial->m_yearToDatePriceReturnDaily = ptreeGetDouble(ptMetric, _T("yearToDatePriceReturnDaily"));
 		} // metric
 		s = ptreeGetString(*ppt, _T("metricType"));
-		ASSERT((s.compare(_T("all")) == 0) || (s.compare(_T("perShare")) == 0)); // 例子中返回的是all，但实际返回的是perShare
+		ASSERT((s == _T("all")) || (s==_T("perShare"))); // 例子中返回的是all，但实际返回的是perShare
 
 		if (ptreeGetChild(*ppt, _T("series"), &ptSeries)) {
 			if (ptreeGetChild(ptSeries, _T("annual"), &ptAnnual)) {
@@ -435,7 +446,8 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_eps, _T("eps"));
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_grossMargin, _T("grossMargin"));
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
-				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
+				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalCapital,
+				              _T("longtermDebtTotalCapital"));
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
 				GetSeasonData(ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
@@ -458,8 +470,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	return true;
 }
 
-bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<CValueOfPeriod>& vData, const char* szMsg)
-{
+bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<CValueOfPeriod>& vData, const char* szMsg) {
 	vector<CValueOfPeriod> vDataTemp;
 	try {
 		ptree ptChild;
@@ -481,11 +492,12 @@ bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<CVa
 
 	try {
 		for (ptree::iterator it = ptData.begin(); it != ptData.end(); ++it) {
-			CValueOfPeriod sv{ 0, 0 };
+			CValueOfPeriod sv{0, 0};
 			string sDate;
-			int year{ 0 }, month{ 0 }, day{ 0 };
+			int year{0}, month{0}, day{0};
 			pt2 = it->second;
-			if ((sDate = ptreeGetString(pt2, _T("period"))) != _T("")) {
+			sDate = ptreeGetString(pt2, _T("period"));
+			if (!sDate.empty()) {
 				sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);
 				sv.m_period = year * 10000 + month * 100 + day;
 				sv.m_value = ptreeGetDouble(pt2, _T("v"));

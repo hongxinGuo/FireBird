@@ -5,7 +5,7 @@
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductNeteaseDayLine, CVirtualProductWebData)
+IMPLEMENT_DYNCREATE(CProductNeteaseDayLine, CVirtualWebProduct)
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_lCurrentStockPosition = 0;
@@ -19,9 +19,8 @@ CString CProductNeteaseDayLine::CreateMessage(void) {
 }
 
 bool CProductNeteaseDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CNeteaseDayLineWebDataPtr pDayLineWebData = nullptr;
+	const auto pDayLineWebData = ParseNeteaseDayLine(pWebData);
 
-	pDayLineWebData = ParseNeteaseDayLine(pWebData);
 	gl_pChinaMarket->PushNeteaseDayLine(pDayLineWebData);
 
 	return true;

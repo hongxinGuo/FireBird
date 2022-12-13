@@ -3,14 +3,14 @@
 #include"ProductFinnhub.h"
 #include"InsiderSentiment.h"
 
-class CProductFinnhubCompanyInsiderSentiment : public CProductFinnhub {
+class CProductFinnhubCompanyInsiderSentiment final : public CProductFinnhub {
 public:
 	DECLARE_DYNCREATE(CProductFinnhubCompanyInsiderSentiment)
-		CProductFinnhubCompanyInsiderSentiment();
-	~CProductFinnhubCompanyInsiderSentiment() {}
+	CProductFinnhubCompanyInsiderSentiment();
+	~CProductFinnhubCompanyInsiderSentiment() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) override final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
 	CInsiderSentimentVectorPtr ParseFinnhubStockInsiderSentiment(CWebDataPtr pWebData);
 };
 

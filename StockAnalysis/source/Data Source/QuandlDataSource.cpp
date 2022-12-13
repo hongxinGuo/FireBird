@@ -10,16 +10,12 @@ CQuandlDataSource::CQuandlDataSource(void) {
 	Reset();
 }
 
-CQuandlDataSource::~CQuandlDataSource(void) {
-}
-
 bool CQuandlDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
 	return true;
 }
 
-bool CQuandlDataSource::UpdateStatus(void)
-{
+bool CQuandlDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case _STOCK_SYMBOLS_:
 		break;
@@ -49,7 +45,7 @@ bool CQuandlDataSource::UpdateStatus(void)
 	case _STOCK_ESTIMATES_PRICE_TARGET_:
 	case _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
 	case _STOCK_ESTIMATES_REVENUE_EXTIMATES_: // Premium
-	case _STOCK_ESTIMATES_EPS_EXTIMATES_:// Premium
+	case _STOCK_ESTIMATES_EPS_EXTIMATES_: // Premium
 	case _STOCK_ESTIMATES_EPS_SURPRISE_:
 	case _STOCK_ESTIMATES_EARNING_CALENDAR_:
 	case _STOCK_PRICE_QUOTE_:
@@ -68,9 +64,9 @@ bool CQuandlDataSource::UpdateStatus(void)
 	case _ECONOMIC_COUNTRY_LIST_:
 	case _ECONOMIC_CALENDAR_:
 	default:
-		// error. not impliment yet.
+		// error. not implement yet.
 		gl_systemMessage.PushErrorMessage(_T("Quandl productŒ¥ µœ÷"));
-		//ASSERT(0);
+	//ASSERT(0);
 		break;
 	}
 	return true;

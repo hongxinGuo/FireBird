@@ -1,9 +1,9 @@
 #pragma once
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 #include"TiingoCryptoSymbol.h"
 
-class CProductTiingoCryptoSymbol : public CVirtualProductWebData {
+class CProductTiingoCryptoSymbol : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCryptoSymbol)
 		CProductTiingoCryptoSymbol();

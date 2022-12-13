@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualProductWebData.h"
+#include"VirtualWebProduct.h"
 
-class CProductTiingoCompanyProfile : public CVirtualProductWebData {
+class CProductTiingoCompanyProfile : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCompanyProfile)
 		CProductTiingoCompanyProfile();
