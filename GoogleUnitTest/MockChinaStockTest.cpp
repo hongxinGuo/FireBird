@@ -28,16 +28,17 @@ namespace StockAnalysisTest {
 	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
 	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
 
-	class CMockChinaStockTest : public ::testing::Test
-	{
+	class CMockChinaStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 		}
+
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			GeneralCheck();
 		}
+
 		virtual void SetUp(void) override {
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
@@ -63,8 +64,8 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*pStock, ReportGuadanTransaction())
 			.Times(0);
 		pStock->ShowCurrentTransaction();
-		EXPECT_EQ(pStock->GetCurrentTransationVolume(), 0);
-		pStock->SetCurrentTransationVolume(1);
+		EXPECT_EQ(pStock->GetCurrentTransactionVolume(), 0);
+		pStock->SetCurrentTransactionVolume(1);
 		EXPECT_CALL(*pStock, ReportGuadanTransaction())
 			.Times(1);
 		pStock->ShowCurrentTransaction();
@@ -120,6 +121,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 		EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
 	}
+
 	TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
 		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pStock->StoreWeekLine(pWeekLine);

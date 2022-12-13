@@ -16,7 +16,7 @@ public:
 	CVirtualStock& operator=(const CVirtualStock&) = delete;
 	CVirtualStock(const CVirtualStock&&) noexcept = delete;
 	CVirtualStock& operator=(const CVirtualStock&&) noexcept = delete;
-	~CVirtualStock() override;
+	~CVirtualStock() override = default;
 	virtual void Reset(void);
 	virtual int GetRatio(void) const = 0;
 

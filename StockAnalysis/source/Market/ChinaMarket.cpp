@@ -925,7 +925,7 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 
 	if (pCurrentStock != nullptr) {
 		if (pCurrentStock->IsRTDataCalculated()) {
-			if (pCurrentStock->GetCurrentTransationVolume() > 0) pCurrentStock->ReportGuadanTransaction();
+			if (pCurrentStock->GetCurrentTransactionVolume() > 0) pCurrentStock->ReportGuadanTransaction();
 			pCurrentStock->ReportGuadan();
 			pCurrentStock->SetRTDataCalculated(false);
 		}

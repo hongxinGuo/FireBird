@@ -8,7 +8,6 @@
 
 #include"VirtualHistoryCandleExtend.h"
 
-
 #include<vector>
 #include<memory>
 #include<atomic>
@@ -30,10 +29,10 @@ public:
 		return false;
 	}
 
-	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend);
 
-	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic);
-	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend);
+	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic);
+	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend);
 
 	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData, bool fRevertSave = false);
 	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false);
@@ -41,7 +40,7 @@ public:
 	void ShowData(CDC* pDC, CRect rectClient);
 
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic, CString strStockSymbol = _T(""));
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, CString strStockSymbol = _T(""));
 
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }

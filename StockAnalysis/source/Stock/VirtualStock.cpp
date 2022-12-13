@@ -3,10 +3,7 @@
 #include "VirtualStock.h"
 
 CVirtualStock::CVirtualStock() : CObject() {
-	Reset();
-}
-
-CVirtualStock::~CVirtualStock() {
+	CVirtualStock::Reset();
 }
 
 void CVirtualStock::Reset(void) {
@@ -32,7 +29,7 @@ void CVirtualStock::Reset(void) {
 	m_fActive = false;
 	m_lDayLineStartDate = 29900101;
 	m_lDayLineEndDate = 19000101;
-	m_lIPOStatus = _STOCK_NOT_CHECKED_;   // 默认状态为无效股票代码。
+	m_lIPOStatus = _STOCK_NOT_CHECKED_; // 默认状态为无效股票代码。
 
 	m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
 	m_fDayLineNeedSaving = false;

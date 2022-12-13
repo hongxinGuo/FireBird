@@ -19,7 +19,7 @@ CVirtualDataHistoryCandleExtend::~CVirtualDataHistoryCandleExtend() {
 //  具体操作的数据表由第一个参数传入，
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic,
+bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic,
                                                     CString strStockSymbol) {
 	size_t lSize = 0;
 	vector<CVirtualHistoryCandleExtendPtr> vHistoryCandle;
@@ -31,24 +31,24 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 
 	lSize = Size();
 	if (strStockSymbol.GetLength() > 0) {
-		psetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
-		psetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
-		psetHistoryCandleBasic->m_strSort = _T("[Date]");
+		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
+		pSetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
+		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
 
-		psetHistoryCandleBasic->Open();
-		while (!psetHistoryCandleBasic->IsEOF()) {
+		pSetHistoryCandleBasic->Open();
+		while (!pSetHistoryCandleBasic->IsEOF()) {
 			pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-			pHistoryCandle->LoadBasicData(psetHistoryCandleBasic);
+			pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 			vHistoryCandle.push_back(pHistoryCandle);
 			lSizeOfOldDayLine++;
-			psetHistoryCandleBasic->MoveNext();
+			pSetHistoryCandleBasic->MoveNext();
 		}
-		psetHistoryCandleBasic->Close();
+		pSetHistoryCandleBasic->Close();
 	}
 	lCurrentPos = 0;
-	psetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
-	psetHistoryCandleBasic->Open();
-	psetHistoryCandleBasic->m_pDatabase->BeginTrans();
+	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
+	pSetHistoryCandleBasic->Open();
+	pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {
 		// 有旧数据
 		for (int i = 0; i < lSize; i++) {
@@ -56,7 +56,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			pHistoryCandle = GetData(i);
 			if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) {
 				// 有更早的新数据？
-				pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 			}
 			else {
 				while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->
@@ -64,12 +64,12 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 					lCurrentPos++;
 				if (lCurrentPos < lSizeOfOldDayLine) {
 					if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
-						pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+						pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 						fNeedUpdate = true;
 					}
 				}
 				else {
-					pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+					pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 					fNeedUpdate = true;
 				}
 			}
@@ -80,44 +80,44 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		for (int i = 0; i < lSize; i++) {
 			// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
-			pHistoryCandle->AppendBasicData(psetHistoryCandleBasic);
+			pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 		}
 	}
-	psetHistoryCandleBasic->m_pDatabase->CommitTrans();
-	psetHistoryCandleBasic->Close();
+	pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
+	pSetHistoryCandleBasic->Close();
 
 	return fNeedUpdate;
 }
 
-bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend) {
+bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
 	ASSERT(m_vHistoryData.size() > 0);
 
-	psetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
-	psetHistoryCandleExtend->Open();
-	psetHistoryCandleExtend->m_pDatabase->BeginTrans();
+	pSetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
+	pSetHistoryCandleExtend->Open();
+	pSetHistoryCandleExtend->m_pDatabase->BeginTrans();
 	for (auto pData : m_vHistoryData) {
-		pData->AppendExtendData(psetHistoryCandleExtend);
+		pData->AppendExtendData(pSetHistoryCandleExtend);
 	}
-	psetHistoryCandleExtend->m_pDatabase->CommitTrans();
-	psetHistoryCandleExtend->Close();
+	pSetHistoryCandleExtend->m_pDatabase->CommitTrans();
+	pSetHistoryCandleExtend->Close();
 
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* psetHistoryCandleBasic) {
+bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 
 	if (gl_systemStatus.IsWorkingMode())
 		ASSERT(!m_fLoadDataFirst);
-	ASSERT(psetHistoryCandleBasic->IsOpen());
+	ASSERT(pSetHistoryCandleBasic->IsOpen());
 
 	// 装入DayLine数据
 	Unload();
-	while (!psetHistoryCandleBasic->IsEOF()) {
+	while (!pSetHistoryCandleBasic->IsEOF()) {
 		pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-		pHistoryCandle->LoadBasicData(psetHistoryCandleBasic);
+		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 		StoreData(pHistoryCandle);
-		psetHistoryCandleBasic->MoveNext();
+		pSetHistoryCandleBasic->MoveNext();
 	}
 	m_fLoadDataFirst = true;
 	return true;
@@ -129,26 +129,26 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* psetHistoryCandleExtend) {
+bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	int iPosition = 0;
 
 	if (gl_systemStatus.IsWorkingMode())
 		ASSERT(m_fLoadDataFirst);
-	ASSERT(psetHistoryCandleExtend->IsOpen());
+	ASSERT(pSetHistoryCandleExtend->IsOpen());
 
-	while (!psetHistoryCandleExtend->IsEOF()) {
+	while (!pSetHistoryCandleExtend->IsEOF()) {
 		pHistoryCandle = GetData(iPosition);
-		while ((pHistoryCandle->GetMarketDate() < psetHistoryCandleExtend->m_Date)
+		while ((pHistoryCandle->GetMarketDate() < pSetHistoryCandleExtend->m_Date)
 			&& (Size() > (iPosition + 1))) {
 			iPosition++;
 			pHistoryCandle = GetData(iPosition);
 		}
-		if (pHistoryCandle->GetMarketDate() == psetHistoryCandleExtend->m_Date) {
-			pHistoryCandle->LoadExtendData(psetHistoryCandleExtend);
+		if (pHistoryCandle->GetMarketDate() == pSetHistoryCandleExtend->m_Date) {
+			pHistoryCandle->LoadExtendData(pSetHistoryCandleExtend);
 		}
 		if (Size() <= (iPosition + 1)) break;
-		psetHistoryCandleExtend->MoveNext();
+		pSetHistoryCandleExtend->MoveNext();
 	}
 	m_fLoadDataFirst = false;
 	return true;
