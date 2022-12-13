@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
 		p = gl_pTiingoDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
+		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
@@ -149,7 +149,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
-		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
+		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
@@ -163,7 +163,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {
-		CVirtualProductWebDataPtr p = make_shared<CProductTinngoStockSymbol>();
+		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
@@ -176,7 +176,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTinngoStockSymbol)));
+		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 

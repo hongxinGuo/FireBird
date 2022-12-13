@@ -2,10 +2,12 @@
 
 #include"VirtualDataFactory.h"
 
-class CTiingoFactory : public CVirtualDataFactory {
+class CTiingoFactory final : public CVirtualDataFactory {
 public:
-	CTiingoFactory() {}
-	~CTiingoFactory() {}
+	CTiingoFactory() {
+	}
+
+	~CTiingoFactory() override = default;
 
 	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
 };

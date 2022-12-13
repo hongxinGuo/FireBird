@@ -2,23 +2,22 @@
 
 #include"VirtualDataSource.h"
 
-
 #include<memory>
 
 class CVirtualMarket : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualMarket)
-		CVirtualMarket(void);
+	CVirtualMarket(void);
 	// 不允许赋值。
 	CVirtualMarket(const CVirtualMarket&) = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&) = delete;
 	CVirtualMarket(const CVirtualMarket&&) noexcept = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&&) noexcept = delete;
-	virtual ~CVirtualMarket(void);
+	~CVirtualMarket(void) override = default;
 
 #ifdef _DEBUG
-	virtual	void AssertValid() const;
-	virtual	void Dump(CDumpContext& dc) const;
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
 #endif
 
 public:
@@ -27,8 +26,8 @@ public:
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void InquireAndProcessDataSource(long lCurrentTime);
 
-	bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-	bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+	bool SchedulingTaskPerSecond(long lSeconds); // 每秒调度一次
+	bool SchedulingTaskPerMinute(long lSeconds, long lCurrentTime); // 每一分钟调度一次
 	virtual void ResetMarket(void);
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
 
@@ -42,12 +41,17 @@ public:
 	CString GetMarketID(void) const noexcept { return m_strMarketId; }
 	static time_t GetUTCTime(void) noexcept { return sm_tUTC; }
 	long GetMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
-	long GetMarketDate(void) const noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
+	long GetMarketDate(void) const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
 	long GetMonthOfYear(void) const noexcept { return m_tmMarket.tm_mon + 1; }
 	long GetDateOfMonth(void) const noexcept { return m_tmMarket.tm_mday; }
 	long GetYear(void) const noexcept { return m_tmMarket.tm_year + 1900; }
-	long GetLastTradeDate(void) noexcept { CalculateLastTradeDate(); return m_lMarketLastTradeDate; }
+
+	long GetLastTradeDate(void) noexcept {
+		CalculateLastTradeDate();
+		return m_lMarketLastTradeDate;
+	}
+
 	bool IsWorkingDay(void) const noexcept;
 	bool IsWorkingDay(CTime timeCurrent) const noexcept;
 	bool IsWorkingDay(long lDate) const noexcept;
@@ -69,14 +73,14 @@ public:
 	CString GetStringOfMarketDate(void) const;
 	CString GetStringOfMarketDateTime(void);
 
-	void CalculateTime(void) noexcept;// 计算本市场的各时间
+	void CalculateTime(void) noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate(void) noexcept;
 	void TaskResetMarketFlagAtMidnight(long lCurrentTime);
 
 	bool IsReadyToRun(void) const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
-	bool HaveResetMarketPerssion(void) const noexcept { return m_fResetMarketPerssion; }
-	void SetResetMarketPerssion(bool fFlag) noexcept { m_fResetMarketPerssion = fFlag; }
+	bool HaveResetMarketPermission(void) const noexcept { return m_fResetMarketPermission; }
+	void SetResetMarketPermission(bool fFlag) noexcept { m_fResetMarketPermission = fFlag; }
 	bool IsResetMarket(void) const noexcept { return m_fResetMarket; }
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
@@ -92,7 +96,7 @@ public:
 public:
 	// 测试用函数
 	void _TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
-	void _TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
+	void _TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
 	void _TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
 	void _TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
@@ -118,20 +122,20 @@ protected:
 	long m_lMarketDate; //本市场的日期
 	long m_lMarketTime; // 本市场的时间
 	long m_lMarketLastTradeDate; // 本市场的上次交易日期
-	tm m_tmMarket; // 本市场时间结构
+	tm m_tmMarket{0, 0, 0, 1, 0, 1970}; // 本市场时间结构
 
 	//系统状态区
 	bool m_fSystemReady; // 市场初始态已经设置好
 
 private:
 	bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
-	bool m_fResetMarketPerssion; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
+	bool m_fResetMarketPermission; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
 	bool m_fResetMarket; // 重启系统标识
 
-	int m_i10SecondCounter;  // 十秒一次的计数器
-	int m_i1MinuteCounter;  // 一分钟一次的计数器
-	int m_i5MinuteCounter;  // 五分钟一次的计数器
-	int m_i1HourCounter;  // 一小时一次的计数器
+	int m_i10SecondCounter; // 十秒一次的计数器
+	int m_i1MinuteCounter; // 一分钟一次的计数器
+	int m_i5MinuteCounter; // 五分钟一次的计数器
+	int m_i1HourCounter; // 一小时一次的计数器
 };
 
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;

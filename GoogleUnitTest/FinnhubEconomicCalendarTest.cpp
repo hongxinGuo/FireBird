@@ -7,7 +7,6 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-
 #include"ProductFinnhubEconomicCalendar.h"
 
 using namespace testing;
@@ -78,6 +77,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvEconomicCalendar = nullptr;
 		}
+
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -92,8 +92,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
-		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-			&finnhubWebData115, &finnhubWebData120));
+	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
@@ -141,6 +141,7 @@ namespace StockAnalysisTest {
 			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket.get());
 			m_finnhubEconomicCalendar.SetIndex(0);
 		}
+
 		virtual void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -154,8 +155,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
-		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-			&finnhubWebData115, &finnhubWebData120));
+	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
@@ -179,7 +180,7 @@ namespace StockAnalysisTest {
 		default:
 			break;
 		}
-		gl_pWorldMarket->ClearEconomicCanendar();
+		gl_pWorldMarket->ClearEconomicCalendar();
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
 	}
 }

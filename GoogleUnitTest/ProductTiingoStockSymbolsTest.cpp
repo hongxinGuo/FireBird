@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
 		}
 
 	protected:
-		CProductTinngoStockSymbol stockSymbols;
+		CProductTiingoStockSymbol stockSymbols;
 	};
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestInitialize) {
@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CTiingoStockVectorPtr m_pvStock;
-		CProductTinngoStockSymbol m_tiingoStockSymbolProduct;
+		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
@@ -167,7 +167,7 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CProductTinngoStockSymbol m_tiingoStockSymbolProduct;
+		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock,

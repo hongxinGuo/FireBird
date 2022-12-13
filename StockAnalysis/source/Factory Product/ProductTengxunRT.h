@@ -1,7 +1,6 @@
 #pragma once
 
 #include<memory>
-#include<string>
 
 #include"ClassDeclaration.h"
 #include"WebRTData.h"
@@ -9,7 +8,7 @@
 
 #include"VirtualWebProduct.h"
 
-class CProductTengxunRT final: public CVirtualWebProduct {
+class CProductTengxunRT final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTengxunRT)
 	CProductTengxunRT();

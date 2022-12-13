@@ -17,7 +17,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 
 	switch (iIndex) {
 	case _STOCK_SYMBOLS_:
-		p = make_shared<CProductTinngoStockSymbol>();
+		p = make_shared<CProductTiingoStockSymbol>();
 		break;
 	case _STOCK_PRICE_CANDLES_:
 		p = make_shared<CProductTiingoStockDayLine>();

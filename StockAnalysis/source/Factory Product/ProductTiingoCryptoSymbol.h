@@ -3,11 +3,11 @@
 #include"VirtualWebProduct.h"
 #include"TiingoCryptoSymbol.h"
 
-class CProductTiingoCryptoSymbol : public CVirtualWebProduct {
+class CProductTiingoCryptoSymbol final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCryptoSymbol)
-		CProductTiingoCryptoSymbol();
-	~CProductTiingoCryptoSymbol() {}
+	CProductTiingoCryptoSymbol();
+	~CProductTiingoCryptoSymbol() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

@@ -17,13 +17,10 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() 
 }
 
 CString CProductTiingoStockDayLine::CreateMessage(void) {
-	CWorldStockPtr pStock = nullptr;
-	CString strMiddle;
-
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	pStock = ((CWorldMarket*)m_pMarket)->GetStock(GetIndex());
-	strMiddle = pStock->GetTiingoDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());
+	const CString strMiddle = pStock->GetTiingoDayLineInquiryString(m_pMarket->GetMarketDate());
 	pStock->SetDayLineNeedUpdate(false);
 
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
@@ -36,11 +33,11 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	CDayLineVectorPtr pvDayLine = nullptr;
 
-	CWorldStockPtr pStock = ((CWorldMarket*)m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pvDayLine = ParseTiingoStockDayLine(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
-	if (pvDayLine->size() > 0) {
-		for (auto& pDayLine2 : *pvDayLine) {
+	if (!pvDayLine->empty()) {
+		for (const auto& pDayLine2 : *pvDayLine) {
 			pDayLine2->SetExchange(pStock->GetExchangeCode());
 			pDayLine2->SetStockSymbol(pStock->GetSymbol());
 			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
@@ -100,21 +97,15 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
-	CDayLineVectorPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
-	ptree pt2;
+	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
-	double dTemp = 0;
-	long lTemp = 0;
-	CDayLinePtr pDayLine = nullptr;
-	CString str;
 	long year, month, day;
-	shared_ptr<ptree> ppt;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
 	if (pWebData->IsVoidJson()) return pvDayLine;
 
-	ppt = pWebData->GetPTree();
+	const auto ppt = pWebData->GetPTree();
 	try {
 		s = ppt->get<string>(_T("detail")); // 是否有报错信息
 		CString strMessage = _T("Tiingo stock dayLine ");
@@ -127,14 +118,14 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 	}
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pDayLine = make_shared<CDayLine>();
-			pt2 = it->second;
+			auto pDayLine = make_shared<CDayLine>();
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("date"));
-			str = s.c_str();
+			CString str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			lTemp = year * 10000 + month * 100 + day;
+			long lTemp = year * 10000 + month * 100 + day;
 			pDayLine->SetDate(lTemp);
-			dTemp = ptreeGetDouble(pt2, _T("close"));
+			double dTemp = ptreeGetDouble(pt2, _T("close"));
 			pDayLine->SetClose(dTemp * 1000);
 			dTemp = ptreeGetDouble(pt2, _T("high"));
 			pDayLine->SetHigh(dTemp * 1000);
@@ -153,7 +144,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e);
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

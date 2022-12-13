@@ -3,11 +3,11 @@
 #include"VirtualWebProduct.h"
 #include"DayLine.h"
 
-class CProductTiingoStockDayLine : public CVirtualWebProduct {
+class CProductTiingoStockDayLine final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoStockDayLine)
-		CProductTiingoStockDayLine();
-	~CProductTiingoStockDayLine() {}
+	CProductTiingoStockDayLine();
+	~CProductTiingoStockDayLine() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;

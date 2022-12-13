@@ -4,10 +4,12 @@
 
 #include"VirtualDataFactory.h"
 
-class CQuandlFactory : public CVirtualDataFactory {
+class CQuandlFactory final : public CVirtualDataFactory {
 public:
-	CQuandlFactory() {}
-	~CQuandlFactory() {}
+	CQuandlFactory() {
+	}
+
+	~CQuandlFactory() override = default;
 
 	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
 };

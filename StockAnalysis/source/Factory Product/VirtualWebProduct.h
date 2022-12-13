@@ -1,7 +1,6 @@
 #pragma once
 
 #include<memory>
-#include<string>
 
 #include"ClassDeclaration.h"
 
@@ -23,9 +22,7 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	bool IsParsed(CWebDataPtr pWebData) const { return pWebData->IsParsed(); }
-
-	bool IsVoidJson(CWebDataPtr pWebData) {
+	bool IsVoidJson(const CWebDataPtr& pWebData) {
 		if (pWebData->IsVoidJson()) {
 			m_iReceivedDataStatus = _VOID_DATA_;
 			return true;

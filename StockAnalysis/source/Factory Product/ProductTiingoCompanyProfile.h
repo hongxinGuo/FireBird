@@ -7,11 +7,11 @@
 
 #include"VirtualWebProduct.h"
 
-class CProductTiingoCompanyProfile : public CVirtualWebProduct {
+class CProductTiingoCompanyProfile final : public CVirtualWebProduct {
 public:
 	DECLARE_DYNCREATE(CProductTiingoCompanyProfile)
-		CProductTiingoCompanyProfile();
-	~CProductTiingoCompanyProfile() {}
+	CProductTiingoCompanyProfile();
+	~CProductTiingoCompanyProfile() override = default;
 
 	virtual CString CreateMessage(void) override final;
 	virtual bool ParseAndStoreWebData(CWebDataPtr pData) override final;
