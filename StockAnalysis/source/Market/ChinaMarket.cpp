@@ -426,7 +426,10 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 		if (!pStock->IsActive()) {
 			// 这里在发行版运行时出现错误，原因待查。
 			if (pRTData->IsValidTime(14)) {
-				pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
+				pStock->SetActive(true);
+				pStock->SetDayLineLoaded(false);
+				pStock->SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+				if (pRTData->GetStockName() != _T("")) pStock->SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 		}

@@ -29,9 +29,9 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
-		if ((pStock->GetTransactionTime() + 3600 * 12 - ((CWorldMarket*)m_pMarket)->GetUTCTime()) > 0) {
+		if ((pStock->GetTransactionTime() + 3600 * 12 - m_pMarket->GetUTCTime()) > 0) {
 			// 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
 			if (!pStock->IsIPOed()) {

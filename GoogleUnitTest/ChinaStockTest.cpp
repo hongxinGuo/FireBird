@@ -27,8 +27,7 @@ namespace StockAnalysisTest {
 	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
 	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
 
-	class CChinaStockTest : public ::testing::Test
-	{
+	class CChinaStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -37,6 +36,7 @@ namespace StockAnalysisTest {
 
 			GeneralCheck();
 		}
+
 		static void TearDownTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -44,6 +44,7 @@ namespace StockAnalysisTest {
 
 			GeneralCheck();
 		}
+
 		virtual void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
@@ -310,7 +311,8 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 	}
 
-	TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+	TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {
+		// 此两个函数是具备同步机制的，这里没有进行测试
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineNeedSaving());
 		stock.SetDayLineNeedSaving(true);
@@ -372,6 +374,7 @@ namespace StockAnalysisTest {
 		stock.SetDisplaySymbol(_T("浦发银行"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("浦发银行"));
 	}
+
 	TEST_F(CChinaStockTest, TestGetOffset) {
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetOffset(), -1);
@@ -538,7 +541,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 
-		CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
+		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 		time_t tt;
 		time(&tt);
 		long lDateSource = TransferToDate(tt);
@@ -1147,7 +1150,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.HaveFirstRTData());
 		EXPECT_TRUE(stock.SetHavingFirstRTData(true));
 		EXPECT_TRUE(stock.HaveFirstRTData());
-		EXPECT_FALSE(stock.SetHavingFirstRTData(true));  // 不允许再次设置开始计算标识
+		EXPECT_FALSE(stock.SetHavingFirstRTData(true)); // 不允许再次设置开始计算标识
 		EXPECT_TRUE(stock.HaveFirstRTData());
 	}
 
@@ -1346,11 +1349,14 @@ namespace StockAnalysisTest {
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.SetDayLineEndDate(_CHINA_MARKET_BEGIN_DATE_ + 1);
 		stock.CheckDayLineStatus();
-		if (gl_pChinaMarket->GetDayOfWeek() == 1) EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		else EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+		if (gl_pChinaMarket->GetDayOfWeek() == 1)
+			EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		else
+			EXPECT_FALSE(stock.IsDayLineNeedUpdate());
 	}
 
-	TEST_F(CChinaStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
+	TEST_F(CChinaStockTest, TestRTDataDeque) {
+		// 此三个函数是具备同步机制的，这里没有进行测试
 		CWebRTDataPtr pData = make_shared<CWebRTData>();
 		pData->SetSymbol(_T("600008.SS"));
 		CChinaStock stock;
@@ -2135,7 +2141,8 @@ namespace StockAnalysisTest {
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
-		for (int i = 0; i < 10; i++) { // 第一个数据日期为19910101
+		for (int i = 0; i < 10; i++) {
+			// 第一个数据日期为19910101
 			dayLine.LoadBasicData(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
@@ -2357,22 +2364,6 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900102);
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		EXPECT_FALSE(pStock->IsUpdateProfileDB()) << "未更新日线起止日期的话，此标识也未被设置";
-	}
-
-	TEST_F(CChinaStockTest, TestSetTodayActive) {
-		pStock = gl_pChinaMarket->GetStock(_T("600001.SS")); // 这个股票退市了，故而可以作为测试对象
-		EXPECT_FALSE(pStock->IsActive());
-		CString strStockName = pStock->GetDisplaySymbol();
-		pStock->SetTodayActive(_T("600002.SZ"), _T("梨园"));
-		EXPECT_TRUE(pStock->IsActive());
-		EXPECT_FALSE(pStock->IsDayLineLoaded());
-		EXPECT_STREQ(pStock->GetSymbol(), _T("600002.SZ"));
-		EXPECT_STREQ(pStock->GetDisplaySymbol(), _T("梨园"));
-
-		// clearup
-		pStock->SetActive(false);
-		pStock->SetSymbol(_T("600001.SS"));
-		pStock->SetDisplaySymbol(strStockName);
 	}
 
 	TEST_F(CChinaStockTest, TestIsVolumeConsisitence) {

@@ -1,4 +1,3 @@
-#include "WorldStock.h"
 #include"pch.h"
 
 #include"CallableFunction.h"
@@ -193,7 +192,8 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 /// <returns></returns>
 bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 	ASSERT(!m_fCompanyNewsUpdated);
-	if (!IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 6)) { // 每星期更新一次公司新闻
+	if (!IsEarlyThen(m_lCompanyNewsUpdateDate, lTodayDate, 6)) {
+		// 每星期更新一次公司新闻
 		m_fCompanyNewsUpdated = true;
 	}
 	else m_fCompanyNewsUpdated = false;
@@ -207,7 +207,8 @@ bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockBasicFinancialUpdateRate())) { // 系统每季更新一次数据，故查询两次即可。
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockBasicFinancialUpdateRate())) {
+		// 系统每季更新一次数据，故查询两次即可。
 		m_fBasicFinancialUpdated = false;
 	}
 	else {
@@ -227,18 +228,14 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <returns></returns>
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-	if (lDayOfWeek != 4) {
-		if (!m_fIsActive) {
-			SetDayLineNeedUpdate(false);
-			return m_fDayLineNeedUpdate;
-		}
-	}
 	if (IsNullStock()) {
 		SetDayLineNeedUpdate(false);
 		return m_fDayLineNeedUpdate;
 	}
-	else if (IsDelisted() || IsNotYetList()) { // 摘牌股票?
-		if (lDayOfWeek != 4) { // 每星期四检查一次
+	else if (IsDelisted() || IsNotYetList()) {
+		// 摘牌股票?
+		if (lDayOfWeek != 4) {
+			// 每星期四检查一次
 			SetDayLineNeedUpdate(false);
 			return m_fDayLineNeedUpdate;
 		}
@@ -248,21 +245,25 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 		return m_fDayLineNeedUpdate;
 	}
 	else {
-		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) { // 周一至周五
+		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+			// 周一至周五
 			if (lTime > 170000) {
-				if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
+				if (lTodayDate <= GetDayLineEndDate()) {
+					// 最新日线数据为今日的数据，而当前时间为下午五时之后
 					SetDayLineNeedUpdate(false); // 日线数据不需要更新
 					return m_fDayLineNeedUpdate;
 				}
 			}
 			else {
-				if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+				if (lLastTradeDate <= GetDayLineEndDate()) {
+					// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
 					SetDayLineNeedUpdate(false); // 日线数据不需要更新
 					return m_fDayLineNeedUpdate;
 				}
 			}
 		}
-		else if (lLastTradeDate <= GetDayLineEndDate()) { // 周六周日时， 最新日线数据为上一个交易日的数据
+		else if (lLastTradeDate <= GetDayLineEndDate()) {
+			// 周六周日时， 最新日线数据为上一个交易日的数据
 			SetDayLineNeedUpdate(false); // 日线数据不需要更新
 			return m_fDayLineNeedUpdate;
 		}
@@ -381,12 +382,13 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 		pInsiderTransaction = m_vInsiderTransaction.at(i);
 		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-			[pInsiderTransaction](CInsiderTransactionPtr& p) {
-				return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-				&& (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-					&& (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-					&& (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-			}) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
+		            [pInsiderTransaction](CInsiderTransactionPtr& p) {
+			            return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+				            && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+				            && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+				            && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+		            }) == vInsiderTransaction.end()) {
+			// 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
 			pInsiderTransaction->Append(setSaveInsiderTransaction);
 		}
 	}
@@ -429,9 +431,10 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 		pInsiderSentiment = m_vInsiderSentiment.at(i);
 		if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-			[pInsiderSentiment](CInsiderSentimentPtr& p) {
-				return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-			}) == vInsiderSentiment.end()) { // 如果报告日期为新的数据，则存储该数据
+		            [pInsiderSentiment](CInsiderSentimentPtr& p) {
+			            return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+		            }) == vInsiderSentiment.end()) {
+			// 如果报告日期为新的数据，则存储该数据
 			pInsiderSentiment->Append(setSaveInsiderSentiment);
 		}
 	}
@@ -465,7 +468,8 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
 			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) { // 没有这个时间点的新闻？
+			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {
+				// 没有这个时间点的新闻？
 				pCompanyNews->Append(setCompanyNews);
 			}
 			if (++lCurrentPos == lSize) break;;
@@ -492,7 +496,8 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	setEPSSurprise.m_strFilter = _T("[ID] = 1");
 	setEPSSurprise.Open();
 	setEPSSurprise.m_pDatabase->BeginTrans();
-	for (auto& pEPSSurprise : m_vEPSSurprise) { // 数据是正序存储的，需要从头部开始存储
+	for (auto& pEPSSurprise : m_vEPSSurprise) {
+		// 数据是正序存储的，需要从头部开始存储
 		if (pEPSSurprise->m_lDate > m_lLastEPSSurpriseUpdateDate) {
 			pEPSSurprise->Append(setEPSSurprise);
 		}
@@ -507,7 +512,8 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 bool CWorldStock::UpdateDayLineDB(void) {
 	CString str;
 
-	if (IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+	if (IsDayLineNeedSavingAndClearFlag()) {
+		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
 			if (HaveNewDayLineData()) {
 				SaveDayLine();
@@ -620,7 +626,8 @@ void CWorldStock::UpdateDayLineStartEndDate(void) {
 bool CWorldStock::HaveNewDayLineData(void) {
 	if (m_dataDayLine.Size() == 0) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
-		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate)) return true;
+		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
+		return true;
 	else return false;
 }
 
@@ -634,13 +641,16 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fEPSSurpriseUpdated = true;
 	}
-	else if (m_lLastEPSSurpriseUpdateDate == 19700101) { // 没有数据？
+	else if (m_lLastEPSSurpriseUpdateDate == 19700101) {
+		// 没有数据？
 		m_fEPSSurpriseUpdated = true;
 	}
-	else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 135)) { // 有不早于135天的数据？
+	else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 135)) {
+		// 有不早于135天的数据？
 		m_fEPSSurpriseUpdated = true;
 	}
-	else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (m_lLastEPSSurpriseUpdateDate != 19800101)) { // 有早于225天的数据？
+	else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (m_lLastEPSSurpriseUpdateDate != 19800101)) {
+		// 有早于225天的数据？
 		m_fEPSSurpriseUpdated = true;
 	}
 	else {
@@ -658,7 +668,8 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubPeerUpdated = true;
 	}
-	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfigeration.GetStockPeerUpdateRate())) { // 有不早于90天的数据？
+	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfigeration.GetStockPeerUpdateRate())) {
+		// 有不早于90天的数据？
 		m_fFinnhubPeerUpdated = true;
 	}
 	else {
@@ -682,7 +693,8 @@ bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	else if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
-	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideTransactionUpdateRate())) { // 有不早于30天的数据？
+	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideTransactionUpdateRate())) {
+		// 有不早于30天的数据？
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
 	else {
@@ -706,7 +718,8 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	else if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubInsiderSentimentNeedUpdate = false;
 	}
-	else if (!IsEarlyThen(m_lInsiderSentimentUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideSentimentUpdateRate())) { // 有不早于30天的数据？
+	else if (!IsEarlyThen(m_lInsiderSentimentUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideSentimentUpdateRate())) {
+		// 有不早于30天的数据？
 		m_fFinnhubInsiderSentimentNeedUpdate = false;
 	}
 	else {
@@ -724,7 +737,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);// 检查最近一年的数据
+	tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600); // 检查最近一年的数据
 	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
 	strTemp = buffer;
 	strMiddle += strTemp;

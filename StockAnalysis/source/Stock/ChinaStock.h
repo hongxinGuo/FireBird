@@ -32,7 +32,6 @@ enum {
 #include"DataChinaWeekLine.h"
 #include"DataChinaDayLine.h"
 
-
 #include<vector>
 #include<memory>
 #include<queue>
@@ -387,7 +386,6 @@ public:
 
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine(void);
-	void SetTodayActive(CString strStockCode, CString strStockName);
 
 	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) {
 		m_dataDayLine.UpdateData(vTempDayLine, fRevertSave);

@@ -20,8 +20,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CWorldStockTest : public ::testing::Test
-	{
+	class CWorldStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -281,7 +280,8 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 	}
 
-	TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+	TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {
+		// 此两个函数是具备同步机制的，这里没有进行测试
 		CWorldStock stock;
 		EXPECT_FALSE(stock.IsDayLineNeedSaving());
 		stock.SetDayLineNeedSaving(true);
@@ -651,8 +651,10 @@ namespace StockAnalysisTest {
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		for (int i = 0; i < 7; i++) {
-			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			if (i == 4)
+				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			else
+				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			stock.SetDayLineNeedUpdate(true);
 		}
 	}
@@ -698,7 +700,7 @@ namespace StockAnalysisTest {
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		for (int i = 1; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
+			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线 " << i;
 			stock.SetDayLineNeedUpdate(true); // 重置之
 		}
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
@@ -727,8 +729,10 @@ namespace StockAnalysisTest {
 		stock.SetDayLineNeedUpdate(true);
 		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		for (int i = 0; i < 7; i++) {
-			if (i == 4) EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			else EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			if (i == 4)
+				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
+			else
+				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			stock.SetDayLineNeedUpdate(true);
 		}
 	}
@@ -1310,7 +1314,7 @@ namespace StockAnalysisTest {
 
 		EXPECT_STREQ(stock.GetTiingoPermaTicker(), pTiingoStock->m_strTiingoPermaTicker);
 		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->m_strTicker);
-		EXPECT_TRUE(stock.IsActive());
+		EXPECT_TRUE(stock.TiingoIsActive());
 		EXPECT_TRUE(stock.IsADR());
 		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSICCode);
 		EXPECT_STREQ(stock.GetSICIndustry(), pTiingoStock->m_strSICIndustry);
@@ -1547,7 +1551,7 @@ namespace StockAnalysisTest {
 		stock.SetMarketCapitalization(34324.234);
 
 		stock.SetTiingoPermaTicker(_T("aasdfasdfj"));
-		stock.SetActive(true);
+		stock.TiingoSetActive(true);
 		stock.SetADR(true);
 		stock.SetSICCode(1234);
 		stock.SetSICIndustry(_T("defg"));
@@ -1618,7 +1622,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
 		EXPECT_EQ(stock.GetIPOStatus(), stock2.GetIPOStatus());
 		EXPECT_STREQ(stock.GetTiingoPermaTicker(), stock2.GetTiingoPermaTicker());
-		EXPECT_TRUE(stock.IsActive() == stock2.IsActive());
+		EXPECT_TRUE(stock.TiingoIsActive() == stock2.TiingoIsActive());
 		EXPECT_TRUE(stock.IsADR() == stock2.IsADR());
 		EXPECT_EQ(stock.GetSICCode(), stock2.GetSICCode());
 		EXPECT_STREQ(stock.GetSICIndustry(), stock2.GetSICIndustry());

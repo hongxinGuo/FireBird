@@ -14,7 +14,6 @@
 #include"SetWorldStock.h"
 #include"SetWorldStockDayLine.h"
 
-
 #include<memory>
 #include<atomic>
 #include<vector>
@@ -27,7 +26,7 @@ public:
 	CWorldStock& operator=(const CWorldStock&) = delete;
 	CWorldStock(const CWorldStock&&) noexcept = delete;
 	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
-	virtual ~CWorldStock();
+	~CWorldStock() override;
 
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }
@@ -80,7 +79,12 @@ public:
 	void SetBasicFinancialUpdated(bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
 	bool IsUpdateBasicFinancialDB(void) const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
 	void SetUpdateBasicFinancialDB(bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
-	bool IsUpdateBasicFinancialDBAndClearFlag(void) { const bool fNeedSave = m_fUpdateFinnhubBasicFinancialDB.exchange(false); return fNeedSave; }
+
+	bool IsUpdateBasicFinancialDBAndClearFlag(void) {
+		const bool fNeedSave = m_fUpdateFinnhubBasicFinancialDB.exchange(false);
+		return fNeedSave;
+	}
+
 	bool UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial);
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial(void) noexcept { return m_pBasicFinancial; }
 
@@ -95,7 +99,11 @@ public:
 	void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
 
-	bool HaveInsiderTransaction(void) noexcept { if (m_vInsiderTransaction.size() > 0) return true; else return false; }
+	bool HaveInsiderTransaction(void) noexcept {
+		if (m_vInsiderTransaction.size() > 0) return true;
+		else return false;
+	}
+
 	void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
 	void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
 	bool IsInsiderTransactionNeedUpdate(void) const noexcept { return m_fFinnhubInsiderTransactionNeedUpdate; }
@@ -103,9 +111,17 @@ public:
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
 	bool IsInsiderTransactionNeedSave(void) const noexcept { return m_fFinnhubInsiderTransactionNeedSave; }
 	void SetInsiderTransactionNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
-	bool IsInsiderTransactionNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false); return fNeedSave; }
 
-	bool HaveInsiderSentiment(void) noexcept { if (m_vInsiderSentiment.size() > 0) return true; else return false; }
+	bool IsInsiderTransactionNeedSaveAndClearFlag(void) {
+		const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false);
+		return fNeedSave;
+	}
+
+	bool HaveInsiderSentiment(void) noexcept {
+		if (m_vInsiderSentiment.size() > 0) return true;
+		else return false;
+	}
+
 	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
 	void UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment);
 	bool IsInsiderSentimentNeedUpdate(void) const noexcept { return m_fFinnhubInsiderSentimentNeedUpdate; }
@@ -113,7 +129,11 @@ public:
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
 	bool IsInsiderSentimentNeedSave(void) const noexcept { return m_fFinnhubInsiderSentimentNeedSave; }
 	void SetInsiderSentimentNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedSave = fFlag; }
-	bool IsInsiderSentimentNeedSaveAndClearFlag(void) { const bool fNeedSave = m_fFinnhubInsiderSentimentNeedSave.exchange(false); return fNeedSave; }
+
+	bool IsInsiderSentimentNeedSaveAndClearFlag(void) {
+		const bool fNeedSave = m_fFinnhubInsiderSentimentNeedSave.exchange(false);
+		return fNeedSave;
+	}
 
 	CString GetType(void) const { return m_strType; }
 	void SetType(CString strType) { m_strType = strType; }
@@ -201,8 +221,8 @@ public:
 
 	CString GetTiingoPermaTicker(void) noexcept { return m_strTiingoPermaTicker; }
 	void SetTiingoPermaTicker(CString strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
-	bool IsActive(void) noexcept { return m_fIsActive; }
-	void SetActive(bool fIsActive) noexcept { m_fIsActive = fIsActive; }
+	bool TiingoIsActive(void) noexcept { return m_fIsActive; }
+	void TiingoSetActive(bool fIsActive) noexcept { m_fIsActive = fIsActive; }
 	bool IsADR(void) noexcept { return m_fIsADR; }
 	void SetADR(bool fIsADR) noexcept { m_fIsADR = fIsADR; }
 	INT32 GetSICCode(void) noexcept { return m_iSICCode; }
@@ -230,7 +250,6 @@ public:
 	bool IsUSMarket(void);
 
 public:
-
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
 	bool m_fEPSSurpriseUpdated;
 	atomic_bool m_fEPSSurpriseNeedSave;
