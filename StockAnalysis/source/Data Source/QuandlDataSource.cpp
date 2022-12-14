@@ -85,7 +85,7 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 		}
 	}
 
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketQuandlInquiryTime())) {
+	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
 		sbWebError = false;
 		if (!IsInquiring()) {
 		}

@@ -170,7 +170,7 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 		}
 	}
 
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketFinnhubInquiryTime())) {
+	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) {
 		sbWebErrorOccured = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireFinnhub(lCurrentTime);

@@ -19,6 +19,7 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
+#include"SetWeekLineExtendInfo.h"
 
 #include"SetCurrentWeekLine.h"
 
@@ -834,7 +835,7 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
-	if (gl_systemConfigeration.IsFastInquiringRTData()) {
+	if (gl_systemConfiguration.IsFastInquiringRTData()) {
 		m_fFastReceivingRTData = true;
 	}
 	else {

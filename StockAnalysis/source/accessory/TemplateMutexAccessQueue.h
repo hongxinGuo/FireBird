@@ -13,10 +13,15 @@ using namespace std;
 #include<mutex>
 #include<memory>
 
-template <typename T> class CTemplateMutexAccessQueue {
+template <typename T>
+class CTemplateMutexAccessQueue {
 public:
-	CTemplateMutexAccessQueue() {}
-	~CTemplateMutexAccessQueue() {}
+	CTemplateMutexAccessQueue() {
+	}
+
+	~CTemplateMutexAccessQueue() {
+	}
+
 	void Reset(void) {
 		m_MutexAccessData.lock();
 		const auto lTotal = m_qData.size();
@@ -28,7 +33,7 @@ public:
 
 	bool Empty() {
 		m_MutexAccessData.lock();
-		bool fEmpty = m_qData.empty();
+		const bool fEmpty = m_qData.empty();
 		m_MutexAccessData.unlock();
 		return fEmpty;
 	}
@@ -51,7 +56,7 @@ public:
 
 	size_t Size(void) {
 		m_MutexAccessData.lock();
-		size_t size = m_qData.size();
+		const size_t size = m_qData.size();
 		m_MutexAccessData.unlock();
 		return size;
 	}

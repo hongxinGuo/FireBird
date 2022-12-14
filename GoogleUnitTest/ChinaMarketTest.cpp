@@ -703,11 +703,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckFastReceivingRTData) {
-		EXPECT_FALSE(gl_systemConfigeration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
+		EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
 		tm tm_;
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->_TEST_SetMarketTM(tm_);
-		gl_systemConfigeration.SetFastInquiringRTData(false);
+		gl_systemConfiguration.SetFastInquiringRTData(false);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(91159));
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 		EXPECT_TRUE(gl_pChinaMarket->TaskCheckFastReceivingData(91200));
@@ -743,7 +743,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 
 		// 恢复原状
-		gl_systemConfigeration.SetFastInquiringRTData(false);
+		gl_systemConfiguration.SetFastInquiringRTData(false);
 	}
 
 	TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {

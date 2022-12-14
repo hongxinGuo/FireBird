@@ -22,7 +22,7 @@ bool CTengxunRTDataSource::Inquire(long lCurrentTime) {
 	long long llTickCount = 0;
 
 	llTickCount = GetTickCount64();
-	if (gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.
+	if (gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.
 		GetChinaMarketRTDataInquiryTime() * 5)) {
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);

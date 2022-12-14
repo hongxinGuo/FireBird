@@ -4,7 +4,6 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
-
 #include<string>
 #include<iostream>
 #include<fstream>
@@ -38,9 +37,6 @@ CInaccessibleExchanges::CInaccessibleExchanges(CString sFunction, int iFunction,
 	}
 }
 
-CInaccessibleExchanges::~CInaccessibleExchanges() {
-}
-
 bool CInaccessibleExchanges::Assign(CString sFunction, int iFunction, vector<CString>& vExchange) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
@@ -61,10 +57,10 @@ bool CInaccessibleExchanges::AddExchange(CString sExchangeName) {
 }
 
 bool CInaccessibleExchanges::DeleteExchange(CString sExchangeName) {
-	int position = 0;
-	if (m_setExchange.count(sExchangeName) > 0) { // 集合中存在此元素？
+	if (m_setExchange.contains(sExchangeName)) {
+		// 集合中存在此元素？
 		m_setExchange.erase(sExchangeName);
-		for (position = 0; position < m_vExchange.size(); position++) {
+		for (int position = 0; position < m_vExchange.size(); position++) {
 			if (m_vExchange.at(position).Compare(sExchangeName) == 0) {
 				m_vExchange.erase(m_vExchange.begin() + position);
 				break;
@@ -75,19 +71,17 @@ bool CInaccessibleExchanges::DeleteExchange(CString sExchangeName) {
 }
 
 bool CInaccessibleExchanges::HaveExchange(CString sExchange) {
-	if (m_setExchange.count(sExchange) > 0) return true;
+	if (m_setExchange.contains(sExchange)) return true;
 	else return false;
 }
 
 bool CInaccessibleExchanges::HaveExchange(void) {
-	if (m_vExchange.size() > 0) return true;
-	else return false;
+	if (m_vExchange.empty()) return false;
+	else return true;
 }
 
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
-	static int siInstance = 0;
-
-	if (++siInstance > 1) {
+	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
@@ -108,43 +102,44 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
-	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
-	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
+	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
+	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
 	if (m_fUpdate) {
-		DeleteFile(gl_systemConfigeration.GetDefaultFileDirectory() + strNew);
-		rename(gl_systemConfigeration.GetDefaultFileDirectory() + strOld, gl_systemConfigeration.GetDefaultFileDirectory() + strNew); // 保存备份
+		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + strNew);
+		rename(gl_systemConfiguration.GetDefaultFileDirectory() + strOld, gl_systemConfiguration.GetDefaultFileDirectory() + strNew); // 保存备份
 		UpdateJson();
 		SaveDB();
 	}
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB(void) {
-	fstream f(gl_systemConfigeration.GetDefaultFileDirectory() + m_strFileName, ios::in);
+	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::in);
 	if (f.is_open()) {
-		f >> m_finnhubInaccessibleExange;
+		f >> m_finnhubInaccessibleExchange;
 		return true;
 	}
 	return false;
 }
 
 void CFinnhubInaccessibleExchange::SaveDB(void) {
-	fstream f(gl_systemConfigeration.GetDefaultFileDirectory() + m_strFileName, ios::out);
-	f << m_finnhubInaccessibleExange;
+	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::out);
+	f << m_finnhubInaccessibleExchange;
 	f.close();
 }
 
 void CFinnhubInaccessibleExchange::Update(void) {
 	CInaccessibleExchangesPtr pExchange = nullptr;
-	for (int i = 0; i < m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).size(); i++) {
-		int size = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
-		if (size > 0) { // 有exchange数据的话才建立数据集
+	for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
+		const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
+		if (size > 0) {
+			// 有exchange数据的话才建立数据集
 			pExchange = make_shared<CInaccessibleExchanges>();
-			string s2 = m_finnhubInaccessibleExange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+			string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
 			pExchange->SetFunctionString(s2.c_str());
 			pExchange->SetFunction(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()));
 			for (int j = 0; j < size; j++) {
-				string s = m_finnhubInaccessibleExange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
+				string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
 				pExchange->AddExchange(s.c_str());
 			}
 			gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString())] = pExchange;
@@ -153,18 +148,18 @@ void CFinnhubInaccessibleExchange::Update(void) {
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson(void) {
-	m_finnhubInaccessibleExange.clear();
+	m_finnhubInaccessibleExchange.clear();
 
-	for (auto& pExchange : m_mapInaccessibleExchange) {
-		json jsonExchange;
-		if (pExchange.second->HaveExchange()) {// 有exchange数据的话才建立数据集
-			jsonExchange = json{ {"Function", pExchange.second->GetFunctionString()} };
+	for (const auto& pExchange : m_mapInaccessibleExchange) {
+		if (pExchange.second->HaveExchange()) {
+			// 有exchange数据的话才建立数据集
+			json jsonExchange = json{{"Function", pExchange.second->GetFunctionString()}};
 			for (int i = 0; i < pExchange.second->ExchangeSize(); i++) {
 				auto s = pExchange.second->GetExchange(i);
 				jsonExchange[_T("Exchange")].push_back(s);
 			}
 
-			m_finnhubInaccessibleExange[_T("InaccessibleExchange")].push_back(jsonExchange);
+			m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].push_back(jsonExchange);
 		}
 	}
 }
@@ -172,7 +167,7 @@ void CFinnhubInaccessibleExchange::UpdateJson(void) {
 void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 	// Web Socket
 	m_mapFinnhubInquiryIndexToString[_WEBSOCKET_TRADES_] = _T("WebSocketTrades");
-	m_mapFinnhubInquiryIndexToString[_WEBSOCKET_NEWS_] = _T("WebSocketNews");// Premium
+	m_mapFinnhubInquiryIndexToString[_WEBSOCKET_NEWS_] = _T("WebSocketNews"); // Premium
 
 	// Stock Fundamentals
 	m_mapFinnhubInquiryIndexToString[_SYMBOL_LOOKUP_] = _T("StockFundamentalsSymolLookup");
@@ -230,7 +225,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 
 	// Mutual funds
 	m_mapFinnhubInquiryIndexToString[_MUTUAL_FUND_PROFILE_] = _T("MutualFundProfile"); // Premium
-	m_mapFinnhubInquiryIndexToString[_MUTUAL_FUND_HOLDINGS_] = _T("MutualFundHoldings");// Premium
+	m_mapFinnhubInquiryIndexToString[_MUTUAL_FUND_HOLDINGS_] = _T("MutualFundHoldings"); // Premium
 	m_mapFinnhubInquiryIndexToString[_MUTUAL_FUND_SECTOR_] = _T("MutualFundSector"); // Premium
 	m_mapFinnhubInquiryIndexToString[_MUTUAL_FUND_COUNTRY_] = _T("MutualFundCountry"); // Premium
 
@@ -242,7 +237,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[_FOREX_EXCHANGE_] = _T("ForexExchange");
 	m_mapFinnhubInquiryIndexToString[_FOREX_SYMBOLS_] = _T("ForexSymbols");
 	m_mapFinnhubInquiryIndexToString[_FOREX_CANDLES_] = _T("ForexCandles"); // 历史数据优先级低 Premium
-	m_mapFinnhubInquiryIndexToString[_FOREX_ALL_RATES_] = _T("ForexAllRates");  // Premium
+	m_mapFinnhubInquiryIndexToString[_FOREX_ALL_RATES_] = _T("ForexAllRates"); // Premium
 
 	// Crypto
 	m_mapFinnhubInquiryIndexToString[_CRYPTO_EXCHANGE_] = _T("CryptoExchange");
@@ -261,7 +256,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_TRANSCRIPT_] = _T("AlternativeDataTranscript"); //Premium
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_SOCIAL_SETIMENT_] = _T("AlternativeDataSetiment");
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_INVEST_THEMES_] = _T("AlternativeDataInvestThemes"); // Premium
-	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_SUPPLY_CHAIN_] = _T("AlternativeDataSupplyChain");  // Premium
+	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_SUPPLY_CHAIN_] = _T("AlternativeDataSupplyChain"); // Premium
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_COMPANY_ESG_] = _T("AlternativeDataCompanyESG"); // Premium
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_] = _T("AlternativeDataQualityScore"); // Premium
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_USPTO_PATENTS_] = _T("AlternativeDataUSPTOpatents");
@@ -279,7 +274,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	// Web Socket
 	m_mapFinnhubInquiryStringToIndex[_T("WebSocketTrades")] = _WEBSOCKET_TRADES_;
-	m_mapFinnhubInquiryStringToIndex[_T("WebSocketNews")] = _WEBSOCKET_NEWS_;// Premium
+	m_mapFinnhubInquiryStringToIndex[_T("WebSocketNews")] = _WEBSOCKET_NEWS_; // Premium
 
 	// Stock Fundamentals
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymolLookup")] = _SYMBOL_LOOKUP_;
@@ -337,7 +332,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 
 	// Mutual funds
 	m_mapFinnhubInquiryStringToIndex[_T("MutualFundProfile")] = _MUTUAL_FUND_PROFILE_; // Premium
-	m_mapFinnhubInquiryStringToIndex[_T("MutualFundHoldings")] = _MUTUAL_FUND_HOLDINGS_;// Premium
+	m_mapFinnhubInquiryStringToIndex[_T("MutualFundHoldings")] = _MUTUAL_FUND_HOLDINGS_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("MutualFundSector")] = _MUTUAL_FUND_SECTOR_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("MutualFundCountry")] = _MUTUAL_FUND_COUNTRY_; // Premium
 
@@ -349,7 +344,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("ForexExchange")] = _FOREX_EXCHANGE_;
 	m_mapFinnhubInquiryStringToIndex[_T("ForexSymbols")] = _FOREX_SYMBOLS_;
 	m_mapFinnhubInquiryStringToIndex[_T("ForexCandles")] = _FOREX_CANDLES_; // 历史数据优先级低 Premium
-	m_mapFinnhubInquiryStringToIndex[_T("ForexAllRates")] = _FOREX_ALL_RATES_;  // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("ForexAllRates")] = _FOREX_ALL_RATES_; // Premium
 
 	// Crypto
 	m_mapFinnhubInquiryStringToIndex[_T("CryptoExchange")] = _CRYPTO_EXCHANGE_;
@@ -368,7 +363,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataTranscript")] = _ALTERNATIVE_DATA_TRANSCRIPT_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSetiment")] = _ALTERNATIVE_DATA_SOCIAL_SETIMENT_;
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataInvestThemes")] = _ALTERNATIVE_DATA_INVEST_THEMES_; // Premium
-	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSupplyChain")] = _ALTERNATIVE_DATA_SUPPLY_CHAIN_;  // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSupplyChain")] = _ALTERNATIVE_DATA_SUPPLY_CHAIN_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataCompanyESG")] = _ALTERNATIVE_DATA_COMPANY_ESG_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataQualityScore")] = _ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSPTOpatents")] = _ALTERNATIVE_DATA_USPTO_PATENTS_;

@@ -15,7 +15,7 @@
 class CVirtualDataHistoryCandleExtend : public CObject {
 public:
 	CVirtualDataHistoryCandleExtend();
-	virtual ~CVirtualDataHistoryCandleExtend() override;
+	~CVirtualDataHistoryCandleExtend() override = default;
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
@@ -53,17 +53,17 @@ public:
 		m_fDataLoaded = false;
 	}
 
-	CVirtualHistoryCandleExtendPtr GetData(long lIndex) const { return m_vHistoryData.at(lIndex); }
+	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
 
-	bool StoreData(CVirtualHistoryCandleExtendPtr pData) {
+	bool StoreData(const CVirtualHistoryCandleExtendPtr pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}
 
 	bool IsDatabaseTodayUpdated(void) const noexcept { return (m_fDatabaseTodayUpdated); }
-	void SetDatabaseTodayUpdated(bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
+	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
 	bool IsDataLoaded(void) const noexcept { return m_fDataLoaded; }
-	void SetDataLoaded(bool fFlag) noexcept { m_fDataLoaded = fFlag; }
+	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
 	bool CalculateRS0(void);
 	virtual bool CalculateRS1(INT64 lNumber);

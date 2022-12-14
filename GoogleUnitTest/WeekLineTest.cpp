@@ -6,6 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"WeekLine.h"
+#include"SetWeekLineExtendInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,10 +15,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CWeekLineTest : public ::testing::Test
-	{
+	class CWeekLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite(void) {
+			// 本测试类的初始化函数
 			GeneralCheck();
 		}
 
@@ -172,6 +173,7 @@ namespace StockAnalysisTest {
 		dl.SetRSIndex(50.5023);
 		EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 50.5023);
 	}
+
 	TEST_F(CWeekLineTest, TestGetRSBackup) {
 		CWeekLine dl;
 		EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 0);
@@ -1156,7 +1158,7 @@ namespace StockAnalysisTest {
 		pDayLine2->SetTime(10010010010); // 与第一个数据pDayLine1时间不同。
 		pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中,但不同
 		pDayLine2->SetStockSymbol(_T("600000.SS")); // 与第一个数据pDayLine1不同。
-		pDayLine2->SetDisplaySymbol(_T("浦发银行"));// 与第一个数据pDayLine1不同。
+		pDayLine2->SetDisplaySymbol(_T("浦发银行")); // 与第一个数据pDayLine1不同。
 
 		pDayLine2->SetOpen(10100);
 		pDayLine2->SetClose(20200);

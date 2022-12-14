@@ -435,9 +435,6 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataTiingoCryptoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h">
-      <Filter>头文件\Template</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStock.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
@@ -462,9 +459,6 @@
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataWorldStockDayline.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h">
-      <Filter>头文件\Template</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductFinnhubCompanyBasicFinancial.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
@@ -483,7 +477,7 @@
     <ClInclude Include="..\StockAnalysis\source\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h">
+    <ClInclude Include="..\StockAnalysis\source\System\SystemConfiguration.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\System\SystemData.h">
@@ -756,6 +750,9 @@
     <ClInclude Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\TemplateMutexAccessQueue.h">
+      <Filter>头文件\Template</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -983,7 +980,7 @@
     <ClCompile Include="..\StockAnalysis\source\Factory Product\ProductDummy.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp">
+    <ClCompile Include="..\StockAnalysis\source\System\SystemConfiguration.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp">

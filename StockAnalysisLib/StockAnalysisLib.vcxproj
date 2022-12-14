@@ -21,10 +21,9 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateDataStake.h" />
-    <ClInclude Include="..\StockAnalysis\source\Base Class\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\ClassDeclaration.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\Data Class\DataChinaStock.h" />
@@ -151,7 +150,7 @@
     <ClInclude Include="..\StockAnalysis\source\Stock\VirtualStock.h" />
     <ClInclude Include="..\StockAnalysis\source\Stock\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.h" />
-    <ClInclude Include="..\StockAnalysis\source\System\SystemConfigeration.h" />
+    <ClInclude Include="..\StockAnalysis\source\System\SystemConfiguration.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemConstant.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemData.h" />
     <ClInclude Include="..\StockAnalysis\source\System\SystemMessage.h" />
@@ -351,7 +350,7 @@
     <ClCompile Include="..\StockAnalysis\source\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Stock\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\FinnhubInaccessibleExchange.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\System\SystemConfigeration.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\System\SystemStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\America market\Country.cpp" />

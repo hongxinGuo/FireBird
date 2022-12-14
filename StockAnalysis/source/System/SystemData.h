@@ -13,39 +13,58 @@
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-
 #include<queue>
 
-class CSystemData : public CObject {
+class CSystemData final : public CObject {
 public:
-	CSystemData(void) {}
+	CSystemData(void) = default;
 	// 不允许赋值。
 	CSystemData(const CSystemData&) = delete;
 	CSystemData& operator=(const CSystemData&) = delete;
 	CSystemData(const CSystemData&&) noexcept = delete;
 	CSystemData& operator=(const CSystemData&&) noexcept = delete;
-	~CSystemData(void) {}
+	~CSystemData(void) override = default;
 
 public:
 	// Finnhub Socket缓存数据
-	size_t GetFinnhubSocketSize(void) { return m_qFinnhubSocket.size(); }
-	void PushFinnhubSocket(CFinnhubSocketPtr p) { m_qFinnhubSocket.push(p); }
-	CFinnhubSocketPtr PopFinnhubSocket(void) { CFinnhubSocketPtr p = m_qFinnhubSocket.front(); m_qFinnhubSocket.pop(); return p; }
+	size_t GetFinnhubSocketSize(void) const { return m_qFinnhubSocket.size(); }
+	void PushFinnhubSocket(const CFinnhubSocketPtr p) { m_qFinnhubSocket.push(p); }
+
+	CFinnhubSocketPtr PopFinnhubSocket(void) {
+		CFinnhubSocketPtr p = m_qFinnhubSocket.front();
+		m_qFinnhubSocket.pop();
+		return p;
+	}
 
 	// TiingoCrypto Socket缓存数据
-	size_t GetTiingoCryptoSocketSize(void) { return m_qTiingoCryptoSocket.size(); }
-	void PushTiingoCryptoSocket(CTiingoCryptoSocketPtr p) { m_qTiingoCryptoSocket.push(p); }
-	CTiingoCryptoSocketPtr PopTiingoCryptoSocket(void) { CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front(); m_qTiingoCryptoSocket.pop(); return p; }
+	size_t GetTiingoCryptoSocketSize(void) const { return m_qTiingoCryptoSocket.size(); }
+	void PushTiingoCryptoSocket(const CTiingoCryptoSocketPtr p) { m_qTiingoCryptoSocket.push(p); }
+
+	CTiingoCryptoSocketPtr PopTiingoCryptoSocket(void) {
+		CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front();
+		m_qTiingoCryptoSocket.pop();
+		return p;
+	}
 
 	// TiingoIEX Socket缓存数据
-	size_t GetTiingoIEXSocketSize(void) { return m_qTiingoIEXSocket.size(); }
-	void PushTiingoIEXSocket(CTiingoIEXSocketPtr p) { m_qTiingoIEXSocket.push(p); }
-	CTiingoIEXSocketPtr PopTiingoIEXSocket(void) { CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front(); m_qTiingoIEXSocket.pop(); return p; }
+	size_t GetTiingoIEXSocketSize(void) const { return m_qTiingoIEXSocket.size(); }
+	void PushTiingoIEXSocket(const CTiingoIEXSocketPtr p) { m_qTiingoIEXSocket.push(p); }
+
+	CTiingoIEXSocketPtr PopTiingoIEXSocket(void) {
+		CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front();
+		m_qTiingoIEXSocket.pop();
+		return p;
+	}
 
 	// TiingoForex Socket缓存数据
-	size_t GetTiingoForexSocketSize(void) { return m_qTiingoForexSocket.size(); }
-	void PushTiingoForexSocket(CTiingoForexSocketPtr p) { m_qTiingoForexSocket.push(p); }
-	CTiingoForexSocketPtr PopTiingoForexSocket(void) { CTiingoForexSocketPtr p = m_qTiingoForexSocket.front(); m_qTiingoForexSocket.pop(); return p; }
+	size_t GetTiingoForexSocketSize(void) const { return m_qTiingoForexSocket.size(); }
+	void PushTiingoForexSocket(const CTiingoForexSocketPtr p) { m_qTiingoForexSocket.push(p); }
+
+	CTiingoForexSocketPtr PopTiingoForexSocket(void) {
+		CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();
+		m_qTiingoForexSocket.pop();
+		return p;
+	}
 
 private:
 	queue<CFinnhubSocketPtr> m_qFinnhubSocket;

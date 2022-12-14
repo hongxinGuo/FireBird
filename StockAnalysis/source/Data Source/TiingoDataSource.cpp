@@ -91,7 +91,7 @@ bool CTiingoDataSource::Inquire(long lCurrentTime) {
 		}
 	}
 
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfigeration.GetWorldMarketTiingoInquiryTime())) {
+	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
 		sbWebErrorOccurred = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireTiingo();

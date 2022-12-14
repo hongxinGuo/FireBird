@@ -643,8 +643,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
 	// create memory DC
 	if (!m_fCreateMemoryDC) {
 		m_MemoryDC.CreateCompatibleDC(pdc);
-		m_Bitmap.CreateCompatibleBitmap(pdc, gl_systemConfigeration.GetSystemDisplayWidth(), gl_systemConfigeration.GetSystemDisplayHeight());
-		m_MemoryDC.FillSolidRect(0, 0, gl_systemConfigeration.GetSystemDisplayWidth(), gl_systemConfigeration.GetSystemDisplayHeight(), crGray);
+		m_Bitmap.CreateCompatibleBitmap(pdc, gl_systemConfiguration.GetSystemDisplayWidth(), gl_systemConfiguration.GetSystemDisplayHeight());
+		m_MemoryDC.FillSolidRect(0, 0, gl_systemConfiguration.GetSystemDisplayWidth(), gl_systemConfiguration.GetSystemDisplayHeight(), crGray);
 		m_fCreateMemoryDC = true;
 	}
 

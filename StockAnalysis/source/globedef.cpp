@@ -5,11 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include<ixwebsocket/IXWebSocket.h>
-
 #include"ThreadStatus.h"
-
-#include"HighPerformanceCounter.h"
 
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
@@ -37,7 +33,7 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
-CSystemConfigeration gl_systemConfigeration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
+CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
 CSystemStatus gl_systemStatus; // 系统状态。
 CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
@@ -45,10 +41,10 @@ CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
 // 为了事先初始化，信号量必须声明为全局变量
-binary_semaphore gl_UpdateWorldMarketDB{ 1 };  // 此信号量用于更新WorldMarket数据库
-counting_semaphore<4> gl_SaveDayLineThreadPermitted{ 1 }; // 当数据库中没有日线数据时，增加此信号量最大值至4
-counting_semaphore<8> gl_BackGroundTaskThread{ 8 };// 后台工作线程数。最大为8
-binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 处理中国市场的实时数据时，不允许同时存储之。
+binary_semaphore gl_UpdateWorldMarketDB{1}; // 此信号量用于更新WorldMarket数据库
+counting_semaphore<4> gl_SaveDayLineThreadPermitted{1}; // 当数据库中没有日线数据时，增加此信号量最大值至4
+counting_semaphore<8> gl_BackGroundTaskThread{8}; // 后台工作线程数。最大为8
+binary_semaphore gl_ProcessChinaMarketRTData{1}; // 处理中国市场的实时数据时，不允许同时存储之。
 
 CSystemData gl_SystemData;
 

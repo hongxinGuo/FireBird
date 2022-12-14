@@ -176,7 +176,7 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 }
 
 bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockProfileUpdateRate())) {
+	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
 		m_fCompanyProfileUpdated = false;
 	}
 	else {
@@ -207,7 +207,7 @@ bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfigeration.GetStockBasicFinancialUpdateRate())) {
+	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 		// 系统每季更新一次数据，故查询两次即可。
 		m_fBasicFinancialUpdated = false;
 	}
@@ -668,7 +668,7 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubPeerUpdated = true;
 	}
-	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfigeration.GetStockPeerUpdateRate())) {
+	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {
 		// 有不早于90天的数据？
 		m_fFinnhubPeerUpdated = true;
 	}
@@ -693,7 +693,7 @@ bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	else if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
-	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideTransactionUpdateRate())) {
+	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfiguration.GetInsideTransactionUpdateRate())) {
 		// 有不早于30天的数据？
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
@@ -718,7 +718,7 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	else if (IsNullStock() || IsDelisted()) {
 		m_fFinnhubInsiderSentimentNeedUpdate = false;
 	}
-	else if (!IsEarlyThen(m_lInsiderSentimentUpdateDate, lCurrentDate, gl_systemConfigeration.GetInsideSentimentUpdateRate())) {
+	else if (!IsEarlyThen(m_lInsiderSentimentUpdateDate, lCurrentDate, gl_systemConfiguration.GetInsideSentimentUpdateRate())) {
 		// 有不早于30天的数据？
 		m_fFinnhubInsiderSentimentNeedUpdate = false;
 	}

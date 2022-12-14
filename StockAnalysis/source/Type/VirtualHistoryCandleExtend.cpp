@@ -7,11 +7,8 @@ CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCand
 	Reset();
 }
 
-CVirtualHistoryCandleExtend::~CVirtualHistoryCandleExtend() {
-}
-
 void CVirtualHistoryCandleExtend::Reset(void) {
-	m_lDate = 0;		// 类型
+	m_lDate = 0; // 类型
 	m_time = 0;
 	m_strExchange = _T("");
 	m_strStockSymbol = _T("");

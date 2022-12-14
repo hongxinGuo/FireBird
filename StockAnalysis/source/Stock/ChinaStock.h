@@ -3,14 +3,14 @@
 //成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 enum {
-	_ATTACK_BUY_ = 1,
-	_STRONG_BUY_ = 2,
-	_ORDINARY_BUY_ = 3,
-	_UNKNOWN_BUYSELL_ = 4,
-	_ORDINARY_SELL_ = 5,
-	_STRONG_SELL_ = 6,
-	_ATTACK_SELL_ = 7,
-	_NO_TRANSACTION_ = 8
+	ATTACK_BUY_ = 1,
+	STRONG_BUY_ = 2,
+	ORDINARY_BUY_ = 3,
+	UNKNOWN_BUYSELL_ = 4,
+	ORDINARY_SELL_ = 5,
+	STRONG_SELL_ = 6,
+	ATTACK_SELL_ = 7,
+	NO_TRANSACTION_ = 8
 };
 
 #include"RSReference.h"
@@ -22,9 +22,7 @@ enum {
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetWeekLineBasicInfo.h"
-#include"SetWeekLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
-#include"SetRealTimeData.h"
 #include"SetChinaStockSymbol.h"
 
 #include"OneDeal.h"
@@ -50,7 +48,7 @@ public:
 	CChinaStock& operator=(const CChinaStock&) = delete;
 	CChinaStock(const CChinaStock&&) noexcept = delete;
 	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
-	~CChinaStock(void) override;
+	~CChinaStock(void) override = default;
 	virtual void Reset(void) override;
 	virtual int GetRatio(void) const override final { return 1000; }
 
@@ -325,7 +323,7 @@ public:
 	void CalculateStrongSell(void);
 	void CalculateAttackSellVolume(void);
 	void ResetCalculatingData(void);
-	void SetLastRTData(const CWebRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
+	void SetLastRTData(const CWebRTDataPtr& pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
 	CWebRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
 	void InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData);
 
@@ -335,7 +333,7 @@ public:
 	void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
 	void CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
 	void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
-	void CalculateCanceledSellVolume(INT64 lCurrentCanceledBuyVolume);
+	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
 	void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
 	bool CheckCurrentRTData();
@@ -344,10 +342,10 @@ public:
 	virtual void ReportGuadanTransaction(void);
 	virtual void ReportGuadan(void);
 
-	void PushRTData(const CWebRTDataPtr pData) { m_qRTData.PushData(pData); }
+	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.PushData(pData); }
 	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
 	CWebRTDataPtr GetRTDataAtHead(void) const { return m_qRTData.GetHead(); }
-	INT64 GetRTDataQueueSize(void) { return m_qRTData.Size(); }
+	INT64 GetRTDataQueueSize(void) { return static_cast<INT64>(m_qRTData.Size()); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque(void);
 
@@ -358,7 +356,7 @@ public:
 	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
 	bool HaveNewDayLineData(void);
 	void UnloadDayLine(void) noexcept { m_dataDayLine.Unload(); }
-	bool StoreDayLine(const CDayLinePtr pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
+	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void ShowDayLine(CDC* pDC, const CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
 	void ShowWeekLine(CDC* pDC, const CRect rectClient) { m_dataWeekLine.ShowData(pDC, rectClient); }
@@ -396,7 +394,7 @@ public:
 	CWeekLinePtr GetWeekLine(const long lIndex) const { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
 	void UnloadWeekLine(void) noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
-	bool StoreWeekLine(const CWeekLinePtr pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
+	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
 	bool IsWeekLineLoaded(void) const noexcept { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算
@@ -415,7 +413,7 @@ public:
 
 public:
 	// 测试专用函数
-	void _TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
+	void TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 public:
 protected:
 	long m_lOffsetInContainer; // 在容器中的偏移量

@@ -9,7 +9,7 @@
 #endif
 
 #include"SystemConstant.h"
-#include"SystemConfigeration.h"
+#include"SystemConfiguration.h"
 #include"SystemStatus.h"
 #include"SystemData.h"
 #include"SystemMessage.h"

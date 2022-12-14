@@ -8,8 +8,8 @@ IMPLEMENT_DYNAMIC(CVirtualRecordset, CRecordset)
 
 CString  CVirtualRecordset::GetSchemaConnect() {
 	if (gl_systemStatus.IsWorkingMode()) {
-		return _T("DSN=") + m_Schema + _T(";UID=") + gl_systemConfigeration.GetDatabaseAccountName() + _T(";PASSWORD=") +
-			gl_systemConfigeration.GetDatabaseAccountPassword() + _T(";charset=utf8mb4"); // 运行时的DSN使用原schema名称
+		return _T("DSN=") + m_Schema + _T(";UID=") + gl_systemConfiguration.GetDatabaseAccountName() + _T(";PASSWORD=") +
+			gl_systemConfiguration.GetDatabaseAccountPassword() + _T(";charset=utf8mb4"); // 运行时的DSN使用原schema名称
 	}
 	else {
 		return _T("DSN=") + m_Schema + _T("Test;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作时DSN名称后要加上后缀Test

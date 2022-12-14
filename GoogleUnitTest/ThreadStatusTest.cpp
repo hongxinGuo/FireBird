@@ -46,10 +46,10 @@ namespace StockAnalysisTest {
 
 	TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
-		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber(); i++) {  // 目前采用最多8个线程
+		for (int i = 0; i < gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {  // 目前采用最多8个线程
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 		}
-		for (int i = 0; i < gl_systemConfigeration.GetBackgroundThreadPermittedNumber() - 1; i++) {
+		for (int i = 0; i < gl_systemConfiguration.GetBackgroundThreadPermittedNumber() - 1; i++) {
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			EXPECT_TRUE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		}

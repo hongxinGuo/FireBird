@@ -2,7 +2,6 @@
 
 class COutputList;
 
-
 #include<deque>
 #include<mutex>
 using std::deque;
@@ -36,7 +35,7 @@ public:
 	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
 	~CSystemMessage();
 
-	void PushInformationMessage(CString str) { m_SystemInformation.PushMessage(str); }
+	void PushInformationMessage(const CString str) { m_SystemInformation.PushMessage(str); }
 	CString PopInformationMessage(void) { return m_SystemInformation.PopMessage(); }
 	size_t InformationSize(void) { return m_SystemInformation.Size(); }
 
@@ -93,35 +92,35 @@ public:
 	size_t ErrorMessageSize(void) { return m_ErrorMessage.Size(); }
 	void DisplayErrorMessage(COutputList* pOutputList, CString strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
 
-	int GetProcessedFinnhubWebSocket(void) noexcept { return m_iProcessedFinnhubWebSocket; }
-	void SetProcessedFinnhubWebSocket(int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }
+	int GetProcessedFinnhubWebSocket(void) const noexcept { return m_iProcessedFinnhubWebSocket; }
+	void SetProcessedFinnhubWebSocket(const int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }
 	void ClearProcessedFinnhubWebSocket(void) noexcept { m_iProcessedFinnhubWebSocket = 0; }
-	int GetProcessedTiingoIEXWebSocket(void) noexcept { return m_iProcessedTiingoIEXWebSocket; }
-	void SetProcessedTiingoIEXWebSocket(int iValue) noexcept { m_iProcessedTiingoIEXWebSocket = iValue; }
+	int GetProcessedTiingoIEXWebSocket(void) const noexcept { return m_iProcessedTiingoIEXWebSocket; }
+	void SetProcessedTiingoIEXWebSocket(const int iValue) noexcept { m_iProcessedTiingoIEXWebSocket = iValue; }
 	void ClearProcessedTiingoIEXWebSocket(void) noexcept { m_iProcessedTiingoIEXWebSocket = 0; }
-	int GetProcessedTiingoCryptoWebSocket(void) noexcept { return m_iProcessedTiingoCryptoWebSocket; }
-	void SetProcessedTiingoCryptoWebSocket(int iValue) noexcept { m_iProcessedTiingoCryptoWebSocket = iValue; }
+	int GetProcessedTiingoCryptoWebSocket(void) const noexcept { return m_iProcessedTiingoCryptoWebSocket; }
+	void SetProcessedTiingoCryptoWebSocket(const int iValue) noexcept { m_iProcessedTiingoCryptoWebSocket = iValue; }
 	void ClearProcessedTiingoCryptoWebSocket(void) noexcept { m_iProcessedTiingoCryptoWebSocket = 0; }
-	int GetProcessedTiingoForexWebSocket(void) noexcept { return m_iProcessedTiingoForexWebSocket; }
-	void SetProcessedTiingoForexWebSocket(int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
+	int GetProcessedTiingoForexWebSocket(void) const noexcept { return m_iProcessedTiingoForexWebSocket; }
+	void SetProcessedTiingoForexWebSocket(const int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
 	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
-	void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
+	void SetStockCodeForInquiringRTData(const CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
 	CString GetStockCodeForInquiringRTData(void) const { return m_strStockCodeForInquiringRTData; }
 
-	void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) {
+	void SetStockCodeForInquiringNeteaseDayLine(const CString strStockCode) {
 		m_strStockCodeForInquiringNeteaseDayLine = strStockCode;
 	}
 
 	CString GetStockCodeForInquiringNeteaseDayLine(void) const { return m_strStockCodeForInquiringNeteaseDayLine; }
 
-	void SetCurrentFinnhubWebSocketStake(CString s) { m_strCurrentFinnhubWebSocketStake = s; }
+	void SetCurrentFinnhubWebSocketStake(const CString s) { m_strCurrentFinnhubWebSocketStake = s; }
 	CString GetCurrentFinnhubWebSocketStake(void) { return m_strCurrentFinnhubWebSocketStake; }
-	void SetCurrentTiingoWebSocketIEX(CString s) { m_strCurrentTiingoWebSocketIEX = s; }
+	void SetCurrentTiingoWebSocketIEX(const CString s) { m_strCurrentTiingoWebSocketIEX = s; }
 	CString GetCurrentTiingoWebSocketIEX(void) { return m_strCurrentTiingoWebSocketIEX; }
-	void SetCurrentTiingoWebSocketForex(CString s) { m_strCurrentTiingoWebSocketForex = s; }
+	void SetCurrentTiingoWebSocketForex(const CString s) { m_strCurrentTiingoWebSocketForex = s; }
 	CString GetCurrentTiingoWebSocketForex(void) { return m_strCurrentTiingoWebSocketForex; }
-	void SetCurrentTiingoWebSocketCrypto(CString s) { m_strCurrentTiingoWebSocketCrypto = s; }
+	void SetCurrentTiingoWebSocketCrypto(const CString s) { m_strCurrentTiingoWebSocketCrypto = s; }
 	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
 
 protected:

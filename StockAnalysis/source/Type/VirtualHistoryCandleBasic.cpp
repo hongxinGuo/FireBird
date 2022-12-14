@@ -7,11 +7,8 @@ CVirtualHistoryCandleBasic::CVirtualHistoryCandleBasic() {
 	Reset();
 }
 
-CVirtualHistoryCandleBasic::~CVirtualHistoryCandleBasic() {
-}
-
 void CVirtualHistoryCandleBasic::Reset() {
-	m_lDate = 0;		// 类型
+	m_lDate = 0; // 类型
 	m_time = 0;
 	m_strStockSymbol = _T("");
 	m_strDisplaySymbol = _T("");

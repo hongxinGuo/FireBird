@@ -1,21 +1,23 @@
 #pragma once
 
-
 #include<atomic>
 
-class CSystemStatus : public CObject {
+class CSystemStatus final : public CObject {
 public:
 	CSystemStatus();
+	// 只能有一个实例,不允许赋值。
+	CSystemStatus(const CSystemStatus&) = delete;
+	CSystemStatus& operator=(const CSystemStatus&) = delete;
+	CSystemStatus(const CSystemStatus&&) noexcept = delete;
+	CSystemStatus& operator=(const CSystemStatus&&) noexcept = delete;
+	~CSystemStatus() override = default;
 
-	virtual ~CSystemStatus() {
-	}
-
-	void SetExitingSystem(bool bExit) { m_fExitingSystem = bExit; }
+	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
 	bool IsExitingSystem() { return m_fExitingSystem; }
-	void SetExitingCalculatingRS(bool bExit) { m_fExitingCalculatingRS = bExit; }
-	bool IsExitingCalculatingRS() { return m_fExitingCalculatingRS; }
-	void SetWorkingMode(bool bNormal) { m_fWorkingMode = bNormal; }
-	bool IsWorkingMode() { return m_fWorkingMode; }
+	void SetExitingCalculatingRS(const bool bExit) { m_fExitingCalculatingRS = bExit; }
+	bool IsExitingCalculatingRS() const { return m_fExitingCalculatingRS; }
+	void SetWorkingMode(const bool bNormal) { m_fWorkingMode = bNormal; }
+	bool IsWorkingMode() const { return m_fWorkingMode; }
 
 protected:
 	std::atomic_bool m_fExitingSystem; //  系统退出标识，用于终止其他线程。

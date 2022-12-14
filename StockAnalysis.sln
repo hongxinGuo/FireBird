@@ -48,7 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文�
 		..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json = ..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json
 		StockAnalysis\source\NetError.txt = StockAnalysis\source\NetError.txt
 		propertysheet.props = propertysheet.props
-		..\..\..\..\..\StockAnalysis\SystemConfigeration.json = ..\..\..\..\..\StockAnalysis\SystemConfigeration.json
+		..\..\..\..\..\StockAnalysis\SystemConfiguration.json = ..\..\..\..\..\StockAnalysis\SystemConfiguration.json
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmark", "Benchmark\Benchmark.vcxproj", "{9E2349D0-2086-41CB-97FF-882700BE9C07}"

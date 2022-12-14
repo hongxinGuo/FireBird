@@ -20,24 +20,20 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"ChinaMarket.h"
-#include"WorldMarket.h"
 
-#include"SystemConfigeration.h"
-
+#include"SystemConfiguration.h"
 
 #include<string>
-#include<iostream>
 #include<fstream>
 
 /// <summary>
 /// 系统配置文件，采用nlohmann json库格式。
 ///
 /// </summary>
-std::string gl_sSystemConfigeration = R"(
+std::string gl_sSystemConfiguration = R"(
 {
-"SystemConfigeration": {
+"SystemConfiguration": {
 	"UsingFastCPU" : true,
 	"DebugMode" : false,
   "DatabaseAccountName" : "hxguo",
@@ -81,10 +77,8 @@ std::string gl_sSystemConfigeration = R"(
 }
 })";
 
-CSystemConfigeration::CSystemConfigeration() {
-	static int siInstance = 0;
-
-	if (++siInstance > 1) {
+CSystemConfiguration::CSystemConfiguration() {
+	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
@@ -94,7 +88,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
 	m_strDirectory = _T("C:\\StockAnalysis\\");
-	m_strFileName = _T("SystemConfigeration.json"); // json file name
+	m_strFileName = _T("SystemConfiguration.json"); // json file name
 
 	// 系统配置
 	m_bUsingFastCPU = true; // 默认使用快速CPU
@@ -138,7 +132,7 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
 
-	ASSERT(GetDefaultFileDirectoryAndName().Compare(_T("C:\\StockAnalysis\\SystemConfigeration.json")) == 0);
+	ASSERT(GetDefaultFileDirectoryAndName().Compare(_T("C:\\StockAnalysis\\SystemConfiguration.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -157,9 +151,9 @@ CSystemConfigeration::CSystemConfigeration() {
 	m_rCurrentWindow.bottom = 1600;
 }
 
-CSystemConfigeration::~CSystemConfigeration() {
-	CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
-	CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
+CSystemConfiguration::~CSystemConfiguration() {
+	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
+	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
 	if (m_fUpdate) {
 		DeleteFile(GetDefaultFileDirectory() + strNew);
@@ -169,140 +163,141 @@ CSystemConfigeration::~CSystemConfigeration() {
 	SaveDB();
 }
 
-void CSystemConfigeration::Update() {
+void CSystemConfiguration::Update() {
 	string sTemp;
 
 	try {
 		// 系统配置
 		try {
-			m_bUsingFastCPU = m_systemConfigeration.at("SystemConfigeration").at("UsingFastCPU");
+			m_bUsingFastCPU = m_systemConfiguration.at("SystemConfiguration").at("UsingFastCPU");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_bDebugMode = m_systemConfigeration.at("SystemConfigeration").at("DebugMode");
+			m_bDebugMode = m_systemConfiguration.at("SystemConfiguration").at("DebugMode");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			sTemp = m_systemConfigeration.at("SystemConfigeration").at("DatabaseAccountName");
+			sTemp = m_systemConfiguration.at("SystemConfiguration").at("DatabaseAccountName");
 			m_strDatabaseAccountName = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			sTemp = m_systemConfigeration.at("SystemConfigeration").at("DatabaseAccountPassword");
+			sTemp = m_systemConfiguration.at("SystemConfiguration").at("DatabaseAccountPassword");
 			m_strDatabaseAccountPassword = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iBackgroundThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("BackgroundThreadPermittedNumber");
+			m_iBackgroundThreadPermittedNumber = m_systemConfiguration.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iSavingThreadPermittedNumber = m_systemConfigeration.at("SystemConfigeration").at("SavingThreadPermittedNumber");
+			m_iSavingThreadPermittedNumber = m_systemConfiguration.at("SystemConfiguration").at("SavingThreadPermittedNumber");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// ChinaMarket
 		try {
-			sTemp = m_systemConfigeration.at("ChinaMarket").at("RealtimeServer");// 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-			if (sTemp.compare(_T("sina")) == 0) {
+			sTemp = m_systemConfiguration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+			if (sTemp == _T("sina")) {
 				m_iChinaMarketRealtimeServer = 0;
 			}
-			else if (sTemp.compare(_T("netease")) == 0) {
+			else if (sTemp == _T("netease")) {
 				m_iChinaMarketRealtimeServer = 1;
 			}
-			else { // 非法服务器名称，使用默认sina服务器
+			else {
+				// 非法服务器名称，使用默认sina服务器
 				m_iChinaMarketRealtimeServer = 0;
 				m_fUpdate = true;
 			}
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iChinaMarketRTDataInquiryTime = m_systemConfigeration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+			m_iChinaMarketRTDataInquiryTime = m_systemConfiguration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iSavingChinaMarketStockDayLineThread = m_systemConfigeration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
+			m_iSavingChinaMarketStockDayLineThread = m_systemConfiguration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iSinaRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+			m_iSinaRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iNeteaseRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+			m_iNeteaseRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iTengxunRTDataInquiryPerTime = m_systemConfigeration.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+			m_iTengxunRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// WorldMarket
 		try {
-			sTemp = m_systemConfigeration.at("WorldMarket").at("FinnhubToken"); // Finnhub token
+			sTemp = m_systemConfiguration.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 			m_strFinnhubToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			sTemp = m_systemConfigeration.at("WorldMarket").at("TiingoToken"); // Tiingo token
+			sTemp = m_systemConfiguration.at("WorldMarket").at("TiingoToken"); // Tiingo token
 			m_strTiingoToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			sTemp = m_systemConfigeration.at("WorldMarket").at("QuandlToken"); // Quandl token
+			sTemp = m_systemConfiguration.at("WorldMarket").at("QuandlToken"); // Quandl token
 			m_strQuandlToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iWorldMarketFinnhubInquiryTime = m_systemConfigeration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
+			m_iWorldMarketFinnhubInquiryTime = m_systemConfiguration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iWorldMarketTiingoInquiryTime = m_systemConfigeration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
+			m_iWorldMarketTiingoInquiryTime = m_systemConfiguration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iWorldMarketQuandlInquiryTime = m_systemConfigeration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
+			m_iWorldMarketQuandlInquiryTime = m_systemConfiguration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// WebSocket
 		try {
-			m_bUsingFinnhubWebSocket = m_systemConfigeration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
+			m_bUsingFinnhubWebSocket = m_systemConfiguration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_bUsingTiingoIEXWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoIEXWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_bUsingTiingoCryptoWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoCryptoWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_bUsingTiingoForexWebSocket = m_systemConfigeration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
+			m_bUsingTiingoForexWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 
 		// Financial Data Update Rate
 		try {
-			m_iStockBasicFinancialUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockBasicFinancial");
+			m_iStockBasicFinancialUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockBasicFinancial");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iStockProfileUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockProfile");
+			m_iStockProfileUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockProfile");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iInsideTransactionUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("InsideTransaction");
+			m_iInsideTransactionUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("InsideTransaction");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iInsideSentimentUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("InsideSentiment");
+			m_iInsideSentimentUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("InsideSentiment");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
-			m_iStockPeerUpdateRate = m_systemConfigeration.at("FinancialDataUpdateRate").at("StockPeer");
+			m_iStockPeerUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockPeer");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 	}
@@ -312,58 +307,58 @@ void CSystemConfigeration::Update() {
 	}
 }
 
-void CSystemConfigeration::UpdateJson(void) {
+void CSystemConfiguration::UpdateJson(void) {
 	// system
-	m_systemConfigeration["SystemConfigeration"]["UsingFastCPU"] = m_bUsingFastCPU;
-	m_systemConfigeration["SystemConfigeration"]["DebugMode"] = m_bDebugMode;
-	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
-	m_systemConfigeration["SystemConfigeration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
-	m_systemConfigeration["SystemConfigeration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
-	m_systemConfigeration["SystemConfigeration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
+	m_systemConfiguration["SystemConfiguration"]["UsingFastCPU"] = m_bUsingFastCPU;
+	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
+	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
+	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
+	m_systemConfiguration["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
+	m_systemConfiguration["SystemConfiguration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
 
 	// China market
 	switch (m_iChinaMarketRealtimeServer) {
 	case 0:
-		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");
 		break;
 	case 1:
-		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("netease");
+		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("netease");
 		break;
 	case 2:
-		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("tencent");
+		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("tencent");
 		break;
 	default:
-		m_systemConfigeration["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");
 		break;
 	}
-	m_systemConfigeration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
-	m_systemConfigeration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
-	m_systemConfigeration["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
-	m_systemConfigeration["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
-	m_systemConfigeration["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
+	m_systemConfiguration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
+	m_systemConfiguration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
+	m_systemConfiguration["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
+	m_systemConfiguration["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
+	m_systemConfiguration["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
 
 	// World market
-	m_systemConfigeration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
-	m_systemConfigeration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
-	m_systemConfigeration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
-	m_systemConfigeration["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
-	m_systemConfigeration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
-	m_systemConfigeration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
+	m_systemConfiguration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
+	m_systemConfiguration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
+	m_systemConfiguration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
+	m_systemConfiguration["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
+	m_systemConfiguration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
+	m_systemConfiguration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
 	// Web socket
-	m_systemConfigeration["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
-	m_systemConfigeration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
-	m_systemConfigeration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
-	m_systemConfigeration["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
+	m_systemConfiguration["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
+	m_systemConfiguration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
+	m_systemConfiguration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
+	m_systemConfiguration["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
 
-	m_systemConfigeration["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
-	m_systemConfigeration["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
-	m_systemConfigeration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
-	m_systemConfigeration["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
-	m_systemConfigeration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
 }
 
-void CSystemConfigeration::UpdateSystem(void) {
+void CSystemConfiguration::UpdateSystem(void) {
 	if (m_iBackgroundThreadPermittedNumber > 8) {
 		for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) {
 			gl_BackGroundTaskThread.release();
@@ -371,20 +366,20 @@ void CSystemConfigeration::UpdateSystem(void) {
 	}
 }
 
-bool CSystemConfigeration::LoadDB() {
+bool CSystemConfiguration::LoadDB() {
 	fstream f(GetDefaultFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
-		f >> m_systemConfigeration;
-		//m_systemConfigeration = json::parse(f); // 这种方式等价于 f >> m_systemConfigeration;
+		f >> m_systemConfiguration;
+		//m_systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
 		f.close();
 		return true;
 	}
 	return false;
 }
 
-bool CSystemConfigeration::SaveDB() {
+bool CSystemConfiguration::SaveDB() {
 	fstream f(GetDefaultFileDirectoryAndName(), ios::out);
-	f << m_systemConfigeration;
+	f << m_systemConfiguration;
 	f.close();
 
 	return true;

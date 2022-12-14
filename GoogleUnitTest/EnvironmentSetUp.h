@@ -63,15 +63,15 @@ namespace StockAnalysisTest {
 		virtual void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
-			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(),
-			             _T("C:\\StockAnalysis\\SystemConfigeration.json"));
-			gl_systemConfigeration.SetDefaultFileDirectory(
+			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
+			             _T("C:\\StockAnalysis\\SystemConfiguration.json"));
+			gl_systemConfiguration.SetDefaultFileDirectory(
 				_T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\"));
-			gl_systemConfigeration.SetDefaultFileName(_T("systemConfigerationTest.json"));
-			ASSERT_STREQ(gl_systemConfigeration.GetDefaultFileDirectoryAndName(),
-			             _T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigerationTest.json"));
-			gl_systemConfigeration.LoadDB();
-			gl_systemConfigeration.Update();
+			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
+			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
+			             _T("C:\\Users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\systemConfigurationTest.json"));
+			gl_systemConfiguration.LoadDB();
+			gl_systemConfiguration.Update();
 
 			gl_pSinaRTWebInquiry = nullptr;
 			gl_pTengxunRTWebInquiry = nullptr;

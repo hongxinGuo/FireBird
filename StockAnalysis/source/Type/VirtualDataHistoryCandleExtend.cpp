@@ -7,9 +7,6 @@ CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() : CObject() {
 	Reset();
 }
 
-CVirtualDataHistoryCandleExtend::~CVirtualDataHistoryCandleExtend() {
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将日线历史数据存入数据库．默认数据库为空。
@@ -21,15 +18,14 @@ CVirtualDataHistoryCandleExtend::~CVirtualDataHistoryCandleExtend() {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic,
                                                     CString strStockSymbol) {
-	size_t lSize = 0;
 	vector<CVirtualHistoryCandleExtendPtr> vHistoryCandle;
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
-	long lCurrentPos = 0, lSizeOfOldDayLine = 0;
+	long lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
 
 	ASSERT(Size() > 0);
 
-	lSize = Size();
+	const size_t lSize = Size();
 	if (strStockSymbol.GetLength() > 0) {
 		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
@@ -45,11 +41,11 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		}
 		pSetHistoryCandleBasic->Close();
 	}
-	lCurrentPos = 0;
 	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
 	pSetHistoryCandleBasic->Open();
 	pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {
+		long lCurrentPos = 0;
 		// 有旧数据
 		for (int i = 0; i < lSize; i++) {
 			// 数据是正序存储的，需要从头部开始存储
@@ -90,12 +86,12 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 }
 
 bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
-	ASSERT(m_vHistoryData.size() > 0);
+	ASSERT(!m_vHistoryData.empty());
 
 	pSetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
 	pSetHistoryCandleExtend->Open();
 	pSetHistoryCandleExtend->m_pDatabase->BeginTrans();
-	for (auto pData : m_vHistoryData) {
+	for (const auto& pData : m_vHistoryData) {
 		pData->AppendExtendData(pSetHistoryCandleExtend);
 	}
 	pSetHistoryCandleExtend->m_pDatabase->CommitTrans();
@@ -105,8 +101,6 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 }
 
 bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
-	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
-
 	if (gl_systemStatus.IsWorkingMode())
 		ASSERT(!m_fLoadDataFirst);
 	ASSERT(pSetHistoryCandleBasic->IsOpen());
@@ -114,7 +108,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 	// 装入DayLine数据
 	Unload();
 	while (!pSetHistoryCandleBasic->IsEOF()) {
-		pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
+		const auto pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 		StoreData(pHistoryCandle);
 		pSetHistoryCandleBasic->MoveNext();
@@ -169,7 +163,7 @@ void CVirtualDataHistoryCandleExtend::UpdateData(vector<CVirtualHistoryCandleExt
 		}
 	}
 	else {
-		for (auto& p : vTempData) {
+		for (const auto& p : vTempData) {
 			if (p->IsActive()) StoreData(p);
 		}
 	}
@@ -250,7 +244,7 @@ void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
 }
 
 bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) {
-	if (m_vHistoryData.size() == 0) return false;
+	if (m_vHistoryData.empty()) return false;
 
 	lStartDate = m_vHistoryData.at(0)->GetMarketDate();
 	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1)->GetMarketDate();
