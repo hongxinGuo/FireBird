@@ -24,39 +24,39 @@
 IMPLEMENT_DYNCREATE(CStockAnalysisView, CView)
 
 BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
-	// 标准打印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
-	ON_WM_TIMER()
-	ON_WM_CREATE()
-	ON_WM_SIZE()
-	ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
-	ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
-	ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
-	ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
-	ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
-	ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
-	ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
-	ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnShowRsInLinear)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
-	ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
-	ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
-	ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
-	ON_COMMAND(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnShowWeekLine)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnUpdateShowWeekLine)
+		// 标准打印命令
+		ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+		ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+		ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
+		ON_WM_CONTEXTMENU()
+		ON_WM_RBUTTONUP()
+		ON_WM_TIMER()
+		ON_WM_CREATE()
+		ON_WM_SIZE()
+		ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
+		ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
+		ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
+		ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
+		ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
+		ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
+		ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
+		ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnShowRsInLinear)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
+		ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
+		ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
+		ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
+		ON_COMMAND(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnShowWeekLine)
+		ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnUpdateShowWeekLine)
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -86,25 +86,23 @@ CStockAnalysisView::CStockAnalysisView() {
 	m_fCreateMemoryDC = false;
 }
 
-CStockAnalysisView::~CStockAnalysisView() {
-}
-
 bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
 	CString str = _T("abcd");
-	CSize sizeText = SysCallGetTextExtent(pDC, str);
-	int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
+	const CSize sizeText = SysCallGetTextExtent(pDC, str);
+	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
-	long lStartPrice = ((long)(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
+	const long lStartPrice = (static_cast<long>(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
 	char buffer[20];
 	int j = 0;
 
 	for (int i = iNumberOfLine; i > 0; i--) {
-		sprintf_s(buffer, _T("%7.2f"), ((double)lStartPrice + i * 10) / 1000);
+		sprintf_s(buffer, _T("%7.2f"), (static_cast<double>(lStartPrice) + i * 10) / 1000);
 		CString strPrice;
 		str = buffer;
-		long lCurrentPrice = lStartPrice + i * 10;
+		const long lCurrentPrice = lStartPrice + i * 10;
 
-		if (!pStock->HaveGuadan(lCurrentPrice)) { // 此价位没有挂单
+		if (!pStock->HaveGuadan(lCurrentPrice)) {
+			// 此价位没有挂单
 			strPrice = _T("    ----------");
 		}
 		else {
@@ -161,11 +159,10 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
 	COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
 	COLORREF crBefore;
 	COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-	CPen* ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
+	CPen *ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
 	CPoint ptCurrent;
 
-	CChinaStockPtr pStock;
-	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
 	int iGraphYEnd2 = iGraphYEnd + 100;
@@ -180,7 +177,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
 	int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
 	crBefore = pDC->SetBkColor(crYellow);
-	pStock = gl_pChinaMarket->GetCurrentStock();
+	CChinaStockPtr pStock = gl_pChinaMarket->GetCurrentStock();
 
 	ppen = SysCallSelectObject(pDC, &penRed);
 	ptCurrent.x = iTextStart - 5;
@@ -225,10 +222,10 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
 }
 
 void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen  penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
+	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 	CRect rectTop, rectBottom;
 	double base;
 	double HalfHeight = rectArea.Height() / 2.0;
@@ -275,10 +272,10 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rect
 }
 
 void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen  penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
+	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 	CRect rectTop, rectBottom;
 	double base;
 	double HalfHeight = rectArea.Height() / 2.0;
@@ -321,10 +318,10 @@ void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRec
 }
 
 void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen  penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
+	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 	CRect rectTop, rectBottom;
 	double base;
 	double HalfHeight = rectArea.Height() / 2.0;
@@ -399,9 +396,9 @@ void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CR
 }
 
 void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen  penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
+	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 
 	double base;
 	double HalfHeight = rectArea.Height() / 2.0;
@@ -483,7 +480,7 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPen* ppen = nullptr;
 	CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
 	CPen penRed1(PS_SOLID, 1, crRed), penRed2(PS_SOLID, 2, crRed), penRed3(PS_SOLID, 3, crRed);
-	CPen  penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
+	CPen penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
 	CPoint ptCurrent;
@@ -568,12 +565,12 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 }
 
 void CStockAnalysisView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
-	vector<double>::iterator it = vRS.end();
+	auto it = vRS.end();
 	int i = 1;
-	it--;
-	int y = m_rectClient.bottom - (*it--) * m_rectClient.bottom / 200;
+	--it;
+	const int y = m_rectClient.bottom - (*it--) * m_rectClient.bottom / 200;
 	SysCallMoveTo(pDC, m_rectClient.right - 1, y);
-	for (; it != vRS.begin(); it--, i++) {
+	for (; it != vRS.begin(); --it, i++) {
 		if (!RSLineTo(pDC, i, (*it), vRS.size())) break;
 	}
 }
@@ -624,7 +621,7 @@ BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
 // CStockAnalysisView 绘图
 
 void CStockAnalysisView::OnDraw(CDC* pdc) {
-	CStockAnalysisDoc* pDoc = GetDocument();
+	const CStockAnalysisDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -671,7 +668,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
 		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
 		if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
 		break;
-	case _SHOW_REAL_TIME_DATA_:	// show realtime stock data
+	case _SHOW_REAL_TIME_DATA_: // show realtime stock data
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowRealtimeData(&m_MemoryDC);
@@ -729,7 +726,7 @@ void CStockAnalysisView::Dump(CDumpContext& dc) const {
 CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
-	return (CStockAnalysisDoc*)m_pDocument;
+	return dynamic_cast<CStockAnalysisDoc*>(m_pDocument);
 }
 #endif //_DEBUG
 
@@ -755,7 +752,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// TODO:  在此添加您专用的创建代码
 	GetClientRect(&m_rectClient);
 
-	m_uIdTimer = SetTimer(3, 500, nullptr);     // 500毫秒每次调度，用于显示实时股票数据。
+	m_uIdTimer = SetTimer(3, 500, nullptr); // 500毫秒每次调度，用于显示实时股票数据。
 	if (m_uIdTimer == 0) {
 		CString str;
 	}

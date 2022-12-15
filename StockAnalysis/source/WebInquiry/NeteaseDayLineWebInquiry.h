@@ -1,12 +1,11 @@
 #pragma once
 
 #include "VirtualWebInquiry.h"
-#include"WebRTData.h"
 
 class CNeteaseDayLineWebInquiry : public CVirtualWebInquiry {
 public:
 	CNeteaseDayLineWebInquiry();
-	virtual ~CNeteaseDayLineWebInquiry();
+	~CNeteaseDayLineWebInquiry() override = default;
 
 	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
 

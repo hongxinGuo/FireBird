@@ -7,18 +7,17 @@
 
 constexpr int _STOCK_ANALYSIS_TIMER_ = 1;
 
-class CMainFrame : public CFrameWndEx
-{
+class CMainFrame : public CFrameWndEx {
 	DECLARE_DYNCREATE(CMainFrame)
+
 public:
 	CMainFrame();
-	virtual ~CMainFrame();
+	~CMainFrame() override;
 
 	void Reset(void);
 
 	// 特性
 public:
-
 	// 操作
 public:
 	virtual bool SchedulingTask(void);
@@ -36,7 +35,11 @@ public:
 	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CFrameWndEx::OnSysCommand(nID, lParam); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
-	virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { SendMessage(message, wParam, lParam); }
+
+	virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) {
+		SendMessage(message, wParam, lParam);
+	}
+
 	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CFrameWndEx::PreTranslateMessage(pMsg); }
 	virtual void SysCallInvalidate(void) { Invalidate(); }
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
@@ -74,7 +77,7 @@ protected:
 
 	static bool sm_fInitIxWebSocket;
 
-protected:  // 控件条嵌入成员
+protected: // 控件条嵌入成员
 	CMFCMenuBar m_wndMenuBar;
 	CMFCToolBar m_wndToolBar;
 	CMFCStatusBar m_wndInnerSystemBar;
@@ -91,7 +94,7 @@ protected:
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	DECLARE_MESSAGE_MAP()
 
-		BOOL CreateDockingWindows();
+	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
 
 public:
@@ -107,8 +110,8 @@ public:
 	afx_msg void OnRebuildDayLineRS();
 	afx_msg void OnBuildResetMarket();
 	afx_msg void OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI);
-	afx_msg void OnAbortBuindingRS();
-	afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
+	afx_msg void OnAbortBuildingRS();
+	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);
 	afx_msg void OnRecordRTData();
 	afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
 	afx_msg void OnCalculate10dayRS1();
@@ -130,8 +133,8 @@ public:
 	afx_msg void OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI);
 	afx_msg void OnBuildRebuildCurrentWeekLine();
 	afx_msg void OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI);
-	afx_msg void OnBuildRebuildCurrentWeekWeeklineTable();
-	afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
+	afx_msg void OnBuildRebuildCurrentWeekWeekLineTable();
+	afx_msg void OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateStockSection();
 	afx_msg void OnUpdateStockCode();
 	afx_msg void OnRebuildEpsSurprise();

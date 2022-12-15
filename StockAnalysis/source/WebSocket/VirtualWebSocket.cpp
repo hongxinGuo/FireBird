@@ -23,7 +23,7 @@ CVirtualWebSocket::~CVirtualWebSocket() {
 
 void CVirtualWebSocket::Reset(void) {
 	m_iSubscriptionId = 0;
-	m_fReveivingData = false;
+	m_fReceivingData = false;
 }
 
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
@@ -47,7 +47,8 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) 
 }
 
 bool CVirtualWebSocket::IsSymbol(CString strSymbol) {
-	if (m_mapSymbol.find(strSymbol) == m_mapSymbol.end()) { // 新符号？
+	if (!m_mapSymbol.contains(strSymbol)) {
+		// 新符号？
 		return false;
 	}
 	else return true;
@@ -55,7 +56,8 @@ bool CVirtualWebSocket::IsSymbol(CString strSymbol) {
 
 void CVirtualWebSocket::AppendSymbol(vector<CString> vSymbol) {
 	for (auto& strSymbol : vSymbol) {
-		if (m_mapSymbol.find(strSymbol) == m_mapSymbol.end()) { // 新符号？
+		if (!m_mapSymbol.contains(strSymbol)) {
+			// 新符号？
 			AddSymbol(strSymbol);
 		}
 	}
@@ -81,12 +83,11 @@ void CVirtualWebSocket::ClearSymbol(void) {
 	m_mapSymbol.clear();
 }
 
-CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol)
-{
+CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol) {
 	CString strSymbols;
 
 	for (auto& s : vSymbol) {
-		CString strSymbol = _T("\"") + s + _T("\"") + _T(",");
+		const CString strSymbol = _T("\"") + s + _T("\"") + _T(",");
 		strSymbols += strSymbol;
 	}
 	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
@@ -131,8 +132,7 @@ bool CVirtualWebSocket::Disconnect(void) {
 }
 
 UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
+	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
 		pWebSocket->Disconnect();
 		s_fConnecting = false;
@@ -156,8 +156,7 @@ bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
 	return true;
 }
 
-bool CVirtualWebSocket::SendMessage(const string& message)
-{
+bool CVirtualWebSocket::SendMessage(const string& message) {
 	m_webSocket.send(message);
 
 	return true;

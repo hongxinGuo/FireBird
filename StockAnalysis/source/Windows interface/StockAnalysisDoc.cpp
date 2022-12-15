@@ -5,12 +5,9 @@
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDayLineERS
-#include "StockAnalysis.h"
 #endif
 
 #include "StockAnalysisDoc.h"
-
-#include <propkey.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,33 +23,31 @@ END_MESSAGE_MAP()
 // CStockAnalysisDoc 构造/析构
 
 CStockAnalysisDoc::CStockAnalysisDoc() {
-  // TODO: 在此添加一次性构造代码
+	// TODO: 在此添加一次性构造代码
 }
 
 CStockAnalysisDoc::~CStockAnalysisDoc() {
 }
 
 BOOL CStockAnalysisDoc::OnNewDocument() {
-  if (!CDocument::OnNewDocument())
-    return FALSE;
+	if (!CDocument::OnNewDocument())
+		return FALSE;
 
-  // TODO: 在此添加重新初始化代码
-  // (SDI 文档将重用该文档)
+	// TODO: 在此添加重新初始化代码
+	// (SDI 文档将重用该文档)
 
-  return TRUE;
+	return TRUE;
 }
 
 // CStockAnalysisDoc 序列化
 
 void CStockAnalysisDoc::Serialize(CArchive& ar) {
-  if (ar.IsStoring())
-  {
-    // TODO: 在此添加存储代码
-  }
-  else
-  {
-    // TODO: 在此添加加载代码
-  }
+	if (ar.IsStoring()) {
+		// TODO: 在此添加存储代码
+	}
+	else {
+		// TODO: 在此添加加载代码
+	}
 }
 
 #ifdef SHARED_HANDayLineERS
@@ -110,11 +105,11 @@ void CStockAnalysisDoc::SetSearchContent(const CString& value) {
 
 #ifdef _DEBUG
 void CStockAnalysisDoc::AssertValid() const {
-  CDocument::AssertValid();
+	CDocument::AssertValid();
 }
 
 void CStockAnalysisDoc::Dump(CDumpContext& dc) const {
-  CDocument::Dump(dc);
+	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 

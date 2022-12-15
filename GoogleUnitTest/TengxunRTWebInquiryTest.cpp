@@ -7,7 +7,6 @@
 #include"TengxunRTDataSource.h"
 #include"MockTengxunRTWebInquiry.h"
 
-
 using namespace testing;
 
 #ifdef _DEBUG
@@ -40,6 +39,7 @@ namespace StockAnalysisTest {
 			gl_pChinaMarket->SetSystemReady(false);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 		}
+
 	public:
 		CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
 	};
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
 		gl_pChinaMarket->SetSystemReady(true);
-		CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleString(1);
+		CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleString(1, false);
 		EXPECT_STREQ(str, _T("sh000001"));
 	}
 

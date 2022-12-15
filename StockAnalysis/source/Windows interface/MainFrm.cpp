@@ -1,5 +1,4 @@
-﻿#include "MainFrm.h"
-// MainFrm.cpp: CMainFrame 类的实现
+﻿// MainFrm.cpp: CMainFrame 类的实现
 //
 #include"pch.h"
 
@@ -9,11 +8,8 @@
 #include "StockAnalysis.h"
 
 #include "MainFrm.h"
-#include"StockAnalysisDoc.h"
 #include"StockAnalysisView.h"
 
-#include"WebRTData.h"
-#include"DayLine.h"
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
@@ -38,12 +34,7 @@
 
 #include"HighPerformanceCounter.h"
 
-#include"SetFinnhubStockExchange.h"
-
 #include <ixwebsocket/IXNetSystem.h>
-
-#include<string>
-#include<thread>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -76,8 +67,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 		ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDayLineRS)
 		ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
 		ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
-		ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
+		ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
+		ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
 		ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
 		ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
 		ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
@@ -99,9 +90,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 		ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
 		ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
 		ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
-		ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
+		ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
 		ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
-		                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
+		                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
 		ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 		ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 		ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
@@ -431,14 +422,14 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void) {
-	for (auto& pVirtualMarket : gl_vMarketPtr) {
+	for (const auto& pVirtualMarket : gl_vMarketPtr) {
 		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
 	}
 	return true;
 }
 
 bool CMainFrame::ResetMarket(void) {
-	for (auto& pMarket : gl_vMarketPtr) {
+	for (const auto& pMarket : gl_vMarketPtr) {
 		if (pMarket->IsResetMarket()) {
 			pMarket->ResetMarket();
 			pMarket->SetResetMarket(false);
@@ -487,7 +478,6 @@ void CMainFrame::Dump(CDumpContext& dc) const {
 
 CString CMainFrame::FormatToMK(long long iNumber) {
 	char buffer[100];
-	CString str;
 	if (iNumber > 1024 * 1024) {
 		// 1M以上的流量？
 		sprintf_s(buffer, _T("%4lldM"), iNumber / (1024 * 1024));
@@ -499,7 +489,7 @@ CString CMainFrame::FormatToMK(long long iNumber) {
 	else {
 		sprintf_s(buffer, _T("%4lld"), iNumber);
 	}
-	str = buffer;
+	CString str = buffer;
 
 	return str;
 }
@@ -570,7 +560,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	static long long s_llCounterforUpdateStatusBar = 0;
+	static long long s_llCounterForUpdateStatusBar = 0;
 	static long long s_llHighPerformanceCounter = 0;
 	long long llTickCount = 0;
 	CHighPerformanceCounter counter;
@@ -587,14 +577,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	//CMainFrame只执行更新状态任务
 	llTickCount = GetTickCount64();
-	if (llTickCount >= (s_llCounterforUpdateStatusBar + 70)) {
+	if (llTickCount >= (s_llCounterForUpdateStatusBar + 70)) {
 		UpdateStatus();
 		UpdateInnerSystemStatus();
-		s_llCounterforUpdateStatusBar = llTickCount;
+		s_llCounterForUpdateStatusBar = llTickCount;
 	}
 
 	counter.stop();
-	long lCurrentPeriod = counter.GetElapsedMilliSecond();
+	const long lCurrentPeriod = counter.GetElapsedMilliSecond();
 	if (lCurrentPeriod > 20) {
 		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
 		//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
@@ -614,7 +604,7 @@ void CMainFrame::UpdateStatus(void) {
 	CString str;
 	char buffer[30]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	//更新状态条
 	if (gl_pChinaMarket->IsCurrentEditStockChanged()) {
@@ -684,11 +674,10 @@ void CMainFrame::UpdateStatus(void) {
 
 void CMainFrame::UpdateInnerSystemStatus(void) {
 	char buffer[30];
-	CString str;
 
 	// 更新新浪实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
-	str = buffer;
+	CString str = buffer;
 	SysCallSetInnerSystemPaneText(1, (LPCTSTR)str);
 	// 更新网易实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTWebInquiry->GetCurrentInquiryTime());
@@ -754,7 +743,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 		// 如果是退出系统
 		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
-		for (auto& pMarket : gl_vMarketPtr) {
+		for (const auto& pMarket : gl_vMarketPtr) {
 			pMarket->PreparingExitMarket();
 		}
 	}
@@ -824,7 +813,6 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	CChinaStockPtr pStock;
 	CString strTemp;
 
 	switch (nChar) {
@@ -853,7 +841,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
 		if (gl_pChinaMarket->IsStock(strTemp)) {
-			pStock = gl_pChinaMarket->GetStock(strTemp);
+			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(strTemp);
 			gl_pChinaMarket->SetCurrentStock(pStock);
 			SysCallInvalidate();
 		}
@@ -886,7 +874,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CChinaStockPtr pStock;
 	CString strTemp;
-	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (pCurrentStock != nullptr) {
 		switch (nChar) {
@@ -942,7 +930,7 @@ void CMainFrame::OnRebuildDayLineRS() {
 
 void CMainFrame::OnBuildResetMarket() {
 	// TODO: Add your command handler code here
-	for (auto& pMarket : gl_vMarketPtr) {
+	for (const auto& pMarket : gl_vMarketPtr) {
 		pMarket->SetResetMarket(true);
 	}
 }
@@ -961,13 +949,13 @@ void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnAbortBuindingRS() {
+void CMainFrame::OnAbortBuildingRS() {
 	// TODO: Add your command handler code here
 	ASSERT(!gl_systemStatus.IsExitingCalculatingRS());
 	gl_systemStatus.SetExitingCalculatingRS(true);
 }
 
-void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
 		SysCallCmdUIEnable(pCmdUI, true);
@@ -1114,12 +1102,12 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable() {
+void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable();
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 

@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"JsonParse.h"
-#include"ThreadStatus.h"
 
 #include"TiingoWebInquiry.h"
 #include "TiingoForexWebSocket.h"
@@ -79,7 +78,7 @@ bool CTiingoForexWebSocket::Connect(void) {
 bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 	ASSERT(IsOpen());
 
-	string messageAuth(CreateMessage(vSymbol));
+	const string messageAuth(CreateMessage(vSymbol));
 	ix::WebSocketSendInfo info = SendMessage(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
@@ -87,18 +86,17 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 }
 
 CString CTiingoForexWebSocket::CreateMessage(vector<CString> vSymbol) {
-	CString str;
-	CString strPreffix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	CString strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	const CString strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	const CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	const CString strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
 	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	vSymbol.push_back(_T("eurusd")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
+	const CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
 
-	str = strPreffix + strAuth + strMiddle + strSymbols + strSuffix;
+	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	return str;
 }
@@ -123,23 +121,29 @@ bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pData) {
-	ptree pt, pt2, pt3, pt4;
-	ptree::iterator it;
-	string sType, sSymbol, sService;
-	char chType;
+	string sSymbol;
 	string strSymbol;
 
-	string sMessageType, sTickers, sDatetime;
+	string sTickers;
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (ParseWithPTree(pt, *pData)) {
+		if (ptree pt; ParseWithPTree(pt, *pData)) {
+			string sDatetime;
+			string sMessageType;
+			char chType;
+			string sService;
+			string sType;
+			ptree::iterator it;
+			ptree pt3;
+			ptree pt2;
 			sType = ptreeGetString(pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				pt2 = pt.get_child(_T("data"));
 				try {
+					ptree pt4;
 					pt3 = pt2.get_child(_T("tickers"));
 					for (ptree::iterator it3 = pt3.begin(); it3 != pt3.end(); it3++) {
 						pt4 = it3->second;
@@ -187,7 +191,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pt3 = it->second;
 				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价
 				gl_SystemData.PushTiingoForexSocket(pForexData);
-				m_fReveivingData = true;
+				m_fReceivingData = true;
 				break;
 			default:
 				// error

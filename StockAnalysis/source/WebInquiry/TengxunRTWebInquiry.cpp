@@ -5,9 +5,6 @@
 #include "TengxunRTWebInquiry.h"
 #include"TengxunRTDataSource.h"
 
-
-#include<thread>
-
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
@@ -17,16 +14,13 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 	ConfigureSession();
 }
 
-CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
-}
-
 bool CTengxunRTWebInquiry::PrepareNextInquiringString(void) {
 	CString strMiddle = _T("");
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	// 申请下一批次股票实时数据。
 	// 申请腾讯实时数据时，如果遇到不存在的股票代码，服务器会返回v_pv_none_match="1";，导致系统故障，
 	// 故而现在只使用有效股票代码。
-	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber); // 使用活跃股票池
+	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, false); // 使用活跃股票池
 	CreateTotalInquiringString(strMiddle);
 	return true;
 }
@@ -36,8 +30,7 @@ CString CTengxunRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bo
 	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }
 
-void CTengxunRTWebInquiry::ConfigureSession(void)
-{
+void CTengxunRTWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为4000毫秒

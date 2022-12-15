@@ -73,7 +73,7 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket
 		break;
 	case _FINANCIAL_: // Premium
 		break;
-	case _FINAICIAL_AS_REPORTED_:
+	case _FINANCIAL_AS_REPORTED_:
 		break;
 	case _SEC_FILINGS_:
 		break;

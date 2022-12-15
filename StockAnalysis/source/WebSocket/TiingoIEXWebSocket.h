@@ -5,7 +5,7 @@
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoIEXSocket : public CObject {
+class CTiingoIEXSocket final : public CObject {
 public:
 	CTiingoIEXSocket() {
 		m_chMessageType = 'Q';
@@ -36,10 +36,10 @@ public:
 
 typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
 
-class CTiingoIEXWebSocket : public CVirtualWebSocket {
+class CTiingoIEXWebSocket final : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
-	~CTiingoIEXWebSocket(void) override;
+	~CTiingoIEXWebSocket(void) override = default;
 
 	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
@@ -52,4 +52,4 @@ public:
 
 typedef shared_ptr<CTiingoIEXWebSocket> CTiingoIEXWebSocketPtr;
 
-extern 	CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
+extern CTiingoIEXWebSocket gl_tiingoIEXWebSocket;

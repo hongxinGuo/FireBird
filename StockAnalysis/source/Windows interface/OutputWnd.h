@@ -3,8 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COutputList 窗口
 
-class COutputList : public CListBox
-{
+class COutputList : public CListBox {
 	// 构造
 public:
 	COutputList();
@@ -25,8 +24,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class COutputWnd : public CDockablePane
-{
+class COutputWnd : public CDockablePane {
 	// 构造
 public:
 	COutputWnd();
@@ -35,7 +33,7 @@ public:
 
 	// 特性
 protected:
-	CMFCTabCtrl	m_wndTabs;
+	CMFCTabCtrl m_wndTabs;
 
 	COutputList m_wndOutputInformation;
 	COutputList m_wndOutputDayLineInfo;
@@ -47,10 +45,9 @@ protected:
 	COutputList m_wndOutputInnerSystemInformation;
 	COutputList m_wndErrorMessage;
 
-	UINT        m_uIdTimer;
+	UINT m_uIdTimer;
 
 protected:
-
 	void AdjustHorzScroll(CListBox& wndListBox);
 
 	// 实现
@@ -62,6 +59,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

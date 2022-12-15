@@ -87,7 +87,6 @@ CStockAnalysisApp::CStockAnalysisApp() {
 CStockAnalysisApp theApp;
 
 // CStockAnalysisApp 初始化
-
 BOOL CStockAnalysisApp::InitInstance() {
 #ifndef DEBUG
 	// 非调试状态下只允许运行一个实例
@@ -137,13 +136,10 @@ BOOL CStockAnalysisApp::InitInstance() {
 	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
 		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
 
-	// Register the application's document templates.  Document templates
-//  serve as the connection between documents, frame windows and views
-	CSingleDocTemplate* pDocTemplate;
-	pDocTemplate = new CSingleDocTemplate(
+	CSingleDocTemplate* pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(CStockAnalysisDoc),
-		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
+		RUNTIME_CLASS(CMainFrame), // main SDI frame window
 		RUNTIME_CLASS(CStockAnalysisView));
 	if (!pDocTemplate)
 		return FALSE;
@@ -212,9 +208,8 @@ void CStockAnalysisApp::OnAppAbout() {
 // CStockAnalysisApp 自定义加载/保存方法
 
 void CStockAnalysisApp::PreLoadState() {
-	BOOL bNameValid;
 	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+	const BOOL bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }

@@ -14,6 +14,7 @@ public:
 		m_iSeconds = 0;
 		m_strCode = _T("");
 	}
+
 public:
 	CString m_strSymbol;
 	double m_dLastPrice;
@@ -21,16 +22,17 @@ public:
 	double m_dLastVolume;
 	CString m_strCode; // trade conditions
 };
+
 typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;
 
-class CFinnhubWebSocket final : public  CVirtualWebSocket {
+class CFinnhubWebSocket final : public CVirtualWebSocket {
 public:
 	CFinnhubWebSocket();
 	CFinnhubWebSocket(const CFinnhubWebSocket&) = delete;
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&) = delete;
 	CFinnhubWebSocket(const CFinnhubWebSocket&&) noexcept = delete;
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
-	~CFinnhubWebSocket(void) override;
+	~CFinnhubWebSocket(void) override = default;
 
 	virtual bool Connect(void) override;
 	virtual bool Send(vector<CString> vSymbol) override;
@@ -40,6 +42,7 @@ public:
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 };
+
 typedef shared_ptr<CFinnhubWebSocket> CFinnhubWebSocketPtr;
 
 extern CFinnhubWebSocket gl_finnhubWebSocket;

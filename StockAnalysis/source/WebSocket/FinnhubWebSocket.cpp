@@ -59,9 +59,6 @@ CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
 	SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
 }
 
-CFinnhubWebSocket::~CFinnhubWebSocket(void) {
-}
-
 /// <summary>
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
@@ -70,7 +67,7 @@ CFinnhubWebSocket::~CFinnhubWebSocket(void) {
 bool CFinnhubWebSocket::Connect(void) {
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiryToken();
 	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
-	string urlAndAuth = m_url + strToken.GetBuffer();
+	const string urlAndAuth = m_url + strToken.GetBuffer();
 
 	return Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
@@ -95,9 +92,9 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 /// <param name="strSymbol"></param>
 /// <returns></returns>
 string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
-	string sPrefix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
-	string sSuffix = _T("\"}");
-	string sSymbol = strSymbol.GetBuffer();
+	const string sPrefix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
+	const string sSuffix = _T("\"}");
+	const string sSymbol = strSymbol.GetBuffer();
 
 	return sPrefix + sSymbol + sSuffix;
 }
@@ -121,16 +118,17 @@ bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CStrin
 /// <param name="pData"></param>
 /// <returns></returns>
 bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
-	ptree pt, pt2, pt3;
 	string sType, sSymbol, sMessage;
-	CString strMessage;
 	string code;
-	CFinnhubSocketPtr pFinnhubDataPtr = nullptr;
 
 	try {
-		if (ParseWithPTree(pt, *pData)) {
+		if (ptree pt; ParseWithPTree(pt, *pData)) {
 			sType = ptreeGetString(pt, _T("type"));
-			if (sType.compare(_T("trade")) == 0) { // 交易数据
+			if (sType == _T("trade")) {
+				CFinnhubSocketPtr pFinnhubDataPtr;
+				ptree pt3;
+				ptree pt2;
+				// 交易数据
 				pt2 = pt.get_child(_T("data"));
 				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
 					pt3 = it->second;
@@ -143,13 +141,16 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					pFinnhubDataPtr->m_dLastVolume = ptreeGetDouble(pt3, _T("v"));
 					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
-					m_fReveivingData = true;
+					m_fReceivingData = true;
 				}
 			}
-			else if (sType.compare(_T("ping")) == 0) { // ping  {\"type\":\"ping\"}
+			else if (sType == _T("ping")) {
+				// ping  {\"type\":\"ping\"}
 				//
 			}
-			else if (sType.compare(_T("error")) == 0) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+			else if (sType == _T("error")) {
+				CString strMessage;
+				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = ptreeGetString(pt, _T("msg"));
 				strMessage = _T("Finnhub WebSocket error message: ");
 				strMessage += sMessage.c_str();

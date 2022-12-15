@@ -131,7 +131,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INSIDER_TRANSACTION_), _T("StockFundamentalsInsiderTransaction"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INSIDER_SENTIMENT_), _T("StockFundamentalsInsiderSentiment"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FINANCIAL_), _T("StockFundamentalsFiniacial")); //Premium
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FINAICIAL_AS_REPORTED_), _T("StockFundamentalsFinaicialAsReported"));
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_FINANCIAL_AS_REPORTED_), _T("StockFundamentalsFinaicialAsReported"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_REVENUE_BREAKDOWN_), _T("StockFundamentalsRevenueBreakdown"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_SEC_FILINGS_), _T("StockFundamentalsSECFilings"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(_INTERNATIONAL_FILINGS_), _T("StockFundamentalsInternationalFilings")); //Premium
@@ -238,7 +238,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderTransaction")), _INSIDER_TRANSACTION_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInsiderSentiment")), _INSIDER_SENTIMENT_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFiniacial")), _FINANCIAL_); //Premium
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFinaicialAsReported")), _FINAICIAL_AS_REPORTED_);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsFinaicialAsReported")), _FINANCIAL_AS_REPORTED_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsRevenueBreakdown")), _REVENUE_BREAKDOWN_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsSECFilings")), _SEC_FILINGS_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("StockFundamentalsInternationalFilings")), _INTERNATIONAL_FILINGS_); //Premium

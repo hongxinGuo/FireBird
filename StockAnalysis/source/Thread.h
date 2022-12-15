@@ -15,10 +15,10 @@
 #include"ClassDeclaration.h"
 
 #include<boost/property_tree/ptree.hpp>
-using namespace boost::property_tree;
+using boost::property_tree::ptree;
 
 #include<gsl/gsl>
-using namespace gsl;
+using gsl::not_null;
 
 // ÍøÂç¶ÁÈ¡ÈÎÎñ
 //

@@ -591,7 +591,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
 		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_pMockMainFrame->OnAbortBuindingRS();
+		gl_pMockMainFrame->OnAbortBuildingRS();
 		EXPECT_TRUE(gl_systemStatus.IsExitingCalculatingRS());
 
 		gl_systemStatus.SetExitingCalculatingRS(false);
@@ -603,12 +603,12 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1)
 			.RetiresOnSaturation();
-		gl_pMockMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateAbortBuildingRS(&cmdUI);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();
-		gl_pMockMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateAbortBuildingRS(&cmdUI);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnRecordRTData) {

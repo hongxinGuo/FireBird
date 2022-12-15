@@ -3,17 +3,11 @@
 #include "TiingoWebInquiry.h"
 #include"TiingoDataSource.h"
 
-
-#include<thread>
-
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Tiingo");
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
-}
-
-CTiingoWebInquiry::~CTiingoWebInquiry() {
 }
 
 bool CTiingoWebInquiry::PrepareNextInquiringString(void) {
@@ -38,7 +32,7 @@ void CTiingoWebInquiry::ConfigureSession(void) {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
+// 解析接收到的数据，默认数据格式为JSon, 使用boost property tree解析
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {

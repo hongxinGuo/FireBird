@@ -35,7 +35,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 	case _OWNERSHIP_: // Premium
 	case _FUND_OWNERSHIP_: // jPremium
 	case _FINANCIAL_: // Premium
-	case _FINAICIAL_AS_REPORTED_:
+	case _FINANCIAL_AS_REPORTED_:
 	case _SEC_FILINGS_:
 	case _INTERNATIONAL_FILINGS_: // Premium
 	case _SEC_SENTIMENT_ANALYSIS_: // Premium
@@ -46,7 +46,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 	case _STOCK_ESTIMATES_PRICE_TARGET_:
 	case _STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
 	case _STOCK_ESTIMATES_REVENUE_EXTIMATES_: // Premium
-	case _STOCK_ESTIMATES_EPS_EXTIMATES_:// Premium
+	case _STOCK_ESTIMATES_EPS_EXTIMATES_: // Premium
 	case _STOCK_ESTIMATES_EPS_SURPRISE_:
 	case _STOCK_ESTIMATES_EARNING_CALENDAR_:
 	case _STOCK_PRICE_QUOTE_:

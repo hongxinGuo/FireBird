@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 #include<string>
 #include<map>
 
@@ -32,7 +31,7 @@ public:
 	bool AddSymbol(CString strSymbol);
 	bool DeleteSymbol(CString strSymbol);
 	void ClearSymbol(void);
-	size_t GetSymbolSize(void) noexcept { return m_vSymbol.size(); }
+	size_t GetSymbolSize(void) const noexcept { return m_vSymbol.size(); }
 
 	// 状态
 	ix::ReadyState GetState(void) const { return m_webSocket.getReadyState(); }
@@ -42,15 +41,23 @@ public:
 	bool IsConnecting(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
 	string GetURL(void) noexcept { return m_url; }
-	void SetURL(string const url) noexcept { m_url = url; }
+	void SetURL(const string url) noexcept { m_url = url; }
 
-	void SetSubscriptionStatus(bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
+	void SetSubscriptionStatus(const bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
 	bool IsSubscriptable(void) const noexcept { return m_fHaveSubscriptionId; }
-	int GetSubscriptionId(void) noexcept { ASSERT(m_fHaveSubscriptionId); return m_iSubscriptionId; }
-	void SetSubscriptionId(int iSubscriptionId) noexcept { ASSERT(m_fHaveSubscriptionId); m_iSubscriptionId = iSubscriptionId; }
 
-	bool IsReceivingData(void) const noexcept { return m_fReveivingData; }
-	void SetReceivingData(bool fFlag) noexcept { m_fReveivingData = fFlag; }
+	int GetSubscriptionId(void) const noexcept {
+		ASSERT(m_fHaveSubscriptionId);
+		return m_iSubscriptionId;
+	}
+
+	void SetSubscriptionId(const int iSubscriptionId) noexcept {
+		ASSERT(m_fHaveSubscriptionId);
+		m_iSubscriptionId = iSubscriptionId;
+	}
+
+	bool IsReceivingData(void) const noexcept { return m_fReceivingData; }
+	void SetReceivingData(const bool fFlag) noexcept { m_fReceivingData = fFlag; }
 
 	// 实现
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
@@ -63,8 +70,13 @@ public:
 	vector<CString> m_vCurrentSymbol;
 
 	size_t DataSize(void) { return m_qWebSocketData.Size(); }
-	void PushData(string data) { shared_ptr<string> pData = make_shared<string>(data); m_qWebSocketData.PushData(pData); }
-	void PushData(shared_ptr<string> pData) { m_qWebSocketData.PushData(pData); }
+
+	void PushData(string data) {
+		const shared_ptr<string> pData = make_shared<string>(data);
+		m_qWebSocketData.PushData(pData);
+	}
+
+	void PushData(const shared_ptr<string> pData) { m_qWebSocketData.PushData(pData); }
 	shared_ptr<string> PopData(void) { return m_qWebSocketData.PopData(); }
 
 protected:
@@ -78,6 +90,6 @@ protected:
 
 	string m_inputMessage;
 
-	bool m_fReveivingData; // 正在接收数据
+	bool m_fReceivingData; // 正在接收数据
 	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
 };

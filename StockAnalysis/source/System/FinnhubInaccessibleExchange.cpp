@@ -186,7 +186,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[_INSIDER_TRANSACTION_] = _T("StockFundamentalsInsiderTransaction");
 	m_mapFinnhubInquiryIndexToString[_INSIDER_SENTIMENT_] = _T("StockFundamentalsInsiderSentiment");
 	m_mapFinnhubInquiryIndexToString[_FINANCIAL_] = _T("StockFundamentalsFiniacial"); //Premium
-	m_mapFinnhubInquiryIndexToString[_FINAICIAL_AS_REPORTED_] = _T("StockFundamentalsFinaicialAsReported");
+	m_mapFinnhubInquiryIndexToString[_FINANCIAL_AS_REPORTED_] = _T("StockFundamentalsFinaicialAsReported");
 	m_mapFinnhubInquiryIndexToString[_REVENUE_BREAKDOWN_] = _T("StockFundamentalsRevenueBreakdown");
 	m_mapFinnhubInquiryIndexToString[_SEC_FILINGS_] = _T("StockFundamentalsSECFilings");
 	m_mapFinnhubInquiryIndexToString[_INTERNATIONAL_FILINGS_] = _T("StockFundamentalsInternationalFilings"); //Premium
@@ -293,7 +293,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInsiderTransaction")] = _INSIDER_TRANSACTION_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInsiderSentiment")] = _INSIDER_SENTIMENT_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFiniacial")] = _FINANCIAL_; //Premium
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFinaicialAsReported")] = _FINAICIAL_AS_REPORTED_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFinaicialAsReported")] = _FINANCIAL_AS_REPORTED_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsRevenueBreakdown")] = _REVENUE_BREAKDOWN_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSECFilings")] = _SEC_FILINGS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInternationalFilings")] = _INTERNATIONAL_FILINGS_; //Premium

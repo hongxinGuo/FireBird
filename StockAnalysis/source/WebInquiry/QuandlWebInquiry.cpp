@@ -5,9 +5,6 @@
 #include "QuandlWebInquiry.h"
 #include"QuandlDataSource.h"
 
-
-#include<thread>
-
 //  api_key=zBMXMyoTyiy_N3pMb3ex
 //m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 // 下面的是第二个,用于dell240工作机。
@@ -28,9 +25,6 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 
 	ConfigureSession();
-}
-
-CQuandlWebInquiry::~CQuandlWebInquiry() {
 }
 
 bool CQuandlWebInquiry::PrepareNextInquiringString(void) {
@@ -55,7 +49,7 @@ void CQuandlWebInquiry::ConfigureSession(void) {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// 解析接收到的数据，默认数据格式为JSon, 使用boost perproty tree解析
+// 解析接收到的数据，默认数据格式为JSon, 使用boost property tree解析
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {

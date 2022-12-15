@@ -1,12 +1,11 @@
 #pragma once
 
 #include"VirtualWebInquiry.h"
-#include"WebRTData.h"
 
 class CNeteaseRTWebInquiry : public CVirtualWebInquiry {
 public:
 	CNeteaseRTWebInquiry();
-	virtual ~CNeteaseRTWebInquiry();
+	~CNeteaseRTWebInquiry() override = default;
 
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual bool PrepareNextInquiringString(void) override;

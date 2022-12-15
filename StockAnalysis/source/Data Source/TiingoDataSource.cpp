@@ -40,7 +40,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	case _OWNERSHIP_: // Premium
 	case _FUND_OWNERSHIP_: // jPremium
 	case _FINANCIAL_: // Premium
-	case _FINAICIAL_AS_REPORTED_:
+	case _FINANCIAL_AS_REPORTED_:
 	case _SEC_FILINGS_:
 	case _INTERNATIONAL_FILINGS_: // Premium
 	case _SEC_SENTIMENT_ANALYSIS_: // Premium

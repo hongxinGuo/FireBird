@@ -27,24 +27,14 @@
 #include "NeteaseRTWebInquiry.h"
 #include"NeteaseRTDataSource.h"
 
-
-#include<thread>
-
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("NeteaseRT");
 	m_fReportStatus = false;
-#ifdef _DEBUG
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
-#else
-	m_lInquiringNumber = 900; // 网易实时数据查询默认值
-#endif
 
 	ConfigureSession();
-}
-
-CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,10 +57,9 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) const {
 
 bool CNeteaseRTWebInquiry::PrepareNextInquiringString(void) {
 	CString strMiddle = _T("");
-	CString strNeteaseStockCode;
 	// 申请下一批次股票实时数据
 	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
-	strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
+	const CString strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
 	CreateTotalInquiringString(strMiddle);
 
