@@ -28,7 +28,7 @@ bool CTiingoWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CTiingoWebInquiry::ConfigerateSession(void) {
+void CTiingoWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒

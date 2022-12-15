@@ -1,10 +1,7 @@
 #pragma once
 
 #include"VirtualStock.h"
-#include"DayLine.h"
 #include"DataForexDayLine.h"
-#include"SetForexDayLine.h"
-
 
 #include<memory>
 #include<vector>

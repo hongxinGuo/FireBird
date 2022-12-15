@@ -7,7 +7,6 @@
 #include"DayLine.h"
 #include"NeteaseDayLineWebData.h"
 
-
 #include<vector>
 
 #ifdef _DEBUG
@@ -22,6 +21,7 @@ namespace StockAnalysisTest {
 			m_iCount = count;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strData;
@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
 			m_DayLinePtr->SetTotalValue(-1);
 			m_DayLinePtr->SetCurrentValue(-1);
 
-			WebInquiry._TESTSetBuffer(pData->m_strData);
+			WebInquiry.TESTSetBuffer(pData->m_strData);
 			WebInquiry.SetByteRead(pData->m_strData.GetLength());
 			WebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
 			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
@@ -106,9 +106,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
-		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-		));
+	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+	                         ));
 
 	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData) {
 		bool fSucceed;
@@ -176,6 +176,7 @@ namespace StockAnalysisTest {
 			m_iCount = count;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strData;
@@ -229,8 +230,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest2,
-		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
-		));
+	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
+	                         ));
 
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
 		char buffer[30];

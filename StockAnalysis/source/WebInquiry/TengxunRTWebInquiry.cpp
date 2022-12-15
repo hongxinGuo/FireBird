@@ -14,7 +14,7 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("TengxunRT");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
-	ConfigerateSession();
+	ConfigureSession();
 }
 
 CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
@@ -36,7 +36,7 @@ CString CTengxunRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bo
 	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }
 
-void CTengxunRTWebInquiry::ConfigerateSession(void)
+void CTengxunRTWebInquiry::ConfigureSession(void)
 {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。

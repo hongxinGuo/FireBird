@@ -1,4 +1,5 @@
 #include"pch.h"
+
 #include"FinnhubStockExchange.h"
 
 CFinnhubStockExchange::CFinnhubStockExchange() : CObject() {

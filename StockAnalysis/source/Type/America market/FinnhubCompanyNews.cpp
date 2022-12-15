@@ -1,10 +1,6 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
-
 #include"FinnhubCompanyNews.h"
-
-
 
 CFinnhubCompanyNews::CFinnhubCompanyNews() : CObject() {
 	m_llDateTime = 0;
@@ -32,7 +28,7 @@ void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) {
 }
 
 void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) {
-	char buffer[30]{ 0 };
+	char buffer[30]{0};
 	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.Left(45);
 	setCompanyNews.m_Category = m_strCategory.Left(100);
 	sprintf_s(buffer, _T("%lld"), m_llDateTime);

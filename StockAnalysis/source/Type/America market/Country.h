@@ -2,15 +2,14 @@
 
 #include"SetCountry.h"
 
-
 #include<memory>
 
-class CCountry : public CObject {
+class CCountry final : public CObject {
 public:
 	CCountry();
+	~CCountry() override = default;
 
 	void Append(CSetCountry& setCountry);
-
 	void Load(CSetCountry& setCountry);
 
 public:

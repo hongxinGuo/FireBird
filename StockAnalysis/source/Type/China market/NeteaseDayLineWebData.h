@@ -3,30 +3,29 @@
 #include"NeteaseDayLineWebInquiry.h"
 #include"DayLine.h"
 
-
 #include<vector>
 #include<memory>
 
-class CNeteaseDayLineWebData : public CObject {
+class CNeteaseDayLineWebData final : public CObject {
 public:
 	CNeteaseDayLineWebData();
-	~CNeteaseDayLineWebData();
+	~CNeteaseDayLineWebData() override = default;
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数
 	vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
 
 	void SetStockCode(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
-	void SetStockCode(CString strSymbol) noexcept { m_strStockCode = strSymbol; }
+	void SetStockCode(const CString strSymbol) noexcept { m_strStockCode = strSymbol; }
 	CString GetStockCode(void) { return m_strStockCode; }
 
 	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
 	bool TransferWebDataToBuffer(CWebDataPtr pWebData);
 	bool ProcessNeteaseDayLineData();
 	bool ProcessOneNeteaseDayLineData(void);
-	INT64 GetBufferLength(void) noexcept { return m_lBufferLength; }
-	INT64 GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(INT64 lValue) noexcept { m_lCurrentPos = lValue; }
+	INT64 GetBufferLength(void) const noexcept { return m_lBufferLength; }
+	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
+	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 	CDayLinePtr GetCurrentProcessingDayLine(void) { return m_pCurrentProcessingDayLine; }
 	bool SkipNeteaseDayLineInformationHeader(void);
 	void ReportDayLineDownLoaded(void);
@@ -35,7 +34,7 @@ public:
 	bool ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos);
 
 	// 用于调试
-	void PushDayLine(CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
+	void PushDayLine(const CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
 
 protected:
 

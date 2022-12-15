@@ -23,7 +23,7 @@ CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("SinaRT");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
-	ConfigerateSession();
+	ConfigureSession();
 }
 
 CSinaRTWebInquiry::~CSinaRTWebInquiry() {
@@ -59,7 +59,7 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bool 
 /// 调整Session的选项可能会改善接收情况。
 /// </summary>
 /// <param name=""></param>
-void CSinaRTWebInquiry::ConfigerateSession(void) {
+void CSinaRTWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 正常情况下sina实时数据接收时间不超过50毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为4000毫秒

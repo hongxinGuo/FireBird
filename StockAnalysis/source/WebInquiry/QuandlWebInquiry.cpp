@@ -27,7 +27,7 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 	m_strConnectionName = _T("Quandl");
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 
-	ConfigerateSession();
+	ConfigureSession();
 }
 
 CQuandlWebInquiry::~CQuandlWebInquiry() {
@@ -45,7 +45,7 @@ bool CQuandlWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CQuandlWebInquiry::ConfigerateSession(void) {
+void CQuandlWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒

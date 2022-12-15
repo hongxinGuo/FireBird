@@ -2,10 +2,9 @@
 
 #include"SetInsiderSentiment.h"
 
-
 #include<memory>
 
-class CInsiderSentiment : public CObject {
+class CInsiderSentiment final : public CObject {
 public:
 	CInsiderSentiment();
 

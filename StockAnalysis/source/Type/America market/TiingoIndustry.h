@@ -2,17 +2,16 @@
 
 #include"SetTiingoIndustry.h"
 
-
 #include<memory>
 
-class CTiingoIndustry : public CObject {
+class CTiingoIndustry final : public CObject {
 public:
 	CTiingoIndustry();
 
 	void Append(CSetTiingoIndustry& setTiingoIndustry);
 	void Load(CSetTiingoIndustry& setTiingoIndustry);
 
-	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:

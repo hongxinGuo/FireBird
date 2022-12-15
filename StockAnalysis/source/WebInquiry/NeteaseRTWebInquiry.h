@@ -11,7 +11,7 @@ public:
 	virtual bool ReportStatus(long lNumberOfData) const override;
 	virtual bool PrepareNextInquiringString(void) override;
 	virtual CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet = false) override final;
-	virtual void ConfigerateSession(void) override final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+	virtual void ConfigureSession(void) override final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
 
 	virtual bool ParseData(CWebDataPtr pWebData) override final;
 };

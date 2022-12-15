@@ -8,9 +8,9 @@
 #include"GeneralCheck.h"
 
 #include"Thread.h"
+#include"DayLine.h"
 
 #include"FinnhubForexSymbol.h"
-
 #include"MockFinnhubForexSymbol.h"
 
 using namespace testing;
@@ -23,8 +23,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CMockFinnhubForexSymbolTest : public ::testing::Test
-	{
+	class CMockFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

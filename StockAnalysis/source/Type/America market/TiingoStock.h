@@ -1,14 +1,11 @@
 #pragma once
 
-#include"SetWorldStock.h"
 #include"SetTiingoStock.h"
 
-
 #include<memory>
-#include<atomic>
 #include<vector>
 
-class CTiingoStock : public CObject {
+class CTiingoStock final : public CObject {
 public:
 	CTiingoStock();
 	// 不允许复制和赋值。
@@ -16,7 +13,7 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&) = delete;
 	CTiingoStock(const CTiingoStock&&) noexcept = delete;
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
-	virtual ~CTiingoStock() {}
+	virtual ~CTiingoStock() override = default;
 
 	void Reset(void);
 

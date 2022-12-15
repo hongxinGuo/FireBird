@@ -11,13 +11,14 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-
 #include<string>
 
 #include "JsonParse.h"
 
 #include"WebRTData.h"
 #include"SaveAndLoad.h"
+
+#include<boost/property_tree/json_parser.hpp>
 
 bool ConvertToWJSON(wptree& pt, string& s) {
 	wstring ws = to_wide_string(s);
@@ -412,7 +413,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 		if (gl_systemStatus.IsExitingSystem()) return 0;
 		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(_NETEASE_RT_WEB_DATA_);
+		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
 			pRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pRTData);
@@ -426,7 +427,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* ppt) {
 
 	for (auto it = ppt->begin(); it != ppt->end(); ++it) {
 		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(_NETEASE_RT_WEB_DATA_);
+		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 		if (pRTData->ParseNeteaseDataWithPTree(it)) {
 			pvWebRTData->push_back(pRTData);
 		}

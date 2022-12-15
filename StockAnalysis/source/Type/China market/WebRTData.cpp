@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 void CWebRTData::Reset(void) {
-	m_lDataSource = _INVALID_RT_WEB_DATA_;
+	m_lDataSource = INVALID_RT_WEB_DATA_;
 	m_time = 0;
 	m_strSymbol = _T("");
 	m_strStockName = _T("");
@@ -102,16 +102,8 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
-	char buffer1[100];
-	char buffer2[20];
-	char buffer3[100];
-	CString strHeader = _T("var hq_str_s");
-	long lStockCode = 0;
-	double dTemp = 0;
+	const CString strHeader = _T("var hq_str_s");
 	char bufferTest[2000];
-	CString strStockSymbol = _T("");
-	WORD wMarket;
-	CString strSinaStockCode;
 	bool fBadData = false;
 
 	int i = 0;
@@ -127,18 +119,23 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 	i++;
 	bufferTest[i] = 0x000;
 	if (fBadData) {
-		CString strTest = bufferTest;
+		const CString strTest = bufferTest;
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("SinaRTData整体数据出问题，抛掉不用"));
 		gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 		return false; // 整个数据出现错误，后面的皆抛掉
 	}
 
 	try {
+		CString strSinaStockCode;
+		WORD wMarket;
+		double dTemp = 0;
+		char buffer3[100];
+		char buffer2[20];
+		char buffer1[100];
 		m_fActive = false; // 初始状态为无效数据
 		pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // 读入“var hq_str_s"
 		buffer1[12] = 0x000;
-		CString str1;
-		str1 = buffer1;
+		const CString str1 = buffer1;
 		if (strHeader.Compare(str1) != 0) {
 			// 数据格式出错
 			throw exception();
@@ -159,7 +156,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 
 		pSinaWebRTData->GetData(buffer2, 6, pSinaWebRTData->GetCurrentPos());
 		buffer2[6] = 0x000;
-		strStockSymbol = buffer2;
+		const CString strStockSymbol = buffer2;
 		switch (wMarket) {
 		case _SHANGHAI_MARKET_:
 			strSinaStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
@@ -171,7 +168,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			throw exception();
 		}
 		m_strSymbol = XferSinaToStandard(strSinaStockCode);
-		lStockCode = static_cast<long>(atof(buffer2));
+		long lStockCode = static_cast<long>(atof(buffer2));
 		pSinaWebRTData->IncreaseCurrentPos(6);
 
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // 读入'="'
@@ -191,7 +188,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 			}
 			pSinaWebRTData->IncreaseCurrentPos();
 			m_fActive = false;
-			SetDataSource(_SINA_RT_WEB_DATA_);
+			SetDataSource(SINA_RT_WEB_DATA_);
 			return true; // 非活跃股票没有实时数据，在此返回。
 		}
 		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) {
@@ -287,8 +284,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
 			throw exception();
 		}
-		CString strTime;
-		strTime = buffer1;
+		CString strTime = buffer1;
 		strTime += ' '; //添加一个空格，以利于下面的转换
 		if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 			throw exception();
@@ -324,7 +320,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
 		// 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
 		CheckSinaRTDataActive();
-		SetDataSource(_SINA_RT_WEB_DATA_);
+		SetDataSource(SINA_RT_WEB_DATA_);
 		return true;
 	}
 	catch (exception& e) {
@@ -347,13 +343,12 @@ bool CWebRTData::CheckSinaRTDataActive(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue) {
-	INT64 llTemp;
 	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 		return false;
 	}
-	llTemp = static_cast<INT64>(atof(buffer3));
+	const auto llTemp = static_cast<INT64>(atof(buffer3));
 	if (llTemp < 0) return false;
 	if (llTemp > 0) llReturnValue = llTemp;
 	return true;
@@ -366,13 +361,12 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnVal
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
-	long lTemp;
 	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
 		return false;
 	}
-	lTemp = static_cast<long>(atof(buffer3));
+	const long lTemp = static_cast<long>(atof(buffer3));
 	if (lTemp < 0) return false;
 	if (lTemp > 0) lReturnValue = lTemp;
 	return true;
@@ -401,8 +395,8 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnVal
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
-	int i = 0;
 	try {
+		int i = 0;
 		while ((pSinaWebRTData->GetCurrentPosData() != ',')) {
 			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) throw exception();
 			if (i > 150) throw exception();
@@ -475,24 +469,23 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
-	char buffer1[200];
-	char buffer2[7];
-	char buffer3[200];
-	CString strHeader = _T("v_s");
+	const CString strHeader = _T("v_s");
 	long lTemp = 0;
-	INT64 llTemp = 0;
-	double dTemp = 0.0;
 	float fTemp = 0.0;
-	long lStockCode = 0;
-	WORD wMarket;
-	CString strStockSymbol, strTengxunStockCode;
 
 	try {
+		CString strTengxunStockCode;
+		WORD wMarket;
+		long lStockCode = 0;
+		double dTemp = 0.0;
+		INT64 llTemp = 0;
+		char buffer3[200];
+		char buffer2[7];
+		char buffer1[200];
 		m_fActive = false; // 初始状态为无效数据
 		pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // 读入“v_s"
 		buffer1[3] = 0x000;
-		CString str1;
-		str1 = buffer1;
+		const CString str1 = buffer1;
 		if (strHeader.Compare(str1) != 0) {
 			// 数据格式出错
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData格式出错"));
@@ -515,7 +508,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		// 六位股票代码
 		pTengxunWebRTData->GetData(buffer2, 6, pTengxunWebRTData->GetCurrentPos());
 		buffer2[6] = 0x000;
-		strStockSymbol = buffer2;
+		const CString strStockSymbol = buffer2;
 		switch (wMarket) {
 		case _SHANGHAI_MARKET_:
 			strTengxunStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
@@ -771,7 +764,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 			}
 		}
 		CheckTengxunRTDataActive();
-		SetDataSource(_TENGXUN_RT_WEB_DATA_);
+		SetDataSource(TENGXUN_RT_WEB_DATA_);
 		return true;
 	}
 	catch (exception& e) {
@@ -801,13 +794,12 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturnValue) {
-	INT64 llTemp;
 	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 		return false;
 	}
-	llTemp = atoll(buffer3);
+	const INT64 llTemp = atoll(buffer3);
 	if (llTemp < 0) return false;
 	if (llTemp > 0) llReturnValue = llTemp;
 	return true;
@@ -820,13 +812,12 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llRet
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturnValue) {
-	double dTemp;
 	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
 		return false;
 	}
-	dTemp = atof(buffer3);
+	const double dTemp = atof(buffer3);
 	dReturnValue = dTemp;
 	return true;
 }
@@ -838,13 +829,12 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dRet
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnValue) {
-	long lTemp;
 	char buffer3[200];
 
 	if (!ReadTengxunOneValue(pWebDataReceived, buffer3)) {
 		return false;
 	}
-	lTemp = atol(buffer3);
+	const long lTemp = atol(buffer3);
 	if (lTemp < 0) return false;
 	if (lTemp > 0) lReturnValue = lTemp;
 	return true;
@@ -903,13 +893,13 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 	ptree pt1, pt2;
 	bool fSucceed = true;
-	string strSymbol, strSymbol2, strTime, strUpdateTime, strName;
-	double dHigh, dLow, dNew, dOpen, dLastClose;
+	string strSymbol, strTime, strUpdateTime, strName;
 	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
-	string sName;
 
 	try {
+		string sName;
+		string strSymbol2;
 		pt1 = it->second;
 		strSymbol = it->first;
 		strSymbol4 = XferNeteaseToStandard(strSymbol.c_str());
@@ -930,6 +920,11 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		fSucceed = false;
 	}
 	try {
+		double dLastClose;
+		double dOpen;
+		double dNew;
+		double dLow;
+		double dHigh;
 		SetVolume(ptreeGetLongLong(pt1, _T("volume")));
 		m_llAmount = ptreeGetLongLong(pt1, _T("turnover"));
 		dHigh = ptreeGetDouble(pt1, _T("high"));
@@ -1009,14 +1004,14 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 	bool fSucceed = true;
-	string symbolName, strSymbol2, strTime, strUpdateTime, strName;
-	double dHigh, dLow, dNew, dOpen, dLastClose;
+	string symbolName, strTime, strUpdateTime, strName;
 	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
-	string sName;
 	json js;
 
 	try {
+		string sName;
+		string strSymbol2;
 		symbolName = it.key();
 		js = it.value();
 		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
@@ -1037,6 +1032,11 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		fSucceed = false;
 	}
 	try {
+		double dLastClose;
+		double dOpen;
+		double dNew;
+		double dLow;
+		double dHigh;
 		SetVolume(js.at(_T("volume")));
 		m_llAmount = js.at(_T("turnover"));
 		dHigh = js.at(_T("high"));

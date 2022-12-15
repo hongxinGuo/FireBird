@@ -66,10 +66,10 @@ namespace StockAnalysisTest {
 
 	TEST_F(CStockWebRTDataTest, TestGetDatasource) {
 		CWebRTData rtData;
-		EXPECT_EQ(rtData.GetDataSource(), _INVALID_RT_WEB_DATA_);
+		EXPECT_EQ(rtData.GetDataSource(), INVALID_RT_WEB_DATA_);
 		EXPECT_FALSE(rtData.IsValidDataSource());
-		rtData.SetDataSource(_SINA_RT_WEB_DATA_);
-		EXPECT_EQ(rtData.GetDataSource(), _SINA_RT_WEB_DATA_);
+		rtData.SetDataSource(SINA_RT_WEB_DATA_);
+		EXPECT_EQ(rtData.GetDataSource(), SINA_RT_WEB_DATA_);
 		EXPECT_TRUE(rtData.IsValidDataSource());
 	}
 

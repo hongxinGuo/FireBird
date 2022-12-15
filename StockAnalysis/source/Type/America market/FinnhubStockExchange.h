@@ -2,10 +2,9 @@
 
 #include"SetFinnhubStockExchange.h"
 
-
 #include<memory>
 
-class CFinnhubStockExchange : public CObject {
+class CFinnhubStockExchange final : public CObject {
 public:
 	CFinnhubStockExchange();
 
@@ -13,7 +12,7 @@ public:
 
 	void Load(CSetFinnhubStockExchange& setFinnhubExchange);
 
-	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:

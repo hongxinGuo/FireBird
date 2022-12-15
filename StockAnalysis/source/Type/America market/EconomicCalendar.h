@@ -2,12 +2,12 @@
 
 #include"SetEconomicCalendar.h"
 
-
 #include<memory>
 
-class CEconomicCalendar : public CObject {
+class CEconomicCalendar final : public CObject {
 public:
 	CEconomicCalendar();
+	~CEconomicCalendar() override = default;
 
 	void Load(CSetEconomicCalendar& setEconomicCalendar);
 	void Append(CSetEconomicCalendar& setEconomicCalendar);

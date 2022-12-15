@@ -35,17 +35,17 @@ namespace StockAnalysisTest {
 	};
 
 	// 无效实时数据标识
-	SinaRTData rtData1(1, _T("600000.SS"), _INVALID_RT_WEB_DATA_, false, -10);
+	SinaRTData rtData1(1, _T("600000.SS"), INVALID_RT_WEB_DATA_, false, -10);
 	// 正常实时数据，但时间比较旧（一样）
-	SinaRTData rtData2(2, _T("000001.SZ"), _SINA_RT_WEB_DATA_, true, -10);
+	SinaRTData rtData2(2, _T("000001.SZ"), SINA_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
-	SinaRTData rtData3(3, _T("600601.SS"), _SINA_RT_WEB_DATA_, true, 0);
+	SinaRTData rtData3(3, _T("600601.SS"), SINA_RT_WEB_DATA_, true, 0);
 	// 非活跃股票，更新的时间
-	SinaRTData rtData4(4, _T("600000.SS"), _SINA_RT_WEB_DATA_, true, 0);
+	SinaRTData rtData4(4, _T("600000.SS"), SINA_RT_WEB_DATA_, true, 0);
 	// 在本测试集的开始，故意设置sh600008的状态为非活跃
-	SinaRTData rtData5(5, _T("600008.SS"), _SINA_RT_WEB_DATA_, true, -5);
+	SinaRTData rtData5(5, _T("600008.SS"), SINA_RT_WEB_DATA_, true, -5);
 	// 新股票代码
-	SinaRTData rtData6(6, _T("000000.SN"), _SINA_RT_WEB_DATA_, true, 0);
+	SinaRTData rtData6(6, _T("000000.SN"), SINA_RT_WEB_DATA_, true, 0);
 	//SinaRTData rtData7(7, _T("140000")_SINA_RT_WEB_DATA_, true, 10101010);
 	//SinaRTData rtData8(8, _T("1400000")_SINA_RT_WEB_DATA_, true, 10101010);
 

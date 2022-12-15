@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
-		FinnhubWebInquiry._TESTSetBuffer(_T("testData"));
+		FinnhubWebInquiry.TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
-		FinnhubWebInquiry._TESTSetBuffer(strMessage);
+		FinnhubWebInquiry.TESTSetBuffer(strMessage);
 		FinnhubWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);

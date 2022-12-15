@@ -1,16 +1,14 @@
 #pragma once
 
-#include"SetWorldStock.h"
 #include"SetTiingoCrypto.h"
 
-
 #include<memory>
-#include<atomic>
 #include<vector>
 
-class CTiingoCryptoSymbol : public CObject {
+class CTiingoCryptoSymbol final : public CObject {
 public:
 	CTiingoCryptoSymbol();
+
 	void Reset(void);
 
 	void Load(CSetTiingoCrypto& setTiingoCrypto);

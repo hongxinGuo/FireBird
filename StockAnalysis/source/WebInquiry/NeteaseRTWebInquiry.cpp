@@ -41,7 +41,7 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 #endif
 
-	ConfigerateSession();
+	ConfigureSession();
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
@@ -86,7 +86,7 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bo
 /// 修改session各参数，试试能否解决问题。
 /// </summary>
 /// <param name=""></param>
-void CNeteaseRTWebInquiry::ConfigerateSession(void) {
+void CNeteaseRTWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 500); // 设置连接超时时间为4000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 500); // 设置接收超时时间为4000毫秒

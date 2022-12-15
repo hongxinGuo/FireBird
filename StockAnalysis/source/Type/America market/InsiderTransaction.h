@@ -2,10 +2,9 @@
 
 #include"SetInsiderTransaction.h"
 
-
 #include<memory>
 
-class CInsiderTransaction : public CObject {
+class CInsiderTransaction final : public CObject {
 public:
 	CInsiderTransaction();
 

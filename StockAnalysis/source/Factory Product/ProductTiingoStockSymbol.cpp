@@ -97,7 +97,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 	const auto ppt = pWebData->GetPTree();
 	try {
 		CString str;
-		int iCount;
+		int iCount = 0;
 		ptree pt2;
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
 			pStock = make_shared<CTiingoStock>();

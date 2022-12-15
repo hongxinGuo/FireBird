@@ -10,8 +10,8 @@
 #include"Thread.h"
 
 #include"FinnhubCryptoSymbol.h"
-
 #include"MockFinnhubCryptoSymbol.h"
+#include"DayLine.h"
 
 using namespace testing;
 #include<memory>
@@ -23,8 +23,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CMockFinnhubCryptoSymbolTest : public ::testing::Test
-	{
+	class CMockFinnhubCryptoSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

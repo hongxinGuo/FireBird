@@ -393,7 +393,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		pRTData = PopSinaRT();
-		if (pRTData->GetDataSource() == _INVALID_RT_WEB_DATA_) {
+		if (pRTData->GetDataSource() == INVALID_RT_WEB_DATA_) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
 			continue;
 		}
@@ -467,7 +467,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopNeteaseRT();
-		if (pRTData->GetDataSource() == _INVALID_RT_WEB_DATA_) {
+		if (pRTData->GetDataSource() == INVALID_RT_WEB_DATA_) {
 			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
 			continue;
 		}

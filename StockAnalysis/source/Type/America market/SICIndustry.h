@@ -2,17 +2,16 @@
 
 #include"SetSICIndustry.h"
 
-
 #include<memory>
 
-class CSICIndustry : public CObject {
+class CSICIndustry final : public CObject {
 public:
 	CSICIndustry();
 
 	void Append(CSetSICIndustry& setSICIndustry);
 	void Load(CSetSICIndustry& setSICIndustry);
 
-	void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated(void) const noexcept { return m_fUpdated; }
 
 public:

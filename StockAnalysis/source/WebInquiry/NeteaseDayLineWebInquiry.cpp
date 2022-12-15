@@ -14,7 +14,7 @@ CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryToken = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strConnectionName = _T("NeteaseDayLine");
 
-	ConfigerateSession();
+	ConfigureSession();
 }
 
 CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
@@ -47,7 +47,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringString(void) {
 	return false;
 }
 
-void CNeteaseDayLineWebInquiry::ConfigerateSession(void)
+void CNeteaseDayLineWebInquiry::ConfigureSession(void)
 {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 正常情况下Netease日线数据接收时间不超过1秒。

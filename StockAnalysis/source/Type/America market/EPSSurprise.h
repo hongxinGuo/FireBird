@@ -2,15 +2,14 @@
 
 #include"SetEPSSurprise.h"
 
-
 #include<memory>
 
-class CEPSSurprise : public CObject {
+class CEPSSurprise final : public CObject {
 public:
 	CEPSSurprise();
 
-	void Append(CSetEPSSurprise& setEPSSukrprise);
-	void Load(CSetEPSSurprise& setEPSSukrprise);
+	void Append(CSetEPSSurprise& setEPSSurprise);
+	void Load(CSetEPSSurprise& setEPSSurprise);
 
 public:
 	CString m_strSymbol;

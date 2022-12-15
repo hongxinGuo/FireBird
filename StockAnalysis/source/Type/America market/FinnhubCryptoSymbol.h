@@ -1,11 +1,8 @@
 #pragma once
 
 #include"VirtualStock.h"
-#include"DayLine.h"
 
 #include"DataCryptoDayLine.h"
-#include"SetCryptoDayLine.h"
-
 
 #include<memory>
 #include<vector>

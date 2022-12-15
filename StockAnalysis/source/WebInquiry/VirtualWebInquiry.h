@@ -11,14 +11,18 @@
 
 #include"ClassDeclaration.h"
 
-
 #include<atomic>
 #include<string>
 
 class CVirtualWebInquiry : public CObject {
 public:
 	CVirtualWebInquiry();
-	virtual ~CVirtualWebInquiry(void);
+	// 只能有一个实例,不允许赋值。
+	CVirtualWebInquiry(const CVirtualWebInquiry&) = delete;
+	CVirtualWebInquiry& operator=(const CVirtualWebInquiry&) = delete;
+	CVirtualWebInquiry(const CVirtualWebInquiry&&) noexcept = delete;
+	CVirtualWebInquiry& operator=(const CVirtualWebInquiry&&) noexcept = delete;
+	~CVirtualWebInquiry(void) override;
 
 	void SetDefaultSessionOption(void);
 
@@ -31,8 +35,11 @@ public:
 
 	bool VerifyDataLength();
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
-	virtual bool ParseData(CWebDataPtr pWebData) { TRACE("调用了基类函数\n"); return false; }; // 解析接收到的数据。继承类必须实现此函数。
-	void ResetBuffer(void) { m_sBuffer.resize(_DefaultWebDataBufferSize_); }
+	virtual bool ParseData(CWebDataPtr pWebData) {
+		TRACE("调用了基类函数\n");
+		return false;
+	} //解析接收到的数据。继承类必须实现此函数。
+	void ResetBuffer(void) { m_sBuffer.resize(DefaultWebDataBufferSize_); }
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
@@ -44,16 +51,26 @@ public:
 
 	// 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
 	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
-	virtual bool PrepareNextInquiringString(void) { ASSERT(0); return true; }
-	virtual CString GetNextInquiringMiddleString(long, bool) { ASSERT(0); return _T(""); } // 申请下一个查询用字符串
-	virtual void PrepareReadingWebData(void);// 在读取网络数据前的准备工作，默认为设置m_pSession状态。
-	virtual void ConfigerateSession(void) { TRACE("调用了基类函数ConfigerateSession\n"); }// 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
+	virtual bool PrepareNextInquiringString(void) {
+		ASSERT(0);
+		return true;
+	}
+
+	virtual CString GetNextInquiringMiddleString(long, bool) {
+		ASSERT(0);
+		return _T("");
+	} //申请下一个查询用字符串
+	virtual void PrepareReadingWebData(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
+	virtual void ConfigureSession(void) {
+		TRACE("调用了基类函数ConfigureSession\n");
+	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {} // 成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
+	} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString(CString strMIddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
-	void SetInquiringString(CString const str) noexcept { m_strInquiry = str; }
+	void SetInquiringString(const CString str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(CString const str) noexcept { m_strInquiry += str; }
 
 	void SetDataSource(CVirtualDataSource* pDataSource) { m_pDataSource = pDataSource; }
@@ -61,12 +78,12 @@ public:
 	CString GetHeaders(void) const noexcept { return m_strHeaders; }
 	void SetHeaders(CString const strHeaders) noexcept { m_strHeaders = strHeaders; }
 
-	char GetData(long lIndex) const { return m_sBuffer.at(lIndex); }
-	void SetData(long lIndex, char value) { m_sBuffer.at(lIndex) = value; }
+	char GetData(const long lIndex) const { return m_sBuffer.at(lIndex); }
+	void SetData(const long lIndex, const char value) { m_sBuffer.at(lIndex) = value; }
 
 	long GetByteRead(void) const noexcept { return m_lByteRead; }
-	void SetByteRead(long lValue) noexcept { m_lByteRead = lValue; }
-	void AddByteRead(long lValue) noexcept { m_lByteRead += lValue; }
+	void SetByteRead(const long lValue) noexcept { m_lByteRead = lValue; }
+	void AddByteRead(const long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
 
 	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
@@ -75,31 +92,39 @@ public:
 	void SetInquiryToken(CString const strToken) noexcept { m_strInquiryToken = strToken; }
 
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
-	void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
+	void SetReadingWebData(const bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-	bool IsWebError(void) const noexcept { if (m_dwWebErrorCode == 0) return false; else return true; }
+	bool IsWebError(void) const noexcept {
+		if (m_dwWebErrorCode == 0) return false;
+		else return true;
+	}
+
 	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
-	void SetErrorCode(DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
-	bool IsTimeout(void) noexcept { if (m_dwWebErrorCode == 12002) return true; else return false; }
+	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
+
+	bool IsTimeout(void) noexcept {
+		if (m_dwWebErrorCode == 12002) return true;
+		else return false;
+	}
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
 
 	CString GetConnectionName(void) const { return m_strConnectionName; }
 
 	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
-	void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
+	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
 	static INT64 GetTotalByteRead(void) noexcept { return sm_lTotalByteRead; }
-	static void SetTotalByteRead(INT64 lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
+	static void SetTotalByteRead(const INT64 lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead(void) noexcept { sm_lTotalByteRead = 0; }
 
-	void SetCurrentInquiryTime(time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
+	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
 
 public:
 	// 以下为测试用函数
-	void _TESTSetBuffer(char* buffer, INT64 lTotalNumber);
-	void _TESTSetBuffer(CString str);
+	void TESTSetBuffer(char* buffer, INT64 lTotalNumber);
+	void TESTSetBuffer(CString str);
 
 protected:
 	CVirtualDataSource* m_pDataSource; // 指向包含自己的数据源。此指针必须使用裸指针，不能使用智能指针，否则解析时会出现循环，导致不可知的结果。
@@ -111,7 +136,7 @@ protected:
 	string m_sBuffer; // 接收到数据的缓冲区
 	long m_lByteRead; // 接收到的字符数.
 
-	CString m_strInquiry;// 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
+	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
 	CString m_strInquiryFunction; // 查询字符串功能部分
 	CString m_strInquiryToken; // 查询字符串令牌
 

@@ -12,7 +12,7 @@ public:
 
 	virtual bool PrepareNextInquiringString(void) override;
 	virtual CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet = false) override final;
-	virtual void ConfigerateSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
+	virtual void ConfigureSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
 	virtual bool ReportStatus(long lNumberOfData) const override;
 
 	bool IsTengxunRTDataInvalid(CWebData& WebDataReceived);

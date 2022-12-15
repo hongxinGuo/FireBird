@@ -449,15 +449,14 @@ void CWorldStock::SaveInsiderSentiment(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldStock::UpdateCompanyNewsDB(void) {
-	CSetCompanyNews setCompanyNews;
 	size_t lSize = 0;
 	CCompanyNewsPtr pCompanyNews = nullptr;
-	long lCurrentPos = 0;
-	bool fNeedUpdate = false;
 
 	ASSERT(m_vCompanyNews.size() > 0);
 	lSize = m_vCompanyNews.size();
 	if (m_strSymbol.GetLength() > 0) {
+		CSetCompanyNews setCompanyNews;
+		long lCurrentPos = 0;
 		setCompanyNews.m_strFilter = _T("[Symbol] = '");
 		setCompanyNews.m_strFilter += m_strSymbol + _T("'");
 		setCompanyNews.m_strSort = _T("[DateTime]");

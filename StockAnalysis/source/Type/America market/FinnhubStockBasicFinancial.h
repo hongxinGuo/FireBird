@@ -4,7 +4,6 @@
 #include"SetFinnhubStockBasicFinancialQuarter.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 
-
 #include<memory>
 
 class CValueOfPeriod {
@@ -195,10 +194,10 @@ public:
 //"yearToDatePriceReturnDaily" : 63.01775
 //		},
 //		"metricType": "all",
-	//
+//
 /// </summary>
 
-class CFinnhubStockBasicFinancial : public CObject {
+class CFinnhubStockBasicFinancial final : public CObject {
 public:
 	CFinnhubStockBasicFinancial();
 
@@ -216,7 +215,7 @@ public:
 	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData);
 
-	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CValueOfPeriod>& vData, CString typeName, vector <CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData);
 
 	bool IsNewData(CString type, CValueOfPeriod vData, vector<CItemOfBasicFinancialSeasonData>& vDBData);

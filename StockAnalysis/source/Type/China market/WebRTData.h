@@ -105,10 +105,10 @@
 #pragma once
 
 enum {
-	_INVALID_RT_WEB_DATA_ = 0,
-	_SINA_RT_WEB_DATA_ = 1,
-	_TENGXUN_RT_WEB_DATA_ = 2,
-	_NETEASE_RT_WEB_DATA_ = 3,
+	INVALID_RT_WEB_DATA_ = 0,
+	SINA_RT_WEB_DATA_ = 1,
+	TENGXUN_RT_WEB_DATA_ = 2,
+	NETEASE_RT_WEB_DATA_ = 3,
 };
 
 #include"WebData.h"
@@ -121,7 +121,7 @@ class CWebRTData;
 typedef std::shared_ptr<CWebRTData> CWebRTDataPtr;
 
 #include<boost/property_tree/ptree.hpp>
-using namespace boost::property_tree;
+using boost::property_tree::ptree;
 
 #include"NlohmannJsonDeclaration.h"
 
@@ -134,8 +134,7 @@ public:
 	CWebRTData& operator=(const CWebRTData&) = delete;
 	CWebRTData(const CWebRTData&&) noexcept = delete;
 	CWebRTData& operator=(const CWebRTData&&) noexcept = delete;
-
-	virtual ~CWebRTData(void) override = default;
+	~CWebRTData(void) override = default;
 
 	void Reset(void);
 
@@ -167,58 +166,58 @@ public:
 	bool ParseNeteaseDataWithNlohmannJSon(json::iterator& it);
 
 public:
-	void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
+	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	long GetDataSource(void) const noexcept { return m_lDataSource; }
 	time_t GetTransactionTime(void) const noexcept { return m_time; }
-	void SetTransactionTime(time_t time) noexcept { m_time = time; }
+	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
 	CString GetSymbol(void) const { return m_strSymbol; }
-	void SetSymbol(CString str) { m_strSymbol = str; }
+	void SetSymbol(const CString str) { m_strSymbol = str; }
 	CString GetStockName(void) const { return m_strStockName; }
-	void SetStockName(CString str) { m_strStockName = str; }
+	void SetStockName(const CString str) { m_strStockName = str; }
 	long GetLastClose(void) const noexcept { return m_lLastClose; }
-	void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen(void) const noexcept { return m_lOpen; }
-	void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+	void SetOpen(const long lValue) noexcept { m_lOpen = lValue; }
 	long GetHigh(void) const noexcept { return m_lHigh; }
-	void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+	void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
 	long GetLow(void) const noexcept { return m_lLow; }
-	void SetLow(long lValue) noexcept { m_lLow = lValue; }
+	void SetLow(const long lValue) noexcept { m_lLow = lValue; }
 	long GetNew(void) const noexcept { return m_lNew; }
-	void SetNew(long lValue) noexcept { m_lNew = lValue; }
+	void SetNew(const long lValue) noexcept { m_lNew = lValue; }
 	INT64 GetAmount(void) const noexcept { return m_llAmount; }
-	void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+	void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
 	INT64 GetVolume(void) const noexcept { return m_llVolume; }
-	void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-	void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+	void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
+	void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
 	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
-	void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+	void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
 	INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
 	long GetBuy(void) const noexcept { return m_lBuy; }
-	void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
+	void SetBuy(const long lValue) noexcept { m_lBuy = lValue; }
 	long GetSell(void) const noexcept { return m_lSell; }
-	void SetSell(long lValue) noexcept { m_lSell = lValue; }
+	void SetSell(const long lValue) noexcept { m_lSell = lValue; }
 	long GetHighLimit(void) const noexcept { return m_lHighLimit; }
-	void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
+	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
 	long GetLowLimit(void) const noexcept { return m_lLowLimit; }
-	void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
-	long GetPBuy(int iIndex) const { return m_lPBuy.at(iIndex); }
-	void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
-	long GetVBuy(int iIndex) const { return m_lVBuy.at(iIndex); }
-	void SetVBuy(int iIndex, long lValue) { m_lVBuy.at(iIndex) = lValue; }
-	long GetPSell(int iIndex) const { return m_lPSell.at(iIndex); }
-	void SetPSell(int iIndex, long lValue) { m_lPSell.at(iIndex) = lValue; }
-	long GetVSell(int iIndex) const { return m_lVSell.at(iIndex); }
-	void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
+	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
+	long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
+	void SetPBuy(const int iIndex, const long lValue) { m_lPBuy.at(iIndex) = lValue; }
+	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
+	void SetVBuy(const int iIndex, const long lValue) { m_lVBuy.at(iIndex) = lValue; }
+	long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
+	void SetPSell(const int iIndex, const long lValue) { m_lPSell.at(iIndex) = lValue; }
+	long GetVSell(const int iIndex) const { return m_lVSell.at(iIndex); }
+	void SetVSell(const int iIndex, const long lValue) { m_lVSell.at(iIndex) = lValue; }
 
 	bool IsActive(void) const noexcept { return m_fActive; }
-	void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 	bool CheckNeteaseRTDataActive(void);
 	bool CheckSinaRTDataActive(void);
 	bool CheckTengxunRTDataActive(void);
 	bool IsValidTime(long lDays) const;
-	//void SetActive(bool fFlag)  { m_fActive = fFlag; }
+
 	bool IsValidDataSource(void) const noexcept {
-		if (m_lDataSource != _INVALID_RT_WEB_DATA_) return true;
+		if (m_lDataSource != INVALID_RT_WEB_DATA_) return true;
 		else return false;
 	}
 

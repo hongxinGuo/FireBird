@@ -3,11 +3,8 @@
 #include "Guadan.h"
 
 CGuadan::CGuadan(void) {
-  m_lCurrentVolume = 0;
-  ReSet();
-}
-
-CGuadan::~CGuadan(void) {
+	m_lCurrentVolume = 0;
+	ReSet();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -16,29 +13,29 @@ CGuadan::~CGuadan(void) {
 //
 /////////////////////////////////////////////////////////////////////////
 void CGuadan::ReSet(void) {
-  m_lCurrentVolume = 0;		//
-  m_lFormerVolume = 0;		//
-  m_lMaxPos = 0;
-  m_vGuadan.resize(0);
-  m_lCompletedPos = 0;
+	m_lCurrentVolume = 0; //
+	m_lFormerVolume = 0; //
+	m_lMaxPos = 0;
+	m_vGuadan.resize(0);
+	m_lCompletedPos = 0;
 }
 
 void CGuadan::AddGuadan(COneGuadan oneGuadan) {
-  m_vGuadan.push_back(oneGuadan);
-  m_lMaxPos++;
+	m_vGuadan.push_back(oneGuadan);
+	m_lMaxPos++;
 }
 
 COneGuadan& CGuadan::GetGuadan(void) {
-  return(m_vGuadan.at(m_lMaxPos - 1));
+	return (m_vGuadan.at(m_lMaxPos - 1));
 }
 
 COneGuadan& CGuadan::GetGuadan(long lIndex) {
-  return(m_vGuadan.at(lIndex));
+	return (m_vGuadan.at(lIndex));
 }
 
 void CGuadan::SetCurrentVolume(long lVolume) {
-  m_lFormerVolume = m_lCurrentVolume;
-  m_lCurrentVolume = lVolume;
+	m_lFormerVolume = m_lCurrentVolume;
+	m_lCurrentVolume = lVolume;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -47,5 +44,5 @@ void CGuadan::SetCurrentVolume(long lVolume) {
 //
 ////////////////////////////////////////////////////////////////////////
 void CGuadan::SetStatus(long lPos, long lStatus) {
-  m_vGuadan.at(lPos).SetStatus(lStatus);
+	m_vGuadan.at(lPos).SetStatus(lStatus);
 }

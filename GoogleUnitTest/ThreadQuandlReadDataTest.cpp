@@ -20,8 +20,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadQuandlDataTest : public ::testing::Test
-	{
+	class CThreadReadQuandlDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 		}
@@ -37,6 +36,7 @@ namespace StockAnalysisTest {
 
 		virtual void TearDown(void) override {
 		}
+
 		CMockQuandlWebInquiry QuandlWebInquiry;
 	};
 
@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
-		QuandlWebInquiry._TESTSetBuffer(_T("testData"));
+		QuandlWebInquiry.TESTSetBuffer(_T("testData"));
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pQuandlDataSource->GetReceivedDataSize(), 0);
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
-		QuandlWebInquiry._TESTSetBuffer(strMessage);
+		QuandlWebInquiry.TESTSetBuffer(strMessage);
 		QuandlWebInquiry.SetReadingWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);

@@ -2,9 +2,6 @@
 
 #include"VirtualHistoryCandleExtend.h"
 
-#include<gsl/gsl>
-using namespace gsl;
-
 #include<memory>
 
 class CDayLine;

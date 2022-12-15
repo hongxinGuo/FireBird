@@ -14,7 +14,7 @@ public:
 	virtual bool PrepareNextInquiringString(void) override;
 	virtual CString GetNextInquiringMiddleString(long, bool) override { return _T(""); }
 	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void ConfigerateSession(void) override final;
+	virtual void ConfigureSession(void) override final;
 	virtual bool ParseData(CWebDataPtr pWebData); // 数据为JSon格式, 需要解析
 };
 

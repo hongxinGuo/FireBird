@@ -9,18 +9,16 @@
 
 #include"ClassDeclaration.h"
 
-
 #include<memory>
 #include<string>
 using std::string;
 
 #include<boost/property_tree/ptree.hpp>
-#include<boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
+using boost::property_tree::ptree;
 
 #include"nlohmannJsonDeclaration.h"
 
-constexpr int _DefaultWebDataBufferSize_ = 1024 * 1024;
+constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData final : public CObject {
 public:
@@ -44,7 +42,7 @@ public:
 		else return true;
 	}
 
-	void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 
 	bool OutOfRange(void) const noexcept {
@@ -52,19 +50,19 @@ public:
 		else return false;
 	}
 
-	void Resize(long lSize) {
+	void Resize(const long lSize) {
 		m_sDataBuffer.resize(lSize);
 		m_lBufferLength = lSize;
 	}
 
 	time_t GetTime(void) const noexcept { return m_tTime; }
-	void SetTime(time_t tTime) noexcept { m_tTime = tTime; }
+	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }
 	CString GetStockCode(void) const noexcept { return m_strStockCode; }
 	void SetStockCode(CString strStockCode) noexcept { m_strStockCode = strStockCode; }
 	INT64 GetBufferLength(void) const noexcept { return m_lBufferLength; }
-	void SetBufferLength(INT64 lValue) noexcept { m_lBufferLength = lValue; }
+	void SetBufferLength(const INT64 lValue) noexcept { m_lBufferLength = lValue; }
 	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(INT64 lValue) noexcept { m_lCurrentPos = lValue; }
+	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
 	string GetDataBuffer(void) noexcept { return m_sDataBuffer; }
 	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
@@ -72,14 +70,14 @@ public:
 	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
 	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
 
-	char GetData(INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
-	void SetData(INT64 lIndex, char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
+	char GetData(const INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
+	void SetData(const INT64 lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
 	char GetCurrentPosData(void) const { return m_sDataBuffer.at(m_lCurrentPos); }
-	void SetCurrentPosData(char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
+	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	void SetJSonContentType(bool fFlag) noexcept { m_fJSonContentType = fFlag; }
+	void SetJSonContentType(const bool fFlag) noexcept { m_fJSonContentType = fFlag; }
 	bool IsJSonContentType(void) const noexcept { return m_fJSonContentType; }
-	void SetParsed(bool fFlag) noexcept { m_fParsed = fFlag; }
+	void SetParsed(const bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed(void) const noexcept { return m_fParsed; }
 
 	bool IsVoidJson(void) const noexcept {
@@ -87,8 +85,7 @@ public:
 		else return false;
 	}
 
-	bool CheckNoRightToAccess(string sCode = _T("error"),
-	                          string sMessage = _T("You don't have access to this resource."));
+	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource."));
 	// 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用boost Property tree将数据转换为json格式。
@@ -102,7 +99,7 @@ public:
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数
-	void _Test_SetBuffer_(CString strBuffer);
+	void Test_SetBuffer_(CString strBuffer);
 
 protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式

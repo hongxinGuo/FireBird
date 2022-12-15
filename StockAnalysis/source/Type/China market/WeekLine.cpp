@@ -1,8 +1,6 @@
 #include"pch.h"
 
-//
 #include"TimeConvert.h"
-
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {
@@ -26,7 +24,7 @@ bool CWeekLine::UpdateWeekLine(CVirtualHistoryCandleExtendPtr pHistoryCandleExte
 	else m_lHigh = m_lHigh > pHistoryCandleExtend->GetHigh() ? m_lHigh : pHistoryCandleExtend->GetHigh();
 	if (m_lLow == 0) m_lLow = pHistoryCandleExtend->GetLow();
 	else m_lLow = m_lLow < pHistoryCandleExtend->GetLow() ? m_lLow : pHistoryCandleExtend->GetLow();
-	m_dUpDown = (double)(m_lClose - m_lLastClose) / GetRatio();
+	m_dUpDown = static_cast<double>(m_lClose - m_lLastClose) / GetRatio();
 	if (m_lLastClose > 0) m_dUpDownRate = m_dUpDown * 100000 / m_lLastClose;
 	else m_dUpDownRate = 0;
 
