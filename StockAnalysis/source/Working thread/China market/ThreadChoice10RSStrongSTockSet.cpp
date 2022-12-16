@@ -11,10 +11,7 @@
 
 #include"ChinaMarket.h"
 
-
-#include<semaphore>
-
-binary_semaphore gl_ChoiceRSStrong{ 1 };//由于各种选择股票集的工作线程都操作日线历史数据，故而同一时间只允许一个线程执行，这样能够减少同步问题。
+binary_semaphore gl_ChoiceRSStrong{1}; //由于各种选择股票集的工作线程都操作日线历史数据，故而同一时间只允许一个线程执行，这样能够减少同步问题。
 
 UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket) {
 	gl_ChoiceRSStrong.acquire();
@@ -78,7 +75,7 @@ UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReferenc
 UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -103,7 +100,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -128,7 +125,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem()) {
 		if (gl_pChinaMarket->IsAStock(pStock) && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {

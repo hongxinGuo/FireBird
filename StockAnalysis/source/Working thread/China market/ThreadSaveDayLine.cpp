@@ -12,20 +12,16 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
 #include"ChinaStock.h"
 
 UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
-	CString str;
-	bool fDataSaved = false;
-
 	gl_SaveDayLineThreadPermitted.acquire(); //使用多线程模式。
 	gl_ThreadStatus.IncreaseSavingThread();
 	if (!gl_systemStatus.IsExitingSystem()) {
-		fDataSaved = pStock->SaveDayLineBasicInfo();
+		const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 		pStock->UpdateDayLineStartEndDate();
 		if (fDataSaved) {
-			str = pStock->GetSymbol() + _T("日线资料存储完成");
+			const CString str = pStock->GetSymbol() + _T("日线资料存储完成");
 			gl_systemMessage.PushDayLineInfoMessage(str);
 		}
 		pStock->UnloadDayLine();

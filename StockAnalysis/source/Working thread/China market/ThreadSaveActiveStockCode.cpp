@@ -8,11 +8,7 @@
 #include"pch.h"
 
 #include"Thread.h"
-
 #include"ChinaMarket.h"
-
-
-#include<thread>
 
 UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket) {
 	pMarket->SaveStockSection();

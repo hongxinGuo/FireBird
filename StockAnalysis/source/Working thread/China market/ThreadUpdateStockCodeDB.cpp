@@ -1,10 +1,7 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
-#include"DayLine.h"
 #include"ChinaMarket.h"
-
 #include"Thread.h"
 
 //////////////////////////////////////////////////////////////////////////////////////

@@ -10,21 +10,23 @@
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 	gl_ThreadStatus.IncreaseSavingThread();
 
-	long lStartMonday = GetCurrentMonday(lStartDate);
-	long year = lStartMonday / 10000;
-	long month = lStartMonday / 100 - (lStartMonday / 10000) * 100;
-	long mday = lStartMonday - (lStartMonday / 100) * 100;
-	CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+	const long lStartMonday = GetCurrentMonday(lStartDate);
+	const long year = lStartMonday / 10000;
+	const long month = lStartMonday / 100 - (lStartMonday / 10000) * 100;
+	const long mDay = lStartMonday - (lStartMonday / 100) * 100;
+	CTime ctCurrent(year, month, mDay, 12, 0, 0), ctNext;
 	const CTimeSpan ts7Day(7, 0, 0, 0);
 	long lCurrentMonday = lStartMonday;
 
-	if (lStartDate > 19900101) { // 目前此种情况只用于重新生成本周周线
+	if (lStartDate > 19900101) {
+		// 目前此种情况只用于重新生成本周周线
 		ASSERT(lStartMonday == GetCurrentMonday(pMarket->GetMarketDate()));
 		do {
 			pMarket->DeleteWeekLine(lCurrentMonday);
 			ctCurrent += ts7Day;
 			lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-		} while (lCurrentMonday <= pMarket->GetMarketDate());
+		}
+		while (lCurrentMonday <= pMarket->GetMarketDate());
 	}
 	else {
 		pMarket->DeleteWeekLine();

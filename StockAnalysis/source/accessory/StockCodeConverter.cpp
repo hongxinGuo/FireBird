@@ -4,13 +4,13 @@
 #include"JsonParse.h"
 
 bool IsShanghaiExchange(CString strStockCode) {
-	CString str = GetStockExchange(strStockCode);
+	const CString str = GetStockExchange(strStockCode);
 	if (str.Compare(_T("SS")) == 0) return true;
 	else return false;
 }
 
 bool IsShenzhenExchange(CString strStockCode) {
-	CString str = GetStockExchange(strStockCode);
+	const CString str = GetStockExchange(strStockCode);
 	if (str.Compare(_T("SZ")) == 0) return true;
 	else return false;
 }
@@ -22,7 +22,7 @@ bool IsShenzhenExchange(CString strStockCode) {
 /// <param name="strStockCode"></param>
 /// <returns></returns>
 CString GetStockSymbol(CString strStockCode) {
-	long lLength = strStockCode.GetLength();
+	const long lLength = strStockCode.GetLength();
 	ASSERT(lLength > 3);
 	CString str = strStockCode.Left(lLength - 3);
 	return str;
@@ -50,7 +50,7 @@ CString CreateStockCode(CString strStockExchange, CString strStockSymbol) {
 }
 
 CString XferSinaToStandard(CString strSina) {
-	CString strSymbol = strSina.Right(6);
+	const CString strSymbol = strSina.Right(6);
 	if (strSina.Left(2).Compare(_T("sh")) == 0) {
 		return strSymbol + _T(".") + _T("SS");
 	}
@@ -61,7 +61,7 @@ CString XferSinaToStandard(CString strSina) {
 }
 
 CString XferSinaToNetease(CString strSina) {
-	CString strSymbol = strSina.Right(6);
+	const CString strSymbol = strSina.Right(6);
 	if (strSina.Left(2).Compare(_T("sh")) == 0) {
 		return _T("0") + strSymbol;
 	}
@@ -72,7 +72,7 @@ CString XferSinaToNetease(CString strSina) {
 }
 
 CString XferNeteaseToStandard(CString strNetease) {
-	CString strSymbol = strNetease.Right(6);
+	const CString strSymbol = strNetease.Right(6);
 	if (strNetease.GetAt(0) == '0') {
 		return strSymbol + _T(".") + _T("SS");
 	}
@@ -83,7 +83,7 @@ CString XferNeteaseToStandard(CString strNetease) {
 }
 
 CString XferNeteaseToSina(CString strNetease) {
-	CString strSymbol = strNetease.Right(6);
+	const CString strSymbol = strNetease.Right(6);
 	if (strNetease.GetAt(0) == '0') {
 		return _T("sh") + strSymbol;
 	}
@@ -98,7 +98,7 @@ CString XferTengxunToStandard(CString strTengxun) {
 }
 
 CString XferStandardToSina(CString strStandard) {
-	CString strSymbol = strStandard.Left(6);
+	const CString strSymbol = strStandard.Left(6);
 	if (IsShanghaiExchange(strStandard)) {
 		return _T("sh") + strSymbol;
 	}
@@ -109,7 +109,7 @@ CString XferStandardToSina(CString strStandard) {
 }
 
 CString XferStandardToNetease(CString strStandard) {
-	CString strSymbol = strStandard.Left(6);
+	const CString strSymbol = strStandard.Left(6);
 	if (IsShanghaiExchange(strStandard)) {
 		return _T("0") + strSymbol;
 	}

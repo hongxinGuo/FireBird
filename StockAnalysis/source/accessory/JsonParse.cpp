@@ -244,11 +244,10 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_e
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 	int iTotal = 0;
-	static int i = 0;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	// 截取实时数据时用。为了测试解析速度
-	if (i < pWebData->GetBufferLength()) {
+	if (static int i = 0; i < pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
 		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.dat"), s.c_str());
 		i = pWebData->GetBufferLength();
@@ -276,11 +275,11 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 	char buffer[50]{};
 	char* pBuffer = buffer;
-	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
 	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
 	buffer[21] = 0x000;
-	CString str1 = buffer;
+	const CString str1 = buffer;
 
 	if (str1.Compare(strInvalidStock) == 0) {
 		ASSERT(WebDataReceived.GetBufferLength() == 21);
@@ -399,10 +398,10 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
-	CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
+	auto pData = make_shared<CNeteaseDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
-	pData->ProcessNeteaseDayLineData(); // pData的日线数据是逆序的，最新日期的在前面。
+	pData->ProcessNeteaseDayLineData(); //pData的日线数据是逆序的，最新日期的在前面。
 
 	return pData;
 }
@@ -456,7 +455,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData)
 	shared_ptr<ptree> ppt = nullptr;
 	int iTotal = 0;
 	bool fProcess = true;
-	ptree* ppt2 = nullptr;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	fProcess = true;
@@ -471,7 +469,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData)
 	}
 	if (fProcess && pData->IsParsed()) {
 		ppt = pData->GetPTree();
-		ppt2 = ppt.get();
+		ptree* ppt2 = ppt.get();
 		pvWebRTData = ParseNeteaseRTData(ppt2);
 	}
 	return pvWebRTData;
@@ -494,9 +492,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
-	string ss;
-	json* pjs = nullptr;
-	bool fProcess = true;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	static int i = 0;
@@ -505,7 +500,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
 		i = pData->GetBufferLength();
 	}
-	fProcess = true;
+	bool fProcess = true;
 	if (!pData->IsParsed()) {
 		if (!pData->CreateNlohmannJSon(21, 2)) {
 			// 网易数据前21位为前缀，后两位为后缀
@@ -513,7 +508,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 		}
 	}
 	if (fProcess && pData->IsParsed()) {
-		pjs = pData->GetJSon();
+		json* pjs = pData->GetJSon();
 		pvWebRTData = ParseNeteaseRTData(pjs);
 	}
 	return pvWebRTData;

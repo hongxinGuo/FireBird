@@ -9,7 +9,6 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
 #include"ChinaMarket.h"
 
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket) {

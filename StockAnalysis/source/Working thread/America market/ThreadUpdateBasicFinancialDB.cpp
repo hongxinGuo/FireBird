@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
 #include"WorldMarket.h"
 #include "Thread.h"
 
@@ -26,8 +25,8 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
 }
 
 UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
-	for (auto& pStock : vStock) {
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
+	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
@@ -37,8 +36,8 @@ UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 }
 
 UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock) {
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
-	for (auto& pStock : vStock) {
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
+	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
 	}

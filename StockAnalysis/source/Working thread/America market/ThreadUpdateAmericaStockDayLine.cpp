@@ -12,7 +12,6 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
 #include"WorldMarket.h"
 
 UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {

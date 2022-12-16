@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
+// 计算从gl_lRelativeStrongEndDate至gl_lDay的相对强度线程。
 //
 // 此线程调用ThreadBuildWeekLineRSOfDate线程，目前最多允许同时生成8个线程。
 //
@@ -9,15 +9,9 @@
 #include"pch.h"
 
 #include"Thread.h"
-
 #include"TimeConvert.h"
-
 #include"ThreadStatus.h"
-
 #include"ChinaMarket.h"
-
-
-#include<thread>
 
 UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingWeekLineRS(true);
@@ -37,11 +31,13 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		pMarket->CreatingThreadBuildWeekLineRSOfDate(lToday);
 		ctCurrent += sevenDay;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
+	}
+	while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
-	if (!gl_systemStatus.IsExitingCalculatingRS()) { // 如果顺利完成了计算任务
+	if (!gl_systemStatus.IsExitingCalculatingRS()) {
+		// 如果顺利完成了计算任务
 		// 显示花费的时间
 		time(&tEnd);
 		const long tDiffer = tEnd - tStart;
@@ -50,12 +46,11 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		const long second = tDiffer - hour * 3600 - min * 60;
 		char buffer[100];
 		sprintf_s(buffer, _T("计算股票周线相对强度用时%02d小时%02d分钟%02d秒"), hour, min, second);
-		CString str;
-		str = buffer;
+		const CString str = buffer;
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	else {
-		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
+		gl_systemStatus.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
 	pMarket->SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
@@ -71,7 +66,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;

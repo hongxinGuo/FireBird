@@ -59,13 +59,13 @@ INT64 TransferToDateTime(const tm* ptm) noexcept {
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
 	ASSERT(lEarlyDate >= 19700101);
 	ASSERT(lLatelyDate >= 19700101);
-	CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
+	const CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
 	const long year = lEarlyDate / 10000;
 	const long month = lEarlyDate / 100 - year * 100;
 	const long day = lEarlyDate - year * 10000 - month * 100;
 	CTime ctEarly(year, month, day, 12, 0, 0);
 	ctEarly += ts;
-	long lNewDate = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
+	const long lNewDate = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
 	return (lNewDate < lLatelyDate);
 }
 
@@ -162,8 +162,8 @@ long GetPrevMonday(long lDate) {
 long GetCurrentMonday(long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - (lDate / 10000) * 100;
-	const long monthOfday = lDate - (lDate / 100) * 100;
-	const CTime ctCurrent(year, month, monthOfday, 12, 0, 0);
+	const long monthOfDay = lDate - (lDate / 100) * 100;
+	const CTime ctCurrent(year, month, monthOfDay, 12, 0, 0);
 
 	CTime ctNext = ctCurrent;
 	switch (ctCurrent.GetDayOfWeek()) {

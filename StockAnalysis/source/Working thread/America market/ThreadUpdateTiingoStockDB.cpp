@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
-
 #include"WorldMarket.h"
 
 UINT ThreadUpdateTiingoStockDB(not_null<CWorldMarket*> pMarket) {

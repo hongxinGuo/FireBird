@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
+// 计算从gl_lRelativeStrongEndDate至gl_lDay的相对强度线程。
 //
 // 此线程调用ThreadBuildDayLineRSOfDate线程，目前最多允许同时生成8个线程。
 //
@@ -13,9 +13,6 @@
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
-
-
-#include<thread>
 
 UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingDayLineRS(true);
@@ -31,18 +28,21 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 	time_t tStart = 0, tEnd = 0;
 	time(&tStart);
 	do {
-		if (pMarket->IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
+		if (pMarket->IsWorkingDay(ctCurrent)) {
+			// 星期六和星期日无交易，略过
 			// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 			// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
 			pMarket->CreatingThreadBuildDayLineRSOfDate(lToday);
 		}
 		ctCurrent += oneDay;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
+	}
+	while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
-	if (!gl_systemStatus.IsExitingCalculatingRS()) { // 如果顺利完成了计算任务
+	if (!gl_systemStatus.IsExitingCalculatingRS()) {
+		// 如果顺利完成了计算任务
 		pMarket->SetRSEndDate(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		// 显示花费的时间
@@ -53,12 +53,11 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 		const long second = tDiffer - hour * 3600 - min * 60;
 		char buffer[100];
 		sprintf_s(buffer, _T("计算股票相对强度用时%02d小时%02d分钟%02d秒"), hour, min, second);
-		CString str;
-		str = buffer;
+		const CString str = buffer;
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	else {
-		gl_systemStatus.SetExitingCalculatingRS(false);// 如果是计算过程中止了，则重置中止标识。
+		gl_systemStatus.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
 	pMarket->SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
@@ -74,9 +73,9 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();     // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	if (!gl_systemStatus.IsExitingSystem() && !gl_systemStatus.IsExitingCalculatingRS()) {
-		pMarket->BuildDayLineRS(lDate);  // 调用实际执行函数
+		pMarket->BuildDayLineRS(lDate); // 调用实际执行函数
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
 	gl_BackGroundTaskThread.release();

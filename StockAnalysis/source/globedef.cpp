@@ -5,33 +5,32 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ThreadStatus.h"
+#include"FinnhubInaccessibleExchange.h"
 
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"NeteaseDayLineWebInquiry.h"
-#include"FinnhubWebInquiry.h"
-#include"TiingoWebInquiry.h"
-#include"QuandlWebInquiry.h"
-
+#include"FinnhubDataSource.h"
+#include"NeteaseDayLineDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"QuandlDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-#include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
+
+#include"FinnhubWebInquiry.h"
+#include"NeteaseDayLineWebInquiry.h"
+#include"NeteaseRTWebInquiry.h"
+#include"QuandlWebInquiry.h"
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+#include"TiingoWebInquiry.h"
 
 #include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
+#include"TiingoForexWebSocket.h"
+#include"TiingoIEXWebSocket.h"
+
+#include"ThreadStatus.h"
 
 #include "ChinaMarket.h"
-#include"WorldMarket.h"
-
-#include"FinnhubInaccessibleExchange.h"
 
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。

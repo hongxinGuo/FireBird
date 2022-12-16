@@ -73,14 +73,14 @@ CString XferToCString(string s);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData) {
 	bool fSucceed = true;
-	string symbolName, strSymbol2, strTime, strUpdateTime, strName;
-	double dHigh, dLow, dNew, dOpen, dLastClose;
+	string symbolName, strTime, strUpdateTime, strName;
 	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
 	CString strSymbol4, str1, strName3;
-	string sName;
 	json js;
 
 	try {
+		string sName;
+		string strSymbol2;
 		symbolName = it.key();
 		js = it.value();
 		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
@@ -101,6 +101,11 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		fSucceed = false;
 	}
 	try {
+		double dLastClose;
+		double dOpen;
+		double dNew;
+		double dLow;
+		double dHigh;
 		pWebRTData->SetVolume(js.at(_T("volume")));
 		pWebRTData->SetAmount(js.at(_T("turnover")));
 		dHigh = js.at(_T("high"));
