@@ -38,7 +38,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			GeneralCheck();
 		}
 	};

@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);

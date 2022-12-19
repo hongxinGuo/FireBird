@@ -73,15 +73,11 @@ namespace StockAnalysisTest {
 	// 无错误数据
 	NeteaseRTData Data101(0, _T("{\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:59\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"3\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 477989511} }"));
 	// 两个数据，无错误
-	NeteaseRTData Data102(
-		1, _T(
-			"{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"high\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"don't use chinese character\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"2\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"0\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} }"));
+	NeteaseRTData Data102(1, _T("{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"high\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"don't use chinese character\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"2\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"0\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} }"));
 	// 所有的数量皆为零
 	NeteaseRTData Data103(2, _T("{\"0600000\":{\"cod\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:59\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"2193\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 477989511} }"));
 	// 两个数据，第一个错误，第二个正确
-	NeteaseRTData Data104(
-		3, _T(
-			"{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"hig\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"don't use chinese character\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"2193\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"0\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} }"));
+	NeteaseRTData Data104(3, _T("{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"hig\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"don't use chinese character\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"2193\", \"time\": \"2019/11/11 15:59:55\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"don't use chinese character\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"0\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} }"));
 	// 一个数据，只有报头
 	NeteaseRTData Data105(4, _T("{\"0600001\":{\"code\": \"0600001\", \"update\": \"2019/11/11 15:59:59\", \"name\": \"don't use chinese character\", \"time\": \"2019/11/11 15:59:55\"} }"));
 
@@ -157,7 +153,7 @@ namespace StockAnalysisTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
 			EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -188,7 +184,7 @@ namespace StockAnalysisTest {
 			break;
 		case 1:
 			EXPECT_TRUE(fSucceed); // 第一个数据没有错误
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime3);
 			++it;
 			fSucceed = m_RTData.ParseNeteaseDataWithPTree(it);
@@ -224,16 +220,16 @@ namespace StockAnalysisTest {
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_RTData.GetHigh(), 12480); // 后续部分皆未设置。
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive()) << "错误的数据皆为不活跃的";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS")); // 股票代码已设置
-			EXPECT_EQ(m_RTData.GetHigh(), 0) << "此位置出错，使用默认值0";
+			EXPECT_EQ(m_RTData.GetHigh(), -1) << "此位置出错";
 			++it;
 			fSucceed = m_RTData.ParseNeteaseDataWithPTree(it);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
@@ -301,7 +297,7 @@ namespace StockAnalysisTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
 			EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -333,7 +329,7 @@ namespace StockAnalysisTest {
 		case 1:
 			EXPECT_TRUE(fSucceed); // 第一个数据没有错误
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime3);
 			++it;
 			fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
@@ -369,14 +365,14 @@ namespace StockAnalysisTest {
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_RTData.GetHigh(), 12480); // 后续部分皆未设置。
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
-			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS")); // 股票代码已设置
 			EXPECT_EQ(m_RTData.GetHigh(), -1) << "此位置出错，使用默认值-1";
 			++it;

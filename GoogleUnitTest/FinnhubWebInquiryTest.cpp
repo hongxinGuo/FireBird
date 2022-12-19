@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			gl_pWorldMarket->SetResetMarket(true);
 			gl_pWorldMarket->SetSystemReady(false);
 			GeneralCheck();

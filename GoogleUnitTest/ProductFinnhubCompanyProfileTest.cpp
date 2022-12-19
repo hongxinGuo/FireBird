@@ -79,7 +79,7 @@ namespace StockAnalysisTest {
 			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdateDate(19800101);
 			m_pStock->SetCompanyProfileUpdated(false);

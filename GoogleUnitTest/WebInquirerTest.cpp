@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 			}

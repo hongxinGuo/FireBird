@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 			m_pvCryptoSymbol = nullptr;
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
 			m_finnhubCryptoSymbolProduct.SetIndex(0);
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}

@@ -108,7 +108,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false);

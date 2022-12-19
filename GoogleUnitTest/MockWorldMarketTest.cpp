@@ -93,7 +93,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);

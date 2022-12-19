@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 			m_pvStock = nullptr;
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyProfileUpdated(false);
 			m_pStock->SetUpdateProfileDB(false);
@@ -132,7 +132,7 @@ namespace StockAnalysisTest {
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
 			GeneralCheck();

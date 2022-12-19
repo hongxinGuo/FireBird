@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -158,13 +158,13 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoCryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
 		}
 
 		void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}

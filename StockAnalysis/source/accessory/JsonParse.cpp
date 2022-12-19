@@ -96,85 +96,44 @@ void ReportJsonError(json::parse_error& e, std::string& s) {
 }
 
 string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
+	auto s = pt.get<string>(szKey);
 	if (s == _T("null")) return szDefault;
 	return s;
 }
 
 string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = ppt->get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
+	auto s = ppt->get<string>(szKey);
 	if (s != _T("null")) return szDefault;
 	return s;
 }
 
 string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDefault) {
-	string s;
-	try {
-		s = ppt->get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		s = szDefault;
-	}
+	auto s = ppt->get<string>(szKey);
 	if (s == _T("null")) return szDefault;
 	return s;
 }
 
 double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
 	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return dDefault;
-	}
+	s = pt.get<string>(szKey);
 	if (s == _T("null")) return dDefault;
 	else return stod(s);
 }
 
 int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return iDefault;
-	}
+	auto s = pt.get<string>(szKey);
 	if (s == _T("null")) return iDefault;
 	else return stoi(s);
 }
 
 long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return llDefault;
-	}
+	auto s = pt.get<string>(szKey);
 	if (s == _T("null")) return llDefault;
 	else return stoll(s);
 }
 
 long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
-	string s;
-	try {
-		s = pt.get<string>(szKey);
-	}
-	catch (ptree_error&) {
-		return lDefault;
-	}
+	auto s = pt.get<string>(szKey);
 	if (s == _T("null")) return lDefault;
 	else return stol(s);
 }

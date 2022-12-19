@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearu
+			// clearUp
 			GeneralCheck();
 		}
 
@@ -96,7 +96,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -126,16 +126,16 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 3: //
-			EXPECT_EQ(pvDayLine->size(), 2);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 5:
-			EXPECT_EQ(pvDayLine->size(), 2);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 6:
-			EXPECT_EQ(pvDayLine->size(), 2);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 7:
-			EXPECT_EQ(pvDayLine->size(), 2);
+			EXPECT_EQ(pvDayLine->size(), 0);
 			break;
 		case 8:
 			EXPECT_EQ(pvDayLine->size(), 0);
@@ -249,14 +249,14 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockPriceCandle.SetIndex(0);
 		}
 
 		void TearDown(void) override {
-			// clearup
+			// clearUp
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
 			gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
@@ -295,28 +295,28 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: //
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 5:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 6:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 7:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 8:
 			EXPECT_FALSE(fSucceed);

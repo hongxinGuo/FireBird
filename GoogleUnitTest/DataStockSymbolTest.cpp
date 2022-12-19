@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			s_pDataStockSymbol->SetStockSectionActiveFlag(0, true);
 			s_pDataStockSymbol->SetStockSectionActiveFlag(1, false);

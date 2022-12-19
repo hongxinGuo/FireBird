@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
 		}
 
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			GeneralCheck();
 
 			m_VirtualWebInquiry.SetInquiringString(_T(""));

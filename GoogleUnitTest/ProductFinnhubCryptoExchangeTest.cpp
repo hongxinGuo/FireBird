@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
 			m_pvExchange = nullptr;
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			GeneralCheck();
 		}
 
@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
 
 			GeneralCheck();

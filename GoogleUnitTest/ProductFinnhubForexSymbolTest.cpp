@@ -75,7 +75,7 @@ namespace StockAnalysisTest {
 			m_pvForexSymbol = nullptr;
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -130,7 +130,7 @@ namespace StockAnalysisTest {
 			m_productFinnhubForexSymbol.SetIndex(0);
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}

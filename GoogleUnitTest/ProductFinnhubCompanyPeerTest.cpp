@@ -75,7 +75,7 @@ namespace StockAnalysisTest {
 			m_strPeer = _T("");
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
 			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
 		}

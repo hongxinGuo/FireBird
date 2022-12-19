@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 			m_pvExchange = nullptr;
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 
 			GeneralCheck();
 		}
@@ -121,7 +121,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
 		virtual void TearDown(void) override {
-			// clearup
+			// clearUp
 			gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
 
 			GeneralCheck();

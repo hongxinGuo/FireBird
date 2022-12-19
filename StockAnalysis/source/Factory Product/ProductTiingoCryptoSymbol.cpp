@@ -23,7 +23,7 @@ CString CProductTiingoCryptoSymbol::CreateMessage(void) {
 }
 
 bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
+	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol2(pWebData);
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {

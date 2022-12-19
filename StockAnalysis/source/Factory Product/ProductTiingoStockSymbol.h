@@ -9,9 +9,10 @@ public:
 	CProductTiingoStockSymbol();
 	~CProductTiingoStockSymbol() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
+	CTiingoStockVectorPtr ParseTiingoStockSymbol2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductTiingoStockSymbol> CTiingoStockSymbolsPtr;
+using CTiingoStockSymbolsPtr = shared_ptr<CProductTiingoStockSymbol>;

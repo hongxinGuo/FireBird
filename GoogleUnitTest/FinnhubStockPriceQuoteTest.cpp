@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -89,8 +89,9 @@ namespace StockAnalysisTest {
 			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockPriceQuote.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
-		virtual void TearDown(void) override {
-			// clearup
+
+		void TearDown(void) override {
+			// clearUp
 			m_pStock->SetNew(0);
 			m_pStock->SetHigh(0);
 			m_pStock->SetLow(0);
@@ -111,9 +112,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-		ProcessFinnhubStockQuoteTest,
-		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
-			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
+	                         ProcessFinnhubStockQuoteTest,
+	                         testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		bool fSucceed = false;
@@ -123,60 +124,24 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 4: // 缺乏c
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 0) << "此项解析失败，使用默认值0";
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 5: // 缺乏h项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 0) << "此项解析失败，使用默认值0";
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 6: // 缺乏l项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 0) << "此项解析失败，使用默认值0";
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 7: // 缺乏o项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 0) << "此项解析失败，使用默认值0";
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 8: // 缺乏pc
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 0) << "此项解析失败，使用默认值0";
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+			EXPECT_FALSE(fSucceed);
 			break;
 		case 9: // 缺乏t项
-			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_pStock->GetNew(), 121030);
-			EXPECT_EQ(m_pStock->GetHigh(), 121170);
-			EXPECT_EQ(m_pStock->GetLow(), 119160);
-			EXPECT_EQ(m_pStock->GetOpen(), 120400);
-			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
-			EXPECT_EQ(m_pStock->GetTransactionTime(), 0) << "此项解析失败，使用默认值0";
+			EXPECT_FALSE(fSucceed);
 			break;
-		case 10:
+		case 10: // 正确的数据
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);

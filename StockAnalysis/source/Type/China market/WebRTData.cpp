@@ -977,7 +977,6 @@ bool CWebRTData::ParseNeteaseDataWithPTree(ptree::iterator& it) {
 		SetActive(false);
 		fSucceed = true;
 	}
-	SetActive(true);
 
 	return fSucceed;
 }
@@ -1022,7 +1021,7 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		strSymbol2 = js.at(_T("code"));
 		m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
 	}
-	catch (json::out_of_range& e) {
+	catch (json::exception& e) {
 		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -1084,12 +1083,11 @@ bool CWebRTData::ParseNeteaseDataWithNlohmannJSon(json::iterator& it) {
 		CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (json::out_of_range&) {
+	catch (json::exception&) {
 		// 非活跃股票（已下市等）
 		SetActive(false);
 		fSucceed = true;
 	}
-	SetActive(true);
 
 	return fSucceed;
 }
