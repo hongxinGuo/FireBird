@@ -34,14 +34,14 @@ bool ConvertToWJSON(wptree& pt, string& s) {
 }
 
 wstring to_wide_string(const std::string& input) {
-	long const lLength = input.size();
-	auto const pBuffer = new char[lLength + 1];
+	const long lLength = input.size();
+	const auto pBuffer = new char[lLength + 1];
 
 	for (int i = 0; i < input.size(); i++) {
 		pBuffer[i] = input.at(i);
 	}
 	pBuffer[lLength] = 0x000;
-	auto const pBufferW = new WCHAR[lLength * 2];
+	const auto pBufferW = new WCHAR[lLength * 2];
 
 	const long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
 	pBufferW[lReturnSize] = 0x000;
@@ -54,16 +54,16 @@ wstring to_wide_string(const std::string& input) {
 }
 
 string to_byte_string(const wstring& input) {
-	long const lLength = input.size();
-	auto const pBufferW = new WCHAR[lLength + 1];
+	const long lLength = input.size();
+	const auto pBufferW = new WCHAR[lLength + 1];
 
 	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
 	for (int i = 0; i < input.size(); i++) {
 		pBufferW[i] = input.at(i);
 	}
-	auto const pBuffer = new char[lLength * 2];
+	const auto pBuffer = new char[lLength * 2];
 
-	long const lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
+	const long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
 	pBuffer[lReturnSize] = 0x000;
 	string s = pBuffer;
 
@@ -196,9 +196,13 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
 }
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_error& e) {
-	CString const strData = data.c_str();
+	const CString strData = data.c_str();
 
 	ReportJSonErrorToSystemMessage(strPrefix + strData.Left(80) + _T(" "), e);
+}
+
+void ReportJSonErrorToSystemMessage(CString strPrefix, CString strWhat) {
+	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +258,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 	}
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsProcessedAllTheData()) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		if (pRTData->ReadSinaData(pWebData)) {
 			iTotal++;
 			pvWebRTData->push_back(pRTData);
@@ -377,7 +381,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 	if (!IsTengxunRTDataInvalid(*pWebData)) {
 		// 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsProcessedAllTheData()) {
-			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+			auto pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {
 				pvWebRTData->push_back(pRTData);
 			}
@@ -502,7 +506,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	}
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJSon(21, 2)) {
+		if (!pData->CreateNlohmannJson(21, 2)) {
 			// 网易数据前21位为前缀，后两位为后缀
 			fProcess = false;
 		}

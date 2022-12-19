@@ -1,11 +1,9 @@
 #pragma once
-#include"FinnhubForexSymbol.h"
 
-#include"WorldStock.h"
 #include"WorldMarket.h"
 
 namespace testing {
-	class CMockWorldMarket : public CWorldMarket {
+	class CMockWorldMarket final : public CWorldMarket {
 	public:
 		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
@@ -23,5 +21,6 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateEconomicCalendarDB, (), (override));
 	};
-	typedef shared_ptr<CMockWorldMarket> CMockWorldMarketPtr;
+
+	using CMockWorldMarketPtr = shared_ptr<CMockWorldMarket>;
 }

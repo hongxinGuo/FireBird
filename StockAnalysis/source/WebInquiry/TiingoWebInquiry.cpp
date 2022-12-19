@@ -34,7 +34,10 @@ void CTiingoWebInquiry::ConfigureSession(void) {
 //
 // 解析接收到的数据，默认数据格式为JSon, 使用boost property tree解析
 //
+// 准备使用nlohmann json解析。
+//
 ////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
+	pWebData->ParseUsingNlohmannJson(0, 0);
 	return pWebData->ParseUsingPropertyTree(0, 0);
 }

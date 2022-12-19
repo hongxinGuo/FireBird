@@ -84,10 +84,7 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 	wstring ws;
 	CStringW strW;
 
-	shared_ptr<ptree> ppt;
-	ptree pt1, pt2;
-	CCompanyNewsPtr pCompanyNews = nullptr;
-	INT64 dateTime = 0;
+	ptree pt2;
 
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
@@ -101,14 +98,14 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
 		return pvFinnhubCompanyNews;
 	}
-	ppt = pWebData->GetPTree();
+	const shared_ptr<ptree> ppt = pWebData->GetPTree();
 	try {
 		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pt1 = it->second;
-			pCompanyNews = make_shared<CFinnhubCompanyNews>();
+			ptree pt1 = it->second;
+			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = pt1.get<string>(_T("category"));
 			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
-			dateTime = pt1.get<INT64>(_T("datetime"));
+			const auto dateTime = pt1.get<INT64>(_T("datetime"));
 			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
 			s = pt1.get<string>(_T("headline"));
 			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();

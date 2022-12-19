@@ -221,9 +221,10 @@ string sData101 = _T("{\
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		CreateNlohmannJson(&j, sData101);
+		NlohmannCreateJson(&j, sData101);
 	}
 }
+
 BENCHMARK(ParseWithNlohmannJSon);
 
 static void ParseWithPTree(benchmark::State& state) {
@@ -232,11 +233,12 @@ static void ParseWithPTree(benchmark::State& state) {
 		ParseWithPTree(pt, sData101);
 	}
 }
+
 BENCHMARK(ParseWithPTree);
 
 class CJsonParse : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) {
+	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\StockSymbol.json"), sUSExchangeStockCode);
 
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), sNeteaseRTData);
@@ -246,8 +248,9 @@ public:
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 	}
 
-	void TearDown(const ::benchmark::State& state) {
+	void TearDown(const ::benchmark::State& state) override {
 	}
+
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
 	string sNeteaseRTDataForPTree;
@@ -257,7 +260,7 @@ public:
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		CreateNlohmannJson(&j, sUSExchangeStockCode);
+		NlohmannCreateJson(&j, sUSExchangeStockCode);
 	}
 }
 
@@ -273,7 +276,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::Stat
 	json j;
 
 	for (auto _ : state) {
-		CreateNlohmannJson(&j, sNeteaseRTData, 21, 2);
+		NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
 	}
 }
 
@@ -289,14 +292,14 @@ json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
 	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
-		CreateNlohmannJson(&j, sNeteaseRTData, 21, 2);
+		NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
 		pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
 
 class CWithNlohmannJson : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) {
+	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
 		try {
 			js = json::parse(s.begin() + 21, s.end() - 2);
@@ -306,8 +309,9 @@ public:
 		}
 	}
 
-	void TearDown(const ::benchmark::State& state) {
+	void TearDown(const ::benchmark::State& state) override {
 	}
+
 	string s;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
 	vector<CWebRTDataPtr> vWebRTDataReceived;
@@ -324,15 +328,16 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
 
 class CWithPTree : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) {
+	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
 		s.resize(s.size() - 2);
 		s.erase(s.begin(), s.begin() + 21);
 		fDone = ParseWithPTree(pt, s);
 	}
 
-	void TearDown(const ::benchmark::State& state) {
+	void TearDown(const ::benchmark::State& state) override {
 	}
+
 	string s;
 	ptree pt; // 此处不能使用智能指针，否则出现重入问题，原因不明。
 	vector<CWebRTDataPtr> vWebRTDataReceived;
@@ -349,7 +354,7 @@ BENCHMARK_F(CWithPTree, ParseNeteaseRTData2)(benchmark::State& state) {
 
 class CTengxunRTData : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) {
+	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.dat"), s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
@@ -360,9 +365,10 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) {
+	void TearDown(const ::benchmark::State& state) override {
 		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
 	}
+
 	string s;
 	CWebDataPtr pWebData;
 };
@@ -378,7 +384,7 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
 
 class CSinaRTData : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) {
+	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\SinaRTData.dat"), s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
@@ -389,9 +395,10 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) {
+	void TearDown(const ::benchmark::State& state) override {
 		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
 	}
+
 	string s;
 	CWebDataPtr pWebData;
 };

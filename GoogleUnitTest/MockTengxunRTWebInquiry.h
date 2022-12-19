@@ -1,11 +1,13 @@
 #pragma once
+
 #include"TengxunRTWebInquiry.h"
 
 namespace testing {
-	class CMockTengxunRTWebInquiry : public CTengxunRTWebInquiry {
+	class CMockTengxunRTWebInquiry final : public CTengxunRTWebInquiry {
 	public:
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};
-	typedef  shared_ptr<CMockTengxunRTWebInquiry> CMockTengxunRTWebInquiryPtr;
+
+	using CMockTengxunRTWebInquiryPtr = shared_ptr<CMockTengxunRTWebInquiry>;
 }

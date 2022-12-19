@@ -60,7 +60,7 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	try {
 		s = m_ppt->get<string>(sCode);
 		m_strErrorMessage = s.c_str();
-		if (s.compare(sMessage) == 0) {
+		if (s == sMessage) {
 			m_fNoRightToAccess = true;
 			return true;
 		}
@@ -88,20 +88,20 @@ bool CWebData::CreatePropertyTree(long lBeginPos, long lEndPos) {
 }
 
 bool CWebData::ParseUsingNlohmannJson(long lBeginPos, long lEndPos) {
-	m_fParsed = CreateNlohmannJSon(lBeginPos, lEndPos);
+	m_fParsed = CreateNlohmannJson(lBeginPos, lEndPos);
 	SetJSonContentType(true);
 	return m_fParsed;
 }
 
-bool CWebData::CreateNlohmannJSon(long lBeginPos, long lEndPos) {
-	m_fParsed = CreateNlohmannJson(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
+bool CWebData::CreateNlohmannJson(long lBeginPos, long lEndPos) {
+	m_fParsed = ::NlohmannCreateJson(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
 
 	return m_fParsed;
 }
 
 void CWebData::Test_SetBuffer_(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
-	char* pBuffer = strBuffer.GetBuffer();
+	const char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_sDataBuffer.at(i) = pBuffer[i]; }
 	m_sDataBuffer.resize(m_lBufferLength);
 }

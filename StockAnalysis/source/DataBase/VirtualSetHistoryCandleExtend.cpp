@@ -1,7 +1,5 @@
 // VirtualSetHistoryCandleExtend.cpp : CVirtualSetHistoryCandleExtend 类的实现
 
-// CVirtualSetHistoryCandleExtend 实现
-
 #include"pch.h"
 
 #include "VirtualSetHistoryCandleExtend.h"
@@ -152,6 +150,7 @@ void CVirtualSetHistoryCandleExtend::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[CanceledSellBelow200000]"), m_CanceledSellVolumeBelow200000);
 	RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // CVirtualSetHistoryCandleExtend 诊断
 

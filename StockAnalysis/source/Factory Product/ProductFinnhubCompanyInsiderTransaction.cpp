@@ -45,7 +45,7 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 
 CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
-	ptree pt1, pt2;
+	ptree pt1;
 	string sError;
 	string s;
 	string stockSymbol;
@@ -76,7 +76,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
 			pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			s = pt2.get<string>(_T("name"));
 			if (!s.empty()) pInsiderTransaction->m_strPersonName = s.c_str();
 			pInsiderTransaction->m_lShare = ptreeGetLongLong(pt2, _T("share"));

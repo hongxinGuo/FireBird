@@ -95,7 +95,7 @@ public:
 
 	// 使用Nlohmann json将数据转换为json格式。
 	bool ParseUsingNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
-	bool CreateNlohmannJSon(long lBeginPos = 0, long lEndPos = 0);
+	bool CreateNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数
@@ -120,4 +120,4 @@ protected:
 	json m_js;
 };
 
-typedef shared_ptr<CWebData> CWebDataPtr;
+using CWebDataPtr = shared_ptr<CWebData>;

@@ -1,8 +1,9 @@
 #pragma once
+
 #include"VirtualWebInquiry.h"
 
 namespace testing {
-	class CMockVirtualWebInquiry : public CVirtualWebInquiry {
+	class CMockVirtualWebInquiry final : public CVirtualWebInquiry {
 	public:
 		MOCK_METHOD(bool, OpenFile, (CString strInquiring), (override));
 		MOCK_METHOD(bool, PrepareNextInquiringString, (), (override));

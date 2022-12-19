@@ -233,8 +233,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(
-	CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
+bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
 	string s;
 	ptree ptMetric, ptSeries, ptAnnual, ptQuarterly;
 	vector<CValueOfPeriod> vData;
@@ -409,7 +408,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(
 			pBasicFinancial->m_totalDebtCagr5Y = ptreeGetDouble(ptMetric, _T("totalDebtCagr5Y"));
 			pBasicFinancial->m_totalDebt_totalEquityAnnual = ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityAnnual"));
 			pBasicFinancial->m_totalDebt_totalEquityQuarterly =
-				ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly"));
+			ptreeGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly"));
 
 			pBasicFinancial->m_yearToDatePriceReturnDaily = ptreeGetDouble(ptMetric, _T("yearToDatePriceReturnDaily"));
 		} // metric
@@ -471,10 +470,10 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(
 }
 
 bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<CValueOfPeriod>& vData, const char* szMsg) {
-	vector<CValueOfPeriod> vDataTemp;
 	try {
 		ptree ptChild;
 		if (ptreeGetChild(pt, szMsg, &ptChild)) {
+			vector<CValueOfPeriod> vDataTemp;
 			ParseVector(ptChild, vDataTemp);
 			for (int i = 0; i < vDataTemp.size(); i++) {
 				vData.push_back(vDataTemp[i]);
@@ -488,14 +487,12 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(ptree& pt, vector<CValu
 }
 
 bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<CValueOfPeriod>& vecData) {
-	ptree pt2;
-
 	try {
 		for (ptree::iterator it = ptData.begin(); it != ptData.end(); ++it) {
 			CValueOfPeriod sv{0, 0};
 			string sDate;
 			int year{0}, month{0}, day{0};
-			pt2 = it->second;
+			ptree pt2 = it->second;
 			sDate = ptreeGetString(pt2, _T("period"));
 			if (!sDate.empty()) {
 				sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);

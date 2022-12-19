@@ -1,7 +1,5 @@
 // VirtualSetChosenStake.h : VirtualSetChosenStake 类的实现
 
-// VirtualSetChosenStake 实现
-
 #include"pch.h"
 
 #include "VirtualSetChosenStake.h"

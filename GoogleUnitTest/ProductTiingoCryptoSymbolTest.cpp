@@ -27,10 +27,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
 
 	class ParseTiingoCryptoTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -65,7 +65,8 @@ namespace StockAnalysisTest {
 			m_pWebData->CreatePropertyTree();
 			m_pWebData->SetJSonContentType(true);
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -79,8 +80,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-		ParseTiingoCryptoTest,
-		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+	                         ParseTiingoCryptoTest,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -102,9 +103,57 @@ namespace StockAnalysisTest {
 		}
 	}
 
+	class ParseTiingoCryptoTest2 : public::testing::TestWithParam<TiingoWebData*> {
+	protected:
+		void SetUp(void) override {
+			GeneralCheck();
+			TiingoWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_pWebData->CreateNlohmannJson();
+			m_pWebData->SetJSonContentType(true);
+		}
+
+		void TearDown(void) override {
+			// clearup
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CTiingoCryptoVectorPtr m_pvCrypto;
+		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
+	                         ParseTiingoCryptoTest2,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+
+	TEST_P(ParseTiingoCryptoTest2, TestParseCryptoSymbol) {
+		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol2(m_pWebData);
+		switch (m_lIndex) {
+		case 11: // 格式不对
+			EXPECT_EQ(m_pvCrypto->size(), 0);
+			break;
+		case 12: // 格式不对
+			EXPECT_EQ(m_pvCrypto->size(), 0);
+			break;
+		case 20:
+			EXPECT_EQ(m_pvCrypto->size(), 1);
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strTicker, _T("New Symbol"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
+			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
+			break;
+		}
+	}
+
 	class ProcessTiingoCryptoTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -113,7 +162,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoCryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -126,8 +176,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCrypto1,
-		ProcessTiingoCryptoTest,
-		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+	                         ProcessTiingoCryptoTest,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto = nullptr;

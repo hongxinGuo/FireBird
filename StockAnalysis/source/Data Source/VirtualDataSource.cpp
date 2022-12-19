@@ -9,7 +9,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
-	Reset();
+	CVirtualDataSource::Reset();
 }
 
 bool CVirtualDataSource::Reset(void) {
@@ -60,12 +60,10 @@ bool CVirtualDataSource::ProcessInquiringMessage(void) {
 //
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
-	CWebDataPtr pWebData = nullptr;
-
 	if (HaveReceivedData()) {
 		// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
-		pWebData = GetReceivedData();
+		CWebDataPtr pWebData = GetReceivedData();
 		if (pWebData->IsParsed()) {
 			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
 			if (m_pCurrentProduct->IsNoRightToAccess()) {

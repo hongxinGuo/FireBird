@@ -1,7 +1,5 @@
 // VirtualSetHistoryCandleBasic.cpp : CVirtualSetHistoryCandleBasic 类的实现
 
-// CVirtualSetHistoryCandleBasic 实现
-
 #include"pch.h"
 
 #include "VirtualSetHistoryCandleBasic.h"
@@ -59,6 +57,7 @@ void CVirtualSetHistoryCandleBasic::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RSIndex);	//相对于市场指数的强度
 	RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RSBackup);	//相对于市场指数的强度
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // CVirtualSetHistoryCandleBasic 诊断
 

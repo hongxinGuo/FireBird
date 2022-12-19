@@ -51,7 +51,7 @@
 #endif
 
 // 排除外部代码
-#include<CodeCoverage\CodeCoverage.h>
+#include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
 //ExcludeSourceFromCodeCoverage(Exclude1, _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
 //ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");

@@ -16,22 +16,22 @@
 // 有关此类的实现，请参阅 StockAnalysis.cpp
 //
 
-class CStockAnalysisApp : public CWinAppEx
+class CStockAnalysisApp final: public CWinAppEx
 {
 public:
 	CStockAnalysisApp();
 
 	// 重写
 public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+	virtual BOOL InitInstance() override;
+	virtual int ExitInstance() override;
 
 	// 实现
 	BOOL  m_bHiColorIcons;
 
-	virtual void PreLoadState();
-	virtual void LoadCustomState();
-	virtual void SaveCustomState();
+	virtual void PreLoadState() override;
+	virtual void LoadCustomState() override;
+	virtual void SaveCustomState() override;
 
 public:
 	afx_msg void OnAppAbout();

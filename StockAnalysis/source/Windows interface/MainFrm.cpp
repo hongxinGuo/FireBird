@@ -51,66 +51,66 @@ constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
-		ON_WM_CREATE()
-		ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
-		ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
-		ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
-		ON_WM_SETTINGCHANGE()
-		ON_WM_TIMER()
-		ON_COMMAND(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnProcessTodayStock)
-		ON_UPDATE_COMMAND_UI(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateProcessTodayStock)
-		ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRS)
-		ON_WM_SYSCOMMAND()
-		ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
-		ON_WM_CHAR()
-		ON_WM_KEYUP()
-		ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDayLineRS)
-		ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
-		ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
-		ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
-		ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
-		ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
-		ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
-		ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
-		ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
-		ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
-		ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
-		ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
-		ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
-		ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
-		ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
-		ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
-		ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
-		ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
-		ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
-		ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
-		ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
-		ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
-		ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
-		ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
-		                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
-		ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
-		ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
-		ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
-		ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
-		ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayLine)
-		ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDayLineStartEnd)
-		ON_COMMAND(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnRecordFinnhubWebSocket)
-		ON_UPDATE_COMMAND_UI(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnUpdateRecordFinnhubWebSocket)
-		ON_COMMAND(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnRecordTiingoCryptoWebSocket)
-		ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoCryptoWebSocket)
-		ON_COMMAND(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnRecordTiingoForexWebSocket)
-		ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
-		ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
-		ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
-		ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
-		ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
-		ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
-		ON_WM_SIZE()
+	ON_WM_CREATE()
+	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
+	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
+	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
+	ON_WM_SETTINGCHANGE()
+	ON_WM_TIMER()
+	ON_COMMAND(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnProcessTodayStock)
+	ON_UPDATE_COMMAND_UI(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateProcessTodayStock)
+	ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRS)
+	ON_WM_SYSCOMMAND()
+	ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
+	ON_WM_CHAR()
+	ON_WM_KEYUP()
+	ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDayLineRS)
+	ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
+	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
+	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
+	ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
+	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
+	ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
+	ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
+	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
+	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
+	ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
+	ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
+	ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
+	ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
+	ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
+	ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
+	ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
+	ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
+	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
+	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
+	                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
+	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
+	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
+	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
+	ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
+	ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayLine)
+	ON_COMMAND(ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDayLineStartEnd)
+	ON_COMMAND(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnRecordFinnhubWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_FINNHUB_WEB_SOCKET, &CMainFrame::OnUpdateRecordFinnhubWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnRecordTiingoCryptoWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoCryptoWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnRecordTiingoForexWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
+	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
+	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
+	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -409,10 +409,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	HICON hOutputBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(),
-	                                          MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
-	                                          IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
-	                                          ::GetSystemMetrics(SM_CYSMICON), 0);
+	auto hOutputBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(),
+	                                         MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
+	                                         IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
+	                                         ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
 
@@ -501,7 +501,7 @@ void CMainFrame::OnWindowManager() {
 }
 
 void CMainFrame::OnViewCustomize() {
-	CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* 扫描菜单*/);
+	auto pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* 扫描菜单*/);
 	pDlgCust->EnableUserDefinedToolbars();
 	pDlgCust->Create();
 }
@@ -512,7 +512,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 		return 0;
 	}
 
-	CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
+	auto pUserToolbar = (CMFCToolBar*)lres;
 	ASSERT_VALID(pUserToolbar);
 
 	BOOL bNameValid;
@@ -577,7 +577,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	//CMainFrame只执行更新状态任务
 	llTickCount = GetTickCount64();
-	if (llTickCount >= (s_llCounterForUpdateStatusBar + 70)) {
+	if (llTickCount >= (s_llCounterForUpdateStatusBar + 70)) {// 状态显示每500毫秒更新一次
 		UpdateStatus();
 		UpdateInnerSystemStatus();
 		s_llCounterForUpdateStatusBar = llTickCount;
@@ -738,7 +738,6 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	if ((nID & 0Xfff0) == SC_CLOSE) {
 		// 如果是退出系统
 		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
@@ -753,7 +752,6 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 }
 
 void CMainFrame::OnCalculateTodayRS() {
-	// TODO: 在此添加命令处理程序代码
 	CalculateTodayRS();
 }
 
@@ -762,7 +760,6 @@ void CMainFrame::CalculateTodayRS(void) {
 }
 
 void CMainFrame::OnProcessTodayStock() {
-	// TODO: 在此添加命令处理程序代码
 	if (gl_pChinaMarket->IsSystemReady()) {
 		ProcessChinaMarketStock();
 	}
@@ -773,7 +770,6 @@ void CMainFrame::ProcessChinaMarketStock() {
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
-	// TODO: 在此添加命令更新用户界面处理程序代码
 	if (gl_pChinaMarket->IsSystemReady()) {
 		// 系统自动更新日线数据时，不允许处理当日的实时数据。
 		SysCallCmdUIEnable(pCmdUI, true);
@@ -782,7 +778,6 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
-	// TODO: 在此添加命令更新用户界面处理程序代码
 	if (gl_pChinaMarket->IsSystemReady()) {
 		if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
 			SysCallCmdUIEnable(pCmdUI, false);
@@ -803,7 +798,6 @@ void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
 //
 //////////////////////////////////////////////////////////////////
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
-	// TODO: 在此添加专用代码和/或调用基类
 	if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) {
 		SysCallSendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
 	}
@@ -812,7 +806,6 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 }
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CString strTemp;
 
 	switch (nChar) {
@@ -860,8 +853,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		break;
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
-		CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+		auto pChild = (CMDIChildWnd*)GetActiveFrame();
+		auto pView = (CStockAnalysisView*)pChild->GetActiveView();
 		if (pView != nullptr) {
 			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
 		}
@@ -871,7 +864,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CChinaStockPtr pStock;
 	CString strTemp;
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
@@ -914,8 +906,8 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		}
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
-		CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+		auto pChild = (CMDIChildWnd*)GetActiveFrame();
+		auto pView = (CStockAnalysisView*)pChild->GetActiveView();
 		if (pView != nullptr) {
 			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
 		}
@@ -924,19 +916,16 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildDayLineRS() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildDayLineRS(_CHINA_MARKET_BEGIN_DATE_);
 }
 
 void CMainFrame::OnBuildResetMarket() {
-	// TODO: Add your command handler code here
 	for (const auto& pMarket : gl_vMarketPtr) {
 		pMarket->SetResetMarket(true);
 	}
 }
 
 void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	// 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
 	if ((gl_pChinaMarket->GetMarketTime() > 83000) && (gl_pChinaMarket->GetMarketTime() < 93000)) {
 		SysCallCmdUIEnable(pCmdUI, false);
@@ -950,13 +939,11 @@ void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnAbortBuildingRS() {
-	// TODO: Add your command handler code here
 	ASSERT(!gl_systemStatus.IsExitingCalculatingRS());
 	gl_systemStatus.SetExitingCalculatingRS(true);
 }
 
 void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
@@ -966,37 +953,31 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRecordRTData() {
-	// TODO: Add your command handler code here
 	if (gl_pChinaMarket->IsRecordingRTData()) gl_pChinaMarket->SetRecordRTData(false);
 	else gl_pChinaMarket->SetRecordRTData(true);
 }
 
 void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
 	else SysCallCmdUISetCheck(pCmdUI, false);
 }
 
 void CMainFrame::OnCalculate10dayRS1() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrong1StockSet();
 	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrong2StockSet();
 	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadChoice10RSStrongStockSet();
 	gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -1004,7 +985,6 @@ void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -1012,7 +992,6 @@ void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -1020,26 +999,22 @@ void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnStopUpdateDayLine() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
 }
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
-	// TODO: Add your command handler code here
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
 	gl_pSinaRTDataSource->Enable(false);
 	gl_pNeteaseRTDataSource->Enable(true);
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
-	// TODO: Add your command handler code here
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
 	gl_pNeteaseRTDataSource->Enable(false);
 	gl_pSinaRTDataSource->Enable(true);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingNeteaseRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1049,7 +1024,6 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingSinaRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1059,7 +1033,6 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCreateWeekLine() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildWeekLine(19900101);
 }
 
@@ -1068,7 +1041,6 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildWeekLineRS() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildWeekLineRS();
 }
 
@@ -1077,24 +1049,19 @@ void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCurrentWeekLine() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildWeekLineOfCurrentWeek();
 }
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-	//#ifndef _DEBUG
 	if ((gl_pChinaMarket->GetMarketTime() > 151000)) {
 		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
-	//#endif // !_DEBUG
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
 }
 
@@ -1103,7 +1070,6 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable();
 }
 
@@ -1112,38 +1078,31 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateStockSection() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->SetUpdateStockSection(true);
 	gl_pChinaMarket->TaskSaveStockSection();
 }
 
 void CMainFrame::OnUpdateStockCode() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->CreatingThreadUpdateStockCodeDB();
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildEPSSurprise();
 }
 
 void CMainFrame::OnRebuildPeer() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildPeer();
 }
 
 void CMainFrame::OnRebuildDayLine() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildStockDayLineDB();
 }
 
 void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
 }
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
-	// TODO: Add your command handler code here
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
 		gl_pWorldMarket->StopFinnhubWebSocket();
@@ -1155,7 +1114,6 @@ void CMainFrame::OnRecordFinnhubWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1165,7 +1123,6 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRecordTiingoCryptoWebSocket() {
-	// TODO: Add your command handler code here
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(false);
 		gl_pWorldMarket->StopTiingoCryptoWebSocket();
@@ -1177,7 +1134,6 @@ void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1187,7 +1143,6 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRecordTiingoForexWebSocket() {
-	// TODO: Add your command handler code here
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(false);
 		gl_pWorldMarket->StopTiingoForexWebSocket();
@@ -1199,7 +1154,6 @@ void CMainFrame::OnRecordTiingoForexWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1209,7 +1163,6 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRecordTiingoIexWebSocket() {
-	// TODO: Add your command handler code here
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
 		gl_pWorldMarket->StopTiingoIEXWebSocket();
@@ -1221,7 +1174,6 @@ void CMainFrame::OnRecordTiingoIexWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1231,17 +1183,14 @@ void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildBasicFinancial() {
-	// TODO: Add your command handler code here
 	gl_pWorldMarket->RebuildBasicFinancial();
 }
 
 void CMainFrame::OnMaintainDayLine() {
-	// TODO: Add your command handler code here
 	gl_pChinaMarket->MaintainDayLine();
 }
 
 void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
@@ -1253,6 +1202,5 @@ void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
 void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 	CFrameWndEx::OnSize(nType, cx, cy);
 
-	// TODO: Add your message handler code here
 	gl_systemConfiguration.SetCurrentWindowRect(cx, cy);
 }

@@ -24,45 +24,44 @@
 IMPLEMENT_DYNCREATE(CStockAnalysisView, CView)
 
 BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
-		// 标准打印命令
-		ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-		ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-		ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
-		ON_WM_CONTEXTMENU()
-		ON_WM_RBUTTONUP()
-		ON_WM_TIMER()
-		ON_WM_CREATE()
-		ON_WM_SIZE()
-		ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
-		ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
-		ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
-		ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
-		ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
-		ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
-		ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
-		ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnShowRsInLinear)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
-		ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
-		ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
-		ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
-		ON_COMMAND(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnShowWeekLine)
-		ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnUpdateShowWeekLine)
+	// 标准打印命令
+	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
+	ON_WM_CONTEXTMENU()
+	ON_WM_RBUTTONUP()
+	ON_WM_TIMER()
+	ON_WM_CREATE()
+	ON_WM_SIZE()
+	ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
+	ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
+	ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
+	ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
+	ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
+	ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
+	ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
+	ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnShowRsInLinear)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
+	ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
+	ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
+	ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
+	ON_COMMAND(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnShowWeekLine)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnUpdateShowWeekLine)
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
 
 CStockAnalysisView::CStockAnalysisView() {
-	// TODO: 在此处添加构造代码
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
@@ -612,7 +611,6 @@ void CStockAnalysisView::ZoomIn(vector<double>& vData, double dLevel, double dRa
 }
 
 BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
-	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
 
 	return CView::PreCreateWindow(cs);
@@ -733,10 +731,7 @@ CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是
 // CStockAnalysisView 消息处理程序
 
 void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-
-	CDC* pdc;
-	pdc = GetDC();
+	CDC* pdc = GetDC();
 
 	Show(pdc);
 
@@ -749,7 +744,6 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	// TODO:  在此添加您专用的创建代码
 	GetClientRect(&m_rectClient);
 
 	m_uIdTimer = SetTimer(3, 500, nullptr); // 500毫秒每次调度，用于显示实时股票数据。
@@ -763,85 +757,71 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
 	SysCallOnSize(nType, cx, cy);
 
-	// TODO: 在此处添加消息处理程序代码
 	m_rectClient.right = cx;
 	m_rectClient.bottom = cy;
 }
 
 void CStockAnalysisView::OnShowRs3() {
-	// TODO: Add your command handler code here
 	if (m_fShow3DaysRS) m_fShow3DaysRS = false;
 	else m_fShow3DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs5() {
-	// TODO: Add your command handler code here
 	if (m_fShow5DaysRS) m_fShow5DaysRS = false;
 	else m_fShow5DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs10() {
-	// TODO: Add your command handler code here
 	if (m_fShow10DaysRS) m_fShow10DaysRS = false;
 	else m_fShow10DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs30() {
-	// TODO: Add your command handler code here
 	if (m_fShow30DaysRS) m_fShow30DaysRS = false;
 	else m_fShow30DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs60() {
-	// TODO: Add your command handler code here
 	if (m_fShow60DaysRS) m_fShow60DaysRS = false;
 	else m_fShow60DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs120() {
-	// TODO: Add your command handler code here
 	if (m_fShow120DaysRS) m_fShow120DaysRS = false;
 	else m_fShow120DaysRS = true;
 }
 
 void CStockAnalysisView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow10DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow120DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow3DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow30DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow5DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_fShow60DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowRsInLogarithm() {
-	// TODO: Add your command handler code here
 	if (m_iShowRSOption != 2) {
 		m_iShowRSOption = 2;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -852,7 +832,6 @@ void CStockAnalysisView::OnShowRsInLogarithm() {
 }
 
 void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -864,7 +843,6 @@ void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
 }
 
 void CStockAnalysisView::OnShowRsInLinear() {
-	// TODO: Add your command handler code here
 	if (m_iShowRSOption != 1) {
 		m_iShowRSOption = 1;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -875,7 +853,6 @@ void CStockAnalysisView::OnShowRsInLinear() {
 }
 
 void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -887,7 +864,6 @@ void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
 }
 
 void CStockAnalysisView::OnShowRsIndex() {
-	// TODO: Add your command handler code here
 	if (m_iShowRSOption != 0) {
 		m_iShowRSOption = 0;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -898,7 +874,6 @@ void CStockAnalysisView::OnShowRsIndex() {
 }
 
 void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -910,7 +885,6 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 }
 
 void CStockAnalysisView::OnShowDayLine() {
-	// TODO: Add your command handler code here
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
@@ -918,24 +892,20 @@ void CStockAnalysisView::OnShowDayLine() {
 }
 
 void CStockAnalysisView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_iCurrentShowType == _SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowRealTime() {
-	// TODO: Add your command handler code here
 	m_iCurrentShowType = _SHOW_REAL_TIME_DATA_;
 }
 
 void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_iCurrentShowType == _SHOW_REAL_TIME_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowWeekLine() {
-	// TODO: Add your command handler code here
 	m_iCurrentShowType = _SHOW_WEEK_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaWeekLine();
@@ -943,7 +913,6 @@ void CStockAnalysisView::OnShowWeekLine() {
 }
 
 void CStockAnalysisView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
 	if (m_iCurrentShowType == _SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

@@ -36,7 +36,7 @@ void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e);
 #include<string>
 using std::stringstream;
 
-bool CreateNlohmannJson(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
+bool NlohmannCreateJson(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
 	try {
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}

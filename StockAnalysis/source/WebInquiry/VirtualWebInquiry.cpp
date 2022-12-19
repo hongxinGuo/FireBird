@@ -10,7 +10,7 @@
 
 #include"HighPerformanceCounter.h"
 
-atomic_llong CVirtualWebInquiry::sm_lTotalByteRead = 0;
+atomic_long CVirtualWebInquiry::sm_lTotalByteRead = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
 	m_pDataSource = nullptr;
@@ -143,7 +143,6 @@ void CVirtualWebInquiry::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadingWebData(void) {
-	CHighPerformanceCounter counter;
 	bool fReadingSuccess = true;
 
 	ASSERT(IsReadingWebData());
@@ -154,7 +153,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	if (OpenFile(GetInquiringString())) {
 		try {
 			long lCurrentByteRead;
-			//counter.Start();
 			do {
 				if (gl_systemStatus.IsExitingSystem()) {
 					// 当系统退出时，要立即中断此进程，以防止内存泄露。
@@ -168,7 +166,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			sm_lTotalByteRead += m_lByteRead;
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
-			//counter.Stop();
 		}
 		catch (CInternetException* exception) {
 			fReadingSuccess = false;
@@ -182,7 +179,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	ASSERT(m_pFile == nullptr);
-	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fReadingSuccess;
 }
@@ -197,7 +193,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 /// <param name="strInquiring"></param>
 /// <returns></returns>
 bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
-	//CHighPerformanceCounter counter;
 	bool fSucceedOpen = true;
 	const long lHeadersLength = m_strHeaders.GetLength();
 
@@ -211,9 +206,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 			fSucceedOpen = false;
 		}
 		else {
-			//counter.Start();
 			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-			//counter.Stop();
 		}
 	}
 	catch (CInternetException* exception) {
@@ -227,7 +220,6 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	if (fSucceedOpen) {
 		QueryDataLength();
 	}
-	//SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	return fSucceedOpen;
 }

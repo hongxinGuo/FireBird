@@ -2,7 +2,7 @@
 //
 // 可以使用Virtual leak detector(vld)查找内存泄漏。
 // 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
-// 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Exterprice\Common7\IDE\Extensions\\TestPlatform\Extensions\Cpp\X64中的那个版本
+// 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\\TestPlatform\Extensions\Cpp\X64中的那个版本
 // 需要将vld\VS2022文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
 //
 // 目前VS本身的内存泄露检测也跟上来了，也许无需使用vld了。vld对VS2022的支持有限。
@@ -10,8 +10,6 @@
 //#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
-
-#include"ThreadStatus.h"
 
 #include "StockAnalysis.h"
 #include "MainFrm.h"
@@ -75,11 +73,8 @@ CStockAnalysisApp::CStockAnalysisApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	// TODO: 将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
-	//为 CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("FiriBird.StockAnalysis.AppID.0.25"));
+	SetAppID(_T("FiriBird.StockAnalysis.AppID.0.27"));
 
-	// TODO: 在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
@@ -121,8 +116,6 @@ BOOL CStockAnalysisApp::InitInstance() {
 	// 最终可执行文件的大小，则应移除下列
 	// 不需要的特定初始化例程
 	// 更改用于存储设置的注册表项
-	// TODO: 应适当修改该字符串，
-	// 例如修改为公司或组织名
 	SetRegistryKey(_T("FireBird"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
@@ -161,7 +154,6 @@ BOOL CStockAnalysisApp::InitInstance() {
 }
 
 int CStockAnalysisApp::ExitInstance() {
-	//TODO: 处理可能已添加的附加资源
 	AfxOleTerm(FALSE);
 
 	return CWinAppEx::ExitInstance();

@@ -68,15 +68,15 @@ public:
 	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
 	} //成功接收后更新系统状态。默认无动作
 
-	void CreateTotalInquiringString(CString strMIddle);
+	void CreateTotalInquiringString(CString strMiddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
 	void SetInquiringString(const CString str) noexcept { m_strInquiry = str; }
-	void AppendInquiringString(CString const str) noexcept { m_strInquiry += str; }
+	void AppendInquiringString(const CString str) noexcept { m_strInquiry += str; }
 
 	void SetDataSource(CVirtualDataSource* pDataSource) { m_pDataSource = pDataSource; }
 
 	CString GetHeaders(void) const noexcept { return m_strHeaders; }
-	void SetHeaders(CString const strHeaders) noexcept { m_strHeaders = strHeaders; }
+	void SetHeaders(const CString strHeaders) noexcept { m_strHeaders = strHeaders; }
 
 	char GetData(const long lIndex) const { return m_sBuffer.at(lIndex); }
 	void SetData(const long lIndex, const char value) { m_sBuffer.at(lIndex) = value; }
@@ -87,9 +87,9 @@ public:
 	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
 
 	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
-	void SetInquiryFunction(CString const strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
+	void SetInquiryFunction(const CString strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
 	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
-	void SetInquiryToken(CString const strToken) noexcept { m_strInquiryToken = strToken; }
+	void SetInquiryToken(const CString strToken) noexcept { m_strInquiryToken = strToken; }
 
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(const bool fFlag) noexcept { m_fReadingWebData = fFlag; }
@@ -99,10 +99,10 @@ public:
 		else return true;
 	}
 
-	DWORD GetErrorCode(void) noexcept { return m_dwWebErrorCode; }
+	DWORD GetErrorCode(void) const noexcept { return m_dwWebErrorCode; }
 	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
-	bool IsTimeout(void) noexcept {
+	bool IsTimeout(void) const noexcept {
 		if (m_dwWebErrorCode == 12002) return true;
 		else return false;
 	}
@@ -114,8 +114,8 @@ public:
 	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
-	static INT64 GetTotalByteRead(void) noexcept { return sm_lTotalByteRead; }
-	static void SetTotalByteRead(const INT64 lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
+	static long GetTotalByteRead(void) noexcept { return sm_lTotalByteRead; }
+	static void SetTotalByteRead(const long lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead(void) noexcept { sm_lTotalByteRead = 0; }
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
@@ -149,7 +149,7 @@ protected:
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	CString m_strConnectionName; // 此网络读取器的名称
-	static atomic_llong sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 };
 
-typedef shared_ptr<CVirtualWebInquiry> CVirtualWebInquiryPtr;
+using CVirtualWebInquiryPtr = shared_ptr<CVirtualWebInquiry>;

@@ -6,7 +6,6 @@
 
 #include"FinnhubInaccessibleExchange.h"
 #include"ThreadStatus.h"
-#include"HighPerformanceCounter.h"
 
 #include"GeneralCheck.h"
 #include"TimeConvert.h"
@@ -31,7 +30,6 @@
 #include"MockFinnhubWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 #include"MockQuandlWebInquiry.h"
-#include"MockChinaMarket.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
@@ -60,7 +58,7 @@ namespace StockAnalysisTest {
 
 		~TestEnvironment() override = default;
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
@@ -204,7 +202,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
 			GeneralCheck();
 
@@ -212,7 +210,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				auto pStock = gl_pChinaMarket->GetStock(i);
+				const auto pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 
@@ -226,7 +224,7 @@ namespace StockAnalysisTest {
 			}
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				auto pStock = gl_pChinaMarket->GetStock(i);
+				const auto pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 				pStock->SetUpdateProfileDB(false);
 				// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。

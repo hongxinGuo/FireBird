@@ -36,8 +36,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// 创建选项卡窗口:
-	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1))
-	{
+	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1)) {
 		TRACE0("未能创建输出选项卡窗口\n");
 		return -1;      // 未能创建
 	}
@@ -53,8 +52,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		!m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
 		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
 		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 10))
-	{
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 10)) {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
 	}
@@ -115,8 +113,7 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 
 	int cxExtentMax = 0;
 
-	for (int i = 0; i < wndListBox.GetCount(); i++)
-	{
+	for (int i = 0; i < wndListBox.GetCount(); i++) {
 		CString strItem;
 		wndListBox.GetText(i, strItem);
 
@@ -175,9 +172,8 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 
 	CMenu* pSumMenu = menu.GetSubMenu(0);
 
-	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx)))
-	{
-		CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
+	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
+		auto pPopupMenu = new CMFCPopupMenu;
 
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
 			return;
@@ -198,11 +194,10 @@ void COutputList::OnEditClear() {
 }
 
 void COutputList::OnViewOutput() {
-	CDockablePane* pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
-	CMDIFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
+	auto pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
+	auto pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
 
-	if (pMainFrame != nullptr && pParentBar != nullptr)
-	{
+	if (pMainFrame != nullptr && pParentBar != nullptr) {
 		pMainFrame->SetFocus();
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
@@ -217,8 +212,6 @@ void COutputList::OnViewOutput() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-
 	CString str, str2;
 	size_t lTotal = 0;
 	long lCurrentPos = 0;

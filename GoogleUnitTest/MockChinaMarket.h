@@ -1,9 +1,9 @@
 #pragma once
-#include"ChinaStock.h"
+
 #include"ChinaMarket.h"
 
 namespace testing {
-	class CMockChinaMarket : public CChinaMarket {
+	class CMockChinaMarket final : public CChinaMarket {
 	public:
 		MOCK_METHOD(bool, CreatingThreadProcessTodayStock, (), (override));
 		MOCK_METHOD(bool, CreatingThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
@@ -41,5 +41,5 @@ namespace testing {
 		MOCK_METHOD(bool, DeleteWeekLine, (long lMonday), (override));
 	};
 
-	typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;
+	using CMockChinaMarketPtr = shared_ptr<CMockChinaMarket>;
 }

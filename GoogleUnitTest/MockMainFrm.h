@@ -1,8 +1,9 @@
 #pragma once
+
 #include"MainFrm.h"
 
 namespace testing {
-	class CMockMainFrame : public CMainFrame {
+	class CMockMainFrame final : public CMainFrame {
 	public:
 		MOCK_METHOD(void, SysCallOnTimer, (UINT_PTR nIDEvent), (override));
 		MOCK_METHOD(void, SysCallSetPaneText, (int iIndex, LPCTSTR lpszNewText), (override));
@@ -17,7 +18,6 @@ namespace testing {
 		MOCK_METHOD(void, SysCallInvalidate, (), (override));
 		MOCK_METHOD(void, SysCallOnChar, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
 		MOCK_METHOD(void, SysCallOnKeyUp, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
-
 		MOCK_METHOD(bool, SchedulingTask, (), (override));
 		MOCK_METHOD(bool, ResetMarket, (), (override));
 	};

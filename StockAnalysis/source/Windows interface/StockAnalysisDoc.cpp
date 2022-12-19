@@ -26,9 +26,6 @@ CStockAnalysisDoc::CStockAnalysisDoc() {
 	// TODO: 在此添加一次性构造代码
 }
 
-CStockAnalysisDoc::~CStockAnalysisDoc() {
-}
-
 BOOL CStockAnalysisDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument())
 		return FALSE;

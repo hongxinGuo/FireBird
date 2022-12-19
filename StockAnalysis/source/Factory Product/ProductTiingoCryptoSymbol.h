@@ -9,13 +9,14 @@ public:
 	CProductTiingoCryptoSymbol();
 	~CProductTiingoCryptoSymbol() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(CWebDataPtr pWebData);
+	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol2(CWebDataPtr pWebData);
 
 	// ≤‚ ‘”√
 	long long m_differ1, m_differ2;
 	double m_ratio;
 };
 
-typedef shared_ptr<CProductTiingoCryptoSymbol> CProductTiingoCryptoSymbolsPtr;
+using CProductTiingoCryptoSymbolsPtr = shared_ptr<CProductTiingoCryptoSymbol>;

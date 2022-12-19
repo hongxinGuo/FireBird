@@ -34,7 +34,7 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CDayLineVectorPtr pvDayLine = nullptr;
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvDayLine = ParseTiingoStockDayLine(pWebData);
+	pvDayLine = ParseTiingoStockDayLine2(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
@@ -142,6 +142,58 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e);
+		return pvDayLine; // 数据解析出错的话，则放弃。
+	}
+	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+
+	return pvDayLine;
+}
+
+CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine2(CWebDataPtr pWebData) {
+	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	string s;
+	long year, month, day;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvDayLine;
+	if (pWebData->IsVoidJson()) return pvDayLine;
+
+	const auto pjs = pWebData->GetJSon();
+	try {
+		s = pjs->at(_T("detail")); // 是否有报错信息
+		CString strMessage = _T("Tiingo stock dayLine ");
+		strMessage += s.c_str();
+		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
+		return pvDayLine;
+	}
+	catch (json::exception& e) {
+		// 正确， do nothing，继续执行
+	}
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			auto pDayLine = make_shared<CDayLine>();
+			s = it->at(_T("date"));
+			CString str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			long lTemp = year * 10000 + month * 100 + day;
+			pDayLine->SetDate(lTemp);
+			double dTemp = it->at(_T("close"));
+			pDayLine->SetClose(dTemp * 1000);
+			dTemp = it->at(_T("high"));
+			pDayLine->SetHigh(dTemp * 1000);
+			dTemp = it->at(_T("low"));
+			pDayLine->SetLow(dTemp * 1000);
+			dTemp = it->at(_T("open"));
+			pDayLine->SetOpen(dTemp * 1000);
+			lTemp = it->at(_T("volume"));
+			pDayLine->SetVolume(lTemp);
+			pvDayLine->push_back(pDayLine);
+		}
+	}
+	catch (json::out_of_range& e) {
+		CString str3 = pWebData->GetDataBuffer().c_str();
+		str3 = str3.Left(120);
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。

@@ -7,8 +7,6 @@
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"
 
-#include"HighPerformanceCounter.h"
-
 IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CVirtualWebProduct)
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualWebProduct() {
@@ -25,8 +23,6 @@ CString CProductTiingoCryptoSymbol::CreateMessage(void) {
 }
 
 bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	CHighPerformanceCounter counter, counter2;
-
 	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
@@ -97,6 +93,62 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	}
 	catch (ptree_error& e) {
 		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->m_strTicker, e);
+	}
+
+	return pvTiingoCrypto;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// https://api.tiingo.com/documentation/crypto
+// ∏Ò Ω£∫
+// [
+// {
+//	"quoteCurrency" : "btc",
+//	"name" : "CureCoin (CURE/BTC)",
+//	"ticker":"curebtc",
+//	"baseCurrency" : "cure"
+// },
+// {
+//	"quoteCurrency": "ust",
+//	"name" : "KSM (KSM/UST)",
+//	"ticker" : "ksmust",
+//	"baseCurrency" : "ksm"
+// }
+// ]
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol2(CWebDataPtr pWebData) {
+	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoSymbolPtr>>();
+	CString strNULL = _T(" ");
+	string s;
+	CString str, strNumber;
+	CTiingoCryptoSymbolPtr pTiingoCrypto = nullptr;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvTiingoCrypto;
+	if (pWebData->IsVoidJson()) return pvTiingoCrypto;
+
+	const auto pjs = pWebData->GetJSon();
+	try {
+		int iCount = 0;
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
+			s = it->at(_T("ticker"));
+			pTiingoCrypto->m_strTicker = s.c_str();
+			s = it->at(_T("name"));
+			if (!s.empty()) pTiingoCrypto->m_strName = s.c_str();
+			s = it->at(_T("baseCurrency"));
+			if (!s.empty()) pTiingoCrypto->m_strBaseCurrency = s.c_str();
+			s = it->at(_T("quoteCurrency"));
+			pTiingoCrypto->m_strQuoteCurrency = s.c_str();
+
+			pvTiingoCrypto->push_back(pTiingoCrypto);
+			iCount++;
+		}
+	}
+	catch (json::out_of_range& e) {
+		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->m_strTicker, e.what());
 	}
 
 	return pvTiingoCrypto;

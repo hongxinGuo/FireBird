@@ -1,4 +1,5 @@
 #pragma once
+
 #include"ChinaStock.h"
 
 namespace testing {
@@ -16,5 +17,5 @@ namespace testing {
 		MOCK_METHOD(bool, Calculate10RSStrongStockSet, (const CRSReference* pRef), (override));
 	};
 
-	typedef shared_ptr<CMockChinaStock> CMockChinaStockPtr;
+	using CMockChinaStockPtr = shared_ptr<CMockChinaStock>;
 }

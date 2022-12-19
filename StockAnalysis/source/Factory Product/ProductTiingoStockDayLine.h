@@ -9,9 +9,10 @@ public:
 	CProductTiingoStockDayLine();
 	~CProductTiingoStockDayLine() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);
+	CDayLineVectorPtr ParseTiingoStockDayLine2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductTiingoStockDayLine> CTiingoStockDayLinePtr;
+using CTiingoStockDayLinePtr = shared_ptr<CProductTiingoStockDayLine>;

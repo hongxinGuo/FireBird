@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
 
 	class ParseTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -95,7 +95,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearup
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -108,9 +108,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest,
-		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
-			&tiingoWebData41));
+	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+		                         &tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CDayLineVectorPtr pvDayLine;
@@ -163,9 +163,88 @@ namespace StockAnalysisTest {
 		}
 	}
 
+	class ParseTiingoStockDayLineTest2 : public::testing::TestWithParam<TiingoWebData*> {
+	protected:
+		void SetUp(void) override {
+			GeneralCheck();
+			TiingoWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pWebData = pData->m_pData;
+			m_pWebData->CreateNlohmannJson();
+			m_pWebData->SetJSonContentType(true);
+		}
+
+		void TearDown(void) override {
+			// clearUp
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			GeneralCheck();
+		}
+
+	public:
+		long m_lIndex;
+		CWebDataPtr m_pWebData;
+		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest2,
+	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+		                         &tiingoWebData41));
+
+	TEST_P(ParseTiingoStockDayLineTest2, TestParseTiingoStockDayLine0) {
+		CDayLineVectorPtr pvDayLine;
+		CString strMessage;
+		CDayLinePtr pDayLine;
+
+		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine2(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 2: //
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 3: //
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 5:
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 6:
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 7:
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 8:
+			EXPECT_EQ(pvDayLine->size(), 0);
+			break;
+		case 9:
+			EXPECT_EQ(pvDayLine->size(), 1);
+			break;
+		case 10:
+			EXPECT_EQ(pvDayLine->size(), 2);
+			pDayLine = pvDayLine->at(0);
+			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
+			EXPECT_EQ(pDayLine->GetClose(), 121960);
+			EXPECT_EQ(pDayLine->GetHigh(), 123210);
+			EXPECT_EQ(pDayLine->GetLow(), 121260);
+			EXPECT_EQ(pDayLine->GetOpen(), 122540);
+			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
+			break;
+		case 11: // 股票没有日线数据
+			EXPECT_EQ(pvDayLine->size(), 0);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "函数报告错误信息";
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
+			break;
+		default:
+			break;
+		}
+	}
+
 	class ProcessTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -176,7 +255,7 @@ namespace StockAnalysisTest {
 			m_tiingoStockPriceCandle.SetIndex(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearup
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
@@ -192,8 +271,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
-		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
+	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
 		CDayLineVectorPtr pvDayLine;

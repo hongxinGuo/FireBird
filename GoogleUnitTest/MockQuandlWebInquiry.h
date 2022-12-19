@@ -1,11 +1,13 @@
 #pragma once
+
 #include"QuandlWebInquiry.h"
 
 namespace testing {
-	class CMockQuandlWebInquiry : public CQuandlWebInquiry {
+	class CMockQuandlWebInquiry final : public CQuandlWebInquiry {
 	public:
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};
-	typedef  shared_ptr<CMockQuandlWebInquiry> CMockQuandlWebInquiryPtr;
+
+	using CMockQuandlWebInquiryPtr = shared_ptr<CMockQuandlWebInquiry>;
 }

@@ -31,7 +31,7 @@ public:
 		return true;
 	}
 
-	void SetCurrentInquiryFunction(CString strFunctionName) const { m_pWebInquiry->SetInquiryFunction(strFunctionName); }
+	void SetCurrentInquiryFunction(const CString& strFunctionName) const { m_pWebInquiry->SetInquiryFunction(strFunctionName); }
 	void StartThreadGetWebData(void) const { m_pWebInquiry->GetWebData(); }
 
 	void SetWebInquiringPtr(CVirtualWebInquiry* p) noexcept { m_pWebInquiry = p; }
@@ -52,17 +52,17 @@ public:
 	}
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
-	void SetCurrentInquiry(CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
+	void SetCurrentInquiry(const CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
 
 	bool IsInquiring(void) const noexcept { return m_fInquiring; }
-	void SetInquiring(bool fFlag) noexcept { m_fInquiring = fFlag; }
+	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
 
 	bool IsInquiringAndClearFlag(void) noexcept {
 		const bool fInquiring = m_fInquiring.exchange(false);
 		return fInquiring;
 	}
 
-	void SetWebInquiryFinished(bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
+	void SetWebInquiryFinished(const bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
 
 	bool IsWebInquiryFinished(void) const noexcept { return m_fWebInquiryFinished; }
 
@@ -71,7 +71,7 @@ public:
 		return fWebInquiryFinished;
 	}
 
-	void StoreReceivedData(CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
+	void StoreReceivedData(const CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
 
@@ -81,7 +81,7 @@ public:
 	}
 
 	bool IsEnable(void) const noexcept { return m_fEnable; }
-	void Enable(bool fFlag) noexcept { m_fEnable = fFlag; }
+	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
 
 protected:
 	CVirtualWebInquiry* m_pWebInquiry; // 网络数据查询器。一个Data source包含一个唯一的查询器。该查询器只为此DataSource服务，不得滥用。此处使用裸指针，防止不必要的解析动作。
@@ -94,4 +94,4 @@ protected:
 	bool m_fEnable; // 允许执行标识
 };
 
-typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
+using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;
