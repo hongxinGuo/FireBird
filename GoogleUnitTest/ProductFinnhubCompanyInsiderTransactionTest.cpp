@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -74,14 +74,14 @@ namespace StockAnalysisTest {
 			m_pStock->SetInsiderTransactionNeedSave(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderTransaction.SetIndex(lIndex);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -139,7 +139,7 @@ namespace StockAnalysisTest {
 			m_pvInsiderTransaction = nullptr;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -160,6 +160,64 @@ namespace StockAnalysisTest {
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 正确
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
+			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strPersonName, _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strSymbol, _T("RIG"));
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lShare, 269036);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lChange, -14236);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lFilingDate, 20210303);
+			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lTransactionDate, 20210303) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1)->m_dTransactionPrice, 3.68);
+			EXPECT_TRUE(m_pvInsiderTransaction->at(1)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
+			break;
+		case 2: // 缺乏data项
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
+			break;
+		case 3: // 缺乏Symbol
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
+			break;
+		default:
+			break;
+		}
+	}
+
+	class ParseFinnhubInsiderTransactionTest2 : public::testing::TestWithParam<FinnhubWebData*> {
+	protected:
+		void SetUp(void) override {
+			GeneralCheck();
+			FinnhubWebData* pData = GetParam();
+			m_lIndex = pData->m_lIndex;
+			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			EXPECT_TRUE(m_pStock != nullptr);
+			m_pWebData = pData->m_pData;
+			m_pWebData->CreateNlohmannJson();
+			m_pWebData->SetJSonContentType(true);
+			m_pvInsiderTransaction = nullptr;
+		}
+
+		void TearDown(void) override {
+			// clearUp
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+
+			GeneralCheck();
+			m_pStock->SetUpdateProfileDB(false);
+		}
+
+	public:
+		long m_lIndex;
+		CWorldStockPtr m_pStock;
+		CWebDataPtr m_pWebData;
+		CInsiderTransactionVectorPtr m_pvInsiderTransaction;
+		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest2,
+	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+
+	TEST_P(ParseFinnhubInsiderTransactionTest2, TestParseFinnhubInsiderTransaction0) {
+		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction2(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);

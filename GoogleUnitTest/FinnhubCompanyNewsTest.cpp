@@ -26,10 +26,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -87,7 +87,7 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubStockCompanyNewsTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -95,12 +95,13 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket.get());
 			m_FinnhubCompanyNews.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyNewsUpdateDate(19800101);
@@ -119,7 +120,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCompanyNews1, ProcessFinnhubStockCompanyNewsTest, testing::Values(&finnhubWebDataCompanyNews2,
-		&finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
+		                         &finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
 		bool fSucceed = false;

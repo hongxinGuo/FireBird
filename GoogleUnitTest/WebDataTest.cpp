@@ -12,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	class CWebDataTest : public ::testing::Test {
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_EQ(m_id.GetCurrentPos(), 0);
 			EXPECT_EQ(m_id.GetTime(), 0);
@@ -21,7 +21,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_id.GetCurrentPos(), 0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			GeneralCheck();
@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage1) {
 		m_id.Test_SetBuffer_("{\"error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingNlohmannJson());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_TRUE(m_id.CheckNoRightToAccess());
@@ -133,13 +133,13 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage2) {
 		m_id.Test_SetBuffer_("{\"error2\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingNlohmannJson());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());
 
 		m_id.Test_SetBuffer_("{\"error\":\"You don't have access to this resour\"}");
-		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingNlohmannJson());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());
@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage3) {
 		m_id.Test_SetBuffer_("{\"no error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(m_id.ParseUsingPropertyTree());
+		EXPECT_TRUE(m_id.ParseUsingNlohmannJson());
 		EXPECT_TRUE(m_id.IsParsed());
 
 		EXPECT_FALSE(m_id.CheckNoRightToAccess());

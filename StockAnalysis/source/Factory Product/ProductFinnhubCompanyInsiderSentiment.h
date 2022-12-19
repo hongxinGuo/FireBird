@@ -9,9 +9,10 @@ public:
 	CProductFinnhubCompanyInsiderSentiment();
 	~CProductFinnhubCompanyInsiderSentiment() override = default;
 
-	CString CreateMessage(void) override final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CInsiderSentimentVectorPtr ParseFinnhubStockInsiderSentiment(CWebDataPtr pWebData);
+	CInsiderSentimentVectorPtr ParseFinnhubStockInsiderSentiment2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubCompanyInsiderSentiment> CProductFinnhubCompanyInsiderSentimentPtr;
+using CProductFinnhubCompanyInsiderSentimentPtr = shared_ptr<CProductFinnhubCompanyInsiderSentiment>;

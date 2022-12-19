@@ -20,7 +20,7 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	char buffer[50]{};
 	int iUpdateDate = 0, iMarketDate = 0;
 	int year = 0, month = 0, day = 0;
-	auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiry + pStock->GetSymbol();
 	iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 	XferDateToYearMonthDay(iUpdateDate, year, month, day);
@@ -43,7 +43,7 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
+	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews2(pWebData);
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	if (!pvFinnhubCompanyNews->empty()) {
@@ -126,6 +126,53 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e);
+		return pvFinnhubCompanyNews; // 没有公司简介
+	}
+	return pvFinnhubCompanyNews;
+}
+
+CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews2(CWebDataPtr pWebData) {
+	string s;
+
+	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvFinnhubCompanyNews;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvFinnhubCompanyNews;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
+			s = jsonGetString(it, _T("category"));
+			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
+			const auto dateTime = jsonGetLongLong(it, _T("datetime"));
+			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
+			s = jsonGetString(it, _T("headline"));
+			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();
+			pCompanyNews->m_iNewsID = jsonGetInt(it,_T("id"));
+			s = jsonGetString(it,_T("image"));
+			if (!s.empty()) pCompanyNews->m_strImage = s.c_str();
+			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
+			s = jsonGetString(it,_T("related"));
+			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s.c_str();
+			s = jsonGetString(it,_T("source"));
+			if (!s.empty()) pCompanyNews->m_strSource = s.c_str();
+			s = jsonGetString(it,_T("summary"));
+			if (!s.empty()) pCompanyNews->m_strSummary = s.c_str();
+			s = jsonGetString(it,_T("url"));
+			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
+			pvFinnhubCompanyNews->push_back(pCompanyNews);
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}
 	return pvFinnhubCompanyNews;

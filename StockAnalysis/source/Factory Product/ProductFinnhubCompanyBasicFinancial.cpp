@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"StockCodeConverter.h"
 #include"worldMarket.h"
 
 #include"FinnhubStockBasicFinancial.h"
@@ -19,7 +18,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CString strMessage;
-	CWorldStockPtr pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -38,7 +37,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
-	CWorldStockPtr pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockBasicFinancial(pFinnhubStockBasicFinancial, pWebData)) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
@@ -320,10 +319,8 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			pBasicFinancial->m_freeCashFlowAnnual = ptreeGetDouble(ptMetric, _T("freeCashFlowAnnual"));
 			pBasicFinancial->m_freeCashFlowPerShareTTM = ptreeGetDouble(ptMetric, _T("freeCashFlowPerShareTTM"));
 			pBasicFinancial->m_freeCashFlowTTM = ptreeGetDouble(ptMetric, _T("freeCashFlowTTM"));
-			pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = ptreeGetDouble(
-				ptMetric, _T("freeOperatingCashFlow/revenue5Y"));
-			pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = ptreeGetDouble(
-				ptMetric, _T("freeOperatingCashFlow/revenueTTM"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = ptreeGetDouble(ptMetric, _T("freeOperatingCashFlow/revenue5Y"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = ptreeGetDouble(ptMetric, _T("freeOperatingCashFlow/revenueTTM"));
 
 			pBasicFinancial->m_grossMargin5Y = ptreeGetDouble(ptMetric, _T("grossMargin5Y"));
 			pBasicFinancial->m_grossMarginAnnual = ptreeGetDouble(ptMetric, _T("grossMarginAnnual"));
@@ -503,6 +500,275 @@ bool CProductFinnhubCompanyBasicFinancial::ParseVector(ptree& ptData, vector<CVa
 		}
 	}
 	catch (ptree_error&) {
+		// just skip
+	}
+
+	return true;
+}
+
+bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial2(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData) {
+	string s;
+	json ptMetric, ptSeries, ptAnnual, ptQuarterly;
+	vector<CValueOfPeriod> vData;
+	int year, month, day;
+
+	ASSERT(pWebData->IsJSonContentType());
+	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
+	if (!pWebData->IsParsed()) return false;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return false;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return false;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		s = pjs->at(_T("symbol"));
+		pBasicFinancial->m_symbol = s.c_str();
+
+		if (jsonGetChild(pjs, _T("metric"), &ptMetric)) {
+			pBasicFinancial->m_10DayAverageTradingVolume = jsonGetDouble(&ptMetric, _T("10DayAverageTradingVolume"));
+			pBasicFinancial->m_13WeekPriceReturnDaily = jsonGetDouble(&ptMetric, _T("13WeekPriceReturnDaily"));
+			pBasicFinancial->m_26WeekPriceReturnDaily = jsonGetDouble(&ptMetric, _T("26WeekPriceReturnDaily"));
+			pBasicFinancial->m_3MonthAverageTradingVolume = jsonGetDouble(&ptMetric, _T("3MonthAverageTradingVolume"));
+			pBasicFinancial->m_52WeekHigh = jsonGetDouble(&ptMetric, _T("52WeekHigh"));
+			pBasicFinancial->m_52WeekLow = jsonGetDouble(&ptMetric, _T("52WeekLow"));
+			s = jsonGetString(&ptMetric, _T("52WeekHighDate"));
+			if (!s.empty()) {
+				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+				pBasicFinancial->m_52WeekHighDate = year * 10000 + month * 100 + day;
+			}
+			s = jsonGetString(&ptMetric, _T("52WeekLowDate"));
+			if (!s.empty()) {
+				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+				pBasicFinancial->m_52WeekLowDate = year * 10000 + month * 100 + day;
+			}
+			pBasicFinancial->m_52WeekPriceReturnDaily = jsonGetDouble(&ptMetric, _T("52WeekPriceReturnDaily"));
+			pBasicFinancial->m_5DayPriceReturnDaily = jsonGetDouble(&ptMetric, _T("5DayPriceReturnDaily"));
+
+			pBasicFinancial->m_assetTurnoverAnnual = jsonGetDouble(&ptMetric, _T("assetTurnoverAnnual"));
+			pBasicFinancial->m_assetTurnoverTTM = jsonGetDouble(&ptMetric, _T("assetTurnoverTTM"));
+
+			pBasicFinancial->m_beta = jsonGetDouble(&ptMetric, _T("beta"));
+			pBasicFinancial->m_bookValuePerShareAnnual = jsonGetDouble(&ptMetric, _T("bookValuePerShareAnnual"));
+			pBasicFinancial->m_bookValuePerShareQuarterly = jsonGetDouble(&ptMetric, _T("bookValuePerShareQuarterly"));
+			pBasicFinancial->m_bookValueShareGrowth5Y = jsonGetDouble(&ptMetric, _T("bookValueShareGrowth5Y"));
+
+			pBasicFinancial->m_capitalSpendingGrowth5Y = jsonGetDouble(&ptMetric, _T("capitalSpendingGrowth5Y"));
+			pBasicFinancial->m_cashFlowPerShareAnnual = jsonGetDouble(&ptMetric, _T("cashFlowPerShareAnnual"));
+			pBasicFinancial->m_cashFlowPerShareTTM = jsonGetDouble(&ptMetric, _T("cashFlowPerShareTTM"));
+			pBasicFinancial->m_cashPerSharePerShareAnnual = jsonGetDouble(&ptMetric, _T("cashPerSharePerShareAnnual"));
+			pBasicFinancial->m_cashPerSharePerShareQuarterly = jsonGetDouble(&ptMetric, _T("cashPerSharePerShareQuarterly"));
+			pBasicFinancial->m_currentEV_freeCashFlowAnnual = jsonGetDouble(&ptMetric, _T("currentEv/freeCashFlowAnnual"));
+			pBasicFinancial->m_currentEV_freeCashFlowTTM = jsonGetDouble(&ptMetric, _T("currentEv/freeCashFlowTTM"));
+			pBasicFinancial->m_currentDividendYieldTTM = jsonGetDouble(&ptMetric, _T("currentDividendYieldTTM"));
+			pBasicFinancial->m_currentRatioAnnual = jsonGetDouble(&ptMetric, _T("currentRatioAnnual"));
+			pBasicFinancial->m_currentRatioQuarterly = jsonGetDouble(&ptMetric, _T("currentRatioQuarterly"));
+
+			pBasicFinancial->m_dividendGrowthRate5Y = jsonGetDouble(&ptMetric, _T("dividendGrowthRate5Y"));
+			pBasicFinancial->m_dividendPerShare5Y = jsonGetDouble(&ptMetric, _T("dividendPerShare5Y"));
+			pBasicFinancial->m_dividendPerShareAnnual = jsonGetDouble(&ptMetric, _T("dividendPerShareAnnual"));
+			pBasicFinancial->m_dividendsPerShareTTM = jsonGetDouble(&ptMetric, _T("dividendsPerShareTTM"));
+			pBasicFinancial->m_dividendYield5Y = jsonGetDouble(&ptMetric, _T("dividendYield5Y"));
+			pBasicFinancial->m_dividendYieldIndicatedAnnual = jsonGetDouble(&ptMetric, _T("dividendYieldIndicatedAnnual"));
+
+			pBasicFinancial->m_ebitdaCagr5Y = jsonGetDouble(&ptMetric, _T("ebitdaCagr5Y"));
+			pBasicFinancial->m_ebitdaInterimCagr5Y = jsonGetDouble(&ptMetric, _T("ebitdaInterimCagr5Y"));
+			pBasicFinancial->m_ebitdPerShareTTM = jsonGetDouble(&ptMetric, _T("ebitdPerShareTTM"));
+			pBasicFinancial->m_epsBasicExclExtraItemsAnnual = jsonGetDouble(&ptMetric, _T("epsBasicExclExtraItemsAnnual"));
+			pBasicFinancial->m_epsBasicExclExtraItemsTTM = jsonGetDouble(&ptMetric, _T("epsBasicExclExtraItemsTTM"));
+			pBasicFinancial->m_epsExclExtraItemsAnnual = jsonGetDouble(&ptMetric, _T("epsExclExtraItemsAnnual"));
+			pBasicFinancial->m_epsExclExtraItemsTTM = jsonGetDouble(&ptMetric, _T("epsExclExtraItemsTTM"));
+			pBasicFinancial->m_epsGrowth3Y = jsonGetDouble(&ptMetric, _T("epsGrowth3Y"));
+			pBasicFinancial->m_epsGrowth5Y = jsonGetDouble(&ptMetric, _T("epsGrowth5Y"));
+			pBasicFinancial->m_epsGrowthQuarterlyYoy = jsonGetDouble(&ptMetric, _T("epsGrowthQuarterlyYoy"));
+			pBasicFinancial->m_epsGrowthTTMYoy = jsonGetDouble(&ptMetric, _T("epsGrowthTTMYoy"));
+			pBasicFinancial->m_epsInclExtraItemsAnnual = jsonGetDouble(&ptMetric, _T("epsInclExtraItemsAnnual"));
+			pBasicFinancial->m_epsInclExtraItemsTTM = jsonGetDouble(&ptMetric, _T("epsInclExtraItemsTTM"));
+			pBasicFinancial->m_epsNormalizedAnnual = jsonGetDouble(&ptMetric, _T("epsNormalizedAnnual"));
+
+			pBasicFinancial->m_focfCagr5Y = jsonGetDouble(&ptMetric, _T("focfCagr5Y"));
+			pBasicFinancial->m_freeCashFlowAnnual = jsonGetDouble(&ptMetric, _T("freeCashFlowAnnual"));
+			pBasicFinancial->m_freeCashFlowPerShareTTM = jsonGetDouble(&ptMetric, _T("freeCashFlowPerShareTTM"));
+			pBasicFinancial->m_freeCashFlowTTM = jsonGetDouble(&ptMetric, _T("freeCashFlowTTM"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = jsonGetDouble(&ptMetric, _T("freeOperatingCashFlow/revenue5Y"));
+			pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = jsonGetDouble(&ptMetric, _T("freeOperatingCashFlow/revenueTTM"));
+
+			pBasicFinancial->m_grossMargin5Y = jsonGetDouble(&ptMetric, _T("grossMargin5Y"));
+			pBasicFinancial->m_grossMarginAnnual = jsonGetDouble(&ptMetric, _T("grossMarginAnnual"));
+			pBasicFinancial->m_grossMarginTTM = jsonGetDouble(&ptMetric, _T("grossMarginTTM"));
+
+			pBasicFinancial->m_inventoryTurnoverAnnual = jsonGetDouble(&ptMetric, _T("inventoryTurnoverAnnual"));
+			pBasicFinancial->m_inventoryTurnoverTTM = jsonGetDouble(&ptMetric, _T("inventoryTurnoverTTM"));
+
+			pBasicFinancial->m_longTermDebt_equityAnnual = jsonGetDouble(&ptMetric, _T("longTermDebt/equityAnnual"));
+			pBasicFinancial->m_longTermDebt_equityQuarterly = jsonGetDouble(&ptMetric, _T("longTermDebt/equityQuarterly"));
+
+			pBasicFinancial->m_marketCapitalization = jsonGetDouble(&ptMetric, _T("marketCapitalization"));
+			pBasicFinancial->m_monthToDatePriceReturnDaily = jsonGetDouble(&ptMetric, _T("monthToDatePriceReturnDaily"));
+
+			pBasicFinancial->m_netDebtAnnual = jsonGetDouble(&ptMetric, _T("netDebtAnnual"));
+			pBasicFinancial->m_netDebtInterim = jsonGetDouble(&ptMetric, _T("netDebtInterim"));
+			pBasicFinancial->m_netIncomeEmployeeAnnual = jsonGetDouble(&ptMetric, _T("netIncomeEmployeeAnnual"));
+			pBasicFinancial->m_netIncomeEmployeeTTM = jsonGetDouble(&ptMetric, _T("netIncomeEmployeeTTM"));
+			pBasicFinancial->m_netInterestCoverageAnnual = jsonGetDouble(&ptMetric, _T("netInterestCoverageAnnual"));
+			pBasicFinancial->m_netInterestCoverageTTM = jsonGetDouble(&ptMetric, _T("netInterestCoverageTTM"));
+			pBasicFinancial->m_netMarginGrowth5Y = jsonGetDouble(&ptMetric, _T("netMarginGrowth5Y"));
+			pBasicFinancial->m_netProfitMargin5Y = jsonGetDouble(&ptMetric, _T("netProfitMargin5Y"));
+			pBasicFinancial->m_netProfitMarginAnnual = jsonGetDouble(&ptMetric, _T("netProfitMarginAnnual"));
+			pBasicFinancial->m_netProfitMarginTTM = jsonGetDouble(&ptMetric, _T("netProfitMarginTTM"));
+
+			pBasicFinancial->m_payoutRatioAnnual = jsonGetDouble(&ptMetric, _T("payoutRatioAnnual"));
+			pBasicFinancial->m_payoutRatioTTM = jsonGetDouble(&ptMetric, _T("payoutRatioTTM"));
+			pBasicFinancial->m_pbAnnual = jsonGetDouble(&ptMetric, _T("pbAnnual"));
+			pBasicFinancial->m_pbQuarterly = jsonGetDouble(&ptMetric, _T("pbQuarterly"));
+			pBasicFinancial->m_pcfShareTTM = jsonGetDouble(&ptMetric, _T("pcfShareTTM"));
+			pBasicFinancial->m_peBasicExclExtraTTM = jsonGetDouble(&ptMetric, _T("peBasicExclExtraTTM"));
+			pBasicFinancial->m_peExclExtraAnnual = jsonGetDouble(&ptMetric, _T("peExclExtraAnnual"));
+			pBasicFinancial->m_peExclExtraHighTTM = jsonGetDouble(&ptMetric, _T("peExclExtraHighTTM"));
+			pBasicFinancial->m_peExclExtraTTM = jsonGetDouble(&ptMetric, _T("peExclExtraTTM"));
+			pBasicFinancial->m_peExclLowTTM = jsonGetDouble(&ptMetric, _T("peExclLowTTM"));
+			pBasicFinancial->m_peInclExtraTTM = jsonGetDouble(&ptMetric, _T("peInclExtraTTM"));
+			pBasicFinancial->m_peNormalizedAnnual = jsonGetDouble(&ptMetric, _T("peNormalizedAnnual"));
+			pBasicFinancial->m_pfcfShareAnnual = jsonGetDouble(&ptMetric, _T("pfcfShareAnnual"));
+			pBasicFinancial->m_pfcfShareTTM = jsonGetDouble(&ptMetric, _T("pfcfShareTTM"));
+			pBasicFinancial->m_pretaxMargin5Y = jsonGetDouble(&ptMetric, _T("pretaxMargin5Y"));
+			pBasicFinancial->m_pretaxMarginAnnual = jsonGetDouble(&ptMetric, _T("pretaxMarginAnnual"));
+			pBasicFinancial->m_pretaxMarginTTM = jsonGetDouble(&ptMetric, _T("pretaxMarginTTM"));
+			pBasicFinancial->m_priceRelativeToSP50013Week = jsonGetDouble(&ptMetric, _T("priceRelativeToS&P50013Week"));
+			pBasicFinancial->m_priceRelativeToSP50026Week = jsonGetDouble(&ptMetric, _T("priceRelativeToS&P50026Week"));
+			pBasicFinancial->m_priceRelativeToSP5004Week = jsonGetDouble(&ptMetric, _T("priceRelativeToS&P5004Week"));
+			pBasicFinancial->m_priceRelativeToSP50052Week = jsonGetDouble(&ptMetric, _T("priceRelativeToS&P50052Week"));
+			pBasicFinancial->m_priceRelativeToSP500Ytd = jsonGetDouble(&ptMetric, _T("priceRelativeToS&P500Ytd"));
+			pBasicFinancial->m_psAnnual = jsonGetDouble(&ptMetric, _T("psAnnual"));
+			pBasicFinancial->m_psTTM = jsonGetDouble(&ptMetric, _T("psTTM"));
+			pBasicFinancial->m_ptbvAnnual = jsonGetDouble(&ptMetric, _T("ptbvAnnual"));
+			pBasicFinancial->m_ptbvQuarterly = jsonGetDouble(&ptMetric, _T("ptbvQuarterly"));
+
+			pBasicFinancial->m_quickRatioAnnual = jsonGetDouble(&ptMetric, _T("quickRatioAnnual"));
+			pBasicFinancial->m_quickRatioQuarterly = jsonGetDouble(&ptMetric, _T("quickRatioQuarterly"));
+
+			pBasicFinancial->m_receivablesTurnoverAnnual = jsonGetDouble(&ptMetric, _T("receivablesTurnoverAnnual"));
+			pBasicFinancial->m_receivablesTurnoverTTM = jsonGetDouble(&ptMetric, _T("receivablesTurnoverTTM"));
+			pBasicFinancial->m_revenueEmployeeAnnual = jsonGetDouble(&ptMetric, _T("revenueEmployeeAnnual"));
+			pBasicFinancial->m_revenueEmployeeTTM = jsonGetDouble(&ptMetric, _T("revenueEmployeeTTM"));
+			pBasicFinancial->m_revenueGrowth3Y = jsonGetDouble(&ptMetric, _T("revenueGrowth3Y"));
+			pBasicFinancial->m_revenueGrowth5Y = jsonGetDouble(&ptMetric, _T("revenueGrowth5Y"));
+			pBasicFinancial->m_revenueGrowthQuarterlyYoy = jsonGetDouble(&ptMetric, _T("revenueGrowthQuarterlyYoy"));
+			pBasicFinancial->m_revenueGrowthTTMYoy = jsonGetDouble(&ptMetric, _T("revenueGrowthTTMYoy"));
+			pBasicFinancial->m_revenuePerShareAnnual = jsonGetDouble(&ptMetric, _T("revenuePerShareAnnual"));
+			pBasicFinancial->m_revenuePerShareTTM = jsonGetDouble(&ptMetric, _T("revenuePerShareTTM"));
+			pBasicFinancial->m_revenueShareGrowth5Y = jsonGetDouble(&ptMetric, _T("revenueShareGrowth5Y"));
+			pBasicFinancial->m_roaa5Y = jsonGetDouble(&ptMetric, _T("roaa5Y"));
+			pBasicFinancial->m_roae5Y = jsonGetDouble(&ptMetric, _T("roae5Y"));
+			pBasicFinancial->m_roaeTTM = jsonGetDouble(&ptMetric, _T("roaeTTM"));
+			pBasicFinancial->m_roaRfy = jsonGetDouble(&ptMetric, _T("roaRfy"));
+			pBasicFinancial->m_roeRfy = jsonGetDouble(&ptMetric, _T("roeRfy"));
+			pBasicFinancial->m_roeTTM = jsonGetDouble(&ptMetric, _T("roeTTM"));
+			pBasicFinancial->m_roi5Y = jsonGetDouble(&ptMetric, _T("roi5Y"));
+			pBasicFinancial->m_roiAnnual = jsonGetDouble(&ptMetric, _T("roiAnnual"));
+			pBasicFinancial->m_roiTTM = jsonGetDouble(&ptMetric, _T("roiTTM"));
+
+			pBasicFinancial->m_tangibleBookValuePerShareAnnual = jsonGetDouble(&ptMetric, _T("tangibleBookValuePerShareAnnual"));
+			pBasicFinancial->m_tangibleBookValuePerShareQuarterly = jsonGetDouble(&ptMetric, _T("tangibleBookValuePerShareQuarterly"));
+			pBasicFinancial->m_tbvCagr5Y = jsonGetDouble(&ptMetric, _T("tbvCagr5Y"));
+			pBasicFinancial->m_totalDebtCagr5Y = jsonGetDouble(&ptMetric, _T("totalDebtCagr5Y"));
+			pBasicFinancial->m_totalDebt_totalEquityAnnual = jsonGetDouble(&ptMetric, _T("totalDebt/totalEquityAnnual"));
+			pBasicFinancial->m_totalDebt_totalEquityQuarterly = jsonGetDouble(&ptMetric, _T("totalDebt/totalEquityQuarterly"));
+
+			pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(&ptMetric, _T("yearToDatePriceReturnDaily"));
+		} // metric
+		s = pjs->at(_T("metricType"));
+		ASSERT((s == _T("all")) || (s==_T("perShare"))); // 例子中返回的是all，但实际返回的是perShare
+
+		if (jsonGetChild(pjs, _T("series"), &ptSeries)) {
+			if (jsonGetChild(&ptSeries, _T("annual"), &ptAnnual)) {
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_cashRatio, _T("cashRatio"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_currentRatio, _T("currentRatio"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_ebitPerShare, _T("ebitPerShare"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_eps, _T("eps"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_grossMargin, _T("grossMargin"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalCapital, _T("longtermDebtTotalCapital"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_netMargin, _T("netMargin"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_operatingMargin, _T("operatingMargin"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_pretaxMargin, _T("pretaxMargin"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_salesPerShare, _T("salesPerShare"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_sgaToSale, _T("sgaToSale"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_totalDebtToEquity, _T("totalDebtToEquity"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
+				GetSeasonData2(&ptAnnual, pBasicFinancial->m_annual.m_totalRatio, _T("totalRatio"));
+			} // annual
+
+			if (jsonGetChild(&ptSeries, _T("quarterly"), &ptQuarterly)) {
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_cashRatio, _T("cashRatio"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_currentRatio, _T("currentRatio"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_ebitPerShare, _T("ebitPerShare"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_eps, _T("eps"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_grossMargin, _T("grossMargin"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalAsset, _T("longtermDebtTotalAsset"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalCapital,_T("longtermDebtTotalCapital"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_longtermDebtTotalEquity, _T("longtermDebtTotalEquity"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalCapital, _T("netDebtToTotalCapital"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_netDebtToTotalEquity, _T("netDebtToTotalEquity"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_netMargin, _T("netMargin"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_operatingMargin, _T("operatingMargin"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_pretaxMargin, _T("pretaxMargin"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_salesPerShare, _T("salesPerShare"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_sgaToSale, _T("sgaToSale"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToEquity, _T("totalDebtToEquity"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalAsset, _T("totalDebtToTotalAsset"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
+				GetSeasonData2(&ptQuarterly, pBasicFinancial->m_quarter.m_totalRatio, _T("totalRatio"));
+			} // quarterly
+		} // series
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock basic financials "), e.what());
+		return false;
+	}
+	return true;
+}
+
+bool CProductFinnhubCompanyBasicFinancial::GetSeasonData2(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg) {
+	try {
+		json ptChild;
+		if (jsonGetChild(pjs, szMsg, &ptChild)) {
+			vector<CValueOfPeriod> vDataTemp;
+			ParseVector2(&ptChild, vDataTemp);
+			for (int i = 0; i < vDataTemp.size(); i++) {
+				vData.push_back(vDataTemp[i]);
+			}
+		}
+	}
+	catch (ptree_error&) {
+		// do nothing
+	}
+	return true;
+}
+
+bool CProductFinnhubCompanyBasicFinancial::ParseVector2(json* pjs, vector<CValueOfPeriod>& vecData) {
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			CValueOfPeriod sv{0, 0};
+			string sDate;
+			int year{0}, month{0}, day{0};
+			sDate = jsonGetString(it, _T("period"));
+			if (!sDate.empty()) {
+				sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);
+				sv.m_period = year * 10000 + month * 100 + day;
+				sv.m_value = jsonGetDouble(it, _T("v"));
+				vecData.push_back(sv);
+			}
+		}
+	}
+	catch (json::exception&) {
 		// just skip
 	}
 

@@ -29,7 +29,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetCompanyProfileUpdated(true);
-	if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
+	if (ParseFinnhubStockProfileConcise2(pWebData, pStock)) {
 		pStock->SetProfileUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return true;
@@ -93,6 +93,47 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebD
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e);
+		return false; // 出现错误则返回任务失败
+	}
+	return true;
+}
+
+bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise2(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+	string s;
+	string sError;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return false;
+	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
+	if (pWebData->CheckNoRightToAccess()) return true;
+
+	const auto pjs = pWebData->GetJSon();
+	try {
+		s = jsonGetString(pjs, _T("ticker"));
+		if (!s.empty()) pStock->SetTicker(s.c_str());
+		s = jsonGetString(pjs, _T("country"));
+		if (!s.empty()) pStock->SetCountry(s.c_str());
+		s = jsonGetString(pjs, _T("currency"));
+		if (!s.empty()) pStock->SetCurrency(s.c_str());
+		s = jsonGetString(pjs, _T("exchange"));
+		if (!s.empty()) pStock->SetListedExchange(s.c_str());
+		s = jsonGetString(pjs, _T("name"));
+		if (!s.empty()) pStock->SetName(s.c_str());
+		s = jsonGetString(pjs, _T("finnhubIndustry"));
+		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
+		s = jsonGetString(pjs, _T("logo"));
+		if (!s.empty()) pStock->SetLogo(s.c_str());
+		pStock->SetMarketCapitalization(jsonGetDouble(pjs, _T("marketCapitalization")));
+		s = jsonGetString(pjs, _T("phone"));
+		if (!s.empty()) pStock->SetPhone(s.c_str());
+		pStock->SetShareOutstanding(jsonGetDouble(pjs, _T("shareOutstanding")));
+		s = jsonGetString(pjs, _T("weburl"));
+		if (!s.empty()) pStock->SetWebURL(s.c_str());
+		s = jsonGetString(pjs, _T("ipo"));
+		if (!s.empty()) pStock->SetIPODate(s.c_str());
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e.what());
 		return false; // 出现错误则返回任务失败
 	}
 	return true;

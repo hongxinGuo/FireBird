@@ -58,7 +58,7 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	string s;
 	ASSERT(m_fParsed);
 	try {
-		s = m_ppt->get<string>(sCode);
+		s = m_js.at(sCode);
 		m_strErrorMessage = s.c_str();
 		if (s == sMessage) {
 			m_fNoRightToAccess = true;
@@ -66,7 +66,7 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 		}
 		else return false;
 	}
-	catch (ptree_error& e) {
+	catch (json::exception& e) {
 		m_fNoRightToAccess = false;
 		m_strErrorMessage = "";
 		return false;

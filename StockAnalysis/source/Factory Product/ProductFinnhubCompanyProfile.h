@@ -8,9 +8,10 @@ public:
 	CProductFinnhubCompanyProfile();
 	~CProductFinnhubCompanyProfile() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	bool ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	bool ParseFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 
-typedef shared_ptr<CProductFinnhubCompanyProfile> CFinnhubCompanyProfilePtr;
+using CFinnhubCompanyProfilePtr = shared_ptr<CProductFinnhubCompanyProfile>;

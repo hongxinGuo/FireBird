@@ -9,9 +9,10 @@ public:
 	CProductFinnhubCompanyInsiderTransaction();
 	~CProductFinnhubCompanyInsiderTransaction() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
+	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubCompanyInsiderTransaction> CFinnhubCompanyInsiderTransactionPtr;
+using CFinnhubCompanyInsiderTransactionPtr = shared_ptr<CProductFinnhubCompanyInsiderTransaction>;
