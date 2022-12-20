@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -196,7 +196,7 @@ namespace StockAnalysisTest {
 		CString strMessage;
 		CDayLinePtr pDayLine;
 
-		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine2(m_pWebData);
+		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(pvDayLine->size(), 0);

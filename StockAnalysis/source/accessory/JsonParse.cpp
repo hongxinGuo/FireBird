@@ -18,21 +18,6 @@
 #include"WebRTData.h"
 #include"SaveAndLoad.h"
 
-#include<boost/property_tree/json_parser.hpp>
-
-bool ConvertToWJSON(wptree& pt, string& s) {
-	wstring ws = to_wide_string(s);
-	wstringstream ss(ws);
-	try {
-		read_json(ss, pt);
-	}
-	catch (ptree_error& e) {
-		//ReportJSonErrorToSystemMessage(_T("PTree JSon Reading Error "), e);
-		return false;
-	}
-	return true;
-}
-
 wstring to_wide_string(const std::string& input) {
 	const long lLength = input.size();
 	const auto pBuffer = new char[lLength + 1];
@@ -95,59 +80,6 @@ void ReportJsonError(json::parse_error& e, std::string& s) {
 	gl_systemMessage.PushErrorMessage(str);
 }
 
-string ptreeGetString(ptree& pt, const char* szKey, const char* szDefault) {
-	auto s = pt.get<string>(szKey);
-	if (s == _T("null")) return szDefault;
-	return s;
-}
-
-string ptreeGetString(ptree* ppt, const char* szKey, const char* szDefault) {
-	auto s = ppt->get<string>(szKey);
-	if (s != _T("null")) return szDefault;
-	return s;
-}
-
-string ptreeGetString(shared_ptr<ptree> ppt, const char* szKey, const char* szDefault) {
-	auto s = ppt->get<string>(szKey);
-	if (s == _T("null")) return szDefault;
-	return s;
-}
-
-double ptreeGetDouble(ptree& pt, const char* szKey, double dDefault) {
-	string s;
-	s = pt.get<string>(szKey);
-	if (s == _T("null")) return dDefault;
-	else return stod(s);
-}
-
-int ptreeGetInt(ptree& pt, const char* szKey, int iDefault) {
-	auto s = pt.get<string>(szKey);
-	if (s == _T("null")) return iDefault;
-	else return stoi(s);
-}
-
-long long ptreeGetLongLong(ptree& pt, const char* szKey, long long llDefault) {
-	auto s = pt.get<string>(szKey);
-	if (s == _T("null")) return llDefault;
-	else return stoll(s);
-}
-
-long ptreeGetLong(ptree& pt, const char* szKey, long lDefault) {
-	auto s = pt.get<string>(szKey);
-	if (s == _T("null")) return lDefault;
-	else return stol(s);
-}
-
-bool ptreeGetChild(ptree& inputPt, const char* szKey, ptree* outputPpt) {
-	try {
-		*outputPpt = inputPt.get_child(szKey);
-	}
-	catch (ptree_error&) {
-		return false;
-	}
-	return true;
-}
-
 bool jsonGetChild(json* inputPt, const char* szKey, json* outputPpt) {
 	try {
 		*outputPpt = inputPt->at(szKey);
@@ -194,6 +126,16 @@ double jsonGetDouble(json::iterator it, const char* szKey, double dDefault) {
 	else return d;
 }
 
+bool jsonGetChild(json::iterator it, const char* szKey, json* outputPpt) {
+	try {
+		*outputPpt = it->at(szKey);
+	}
+	catch (json::exception&) {
+		return false;
+	}
+	return true;
+}
+
 string jsonGetString(json::iterator it, const char* szKey, const char* szDefault) {
 	const auto s = it->at(szKey);
 	if (s.is_null()) return szDefault;
@@ -218,16 +160,34 @@ long jsonGetLong(json::iterator it, const char* szKey, long lDefault) {
 	else return s;
 }
 
-void ReportJSonErrorToSystemMessage(CString strPrefix, ptree_error& e) {
-	CString strError = strPrefix;
-	strError += e.what();
-	gl_systemMessage.PushErrorMessage(strError);
+double jsonGetDouble(json::iterator it) {
+	const auto d = *it;
+	if (d.is_null()) return 0.0;
+	else return d;
 }
 
-void ReportJSonErrorToSystemMessage(CString strPrefix, std::string data, ptree_error& e) {
-	const CString strData = data.c_str();
+string jsonGetString(json::iterator it) {
+	const auto s = *it;
+	if (s.is_null()) return _T("");
+	return s;
+}
 
-	ReportJSonErrorToSystemMessage(strPrefix + strData.Left(80) + _T(" "), e);
+int jsonGetInt(json::iterator it) {
+	const auto s = *it;
+	if (s.is_null()) return 0;
+	else return s;
+}
+
+long long jsonGetLongLong(json::iterator it) {
+	const auto s = *it;
+	if (s.is_null()) return 0;
+	else return s;
+}
+
+long jsonGetLong(json::iterator it) {
+	const auto s = *it;
+	if (s.is_null()) return 0;
+	else return s;
 }
 
 void ReportJSonErrorToSystemMessage(CString strPrefix, CString strWhat) {
@@ -450,60 +410,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 			pRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pRTData);
 		}
-	}
-	return pvWebRTData;
-}
-
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(ptree* ppt) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
-	for (auto it = ppt->begin(); it != ppt->end(); ++it) {
-		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
-		if (pRTData->ParseNeteaseDataWithPTree(it)) {
-			pvWebRTData->push_back(pRTData);
-		}
-	}
-	return pvWebRTData;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
-//
-// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
-//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
-//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
-//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
-//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
-//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
-//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
-//
-// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithPTree(CWebDataPtr pData) {
-	string ss;
-	shared_ptr<ptree> ppt = nullptr;
-	int iTotal = 0;
-	bool fProcess = true;
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
-	fProcess = true;
-	if (!pData->IsParsed()) {
-		if (!pData->CreatePropertyTree(21, 2)) {
-			// 网易数据前21位为前缀，后两位为后缀
-			fProcess = false;
-		}
-	}
-	else {
-		ASSERT(pData->GetJSon() == nullptr);
-	}
-	if (fProcess && pData->IsParsed()) {
-		ppt = pData->GetPTree();
-		ptree* ppt2 = ppt.get();
-		pvWebRTData = ParseNeteaseRTData(ppt2);
 	}
 	return pvWebRTData;
 }

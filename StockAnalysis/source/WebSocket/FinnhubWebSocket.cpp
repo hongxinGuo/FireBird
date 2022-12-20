@@ -122,24 +122,24 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	string code;
 
 	try {
-		if (ptree pt; ParseWithPTree(pt, *pData)) {
-			sType = ptreeGetString(pt, _T("type"));
+		if (json pt; NlohmannCreateJson(&pt, *pData)) {
+			sType = jsonGetString(&pt, _T("type"));
 			if (sType == _T("trade")) {
-				CFinnhubSocketPtr pFinnhubDataPtr;
-				ptree pt3;
-				ptree pt2;
+				json pt2;
+				json pt3;
 				// 交易数据
-				pt2 = pt.get_child(_T("data"));
-				for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-					pt3 = it->second;
-					pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-					sSymbol = ptreeGetString(pt3, _T("s"));
+				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
+				for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
+					sSymbol = jsonGetString(it, _T("s"));
 					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
-					code = ptreeGetString(pt3, _T("c"));
-					pFinnhubDataPtr->m_strCode = code.c_str();
-					pFinnhubDataPtr->m_dLastPrice = ptreeGetDouble(pt3, _T("p"));
-					pFinnhubDataPtr->m_dLastVolume = ptreeGetDouble(pt3, _T("v"));
-					pFinnhubDataPtr->m_iSeconds = pt3.get<time_t>(_T("t"));
+					jsonGetChild(it, _T("c"), &pt3);
+					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
+						pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2));
+					}
+					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, _T("p"));
+					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, _T("v"));
+					pFinnhubDataPtr->m_iSeconds = jsonGetLongLong(it, _T("t"));
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 					m_fReceivingData = true;
 				}
@@ -149,10 +149,9 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				//
 			}
 			else if (sType == _T("error")) {
-				CString strMessage;
 				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
-				sMessage = ptreeGetString(pt, _T("msg"));
-				strMessage = _T("Finnhub WebSocket error message: ");
+				sMessage = jsonGetString(&pt, _T("msg"));
+				CString strMessage = "Finnhub WebSocket error message: ";
 				strMessage += sMessage.c_str();
 				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 				return false;
@@ -170,8 +169,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			return false;
 		}
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e);
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e.what());
 		return false;
 	}
 

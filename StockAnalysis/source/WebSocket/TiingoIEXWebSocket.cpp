@@ -76,15 +76,15 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 }
 
 CString CTiingoIEXWebSocket::CreateMessage(vector<CString> vSymbol) {
-	CString const strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	CString const strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
-	CString const strSuffix = _T("]}}");
+	const CString strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	const CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
+	const CString strSuffix = _T("]}}");
 	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
 	strAuth = strAuth.Right(strAuth.GetLength() - 7);
 
 	vSymbol.emplace_back(_T("rig")); // 多加一个Tiingo制式的代码。
 	vSymbol.emplace_back(_T("aapl")); // 多加一个Tiingo制式的代码。
-	CString const strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
+	const CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
 
 	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
@@ -117,185 +117,89 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	CTiingoIEXSocketPtr pIEXData = nullptr;
 
 	try {
-		if (ptree pt; ParseWithPTree(pt, *pData)) {
+		if (json js; NlohmannCreateJson(&js, *pData)) {
 			int i = 0;
 			string sMessageType;
 			string sDatetime;
 			char chType;
 			string sService;
 			string sType;
-			ptree pt3;
-			ptree pt2;
-			ptree::iterator it;
-			sType = ptreeGetString(pt, _T("messageType"));
+			json js2;
+			json::iterator it;
+			sType = jsonGetString(&js, _T("messageType"));
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
 			case 'A': // 交易数据
 				pIEXData = make_shared<CTiingoIEXSocket>();
-				sService = ptreeGetString(pt, _T("service"));
+				sService = jsonGetString(&js, _T("service"));
 				if (sService != _T("iex")) return false; // 此项必须为"iex"
-				pt2 = pt.get_child(_T("data"));
-				it = pt2.begin();
-				pt3 = it->second;
-				sMessageType = pt3.get_value<string>(); // message type, 'Q'、'T'或者'B'
+				if (!jsonGetChild(&js, _T("data"), &js2)) return false;
+				it = js2.begin();
+				sMessageType = jsonGetString(it); // message type, 'Q'、'T'或者'B'
 				chType = sMessageType.at(0);
 				pIEXData->m_chMessageType = chType;
 				switch (chType) {
 				case 'Q': // top-of-book update message
 					++it;
-					pt3 = it->second;
-					sDatetime = pt3.get_value<string>();
+					sDatetime = jsonGetString(it);
 					++it;
-					pt3 = it->second;
-					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
+					pIEXData->m_iNanoseconds = jsonGetLongLong(it);
 					++it;
-					pt3 = it->second;
-					sTicker = pt3.get_value<string>();
+					sTicker = jsonGetString(it);
 					pIEXData->m_strSymbol = sTicker.c_str();
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dBidSize = atof(sValue.c_str());
-					}
+					pIEXData->m_dBidSize = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dBidPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dBidPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dMidPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dMidPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dAskPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dAskPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dAskSize = atof(sValue.c_str());
-					}
+					pIEXData->m_dAskSize = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dLastPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dLastPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dLastSize = atof(sValue.c_str());
-					}
+					pIEXData->m_dLastSize = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					pIEXData->m_iHalted = pt3.get_value<int>();
+					pIEXData->m_iAfterHour = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					pIEXData->m_iAfterHour = pt3.get_value<int>();
+					pIEXData->m_iISO = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iISO = atoi(sValue.c_str());
-					}
+					pIEXData->m_iOddlot = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iOddlot = atoi(sValue.c_str());
-					}
-					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iNMSRule611 = atoi(sValue.c_str());
-					}
+					pIEXData->m_iNMSRule611 = jsonGetInt(it);
 					break;
 				case 'T': // 'T' last trade message
 					++it;
-					pt3 = it->second;
-					sDatetime = pt3.get_value<string>();
+					sDatetime = jsonGetString(it);
 					++it;
-					pt3 = it->second;
-					pIEXData->m_iNanoseconds = pt3.get_value<INT64>();
+					pIEXData->m_iNanoseconds = jsonGetLongLong(it);
 					++it;
-					pt3 = it->second;
-					sTicker = pt3.get_value<string>();
+					sTicker = jsonGetString(it);
 					pIEXData->m_strSymbol = sTicker.c_str();
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dBidSize = atof(sValue.c_str());
-					}
+					pIEXData->m_dBidSize = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dBidPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dBidPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dMidPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dMidPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dAskPrice = atof(sValue.c_str());
-					}
+					pIEXData->m_dAskPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dAskSize = atof(sValue.c_str());
-					}
+					pIEXData->m_dAskSize = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dLastPrice = pt3.get_value<double>();
-					}
+					pIEXData->m_dLastPrice = jsonGetDouble(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_dLastSize = atoi(sValue.c_str());
-					}
+					pIEXData->m_dLastSize = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iHalted = atoi(sValue.c_str());
-					}
+					pIEXData->m_iHalted = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iISO = atoi(sValue.c_str());
-					}
+					pIEXData->m_iISO = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iOddlot = atoi(sValue.c_str());
-					}
+					pIEXData->m_iOddlot = jsonGetInt(it);
 					++it;
-					pt3 = it->second;
-					sValue = pt3.get_value<string>();
-					if (sValue != _T("null")) {
-						pIEXData->m_iNMSRule611 = atoi(sValue.c_str());
-					}
+					pIEXData->m_iNMSRule611 = jsonGetInt(it);
 					break;
 				case 'B': // 'B'trade break messages
 					i++;
@@ -308,19 +212,17 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				m_fReceivingData = true;
 				break;
 			case 'I': // authentication  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
-				pt2 = pt.get_child(_T("data"));
+				if (!jsonGetChild(&js, _T("data"), &js2)) return false;
 				try {
-					ptree pt4;
-					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it4 = pt3.begin(); it4 != pt3.end(); ++it4) {
-						pt4 = it4->second;
-						strSymbol = pt4.get_value<string>();
+					json js3 = js2.at(_T("tickers"));
+					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
+						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
 				}
-				catch (exception e) {
+				catch (json::exception&) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
@@ -336,8 +238,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			return false;
 		}
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e);
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e.what());
 		return false;
 	}
 

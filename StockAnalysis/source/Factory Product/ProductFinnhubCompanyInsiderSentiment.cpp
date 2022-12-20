@@ -34,7 +34,7 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 
 	CInsiderSentimentVectorPtr pvInsiderSentiment = nullptr;
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvInsiderSentiment = ParseFinnhubStockInsiderSentiment2(pWebData);
+	pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetInsiderSentimentNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
@@ -69,58 +69,6 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 //  "symbol": "TSLA"}
 //
 CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(CWebDataPtr pWebData) {
-	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
-	ptree pt1, pt2;
-	string sError;
-	string s;
-	string stockSymbol;
-	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvInsiderSentiment;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvInsiderSentiment;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvInsiderSentiment;
-	}
-	const auto ppt = pWebData->GetPTree();
-	try {
-		pt1 = ppt->get_child(_T("data"));
-		stockSymbol = ppt->get<string>(_T("symbol"));
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiry(), e);
-		return pvInsiderSentiment;
-	}
-
-	try {
-		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-			pInsiderSentiment = make_shared<CInsiderSentiment>();
-			pInsiderSentiment->m_strSymbol = stockSymbol.c_str();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("symbol"));
-			if (!s.empty()) pInsiderSentiment->m_strSymbol = s.c_str();
-			const long year = ptreeGetLongLong(pt2, _T("year"));
-			const long month = ptreeGetLongLong(pt2, _T("month"));
-			pInsiderSentiment->m_lDate = year * 10000 + month * 100 + 1; // 日期要有效，故而日子用每月的第一天
-			pInsiderSentiment->m_lChange = ptreeGetLongLong(pt2, _T("change"));
-			pInsiderSentiment->m_mspr = ptreeGetDouble(pt2, _T("mspr"));
-			pvInsiderSentiment->push_back(pInsiderSentiment);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "),
-		                               e);
-		return pvInsiderSentiment;
-	}
-	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
-	return pvInsiderSentiment;
-}
-
-CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment2(CWebDataPtr pWebData) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
 	json pt1;
 	string sError;

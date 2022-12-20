@@ -37,18 +37,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
 			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry.get());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
 			GeneralCheck();
 		}
+
 	protected:
 	};
 
@@ -199,7 +200,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryFunction(),
-			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
+		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
@@ -245,9 +246,9 @@ namespace StockAnalysisTest {
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		CWebDataPtr pData = make_shared<CWebData>();
+		auto pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
-		pData->ParseUsingPropertyTree();
+		pData->ParseUsingNlohmannJson();
 		pData->SetParsed(true);
 
 		gl_pTiingoDataSource->StoreReceivedData(pData);

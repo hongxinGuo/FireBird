@@ -12,7 +12,6 @@ public:
 		m_strSymbol = _T("");
 		m_dLastPrice = m_dLastVolume = 0;
 		m_iSeconds = 0;
-		m_strCode = _T("");
 	}
 
 public:
@@ -20,10 +19,10 @@ public:
 	double m_dLastPrice;
 	INT64 m_iSeconds; // UNIX milliseconds timestamp
 	double m_dLastVolume;
-	CString m_strCode; // trade conditions
+	vector<string> m_vCode; // trade conditions
 };
 
-typedef shared_ptr<CFinnhubSocket> CFinnhubSocketPtr;
+using CFinnhubSocketPtr = shared_ptr<CFinnhubSocket>;
 
 class CFinnhubWebSocket final : public CVirtualWebSocket {
 public:
@@ -34,8 +33,8 @@ public:
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
 	~CFinnhubWebSocket(void) override = default;
 
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
+	bool Connect(void) override;
+	bool Send(vector<CString> vSymbol) override;
 	string CreateFinnhubWebSocketString(CString strSymbol);
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
@@ -43,6 +42,6 @@ public:
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 };
 
-typedef shared_ptr<CFinnhubWebSocket> CFinnhubWebSocketPtr;
+using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;
 
 extern CFinnhubWebSocket gl_finnhubWebSocket;

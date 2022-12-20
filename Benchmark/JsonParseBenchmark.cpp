@@ -227,15 +227,6 @@ static void ParseWithNlohmannJSon(benchmark::State& state) {
 
 BENCHMARK(ParseWithNlohmannJSon);
 
-static void ParseWithPTree(benchmark::State& state) {
-	ptree pt;
-	for (auto _ : state) {
-		ParseWithPTree(pt, sData101);
-	}
-}
-
-BENCHMARK(ParseWithPTree);
-
 class CJsonParse : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
@@ -264,26 +255,12 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& stat
 	}
 }
 
-BENCHMARK_F(CJsonParse, StockSymbolParseWithPTree)(benchmark::State& state) {
-	ptree pt;
-	for (auto _ : state) {
-		ParseWithPTree(pt, sUSExchangeStockCode);
-	}
-}
-
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
 
 	for (auto _ : state) {
 		NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
-	}
-}
-
-BENCHMARK_F(CJsonParse, NeteaseRTDataCreatePTreeWithBoostPTree)(benchmark::State& state) {
-	ptree pt;
-	for (auto _ : state) {
-		ParseWithPTree(pt, sNeteaseRTDataForPTree);
 	}
 }
 
@@ -323,32 +300,6 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
 	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
 		pvWebRTData = ParseNeteaseRTData(&js);
-	}
-}
-
-class CWithPTree : public benchmark::Fixture {
-public:
-	void SetUp(const ::benchmark::State& state) override {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
-		s.resize(s.size() - 2);
-		s.erase(s.begin(), s.begin() + 21);
-		fDone = ParseWithPTree(pt, s);
-	}
-
-	void TearDown(const ::benchmark::State& state) override {
-	}
-
-	string s;
-	ptree pt; // 此处不能使用智能指针，否则出现重入问题，原因不明。
-	vector<CWebRTDataPtr> vWebRTDataReceived;
-	bool fDone;
-};
-
-// 测试boost ptree解析NeteaseRTData的速度
-BENCHMARK_F(CWithPTree, ParseNeteaseRTData2)(benchmark::State& state) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
-	for (auto _ : state) {
-		pvWebRTData = ParseNeteaseRTData(&pt);
 	}
 }
 

@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoExchange::CreateMessage(void) {
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvCryptoExchange = ParseFinnhubCryptoExchange2(pWebData);
+	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
 		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
 			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
@@ -39,38 +39,6 @@ bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //
 shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
-	string s;
-	CString str = _T("");
-	string sError;
-	auto pvExchange = make_shared<vector<CString>>();
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvExchange;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvExchange;
-	}
-	const auto ppt = pWebData->GetPTree();
-	try {
-		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			ptree pt2 = it->second;
-			s = pt2.get_value<string>();
-			str = s.c_str();
-			pvExchange->push_back(str);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e);
-		return pvExchange;
-	}
-	return pvExchange;
-}
-
-shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange2(CWebDataPtr pWebData) {
 	string s;
 	CString str = _T("");
 	string sError;

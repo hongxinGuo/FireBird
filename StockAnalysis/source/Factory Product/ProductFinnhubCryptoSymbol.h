@@ -13,7 +13,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CFinnhubCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(CWebDataPtr pWebData);
-	CFinnhubCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol2(CWebDataPtr pWebData);
 };
 
 using CFinnhubCryptoSymbolProductPtr = shared_ptr<CProductFinnhubCryptoSymbol>;

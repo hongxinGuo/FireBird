@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
-	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction2(CWebDataPtr pWebData);
 };
 
 using CFinnhubCompanyInsiderTransactionPtr = shared_ptr<CProductFinnhubCompanyInsiderTransaction>;

@@ -33,7 +33,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	const auto pvDayLine = ParseFinnhubStockCandle2(pWebData);
+	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
@@ -62,109 +62,6 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
-	ptree pt2, pt3;
-	CDayLinePtr pDayLine = nullptr;
-	string sError;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvDayLine;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvDayLine;
-	}
-
-	const auto ppt = pWebData->GetPTree();
-	try {
-		auto s = ppt->get<string>(_T("s"));
-		if (s == _T("no_data")) {
-			// 没有日线数据，无需检查此股票的日线和实时数据
-			return pvDayLine;
-		}
-		if (s != _T("ok")) {
-			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
-			return pvDayLine;
-		}
-	}
-	catch (ptree_error& e) {
-		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e);
-		return pvDayLine;
-	}
-
-	try {
-		time_t tTemp;
-		pt2 = ppt->get_child(_T("t"));
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			tTemp = pt3.get_value<time_t>();
-			pDayLine = make_shared<CDayLine>();
-			pDayLine->SetTime(tTemp);
-			pvDayLine->push_back(pDayLine);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiry(), e);
-		return pvDayLine;
-	}
-	try {
-		int i;
-		INT64 llTemp;
-		double dTemp;
-		pt2 = ppt->get_child(_T("c"));
-		i = 0;
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			dTemp = pt3.get_value<double>();
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetClose(dTemp * 1000);
-		}
-		pt2 = ppt->get_child(_T("o"));
-		i = 0;
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			dTemp = pt3.get_value<double>();
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetOpen(dTemp * 1000);
-		}
-		pt2 = ppt->get_child(_T("h"));
-		i = 0;
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			dTemp = pt3.get_value<double>();
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetHigh(dTemp * 1000);
-		}
-		pt2 = ppt->get_child(_T("l"));
-		i = 0;
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			dTemp = pt3.get_value<double>();
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetLow(dTemp * 1000);
-		}
-		pt2 = ppt->get_child(_T("v"));
-		i = 0;
-		for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-			pt3 = it->second;
-			llTemp = pt3.get_value<double>();
-			pDayLine = pvDayLine->at(i++);
-			pDayLine->SetVolume(llTemp);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e);
-	}
-	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
-
-	return pvDayLine;
-}
-
-CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle2(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	json pt2;
 	CDayLinePtr pDayLine = nullptr;

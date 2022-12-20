@@ -118,10 +118,7 @@ using std::array;
 using std::shared_ptr;
 
 class CWebRTData;
-typedef std::shared_ptr<CWebRTData> CWebRTDataPtr;
-
-#include<boost/property_tree/ptree.hpp>
-using boost::property_tree::ptree;
+using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
 
 #include"NlohmannJsonDeclaration.h"
 
@@ -162,7 +159,6 @@ public:
 
 	// 读取网易实时数据函数
 	// 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-	bool ParseNeteaseDataWithPTree(ptree::iterator& it);
 	bool ParseNeteaseDataWithNlohmannJSon(json::iterator& it);
 
 public:
@@ -222,8 +218,8 @@ public:
 	}
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 	// 数据

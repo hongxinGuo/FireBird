@@ -14,9 +14,6 @@
 
 #include"ClassDeclaration.h"
 
-#include<boost/property_tree/ptree.hpp>
-using boost::property_tree::ptree;
-
 #include<gsl/gsl>
 using gsl::not_null;
 

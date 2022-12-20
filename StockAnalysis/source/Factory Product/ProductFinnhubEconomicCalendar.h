@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
-	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar2(CWebDataPtr pWebData);
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

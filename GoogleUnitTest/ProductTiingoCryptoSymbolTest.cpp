@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -132,7 +132,7 @@ namespace StockAnalysisTest {
 	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest2, TestParseCryptoSymbol) {
-		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol2(m_pWebData);
+		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 11: // 格式不对
 			EXPECT_EQ(m_pvCrypto->size(), 0);

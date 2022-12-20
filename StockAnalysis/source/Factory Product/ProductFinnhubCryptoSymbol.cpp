@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol2(pWebData);
+	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
 		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex));
@@ -49,41 +49,6 @@ bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //
 CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(CWebDataPtr pWebData) {
-	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
-	string s;
-	string sError;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvCryptoSymbol;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvCryptoSymbol;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvCryptoSymbol;
-	}
-	const auto ppt = pWebData->GetPTree();
-	try {
-		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			auto pSymbol = make_shared<CFinnhubCryptoSymbol>();
-			ptree pt2 = it->second;
-			s = pt2.get<string>(_T("description"));
-			if (!s.empty()) pSymbol->SetDescription(s.c_str());
-			s = pt2.get<string>(_T("displaySymbol"));
-			pSymbol->SetDisplaySymbol(s.c_str());
-			s = pt2.get<string>(_T("symbol"));
-			pSymbol->SetSymbol(s.c_str());
-			pvCryptoSymbol->push_back(pSymbol);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e);
-	}
-	return pvCryptoSymbol;
-}
-
-CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol2(CWebDataPtr pWebData) {
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
 	string s;
 	string sError;

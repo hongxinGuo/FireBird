@@ -31,7 +31,7 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 
 	CInsiderTransactionVectorPtr pvInsiderTransaction = nullptr;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvInsiderTransaction = ParseFinnhubStockInsiderTransaction2(pWebData);
+	pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetInsiderTransactionNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
@@ -68,64 +68,6 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 //
 //
 CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData) {
-	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
-	ptree pt1;
-	string sError;
-	string s;
-	string stockSymbol;
-	long year, month, day;
-	CInsiderTransactionPtr pInsiderTransaction = nullptr;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvInsiderTransaction;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvInsiderTransaction;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvInsiderTransaction;
-	}
-	const auto ppt = pWebData->GetPTree();
-	try {
-		pt1 = ppt->get_child(_T("data"));
-		stockSymbol = ppt->get<string>(_T("symbol"));
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiry(), e);
-		return pvInsiderTransaction;
-	}
-
-	try {
-		for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
-			pInsiderTransaction = make_shared<CInsiderTransaction>();
-			pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
-			ptree pt2 = it->second;
-			s = pt2.get<string>(_T("name"));
-			if (!s.empty()) pInsiderTransaction->m_strPersonName = s.c_str();
-			pInsiderTransaction->m_lShare = ptreeGetLongLong(pt2, _T("share"));
-			pInsiderTransaction->m_lChange = ptreeGetLongLong(pt2, _T("change"));
-			s = pt2.get<string>(_T("filingDate"));
-			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-			pInsiderTransaction->m_lFilingDate = year * 10000 + month * 100 + day;
-			s = pt2.get<string>(_T("transactionDate"));
-			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-			pInsiderTransaction->m_lTransactionDate = year * 10000 + month * 100 + day;
-			s = pt2.get<string>(_T("transactionCode"));
-			pInsiderTransaction->m_strTransactionCode = s.c_str();
-			pInsiderTransaction->m_dTransactionPrice = ptreeGetDouble(pt2, _T("transactionPrice"));
-			pvInsiderTransaction->push_back(pInsiderTransaction);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e);
-		return pvInsiderTransaction;
-	}
-	ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(), CompareInsiderTransaction);
-	return pvInsiderTransaction;
-}
-
-CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction2(CWebDataPtr pWebData) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
 	json pt1;
 	string sError;

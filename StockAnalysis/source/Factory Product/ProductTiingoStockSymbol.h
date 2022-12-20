@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CTiingoStockVectorPtr ParseTiingoStockSymbol(CWebDataPtr pWebData);
-	CTiingoStockVectorPtr ParseTiingoStockSymbol2(CWebDataPtr pWebData);
 };
 
 using CTiingoStockSymbolsPtr = shared_ptr<CProductTiingoStockSymbol>;

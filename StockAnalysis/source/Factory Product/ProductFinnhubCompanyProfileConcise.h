@@ -11,7 +11,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
-	bool ParseFinnhubStockProfileConcise2(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 
 using CFinnhubCompanyProfileConcisePtr = shared_ptr<CProductFinnhubCompanyProfileConcise>;

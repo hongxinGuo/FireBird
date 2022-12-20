@@ -23,26 +23,6 @@ namespace StockAnalysisTest {
 		}
 	};
 
-	TEST_F(jsonParseTest, TestParseWithPTree) {
-		ptree pt;
-		string s{_T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}")};
-		EXPECT_TRUE(ParseWithPTree(pt, s));
-		string sSubscribe = ptreeGetString(pt, _T("eventName"));
-		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ParseWithPTree(pt, s));
-	}
-
-	TEST_F(jsonParseTest, TestParseWithPTree2) {
-		auto ppt = make_shared<ptree>();
-		string s{_T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}")};
-		EXPECT_TRUE(ParseWithPTree(ppt, s));
-		auto sSubscribe = ppt->get<string>(_T("eventName"));
-		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}");
-		EXPECT_FALSE(ParseWithPTree(ppt, s));
-	}
-
 	TEST_F(jsonParseTest, TestCreateNlohmannJson) {
 		auto pjs = new json;
 		string s{_T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}")};
@@ -77,16 +57,5 @@ namespace StockAnalysisTest {
 		const string s2 = it->at("period");
 		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
-	}
-
-	TEST_F(jsonParseTest, TestReportJSonErrorToSystemMessage) {
-		ptree_error e(_T("error message"));
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
-
-		ReportJSonErrorToSystemMessage(_T("Error Message Prefix "), e);
-		CString strMessage = gl_systemMessage.PopErrorMessage();
-		EXPECT_STREQ(strMessage, _T("Error Message Prefix error message"));
-
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 	}
 }

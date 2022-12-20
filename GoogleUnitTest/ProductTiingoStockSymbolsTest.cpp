@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
 			TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -176,7 +176,7 @@ namespace StockAnalysisTest {
 		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest2, TestParseStockProfile) {
-		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol2(m_pWebData);
+		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvStock->size(), 0);

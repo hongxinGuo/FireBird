@@ -13,7 +13,6 @@ public:
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	bool IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode);
 	CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
-	CWorldStockVectorPtr ParseFinnhubStockSymbol2(CWebDataPtr pWebData);
 };
 
 using CProductFinnhubCompanySymbolPtr = shared_ptr<CProductFinnhubStockSymbol>;

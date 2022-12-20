@@ -14,12 +14,10 @@ CWebData::CWebData() : CObject() {
 	m_fParsed = false;
 	m_fNoRightToAccess = false;
 	m_strErrorMessage = "";
-	m_ppt = nullptr;
 }
 
 CWebData::~CWebData() {
 	m_sDataBuffer.resize(0);
-	if (m_ppt != nullptr) m_ppt = nullptr;
 }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
@@ -71,20 +69,6 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 		m_strErrorMessage = "";
 		return false;
 	}
-}
-
-bool CWebData::ParseUsingPropertyTree(long lBeginPos, long lEndPos) {
-	m_fParsed = CreatePropertyTree(lBeginPos, lEndPos);
-	SetJSonContentType(true);
-	return m_fParsed;
-}
-
-bool CWebData::CreatePropertyTree(long lBeginPos, long lEndPos) {
-	if (lEndPos > 0) m_sDataBuffer.resize(m_sDataBuffer.size() - lEndPos);
-	if (lBeginPos > 0) m_sDataBuffer.erase(m_sDataBuffer.begin(), m_sDataBuffer.begin() + lBeginPos);
-	if (m_ppt == nullptr) m_ppt = make_shared<ptree>();
-	m_fParsed = ParseWithPTree(m_ppt, m_sDataBuffer);
-	return m_fParsed;
 }
 
 bool CWebData::ParseUsingNlohmannJson(long lBeginPos, long lEndPos) {

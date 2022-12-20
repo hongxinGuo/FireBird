@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
-	CCountryVectorPtr ParseFinnhubCountryList2(CWebDataPtr pWebData);
 };
 
 using CFinnhubEconomicCountryListPtr = shared_ptr<CProductFinnhubEconomicCountryList>;

@@ -72,15 +72,13 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoForexData10(
 		10, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
 	// authenizition
-	TiingoWebSocketData tiingoForexData11(11, _T(""), _T(
-		                                      "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	TiingoWebSocketData tiingoForexData11(11, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
 	// subscribe
-	TiingoWebSocketData tiingoForexData12(12, _T(""), _T(
-		                                      "{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+	TiingoWebSocketData tiingoForexData12(12, _T(""), _T("{\"data\":{\"tickers\":[\"*\",\"FXCM:EUR/USD\",\"IC MARKETS:2\",\"OANDA:USD_JPY\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 
 	class ProcessOneTiingoForexWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
@@ -89,7 +87,7 @@ namespace StockAnalysisTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -170,8 +168,7 @@ namespace StockAnalysisTest {
 	TiingoWebSocketData tiingoCryptoData3(
 		3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
 	// authenizition
-	TiingoWebSocketData tiingoCryptoData4(4, _T(""), _T(
-		                                      "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
+	TiingoWebSocketData tiingoCryptoData4(4, _T(""), _T("{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}"));
 	// messageType必须为'A' 'H' 或者'I'
 	TiingoWebSocketData tiingoCryptoData5(5, _T(""), _T(
 		                                      "{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
@@ -190,7 +187,7 @@ namespace StockAnalysisTest {
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
@@ -199,7 +196,7 @@ namespace StockAnalysisTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -317,7 +314,7 @@ namespace StockAnalysisTest {
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoIEXWebSocket.IsReceivingData());
 
@@ -328,7 +325,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

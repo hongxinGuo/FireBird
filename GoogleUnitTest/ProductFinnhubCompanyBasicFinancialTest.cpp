@@ -462,7 +462,7 @@ namespace StockAnalysisTest {
 			m_pStock->SetBasicFinancialUpdated(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
@@ -549,7 +549,7 @@ namespace StockAnalysisTest {
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest2, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
-		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial2(pBasicFinancial, m_pWebData);
+		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_TRUE(fSucceed);
@@ -577,7 +577,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);

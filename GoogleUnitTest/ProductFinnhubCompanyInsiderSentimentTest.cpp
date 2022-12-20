@@ -150,7 +150,7 @@ namespace StockAnalysisTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
 		}
@@ -233,7 +233,7 @@ namespace StockAnalysisTest {
 	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
-		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment2(m_pWebData);
+		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // ÕýÈ·
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);

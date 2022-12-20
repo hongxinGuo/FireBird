@@ -43,7 +43,7 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews2(pWebData);
+	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	if (!pvFinnhubCompanyNews->empty()) {
@@ -80,58 +80,6 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
 ///		}
 CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDataPtr pWebData) {
-	string s;
-	wstring ws;
-	CStringW strW;
-
-	ptree pt2;
-
-	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvFinnhubCompanyNews;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvFinnhubCompanyNews;
-	}
-	const shared_ptr<ptree> ppt = pWebData->GetPTree();
-	try {
-		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			ptree pt1 = it->second;
-			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
-			s = pt1.get<string>(_T("category"));
-			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
-			const auto dateTime = pt1.get<INT64>(_T("datetime"));
-			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
-			s = pt1.get<string>(_T("headline"));
-			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();
-			pCompanyNews->m_iNewsID = pt1.get<int>(_T("id"));
-			s = pt1.get<string>(_T("image"));
-			if (!s.empty()) pCompanyNews->m_strImage = s.c_str();
-			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
-			s = pt1.get<string>(_T("related"));
-			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s.c_str();
-			s = pt1.get<string>(_T("source"));
-			if (!s.empty()) pCompanyNews->m_strSource = s.c_str();
-			s = pt1.get<string>(_T("summary"));
-			if (!s.empty()) pCompanyNews->m_strSummary = s.c_str();
-			s = pt1.get<string>(_T("url"));
-			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
-			pvFinnhubCompanyNews->push_back(pCompanyNews);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e);
-		return pvFinnhubCompanyNews; // 没有公司简介
-	}
-	return pvFinnhubCompanyNews;
-}
-
-CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews2(CWebDataPtr pWebData) {
 	string s;
 
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();

@@ -107,7 +107,7 @@ namespace StockAnalysisTest {
 			m_pvDayLine = nullptr;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 		}
 
@@ -147,33 +147,21 @@ namespace StockAnalysisTest {
 			break;
 		case 4:
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
 			EXPECT_GT(m_pvDayLine->size(), 0);
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
 			EXPECT_EQ(m_pvDayLine->size(), 2);

@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(CWebDataPtr pWebData);
-	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol2(CWebDataPtr pWebData);
 
 	// ≤‚ ‘”√
 	long long m_differ1, m_differ2;

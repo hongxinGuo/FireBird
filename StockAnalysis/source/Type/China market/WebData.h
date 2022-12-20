@@ -13,9 +13,6 @@
 #include<string>
 using std::string;
 
-#include<boost/property_tree/ptree.hpp>
-using boost::property_tree::ptree;
-
 #include"nlohmannJsonDeclaration.h"
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
@@ -88,11 +85,6 @@ public:
 	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource."));
 	// 默认的为finnhub禁止访问标识（目前只有此选项）
 
-	// 使用boost Property tree将数据转换为json格式。
-	bool ParseUsingPropertyTree(long lBeginPos = 0, long lEndPos = 0);
-	bool CreatePropertyTree(long lBeginPos = 0, long lEndPos = 0);
-	shared_ptr<ptree> GetPTree(void) { return m_ppt; }
-
 	// 使用Nlohmann json将数据转换为json格式。
 	bool ParseUsingNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
 	bool CreateNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
@@ -112,7 +104,6 @@ protected:
 	bool m_fParsed;
 	bool m_fNoRightToAccess; // 该网络数据报告错误
 	CString m_strErrorMessage; // 错误信息
-	shared_ptr<ptree> m_ppt;
 
 	// 以下为nlohmann制式的json数据，目前暂不使用
 	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者Nholmann json库bug，两者必居其一）。

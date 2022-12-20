@@ -31,7 +31,7 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	// SaveToFile(_T("C:\\StockAnalysis\\StockSymbol.json"), pWebData->GetDataBuffer());
 
 	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
-	const auto pvStock = ParseFinnhubStockSymbol2(pWebData);
+	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
 	pExchange->SetUpdated(true);
 	// 加上交易所代码。
@@ -87,58 +87,6 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, C
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {
-	auto pvStock = make_shared<vector<CWorldStockPtr>>();
-	CWorldStockPtr pStock = nullptr;
-	string s, sError;
-	shared_ptr<ptree> ppt;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvStock;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
-		return pvStock;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
-		return pvStock;
-	}
-	ppt = pWebData->GetPTree();
-	try {
-		ptree pt2;
-		for (ptree::iterator it = ppt->begin(); it != ppt->end(); ++it) {
-			pStock = make_shared<CWorldStock>();
-			pt2 = it->second;
-			s = pt2.get<string>(_T("currency"));
-			if (!s.empty()) pStock->SetCurrency(s.c_str());
-			s = pt2.get<string>(_T("description"));
-			if (!s.empty()) pStock->SetDescription(s.c_str());
-			s = pt2.get<string>(_T("displaySymbol"));
-			pStock->SetDisplaySymbol(s.c_str());
-			s = pt2.get<string>(_T("figi"));
-			if (!s.empty()) pStock->SetFigi(s.c_str());
-			s = pt2.get<string>(_T("isin"));
-			if (!s.empty()) pStock->SetIsin(s.c_str());
-			s = pt2.get<string>(_T("mic"));
-			if (!s.empty()) pStock->SetMic(s.c_str());
-			s = pt2.get<string>(_T("shareClassFIGI"));
-			if (!s.empty()) pStock->SetShareClassFIGI(s.c_str());
-			s = pt2.get<string>(_T("symbol"));
-			pStock->SetSymbol(s.c_str());
-			s = pt2.get<string>(_T("symbol2"));
-			pStock->SetSymbol2(s.c_str());
-			s = pt2.get<string>(_T("type"));
-			if (!s.empty()) pStock->SetType(s.c_str());
-			pvStock->push_back(pStock);
-		}
-	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
-		return pvStock;
-	}
-	return pvStock;
-}
-
-CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol2(CWebDataPtr pWebData) {
 	auto pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;

@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
-	CDayLineVectorPtr ParseFinnhubForexCandle2(CWebDataPtr pWebData);
 };
 
 using CFinnhubForexDayLinePtr = shared_ptr<CProductFinnhubForexDayLine>;

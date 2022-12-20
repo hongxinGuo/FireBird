@@ -12,7 +12,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CDayLineVectorPtr ParseTiingoStockDayLine(CWebDataPtr pWebData);
-	CDayLineVectorPtr ParseTiingoStockDayLine2(CWebDataPtr pWebData);
 };
 
 using CTiingoStockDayLinePtr = shared_ptr<CProductTiingoStockDayLine>;

@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvStock = nullptr;
 		}
@@ -111,7 +111,7 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("A"));
 			EXPECT_STREQ(m_pvStock->at(0)->GetIsin(), _T("not null")) << "此时内容不为空，需要双引号";
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvStock->at(1)->GetIsin(), _T("null")) << "当内容为空（null）时，无需双引号";
+			EXPECT_STREQ(m_pvStock->at(1)->GetIsin(), _T(" ")) << "当内容为空（null）时，使用默认值“ ”";
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:

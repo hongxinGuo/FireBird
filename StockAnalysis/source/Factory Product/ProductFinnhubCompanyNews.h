@@ -18,7 +18,6 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CCompanyNewsVectorPtr ParseFinnhubCompanyNews(CWebDataPtr pWebData);
-	CCompanyNewsVectorPtr ParseFinnhubCompanyNews2(CWebDataPtr pWebData);
 };
 
 using CProductFinnhubCompanyNewsPtr = shared_ptr<CProductFinnhubCompanyNews>;

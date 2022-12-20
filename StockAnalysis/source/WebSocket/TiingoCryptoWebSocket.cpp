@@ -128,33 +128,31 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 	string sTickers, sExchange;
 
 	try {
-		if (ptree pt; ParseWithPTree(pt, *pData)) {
+		if (json pt; NlohmannCreateJson(&pt, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
 			string sDatetime;
 			string sMessageType;
 			char chType;
 			string sType;
-			ptree pt3;
-			ptree pt2;
-			ptree::iterator it;
-			sType = ptreeGetString(pt, _T("messageType"));
+			json pt3;
+			json pt2;
+			json::iterator it;
+			sType = jsonGetString(&pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-				pt2 = pt.get_child(_T("data"));
+				jsonGetChild(&pt, _T("data"), &pt2);
 				try {
-					ptree pt4;
-					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it2 = pt3.begin(); it2 != pt3.end(); it2++) {
-						pt4 = it2->second;
-						strSymbol = pt4.get_value<string>();
+					pt3 = pt2.at(_T("tickers"));
+					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
+						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
 				}
-				catch (exception e) {
+				catch (json::exception&) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&pt2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
@@ -162,62 +160,48 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
-				sService = ptreeGetString(pt, _T("service"));
-				if (sService.compare(_T("crypto_data")) != 0) return false; // 格式不符则退出
-				pt2 = pt.get_child(_T("data"));
+				sService = jsonGetString(&pt, _T("service"));
+				if (sService != _T("crypto_data")) return false; // 格式不符则退出
+				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
 				it = pt2.begin();
-				pt3 = it->second;
-				sMessageType = pt3.get_value<string>(); // ‘Q’或者‘T’
+				sMessageType = it->get<string>(); // ‘Q’或者‘T’
 				if (sMessageType.at(0) == 'T') {
 					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
 					++it;
-					pt3 = it->second;
-					sTickers = pt3.get_value<string>(); // 证券名称
+					sTickers = jsonGetString(it); // 证券名称
 					pCryptoData->m_strSymbol = sTickers.c_str();
 					++it;
-					pt3 = it->second;
-					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
-					pt3 = it->second;
-					sExchange = pt3.get_value<string>(); // 交易所
+					sExchange = jsonGetString(it); // 交易所
 					pCryptoData->m_strExchange = sExchange.c_str();
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dLastSize = pt3.get_value<double>(); // 最新数量
+					pCryptoData->m_dLastSize = jsonGetDouble(it); // 最新数量
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dLastPrice = pt3.get_value<double>(); // 最新价格
+					pCryptoData->m_dLastPrice = jsonGetDouble(it); // 最新价格
 				}
 				else if (sMessageType.at(0) == 'Q') {
 					// 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
 					++it;
-					pt3 = it->second;
-					sTickers = pt3.get_value<string>(); // 证券名称
+					sTickers = jsonGetString(it); // 证券名称
 					pCryptoData->m_strSymbol = sTickers.c_str();
 					++it;
-					pt3 = it->second;
-					sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
-					pt3 = it->second;
-					sExchange = pt3.get_value<string>(); // 交易所
+					sExchange = jsonGetString(it);// 交易所
 					pCryptoData->m_strExchange = sExchange.c_str();
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dBidSize = pt3.get_value<double>(); // 买价数量
+					pCryptoData->m_dBidSize = jsonGetDouble(it); // 买价数量
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dBidPrice = pt3.get_value<double>(); // 买价
+					pCryptoData->m_dBidPrice = jsonGetDouble(it); // 买价
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
+					pCryptoData->m_dMidPrice = jsonGetDouble(it); // 中间价 （BidPrice + AskPrice)/2
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dAskSize = pt3.get_value<double>(); // 卖价数量
+					pCryptoData->m_dAskSize = jsonGetDouble(it); // 卖价数量
 					++it;
-					pt3 = it->second;
-					pCryptoData->m_dAskPrice = pt3.get_value<double>(); // 卖价
+					pCryptoData->m_dAskPrice = jsonGetDouble(it); // 卖价
 				}
 				else {
 					// 格式不对
@@ -235,8 +219,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			return false;
 		}
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e);
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
 		return false;
 	}
 

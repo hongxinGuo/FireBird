@@ -128,68 +128,57 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (ptree pt; ParseWithPTree(pt, *pData)) {
+		if (json pt; NlohmannCreateJson(&pt, *pData)) {
 			string sDatetime;
 			string sMessageType;
 			char chType;
 			string sService;
 			string sType;
-			ptree::iterator it;
-			ptree pt3;
-			ptree pt2;
-			sType = ptreeGetString(pt, _T("messageType"));
+			json::iterator it;
+			json pt2;
+			sType = jsonGetString(&pt, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-				pt2 = pt.get_child(_T("data"));
+				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
 				try {
-					ptree pt4;
-					pt3 = pt2.get_child(_T("tickers"));
-					for (ptree::iterator it3 = pt3.begin(); it3 != pt3.end(); it3++) {
-						pt4 = it3->second;
-						strSymbol = pt4.get_value<string>();
+					json pt3 = pt2.at(_T("tickers"));
+					for (auto it3 = pt3.begin(); it3 != pt3.end(); ++it3) {
+						strSymbol = jsonGetString(it3);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
 				}
-				catch (exception e) {
+				catch (json::exception& e) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(ptreeGetInt(pt2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&pt2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 				// do nothing
 				break;
 			case 'A': // new data
-				sService = ptreeGetString(pt, _T("service"));
-				if (sService.compare(_T("fx")) != 0) return false; // 只有此项
+				sService = jsonGetString(&pt, _T("service"));
+				if (sService != _T("fx")) return false; // 只有此项
 				pForexData = make_shared<CTiingoForexSocket>();
-				pt2 = pt.get_child(_T("data"));
+				jsonGetChild(&pt, _T("data"), &pt2);
 				it = pt2.begin();
-				pt3 = it->second;
-				sMessageType = pt3.get_value<string>(); // 必须是‘Q’
+				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
 				++it;
-				pt3 = it->second;
-				sTickers = pt3.get_value<string>(); // 证券名称
+				sTickers = jsonGetString(it); // 证券名称
 				pForexData->m_strSymbol = sTickers.c_str();
 				++it;
-				pt3 = it->second;
-				sDatetime = pt3.get_value<string>(); // 时间串："2019-07-05T15:49:15.157000+00:00"
+				sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 				++it;
-				pt3 = it->second;
-				pForexData->m_dBidSize = pt3.get_value<double>(); // 买价数量
+				pForexData->m_dBidSize = jsonGetDouble(it); // 买价数量
 				++it;
-				pt3 = it->second;
-				pForexData->m_dBidPrice = pt3.get_value<double>(); // 买价
+				pForexData->m_dBidPrice = jsonGetDouble(it); // 买价
 				++it;
-				pt3 = it->second;
-				pForexData->m_dMidPrice = pt3.get_value<double>(); // 中间价 （BidPrice + AskPrice)/2
+				pForexData->m_dMidPrice = jsonGetDouble(it); // 中间价 （BidPrice + AskPrice)/2
 				++it;
-				pt3 = it->second;
-				pForexData->m_dAskSize = pt3.get_value<double>(); // 卖价数量
+				pForexData->m_dAskSize = jsonGetDouble(it); // 卖价数量
 				++it;
-				pt3 = it->second;
-				pForexData->m_dAskPrice = pt3.get_value<double>(); // 卖价
+				pForexData->m_dAskPrice = jsonGetDouble(it); // 卖价
 				gl_SystemData.PushTiingoForexSocket(pForexData);
 				m_fReceivingData = true;
 				break;
@@ -205,8 +194,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			return false;
 		}
 	}
-	catch (ptree_error& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e);
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
 		return false;
 	}
 
