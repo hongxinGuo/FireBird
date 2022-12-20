@@ -23,7 +23,7 @@ CString CProductFinnhubEconomicCalendar::CreateMessage(void) {
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
+	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar2(pWebData);
 	dynamic_cast<CWorldMarket*>(m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
 
 	return true;
@@ -68,6 +68,50 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e);
+	}
+	return pvEconomicCalendar;
+}
+
+CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar2(CWebDataPtr pWebData) {
+	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
+	CEconomicCalendarPtr pEconomicCalendar = nullptr;
+	string s;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvEconomicCalendar;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvEconomicCalendar;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvEconomicCalendar;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		json pt1;
+		if (jsonGetChild(pjs, _T("economicCalendar"), &pt1)) {
+			for (auto it = pt1.begin(); it != pt1.end(); ++it) {
+				pEconomicCalendar = make_shared<CEconomicCalendar>();
+				s = jsonGetString(it, _T("country"));
+				if (!s.empty()) pEconomicCalendar->m_strCountry = s.c_str();
+				s = jsonGetString(it,_T("event"));
+				pEconomicCalendar->m_strEvent = s.c_str();
+				s = jsonGetString(it,_T("impact"));
+				pEconomicCalendar->m_strImpact = s.c_str();
+				pEconomicCalendar->m_dEstimate = jsonGetDouble(it, _T("estimate"));
+				pEconomicCalendar->m_dActual = jsonGetDouble(it, _T("actual"));
+				pEconomicCalendar->m_dPrev = jsonGetDouble(it, _T("prev"));
+				s = jsonGetString(it,_T("time"));
+				pEconomicCalendar->m_strTime = s.c_str();
+				s = jsonGetString(it,_T("unit"));
+				pEconomicCalendar->m_strUnit = s.c_str();
+				pvEconomicCalendar->push_back(pEconomicCalendar);
+			}
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e.what());
 	}
 	return pvEconomicCalendar;
 }

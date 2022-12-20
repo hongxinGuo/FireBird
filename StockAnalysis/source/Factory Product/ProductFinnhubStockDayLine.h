@@ -9,9 +9,10 @@ public:
 	CProductFinnhubStockDayLine();
 	~CProductFinnhubStockDayLine() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
+	CDayLineVectorPtr ParseFinnhubStockCandle2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubStockDayLine> CFinnhubStockDayLinePtr;
+using CFinnhubStockDayLinePtr = shared_ptr<CProductFinnhubStockDayLine>;

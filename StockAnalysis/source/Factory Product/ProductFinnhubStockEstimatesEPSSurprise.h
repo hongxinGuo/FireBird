@@ -9,9 +9,10 @@ public:
 	CProductFinnhubStockEstimatesEPSSurprise();
 	~CProductFinnhubStockEstimatesEPSSurprise() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
+	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubStockEstimatesEPSSurprise> CFinnhubStockEstimatesEPSSurprisePtr;
+using CFinnhubStockEstimatesEPSSurprisePtr = shared_ptr<CProductFinnhubStockEstimatesEPSSurprise>;

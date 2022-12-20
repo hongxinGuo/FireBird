@@ -26,7 +26,7 @@ CString CProductFinnhubForexSymbol::CreateMessage(void) {
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
+	const auto pvForexSymbol = ParseFinnhubForexSymbol2(pWebData);
 	if (pvForexSymbol->empty()) return false;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsForexSymbol(pSymbol->GetSymbol())) {
@@ -70,6 +70,42 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e);
+	}
+
+	return pvForexSymbol;
+}
+
+CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol2(CWebDataPtr pWebData) {
+	auto pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
+	CForexSymbolPtr pSymbol = nullptr;
+	string s;
+	string sError;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvForexSymbol;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvForexSymbol;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvForexSymbol;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			pSymbol = make_shared<CFinnhubForexSymbol>();
+			s = jsonGetString(it, _T("description"));
+			if (!s.empty()) pSymbol->SetDescription(s.c_str());
+			s = jsonGetString(it,_T("displaySymbol"));
+			pSymbol->SetDisplaySymbol(s.c_str());
+			s = jsonGetString(it,_T("symbol"));
+			pSymbol->SetSymbol(s.c_str());
+			pvForexSymbol->push_back(pSymbol);
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e.what());
 	}
 
 	return pvForexSymbol;

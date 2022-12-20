@@ -23,10 +23,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -65,7 +65,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -77,7 +77,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvStock = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyProfileUpdated(false);
@@ -95,7 +96,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		&finnhubWebData30));
+		                         &finnhubWebData30));
 
 	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);
@@ -120,18 +121,19 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -145,7 +147,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		&finnhubWebData30));
+		                         &finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CWorldStockPtr pStock = nullptr;
@@ -165,7 +167,7 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
-			// 恢复原状
+		// 恢复原状
 			EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
 			break;
 		default:

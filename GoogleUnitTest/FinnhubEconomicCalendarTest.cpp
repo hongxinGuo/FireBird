@@ -28,10 +28,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 			m_pvEconomicCalendar = nullptr;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -105,10 +105,10 @@ namespace StockAnalysisTest {
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
 		case 4: // 第一个数据缺actual
-			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0) << "遇错误返回，没有数据";
 			break;
 		case 5: // 第二个数据缺actual
-			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 1) << "第一个数据是正确的";
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
 			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
 			break;
@@ -131,18 +131,18 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket.get());
 			m_finnhubEconomicCalendar.SetIndex(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();

@@ -8,9 +8,10 @@ public:
 	CProductFinnhubForexExchange();
 	~CProductFinnhubForexExchange() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	shared_ptr<vector<CString>> ParseFinnhubForexExchange(CWebDataPtr pWebData);
+	shared_ptr<vector<CString>> ParseFinnhubForexExchange2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubForexExchange> CFinnhubForexExchangePtr;
+using CFinnhubForexExchangePtr = shared_ptr<CProductFinnhubForexExchange>;

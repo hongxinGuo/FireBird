@@ -1,6 +1,5 @@
 #include "pch.h"
 
-//
 #include"TimeConvert.h"
 #include"jsonParse.h"
 
@@ -32,7 +31,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	bool fStatus = true;
 
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
-	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
+	const auto pvDayLine = ParseFinnhubCryptoCandle2(pWebData);
 	pCryptoSymbol->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
@@ -164,6 +163,115 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e);
+		// 有些外汇交易不提供成交量，忽略就可以了
+	}
+	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	// 清除掉交易日期为零的无效数据
+	for (auto& pDayLine2 : *pvDayLine) {
+		if (pDayLine2->m_time > 0) {
+			pvDayLineReturn->push_back(pDayLine2);
+		}
+	}
+	return pvDayLineReturn;
+}
+
+CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle2(CWebDataPtr pWebData) {
+	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	auto pvDayLineReturn = make_shared<vector<CDayLinePtr>>();
+	json pt2, pt3;
+	CDayLinePtr pDayLine = nullptr;
+	string sError;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvDayLine;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvDayLine;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvDayLine;
+	}
+
+	const auto pjs = pWebData->GetJSon();
+	try {
+		string s;
+		s = jsonGetString(pjs, _T("s"));
+		if (s == _T("no_data")) {
+			// 没有日线数据，无需检查此股票的日线和实时数据
+			return pvDayLine;
+		}
+		if (s != _T("ok")) {
+			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
+			return pvDayLine;
+		}
+	}
+	catch (json::exception& e) {
+		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 's': "), pWebData->GetDataBuffer().c_str());
+		return pvDayLine;
+	}
+	try {
+		time_t tTemp = 0;
+		if (!jsonGetChild(pjs, _T("t"), &pt2)) return pvDayLineReturn;
+		for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+			tTemp = it->get<INT64>();
+			pDayLine = make_shared<CDayLine>();
+			pDayLine->SetTime(tTemp);
+			pvDayLine->push_back(pDayLine);
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 't' "), e.what());
+		return pvDayLine;
+	}
+	try {
+		int i = 0;
+		INT64 llTemp;
+		double dTemp;
+		if (jsonGetChild(pjs, _T("c"), &pt2)) {
+			i = 0;
+			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				dTemp = it->get<double>();
+				pDayLine = pvDayLine->at(i++);
+				pDayLine->SetClose(static_cast<long>(dTemp * 1000));
+			}
+		}
+		if (jsonGetChild(pjs, _T("h"), &pt2)) {
+			i = 0;
+			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				dTemp = it->get<double>();
+				pDayLine = pvDayLine->at(i++);
+				pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
+			}
+		}
+		if (jsonGetChild(pjs, _T("l"), &pt2)) {
+			i = 0;
+			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				dTemp = it->get<double>();
+				pDayLine = pvDayLine->at(i++);
+				pDayLine->SetLow(static_cast<long>(1000 * dTemp));
+			}
+		}
+		if (jsonGetChild(pjs, _T("o"), &pt2)) {
+			i = 0;
+			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				dTemp = it->get<double>();
+				pDayLine = pvDayLine->at(i++);
+				pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
+			}
+		}
+		if (jsonGetChild(pjs, _T("v"), &pt2)) {
+			i = 0;
+			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				llTemp = static_cast<INT64>(it->get<double>());
+				pDayLine = pvDayLine->at(i++);
+				pDayLine->SetVolume(llTemp);
+			}
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
 	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);

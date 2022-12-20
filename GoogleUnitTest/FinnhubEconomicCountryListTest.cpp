@@ -27,10 +27,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
 			m_pvCountry = nullptr;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -138,17 +138,17 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			if (gl_pWorldMarket->IsCountry(_T("Zero"))) {
 				auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));

@@ -8,9 +8,10 @@ public:
 	CProductFinnhubStockPriceQuote();
 	~CProductFinnhubStockPriceQuote() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	bool ParseFinnhubStockQuote2(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 
-typedef shared_ptr<CProductFinnhubStockPriceQuote> CFinnhubStockPriceQuotePtr;
+using CFinnhubStockPriceQuotePtr = shared_ptr<CProductFinnhubStockPriceQuote>;

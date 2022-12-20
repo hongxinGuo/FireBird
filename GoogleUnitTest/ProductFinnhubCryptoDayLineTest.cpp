@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreateMessage(),
-			cryptoDayLine.GetInquiry() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+		             cryptoDayLine.GetInquiry() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 			m_pvDayLine = nullptr;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
@@ -106,9 +106,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoCandle1,
-		ParseFinnhubCryptoCandleTest,
-		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+	                         ParseFinnhubCryptoCandleTest,
+	                         testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+		                         &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		CString strMessage;
@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -165,13 +165,13 @@ namespace StockAnalysisTest {
 			lIPOStatus = gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->GetIPOStatus();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCryptoDayLine.SetIndex(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(lIPOStatus);
@@ -187,8 +187,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoCandle, ProcessFinnhubCryptoCandleTest,
-		testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
-			&finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
+	                         testing::Values(&finnhubWebData221, &finnhubWebData222_1, &finnhubWebData222, &finnhubWebData223, &finnhubWebData224, &finnhubWebData225,
+		                         &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
 		CString strMessage;

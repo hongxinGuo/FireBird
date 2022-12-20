@@ -9,9 +9,10 @@ public:
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
+	CCountryVectorPtr ParseFinnhubCountryList2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubEconomicCountryList> CFinnhubEconomicCountryListPtr;
+using CFinnhubEconomicCountryListPtr = shared_ptr<CProductFinnhubEconomicCountryList>;

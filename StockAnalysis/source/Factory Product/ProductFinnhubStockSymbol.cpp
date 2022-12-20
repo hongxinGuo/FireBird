@@ -31,7 +31,7 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	// SaveToFile(_T("C:\\StockAnalysis\\StockSymbol.json"), pWebData->GetDataBuffer());
 
 	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
-	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
+	const auto pvStock = ParseFinnhubStockSymbol2(pWebData);
 	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
 	pExchange->SetUpdated(true);
 	// 加上交易所代码。
@@ -133,6 +133,55 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e);
+		return pvStock;
+	}
+	return pvStock;
+}
+
+CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol2(CWebDataPtr pWebData) {
+	auto pvStock = make_shared<vector<CWorldStockPtr>>();
+	CWorldStockPtr pStock = nullptr;
+	string s, sError;
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvStock;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvStock;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvStock;
+	}
+	auto pjs = pWebData->GetJSon();
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			pStock = make_shared<CWorldStock>();
+			s = jsonGetString(it, _T("currency"));
+			if (!s.empty()) pStock->SetCurrency(s.c_str());
+			s = jsonGetString(it, _T("description"));
+			if (!s.empty()) pStock->SetDescription(s.c_str());
+			s = jsonGetString(it, _T("displaySymbol"));
+			pStock->SetDisplaySymbol(s.c_str());
+			s = jsonGetString(it, _T("figi"));
+			if (!s.empty()) pStock->SetFigi(s.c_str());
+			s = jsonGetString(it, _T("isin"));
+			if (!s.empty()) pStock->SetIsin(s.c_str());
+			s = jsonGetString(it, _T("mic"));
+			if (!s.empty()) pStock->SetMic(s.c_str());
+			s = jsonGetString(it, _T("shareClassFIGI"));
+			if (!s.empty()) pStock->SetShareClassFIGI(s.c_str());
+			s = jsonGetString(it, _T("symbol"));
+			pStock->SetSymbol(s.c_str());
+			s = jsonGetString(it, _T("symbol2"));
+			pStock->SetSymbol2(s.c_str());
+			s = jsonGetString(it, _T("type"));
+			if (!s.empty()) pStock->SetType(s.c_str());
+			pvStock->push_back(pStock);
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e.what());
 		return pvStock;
 	}
 	return pvStock;

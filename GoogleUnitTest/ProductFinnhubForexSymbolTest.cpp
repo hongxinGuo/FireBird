@@ -13,8 +13,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CProductFinnhubForexSymbolTest : public ::testing::Test
-	{
+	class CProductFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -24,10 +23,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -62,10 +61,9 @@ namespace StockAnalysisTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData90(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
-	class ParseFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ParseFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -74,7 +72,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvForexSymbol = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -88,8 +87,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
-		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-			&finnhubWebData85, &finnhubWebData90));
+	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
@@ -116,20 +115,20 @@ namespace StockAnalysisTest {
 		}
 	}
 
-	class ProcessFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
-	{
+	class ProcessFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_productFinnhubForexSymbol.SetMarket(gl_pWorldMarket.get());
 			m_productFinnhubForexSymbol.SetIndex(0);
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -142,8 +141,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
-		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-			&finnhubWebData85, &finnhubWebData90));
+	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;
@@ -167,7 +166,7 @@ namespace StockAnalysisTest {
 			pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";
 
-			// 恢复原状
+		// 恢复原状
 			EXPECT_TRUE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol));
 			break;
 		default:

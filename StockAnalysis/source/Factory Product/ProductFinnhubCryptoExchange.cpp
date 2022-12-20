@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoExchange::CreateMessage(void) {
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
-	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
+	const auto pvCryptoExchange = ParseFinnhubCryptoExchange2(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
 		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
 			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
@@ -33,6 +33,11 @@ bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
+//
+//
+// ["KRAKEN", "HITBTC", "COINBASE", "GEMINI", "POLONIEX", "Binance", "ZB", "BITTREX", "KUCOIN", "OKEX", "BITFINEX", "HUOBI"]
+//
+//
 shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(CWebDataPtr pWebData) {
 	string s;
 	CString str = _T("");
@@ -60,6 +65,37 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	}
 	catch (ptree_error& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e);
+		return pvExchange;
+	}
+	return pvExchange;
+}
+
+shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange2(CWebDataPtr pWebData) {
+	string s;
+	CString str = _T("");
+	string sError;
+	auto pvExchange = make_shared<vector<CString>>();
+
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return pvExchange;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return pvExchange;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return pvExchange;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+			s = it->get<string>();
+			str = s.c_str();
+			pvExchange->push_back(str);
+		}
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e.what());
 		return pvExchange;
 	}
 	return pvExchange;

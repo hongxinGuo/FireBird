@@ -7,7 +7,6 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-
 #include"ProductFinnhubForexExchange.h"
 
 using namespace testing;
@@ -29,10 +28,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -63,7 +62,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -72,7 +71,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvExchange = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 
 			GeneralCheck();
@@ -81,12 +81,12 @@ namespace StockAnalysisTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		shared_ptr<vector<CString>>  m_pvExchange;
+		shared_ptr<vector<CString>> m_pvExchange;
 		CProductFinnhubForexExchange m_finnhubForexExchange;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		&finnhubWebData80));
+		                         &finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
@@ -109,18 +109,19 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket.get());
 			EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
 
@@ -135,7 +136,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		&finnhubWebData80));
+		                         &finnhubWebData80));
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);

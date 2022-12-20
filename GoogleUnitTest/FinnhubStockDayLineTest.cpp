@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
 		stockDayLine.SetMarket(gl_pWorldMarket.get());
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreateMessage(),
-			stockDayLine.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
+		             stockDayLine.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方重置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
@@ -78,20 +78,20 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubStockCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockDayLine.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyProfileUpdated(false);
@@ -112,9 +112,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
-		ProcessFinnhubStockCandleTest,
-		testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
-			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
+	                         ProcessFinnhubStockCandleTest,
+	                         testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
+		                         &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
 		CString strMessage;

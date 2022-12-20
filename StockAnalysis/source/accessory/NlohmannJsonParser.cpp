@@ -41,7 +41,7 @@ bool NlohmannCreateJson(json* pjs, std::string& s, long lBeginPos, long lEndPos)
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}
 	catch (json::parse_error& e) {
-		gl_systemMessage.PushErrorMessage("nlohmann json parse error");
+		//gl_systemMessage.PushErrorMessage("nlohmann json parse error");
 		//ReportJsonError(e, s);
 		pjs = nullptr;
 		return false;

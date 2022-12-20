@@ -27,10 +27,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -61,7 +61,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -70,7 +70,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvExchange = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -83,7 +84,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
-		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
@@ -106,18 +107,19 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket.get());
 			EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
 
@@ -132,7 +134,7 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
-		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);

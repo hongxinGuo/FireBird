@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -65,7 +65,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -76,7 +76,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvEPSSurprise = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyProfileUpdated(false);
@@ -93,8 +94,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-			&finnhubWebData125, &finnhubWebData130));
+	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
@@ -102,22 +103,22 @@ namespace StockAnalysisTest {
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
-		case 3: //
-			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
+		case 3: //第一个数据缺actual
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0) << "第一个数据极为错误的";
 			break;
 		case 4: // 第二个数据缺缺actual
-			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 1) << "错误数据不存储";
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 5: // 第三个数据缺CodeNo
-			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68);
-			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
-			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->size(), 2) << "第三个数据是错误的";
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
+			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
+			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
@@ -137,19 +138,20 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyProfileUpdated(false);
@@ -165,8 +167,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-			&finnhubWebData125, &finnhubWebData130));
+	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
@@ -179,25 +181,25 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
 			break;
-		case 3: //
+		case 3: //第一个数据缺actual
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
-			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 0);
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101) << "数据为空时，将日期设置为原点";
 			break;
 		case 4: // 第二个数据缺缺actual
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 1);
 			break;
 		case 5: // 第三个数据缺CodeNo
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
-			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);
+			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 2);
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

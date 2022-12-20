@@ -10,9 +10,10 @@ public:
 
 	~CProductFinnhubCryptoSymbol() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CFinnhubCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(CWebDataPtr pWebData);
+	CFinnhubCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubCryptoSymbol> CFinnhubCryptoSymbolProductPtr;
+using CFinnhubCryptoSymbolProductPtr = shared_ptr<CProductFinnhubCryptoSymbol>;

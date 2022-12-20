@@ -11,9 +11,10 @@ public:
 	CProductFinnhubCryptoDayLine();
 	~CProductFinnhubCryptoDayLine() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 	CDayLineVectorPtr ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
+	CDayLineVectorPtr ParseFinnhubCryptoCandle2(CWebDataPtr pWebData);
 };
 
-typedef shared_ptr<CProductFinnhubCryptoDayLine> CFinnhubCryptoDayLinePtr;
+using CFinnhubCryptoDayLinePtr = shared_ptr<CProductFinnhubCryptoDayLine>;

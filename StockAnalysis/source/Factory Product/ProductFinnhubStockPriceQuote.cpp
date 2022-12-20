@@ -30,7 +30,7 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	if (ParseFinnhubStockQuote(pWebData, pStock)) {
+	if (ParseFinnhubStockQuote2(pWebData, pStock)) {
 		if ((pStock->GetTransactionTime() + 3600 * 12 - m_pMarket->GetUTCTime()) > 0) {
 			// 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
@@ -73,6 +73,40 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	catch (ptree_error& e) {
 		// 数据格式不对，跳过。
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e);
+		return false;
+	}
+	return true;
+}
+
+bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote2(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return false;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = _VOID_DATA_;
+		return false;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		return false;
+	}
+	const auto pjs = pWebData->GetJSon();
+	try {
+		double dTemp = jsonGetDouble(pjs, _T("c"));
+		pStock->SetNew(dTemp * 1000);
+		dTemp = jsonGetDouble(pjs, _T("h"));
+		pStock->SetHigh(dTemp * 1000);
+		dTemp = jsonGetDouble(pjs, _T("l"));
+		pStock->SetLow(dTemp * 1000);
+		dTemp = jsonGetDouble(pjs, _T("o"));
+		pStock->SetOpen(dTemp * 1000);
+		dTemp = jsonGetDouble(pjs, _T("pc"));
+		pStock->SetLastClose(dTemp * 1000);
+		const auto tt = jsonGetLongLong(pjs,_T("t"));
+		pStock->SetTransactionTime(tt);
+	}
+	catch (json::exception& e) {
+		// 数据格式不对，跳过。
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e.what());
 		return false;
 	}
 	return true;

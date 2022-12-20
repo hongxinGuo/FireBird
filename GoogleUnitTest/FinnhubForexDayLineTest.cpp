@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -90,9 +90,7 @@ namespace StockAnalysisTest {
 	                                _T(
 		                                "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏o项
-	FinnhubWebData finnhubWebData68(8, _T("OANDA:XAU_SGD"),
-	                                _T(
-		                                "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	FinnhubWebData finnhubWebData68(8, _T("OANDA:XAU_SGD"),_T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏v项
 	FinnhubWebData finnhubWebData69(9, _T("OANDA:XAU_SGD"),
 	                                _T(
@@ -102,7 +100,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -113,7 +111,7 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 
 			GeneralCheck();
@@ -194,19 +192,19 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket.get());
 			m_finnhubForexDayLine.SetIndex(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 
 			GeneralCheck();
@@ -253,8 +251,6 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 5: // 缺乏C项，无效数据
 			EXPECT_TRUE(fSucceed);
@@ -262,8 +258,6 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 6:
 			EXPECT_TRUE(fSucceed);
@@ -271,8 +265,6 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 7:
 			EXPECT_TRUE(fSucceed);
@@ -280,8 +272,6 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 8:
 			EXPECT_TRUE(fSucceed);
@@ -289,8 +279,6 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 9:
 			EXPECT_TRUE(fSucceed);
@@ -298,8 +286,6 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
-			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

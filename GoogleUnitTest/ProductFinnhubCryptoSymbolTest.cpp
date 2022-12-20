@@ -23,10 +23,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 
 	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -72,7 +72,8 @@ namespace StockAnalysisTest {
 			m_pWebData->SetJSonContentType(true);
 			m_pvCryptoSymbol = nullptr;
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -86,8 +87,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
-		testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
-			&finnhubWebData215, &finnhubWebData220));
+	                         testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);
@@ -116,17 +117,18 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreatePropertyTree();
+			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCryptoSymbolProduct.SetIndex(0);
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -139,8 +141,8 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol, ProcessFinnhubCryptoSymbolTest,
-		testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
-			&finnhubWebData215, &finnhubWebData220));
+	                         testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
 		CFinnhubCryptoSymbolPtr pCrypto;
@@ -164,7 +166,7 @@ namespace StockAnalysisTest {
 			pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
 
-			// »Ö¸´Ô­×´
+		// »Ö¸´Ô­×´
 			EXPECT_TRUE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCrypto));
 			break;
 		default:
