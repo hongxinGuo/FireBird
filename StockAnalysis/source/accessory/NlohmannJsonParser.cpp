@@ -24,6 +24,7 @@
 #include"SystemMessage.h"
 #include"WebRTData.h"
 
+#include"JsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 
 #include<sstream>
@@ -79,13 +80,13 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		js = it.value();
 		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
 		pWebRTData->SetSymbol(strSymbol4);
-		sName = js.at("name");
+		sName = jsonGetString(&js, "name");
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
-		strTime = js.at(_T("time"));
-		strSymbol2 = js.at(_T("code"));
+		strTime = jsonGetString(&js, _T("time"));
+		strSymbol2 = jsonGetString(&js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 	}
-	catch (json::out_of_range& e) {
+	catch (json::exception& e) {
 		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -100,54 +101,54 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		double dNew;
 		double dLow;
 		double dHigh;
-		pWebRTData->SetVolume(js.at(_T("volume")));
-		pWebRTData->SetAmount(js.at(_T("turnover")));
-		dHigh = js.at(_T("high"));
+		pWebRTData->SetVolume(jsonGetLongLong(&js, _T("volume")));
+		pWebRTData->SetAmount(jsonGetLongLong(&js,_T("turnover")));
+		dHigh = jsonGetDouble(&js, _T("high"));
 		pWebRTData->SetHigh(dHigh * 1000);
-		dLow = js.at(_T("low"));
+		dLow = jsonGetDouble(&js, _T("low"));
 		pWebRTData->SetLow(dLow * 1000);
-		dNew = js.at(_T("price"));
+		dNew = jsonGetDouble(&js, _T("price"));
 		pWebRTData->SetNew(dNew * 1000);
-		dLastClose = js.at(_T("yestclose"));
+		dLastClose = jsonGetDouble(&js, _T("yestclose"));
 		pWebRTData->SetLastClose(dLastClose * 1000);
-		dOpen = js.at(_T("open"));
+		dOpen = jsonGetDouble(&js, _T("open"));
 		pWebRTData->SetOpen(dOpen * 1000);
 
-		pWebRTData->SetVBuy(0, js.at(_T("bidvol1")));
-		pWebRTData->SetVBuy(1, js.at(_T("bidvol2")));
-		pWebRTData->SetVBuy(2, js.at(_T("bidvol3")));
-		pWebRTData->SetVBuy(3, js.at(_T("bidvol4")));
-		pWebRTData->SetVBuy(4, js.at(_T("bidvol5")));
-		pWebRTData->SetVSell(0, js.at(_T("askvol1")));
-		pWebRTData->SetVSell(1, js.at(_T("askvol2")));
-		pWebRTData->SetVSell(2, js.at(_T("askvol3")));
-		pWebRTData->SetVSell(3, js.at(_T("askvol4")));
-		pWebRTData->SetVSell(4, js.at(_T("askvol5")));
-		aAsk[0] = js.at(_T("ask1"));
+		pWebRTData->SetVBuy(0, jsonGetLong(&js,_T("bidvol1")));
+		pWebRTData->SetVBuy(1, jsonGetLong(&js,_T("bidvol2")));
+		pWebRTData->SetVBuy(2, jsonGetLong(&js,_T("bidvol3")));
+		pWebRTData->SetVBuy(3, jsonGetLong(&js,_T("bidvol4")));
+		pWebRTData->SetVBuy(4, jsonGetLong(&js,_T("bidvol5")));
+		pWebRTData->SetVSell(0, jsonGetLong(&js,_T("askvol1")));
+		pWebRTData->SetVSell(1, jsonGetLong(&js,_T("askvol2")));
+		pWebRTData->SetVSell(2, jsonGetLong(&js,_T("askvol3")));
+		pWebRTData->SetVSell(3, jsonGetLong(&js,_T("askvol4")));
+		pWebRTData->SetVSell(4, jsonGetLong(&js,_T("askvol5")));
+		aAsk[0] = jsonGetDouble(&js,_T("ask1"));
 		pWebRTData->SetPSell(0, aAsk[0] * 1000);
-		aAsk[1] = js.at(_T("ask2"));
+		aAsk[1] = jsonGetDouble(&js,_T("ask2"));
 		pWebRTData->SetPSell(1, aAsk[1] * 1000);
-		aAsk[2] = js.at(_T("ask3"));
+		aAsk[2] = jsonGetDouble(&js,_T("ask3"));
 		pWebRTData->SetPSell(2, aAsk[2] * 1000);
-		aAsk[3] = js.at(_T("ask4"));
+		aAsk[3] = jsonGetDouble(&js,_T("ask4"));
 		pWebRTData->SetPSell(3, aAsk[3] * 1000);
-		aAsk[4] = js.at(_T("ask5"));
+		aAsk[4] = jsonGetDouble(&js,_T("ask5"));
 		pWebRTData->SetPSell(4, aAsk[4] * 1000);
-		aBid[0] = js.at(_T("bid1"));
+		aBid[0] = jsonGetDouble(&js,_T("bid1"));
 		pWebRTData->SetPBuy(0, aBid[0] * 1000);
-		aBid[1] = js.at(_T("bid2"));
+		aBid[1] = jsonGetDouble(&js,_T("bid2"));
 		pWebRTData->SetPBuy(1, aBid[1] * 1000);
-		aBid[2] = js.at(_T("bid3"));
+		aBid[2] = jsonGetDouble(&js,_T("bid3"));
 		pWebRTData->SetPBuy(2, aBid[2] * 1000);
-		aBid[3] = js.at(_T("bid4"));
+		aBid[3] = jsonGetDouble(&js,_T("bid4"));
 		pWebRTData->SetPBuy(3, aBid[3] * 1000);
-		aBid[4] = js.at(_T("bid5"));
+		aBid[4] = jsonGetDouble(&js,_T("bid5"));
 		pWebRTData->SetPBuy(4, aBid[4] * 1000);
 
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
 	}
-	catch (json::out_of_range&) {
+	catch (json::exception&) {
 		// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 		fSucceed = true;

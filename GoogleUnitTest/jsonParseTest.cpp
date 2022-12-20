@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
+#include"JsonGetValue.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

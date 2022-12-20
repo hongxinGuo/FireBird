@@ -2,6 +2,7 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
+#include"JsonGetValue.h"
 
 #include"WorldMarket.h"
 #include"FinnhubCryptoSymbol.h"
@@ -122,7 +123,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		if (jsonGetChild(pjs, _T("c"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetClose(static_cast<long>(dTemp * 1000));
 			}
@@ -130,7 +131,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		if (jsonGetChild(pjs, _T("h"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
 			}
@@ -138,7 +139,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		if (jsonGetChild(pjs, _T("l"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetLow(static_cast<long>(1000 * dTemp));
 			}
@@ -146,7 +147,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		if (jsonGetChild(pjs, _T("o"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
 			}
@@ -154,7 +155,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		if (jsonGetChild(pjs, _T("v"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				llTemp = static_cast<INT64>(it->get<double>());
+				llTemp = jsonGetLongLong(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetVolume(llTemp);
 			}

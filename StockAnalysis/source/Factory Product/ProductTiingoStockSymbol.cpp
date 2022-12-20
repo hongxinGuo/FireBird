@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"JsonGetValue.h"
+
 #include"WorldMarket.h"
 
 #include"TiingoStock.h"
@@ -119,10 +121,8 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 				if (!s.empty()) pStock->m_strTiingoSector = s.c_str();
 			}
 			else pStock->m_strTiingoSector = strNULL;
-			s = jsonGetString(it,_T("sicCode"));
-			if (s != strNotAvailable) {
-				pStock->m_iSICCode = atoi(s.c_str());
-			}
+			auto s2 = it->at(_T("sicCode"));
+			if (s2.is_number()) pStock->m_iSICCode = s2;
 			else pStock->m_iSICCode = 0;
 			s = jsonGetString(it,_T("sicIndustry"));
 			if (s != strNotAvailable) {

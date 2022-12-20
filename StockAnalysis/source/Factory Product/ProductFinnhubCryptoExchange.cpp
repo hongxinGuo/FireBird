@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"JsonGetValue.h"
+
 #include"WorldMarket.h"
 
 #include "ProductFinnhubCryptoExchange.h"
@@ -57,7 +59,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	const auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
-			s = it->get<string>();
+			s = jsonGetString(it);
 			str = s.c_str();
 			pvExchange->push_back(str);
 		}

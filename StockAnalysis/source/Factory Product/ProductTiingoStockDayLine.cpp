@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"JsonGetValue.h"
 
 #include"WorldStock.h"
 #include"WorldMarket.h"

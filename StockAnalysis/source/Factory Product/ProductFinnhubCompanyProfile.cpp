@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include"jsonParse.h"
+#include"JsonGetValue.h"
+
 #include"worldMarket.h"
 
 #include "ProductFinnhubCompanyProfile.h"

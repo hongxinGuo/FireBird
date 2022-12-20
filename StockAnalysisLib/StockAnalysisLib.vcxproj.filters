@@ -753,6 +753,9 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\TemplateMutexAccessQueue.h">
       <Filter>头文件\Template</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\accessory\JsonGetValue.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
@@ -1333,6 +1336,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Data Class\NewClass1.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\accessory\JsonGetValue.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

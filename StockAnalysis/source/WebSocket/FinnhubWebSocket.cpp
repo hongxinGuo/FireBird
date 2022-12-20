@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include"JsonParse.h"
+#include"JsonGetValue.h"
 
 #include "FinnhubWebSocket.h"
 #include"FinnhubWebInquiry.h"

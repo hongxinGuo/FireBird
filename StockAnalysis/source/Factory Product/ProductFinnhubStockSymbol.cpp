@@ -3,6 +3,7 @@
 #include"SaveAndLoad.h"
 
 #include"jsonParse.h"
+#include"JsonGetValue.h"
 
 #include "ProductFinnhubStockSymbol.h"
 

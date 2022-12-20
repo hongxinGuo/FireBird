@@ -2,6 +2,8 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
+#include"JsonGetValue.h"
+
 #include"worldMarket.h"
 
 #include "ProductFinnhubCompanyNews.h"

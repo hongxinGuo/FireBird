@@ -2,6 +2,7 @@
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
+#include"JsonGetValue.h"
 
 #include"WorldMarket.h"
 #include"FinnhubForexSymbol.h"
@@ -95,7 +96,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		long lTemp;
 		if (!jsonGetChild(pjs, _T("t"), &pt2)) return pvDayLine;
 		for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-			tTemp = it->get<time_t>();
+			tTemp = jsonGetLongLong(it);
 			pDayLine = make_shared<CDayLine>();
 			pDayLine->SetTime(tTemp);
 			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
@@ -114,7 +115,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		if (jsonGetChild(pjs, _T("c"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetClose(dTemp * 1000);
 			}
@@ -122,7 +123,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		if (jsonGetChild(pjs, _T("h"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetHigh(dTemp * 1000);
 			}
@@ -130,7 +131,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		if (jsonGetChild(pjs, _T("l"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetLow(dTemp * 1000);
 			}
@@ -138,7 +139,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		if (jsonGetChild(pjs, _T("o"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = it->get<double>();
+				dTemp = jsonGetDouble(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetOpen(dTemp * 1000);
 			}
@@ -146,7 +147,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		if (jsonGetChild(pjs, _T("v"), &pt2)) {
 			i = 0;
 			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				llTemp = it->get<double>();
+				llTemp = jsonGetLongLong(it);
 				pDayLine = pvDayLine->at(i++);
 				pDayLine->SetVolume(llTemp);
 			}
