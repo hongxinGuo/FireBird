@@ -129,40 +129,40 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (json pt; NlohmannCreateJson(&pt, *pData)) {
+		if (json js; NlohmannCreateJson(&js, *pData)) {
 			string sDatetime;
 			string sMessageType;
 			char chType;
 			string sService;
 			string sType;
 			json::iterator it;
-			json pt2;
-			sType = jsonGetString(&pt, _T("messageType"));
+			json js2;
+			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
+				js2 = jsonGetChild(&js, _T("data"));
 				try {
-					json pt3 = pt2.at(_T("tickers"));
-					for (auto it3 = pt3.begin(); it3 != pt3.end(); ++it3) {
+					json js3 = js2.at(_T("tickers"));
+					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
 				}
 				catch (json::exception& e) {
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(jsonGetInt(&pt2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 				// do nothing
 				break;
 			case 'A': // new data
-				sService = jsonGetString(&pt, _T("service"));
+				sService = jsonGetString(&js, _T("service"));
 				if (sService != _T("fx")) return false; // 只有此项
 				pForexData = make_shared<CTiingoForexSocket>();
-				jsonGetChild(&pt, _T("data"), &pt2);
-				it = pt2.begin();
+				js2 = jsonGetChild(&js, _T("data"));
+				it = js2.begin();
 				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
 				++it;

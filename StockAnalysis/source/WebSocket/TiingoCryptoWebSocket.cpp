@@ -129,31 +129,31 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 	string sTickers, sExchange;
 
 	try {
-		if (json pt; NlohmannCreateJson(&pt, *pData)) {
+		if (json js; NlohmannCreateJson(&js, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
 			string sDatetime;
 			string sMessageType;
 			char chType;
 			string sType;
-			json pt3;
-			json pt2;
+			json js2;
 			json::iterator it;
-			sType = jsonGetString(&pt, _T("messageType"));
+			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-				jsonGetChild(&pt, _T("data"), &pt2);
+				// 或者  {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
+				js2 = jsonGetChild(&js, _T("data"));
 				try {
-					pt3 = pt2.at(_T("tickers"));
-					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
+					json js3 = js2.at(_T("tickers"));
+					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
-						m_vCurrentSymbol.push_back(strSymbol.c_str());
+						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
 					}
 				}
-				catch (json::exception&) {
+				catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
 					ASSERT(GetSubscriptionId() == 0);
-					SetSubscriptionId(jsonGetInt(&pt2, _T("subscriptionId")));
+					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
@@ -161,11 +161,11 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
-				sService = jsonGetString(&pt, _T("service"));
+				sService = jsonGetString(&js, _T("service"));
 				if (sService != _T("crypto_data")) return false; // 格式不符则退出
-				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
-				it = pt2.begin();
-				sMessageType = it->get<string>(); // ‘Q’或者‘T’
+				js2 = jsonGetChild(&js, _T("data"));
+				it = js2.begin();
+				sMessageType = jsonGetString(it); // ‘Q’或者‘T’
 				if (sMessageType.at(0) == 'T') {
 					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';

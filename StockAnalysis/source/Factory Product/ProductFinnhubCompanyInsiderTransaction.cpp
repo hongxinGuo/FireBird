@@ -89,7 +89,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	}
 	const auto pjs = pWebData->GetJSon();
 	try {
-		jsonGetChild(pjs, _T("data"), &pt1);
+		pt1 = jsonGetChild(pjs, _T("data"));
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
 	}
 	catch (json::exception& e) {

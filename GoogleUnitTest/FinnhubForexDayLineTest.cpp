@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearu
+			// clearUp
 			GeneralCheck();
 		}
 
@@ -176,6 +176,7 @@ namespace StockAnalysisTest {
 		default:
 			break;
 		}
+		if (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
@@ -260,6 +261,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 8:
 			EXPECT_TRUE(fSucceed);
@@ -288,10 +290,10 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
-			gl_systemMessage.PopErrorMessage();
 			break;
 		default:
 			break;
 		}
+		if (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 }

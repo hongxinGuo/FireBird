@@ -134,7 +134,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				pIEXData = make_shared<CTiingoIEXSocket>();
 				sService = jsonGetString(&js, _T("service"));
 				if (sService != _T("iex")) return false; // 此项必须为"iex"
-				if (!jsonGetChild(&js, _T("data"), &js2)) return false;
+				js2 = jsonGetChild(&js, _T("data"));
 				it = js2.begin();
 				sMessageType = jsonGetString(it); // message type, 'Q'、'T'或者'B'
 				chType = sMessageType.at(0);
@@ -202,7 +202,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					++it;
 					pIEXData->m_iNMSRule611 = jsonGetInt(it);
 					break;
-				case 'B': // 'B'trade break messages
+				case 'B': // 'B' trade break messages
 					i++;
 					break;
 				default: // 错误
@@ -213,15 +213,15 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				m_fReceivingData = true;
 				break;
 			case 'I': // authentication  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
-				if (!jsonGetChild(&js, _T("data"), &js2)) return false;
+				js2 = jsonGetChild(&js, _T("data"));
 				try {
 					json js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
-						m_vCurrentSymbol.push_back(strSymbol.c_str());
+						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
 					}
 				}
-				catch (json::exception&) {
+				catch (json::exception&) { // 注册ID "data":{"subscriptionId":2563367}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}

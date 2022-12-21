@@ -564,6 +564,9 @@
     <ClCompile Include="DataChoicedCryptoTest.cpp" />
     <ClCompile Include="DataChoicedForexTest.cpp" />
     <ClCompile Include="DataChoicedIEXTest.cpp" />
+    <ClCompile Include="JsonGetValueTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

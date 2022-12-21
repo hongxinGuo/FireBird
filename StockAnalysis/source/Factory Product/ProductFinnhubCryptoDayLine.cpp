@@ -69,7 +69,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	auto pvDayLineReturn = make_shared<vector<CDayLinePtr>>();
-	json pt2, pt3;
+	json js2;
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
 
@@ -104,8 +104,8 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	}
 	try {
 		time_t tTemp = 0;
-		if (!jsonGetChild(pjs, _T("t"), &pt2)) return pvDayLineReturn;
-		for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+		js2 = jsonGetChild(pjs, _T("t"));
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = it->get<INT64>();
 			pDayLine = make_shared<CDayLine>();
 			pDayLine->SetTime(tTemp);
@@ -120,45 +120,40 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		int i = 0;
 		INT64 llTemp;
 		double dTemp;
-		if (jsonGetChild(pjs, _T("c"), &pt2)) {
-			i = 0;
-			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = jsonGetDouble(it);
-				pDayLine = pvDayLine->at(i++);
-				pDayLine->SetClose(static_cast<long>(dTemp * 1000));
-			}
+		js2 = jsonGetChild(pjs, _T("c"));
+		i = 0;
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
+			dTemp = jsonGetDouble(it);
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetClose(static_cast<long>(dTemp * 1000));
 		}
-		if (jsonGetChild(pjs, _T("h"), &pt2)) {
-			i = 0;
-			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = jsonGetDouble(it);
-				pDayLine = pvDayLine->at(i++);
-				pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
-			}
+		js2 = jsonGetChild(pjs, _T("h"));
+		i = 0;
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
+			dTemp = jsonGetDouble(it);
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
 		}
-		if (jsonGetChild(pjs, _T("l"), &pt2)) {
-			i = 0;
-			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = jsonGetDouble(it);
-				pDayLine = pvDayLine->at(i++);
-				pDayLine->SetLow(static_cast<long>(1000 * dTemp));
-			}
+		js2 = jsonGetChild(pjs, _T("l"));
+		i = 0;
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
+			dTemp = jsonGetDouble(it);
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetLow(static_cast<long>(1000 * dTemp));
 		}
-		if (jsonGetChild(pjs, _T("o"), &pt2)) {
-			i = 0;
-			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				dTemp = jsonGetDouble(it);
-				pDayLine = pvDayLine->at(i++);
-				pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
-			}
+		js2 = jsonGetChild(pjs, _T("o"));
+		i = 0;
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
+			dTemp = jsonGetDouble(it);
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
 		}
-		if (jsonGetChild(pjs, _T("v"), &pt2)) {
-			i = 0;
-			for (auto it = pt2.begin(); it != pt2.end(); ++it) {
-				llTemp = jsonGetLongLong(it);
-				pDayLine = pvDayLine->at(i++);
-				pDayLine->SetVolume(llTemp);
-			}
+		js2 = jsonGetChild(pjs, _T("v"));
+		i = 0;
+		for (auto it = js2.begin(); it != js2.end(); ++it) {
+			llTemp = jsonGetLongLong(it);
+			pDayLine = pvDayLine->at(i++);
+			pDayLine->SetVolume(llTemp);
 		}
 	}
 	catch (json::exception& e) {

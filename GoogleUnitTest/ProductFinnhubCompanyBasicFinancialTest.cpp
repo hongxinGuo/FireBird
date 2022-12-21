@@ -498,64 +498,9 @@ namespace StockAnalysisTest {
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
-			break;
-		case 2: //
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
-		default:
-			break;
-		}
-	}
-
-	class ParseFinnhubStockBasicFinancialTest2 : public::testing::TestWithParam<FinnhubWebData*> {
-	protected:
-		void SetUp(void) override {
-			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
-			m_pStock->SetBasicFinancialUpdated(false);
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
-			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
-			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
-			const long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
-			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
-		}
-
-		void TearDown(void) override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetBasicFinancialUpdateDate(19800101);
-			m_pStock->SetBasicFinancialUpdated(false);
-
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWorldStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest2,
-	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002));
-
-	TEST_P(ParseFinnhubStockBasicFinancialTest2, TestParseFinnhubInsiderTransaction0) {
-		CFinnhubStockBasicFinancialPtr pBasicFinancial;
-		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 正确
-			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
-			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
+			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.size(), 2);
+			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_period, 20201231);
+			EXPECT_DOUBLE_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_value, 0.7634660421545667);
 			break;
 		case 2: //
 			EXPECT_TRUE(fSucceed);

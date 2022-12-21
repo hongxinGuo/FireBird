@@ -125,16 +125,16 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	try {
 		if (json pt; NlohmannCreateJson(&pt, *pData)) {
 			sType = jsonGetString(&pt, _T("type"));
-			if (sType == _T("trade")) {
-				json pt2;
+			if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+				json js2;
 				json pt3;
 				// 交易数据
-				if (!jsonGetChild(&pt, _T("data"), &pt2)) return false;
-				for (auto it = pt2.begin(); it != pt2.end(); ++it) {
+				js2 = jsonGetChild(&pt, _T("data"));
+				for (auto it = js2.begin(); it != js2.end(); ++it) {
 					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 					sSymbol = jsonGetString(it, _T("s"));
 					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
-					jsonGetChild(it, _T("c"), &pt3);
+					pt3 = jsonGetChild(it, _T("c"));
 					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
 						pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2));
 					}

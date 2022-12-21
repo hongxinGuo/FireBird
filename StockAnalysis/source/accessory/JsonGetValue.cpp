@@ -2,112 +2,102 @@
 
 #include "JsonGetValue.h"
 
-bool jsonGetChild(json* inputPt, const char* szKey, json* outputPpt) {
-	try {
-		*outputPpt = inputPt->at(szKey);
-	}
-	catch (json::exception&) {
-		return false;
-	}
-	return true;
+json jsonGetChild(json* pjs, const char* szKey) {
+	auto js = pjs->at(szKey);
+	return js;
 }
 
-double jsonGetDouble(json* pt, const char* szKey, double dDefault) {
-	const auto d = pt->at(szKey);
-	if (d.is_null()) return dDefault;
-	else return d;
+double jsonGetDouble(json* pjs, const char* szKey, const double dDefault) {
+	const auto d = pjs->at(szKey);
+	if (d.is_number()) return d;
+	else return dDefault;
 }
 
-string jsonGetString(json* pt, const char* szKey, const char* szDefault) {
-	const auto s = pt->at(szKey);
-	if (s.is_null()) return szDefault;
-	return s;
+string jsonGetString(json* pjs, const char* szKey, const char* szDefault) {
+	const auto s = pjs->at(szKey);
+	if (s.is_string()) return s;
+	return szDefault;
 }
 
-int jsonGetInt(json* pt, const char* szKey, int iDefault) {
-	const auto s = pt->at(szKey);
-	if (s.is_null()) return iDefault;
-	else return s;
+int jsonGetInt(json* pjs, const char* szKey, const int iDefault) {
+	const auto s = pjs->at(szKey);
+	if (s.is_number()) return s;
+	else return iDefault;
 }
 
-long long jsonGetLongLong(json* pt, const char* szKey, long long llDefault) {
-	const auto s = pt->at(szKey);
-	if (s.is_null()) return llDefault;
-	else return s;
+long long jsonGetLongLong(json* pjs, const char* szKey, const long long llDefault) {
+	const auto s = pjs->at(szKey);
+	if (s.is_number()) return s;
+	else return llDefault;
 }
 
-long jsonGetLong(json* pt, const char* szKey, long lDefault) {
-	const auto s = pt->at(szKey);
-	if (s.is_null()) return lDefault;
-	else return s;
+long jsonGetLong(json* pjs, const char* szKey, const long lDefault) {
+	const auto s = pjs->at(szKey);
+	if (s.is_number()) return s;
+	else return lDefault;
 }
 
-double jsonGetDouble(json::iterator it, const char* szKey, double dDefault) {
-	const auto d = it->at(szKey);
-	if (d.is_null()) return dDefault;
-	else return d;
+double jsonGetDouble(const json::iterator& it, const char* szKey, const double dDefault) {
+	auto d = it->at(szKey);
+	if (d.is_number()) return d;
+	else return dDefault;
 }
 
-bool jsonGetChild(json::iterator it, const char* szKey, json* outputPpt) {
-	try {
-		*outputPpt = it->at(szKey);
-	}
-	catch (json::exception&) {
-		return false;
-	}
-	return true;
+json jsonGetChild(const json::iterator& it, const char* szKey) {
+	auto js2 = it->at(szKey);
+	return js2;
 }
 
-string jsonGetString(json::iterator it, const char* szKey, const char* szDefault) {
+string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault) {
+	auto str = it->at(szKey);
+	if (str.is_string()) return str;
+	else return szDefault;
+}
+
+int jsonGetInt(const json::iterator& it, const char* szKey, const int iDefault) {
+	auto i = it->at(szKey);
+	if (i.is_number()) return i;
+	else return iDefault;
+}
+
+long long jsonGetLongLong(const json::iterator& it, const char* szKey, const long long llDefault) {
 	const auto s = it->at(szKey);
-	if (s.is_null()) return szDefault;
-	return s;
+	if (s.is_number()) return s;
+	else return llDefault;
 }
 
-int jsonGetInt(json::iterator it, const char* szKey, int iDefault) {
+long jsonGetLong(const json::iterator& it, const char* szKey, const long lDefault) {
 	const auto s = it->at(szKey);
-	if (s.is_null()) return iDefault;
-	else return s;
+	if (s.is_number()) return s;
+	else return lDefault;
 }
 
-long long jsonGetLongLong(json::iterator it, const char* szKey, long long llDefault) {
-	const auto s = it->at(szKey);
-	if (s.is_null()) return llDefault;
-	else return s;
-}
-
-long jsonGetLong(json::iterator it, const char* szKey, long lDefault) {
-	const auto s = it->at(szKey);
-	if (s.is_null()) return lDefault;
-	else return s;
-}
-
-double jsonGetDouble(json::iterator it) {
+double jsonGetDouble(const json::iterator& it) {
 	const auto d = *it;
-	if (d.is_null()) return 0.0;
-	else return d;
+	if (d.is_number()) return d;
+	else return 0.0;
 }
 
-string jsonGetString(json::iterator it) {
+string jsonGetString(const json::iterator& it) {
 	const auto s = *it;
-	if (s.is_null()) return _T("");
-	return s;
+	if (s.is_string()) return s;
+	return _T("");
 }
 
-int jsonGetInt(json::iterator it) {
+int jsonGetInt(const json::iterator& it) {
 	const auto s = *it;
-	if (s.is_null()) return 0;
-	else return s;
+	if (s.is_number()) return s;
+	else return 0;
 }
 
 long long jsonGetLongLong(const json::iterator& it) {
 	const auto s = *it;
-	if (s.is_null()) return 0;
-	else return s;
+	if (s.is_number()) return s;
+	else return 0;
 }
 
-long jsonGetLong(json::iterator it) {
+long jsonGetLong(const json::iterator& it) {
 	const auto s = *it;
-	if (s.is_null()) return 0;
-	else return s;
+	if (s.is_number()) return s;
+	else return 0;
 }
