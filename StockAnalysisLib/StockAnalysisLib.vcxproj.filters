@@ -1310,7 +1310,7 @@
     <ClCompile Include="..\StockAnalysis\source\Data Source\TengxunRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\accessory\NlohmannJsonParser.cpp">
+    <ClCompile Include="..\StockAnalysis\source\accessory\NeteaseRTDataParser.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp">

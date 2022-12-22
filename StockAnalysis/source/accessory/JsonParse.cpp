@@ -289,60 +289,6 @@ CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
 	return pData;
 }
 
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
-	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
-		if (gl_systemStatus.IsExitingSystem()) return 0;
-		auto pRTData = make_shared<CWebRTData>();
-		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
-		if (ParseOneNeteaseRTDataWithNlohmannJSon(it, pRTData)) {
-			pRTData->CheckNeteaseRTDataActive();
-			pvWebRTData->push_back(pRTData);
-		}
-	}
-	return pvWebRTData;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
-//
-// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
-//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
-//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
-//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
-//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
-//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
-//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
-//
-// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
-	static int i = 0;
-	// 截取实时数据时用。为了测试解析速度
-	if (i < pData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
-		i = pData->GetBufferLength();
-	}
-	bool fProcess = true;
-	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJson(21, 2)) {
-			// 网易数据前21位为前缀，后两位为后缀
-			fProcess = false;
-		}
-	}
-	if (fProcess && pData->IsParsed()) {
-		json* pjs = pData->GetJSon();
-		pvWebRTData = ParseNeteaseRTData(pjs);
-	}
-	return pvWebRTData;
-}
-
 // 将PTree中提取的utf-8字符串转化为CString
 CString XferToCString(string s) {
 	CString strName3;

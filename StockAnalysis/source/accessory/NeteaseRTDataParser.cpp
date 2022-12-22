@@ -29,9 +29,12 @@
 
 #include<sstream>
 #include<string>
-using std::stringstream;
+#include<memory>
+#include<vector>
 
-bool NlohmannCreateJson(json* pjs, std::string& s, long lBeginPos, long lEndPos) {
+using namespace std;
+
+bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, const long lEndPos) {
 	try {
 		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}
@@ -66,24 +69,20 @@ CString XferToCString(string s);
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWebRTData) {
+bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
 	bool fSucceed = true;
-	string symbolName, strTime, strUpdateTime, strName;
-	array<double, 5> aAsk{0, 0, 0, 0, 0}, aBid{0, 0, 0, 0, 0};
+	string strTime, strUpdateTime, strName;
 	CString strSymbol4, str1, strName3;
-	json js;
+	json js = it.value();;
+	const string symbolName = it.key();
 
 	try {
-		string sName;
-		string strSymbol2;
-		symbolName = it.key();
-		js = it.value();
 		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
 		pWebRTData->SetSymbol(strSymbol4);
-		sName = jsonGetString(&js, "name");
+		const string sName = jsonGetString(&js, "name");
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
 		strTime = jsonGetString(&js, _T("time"));
-		strSymbol2 = jsonGetString(&js, _T("code"));
+		string strSymbol2 = jsonGetString(&js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 	}
 	catch (json::exception& e) {
@@ -96,23 +95,13 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		fSucceed = false;
 	}
 	try {
-		double dLastClose;
-		double dOpen;
-		double dNew;
-		double dLow;
-		double dHigh;
 		pWebRTData->SetVolume(jsonGetLongLong(&js, _T("volume")));
 		pWebRTData->SetAmount(jsonGetLongLong(&js,_T("turnover")));
-		dHigh = jsonGetDouble(&js, _T("high"));
-		pWebRTData->SetHigh(dHigh * 1000);
-		dLow = jsonGetDouble(&js, _T("low"));
-		pWebRTData->SetLow(dLow * 1000);
-		dNew = jsonGetDouble(&js, _T("price"));
-		pWebRTData->SetNew(dNew * 1000);
-		dLastClose = jsonGetDouble(&js, _T("yestclose"));
-		pWebRTData->SetLastClose(dLastClose * 1000);
-		dOpen = jsonGetDouble(&js, _T("open"));
-		pWebRTData->SetOpen(dOpen * 1000);
+		pWebRTData->SetHigh(jsonGetDouble(&js, _T("high")) * 1000);
+		pWebRTData->SetLow(jsonGetDouble(&js, _T("low")) * 1000);
+		pWebRTData->SetNew(jsonGetDouble(&js, _T("price")) * 1000);
+		pWebRTData->SetLastClose(jsonGetDouble(&js, _T("yestclose")) * 1000);
+		pWebRTData->SetOpen(jsonGetDouble(&js, _T("open")) * 1000);
 
 		pWebRTData->SetVBuy(0, jsonGetLong(&js,_T("bidvol1")));
 		pWebRTData->SetVBuy(1, jsonGetLong(&js,_T("bidvol2")));
@@ -124,26 +113,17 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 		pWebRTData->SetVSell(2, jsonGetLong(&js,_T("askvol3")));
 		pWebRTData->SetVSell(3, jsonGetLong(&js,_T("askvol4")));
 		pWebRTData->SetVSell(4, jsonGetLong(&js,_T("askvol5")));
-		aAsk[0] = jsonGetDouble(&js,_T("ask1"));
-		pWebRTData->SetPSell(0, aAsk[0] * 1000);
-		aAsk[1] = jsonGetDouble(&js,_T("ask2"));
-		pWebRTData->SetPSell(1, aAsk[1] * 1000);
-		aAsk[2] = jsonGetDouble(&js,_T("ask3"));
-		pWebRTData->SetPSell(2, aAsk[2] * 1000);
-		aAsk[3] = jsonGetDouble(&js,_T("ask4"));
-		pWebRTData->SetPSell(3, aAsk[3] * 1000);
-		aAsk[4] = jsonGetDouble(&js,_T("ask5"));
-		pWebRTData->SetPSell(4, aAsk[4] * 1000);
-		aBid[0] = jsonGetDouble(&js,_T("bid1"));
-		pWebRTData->SetPBuy(0, aBid[0] * 1000);
-		aBid[1] = jsonGetDouble(&js,_T("bid2"));
-		pWebRTData->SetPBuy(1, aBid[1] * 1000);
-		aBid[2] = jsonGetDouble(&js,_T("bid3"));
-		pWebRTData->SetPBuy(2, aBid[2] * 1000);
-		aBid[3] = jsonGetDouble(&js,_T("bid4"));
-		pWebRTData->SetPBuy(3, aBid[3] * 1000);
-		aBid[4] = jsonGetDouble(&js,_T("bid5"));
-		pWebRTData->SetPBuy(4, aBid[4] * 1000);
+
+		pWebRTData->SetPSell(0, jsonGetDouble(&js,_T("ask1")) * 1000);
+		pWebRTData->SetPSell(1, jsonGetDouble(&js,_T("ask2")) * 1000);
+		pWebRTData->SetPSell(2, jsonGetDouble(&js,_T("ask3")) * 1000);
+		pWebRTData->SetPSell(3, jsonGetDouble(&js,_T("ask4")) * 1000);
+		pWebRTData->SetPSell(4, jsonGetDouble(&js,_T("ask5")) * 1000);
+		pWebRTData->SetPBuy(0, jsonGetDouble(&js,_T("bid1")) * 1000);
+		pWebRTData->SetPBuy(1, jsonGetDouble(&js,_T("bid2")) * 1000);
+		pWebRTData->SetPBuy(2, jsonGetDouble(&js,_T("bid3")) * 1000);
+		pWebRTData->SetPBuy(3, jsonGetDouble(&js,_T("bid4")) * 1000);
+		pWebRTData->SetPBuy(4, jsonGetDouble(&js,_T("bid5")) * 1000);
 
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
@@ -156,4 +136,56 @@ bool ParseOneNeteaseRTDataWithNlohmannJSon(json::iterator& it, CWebRTDataPtr pWe
 	pWebRTData->SetActive(true);
 
 	return fSucceed;
+}
+
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
+	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		auto pRTData = make_shared<CWebRTData>();
+		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
+		if (ParseOneNeteaseRTData(it, pRTData)) {
+			pRTData->CheckNeteaseRTDataActive();
+			pvWebRTData->push_back(pRTData);
+		}
+	}
+	return pvWebRTData;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+
+	static int i = 0;
+	// 截取实时数据时用。为了测试解析速度
+	if (i < pData->GetBufferLength()) {
+		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
+		i = pData->GetBufferLength();
+	}
+	bool fProcess = true;
+	if (!pData->IsParsed()) {
+		if (!pData->CreateNlohmannJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
+			fProcess = false;
+		}
+	}
+	if (fProcess && pData->IsParsed()) {
+		json* pjs = pData->GetJSon();
+		pvWebRTData = ParseNeteaseRTData(pjs);
+	}
+	return pvWebRTData;
 }
