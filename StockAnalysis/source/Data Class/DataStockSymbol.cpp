@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 #include "DataStockSymbol.h"
 
 CDataStockSymbol::CDataStockSymbol() {
@@ -124,10 +124,10 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	return true;
 }
 
-void CDataStockSymbol::CreateStockSection(CString strFirstStockCode) {
+void CDataStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
 	CString strCode = GetStockSymbol(strFirstStockCode);
 	CString str = _T("");
-	int iCode = atoi(strCode.GetBuffer());
+	const int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
 	char buffer[10];
 	CChinaStockPtr pStock = nullptr;
@@ -155,9 +155,10 @@ void CDataStockSymbol::CreateStockSection(CString strFirstStockCode) {
 	m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 
-bool CDataStockSymbol::UpdateStockSection(CString strStockCode) {
+bool CDataStockSymbol::UpdateStockSection(const CString& strStockCode) const {
 	CString strCode = GetStockSymbol(strStockCode);
-	int iCode = atoi(strCode.GetBuffer());
+	char* pChar;
+	const int iCode = strtol(strCode.GetBuffer(), &pChar, 10);
 	int iMarket = 0;
 
 	if (IsShanghaiExchange(strStockCode)) {
@@ -171,7 +172,7 @@ bool CDataStockSymbol::UpdateStockSection(CString strStockCode) {
 	return UpdateStockSection(iCode / 1000 + iMarket);
 }
 
-bool CDataStockSymbol::UpdateStockSection(long lIndex) {
+bool CDataStockSymbol::UpdateStockSection(const long lIndex) const {
 	if (!m_vStockSection.at(lIndex)->IsActive()) {
 		m_vStockSection.at(lIndex)->SetActive(true);
 		return true;
@@ -179,7 +180,7 @@ bool CDataStockSymbol::UpdateStockSection(long lIndex) {
 	return false;
 }
 
-bool CDataStockSymbol::Delete(CString strSymbol) {
+bool CDataStockSymbol::Delete(const CString& strSymbol) {
 	if (!IsStockSymbol(strSymbol)) return false;
 
 	m_vStockSymbol.erase(m_vStockSymbol.begin() + m_mapStockSymbol.at(strSymbol));
@@ -188,52 +189,48 @@ bool CDataStockSymbol::Delete(CString strSymbol) {
 	return true;
 }
 
-void CDataStockSymbol::Add(CString strSymbol) {
+void CDataStockSymbol::Add(const CString& strSymbol) {
 	m_mapStockSymbol[strSymbol] = m_vStockSymbol.size();
 	m_vStockSymbol.push_back(strSymbol);
 }
 
 CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
-	CString strReturn = _T("");
-	CString strSuffix = _T(",");
+	const CString strSuffix = _T(",");
 
 	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex)); // 得到第一个股票代码
+	CString strReturn = XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex)); // 得到第一个股票代码
 	GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) {
-		// 每次最大查询量为lTotalNumber个股票
+	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strSuffix;
 		strReturn += XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));
-		GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
+		m_lNextSinaStockInquiringMiddleStrIndex = GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
 	}
-	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--;
-	// 退后一步，防止最后一个股票查询错误（其实不必要了）
+	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
 
 CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
-	CString strPostfix = _T(",");
+	const CString strPostfix = _T(",");
 
 	if (m_vStockSymbol.empty()) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
 	CString strReturn = XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex)); // 得到第一个股票代码
-	GetNextIndex(m_lNeteaseRTDataInquiryIndex);
+	m_lNeteaseRTDataInquiryIndex = GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) {
-		// 每次最大查询量为lTotalNumber个股票
+	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount < lTotalNumber)) {// 每次最大查询量为lTotalNumber个股票
 		iCount++;
 		strReturn += strPostfix;
 		strReturn += XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex)); // 得到第一个股票代码
-		GetNextIndex(m_lNeteaseRTDataInquiryIndex);
+		m_lNeteaseRTDataInquiryIndex = GetNextIndex(m_lNeteaseRTDataInquiryIndex);
 	}
 	if (m_lNeteaseRTDataInquiryIndex > 0) m_lNeteaseRTDataInquiryIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
 
-long CDataStockSymbol::GetNextIndex(long& lIndex) {
+long CDataStockSymbol::GetNextIndex(long lIndex) {
 	if (++lIndex >= m_vStockSymbol.size()) {
 		lIndex = 0;
 	}

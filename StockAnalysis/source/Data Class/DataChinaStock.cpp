@@ -3,7 +3,7 @@
 #include"ConvertToString.h"
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 #include"InfoReport.h"
 
 #include"ChinaMarket.h"
@@ -47,7 +47,7 @@ long CDataChinaStock::GetActiveStockSize(void) const {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CDataChinaStock::IsAStock(CString strStockCode) const {
-	CString const strSymbol = GetStockSymbol(strStockCode);
+	const CString strSymbol = GetStockSymbol(strStockCode);
 	if (IsShanghaiExchange(strStockCode)) {
 		if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
 			if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
@@ -72,7 +72,7 @@ bool CDataChinaStock::IsAStock(CString strStockCode) const {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-CChinaStockPtr CDataChinaStock::GetStock(CString strStockCode) {
+CChinaStockPtr CDataChinaStock::GetStock(const CString& strStockCode) {
 	CChinaStockPtr pStock;
 	if (!IsStock(strStockCode)) {
 		return nullptr;
@@ -102,7 +102,7 @@ bool CDataChinaStock::Delete(CChinaStockPtr pStock) {
 	return true;
 }
 
-bool CDataChinaStock::Add(CChinaStockPtr pStock) {
+bool CDataChinaStock::Add(const CChinaStockPtr pStock) {
 	if (pStock == nullptr) return false;
 	if (IsStock(pStock->GetSymbol())) return false;
 
@@ -123,7 +123,7 @@ long CDataChinaStock::LoadStockCodeDB(void) {
 	setChinaStockSymbol.m_pDatabase->BeginTrans();
 	// 装入股票代码数据库
 	while (!setChinaStockSymbol.IsEOF()) {
-		auto pStock = make_shared<CChinaStock>();
+		const auto pStock = make_shared<CChinaStock>();
 		if (!IsStock(setChinaStockSymbol.m_Symbol)) {
 			pStock->LoadStockCodeDB(setChinaStockSymbol);
 			Add(pStock);
@@ -154,14 +154,13 @@ long CDataChinaStock::LoadStockCodeDB(void) {
 }
 
 bool CDataChinaStock::UpdateStockCodeDB(void) {
-	CChinaStockPtr pStock = nullptr;
 	CSetChinaStockSymbol setChinaStockSymbol;
 	int iStockCodeNeedUpdate = 0;
 	int iCount = 0;
 
 	//更新原有的代码集状态
 	if (IsUpdateStockCodeDB()) {
-		for (auto& pStock2 : m_vStock) {
+		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
 		}
 		setChinaStockSymbol.m_strSort = _T("[Symbol]");
@@ -169,7 +168,7 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 		setChinaStockSymbol.m_pDatabase->BeginTrans();
 		while (iCount < iStockCodeNeedUpdate) {
 			if (setChinaStockSymbol.IsEOF()) break;
-			pStock = m_vStock.at(m_mapStock.at(setChinaStockSymbol.m_Symbol));
+			const CChinaStockPtr pStock = m_vStock.at(m_mapStock.at(setChinaStockSymbol.m_Symbol));
 			if (pStock->IsUpdateProfileDBAndClearFlag()) {
 				//ASSERT(!pStock3->IsTodayNewStock());
 				iCount++;
@@ -178,7 +177,7 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 			setChinaStockSymbol.MoveNext();
 		}
 		if (iCount < iStockCodeNeedUpdate) {
-			for (auto& pStock3 : m_vStock) {
+			for (const auto& pStock3 : m_vStock) {
 				if (pStock3->IsUpdateProfileDBAndClearFlag()) {
 					ASSERT(pStock3->IsTodayNewStock());
 					iCount++;
@@ -196,20 +195,20 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 	return true;
 }
 
-bool CDataChinaStock::IsDayLineDBUpdated(void) noexcept {
+bool CDataChinaStock::IsDayLineDBUpdated(void) const noexcept {
 	for (auto& pStock : m_vStock) {
 		if (pStock->IsDayLineDBUpdated()) return true;
 	}
 	return false;
 }
 
-void CDataChinaStock::ClearDayLineDBUpdatedFlag(void) noexcept {
+void CDataChinaStock::ClearDayLineDBUpdatedFlag(void) const noexcept {
 	for (auto& pStock : m_vStock) {
 		pStock->SetDayLineDBUpdated(false);
 	}
 }
 
-INT64 CDataChinaStock::GetTotalAttackBuyAmount(void) {
+INT64 CDataChinaStock::GetTotalAttackBuyAmount(void) const {
 	INT64 lAmount = 0;
 	for (auto& pStock : m_vStock) {
 		if (pStock->IsActive() && IsAStock(pStock)) {
@@ -219,9 +218,9 @@ INT64 CDataChinaStock::GetTotalAttackBuyAmount(void) {
 	return (lAmount);
 }
 
-INT64 CDataChinaStock::GetTotalAttackSellAmount(void) {
+INT64 CDataChinaStock::GetTotalAttackSellAmount(void) const {
 	INT64 lAmount = 0;
-	for (auto& pStock : m_vStock) {
+	for (const auto& pStock : m_vStock) {
 		if (pStock->IsActive() && IsAStock(pStock)) {
 			lAmount += pStock->GetAttackSellAmount();
 		}
@@ -247,17 +246,15 @@ bool CDataChinaStock::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
 	strReturn = _T("");
 
 	while (!fFound && (iCount++ < GetStockSize())) {
-		CChinaStockPtr pStock = m_vStock.at(m_lNeteaseDayLineDataInquiringIndex);
-		if (!pStock->IsDayLineNeedUpdate()) {
-			// 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
+		const CChinaStockPtr pStock = m_vStock.at(m_lNeteaseDayLineDataInquiringIndex);
+		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
 			// TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
+			m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
 		}
-		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {
-			//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
 			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
 			// TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
+			m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
 		}
 		else {
 			fFound = true;
@@ -271,22 +268,19 @@ bool CDataChinaStock::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
 	}
 
 	// 找到了需申请日线历史数据的股票（siCounter为索引）
-	CChinaStockPtr pStock = m_vStock.at(m_lNeteaseDayLineDataInquiringIndex);
+	const CChinaStockPtr pStock = m_vStock.at(m_lNeteaseDayLineDataInquiringIndex);
 	ASSERT(!pStock->IsDayLineNeedSaving());
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	pStock->SetDayLineNeedUpdate(false);
 	strReturn += XferStandardToNetease(pStock->GetSymbol());
-	GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
+	m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
 	return true;
 }
 
-CString CDataChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber) {
-	CString strReturn = _T("");
-	CString strStockCode, strStockExchange, strStockSymbol;
-
+CString CDataChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber) const {
 	if (m_vStock.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	strReturn = XferStandardToSina(m_vStock.at(iStockIndex)->GetSymbol()); // 得到第一个股票代码
-	GetNextIndex(iStockIndex);
+	CString strReturn = XferStandardToSina(m_vStock.at(iStockIndex)->GetSymbol()); // 得到第一个股票代码
+	iStockIndex = GetNextIndex(iStockIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
 	while (iCount < lTotalNumber) {
 		// 每次最大查询量为lTotalNumber个股票
@@ -295,42 +289,36 @@ CString CDataChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CStri
 			strReturn += strPostfix;
 			strReturn += XferStandardToSina(m_vStock.at(iStockIndex)->GetSymbol()); // 得到第一个股票代码
 		}
-		GetNextIndex(iStockIndex);
+		iStockIndex = GetNextIndex(iStockIndex);
 	}
 
 	return strReturn;
 }
 
-CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
-	CString strStockCode, strRight6, strLeft2, strPrefix;
-	CString strNeteaseRTDataInquiringStr = _T("");
-
-	strNeteaseRTDataInquiringStr = XferStandardToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
-	GetNextIndex(m_lNeteaseRTDataInquiringIndex);
+CString CDataChinaStock::GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber) {
+	CString strNeteaseRTDataInquiringStr = XferStandardToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
+	m_lNeteaseRTDataInquiringIndex = GetNextIndex(m_lNeteaseRTDataInquiringIndex);
 	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while (iCount < lTotalNumber) {
-		// 每次最大查询量为lTotalNumber个股票
-		if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive() || m_vStock.at(m_lNeteaseRTDataInquiringIndex)->
-		                                                                        IsIPOed()) {
-			//if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive()) {
+	while (iCount < lTotalNumber) {	// 每次最大查询量为lTotalNumber个股票
+		if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive() || m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsIPOed()) {//if (m_vStock.at(m_lNeteaseRTDataInquiringIndex)->IsActive()) {
 			iCount++;
 			strNeteaseRTDataInquiringStr += _T(",");
 			strNeteaseRTDataInquiringStr += XferStandardToNetease(m_vStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
 		}
-		GetNextIndex(m_lNeteaseRTDataInquiringIndex);
+		m_lNeteaseRTDataInquiringIndex = GetNextIndex(m_lNeteaseRTDataInquiringIndex);
 	}
 
 	return strNeteaseRTDataInquiringStr;
 }
 
-long CDataChinaStock::GetNextIndex(long& lIndex) {
+long CDataChinaStock::GetNextIndex(long lIndex) const {
 	if (++lIndex >= m_vStock.size()) {
 		lIndex = 0;
 	}
 	return lIndex;
 }
 
-bool CDataChinaStock::TaskProcessRTData(void) {
+bool CDataChinaStock::TaskProcessRTData(void) const {
 	for (auto& pStock : m_vStock) {
 		if (pStock->IsActive()) {
 			pStock->ProcessRTData();
@@ -339,14 +327,14 @@ bool CDataChinaStock::TaskProcessRTData(void) {
 	return true;
 }
 
-void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) {
+void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) const {
 	for (auto& pStock : m_vStock) {
 		pStock->SetDayLineNeedUpdate(false);
 	}
 }
 
-bool CDataChinaStock::IsUpdateStockCodeDB(void) {
-	for (auto& pStock : m_vStock) {
+bool CDataChinaStock::IsUpdateStockCodeDB(void) const {
+	for (const auto& pStock : m_vStock) {
 		if (pStock->IsUpdateProfileDB()) return true;
 	}
 	return false;
@@ -357,7 +345,7 @@ bool CDataChinaStock::IsUpdateStockCodeDB(void) {
 // 得到股票的简称
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-CString CDataChinaStock::GetStockName(CString strStockCode) {
+CString CDataChinaStock::GetStockName(const CString& strStockCode) {
 	try {
 		return (m_vStock.at(m_mapStock.at(strStockCode))->GetDisplaySymbol());
 	}
@@ -1002,7 +990,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 	return (true);
 }
 
-double CDataChinaStock::GetUpDownRate(CString strClose, CString strLastClose) noexcept {
+double CDataChinaStock::GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept {
 	const double lastClose = atof(strLastClose);
 	if (lastClose < 0.001) return 0;
 	double result = (atof(strClose) - lastClose) / lastClose;

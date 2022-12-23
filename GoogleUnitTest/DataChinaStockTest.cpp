@@ -24,7 +24,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			CChinaStockPtr pStock = nullptr;
 
 			for (int i = 0; i < 100; i++) {
@@ -33,7 +33,7 @@ namespace StockAnalysisTest {
 			}
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -68,6 +68,7 @@ namespace StockAnalysisTest {
 		m_dataChinaStock.SetSinaRTDataInquiringIndex(100);
 		EXPECT_EQ(m_dataChinaStock.GetSinaRTDataInquiringIndex(), 100);
 	}
+
 	TEST_F(CDataChinaStockTest, TestGetTengxunRTDataInquiringIndex) {
 		EXPECT_EQ(m_dataChinaStock.GetTengxunRTDataInquiringIndex(), 0);
 		m_dataChinaStock.SetTengxunRTDataInquiringIndex(100);
@@ -77,13 +78,15 @@ namespace StockAnalysisTest {
 	TEST_F(CDataChinaStockTest, TestGetNextIndex) {
 		long l = 0;
 		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 1);
-		EXPECT_EQ(l, 1);
+		EXPECT_EQ(l, 0);
+		l++;
 		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 2);
-		EXPECT_EQ(l, 2);
+		EXPECT_EQ(l, 1);
 		l = 98;
 		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 99);
-		EXPECT_EQ(l, 99);
+		EXPECT_EQ(l, 98);
+		l++;
 		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 0) << "默认的Stock数为100";
-		EXPECT_EQ(l, 0);
+		EXPECT_EQ(l, 99);
 	}
 }

@@ -21,7 +21,7 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\RSReference.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h" />
-    <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h" />
+    <ClInclude Include="..\StockAnalysis\source\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\accessory\TimeConvert.h" />
@@ -245,7 +245,7 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Data Class\DataChinaDayLine.cpp" />

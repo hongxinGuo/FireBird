@@ -18,8 +18,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadSinaRTDataTest : public ::testing::Test
-	{
+	class CThreadReadSinaRTDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 		}
@@ -28,19 +27,23 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
+			EXPECT_FALSE(gl_pSinaRTDataSource->IsInquiring());
 			SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource.get());
 			SinaRTWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
+			EXPECT_FALSE(gl_pSinaRTDataSource->IsInquiring());
 		}
+
 		CMockSinaRTWebInquiry SinaRTWebInquiry;
 	};
 
 	TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
+		gl_pSinaRTDataSource->SetInquiring(true);
 		EXPECT_CALL(SinaRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -48,6 +51,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&SinaRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsInquiring());
+		gl_pSinaRTDataSource->SetInquiring(true);
 		EXPECT_CALL(SinaRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
@@ -58,6 +63,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 1);
 
 		// »Ö¸´Ô­×´
+		gl_pSinaRTDataSource->SetInquiring(false);
 		CWebDataPtr pRTData = gl_pSinaRTDataSource->GetReceivedData();
 	}
 }

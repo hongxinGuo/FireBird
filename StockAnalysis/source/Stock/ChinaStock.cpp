@@ -3,7 +3,7 @@
 #include "globedef.h"
 
 #include"TimeConvert.h"
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 
 #include "ChinaStock.h"
 #include"ChinaMarket.h"
@@ -819,8 +819,8 @@ void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTr
 	ASSERT(GetTransactionTime() >= pRTData->GetTransactionTime());
 	const INT64 I = pRTData->GetVolume();
 	const INT64 j = GetOrdinaryBuyVolume() + GetOrdinarySellVolume()
-		+ GetAttackBuyVolume() + GetAttackSellVolume()
-		+ GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume();
+	+ GetAttackBuyVolume() + GetAttackSellVolume()
+	+ GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume();
 	ASSERT(I == j);
 }
 

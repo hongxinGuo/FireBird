@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadTengxunRTDataTest : public ::testing::Test
-	{
+	class CThreadReadTengxunRTDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 		}
@@ -26,17 +25,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			TengxunRTWebInquiry.SetDataSource(gl_pTengxunRTDataSource.get());
 			TengxunRTWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 		}
+
 		CMockTengxunRTWebInquiry TengxunRTWebInquiry;
 	};
 
 	TEST_F(CThreadReadTengxunRTDataTest, TestThreadReadTengxunRTData) {
+		gl_pTengxunRTDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 		EXPECT_CALL(TengxunRTWebInquiry, ReadingWebData())
 			.Times(1)
@@ -45,6 +46,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&TengxunRTWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
+		gl_pTengxunRTDataSource->SetInquiring(true);
 		EXPECT_CALL(TengxunRTWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

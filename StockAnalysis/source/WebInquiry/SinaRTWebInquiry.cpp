@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 #include"ChinaMarket.h"
 
 #include "SinaRTWebInquiry.h"

@@ -29,18 +29,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
 			QuandlWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 		}
 
 		CMockQuandlWebInquiry QuandlWebInquiry;
 	};
 
 	TEST_F(CThreadReadQuandlDataTest, TestThreadReadQuandlData) {
+		gl_pQuandlDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
 		gl_pQuandlDataSource->SetWebInquiryFinished(false);
@@ -52,6 +53,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pQuandlDataSource->GetReceivedDataSize(), 0);
 
+		gl_pQuandlDataSource->SetInquiring(true);
 		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pQuandlDataSource->SetWebInquiryFinished(false);
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())

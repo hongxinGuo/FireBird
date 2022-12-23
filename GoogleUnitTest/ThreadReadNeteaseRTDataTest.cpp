@@ -16,8 +16,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadNeteaseRTDataTest : public ::testing::Test
-	{
+	class CThreadReadNeteaseRTDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -27,13 +26,14 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			NeteaseRTWebInquiry.SetDataSource(gl_pNeteaseRTDataSource.get());
 			NeteaseRTWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 		}
+
 		CMockNeteaseRTWebInquiry NeteaseRTWebInquiry;
 	};
 
@@ -49,6 +49,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData2) {
+		gl_pNeteaseRTDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 		EXPECT_CALL(NeteaseRTWebInquiry, ReadingWebData())
 			.Times(1)

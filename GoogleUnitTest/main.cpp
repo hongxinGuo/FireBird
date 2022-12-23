@@ -27,19 +27,23 @@
 // where all clauses are optional and WillOnce() can be repeated.
 //
 
-// 可以使用Virtual leak detector(vld)查找内存泄漏。
-// 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
-// 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Exterprice\Common7\IDE\Extensions\\TestPlatform\Extensions\Cpp\X64中的那个版本
-// 需要将vld\VS2022文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹(X64\Release)中
-//
-// 目前VS本身的内存泄露检测也跟上来了，也许无需使用vld了。vld对VS2022的支持有限。
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 可以使用Virtual leak detector(vld)查找内存泄漏。
+/// 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
+/// 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\\TestPlatform\Extensions\Cpp\X64中的那个版本
+/// 需要将vld\VS2022文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹(X64\Release)中
+///
+/// 目前VS本身的内存泄露检测也跟上来了，也许无需使用vld了。vld对VS2022的支持有限。
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 
 #if _MSVC_LANG > 201703
 //#error _T("目前codecoverage宏ExcludeSourceFromCodeCoverage, ExcludeFromCodeCoverage不支持C17以上版本，故而必须使用C17及以下标准编译")
+// 现在系统使用C20标准，导致宏ExcludeSourceFromCodeCoverage无法编译。等待VS修正此bug。
 #endif //
 
 #ifndef _MBCS

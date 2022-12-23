@@ -663,7 +663,7 @@
     <ClInclude Include="..\StockAnalysis\source\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\accessory\StockCodeConverter.h">
+    <ClInclude Include="..\StockAnalysis\source\accessory\ChinaStockCodeConverter.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\accessory\ThreadStatus.h">
@@ -1229,7 +1229,7 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\SaveAndLoad.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\accessory\StockCodeConverter.cpp">
+    <ClCompile Include="..\StockAnalysis\source\accessory\ChinaStockCodeConverter.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\accessory\ThreadStatus.cpp">

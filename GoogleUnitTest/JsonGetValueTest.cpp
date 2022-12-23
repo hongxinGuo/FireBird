@@ -46,6 +46,8 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
 		string str2 = jsonGetString(pjs, _T("v"));
 		EXPECT_STREQ(str2.c_str(), _T("")) << "v为浮点数，返回默认值";
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble) {
@@ -56,6 +58,8 @@ namespace StockAnalysisTest {
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
 		double d2 = jsonGetDouble(pjs, _T("v"));
 		EXPECT_DOUBLE_EQ(d2, -2.7551);
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt) {
@@ -66,6 +70,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		int d2 = jsonGetInt(pjs, _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLong) {
@@ -76,6 +82,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		long d2 = jsonGetLong(pjs, _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong) {
@@ -86,6 +94,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		long long d2 = jsonGetLongLong(pjs, _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetString2) {
@@ -98,6 +108,8 @@ namespace StockAnalysisTest {
 		++it;
 		string str2 = jsonGetString(it, _T("v"));
 		EXPECT_STREQ(str2.c_str(), _T(""));
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble2) {
@@ -110,6 +122,8 @@ namespace StockAnalysisTest {
 		++it;
 		double d2 = jsonGetDouble(it, _T("v"));
 		EXPECT_DOUBLE_EQ(d2, -3.7551);
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt2) {
@@ -122,6 +136,8 @@ namespace StockAnalysisTest {
 		++it;
 		int d2 = jsonGetInt(it, _T("v"));
 		EXPECT_EQ(d2, -3);
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLong2) {
@@ -134,6 +150,8 @@ namespace StockAnalysisTest {
 		++it;
 		long d2 = jsonGetLong(it, _T("v"));
 		EXPECT_EQ(d2, -3);
+
+		delete pjs;
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong2) {
@@ -141,10 +159,82 @@ namespace StockAnalysisTest {
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
 		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
 		auto it = pjs->begin();
-		long long d1 = jsonGetLongLong(it, _T("period"));
+		const long long d1 = jsonGetLongLong(it, _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		++it;
-		long long d2 = jsonGetLongLong(it, _T("v"));
+		const long long d2 = jsonGetLongLong(it, _T("v"));
 		EXPECT_EQ(d2, -3);
+
+		delete pjs;
+	}
+
+	TEST_F(jsonGetValueTest, TestjsonGetString3) {
+		const auto pjs = new json;
+		const string s{_T("[\"2021-03-31\", 2021]")};
+		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
+		auto it = pjs->begin();
+		const string str1 = jsonGetString(it);
+		EXPECT_STREQ(str1.c_str(), _T("2021-03-31"));
+		++it;
+		const string str2 = jsonGetString(it);
+		EXPECT_STREQ(str2.c_str(), _T("")) << "无法解析的使用默认值";
+
+		delete pjs;
+	}
+
+	TEST_F(jsonGetValueTest, TestjsonGetInt3) {
+		const auto pjs = new json;
+		const string s{_T("[1, \"2\"]")};
+		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
+		auto it = pjs->begin();
+		const int i1 = jsonGetInt(it);
+		EXPECT_EQ(i1, 1);
+		++it;
+		const int i2 = jsonGetInt(it);
+		EXPECT_EQ(i2, 0) << "无法解析的使用默认值";
+
+		delete pjs;
+	}
+
+	TEST_F(jsonGetValueTest, TestjsonGetLong3) {
+		const auto pjs = new json;
+		const string s{_T("[1, \"2\"]")};
+		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
+		auto it = pjs->begin();
+		const long i1 = jsonGetLong(it);
+		EXPECT_EQ(i1, 1);
+		++it;
+		const long i2 = jsonGetLong(it);
+		EXPECT_EQ(i2, 0) << "无法解析的使用默认值";
+
+		delete pjs;
+	}
+
+	TEST_F(jsonGetValueTest, TestjsonGetLongLong3) {
+		const auto pjs = new json;
+		const string s{_T("[1, \"2\"]")};
+		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
+		auto it = pjs->begin();
+		const long long i1 = jsonGetLongLong(it);
+		EXPECT_EQ(i1, 1);
+		++it;
+		const long long i2 = jsonGetLongLong(it);
+		EXPECT_EQ(i2, 0) << "无法解析的使用默认值";
+
+		delete pjs;
+	}
+
+	TEST_F(jsonGetValueTest, TestjsonGetDouble3) {
+		const auto pjs = new json;
+		const string s{_T("[1.1, \"2.1\"]")};
+		EXPECT_TRUE(NlohmannCreateJson(pjs, s, 0, 0));
+		auto it = pjs->begin();
+		const double i1 = jsonGetDouble(it);
+		EXPECT_DOUBLE_EQ(i1, 1.1);
+		++it;
+		const double i2 = jsonGetDouble(it);
+		EXPECT_DOUBLE_EQ(i2, 0.0) << "无法解析的使用默认值";
+
+		delete pjs;
 	}
 }

@@ -173,7 +173,7 @@
       <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
       <Profile>true</Profile>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>40971520</HeapReserveSize>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>

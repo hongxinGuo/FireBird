@@ -20,8 +20,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadTiingoDataTest : public ::testing::Test
-	{
+	class CThreadReadTiingoDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -31,17 +30,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			TiingoWebInquiry.SetDataSource(gl_pTiingoDataSource.get());
 			TiingoWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 		}
+
 		CMockTiingoWebInquiry TiingoWebInquiry;
 	};
 
 	TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
+		gl_pTiingoDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
@@ -54,6 +55,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 
+		gl_pTiingoDataSource->SetInquiring(true);
 		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())

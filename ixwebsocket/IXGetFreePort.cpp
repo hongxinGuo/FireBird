@@ -73,8 +73,8 @@ namespace ix
     {
         while (true)
         {
-#if defined(_has_feature)
-#if _has_feature(address_sanitizer)
+#if defined(__has_feature)
+#if __has_feature(address_sanitizer)
             int port = getAnyFreePortRandom();
 #else
             int port = getAnyFreePort();

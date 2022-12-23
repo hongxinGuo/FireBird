@@ -5,6 +5,8 @@
 #include"ChinaMarket.h"
 
 #include"WebRTData.h"
+#include"JsonParse.h"
+
 #include"NeteaseRTWebInquiry.h"
 
 #ifdef _DEBUG
@@ -96,21 +98,22 @@ namespace StockAnalysisTest {
 			m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
 			m_pNeteaseWebRTData->Resize(m_lStringLength);
 			m_pNeteaseWebRTData->ResetCurrentPos();
+			m_pRTData = make_shared<CWebRTData>();
 			for (int i = 0; i < 5; i++) {
-				m_RTData.SetPBuy(i, -1);
-				m_RTData.SetPSell(i, -1);
-				m_RTData.SetVBuy(i, -1);
-				m_RTData.SetVSell(i, -1);
+				m_pRTData->SetPBuy(i, -1);
+				m_pRTData->SetPSell(i, -1);
+				m_pRTData->SetVBuy(i, -1);
+				m_pRTData->SetVSell(i, -1);
 			}
-			m_RTData.SetAmount(-1);
-			m_RTData.SetVolume(-1);
-			m_RTData.SetOpen(-1);
-			m_RTData.SetNew(-1);
-			m_RTData.SetLastClose(-1);
-			m_RTData.SetHigh(-1);
-			m_RTData.SetLow(-1);
-			m_RTData.SetSell(-1);
-			m_RTData.SetBuy(-1);
+			m_pRTData->SetAmount(-1);
+			m_pRTData->SetVolume(-1);
+			m_pRTData->SetOpen(-1);
+			m_pRTData->SetNew(-1);
+			m_pRTData->SetLastClose(-1);
+			m_pRTData->SetHigh(-1);
+			m_pRTData->SetLow(-1);
+			m_pRTData->SetSell(-1);
+			m_pRTData->SetBuy(-1);
 		}
 
 		void TearDown(void) override {
@@ -125,16 +128,16 @@ namespace StockAnalysisTest {
 		char* m_pData;
 		long m_lStringLength;
 		CWebDataPtr m_pNeteaseWebRTData;
-		CWebRTData m_RTData;
+		CWebRTDataPtr m_pRTData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseWebRTDataTest, testing::Values(&Data101, &Data102, &Data103, &Data104
 	                         ));
 
-	TEST_P(CalculateNeteaseWebRTDataTest, TestParseNeteaseDataWithNlohmannJSon) {
+	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJson());
 		auto it = m_pNeteaseWebRTData->GetJSon()->begin();
-		bool fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
+		bool fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
 		time_t ttime, ttime2, ttime3, tUTCTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
@@ -153,122 +156,122 @@ namespace StockAnalysisTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
-			EXPECT_EQ(m_RTData.GetOpen(), 12480);
-			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
-			EXPECT_EQ(m_RTData.GetNew(), 12290);
-			EXPECT_EQ(m_RTData.GetVolume(), 38594267);
-			EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
-			EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
-			EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
-			EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
-			EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
-			EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
-			EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
-			EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
-			EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
-			EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
-			EXPECT_EQ(m_RTData.GetVSell(0), 51100);
-			EXPECT_EQ(m_RTData.GetPSell(0), 12300);
-			EXPECT_EQ(m_RTData.GetVSell(1), 106387);
-			EXPECT_EQ(m_RTData.GetPSell(1), 12310);
-			EXPECT_EQ(m_RTData.GetVSell(2), 162290);
-			EXPECT_EQ(m_RTData.GetPSell(2), 12320);
-			EXPECT_EQ(m_RTData.GetVSell(3), 237059);
-			EXPECT_EQ(m_RTData.GetPSell(3), 12330);
-			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
-			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_FALSE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
+			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
+			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
+			EXPECT_EQ(m_pRTData->GetNew(), 12290);
+			EXPECT_EQ(m_pRTData->GetVolume(), 38594267);
+			EXPECT_EQ(m_pRTData->GetVBuy(0), 178647);
+			EXPECT_EQ(m_pRTData->GetPBuy(0), 12290);
+			EXPECT_EQ(m_pRTData->GetVBuy(1), 184600);
+			EXPECT_EQ(m_pRTData->GetPBuy(1), 12280);
+			EXPECT_EQ(m_pRTData->GetVBuy(2), 118700);
+			EXPECT_EQ(m_pRTData->GetPBuy(2), 12270);
+			EXPECT_EQ(m_pRTData->GetVBuy(3), 175500);
+			EXPECT_EQ(m_pRTData->GetPBuy(3), 12260);
+			EXPECT_EQ(m_pRTData->GetVBuy(4), 640700);
+			EXPECT_EQ(m_pRTData->GetPBuy(4), 12250);
+			EXPECT_EQ(m_pRTData->GetVSell(0), 51100);
+			EXPECT_EQ(m_pRTData->GetPSell(0), 12300);
+			EXPECT_EQ(m_pRTData->GetVSell(1), 106387);
+			EXPECT_EQ(m_pRTData->GetPSell(1), 12310);
+			EXPECT_EQ(m_pRTData->GetVSell(2), 162290);
+			EXPECT_EQ(m_pRTData->GetPSell(2), 12320);
+			EXPECT_EQ(m_pRTData->GetVSell(3), 237059);
+			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
+			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
+			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime);
 			break;
 		case 1:
 			EXPECT_TRUE(fSucceed); // 第一个数据没有错误
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime3);
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS"));
+			EXPECT_FALSE(m_pRTData->IsActive());
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime3);
 			++it;
-			fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
+			fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character"));
-			EXPECT_EQ(m_RTData.GetOpen(), 12480);
-			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
-			EXPECT_EQ(m_RTData.GetNew(), 12290);
-			EXPECT_EQ(m_RTData.GetVolume(), 38594267);
-			EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
-			EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
-			EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
-			EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
-			EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
-			EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
-			EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
-			EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
-			EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
-			EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
-			EXPECT_EQ(m_RTData.GetVSell(0), 51100);
-			EXPECT_EQ(m_RTData.GetPSell(0), 12300);
-			EXPECT_EQ(m_RTData.GetVSell(1), 106387);
-			EXPECT_EQ(m_RTData.GetPSell(1), 12310);
-			EXPECT_EQ(m_RTData.GetVSell(2), 162290);
-			EXPECT_EQ(m_RTData.GetPSell(2), 12320);
-			EXPECT_EQ(m_RTData.GetVSell(3), 237059);
-			EXPECT_EQ(m_RTData.GetPSell(3), 12330);
-			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
-			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_TRUE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
+			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
+			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
+			EXPECT_EQ(m_pRTData->GetNew(), 12290);
+			EXPECT_EQ(m_pRTData->GetVolume(), 38594267);
+			EXPECT_EQ(m_pRTData->GetVBuy(0), 178647);
+			EXPECT_EQ(m_pRTData->GetPBuy(0), 12290);
+			EXPECT_EQ(m_pRTData->GetVBuy(1), 184600);
+			EXPECT_EQ(m_pRTData->GetPBuy(1), 12280);
+			EXPECT_EQ(m_pRTData->GetVBuy(2), 118700);
+			EXPECT_EQ(m_pRTData->GetPBuy(2), 12270);
+			EXPECT_EQ(m_pRTData->GetVBuy(3), 175500);
+			EXPECT_EQ(m_pRTData->GetPBuy(3), 12260);
+			EXPECT_EQ(m_pRTData->GetVBuy(4), 640700);
+			EXPECT_EQ(m_pRTData->GetPBuy(4), 12250);
+			EXPECT_EQ(m_pRTData->GetVSell(0), 51100);
+			EXPECT_EQ(m_pRTData->GetPSell(0), 12300);
+			EXPECT_EQ(m_pRTData->GetVSell(1), 106387);
+			EXPECT_EQ(m_pRTData->GetPSell(1), 12310);
+			EXPECT_EQ(m_pRTData->GetVSell(2), 162290);
+			EXPECT_EQ(m_pRTData->GetPSell(2), 12320);
+			EXPECT_EQ(m_pRTData->GetVSell(3), 237059);
+			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
+			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
+			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
-			EXPECT_EQ(m_RTData.GetHigh(), 12480); // 后续部分皆未设置。
+			EXPECT_FALSE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
+			EXPECT_EQ(m_pRTData->GetHigh(), 12480); // 后续部分皆未设置。
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS")); // 股票代码已设置
-			EXPECT_EQ(m_RTData.GetHigh(), -1) << "此位置出错，使用默认值-1";
+			EXPECT_FALSE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS")); // 股票代码已设置
+			EXPECT_EQ(m_pRTData->GetHigh(), -1) << "此位置出错，使用默认值-1";
 			++it;
-			fSucceed = m_RTData.ParseNeteaseDataWithNlohmannJSon(it);
+			fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("don't use chinese character"));
-			EXPECT_EQ(m_RTData.GetOpen(), 12480);
-			EXPECT_EQ(m_RTData.GetLastClose(), 12570);
-			EXPECT_EQ(m_RTData.GetNew(), 12290);
-			EXPECT_EQ(m_RTData.GetVolume(), 38594267);
-			EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
-			EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
-			EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
-			EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
-			EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
-			EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
-			EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
-			EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
-			EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
-			EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
-			EXPECT_EQ(m_RTData.GetVSell(0), 51100);
-			EXPECT_EQ(m_RTData.GetPSell(0), 12300);
-			EXPECT_EQ(m_RTData.GetVSell(1), 106387);
-			EXPECT_EQ(m_RTData.GetPSell(1), 12310);
-			EXPECT_EQ(m_RTData.GetVSell(2), 162290);
-			EXPECT_EQ(m_RTData.GetPSell(2), 12320);
-			EXPECT_EQ(m_RTData.GetVSell(3), 237059);
-			EXPECT_EQ(m_RTData.GetPSell(3), 12330);
-			EXPECT_EQ(m_RTData.GetVSell(4), 609700);
-			EXPECT_EQ(m_RTData.GetPSell(4), 12340);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
+			EXPECT_TRUE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
+			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
+			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
+			EXPECT_EQ(m_pRTData->GetNew(), 12290);
+			EXPECT_EQ(m_pRTData->GetVolume(), 38594267);
+			EXPECT_EQ(m_pRTData->GetVBuy(0), 178647);
+			EXPECT_EQ(m_pRTData->GetPBuy(0), 12290);
+			EXPECT_EQ(m_pRTData->GetVBuy(1), 184600);
+			EXPECT_EQ(m_pRTData->GetPBuy(1), 12280);
+			EXPECT_EQ(m_pRTData->GetVBuy(2), 118700);
+			EXPECT_EQ(m_pRTData->GetPBuy(2), 12270);
+			EXPECT_EQ(m_pRTData->GetVBuy(3), 175500);
+			EXPECT_EQ(m_pRTData->GetPBuy(3), 12260);
+			EXPECT_EQ(m_pRTData->GetVBuy(4), 640700);
+			EXPECT_EQ(m_pRTData->GetPBuy(4), 12250);
+			EXPECT_EQ(m_pRTData->GetVSell(0), 51100);
+			EXPECT_EQ(m_pRTData->GetPSell(0), 12300);
+			EXPECT_EQ(m_pRTData->GetVSell(1), 106387);
+			EXPECT_EQ(m_pRTData->GetPSell(1), 12310);
+			EXPECT_EQ(m_pRTData->GetVSell(2), 162290);
+			EXPECT_EQ(m_pRTData->GetPSell(2), 12320);
+			EXPECT_EQ(m_pRTData->GetVSell(3), 237059);
+			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
+			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
+			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_TRUE(fSucceed);
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_FALSE(m_pRTData->IsActive());
+			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
 		default:
 			break;
 		}

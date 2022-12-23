@@ -3,7 +3,7 @@
 
 #include"ConvertToString.h"
 #include"TimeConvert.h"
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 #include"Thread.h"
 
 #include"ThreadStatus.h"
@@ -50,6 +50,9 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 
 	m_avChosenStock.resize(30);
 	m_aRSStrongOption.resize(10);
+
+	auto p = new char;
+	*p = 'a';
 
 	Reset();
 }

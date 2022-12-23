@@ -2,7 +2,7 @@
 
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -107,7 +107,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);
@@ -264,7 +264,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsAStock) {
-		CChinaStockPtr pstock = make_shared<CChinaStock>();
+		auto pstock = make_shared<CChinaStock>();
 		pstock->SetSymbol(_T("600000.SS"));
 		EXPECT_TRUE(gl_pChinaMarket->IsAStock(pstock));
 		pstock->SetSymbol(_T("600000.SA"));
@@ -435,7 +435,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
-		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
+		auto pData = make_shared<CNeteaseDayLineWebData>();
 		gl_pChinaMarket->PushNeteaseDayLine(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
@@ -445,7 +445,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
-		CNeteaseDayLineWebDataPtr pData = make_shared<CNeteaseDayLineWebData>();
+		auto pData = make_shared<CNeteaseDayLineWebData>();
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
 		CString strTest = _T("");
 
@@ -858,7 +858,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestStoreChosenRTData) {
 		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 0);
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		gl_pChinaMarket->StoreChoiceRTData(pRTData);
 		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 1);
 		gl_pChinaMarket->ClearChosenRTDataQueue();
@@ -1005,7 +1005,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是上证指数");
 		gl_pChinaMarket->ChangeToPrevStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), gl_pChinaMarket->GetTotalStock() - 1) << _T(
-				"上证指数前的为空，然后就转到最后面的中证煤炭了");
+			"上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 	}
@@ -1189,7 +1189,7 @@ namespace StockAnalysisTest {
 		CString strDate;
 
 		CSetDayLineBasicInfo setDayLine, setDayLine2;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(19900101);
@@ -1224,7 +1224,7 @@ namespace StockAnalysisTest {
 		CString strDate;
 
 		CSetDayLineExtendInfo setDayLine, setDayLine2;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(19900101);
@@ -1258,7 +1258,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(GetCurrentMonday(20200101));
@@ -1313,7 +1313,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
 		vector<CVirtualHistoryCandleExtendPtr> vData;
-		CVirtualHistoryCandleExtendPtr pData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pData = make_shared<CVirtualHistoryCandleExtend>();
 		pData->SetStockSymbol(_T("600000.SS"));
 		vData.resize(2);
 		vData[0] = pData;
@@ -1332,7 +1332,7 @@ namespace StockAnalysisTest {
 	TEST_F(CChinaMarketTest, TestUpdateStockCodeDB) {
 		ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
-		CChinaStockPtr pStock = make_shared<CChinaStock>();
+		auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
@@ -1410,7 +1410,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 
 		EXPECT_THAT(gl_pChinaMarket->TengxunRTSize(), Eq(0));
 

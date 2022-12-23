@@ -82,8 +82,7 @@ public:
 		else return false;
 	}
 
-	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource."));
-	// 默认的为finnhub禁止访问标识（目前只有此选项）
+	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用Nlohmann json将数据转换为json格式。
 	bool ParseUsingNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
@@ -94,6 +93,7 @@ public:
 	void Test_SetBuffer_(CString strBuffer);
 
 protected:
+	json m_js;
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
@@ -104,11 +104,6 @@ protected:
 	bool m_fParsed;
 	bool m_fNoRightToAccess; // 该网络数据报告错误
 	CString m_strErrorMessage; // 错误信息
-
-	// 以下为nlohmann制式的json数据，目前暂不使用
-	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者Nholmann json库bug，两者必居其一）。
-	// VS17.2.4的bug，17.2.5已修正。
-	json m_js;
 };
 
 using CWebDataPtr = shared_ptr<CWebData>;

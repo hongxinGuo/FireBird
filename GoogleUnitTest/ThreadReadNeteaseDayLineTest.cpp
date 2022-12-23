@@ -18,8 +18,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadNeteaseDayLineTest : public ::testing::Test
-	{
+	class CThreadReadNeteaseDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 		}
@@ -28,17 +27,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			NeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDayLineDataSource.get());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 		}
+
 		CMockNeteaseDayLineWebInquiry NeteaseDayLineWebInquiry;
 	};
 
 	TEST_F(CThreadReadNeteaseDayLineTest, TestThreadReadNeteaseDayLine) {
+		gl_pNeteaseDayLineDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 		EXPECT_CALL(NeteaseDayLineWebInquiry, ReadingWebData())
 			.Times(1)
@@ -49,6 +50,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
+		gl_pNeteaseDayLineDataSource->SetInquiring(true);
 		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
 		NeteaseDayLineWebInquiry.SetReadingWebData(true);
 		EXPECT_CALL(NeteaseDayLineWebInquiry, ReadingWebData())

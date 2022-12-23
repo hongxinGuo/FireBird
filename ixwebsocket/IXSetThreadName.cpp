@@ -6,7 +6,7 @@
 #include "IXSetThreadName.h"
 
 // unix systems
-#if defined(_APPLE_) || defined(_linux_) || defined(BSD)
+#if defined(__APPLE__) || defined(__linux__) || defined(BSD)
 #include <pthread.h>
 #endif
 
@@ -37,19 +37,19 @@ namespace ix
 
     void SetThreadName(DWORD dwThreadID, const char* threadName)
     {
-#ifndef _GNUC_
+#ifndef __GNUC__
         THREADNAME_INFO info;
         info.dwType = 0x1000;
         info.szName = threadName;
         info.dwThreadID = dwThreadID;
         info.dwFlags = 0;
 
-        _try
+        __try
         {
             RaiseException(
                 MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
         }
-        _except (EXCEPTION_EXECUTE_HANDLER)
+        __except (EXCEPTION_EXECUTE_HANDLER)
         {
         }
 #endif
@@ -58,14 +58,14 @@ namespace ix
 
     void setThreadName(const std::string& name)
     {
-#if defined(_APPLE_)
+#if defined(__APPLE__)
         //
         // Apple reserves 16 bytes for its thread names
         // Notice that the Apple version of pthread_setname_np
         // does not take a pthread_t argument
         //
         pthread_setname_np(name.substr(0, 63).c_str());
-#elif defined(_linux_)
+#elif defined(__linux__)
         //
         // Linux only reserves 16 bytes for its thread names
         // See prctl and PR_SET_NAME property in

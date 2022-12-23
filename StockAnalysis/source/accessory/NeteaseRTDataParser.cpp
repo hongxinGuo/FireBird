@@ -19,7 +19,7 @@
 // #include"pch.h"
 // 不使用pch.h预编译头，而是将具体头文件放在这里，以便于分别编译
 #include"stdafx.h"
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 #include"TimeConvert.h"
 #include"SystemMessage.h"
 #include"WebRTData.h"
@@ -27,7 +27,6 @@
 #include"JsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 
-#include<sstream>
 #include<string>
 #include<memory>
 #include<vector>
@@ -97,11 +96,11 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 	try {
 		pWebRTData->SetVolume(jsonGetLongLong(&js, _T("volume")));
 		pWebRTData->SetAmount(jsonGetLongLong(&js,_T("turnover")));
-		pWebRTData->SetHigh(jsonGetDouble(&js, _T("high")) * 1000);
-		pWebRTData->SetLow(jsonGetDouble(&js, _T("low")) * 1000);
-		pWebRTData->SetNew(jsonGetDouble(&js, _T("price")) * 1000);
-		pWebRTData->SetLastClose(jsonGetDouble(&js, _T("yestclose")) * 1000);
-		pWebRTData->SetOpen(jsonGetDouble(&js, _T("open")) * 1000);
+		pWebRTData->SetHigh(static_cast<long>(jsonGetDouble(&js, _T("high")) * 1000));
+		pWebRTData->SetLow(static_cast<long>(jsonGetDouble(&js, _T("low")) * 1000));
+		pWebRTData->SetNew(static_cast<long>(jsonGetDouble(&js, _T("price")) * 1000));
+		pWebRTData->SetLastClose(static_cast<long>(jsonGetDouble(&js, _T("yestclose")) * 1000));
+		pWebRTData->SetOpen(static_cast<long>(jsonGetDouble(&js, _T("open")) * 1000));
 
 		pWebRTData->SetVBuy(0, jsonGetLong(&js,_T("bidvol1")));
 		pWebRTData->SetVBuy(1, jsonGetLong(&js,_T("bidvol2")));
@@ -114,16 +113,16 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		pWebRTData->SetVSell(3, jsonGetLong(&js,_T("askvol4")));
 		pWebRTData->SetVSell(4, jsonGetLong(&js,_T("askvol5")));
 
-		pWebRTData->SetPSell(0, jsonGetDouble(&js,_T("ask1")) * 1000);
-		pWebRTData->SetPSell(1, jsonGetDouble(&js,_T("ask2")) * 1000);
-		pWebRTData->SetPSell(2, jsonGetDouble(&js,_T("ask3")) * 1000);
-		pWebRTData->SetPSell(3, jsonGetDouble(&js,_T("ask4")) * 1000);
-		pWebRTData->SetPSell(4, jsonGetDouble(&js,_T("ask5")) * 1000);
-		pWebRTData->SetPBuy(0, jsonGetDouble(&js,_T("bid1")) * 1000);
-		pWebRTData->SetPBuy(1, jsonGetDouble(&js,_T("bid2")) * 1000);
-		pWebRTData->SetPBuy(2, jsonGetDouble(&js,_T("bid3")) * 1000);
-		pWebRTData->SetPBuy(3, jsonGetDouble(&js,_T("bid4")) * 1000);
-		pWebRTData->SetPBuy(4, jsonGetDouble(&js,_T("bid5")) * 1000);
+		pWebRTData->SetPSell(0, static_cast<long>(jsonGetDouble(&js,_T("ask1")) * 1000));
+		pWebRTData->SetPSell(1, static_cast<long>(jsonGetDouble(&js,_T("ask2")) * 1000));
+		pWebRTData->SetPSell(2, static_cast<long>(jsonGetDouble(&js,_T("ask3")) * 1000));
+		pWebRTData->SetPSell(3, static_cast<long>(jsonGetDouble(&js,_T("ask4")) * 1000));
+		pWebRTData->SetPSell(4, static_cast<long>(jsonGetDouble(&js,_T("ask5")) * 1000));
+		pWebRTData->SetPBuy(0, static_cast<long>(jsonGetDouble(&js,_T("bid1")) * 1000));
+		pWebRTData->SetPBuy(1, static_cast<long>(jsonGetDouble(&js,_T("bid2")) * 1000));
+		pWebRTData->SetPBuy(2, static_cast<long>(jsonGetDouble(&js,_T("bid3")) * 1000));
+		pWebRTData->SetPBuy(3, static_cast<long>(jsonGetDouble(&js,_T("bid4")) * 1000));
+		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(&js,_T("bid5")) * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
@@ -133,7 +132,6 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		pWebRTData->SetActive(false);
 		fSucceed = true;
 	}
-	pWebRTData->SetActive(true);
 
 	return fSucceed;
 }

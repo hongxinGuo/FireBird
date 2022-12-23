@@ -5,7 +5,7 @@
 
 #include"GeneralCheck.h"
 
-#include"StockCodeConverter.h"
+#include"ChinaStockCodeConverter.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,10 +15,11 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	class StockCodeConverterTest : public ::testing::Test {
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();

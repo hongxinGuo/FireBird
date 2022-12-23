@@ -24,8 +24,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CThreadReadFinnhubDataTest : public ::testing::Test
-	{
+	class CThreadReadFinnhubDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -35,17 +34,19 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
 			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 		}
+
 		CMockFinnhubWebInquiry FinnhubWebInquiry;
 	};
 
 	TEST_F(CThreadReadFinnhubDataTest, TestThreadReadFinnhubData) {
+		gl_pFinnhubDataSource->SetInquiring(true);
 		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
 		gl_pFinnhubDataSource->SetWebInquiryFinished(false);
@@ -57,6 +58,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 
+		gl_pFinnhubDataSource->SetInquiring(true);
 		CString strMessage = _T("{\"test\":\"testData\"}");
 		gl_pFinnhubDataSource->SetWebInquiryFinished(false);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())

@@ -14,6 +14,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	static CDataStockSymbolPtr s_pDataStockSymbol = nullptr;
+
 	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -31,10 +32,10 @@ namespace StockAnalysisTest {
 			s_pDataStockSymbol = nullptr;
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			s_pDataStockSymbol->SetStockSectionActiveFlag(0, true);
@@ -103,14 +104,16 @@ namespace StockAnalysisTest {
 	TEST_F(CDataStockSymbolTest, TestGetNextIndex) {
 		long l = 0;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 1);
-		EXPECT_EQ(l, 1);
+		EXPECT_EQ(l, 0);
+		l++;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 2);
-		EXPECT_EQ(l, 2);
+		EXPECT_EQ(l, 1);
 		l = 14000 - 2;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 14000 - 1);
-		EXPECT_EQ(l, 14000 - 1);
+		EXPECT_EQ(l, 14000 - 2);
+		l++;
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 0) << "默认装入的StockSymbol数为14000";
-		EXPECT_EQ(l, 0);
+		EXPECT_EQ(l, 13999);
 	}
 
 	TEST_F(CDataStockSymbolTest, TestAdd) {

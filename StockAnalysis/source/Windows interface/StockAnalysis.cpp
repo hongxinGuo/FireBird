@@ -3,11 +3,12 @@
 // 可以使用Virtual leak detector(vld)查找内存泄漏。
 // 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
 // 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\\TestPlatform\Extensions\Cpp\X64中的那个版本
+// 也可以使用steam提供的dbghelp.dll,位于：
 // 需要将vld\VS2022文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
 //
 // 目前VS本身的内存泄露检测也跟上来了，也许无需使用vld了。vld对VS2022的支持有限。
 //
-//#include"vld.h" // 需要检测内存泄漏时包括此头文件
+#include"vld.h" // 需要检测内存泄漏时包括此头文件
 
 #include"pch.h"
 
@@ -32,8 +33,8 @@
 #endif
 #else
 #ifdef _OPENSSL_USE_DLL
-//#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
-//#pragma comment(lib, "/vc/static/libssl64MT.lib")
+//#pragma comment(lib, "/vc/libcrypto64MT.lib")
+//#pragma comment(lib, "/vc/libssl64MT.lib")
 #else
 //#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
 //#pragma comment(lib, "/vc/static/libssl64MT.lib")

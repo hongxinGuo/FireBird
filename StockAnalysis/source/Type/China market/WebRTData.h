@@ -157,10 +157,6 @@ public:
 	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
 	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
 
-	// 读取网易实时数据函数
-	// 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-	bool ParseNeteaseDataWithNlohmannJSon(json::iterator& it);
-
 public:
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	long GetDataSource(void) const noexcept { return m_lDataSource; }

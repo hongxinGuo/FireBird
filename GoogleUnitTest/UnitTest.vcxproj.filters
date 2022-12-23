@@ -351,7 +351,7 @@
     <ClCompile Include="VirtualRecordsetTest.cpp">
       <Filter>Test源文件\Data Base</Filter>
     </ClCompile>
-    <ClCompile Include="StockCodeConverterTest.cpp">
+    <ClCompile Include="ChinaStockCodeConverterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubINquiryTypeTest.cpp">
