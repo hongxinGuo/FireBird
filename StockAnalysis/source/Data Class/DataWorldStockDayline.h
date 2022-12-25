@@ -8,8 +8,8 @@ public:
 	~CDataWorldStockDayLine() override = default;
 
 public:
-	virtual bool SaveDB(CString strStockSymbol) override final;
-	virtual bool LoadDB(CString strStockSymbol) override final;
+	bool SaveDB(const CString& strStockSymbol) final;
+	bool LoadDB(const CString& strStockSymbol) final;
 
 public:
 	// ÌØÓÐº¯Êý
@@ -17,4 +17,4 @@ public:
 private:
 };
 
-typedef shared_ptr<CDataWorldStockDayLine> CDataWorldStockDayLinePtr;
+using CDataWorldStockDayLinePtr = shared_ptr<CDataWorldStockDayLine>;

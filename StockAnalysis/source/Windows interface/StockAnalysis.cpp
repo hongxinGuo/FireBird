@@ -18,11 +18,6 @@
 #include "StockAnalysisDoc.h"
 #include "StockAnalysisView.h"
 
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
-
-#include <ixwebsocket/IXNetSystem.h>
-
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
 //#pragma comment(lib, "/vc/libcrypto64MTd.lib")
@@ -82,19 +77,26 @@ CStockAnalysisApp::CStockAnalysisApp() {
 // 唯一的 CStockAnalysisApp 对象
 CStockAnalysisApp theApp;
 
+bool IsAlreadyRun() {
+	HANDLE hMutex = ::CreateMutex(nullptr, false, _T("StockAnalysisAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	if(hMutex) {
+		if(ERROR_ALREADY_EXISTS == ::GetLastError()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 // CStockAnalysisApp 初始化
 BOOL CStockAnalysisApp::InitInstance() {
-#ifndef DEBUG
-	// 非调试状态下只允许运行一个实例
-	if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
-		//找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
+	if (IsAlreadyRun()) {
 		MessageBox(nullptr,
 			"Only one instance can run!",
-			"FireBird Stock Analysis Warnning:",
+			"FireBird Stock Analysis Warning:",
 			MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
-#endif // DEBUG
+
 	ASSERT(!gl_systemStatus.IsWorkingMode()); // 确保此标识初始态为测试状态
 	gl_systemStatus.SetWorkingMode(true); // 实际系统，测试状态为假。
 
@@ -117,7 +119,7 @@ BOOL CStockAnalysisApp::InitInstance() {
 	// 最终可执行文件的大小，则应移除下列
 	// 不需要的特定初始化例程
 	// 更改用于存储设置的注册表项
-	SetRegistryKey(_T("FireBird"));
+	SetRegistryKey(_T("FireBird StockAnalysis"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
 	InitContextMenuManager();
@@ -163,7 +165,6 @@ int CStockAnalysisApp::ExitInstance() {
 // CStockAnalysisApp 消息处理程序
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
 class CAboutDlg : public CDialogEx
 {
 public:

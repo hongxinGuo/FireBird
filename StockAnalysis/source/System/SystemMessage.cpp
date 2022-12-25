@@ -3,43 +3,35 @@
 #include "SystemMessage.h"
 #include"OutputWnd.h"
 
-CSystemDeque::CSystemDeque() {
-}
+CSystemDeque::CSystemDeque() {}
 
-CSystemDeque::~CSystemDeque() {
-	m_dequeMessage.clear();
-}
+CSystemDeque::~CSystemDeque() { m_dequeMessage.clear(); }
 
-CSystemMessage::~CSystemMessage() {
-}
+CSystemMessage::~CSystemMessage() = default;
 
-void CSystemDeque::Display(COutputList* pOutputList, CString strTime) {
-	CString str, str2;
+void CSystemDeque::Display(COutputList *pOutputList, const CString &strTime) {
 	const size_t lTotal = Size();
 	for (int i = 0; i < lTotal; i++) {
-		str = PopMessage();
-		str2 = strTime + _T(": ") + str;
+		CString str = PopMessage();
+		CString str2 = strTime + _T(": ") + str;
 		SysCallOutputListAddString(pOutputList, str2);
 	}
 }
 
-void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, CString str) {
-	pOutputList->AddString(str);
-}
+void CSystemDeque::SysCallOutputListAddString(COutputList *pOutputList, const CString &str) { pOutputList->AddString(str); }
 
-void CSystemDeque::PushMessage(CString str) {
+void CSystemDeque::PushMessage(const CString &str) {
 	m_mutex.lock();
 	m_dequeMessage.push_back(str);
 	m_mutex.unlock();
 }
 
 CString CSystemDeque::PopMessage(void) {
-	CString str;
 	m_mutex.lock();
-	str = m_dequeMessage.front();
+	CString str = m_dequeMessage.front();
 	m_dequeMessage.pop_front();
 	m_mutex.unlock();
-	return str;     // 只能从这里返回
+	return str; // 只能从这里返回
 }
 
 size_t CSystemDeque::Size(void) {
@@ -50,8 +42,7 @@ size_t CSystemDeque::Size(void) {
 }
 
 CSystemMessage::CSystemMessage() {
-	static int siCounter = 0;
-	if (siCounter++ > 0) {
+	if (static int siCounter = 0; siCounter++ > 0) {
 		TRACE("系统消息只允许一个实例\n");
 		gl_systemMessage.PushErrorMessage(_T("错误：系统不允许生成多个CSystemMessage实例"));
 	}

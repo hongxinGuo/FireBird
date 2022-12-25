@@ -11,7 +11,7 @@ public:
 	~CDataChosenForex() override = default;
 	void Reset(void);
 
-	CForexSymbolPtr GetForex(long lIndex) { return m_vWorldChosenForex.at(lIndex); }
+	CForexSymbolPtr GetForex(const long lIndex) { return m_vWorldChosenForex.at(lIndex); }
 	size_t GetSize(void) const noexcept { return m_vWorldChosenForex.size(); }
 
 	bool LoadDB(void);

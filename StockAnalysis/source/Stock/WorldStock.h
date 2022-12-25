@@ -8,11 +8,8 @@
 #include"DayLine.h"
 #include"DataWorldStockDayLine.h"
 #include"FinnhubCompanyNews.h"
-#include"EPSSurprise.h"
-#include"InsiderTransaction.h"
 
 #include"SetWorldStock.h"
-#include"SetWorldStockDayLine.h"
 
 #include<memory>
 #include<atomic>
@@ -28,8 +25,8 @@ public:
 	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
 	~CWorldStock() override;
 
-	virtual void Reset(void) override;
-	virtual int GetRatio(void) const override final { return 1000; }
+	void Reset(void) override;
+	int GetRatio(void) const final { return 1000; }
 
 public:
 	void Load(CSetWorldStock& setWorldStock);
@@ -48,8 +45,8 @@ public:
 	virtual bool UpdateEPSSurpriseDB(void);
 	virtual bool UpdateDayLineDB(void);
 
-	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) { m_pBasicFinancial->UpdateMetric(set); }
-	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) { m_pBasicFinancial->AppendMetric(set); }
+	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->UpdateMetric(set); }
+	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->AppendMetric(set); }
 	void AppendBasicFinancialAnnual(void);
 	void AppendBasicFinancialQuarter(void);
 
@@ -62,23 +59,23 @@ public:
 
 	void UpdateDayLineStartEndDate(void);
 	long GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
-	CDayLinePtr GetDayLine(long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
 
 	bool HaveNewDayLineData(void);
 
 	bool IsCompanyProfileUpdated(void) const noexcept { return m_fCompanyProfileUpdated; }
-	void SetCompanyProfileUpdated(bool fFlag) noexcept { m_fCompanyProfileUpdated = fFlag; }
+	void SetCompanyProfileUpdated(const bool fFlag) noexcept { m_fCompanyProfileUpdated = fFlag; }
 
 	bool IsCompanyNewsUpdated(void) const noexcept { return m_fCompanyNewsUpdated; }
-	void SetCompanyNewsUpdated(bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
-	size_t GetCompanyNewsSize(void) noexcept { return m_vCompanyNews.size(); }
-	long long GetCompanyNewsDateTime(int iIndex) { return m_vCompanyNews.at(iIndex)->m_llDateTime; }
+	void SetCompanyNewsUpdated(const bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
+	size_t GetCompanyNewsSize(void) const noexcept { return m_vCompanyNews.size(); }
+	long long GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex)->m_llDateTime; }
 
 	bool IsBasicFinancialUpdated(void) const noexcept { return m_fBasicFinancialUpdated; }
-	void SetBasicFinancialUpdated(bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
+	void SetBasicFinancialUpdated(const bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
 	bool IsUpdateBasicFinancialDB(void) const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
-	void SetUpdateBasicFinancialDB(bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
+	void SetUpdateBasicFinancialDB(const bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
 
 	bool IsUpdateBasicFinancialDBAndClearFlag(void) {
 		const bool fNeedSave = m_fUpdateFinnhubBasicFinancialDB.exchange(false);
@@ -89,17 +86,17 @@ public:
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial(void) noexcept { return m_pBasicFinancial; }
 
 	bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
-	void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
+	void SetEPSSurpriseUpdated(const bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
 	bool CheckEPSSurpriseStatus(long lCurrentDate);
 	bool IsEPSSurpriseNeedSave(void) const noexcept { return m_fEPSSurpriseNeedSave; }
-	void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
+	void SetEPSSurpriseNeedSave(const bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
 	bool IsEPSSurpriseNeedSaveAndClearFlag(void);
 
 	bool IsPeerUpdated(void) const noexcept { return m_fFinnhubPeerUpdated; }
 	void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
 
-	bool HaveInsiderTransaction(void) noexcept {
+	bool HaveInsiderTransaction(void) const noexcept {
 		if (m_vInsiderTransaction.size() > 0) return true;
 		else return false;
 	}
@@ -107,17 +104,17 @@ public:
 	void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
 	void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
 	bool IsInsiderTransactionNeedUpdate(void) const noexcept { return m_fFinnhubInsiderTransactionNeedUpdate; }
-	void SetInsiderTransactionNeedUpdate(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
+	void SetInsiderTransactionNeedUpdate(const bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
 	bool IsInsiderTransactionNeedSave(void) const noexcept { return m_fFinnhubInsiderTransactionNeedSave; }
-	void SetInsiderTransactionNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
+	void SetInsiderTransactionNeedSave(const bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
 
 	bool IsInsiderTransactionNeedSaveAndClearFlag(void) {
 		const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false);
 		return fNeedSave;
 	}
 
-	bool HaveInsiderSentiment(void) noexcept {
+	bool HaveInsiderSentiment(void) const noexcept {
 		if (m_vInsiderSentiment.size() > 0) return true;
 		else return false;
 	}
@@ -125,10 +122,10 @@ public:
 	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
 	void UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment);
 	bool IsInsiderSentimentNeedUpdate(void) const noexcept { return m_fFinnhubInsiderSentimentNeedUpdate; }
-	void SetInsiderSentimentNeedUpdate(bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedUpdate = fFlag; }
+	void SetInsiderSentimentNeedUpdate(const bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedUpdate = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
 	bool IsInsiderSentimentNeedSave(void) const noexcept { return m_fFinnhubInsiderSentimentNeedSave; }
-	void SetInsiderSentimentNeedSave(bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedSave = fFlag; }
+	void SetInsiderSentimentNeedSave(const bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedSave = fFlag; }
 
 	bool IsInsiderSentimentNeedSaveAndClearFlag(void) {
 		const bool fNeedSave = m_fFinnhubInsiderSentimentNeedSave.exchange(false);
@@ -136,113 +133,113 @@ public:
 	}
 
 	CString GetType(void) const { return m_strType; }
-	void SetType(CString strType) { m_strType = strType; }
+	void SetType(const CString& strType) { m_strType = strType; }
 	CString GetMic(void) const { return m_strMic; }
-	void SetMic(CString strMic) { m_strMic = strMic; }
+	void SetMic(const CString& strMic) { m_strMic = strMic; }
 	CString GetFigi(void) const { return m_strFigi; }
-	void SetFigi(CString strFigi) { m_strFigi = strFigi; }
+	void SetFigi(const CString& strFigi) { m_strFigi = strFigi; }
 	CString GetShareClassFIGI(void) const { return m_strShareClassFIGI; }
-	void SetShareClassFIGI(CString strFigi) { m_strShareClassFIGI = strFigi; }
+	void SetShareClassFIGI(const CString& strFigi) { m_strShareClassFIGI = strFigi; }
 	CString GetSymbol2(void) const { return m_strSymbol2; }
-	void SetSymbol2(CString str) { m_strSymbol2 = str; }
+	void SetSymbol2(const CString& str) { m_strSymbol2 = str; }
 	CString GetCurrency(void) const { return m_strCurrency; }
-	void SetCurrency(CString strCurrency) { m_strCurrency = strCurrency; }
+	void SetCurrency(const CString& strCurrency) { m_strCurrency = strCurrency; }
 
 	CString GetAddress(void) const { return m_strAddress; }
-	void SetAddress(CString strAddress) { m_strAddress = strAddress; }
+	void SetAddress(const CString& strAddress) { m_strAddress = strAddress; }
 	CString GetCity(void) const { return m_strCity; }
-	void SetCity(CString strCity) { m_strCity = strCity; }
+	void SetCity(const CString& strCity) { m_strCity = strCity; }
 	CString GetCountry(void) const { return m_strCountry; }
-	void SetCountry(CString strCountry) { m_strCountry = strCountry; }
+	void SetCountry(const CString& strCountry) { m_strCountry = strCountry; }
 	CString GetCusip(void) const { return m_strCusip; }
-	void SetCusip(CString strCusip) { m_strCusip = strCusip; }
+	void SetCusip(const CString& strCusip) { m_strCusip = strCusip; }
 	CString GetSedol(void) const { return m_strSedol; }
-	void SetSedol(CString strSedol) { m_strSedol = strSedol; }
+	void SetSedol(const CString& strSedol) { m_strSedol = strSedol; }
 	long GetEmployeeTotal(void) const noexcept { return m_lEmployeeTotal; }
-	void SetEmployeeTotal(long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
+	void SetEmployeeTotal(const long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
 	CString GetListedExchange(void) const { return m_strListedExchange; }
-	void SetListedExchange(CString strListedExchange) { m_strListedExchange = strListedExchange; }
+	void SetListedExchange(const CString& strListedExchange) { m_strListedExchange = strListedExchange; }
 	CString GetGgroup(void) const { return m_strGgroup; }
-	void SetGgroup(CString strGgroup) { m_strGgroup = strGgroup; }
+	void SetGgroup(const CString& strGgroup) { m_strGgroup = strGgroup; }
 	CString GetGind(void) const { return m_strGind; }
-	void SetGind(CString strGind) { m_strGind = strGind; }
+	void SetGind(const CString& strGind) { m_strGind = strGind; }
 	CString GetGsector(void) const { return m_strGsector; }
-	void SetGsector(CString strGsector) { m_strGsector = strGsector; }
+	void SetGsector(const CString& strGsector) { m_strGsector = strGsector; }
 	CString GetGsubind(void) const { return m_strGsubind; }
-	void SetGsubind(CString strGsubind) { m_strGsubind = strGsubind; }
+	void SetGsubind(const CString& strGsubind) { m_strGsubind = strGsubind; }
 	CString GetIPODate(void) const { return m_strIPODate; }
-	void SetIPODate(CString strIPODate) { m_strIPODate = strIPODate; }
+	void SetIPODate(const CString& strIPODate) { m_strIPODate = strIPODate; }
 	CString GetIsin(void) const { return m_strIsin; }
-	void SetIsin(CString strIsin) { m_strIsin = strIsin; }
+	void SetIsin(const CString& strIsin) { m_strIsin = strIsin; }
 	double GetMarketCapitalization(void) const noexcept { return m_dMarketCapitalization; }
 	void SetMarketCapitalization(double dMarketCapitalization) noexcept { m_dMarketCapitalization = dMarketCapitalization; }
 	CString GetNaics(void) const { return m_strNaics; }
-	void SetNaics(CString strNaics) { m_strNaics = strNaics; }
+	void SetNaics(const CString& strNaics) { m_strNaics = strNaics; }
 	CString GetNaicsNationalIndustry(void) const { return m_strNaicsNationalIndustry; }
-	void SetNaicsNationalIndustry(CString strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
+	void SetNaicsNationalIndustry(const CString& strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
 	CString GetNaicsSector(void) const { return m_strNaicsSector; }
-	void SetNaicsSector(CString strNaicsSector) { m_strNaicsSector = strNaicsSector; }
+	void SetNaicsSector(const CString& strNaicsSector) { m_strNaicsSector = strNaicsSector; }
 	CString GetNaicsSubsector(void) const { return m_strNaicsSubsector; }
-	void SetNaicsSubsector(CString strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
+	void SetNaicsSubsector(const CString& strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
 	CString GetName(void) const { return m_strName; }
-	void SetName(CString strName) { m_strName = strName; }
+	void SetName(const CString& strName) { m_strName = strName; }
 	CString GetPhone(void) const { return m_strPhone; }
-	void SetPhone(CString strPhone) { m_strPhone = strPhone; }
+	void SetPhone(const CString& strPhone) { m_strPhone = strPhone; }
 	double GetShareOutstanding(void) const noexcept { return m_dShareOutstanding; }
-	void SetShareOutstanding(double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
+	void SetShareOutstanding(const double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
 	CString GetState(void) const { return m_strState; }
-	void SetState(CString strState) { m_strState = strState; }
+	void SetState(const CString& strState) { m_strState = strState; }
 	CString GetTicker(void) const { return m_strTicker; }
-	void SetTicker(CString strTicker) { m_strTicker = strTicker; }
+	void SetTicker(const CString& strTicker) { m_strTicker = strTicker; }
 	CString GetWebURL(void) const { return m_strWebURL; }
-	void SetWebURL(CString strWebURL) { m_strWebURL = strWebURL; }
+	void SetWebURL(const CString& strWebURL) { m_strWebURL = strWebURL; }
 	CString GetLogo(void) const { return m_strLogo; }
-	void SetLogo(CString strLogo) { m_strLogo = strLogo; }
+	void SetLogo(const CString& strLogo) { m_strLogo = strLogo; }
 	CString GetFinnhubIndustry(void) const { return m_strFinnhubIndustry; }
-	void SetFinnhubIndustry(CString strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
+	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	CString GetPeer(void) const { return m_strPeer; }
-	void SetPeer(CString strPeer) { m_strPeer = strPeer; }
+	void SetPeer(const CString& strPeer) { m_strPeer = strPeer; }
 	long GetProfileUpdateDate(void) const noexcept { return m_lProfileUpdateDate; }
-	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
+	void SetProfileUpdateDate(const long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
 	long GetCompanyNewsUpdateDate(void) const noexcept { return m_lCompanyNewsUpdateDate; }
-	void SetCompanyNewsUpdateDate(long lCompanyNewsUpdateDate) noexcept { m_lCompanyNewsUpdateDate = lCompanyNewsUpdateDate; }
+	void SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept { m_lCompanyNewsUpdateDate = lCompanyNewsUpdateDate; }
 	long GetBasicFinancialUpdateDate(void) const noexcept { return m_lBasicFinancialUpdateDate; }
-	void SetBasicFinancialUpdateDate(long lBasicFinancialUpdateDate) noexcept { m_lBasicFinancialUpdateDate = lBasicFinancialUpdateDate; }
+	void SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept { m_lBasicFinancialUpdateDate = lBasicFinancialUpdateDate; }
 	long GetLastRTDataUpdateDate(void) const noexcept { return m_lLastRTDataUpdateDate; }
-	void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
+	void SetLastRTDataUpdateDate(const long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
 	long GetPeerUpdateDate(void) const noexcept { return m_lPeerUpdateDate; }
-	void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
+	void SetPeerUpdateDate(const long lDate) noexcept { m_lPeerUpdateDate = lDate; }
 	long GetInsiderTransactionUpdateDate(void) const noexcept { return m_lInsiderTransactionUpdateDate; }
-	void SetInsiderTransactionUpdateDate(long lDate) noexcept { m_lInsiderTransactionUpdateDate = lDate; }
+	void SetInsiderTransactionUpdateDate(const long lDate) noexcept { m_lInsiderTransactionUpdateDate = lDate; }
 	long GetInsiderSentimentUpdateDate(void) const noexcept { return m_lInsiderSentimentUpdateDate; }
-	void SetInsiderSentimentUpdateDate(long lDate) noexcept { m_lInsiderSentimentUpdateDate = lDate; }
+	void SetInsiderSentimentUpdateDate(const long lDate) noexcept { m_lInsiderSentimentUpdateDate = lDate; }
 	long GetLastEPSSurpriseUpdateDate(void) const noexcept { return m_lLastEPSSurpriseUpdateDate; }
-	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
+	void SetLastEPSSurpriseUpdateDate(const long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
 
 	CString GetTiingoPermaTicker(void) noexcept { return m_strTiingoPermaTicker; }
-	void SetTiingoPermaTicker(CString strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
-	bool TiingoIsActive(void) noexcept { return m_fIsActive; }
-	void TiingoSetActive(bool fIsActive) noexcept { m_fIsActive = fIsActive; }
-	bool IsADR(void) noexcept { return m_fIsADR; }
-	void SetADR(bool fIsADR) noexcept { m_fIsADR = fIsADR; }
-	INT32 GetSICCode(void) noexcept { return m_iSICCode; }
-	void SetSICCode(INT32 iSICCode) noexcept { m_iSICCode = iSICCode; }
+	void SetTiingoPermaTicker(const CString& strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
+	bool TiingoIsActive(void) const noexcept { return m_fIsActive; }
+	void TiingoSetActive(const bool fIsActive) noexcept { m_fIsActive = fIsActive; }
+	bool IsADR(void) const noexcept { return m_fIsADR; }
+	void SetADR(const bool fIsADR) noexcept { m_fIsADR = fIsADR; }
+	INT32 GetSICCode(void) const noexcept { return m_iSICCode; }
+	void SetSICCode(const INT32 iSICCode) noexcept { m_iSICCode = iSICCode; }
 	CString GetSICIndustry(void) noexcept { return m_strSICIndustry; }
-	void SetSICIndustry(CString strSICIndustry) noexcept { m_strSICIndustry = strSICIndustry; }
+	void SetSICIndustry(const CString& strSICIndustry) noexcept { m_strSICIndustry = strSICIndustry; }
 	CString GetSICSector(void) noexcept { return m_strSICSector; }
-	void SetSICSector(CString strSICSector) noexcept { m_strSICSector = strSICSector; }
+	void SetSICSector(const CString& strSICSector) noexcept { m_strSICSector = strSICSector; }
 	CString GetTiingoIndustry(void) noexcept { return m_strTiingoIndustry; }
-	void SetTiingoIndustry(CString strTiingoIndustry) noexcept { m_strTiingoIndustry = strTiingoIndustry; }
+	void SetTiingoIndustry(const CString& strTiingoIndustry) noexcept { m_strTiingoIndustry = strTiingoIndustry; }
 	CString GetTiingoSector(void) noexcept { return m_strTiingoSector; }
-	void SetTiingoSector(CString strTiingoSector) noexcept { m_strTiingoSector = strTiingoSector; }
+	void SetTiingoSector(const CString& strTiingoSector) noexcept { m_strTiingoSector = strTiingoSector; }
 	CString GetCompanyWebSite(void) noexcept { return m_strCompanyWebSite; }
-	void SetCompanyWebSite(CString strCompanyWebSite) noexcept { m_strCompanyWebSite = strCompanyWebSite; }
+	void SetCompanyWebSite(const CString& strCompanyWebSite) noexcept { m_strCompanyWebSite = strCompanyWebSite; }
 	CString GetSECFilingWebSite(void) noexcept { return m_strSECFilingWebSite; }
-	void SetSECFilingWebSite(CString strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
-	long GetStatementUpdateDate(void) noexcept { return m_lStatementUpdateDate; }
-	void SetStatementUpdateDate(long lStatementUpdateDate) noexcept { m_lStatementUpdateDate = lStatementUpdateDate; }
-	long GetDailyDataUpdateDate(void) noexcept { return m_lDailyDataUpdateDate; }
-	void SetDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept { m_lDailyDataUpdateDate = lDailyDataUpdateDate; }
+	void SetSECFilingWebSite(const CString& strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
+	long GetStatementUpdateDate(void) const noexcept { return m_lStatementUpdateDate; }
+	void SetStatementUpdateDate(const long lStatementUpdateDate) noexcept { m_lStatementUpdateDate = lStatementUpdateDate; }
+	long GetDailyDataUpdateDate(void) const noexcept { return m_lDailyDataUpdateDate; }
+	void SetDailyDataUpdateDate(const long lDailyDataUpdateDate) noexcept { m_lDailyDataUpdateDate = lDailyDataUpdateDate; }
 
 	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
 	CString GetTiingoDayLineInquiryString(long lCurrentDate);
@@ -339,5 +336,5 @@ protected:
 	atomic_bool m_fFinnhubInsiderSentimentNeedSave; // 内部交易情绪数据需要存储
 };
 
-typedef shared_ptr<CWorldStock> CWorldStockPtr;
-typedef shared_ptr<vector<CWorldStockPtr>> CWorldStockVectorPtr;
+using CWorldStockPtr = shared_ptr<CWorldStock>;
+using CWorldStockVectorPtr = shared_ptr<vector<CWorldStockPtr>>;

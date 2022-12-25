@@ -8,8 +8,8 @@ public:
 	~CDataCryptoDayLine() override = default;
 
 public:
-	virtual bool SaveDB(CString strCryptoSymbol) override final;
-	virtual bool LoadDB(CString strCryptoSymbol) override final;
+	bool SaveDB(const CString& strCryptoSymbol) final;
+	bool LoadDB(const CString& strCryptoSymbol) final;
 
 public:
 	// ÌØÓÐº¯Êý
@@ -17,4 +17,4 @@ public:
 private:
 };
 
-typedef shared_ptr<CDataCryptoDayLine> CDataCryptoDayLinePtr;
+using CDataCryptoDayLinePtr = shared_ptr<CDataCryptoDayLine>;

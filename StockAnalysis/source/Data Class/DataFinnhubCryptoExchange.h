@@ -9,13 +9,13 @@ public:
 	~CDataFinnhubCryptoExchange() override = default;
 	void Reset(void);
 
-	bool IsCryptoExchange(CString strExchange) const noexcept {
+	bool IsCryptoExchange(const CString& strExchange) const noexcept {
 		if (m_mapCryptoExchange.contains(strExchange)) return true;
 		else return false;
 	}
 
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_vCryptoExchange.size(); }
-	CString GetCryptoExchange(long lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
+	CString GetCryptoExchange(const long lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
 	bool Delete(CString strCryptoExchange);
 	void Add(CString strCryptoExchange);
 

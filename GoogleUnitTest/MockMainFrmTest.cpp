@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	extern CMockMainFrame* gl_pMockMainFrame;
+	extern CMockMainFrame *gl_pMockMainFrame;
 
 	class CMockMainFrameTest : public ::testing::Test {
 	public:
@@ -45,13 +45,13 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -557,20 +557,20 @@ namespace StockAnalysisTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime((long)83001);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83001);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime((long)92959);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)92959);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime((long)83000);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime((long)83000);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1);
@@ -665,22 +665,22 @@ namespace StockAnalysisTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {
 		CCmdUI cmdUI;
 		long lTime = gl_pChinaMarket->GetMarketTime();
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime(150959);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(150959);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime(151000);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(151000);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime(151001);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(151001);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1)
 			.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
-		gl_pChinaMarket->_TEST_SetFormatedMarketTime(lTime);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(lTime);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {

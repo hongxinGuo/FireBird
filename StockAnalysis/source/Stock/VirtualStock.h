@@ -6,7 +6,7 @@
 #include<atomic>
 
 class CVirtualStock;
-typedef shared_ptr<CVirtualStock> CVirtualStockPtr;
+using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 
 class CVirtualStock : public CObject {
 public:
@@ -31,7 +31,7 @@ public:
 	CString GetDescription(void) const noexcept { return m_strDescription; }
 	void SetDescription(const CString& strDescription) noexcept { m_strDescription = strDescription; }
 	CString GetExchangeCode(void) const noexcept { return m_strExchangeCode; }
-	void SetExchangeCode(const CString strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
+	void SetExchangeCode(const CString& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
 	CString GetSymbol(void) const noexcept { return m_strSymbol; }
 	void SetSymbol(const CString& str) noexcept { m_strSymbol = str; }
 	CString GetDisplaySymbol(void) const noexcept { return m_strDisplaySymbol; }

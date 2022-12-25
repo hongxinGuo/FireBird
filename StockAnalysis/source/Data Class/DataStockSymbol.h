@@ -21,12 +21,7 @@ public:
 
 	long GetIndex(const CString& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
 	size_t GetStockSize(void) const noexcept { return m_vStockSymbol.size(); }
-
-	bool IsStockSymbol(const CString& strSymbol) const {
-		if (m_mapStockSymbol.contains(strSymbol)) return true;
-		else return false;
-	}
-
+	bool IsStockSymbol(const CString& strSymbol) const { if (m_mapStockSymbol.contains(strSymbol)) return true;	else return false;}
 	bool Delete(const CString& strSymbol);
 	void Add(const CString& strSymbol);
 
@@ -39,9 +34,7 @@ public:
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
 
-	void SetStockSectionActiveFlag(const long lIndex, const bool fFlag) const noexcept {
-		m_vStockSection.at(lIndex)->SetActive(fFlag);
-	}
+	void SetStockSectionActiveFlag(const long lIndex, const bool fFlag) const noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
 
 	bool IsStockSectionActive(const long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
 

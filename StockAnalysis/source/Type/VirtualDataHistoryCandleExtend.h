@@ -19,12 +19,12 @@ public:
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
-	virtual bool SaveDB(CString strStockSymbol) {
+	virtual bool SaveDB(const CString& strStockSymbol) {
 		TRACE(_T("调用了基类SaveDB\n"));
 		return false;
 	}
 
-	virtual bool LoadDB(CString strStockSymbol) {
+	virtual bool LoadDB(const CString& strStockSymbol) {
 		TRACE(_T("调用了基类LoadDB\n"));
 		return false;
 	}
@@ -40,7 +40,7 @@ public:
 	void ShowData(CDC* pDC, CRect rectClient);
 
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, CString strStockSymbol = _T(""));
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol = _T(""));
 
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
@@ -93,4 +93,4 @@ protected:
 	bool m_fLoadDataFirst;
 };
 
-typedef shared_ptr<CVirtualDataHistoryCandleExtend> CVirtualDataHistoryCandleExtendPtr;
+using CVirtualDataHistoryCandleExtendPtr = shared_ptr<CVirtualDataHistoryCandleExtend>;

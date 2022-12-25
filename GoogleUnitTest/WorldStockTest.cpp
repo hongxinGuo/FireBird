@@ -5,11 +5,14 @@
 #include"TimeConvert.h"
 
 #include"InsiderSentiment.h"
+#include"InsiderTransaction.h"
+#include"EPSSurprise.h"
 
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
 #include"SetWorldStockDayLine.h"
+#include"SetInsiderTransaction.h"
 
 using namespace testing;
 
@@ -22,19 +25,13 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class CWorldStockTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-			GeneralCheck();
-		}
+		static void SetUpTestSuite(void) { GeneralCheck(); }
 
-		static void TearDownTestSuite(void) {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
-			pStock = nullptr;
-		}
+		void SetUp(void) override { pStock = nullptr; }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -685,9 +682,7 @@ namespace StockAnalysisTest {
 			stock.SetDayLineNeedUpdate(true); // 重置状态
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
-		for (int i = 1; i < 6; i++) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
-		}
+		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线"; }
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus6) {
@@ -704,9 +699,7 @@ namespace StockAnalysisTest {
 			stock.SetDayLineNeedUpdate(true); // 重置之
 		}
 		stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
-		for (int i = 1; i < 6; i++) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
-		}
+		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线"; }
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus7) {
@@ -1038,7 +1031,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestUpdateCompanyNewsDB) {
 		CWorldStock stock;
-		CCompanyNewsVectorPtr pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
+		auto pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 		CCompanyNewsPtr pCompanyNews;
 		CSetCompanyNews setCompanyNews;
 
@@ -1190,7 +1183,7 @@ namespace StockAnalysisTest {
 	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB1) {
 		CWorldStock stock;
 		vector<CEPSSurprisePtr> vEPS;
-		CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+		auto pEPS = make_shared<CEPSSurprise>();
 
 		EXPECT_TRUE(stock.UpdateEPSSurpriseDB()) << "没有数据，返回";
 	}
@@ -1198,7 +1191,7 @@ namespace StockAnalysisTest {
 	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB2) {
 		CWorldStock stock;
 		vector<CEPSSurprisePtr> vEPS;
-		CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+		auto pEPS = make_shared<CEPSSurprise>();
 
 		pEPS->m_strSymbol = _T("600601.SS");
 		pEPS->m_lDate = 20200101;
@@ -1220,7 +1213,7 @@ namespace StockAnalysisTest {
 	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB3) {
 		CWorldStock stock;
 		vector<CEPSSurprisePtr> vEPS;
-		CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+		auto pEPS = make_shared<CEPSSurprise>();
 
 		pEPS->m_strSymbol = _T("600601.US");
 		pEPS->m_lDate = 20200101;
@@ -1262,7 +1255,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestIsNeedUpdateProfile) {
 		CWorldStock stock;
-		CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+		auto pTiingoStock = make_shared<CTiingoStock>();
 
 		stock.SetSymbol(_T("asdjfkajsfkj"));
 
@@ -1289,7 +1282,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestUpdateStockProfile) {
 		CWorldStock stock;
-		CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+		auto pTiingoStock = make_shared<CTiingoStock>();
 
 		stock.SetSymbol(_T("asdjfkajsfkj"));
 
@@ -1409,7 +1402,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestHaveInsiderTransaction) {
 		CWorldStock stock;
-		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
+		auto pInsiderTransaction = make_shared<CInsiderTransaction>();
 
 		EXPECT_FALSE(stock.HaveInsiderTransaction());
 		stock.m_vInsiderTransaction.push_back(pInsiderTransaction);
@@ -1440,7 +1433,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CWorldStockTest, TestHaveInsiderSentiment) {
 		CWorldStock stock;
-		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
+		auto pInsiderSentiment = make_shared<CInsiderSentiment>();
 
 		EXPECT_FALSE(stock.HaveInsiderSentiment());
 		stock.m_vInsiderSentiment.push_back(pInsiderSentiment);

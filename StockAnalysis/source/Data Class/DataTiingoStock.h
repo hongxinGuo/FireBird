@@ -16,15 +16,15 @@ public:
 	bool Delete(CTiingoStockPtr pStock);
 	size_t GetTotalStock(void) const noexcept { return m_vTiingoStock.size(); }
 
-	bool IsStock(CString strSymbol) const noexcept {
+	bool IsStock(const CString &strSymbol) const noexcept {
 		if (m_mapTiingoStock.contains(strSymbol)) return true;
 		else return false;
 	}
 
-	bool IsStock(CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
-	bool IsStock(CTiingoStockPtr pTiingoStock) const { return IsStock(pTiingoStock->m_strTicker); }
-	CTiingoStockPtr GetStock(long lIndex) const { return m_vTiingoStock.at(lIndex); }
-	CTiingoStockPtr GetStock(CString strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
+	bool IsStock(const CWorldStockPtr &pStock) const { return IsStock(pStock->GetSymbol()); }
+	bool IsStock(const CTiingoStockPtr &pTiingoStock) const { return IsStock(pTiingoStock->m_strTicker); }
+	CTiingoStockPtr GetStock(const long lIndex) const { return m_vTiingoStock.at(lIndex); }
+	CTiingoStockPtr GetStock(const CString &strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
 
 	bool UpdateDB(void);
 	bool LoadDB(void);

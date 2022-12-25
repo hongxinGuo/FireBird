@@ -15,6 +15,8 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
+#include"SetWorldStockDayLine.h"
+
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
@@ -26,9 +28,7 @@
 IMPLEMENT_DYNCREATE(CWorldMarket, CVirtualMarket)
 
 CWorldMarket::CWorldMarket() {
-	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
-	}
+	if (static int siInstance = 0; ++siInstance > 1) { TRACE("CWorldMarket市场变量只允许存在一个实例\n"); }
 
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;
@@ -42,9 +42,7 @@ CWorldMarket::CWorldMarket() {
 	Reset();
 }
 
-CWorldMarket::~CWorldMarket() {
-	PreparingExitMarket();
-}
+CWorldMarket::~CWorldMarket() { PreparingExitMarket(); }
 
 void CWorldMarket::Reset(void) {
 	ResetFinnhub();
@@ -102,9 +100,7 @@ void CWorldMarket::ResetMarket(void) {
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
 
-	for (const auto& pDataSource : m_vDataSource) {
-		pDataSource->Reset();
-	}
+	for (const auto& pDataSource : m_vDataSource) { pDataSource->Reset(); }
 
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
@@ -193,9 +189,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
 	if (!IsTimeToResetSystem(lCurrentTime)) {
 		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
-			TaskUpdateCountryListDB();
-		}
+		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) { TaskUpdateCountryListDB(); }
 		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
 		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
@@ -220,16 +214,12 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
 	// 更新股票基本情况最好放在最后。
-	if (gl_pFinnhubDataSource->IsSymbolUpdated() && IsStockProfileNeedUpdate()) {
-		TaskUpdateStockProfileDB();
-	}
+	if (gl_pFinnhubDataSource->IsSymbolUpdated() && IsStockProfileNeedUpdate()) { TaskUpdateStockProfileDB(); }
 
 	return true;
 }
 
-bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
-	return true;
-}
+bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) { return true; }
 
 /// <summary>
 /// /////////////////////////////////////////////////////////////////////////////////
@@ -506,24 +496,12 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 bool CWorldMarket::UpdateToken(void) {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 
-	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) {
-		gl_pFinnhubWebInquiry->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
-	}
-	if (gl_systemConfiguration.GetTiingoToken().GetLength() > 5) {
-		gl_pTiingoWebInquiry->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
-	}
-	if (gl_systemConfiguration.GetQuandlToken().GetLength() > 5) {
-		gl_pQuandlWebInquiry->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
-	}
-	else {
-		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
-	}
+	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) { gl_pFinnhubWebInquiry->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken()); }
+	else { gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed")); }
+	if (gl_systemConfiguration.GetTiingoToken().GetLength() > 5) { gl_pTiingoWebInquiry->SetInquiryToken(gl_systemConfiguration.GetTiingoToken()); }
+	else { gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed")); }
+	if (gl_systemConfiguration.GetQuandlToken().GetLength() > 5) { gl_pQuandlWebInquiry->SetInquiryToken(gl_systemConfiguration.GetQuandlToken()); }
+	else { gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed")); }
 
 	return true;
 }
@@ -766,37 +744,13 @@ bool CWorldMarket::StartAllWebSocket(void) {
 	return true;
 }
 
-void CWorldMarket::StartFinnhubWebSocket(void) {
-	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubWebInquiry->IsTimeout()) {
-		if (gl_finnhubWebSocket.IsClosed()) {
-			gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
-		}
-	}
-}
+void CWorldMarket::StartFinnhubWebSocket(void) { if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubWebInquiry->IsTimeout()) { if (gl_finnhubWebSocket.IsClosed()) { gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector()); } } }
 
-void CWorldMarket::StartTiingoIEXWebSocket(void) {
-	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
-		if (gl_tiingoIEXWebSocket.IsClosed()) {
-			gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
-		}
-	}
-}
+void CWorldMarket::StartTiingoIEXWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoIEXWebSocket.IsClosed()) { gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector()); } } }
 
-void CWorldMarket::StartTiingoCryptoWebSocket(void) {
-	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
-		if (gl_tiingoCryptoWebSocket.IsClosed()) {
-			gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
-		}
-	}
-}
+void CWorldMarket::StartTiingoCryptoWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoCryptoWebSocket.IsClosed()) { gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector()); } } }
 
-void CWorldMarket::StartTiingoForexWebSocket(void) {
-	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
-		if (gl_tiingoForexWebSocket.IsClosed()) {
-			gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
-		}
-	}
-}
+void CWorldMarket::StartTiingoForexWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoForexWebSocket.IsClosed()) { gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector()); } } }
 
 /// <summary>
 /// // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。

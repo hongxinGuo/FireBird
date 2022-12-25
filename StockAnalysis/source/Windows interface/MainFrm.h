@@ -35,16 +35,11 @@ public:
 	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CFrameWndEx::OnSysCommand(nID, lParam); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
-
-	virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) {
-		SendMessage(message, wParam, lParam);
-	}
-
+	virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { SendMessage(message, wParam, lParam);	}
 	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CFrameWndEx::PreTranslateMessage(pMsg); }
 	virtual void SysCallInvalidate(void) { Invalidate(); }
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
 	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
-
 	virtual void CalculateTodayRS(void);
 	virtual void ProcessChinaMarketStock(void);
 
@@ -52,20 +47,20 @@ public:
 	// 重置系统（恢复系统的初始态，准备第二天继续工作。
 	virtual bool ResetMarket(void);
 
-	long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
+	long GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
 
 	// 重写
 public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr);
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
 
 	// 实现
 public:
 	CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
@@ -104,7 +99,7 @@ public:
 	afx_msg void OnCalculateTodayRS();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnUpdateCalculateTodayRS(CCmdUI* pCmdUI);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnRebuildDayLineRS();

@@ -7,11 +7,11 @@
 class CDataChinaDayLine : public CVirtualDataHistoryCandleExtend {
 public:
 	CDataChinaDayLine();
-	virtual ~CDataChinaDayLine() override = default;
+	~CDataChinaDayLine() override = default;
 
 public:
-	virtual bool SaveDB(CString strStockSymbol) override final;
-	virtual bool LoadDB(CString strStockSymbol) override final;
+	bool SaveDB(const CString& strStockSymbol) final;
+	bool LoadDB(const CString& strStockSymbol) final;
 
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 
@@ -22,4 +22,4 @@ public:
 private:
 };
 
-typedef shared_ptr<CDataChinaDayLine> CDataChinaDayLinePtr;
+using CDataChinaDayLinePtr = shared_ptr<CDataChinaDayLine>;

@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->_TEST_SetUTCTime(tt);
+		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt);
 		EXPECT_TRUE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
 		tm_.tm_sec = 55;
 		ttime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = gl_pChinaMarket->GetUTCTime();
-		gl_pChinaMarket->_TEST_SetUTCTime(ttime);
+		gl_pChinaMarket->TEST_SetUTCTime(ttime);
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // Ã»ÓÐ´íÎó
@@ -276,6 +276,6 @@ namespace StockAnalysisTest {
 			break;
 		}
 		// »Ö¸´Ô­Ì¬
-		gl_pChinaMarket->_TEST_SetUTCTime(tUTCTime);
+		gl_pChinaMarket->TEST_SetUTCTime(tUTCTime);
 	}
 }

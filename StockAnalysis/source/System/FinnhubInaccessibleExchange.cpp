@@ -28,7 +28,7 @@ CInaccessibleExchanges::CInaccessibleExchanges(void) {
 	m_setExchange.clear();
 }
 
-CInaccessibleExchanges::CInaccessibleExchanges(CString sFunction, int iFunction, vector<CString>& vExchange) {
+CInaccessibleExchanges::CInaccessibleExchanges(const CString& sFunction, const int iFunction, const vector<CString>& vExchange) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	for (auto& s : vExchange) {
@@ -37,7 +37,7 @@ CInaccessibleExchanges::CInaccessibleExchanges(CString sFunction, int iFunction,
 	}
 }
 
-bool CInaccessibleExchanges::Assign(CString sFunction, int iFunction, vector<CString>& vExchange) {
+bool CInaccessibleExchanges::Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	m_vExchange.clear();
@@ -49,16 +49,15 @@ bool CInaccessibleExchanges::Assign(CString sFunction, int iFunction, vector<CSt
 	return true;
 }
 
-bool CInaccessibleExchanges::AddExchange(CString sExchangeName) {
+bool CInaccessibleExchanges::AddExchange(const CString& sExchangeName) {
 	ASSERT(sExchangeName.Compare(_T("US")) != 0); // 系统中不存储美国市场代码（US)。
 	m_vExchange.push_back(sExchangeName);
 	m_setExchange.insert(sExchangeName);
 	return true;
 }
 
-bool CInaccessibleExchanges::DeleteExchange(CString sExchangeName) {
-	if (m_setExchange.contains(sExchangeName)) {
-		// 集合中存在此元素？
+bool CInaccessibleExchanges::DeleteExchange(const CString& sExchangeName) {
+	if (m_setExchange.contains(sExchangeName)) { // 集合中存在此元素？
 		m_setExchange.erase(sExchangeName);
 		for (int position = 0; position < m_vExchange.size(); position++) {
 			if (m_vExchange.at(position).Compare(sExchangeName) == 0) {
@@ -70,12 +69,12 @@ bool CInaccessibleExchanges::DeleteExchange(CString sExchangeName) {
 	return true;
 }
 
-bool CInaccessibleExchanges::HaveExchange(CString sExchange) {
+bool CInaccessibleExchanges::HaveExchange(const CString& sExchange) const {
 	if (m_setExchange.contains(sExchange)) return true;
 	else return false;
 }
 
-bool CInaccessibleExchanges::HaveExchange(void) {
+bool CInaccessibleExchanges::HaveExchange(void) const {
 	if (m_vExchange.empty()) return false;
 	else return true;
 }
@@ -96,9 +95,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	m_strFileName = _T("FinnhubInaccessibleExchange.json"); // json file name
 
 	ASSERT(m_strFileName.Compare(_T("FinnhubInaccessibleExchange.json")) == 0);
-	if (LoadDB()) {
-		Update();
-	}
+	if (LoadDB()) { Update(); }
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
@@ -122,7 +119,7 @@ bool CFinnhubInaccessibleExchange::LoadDB(void) {
 	return false;
 }
 
-void CFinnhubInaccessibleExchange::SaveDB(void) {
+void CFinnhubInaccessibleExchange::SaveDB(void) const {
 	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::out);
 	f << m_finnhubInaccessibleExchange;
 	f.close();
@@ -153,7 +150,7 @@ void CFinnhubInaccessibleExchange::UpdateJson(void) {
 	for (const auto& pExchange : m_mapInaccessibleExchange) {
 		if (pExchange.second->HaveExchange()) {
 			// 有exchange数据的话才建立数据集
-			json jsonExchange = json{{"Function", pExchange.second->GetFunctionString()}};
+			auto jsonExchange = json{{"Function", pExchange.second->GetFunctionString()}};
 			for (int i = 0; i < pExchange.second->ExchangeSize(); i++) {
 				auto s = pExchange.second->GetExchange(i);
 				jsonExchange[_T("Exchange")].push_back(s);
@@ -264,7 +261,7 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_COVID_19_] = _T("AlternativeDataCOVID_19");
 	m_mapFinnhubInquiryIndexToString[_ALTERNATIVE_DATA_FDA_CALENDAR_] = _T("AlternativeDataFDACalendar");
 
-	// Econimic
+	// Economic
 	m_mapFinnhubInquiryIndexToString[_ECONOMIC_COUNTRY_LIST_] = _T("EconomicCountryList");
 	m_mapFinnhubInquiryIndexToString[_ECONOMIC_CALENDAR_] = _T("EconomicCalendar"); //Premium
 	m_mapFinnhubInquiryIndexToString[_ECONOMIC_CODES_] = _T("EconomicCodes"); //Premium
@@ -371,28 +368,20 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataCOVID_19")] = _ALTERNATIVE_DATA_COVID_19_;
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataFDACalendar")] = _ALTERNATIVE_DATA_FDA_CALENDAR_;
 
-	// Econimic
+	// Economic
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicCountryList")] = _ECONOMIC_COUNTRY_LIST_;
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicCalendar")] = _ECONOMIC_CALENDAR_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicCodes")] = _ECONOMIC_CODES_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicEconomic")] = _ECONOMIC_ECONOMIC_; //Premium
 }
 
-CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(int iInquiryType) {
-	return m_mapInaccessibleExchange.at(iInquiryType);
-}
+CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(const int iInquiryType) { return m_mapInaccessibleExchange.at(iInquiryType); }
 
-bool CFinnhubInaccessibleExchange::IsInaccessible(int iInquiryType, CString strExchangeCode) {
+bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) {
 	try {
-		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) { return true; }
+		else { return false; }
 	}
-	catch (out_of_range&) {
-		return false;
-	}
+	catch (out_of_range&) { return false; }
 	return false;
 }

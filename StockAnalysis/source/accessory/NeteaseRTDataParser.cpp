@@ -34,19 +34,16 @@
 using namespace std;
 
 bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, const long lEndPos) {
-	try {
-		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	}
+	try { *pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos); }
 	catch (json::parse_error& e) {
 		//gl_systemMessage.PushErrorMessage("nlohmann json parse error");
-		//ReportJsonError(e, s);
 		pjs = nullptr;
 		return false;
 	}
 	return true;
 }
 
-CString XferToCString(string s);
+CString XferToCString(const string& s);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -169,9 +166,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	static int i = 0;
 	// 截取实时数据时用。为了测试解析速度
-	if (i < pData->GetBufferLength()) {
+	if (static int i = 0; i < pData->GetBufferLength()) {
 		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
 		i = pData->GetBufferLength();
 	}

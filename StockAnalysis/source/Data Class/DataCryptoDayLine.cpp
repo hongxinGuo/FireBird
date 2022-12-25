@@ -5,14 +5,14 @@
 CDataCryptoDayLine::CDataCryptoDayLine() {
 }
 
-bool CDataCryptoDayLine::SaveDB(CString strCryptoSymbol) {
+bool CDataCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	CSetCryptoDayLine setCryptoDayLineBasic;
 	UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
 
 	return true;
 }
 
-bool CDataCryptoDayLine::LoadDB(CString strCryptoSymbol) {
+bool CDataCryptoDayLine::LoadDB(const CString& strCryptoSymbol) {
 	CSetCryptoDayLine setDayLineBasic;
 
 	// 装入DayLine数据

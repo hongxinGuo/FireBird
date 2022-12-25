@@ -11,7 +11,7 @@ public:
 	~CDataChosenStock() override = default;
 	void Reset(void);
 
-	CWorldStockPtr GetStock(long lIndex) { return m_vWorldChosenStock.at(lIndex); }
+	CWorldStockPtr GetStock(const long lIndex) { return m_vWorldChosenStock.at(lIndex); }
 	size_t GetSize(void) const noexcept { return m_vWorldChosenStock.size(); }
 
 	bool LoadDB(void);

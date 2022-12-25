@@ -11,15 +11,15 @@ public:
 	~CDataNaicsIndustry() override = default;
 	void Reset(void);
 
-	size_t GetTotalNaicsIndustry(void) noexcept { return m_vNaicsIndustry.size(); }
-	long GetLastTotalNaicsIndustry(void) noexcept { return m_lLastTotalNaicsIndustry; }
+	size_t GetTotalNaicsIndustry(void) const noexcept { return m_vNaicsIndustry.size(); }
+	long GetLastTotalNaicsIndustry(void) const noexcept { return m_lLastTotalNaicsIndustry; }
 
-	bool IsNaicsIndustry(CString strNaicsIndustry) {
-		if (m_mapNaicsIndustry.find(strNaicsIndustry) == m_mapNaicsIndustry.end()) return false;
-		else return true;
+	bool IsNaicsIndustry(const CString &strNaicsIndustry) const {
+		if (!m_mapNaicsIndustry.contains(strNaicsIndustry)) return true;
+		else return false;
 	}
 
-	bool IsNaicsIndustry(CNaicsIndustryPtr pNaicsIndustry) { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
+	bool IsNaicsIndustry(const CNaicsIndustryPtr &pNaicsIndustry) const { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
 	void Add(CNaicsIndustryPtr pNaicsIndustry);
 	bool Delete(CNaicsIndustryPtr pNaicsIndustry);
 

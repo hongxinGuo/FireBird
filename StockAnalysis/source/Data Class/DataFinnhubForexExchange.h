@@ -9,13 +9,13 @@ public:
 	~CDataFinnhubForexExchange() override = default;
 	void Reset(void);
 
-	bool IsForexExchange(CString strExchange) const noexcept {
+	bool IsForexExchange(const CString &strExchange) const noexcept {
 		if (m_mapForexExchange.contains(strExchange)) return true;
 		else return false;
 	}
 
 	size_t GetForexExchangeSize(void) const noexcept { return m_vForexExchange.size(); }
-	CString GetForexExchange(long lIndex) const { return m_vForexExchange.at(lIndex); }
+	CString GetForexExchange(const long lIndex) const { return m_vForexExchange.at(lIndex); }
 	bool Delete(CString strForexExchange);
 	void Add(CString strForexExchange);
 

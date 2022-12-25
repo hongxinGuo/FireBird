@@ -16,15 +16,15 @@ public:
 	~CVirtualMarket(void) override = default;
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
-	void InquireAndProcessDataSource(long lCurrentTime);
+	void InquireAndProcessDataSource(long lCurrentTime) const;
 
 	bool SchedulingTaskPerSecond(long lSeconds); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSeconds, long lCurrentTime); // 每一分钟调度一次
@@ -86,7 +86,7 @@ public:
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	virtual bool IsSystemReady(void) const noexcept { return m_fSystemReady; }
-	virtual void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
+	virtual void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
 	virtual bool PreparingExitMarket(void) { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
 
@@ -95,10 +95,10 @@ public:
 
 public:
 	// 测试用函数
-	void _TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
-	void _TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
-	void _TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
-	void _TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
+	void TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
+	void TEST_SetFormattedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
+	void TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
+	void TEST_SetFormattedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
 	// Finnhub.io提供的信息
@@ -138,5 +138,5 @@ private:
 	int m_i1HourCounter; // 一小时一次的计数器
 };
 
-typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask

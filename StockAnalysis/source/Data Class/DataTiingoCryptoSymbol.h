@@ -17,17 +17,15 @@ public:
 	size_t GetCryptoSymbolSize(void) const noexcept { return m_vTiingoCrypto.size(); }
 	long GetLastCryptoSymbolSize(void) const noexcept { return m_lLastTotalTiingoCrypto; }
 
-	bool IsTiingoCryptoSymbol(CString strSymbol) const {
+	bool IsTiingoCryptoSymbol(const CString &strSymbol) const {
 		if (m_mapTiingoCrypto.contains(strSymbol)) return true;
 		else return false;
 	}
 
-	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
-	CTiingoCryptoSymbolPtr GetCryptoSymbol(long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
+	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr &pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
+	CTiingoCryptoSymbolPtr GetCryptoSymbol(const long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
 
-	CTiingoCryptoSymbolPtr GetCryptoSymbol(CString strTicker) const {
-		return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker));
-	}
+	CTiingoCryptoSymbolPtr GetCryptoSymbol(const CString &strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
 
 	bool UpdateDB(void);
 	bool LoadDB(void);

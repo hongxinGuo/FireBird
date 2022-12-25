@@ -2,7 +2,6 @@
 
 #include"FinnhubForexSymbol.h"
 
-
 #include<vector>
 #include<map>
 
@@ -12,14 +11,14 @@ public:
 	~CDataFinnhubForexSymbol() override = default;
 	void Reset(void);
 
-	bool IsForexSymbol(CString strSymbol) const {
+	bool IsForexSymbol(const CString &strSymbol) const {
 		if (m_mapForexSymbol.contains(strSymbol)) return true;
 		else return false;
 	}
 
 	size_t GetForexSymbolSize(void) const noexcept { return m_vForexSymbol.size(); }
-	CForexSymbolPtr GetForexSymbol(long lIndex) const { return m_vForexSymbol.at(lIndex); }
-	CForexSymbolPtr GetForexSymbol(CString strSymbol) const { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
+	CForexSymbolPtr GetForexSymbol(const long lIndex) const { return m_vForexSymbol.at(lIndex); }
+	CForexSymbolPtr GetForexSymbol(const CString &strSymbol) const { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
 	bool Delete(CForexSymbolPtr pSymbol);
 	void Add(CForexSymbolPtr pSymbol);
 

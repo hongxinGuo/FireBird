@@ -5,14 +5,14 @@
 CDataForexDayLine::CDataForexDayLine() {
 }
 
-bool CDataForexDayLine::SaveDB(CString strCryptoSymbol) {
+bool CDataForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 	CSetForexDayLine setForexDayLineBasic;
 	UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
 
 	return true;
 }
 
-bool CDataForexDayLine::LoadDB(CString strCryptoSymbol) {
+bool CDataForexDayLine::LoadDB(const CString& strCryptoSymbol) {
 	CSetForexDayLine setDayLineBasic;
 
 	// 装入DayLine数据

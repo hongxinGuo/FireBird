@@ -8,8 +8,8 @@ public:
 	CDataChinaWeekLine();
 	~CDataChinaWeekLine() override = default;
 
-	virtual bool LoadDB(CString strStockSymbol = _T("")) override final;
-	virtual bool SaveDB(CString strStockSymbol = _T("")) override final;
+	bool LoadDB(const CString& strStockSymbol = _T("")) final;
+	bool SaveDB(const CString& strStockSymbol = _T("")) final;
 
 	bool SaveCurrentWeekLine(void);
 	bool LoadCurrentWeekLine(void);
@@ -20,4 +20,4 @@ public:
 	bool StoreVectorData(vector<CWeekLinePtr>& vWeekLine);
 };
 
-typedef shared_ptr<CDataChinaWeekLine> CDataChinaWeekLinePtr;
+using CDataChinaWeekLinePtr = shared_ptr<CDataChinaWeekLine>;

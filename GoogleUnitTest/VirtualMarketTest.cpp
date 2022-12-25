@@ -15,8 +15,7 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	CVirtualMarketPtr gl_pVirtualMarket;
 
-	class CVirtualMarketTest : public ::testing::Test
-	{
+	class CVirtualMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			gl_pVirtualMarket = make_shared<CVirtualMarket>();
@@ -24,18 +23,16 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			gl_pVirtualMarket->SetResetMarketPermission(true);
 			gl_pVirtualMarket->SetReadyToRun(true);
 			gl_pVirtualMarket->SetResetMarket(true);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -199,8 +196,8 @@ namespace StockAnalysisTest {
 			tUTC += i * 60 * 60 * 24;
 			GetMarketTimeStruct(&tm2, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 			tm_ = tm2;
-			gl_pVirtualMarket->_TEST_SetUTCTime(tUTC);
-			gl_pVirtualMarket->_TEST_SetMarketTM(tm2);
+			gl_pVirtualMarket->TEST_SetUTCTime(tUTC);
+			gl_pVirtualMarket->TEST_SetMarketTM(tm2);
 
 			switch (tm_.tm_wday) {
 			case 1: // 星期一
@@ -347,7 +344,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);
 	}
 
-	TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) { // 这个其实是测试的CVirtualMarket类中的函数。
+	TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) {
+		// 这个其实是测试的CVirtualMarket类中的函数。
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 		gl_pVirtualMarket->SetResetMarketPermission(false);
 		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(0);
@@ -368,9 +366,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(gl_pVirtualMarket->SchedulingTask()) << "第二次调用时，内部时间已经设置为当前时间了，间隔不超过一秒，故而返回假";
 	}
 
-	TEST_F(CVirtualMarketTest, TestSchedulingTaskPerSecond) {
-		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerSecond(90000));
-	}
+	TEST_F(CVirtualMarketTest, TestSchedulingTaskPerSecond) { EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerSecond(90000)); }
 
 	TEST_F(CVirtualMarketTest, TestSchedulingTaskPerMinute) {
 		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerMinute(60, 10000));
@@ -378,7 +374,5 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerMinute(1, 12010));
 	}
 
-	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) {
-		EXPECT_TRUE(gl_pVirtualMarket->UpdateMarketInfo());
-	}
+	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) { EXPECT_TRUE(gl_pVirtualMarket->UpdateMarketInfo()); }
 }

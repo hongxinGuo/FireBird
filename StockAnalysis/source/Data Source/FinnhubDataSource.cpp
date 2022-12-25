@@ -160,18 +160,18 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
-	static bool sbWebErrorOccured = false;
+	static bool sbWebErrorOccurred = false;
 	long long llTickCount = GetTickCount64();;
 
-	if (!sbWebErrorOccured) {
+	if (!sbWebErrorOccurred) {
 		if (m_pWebInquiry->IsWebError()) {
-			sbWebErrorOccured = true;
+			sbWebErrorOccurred = true;
 			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 		}
 	}
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) {
-		sbWebErrorOccured = false; // 申请时清除错误标识
+		sbWebErrorOccurred = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireFinnhub(lCurrentTime);
 			if (IsInquiring()) sllLastTimeTickCount = llTickCount;
@@ -215,8 +215,8 @@ bool CFinnhubDataSource::InquireFinnhub(long lCurrentTime) {
 
 bool CFinnhubDataSource::InquireCountryList(void) {
 	if (!IsInquiring() && !IsCountryListUpdated()) {
-		CVirtualProductWebDataPtr product = m_FinnhubFactory.
-			CreateProduct(gl_pWorldMarket.get(), _ECONOMIC_COUNTRY_LIST_);
+		const CVirtualProductWebDataPtr product = m_FinnhubFactory.
+		CreateProduct(gl_pWorldMarket.get(), _ECONOMIC_COUNTRY_LIST_);
 		StoreInquiry(product);
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub country List"));
 		SetInquiring(true);
@@ -227,17 +227,16 @@ bool CFinnhubDataSource::InquireCountryList(void) {
 }
 
 bool CFinnhubDataSource::InquireCompanySymbol(void) {
-	static bool s_fInquiringFinnhubStockSymbol = false;
-	bool fFound = false;
-	CFinnhubStockExchangePtr pExchange;
-	CString str = _T("");
-	long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
 	bool fHaveInquiry = false;
 	CVirtualProductWebDataPtr product = nullptr;
-	long lCurrentStockExchangePos = 0;
-	int iInquiryType = _STOCK_SYMBOLS_;
+	const int iInquiryType = _STOCK_SYMBOLS_;
 
 	if (!IsInquiring() && !IsSymbolUpdated()) {
+		CFinnhubStockExchangePtr pExchange;
+		static bool s_fInquiringFinnhubStockSymbol = false;
+		bool fFound = false;
+		long lCurrentStockExchangePos = 0;
 		if (!s_fInquiringFinnhubStockSymbol) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock symbol..."));
 			s_fInquiringFinnhubStockSymbol = true;
@@ -265,7 +264,7 @@ bool CFinnhubDataSource::InquireCompanySymbol(void) {
 			fHaveInquiry = false;
 			SetSymbolUpdated(true);
 			TRACE("Finnhub交易所代码数据查询完毕\n");
-			str = _T("Finnhub交易所代码数据查询完毕");
+			const CString str = "Finnhub交易所代码数据查询完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -273,18 +272,18 @@ bool CFinnhubDataSource::InquireCompanySymbol(void) {
 }
 
 bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
-	static bool s_fInquiringFinnhubStockProfile = false;
-	bool fFound = false;
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	CString str = _T("");
 	bool fHaveInquiry = false;
 	CVirtualProductWebDataPtr product = nullptr;
-	long lCurrentProfilePos;
 	CWorldStockPtr pStock = nullptr;
-	int iInquiryType = _COMPANY_PROFILE_CONCISE_;
+	const int iInquiryType = _COMPANY_PROFILE_CONCISE_;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsStockProfileUpdated()) {
+		long lCurrentProfilePos;
+		bool fFound = false;
+		static bool s_fInquiringFinnhubStockProfile = false;
 		if (!s_fInquiringFinnhubStockProfile) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock profile..."));
 			s_fInquiringFinnhubStockProfile = true;
@@ -325,16 +324,16 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CFinnhubDataSource::InquireCompanyNews(void) {
-	static bool s_fInquiringFinnhubCompanyNews = false;
-	bool fFound = false;
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	CString str = _T("");
 	bool fHaveInquiry = false;
 	CVirtualProductWebDataPtr product = nullptr;
-	long lCurrentCompanyNewsPos;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsCompanyNewsUpdated()) {
+		long lCurrentCompanyNewsPos;
+		bool fFound = false;
+		static bool s_fInquiringFinnhubCompanyNews = false;
 		if (!s_fInquiringFinnhubCompanyNews) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub company news..."));
 			s_fInquiringFinnhubCompanyNews = true;
@@ -637,9 +636,7 @@ bool CFinnhubDataSource::InquireEconomicCalendar(void) {
 			StoreInquiry(product);
 			SetInquiring(true);
 		}
-		else {
-			SetEconomicCalendarUpdated(true);
-		}
+		else { SetEconomicCalendarUpdated(true); }
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar"));
 		return true;
 	}

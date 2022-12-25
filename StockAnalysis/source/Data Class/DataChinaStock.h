@@ -28,7 +28,7 @@ public:
 		else return false;
 	}
 
-	bool IsAStock(CString strStockCode) const;
+	bool IsAStock(const CString& strStockCode) const;
 	bool IsAStock(const not_null<CChinaStockPtr> pStock) const { return (IsAStock(pStock->GetSymbol())); }
 	CChinaStockPtr GetStock(const CString& strStockCode);
 	CChinaStockPtr GetStock(long lIndex);
@@ -62,14 +62,8 @@ public:
 	bool CreateNeteaseDayLineInquiringStr(CString& strReturn);
 	CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber) const;
 
-	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) {
-		return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber);
-	}
-
-	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) {
-		return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber);
-	}
-
+	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
+	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber);
 
 	bool TaskProcessRTData(void) const;

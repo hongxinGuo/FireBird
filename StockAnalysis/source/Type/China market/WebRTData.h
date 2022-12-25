@@ -163,9 +163,9 @@ public:
 	time_t GetTransactionTime(void) const noexcept { return m_time; }
 	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
 	CString GetSymbol(void) const { return m_strSymbol; }
-	void SetSymbol(const CString str) { m_strSymbol = str; }
+	void SetSymbol(const CString& str) { m_strSymbol = str; }
 	CString GetStockName(void) const { return m_strStockName; }
-	void SetStockName(const CString str) { m_strStockName = str; }
+	void SetStockName(const CString& str) { m_strStockName = str; }
 	long GetLastClose(void) const noexcept { return m_lLastClose; }
 	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen(void) const noexcept { return m_lOpen; }

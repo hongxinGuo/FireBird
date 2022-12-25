@@ -8,7 +8,7 @@ namespace testing {
 		MOCK_METHOD(void, ReportGuadanTransaction, (), (override));
 		MOCK_METHOD(void, ReportGuadan, (), (override));
 		MOCK_METHOD(bool, SaveDayLineBasicInfo, (), (override));
-		MOCK_METHOD(bool, LoadDayLine, (CString strStockCode), (override));
+		MOCK_METHOD(bool, LoadDayLine, (const CString& strStockCode), (override));
 		MOCK_METHOD(bool, SaveWeekLine, (), (override));
 		MOCK_METHOD(bool, LoadWeekLine, (), (override));
 		MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));

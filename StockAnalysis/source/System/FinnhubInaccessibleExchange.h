@@ -16,21 +16,21 @@
 class CInaccessibleExchanges : CObject {
 public:
 	CInaccessibleExchanges();
-	CInaccessibleExchanges(CString sFunction, int iFunction, vector<CString>& vExchange);
+	CInaccessibleExchanges(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
 	~CInaccessibleExchanges() override = default;
 
-	bool Assign(CString sFunction, int iFunction, vector<CString>& vExchange);
+	bool Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
 
 	int GetFunction(void) const noexcept { return m_iFunction; }
 	void SetFunction(const int iFunction) noexcept { m_iFunction = iFunction; }
 	CString GetFunctionString(void) noexcept { return m_sFunction; }
-	void SetFunctionString(const CString sFunction) noexcept { m_sFunction = sFunction; }
+	void SetFunctionString(const CString& sFunction) noexcept { m_sFunction = sFunction; }
 
-	bool AddExchange(CString sExchangeName);
-	bool DeleteExchange(CString sExchangeName);
+	bool AddExchange(const CString& sExchangeName);
+	bool DeleteExchange(const CString& sExchangeName);
 
-	bool HaveExchange(CString sExchange);
-	bool HaveExchange(void);
+	bool HaveExchange(const CString& sExchange) const;
+	bool HaveExchange(void) const;
 
 	size_t ExchangeSize(void) const noexcept { return m_vExchange.size(); }
 	CString GetExchange(const int iIndex) { return m_vExchange.at(iIndex); }
@@ -44,7 +44,7 @@ protected:
 	set<CString> m_setExchange; // 所禁止的交易所名称的集合
 };
 
-typedef shared_ptr<CInaccessibleExchanges> CInaccessibleExchangesPtr;
+using CInaccessibleExchangesPtr = shared_ptr<CInaccessibleExchanges>;
 
 class CFinnhubInaccessibleExchange : CObject {
 public:
@@ -52,7 +52,7 @@ public:
 	~CFinnhubInaccessibleExchange() override;
 
 	bool LoadDB(void);
-	void SaveDB(void);
+	void SaveDB(void) const;
 	void Update(void);
 	void UpdateJson(void);
 
@@ -61,22 +61,22 @@ public:
 		m_finnhubInaccessibleExchange.clear();
 	}
 
-	void SetDefaultFileName(const CString fileName) { m_strFileName = fileName; }
+	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
 	CString GetDefaultFileName(void) const { return m_strFileName; }
 
 	void CreateFinnhubInquiryIndexToStringMap();
 	void CreateFinnhubInquiryStringToIndexMap();
 
 	CString GetFinnhubInquiryString(int iInquiryIndex) { return m_mapFinnhubInquiryIndexToString.at(iInquiryIndex); }
-	int GetFinnhubInquiryIndex(const CString sString) const { return m_mapFinnhubInquiryStringToIndex.at(sString); }
+	int GetFinnhubInquiryIndex(const CString& sString) const { return m_mapFinnhubInquiryStringToIndex.at(sString); }
 	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);
-	void SetInaccessibleExchange(const int iInquiryType, CInaccessibleExchangesPtr pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
+	void SetInaccessibleExchange(const int iInquiryType, const CInaccessibleExchangesPtr pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
 	size_t GetInaccessibleExchangeSize(void) const noexcept { return m_mapInaccessibleExchange.size(); }
 
 	bool IsNeedUpdate(void) const noexcept { return m_fUpdate; }
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
 
-	bool IsInaccessible(int iInquiryType, CString strExchangeCode);
+	bool IsInaccessible(const int iInquiryType, const CString& strExchangeCode);
 
 public:
 
@@ -93,7 +93,7 @@ protected:
 	json m_finnhubInaccessibleExchange;
 };
 
-typedef shared_ptr<CFinnhubInaccessibleExchange> CFinnhubInaccessibleExchangePtr;
+using CFinnhubInaccessibleExchangePtr = shared_ptr<CFinnhubInaccessibleExchange>;
 
 extern CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange;
 

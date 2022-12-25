@@ -22,9 +22,7 @@ wstring to_wide_string(const std::string& input) {
 	const long lLength = input.size();
 	const auto pBuffer = new char[lLength + 1];
 
-	for (int i = 0; i < input.size(); i++) {
-		pBuffer[i] = input.at(i);
-	}
+	for (int i = 0; i < input.size(); i++) { pBuffer[i] = input.at(i); }
 	pBuffer[lLength] = 0x000;
 	const auto pBufferW = new WCHAR[lLength * 2];
 
@@ -43,9 +41,7 @@ string to_byte_string(const wstring& input) {
 	const auto pBufferW = new WCHAR[lLength + 1];
 
 	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
-	for (int i = 0; i < input.size(); i++) {
-		pBufferW[i] = input.at(i);
-	}
+	for (int i = 0; i < input.size(); i++) { pBufferW[i] = input.at(i); }
 	const auto pBuffer = new char[lLength * 2];
 
 	const long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
@@ -65,14 +61,12 @@ void ReportJsonError(json::parse_error& e, std::string& s) {
 	gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
 	for (i = 0; i < 180; i++) buffer[i] = 0x000;
 	for (i = 0; i < 180; i++) {
-		if ((e.byte - 90 + i) < s.size()) {
-			buffer[i] = s.at(e.byte - 90 + i);
-		}
+		if ((e.byte - 90 + i) < s.size()) { buffer[i] = s.at(e.byte - 90 + i); }
 		else break;
 	}
-	sprintf_s(buffer2, _T("%d  "), (long)(s.size()));
+	sprintf_s(buffer2, _T("%d  "), static_cast<long>(s.size()));
 	str = buffer2;
-	sprintf_s(buffer2, _T("%d  "), (long)(e.byte));
+	sprintf_s(buffer2, _T("%d  "), static_cast<long>(e.byte));
 	str += buffer2;
 	sprintf_s(buffer2, _T("%d  "), i);
 	str += buffer2;
@@ -80,9 +74,7 @@ void ReportJsonError(json::parse_error& e, std::string& s) {
 	gl_systemMessage.PushErrorMessage(str);
 }
 
-void ReportJSonErrorToSystemMessage(CString strPrefix, CString strWhat) {
-	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
-}
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) { gl_systemMessage.PushErrorMessage(strPrefix + strWhat); }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -261,9 +253,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 		// 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsProcessedAllTheData()) {
 			auto pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadTengxunData(pWebData)) {
-				pvWebRTData->push_back(pRTData);
-			}
+			if (pRTData->ReadTengxunData(pWebData)) { pvWebRTData->push_back(pRTData); }
 			else {
 				break; // 后面的数据出问题，抛掉不用。
 			}
@@ -290,7 +280,7 @@ CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
 }
 
 // 将PTree中提取的utf-8字符串转化为CString
-CString XferToCString(string s) {
+CString XferToCString(const string& s) {
 	CString strName3;
 	wstring wsName;
 	CStringW strWName;

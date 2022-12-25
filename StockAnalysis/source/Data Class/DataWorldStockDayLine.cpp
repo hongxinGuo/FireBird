@@ -6,14 +6,14 @@
 CDataWorldStockDayLine::CDataWorldStockDayLine() {
 }
 
-bool CDataWorldStockDayLine::SaveDB(CString strStockSymbol) {
+bool CDataWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
 	CSetWorldStockDayLine setWorldStockDayLineBasic;
 	UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);
 
 	return true;
 }
 
-bool CDataWorldStockDayLine::LoadDB(CString strStockSymbol) {
+bool CDataWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
 	CSetWorldStockDayLine setDayLineBasic;
 
 	// 装入DayLine数据

@@ -8,18 +8,18 @@
 class CDataSICIndustry : public CObject {
 public:
 	CDataSICIndustry();
-	~CDataSICIndustry();
+	~CDataSICIndustry() override;
 	void Reset(void);
 
-	size_t GetTotalSICIndustry(void) noexcept { return m_vSICIndustry.size(); }
-	long GetLastTotalSICIndustry(void) noexcept { return m_lLastTotalSICIndustry; }
+	size_t GetTotalSICIndustry(void) const noexcept { return m_vSICIndustry.size(); }
+	long GetLastTotalSICIndustry(void) const noexcept { return m_lLastTotalSICIndustry; }
 
-	bool IsSICIndustry(long lSICCode) {
-		if (m_mapSICIndustry.find(lSICCode) == m_mapSICIndustry.end()) return false;
-		else return true;
+	bool IsSICIndustry(const long lSICCode) const {
+		if (!m_mapSICIndustry.contains(lSICCode)) return true;
+		else return false;
 	}
 
-	bool IsSICIndustry(CSICIndustryPtr pSICIndustry) { return IsSICIndustry(pSICIndustry->m_lCode); }
+	bool IsSICIndustry(const CSICIndustryPtr &pSICIndustry) const { return IsSICIndustry(pSICIndustry->m_lCode); }
 	void Add(CSICIndustryPtr pSICIndustry);
 	bool Delete(CSICIndustryPtr pSICIndustry);
 

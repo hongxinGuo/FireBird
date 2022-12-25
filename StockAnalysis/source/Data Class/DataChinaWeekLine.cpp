@@ -9,7 +9,7 @@
 CDataChinaWeekLine::CDataChinaWeekLine() {
 }
 
-bool CDataChinaWeekLine::SaveDB(CString strStockSymbol) {
+bool CDataChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 	CSetWeekLineBasicInfo setWeekLineBasic;
 	CSetWeekLineExtendInfo setWeekLineExtend;
 	UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
@@ -27,9 +27,7 @@ bool CDataChinaWeekLine::SaveCurrentWeekLine(void) {
 	setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	for (const auto& pData : m_vHistoryData) {
-		pData->Append(&setCurrentWeekLineInfo);
-	}
+	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
 	TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
@@ -37,7 +35,7 @@ bool CDataChinaWeekLine::SaveCurrentWeekLine(void) {
 	return true;
 }
 
-bool CDataChinaWeekLine::LoadDB(CString strStockCode) {
+bool CDataChinaWeekLine::LoadDB(const CString& strStockCode) {
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
@@ -74,7 +72,7 @@ bool CDataChinaWeekLine::LoadCurrentWeekLine(void) {
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->Load(&setCurrentWeekLineInfo);
 		StoreData(pWeekLine);
 		setCurrentWeekLineInfo.MoveNext();
@@ -86,9 +84,7 @@ bool CDataChinaWeekLine::LoadCurrentWeekLine(void) {
 }
 
 bool CDataChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
-	for (const auto& pWeekLine : vWeekLine) {
-		StoreData(pWeekLine);
-	}
+	for (const auto& pWeekLine : vWeekLine) { StoreData(pWeekLine); }
 	SetDataLoaded(true);
 
 	return true;
@@ -102,9 +98,7 @@ bool CDataChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
 void CDataChinaWeekLine::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (const auto& pWeekLine : vTempWeekLine) {
-		StoreData(pWeekLine);
-	}
+	for (const auto& pWeekLine : vTempWeekLine) { StoreData(pWeekLine); }
 	SetDataLoaded(true);
 }
 

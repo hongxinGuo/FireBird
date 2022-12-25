@@ -11,7 +11,7 @@ public:
 	~CDataChosenCrypto() override = default;
 	void Reset(void);
 
-	CFinnhubCryptoSymbolPtr GetCrypto(long lIndex) { return m_vWorldChosenCrypto.at(lIndex); }
+	CFinnhubCryptoSymbolPtr GetCrypto(const long lIndex) { return m_vWorldChosenCrypto.at(lIndex); }
 	size_t GetSize(void) const noexcept { return m_vWorldChosenCrypto.size(); }
 
 	bool LoadDB(void);

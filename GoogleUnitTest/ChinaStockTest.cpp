@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
@@ -455,7 +455,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaStockTest, TestReset) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
@@ -541,7 +541,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		time_t tt;
 		time(&tt);
 		long lDateSource = TransferToDate(tt);
@@ -580,12 +580,8 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetAmount(), 7070707070707070);
 		EXPECT_EQ(stock.GetUpDown(), pRTData->GetNew() - pRTData->GetLastClose());
 		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), (double)(pRTData->GetNew() - pRTData->GetLastClose()) * 100 / pRTData->GetLastClose());
-		if (pRTData->GetTotalValue() != 0) {
-			EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), (double)(pRTData->GetAmount()) * 100 / pRTData->GetTotalValue());
-		}
-		else {
-			EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
-		}
+		if (pRTData->GetTotalValue() != 0) { EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), (double)(pRTData->GetAmount()) * 100 / pRTData->GetTotalValue()); }
+		else { EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0); }
 		EXPECT_EQ(stock.GetTotalValue(), pRTData->GetTotalValue());
 		EXPECT_EQ(stock.GetCurrentValue(), pRTData->GetCurrentValue());
 		for (int i = 0; i < 5; i++) {
@@ -1077,8 +1073,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(stock.GetAttackSellAbove200000(), 101010102);
 	}
 
-	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
-	}
+	TEST_F(CChinaStockTest, TestReadOnlyFunctions) { }
 
 	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
 		CChinaStock stock;
@@ -1158,7 +1153,7 @@ namespace StockAnalysisTest {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101);
 		stock.StoreDayLine(pDayLine);
 		EXPECT_EQ(stock.GetDayLineSize(), 1);
@@ -1261,9 +1256,7 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
-		else {
-			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_IPOED_));
-		}
+		else { EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_IPOED_)); }
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.UpdateSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
@@ -1288,9 +1281,7 @@ namespace StockAnalysisTest {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
-		else {
-			EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
-		}
+		else { EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus); }
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
 		EXPECT_EQ(stock.GetDayLineEndDate(), setChinaStockSymbol.m_DayLineEndDate);
 		setChinaStockSymbol.Close();
@@ -1357,7 +1348,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {
 		// 此三个函数是具备同步机制的，这里没有进行测试
-		CWebRTDataPtr pData = make_shared<CWebRTData>();
+		auto pData = make_shared<CWebRTData>();
 		pData->SetSymbol(_T("600008.SS"));
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
@@ -1710,7 +1701,7 @@ namespace StockAnalysisTest {
 		CSetDayLineTodaySaved setDayLineTemp;
 		pStock = make_shared<CChinaStock>();
 		CChinaStock stock;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 
 		pStock->SetHavingFirstRTData(true);
 		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(20191101));
@@ -1888,7 +1879,7 @@ namespace StockAnalysisTest {
 		CDayLine stock;
 		pStock = gl_pChinaMarket->GetStock(_T("600011.SS"));
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
-		gl_pChinaMarket->_TEST_SetFormatedMarketDate(21900101);
+		gl_pChinaMarket->TEST_SetFormattedMarketDate(21900101);
 
 		pid = make_shared<CDayLine>();
 		pid->SetDate(21900101);
@@ -2107,7 +2098,7 @@ namespace StockAnalysisTest {
 		CDayLine dayLine;
 		pStock = gl_pChinaMarket->GetStock(_T("600016.SS"));
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
-		gl_pChinaMarket->_TEST_SetFormatedMarketDate(20190101);
+		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		pid = make_shared<CDayLine>();
 		pid->SetClose(1000);
@@ -2399,9 +2390,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(vDayLine);
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
-		for (int i = 0; i < 10; i++) {
-			EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i);
-		}
+		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
 
@@ -2420,9 +2409,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(stock.IsDayLineLoaded());
 		stock.UpdateDayLine(data.GetProcessedDayLine()); // 测试CDownloadedNeteaseDayLine中的GetProcessedDayLine
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
-		for (int i = 0; i < 10; i++) {
-			EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i);
-		}
+		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetMarketDate(), 19900101 + i); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());
 	}
 
@@ -2605,7 +2592,7 @@ namespace StockAnalysisTest {
 		CWeekLinePtr pid;
 		CWeekLine stock;
 		pStock = gl_pChinaMarket->GetStock(_T("600016.SS"));
-		gl_pChinaMarket->_TEST_SetFormatedMarketDate(20190101);
+		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CWeekLine>();

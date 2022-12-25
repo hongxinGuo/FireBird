@@ -202,7 +202,8 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待WebSocket退出
+	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
 
 	gl_systemConfiguration.SaveDB(); // 保存全局参数。
 	TRACE("finally exited\n");
@@ -568,12 +569,17 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	CString str;
 
 	ASSERT(nIDEvent == _STOCK_ANALYSIS_TIMER_);
-	counter.start();
+
+	if (gl_systemStatus.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
+
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
 
+	counter.start();
+
 	// 调用主调度函数,由各市场调度函数执行具体任务
 	SchedulingTask();
+	counter.stop();
 
 	//CMainFrame只执行更新状态任务
 	llTickCount = GetTickCount64();
@@ -583,7 +589,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		s_llCounterForUpdateStatusBar = llTickCount;
 	}
 
-	counter.stop();
 	const long lCurrentPeriod = counter.GetElapsedMilliSecond();
 	if (lCurrentPeriod > 20) {
 		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";

@@ -1,5 +1,5 @@
-# Visual Studio generated .editorconfig file with C++ settings.
 root = true
+# Visual Studio generated .editorconfig file with C++ settings.
 
 [*.{c++,cc,cpp,cppm,cxx,h,h++,hh,hpp,hxx,inl,ipp,ixx,tlh,tli}]
 
@@ -67,3 +67,97 @@ cpp_space_around_assignment_operator = insert
 cpp_space_pointer_reference_alignment = left
 cpp_space_around_ternary_operator = insert
 cpp_wrap_preserve_blocks = one_liners
+
+# ReSharper properties
+resharper_anonymous_method_declaration_braces = end_of_line
+resharper_case_block_braces = end_of_line
+resharper_continuous_line_indent = none
+resharper_cpp_indent_size = 2
+resharper_cpp_max_line_length = 3000
+resharper_cpp_tab_width = 2
+resharper_disable_space_changes_before_trailing_comment = true
+resharper_function_definition_return_type_style = on_single_line
+resharper_invocable_declaration_braces = end_of_line
+resharper_keep_blank_lines_in_code = 1
+resharper_keep_blank_lines_in_declarations = 1
+resharper_namespace_declaration_braces = end_of_line
+resharper_other_braces = end_of_line
+resharper_requires_expression_braces = end_of_line
+resharper_simple_block_style = on_single_line
+resharper_simple_embedded_statement_style = on_single_line
+resharper_type_declaration_braces = end_of_line
+resharper_wrap_enumeration_style = wrap_if_long
+
+# ReSharper inspection severities
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_source_encoding_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_utf8_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_used_but_marked_unused_highlighting = none
+resharper_cpp_inconsistent_naming_highlighting = none
+
+[*.{appxmanifest,axaml,axml,build,c,c++,cc,cginc,compute,config,cp,cpp,csproj,cu,cuh,cxx,dbml,discomap,dtd,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,jsproj,lsproj,mpp,mq4,mq5,mqh,njsproj,nuspec,paml,proj,props,resw,resx,StyleCop,targets,tasks,tpp,usf,ush,vbproj,xaml,xamlx,xml,xoml,xsd}]
+indent_style = tab
+indent_size = tab
+tab_width = 2
+
+# ReSharper properties
+resharper_anonymous_method_declaration_braces = end_of_line
+resharper_case_block_braces = end_of_line
+resharper_continuous_line_indent = none
+resharper_cpp_indent_size = 2
+resharper_cpp_max_line_length = 3000
+resharper_cpp_tab_width = 2
+resharper_disable_space_changes_before_trailing_comment = true
+resharper_function_definition_return_type_style = on_single_line
+resharper_invocable_declaration_braces = end_of_line
+resharper_keep_blank_lines_in_code = 1
+resharper_keep_blank_lines_in_declarations = 1
+resharper_namespace_declaration_braces = end_of_line
+resharper_other_braces = end_of_line
+resharper_requires_expression_braces = end_of_line
+resharper_simple_block_style = on_single_line
+resharper_simple_embedded_statement_style = on_single_line
+resharper_type_declaration_braces = end_of_line
+resharper_wrap_enumeration_style = wrap_if_long
+resharper_xmldoc_tab_width = 4
+resharper_xml_tab_width = 4
+
+# ReSharper inspection severities
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_source_encoding_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_utf8_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_used_but_marked_unused_highlighting = none
+resharper_cpp_inconsistent_naming_highlighting = none
+
+[*.{c,c++,cc,cginc,compute,cp,cpp,cu,cuh,cxx,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,mpp,mq4,mq5,mqh,tpp,usf,ush}]
+indent_style = tab
+indent_size = tab
+tab_width = 2
+
+[*]
+
+# ReSharper properties
+resharper_anonymous_method_declaration_braces = end_of_line
+resharper_case_block_braces = end_of_line
+resharper_continuous_line_indent = none
+resharper_cpp_indent_size = 2
+resharper_cpp_indent_style = tab
+resharper_cpp_max_line_length = 3000
+resharper_cpp_tab_width = 2
+resharper_disable_space_changes_before_trailing_comment = true
+resharper_function_declaration_return_type_style = on_single_line
+resharper_function_definition_return_type_style = on_single_line
+resharper_invocable_declaration_braces = end_of_line
+resharper_keep_blank_lines_in_code = 1
+resharper_keep_blank_lines_in_declarations = 1
+resharper_namespace_declaration_braces = end_of_line
+resharper_other_braces = end_of_line
+resharper_requires_expression_braces = end_of_line
+resharper_simple_block_style = on_single_line
+resharper_simple_embedded_statement_style = on_single_line
+resharper_type_declaration_braces = end_of_line
+resharper_wrap_enumeration_style = wrap_if_long
+
+# ReSharper inspection severities
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_source_encoding_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_invalid_utf8_highlighting = none
+resharper_cpp_clang_tidy_clang_diagnostic_used_but_marked_unused_highlighting = none
+resharper_cpp_inconsistent_naming_highlighting = none

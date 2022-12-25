@@ -5,6 +5,8 @@
 #include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"InsiderSentiment.h"
+#include"InsiderTransaction.h"
+#include"EPSSurprise.h"
 
 #include "WorldStock.h"
 #include"WorldMarket.h"
@@ -13,14 +15,11 @@
 
 #include"SetWorldStockDayLine.h"
 #include"SetInsiderSentiment.h"
+#include"SetEPSSurprise.h"
 
-CWorldStock::CWorldStock() : CVirtualStock() {
-	Reset();
-}
+CWorldStock::CWorldStock() : CVirtualStock() { Reset(); }
 
-CWorldStock::~CWorldStock() {
-	m_pBasicFinancial = nullptr;
-}
+CWorldStock::~CWorldStock() { m_pBasicFinancial = nullptr; }
 
 void CWorldStock::Reset(void) {
 	CVirtualStock::Reset();
@@ -176,12 +175,8 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 }
 
 bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
-		m_fCompanyProfileUpdated = false;
-	}
-	else {
-		m_fCompanyProfileUpdated = true;
-	}
+	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) { m_fCompanyProfileUpdated = false; }
+	else { m_fCompanyProfileUpdated = true; }
 	return m_fCompanyProfileUpdated;
 }
 
@@ -211,9 +206,7 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 		// 系统每季更新一次数据，故查询两次即可。
 		m_fBasicFinancialUpdated = false;
 	}
-	else {
-		m_fBasicFinancialUpdated = true;
-	}
+	else { m_fBasicFinancialUpdated = true; }
 	return m_fBasicFinancialUpdated;
 }
 
@@ -368,11 +361,7 @@ void CWorldStock::SaveInsiderTransaction(void) {
 		lSizeOfOldInsiderTransaction++;
 		setInsiderTransaction.MoveNext();
 	}
-	if (lSizeOfOldInsiderTransaction > 0) {
-		if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) {
-			m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate;
-		}
-	}
+	if (lSizeOfOldInsiderTransaction > 0) { if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) { m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate; } }
 	setInsiderTransaction.Close();
 
 	setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
@@ -417,11 +406,7 @@ void CWorldStock::SaveInsiderSentiment(void) {
 		lSizeOfOldInsiderSentiment++;
 		setInsiderSentiment.MoveNext();
 	}
-	if (lSizeOfOldInsiderSentiment > 0) {
-		if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) {
-			m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate;
-		}
-	}
+	if (lSizeOfOldInsiderSentiment > 0) { if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) { m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate; } }
 	setInsiderSentiment.Close();
 
 	setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");
@@ -487,9 +472,7 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	CSetEPSSurprise setEPSSurprise;
 
 	if (m_vEPSSurprise.size() == 0) return true;
-	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > m_lLastEPSSurpriseUpdateDate) {
-		SetUpdateProfileDB(true);
-	}
+	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > m_lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
 	else return false; // 没有新数据则返回
 
 	setEPSSurprise.m_strFilter = _T("[ID] = 1");
@@ -497,9 +480,7 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	setEPSSurprise.m_pDatabase->BeginTrans();
 	for (auto& pEPSSurprise : m_vEPSSurprise) {
 		// 数据是正序存储的，需要从头部开始存储
-		if (pEPSSurprise->m_lDate > m_lLastEPSSurpriseUpdateDate) {
-			pEPSSurprise->Append(setEPSSurprise);
-		}
+		if (pEPSSurprise->m_lDate > m_lLastEPSSurpriseUpdateDate) { pEPSSurprise->Append(setEPSSurprise); }
 	}
 	setEPSSurprise.m_pDatabase->CommitTrans();
 	setEPSSurprise.Close();
@@ -554,17 +535,13 @@ void CWorldStock::AppendBasicFinancialQuarter(void) {
 
 void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
 	m_vCompanyNews.resize(0);
-	for (auto& p : *pvCompanyNews) {
-		m_vCompanyNews.push_back(p);
-	}
+	for (auto& p : *pvCompanyNews) { m_vCompanyNews.push_back(p); }
 	sort(m_vCompanyNews.begin(), m_vCompanyNews.end(), CompareFinnhubCompanyNews); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
-	for (auto& p : vEPSSurprise) {
-		m_vEPSSurprise.push_back(p);
-	}
+	for (auto& p : vEPSSurprise) { m_vEPSSurprise.push_back(p); }
 }
 
 bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
@@ -637,9 +614,7 @@ bool CWorldStock::UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubSt
 }
 
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
-	if (IsNullStock() || IsDelisted()) {
-		m_fEPSSurpriseUpdated = true;
-	}
+	if (IsNullStock() || IsDelisted()) { m_fEPSSurpriseUpdated = true; }
 	else if (m_lLastEPSSurpriseUpdateDate == 19700101) {
 		// 没有数据？
 		m_fEPSSurpriseUpdated = true;
@@ -652,9 +627,7 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 		// 有早于225天的数据？
 		m_fEPSSurpriseUpdated = true;
 	}
-	else {
-		m_fEPSSurpriseUpdated = false;
-	}
+	else { m_fEPSSurpriseUpdated = false; }
 	return m_fEPSSurpriseUpdated;
 }
 
@@ -664,66 +637,46 @@ bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag(void) {
 }
 
 bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
-	if (IsNullStock() || IsDelisted()) {
-		m_fFinnhubPeerUpdated = true;
-	}
+	if (IsNullStock() || IsDelisted()) { m_fFinnhubPeerUpdated = true; }
 	else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {
 		// 有不早于90天的数据？
 		m_fFinnhubPeerUpdated = true;
 	}
-	else {
-		m_fFinnhubPeerUpdated = false;
-	}
+	else { m_fFinnhubPeerUpdated = false; }
 	return m_fFinnhubPeerUpdated;
 }
 
 void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction) {
 	m_vInsiderTransaction.resize(0);
 
-	for (auto pInsiderTransacton : vInsiderTransaction) {
-		m_vInsiderTransaction.push_back(pInsiderTransacton);
-	}
+	for (auto pInsiderTransacton : vInsiderTransaction) { m_vInsiderTransaction.push_back(pInsiderTransacton); }
 }
 
 bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
-	if (!IsUSMarket()) {
-		m_fFinnhubInsiderTransactionNeedUpdate = false;
-	}
-	else if (IsNullStock() || IsDelisted()) {
-		m_fFinnhubInsiderTransactionNeedUpdate = false;
-	}
+	if (!IsUSMarket()) { m_fFinnhubInsiderTransactionNeedUpdate = false; }
+	else if (IsNullStock() || IsDelisted()) { m_fFinnhubInsiderTransactionNeedUpdate = false; }
 	else if (!IsEarlyThen(m_lInsiderTransactionUpdateDate, lCurrentDate, gl_systemConfiguration.GetInsideTransactionUpdateRate())) {
 		// 有不早于30天的数据？
 		m_fFinnhubInsiderTransactionNeedUpdate = false;
 	}
-	else {
-		m_fFinnhubInsiderTransactionNeedUpdate = true;
-	}
+	else { m_fFinnhubInsiderTransactionNeedUpdate = true; }
 	return m_fFinnhubInsiderTransactionNeedUpdate;
 }
 
 void CWorldStock::UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment) {
 	m_vInsiderSentiment.resize(0);
 
-	for (auto pInsiderSentiment : vInsiderSentiment) {
-		m_vInsiderSentiment.push_back(pInsiderSentiment);
-	}
+	for (auto pInsiderSentiment : vInsiderSentiment) { m_vInsiderSentiment.push_back(pInsiderSentiment); }
 }
 
 bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
-	if (!IsUSMarket()) {
-		m_fFinnhubInsiderSentimentNeedUpdate = false;
-	}
-	else if (IsNullStock() || IsDelisted()) {
-		m_fFinnhubInsiderSentimentNeedUpdate = false;
-	}
+	if (!IsUSMarket()) { m_fFinnhubInsiderSentimentNeedUpdate = false; }
+	else if (IsNullStock() || IsDelisted()) { m_fFinnhubInsiderSentimentNeedUpdate = false; }
 	else if (!IsEarlyThen(m_lInsiderSentimentUpdateDate, lCurrentDate, gl_systemConfiguration.GetInsideSentimentUpdateRate())) {
 		// 有不早于30天的数据？
 		m_fFinnhubInsiderSentimentNeedUpdate = false;
 	}
-	else {
-		m_fFinnhubInsiderSentimentNeedUpdate = true;
-	}
+	else { m_fFinnhubInsiderSentimentNeedUpdate = true; }
 	return m_fFinnhubInsiderSentimentNeedUpdate;
 }
 

@@ -216,7 +216,7 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->_TEST_SetUTCTime(tt);
+		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.IsValidTime(14));
@@ -238,7 +238,7 @@ namespace StockAnalysisTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->_TEST_SetUTCTime(tt);
+		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
@@ -481,7 +481,7 @@ namespace StockAnalysisTest {
 		tm_.tm_sec = 0;
 		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = gl_pChinaMarket->GetUTCTime();
-		gl_pChinaMarket->_TEST_SetUTCTime(ttime);
+		gl_pChinaMarket->TEST_SetUTCTime(ttime);
 		bool fSucceed = m_RTData.ReadSinaData(m_pSinaWebRTData);
 		switch (m_iCount) {
 		case 0:
@@ -1267,7 +1267,7 @@ namespace StockAnalysisTest {
 			break;
 		}
 		// »Ö¸´Ô­Ì¬
-		gl_pChinaMarket->_TEST_SetUTCTime(tUTCTime);
+		gl_pChinaMarket->TEST_SetUTCTime(tUTCTime);
 	}
 
 	struct ReadSinaOneValueExceptPeriodData {

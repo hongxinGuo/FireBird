@@ -37,7 +37,7 @@ enum {
 #include<array>
 
 class CChinaStock;
-typedef shared_ptr<CChinaStock> CChinaStockPtr;
+using CChinaStockPtr = shared_ptr<CChinaStock>;
 
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {
@@ -49,8 +49,8 @@ public:
 	CChinaStock(const CChinaStock&&) noexcept = delete;
 	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
 	~CChinaStock(void) override = default;
-	virtual void Reset(void) override;
-	virtual int GetRatio(void) const override final { return 1000; }
+	void Reset(void) override;
+	int GetRatio(void) const final { return 1000; }
 
 public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
@@ -71,10 +71,10 @@ public:
 	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
 	long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
 	long GetVSell(const int iIndex) const { return m_lVSell.at(iIndex); }
-	void SetPBuy(const int iIndex, long value) { m_lPBuy.at(iIndex) = value; }
-	void SetVBuy(const int iIndex, long value) { m_lVBuy.at(iIndex) = value; }
-	void SetPSell(const int iIndex, long value) { m_lPSell.at(iIndex) = value; }
-	void SetVSell(const int iIndex, long value) { m_lVSell.at(iIndex) = value; }
+	void SetPBuy(const int iIndex, const long value) { m_lPBuy.at(iIndex) = value; }
+	void SetVBuy(const int iIndex, const long value) { m_lVBuy.at(iIndex) = value; }
+	void SetPSell(const int iIndex, const long value) { m_lPSell.at(iIndex) = value; }
+	void SetVSell(const int iIndex, const long value) { m_lVSell.at(iIndex) = value; }
 	double GetRS(void) const noexcept { return m_dRealtimeRS; }
 	void SetRS(const double value) noexcept { m_dRealtimeRS = value; }
 	double GetRSIndex(void) const noexcept { return m_dRealtimeRSIndex; }
@@ -260,7 +260,7 @@ public:
 	void SetRTDataCalculated(const bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
 	bool IsRTDataCalculated(void) const noexcept { return m_fRTDataCalculated; }
 
-	void SetRecordRTData(bool fFlag) noexcept { m_fRecordRTData = fFlag; }
+	void SetRecordRTData(const bool fFlag) noexcept { m_fRecordRTData = fFlag; }
 	bool IsRecordRTData(void) const noexcept { return m_fRecordRTData; }
 
 	bool IsTodayDataActive(void) const; //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
@@ -268,12 +268,10 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	virtual bool LoadDayLine(const CString strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
+	virtual bool LoadDayLine(const CString& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
 	virtual bool SaveDayLineBasicInfo(void) { return m_dataDayLine.SaveDB(GetSymbol()); }
 
-	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) {
-		return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo);
-	}
+	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 
 	void AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLine); // 存储当日基本数据
 	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo);
@@ -287,9 +285,7 @@ public:
 	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
 
-	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* pSetWeekLineBasicInfo) {
-		return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo);
-	}
+	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }
 
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
@@ -383,9 +379,7 @@ public:
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine(void);
 
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) {
-		m_dataDayLine.UpdateData(vTempDayLine, fRevertSave);
-	}
+	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) { m_dataDayLine.UpdateData(vTempDayLine, fRevertSave); }
 
 	void ReportDayLineDownLoaded(void);
 
@@ -407,8 +401,8 @@ public:
 	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine(void) noexcept { return &m_dataWeekLine; }
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 public:
