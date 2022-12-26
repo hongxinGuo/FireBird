@@ -8,10 +8,10 @@ public:
 	CFinnhubDataSource(void);
 	~CFinnhubDataSource(void) override = default;
 
-	virtual bool Reset(void) override final;
-	virtual bool UpdateStatus(void) override final;
+	bool Reset(void) final;
+	bool UpdateStatus(void) final;
 
-	virtual bool Inquire(long lCurrentTime) override final;
+	bool Inquire(long lCurrentTime) override;
 
 	bool InquireFinnhub(long lCurrentTime);
 
@@ -35,41 +35,41 @@ public:
 	bool InquireCryptoDayLine(void);
 
 	bool IsCountryListUpdated(void) const noexcept { return m_fCountryListUpdated; }
-	void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
+	void SetCountryListUpdated(const bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
 	bool IsSymbolUpdated(void) const noexcept { return m_fSymbolUpdated; }
-	void SetSymbolUpdated(bool fFlag) noexcept { m_fSymbolUpdated = fFlag; }
+	void SetSymbolUpdated(const bool fFlag) noexcept { m_fSymbolUpdated = fFlag; }
 	bool IsStockProfileUpdated(void) const noexcept { return m_fStockProfileUpdated; }
-	void SetStockProfileUpdated(bool fFlag) noexcept { m_fStockProfileUpdated = fFlag; }
+	void SetStockProfileUpdated(const bool fFlag) noexcept { m_fStockProfileUpdated = fFlag; }
 	bool IsCompanyNewsUpdated(void) const noexcept { return m_fCompanyNewsUpdated; }
-	void SetCompanyNewsUpdated(bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
+	void SetCompanyNewsUpdated(const bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
 	bool IsCompanyPriceMetricsUpdated(void) const noexcept { return m_fCompanyPriceMetricsUpdated; }
-	void SetCompanyPriceMetricsUpdated(bool fFlag) noexcept { m_fCompanyPriceMetricsUpdated = fFlag; }
+	void SetCompanyPriceMetricsUpdated(const bool fFlag) noexcept { m_fCompanyPriceMetricsUpdated = fFlag; }
 	bool IsStockBasicFinancialUpdated(void) const noexcept { return m_fStockBasicFinancialUpdated; }
-	void SetStockBasicFinancialUpdated(bool fFlag) noexcept { m_fStockBasicFinancialUpdated = fFlag; }
+	void SetStockBasicFinancialUpdated(const bool fFlag) noexcept { m_fStockBasicFinancialUpdated = fFlag; }
 	bool IsStockDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
-	void SetDayLineUpdated(bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
+	void SetDayLineUpdated(const bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
 	bool IsForexExchangeUpdated(void) const noexcept { return m_fForexExchangeUpdated; }
-	void SetForexExchangeUpdated(bool fFlag) noexcept { m_fForexExchangeUpdated = fFlag; }
+	void SetForexExchangeUpdated(const bool fFlag) noexcept { m_fForexExchangeUpdated = fFlag; }
 	bool IsForexSymbolUpdated(void) const noexcept { return m_fForexSymbolUpdated; }
-	void SetForexSymbolUpdated(bool fFlag) noexcept { m_fForexSymbolUpdated = fFlag; }
+	void SetForexSymbolUpdated(const bool fFlag) noexcept { m_fForexSymbolUpdated = fFlag; }
 	bool IsForexDayLineUpdated(void) const noexcept { return m_fForexDayLineUpdated; }
-	void SetForexDayLineUpdated(bool fFlag) noexcept { m_fForexDayLineUpdated = fFlag; }
+	void SetForexDayLineUpdated(const bool fFlag) noexcept { m_fForexDayLineUpdated = fFlag; }
 	bool IsCryptoExchangeUpdated(void) const noexcept { return m_fCryptoExchangeUpdated; }
-	void SetCryptoExchangeUpdated(bool fFlag) noexcept { m_fCryptoExchangeUpdated = fFlag; }
+	void SetCryptoExchangeUpdated(const bool fFlag) noexcept { m_fCryptoExchangeUpdated = fFlag; }
 	bool IsCryptoSymbolUpdated(void) const noexcept { return m_fCryptoSymbolUpdated; }
-	void SetCryptoSymbolUpdated(bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
+	void SetCryptoSymbolUpdated(const bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
 	bool IsCryptoDayLineUpdated(void) const noexcept { return m_fCryptoDayLineUpdated; }
-	void SetCryptoDayLineUpdated(bool fFlag) noexcept { m_fCryptoDayLineUpdated = fFlag; }
+	void SetCryptoDayLineUpdated(const bool fFlag) noexcept { m_fCryptoDayLineUpdated = fFlag; }
 	bool IsPeerUpdated(void) const noexcept { return m_fPeerUpdated; }
-	void SetPeerUpdated(bool fFlag) noexcept { m_fPeerUpdated = fFlag; }
+	void SetPeerUpdated(const bool fFlag) noexcept { m_fPeerUpdated = fFlag; }
 	bool IsInsiderTransactionUpdated(void) const noexcept { return m_fInsiderTransactionUpdated; }
-	void SetInsiderTransactionUpdated(bool fFlag) noexcept { m_fInsiderTransactionUpdated = fFlag; }
+	void SetInsiderTransactionUpdated(const bool fFlag) noexcept { m_fInsiderTransactionUpdated = fFlag; }
 	bool IsInsiderSentimentUpdated(void) const noexcept { return m_fInsiderSentimentUpdated; }
-	void SetInsiderSentimentUpdated(bool fFlag) noexcept { m_fInsiderSentimentUpdated = fFlag; }
+	void SetInsiderSentimentUpdated(const bool fFlag) noexcept { m_fInsiderSentimentUpdated = fFlag; }
 	bool IsEconomicCalendarUpdated(void) const noexcept { return m_fEconomicCalendarUpdated; }
-	void SetEconomicCalendarUpdated(bool fFlag) noexcept { m_fEconomicCalendarUpdated = fFlag; }
+	void SetEconomicCalendarUpdated(const bool fFlag) noexcept { m_fEconomicCalendarUpdated = fFlag; }
 	bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
-	void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
+	void SetEPSSurpriseUpdated(const bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
 
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
@@ -95,7 +95,20 @@ protected:
 	bool m_fEPSSurpriseUpdated;
 
 	CFinnhubFactory m_FinnhubFactory;
+
+private:
+	bool m_fInquiringFinnhubStockSymbol = {false};
+	bool m_fInquiringFinnhubStockProfile = {false};
+	bool m_fInquiringFinnhubCompanyNews = {false};
+	bool m_fInquiringFinnhubCompanyBasicFinancial = {false};
+	bool m_fInquiringFinnhubStockDayLine = {false};
+	bool m_fInquiringFinnhubStockInsiderTransaction = {false};
+	bool m_fInquiringFinnhubStockInsiderSentiment = {false};
+	bool m_fInquiringFinnhubStockPeer = {false};
+	bool m_fInquiringFinnhubStockEPSSurprise = {false};
+	bool m_fInquiringFinnhubForexDayLine = {false};
+	bool m_fInquiringFinnhubCryptoDayLine = {false};
 };
 
-typedef shared_ptr<CFinnhubDataSource> CFinnhubDataSourcePtr;
+using CFinnhubDataSourcePtr = shared_ptr<CFinnhubDataSource>;
 extern CFinnhubDataSourcePtr gl_pFinnhubDataSource;

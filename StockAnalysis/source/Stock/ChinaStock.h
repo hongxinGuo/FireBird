@@ -27,6 +27,7 @@ enum {
 
 #include"OneDeal.h"
 
+#include"DayLine.h"
 #include"DataChinaWeekLine.h"
 #include"DataChinaDayLine.h"
 

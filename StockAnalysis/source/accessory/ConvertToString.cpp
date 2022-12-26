@@ -1,8 +1,6 @@
 #include"pch.h"
 
-
-
-CString ConvertValueToString(long lValue, int iDividend) {
+CString ConvertValueToString(const long lValue, const int iDividend) {
 	char buffer[50]{0};
 	const double d = (static_cast<double>(lValue)) / iDividend;
 
@@ -11,7 +9,7 @@ CString ConvertValueToString(long lValue, int iDividend) {
 	return str;
 }
 
-CString ConvertValueToString(int iValue, int iDividend) {
+CString ConvertValueToString(const int iValue, const int iDividend) {
 	char buffer[50]{0};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
@@ -21,7 +19,7 @@ CString ConvertValueToString(int iValue, int iDividend) {
 	return str;
 }
 
-CString ConvertValueToString(INT64 iValue, int iDividend) {
+CString ConvertValueToString(const INT64 iValue, const int iDividend) {
 	char buffer[50]{0};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
@@ -30,7 +28,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
 	return str;
 }
 
-CString ConvertValueToString(double dValue, int iDividend) {
+CString ConvertValueToString(const double dValue, const int iDividend) {
 	char buffer[50]{0};
 	const double d = dValue / iDividend;
 

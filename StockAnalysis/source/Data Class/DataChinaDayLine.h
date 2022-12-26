@@ -1,6 +1,5 @@
 #pragma once
 
-#include"DayLine.h"
 #include"WeekLine.h"
 #include "VirtualDataHistoryCandleExtend.h"
 

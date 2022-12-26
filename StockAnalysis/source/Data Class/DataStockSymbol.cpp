@@ -3,6 +3,8 @@
 #include"ChinaStockCodeConverter.h"
 #include "DataStockSymbol.h"
 
+#include"SetStockSection.h"
+
 CDataStockSymbol::CDataStockSymbol() {
 	m_vStockSection.resize(2000); // 沪深各1000个段。
 	for (int i = 0; i < 2000; i++) {
@@ -39,9 +41,7 @@ void CDataStockSymbol::Reset(void) {
 	// 从股票代码集数据库中读入其他股票集
 
 	//重置StockSection
-	for (int i = 0; i < m_vStockSection.size(); i++) {
-		m_vStockSection.at(i)->SetBuildStockPtr(false);
-	}
+	for (int i = 0; i < m_vStockSection.size(); i++) { m_vStockSection.at(i)->SetBuildStockPtr(false); }
 
 	LoadStockSectionDB();
 
@@ -60,9 +60,7 @@ void CDataStockSymbol::Reset(void) {
 bool CDataStockSymbol::CreateTotalStockContainer(void) {
 	CChinaStockPtr pStock = nullptr;
 
-	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
-		CreateStockSection(m_vCurrentSectionStockCode.at(i));
-	}
+	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) { CreateStockSection(m_vCurrentSectionStockCode.at(i)); }
 	return true;
 }
 
@@ -149,9 +147,7 @@ void CDataStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
 		const CString strStockCode = CreateStockCode(strExchange, strStockSymbol);
 		Add(strStockCode);
 	}
-	if (UpdateStockSection(iCode / 1000 + iMarket)) {
-		SetUpdateStockSection(true);
-	}
+	if (UpdateStockSection(iCode / 1000 + iMarket)) { SetUpdateStockSection(true); }
 	m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 
@@ -231,8 +227,6 @@ CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumbe
 }
 
 long CDataStockSymbol::GetNextIndex(long lIndex) {
-	if (++lIndex >= m_vStockSymbol.size()) {
-		lIndex = 0;
-	}
+	if (++lIndex >= m_vStockSymbol.size()) { lIndex = 0; }
 	return lIndex;
 }

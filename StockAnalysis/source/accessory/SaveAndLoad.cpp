@@ -2,7 +2,7 @@
 
 #include "SaveAndLoad.h"
 
-void SaveToFile(CString strFileName, CString s) {
+void SaveToFile(const CString& strFileName, CString& s) {
 	CFile f;
 	if (f.Open(strFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		f.Write(s.GetBuffer(), s.GetLength());
@@ -10,7 +10,7 @@ void SaveToFile(CString strFileName, CString s) {
 	}
 }
 
-bool LoadFromFile(CString strFileName, string& s) {
+bool LoadFromFile(const CString& strFileName, string& s) {
 	char buffer[1025]{};
 	int iRead = 0;
 	CFile f(strFileName, CFile::modeRead | CFile::typeBinary);

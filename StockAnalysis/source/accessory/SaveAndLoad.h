@@ -2,6 +2,6 @@
 
 #include<string>
 
-void SaveToFile(CString strFileName, CString s);
+void SaveToFile(const CString& strFileName, CString& s);
 
-bool LoadFromFile(CString strFileName, string& s);
+bool LoadFromFile(const CString& strFileName, string& s);

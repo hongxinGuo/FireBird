@@ -1,6 +1,6 @@
 #pragma once
 
-CString ConvertValueToString(long lValue, int iDividend = 1);
-CString ConvertValueToString(INT64 iValue, int iDividend = 1);
-CString ConvertValueToString(int iValue, int iDividend = 1);
-CString ConvertValueToString(double dValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(const long lValue, const int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(const INT64 iValue, const int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(const int iValue, const int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(const double dValue, const int iDividend = 1);

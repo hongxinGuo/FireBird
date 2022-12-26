@@ -10,7 +10,7 @@ long GetDayOfWeek(void) {
 	return tm_.tm_wday;
 }
 
-time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
+time_t TransferToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
 	tm tmMarket{0, 0, 0, 0, 0, 0};
 
 	ASSERT(lDate >= 19700101);
@@ -24,32 +24,28 @@ time_t TransferToTTime(long lDate, time_t tTimeZone, long lTime) {
 	return _mkgmtime(&tmMarket) + tTimeZone;
 }
 
-long TransferToDate(time_t const tUTC, time_t tTimeZone) noexcept {
+long TransferToDate(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long TransferToTime(time_t const tUTC, time_t tTimeZone) noexcept {
+long TransferToTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return (tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 TransferToDateTime(time_t const tUTC, time_t tTimeZone) noexcept {
+INT64 TransferToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return ((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 +
 		static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long TransferToDate(const tm* ptm) noexcept {
-	return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
-}
+long TransferToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
 
-long TransferToTime(const tm* ptm) noexcept {
-	return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
-}
+long TransferToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
 
 INT64 TransferToDateTime(const tm* ptm) noexcept {
 	return ((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 +
@@ -196,28 +192,26 @@ long GetCurrentMonday(long lDate) {
 	return lCurrentMonday;
 }
 
-void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) {
-	gmtime_s(tm_, tUTC);
-}
+void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
 
-void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone) {
+void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
 	tMarket = tUTC - tTimeZone;
 	gmtime_s(tm_, &tMarket);
 }
 
-CString ConvertDateToString(long lDate) {
+CString ConvertDateToString(const long lDate) {
 	char buffer[30];
-	long const year = lDate / 10000;
-	long const month = lDate / 100 - year * 100;
-	long const day = lDate - year * 10000 - month * 100;
+	const long year = lDate / 10000;
+	const long month = lDate / 100 - year * 100;
+	const long day = lDate - year * 10000 - month * 100;
 
 	sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), year, month, day);
 	CString str = buffer;
 	return (str);
 }
 
-time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time_t tTimeZoneOffset) {
+time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset) {
 	time_t tt{0};
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
@@ -237,7 +231,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* bufferMarketTime, time
 	return tt;
 }
 
-time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset) {
+time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset) {
 	time_t tt{0};
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;

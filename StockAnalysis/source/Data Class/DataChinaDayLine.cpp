@@ -3,12 +3,12 @@
 //
 #include"TimeConvert.h"
 
+#include"DayLine.h"
 #include "DataChinaDayLine.h"
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 
-CDataChinaDayLine::CDataChinaDayLine() {
-}
+CDataChinaDayLine::CDataChinaDayLine() {}
 
 bool CDataChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasic;

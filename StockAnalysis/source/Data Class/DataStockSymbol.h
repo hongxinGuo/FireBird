@@ -1,7 +1,6 @@
 #pragma once
 
 #include"StockSection.h"
-#include"SetStockSection.h"
 
 #include<memory>
 #include<vector>

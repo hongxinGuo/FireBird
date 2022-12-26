@@ -1,6 +1,6 @@
 #pragma once
 
-void ReportErrorToSystemMessage(CString strPrefix, exception& e);
+void ReportErrorToSystemMessage(const CString& strPrefix, exception& e);
 
-void ReportWebError(DWORD dwErrorNo, long long llTime, CString strInputMessage);
-void ReportWebError(DWORD dwErrorNo, CString strInputMessage);
+void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString& strInputMessage);
+void ReportWebError(const DWORD dwErrorNo, const CString& strInputMessage);
