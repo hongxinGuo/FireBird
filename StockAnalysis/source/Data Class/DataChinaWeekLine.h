@@ -8,8 +8,8 @@ public:
 	CDataChinaWeekLine();
 	~CDataChinaWeekLine() override = default;
 
-	bool LoadDB(const CString& strStockSymbol = _T("")) final;
-	bool SaveDB(const CString& strStockSymbol = _T("")) final;
+	bool LoadDB(const CString& strStockSymbol) final;
+	bool SaveDB(const CString& strStockSymbol) final;
 
 	bool SaveCurrentWeekLine(void);
 	bool LoadCurrentWeekLine(void);

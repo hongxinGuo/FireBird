@@ -19,7 +19,7 @@ bool CVirtualDataSource::Reset(void) {
 	return true;
 }
 
-void CVirtualDataSource::Run(long lCurrentTime) {
+void CVirtualDataSource::Run(const long lCurrentTime) {
 	if (!m_fEnable) return; // 不允许执行的话，直接返回
 	Inquire(lCurrentTime);
 	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
@@ -101,6 +101,4 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 /// </summary>
 /// <param name="pProductWebData"></param>
 /// <param name="pWebData"></param>
-void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData);
-}
+void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) { pProductWebData->ParseAndStoreWebData(pWebData); }

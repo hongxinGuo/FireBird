@@ -21,10 +21,9 @@ CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineWebInquiry::PrepareNextInquiringString(void) {
-	CString strMiddle = _T("");
-
 	// 准备网易日线数据申请格式
-	if (gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(strMiddle)) {
+	CString strMiddle = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
+	if (strMiddle.GetLength() > 0) {
 		char buffer2[200];
 		const CString strStockCode = XferNeteaseToStandard(strMiddle);
 		SetDownLoadingStockCode(strStockCode);
@@ -48,14 +47,10 @@ void CNeteaseDayLineWebInquiry::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-void CNeteaseDayLineWebInquiry::UpdateStatusAfterSucceed(CWebDataPtr pData) {
-	pData->SetStockCode(GetDownLoadingStockCode());
-}
+void CNeteaseDayLineWebInquiry::UpdateStatusAfterSucceed(CWebDataPtr pData) { pData->SetStockCode(GetDownLoadingStockCode()); }
 
 /// <summary>
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
-	m_strDownLoadingStockCode = strStockCode;
-}
+void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) { m_strDownLoadingStockCode = strStockCode; }

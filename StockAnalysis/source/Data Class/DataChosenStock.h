@@ -12,7 +12,7 @@ public:
 	void Reset(void);
 
 	CWorldStockPtr GetStock(const long lIndex) { return m_vWorldChosenStock.at(lIndex); }
-	size_t GetSize(void) const noexcept { return m_vWorldChosenStock.size(); }
+	[[nodiscard]] size_t GetSize(void) const noexcept { return m_vWorldChosenStock.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

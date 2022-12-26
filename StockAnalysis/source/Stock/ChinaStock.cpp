@@ -17,9 +17,7 @@ using namespace gsl;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CChinaStock::CChinaStock() {
-	CChinaStock::Reset();
-}
+CChinaStock::CChinaStock() { CChinaStock::Reset(); }
 
 void CChinaStock::Reset(void) {
 	CVirtualStock::Reset();
@@ -128,9 +126,7 @@ void CChinaStock::Reset(void) {
 
 void CChinaStock::ClearRTDataDeque(void) {
 	const long lTotalNumber = GetRTDataQueueSize();
-	for (int i = 0; i < lTotalNumber; i++) {
-		CWebRTDataPtr pRTData = PopRTData();
-	}
+	for (int i = 0; i < lTotalNumber; i++) { CWebRTDataPtr pRTData = PopRTData(); }
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
@@ -188,12 +184,8 @@ void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeU
 	pBeUpdated->SetAmount(m_llAmount);
 	pBeUpdated->SetUpDown(static_cast<double>(m_lUpDown) / GetRatio());
 	pBeUpdated->SetUpDownRate(m_dUpDownRate);
-	if (m_llTotalValue != 0) {
-		pBeUpdated->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue);
-	}
-	else {
-		pBeUpdated->SetChangeHandRate(0.0);
-	}
+	if (m_llTotalValue != 0) { pBeUpdated->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue); }
+	else { pBeUpdated->SetChangeHandRate(0.0); }
 	pBeUpdated->SetTotalValue(m_llTotalValue);
 	pBeUpdated->SetCurrentValue(m_llCurrentValue);
 
@@ -304,9 +296,7 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 			fUpdated = true;
 		}
 	}
-	if (fUpdated) {
-		SetUpdateProfileDB(true);
-	}
+	if (fUpdated) { SetUpdateProfileDB(true); }
 }
 
 void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) {
@@ -404,7 +394,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
 		m_v10DaysRS.resize(iDayLineSize);
 		CalculateDayLineRSIndex();
 		Get10DaysRS(m_v10DaysRS);
-		int i = 0;
+		int i;
 		for (i = iDayLineSize - 1; i > iDayLineSize - 5; i--) {
 			if (m_v10DaysRS.at(i) > 55) iCountFirst++;
 			if (iCountFirst >= 3) break;
@@ -412,12 +402,8 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
 		if (iCountFirst >= 3) {
 			int iCountSecond = 0;
 			while (m_v10DaysRS.at(i) > 53) i--;
-			for (int j = i; j > i - 50; j--) {
-				if (m_v10DaysRS.at(j) > 55) iCountSecond++;
-			}
-			if (iCountSecond >= 3) {
-				return true;
-			}
+			for (int j = i; j > i - 50; j--) { if (m_v10DaysRS.at(j) > 55) iCountSecond++; }
+			if (iCountSecond >= 3) { return true; }
 		}
 	}
 
@@ -436,7 +422,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
 	m_v10DaysRS.resize(iDayLineSize);
 	CalculateDayLineRSIndex();
 	Get10DaysRS(m_v10DaysRS);
-	int i = 0, j = 0;
+	int i, j;
 
 	for (i = iDayLineSize - 1; i > iDayLineSize - 40; i--) {
 		if (m_v10DaysRS.at(i) > 55) iCountFirst++;
@@ -464,8 +450,8 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 	vector<double> m_v10DaysRS;
 	int iCountFirst = 0, iCountSecond = 0, iCountThird = 0, iCountFourth = 0;
 	bool fFind1 = false, fFind2 = false, fFind3 = false, fFind4 = false;
-	double dStrong1{0.0}, dStrong2{0.0}, dStrong3{0.0}, dStrong4{0.0};
-	bool fFindHigh1{false}, fFindHigh2{false}, fFindHigh3{false}, fFindHigh4{false};
+	double dStrong1, dStrong2, dStrong3, dStrong4;
+	bool fFindHigh1, fFindHigh2, fFindHigh3, fFindHigh4;
 
 	if (pRef->m_dRSStrong[0] < 0) {
 		dStrong1 = -pRef->m_dRSStrong[0];
@@ -654,7 +640,7 @@ bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
 	double d1, d2;
 	int iAdjust = 0;
-	int iCompare = 10;
+	int iCompare;
 	int i2 = 0;
 
 	if (pRTData->GetPSell(0) == 0) {
@@ -683,9 +669,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
 					}
 					m_lLowLimit2 = pRTData->GetLastClose() - i2 + iAdjust;
 				}
-				else {
-					m_lLowLimit2 = m_lLowLimit;
-				}
+				else { m_lLowLimit2 = m_lLowLimit; }
 			}
 			if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
 			if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
@@ -722,9 +706,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
 					}
 					m_lHighLimit2 = pRTData->GetLastClose() + i2 + iAdjust;
 				}
-				else {
-					m_lHighLimit2 = m_lHighLimit;
-				}
+				else { m_lHighLimit2 = m_lHighLimit; }
 			}
 			if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
 			if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
@@ -777,9 +759,7 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
 			m_nCurrentTransactionType = UNKNOWN_BUYSELL_;
 			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 		}
-		else {
-			CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice);
-		}
+		else { CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice); }
 	}
 
 	// 下面开始分析挂单情况
@@ -791,7 +771,7 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
 
 void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
 	IncreaseTransactionNumber();
-	lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
+	ASSERT(lCurrentGuadanTransactionPrice == ((pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume)); // 生成比较用的价格（放大一千倍后采用长整型）
 	m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
 	if (lCurrentGuadanTransactionPrice >= m_pLastRTData->GetPBuy(0)) {
 		// 高于前买盘1
@@ -826,18 +806,10 @@ void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTr
 
 void CChinaStock::IncreaseTransactionNumber(void) {
 	m_lTransactionNumber++; // 成交数加一。
-	if (m_lCurrentGuadanTransactionVolume < 5000) {
-		m_lTransactionNumberBelow5000++;
-	}
-	else if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lTransactionNumberBelow50000++;
-	}
-	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lTransactionNumberBelow200000++;
-	}
-	else {
-		m_lTransactionNumberAbove200000++;
-	}
+	if (m_lCurrentGuadanTransactionVolume < 5000) { m_lTransactionNumberBelow5000++; }
+	else if (m_lCurrentGuadanTransactionVolume < 50000) { m_lTransactionNumberBelow50000++; }
+	else if (m_lCurrentGuadanTransactionVolume < 200000) { m_lTransactionNumberBelow200000++; }
+	else { m_lTransactionNumberAbove200000++; }
 	ASSERT(GetTransactionNumber() == (GetTransactionNumberAbove200000()
 		+ GetTransactionNumberBelow200000()
 		+ GetTransactionNumberBelow50000() + GetTransactionNumberBelow5000()));
@@ -938,15 +910,9 @@ void CChinaStock::CalculateStrongBuy(void) {
 }
 
 void CChinaStock::CalculateAttackBuyVolume(void) {
-	if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
-	}
-	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
-	}
-	else {
-		m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
-	}
+	if (m_lCurrentGuadanTransactionVolume < 50000) { m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume; }
+	else if (m_lCurrentGuadanTransactionVolume < 200000) { m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume; }
+	else { m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume; }
 }
 
 void CChinaStock::CalculateAttackSell(void) {
@@ -962,15 +928,9 @@ void CChinaStock::CalculateStrongSell(void) {
 }
 
 void CChinaStock::CalculateAttackSellVolume(void) {
-	if (m_lCurrentGuadanTransactionVolume < 50000) {
-		m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
-	}
-	else if (m_lCurrentGuadanTransactionVolume < 200000) {
-		m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
-	}
-	else {
-		m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-	}
+	if (m_lCurrentGuadanTransactionVolume < 50000) { m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume; }
+	else if (m_lCurrentGuadanTransactionVolume < 200000) { m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume; }
+	else { m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume; }
 }
 
 void CChinaStock::ResetCalculatingData(void) {
@@ -1106,27 +1066,13 @@ void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
 }
 
 void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume) {
-	if (lCurrentCanceledSellVolume < 5000) {
-		m_lCanceledSellVolumeBelow5000 += lCurrentCanceledSellVolume;
-	}
-	else if (lCurrentCanceledSellVolume < 10000) {
-		m_lCanceledSellVolumeBelow10000 += lCurrentCanceledSellVolume;
-	}
-	else if (lCurrentCanceledSellVolume < 20000) {
-		m_lCanceledSellVolumeBelow20000 += lCurrentCanceledSellVolume;
-	}
-	else if (lCurrentCanceledSellVolume < 50000) {
-		m_lCanceledSellVolumeBelow50000 += lCurrentCanceledSellVolume;
-	}
-	else if (lCurrentCanceledSellVolume < 100000) {
-		m_lCanceledSellVolumeBelow100000 += lCurrentCanceledSellVolume;
-	}
-	else if (lCurrentCanceledSellVolume < 200000) {
-		m_lCanceledSellVolumeBelow200000 += lCurrentCanceledSellVolume;
-	}
-	else {
-		m_lCanceledSellVolumeAbove200000 += lCurrentCanceledSellVolume;
-	}
+	if (lCurrentCanceledSellVolume < 5000) { m_lCanceledSellVolumeBelow5000 += lCurrentCanceledSellVolume; }
+	else if (lCurrentCanceledSellVolume < 10000) { m_lCanceledSellVolumeBelow10000 += lCurrentCanceledSellVolume; }
+	else if (lCurrentCanceledSellVolume < 20000) { m_lCanceledSellVolumeBelow20000 += lCurrentCanceledSellVolume; }
+	else if (lCurrentCanceledSellVolume < 50000) { m_lCanceledSellVolumeBelow50000 += lCurrentCanceledSellVolume; }
+	else if (lCurrentCanceledSellVolume < 100000) { m_lCanceledSellVolumeBelow100000 += lCurrentCanceledSellVolume; }
+	else if (lCurrentCanceledSellVolume < 200000) { m_lCanceledSellVolumeBelow200000 += lCurrentCanceledSellVolume; }
+	else { m_lCanceledSellVolumeAbove200000 += lCurrentCanceledSellVolume; }
 }
 
 void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
@@ -1146,27 +1092,13 @@ void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
 }
 
 void CChinaStock::CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume) {
-	if (lCurrentCanceledBuyVolume < 5000) {
-		m_lCanceledBuyVolumeBelow5000 += lCurrentCanceledBuyVolume;
-	}
-	else if (lCurrentCanceledBuyVolume < 10000) {
-		m_lCanceledBuyVolumeBelow10000 += lCurrentCanceledBuyVolume;
-	}
-	else if (lCurrentCanceledBuyVolume < 20000) {
-		m_lCanceledBuyVolumeBelow20000 += lCurrentCanceledBuyVolume;
-	}
-	else if (lCurrentCanceledBuyVolume < 50000) {
-		m_lCanceledBuyVolumeBelow50000 += lCurrentCanceledBuyVolume;
-	}
-	else if (lCurrentCanceledBuyVolume < 100000) {
-		m_lCanceledBuyVolumeBelow100000 += lCurrentCanceledBuyVolume;
-	}
-	else if (lCurrentCanceledBuyVolume < 200000) {
-		m_lCanceledBuyVolumeBelow200000 += lCurrentCanceledBuyVolume;
-	}
-	else {
-		m_lCanceledBuyVolumeAbove200000 += lCurrentCanceledBuyVolume;
-	}
+	if (lCurrentCanceledBuyVolume < 5000) { m_lCanceledBuyVolumeBelow5000 += lCurrentCanceledBuyVolume; }
+	else if (lCurrentCanceledBuyVolume < 10000) { m_lCanceledBuyVolumeBelow10000 += lCurrentCanceledBuyVolume; }
+	else if (lCurrentCanceledBuyVolume < 20000) { m_lCanceledBuyVolumeBelow20000 += lCurrentCanceledBuyVolume; }
+	else if (lCurrentCanceledBuyVolume < 50000) { m_lCanceledBuyVolumeBelow50000 += lCurrentCanceledBuyVolume; }
+	else if (lCurrentCanceledBuyVolume < 100000) { m_lCanceledBuyVolumeBelow100000 += lCurrentCanceledBuyVolume; }
+	else if (lCurrentCanceledBuyVolume < 200000) { m_lCanceledBuyVolumeBelow200000 += lCurrentCanceledBuyVolume; }
+	else { m_lCanceledBuyVolumeAbove200000 += lCurrentCanceledBuyVolume; }
 }
 
 bool CChinaStock::HaveGuadan(INT64 lPrice) {
@@ -1195,9 +1127,7 @@ bool CChinaStock::CheckCurrentRTData() {
 void CChinaStock::ShowCurrentTransaction() {
 	// 显示当前交易情况
 
-	if (GetCurrentTransactionVolume() > 0) {
-		ReportGuadanTransaction();
-	}
+	if (GetCurrentTransactionVolume() > 0) { ReportGuadanTransaction(); }
 }
 
 void CChinaStock::ShowCurrentInformationOfCancelingGuadan(void) {
@@ -1315,23 +1245,17 @@ bool CChinaStock::CheckDayLineStatus(void) {
 	}
 	else if (IsDelisted()) {
 		// 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) {
-			SetDayLineNeedUpdate(false);
-		}
+		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) { SetDayLineNeedUpdate(false); }
 	}
 	return m_fDayLineNeedUpdate;
 }
 
 bool CChinaStock::BuildWeekLine(long lStartDate) {
 	if (IsNullStock()) return true;
-	if (!IsDayLineLoaded()) {
-		LoadDayLine(GetSymbol());
-	}
+	if (!IsDayLineLoaded()) { LoadDayLine(GetSymbol()); }
 	if (GetDayLineSize() <= 0) return true;
 
-	if (CalculatingWeekLine(lStartDate)) {
-		SaveWeekLine();
-	}
+	if (CalculatingWeekLine(lStartDate)) { SaveWeekLine(); }
 
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		if (!IsSameStock(gl_pChinaMarket->GetCurrentStock())) {
@@ -1363,9 +1287,7 @@ bool CChinaStock::IsSameStock(const CChinaStockPtr& pStock) const {
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataActive(void) const {
 	if (!m_fActive) return false;
-	else {
-		return IsTodayDataChanged();
-	}
+	else { return IsTodayDataChanged(); }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1375,19 +1297,13 @@ bool CChinaStock::IsTodayDataActive(void) const {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataChanged(void) const {
-	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) { return true; }
+	else { return false; }
 }
 
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
 	if ((m_lHighLimit2 > 0) && (m_lLowLimit2 > 0)) {
-		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
-			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
-		}
+		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) { TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2); }
 		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {
 			// 当涨跌停板打开时
 			m_lHighLimit2 = m_lLowLimit2 = 0; // 重置此两变量
@@ -1410,9 +1326,7 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	CWeekLinePtr pWeekLine = nullptr;
 
 	m_dataWeekLine.Unload();
-	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
-		i++;
-	}
+	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) { i++; }
 	if (i < m_dataDayLine.Size()) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);

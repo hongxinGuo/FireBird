@@ -13,14 +13,14 @@ public:
 
 	// 通用接口函数
 	void PushData(CWebRTDataPtr pData);
-	CWebRTDataPtr PopData(void);
-	CWebRTDataPtr GetHead(void) const noexcept { return m_priorityQueueWebRTData.top(); }
-	size_t Size(void);
+	[[nodiscard]] CWebRTDataPtr PopData(void);
+	[[nodiscard]] CWebRTDataPtr GetHead(void) const noexcept { return m_priorityQueueWebRTData.top(); }
+	[[nodiscard]] size_t Size(void);
 
 protected:
 	// 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。
 	struct cmpRTData {
-		bool operator()(const CWebRTDataPtr &p1, const CWebRTDataPtr &p2) const noexcept {
+		bool operator()(const CWebRTDataPtr& p1, const CWebRTDataPtr& p2) const noexcept {
 			// 有优先级的队列默认排列顺序是从大到小，故而从小到大排列需要使用 > 符号。
 			// 相同时间的数据，先放入的数据位于后放入的数据前面。
 			// 不同时间的数据，时间较早的数据位于时间较晚的数据前面。

@@ -220,9 +220,7 @@ string sData101 = _T("{\
 
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
-	for (auto _ : state) {
-		NlohmannCreateJson(&j, sData101);
-	}
+	for (auto _ : state) { auto f = NlohmannCreateJson(&j, sData101); }
 }
 
 BENCHMARK(ParseWithNlohmannJSon);
@@ -250,27 +248,22 @@ public:
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
-	for (auto _ : state) {
-		NlohmannCreateJson(&j, sUSExchangeStockCode);
-	}
+	for (auto _ : state) { auto f = NlohmannCreateJson(&j, sUSExchangeStockCode); }
 }
 
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
 
-	for (auto _ : state) {
-		NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
-	}
+	for (auto _ : state) { [[maybe_unused]] auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2); }
 }
 
 // 解析并处理netease实时数据。NeteaseRTData的解析只实现了nlohmann json部分，不使用boost ptree来解析。
 json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
 	for (auto _ : state) {
-		NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
-		pvWebRTData = ParseNeteaseRTData(&j);
+		auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
 
@@ -278,12 +271,8 @@ class CWithNlohmannJson : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
-		try {
-			js = json::parse(s.begin() + 21, s.end() - 2);
-		}
-		catch (json::parse_error&) {
-			fDone = false;
-		}
+		try { js = json::parse(s.begin() + 21, s.end() - 2); }
+		catch (json::parse_error&) { fDone = false; }
 	}
 
 	void TearDown(const ::benchmark::State& state) override {
@@ -296,12 +285,7 @@ public:
 };
 
 // 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData;
-	for (auto _ : state) {
-		pvWebRTData = ParseNeteaseRTData(&js);
-	}
-}
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) { for (auto _ : state) { shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js); } }
 
 class CTengxunRTData : public benchmark::Fixture {
 public:
@@ -309,16 +293,14 @@ public:
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.dat"), s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
-		long lStringLength = str.GetLength();
+		const long lStringLength = str.GetLength();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override {
-		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
-	}
+	void TearDown(const ::benchmark::State& state) override { while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT(); }
 
 	string s;
 	CWebDataPtr pWebData;
@@ -326,10 +308,9 @@ public:
 
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 	for (auto _ : state) {
 		//pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pvWebRTData = ParseTengxunRTData(pWebData);
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
 	}
 }
 
@@ -339,16 +320,14 @@ public:
 		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\SinaRTData.dat"), s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
-		long lStringLength = str.GetLength();
+		const long lStringLength = str.GetLength();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override {
-		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
-	}
+	void TearDown(const ::benchmark::State& state) override { while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT(); }
 
 	string s;
 	CWebDataPtr pWebData;
@@ -356,9 +335,8 @@ public:
 
 // 测试nlohmann json解析NeteaseRTData的速度
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebData = nullptr;
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pvWebData = ParseSinaRTData(pWebData);
+		shared_ptr<vector<CWebRTDataPtr>> pvWebData = ParseSinaRTData(pWebData);
 	}
 }

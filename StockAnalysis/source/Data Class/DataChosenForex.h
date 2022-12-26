@@ -12,7 +12,7 @@ public:
 	void Reset(void);
 
 	CForexSymbolPtr GetForex(const long lIndex) { return m_vWorldChosenForex.at(lIndex); }
-	size_t GetSize(void) const noexcept { return m_vWorldChosenForex.size(); }
+	[[nodiscard]] size_t GetSize(void) const noexcept { return m_vWorldChosenForex.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

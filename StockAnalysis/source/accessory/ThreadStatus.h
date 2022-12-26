@@ -19,37 +19,35 @@ public:
 	//并发执行计算日线相对强度的计数器，最多允许cMaxBackGroundTaskThreads个线程同时执行
 	void IncreaseBackGroundWorkingThread(void) noexcept { ++m_NumberOfBackGroundWorkingThreads; } //同时运行线程数加一
 	void DecreaseBackGroundWorkingThread(void) noexcept { --m_NumberOfBackGroundWorkingThreads; } //同时运行线程数减一
-	bool IsBackGroundThreadsWorking(void) const noexcept {
+	[[nodiscard]] bool IsBackGroundThreadsWorking(void) const noexcept {
 		if (m_NumberOfBackGroundWorkingThreads > 0) return true;
 		else return false;
 	} //计算日线的线程是否处于运行中
-	int GetNumberOfBackGroundWorkingThread(void) const noexcept { return m_NumberOfBackGroundWorkingThreads; }
+	[[nodiscard]] int GetNumberOfBackGroundWorkingThread(void) const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
 	void IncreaseSavingThread(void) noexcept { ++m_NumberOfSavingThread; }
 	void DecreaseSavingThread(void) noexcept { if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread; }
 
-	int GetNumberOfSavingThread(void) const noexcept {
+	[[nodiscard]] int GetNumberOfSavingThread(void) const noexcept {
 		const int iNumber = m_NumberOfSavingThread;
 		return iNumber;
 	}
 
-	bool IsSavingThreadRunning(void) const noexcept {
+	[[nodiscard]] bool IsSavingThreadRunning(void) const noexcept {
 		if (GetNumberOfSavingThread() > 0) return true;
 		else return false;
 	}
 
 	void IncreaseWebInquiringThread(void) noexcept { ++m_NumberOfWebInquiringThread; }
 
-	void DecreaseWebInquiringThread(void) noexcept {
-		if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread;
-	}
+	void DecreaseWebInquiringThread(void) noexcept { if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread; }
 
 	int GetNumberOfWebInquiringThread(void) const noexcept {
 		const int iNumber = m_NumberOfWebInquiringThread;
 		return iNumber;
 	}
 
-	bool IsWebInquiringThreadRunning(void) const noexcept {
+	[[nodiscard]] bool IsWebInquiringThreadRunning(void) const noexcept {
 		if (GetNumberOfWebInquiringThread() > 0) return true;
 		else return false;
 	}

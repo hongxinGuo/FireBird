@@ -86,9 +86,7 @@ bool CVirtualWebInquiry::GetWebData(void) {
 	else return false; // 工作线程已在执行接收数据的任务
 }
 
-void CVirtualWebInquiry::PrepareReadingWebData(void) {
-	ConfigureSession();
-}
+void CVirtualWebInquiry::PrepareReadingWebData(void) { ConfigureSession(); }
 
 void CVirtualWebInquiry::StartReadingThread(void) {
 	thread thread1(ThreadReadVirtualWebData, this);
@@ -167,11 +165,11 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 		}
-		catch (CInternetException* exception) {
+		catch (CInternetException& exception) {
 			fReadingSuccess = false;
-			m_dwWebErrorCode = exception->m_dwError;
+			m_dwWebErrorCode = exception.m_dwError;
 			ReportWebError(m_dwWebErrorCode, m_strInquiry);
-			exception->Delete();
+			//exception.Delete();
 		}
 		DeleteWebFile();
 	}
@@ -202,24 +200,18 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	try {
 		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 		// 其他的数据尚未需要提供头部验证数据。
-		if (gl_systemStatus.IsExitingSystem()) {
-			fSucceedOpen = false;
-		}
-		else {
-			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-		}
+		if (gl_systemStatus.IsExitingSystem()) { fSucceedOpen = false; }
+		else { m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength)); }
 	}
-	catch (CInternetException* exception) {
+	catch (CInternetException& exception) {
 		ASSERT(m_pFile == nullptr);
 		DeleteWebFile();
-		m_dwWebErrorCode = exception->m_dwError;
+		m_dwWebErrorCode = exception.m_dwError;
 		ReportWebError(m_dwWebErrorCode, GetTickCount64() - llCurrentTickCount, m_strInquiry);
 		fSucceedOpen = false;
-		exception->Delete();
+		//exception->Delete();
 	}
-	if (fSucceedOpen) {
-		QueryDataLength();
-	}
+	if (fSucceedOpen) { QueryDataLength(); }
 
 	return fSucceedOpen;
 }
@@ -235,9 +227,7 @@ void CVirtualWebInquiry::DeleteWebFile() {
 long CVirtualWebInquiry::QueryDataLength() {
 	CString str;
 	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-	if (str.GetLength() > 0) {
-		m_lContentLength = atol(str.GetBuffer());
-	}
+	if (str.GetLength() > 0) { m_lContentLength = atol(str.GetBuffer()); }
 	return m_lContentLength;
 }
 
@@ -250,9 +240,7 @@ long CVirtualWebInquiry::QueryDataLength() {
 UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
 	char buffer[1024 * 4];
 	const UINT uByteRead = m_pFile->Read(buffer, 1024 * 4);
-	for (int i = 0; i < uByteRead; i++) {
-		m_sBuffer.at(m_lByteRead++) = buffer[i];
-	}
+	for (int i = 0; i < uByteRead; i++) { m_sBuffer.at(m_lByteRead++) = buffer[i]; }
 
 	return uByteRead;
 }
@@ -299,15 +287,11 @@ bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken;
-}
+void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) { m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken; }
 
 void CVirtualWebInquiry::TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
-	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_sBuffer.at(i) = buffer[i];
-	}
+	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
 }
 
@@ -316,8 +300,6 @@ void CVirtualWebInquiry::TESTSetBuffer(CString str) {
 	const char* buffer = str.GetBuffer();
 
 	m_sBuffer.resize(lTotalNumber);
-	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_sBuffer.at(i) = buffer[i];
-	}
+	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
 }

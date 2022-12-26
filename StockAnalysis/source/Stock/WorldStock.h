@@ -120,7 +120,7 @@ public:
 	}
 
 	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
-	void UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment);
+	void UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment);
 	bool IsInsiderSentimentNeedUpdate(void) const noexcept { return m_fFinnhubInsiderSentimentNeedUpdate; }
 	void SetInsiderSentimentNeedUpdate(const bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedUpdate = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
@@ -244,7 +244,7 @@ public:
 	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
 	CString GetTiingoDayLineInquiryString(long lCurrentDate);
 
-	bool IsUSMarket(void);
+	bool IsUSMarket(void) const;
 
 public:
 	vector<CEPSSurprisePtr> m_vEPSSurprise;

@@ -18,7 +18,7 @@ bool CNeteaseDayLineDataSource::UpdateStatus(void) { return true; }
 // 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineDataSource::Inquire(long lCurrentTime) {
+bool CNeteaseDayLineDataSource::Inquire(const long lCurrentTime) {
 	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (
 		gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {

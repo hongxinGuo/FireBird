@@ -13,11 +13,10 @@
 
 #include"FinnhubCompanyNews.h"
 
-#include"SetWorldStockDayLine.h"
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"
 
-CWorldStock::CWorldStock() : CVirtualStock() { Reset(); }
+CWorldStock::CWorldStock() : CVirtualStock() { CWorldStock::Reset(); }
 
 CWorldStock::~CWorldStock() { m_pBasicFinancial = nullptr; }
 
@@ -434,12 +433,10 @@ void CWorldStock::SaveInsiderSentiment(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldStock::UpdateCompanyNewsDB(void) {
-	size_t lSize = 0;
-	CCompanyNewsPtr pCompanyNews = nullptr;
-
 	ASSERT(m_vCompanyNews.size() > 0);
-	lSize = m_vCompanyNews.size();
+	const size_t lSize = m_vCompanyNews.size();
 	if (m_strSymbol.GetLength() > 0) {
+		CCompanyNewsPtr pCompanyNews;
 		CSetCompanyNews setCompanyNews;
 		long lCurrentPos = 0;
 		setCompanyNews.m_strFilter = _T("[Symbol] = '");
@@ -478,7 +475,7 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	setEPSSurprise.m_strFilter = _T("[ID] = 1");
 	setEPSSurprise.Open();
 	setEPSSurprise.m_pDatabase->BeginTrans();
-	for (auto& pEPSSurprise : m_vEPSSurprise) {
+	for (const auto& pEPSSurprise : m_vEPSSurprise) {
 		// 数据是正序存储的，需要从头部开始存储
 		if (pEPSSurprise->m_lDate > m_lLastEPSSurpriseUpdateDate) { pEPSSurprise->Append(setEPSSurprise); }
 	}
@@ -490,8 +487,6 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 }
 
 bool CWorldStock::UpdateDayLineDB(void) {
-	CString str;
-
 	if (IsDayLineNeedSavingAndClearFlag()) {
 		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
@@ -499,7 +494,7 @@ bool CWorldStock::UpdateDayLineDB(void) {
 				SaveDayLine();
 				UpdateDayLineStartEndDate();
 				SetUpdateProfileDB(true);
-				str = GetSymbol() + _T("日线资料存储完成");
+				const CString str = GetSymbol() + _T("日线资料存储完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
 				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
 				UnloadDayLine();
@@ -663,7 +658,7 @@ bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	return m_fFinnhubInsiderTransactionNeedUpdate;
 }
 
-void CWorldStock::UpdateInsiderSentiment(vector<CInsiderSentimentPtr>& vInsiderSentiment) {
+void CWorldStock::UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment) {
 	m_vInsiderSentiment.resize(0);
 
 	for (auto pInsiderSentiment : vInsiderSentiment) { m_vInsiderSentiment.push_back(pInsiderSentiment); }
@@ -682,16 +677,15 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 
 CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
-	CString strTemp;
 	char buffer[50];
 	time_t tStartTime = 0;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600); // 检查最近一年的数据
+	tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
 	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
-	strTemp = buffer;
+	CString strTemp = buffer;
 	strMiddle += strTemp;
 	strMiddle += _T("&to=");
 	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
@@ -703,22 +697,21 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 
 CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
 	CString strMiddle = _T("");
-	CString strTemp;
 	char buffer[50];
-	long year = lCurrentDate / 10000;
-	long month = lCurrentDate / 100 - year * 100;
-	long date = lCurrentDate - year * 10000 - month * 100;
+	const long year = lCurrentDate / 10000;
+	const long month = lCurrentDate / 100 - year * 100;
+	const long date = lCurrentDate - year * 10000 - month * 100;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("/prices?&startDate=1980-1-1&endDate=");
 	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
-	strTemp = buffer;
+	const CString strTemp = buffer;
 	strMiddle += strTemp;
 
 	return strMiddle;
 }
 
-bool CWorldStock::IsUSMarket(void) {
+bool CWorldStock::IsUSMarket(void) const {
 	if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
 	else return false;
 }

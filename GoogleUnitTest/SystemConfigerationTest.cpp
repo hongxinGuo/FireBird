@@ -15,11 +15,9 @@ static char THIS_FILE[] = __FILE__;
 
 namespace StockAnalysisTest {
 	class CSystemConfigurationTest : public ::testing::Test {
-		virtual void SetUp(void) override {
-			GeneralCheck();
-		}
+		void SetUp(void) override { GeneralCheck(); }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();
@@ -34,15 +32,15 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DebugMode")));
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
-		EXPECT_TRUE(sTemp.compare("hxguo") == 0);
+		EXPECT_TRUE(sTemp == _T("hxguo"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountPassword"));
-		EXPECT_TRUE(sTemp.compare("hxguo") == 0);
+		EXPECT_TRUE(sTemp == _T("hxguo"));
 
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/BackgroundThreadPermittedNumber")), 8);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/SavingThreadPermittedNumber")), 4);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeServer"));
-		EXPECT_TRUE(sTemp.compare("sina") == 0);
+		EXPECT_TRUE(sTemp == _T("sina"));
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
@@ -50,11 +48,11 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
-		EXPECT_TRUE(sTemp.compare("&token=bv985d748v6ujthqfke0") == 0);
+		EXPECT_TRUE(sTemp == _T("&token=bv985d748v6ujthqfke0"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoToken"));
-		EXPECT_TRUE(sTemp.compare("&token=c897a00b7cfc2adffc630d23befd5316a4683156") == 0);
+		EXPECT_TRUE(sTemp == _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
-		EXPECT_TRUE(sTemp.compare("&api_key=zBMXMyoTyiy_N3pMb3ex") == 0);
+		EXPECT_TRUE(sTemp == _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
@@ -109,7 +107,6 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSave) {
-		string sTemp;
 		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
 
 		gl_systemConfiguration.UpdateJson();
@@ -121,11 +118,9 @@ namespace StockAnalysisTest {
 			EXPECT_FALSE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocketÔ¤ÉèÎªfalse";
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
 
-			sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
-			EXPECT_TRUE(sTemp.compare(_T("sina")) == 0);
+			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
+			EXPECT_TRUE(sTemp==_T("sina"));
 		}
-		catch (json::type_error e) {
-			EXPECT_TRUE(FALSE);
-		}
+		catch (json::type_error&) { EXPECT_TRUE(FALSE); }
 	}
 }

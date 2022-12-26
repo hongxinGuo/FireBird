@@ -25,8 +25,8 @@ public:
 
 	virtual bool Reset(void);
 
-	void Run(long lCurrentTime);
-	virtual bool Inquire(long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	void Run(const long lCurrentTime);
+	virtual bool Inquire(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData);
@@ -43,7 +43,7 @@ public:
 	CVirtualWebInquiry* GetWebInquiryPtr(void) const noexcept { return m_pWebInquiry; }
 
 	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
-	void StoreInquiry(CVirtualProductWebDataPtr p) { m_qProduct.push(p); }
+	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
 
 	CVirtualProductWebDataPtr GetInquiry(void) {
 		m_pCurrentProduct = m_qProduct.front();
@@ -57,7 +57,7 @@ public:
 	}
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
-	void SetCurrentInquiry(const CVirtualProductWebDataPtr p) { m_pCurrentProduct = p; }
+	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
 
 	bool IsInquiring(void) const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }

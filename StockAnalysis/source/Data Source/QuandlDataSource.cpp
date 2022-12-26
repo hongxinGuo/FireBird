@@ -6,9 +6,7 @@
 
 #include"WorldMarket.h"
 
-CQuandlDataSource::CQuandlDataSource(void) {
-	Reset();
-}
+CQuandlDataSource::CQuandlDataSource(void) { Reset(); }
 
 bool CQuandlDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
@@ -75,9 +73,8 @@ bool CQuandlDataSource::UpdateStatus(void) {
 bool CQuandlDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebError = false;
-	long long llTickCount = 0;
 
-	llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount64();
 	if (!sbWebError) {
 		if (m_pWebInquiry->IsWebError()) {
 			sbWebError = true;

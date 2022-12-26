@@ -31,15 +31,13 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 3000
 ContinuationIndentWidth: 0
 IncludeCategories: 
-  - Regex: '^<.*'
+  - Regex: ^<.*
     Priority: 1
-  - Regex: '^".*'
+  - Regex: ^".*
     Priority: 2
-  - Regex: '.*'
+  - Regex: .*
     Priority: 3
-IncludeIsMainRegex: '([-_](test|unittest))?$'
-MacroBlockBegin: ''
-MacroBlockEnd: ''
+IncludeIsMainRegex: ([-_](test|unittest))?$
 NamespaceIndentation: All
 SpacesInAngles: false
 TabWidth: 2

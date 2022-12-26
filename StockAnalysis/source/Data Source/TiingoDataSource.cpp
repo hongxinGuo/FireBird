@@ -6,9 +6,7 @@
 
 #include"WorldMarket.h"
 
-CTiingoDataSource::CTiingoDataSource(void) {
-	Reset();
-}
+CTiingoDataSource::CTiingoDataSource(void) { Reset(); }
 
 bool CTiingoDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
@@ -82,7 +80,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 bool CTiingoDataSource::Inquire(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
-	long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount64();
 
 	if (!sbWebErrorOccurred) {
 		if (m_pWebInquiry->IsWebError()) {
@@ -93,12 +91,8 @@ bool CTiingoDataSource::Inquire(long lCurrentTime) {
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
 		sbWebErrorOccurred = false; // 申请时清除错误标识
-		if (!IsInquiring()) {
-			InquireTiingo();
-		}
-		if (IsInquiring()) {
-			sllLastTimeTickCount = llTickCount;
-		}
+		if (!IsInquiring()) { InquireTiingo(); }
+		if (IsInquiring()) { sllLastTimeTickCount = llTickCount; }
 	}
 	return true;
 }
@@ -149,14 +143,14 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine(void) {
-	bool fFound = false;
-	CWorldStockPtr pStock;
 	CString str = _T("");
-	long lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
+	const long lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsDayLineUpdated()) {
+		CWorldStockPtr pStock;
+		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			if (gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
 				pStock = gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos);

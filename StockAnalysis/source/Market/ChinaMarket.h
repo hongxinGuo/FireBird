@@ -29,28 +29,28 @@ public:
 	CChinaMarket(const CChinaMarket&&) noexcept = delete;
 	CChinaMarket& operator=(const CChinaMarket&&) noexcept = delete;
 	~CChinaMarket(void) override;
-	virtual void ResetMarket(void) override final;
+	void ResetMarket(void) final;
 	void Reset(void);
 
-	virtual bool PreparingExitMarket(void) override final;
+	bool PreparingExitMarket(void) final;
 
-	virtual bool IsTimeToResetSystem(long lCurrentTime) override final;
+	bool IsTimeToResetSystem(long lCurrentTime) final;
 
-	virtual bool IsOrdinaryTradeTime(void) override final; // 日常交易时间
-	virtual bool IsOrdinaryTradeTime(long) override final;
-	virtual bool IsWorkingTime(void) override final;
-	virtual bool IsWorkingTime(long lTime) override final;
-	virtual bool IsDummyTime(void) override final;
-	virtual bool IsDummyTime(long lTime) override final;
+	bool IsOrdinaryTradeTime(void) final; // 日常交易时间
+	bool IsOrdinaryTradeTime(long) final;
+	bool IsWorkingTime(void) final;
+	bool IsWorkingTime(long lTime) final;
+	bool IsDummyTime(void) final;
+	bool IsDummyTime(long lTime) final;
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 public:
 	// 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
-	virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
+	bool SchedulingTask(void) final; // 由程序的定时器调度，大约每100毫秒一次
 
 	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
 	bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
@@ -122,32 +122,20 @@ public:
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
 
-	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
-		return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
-	}
+	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 
 	bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
 
-	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) {
-		return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
-	}
+	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
 
-	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) {
-		return m_dataStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
-	}
+	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(long lTotalNumber) { return m_dataStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 
-	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
-		return m_dataChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
-	}
+	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
 
-	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) {
-		return m_dataChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
-	}
+	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return m_dataChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber); }
 
 	//日线历史数据读取
-	bool CreateNeteaseDayLineInquiringStr(CString& strReturn) {
-		return m_dataChinaStock.CreateNeteaseDayLineInquiringStr(strReturn);
-	}
+	CString CreateNeteaseDayLineInquiringStr() { return m_dataChinaStock.CreateNeteaseDayLineInquiringStr(); }
 
 	long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
@@ -262,9 +250,7 @@ public:
 	// 选择10日强势股票集（两次峰值）
 	virtual bool Choice10RSStrong1StockSet(void) { return m_dataChinaStock.Choice10RSStrong1StockSet(); }
 	// 选择10日强势股票集（一次峰值）
-	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
-		return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex);
-	}
+	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) { return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex); }
 
 	bool IsDayLineNeedUpdate(void) const noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess(void);
@@ -382,13 +368,9 @@ public:
 	void SetTengxunRTDataInquiringIndex(long lIndex) noexcept { m_dataChinaStock.SetTengxunRTDataInquiringIndex(lIndex); }
 	long GetTengxunRTDataInquiringIndex(void) const noexcept { return m_dataChinaStock.GetTengxunRTDataInquiringIndex(); }
 
-	void SetNeteaseDayLineDataInquiringIndex(long lIndex) noexcept {
-		m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex);
-	}
+	void SetNeteaseDayLineDataInquiringIndex(long lIndex) noexcept { m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex); }
 
-	long GetNeteaseDayLineDataInquiringIndex(void) const noexcept {
-		return m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex();
-	}
+	long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex(); }
 
 	void ClearDayLineNeedUpdateStatus(void) { m_dataChinaStock.ClearDayLineNeedUpdateStatus(); }
 
@@ -544,6 +526,6 @@ protected:
 private:
 };
 
-typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
+using CChinaMarketPtr = shared_ptr<CChinaMarket>;
 
 extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

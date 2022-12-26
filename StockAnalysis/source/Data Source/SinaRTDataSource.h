@@ -7,15 +7,15 @@ public:
 	CSinaRTDataSource();
 	~CSinaRTDataSource() override = default;
 
-	virtual bool Reset(void) override final;
-	virtual bool UpdateStatus(void) override final;
+	bool Reset(void) final;
+	bool UpdateStatus(void) final;
 
-	virtual bool Inquire(long lCurrentTime) override final;
+	bool Inquire(const long lCurrentTime) final;
 
-	bool InquireRTData(long lCurrentTime);
+	bool InquireRTData(const long lCurrentTime);
 
 protected:
 };
 
-typedef shared_ptr<CSinaRTDataSource> CSinaRTDataSourcePtr;
+using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;
 extern CSinaRTDataSourcePtr gl_pSinaRTDataSource;

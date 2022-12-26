@@ -190,7 +190,6 @@ namespace StockAnalysisTest {
 
 	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
 		CString str;
-		bool fStatus = false;
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
 		long lDate;
@@ -205,13 +204,11 @@ namespace StockAnalysisTest {
 		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate());
 		lDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-		fStatus = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(str);
-		EXPECT_TRUE(fStatus);
+		str = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
 		EXPECT_STREQ(str, _T("1000001"));
 		pStock = gl_pChinaMarket->GetStock(1);
 		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-		fStatus = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr(str);
-		EXPECT_TRUE(fStatus);
+		str = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
 		EXPECT_STREQ(str, _T("1000002"));
 
 		gl_pChinaMarket->GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
@@ -993,7 +990,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是上证指数");
 		gl_pChinaMarket->ChangeToPrevStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), gl_pChinaMarket->GetTotalStock() - 1) << _T(
-		"上证指数前的为空，然后就转到最后面的中证煤炭了");
+			"上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 	}

@@ -1034,7 +1034,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 	// 清除之前的周线数据
 	DeleteWeekLine(lCurrentMonday);
 	// 存储周线数据值周线数据表
-	dataChinaWeekLine.SaveDB();
+	dataChinaWeekLine.SaveDB(_T(""));
 	// 清除当前周的数据
 	DeleteCurrentWeekWeekLine();
 	// 存储当前周数据于当前周数据表

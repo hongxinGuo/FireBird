@@ -12,7 +12,7 @@ public:
 	void Reset(void);
 
 	CFinnhubCryptoSymbolPtr GetCrypto(const long lIndex) { return m_vWorldChosenCrypto.at(lIndex); }
-	size_t GetSize(void) const noexcept { return m_vWorldChosenCrypto.size(); }
+	[[nodiscard]] size_t GetSize(void) const noexcept { return m_vWorldChosenCrypto.size(); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

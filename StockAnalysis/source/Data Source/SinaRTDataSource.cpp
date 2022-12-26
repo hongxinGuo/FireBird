@@ -5,27 +5,16 @@
 
 #include"ChinaMarket.h"
 
-CSinaRTDataSource::CSinaRTDataSource() {
-	Reset();
-}
+CSinaRTDataSource::CSinaRTDataSource() { Reset(); }
 
-bool CSinaRTDataSource::Reset(void) {
-	return true;
-}
+bool CSinaRTDataSource::Reset(void) { return true; }
 
-bool CSinaRTDataSource::UpdateStatus(void) {
-	return true;
-}
+bool CSinaRTDataSource::UpdateStatus(void) { return true; }
 
-bool CSinaRTDataSource::Inquire(long lCurrentTime) {
-	static long long sllLastTimeTickCount = 0;
-	long long llTickCount = 0;
-
-	llTickCount = GetTickCount64();
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
-		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
-		}
+bool CSinaRTDataSource::Inquire(const long lCurrentTime) {
+	const long long llTickCount = GetTickCount64();
+	if (static long long sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
+		if (!IsInquiring()) { InquireRTData(lCurrentTime); }
 		if (IsInquiring()) {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.
 				IsDebugMode()) {
@@ -42,7 +31,7 @@ bool CSinaRTDataSource::Inquire(long lCurrentTime) {
 	return true;
 }
 
-bool CSinaRTDataSource::InquireRTData(long lCurrentTime) {
+bool CSinaRTDataSource::InquireRTData(const long) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductSinaRT>();
 		StoreInquiry(product);
