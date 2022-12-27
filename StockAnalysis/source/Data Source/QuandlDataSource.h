@@ -8,15 +8,15 @@ public:
 	CQuandlDataSource(void);
 	~CQuandlDataSource(void) override = default;
 
-	virtual bool Reset(void) override final;
-	virtual bool UpdateStatus(void) override final;
+	bool Reset(void) final;
+	bool UpdateStatus(void) final;
 
-	virtual bool Inquire(long lCurrentTime) override final;
+	bool Inquire(const long lCurrentTime) override;
 
 protected:
 	CQuandlFactory m_QuandlFactory;
 };
 
-typedef shared_ptr<CQuandlDataSource> CQuandlDataSourcePtr;
+using CQuandlDataSourcePtr = shared_ptr<CQuandlDataSource>;
 
 extern CQuandlDataSourcePtr gl_pQuandlDataSource;

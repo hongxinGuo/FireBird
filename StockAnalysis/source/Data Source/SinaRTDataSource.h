@@ -10,7 +10,7 @@ public:
 	bool Reset(void) final;
 	bool UpdateStatus(void) final;
 
-	bool Inquire(const long lCurrentTime) final;
+	bool Inquire(const long lCurrentTime) override;
 
 	bool InquireRTData(const long lCurrentTime);
 

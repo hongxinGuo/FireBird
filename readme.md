@@ -1,6 +1,8 @@
 # FireBird StockAnalysis
 
 ### 声明
+Version 0.27:增加自动判断是否有权读取数据的功能，自动添加不允许读取数据的交易所名称。
+
 Version 0.20:添加接收Finnhub和Tiingo的WebSocket数据的功能。
 
 Version 0.18:收集全球70个交易所的基本情况。
@@ -34,11 +36,13 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 ### 致谢
 1.GoogleTest(https://github.com/google/googletest).
 
-2.OpenSSL库https://www.openssl.org/).
+2.OpenSSL库(https://www.openssl.org/).
 
 3.ixWebSocket库(https://github.com/machinezone/IXWebSocket).
 
 4.Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1).
+
+5.Nlohmann json(https://github.com/nlohmann/json).
 
 
 

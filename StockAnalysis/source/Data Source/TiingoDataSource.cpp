@@ -77,7 +77,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CTiingoDataSource::Inquire(long lCurrentTime) {
+bool CTiingoDataSource::Inquire(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
 	const long long llTickCount = GetTickCount64();

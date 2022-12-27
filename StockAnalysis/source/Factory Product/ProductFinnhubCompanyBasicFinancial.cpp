@@ -28,13 +28,13 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-/// <summary>
-/// Basic financials最新日期的更新，需要判断此基本金融数据是否存在。如果不存在的话，则每次查询后即自动更新日期，这样能够减少无效查询次数；
-/// 如果存在有效数据的话，则为了能够及时提供最新数据，需要检查是否有新数据出现，有的话才更新日期，否则留待明日继续查询。
-///
-/// 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。如申请BVDRF,回复的股票代码为MBWS.PA。
-///
-///
+// <summary>
+// Basic financials最新日期的更新，需要判断此基本金融数据是否存在。如果不存在的话，则每次查询后即自动更新日期，这样能够减少无效查询次数；
+// 如果存在有效数据的话，则为了能够及时提供最新数据，需要检查是否有新数据出现，有的话才更新日期，否则留待明日继续查询。
+//
+// 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。如申请BVDRF,回复的股票代码为MBWS.PA。
+//
+//
 bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
@@ -54,8 +54,8 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	return true;
 }
 
-/// <summary>
-/// Processes the web data.格式：
+// <summary>
+// Processes the web data.格式
 //{
 //  "metric": {
 //    "10DayAverageTradingVolume": 85.81857,
@@ -240,6 +240,11 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	vector<CValueOfPeriod> vData;
 	int year, month, day;
 
+	ptQuarterly.clear();
+	ptAnnual.clear();
+	ptMetric.clear();
+	ptSeries.clear();
+
 	ASSERT(pWebData->IsJSonContentType());
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (!pWebData->IsParsed()) return false;
@@ -272,7 +277,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 		try {
 			s = jsonGetString(&ptMetric, _T("52WeekHighDate"));
 			if (!s.empty()) {
-				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
 				pBasicFinancial->m_52WeekHighDate = year * 10000 + month * 100 + day;
 			}
 		}
@@ -280,7 +285,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 		try {
 			s = jsonGetString(&ptMetric, _T("52WeekLowDate"));
 			if (!s.empty()) {
-				sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
 				pBasicFinancial->m_52WeekLowDate = year * 10000 + month * 100 + day;
 			}
 		}
@@ -543,8 +548,11 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 
 		ptSeries = jsonGetChild(pjs, _T("series"));
 		if (!ptSeries.empty()) {
-			ptAnnual = jsonGetChild(&ptSeries, _T("annual"));
-			if (!ptAnnual.empty()) {
+			bool fAnnualEmpty = false;
+			bool fQuarterlyEmpty = false;
+			try { ptAnnual = jsonGetChild(&ptSeries, _T("annual")); }
+			catch (json::exception&) { fAnnualEmpty = true; }
+			if (!fAnnualEmpty && !ptAnnual.empty()) {
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_cashRatio, _T("cashRatio"));
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_currentRatio, _T("currentRatio"));
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_ebitPerShare, _T("ebitPerShare"));
@@ -565,8 +573,9 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_totalRatio, _T("totalRatio"));
 			}
-			ptQuarterly = jsonGetChild(&ptSeries, _T("quarterly"));
-			if (!ptQuarterly.empty()) {
+			try { ptQuarterly = jsonGetChild(&ptSeries, _T("quarterly")); }
+			catch (json::exception&) { fQuarterlyEmpty = true; }
+			if (!fQuarterlyEmpty && !ptQuarterly.empty()) {
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_cashRatio, _T("cashRatio"));
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_currentRatio, _T("currentRatio"));
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_ebitPerShare, _T("ebitPerShare"));
@@ -602,7 +611,7 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(json* pjs, vector<CValu
 		ptChild = jsonGetChild(pjs, szMsg);
 		vector<CValueOfPeriod> vDataTemp;
 		ParseVector(&ptChild, vDataTemp);
-		for (int i = 0; i < vDataTemp.size(); i++) { vData.push_back(vDataTemp[i]); }
+		for (size_t i = 0; i < vDataTemp.size(); i++) { vData.push_back(vDataTemp[i]); }
 	}
 	catch (json::exception&) {
 		// do nothing
@@ -622,7 +631,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseVector(json* pjs, vector<CValueO
 			int year{0}, month{0}, day{0};
 			sDate = jsonGetString(it, _T("period"));
 			if (!sDate.empty()) {
-				sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day);
+				static_cast<void>(sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day));
 				sv.m_period = year * 10000 + month * 100 + day;
 				sv.m_value = jsonGetDouble(it, _T("v"));
 				vecData.push_back(sv);

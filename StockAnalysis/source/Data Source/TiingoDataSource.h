@@ -8,10 +8,10 @@ public:
 	CTiingoDataSource(void);
 	~CTiingoDataSource(void) override = default;;
 
-	virtual bool Reset(void) override final;
-	virtual bool UpdateStatus(void) override final;
+	bool Reset(void) final;
+	bool UpdateStatus(void) final;
 
-	virtual bool Inquire(long lCurrentTime) override final;
+	bool Inquire(const long lCurrentTime) override;
 
 	bool InquireTiingo(void);
 	bool InquireCompanySymbol(void);
@@ -33,6 +33,6 @@ protected:
 	bool m_fDayLineUpdated; // 每日更新公司日线数据
 };
 
-typedef shared_ptr<CTiingoDataSource> CTiingoDataSourcePtr;
+using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;
 
 extern CTiingoDataSourcePtr gl_pTiingoDataSource;

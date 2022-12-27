@@ -65,8 +65,7 @@ CChinaMarket::~CChinaMarket() {
 		gl_systemStatus.SetExitingSystem(true);
 		gl_systemStatus.SetExitingSystem(false);
 	}
-	else {
-	}
+	else { }
 }
 
 void CChinaMarket::ResetMarket(void) {
@@ -324,15 +323,13 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) 
 long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 	ASSERT(tUTC >= 0);
 	tm tmMarketTime{};
-	time_t tUTC2 = 0;
-	long lIndex = 0;
 
 	tmMarketTime = TransferToMarketTime(tUTC);
 	tmMarketTime.tm_hour = 9;
 	tmMarketTime.tm_min = 30;
 	tmMarketTime.tm_sec = 0;
-	tUTC2 = TransferToUTCTime(&tmMarketTime);
-	lIndex = (tUTC - tUTC2) / 60;
+	const time_t tUTC2 = TransferToUTCTime(&tmMarketTime);
+	long lIndex = (tUTC - tUTC2) / 60;
 	if (lIndex < 0) lIndex = 0;
 	if ((lIndex >= 120) && (lIndex < 209)) lIndex = 119;
 	if (lIndex >= 210) lIndex -= 90;
@@ -453,7 +450,7 @@ CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool 
 	else { return GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 }
 
-bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
+bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) {
 	const CString strNetease = str.Left(7);
 	CString strStockCode = XferNeteaseToStandard(strNetease);
 	if (!IsStock(strStockCode)) {
@@ -466,8 +463,6 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 
 	return true;
 }
-
-void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) { m_qRTData.push(pRTData); }
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
 	CWebRTDataPtr pRTData = nullptr;
@@ -919,7 +914,7 @@ void CChinaMarket::TaskGetActiveStockSize(void) { m_lTotalActiveStock = m_dataCh
 bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	setDayLineExtendInfo.Open(AFX_DB_USE_DEFAULT_TYPE, NULL, CRecordset::executeDirect);
+	setDayLineExtendInfo.Open(AFX_DB_USE_DEFAULT_TYPE, nullptr, CRecordset::executeDirect);
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
 		setDayLineExtendInfo.Edit();
@@ -954,7 +949,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 //	通过股票代码和市场代码设置当前选择股票
 //
 //////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::SetCurrentStock(CString strStockCode) {
+void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	ASSERT(IsStock(strStockCode));
 	const CChinaStockPtr pStock = GetStock(strStockCode);
 	SetCurrentStock(pStock);
@@ -1067,7 +1062,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
 	DeleteCurrentWeekWeekLine();
 
-	sprintf_s(buffer, _T("%08d"), lCurrentMonday);
+	static_cast<void>(sprintf_s(buffer, _T("%08d"), lCurrentMonday));
 	const CString strDate = buffer;
 	setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
 	setWeekLineBasicInfo.m_strFilter += strDate;
@@ -1106,7 +1101,7 @@ bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) 
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	sprintf_s(pch, _T("%08d"), lDate);
+	static_cast<void>(sprintf_s(pch, _T("%08d"), lDate));
 	const CString strDate = pch;
 	setDayLineBasicInfo.m_strSort = _T("[Symbol]");
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");

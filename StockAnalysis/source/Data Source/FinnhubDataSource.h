@@ -11,9 +11,9 @@ public:
 	bool Reset(void) final;
 	bool UpdateStatus(void) final;
 
-	bool Inquire(long lCurrentTime) override;
+	bool Inquire(const long lCurrentTime) override;
 
-	bool InquireFinnhub(long lCurrentTime);
+	bool InquireFinnhub(const long lCurrentTime);
 
 	bool InquireCountryList(void);
 	bool InquireCompanySymbol(void);

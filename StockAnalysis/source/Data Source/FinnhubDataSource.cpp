@@ -158,7 +158,7 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::Inquire(long lCurrentTime) {
+bool CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
 	const long long llTickCount = GetTickCount64();;
@@ -180,7 +180,7 @@ bool CFinnhubDataSource::Inquire(long lCurrentTime) {
 	return true;
 }
 
-bool CFinnhubDataSource::InquireFinnhub(long lCurrentTime) {
+bool CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) {
 		// 下午五时重启系统，故而此时不允许接收网络信息。
