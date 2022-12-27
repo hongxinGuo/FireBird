@@ -61,12 +61,12 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
-		p->SetProductType(_STOCK_SYMBOLS_);
+		p->SetProductType(STOCK_SYMBOLS_);
 		gl_pTiingoDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pTiingoDataSource->IsStockSymbolUpdated());
 		gl_pTiingoDataSource->SetStockSymbolUpdated(false);
 
-		p->SetProductType(_CRYPTO_SYMBOLS_);
+		p->SetProductType(CRYPTO_SYMBOLS_);
 		gl_pTiingoDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pTiingoDataSource->IsCryptoSymbolUpdated());
 		gl_pTiingoDataSource->SetCryptoSymbolUpdated(false);

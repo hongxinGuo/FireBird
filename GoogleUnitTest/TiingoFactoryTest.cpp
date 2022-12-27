@@ -42,8 +42,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), _STOCK_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), _CRYPTO_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoCryptoSymbol)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), _STOCK_PRICE_CANDLES_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoCryptoSymbol)));
+		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
 	}
 }

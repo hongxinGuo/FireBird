@@ -119,19 +119,14 @@ UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket); // 此线程
 // 计算10日强股票集（使用外部pRef提供的参数）
 UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为103
 // 计算股票的10日强势与否
-UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef,
-                                    not_null<CChinaStockPtr> pStock); // 此线程返回值为104
+UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock); // 此线程返回值为104
 // 计算股票的10日强势与否1
-UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock,
-                                     not_null<CChinaStockPtr> pStock); // 此线程返回值为105
+UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为105
 // 计算股票的10日强势与否2
-UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock,
-                                     not_null<CChinaStockPtr> pStock); // 此线程返回值为106
+UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为106
 // 计算chinaMarket的实时数据
 UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为107
 
 // 后台处理线程
 // WebSource ParseAndSaveWebData线程。 此线程的返回值为203
-UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource,
-                                         not_null<CVirtualProductWebDataPtr> pProductWebData,
-                                         not_null<CWebDataPtr> pWebData);
+UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData);

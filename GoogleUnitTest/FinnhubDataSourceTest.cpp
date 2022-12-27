@@ -76,37 +76,37 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pFinnhubDataSource->SetCurrentInquiry(p);
 
-		p->SetProductType(_ECONOMIC_COUNTRY_LIST_);
+		p->SetProductType(ECONOMIC_COUNTRY_LIST_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsCountryListUpdated());
 		gl_pFinnhubDataSource->SetCountryListUpdated(false);
 
-		p->SetProductType(_COMPANY_PROFILE_);
+		p->SetProductType(COMPANY_PROFILE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
-		p->SetProductType(_COMPANY_PROFILE_CONCISE_);
+		p->SetProductType(COMPANY_PROFILE_CONCISE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
-		p->SetProductType(_PEERS_);
+		p->SetProductType(PEERS_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsPeerUpdated());
 		gl_pFinnhubDataSource->SetPeerUpdated(false);
 
-		p->SetProductType(_FOREX_EXCHANGE_);
+		p->SetProductType(FOREX_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
 		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
 
-		p->SetProductType(_CRYPTO_EXCHANGE_);
+		p->SetProductType(CRYPTO_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
 
-		p->SetProductType(_ECONOMIC_CALENDAR_);
+		p->SetProductType(ECONOMIC_CALENDAR_);
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
 		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(false);
