@@ -1,7 +1,5 @@
 #pragma once
 
-#include<memory>
-
 #include"ClassDeclaration.h"
 #include"WebRTData.h"
 #include"WebData.h"
@@ -15,8 +13,8 @@ public:
 
 	~CProductSinaRT() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 
 public:
 	bool ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

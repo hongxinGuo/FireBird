@@ -3,9 +3,10 @@
 #include "DataFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 
-CDataFinnhubForexSymbol::CDataFinnhubForexSymbol() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataFinnhubForexSymbol::CDataFinnhubForexSymbol() { Reset(); }
 
 void CDataFinnhubForexSymbol::Reset(void) {
 	m_vForexSymbol.resize(0);
@@ -42,9 +43,7 @@ bool CDataFinnhubForexSymbol::LoadDB(void) {
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}
-		else {
-			setForexSymbol.Delete();
-		}
+		else { setForexSymbol.Delete(); }
 		setForexSymbol.MoveNext();
 	}
 	setForexSymbol.m_pDatabase->CommitTrans();
@@ -99,10 +98,6 @@ bool CDataFinnhubForexSymbol::UpdateDB(void) {
 }
 
 bool CDataFinnhubForexSymbol::IsNeedUpdate(void) {
-	for (auto& pForex : m_vForexSymbol) {
-		if (pForex->IsUpdateProfileDB()) {
-			return true;
-		}
-	}
+	for (auto& pForex : m_vForexSymbol) { if (pForex->IsUpdateProfileDB()) { return true; } }
 	return false;
 }

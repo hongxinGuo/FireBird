@@ -16,39 +16,29 @@ CWebData::CWebData() : CObject() {
 	m_strErrorMessage = "";
 }
 
-CWebData::~CWebData() {
-	m_sDataBuffer.resize(0);
-}
+CWebData::~CWebData() { m_sDataBuffer.resize(0); }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
-	for (INT64 i = 0; i < lDataLength; i++) {
-		buffer[i] = m_sDataBuffer.at(i + lStartPosition);
-	}
+	for (INT64 i = 0; i < lDataLength; i++) { buffer[i] = m_sDataBuffer.at(i + lStartPosition); }
 	return true;
 }
 
 bool CWebData::GetData(char* buffer, INT64 lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
-	for (INT64 i = 0; i < lDataLength; i++) {
-		buffer[i] = m_sDataBuffer.at(i + m_lCurrentPos);
-	}
+	for (INT64 i = 0; i < lDataLength; i++) { buffer[i] = m_sDataBuffer.at(i + m_lCurrentPos); }
 	return true;
 }
 
 bool CWebData::SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
-	for (INT64 i = 0; i < lDataLength; i++) {
-		m_sDataBuffer.at(i + lStartPosition) = buffer[i];
-	}
+	for (INT64 i = 0; i < lDataLength; i++) { m_sDataBuffer.at(i + lStartPosition) = buffer[i]; }
 	return true;
 }
 
 bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
-	for (INT64 i = 0; i < lDataLength; i++) {
-		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
-	}
+	for (INT64 i = 0; i < lDataLength; i++) { m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i]; }
 	return true;
 }
 
@@ -63,8 +53,7 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 			return true;
 		}
 		else return false;
-	}
-	catch (json::exception& e) {
+	} catch (json::exception&) {
 		m_fNoRightToAccess = false;
 		m_strErrorMessage = "";
 		return false;

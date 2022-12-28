@@ -9,6 +9,8 @@
 
 #include "ProductTiingoStockDayLine.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductTiingoStockDayLine, CVirtualWebProduct)
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() {
@@ -113,8 +115,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 		strMessage += s.c_str();
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
-	}
-	catch (json::exception& e) {
+	} catch (json::exception&) {
 		// 正确， do nothing，继续执行
 	}
 	try {
@@ -137,8 +138,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());

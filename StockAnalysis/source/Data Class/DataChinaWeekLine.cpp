@@ -6,8 +6,10 @@
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
-CDataChinaWeekLine::CDataChinaWeekLine() {
-}
+#include<memory>
+using std::make_shared;
+
+CDataChinaWeekLine::CDataChinaWeekLine() {}
 
 bool CDataChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 	CSetWeekLineBasicInfo setWeekLineBasic;

@@ -6,8 +6,9 @@
 
 #include"NeteaseDayLineWebData.h"
 
-
 #include<vector>
+#include<memory>
+using std::make_shared;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,6 +23,7 @@ namespace StockAnalysisTest {
 			m_strSymbol = Symbol;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strSymbol;
@@ -52,22 +54,20 @@ namespace StockAnalysisTest {
 
 	class NeteaseDayLineTest : public::testing::TestWithParam<NeteaseDayLineData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			NeteaseDayLineData* pData = GetParam();
 			CNeteaseDayLineWebInquiry DayLineWebInquiry;
 			DayLineWebInquiry.SetDownLoadingStockCode(pData->m_strSymbol);
 			DayLineWebInquiry.SetByteRead(pData->m_strData.GetLength());
-			for (int i = 0; i < pData->m_strData.GetLength(); i++) {
-				DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i));
-			}
+			for (int i = 0; i < pData->m_strData.GetLength(); i++) { DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i)); }
 			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
 			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
 			m_iCount = pData->m_iCount;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -81,9 +81,9 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
-		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-		));
+	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+	                         ));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
 		bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();

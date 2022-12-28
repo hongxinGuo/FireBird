@@ -228,17 +228,18 @@ BENCHMARK(ParseWithNlohmannJSon);
 class CJsonParse : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\StockSymbol.json"), sUSExchangeStockCode);
+		CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
+		LoadFromFile(strFileName, sUSExchangeStockCode);
 
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), sNeteaseRTData);
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+		LoadFromFile(strFileName, sNeteaseRTData);
 
 		sNeteaseRTDataForPTree = sNeteaseRTData;
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 	}
 
-	void TearDown(const ::benchmark::State& state) override {
-	}
+	void TearDown(const ::benchmark::State& state) override { }
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -258,7 +259,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::Stat
 	for (auto _ : state) { [[maybe_unused]] auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2); }
 }
 
-// 解析并处理netease实时数据。NeteaseRTData的解析只实现了nlohmann json部分，不使用boost ptree来解析。
+// 解析并处理netease实时数据。
 json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
 	for (auto _ : state) {
@@ -270,13 +271,12 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 class CWithNlohmannJson : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\NeteaseRTData.json"), s);
-		try { js = json::parse(s.begin() + 21, s.end() - 2); }
-		catch (json::parse_error&) { fDone = false; }
+		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+		LoadFromFile(strFileName, s);
+		try { js = json::parse(s.begin() + 21, s.end() - 2); } catch (json::parse_error&) { fDone = false; }
 	}
 
-	void TearDown(const ::benchmark::State& state) override {
-	}
+	void TearDown(const ::benchmark::State& state) override { }
 
 	string s;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
@@ -290,7 +290,8 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) { f
 class CTengxunRTData : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\TengxunRTData.dat"), s);
+		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
+		LoadFromFile(strFileName, s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = str.GetLength();
@@ -300,7 +301,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override { while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT(); }
+	void TearDown(const ::benchmark::State& state) override { }
 
 	string s;
 	CWebDataPtr pWebData;
@@ -317,7 +318,8 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
 class CSinaRTData : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		LoadFromFile(_T("C:\\StockAnalysis\\Benchmark Test Data\\SinaRTData.dat"), s);
+		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
+		LoadFromFile(strFileName, s);
 		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = str.GetLength();
@@ -327,7 +329,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override { while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT(); }
+	void TearDown(const ::benchmark::State& state) override { }
 
 	string s;
 	CWebDataPtr pWebData;

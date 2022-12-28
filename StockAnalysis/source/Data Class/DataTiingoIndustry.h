@@ -2,9 +2,6 @@
 
 #include"TiingoIndustry.h"
 
-#include<vector>
-#include<map>
-
 class CDataTiingoIndustry : public CObject {
 public:
 	CDataTiingoIndustry();
@@ -14,12 +11,12 @@ public:
 	size_t GetTotalTiingoIndustry(void) const noexcept { return m_vTiingoIndustry.size(); }
 	long GetLastTotalTiingoIndustry(void) const noexcept { return m_lLastTotalTiingoIndustry; }
 
-	bool IsTiingoIndustry(const CString &strTiingoIndustry) const {
+	bool IsTiingoIndustry(const CString& strTiingoIndustry) const {
 		if (!m_mapTiingoIndustry.contains(strTiingoIndustry)) return true;
 		else return false;
 	}
 
-	bool IsTiingoIndustry(const CTiingoIndustryPt &pTiingoIndustry) const { return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector); }
+	bool IsTiingoIndustry(const CTiingoIndustryPt& pTiingoIndustry) const { return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector); }
 
 	void Add(CTiingoIndustryPtr pTiingoIndustry);
 	bool Delete(CTiingoIndustryPtr pTiingoIndustry);

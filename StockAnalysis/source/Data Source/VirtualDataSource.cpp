@@ -4,6 +4,9 @@
 #include"Thread.h"
 #include"ThreadStatus.h"
 
+#include<thread>
+using std::thread;
+
 CVirtualDataSource::CVirtualDataSource(void) {
 	m_pWebInquiry = nullptr;
 	m_pCurrentProduct = nullptr;

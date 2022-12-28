@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "DataTiingoStock.h"
 
-CDataTiingoStock::CDataTiingoStock() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataTiingoStock::CDataTiingoStock() { Reset(); }
 
 void CDataTiingoStock::Reset(void) {
 	m_vTiingoStock.resize(0);
@@ -58,9 +59,7 @@ bool CDataTiingoStock::LoadDB(void) {
 			pTiingoStock->Load(setTiingoStock);
 			Add(pTiingoStock);
 		}
-		else {
-			setTiingoStock.Delete();
-		}
+		else { setTiingoStock.Delete(); }
 		setTiingoStock.MoveNext();
 	}
 	setTiingoStock.m_pDatabase->CommitTrans();

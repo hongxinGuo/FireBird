@@ -6,7 +6,8 @@
 
 #include"FinnhubWebSocket.h"
 
-#include<string>
+#include<memory>
+using std::make_shared;
 
 using namespace testing;
 
@@ -25,8 +26,7 @@ namespace StockAnalysisTest {
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~FinnhubWebData() {
-		}
+		~FinnhubWebData() { }
 
 	public:
 		long m_lIndex;
@@ -40,8 +40,7 @@ namespace StockAnalysisTest {
 			m_pData = strData;
 		}
 
-		~FinnhubWebSocketData() {
-		}
+		~FinnhubWebSocketData() { }
 
 	public:
 		long m_lIndex;
@@ -72,7 +71,7 @@ namespace StockAnalysisTest {
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 
@@ -82,7 +81,7 @@ namespace StockAnalysisTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();

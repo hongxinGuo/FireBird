@@ -2,9 +2,6 @@
 
 #include"WorldStock.h"
 
-#include<vector>
-#include<map>
-
 class CDataChosenStock final : public CObject {
 public:
 	CDataChosenStock();

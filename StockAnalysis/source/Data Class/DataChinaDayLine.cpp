@@ -1,12 +1,14 @@
 #include"pch.h"
 
-//
 #include"TimeConvert.h"
 
 #include"DayLine.h"
 #include "DataChinaDayLine.h"
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
+
+#include<memory>
+using std::make_shared;
 
 CDataChinaDayLine::CDataChinaDayLine() {}
 

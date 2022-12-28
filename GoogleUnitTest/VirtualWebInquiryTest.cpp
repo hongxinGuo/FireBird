@@ -17,26 +17,23 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class CVirtualWebInquiryTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-			GeneralCheck();
-		}
+		static void SetUpTestSuite(void) { GeneralCheck(); }
 
-		static void TearDownTestSuite(void) {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 
 			m_VirtualWebInquiry.SetInquiringString(_T(""));
 			m_VirtualWebInquiry.SetReadingWebData(false);
 		}
+
 	public:
 		CVirtualWebInquiry m_VirtualWebInquiry;
 	};
@@ -76,9 +73,7 @@ namespace StockAnalysisTest {
 		m_VirtualWebInquiry.SetInquiryToken(_T(""));
 	}
 
-	TEST_F(CVirtualWebInquiryTest, TestReportStatus) {
-		EXPECT_TRUE(m_VirtualWebInquiry.ReportStatus(0));
-	}
+	TEST_F(CVirtualWebInquiryTest, TestReportStatus) { EXPECT_TRUE(m_VirtualWebInquiry.ReportStatus(0)); }
 
 	TEST_F(CVirtualWebInquiryTest, TestCreateTotalInquiringString) {
 		CString str = _T("abcdef");
@@ -98,7 +93,7 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
 		m_VirtualWebInquiry.SetErrorCode(102);
 		EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
-		EXPECT_EQ(m_VirtualWebInquiry.GetErrorCode(), 102);
+		EXPECT_EQ(m_VirtualWebInquiry.GetErrorCode(), static_cast<DWORD>(102));
 		m_VirtualWebInquiry.SetErrorCode(0);
 		EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
 		EXPECT_EQ(m_VirtualWebInquiry.GetErrorCode(), 0);

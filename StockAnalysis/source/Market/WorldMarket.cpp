@@ -21,6 +21,11 @@
 #include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
 
+#include<thread>
+#include<memory>
+using std::thread;
+using std::make_shared;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -58,11 +63,9 @@ void CWorldMarket::ResetFinnhub(void) {
 	SetSystemReady(false); // 市场初始状态为未设置好。
 }
 
-void CWorldMarket::ResetQuandl(void) {
-}
+void CWorldMarket::ResetQuandl(void) {}
 
-void CWorldMarket::ResetTiingo(void) {
-}
+void CWorldMarket::ResetTiingo(void) {}
 
 void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubStockExchange.Reset();

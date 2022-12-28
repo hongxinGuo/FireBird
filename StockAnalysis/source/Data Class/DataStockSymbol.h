@@ -2,10 +2,6 @@
 
 #include"StockSection.h"
 
-#include<memory>
-#include<vector>
-#include<map>
-
 class CDataStockSymbol final : public CObject {
 public:
 	CDataStockSymbol();

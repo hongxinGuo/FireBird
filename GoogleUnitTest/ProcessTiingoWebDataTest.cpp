@@ -6,6 +6,9 @@
 
 #include"WorldStock.h"
 
+#include<memory>
+using std::make_shared;
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -23,8 +26,7 @@ namespace StockAnalysisTest {
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~TiingoWebData() {
-		}
+		~TiingoWebData() { }
 
 	public:
 		long m_lIndex;
@@ -39,8 +41,7 @@ namespace StockAnalysisTest {
 			m_pData = strData;
 		}
 
-		~TiingoWebSocketData() {
-		}
+		~TiingoWebSocketData() { }
 
 	public:
 		long m_lIndex;

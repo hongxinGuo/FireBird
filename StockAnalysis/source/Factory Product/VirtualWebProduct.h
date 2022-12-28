@@ -1,10 +1,11 @@
 #pragma once
 
-#include<memory>
-
 #include"ClassDeclaration.h"
 
 #include"WebData.h"
+
+#include<memory>
+using std::make_shared;
 
 enum {
 	_VOID_DATA_ = 1,
@@ -15,7 +16,7 @@ class CVirtualWebProduct : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualWebProduct)
 	CVirtualWebProduct();
-	virtual ~CVirtualWebProduct() override = default;
+	~CVirtualWebProduct() override = default;
 
 	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreateMessage和ParseAndStoreWebData声明为纯虚函数。
 	virtual CString CreateMessage(void) { return _T(""); }
@@ -38,16 +39,16 @@ public:
 	CString GetInquiry(void) const noexcept { return m_strInquiry; }
 
 	long GetIndex(void) const noexcept { return m_lIndex; }
-	void SetIndex(long const lIndex) noexcept { m_lIndex = lIndex; }
+	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
 
 	[[nodiscard]] CVirtualMarket* GetMarket(void) const noexcept { return m_pMarket; }
 	void SetMarket(CVirtualMarket* pMarket) noexcept { m_pMarket = pMarket; }
 
-	void SetInquiringExchange(CString exchange) noexcept { m_strInquiringExchange = exchange; }
+	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange(void) const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket(void); // 如果是美国市场
 
-	void SetProductType(int iProductType) noexcept { m_iProductType = iProductType; }
+	void SetProductType(const int iProductType) noexcept { m_iProductType = iProductType; }
 	int GetProductType(void) const noexcept { return m_iProductType; }
 
 protected:
@@ -62,7 +63,7 @@ protected:
 	// 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
-typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
+using CVirtualProductWebDataPtr = shared_ptr<CVirtualWebProduct>;
 
 // 此结构只用于测试中
 struct FinnhubWebData {
@@ -90,8 +91,7 @@ struct TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~TiingoWebData() {
-	}
+	~TiingoWebData() { }
 
 public:
 	long m_lIndex;

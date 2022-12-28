@@ -2,9 +2,6 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-#include<vector>
-#include<map>
-
 class CDataChosenCrypto final : public CObject {
 public:
 	CDataChosenCrypto();

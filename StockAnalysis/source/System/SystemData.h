@@ -13,8 +13,6 @@
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-#include<queue>
-
 class CSystemData final : public CObject {
 public:
 	CSystemData(void) = default;

@@ -4,6 +4,9 @@
 
 #include"VirtualDataHistoryCandleExtend.h"
 
+#include<memory>
+using std::make_shared;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -11,22 +14,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test
-	{
+	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite() {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite() { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
-			GeneralCheck();
-		}
+		void SetUp(void) override { GeneralCheck(); }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 	};
@@ -43,7 +41,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetContainer) {
 		CVirtualDataHistoryCandleExtend id;
-		CVirtualHistoryCandleExtendPtr pData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pData = make_shared<CVirtualHistoryCandleExtend>();
 		pData->SetStockSymbol(_T("600008.SS"));
 		pData->SetDate(20202020);
 		id.StoreData(pData);
@@ -53,11 +51,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS1) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
@@ -75,11 +73,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRSIndex) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSIndex(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSIndex(2.2);
@@ -97,11 +95,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRSLogarithm) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetRSLogarithm(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetRSLogarithm(2.2);
@@ -119,11 +117,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS3) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set3RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set3RS(2.2);
@@ -141,11 +139,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS5) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set5RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set5RS(2.2);
@@ -163,11 +161,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS10) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set10RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set10RS(2.2);
@@ -185,11 +183,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS30) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set30RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set30RS(2.2);
@@ -207,11 +205,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS60) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set60RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set60RS(2.2);
@@ -229,11 +227,11 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS120) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->Set120RS(1.1);
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->Set120RS(2.2);
@@ -251,13 +249,13 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestUpdateData1) {
-		CVirtualHistoryCandleExtendPtr pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData->SetStockSymbol(_T("600000.SS"));
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetHigh(1000);
 		pHistoryData->SetLow(200);
 		pHistoryData->SetClose(100); // 确保此数据有效
-		CVirtualHistoryCandleExtendPtr pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
+		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol(_T("600001.SS"));
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetHigh(11000);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include"VirtualWebProduct.h"
 #include"VirtualMarket.h"
 
 class CVirtualDataFactory : public CObject {

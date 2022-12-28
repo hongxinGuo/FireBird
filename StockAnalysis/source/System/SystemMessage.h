@@ -12,13 +12,13 @@ public:
 	CSystemDeque();
 	virtual ~CSystemDeque();
 
-	void PushMessage(const CString &str);
+	void PushMessage(const CString& str);
 	CString PopMessage(void);
 	size_t Size(void);
 
-	void Display(COutputList *pOutputList, const CString &strTime);
+	void Display(COutputList* pOutputList, const CString& strTime);
 
-	virtual void SysCallOutputListAddString(COutputList *pOutputList, const CString &str);
+	virtual void SysCallOutputListAddString(COutputList* pOutputList, const CString& str);
 
 protected:
 	deque<CString> m_dequeMessage;
@@ -29,60 +29,60 @@ class CSystemMessage final {
 public:
 	CSystemMessage();
 	// 只能有一个实例,不允许赋值。
-	CSystemMessage(const CSystemMessage &) = delete;
-	CSystemMessage &operator=(const CSystemMessage &) = delete;
-	CSystemMessage(const CSystemMessage &&) noexcept = delete;
-	CSystemMessage &operator=(const CSystemMessage &&) noexcept = delete;
+	CSystemMessage(const CSystemMessage&) = delete;
+	CSystemMessage& operator=(const CSystemMessage&) = delete;
+	CSystemMessage(const CSystemMessage&&) noexcept = delete;
+	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
 	~CSystemMessage();
 
-	void PushInformationMessage(const CString &str) { m_SystemInformation.PushMessage(str); }
+	void PushInformationMessage(const CString& str) { m_SystemInformation.PushMessage(str); }
 	CString PopInformationMessage(void) { return m_SystemInformation.PopMessage(); }
 	size_t InformationSize(void) { return m_SystemInformation.Size(); }
 
-	void DisplayInformation(COutputList *pOutputList, const CString &strTime) { m_SystemInformation.Display(pOutputList, strTime); }
+	void DisplayInformation(COutputList* pOutputList, const CString& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
 
-	void PushDayLineInfoMessage(const CString &str) { m_DayLineInformation.PushMessage(str); }
+	void PushDayLineInfoMessage(const CString& str) { m_DayLineInformation.PushMessage(str); }
 	CString PopDayLineInfoMessage(void) { return m_DayLineInformation.PopMessage(); }
 	size_t DayLineInfoSize(void) { return m_DayLineInformation.Size(); }
 
-	void DisplayDayLineInfo(COutputList *pOutputList, const CString &strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
+	void DisplayDayLineInfo(COutputList* pOutputList, const CString& strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
 
-	void PushTransactionMessage(const CString &str) { m_Transaction.PushMessage(str); }
+	void PushTransactionMessage(const CString& str) { m_Transaction.PushMessage(str); }
 	CString PopTransactionMessage(void) { return m_Transaction.PopMessage(); }
 	size_t TransactionInfoSize(void) { return m_Transaction.Size(); }
-	void DisplayTransaction(COutputList *pOutputList, const CString &strTime) { m_Transaction.Display(pOutputList, strTime); }
+	void DisplayTransaction(COutputList* pOutputList, const CString& strTime) { m_Transaction.Display(pOutputList, strTime); }
 
-	void PushCancelSellMessage(const CString &str) { m_CancelSell.PushMessage(str); }
+	void PushCancelSellMessage(const CString& str) { m_CancelSell.PushMessage(str); }
 	CString PopCancelSellMessage(void) { return m_CancelSell.PopMessage(); }
 	size_t CancelSellInfoSize(void) { return m_CancelSell.Size(); }
-	void DisplayCancelSell(COutputList *pOutputList, const CString &strTime) { m_CancelSell.Display(pOutputList, strTime); }
+	void DisplayCancelSell(COutputList* pOutputList, const CString& strTime) { m_CancelSell.Display(pOutputList, strTime); }
 
-	void PushCancelBuyMessage(const CString &str) { m_CancelBuy.PushMessage(str); }
+	void PushCancelBuyMessage(const CString& str) { m_CancelBuy.PushMessage(str); }
 	CString PopCancelBuyMessage(void) { return m_CancelBuy.PopMessage(); }
 	size_t CancelBuyInfoSize(void) { return m_CancelBuy.Size(); }
-	void DisplayCancelBuy(COutputList *pOutputList, const CString &strTime) { m_CancelBuy.Display(pOutputList, strTime); }
+	void DisplayCancelBuy(COutputList* pOutputList, const CString& strTime) { m_CancelBuy.Display(pOutputList, strTime); }
 
-	void PushTrace2Message(const CString &str) { m_Trace2.PushMessage(str); }
+	void PushTrace2Message(const CString& str) { m_Trace2.PushMessage(str); }
 	CString PopTrace2Message(void) { return m_Trace2.PopMessage(); }
 	size_t Trace2Size(void) { return m_Trace2.Size(); }
-	void DisplayTrace2(COutputList *pOutputList, const CString &strTime) { m_Trace2.Display(pOutputList, strTime); }
+	void DisplayTrace2(COutputList* pOutputList, const CString& strTime) { m_Trace2.Display(pOutputList, strTime); }
 
-	void PushWebSocketInfoMessage(const CString &str) { m_WebSocketInfo.PushMessage(str); }
+	void PushWebSocketInfoMessage(const CString& str) { m_WebSocketInfo.PushMessage(str); }
 	CString PopWebSocketInfoMessage(void) { return m_WebSocketInfo.PopMessage(); }
 	size_t WebSocketInfoSize(void) { return m_WebSocketInfo.Size(); }
 
-	void DisplayWebSocketInfo(COutputList *pOutputList, const CString &strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
+	void DisplayWebSocketInfo(COutputList* pOutputList, const CString& strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
 
-	void PushInnerSystemInformationMessage(const CString &str) { m_InnerSystemInformation.PushMessage(str); }
+	void PushInnerSystemInformationMessage(const CString& str) { m_InnerSystemInformation.PushMessage(str); }
 	CString PopInnerSystemInformationMessage(void) { return m_InnerSystemInformation.PopMessage(); }
 	size_t InnerSystemInfoSize(void) { return m_InnerSystemInformation.Size(); }
 
-	void DisplayInnerSystemInformation(COutputList *pOutputList, const CString &strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
+	void DisplayInnerSystemInformation(COutputList* pOutputList, const CString& strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
 
-	void PushErrorMessage(const CString &str) { m_ErrorMessage.PushMessage(str); }
+	void PushErrorMessage(const CString& str) { m_ErrorMessage.PushMessage(str); }
 	CString PopErrorMessage(void) { return m_ErrorMessage.PopMessage(); }
 	size_t ErrorMessageSize(void) { return m_ErrorMessage.Size(); }
-	void DisplayErrorMessage(COutputList *pOutputList, const CString &strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
+	void DisplayErrorMessage(COutputList* pOutputList, const CString& strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
 
 	int GetProcessedFinnhubWebSocket(void) const noexcept { return m_iProcessedFinnhubWebSocket; }
 	void SetProcessedFinnhubWebSocket(const int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }
@@ -97,20 +97,20 @@ public:
 	void SetProcessedTiingoForexWebSocket(const int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
 	void ClearProcessedTiingoForexWebSocket(void) noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
-	void SetStockCodeForInquiringRTData(const CString &strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
+	void SetStockCodeForInquiringRTData(const CString& strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
 	CString GetStockCodeForInquiringRTData(void) const { return m_strStockCodeForInquiringRTData; }
 
-	void SetStockCodeForInquiringNeteaseDayLine(const CString &strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+	void SetStockCodeForInquiringNeteaseDayLine(const CString& strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
 
 	CString GetStockCodeForInquiringNeteaseDayLine(void) const { return m_strStockCodeForInquiringNeteaseDayLine; }
 
-	void SetCurrentFinnhubWebSocketStake(const CString &s) { m_strCurrentFinnhubWebSocketStake = s; }
+	void SetCurrentFinnhubWebSocketStake(const CString& s) { m_strCurrentFinnhubWebSocketStake = s; }
 	CString GetCurrentFinnhubWebSocketStake(void) { return m_strCurrentFinnhubWebSocketStake; }
-	void SetCurrentTiingoWebSocketIEX(const CString &s) { m_strCurrentTiingoWebSocketIEX = s; }
+	void SetCurrentTiingoWebSocketIEX(const CString& s) { m_strCurrentTiingoWebSocketIEX = s; }
 	CString GetCurrentTiingoWebSocketIEX(void) { return m_strCurrentTiingoWebSocketIEX; }
-	void SetCurrentTiingoWebSocketForex(const CString &s) { m_strCurrentTiingoWebSocketForex = s; }
+	void SetCurrentTiingoWebSocketForex(const CString& s) { m_strCurrentTiingoWebSocketForex = s; }
 	CString GetCurrentTiingoWebSocketForex(void) { return m_strCurrentTiingoWebSocketForex; }
-	void SetCurrentTiingoWebSocketCrypto(const CString &s) { m_strCurrentTiingoWebSocketCrypto = s; }
+	void SetCurrentTiingoWebSocketCrypto(const CString& s) { m_strCurrentTiingoWebSocketCrypto = s; }
 	CString GetCurrentTiingoWebSocketCrypto(void) { return m_strCurrentTiingoWebSocketCrypto; }
 
 protected:

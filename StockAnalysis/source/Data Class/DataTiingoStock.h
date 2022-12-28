@@ -1,10 +1,7 @@
 #pragma once
 
 #include"WorldStock.h"
-#include <TiingoStock.h>
-
-#include<vector>
-#include<map>
+#include"TiingoStock.h"
 
 class CDataTiingoStock final : public CObject {
 public:
@@ -16,15 +13,15 @@ public:
 	bool Delete(CTiingoStockPtr pStock);
 	size_t GetTotalStock(void) const noexcept { return m_vTiingoStock.size(); }
 
-	bool IsStock(const CString &strSymbol) const noexcept {
+	bool IsStock(const CString& strSymbol) const noexcept {
 		if (m_mapTiingoStock.contains(strSymbol)) return true;
 		else return false;
 	}
 
-	bool IsStock(const CWorldStockPtr &pStock) const { return IsStock(pStock->GetSymbol()); }
-	bool IsStock(const CTiingoStockPtr &pTiingoStock) const { return IsStock(pTiingoStock->m_strTicker); }
+	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
+	bool IsStock(const CTiingoStockPtr& pTiingoStock) const { return IsStock(pTiingoStock->m_strTicker); }
 	CTiingoStockPtr GetStock(const long lIndex) const { return m_vTiingoStock.at(lIndex); }
-	CTiingoStockPtr GetStock(const CString &strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
+	CTiingoStockPtr GetStock(const CString& strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
 
 	bool UpdateDB(void);
 	bool LoadDB(void);

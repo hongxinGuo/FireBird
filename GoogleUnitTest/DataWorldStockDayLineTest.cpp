@@ -7,6 +7,9 @@
 
 #include"SEtWorldStockDayLine.h"
 
+#include<memory>
+using std::make_shared;
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -18,18 +21,13 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class CDataWorldStockDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-			GeneralCheck();
-		}
+		static void SetUpTestSuite(void) { GeneralCheck(); }
 
-		static void TearDownTestSuite(void) {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}

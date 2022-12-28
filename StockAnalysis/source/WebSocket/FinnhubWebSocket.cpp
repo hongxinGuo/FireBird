@@ -8,15 +8,18 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
+#include<thread>
+#include<memory>
+using std::thread;
+using std::make_shared;
+
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) {
-			gl_finnhubWebSocket.PushData(msg->str);
-		}
+		if (!gl_systemStatus.IsExitingSystem()) { gl_finnhubWebSocket.PushData(msg->str); }
 		break;
 	case ix::WebSocketMessageType::Error:
 		str = _T("Finnhub WebSocket Error: ");
@@ -47,9 +50,7 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
-		}
+		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务")); }
 		s_fConnecting = false;
 	}
 	return 70;
@@ -135,9 +136,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					sSymbol = jsonGetString(it, _T("s"));
 					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
 					pt3 = jsonGetChild(it, _T("c"));
-					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
-						pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2));
-					}
+					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) { pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2)); }
 					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, _T("p"));
 					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, _T("v"));
 					pFinnhubDataPtr->m_iSeconds = jsonGetLongLong(it, _T("t"));
@@ -169,8 +168,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub Web Socket json error"));
 			return false;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e.what());
 		return false;
 	}

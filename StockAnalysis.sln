@@ -15,8 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "GoogleUnitTest\
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D} = {37404DD5-58A1-46DC-A0A9-23D4FF0E007D}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4F3BADE0-1F2E-4169-AA65-EDF785723F38}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoogleTestLib", "GoogleTestLib\GoogleTestLib.vcxproj", "{F77641F7-1DF8-4461-9338-A8E502E570DC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StockAnalysisLib", "StockAnalysisLib\StockAnalysisLib.vcxproj", "{4DAC4767-5D5B-4F93-9677-F27227996E69}"
@@ -38,12 +36,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json = ..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json
-		StockAnalysis\source\NetError.txt = StockAnalysis\source\NetError.txt
 		propertysheet.props = propertysheet.props
 		..\..\..\..\..\StockAnalysis\SystemConfiguration.json = ..\..\..\..\..\StockAnalysis\SystemConfiguration.json
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmark", "Benchmark\Benchmark.vcxproj", "{9E2349D0-2086-41CB-97FF-882700BE9C07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{B2A9CE23-96BB-4CC9-8469-1746C2328291}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Internal\NetError.txt = docs\Internal\NetError.txt
+		docs\安装使用手册(中文版).md = docs\安装使用手册(中文版).md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

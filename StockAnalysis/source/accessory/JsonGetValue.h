@@ -2,6 +2,8 @@
 
 #include<string>
 
+using std::string;
+
 #include"nlohmannJsonDeclaration.h"
 
 [[nodiscard]] json jsonGetChild(json* pjs, const char* szKey);

@@ -7,6 +7,9 @@
 
 #include"GeneralCheck.h"
 
+#include<memory>
+using std::make_shared;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -14,14 +17,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CSystemDataTest : public ::testing::Test
-	{
+	class CSystemDataTest : public ::testing::Test {
 	protected:
-		virtual void SetUp(void) override {
-			GeneralCheck();
-		}
+		void SetUp(void) override { GeneralCheck(); }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSystemDataTest, TestFinnhubSocket) {
 		EXPECT_EQ(gl_SystemData.GetFinnhubSocketSize(), 0);
-		CFinnhubSocketPtr pData = make_shared<CFinnhubSocket>();
+		auto pData = make_shared<CFinnhubSocket>();
 		pData->m_strSymbol = _T("Test1");
 		gl_SystemData.PushFinnhubSocket(pData);
 		pData = nullptr;
@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSystemDataTest, TestTiingoCryptoSocket) {
 		EXPECT_EQ(gl_SystemData.GetTiingoCryptoSocketSize(), 0);
-		CTiingoCryptoSocketPtr pData = make_shared<CTiingoCryptoSocket>();
+		auto pData = make_shared<CTiingoCryptoSocket>();
 		pData->m_strSymbol = _T("Test1");
 		gl_SystemData.PushTiingoCryptoSocket(pData);
 		pData = nullptr;
@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSystemDataTest, TestTiingoIEXSocket) {
 		EXPECT_EQ(gl_SystemData.GetTiingoIEXSocketSize(), 0);
-		CTiingoIEXSocketPtr pData = make_shared<CTiingoIEXSocket>();
+		auto pData = make_shared<CTiingoIEXSocket>();
 		pData->m_strSymbol = _T("Test1");
 		gl_SystemData.PushTiingoIEXSocket(pData);
 		pData = nullptr;
@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
 
 	TEST_F(CSystemDataTest, TestTiingoForexSocket) {
 		EXPECT_EQ(gl_SystemData.GetTiingoForexSocketSize(), 0);
-		CTiingoForexSocketPtr pData = make_shared<CTiingoForexSocket>();
+		auto pData = make_shared<CTiingoForexSocket>();
 		pData->m_strSymbol = _T("Test1");
 		gl_SystemData.PushTiingoForexSocket(pData);
 		pData = nullptr;

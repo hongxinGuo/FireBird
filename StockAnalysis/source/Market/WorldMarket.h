@@ -19,11 +19,11 @@
 
 #include"DataTiingoCryptoSymbol.h"
 
-#include<vector>
-#include<semaphore>
-
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
+
+#include<semaphore>
+using std::binary_semaphore;
 
 extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库
 
@@ -37,9 +37,9 @@ public:
 	CWorldMarket(const CWorldMarket&&) noexcept = delete;
 	CWorldMarket& operator=(const CWorldMarket&&) noexcept = delete;
 	~CWorldMarket() override;
-	virtual void ResetMarket(void) override final;
+	void ResetMarket(void) final;
 
-	virtual bool PreparingExitMarket(void) override final;
+	bool PreparingExitMarket(void) final;
 
 	void Reset(void);
 	void ResetFinnhub(void);
@@ -47,12 +47,12 @@ public:
 	void ResetTiingo(void);
 	void ResetDataClass(void);
 
-	virtual bool IsTimeToResetSystem(const long lCurrentTime) override final {
+	bool IsTimeToResetSystem(long lCurrentTime) final {
 		if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true;
 		else return false;
 	}
 
-	virtual bool SchedulingTask(void) override final;
+	bool SchedulingTask(void) final;
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -89,9 +89,7 @@ public:
 
 	void ClearEconomicCalendar(void) { m_dataFinnhubEconomicCalendar.Reset(); }
 
-	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
-		return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar);
-	}
+	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态
 	CFinnhubStockExchangePtr GetStockExchange(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
@@ -123,9 +121,7 @@ public:
 	CTiingoStockPtr GetTiingoStock(const long lIndex) const { return m_dataTiingoStock.GetStock(lIndex); }
 	CTiingoStockPtr GetTiingoStock(const CString strTicker) const { return m_dataTiingoStock.GetStock(strTicker); }
 
-	bool IsForexExchange(const CString strForexExchange) const {
-		return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange);
-	}
+	bool IsForexExchange(const CString strForexExchange) const { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
 
 	void AddForexExchange(const CString strForexExchange) { m_dataFinnhubForexExchange.Add(strForexExchange); }
 	bool DeleteForexExchange(const CString strForexExchange) { return m_dataFinnhubForexExchange.Delete(strForexExchange); }
@@ -140,9 +136,7 @@ public:
 	CForexSymbolPtr GetForexSymbol(const CString strSymbol) const { return m_dataFinnhubForexSymbol.GetForexSymbol(strSymbol); }
 	size_t GetForexSymbolSize(void) const noexcept { return m_dataFinnhubForexSymbol.GetForexSymbolSize(); }
 
-	bool IsCryptoExchange(const CString strCryptoExchange) const {
-		return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange);
-	}
+	bool IsCryptoExchange(const CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange); }
 
 	void AddCryptoExchange(const CString strCryptoExchange) { m_dataFinnhubCryptoExchange.Add(strCryptoExchange); }
 	bool DeleteCryptoExchange(const CString strCryptoExchange) { return m_dataFinnhubCryptoExchange.Delete(strCryptoExchange); }
@@ -151,43 +145,29 @@ public:
 
 	bool IsFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.IsFinnhubCryptoSymbol(strSymbol); }
 
-	bool IsFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) const {
-		return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol());
-	}
+	bool IsFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) const { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
 
 	void AddFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
 
-	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr pCryptoSymbol) {
-		return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol);
-	}
+	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr pCryptoSymbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
 
-	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const long lIndex) const {
-		return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex);
-	}
+	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const long lIndex) const { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex); }
 
-	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString strSymbol) const {
-		return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol);
-	}
+	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol); }
 
 	size_t GetFinnhubCryptoSymbolSize(void) const noexcept { return m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); }
 
 	bool IsTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
 
-	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) const {
-		return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker);
-	}
+	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
 
 	void AddTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
 
-	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) {
-		return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol);
-	}
+	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol); }
 
 	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const long lIndex) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(lIndex); }
 
-	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString strSymbol) const {
-		return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol);
-	}
+	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
 
 	size_t GetTiingoCryptoSymbolSize(void) const noexcept { return m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(); }
 
@@ -323,6 +303,6 @@ protected:
 private:
 };
 
-typedef shared_ptr<CWorldMarket> CWorldMarketPtr;
+using CWorldMarketPtr = shared_ptr<CWorldMarket>;
 
 extern CWorldMarketPtr gl_pWorldMarket; // 股票市场。 单一实例变量，仅允许存在一个实例。

@@ -1,7 +1,9 @@
 #pragma once
 
-#include<atomic>
 #include<semaphore>
+#include<atomic>
+using std::counting_semaphore;
+using std::atomic_int;
 
 extern counting_semaphore<4> gl_SaveDayLineThreadPermitted; //默认为1.当数据库中没有日线数据时，增加此信号量最大值至4
 

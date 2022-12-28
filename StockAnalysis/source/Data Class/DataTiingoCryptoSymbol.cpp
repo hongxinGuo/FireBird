@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "DataTiingoCryptoSymbol.h"
 
-CDataTiingoCryptoSymbol::CDataTiingoCryptoSymbol() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataTiingoCryptoSymbol::CDataTiingoCryptoSymbol() { Reset(); }
 
 void CDataTiingoCryptoSymbol::Reset(void) {
 	m_vTiingoCrypto.resize(0);
@@ -40,9 +41,7 @@ bool CDataTiingoCryptoSymbol::LoadDB(void) {
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
 		}
-		else {
-			setCryptoSymbol.Delete();
-		}
+		else { setCryptoSymbol.Delete(); }
 		setCryptoSymbol.MoveNext();
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();

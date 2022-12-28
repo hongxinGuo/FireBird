@@ -23,8 +23,7 @@
 
 #include"SetCurrentWeekLine.h"
 
-#include<thread>
-#include<set>
+using namespace std;
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -170,7 +169,7 @@ bool CChinaMarket::IsOrdinaryTradeTime(long lTime) {
 
 bool CChinaMarket::IsOrdinaryTradeTime(void) { return IsOrdinaryTradeTime(GetMarketTime()); }
 
-bool CChinaMarket::IsWorkingTime(long lTime) {
+bool CChinaMarket::IsWorkingTime(const long lTime) {
 	if (!IsWorkingDay()) return false;
 	if (lTime < 91200) return false;
 	if ((lTime > 114500) && (lTime < 124500)) return false;
@@ -1761,9 +1760,7 @@ void CChinaMarket::LoadChosenStockDB(void) {
 		CChinaStockPtr pStock = nullptr;
 		if (IsStock(setChinaChosenStock.m_Symbol)) {
 			pStock = GetStock(setChinaChosenStock.m_Symbol);
-			if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
-				m_avChosenStock.at(0).push_back(pStock);
-			}
+			if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) { m_avChosenStock.at(0).push_back(pStock); }
 			pStock->SetChosen(true);
 			pStock->SetSaveToChosenStockDB(true);
 		}

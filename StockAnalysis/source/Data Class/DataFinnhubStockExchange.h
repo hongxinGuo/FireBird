@@ -2,9 +2,6 @@
 
 #include"FinnhubStockExchange.h"
 
-#include<vector>
-#include<map>
-
 class CDataFinnhubStockExchange final : public CObject {
 public:
 	CDataFinnhubStockExchange();

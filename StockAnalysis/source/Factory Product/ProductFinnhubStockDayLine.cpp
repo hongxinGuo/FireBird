@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubStockDayLine.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductFinnhubStockDayLine, CProductFinnhub)
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
@@ -51,9 +53,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateProfileDB(true);
 			const long lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetMarketDate(), m_pMarket->GetMarketDate(), 100)) {
-				pStock->SetIPOStatus(_STOCK_IPOED_);
-			}
+			if (!IsEarlyThen(pDayLine->GetMarketDate(), m_pMarket->GetMarketDate(), 100)) { pStock->SetIPOStatus(_STOCK_IPOED_); }
 			return true;
 		}
 	}
@@ -90,8 +90,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e.what());
 		return pvDayLine;
@@ -106,8 +105,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiry(), e.what());
 		return pvDayLine;
 	}
@@ -150,10 +148,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	}
-	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e.what());
-	}
+	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e.what()); }
 	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

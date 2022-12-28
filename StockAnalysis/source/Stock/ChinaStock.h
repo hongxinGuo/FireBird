@@ -31,12 +31,6 @@ enum {
 #include"DataChinaWeekLine.h"
 #include"DataChinaDayLine.h"
 
-#include<vector>
-#include<memory>
-#include<queue>
-#include<map>
-#include<array>
-
 class CChinaStock;
 using CChinaStockPtr = shared_ptr<CChinaStock>;
 

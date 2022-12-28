@@ -1,10 +1,6 @@
 #pragma once
 
-//#include"WorldStock.h"
 #include <TiingoCryptoSymbol.h>
-
-#include<vector>
-#include<map>
 
 class CDataTiingoCryptoSymbol final : public CObject {
 public:
@@ -17,15 +13,15 @@ public:
 	size_t GetCryptoSymbolSize(void) const noexcept { return m_vTiingoCrypto.size(); }
 	long GetLastCryptoSymbolSize(void) const noexcept { return m_lLastTotalTiingoCrypto; }
 
-	bool IsTiingoCryptoSymbol(const CString &strSymbol) const {
+	bool IsTiingoCryptoSymbol(const CString& strSymbol) const {
 		if (m_mapTiingoCrypto.contains(strSymbol)) return true;
 		else return false;
 	}
 
-	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr &pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
+	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
 	CTiingoCryptoSymbolPtr GetCryptoSymbol(const long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
 
-	CTiingoCryptoSymbolPtr GetCryptoSymbol(const CString &strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
+	CTiingoCryptoSymbolPtr GetCryptoSymbol(const CString& strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
 
 	bool UpdateDB(void);
 	bool LoadDB(void);

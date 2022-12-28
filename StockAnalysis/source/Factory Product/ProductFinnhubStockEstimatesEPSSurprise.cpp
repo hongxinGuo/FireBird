@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise, CProductFinnhub)
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
@@ -33,9 +35,7 @@ bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
-	if (!pvEPSSurprise->empty()) {
-		pStock->UpdateEPSSurprise(*pvEPSSurprise);
-	}
+	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
 	else {
 		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
@@ -77,8 +77,7 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}

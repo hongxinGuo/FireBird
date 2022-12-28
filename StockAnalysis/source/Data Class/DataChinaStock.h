@@ -1,11 +1,7 @@
 #pragma once
 
 #include"RSReference.h"
-
 #include"ChinaStock.h"
-
-#include<vector>
-#include<map>
 
 class CDataChinaStock : public CObject {
 public:

@@ -333,8 +333,7 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	ASSERT(setBeSaved.IsOpen());
 	setAnnual.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
 	setAnnual.Open();
-	while (!setAnnual.IsEOF())
-	{
+	while (!setAnnual.IsEOF()) {
 		data.m_symbol = setAnnual.m_symbol;
 		data.m_date = setAnnual.m_date;
 		data.m_type = setAnnual.m_type;
@@ -384,6 +383,7 @@ void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancial
 }
 
 void CFinnhubStockBasicFinancial::LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData) {
+	// TODO
 }
 
 void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
@@ -423,14 +423,11 @@ void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialA
 }
 
 void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData) {
+	// TODO: not yet implementation
 }
 
 bool CFinnhubStockBasicFinancial::IsNewData(CString type, CValueOfPeriod vData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
-	for (int i = 0; i < vDBData.size(); i++) {
-		if ((vDBData.at(i).m_type == type) && (vDBData.at(i).m_date == vData.m_period)) {
-			return false;
-		}
-	}
+	for (int i = 0; i < vDBData.size(); i++) { if ((vDBData.at(i).m_type == type) && (vDBData.at(i).m_date == vData.m_period)) { return false; } }
 	return true;
 }
 

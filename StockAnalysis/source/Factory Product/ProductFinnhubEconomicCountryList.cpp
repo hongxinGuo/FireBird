@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubEconomicCountryList.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCountryList, CProductFinnhub)
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
@@ -26,11 +28,7 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
 
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
-	for (const auto& pCountry : *pvCountry) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) {
-			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry);
-		}
-	}
+	for (const auto& pCountry : *pvCountry) { if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry); } }
 
 	return true;
 }
@@ -68,8 +66,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 			pCountry->m_strCurrencyCode = s.c_str();
 			pvCountry->push_back(pCountry);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}

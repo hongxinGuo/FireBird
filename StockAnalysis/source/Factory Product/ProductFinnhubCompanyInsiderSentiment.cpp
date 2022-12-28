@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderSentiment, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
@@ -92,8 +94,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiry(), e.what());
 		return pvInsiderSentiment;
 	}
@@ -111,8 +112,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}

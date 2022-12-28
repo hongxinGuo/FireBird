@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "DataFinnhubCountry.h"
 
-CDataFinnhubCountry::CDataFinnhubCountry() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataFinnhubCountry::CDataFinnhubCountry() { Reset(); }
 
 void CDataFinnhubCountry::Reset(void) {
 	m_vCountry.resize(0);

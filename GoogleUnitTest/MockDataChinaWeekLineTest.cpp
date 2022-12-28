@@ -4,6 +4,9 @@
 
 #include"MockDataChinaWeekLine.h"
 
+#include<memory>
+using std::make_shared;
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -13,23 +16,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CMockDataChinaDayLineTest : public ::testing::Test
-	{
+	class CMockDataChinaDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite() {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite() { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			pWeekLine = make_shared<CMockDataChinaWeekLine>();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 

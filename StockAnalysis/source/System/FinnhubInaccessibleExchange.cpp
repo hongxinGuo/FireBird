@@ -7,6 +7,12 @@
 #include<string>
 #include<iostream>
 #include<fstream>
+#include<memory>
+using std::fstream;
+using std::ios;
+using std::make_shared;
+
+using namespace std;
 
 std::string gl_sFinnhubInaccessibleExchange = R"(
 { "InaccessibleExchange" :
@@ -381,7 +387,6 @@ bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const 
 	try {
 		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) { return true; }
 		else { return false; }
-	}
-	catch (out_of_range&) { return false; }
+	} catch (out_of_range&) { return false; }
 	return false;
 }

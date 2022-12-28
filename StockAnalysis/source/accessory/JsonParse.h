@@ -1,11 +1,11 @@
 #pragma once
 
-#include<string>
-#include<memory>
-
 #include"nlohmannJsonDeclaration.h"
 
 #include"NeteaseDayLineWebData.h"
+
+#include<string>
+using std::wstring;
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
 [[nodiscard]] wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。

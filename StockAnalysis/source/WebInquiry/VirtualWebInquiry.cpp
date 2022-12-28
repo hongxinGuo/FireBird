@@ -10,6 +10,9 @@
 
 #include"HighPerformanceCounter.h"
 
+#include<thread>
+using std::thread;
+
 atomic_long CVirtualWebInquiry::sm_lTotalByteRead = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
@@ -164,8 +167,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			sm_lTotalByteRead += m_lByteRead;
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
-		}
-		catch (CInternetException& exception) {
+		} catch (CInternetException& exception) {
 			fReadingSuccess = false;
 			m_dwWebErrorCode = exception.m_dwError;
 			ReportWebError(m_dwWebErrorCode, m_strInquiry);
@@ -202,8 +204,7 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		// 其他的数据尚未需要提供头部验证数据。
 		if (gl_systemStatus.IsExitingSystem()) { fSucceedOpen = false; }
 		else { m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength)); }
-	}
-	catch (CInternetException& exception) {
+	} catch (CInternetException& exception) {
 		ASSERT(m_pFile == nullptr);
 		DeleteWebFile();
 		m_dwWebErrorCode = exception.m_dwError;

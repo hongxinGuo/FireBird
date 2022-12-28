@@ -7,11 +7,12 @@
 #include"DataStockSymbol.h"
 #include"DataChinaStock.h"
 
-#include<vector>
-#include<atomic>
-#include<queue>
-#include<set>
 #include<semaphore>
+#include<set>
+#include<atomic>
+using std::binary_semaphore;
+using std::set;
+using std::atomic_int64_t;
 
 extern counting_semaphore<8> gl_BackGroundTaskThread; // 后台工作线程数。最大为8
 extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。

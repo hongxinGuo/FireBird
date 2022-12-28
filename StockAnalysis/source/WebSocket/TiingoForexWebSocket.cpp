@@ -6,14 +6,17 @@
 #include"TiingoWebInquiry.h"
 #include "TiingoForexWebSocket.h"
 
+#include<thread>
+#include<memory>
+using std::thread;
+using std::make_shared;
+
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) {
-			gl_tiingoForexWebSocket.PushData(msg->str);
-		}
+		if (!gl_systemStatus.IsExitingSystem()) { gl_tiingoForexWebSocket.PushData(msg->str); }
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
@@ -42,21 +45,16 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
-		}
+		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务")); }
 		s_fConnecting = false;
 	}
 
 	return 73;
 }
 
-CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() {
-	m_url = _T("wss://api.tiingo.com/fx");
-}
+CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/fx"); }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
-}
+CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
@@ -148,8 +146,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 						strSymbol = jsonGetString(it3);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
-				}
-				catch (json::exception& e) {
+				} catch (json::exception&) {
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -194,8 +191,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			// ERROR
 			return false;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
 		return false;
 	}

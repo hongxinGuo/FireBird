@@ -11,6 +11,9 @@
 #include<vector>
 #include<memory>
 #include<atomic>
+using std::vector;
+using std::shared_ptr;
+using std::atomic_bool;
 
 class CVirtualDataHistoryCandleExtend : public CObject {
 public:

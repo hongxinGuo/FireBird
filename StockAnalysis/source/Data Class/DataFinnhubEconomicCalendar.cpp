@@ -2,9 +2,10 @@
 #include "DataFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
-CDataFinnhubEconomicCalendar::CDataFinnhubEconomicCalendar() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataFinnhubEconomicCalendar::CDataFinnhubEconomicCalendar() { Reset(); }
 
 void CDataFinnhubEconomicCalendar::Reset(void) {
 	m_lLastTotalEconomicCalendar = 0;

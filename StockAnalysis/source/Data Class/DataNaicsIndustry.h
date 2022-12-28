@@ -2,9 +2,6 @@
 
 #include"NaicsIndustry.h"
 
-#include<vector>
-#include<map>
-
 class CDataNaicsIndustry final : public CObject {
 public:
 	CDataNaicsIndustry();
@@ -14,12 +11,12 @@ public:
 	size_t GetTotalNaicsIndustry(void) const noexcept { return m_vNaicsIndustry.size(); }
 	long GetLastTotalNaicsIndustry(void) const noexcept { return m_lLastTotalNaicsIndustry; }
 
-	bool IsNaicsIndustry(const CString &strNaicsIndustry) const {
+	bool IsNaicsIndustry(const CString& strNaicsIndustry) const {
 		if (!m_mapNaicsIndustry.contains(strNaicsIndustry)) return true;
 		else return false;
 	}
 
-	bool IsNaicsIndustry(const CNaicsIndustryPtr &pNaicsIndustry) const { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
+	bool IsNaicsIndustry(const CNaicsIndustryPtr& pNaicsIndustry) const { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
 	void Add(CNaicsIndustryPtr pNaicsIndustry);
 	bool Delete(CNaicsIndustryPtr pNaicsIndustry);
 

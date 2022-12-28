@@ -2,8 +2,6 @@
 
 #include"VirtualDataSource.h"
 
-#include<memory>
-
 class CVirtualMarket : public CObject {
 public:
 	DECLARE_DYNCREATE(CVirtualMarket)

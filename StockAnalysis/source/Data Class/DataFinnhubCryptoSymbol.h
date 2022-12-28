@@ -2,15 +2,13 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-#include<vector>
-
 class CDataFinnhubCryptoSymbol : public CObject {
 public:
 	CDataFinnhubCryptoSymbol();
 	~CDataFinnhubCryptoSymbol() override = default;
 	void Reset(void);
 
-	bool IsFinnhubCryptoSymbol(const CString &strSymbol) const noexcept {
+	bool IsFinnhubCryptoSymbol(const CString& strSymbol) const noexcept {
 		if (m_mapCryptoSymbol.contains(strSymbol)) return true;
 		else return false;
 	}
@@ -18,7 +16,7 @@ public:
 	size_t GetCryptoSymbolSize(void) const noexcept { return m_vCryptoSymbol.size(); }
 	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const long lIndex) const { return m_vCryptoSymbol.at(lIndex); }
 
-	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString &strSymbol) const { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
+	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString& strSymbol) const { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
 
 	bool Delete(CFinnhubCryptoSymbolPtr pSymbol);
 	void Add(CFinnhubCryptoSymbolPtr pSymbol);

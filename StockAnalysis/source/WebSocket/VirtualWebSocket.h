@@ -9,6 +9,10 @@
 
 #include<string>
 #include<map>
+#include<vector>
+using std::string;
+using std::map;
+using std::vector;
 
 #include <ixwebsocket/IXWebSocket.h>
 

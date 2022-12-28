@@ -22,6 +22,7 @@
 #include"ChinaStockCodeConverter.h"
 #include"TimeConvert.h"
 #include"SystemMessage.h"
+#include"WebData.h"
 #include"WebRTData.h"
 
 #include"JsonGetValue.h"
@@ -30,12 +31,15 @@
 #include<string>
 #include<memory>
 #include<vector>
+using std::vector;
+using std::shared_ptr;
+using std::make_shared;
+using std::string;
 
-using namespace std;
+//using namespace std;
 
 bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, const long lEndPos) {
-	try { *pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos); }
-	catch (json::parse_error& e) {
+	try { *pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos); } catch (json::parse_error&) {
 		//gl_systemMessage.PushErrorMessage("nlohmann json parse error");
 		pjs = nullptr;
 		return false;
@@ -80,8 +84,7 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		strTime = jsonGetString(&js, _T("time"));
 		string strSymbol2 = jsonGetString(&js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -123,8 +126,7 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 		fSucceed = true;

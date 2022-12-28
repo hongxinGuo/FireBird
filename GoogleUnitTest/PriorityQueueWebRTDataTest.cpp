@@ -4,6 +4,9 @@
 
 #include"PriorityQueueWebRTData.h"
 
+#include<memory>
+using std::make_shared;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -13,14 +16,11 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	static CPriorityQueueWebRTData gl_PriorityQueueRTData;
 
-	class CPriorityQueueRTDataTest : public ::testing::Test
-	{
+	class CPriorityQueueRTDataTest : public ::testing::Test {
 	protected:
-		virtual void SetUp(void) override {
-			GeneralCheck();
-		}
+		void SetUp(void) override { GeneralCheck(); }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_PriorityQueueRTData.Reset();
 			GeneralCheck();
@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CPriorityQueueRTDataTest, TestReset) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(1);
 		gl_PriorityQueueRTData.PushData(pRTData);
 		EXPECT_EQ(gl_PriorityQueueRTData.Size(), 1);
@@ -37,9 +37,9 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CPriorityQueueRTDataTest, TestPushPopData) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(1);
-		CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
+		auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(0);
 		gl_PriorityQueueRTData.PushData(pRTData);
 		gl_PriorityQueueRTData.PushData(pRTData2);

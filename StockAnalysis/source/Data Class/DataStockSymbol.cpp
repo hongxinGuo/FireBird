@@ -5,6 +5,9 @@
 
 #include"SetStockSection.h"
 
+#include<memory>
+using std::make_shared;
+
 CDataStockSymbol::CDataStockSymbol() {
 	m_vStockSection.resize(2000); // »¦Éî¸÷1000¸ö¶Î¡£
 	for (int i = 0; i < 2000; i++) {

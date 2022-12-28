@@ -8,8 +8,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 
-#include<algorithm>
-#include<string>
+using namespace std;
 
 IMPLEMENT_DYNCREATE(CProductTiingoStockSymbol, CVirtualWebProduct)
 
@@ -29,9 +28,7 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsTiingoStock(pTiingoStock->m_strTicker)) {
-				dynamic_cast<CWorldMarket*>(m_pMarket)->AddTiingoStock(pTiingoStock);
-			}
+			if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsTiingoStock(pTiingoStock->m_strTicker)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddTiingoStock(pTiingoStock); }
 			if (dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pTiingoStock->m_strTicker)) {
 				// Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
@@ -112,27 +109,19 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 			pStock->m_fIsActive = it->at(_T("isActive"));
 			pStock->m_fIsADR = it->at(_T("isADR"));
 			s = jsonGetString(it,_T("industry"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strTiingoIndustry = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strTiingoIndustry = s.c_str(); }
 			else pStock->m_strTiingoIndustry = strNULL;
 			s = jsonGetString(it,_T("sector"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strTiingoSector = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strTiingoSector = s.c_str(); }
 			else pStock->m_strTiingoSector = strNULL;
 			auto s2 = it->at(_T("sicCode"));
 			if (s2.is_number()) pStock->m_iSICCode = s2;
 			else pStock->m_iSICCode = 0;
 			s = jsonGetString(it,_T("sicIndustry"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strSICIndustry = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSICIndustry = s.c_str(); }
 			else pStock->m_strSICIndustry = strNULL;
 			s = jsonGetString(it,_T("sicSector"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strSICSector = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSICSector = s.c_str(); }
 			else pStock->m_strSICSector = strNULL;
 			s = jsonGetString(it,_T("reportingCurrency"));
 			if (s != strNotAvailable) {
@@ -141,19 +130,13 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 			}
 			else pStock->m_strReportingCurrency = strNULL;
 			s = jsonGetString(it,_T("location"));
-			if (s != strNotAvailable) {
-				if ((!s.empty())) pStock->m_strLocation = s.c_str();
-			}
+			if (s != strNotAvailable) { if ((!s.empty())) pStock->m_strLocation = s.c_str(); }
 			else pStock->m_strLocation = _T(" ");
 			s = jsonGetString(it,_T("companyWebsite"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strCompanyWebSite = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strCompanyWebSite = s.c_str(); }
 			else pStock->m_strCompanyWebSite = strNULL;
 			s = jsonGetString(it,_T("secFilingWebsite"));
-			if (s != strNotAvailable) {
-				if (!s.empty()) pStock->m_strSECFilingWebSite = s.c_str();
-			}
+			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSECFilingWebSite = s.c_str(); }
 			else pStock->m_strSECFilingWebSite = strNULL;
 			s = jsonGetString(it,_T("statementLastUpdated"));
 			if (!s.empty()) str = s.c_str();
@@ -166,10 +149,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}
-	}
-	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e.what());
-	}
+	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e.what()); }
 
 	return pvTiingoStock;
 }

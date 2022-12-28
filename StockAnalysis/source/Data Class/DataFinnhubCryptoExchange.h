@@ -1,8 +1,5 @@
 #pragma once
 
-#include<vector>
-#include<map>
-
 class CDataFinnhubCryptoExchange final : public CObject {
 public:
 	CDataFinnhubCryptoExchange();

@@ -9,11 +9,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include<string>
-
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-class CSystemConfiguration : CObject {
+class CSystemConfiguration final : CObject {
 public:
 	CSystemConfiguration();
 	// 只能有一个实例,不允许赋值。
@@ -30,99 +28,99 @@ public:
 
 	void UpdateSystem(void); // 使用本参数去更新系统
 
-	void SetDefaultFileDirectory(CString fileDirectory) { m_strDirectory = fileDirectory; }
-	CString GetDefaultFileDirectory(void) { return m_strDirectory; }
+	void SetDefaultFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
+	[[nodiscard]] CString GetDefaultFileDirectory(void) { return m_strDirectory; }
 
-	void SetDefaultFileName(CString fileName) { m_strFileName = fileName; }
-	CString GetDefaultFileName(void) { return m_strFileName; }
-	CString GetDefaultFileDirectoryAndName(void) const { return m_strDirectory + m_strFileName; }
+	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
+	[[nodiscard]] CString GetDefaultFileName(void) { return m_strFileName; }
+	[[nodiscard]] CString GetDefaultFileDirectoryAndName(void) const { return m_strDirectory + m_strFileName; }
 
 	// 获取系统配置参数
-	bool IsUsingFastCPU(void) const noexcept { return m_bUsingFastCPU; }
+	[[nodiscard]] bool IsUsingFastCPU(void) const noexcept { return m_bUsingFastCPU; }
 	void SetUsingFastCPU(const bool bUsingFastCPU) noexcept { m_bUsingFastCPU = bUsingFastCPU; }
-	bool IsDebugMode(void) const noexcept { return m_bDebugMode; }
+	[[nodiscard]] bool IsDebugMode(void) const noexcept { return m_bDebugMode; }
 	void SetDebugMode(const bool bFlag) noexcept { m_bDebugMode = bFlag; }
-	CString GetDatabaseAccountName(void) noexcept { return m_strDatabaseAccountName; }
-	void SetDatabaseAccountName(const CString strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
-	CString GetDatabaseAccountPassword(void) noexcept { return m_strDatabaseAccountPassword; }
-	void SetDatabaseAccountPassword(const CString strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
+	[[nodiscard]] CString GetDatabaseAccountName(void) noexcept { return m_strDatabaseAccountName; }
+	void SetDatabaseAccountName(const CString& strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
+	[[nodiscard]] CString GetDatabaseAccountPassword(void) noexcept { return m_strDatabaseAccountPassword; }
+	void SetDatabaseAccountPassword(const CString& strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
 
-	int GetBackgroundThreadPermittedNumber(void) const noexcept { return m_iBackgroundThreadPermittedNumber; }
-	int GetSavingThreadPermittedNumber(void) const noexcept { return m_iSavingThreadPermittedNumber; }
+	[[nodiscard]] int GetBackgroundThreadPermittedNumber(void) const noexcept { return m_iBackgroundThreadPermittedNumber; }
+	[[nodiscard]] int GetSavingThreadPermittedNumber(void) const noexcept { return m_iSavingThreadPermittedNumber; }
 
 	// 全局参数
-	int GetChinaMarketRealtimeServer(void) const noexcept { return m_iChinaMarketRealtimeServer; }
+	[[nodiscard]] int GetChinaMarketRealtimeServer(void) const noexcept { return m_iChinaMarketRealtimeServer; }
 
 	void SetChinaMarketRealtimeServer(const int iChinaMarketRealtimeServer) noexcept {
 		m_fUpdate = true;
 		m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer;
 	}
 
-	int GetChinaMarketRTDataInquiryTime(void) const noexcept { return m_iChinaMarketRTDataInquiryTime; }
+	[[nodiscard]] int GetChinaMarketRTDataInquiryTime(void) const noexcept { return m_iChinaMarketRTDataInquiryTime; }
 
 	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
 		m_fUpdate = true;
 		m_iChinaMarketRTDataInquiryTime = iChinaMarketRTDataInquiryTime;
 	}
 
-	CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
-	CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
-	CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
-	int GetWorldMarketFinnhubInquiryTime(void) const noexcept { return m_iWorldMarketFinnhubInquiryTime; } // 单位为毫秒
+	[[nodiscard]] CString GetFinnhubToken(void) noexcept { return m_strFinnhubToken; }
+	[[nodiscard]] CString GetTiingoToken(void) noexcept { return m_strTiingoToken; }
+	[[nodiscard]] CString GetQuandlToken(void) noexcept { return m_strQuandlToken; }
+	[[nodiscard]] int GetWorldMarketFinnhubInquiryTime(void) const noexcept { return m_iWorldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
 		m_fUpdate = true;
 		m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime;
 	}
 
-	int GetWorldMarketTiingoInquiryTime(void) const noexcept { return m_iWorldMarketTiingoInquiryTime; }
+	[[nodiscard]] int GetWorldMarketTiingoInquiryTime(void) const noexcept { return m_iWorldMarketTiingoInquiryTime; }
 
 	void SetWorldMarketTiingoInquiryTime(const int iWorldMarketTiingoInquiryTime) noexcept {
 		m_fUpdate = true;
 		m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime;
 	}
 
-	int GetWorldMarketQuandlInquiryTime(void) const noexcept { return m_iWorldMarketQuandlInquiryTime; }
+	[[nodiscard]] int GetWorldMarketQuandlInquiryTime(void) const noexcept { return m_iWorldMarketQuandlInquiryTime; }
 
 	void SetWorldMarketQuandlInquiryTime(const int iWorldMarketQuandlInquiryTime) noexcept {
 		m_fUpdate = true;
 		m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime;
 	}
 
-	bool IsUsingSinaRTServer(void) const noexcept {
+	[[nodiscard]] bool IsUsingSinaRTServer(void) const noexcept {
 		if (m_iChinaMarketRealtimeServer == 0) return true;
 		else return false;
 	}
 
-	bool IsUsingNeteaseRTServer(void) const noexcept {
+	[[nodiscard]] bool IsUsingNeteaseRTServer(void) const noexcept {
 		if (m_iChinaMarketRealtimeServer == 1) return true;
 		else return false;
 	}
 
 	// WebSocket
-	bool IsUsingFinnhubWebSocket(void) const noexcept { return m_bUsingFinnhubWebSocket; }
+	[[nodiscard]] bool IsUsingFinnhubWebSocket(void) const noexcept { return m_bUsingFinnhubWebSocket; }
 	void SetUsingFinnhubWebSocket(const bool bUsingFinnhubWebSocket) noexcept { m_bUsingFinnhubWebSocket = bUsingFinnhubWebSocket; }
-	bool IsUsingTiingoIEXWebSocket(void) const noexcept { return m_bUsingTiingoIEXWebSocket; }
+	[[nodiscard]] bool IsUsingTiingoIEXWebSocket(void) const noexcept { return m_bUsingTiingoIEXWebSocket; }
 
 	void SetUsingTiingoIEXWebSocket(const bool bUsingTiingoIEXWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket;
 	}
 
-	bool IsUsingTiingoCryptoWebSocket(void) const noexcept { return m_bUsingTiingoCryptoWebSocket; }
+	[[nodiscard]] bool IsUsingTiingoCryptoWebSocket(void) const noexcept { return m_bUsingTiingoCryptoWebSocket; }
 
 	void SetUsingTiingoCryptoWebSocket(const bool bUsingTiingoCryptoWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket;
 	}
 
-	bool IsUsingTiingoForexWebSocket(void) const noexcept { return m_bUsingTiingoForexWebSocket; }
+	[[nodiscard]] bool IsUsingTiingoForexWebSocket(void) const noexcept { return m_bUsingTiingoForexWebSocket; }
 
 	void SetUsingTiingoForexWebSocket(const bool bUsingTiingoForexWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket;
 	}
 
-	bool IsUsingQuandlWebSocket(void) const noexcept { return m_bUsingQuandlWebSocket; }
+	[[nodiscard]] bool IsUsingQuandlWebSocket(void) const noexcept { return m_bUsingQuandlWebSocket; }
 
 	void SetUsingQuandlWebSocket(const bool bUsingQuandlWebSocket) noexcept {
 		m_fUpdate = true;
@@ -130,61 +128,68 @@ public:
 	}
 
 	// ChinaMarket
-	int GetSavingChinaMarketStockDayLineThread(void) const noexcept { return m_iSavingChinaMarketStockDayLineThread; }
+	[[nodiscard]] int GetSavingChinaMarketStockDayLineThread(void) const noexcept { return m_iSavingChinaMarketStockDayLineThread; }
 
 	void SetSavingChinaMarketStockDayLineThread(const int iSavingChinaMarketStockDayLineThread) noexcept {
 		m_fUpdate = true;
 		m_iSavingChinaMarketStockDayLineThread = iSavingChinaMarketStockDayLineThread;
 	}
 
-	bool IsFastInquiringRTData(void) const noexcept { return m_bFastInquiringRTData; }
+	[[nodiscard]] bool IsFastInquiringRTData(void) const noexcept { return m_bFastInquiringRTData; }
 
 	void SetFastInquiringRTData(const bool fFlag) noexcept {
 		m_fUpdate = true;
 		m_bFastInquiringRTData = fFlag;
 	}
 
-	int GetSinaRTDataInquiryPerTime(void) const noexcept { return m_iSinaRTDataInquiryPerTime; }
+	[[nodiscard]] int GetSinaRTDataInquiryPerTime(void) const noexcept { return m_iSinaRTDataInquiryPerTime; }
 	void SetSinaRTDataInquiryPerTime(const int iNumber) noexcept { m_iSinaRTDataInquiryPerTime = iNumber; }
-	int GetNeteaseRTDataInquiryPerTime(void) const noexcept { return m_iNeteaseRTDataInquiryPerTime; }
+	[[nodiscard]] int GetNeteaseRTDataInquiryPerTime(void) const noexcept { return m_iNeteaseRTDataInquiryPerTime; }
 	void SetNeteaseRTDataInquiryPerTime(const int iNumber) noexcept { m_iNeteaseRTDataInquiryPerTime = iNumber; }
-	int GetTengxunRTDataInquiryPerTime(void) const noexcept { return m_iTengxunRTDataInquiryPerTime; }
+	[[nodiscard]] int GetTengxunRTDataInquiryPerTime(void) const noexcept { return m_iTengxunRTDataInquiryPerTime; }
 	void SetTengxunRTDataInquiryPerTime(const int iNumber) noexcept { m_iTengxunRTDataInquiryPerTime = iNumber; }
 
 	// data update rate
-	int GetStockProfileUpdateRate(void) const noexcept { return m_iStockProfileUpdateRate; }
+	[[nodiscard]] int GetStockProfileUpdateRate(void) const noexcept { return m_iStockProfileUpdateRate; }
 
 	void SetStockProfileUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockProfileUpdateRate = iRate;
 	}
 
-	int GetStockBasicFinancialUpdateRate(void) const noexcept { return m_iStockBasicFinancialUpdateRate; }
+	[[nodiscard]] int GetStockBasicFinancialUpdateRate(void) const noexcept { return m_iStockBasicFinancialUpdateRate; }
 
 	void SetStockBasicFinancialUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockBasicFinancialUpdateRate = iRate;
 	}
 
-	int GetInsideTransactionUpdateRate(void) const noexcept { return m_iInsideTransactionUpdateRate; }
+	[[nodiscard]] int GetInsideTransactionUpdateRate(void) const noexcept { return m_iInsideTransactionUpdateRate; }
 
 	void SetInsideTransactionUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iInsideTransactionUpdateRate = iRate;
 	}
 
-	int GetInsideSentimentUpdateRate(void) const noexcept { return m_iInsideSentimentUpdateRate; }
+	[[nodiscard]] int GetInsideSentimentUpdateRate(void) const noexcept { return m_iInsideSentimentUpdateRate; }
 
 	void SetInsideSentimentUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iInsideSentimentUpdateRate = iRate;
 	}
 
-	int GetStockPeerUpdateRate(void) const noexcept { return m_iStockPeerUpdateRate; }
+	[[nodiscard]] int GetStockPeerUpdateRate(void) const noexcept { return m_iStockPeerUpdateRate; }
 
 	void SetStockPeerUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockPeerUpdateRate = iRate;
+	}
+
+	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
+
+	void SetBenchmarkTestFileDirectory(const CString& strFileDirectory) {
+		m_fUpdate = true;
+		m_strBenchmarkTestFileDirectory = strFileDirectory;
 	}
 
 	void SetSystemDisplayRect(const RECT rect) noexcept { m_rSystemDisplay = rect; }
@@ -196,9 +201,9 @@ public:
 		m_rSystemDisplay.bottom = cy;
 	}
 
-	RECT GetSystemDisplayRect(void) const noexcept { return m_rSystemDisplay; }
-	int GetSystemDisplayHeight(void) const noexcept { return m_rSystemDisplay.bottom - m_rSystemDisplay.top; }
-	int GetSystemDisplayWidth(void) const noexcept { return m_rSystemDisplay.right - m_rSystemDisplay.left; }
+	[[nodiscard]] RECT GetSystemDisplayRect(void) const noexcept { return m_rSystemDisplay; }
+	[[nodiscard]] int GetSystemDisplayHeight(void) const noexcept { return m_rSystemDisplay.bottom - m_rSystemDisplay.top; }
+	[[nodiscard]] int GetSystemDisplayWidth(void) const noexcept { return m_rSystemDisplay.right - m_rSystemDisplay.left; }
 	void SetCurrentWindowRect(const RECT rect) noexcept { m_rCurrentWindow = rect; }
 
 	void SetCurrentWindowRect(const int cx, const int cy) noexcept {
@@ -208,11 +213,13 @@ public:
 		m_rCurrentWindow.bottom = cy;
 	}
 
-	RECT GetCurrentWindowRect(void) const noexcept { return m_rCurrentWindow; }
-	int GetCurrentWindowHeight(void) const noexcept { return m_rCurrentWindow.bottom - m_rCurrentWindow.top; }
-	int GetCurrentWindowWidth(void) const noexcept { return m_rCurrentWindow.right - m_rCurrentWindow.left; }
+	[[nodiscard]] RECT GetCurrentWindowRect(void) const noexcept { return m_rCurrentWindow; }
+	[[nodiscard]] int GetCurrentWindowHeight(void) const noexcept { return m_rCurrentWindow.bottom - m_rCurrentWindow.top; }
+	[[nodiscard]] int GetCurrentWindowWidth(void) const noexcept { return m_rCurrentWindow.right - m_rCurrentWindow.left; }
 
-	bool IsInitialized(void) const noexcept { return m_fInitialized; }
+	// 测试系统选项
+
+	[[nodiscard]] bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
 public:
 
@@ -260,6 +267,9 @@ protected:
 	int m_iInsideSentimentUpdateRate; // 默认45天更新一次
 	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
 	int m_iStockPeerUpdateRate; // 默认90天更新一次
+
+	// 测试系统
+	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 
 	bool m_fUpdate;
 	bool m_fInitialized = false;

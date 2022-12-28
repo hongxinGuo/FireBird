@@ -4,6 +4,9 @@
 
 #include"DataStockSymbol.h"
 
+#include<memory>
+using std::make_shared;
+
 using namespace testing;
 
 #ifdef _DEBUG
@@ -32,8 +35,7 @@ namespace StockAnalysisTest {
 			s_pDataStockSymbol = nullptr;
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp

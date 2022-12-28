@@ -1,15 +1,12 @@
 #pragma once
 
-#include<vector>
-#include<map>
-
 class CDataFinnhubForexExchange final : public CObject {
 public:
 	CDataFinnhubForexExchange();
 	~CDataFinnhubForexExchange() override = default;
 	void Reset(void);
 
-	bool IsForexExchange(const CString &strExchange) const noexcept {
+	bool IsForexExchange(const CString& strExchange) const noexcept {
 		if (m_mapForexExchange.contains(strExchange)) return true;
 		else return false;
 	}

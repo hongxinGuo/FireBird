@@ -4,6 +4,9 @@
 
 #include"ChinaStock.h"
 
+#include<memory>
+using std::make_shared;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -22,6 +25,7 @@ namespace StockAnalysisTest {
 			m_lHighLimit2 = lHighLimit2;
 			m_lLowLimit2 = lLowLimit2;
 		}
+
 	public:
 		CString m_strSymbol;
 		long m_lPBuy0;
@@ -60,10 +64,9 @@ namespace StockAnalysisTest {
 	HighLowData HighLowData25("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 	HighLowData HighLowData26("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 
-	class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*>
-	{
+	class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
@@ -76,7 +79,7 @@ namespace StockAnalysisTest {
 			m_stock.SetSymbol(pData->m_strSymbol);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -87,12 +90,12 @@ namespace StockAnalysisTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestGuadanData, StockHighLlowLImitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
-		&HighLowData4, &HighLowData5, &HighLowData6,
-		&HighLowData7, &HighLowData8, &HighLowData9,
-		&HighLowData10, &HighLowData11, &HighLowData12,
-		&HighLowData13, &HighLowData14, &HighLowData15,
-		&HighLowData16, &HighLowData17, &HighLowData18,
-		&HighLowData19, &HighLowData20, &HighLowData21));
+		                         &HighLowData4, &HighLowData5, &HighLowData6,
+		                         &HighLowData7, &HighLowData8, &HighLowData9,
+		                         &HighLowData10, &HighLowData11, &HighLowData12,
+		                         &HighLowData13, &HighLowData14, &HighLowData15,
+		                         &HighLowData16, &HighLowData17, &HighLowData18,
+		                         &HighLowData19, &HighLowData20, &HighLowData21));
 
 	TEST_P(StockHighLlowLImitTest, HighLowTest1) {
 		m_stock.CalculateHighLowLimit(pRTData);

@@ -4,6 +4,8 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+using namespace std;
+
 #include<gsl/gsl>
 using namespace gsl;
 
@@ -17,9 +19,7 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
 	Reset();
 }
 
-CVirtualWebSocket::~CVirtualWebSocket() {
-	Disconnect();
-}
+CVirtualWebSocket::~CVirtualWebSocket() { Disconnect(); }
 
 void CVirtualWebSocket::Reset(void) {
 	m_iSubscriptionId = 0;
@@ -37,8 +37,7 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) 
 		while (!IsOpen()) Sleep(1);
 		ASSERT(IsOpen());
 		Send(m_vSymbol);
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		CString sError = e.what();
 		return false;
 	}
@@ -121,9 +120,7 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 }
 
 bool CVirtualWebSocket::Disconnect(void) {
-	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_webSocket.stop();
-	}
+	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) { m_webSocket.stop(); }
 	while (m_webSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
 
 	m_iSubscriptionId = 0;
@@ -148,9 +145,7 @@ bool CVirtualWebSocket::CreateThreadDisconnectWebSocket(void) {
 }
 
 bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
-	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) {
-		m_webSocket.stop();
-	}
+	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) { m_webSocket.stop(); }
 	m_iSubscriptionId = 0;
 
 	return true;

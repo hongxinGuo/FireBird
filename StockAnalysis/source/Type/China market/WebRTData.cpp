@@ -42,21 +42,15 @@ void CWebRTData::Reset(void) {
 	m_fActive = false;
 }
 
-CWebRTData::CWebRTData(void) : CObject() {
-	Reset();
-}
+CWebRTData::CWebRTData(void) : CObject() { Reset(); }
 
 /////////////////////////////////////////////////////////////////////////////
 // CWebRTData diagnostics
 
 #ifdef _DEBUG
-void CWebRTData::AssertValid() const {
-	CObject::AssertValid();
-}
+void CWebRTData::AssertValid() const { CObject::AssertValid(); }
 
-void CWebRTData::Dump(CDumpContext& dc) const {
-	CObject::Dump(dc);
-}
+void CWebRTData::Dump(CDumpContext& dc) const { CObject::Dump(dc); }
 
 #endif //_DEBUG
 
@@ -101,7 +95,7 @@ void CWebRTData::Dump(CDumpContext& dc) const {
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
+bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebRTData) {
 	const CString strHeader = _T("var hq_str_s");
 	char bufferTest[2000];
 	bool fBadData = false;
@@ -149,9 +143,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
 			wMarket = _SHENZHEN_MARKET_; // 深圳股票标识
 		}
-		else {
-			throw exception();
-		}
+		else { throw exception(); }
 		pSinaWebRTData->IncreaseCurrentPos();
 
 		pSinaWebRTData->GetData(buffer2, 6, pSinaWebRTData->GetCurrentPos());
@@ -172,39 +164,27 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		pSinaWebRTData->IncreaseCurrentPos(6);
 
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // 读入'="'
-		if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
-			throw exception();
-		}
+		if ((buffer1[0] != '=') || (buffer1[1] != '"')) { throw exception(); }
 		pSinaWebRTData->IncreaseCurrentPos(2);
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos());
 		if (buffer1[0] == '"') {
 			// 没有数据?
-			if (buffer1[1] != ';') {
-				throw exception();
-			}
+			if (buffer1[1] != ';') { throw exception(); }
 			pSinaWebRTData->IncreaseCurrentPos(2);
-			if (pSinaWebRTData->GetCurrentPosData() != 0x00a) {
-				return false;
-			}
+			if (pSinaWebRTData->GetCurrentPosData() != 0x00a) { return false; }
 			pSinaWebRTData->IncreaseCurrentPos();
 			m_fActive = false;
 			SetDataSource(SINA_RT_WEB_DATA_);
 			return true; // 非活跃股票没有实时数据，在此返回。
 		}
-		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) {
-			throw exception();
-		}
-		if ((buffer1[1] == 0x00a) || pSinaWebRTData->OutOfRange()) {
-			throw exception();
-		}
+		if ((buffer1[0] == 0x00a) || pSinaWebRTData->OutOfRange()) { throw exception(); }
+		if ((buffer1[1] == 0x00a) || pSinaWebRTData->OutOfRange()) { throw exception(); }
 		pSinaWebRTData->IncreaseCurrentPos(2);
 
 		i = 2;
 		while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) {
 			// 读入剩下的中文名字（第一个字在buffer1中）
-			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) {
-				throw exception();
-			}
+			if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || pSinaWebRTData->OutOfRange()) { throw exception(); }
 			buffer1[i++] = pSinaWebRTData->GetCurrentPosData();
 			pSinaWebRTData->IncreaseCurrentPos();
 		}
@@ -214,81 +194,51 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		pSinaWebRTData->IncreaseCurrentPos();
 
 		// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入前收盘价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入当前价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入最高价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入最低价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入竞买价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入竞卖价
-		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 		m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
 		// 读入成交股数。成交股数存储实际值
-		if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) { throw exception(); }
 		// 读入成交金额
-		if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) { throw exception(); }
 		// 读入买一--买五的股数和价格
 		for (int j = 0; j < 5; j++) {
 			// 读入数量
-			if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) {
-				throw exception();
-			}
+			if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) { throw exception(); }
 			// 读入价格
-			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-				throw exception();
-			}
+			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 		}
 		// 读入卖一--卖五的股数和价格
 		for (int j = 0; j < 5; j++) {
 			// 读入数量
-			if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) {
-				throw exception();
-			}
+			if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) { throw exception(); }
 			// 读入价格
-			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-				throw exception();
-			}
+			if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) { throw exception(); }
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 		}
 		// 读入成交日期和时间。此时间为东八区（北京标准时间）。
-		if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) { throw exception(); }
 		CString strTime = buffer1;
 		strTime += ' '; //添加一个空格，以利于下面的转换
-		if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-			throw exception();
-		}
+		if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) { throw exception(); }
 		strTime += buffer3;
 		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 		// 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
@@ -299,9 +249,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		while (pSinaWebRTData->GetCurrentPosData() != '"') {
 			// 寻找本段数据的结束符（“"”）。
 			pSinaWebRTData->IncreaseCurrentPos();
-			if (pSinaWebRTData->OutOfRange()) {
-				throw exception();
-			}
+			if (pSinaWebRTData->OutOfRange()) { throw exception(); }
 		}
 		pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'"'
 		if (pSinaWebRTData->GetCurrentPosData() != ';') {
@@ -322,8 +270,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 		CheckSinaRTDataActive();
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		return false;
 	}
@@ -342,12 +289,10 @@ bool CWebRTData::CheckSinaRTDataActive(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, INT64& llReturnValue) {
 	char buffer3[200];
 
-	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) { return false; }
 	const auto llTemp = static_cast<INT64>(atof(buffer3));
 	if (llTemp < 0) return false;
 	if (llTemp > 0) llReturnValue = llTemp;
@@ -360,12 +305,10 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnVal
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, long& lReturnValue) {
 	char buffer3[200];
 
-	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) { return false; }
 	const long lTemp = static_cast<long>(atof(buffer3));
 	if (lTemp < 0) return false;
 	if (lTemp > 0) lReturnValue = lTemp;
@@ -378,12 +321,10 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, double& dReturnValue) {
 	char buffer3[200];
 
-	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) { return false; }
 	dReturnValue = atof(buffer3);
 	return true;
 }
@@ -394,7 +335,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnVal
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, char* buffer) {
 	try {
 		int i = 0;
 		while ((pSinaWebRTData->GetCurrentPosData() != ',')) {
@@ -408,8 +349,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 		pSinaWebRTData->IncreaseCurrentPos();
 
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaDataOneValue异常 "), e);
 		return false;
 	}
@@ -468,7 +408,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
+bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	const CString strHeader = _T("v_s");
 	long lTemp = 0;
 	float fTemp = 0.0;
@@ -747,9 +687,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		while (pTengxunWebRTData->GetCurrentPosData() != '"') {
 			// 寻找本段数据的结束符（“"”）。
 			pTengxunWebRTData->IncreaseCurrentPos();
-			if (pTengxunWebRTData->OutOfRange()) {
-				return false;
-			}
+			if (pTengxunWebRTData->OutOfRange()) { return false; }
 		}
 		pTengxunWebRTData->IncreaseCurrentPos();
 		if (pTengxunWebRTData->GetCurrentPosData() != ';') {
@@ -766,8 +704,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 		CheckTengxunRTDataActive();
 		SetDataSource(TENGXUN_RT_WEB_DATA_);
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadTengxunData异常 "), e);
 		return false;
 	}
@@ -793,12 +730,10 @@ bool CWebRTData::CheckTengxunRTDataActive() {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, INT64& llReturnValue) {
 	char buffer3[200];
 
-	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
-		return false;
-	}
+	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) { return false; }
 	const INT64 llTemp = atoll(buffer3);
 	if (llTemp < 0) return false;
 	if (llTemp > 0) llReturnValue = llTemp;
@@ -811,12 +746,10 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llRet
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, double& dReturnValue) {
 	char buffer3[200];
 
-	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
-		return false;
-	}
+	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) { return false; }
 	const double dTemp = atof(buffer3);
 	dReturnValue = dTemp;
 	return true;
@@ -828,12 +761,10 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dRet
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, long& lReturnValue) {
 	char buffer3[200];
 
-	if (!ReadTengxunOneValue(pWebDataReceived, buffer3)) {
-		return false;
-	}
+	if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) { return false; }
 	const long lTemp = atol(buffer3);
 	if (lTemp < 0) return false;
 	if (lTemp > 0) lReturnValue = lTemp;
@@ -846,21 +777,20 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturn
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
+bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, char* buffer) {
 	int i = 0;
 	try {
-		while (pWebDataReceived->GetCurrentPosData() != '~') {
-			if ((pWebDataReceived->GetCurrentPosData() == 0x00a) || pWebDataReceived->OutOfRange()) return false;
-			buffer[i++] = pWebDataReceived->GetCurrentPosData();
-			pWebDataReceived->IncreaseCurrentPos();
+		while (pTengxunWebRTData->GetCurrentPosData() != '~') {
+			if ((pTengxunWebRTData->GetCurrentPosData() == 0x00a) || pTengxunWebRTData->OutOfRange()) return false;
+			buffer[i++] = pTengxunWebRTData->GetCurrentPosData();
+			pTengxunWebRTData->IncreaseCurrentPos();
 		}
 		buffer[i] = 0x000;
-		pWebDataReceived->IncreaseCurrentPos();
+		pTengxunWebRTData->IncreaseCurrentPos();
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		buffer[i] = 0x000;
-		CString errorMessage = pWebDataReceived->GetStockCode() + _T(" ReadTengxunOnValue异常:");
+		CString errorMessage = pTengxunWebRTData->GetStockCode() + _T(" ReadTengxunOnValue异常:");
 		errorMessage += buffer;
 		ReportErrorToSystemMessage(errorMessage, e);
 		return false;
@@ -893,9 +823,7 @@ bool CWebRTData::IsValidTime(long lDays) const {
 		// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
-	else if (m_time > gl_pChinaMarket->GetUTCTime()) {
-		return false;
-	}
+	else if (m_time > gl_pChinaMarket->GetUTCTime()) { return false; }
 	else return true;
 }
 

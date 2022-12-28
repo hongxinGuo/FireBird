@@ -11,12 +11,14 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include<string>
-
 #include "JsonParse.h"
 
 #include"WebRTData.h"
 #include"SaveAndLoad.h"
+
+#include<string>
+#include<memory>
+using std::make_shared;
 
 wstring to_wide_string(const std::string& input) {
 	const long lLength = input.size();

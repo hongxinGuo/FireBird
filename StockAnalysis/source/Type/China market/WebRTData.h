@@ -111,12 +111,13 @@ enum {
 	NETEASE_RT_WEB_DATA_ = 3,
 };
 
-#include"WebData.h"
 #include"SetRealTimeData.h"
 
 using std::array;
 using std::shared_ptr;
 
+class CWebData;
+using CWebDataPtr = std::shared_ptr<CWebData>;
 class CWebRTData;
 using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
 
@@ -143,72 +144,72 @@ public:
 public:
 	// 读取新浪实时数据函数
 	// 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-	bool ReadSinaData(CWebDataPtr pSinaWebRTData);
-	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
-	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
-	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-	bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
+	bool ReadSinaData(const CWebDataPtr& pSinaWebRTData);
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
 
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-	bool ReadTengxunData(CWebDataPtr pSinaWebRTData);
-	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
-	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
-	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-	bool ReadTengxunOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
+	bool ReadTengxunData(const CWebDataPtr& pTengxunWebRTData);
+	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, long& lReturnValue); // 从file中读入一个长整型
+	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
+	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, double& dReturnValue); // 从file中读入一个浮点数
+	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
 
 public:
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
-	long GetDataSource(void) const noexcept { return m_lDataSource; }
-	time_t GetTransactionTime(void) const noexcept { return m_time; }
+	[[nodiscard]] long GetDataSource(void) const noexcept { return m_lDataSource; }
+	[[nodiscard]] time_t GetTransactionTime(void) const noexcept { return m_time; }
 	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
-	CString GetSymbol(void) const { return m_strSymbol; }
+	[[nodiscard]] CString GetSymbol(void) const { return m_strSymbol; }
 	void SetSymbol(const CString& str) { m_strSymbol = str; }
-	CString GetStockName(void) const { return m_strStockName; }
+	[[nodiscard]] CString GetStockName(void) const { return m_strStockName; }
 	void SetStockName(const CString& str) { m_strStockName = str; }
-	long GetLastClose(void) const noexcept { return m_lLastClose; }
+	[[nodiscard]] long GetLastClose(void) const noexcept { return m_lLastClose; }
 	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
-	long GetOpen(void) const noexcept { return m_lOpen; }
+	[[nodiscard]] long GetOpen(void) const noexcept { return m_lOpen; }
 	void SetOpen(const long lValue) noexcept { m_lOpen = lValue; }
-	long GetHigh(void) const noexcept { return m_lHigh; }
+	[[nodiscard]] long GetHigh(void) const noexcept { return m_lHigh; }
 	void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
-	long GetLow(void) const noexcept { return m_lLow; }
+	[[nodiscard]] long GetLow(void) const noexcept { return m_lLow; }
 	void SetLow(const long lValue) noexcept { m_lLow = lValue; }
-	long GetNew(void) const noexcept { return m_lNew; }
+	[[nodiscard]] long GetNew(void) const noexcept { return m_lNew; }
 	void SetNew(const long lValue) noexcept { m_lNew = lValue; }
-	INT64 GetAmount(void) const noexcept { return m_llAmount; }
+	[[nodiscard]] INT64 GetAmount(void) const noexcept { return m_llAmount; }
 	void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
-	INT64 GetVolume(void) const noexcept { return m_llVolume; }
+	[[nodiscard]] INT64 GetVolume(void) const noexcept { return m_llVolume; }
 	void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
 	void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
-	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
+	[[nodiscard]] INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
 	void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-	INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
-	long GetBuy(void) const noexcept { return m_lBuy; }
+	[[nodiscard]] INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
+	[[nodiscard]] long GetBuy(void) const noexcept { return m_lBuy; }
 	void SetBuy(const long lValue) noexcept { m_lBuy = lValue; }
-	long GetSell(void) const noexcept { return m_lSell; }
+	[[nodiscard]] long GetSell(void) const noexcept { return m_lSell; }
 	void SetSell(const long lValue) noexcept { m_lSell = lValue; }
-	long GetHighLimit(void) const noexcept { return m_lHighLimit; }
+	[[nodiscard]] long GetHighLimit(void) const noexcept { return m_lHighLimit; }
 	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
-	long GetLowLimit(void) const noexcept { return m_lLowLimit; }
+	[[nodiscard]] long GetLowLimit(void) const noexcept { return m_lLowLimit; }
 	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
-	long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
+	[[nodiscard]] long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
 	void SetPBuy(const int iIndex, const long lValue) { m_lPBuy.at(iIndex) = lValue; }
-	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
+	[[nodiscard]] long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
 	void SetVBuy(const int iIndex, const long lValue) { m_lVBuy.at(iIndex) = lValue; }
-	long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
+	[[nodiscard]] long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
 	void SetPSell(const int iIndex, const long lValue) { m_lPSell.at(iIndex) = lValue; }
-	long GetVSell(const int iIndex) const { return m_lVSell.at(iIndex); }
+	[[nodiscard]] long GetVSell(const int iIndex) const { return m_lVSell.at(iIndex); }
 	void SetVSell(const int iIndex, const long lValue) { m_lVSell.at(iIndex) = lValue; }
 
-	bool IsActive(void) const noexcept { return m_fActive; }
+	[[nodiscard]] bool IsActive(void) const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 	bool CheckNeteaseRTDataActive(void);
 	bool CheckSinaRTDataActive(void);
 	bool CheckTengxunRTDataActive(void);
 	bool IsValidTime(long lDays) const;
 
-	bool IsValidDataSource(void) const noexcept {
+	[[nodiscard]] bool IsValidDataSource(void) const noexcept {
 		if (m_lDataSource != INVALID_RT_WEB_DATA_) return true;
 		else return false;
 	}

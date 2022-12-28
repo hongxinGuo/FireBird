@@ -11,10 +11,6 @@
 
 #include"SetWorldStock.h"
 
-#include<memory>
-#include<atomic>
-#include<vector>
-
 class CWorldStock : public CVirtualStock {
 public:
 	CWorldStock();

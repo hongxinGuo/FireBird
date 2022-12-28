@@ -16,6 +16,9 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
 
+#include<thread>
+using std::thread;
+
 CDataChinaStock::CDataChinaStock() { Reset(); }
 
 void CDataChinaStock::Reset(void) {
@@ -63,8 +66,7 @@ CChinaStockPtr CDataChinaStock::GetStock(const CString& strStockCode) {
 }
 
 CChinaStockPtr CDataChinaStock::GetStock(const long lIndex) {
-	try { return m_vStock.at(lIndex); }
-	catch (exception& e) {
+	try { return m_vStock.at(lIndex); } catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStock "), e);
 		return nullptr;
 	}
@@ -294,8 +296,7 @@ bool CDataChinaStock::IsUpdateStockCodeDB(void) const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CDataChinaStock::GetStockName(const CString& strStockCode) {
-	try { return (m_vStock.at(m_mapStock.at(strStockCode))->GetDisplaySymbol()); }
-	catch (exception& e) {
+	try { return (m_vStock.at(m_mapStock.at(strStockCode))->GetDisplaySymbol()); } catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
 		return _T("");
 	}

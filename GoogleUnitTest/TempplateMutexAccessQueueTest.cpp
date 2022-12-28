@@ -7,7 +7,8 @@
 #include"NeteaseDayLineWebData.h"
 #include"WebData.h"
 
-#include<string>
+#include<memory>
+using std::make_shared;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,13 +20,13 @@ namespace StockAnalysisTest {
 	template <typename T>
 	class CTemplateMutexAccessQueueTest : public ::testing::Test {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			m_data1 = make_shared<T>();
 			m_data2 = make_shared<T>();
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			m_qDataTest.Reset();
 			GeneralCheck();

@@ -6,14 +6,17 @@
 #include"TiingoWebInquiry.h"
 #include "TiingoCryptoWebSocket.h"
 
+#include<memory>
+#include<thread>
+using std::make_shared;
+using std::thread;
+
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) {
-			gl_tiingoCryptoWebSocket.PushData(msg->str);
-		}
+		if (!gl_systemStatus.IsExitingSystem()) { gl_tiingoCryptoWebSocket.PushData(msg->str); }
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
@@ -41,18 +44,14 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
 	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
-		}
+		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务")); }
 		s_fConnecting = false;
 	}
 
 	return 73;
 }
 
-CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
-	m_url = _T("wss://api.tiingo.com/crypto");
-}
+CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/crypto"); }
 
 /// <summary>
 /// Tiingo Crypto的数据源格式：wss://api.tiingo.com/crypto，其密钥是随后发送的。
@@ -150,8 +149,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
 					}
-				}
-				catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
+				} catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -216,11 +214,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				break;
 			}
 		}
-		else {
-			return false;
-		}
-	}
-	catch (json::exception& e) {
+		else { return false; }
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
 		return false;
 	}

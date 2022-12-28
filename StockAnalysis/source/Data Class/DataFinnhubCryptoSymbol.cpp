@@ -3,9 +3,10 @@
 #include "DataFinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"
 
-CDataFinnhubCryptoSymbol::CDataFinnhubCryptoSymbol() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataFinnhubCryptoSymbol::CDataFinnhubCryptoSymbol() { Reset(); }
 
 void CDataFinnhubCryptoSymbol::Reset(void) {
 	m_vCryptoSymbol.resize(0);
@@ -40,14 +41,10 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapCryptoSymbol.contains(pSymbol->GetSymbol())) {
-				gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol());
-			}
+			if (m_mapCryptoSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
 			Add(pSymbol);
 		}
-		else {
-			setCryptoSymbol.Delete();
-		}
+		else { setCryptoSymbol.Delete(); }
 		setCryptoSymbol.MoveNext();
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
@@ -101,12 +98,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 	return true;
 }
 
-
 bool CDataFinnhubCryptoSymbol::IsNeedUpdate(void) {
-	for (const auto& pCrypto : m_vCryptoSymbol) {
-		if (pCrypto->IsUpdateProfileDB()) {
-			return true;
-		}
-	}
+	for (const auto& pCrypto : m_vCryptoSymbol) { if (pCrypto->IsUpdateProfileDB()) { return true; } }
 	return false;
 }

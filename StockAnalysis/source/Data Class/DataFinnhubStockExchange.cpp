@@ -9,9 +9,10 @@
 #include "pch.h"
 #include "DataFinnhubStockExchange.h"
 
-CDataFinnhubStockExchange::CDataFinnhubStockExchange() {
-	Reset();
-}
+#include<memory>
+using std::make_shared;
+
+CDataFinnhubStockExchange::CDataFinnhubStockExchange() { Reset(); }
 
 void CDataFinnhubStockExchange::Reset() {
 	m_vFinnhubStockExchange.resize(0);

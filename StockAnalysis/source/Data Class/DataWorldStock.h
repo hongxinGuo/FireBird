@@ -2,9 +2,6 @@
 
 #include"WorldStock.h"
 
-#include<vector>
-#include<map>
-
 class CDataWorldStock : public CObject {
 public:
 	CDataWorldStock();
@@ -18,9 +15,9 @@ public:
 
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(const long lIndex) const { return m_vWorldStock.at(lIndex); }
-	CWorldStockPtr GetStock(const CString &strSymbol) const { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
-	long GetIndex(const CString &strSymbol) const { return m_mapWorldStock.at(strSymbol); }
-	long GetStockIndex(const CString &strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	CWorldStockPtr GetStock(const CString& strSymbol) const { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
+	long GetIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	long GetStockIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
 	size_t GetStockSize(void) const noexcept { return m_vWorldStock.size(); }
 	long GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 

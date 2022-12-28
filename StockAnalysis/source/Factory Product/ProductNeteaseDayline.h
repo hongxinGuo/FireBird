@@ -1,8 +1,6 @@
 #pragma once
 
 #include"ClassDeclaration.h"
-#include"WebRTData.h"
-#include"WebData.h"
 
 #include"VirtualWebProduct.h"
 
@@ -13,8 +11,8 @@ public:
 
 	~CProductNeteaseDayLine() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

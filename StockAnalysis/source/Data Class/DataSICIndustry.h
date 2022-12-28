@@ -2,9 +2,6 @@
 
 #include"SICIndustry.h"
 
-#include<vector>
-#include<map>
-
 class CDataSICIndustry : public CObject {
 public:
 	CDataSICIndustry();
@@ -19,7 +16,7 @@ public:
 		else return false;
 	}
 
-	bool IsSICIndustry(const CSICIndustryPtr &pSICIndustry) const { return IsSICIndustry(pSICIndustry->m_lCode); }
+	bool IsSICIndustry(const CSICIndustryPtr& pSICIndustry) const { return IsSICIndustry(pSICIndustry->m_lCode); }
 	void Add(CSICIndustryPtr pSICIndustry);
 	bool Delete(CSICIndustryPtr pSICIndustry);
 

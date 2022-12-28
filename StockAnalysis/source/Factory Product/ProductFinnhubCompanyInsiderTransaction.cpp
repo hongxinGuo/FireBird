@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
+using namespace std;
+
 IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderTransaction, CProductFinnhub)
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
@@ -91,8 +93,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiry(), e.what());
 		return pvInsiderTransaction;
 	}
@@ -116,8 +117,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
 		return pvInsiderTransaction;
 	}

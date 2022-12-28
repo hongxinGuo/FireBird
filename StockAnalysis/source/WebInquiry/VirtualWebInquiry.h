@@ -13,6 +13,9 @@
 
 #include<atomic>
 #include<string>
+using std::atomic_bool;
+using std::atomic_long;
+using std::string;
 
 class CVirtualWebInquiry : public CObject {
 public:
@@ -65,8 +68,7 @@ public:
 		TRACE("调用了基类函数ConfigureSession\n");
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
-	} //成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) { } //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString(CString strMiddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }

@@ -14,7 +14,9 @@
 #include"MockFinnhubForexSymbol.h"
 
 using namespace testing;
+
 #include<memory>
+using std::make_shared;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,19 +27,13 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	class CMockFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-			GeneralCheck();
-		}
+		static void SetUpTestSuite(void) { GeneralCheck(); }
 
-		static void TearDownTestSuite(void) {
-			GeneralCheck();
-		}
+		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		virtual void SetUp(void) override {
-			GeneralCheck();
-		}
+		void SetUp(void) override { GeneralCheck(); }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -46,7 +42,7 @@ namespace StockAnalysisTest {
 	TEST_F(CMockFinnhubForexSymbolTest, TestThreadUpdateFinnhubForexSymbolDayLine) {
 		CMockFinnhubForexSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);

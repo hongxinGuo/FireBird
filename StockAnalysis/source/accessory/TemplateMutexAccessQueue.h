@@ -8,26 +8,24 @@
 ///////////////////////////////////////////////////////////
 #pragma once
 
-using namespace std;
 #include<queue>
 #include<mutex>
 #include<memory>
+using std::queue;
+using std::shared_ptr;
+using std::mutex;
 
 template <typename T>
 class CTemplateMutexAccessQueue {
 public:
-	CTemplateMutexAccessQueue() {
-	}
+	CTemplateMutexAccessQueue() { }
 
-	~CTemplateMutexAccessQueue() {
-	}
+	~CTemplateMutexAccessQueue() { }
 
 	void Reset(void) {
 		m_MutexAccessData.lock();
 		const auto lTotal = m_qData.size();
-		for (int i = 0; i < lTotal; i++) {
-			m_qData.pop();
-		}
+		for (int i = 0; i < lTotal; i++) { m_qData.pop(); }
 		m_MutexAccessData.unlock();
 	}
 

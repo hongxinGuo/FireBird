@@ -1,7 +1,5 @@
 #pragma once
 
-#include<atomic>
-
 class CSystemStatus final : public CObject {
 public:
 	CSystemStatus();

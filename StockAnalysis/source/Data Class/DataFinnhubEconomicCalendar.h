@@ -2,9 +2,6 @@
 
 #include"EconomicCalendar.h"
 
-#include<vector>
-#include<map>
-
 class CDataFinnhubEconomicCalendar final : public CObject {
 public:
 	CDataFinnhubEconomicCalendar();

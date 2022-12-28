@@ -2,9 +2,6 @@
 
 #include"FinnhubForexSymbol.h"
 
-#include<vector>
-#include<map>
-
 class CDataChosenForex final : public CObject {
 public:
 	CDataChosenForex();

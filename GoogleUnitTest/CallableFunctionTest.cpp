@@ -18,8 +18,8 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-
-#include<string>
+#include<memory>
+using std::make_shared;
 
 using namespace testing;
 
@@ -37,8 +37,7 @@ namespace StockAnalysisTest {
 			m_strError = strError;
 		}
 
-		~WebSocketMessageData() {
-		}
+		~WebSocketMessageData() { }
 
 	public:
 		long m_lType;
@@ -58,7 +57,7 @@ namespace StockAnalysisTest {
 
 	class ProcessFinnhubWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
@@ -71,7 +70,7 @@ namespace StockAnalysisTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -135,7 +134,7 @@ namespace StockAnalysisTest {
 
 	class ProcessTiingoIEXWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
@@ -148,7 +147,7 @@ namespace StockAnalysisTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -212,7 +211,7 @@ namespace StockAnalysisTest {
 
 	class ProcessTiingoCryptoWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
@@ -225,7 +224,7 @@ namespace StockAnalysisTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -290,7 +289,7 @@ namespace StockAnalysisTest {
 
 	class ProcessTiingoForexWebSocketTest : public::testing::TestWithParam<WebSocketMessageData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
@@ -303,7 +302,7 @@ namespace StockAnalysisTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -359,8 +358,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareEPSSurprise) {
-		CEPSSurprisePtr p1 = make_shared<CEPSSurprise>();
-		CEPSSurprisePtr p2 = make_shared<CEPSSurprise>();
+		auto p1 = make_shared<CEPSSurprise>();
+		auto p2 = make_shared<CEPSSurprise>();
 		p1->m_lDate = 0;
 		p2->m_lDate = 1;
 		EXPECT_TRUE(CompareEPSSurprise(p1, p2));
@@ -373,8 +372,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareDayLine) {
-		CDayLinePtr p1 = make_shared<CDayLine>();
-		CDayLinePtr p2 = make_shared<CDayLine>();
+		auto p1 = make_shared<CDayLine>();
+		auto p2 = make_shared<CDayLine>();
 		p1->SetDate(0);
 		p2->SetDate(1);
 		EXPECT_TRUE(CompareDayLineDate(p1, p2));
@@ -387,8 +386,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareCountryList) {
-		CCountryPtr p1 = make_shared<CCountry>();
-		CCountryPtr p2 = make_shared<CCountry>();
+		auto p1 = make_shared<CCountry>();
+		auto p2 = make_shared<CCountry>();
 		p1->m_strCountry = _T("abc");
 		p2->m_strCountry = _T("abd");
 		EXPECT_TRUE(CompareCountryList(p1, p2));
@@ -401,8 +400,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareInsiderTransaction) {
-		CInsiderTransactionPtr p1 = make_shared<CInsiderTransaction>();
-		CInsiderTransactionPtr p2 = make_shared<CInsiderTransaction>();
+		auto p1 = make_shared<CInsiderTransaction>();
+		auto p2 = make_shared<CInsiderTransaction>();
 		p1->m_lTransactionDate = 0;
 		p2->m_lTransactionDate = 1;
 		EXPECT_TRUE(CompareInsiderTransaction(p1, p2));
@@ -415,8 +414,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareChinaStock) {
-		CChinaStockPtr p1 = make_shared<CChinaStock>();
-		CChinaStockPtr p2 = make_shared<CChinaStock>();
+		auto p1 = make_shared<CChinaStock>();
+		auto p2 = make_shared<CChinaStock>();
 		p1->SetSymbol(_T("abc"));
 		p2->SetSymbol(_T("abd"));
 		EXPECT_TRUE(CompareChinaStock(p1, p2));
@@ -429,8 +428,8 @@ namespace StockAnalysisTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareWorldStock) {
-		CWorldStockPtr p1 = make_shared<CWorldStock>();
-		CWorldStockPtr p2 = make_shared<CWorldStock>();
+		auto p1 = make_shared<CWorldStock>();
+		auto p2 = make_shared<CWorldStock>();
 		p1->SetSymbol(_T("abc"));
 		p2->SetSymbol(_T("abd"));
 		EXPECT_TRUE(CompareWorldStock(p1, p2));
