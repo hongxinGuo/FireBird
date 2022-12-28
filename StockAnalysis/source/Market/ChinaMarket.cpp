@@ -630,8 +630,7 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
 }
 
 bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
-	const auto it = ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
-	if (it == m_avChosenStock.at(0).end()) {
+	if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
 		ASSERT(!pStock->IsSaveToChosenStockDB());
 		return true;
@@ -1762,8 +1761,9 @@ void CChinaMarket::LoadChosenStockDB(void) {
 		CChinaStockPtr pStock = nullptr;
 		if (IsStock(setChinaChosenStock.m_Symbol)) {
 			pStock = GetStock(setChinaChosenStock.m_Symbol);
-			auto it = ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
-			if (it == m_avChosenStock.at(0).end()) { m_avChosenStock.at(0).push_back(pStock); }
+			if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
+				m_avChosenStock.at(0).push_back(pStock);
+			}
 			pStock->SetChosen(true);
 			pStock->SetSaveToChosenStockDB(true);
 		}

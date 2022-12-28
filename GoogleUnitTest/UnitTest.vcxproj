@@ -47,25 +47,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath);C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld</LibraryPath>
+    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(LibraryPath)</LibraryPath>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <SourcePath>C:\Users\hxguo\source\repos\googletest\googletest;C:\Users\hxguo\source\repos\googletest\googlemock;$(SourcePath)</SourcePath>
-    <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld;$(LibraryWPath)</LibraryWPath>
+    <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(nlohmannJsonInclude);$(VLDInclude)</IncludePath>
+    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
-    <LibraryPath>$(LibraryPath);C:\Program Files\OpenSSL-Win64\lib;C:\Users\hxguo\source\repos\StockAnalysis\vld</LibraryPath>
+    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemGroup>

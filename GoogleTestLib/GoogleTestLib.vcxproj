@@ -39,18 +39,20 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include</IncludePath>
+    <IncludePath>$(GoogletestInclude);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googlemock\include;C:\Users\hxguo\source\repos\StockAnalysis\googletest\googletest\include</IncludePath>
+    <IncludePath>$(GoogletestInclude);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -99,11 +101,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\googletest\googlemock\src\gmock-all.cc" />
-    <ClCompile Include="..\googletest\googletest\src\gtest-all.cc" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="..\Lib\GoogleTest\googlemock\src\gmock-all.cc" />
+    <ClCompile Include="..\Lib\GoogleTest\googletest\src\gtest-all.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

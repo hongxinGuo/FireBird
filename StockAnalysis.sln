@@ -32,14 +32,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib and DLL", "Lib and DLL", "{46774014-7022-4250-A1D8-F2193FE3992E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{B5233B65-5C3D-42FC-A7A0-62FDC03A33C7}"
-	ProjectSection(SolutionItems) = preProject
-		x64\Debug\dbghelp.dll = x64\Debug\dbghelp.dll
-		x64\Debug\libformat.lib = x64\Debug\libformat.lib
-		x64\Debug\libformat.pdb = x64\Debug\libformat.pdb
-		x64\Debug\Microsoft.DTfW.DHL.manifest = x64\Debug\Microsoft.DTfW.DHL.manifest
-		x64\Debug\vld.lib = x64\Debug\vld.lib
-		x64\Debug\vld_x64.dll = x64\Debug\vld_x64.dll
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{5C4CEB93-050C-4CD9-BCAC-8498EFC87370}"
 EndProject
