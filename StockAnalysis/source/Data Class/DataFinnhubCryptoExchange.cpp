@@ -39,15 +39,14 @@ bool CDataFinnhubCryptoExchange::LoadDB(void) {
 		setCryptoExchange.MoveNext();
 	}
 	setCryptoExchange.Close();
-	m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
+	m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 
 	return true;
 }
 
 bool CDataFinnhubCryptoExchange::UpdateDB(void) {
-	CSetFinnhubCryptoExchange setCryptoExchange;
-
 	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
+		CSetFinnhubCryptoExchange setCryptoExchange;
 		setCryptoExchange.Open();
 		setCryptoExchange.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
@@ -57,7 +56,7 @@ bool CDataFinnhubCryptoExchange::UpdateDB(void) {
 		}
 		setCryptoExchange.m_pDatabase->CommitTrans();
 		setCryptoExchange.Close();
-		m_lLastTotalCryptoExchange = m_vCryptoExchange.size();
+		m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 		return true;
 	}
 	return false;

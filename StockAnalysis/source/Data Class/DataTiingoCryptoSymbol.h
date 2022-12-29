@@ -33,6 +33,6 @@ public:
 
 protected:
 	vector<CTiingoCryptoSymbolPtr> m_vTiingoCrypto;
-	map<CString, long> m_mapTiingoCrypto;
+	map<CString, size_t> m_mapTiingoCrypto;
 	long m_lLastTotalTiingoCrypto;
 };

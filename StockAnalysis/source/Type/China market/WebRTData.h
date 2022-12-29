@@ -121,8 +121,6 @@ using CWebDataPtr = std::shared_ptr<CWebData>;
 class CWebRTData;
 using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
 
-#include"NlohmannJsonDeclaration.h"
-
 class CWebRTData final : public CObject {
 public:
 	// ≥ı ºªØ

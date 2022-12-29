@@ -90,7 +90,7 @@ protected:
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
 	vector<CString> m_vSymbol;
-	map<CString, long> m_mapSymbol;
+	map<CString, size_t> m_mapSymbol;
 
 	string m_inputMessage;
 

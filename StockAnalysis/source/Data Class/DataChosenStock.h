@@ -9,13 +9,13 @@ public:
 	void Reset(void);
 
 	CWorldStockPtr GetStock(const long lIndex) { return m_vWorldChosenStock.at(lIndex); }
-	[[nodiscard]] size_t GetSize(void) const noexcept { return m_vWorldChosenStock.size(); }
+	[[nodiscard]] long GetSize(void) const noexcept { return static_cast<long>(m_vWorldChosenStock.size()); }
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);
 
 protected:
 	vector<CWorldStockPtr> m_vWorldChosenStock;
-	map<CString, long> m_mapWorldChosenStock;
+	map<CString, size_t> m_mapWorldChosenStock;
 	long m_lChosenStockPos;
 };

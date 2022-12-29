@@ -28,6 +28,6 @@ public:
 
 protected:
 	vector<CFinnhubCryptoSymbolPtr> m_vCryptoSymbol;
-	map<CString, long> m_mapCryptoSymbol;
+	map<CString, size_t> m_mapCryptoSymbol;
 	long m_lLastTotalCryptoSymbol;
 };

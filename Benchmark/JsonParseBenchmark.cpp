@@ -21,7 +21,7 @@
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
 // 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
-string sData101 = _T("{\
+std::string sData101 = _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\

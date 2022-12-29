@@ -6,10 +6,11 @@
 
 #include<string>
 using std::wstring;
+using std::string;
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
-[[nodiscard]] wstring to_wide_string(const string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
-[[nodiscard]] string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
+[[nodiscard]] wstring to_wide_string(const std::string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
+[[nodiscard]] std::string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData);
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData);
@@ -22,4 +23,4 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 解析一个WebData
 
 // 将PTree中提取的utf-8字符串转化为CString
-[[nodiscard]] CString XferToCString(const string& s);
+[[nodiscard]] CString XferToCString(const std::string& s);

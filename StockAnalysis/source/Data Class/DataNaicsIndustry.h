@@ -25,6 +25,6 @@ public:
 
 protected:
 	vector<CNaicsIndustryPtr> m_vNaicsIndustry;
-	map<CString, long> m_mapNaicsIndustry;
+	map<CString, size_t> m_mapNaicsIndustry;
 	long m_lLastTotalNaicsIndustry;
 };

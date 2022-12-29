@@ -13,7 +13,7 @@ double jsonGetDouble(json* pjs, const char* szKey, const double dDefault) {
 	else return dDefault;
 }
 
-string jsonGetString(json* pjs, const char* szKey, const char* szDefault) {
+std::string jsonGetString(json* pjs, const char* szKey, const char* szDefault) {
 	const auto s = pjs->at(szKey);
 	if (s.is_string()) return s;
 	return szDefault;
@@ -48,7 +48,7 @@ json jsonGetChild(const json::iterator& it, const char* szKey) {
 	return js2;
 }
 
-string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault) {
+std::string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault) {
 	auto str = it->at(szKey);
 	if (str.is_string()) return str;
 	else return szDefault;
@@ -78,7 +78,7 @@ double jsonGetDouble(const json::iterator& it) {
 	else return 0.0;
 }
 
-string jsonGetString(const json::iterator& it) {
+std::string jsonGetString(const json::iterator& it) {
 	const auto s = *it;
 	if (s.is_string()) return s;
 	return _T("");

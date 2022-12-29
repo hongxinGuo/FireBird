@@ -39,7 +39,7 @@ bool CDataFinnhubForexExchange::LoadDB(void) {
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();
-	m_lLastTotalForexExchange = m_vForexExchange.size();
+	m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
 
 	return true;
 }
@@ -57,7 +57,7 @@ bool CDataFinnhubForexExchange::UpdateDB(void) {
 		}
 		setForexExchange.m_pDatabase->CommitTrans();
 		setForexExchange.Close();
-		m_lLastTotalForexExchange = m_vForexExchange.size();
+		m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
 		return true;
 	}
 	return false;

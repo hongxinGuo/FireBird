@@ -144,7 +144,7 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine(void) {
 	CString str = _T("");
-	const long lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());

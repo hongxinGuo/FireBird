@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CString> m_vForexExchange;
-	map<CString, long> m_mapForexExchange;
+	map<CString, size_t> m_mapForexExchange;
 	long m_lLastTotalForexExchange;
 };

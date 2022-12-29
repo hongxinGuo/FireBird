@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CTiingoIndustryPtr> m_vTiingoIndustry;
-	map<CString, long> m_mapTiingoIndustry;
+	map<CString, size_t> m_mapTiingoIndustry;
 	long m_lLastTotalTiingoIndustry;
 };

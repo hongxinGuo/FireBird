@@ -16,6 +16,6 @@ public:
 
 protected:
 	vector<CFinnhubCryptoSymbolPtr> m_vWorldChosenCrypto;
-	map<CString, long> m_mapWorldChosenCrypto;
+	map<CString, size_t> m_mapWorldChosenCrypto;
 	long m_lChosenCryptoPos;
 };

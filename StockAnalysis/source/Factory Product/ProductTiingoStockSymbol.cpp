@@ -124,8 +124,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSICSector = s.c_str(); }
 			else pStock->m_strSICSector = strNULL;
 			s = jsonGetString(it,_T("reportingCurrency"));
-			if (s != strNotAvailable) {
-				// 此项应该永远存在
+			if (s != strNotAvailable) {	// 此项应该永远存在
 				if ((!s.empty())) pStock->m_strReportingCurrency = s.c_str();
 			}
 			else pStock->m_strReportingCurrency = strNULL;
@@ -149,7 +148,10 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}
-	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e.what()); }
+	}
+	catch (json::exception& e) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), e.what());
+	}
 
 	return pvTiingoStock;
 }

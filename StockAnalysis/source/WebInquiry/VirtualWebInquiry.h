@@ -36,7 +36,7 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
-	bool VerifyDataLength();
+	bool VerifyDataLength() const;
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数\n");
@@ -72,13 +72,13 @@ public:
 
 	void CreateTotalInquiringString(CString strMiddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
-	void SetInquiringString(const CString str) noexcept { m_strInquiry = str; }
-	void AppendInquiringString(const CString str) noexcept { m_strInquiry += str; }
+	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
+	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
 
 	void SetDataSource(CVirtualDataSource* pDataSource) { m_pDataSource = pDataSource; }
 
 	CString GetHeaders(void) const noexcept { return m_strHeaders; }
-	void SetHeaders(const CString strHeaders) noexcept { m_strHeaders = strHeaders; }
+	void SetHeaders(const CString& strHeaders) noexcept { m_strHeaders = strHeaders; }
 
 	char GetData(const long lIndex) const { return m_sBuffer.at(lIndex); }
 	void SetData(const long lIndex, const char value) { m_sBuffer.at(lIndex) = value; }
@@ -86,12 +86,12 @@ public:
 	long GetByteRead(void) const noexcept { return m_lByteRead; }
 	void SetByteRead(const long lValue) noexcept { m_lByteRead = lValue; }
 	void AddByteRead(const long lValue) noexcept { m_lByteRead += lValue; }
-	size_t GetBufferSize(void) noexcept { return m_sBuffer.size(); }
+	size_t GetBufferSize(void) const noexcept { return m_sBuffer.size(); }
 
 	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
-	void SetInquiryFunction(const CString strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
+	void SetInquiryFunction(const CString& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
 	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
-	void SetInquiryToken(const CString strToken) noexcept { m_strInquiryToken = strToken; }
+	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(const bool fFlag) noexcept { m_fReadingWebData = fFlag; }

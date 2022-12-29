@@ -94,7 +94,7 @@ public:
 	// 各种状态
 	CFinnhubStockExchangePtr GetStockExchange(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
 	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
-	size_t GetStockExchangeSize(void) const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
+	long GetStockExchangeSize(void) const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
 
 	bool IsStockProfileNeedUpdate(void) { return m_dataWorldStock.IsStockProfileNeedUpdate(); }
 	void AddStock(const CWorldStockPtr pStock) { m_dataWorldStock.Add(pStock); }
@@ -107,7 +107,7 @@ public:
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(const long lIndex) const { return m_dataWorldStock.GetStock(lIndex); }
 	CWorldStockPtr GetStock(const CString strSymbol) const { return m_dataWorldStock.GetStock(strSymbol); }
-	long GetStockIndex(const CString strSymbol) const { return m_dataWorldStock.GetStockIndex(strSymbol); }
+	size_t GetStockIndex(const CString strSymbol) const { return m_dataWorldStock.GetStockIndex(strSymbol); }
 
 	bool IsCompanyNewsNeedUpdate(void) { return m_dataWorldStock.IsCompanyNewsNeedUpdate(); }
 	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
@@ -251,11 +251,11 @@ public:
 	void StartTiingoCryptoWebSocket(void);
 	void StartTiingoForexWebSocket(void);
 	void DisconnectAllWebSocket(void); // // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-	void StopAllWebSocket(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-	void StopFinnhubWebSocket(void);
-	void StopTiingoIEXWebSocket(void);
-	void StopTiingoCryptoWebSocket(void);
-	void StopTiingoForexWebSocket(void);
+	void StopAllWebSocketIfOutOfTime(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+	void StopFinnhubWebSocketIfOutOfTime(void);
+	void StopTiingoIEXWebSocketIfOutOfTime(void);
+	void StopTiingoCryptoWebSocketIfOutOfTime(void);
+	void StopTiingoForexWebSocketIfOutOfTime(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

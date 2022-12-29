@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CForexSymbolPtr> m_vForexSymbol;
-	map<CString, long> m_mapForexSymbol;
+	map<CString, size_t> m_mapForexSymbol;
 	long m_lLastTotalForexSymbol;
 };

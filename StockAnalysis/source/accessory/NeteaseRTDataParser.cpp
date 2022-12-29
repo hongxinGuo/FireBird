@@ -47,7 +47,7 @@ bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, c
 	return true;
 }
 
-CString XferToCString(const string& s);
+CString XferToCString(const std::string& s);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

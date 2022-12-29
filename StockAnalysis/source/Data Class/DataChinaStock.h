@@ -92,7 +92,7 @@ private:
 
 protected:
 	vector<CChinaStockPtr> m_vStock; // 本系统允许的所有股票池（无论代码是否存在）
-	map<CString, long> m_mapStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+	map<CString, size_t> m_mapStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 	long m_lLoadedStock; // 本次装载的股票总数
 
 	long m_lNeteaseDayLineDataInquiringIndex;

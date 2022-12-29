@@ -135,6 +135,7 @@ tab_width = 2
 [*]
 
 # ReSharper properties
+resharper_align_ternary = none
 resharper_anonymous_method_declaration_braces = end_of_line
 resharper_case_block_braces = end_of_line
 resharper_continuous_line_indent = none
@@ -150,10 +151,11 @@ resharper_invocable_declaration_braces = end_of_line
 resharper_keep_blank_lines_in_code = 1
 resharper_keep_blank_lines_in_declarations = 1
 resharper_namespace_declaration_braces = end_of_line
-resharper_new_line_before_catch = false
+resharper_new_line_before_catch = true
+resharper_new_line_before_while = false
 resharper_other_braces = end_of_line
 resharper_requires_expression_braces = end_of_line
-resharper_simple_block_style = on_single_line
+resharper_simple_block_style = do_not_change
 resharper_simple_embedded_statement_style = on_single_line
 resharper_type_declaration_braces = end_of_line
 resharper_wrap_enumeration_style = wrap_if_long

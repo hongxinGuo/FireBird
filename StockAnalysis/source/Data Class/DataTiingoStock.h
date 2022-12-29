@@ -33,6 +33,6 @@ public:
 
 protected:
 	vector<CTiingoStockPtr> m_vTiingoStock;
-	map<CString, long> m_mapTiingoStock;
+	map<CString, size_t> m_mapTiingoStock;
 	long m_lLastTotalTiingoStock;
 };

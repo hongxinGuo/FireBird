@@ -281,8 +281,8 @@ CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
 	return pData;
 }
 
-// 将PTree中提取的utf-8字符串转化为CString
-CString XferToCString(const string& s) {
+// 将utf-8字符串转化为CString
+CString XferToCString(const std::string& s) {
 	CString strName3;
 	wstring wsName;
 	CStringW strWName;

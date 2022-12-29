@@ -32,7 +32,6 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 				dynamic_cast<CWorldMarket*>(m_pMarket)->AddTiingoCryptoSymbol(pTiingoCrypto);
 			}
 		}
-		TRACE("今日Tiingo crypto symbol活跃数为：%d\n", pvTiingoCrypto->size());
 		sprintf_s(buffer, _T("%zd"), pvTiingoCrypto->size());
 		const CString strNumber = buffer;
 		const CString str = _T("今日Tiingo Crypto Symbol活跃总数为") + strNumber;

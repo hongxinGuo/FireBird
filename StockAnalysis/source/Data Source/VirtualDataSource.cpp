@@ -104,4 +104,6 @@ UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSour
 /// </summary>
 /// <param name="pProductWebData"></param>
 /// <param name="pWebData"></param>
-void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) { pProductWebData->ParseAndStoreWebData(pWebData); }
+void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
+	pProductWebData->ParseAndStoreWebData(pWebData);
+}

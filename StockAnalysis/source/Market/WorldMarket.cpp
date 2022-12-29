@@ -179,7 +179,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	StopAllWebSocket();
+	StopAllWebSocketIfOutOfTime();
 	return true;
 }
 
@@ -771,37 +771,37 @@ void CWorldMarket::DisconnectAllWebSocket(void) {
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
 /// <param name=""></param>
-void CWorldMarket::StopAllWebSocket(void) {
+void CWorldMarket::StopAllWebSocketIfOutOfTime(void) {
 	if (IsSystemReady()) {
-		StopFinnhubWebSocket();
-		StopTiingoIEXWebSocket();
-		StopTiingoCryptoWebSocket();
-		StopTiingoForexWebSocket();
+		StopFinnhubWebSocketIfOutOfTime();
+		StopTiingoIEXWebSocketIfOutOfTime();
+		StopTiingoCryptoWebSocketIfOutOfTime();
+		StopTiingoForexWebSocketIfOutOfTime();
 	}
 }
 
-void CWorldMarket::StopFinnhubWebSocket(void) {
+void CWorldMarket::StopFinnhubWebSocketIfOutOfTime(void) {
 	if ((gl_pFinnhubWebInquiry->IsTimeout()) && !gl_finnhubWebSocket.IsClosed()) {
 		gl_finnhubWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoIEXWebSocket(void) {
+void CWorldMarket::StopTiingoIEXWebSocketIfOutOfTime(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoIEXWebSocket.IsClosed()) {
 		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoCryptoWebSocket(void) {
+void CWorldMarket::StopTiingoCryptoWebSocketIfOutOfTime(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoCryptoWebSocket.IsClosed()) {
 		gl_tiingoCryptoWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoForexWebSocket(void) {
+void CWorldMarket::StopTiingoForexWebSocketIfOutOfTime(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoForexWebSocket.IsClosed()) {
 		gl_tiingoForexWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web故障12002，关闭Web socket服务"));

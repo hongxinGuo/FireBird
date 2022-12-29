@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CString> m_vCryptoExchange;
-	map<CString, long> m_mapCryptoExchange;
+	map<CString, size_t> m_mapCryptoExchange;
 	long m_lLastTotalCryptoExchange;
 };

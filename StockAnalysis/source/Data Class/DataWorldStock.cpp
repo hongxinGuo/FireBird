@@ -36,24 +36,24 @@ bool CDataWorldStock::SortStock(void) {
 }
 
 bool CDataWorldStock::IsStockProfileNeedUpdate(void) {
-	const int iTotal = m_vWorldStock.size();
-	for (int i = 0; i < iTotal; i++) {
+	const size_t iTotal = m_vWorldStock.size();
+	for (size_t i = 0; i < iTotal; i++) {
 		if (m_vWorldStock.at(i)->IsUpdateProfileDB()) return true;
 	}
 	return false;
 }
 
 bool CDataWorldStock::IsCompanyNewsNeedUpdate(void) {
-	const int iTotal = m_vWorldStock.size();
-	for (int i = 0; i < iTotal; i++) {
+	const size_t iTotal = m_vWorldStock.size();
+	for (size_t i = 0; i < iTotal; i++) {
 		if (m_vWorldStock.at(i)->IsUpdateCompanyNewsDB()) return true;
 	}
 	return false;
 }
 
 bool CDataWorldStock::IsBasicFinancialNeedUpdate(void) {
-	const int iTotal = m_vWorldStock.size();
-	for (int i = 0; i < iTotal; i++) {
+	const size_t iTotal = m_vWorldStock.size();
+	for (size_t i = 0; i < iTotal; i++) {
 		if (m_vWorldStock.at(i)->IsUpdateBasicFinancialDB()) {
 			return true;
 		}
@@ -310,8 +310,8 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock
 
 bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	int iBasicFinancialNeedUpdate = vStock.size();
-	int iCurrentUpdated = 0;
+	auto iBasicFinancialNeedUpdate = vStock.size();
+	size_t iCurrentUpdated = 0;
 
 	ASSERT(IsBasicFinancialNeedUpdate());
 	setBasicFinancialMetric.m_strSort = _T("[Symbol]");

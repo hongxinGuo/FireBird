@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CCountryPtr> m_vCountry;
-	map<CString, long> m_mapCountry;
+	map<CString, size_t> m_mapCountry;
 	long m_lLastTotalCountry;
 };

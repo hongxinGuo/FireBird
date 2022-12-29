@@ -8,7 +8,7 @@ public:
 	~CDataWorldStock() override = default;
 	void Reset(void);
 
-	bool IsStock(CString strSymbol) const {
+	bool IsStock(const CString& strSymbol) const {
 		if (m_mapWorldStock.contains(strSymbol)) return true;
 		else return false;
 	}
@@ -16,10 +16,10 @@ public:
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(const long lIndex) const { return m_vWorldStock.at(lIndex); }
 	CWorldStockPtr GetStock(const CString& strSymbol) const { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
-	long GetIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
-	long GetStockIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	size_t GetIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
+	size_t GetStockIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
 	size_t GetStockSize(void) const noexcept { return m_vWorldStock.size(); }
-	long GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
+	size_t GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 
 	bool SortStock(void);
 
@@ -52,6 +52,6 @@ public:
 
 protected:
 	vector<CWorldStockPtr> m_vWorldStock;
-	map<CString, long> m_mapWorldStock;
-	long m_lLastTotalWorldStock;
+	map<CString, size_t> m_mapWorldStock;
+	size_t m_lLastTotalWorldStock;
 };
