@@ -107,6 +107,7 @@
     </ClCompile>
     <ClCompile Include="Benchmark.cpp" />
     <ClCompile Include="JsonParseBenchmark.cpp" />
+    <ClCompile Include="FinnhubInaccessibleExchangeBenchmark.cpp" />
     <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>
   <ItemGroup>

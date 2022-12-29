@@ -52,6 +52,7 @@ public:
 	~CFinnhubInaccessibleExchange() override;
 
 	bool LoadDB(void);
+	bool LoadDB(CString strFileDirectory);
 	void SaveDB(void) const;
 	void Update(void);
 	void UpdateJson(void);

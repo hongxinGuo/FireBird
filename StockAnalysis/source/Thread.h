@@ -129,4 +129,4 @@ UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为107
 
 // 后台处理线程
 // WebSource ParseAndSaveWebData线程。 此线程的返回值为203
-UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource, not_null<CVirtualProductWebDataPtr> pProductWebData, not_null<CWebDataPtr> pWebData);
+UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData);

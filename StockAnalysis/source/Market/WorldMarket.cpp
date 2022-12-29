@@ -179,13 +179,13 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	StopAllWebSocketIfOutOfTime();
+	//StopAllWebSocketIfOutOfTime();
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
-	StartAllWebSocket();
+	//StartAllWebSocket();
 
 	TaskResetMarket(lCurrentTime);
 
@@ -747,13 +747,37 @@ bool CWorldMarket::StartAllWebSocket(void) {
 	return true;
 }
 
-void CWorldMarket::StartFinnhubWebSocket(void) { if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubWebInquiry->IsTimeout()) { if (gl_finnhubWebSocket.IsClosed()) { gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector()); } } }
+void CWorldMarket::StartFinnhubWebSocket(void) {
+	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubWebInquiry->IsTimeout()) {
+		if (gl_finnhubWebSocket.IsClosed()) {
+			gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		}
+	}
+}
 
-void CWorldMarket::StartTiingoIEXWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoIEXWebSocket.IsClosed()) { gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector()); } } }
+void CWorldMarket::StartTiingoIEXWebSocket(void) {
+	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
+		if (gl_tiingoIEXWebSocket.IsClosed()) {
+			gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		}
+	}
+}
 
-void CWorldMarket::StartTiingoCryptoWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoCryptoWebSocket.IsClosed()) { gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector()); } } }
+void CWorldMarket::StartTiingoCryptoWebSocket(void) {
+	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
+		if (gl_tiingoCryptoWebSocket.IsClosed()) {
+			gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		}
+	}
+}
 
-void CWorldMarket::StartTiingoForexWebSocket(void) { if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) { if (gl_tiingoForexWebSocket.IsClosed()) { gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector()); } } }
+void CWorldMarket::StartTiingoForexWebSocket(void) {
+	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoWebInquiry->IsTimeout()) {
+		if (gl_tiingoForexWebSocket.IsClosed()) {
+			gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		}
+	}
+}
 
 /// <summary>
 /// // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。

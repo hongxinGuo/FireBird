@@ -4,6 +4,7 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
+using namespace std;
 #include<string>
 #include<iostream>
 #include<fstream>
@@ -11,8 +12,7 @@
 using std::fstream;
 using std::ios;
 using std::make_shared;
-
-using namespace std;
+using std::exception;
 
 std::string gl_sFinnhubInaccessibleExchange = R"(
 { "InaccessibleExchange" :
@@ -118,6 +118,15 @@ CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 
 bool CFinnhubInaccessibleExchange::LoadDB(void) {
 	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::in);
+	if (f.is_open()) {
+		f >> m_finnhubInaccessibleExchange;
+		return true;
+	}
+	return false;
+}
+
+bool CFinnhubInaccessibleExchange::LoadDB(CString strFileDirectory) {
+	fstream f(strFileDirectory + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;
 		return true;
@@ -381,12 +390,20 @@ void CFinnhubInaccessibleExchange::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("EconomicEconomic")] = ECONOMIC_ECONOMIC_; //Premium
 }
 
-CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(const int iInquiryType) { return m_mapInaccessibleExchange.at(iInquiryType); }
+CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(const int iInquiryType) {
+	return m_mapInaccessibleExchange.at(iInquiryType);
+}
 
 bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) {
 	try {
-		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) { return true; }
-		else { return false; }
-	} catch (out_of_range&) { return false; }
-	return false;
+		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	catch (exception&) {
+		return false;
+	}
 }

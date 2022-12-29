@@ -87,9 +87,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	return false;
 }
 
-UINT ThreadWebSourceParseAndStoreWebData(not_null<CVirtualDataSource*> pDataSource,
-                                         not_null<CVirtualProductWebDataPtr> pProductWebData,
-                                         not_null<CWebDataPtr> pWebData) {
+UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
 	gl_WebSourceParseAndStoreData.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	pDataSource->ParseAndStoreData(pProductWebData, pWebData);

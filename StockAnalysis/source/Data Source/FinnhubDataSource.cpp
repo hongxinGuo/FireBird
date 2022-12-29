@@ -509,11 +509,10 @@ bool CFinnhubDataSource::InquireInsiderSentiment(void) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider sentiment..."));
 			m_fInquiringFinnhubStockInsiderSentiment = true;
 		}
-		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize;
-		     lCurrentUpdateInsiderSentimentPos++) {
+		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
-			if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
-				if (pStock->IsInsiderSentimentNeedUpdate()) {
+			if (pStock->IsInsiderSentimentNeedUpdate()) {
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}

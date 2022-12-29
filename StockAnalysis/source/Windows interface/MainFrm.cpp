@@ -416,7 +416,9 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void) {
-	for (const auto& pVirtualMarket : gl_vMarketPtr) { if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask(); }
+	for (const auto& pVirtualMarket : gl_vMarketPtr) {
+		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
+	}
 	return true;
 }
 
@@ -539,9 +541,10 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
+	CHighPerformanceCounter counter;
 	char buffer[50]{};
 	CString str;
-	long long llTickCount = GetTickCount64();
+	static long long s_TickCount = 0;
 
 	ASSERT(nIDEvent == _STOCK_ANALYSIS_TIMER_);
 
@@ -549,26 +552,30 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
-
+	counter.start();
 	// 调用主调度函数,由各市场调度函数执行具体任务
 	SchedulingTask();
+	const long long llTickCount = GetTickCount64();
 
 	//CMainFrame只执行更新状态任务
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 
-	if (!gl_systemStatus.IsWorkingMode()) { gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动")); }
+	if (!gl_systemStatus.IsWorkingMode()) {
+		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
+	}
 
-	SysCallOnTimer(nIDEvent);
-
-	const long lCurrentPeriod = GetTickCount64() - llTickCount;
-	if (lCurrentPeriod > 20) {
+	const long lCurrentPeriod = llTickCount - s_TickCount;
+	if (lCurrentPeriod > 130) {
 		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
 		//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
 		sprintf_s(buffer, _T("%d"), lCurrentPeriod);
 		str = buffer;
 		SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 	}
+	s_TickCount = llTickCount;
+
+	SysCallOnTimer(nIDEvent);
 }
 
 void CMainFrame::UpdateStatus(void) {
