@@ -18,6 +18,8 @@ using std::vector;
 
 #include"TemplateMutexAccessQueue.h"
 
+using vectorString = vector<string>;
+
 class CVirtualWebSocket : public CObject {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
@@ -25,15 +27,15 @@ public:
 	void Reset(void);
 
 	virtual bool Connect(void) = 0;
-	virtual bool Send(vector<CString> vSymbol) = 0;
-	bool ConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	virtual bool Send(vector<string> vSymbol) = 0;
+	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 
-	CString CreateTiingoWebSocketSymbolString(vector<CString> vSymbol);
+	string CreateTiingoWebSocketSymbolString(vectorString vSymbol);
 
-	bool IsSymbol(CString strSymbol);
-	void AppendSymbol(vector<CString> vSymbol);
-	bool AddSymbol(CString strSymbol);
-	bool DeleteSymbol(CString strSymbol);
+	bool IsSymbol(string sSymbol);
+	void AppendSymbol(vectorString vSymbol);
+	bool AddSymbol(const string& sSymbol);
+	bool DeleteSymbol(const string& sSymbol);
 	void ClearSymbol(void);
 	size_t GetSymbolSize(void) const noexcept { return m_vSymbol.size(); }
 
@@ -45,7 +47,7 @@ public:
 	bool IsConnecting(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
 	string GetURL(void) noexcept { return m_url; }
-	void SetURL(const string url) noexcept { m_url = url; }
+	void SetURL(const string& url) noexcept { m_url = url; }
 
 	void SetSubscriptionStatus(const bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
 	bool IsSubscriptable(void) const noexcept { return m_fHaveSubscriptionId; }
@@ -71,7 +73,7 @@ public:
 	bool DisconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
 	bool SendMessage(const string& message);
 
-	vector<CString> m_vCurrentSymbol;
+	vectorString m_vCurrentSymbol;
 
 	size_t DataSize(void) { return m_qWebSocketData.Size(); }
 
@@ -89,8 +91,8 @@ protected:
 
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
-	vector<CString> m_vSymbol;
-	map<CString, size_t> m_mapSymbol;
+	vectorString m_vSymbol;
+	map<string, size_t> m_mapSymbol;
 
 	string m_inputMessage;
 

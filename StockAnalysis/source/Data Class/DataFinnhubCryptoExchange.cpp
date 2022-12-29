@@ -13,19 +13,19 @@ void CDataFinnhubCryptoExchange::Reset(void) {
 	m_lLastTotalCryptoExchange = 0;
 }
 
-bool CDataFinnhubCryptoExchange::Delete(CString strCryptoExchange) {
-	if (!IsCryptoExchange(strCryptoExchange)) return false;
+bool CDataFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
+	if (!IsCryptoExchange(sCryptoExchange)) return false;
 
-	auto it = find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), strCryptoExchange);
+	auto it = find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), sCryptoExchange);
 	m_vCryptoExchange.erase(it);
-	m_mapCryptoExchange.erase(strCryptoExchange);
+	m_mapCryptoExchange.erase(sCryptoExchange);
 
 	return true;
 }
 
-void CDataFinnhubCryptoExchange::Add(CString strCryptoExchange) {
-	m_mapCryptoExchange[strCryptoExchange] = m_vCryptoExchange.size();
-	m_vCryptoExchange.push_back(strCryptoExchange);
+void CDataFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
+	m_mapCryptoExchange[sCryptoExchange] = m_vCryptoExchange.size();
+	m_vCryptoExchange.push_back(sCryptoExchange);
 }
 
 bool CDataFinnhubCryptoExchange::LoadDB(void) {
@@ -34,8 +34,8 @@ bool CDataFinnhubCryptoExchange::LoadDB(void) {
 
 	setCryptoExchange.Open();
 	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(setCryptoExchange.m_Code);
-		m_mapCryptoExchange[setCryptoExchange.m_Code] = i++;
+		m_vCryptoExchange.push_back(setCryptoExchange.m_Code.GetBuffer());
+		m_mapCryptoExchange[setCryptoExchange.m_Code.GetBuffer()] = i++;
 		setCryptoExchange.MoveNext();
 	}
 	setCryptoExchange.Close();
@@ -51,7 +51,7 @@ bool CDataFinnhubCryptoExchange::UpdateDB(void) {
 		setCryptoExchange.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 			setCryptoExchange.AddNew();
-			setCryptoExchange.m_Code = m_vCryptoExchange.at(l);
+			setCryptoExchange.m_Code = m_vCryptoExchange.at(l).c_str();
 			setCryptoExchange.Update();
 		}
 		setCryptoExchange.m_pDatabase->CommitTrans();

@@ -25,10 +25,9 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -42,22 +41,22 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CDataTiingoForexWebSocketTest, TestCreateTiingoForexWebSocketSymbolString) {
-		vector<CString> vSymbol;
+		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		CString strSymbols = gl_tiingoForexWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
-		EXPECT_STREQ(strSymbols, _T("\"A\",\"AA\",\"AAL\",\"AAPL\""));
+		string sSymbols = gl_tiingoForexWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
+		EXPECT_TRUE(sSymbols == _T("\"A\",\"AA\",\"AAL\",\"AAPL\""));
 	}
 
 	TEST_F(CDataTiingoForexWebSocketTest, TestCreateMessage) {
-		vector<CString> vSymbol;
+		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		CString strSymbols = gl_tiingoForexWebSocket.CreateMessage(vSymbol);
-		EXPECT_STREQ(strSymbols, _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"gbpaud\",\"eurusd\"]}}")) << "最后两个代码是为了测试手工加上的";
+		string sSymbols = gl_tiingoForexWebSocket.CreateMessage(vSymbol);
+		EXPECT_TRUE(sSymbols == _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"gbpaud\",\"eurusd\"]}}")) << "最后两个代码是为了测试手工加上的";
 	}
 }

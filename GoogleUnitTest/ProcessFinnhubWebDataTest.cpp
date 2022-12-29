@@ -107,13 +107,13 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
-			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("AAPL"));
+			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("AAPL"));
 		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 43);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530221);
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
-			EXPECT_STREQ(pFinnhubWebSocket->m_strSymbol, _T("A"));
+			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("A"));
 		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 1);

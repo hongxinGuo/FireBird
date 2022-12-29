@@ -16,7 +16,9 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) { gl_tiingoCryptoWebSocket.PushData(msg->str); }
+		if (!gl_systemStatus.IsExitingSystem()) {
+			gl_tiingoCryptoWebSocket.PushData(msg->str);
+		}
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
@@ -41,10 +43,12 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vectorString vSymbol) {
 	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务")); }
+		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
@@ -72,7 +76,7 @@ bool CTiingoCryptoWebSocket::Connect(void) {
 // thresholdlevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
+bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -85,23 +89,23 @@ bool CTiingoCryptoWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-CString CTiingoCryptoWebSocket::CreateMessage(vector<CString> vSymbol) {
-	const CString strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	const CString strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
+string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
+	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	const string strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
+	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
 
-	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 	vSymbol.push_back(_T("dkaeth")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	vSymbol.push_back(_T("ksmust")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	const CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
+	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
 
-	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
+	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	return str;
 }
 
-bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
@@ -149,7 +153,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
+				}
+				catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -168,8 +173,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
 					++it;
-					sTickers = jsonGetString(it); // 证券名称
-					pCryptoData->m_strSymbol = sTickers.c_str();
+					pCryptoData->m_sSymbol = jsonGetString(it); // 证券名称
 					++it;
 					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
@@ -184,8 +188,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					// 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
 					++it;
-					sTickers = jsonGetString(it); // 证券名称
-					pCryptoData->m_strSymbol = sTickers.c_str();
+					pCryptoData->m_sSymbol = jsonGetString(it); // 证券名称
 					++it;
 					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
@@ -215,7 +218,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			}
 		}
 		else { return false; }
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
 		return false;
 	}

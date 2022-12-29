@@ -41,11 +41,13 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vectorString vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务")); }
+		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
@@ -74,7 +76,7 @@ bool CTiingoForexWebSocket::Connect(void) {
 // thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
+bool CTiingoForexWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -84,23 +86,23 @@ bool CTiingoForexWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-CString CTiingoForexWebSocket::CreateMessage(vector<CString> vSymbol) {
-	const CString strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	const CString strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
-	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
+	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	const string strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
+	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 
 	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	vSymbol.push_back(_T("eurusd")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	const CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
+	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
 
-	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
+	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	return str;
 }
 
-bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoForexWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
@@ -146,7 +148,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 						strSymbol = jsonGetString(it3);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) {
+				}
+				catch (json::exception&) {
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -163,8 +166,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
 				++it;
-				sTickers = jsonGetString(it); // 证券名称
-				pForexData->m_strSymbol = sTickers.c_str();
+				pForexData->m_sSymbol = jsonGetString(it); // 证券名称
 				++it;
 				sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 				++it;
@@ -191,7 +193,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
 		return false;
 	}

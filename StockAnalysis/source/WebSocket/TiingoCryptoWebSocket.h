@@ -9,16 +9,16 @@ class CTiingoCryptoSocket : public CObject {
 public:
 	CTiingoCryptoSocket() {
 		m_chMessageType = ' ';
-		m_strSymbol = _T("");
+		m_sSymbol = _T("");
 		m_strExchange = _T("");
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
 	}
 
 public:
 	char m_chMessageType; // 'Q' or 'T'
-	CString m_strSymbol;
+	string m_sSymbol;
 	CTime m_date;
-	CString m_strExchange;
+	string m_strExchange;
 	double m_dBidSize;
 	double m_dBidPrice;
 	double m_dMidPrice;
@@ -27,22 +27,23 @@ public:
 	double m_dLastPrice;
 	double m_dLastSize;
 };
-typedef shared_ptr<CTiingoCryptoSocket> CTiingoCryptoSocketPtr;
+
+using CTiingoCryptoSocketPtr = shared_ptr<CTiingoCryptoSocket>;
 
 class CTiingoCryptoWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoCryptoWebSocket();
 	~CTiingoCryptoWebSocket(void) override = default;
 
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
+	bool Connect(void) override;
+	bool Send(vectorString vSymbol) override;
 
-	bool CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
-	CString CreateMessage(vector<CString> vSymbol);
+	string CreateMessage(vectorString vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 };
 
-typedef shared_ptr<CTiingoCryptoWebSocket> CTiingoCryptoWebSocketPtr;
+using CTiingoCryptoWebSocketPtr = shared_ptr<CTiingoCryptoWebSocket>;
 
 extern CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;

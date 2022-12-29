@@ -136,12 +136,12 @@ public:
 	CForexSymbolPtr GetForexSymbol(const CString strSymbol) const { return m_dataFinnhubForexSymbol.GetForexSymbol(strSymbol); }
 	size_t GetForexSymbolSize(void) const noexcept { return m_dataFinnhubForexSymbol.GetForexSymbolSize(); }
 
-	bool IsCryptoExchange(const CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange); }
+	bool IsCryptoExchange(CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange.GetBuffer()); }
 
-	void AddCryptoExchange(const CString strCryptoExchange) { m_dataFinnhubCryptoExchange.Add(strCryptoExchange); }
-	bool DeleteCryptoExchange(const CString strCryptoExchange) { return m_dataFinnhubCryptoExchange.Delete(strCryptoExchange); }
+	void AddCryptoExchange(CString strCryptoExchange) { m_dataFinnhubCryptoExchange.Add(strCryptoExchange.GetBuffer()); }
+	bool DeleteCryptoExchange(CString strCryptoExchange) { return m_dataFinnhubCryptoExchange.Delete(strCryptoExchange.GetBuffer()); }
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
-	CString GetCryptoExchange(const long lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex); }
+	CString GetCryptoExchange(const long lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex).c_str(); }
 
 	bool IsFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.IsFinnhubCryptoSymbol(strSymbol); }
 
@@ -240,10 +240,10 @@ public:
 
 	bool SortStock(void) { return m_dataWorldStock.SortStock(); }
 
-	vector<CString> GetFinnhubWebSocketSymbolVector(void);
-	vector<CString> GetTiingoIEXWebSocketSymbolVector(void);
-	vector<CString> GetTiingoCryptoWebSocketSymbolVector(void);
-	vector<CString> GetTiingoForexWebSocketSymbolVector(void);
+	vectorString GetFinnhubWebSocketSymbolVector(void);
+	vectorString GetTiingoIEXWebSocketSymbolVector(void);
+	vectorString GetTiingoCryptoWebSocketSymbolVector(void);
+	vectorString GetTiingoForexWebSocketSymbolVector(void);
 
 	bool StartAllWebSocket(void);
 	void StartFinnhubWebSocket(void);

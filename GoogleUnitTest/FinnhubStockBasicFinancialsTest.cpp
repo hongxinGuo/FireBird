@@ -11,8 +11,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	class CFinnhubStockBasicFinancialTest : public ::testing::Test
-	{
+	class CFinnhubStockBasicFinancialTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -22,17 +21,15 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
 	};
 
-	TEST_F(CFinnhubStockBasicFinancialTest, TestInitialize) {
-	}
+	TEST_F(CFinnhubStockBasicFinancialTest, TestInitialize) { }
 
 	TEST_F(CFinnhubStockBasicFinancialTest, TestIsNewData) {
 		CFinnhubStockBasicFinancial finnhubStockBasicFinancial;
@@ -54,7 +51,7 @@ namespace StockAnalysisTest {
 		data.m_value = 3.0;
 		vDBData.push_back(data);
 
-		CValueOfPeriod valueData{ 20190101, 1.0 };
+		CValueOfPeriod valueData{20190101, 1.0};
 		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData)) << "数据已存在于数据库中";
 		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
 		valueData.m_period = 20220101;
@@ -68,12 +65,12 @@ namespace StockAnalysisTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
-		instance.m_quarter.m_cashRatio.push_back({ 20210630, 1.0 }); // 数据库中已有
-		instance.m_quarter.m_cashRatio.push_back({ 20210930, 2.0 }); // 数据库中已有
-		instance.m_quarter.m_cashRatio.push_back({ 20211231, 3.0 }); // 这个是新数据
+		instance.m_symbol = _T("300020.SZ");
+		instance.m_quarter.m_cashRatio.push_back({20210930, 1.0}); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({20211231, 2.0}); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({20220331, 3.0}); // 这个是新数据
 
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setQuarter.Open();
 		while (!setQuarter.IsEOF()) {
 			dbData.m_symbol = setQuarter.m_symbol;
@@ -85,7 +82,7 @@ namespace StockAnalysisTest {
 		}
 		setQuarter.Close();
 
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		instance.SaveQuarterData(setQuarter, instance.m_quarter.m_cashRatio, _T("cashRatio"), seasonDBData);
@@ -93,19 +90,19 @@ namespace StockAnalysisTest {
 		setQuarter.Close();
 
 		// 检查数据库中的数据，并恢复原状
-		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Type] = 'cashRatio'");
+		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'");
 		setQuarter.m_strSort = _T("[Date] ASC");
 		setQuarter.Open();
 		setQuarter.m_pDatabase->BeginTrans();
 		setQuarter.MoveLast();
-		EXPECT_EQ(setQuarter.m_date, 20211231) << "新数据存入了数据库";
+		EXPECT_EQ(setQuarter.m_date, 20220331) << "新数据存入了数据库";
 		setQuarter.Delete();
 		setQuarter.MovePrev();
-		EXPECT_EQ(setQuarter.m_date, 20210930) << "数据库中已有此数据，无需插入新数据";
+		EXPECT_EQ(setQuarter.m_date, 20211231) << "数据库中已有此数据，无需插入新数据";
+		setQuarter.MovePrev();
+		EXPECT_EQ(setQuarter.m_date, 20210930) << "数据库中已有此数据， 无需插入新数据";
 		setQuarter.MovePrev();
 		EXPECT_EQ(setQuarter.m_date, 20210630) << "数据库中已有此数据， 无需插入新数据";
-		setQuarter.MovePrev();
-		EXPECT_EQ(setQuarter.m_date, 20210331) << "数据库中已有此数据， 无需插入新数据";
 		setQuarter.MovePrev();
 		setQuarter.m_pDatabase->CommitTrans();
 		setQuarter.Close();
@@ -117,12 +114,12 @@ namespace StockAnalysisTest {
 		vector<CItemOfBasicFinancialSeasonData> seasonDBData;
 		CItemOfBasicFinancialSeasonData dbData;
 
-		instance.m_symbol = _T("200054.SZ");
-		instance.m_annual.m_cashRatio.push_back({ 20191231, 1.0 }); // 数据库中已有
-		instance.m_annual.m_cashRatio.push_back({ 20201231, 2.0 }); // 数据库中已有
-		instance.m_annual.m_cashRatio.push_back({ 20211231, 3.0 }); // 这个是新数据
+		instance.m_symbol = _T("300020.SZ");
+		instance.m_annual.m_cashRatio.push_back({20191231, 1.0}); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({20201231, 2.0}); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({20211231, 3.0}); // 这个是新数据
 
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setAnnual.Open();
 		while (!setAnnual.IsEOF()) {
 			dbData.m_symbol = setAnnual.m_symbol;
@@ -134,7 +131,7 @@ namespace StockAnalysisTest {
 		}
 		setAnnual.Close();
 
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
+		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
 		instance.SaveAnnualData(setAnnual, instance.m_annual.m_cashRatio, _T("cashRatio"), seasonDBData);
@@ -142,7 +139,7 @@ namespace StockAnalysisTest {
 		setAnnual.Close();
 
 		// 检查数据库中的数据，并恢复原状
-		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ' AND [Type] = 'cashRatio'");
+		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ' AND [Type] = 'cashRatio'");
 		setAnnual.m_strSort = _T("[Date] ASC");
 		setAnnual.Open();
 		setAnnual.m_pDatabase->BeginTrans();
@@ -167,25 +164,25 @@ namespace StockAnalysisTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
-		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
-		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
-		instance.m_annual.m_eps.push_back({ 19800101, 4.0 });
-		instance.m_annual.m_grossMargin.push_back({ 19800101, 5.0 });
-		instance.m_annual.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
-		instance.m_annual.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
-		instance.m_annual.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
-		instance.m_annual.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
-		instance.m_annual.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
-		instance.m_annual.m_netMargin.push_back({ 19800101, 11.0 });
-		instance.m_annual.m_operatingMargin.push_back({ 19800101, 12.0 });
-		instance.m_annual.m_pretaxMargin.push_back({ 19800101, 13.0 });
-		instance.m_annual.m_salesPerShare.push_back({ 19800101, 14.0 });
-		instance.m_annual.m_sgaToSale.push_back({ 19800101, 15.0 });
-		instance.m_annual.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
-		instance.m_annual.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
-		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
-		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
+		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
+		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
+		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
+		instance.m_annual.m_eps.push_back({19800101, 4.0});
+		instance.m_annual.m_grossMargin.push_back({19800101, 5.0});
+		instance.m_annual.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
+		instance.m_annual.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
+		instance.m_annual.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
+		instance.m_annual.m_netDebtToTotalCapital.push_back({19800101, 9.0});
+		instance.m_annual.m_netDebtToTotalEquity.push_back({19800101, 10.0});
+		instance.m_annual.m_netMargin.push_back({19800101, 11.0});
+		instance.m_annual.m_operatingMargin.push_back({19800101, 12.0});
+		instance.m_annual.m_pretaxMargin.push_back({19800101, 13.0});
+		instance.m_annual.m_salesPerShare.push_back({19800101, 14.0});
+		instance.m_annual.m_sgaToSale.push_back({19800101, 15.0});
+		instance.m_annual.m_totalDebtToEquity.push_back({19800101, 16.0});
+		instance.m_annual.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
+		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
+		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
 
 		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();
@@ -297,25 +294,25 @@ namespace StockAnalysisTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
-		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
-		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
-		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
-		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
-		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
-		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
-		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
-		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
-		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
-		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
-		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
-		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
-		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
-		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
-		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
-		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
-		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
-		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
+		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
+		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
+		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
+		instance.m_quarter.m_eps.push_back({19800101, 4.0});
+		instance.m_quarter.m_grossMargin.push_back({19800101, 5.0});
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({19800101, 9.0});
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({19800101, 10.0});
+		instance.m_quarter.m_netMargin.push_back({19800101, 11.0});
+		instance.m_quarter.m_operatingMargin.push_back({19800101, 12.0});
+		instance.m_quarter.m_pretaxMargin.push_back({19800101, 13.0});
+		instance.m_quarter.m_salesPerShare.push_back({19800101, 14.0});
+		instance.m_quarter.m_sgaToSale.push_back({19800101, 15.0});
+		instance.m_quarter.m_totalDebtToEquity.push_back({19800101, 16.0});
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
+		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
 
 		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setQuarter.Open();
@@ -426,25 +423,25 @@ namespace StockAnalysisTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
-		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
-		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
-		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
-		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
-		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
-		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
-		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
-		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
-		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
-		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
-		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
-		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
-		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
-		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
-		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
-		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
-		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
-		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
+		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
+		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
+		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
+		instance.m_quarter.m_eps.push_back({19800101, 4.0});
+		instance.m_quarter.m_grossMargin.push_back({19800101, 5.0});
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({19800101, 9.0});
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({19800101, 10.0});
+		instance.m_quarter.m_netMargin.push_back({19800101, 11.0});
+		instance.m_quarter.m_operatingMargin.push_back({19800101, 12.0});
+		instance.m_quarter.m_pretaxMargin.push_back({19800101, 13.0});
+		instance.m_quarter.m_salesPerShare.push_back({19800101, 14.0});
+		instance.m_quarter.m_sgaToSale.push_back({19800101, 15.0});
+		instance.m_quarter.m_totalDebtToEquity.push_back({19800101, 16.0});
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
+		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
 
 		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setQuarter.Open();
@@ -562,25 +559,25 @@ namespace StockAnalysisTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
-		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
-		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
-		instance.m_annual.m_eps.push_back({ 19800101, 4.0 });
-		instance.m_annual.m_grossMargin.push_back({ 19800101, 5.0 });
-		instance.m_annual.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
-		instance.m_annual.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
-		instance.m_annual.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
-		instance.m_annual.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
-		instance.m_annual.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
-		instance.m_annual.m_netMargin.push_back({ 19800101, 11.0 });
-		instance.m_annual.m_operatingMargin.push_back({ 19800101, 12.0 });
-		instance.m_annual.m_pretaxMargin.push_back({ 19800101, 13.0 });
-		instance.m_annual.m_salesPerShare.push_back({ 19800101, 14.0 });
-		instance.m_annual.m_sgaToSale.push_back({ 19800101, 15.0 });
-		instance.m_annual.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
-		instance.m_annual.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
-		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
-		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
+		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
+		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
+		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
+		instance.m_annual.m_eps.push_back({19800101, 4.0});
+		instance.m_annual.m_grossMargin.push_back({19800101, 5.0});
+		instance.m_annual.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
+		instance.m_annual.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
+		instance.m_annual.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
+		instance.m_annual.m_netDebtToTotalCapital.push_back({19800101, 9.0});
+		instance.m_annual.m_netDebtToTotalEquity.push_back({19800101, 10.0});
+		instance.m_annual.m_netMargin.push_back({19800101, 11.0});
+		instance.m_annual.m_operatingMargin.push_back({19800101, 12.0});
+		instance.m_annual.m_pretaxMargin.push_back({19800101, 13.0});
+		instance.m_annual.m_salesPerShare.push_back({19800101, 14.0});
+		instance.m_annual.m_sgaToSale.push_back({19800101, 15.0});
+		instance.m_annual.m_totalDebtToEquity.push_back({19800101, 16.0});
+		instance.m_annual.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
+		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
+		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
 
 		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();

@@ -6,15 +6,15 @@ public:
 	~CDataFinnhubCryptoExchange() override = default;
 	void Reset(void);
 
-	bool IsCryptoExchange(const CString& strExchange) const noexcept {
-		if (m_mapCryptoExchange.contains(strExchange)) return true;
+	bool IsCryptoExchange(const string& sExchange) const noexcept {
+		if (m_mapCryptoExchange.contains(sExchange)) return true;
 		else return false;
 	}
 
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_vCryptoExchange.size(); }
-	CString GetCryptoExchange(const long lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
-	bool Delete(CString strCryptoExchange);
-	void Add(CString strCryptoExchange);
+	string GetCryptoExchange(const long lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
+	bool Delete(const string& sCryptoExchange);
+	void Add(const string& sCryptoExchange);
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
@@ -25,7 +25,7 @@ public:
 	}
 
 protected:
-	vector<CString> m_vCryptoExchange;
-	map<CString, size_t> m_mapCryptoExchange;
+	vectorString m_vCryptoExchange;
+	map<string, size_t> m_mapCryptoExchange;
 	long m_lLastTotalCryptoExchange;
 };

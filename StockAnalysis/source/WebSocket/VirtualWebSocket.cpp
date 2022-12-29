@@ -26,7 +26,7 @@ void CVirtualWebSocket::Reset(void) {
 	m_fReceivingData = false;
 }
 
-bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Disconnect();
@@ -37,7 +37,8 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) 
 		while (!IsOpen()) Sleep(1);
 		ASSERT(IsOpen());
 		Send(m_vSymbol);
-	} catch (exception& e) {
+	}
+	catch (exception& e) {
 		CString sError = e.what();
 		return false;
 	}
@@ -45,35 +46,35 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vector<CString> vSymbol) 
 	return true;
 }
 
-bool CVirtualWebSocket::IsSymbol(CString strSymbol) {
-	if (!m_mapSymbol.contains(strSymbol)) {
+bool CVirtualWebSocket::IsSymbol(string sSymbol) {
+	if (!m_mapSymbol.contains(sSymbol)) {
 		// 新符号？
 		return false;
 	}
 	else return true;
 }
 
-void CVirtualWebSocket::AppendSymbol(vector<CString> vSymbol) {
-	for (auto& strSymbol : vSymbol) {
-		if (!m_mapSymbol.contains(strSymbol)) {
+void CVirtualWebSocket::AppendSymbol(vectorString vSymbol) {
+	for (auto& sSymbol : vSymbol) {
+		if (!m_mapSymbol.contains(sSymbol)) {
 			// 新符号？
-			AddSymbol(strSymbol);
+			AddSymbol(sSymbol);
 		}
 	}
 }
 
-bool CVirtualWebSocket::AddSymbol(CString strSymbol) {
-	if (IsSymbol(strSymbol)) return false;
-	m_mapSymbol[strSymbol] = m_mapSymbol.size();
-	m_vSymbol.push_back(strSymbol);
+bool CVirtualWebSocket::AddSymbol(const string& sSymbol) {
+	if (IsSymbol(sSymbol)) return false;
+	m_mapSymbol[sSymbol] = m_mapSymbol.size();
+	m_vSymbol.push_back(sSymbol);
 	return true;
 }
 
-bool CVirtualWebSocket::DeleteSymbol(CString strSymbol) {
-	if (!IsSymbol(strSymbol)) return false;
+bool CVirtualWebSocket::DeleteSymbol(const string& sSymbol) {
+	if (!IsSymbol(sSymbol)) return false;
 
-	m_vSymbol.erase(m_vSymbol.begin() + m_mapSymbol.at(strSymbol));
-	m_mapSymbol.erase(strSymbol);
+	m_vSymbol.erase(m_vSymbol.begin() + m_mapSymbol.at(sSymbol));
+	m_mapSymbol.erase(sSymbol);
 	return true;
 }
 
@@ -82,16 +83,16 @@ void CVirtualWebSocket::ClearSymbol(void) {
 	m_mapSymbol.clear();
 }
 
-CString CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vector<CString> vSymbol) {
-	CString strSymbols;
+string CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vectorString vSymbol) {
+	string sSymbols;
 
 	for (auto& s : vSymbol) {
-		const CString strSymbol = _T("\"") + s + _T("\"") + _T(",");
-		strSymbols += strSymbol;
+		const string sSymbol = _T("\"") + s + _T("\"") + _T(",");
+		sSymbols += sSymbol;
 	}
-	strSymbols = strSymbols.Left(strSymbols.GetLength() - 1); // 去除最后多余的字符','
+	sSymbols.erase(sSymbols.end() - 1); // 去除最后多余的字符','
 
-	return strSymbols;
+	return sSymbols;
 }
 
 bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {

@@ -41,10 +41,12 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vectorString vSymbol) {
 	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务")); }
+		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 
@@ -64,7 +66,7 @@ bool CTiingoIEXWebSocket::Connect(void) {
 	return true;
 }
 
-bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
+bool CTiingoIEXWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -75,23 +77,23 @@ bool CTiingoIEXWebSocket::Send(vector<CString> vSymbol) {
 	return true;
 }
 
-CString CTiingoIEXWebSocket::CreateMessage(vector<CString> vSymbol) {
-	const CString strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const CString strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
-	const CString strSuffix = _T("]}}");
-	CString strAuth = gl_pTiingoWebInquiry->GetInquiryToken();
-	strAuth = strAuth.Right(strAuth.GetLength() - 7);
+string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
+	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
+	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
+	const string strSuffix = _T("]}}");
+	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
+	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 
 	vSymbol.emplace_back(_T("rig")); // 多加一个Tiingo制式的代码。
 	vSymbol.emplace_back(_T("aapl")); // 多加一个Tiingo制式的代码。
-	const CString strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
+	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
 
-	CString str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
+	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
 
 	return str;
 }
 
-bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoIEXWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
@@ -145,8 +147,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					++it;
 					pIEXData->m_iNanoseconds = jsonGetLongLong(it);
 					++it;
-					sTicker = jsonGetString(it);
-					pIEXData->m_strSymbol = sTicker.c_str();
+					pIEXData->m_sSymbol = jsonGetString(it);
 					++it;
 					pIEXData->m_dBidSize = jsonGetDouble(it);
 					++it;
@@ -176,8 +177,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					++it;
 					pIEXData->m_iNanoseconds = jsonGetLongLong(it);
 					++it;
-					sTicker = jsonGetString(it);
-					pIEXData->m_strSymbol = sTicker.c_str();
+					pIEXData->m_sSymbol = jsonGetString(it);
 					++it;
 					pIEXData->m_dBidSize = jsonGetDouble(it);
 					++it;
@@ -219,7 +219,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) { // 注册ID "data":{"subscriptionId":2563367}
+				}
+				catch (json::exception&) { // 注册ID "data":{"subscriptionId":2563367}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -236,7 +237,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e.what());
 		return false;
 	}

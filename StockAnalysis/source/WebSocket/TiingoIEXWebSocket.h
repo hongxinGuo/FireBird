@@ -9,7 +9,7 @@ class CTiingoIEXSocket final : public CObject {
 public:
 	CTiingoIEXSocket() {
 		m_chMessageType = 'Q';
-		m_strSymbol = _T("");
+		m_sSymbol = _T("");
 		m_iNanoseconds = 0;
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = m_dLastPrice = m_dLastSize = 0;
 		m_iAfterHour = m_iHalted = m_iISO = m_iOddlot = m_iNMSRule611 = 0;
@@ -19,7 +19,7 @@ public:
 	char m_chMessageType; // 'Q', 'T', or 'B'
 	CTime m_date;
 	INT64 m_iNanoseconds;
-	CString m_strSymbol;
+	string m_sSymbol;
 	double m_dBidSize;
 	double m_dBidPrice;
 	double m_dMidPrice;
@@ -34,22 +34,22 @@ public:
 	int m_iNMSRule611; // 1 if the trade is not subject to NMS Rule 611 (trade through), 0 if the trade is subject to Rule NMS 611. Only available for Trade updates, null otherwise.
 };
 
-typedef shared_ptr<CTiingoIEXSocket> CTiingoIEXSocketPtr;
+using CTiingoIEXSocketPtr = shared_ptr<CTiingoIEXSocket>;
 
 class CTiingoIEXWebSocket final : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
 	~CTiingoIEXWebSocket(void) override = default;
 
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
+	bool Connect(void) override;
+	bool Send(vectorString vSymbol) override;
 
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
-	CString CreateMessage(vector<CString> vSymbol);
+	string CreateMessage(vectorString vSymbol);
 	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);
 };
 
-typedef shared_ptr<CTiingoIEXWebSocket> CTiingoIEXWebSocketPtr;
+using CTiingoIEXWebSocketPtr = shared_ptr<CTiingoIEXWebSocket>;
 
 extern CTiingoIEXWebSocket gl_tiingoIEXWebSocket;

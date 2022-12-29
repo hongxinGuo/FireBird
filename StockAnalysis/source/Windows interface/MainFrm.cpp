@@ -566,13 +566,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	}
 
 	const long lCurrentPeriod = llTickCount - s_TickCount;
-	if (lCurrentPeriod > 130) {
-		//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
-		//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
-		sprintf_s(buffer, _T("%d"), lCurrentPeriod);
-		str = buffer;
-		SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
-	}
+	//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
+	//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
+	sprintf_s(buffer, _T("%d"), lCurrentPeriod);
+	str = buffer;
+	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 	s_TickCount = llTickCount;
 
 	SysCallOnTimer(nIDEvent);

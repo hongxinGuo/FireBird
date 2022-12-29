@@ -28,10 +28,9 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearu
 			GeneralCheck();
 		}
@@ -89,7 +88,7 @@ namespace StockAnalysisTest {
 	}
 
 	TEST_F(CDataFinnhubWebSocketTest, TestAddSymbol) {
-		vector<CString> vSymbol{ _T("a"), _T("b"), _T("c"), _T("d"), _T("e") };
+		vectorString vSymbol{_T("a"), _T("b"), _T("c"), _T("d"), _T("e")};
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 		m_finnhubWebSocket.AppendSymbol(vSymbol);

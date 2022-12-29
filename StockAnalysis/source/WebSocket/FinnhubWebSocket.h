@@ -9,17 +9,17 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 class CFinnhubSocket final : public CObject {
 public:
 	CFinnhubSocket() {
-		m_strSymbol = _T("");
+		m_sSymbol = _T("");
 		m_dLastPrice = m_dLastVolume = 0;
 		m_iSeconds = 0;
 	}
 
 public:
-	CString m_strSymbol;
+	string m_sSymbol;
 	double m_dLastPrice;
 	INT64 m_iSeconds; // UNIX milliseconds timestamp
 	double m_dLastVolume;
-	vector<string> m_vCode; // trade conditions
+	vectorString m_vCode; // trade conditions
 };
 
 using CFinnhubSocketPtr = shared_ptr<CFinnhubSocket>;
@@ -34,10 +34,10 @@ public:
 	~CFinnhubWebSocket(void) override = default;
 
 	bool Connect(void) override;
-	bool Send(vector<CString> vSymbol) override;
-	string CreateFinnhubWebSocketString(CString strSymbol);
+	bool Send(vectorString vSymbol) override;
+	string CreateFinnhubWebSocketString(string sSymbol);
 
-	bool CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 };

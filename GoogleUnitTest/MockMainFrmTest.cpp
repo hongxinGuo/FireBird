@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 namespace StockAnalysisTest {
-	extern CMockMainFrame *gl_pMockMainFrame;
+	extern CMockMainFrame* gl_pMockMainFrame;
 
 	class CMockMainFrameTest : public ::testing::Test {
 	public:
@@ -163,8 +163,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
-			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _))
@@ -791,13 +790,11 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(6, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _))
-			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _))
 			.Times(1);
-
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
@@ -818,8 +815,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _))
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
-			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _))
@@ -835,6 +831,8 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(14, _))
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(15, _))
+			.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
 			.Times(1);
 
 		gl_pMockMainFrame->OnTimer(_STOCK_ANALYSIS_TIMER_);

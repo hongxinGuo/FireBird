@@ -9,13 +9,13 @@ class CTiingoForexSocket : public CObject {
 public:
 	CTiingoForexSocket() {
 		m_chMessageType = 'Q';
-		m_strSymbol = _T("");
+		m_sSymbol = _T("");
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
 	}
 
 public:
 	char m_chMessageType; // ±ÿ–Î «'Q'
-	CString m_strSymbol;
+	string m_sSymbol;
 	CTime m_date;
 	double m_dBidSize;
 	double m_dBidPrice;
@@ -24,22 +24,22 @@ public:
 	double m_dAskSize;
 };
 
-typedef shared_ptr<CTiingoForexSocket> CTiingoForexSocketPtr;
+using CTiingoForexSocketPtr = shared_ptr<CTiingoForexSocket>;
 
 class CTiingoForexWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoForexWebSocket();
-	~CTiingoForexWebSocket(void);
+	~CTiingoForexWebSocket(void) override;
 
-	virtual bool Connect(void) override;
-	virtual bool Send(vector<CString> vSymbol) override;
+	bool Connect(void) override;
+	bool Send(vectorString vSymbol) override;
 
-	bool CreatingThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol);
+	bool CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
-	CString CreateMessage(vector<CString> vSymbol);
+	string CreateMessage(vectorString vSymbol);
 	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
 };
 
-typedef shared_ptr<CTiingoForexWebSocket> CTiingoForexWebSocketPtr;
+using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;
 
 extern CTiingoForexWebSocket gl_tiingoForexWebSocket;

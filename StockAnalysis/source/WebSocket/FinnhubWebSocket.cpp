@@ -46,11 +46,13 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vector<CString> vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vectorString vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) { gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务")); }
+		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Finnhub web socket服务"));
+		}
 		s_fConnecting = false;
 	}
 	return 70;
@@ -74,7 +76,7 @@ bool CFinnhubWebSocket::Connect(void) {
 	return Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
-bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
+bool CFinnhubWebSocket::Send(vectorString vSymbol) {
 	string strMessage;
 
 	ASSERT(IsOpen());
@@ -93,15 +95,14 @@ bool CFinnhubWebSocket::Send(vector<CString> vSymbol) {
 /// </summary>
 /// <param name="strSymbol"></param>
 /// <returns></returns>
-string CFinnhubWebSocket::CreateFinnhubWebSocketString(CString strSymbol) {
+string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	const string sPrefix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
 	const string sSuffix = _T("\"}");
-	const string sSymbol = strSymbol.GetBuffer();
 
 	return sPrefix + sSymbol + sSuffix;
 }
 
-bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vector<CString> vSymbol) {
+bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 
@@ -133,8 +134,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				js2 = jsonGetChild(&pt, _T("data"));
 				for (auto it = js2.begin(); it != js2.end(); ++it) {
 					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-					sSymbol = jsonGetString(it, _T("s"));
-					pFinnhubDataPtr->m_strSymbol = sSymbol.c_str();
+					pFinnhubDataPtr->m_sSymbol = jsonGetString(it, _T("s"));
 					pt3 = jsonGetChild(it, _T("c"));
 					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) { pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2)); }
 					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, _T("p"));
@@ -168,7 +168,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub Web Socket json error"));
 			return false;
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e.what());
 		return false;
 	}
