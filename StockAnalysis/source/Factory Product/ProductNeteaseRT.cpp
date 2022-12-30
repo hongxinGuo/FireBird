@@ -5,8 +5,6 @@
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductNeteaseRT, CVirtualWebProduct)
-
 CProductNeteaseRT::CProductNeteaseRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiry = _T("http://api.money.126.net/data/feed/");

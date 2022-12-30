@@ -5,7 +5,6 @@
 
 class CProductFinnhubForexDayLine final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubForexDayLine)
 	CProductFinnhubForexDayLine();
 	~CProductFinnhubForexDayLine() override = default;
 

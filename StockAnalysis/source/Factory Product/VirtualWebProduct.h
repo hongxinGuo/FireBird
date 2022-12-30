@@ -8,32 +8,30 @@
 using std::make_shared;
 
 enum {
-	_VOID_DATA_ = 1,
-	_NO_ACCESS_RIGHT_ = 2,
+	VOID_DATA_ = 1,
+	NO_ACCESS_RIGHT_ = 2,
 };
 
-class CVirtualWebProduct : public CObject {
+class CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CVirtualWebProduct)
 	CVirtualWebProduct();
-	~CVirtualWebProduct() override = default;
+	virtual ~CVirtualWebProduct() = default;
 
-	// 由于需要DECLARE_DYNCREATE此类，故而无法将CreateMessage和ParseAndStoreWebData声明为纯虚函数。
-	virtual CString CreateMessage(void) { return _T(""); }
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; }
+	virtual CString CreateMessage(void) { return _T(""); };
+	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	bool IsVoidJson(const CWebDataPtr& pWebData) {
 		if (pWebData->IsVoidJson()) {
-			m_iReceivedDataStatus = _VOID_DATA_;
+			m_iReceivedDataStatus = VOID_DATA_;
 			return true;
 		}
 		else return false;
 	}
 
-	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == _VOID_DATA_; }
+	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
-	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == _NO_ACCESS_RIGHT_; }
+	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 
 	CString GetClassName(void) const noexcept { return m_strClassName; }
 	CString GetInquiry(void) const noexcept { return m_strInquiry; }

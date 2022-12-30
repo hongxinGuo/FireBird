@@ -2,10 +2,10 @@
 
 #include"TiingoIndustry.h"
 
-class CDataTiingoIndustry : public CObject {
+class CDataTiingoIndustry {
 public:
 	CDataTiingoIndustry();
-	~CDataTiingoIndustry() override;
+	virtual ~CDataTiingoIndustry() = default;
 	void Reset(void);
 
 	size_t GetTotalTiingoIndustry(void) const noexcept { return m_vTiingoIndustry.size(); }

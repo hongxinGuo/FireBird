@@ -6,7 +6,6 @@
 
 class CProductNeteaseDayLine final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductNeteaseDayLine)
 	CProductNeteaseDayLine();
 
 	~CProductNeteaseDayLine() override = default;

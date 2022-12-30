@@ -7,7 +7,6 @@
 
 class CProductFinnhubCompanyBasicFinancial final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCompanyBasicFinancial)
 	CProductFinnhubCompanyBasicFinancial();
 	~CProductFinnhubCompanyBasicFinancial() override = default;
 

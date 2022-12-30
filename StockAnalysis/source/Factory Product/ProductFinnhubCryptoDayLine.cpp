@@ -12,8 +12,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCryptoDayLine, CProductFinnhub)
-
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strClassName = _T("Finnhub crypto dayline");
 	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
@@ -21,7 +19,7 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 }
 
 CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
@@ -30,7 +28,7 @@ CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
 }
 
 bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	bool fStatus = true;
 
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
@@ -72,11 +70,11 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvDayLine;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvDayLine;
 	}
 
@@ -92,7 +90,8 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	} catch (json::exception&) {
+	}
+	catch (json::exception&) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 's': "), pWebData->GetDataBuffer().c_str());
 		return pvDayLine;
@@ -106,7 +105,8 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 't' "), e.what());
 		return pvDayLine;
 	}
@@ -149,7 +149,8 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}

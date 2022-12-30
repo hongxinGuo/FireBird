@@ -1,6 +1,6 @@
 #pragma once
 
-class CSystemStatus final : public CObject {
+class CSystemStatus final {
 public:
 	CSystemStatus();
 	// 只能有一个实例,不允许赋值。
@@ -8,7 +8,7 @@ public:
 	CSystemStatus& operator=(const CSystemStatus&) = delete;
 	CSystemStatus(const CSystemStatus&&) noexcept = delete;
 	CSystemStatus& operator=(const CSystemStatus&&) noexcept = delete;
-	~CSystemStatus() override = default;
+	virtual ~CSystemStatus() = default;
 
 	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
 	bool IsExitingSystem() { return m_fExitingSystem; }

@@ -39,7 +39,10 @@ using std::string;
 //using namespace std;
 
 bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, const long lEndPos) {
-	try { *pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos); } catch (json::parse_error&) {
+	try {
+		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	}
+	catch (json::parse_error&) {
 		//gl_systemMessage.PushErrorMessage("nlohmann json parse error");
 		pjs = nullptr;
 		return false;
@@ -84,7 +87,8 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		strTime = jsonGetString(&js, _T("time"));
 		string strSymbol2 = jsonGetString(&js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -126,7 +130,8 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 
 		pWebRTData->CheckNeteaseRTDataActive();
 		fSucceed = true;
-	} catch (json::exception&) {
+	}
+	catch (json::exception&) {
 		// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 		fSucceed = true;
@@ -176,6 +181,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
 		if (!pData->CreateNlohmannJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
+			gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
 			fProcess = false;
 		}
 	}

@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CInsiderSentiment final : public CObject {
+class CInsiderSentiment final {
 public:
 	CInsiderSentiment();
+	virtual ~CInsiderSentiment() = default;
 
 	void Append(CSetInsiderSentiment& setInsiderTransaction);
 	void Update(CSetInsiderSentiment& setInsiderTransaction);
@@ -21,5 +22,5 @@ public:
 	double m_mspr;
 };
 
-typedef shared_ptr<CInsiderSentiment> CInsiderSentimentPtr;
-typedef shared_ptr<vector<CInsiderSentimentPtr>> CInsiderSentimentVectorPtr;
+using CInsiderSentimentPtr = shared_ptr<CInsiderSentiment>;
+using CInsiderSentimentVectorPtr = shared_ptr<vector<CInsiderSentimentPtr>>;

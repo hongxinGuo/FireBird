@@ -5,8 +5,6 @@
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductNeteaseDayLine, CVirtualWebProduct)
-
 CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiry = _T("http://quotes.money.163.com/service/chddata.html?code=");

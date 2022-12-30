@@ -6,10 +6,10 @@
 #include<vector>
 #include<memory>
 
-class CNeteaseDayLineWebData final : public CObject {
+class CNeteaseDayLineWebData final {
 public:
 	CNeteaseDayLineWebData();
-	~CNeteaseDayLineWebData() override = default;
+	virtual ~CNeteaseDayLineWebData() = default;
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数
@@ -49,4 +49,4 @@ private:
 	CDayLinePtr m_pCurrentProcessingDayLine;
 };
 
-typedef shared_ptr<CNeteaseDayLineWebData> CNeteaseDayLineWebDataPtr;
+using CNeteaseDayLineWebDataPtr = shared_ptr<CNeteaseDayLineWebData>;

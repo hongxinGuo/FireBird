@@ -2,10 +2,10 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-class CDataChosenCrypto final : public CObject {
+class CDataChosenCrypto final {
 public:
 	CDataChosenCrypto();
-	~CDataChosenCrypto() override = default;
+	virtual ~CDataChosenCrypto() = default;
 	void Reset(void);
 
 	CFinnhubCryptoSymbolPtr GetCrypto(const long lIndex) { return m_vWorldChosenCrypto.at(lIndex); }

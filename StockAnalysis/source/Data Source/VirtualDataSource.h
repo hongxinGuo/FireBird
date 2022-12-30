@@ -14,7 +14,7 @@ using std::list;
 // 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
 extern counting_semaphore<3> gl_WebSourceParseAndStoreData;
 
-class CVirtualDataSource : public CObject {
+class CVirtualDataSource {
 public:
 	CVirtualDataSource(void);
 	// 只能有一个实例,不允许赋值。
@@ -22,7 +22,7 @@ public:
 	CVirtualDataSource& operator=(const CVirtualDataSource&) = delete;
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
-	~CVirtualDataSource(void) override = default;
+	virtual ~CVirtualDataSource(void) = default;
 
 	virtual bool Reset(void);
 

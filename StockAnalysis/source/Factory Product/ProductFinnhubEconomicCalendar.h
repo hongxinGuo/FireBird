@@ -5,7 +5,6 @@
 
 class CProductFinnhubEconomicCalendar final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubEconomicCalendar)
 	CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() override = default;
 

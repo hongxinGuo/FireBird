@@ -5,7 +5,6 @@
 
 class CProductFinnhubStockEstimatesEPSSurprise final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise)
 	CProductFinnhubStockEstimatesEPSSurprise();
 	~CProductFinnhubStockEstimatesEPSSurprise() override = default;
 

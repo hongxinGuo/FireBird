@@ -13,7 +13,7 @@ using std::thread;
 
 atomic_long CVirtualWebInquiry::sm_lTotalByteRead = 0;
 
-CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
+CVirtualWebInquiry::CVirtualWebInquiry() {
 	m_pDataSource = nullptr;
 
 	m_pSession = new CInternetSession(_T("StockAnalysis")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。

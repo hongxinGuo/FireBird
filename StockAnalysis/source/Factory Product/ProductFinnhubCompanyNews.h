@@ -11,7 +11,6 @@
 
 class CProductFinnhubCompanyNews final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCompanyNews)
 	CProductFinnhubCompanyNews();
 	~CProductFinnhubCompanyNews() override = default;
 

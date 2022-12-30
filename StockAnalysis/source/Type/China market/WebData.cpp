@@ -3,7 +3,7 @@
 #include"JsonParse.h"
 #include"WebData.h"
 
-CWebData::CWebData() : CObject() {
+CWebData::CWebData() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
 	m_sDataBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
@@ -53,21 +53,17 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 			return true;
 		}
 		else return false;
-	} catch (json::exception&) {
+	}
+	catch (json::exception&) {
 		m_fNoRightToAccess = false;
 		m_strErrorMessage = "";
 		return false;
 	}
 }
 
-bool CWebData::ParseUsingNlohmannJson(long lBeginPos, long lEndPos) {
-	m_fParsed = CreateNlohmannJson(lBeginPos, lEndPos);
-	SetJSonContentType(true);
-	return m_fParsed;
-}
-
 bool CWebData::CreateNlohmannJson(long lBeginPos, long lEndPos) {
 	m_fParsed = ::NlohmannCreateJson(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
+	SetJSonContentType(true);
 
 	return m_fParsed;
 }

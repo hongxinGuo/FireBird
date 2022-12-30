@@ -7,8 +7,6 @@
 
 #include "ProductFinnhubForexSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubForexSymbol, CProductFinnhub)
-
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strClassName = _T("Finnhub forex symbols");
 	m_strInquiry = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
@@ -16,7 +14,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 }
 
 CString CProductFinnhubForexSymbol::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);
 
@@ -26,7 +24,7 @@ CString CProductFinnhubForexSymbol::CreateMessage(void) {
 }
 
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
 	if (pvForexSymbol->empty()) return false;
@@ -49,11 +47,11 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(CWebDa
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvForexSymbol;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvForexSymbol;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvForexSymbol;
 	}
 	const auto pjs = pWebData->GetJSon();

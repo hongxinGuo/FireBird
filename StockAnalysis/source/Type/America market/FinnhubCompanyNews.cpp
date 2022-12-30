@@ -2,7 +2,7 @@
 
 #include"FinnhubCompanyNews.h"
 
-CFinnhubCompanyNews::CFinnhubCompanyNews() : CObject() {
+CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	m_llDateTime = 0;
 	m_iNewsID = 0;
 	m_strCategory = _T("");

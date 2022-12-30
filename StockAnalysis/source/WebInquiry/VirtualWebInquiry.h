@@ -17,7 +17,7 @@ using std::atomic_bool;
 using std::atomic_long;
 using std::string;
 
-class CVirtualWebInquiry : public CObject {
+class CVirtualWebInquiry {
 public:
 	CVirtualWebInquiry();
 	// 只能有一个实例,不允许赋值。
@@ -25,7 +25,7 @@ public:
 	CVirtualWebInquiry& operator=(const CVirtualWebInquiry&) = delete;
 	CVirtualWebInquiry(const CVirtualWebInquiry&&) noexcept = delete;
 	CVirtualWebInquiry& operator=(const CVirtualWebInquiry&&) noexcept = delete;
-	~CVirtualWebInquiry(void) override;
+	virtual ~CVirtualWebInquiry(void);
 
 	void SetDefaultSessionOption(void);
 

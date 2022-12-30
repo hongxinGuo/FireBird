@@ -2,10 +2,10 @@
 
 #include<memory>
 
-class CStockSection : public CObject {
+class CStockSection {
 public:
 	CStockSection();
-	~CStockSection(void) override = default;
+	virtual ~CStockSection(void) = default;
 
 	bool IsActive(void) const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
@@ -29,4 +29,4 @@ protected:
 	bool m_fBuildStockPtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStock中）。
 };
 
-typedef shared_ptr<CStockSection> CStockSectionPtr;
+using CStockSectionPtr = shared_ptr<CStockSection>;

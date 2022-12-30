@@ -1,9 +1,9 @@
 #pragma once
 
-class CDataFinnhubCryptoExchange final : public CObject {
+class CDataFinnhubCryptoExchange final {
 public:
 	CDataFinnhubCryptoExchange();
-	~CDataFinnhubCryptoExchange() override = default;
+	virtual ~CDataFinnhubCryptoExchange() = default;
 	void Reset(void);
 
 	bool IsCryptoExchange(const string& sExchange) const noexcept {

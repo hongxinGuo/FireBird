@@ -7,7 +7,6 @@
 
 class CProductFinnhubCryptoDayLine final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCryptoDayLine)
 	CProductFinnhubCryptoDayLine();
 	~CProductFinnhubCryptoDayLine() override = default;
 

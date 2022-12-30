@@ -5,7 +5,7 @@
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoCryptoSocket : public CObject {
+class CTiingoCryptoSocket {
 public:
 	CTiingoCryptoSocket() {
 		m_chMessageType = ' ';

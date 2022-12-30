@@ -2,7 +2,7 @@
 
 #include"NaicsIndustry.h"
 
-CNaicsIndustry::CNaicsIndustry() : CObject() {
+CNaicsIndustry::CNaicsIndustry() {
 	m_strNaics = _T(" ");
 	m_strNationalIndustry = _T(" ");
 	m_strSector = _T(" ");

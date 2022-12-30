@@ -2,7 +2,7 @@
 
 #include"StockSection.h"
 
-class CDataStockSymbol final : public CObject {
+class CDataStockSymbol final {
 public:
 	CDataStockSymbol();
 	// 只能有一个实例,不允许赋值。
@@ -10,7 +10,7 @@ public:
 	CDataStockSymbol& operator=(const CDataStockSymbol&) = delete;
 	CDataStockSymbol(const CDataStockSymbol&&) noexcept = delete;
 	CDataStockSymbol& operator=(const CDataStockSymbol&&) noexcept = delete;
-	~CDataStockSymbol() override = default;
+	virtual ~CDataStockSymbol() = default;
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
 

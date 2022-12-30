@@ -2,7 +2,7 @@
 
 #include"InsiderSentiment.h"
 
-CInsiderSentiment::CInsiderSentiment() : CObject() {
+CInsiderSentiment::CInsiderSentiment() {
 	m_strSymbol = _T(" ");
 	m_lDate = 19800101;
 	m_lChange = 0;

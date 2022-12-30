@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
 		p = gl_pTiingoDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockSymbol"));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Tiingo stock symbol已更新"));
@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
 		p = gl_pTiingoDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(3)->IsDayLineNeedUpdate());
@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(3)->GetSymbol());
 		p = gl_pTiingoDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 
@@ -177,7 +177,8 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
+		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockSymbol"));
+
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -203,7 +204,7 @@ namespace StockAnalysisTest {
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pTiingoDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -248,7 +249,7 @@ namespace StockAnalysisTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		auto pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
-		pData->ParseUsingNlohmannJson();
+		pData->CreateNlohmannJson();
 		pData->SetParsed(true);
 
 		gl_pTiingoDataSource->StoreReceivedData(pData);

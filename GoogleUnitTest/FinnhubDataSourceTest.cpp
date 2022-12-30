@@ -155,7 +155,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockSymbol"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStockExchange(1)->m_fUpdated = true;
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanySymbol());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockSymbol"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
 
@@ -205,7 +205,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanyProfileConcise());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated());
@@ -214,7 +214,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanyProfileConcise());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -259,7 +259,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireStockDayLine());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), 3001) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
@@ -268,7 +268,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireStockDayLine());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), 3010) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
@@ -300,7 +300,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireRTQuote());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockPriceQuote"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquirePeer) {
@@ -325,7 +325,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquirePeer());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
 
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -335,7 +335,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquirePeer());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
@@ -375,7 +375,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireInsiderTransaction());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票为中国股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票为中国股票，没有复原";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
@@ -385,7 +385,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireInsiderTransaction());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyInsiderTransaction)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
 		EXPECT_EQ(p->GetIndex(), 2500) << "第二次待查询股票为美国股票，位于2500";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票已复原";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
@@ -443,7 +443,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireEPSSurprise());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
@@ -452,7 +452,7 @@ namespace StockAnalysisTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireEPSSurprise());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
@@ -498,7 +498,7 @@ namespace StockAnalysisTest {
 			EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexSymbol());
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 			p = gl_pFinnhubDataSource->GetInquiry();
-			EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+			EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 			EXPECT_EQ(p->GetIndex(), i);
 			EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
 		}
@@ -509,7 +509,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexSymbol());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CFinnhubForexSymbol)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex symbols..."));
@@ -538,7 +538,7 @@ namespace StockAnalysisTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexDayLine());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
@@ -547,7 +547,7 @@ namespace StockAnalysisTest {
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexDayLine());
 		p = gl_pFinnhubDataSource->GetInquiry();
-		EXPECT_TRUE(p->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
@@ -649,7 +649,7 @@ namespace StockAnalysisTest {
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfile)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfile"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -675,7 +675,7 @@ namespace StockAnalysisTest {
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyProfileConcise)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -701,7 +701,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetStockExchange(0)->m_strCode);
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockSymbol)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockSymbol"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -726,7 +726,7 @@ namespace StockAnalysisTest {
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsPeerUpdated()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCompanyPeer)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -750,7 +750,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockEstimatesEPSSurprise)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -773,7 +773,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockPriceQuote)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockPriceQuote"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -798,7 +798,7 @@ namespace StockAnalysisTest {
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubStockDayLine)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -822,7 +822,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetForexExchange(p->GetIndex()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexSymbol)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
@@ -846,7 +846,8 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetForexSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubForexDayLine)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubForexDayLine"));
+
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(p->GetIndex())->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
@@ -870,7 +871,8 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetCryptoExchange(p->GetIndex()));
 		// 顺便测试一下
-		EXPECT_TRUE(gl_pFinnhubDataSource->GetCurrentInquiry()->IsKindOf(RUNTIME_CLASS(CProductFinnhubCryptoSymbol)));
+		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCryptoSymbol"));
+
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 

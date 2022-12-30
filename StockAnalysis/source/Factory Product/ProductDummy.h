@@ -4,12 +4,11 @@
 
 class CProductDummy final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductDummy)
 	CProductDummy();
 	~CProductDummy() override = default;
 
-	virtual CString CreateMessage(void) override final;
-	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) override final;
+	CString CreateMessage(void) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
 };
 
-typedef shared_ptr<CProductDummy> CProductDummyPtr;
+using CProductDummyPtr = shared_ptr<CProductDummy>;

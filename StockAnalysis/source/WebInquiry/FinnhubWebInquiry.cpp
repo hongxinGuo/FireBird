@@ -14,8 +14,7 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 	ConfigureSession();
 }
 
-CFinnhubWebInquiry::~CFinnhubWebInquiry() {
-}
+CFinnhubWebInquiry::~CFinnhubWebInquiry() {}
 
 bool CFinnhubWebInquiry::PrepareNextInquiringString(void) {
 	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此处解析申请字符串，只是将解析后的字符串组装起来。
@@ -45,5 +44,5 @@ void CFinnhubWebInquiry::ConfigureSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseUsingNlohmannJson(0, 0);
+	return pWebData->CreateNlohmannJson(0, 0);
 }

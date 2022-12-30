@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CTiingoIndustry final : public CObject {
+class CTiingoIndustry final {
 public:
 	CTiingoIndustry();
+	virtual ~CTiingoIndustry() = default;
 
 	void Append(CSetTiingoIndustry& setTiingoIndustry);
 	void Load(CSetTiingoIndustry& setTiingoIndustry);
@@ -21,5 +22,5 @@ public:
 	bool m_fUpdated;
 };
 
-typedef shared_ptr<CTiingoIndustry> CTiingoIndustryPtr;
-typedef shared_ptr<vector<CTiingoIndustryPtr>> CTiingoIndustryVectorPtr;
+using CTiingoIndustryPtr = shared_ptr<CTiingoIndustry>;
+using CTiingoIndustryVectorPtr = shared_ptr<vector<CTiingoIndustryPtr>>;

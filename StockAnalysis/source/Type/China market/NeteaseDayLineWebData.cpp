@@ -4,7 +4,7 @@
 #include"NeteaseDayLineWebInquiry.h"
 #include"NeteaseDayLineWebData.h"
 
-CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CObject() {
+CNeteaseDayLineWebData::CNeteaseDayLineWebData() {
 	Reset();
 }
 
@@ -220,8 +220,7 @@ bool CNeteaseDayLineWebData::SkipNeteaseDayLineInformationHeader(void) {
 			m_lCurrentPos++; // ¿ç¹ý´Ë\n
 			return false;
 		}
-	}
-	while (m_sDataBuffer.at(m_lCurrentPos++) != 0X0d); // Ñ°ÕÒ\r
+	} while (m_sDataBuffer.at(m_lCurrentPos++) != 0X0d); // Ñ°ÕÒ\r
 	if (m_lCurrentPos >= m_lBufferLength) {
 		return false;
 	}

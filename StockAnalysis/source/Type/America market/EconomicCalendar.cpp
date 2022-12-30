@@ -3,7 +3,7 @@
 #include"ConvertToString.h"
 #include "EconomicCalendar.h"
 
-CEconomicCalendar::CEconomicCalendar() : CObject() {
+CEconomicCalendar::CEconomicCalendar() {
 	m_strCountry = _T(" ");
 	m_strEvent = _T(" ");
 	m_strImpact = _T(" ");

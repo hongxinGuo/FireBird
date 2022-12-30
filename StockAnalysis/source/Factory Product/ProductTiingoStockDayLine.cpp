@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductTiingoStockDayLine, CVirtualWebProduct)
-
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo stock price candle");
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/daily/");
@@ -20,7 +18,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() 
 }
 
 CString CProductTiingoStockDayLine::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());
 	const CString strMiddle = pStock->GetTiingoDayLineInquiryString(m_pMarket->GetMarketDate());
@@ -32,7 +30,7 @@ CString CProductTiingoStockDayLine::CreateMessage(void) {
 
 bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CDayLineVectorPtr pvDayLine = nullptr;
 
@@ -115,7 +113,8 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 		strMessage += s.c_str();
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
-	} catch (json::exception&) {
+	}
+	catch (json::exception&) {
 		// 正确， do nothing，继续执行
 	}
 	try {
@@ -138,7 +137,8 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPt
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());

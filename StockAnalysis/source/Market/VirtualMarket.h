@@ -2,21 +2,15 @@
 
 #include"VirtualDataSource.h"
 
-class CVirtualMarket : public CObject {
+class CVirtualMarket {
 public:
-	DECLARE_DYNCREATE(CVirtualMarket)
 	CVirtualMarket(void);
 	// 不允许赋值。
 	CVirtualMarket(const CVirtualMarket&) = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&) = delete;
 	CVirtualMarket(const CVirtualMarket&&) noexcept = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&&) noexcept = delete;
-	~CVirtualMarket(void) override = default;
-
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
+	virtual ~CVirtualMarket(void) = default;
 
 public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次

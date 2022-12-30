@@ -17,7 +17,7 @@ using std::string;
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
-class CWebData final : public CObject {
+class CWebData final {
 public:
 	friend CVirtualWebInquiry;
 	friend CNeteaseRTWebInquiry;
@@ -32,7 +32,7 @@ public:
 	CWebData& operator=(const CWebData&) = delete;
 	CWebData(const CWebData&&) noexcept = delete;
 	CWebData& operator=(const CWebData&&) noexcept = delete;
-	~CWebData() override;
+	virtual ~CWebData();
 
 	bool IsProcessedAllTheData(void) const noexcept {
 		if (m_lCurrentPos < m_lBufferLength) return false;
@@ -85,7 +85,6 @@ public:
 	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用Nlohmann json将数据转换为json格式。
-	bool ParseUsingNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
 	bool CreateNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon(void) { return &m_js; }
 
@@ -93,7 +92,7 @@ public:
 	void Test_SetBuffer_(CString strBuffer);
 
 protected:
-	json m_js;
+	json m_js; // 存储解析后的json
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;

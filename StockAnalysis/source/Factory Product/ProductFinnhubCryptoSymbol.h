@@ -5,7 +5,6 @@
 
 class CProductFinnhubCryptoSymbol final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCryptoSymbol)
 	CProductFinnhubCryptoSymbol();
 
 	~CProductFinnhubCryptoSymbol() override = default;

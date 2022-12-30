@@ -11,7 +11,7 @@
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-class CSystemConfiguration final : CObject {
+class CSystemConfiguration final {
 public:
 	CSystemConfiguration();
 	// 只能有一个实例,不允许赋值。
@@ -19,7 +19,7 @@ public:
 	CSystemConfiguration& operator=(const CSystemConfiguration&) = delete;
 	CSystemConfiguration(const CSystemConfiguration&&) noexcept = delete;
 	CSystemConfiguration& operator=(const CSystemConfiguration&&) noexcept = delete;
-	~CSystemConfiguration() override;
+	virtual ~CSystemConfiguration();
 
 	bool LoadDB();
 	bool SaveDB();

@@ -397,7 +397,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
 	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。
-	m_uIdTimer = SetTimer(_STOCK_ANALYSIS_TIMER_, 100, nullptr);
+	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 100, nullptr);
 	if (m_uIdTimer == 0) { TRACE(_T("生成100ms时钟时失败\n")); }
 	return 0;
 }
@@ -546,7 +546,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	CString str;
 	static long long s_TickCount = 0;
 
-	ASSERT(nIDEvent == _STOCK_ANALYSIS_TIMER_);
+	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
 
 	if (gl_systemStatus.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
 

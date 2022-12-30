@@ -7,8 +7,6 @@
 
 #include "ProductFinnhubCompanyProfileConcise.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyProfileConcise, CProductFinnhub)
-
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strClassName = _T("Finnhub company profile concise");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
@@ -16,7 +14,7 @@ CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 }
 
 CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -27,7 +25,7 @@ CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetCompanyProfileUpdated(true);

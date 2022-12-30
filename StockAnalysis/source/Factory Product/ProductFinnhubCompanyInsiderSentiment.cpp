@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderSentiment, CProductFinnhub)
-
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strClassName = _T("Finnhub company insider sentiment");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
@@ -20,7 +18,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 }
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const long lCurrentDate = m_pMarket->GetMarketDate();
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	char buffer[100];
@@ -34,7 +32,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CInsiderSentimentVectorPtr pvInsiderSentiment = nullptr;
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -83,18 +81,19 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderSentiment;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvInsiderSentiment;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvInsiderSentiment;
 	}
 	const auto pjs = pWebData->GetJSon();
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiry(), e.what());
 		return pvInsiderSentiment;
 	}
@@ -112,7 +111,8 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}

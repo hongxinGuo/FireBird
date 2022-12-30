@@ -7,9 +7,7 @@
 // 所有的市场使用同一个当地时间。
 time_t CVirtualMarket::sm_tUTC = 0;
 
-IMPLEMENT_DYNCREATE(CVirtualMarket, CObject)
-
-CVirtualMarket::CVirtualMarket(void) : CObject() {
+CVirtualMarket::CVirtualMarket(void) {
 	m_fResetMarketPermission = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
 	m_fReadyToRun = true;
@@ -29,16 +27,6 @@ CVirtualMarket::CVirtualMarket(void) : CObject() {
 	m_i5MinuteCounter = 299; // 五分钟一次的计数器
 	m_i1HourCounter = 3599; // 一小时一次的计数器
 }
-
-#ifdef _DEBUG
-void CVirtualMarket::AssertValid() const {
-	CObject::AssertValid();
-}
-
-void CVirtualMarket::Dump(CDumpContext& dc) const {
-	CObject::Dump(dc);
-}
-#endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
 	CalculateTime();

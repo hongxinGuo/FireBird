@@ -2,7 +2,7 @@
 
 #include"SICIndustry.h"
 
-CSICIndustry::CSICIndustry() : CObject() {
+CSICIndustry::CSICIndustry() {
 	m_lCode = 0;
 	m_strIndustry = _T(" ");
 	m_strSector = _T(" ");

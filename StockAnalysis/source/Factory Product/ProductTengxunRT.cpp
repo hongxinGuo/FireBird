@@ -5,8 +5,6 @@
 
 #include"JsonParse.h"
 
-IMPLEMENT_DYNCREATE(CProductTengxunRT, CVirtualWebProduct)
-
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiry = _T("http://qt.gtimg.cn/q=");

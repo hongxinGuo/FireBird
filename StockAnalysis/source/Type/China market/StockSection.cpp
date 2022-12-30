@@ -1,7 +1,7 @@
 #include"pch.h"
 #include "StockSection.h"
 
-CStockSection::CStockSection() : CObject() {
+CStockSection::CStockSection() {
 	m_fActive = false;
 	m_wMarket = 0;
 	m_strComment = _T("");

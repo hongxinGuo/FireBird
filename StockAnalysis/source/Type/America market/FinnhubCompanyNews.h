@@ -2,8 +2,6 @@
 
 #include"SetFinnhubCompanyNews.h"
 
-#include<memory>
-
 //[
 //{
 //"category": "company news",
@@ -29,9 +27,10 @@
 //}
 //]
 
-class CFinnhubCompanyNews final : public CObject {
+class CFinnhubCompanyNews final {
 public:
 	CFinnhubCompanyNews();
+	virtual ~CFinnhubCompanyNews() = default;
 
 	void Append(CSetCompanyNews& setCompanyNews);
 	void Update(CSetCompanyNews& setCompanyNews);
@@ -52,5 +51,5 @@ public:
 	CString m_strURL;
 };
 
-typedef shared_ptr<CFinnhubCompanyNews> CCompanyNewsPtr;
-typedef shared_ptr<vector<CCompanyNewsPtr>> CCompanyNewsVectorPtr;
+using CCompanyNewsPtr = shared_ptr<CFinnhubCompanyNews>;
+using CCompanyNewsVectorPtr = shared_ptr<vector<CCompanyNewsPtr>>;

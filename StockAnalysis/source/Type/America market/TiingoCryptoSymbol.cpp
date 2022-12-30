@@ -2,7 +2,7 @@
 
 #include"TiingoCryptoSymbol.h"
 
-CTiingoCryptoSymbol::CTiingoCryptoSymbol() : CObject() {
+CTiingoCryptoSymbol::CTiingoCryptoSymbol() {
 	Reset();
 }
 

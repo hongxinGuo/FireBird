@@ -197,9 +197,10 @@ public:
 //
 /// </summary>
 
-class CFinnhubStockBasicFinancial final : public CObject {
+class CFinnhubStockBasicFinancial final {
 public:
 	CFinnhubStockBasicFinancial();
+	virtual ~CFinnhubStockBasicFinancial() = default;
 
 	void AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);
 	void UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);
@@ -376,5 +377,5 @@ public:
 	CBasicFinancialOfSeason m_quarter;
 };
 
-typedef shared_ptr<CFinnhubStockBasicFinancial> CFinnhubStockBasicFinancialPtr;
-typedef shared_ptr<vector<CFinnhubStockBasicFinancialPtr>> CFinnhubStockBasicFinancialVectorPtr;
+using CFinnhubStockBasicFinancialPtr = shared_ptr<CFinnhubStockBasicFinancial>;
+using CFinnhubStockBasicFinancialVectorPtr = shared_ptr<vector<CFinnhubStockBasicFinancialPtr>>;

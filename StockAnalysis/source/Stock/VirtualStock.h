@@ -8,7 +8,7 @@ using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 #include<atomic>
 using std::atomic_bool;
 
-class CVirtualStock : public CObject {
+class CVirtualStock {
 public:
 	CVirtualStock();
 	// ≤ª‘ –Ì∏≥÷µ°£
@@ -16,7 +16,7 @@ public:
 	CVirtualStock& operator=(const CVirtualStock&) = delete;
 	CVirtualStock(const CVirtualStock&&) noexcept = delete;
 	CVirtualStock& operator=(const CVirtualStock&&) noexcept = delete;
-	~CVirtualStock() override = default;
+	virtual ~CVirtualStock() = default;
 	virtual void Reset(void);
 	virtual int GetRatio(void) const = 0;
 

@@ -5,7 +5,6 @@
 
 class CProductTiingoStockDayLine final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductTiingoStockDayLine)
 	CProductTiingoStockDayLine();
 	~CProductTiingoStockDayLine() override = default;
 

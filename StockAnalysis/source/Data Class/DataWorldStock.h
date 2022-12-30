@@ -2,10 +2,10 @@
 
 #include"WorldStock.h"
 
-class CDataWorldStock : public CObject {
+class CDataWorldStock {
 public:
 	CDataWorldStock();
-	~CDataWorldStock() override = default;
+	virtual ~CDataWorldStock() = default;
 	void Reset(void);
 
 	bool IsStock(const CString& strSymbol) const {

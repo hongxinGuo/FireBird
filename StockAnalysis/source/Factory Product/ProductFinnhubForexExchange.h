@@ -4,7 +4,6 @@
 
 class CProductFinnhubForexExchange final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubForexExchange)
 	CProductFinnhubForexExchange();
 	~CProductFinnhubForexExchange() override = default;
 

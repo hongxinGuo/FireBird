@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyInsiderTransaction, CProductFinnhub)
-
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strClassName = _T("Finnhub company insider transaction");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
@@ -20,7 +18,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 }
 
 CString CProductFinnhubCompanyInsiderTransaction::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
@@ -30,7 +28,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CInsiderTransactionVectorPtr pvInsiderTransaction = nullptr;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -82,18 +80,19 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvInsiderTransaction;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvInsiderTransaction;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvInsiderTransaction;
 	}
 	const auto pjs = pWebData->GetJSon();
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiry(), e.what());
 		return pvInsiderTransaction;
 	}
@@ -117,7 +116,8 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
 		return pvInsiderTransaction;
 	}

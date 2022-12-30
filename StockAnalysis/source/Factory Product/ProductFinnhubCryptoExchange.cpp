@@ -7,8 +7,6 @@
 
 #include "ProductFinnhubCryptoExchange.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCryptoExchange, CProductFinnhub)
-
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strClassName = _T("Finnhub crypto exchange");
 	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/exchange?");
@@ -23,7 +21,7 @@ CString CProductFinnhubCryptoExchange::CreateMessage(void) {
 }
 
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
@@ -49,11 +47,11 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvExchange;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvExchange;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvExchange;
 	}
 	const auto pjs = pWebData->GetJSon();

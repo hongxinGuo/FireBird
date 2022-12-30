@@ -1,9 +1,9 @@
 #pragma once
 
-class CDataFinnhubForexExchange final : public CObject {
+class CDataFinnhubForexExchange final {
 public:
 	CDataFinnhubForexExchange();
-	~CDataFinnhubForexExchange() override = default;
+	virtual ~CDataFinnhubForexExchange() = default;
 	void Reset(void);
 
 	bool IsForexExchange(const CString& strExchange) const noexcept {

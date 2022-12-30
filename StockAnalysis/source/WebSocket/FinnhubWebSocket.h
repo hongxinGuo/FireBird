@@ -6,7 +6,7 @@
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CFinnhubSocket final : public CObject {
+class CFinnhubSocket final {
 public:
 	CFinnhubSocket() {
 		m_sSymbol = _T("");

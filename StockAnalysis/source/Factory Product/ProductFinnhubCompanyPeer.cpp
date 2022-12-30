@@ -5,8 +5,6 @@
 
 #include "ProductFinnhubCompanyPeer.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyPeer, CProductFinnhub)
-
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strClassName = _T("Finnhub company peer");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
@@ -14,7 +12,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 }
 
 CString CProductFinnhubCompanyPeer::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
@@ -24,7 +22,7 @@ CString CProductFinnhubCompanyPeer::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const CString strPeer = ParseFinnhubStockPeer(pWebData);
@@ -45,11 +43,11 @@ CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return strPeer;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return strPeer;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return strPeer;
 	}
 	for (i = 0; i < pWebData->GetBufferLength(); i++) {

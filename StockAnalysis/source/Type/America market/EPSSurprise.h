@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CEPSSurprise final : public CObject {
+class CEPSSurprise final {
 public:
 	CEPSSurprise();
+	virtual ~CEPSSurprise() = default;
 
 	void Append(CSetEPSSurprise& setEPSSurprise);
 	void Load(CSetEPSSurprise& setEPSSurprise);
@@ -18,5 +19,5 @@ public:
 	double m_dEstimate;
 };
 
-typedef shared_ptr<CEPSSurprise> CEPSSurprisePtr;
-typedef shared_ptr<vector<CEPSSurprisePtr>> CEPSSurpriseVectorPtr;
+using CEPSSurprisePtr = shared_ptr<CEPSSurprise>;
+using CEPSSurpriseVectorPtr = shared_ptr<vector<CEPSSurprisePtr>>;

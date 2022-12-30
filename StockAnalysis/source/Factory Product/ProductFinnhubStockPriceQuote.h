@@ -4,7 +4,6 @@
 
 class CProductFinnhubStockPriceQuote final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubStockPriceQuote)
 	CProductFinnhubStockPriceQuote();
 	~CProductFinnhubStockPriceQuote() override = default;
 

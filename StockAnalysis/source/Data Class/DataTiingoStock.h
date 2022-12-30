@@ -3,10 +3,10 @@
 #include"WorldStock.h"
 #include"TiingoStock.h"
 
-class CDataTiingoStock final : public CObject {
+class CDataTiingoStock final {
 public:
 	CDataTiingoStock();
-	~CDataTiingoStock() override = default;
+	virtual ~CDataTiingoStock() = default;
 	void Reset(void);
 
 	void Add(CTiingoStockPtr pTiingoStock);

@@ -5,7 +5,6 @@
 
 class CProductFinnhubEconomicCountryList final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubEconomicCountryList)
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 

@@ -8,8 +8,6 @@
 
 #include "ProductFinnhubCompanyNews.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyNews, CProductFinnhub)
-
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strClassName = _T("Finnhub company news");
 	m_strInquiry = _T("https://finnhub.io/api/v1/company-news?symbol=");
@@ -17,7 +15,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 }
 
 CString CProductFinnhubCompanyNews::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	char buffer[50]{};
 	int iUpdateDate = 0, iMarketDate = 0;
@@ -43,7 +41,7 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -89,11 +87,11 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvFinnhubCompanyNews;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvFinnhubCompanyNews;
 	}
 	const auto pjs = pWebData->GetJSon();

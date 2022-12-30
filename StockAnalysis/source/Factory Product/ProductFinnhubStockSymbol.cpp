@@ -7,8 +7,6 @@
 
 #include "ProductFinnhubStockSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockSymbol, CProductFinnhub)
-
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strClassName = _T("Finnhub company symbols");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
@@ -16,7 +14,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 CString CProductFinnhubStockSymbol::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
 
@@ -26,7 +24,7 @@ CString CProductFinnhubStockSymbol::CreateMessage(void) {
 }
 
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	// 临时输出数据至文件中。
 	// SaveToFile(_T("C:\\StockAnalysis\\StockSymbol.json"), pWebData->GetDataBuffer());
@@ -95,11 +93,11 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDat
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvStock;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvStock;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvStock;
 	}
 	auto pjs = pWebData->GetJSon();

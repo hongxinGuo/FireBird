@@ -12,41 +12,39 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 #include<memory>
 
 enum {
-  _TYPE_UNKNOWN_ = 0,
-  _TYPE_BUY_ = 1,
-  _TYPE_ATTACK_BUY_ = 2,
-  _TYPE_STRONG_BUY_ = 3,
-  _TYPE_CANCELED_BUY_ = 4,
-  _TYPE_SELL_ = 11,
-  _TYPE_STRONG_SELL_ = 12,
-  _TYPE_ATTACK_SELL_ = 13,
-  _TYPE_CANCELED_SELL = 14,
+	_TYPE_UNKNOWN_ = 0,
+	_TYPE_BUY_ = 1,
+	_TYPE_ATTACK_BUY_ = 2,
+	_TYPE_STRONG_BUY_ = 3,
+	_TYPE_CANCELED_BUY_ = 4,
+	_TYPE_SELL_ = 11,
+	_TYPE_STRONG_SELL_ = 12,
+	_TYPE_ATTACK_SELL_ = 13,
+	_TYPE_CANCELED_SELL = 14,
 };
 
-class COneDeal
-{
+class COneDeal {
 public:
-  COneDeal();
-  ~COneDeal();
+	COneDeal();
+	~COneDeal();
 
-  time_t GetMarketTime(void) noexcept { return m_time; }
-  void SetTime(time_t time) noexcept { m_time = time; }
-  long GetType(void) const noexcept { return m_lType; }
-  void SetType(long lType) noexcept { m_lType = lType; }
-  long GetPrice(void) const noexcept { return m_lPrice; }
-  void SetPrice(long lPrice) noexcept { m_lPrice = lPrice; }
-  long GetVolume(void) const noexcept { return m_lVolume; }
-  void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
+	time_t GetMarketTime(void) noexcept { return m_time; }
+	void SetTime(time_t time) noexcept { m_time = time; }
+	long GetType(void) const noexcept { return m_lType; }
+	void SetType(long lType) noexcept { m_lType = lType; }
+	long GetPrice(void) const noexcept { return m_lPrice; }
+	void SetPrice(long lPrice) noexcept { m_lPrice = lPrice; }
+	long GetVolume(void) const noexcept { return m_lVolume; }
+	void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
 
 protected:
-  time_t m_time;       // 交易时间
-  long m_lType;      // 交易类型
-  long m_lPrice;     // 成交价格。单位：0.001元。
-  long m_lVolume;    // 交易数量。单位：股。
+	time_t m_time;       // 交易时间
+	long m_lType;      // 交易类型
+	long m_lPrice;     // 成交价格。单位：0.001元。
+	long m_lVolume;    // 交易数量。单位：股。
 };
 
-typedef shared_ptr<COneDeal> COneDealPtr;
+using COneDealPtr = shared_ptr<COneDeal>;

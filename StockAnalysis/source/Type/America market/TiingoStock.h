@@ -5,7 +5,7 @@
 #include<memory>
 #include<vector>
 
-class CTiingoStock final : public CObject {
+class CTiingoStock final {
 public:
 	CTiingoStock();
 	// 不允许复制和赋值。
@@ -13,7 +13,7 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&) = delete;
 	CTiingoStock(const CTiingoStock&&) noexcept = delete;
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
-	virtual ~CTiingoStock() override = default;
+	virtual ~CTiingoStock() = default;
 
 	void Reset(void);
 
@@ -43,5 +43,5 @@ protected:
 	// 无需存储数据区
 };
 
-typedef shared_ptr<CTiingoStock> CTiingoStockPtr;
-typedef shared_ptr<vector<CTiingoStockPtr>> CTiingoStockVectorPtr;
+using CTiingoStockPtr = shared_ptr<CTiingoStock>;
+using CTiingoStockVectorPtr = shared_ptr<vector<CTiingoStockPtr>>;

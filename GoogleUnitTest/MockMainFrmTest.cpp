@@ -781,7 +781,7 @@ namespace StockAnalysisTest {
 			.Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask())
 			.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(_STOCK_ANALYSIS_TIMER_))
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_))
 			.Times(1);
 
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _))
@@ -835,7 +835,7 @@ namespace StockAnalysisTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _))
 			.Times(1);
 
-		gl_pMockMainFrame->OnTimer(_STOCK_ANALYSIS_TIMER_);
+		gl_pMockMainFrame->OnTimer(STOCK_ANALYSIS_TIMER_);
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();

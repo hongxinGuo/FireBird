@@ -5,7 +5,6 @@
 
 class CProductFinnhubStockSymbol final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubStockSymbol)
 	CProductFinnhubStockSymbol();
 	~CProductFinnhubStockSymbol() override = default;
 

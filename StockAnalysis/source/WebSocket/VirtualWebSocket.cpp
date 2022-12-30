@@ -9,7 +9,7 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
-CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) : CObject() {
+CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) {
 	m_fHaveSubscriptionId = fHaveSubscription;
 	m_iSubscriptionId = 0;
 	m_url = _T("");

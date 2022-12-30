@@ -7,8 +7,6 @@
 
 #include "ProductFinnhubEconomicCalendar.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCalendar, CProductFinnhub)
-
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strClassName = _T("Finnhub economic calendar");
 	m_strInquiry = _T("https://finnhub.io/api/v1/calendar/economic?");
@@ -23,7 +21,7 @@ CString CProductFinnhubEconomicCalendar::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	dynamic_cast<CWorldMarket*>(m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
@@ -39,11 +37,11 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEconomicCalendar;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvEconomicCalendar;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvEconomicCalendar;
 	}
 	const auto pjs = pWebData->GetJSon();

@@ -2,10 +2,10 @@
 
 #include"NaicsIndustry.h"
 
-class CDataNaicsIndustry final : public CObject {
+class CDataNaicsIndustry final {
 public:
 	CDataNaicsIndustry();
-	~CDataNaicsIndustry() override = default;
+	Virtual ~CDataNaicsIndustry() = default;
 	void Reset(void);
 
 	size_t GetTotalNaicsIndustry(void) const noexcept { return m_vNaicsIndustry.size(); }

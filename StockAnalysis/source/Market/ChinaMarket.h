@@ -22,7 +22,6 @@ constexpr int c_10DaysRSStockSetStartPosition = 10; // Ê®ÈÕÏà¶ÔÇ¿¶È¹ÉÆ±¼¯ÆğÊ¼Î»Ö
 
 class CChinaMarket : public CVirtualMarket {
 public:
-	DECLARE_DYNCREATE(CChinaMarket)
 	CChinaMarket(void);
 	// Ö»ÄÜÓĞÒ»¸öÊµÀı,²»ÔÊĞí¸³Öµ¡£
 	CChinaMarket(const CChinaMarket&) = delete;
@@ -43,11 +42,6 @@ public:
 	bool IsWorkingTime(long lTime) final;
 	bool IsDummyTime(void) final;
 	bool IsDummyTime(long lTime) final;
-
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
 
 public:
 	// ¶¨Ê±¸üĞÂ£¬Íê³É¾ßÌåµ÷¶ÈÈÎÎñ¡£ÓÉÖ÷Ïß³ÌCMainFrameµÄOnTimerº¯Êıµ÷ÓÃ¡£Æäºó¸úËæ¸÷±»µ÷¶Èº¯Êı

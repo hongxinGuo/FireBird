@@ -10,8 +10,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductTiingoStockSymbol, CVirtualWebProduct)
-
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo stock symbols");
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");

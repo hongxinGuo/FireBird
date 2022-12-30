@@ -2,10 +2,10 @@
 
 #include <TiingoCryptoSymbol.h>
 
-class CDataTiingoCryptoSymbol final : public CObject {
+class CDataTiingoCryptoSymbol final {
 public:
 	CDataTiingoCryptoSymbol();
-	~CDataTiingoCryptoSymbol() override = default;
+	virtual ~CDataTiingoCryptoSymbol() = default;
 	void Reset(void);
 
 	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);

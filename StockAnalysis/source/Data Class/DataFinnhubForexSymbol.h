@@ -2,10 +2,10 @@
 
 #include"FinnhubForexSymbol.h"
 
-class CDataFinnhubForexSymbol final : public CObject {
+class CDataFinnhubForexSymbol final {
 public:
 	CDataFinnhubForexSymbol();
-	~CDataFinnhubForexSymbol() override = default;
+	virtual ~CDataFinnhubForexSymbol() = default;
 	void Reset(void);
 
 	bool IsForexSymbol(const CString& strSymbol) const {

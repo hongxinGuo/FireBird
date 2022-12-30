@@ -2,7 +2,7 @@
 
 #include "VirtualStock.h"
 
-CVirtualStock::CVirtualStock() : CObject() {
+CVirtualStock::CVirtualStock() {
 	CVirtualStock::Reset();
 }
 

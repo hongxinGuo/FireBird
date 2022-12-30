@@ -20,10 +20,10 @@ using std::vector;
 
 using vectorString = vector<string>;
 
-class CVirtualWebSocket : public CObject {
+class CVirtualWebSocket {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
-	~CVirtualWebSocket() override;
+	virtual ~CVirtualWebSocket();
 	void Reset(void);
 
 	virtual bool Connect(void) = 0;

@@ -4,7 +4,6 @@
 
 class CProductFinnhubCompanyProfile final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCompanyProfile)
 	CProductFinnhubCompanyProfile();
 	~CProductFinnhubCompanyProfile() override = default;
 

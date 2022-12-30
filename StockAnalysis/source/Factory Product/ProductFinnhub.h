@@ -6,8 +6,6 @@
 
 class CProductFinnhub : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductFinnhub)
-
 	CProductFinnhub() { }
 
 	~CProductFinnhub() override = default;

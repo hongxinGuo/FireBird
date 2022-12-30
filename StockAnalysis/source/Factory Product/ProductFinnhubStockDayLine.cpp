@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockDayLine, CProductFinnhub)
-
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
@@ -22,7 +20,7 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 }
 
 CString CProductFinnhubStockDayLine::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto strMiddle = pStock->GetFinnhubDayLineInquiryString(CVirtualMarket::GetUTCTime());
@@ -33,7 +31,7 @@ CString CProductFinnhubStockDayLine::CreateMessage(void) {
 }
 
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
@@ -71,11 +69,11 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvDayLine;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvDayLine;
 	}
 
@@ -90,7 +88,8 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e.what());
 		return pvDayLine;
@@ -105,7 +104,8 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiry(), e.what());
 		return pvDayLine;
 	}
@@ -148,7 +148,8 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e.what()); }
+	}
+	catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e.what()); }
 	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

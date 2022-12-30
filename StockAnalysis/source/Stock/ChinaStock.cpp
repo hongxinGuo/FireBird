@@ -1331,21 +1331,9 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);
 			m_dataWeekLine.StoreData(pWeekLine);
-		}
-		while (i < m_dataDayLine.Size());
+		} while (i < m_dataDayLine.Size());
 		m_dataWeekLine.SetDataLoaded(true);
 		return true;
 	}
 	else return false;
 }
-
-#ifdef _DEBUG
-void CChinaStock::AssertValid() const {
-	CObject::AssertValid();
-}
-
-void CChinaStock::Dump(CDumpContext& dc) const {
-	CObject::Dump(dc);
-}
-
-#endif //_DEBUG

@@ -7,11 +7,9 @@
 #include<exception>
 using std::out_of_range;
 
-IMPLEMENT_DYNCREATE(CProductFinnhub, CVirtualWebProduct)
-
 bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return true;
 	}
 	else return false;
@@ -36,7 +34,8 @@ bool CProductFinnhub::AddInaccessibleExchangeIfNeeded(void) {
 			return true;
 		}
 		else { return false; }
-	} catch (out_of_range&) {
+	}
+	catch (out_of_range&) {
 		// 新的数据
 		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
 		pNewExchange->SetFunction(m_iProductType);

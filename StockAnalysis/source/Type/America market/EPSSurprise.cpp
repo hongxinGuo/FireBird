@@ -2,7 +2,7 @@
 
 #include"EPSSurprise.h"
 
-CEPSSurprise::CEPSSurprise() : CObject() {
+CEPSSurprise::CEPSSurprise() {
 	m_strSymbol = _T(" ");
 	m_lDate = 0;
 	m_dActual = 0.0;

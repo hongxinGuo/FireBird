@@ -5,7 +5,6 @@
 
 class CProductTiingoStockSymbol final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductTiingoStockSymbol)
 	CProductTiingoStockSymbol();
 	~CProductTiingoStockSymbol() override = default;
 

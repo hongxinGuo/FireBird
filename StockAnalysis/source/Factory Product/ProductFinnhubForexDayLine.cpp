@@ -12,8 +12,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubForexDayLine, CProductFinnhub)
-
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strClassName = _T("Finnhub forex dayline");
 	m_strInquiry = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
@@ -21,7 +19,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 }
 
 CString CProductFinnhubForexDayLine::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = static_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
 
@@ -31,7 +29,7 @@ CString CProductFinnhubForexDayLine::CreateMessage(void) {
 }
 
 bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CDayLineVectorPtr pvDayLine = nullptr;
 
@@ -69,11 +67,11 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvDayLine;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvDayLine;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvDayLine;
 	}
 	const auto pjs = pWebData->GetJSon();
@@ -87,7 +85,8 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle没有s项"), e.what());
 		return pvDayLine;
@@ -104,7 +103,8 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			pDayLine->SetDate(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 't' "), e.what());
 		return pvDayLine;
 	}
@@ -147,7 +147,8 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 'v' "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}

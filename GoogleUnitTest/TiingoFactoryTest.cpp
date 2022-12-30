@@ -29,11 +29,10 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
-			// clearu
+		void TearDown(void) override {
+			// clearUp
 			GeneralCheck();
 		}
 
@@ -42,8 +41,8 @@ namespace StockAnalysisTest {
 	};
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockSymbol)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_)->IsKindOf(RUNTIME_CLASS(CProductTiingoCryptoSymbol)));
-		EXPECT_TRUE(factory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_)->IsKindOf(RUNTIME_CLASS(CProductTiingoStockDayLine)));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_)).name(), _T("class CProductTiingoCryptoSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_)).name(), _T("class CProductTiingoStockDayLine"));
 	}
 }

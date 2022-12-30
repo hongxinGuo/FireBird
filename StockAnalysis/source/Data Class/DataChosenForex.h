@@ -2,10 +2,10 @@
 
 #include"FinnhubForexSymbol.h"
 
-class CDataChosenForex final : public CObject {
+class CDataChosenForex final {
 public:
 	CDataChosenForex();
-	~CDataChosenForex() override = default;
+	virtual ~CDataChosenForex() = default;
 	void Reset(void);
 
 	CForexSymbolPtr GetForex(const long lIndex) { return m_vWorldChosenForex.at(lIndex); }

@@ -1,7 +1,7 @@
 #include"pch.h"
 #include"FinnhubStockBasicFinancial.h"
 
-CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() : CObject() {
+CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 	m_symbol = _T("");
 	m_10DayAverageTradingVolume = 0.0;
 	m_52WeekHigh = 0.0;

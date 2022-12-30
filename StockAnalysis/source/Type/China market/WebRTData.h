@@ -121,7 +121,7 @@ using CWebDataPtr = std::shared_ptr<CWebData>;
 class CWebRTData;
 using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
 
-class CWebRTData final : public CObject {
+class CWebRTData final {
 public:
 	// 初始化
 	CWebRTData(void);
@@ -130,7 +130,7 @@ public:
 	CWebRTData& operator=(const CWebRTData&) = delete;
 	CWebRTData(const CWebRTData&&) noexcept = delete;
 	CWebRTData& operator=(const CWebRTData&&) noexcept = delete;
-	~CWebRTData(void) override = default;
+	virtual ~CWebRTData(void) = default;
 
 	void Reset(void);
 
@@ -211,11 +211,6 @@ public:
 		if (m_lDataSource != INVALID_RT_WEB_DATA_) return true;
 		else return false;
 	}
-
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
 
 	// 数据
 public:

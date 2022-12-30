@@ -5,7 +5,6 @@
 
 class CProductFinnhubForexSymbol final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubForexSymbol)
 	CProductFinnhubForexSymbol();
 	~CProductFinnhubForexSymbol() override = default;
 

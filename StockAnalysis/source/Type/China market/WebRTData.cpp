@@ -10,12 +10,6 @@
 #include"WebRTData.h"
 #include"ChinaMarket.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 void CWebRTData::Reset(void) {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
 	m_time = 0;
@@ -42,17 +36,9 @@ void CWebRTData::Reset(void) {
 	m_fActive = false;
 }
 
-CWebRTData::CWebRTData(void) : CObject() { Reset(); }
-
-/////////////////////////////////////////////////////////////////////////////
-// CWebRTData diagnostics
-
-#ifdef _DEBUG
-void CWebRTData::AssertValid() const { CObject::AssertValid(); }
-
-void CWebRTData::Dump(CDumpContext& dc) const { CObject::Dump(dc); }
-
-#endif //_DEBUG
+CWebRTData::CWebRTData(void) {
+	Reset();
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -270,7 +256,8 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebRTData) {
 		CheckSinaRTDataActive();
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return true;
-	} catch (exception& e) {
+	}
+	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		return false;
 	}
@@ -349,7 +336,8 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, char* buffe
 		pSinaWebRTData->IncreaseCurrentPos();
 
 		return true;
-	} catch (exception& e) {
+	}
+	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaDataOneValue异常 "), e);
 		return false;
 	}
@@ -704,7 +692,8 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		CheckTengxunRTDataActive();
 		SetDataSource(TENGXUN_RT_WEB_DATA_);
 		return true;
-	} catch (exception& e) {
+	}
+	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadTengxunData异常 "), e);
 		return false;
 	}
@@ -788,7 +777,8 @@ bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, char*
 		buffer[i] = 0x000;
 		pTengxunWebRTData->IncreaseCurrentPos();
 		return true;
-	} catch (exception& e) {
+	}
+	catch (exception& e) {
 		buffer[i] = 0x000;
 		CString errorMessage = pTengxunWebRTData->GetStockCode() + _T(" ReadTengxunOnValue异常:");
 		errorMessage += buffer;

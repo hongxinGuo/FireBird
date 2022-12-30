@@ -5,7 +5,6 @@
 
 class CProductFinnhubStockDayLine final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubStockDayLine)
 	CProductFinnhubStockDayLine();
 	~CProductFinnhubStockDayLine() override = default;
 

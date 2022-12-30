@@ -2,10 +2,10 @@
 
 #include"WorldStock.h"
 
-class CDataChosenStock final : public CObject {
+class CDataChosenStock final {
 public:
 	CDataChosenStock();
-	~CDataChosenStock() override = default;
+	virtual ~CDataChosenStock() = default;
 	void Reset(void);
 
 	CWorldStockPtr GetStock(const long lIndex) { return m_vWorldChosenStock.at(lIndex); }

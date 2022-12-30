@@ -5,7 +5,6 @@
 
 class CProductTiingoCryptoSymbol final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductTiingoCryptoSymbol)
 	CProductTiingoCryptoSymbol();
 	~CProductTiingoCryptoSymbol() override = default;
 

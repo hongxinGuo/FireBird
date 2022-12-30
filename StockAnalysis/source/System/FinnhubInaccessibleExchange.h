@@ -13,11 +13,11 @@
 #include<set>
 using std::set;
 
-class CInaccessibleExchanges : CObject {
+class CInaccessibleExchanges {
 public:
 	CInaccessibleExchanges();
 	CInaccessibleExchanges(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
-	~CInaccessibleExchanges() override = default;
+	virtual ~CInaccessibleExchanges() = default;
 
 	bool Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
 
@@ -46,10 +46,10 @@ protected:
 
 using CInaccessibleExchangesPtr = shared_ptr<CInaccessibleExchanges>;
 
-class CFinnhubInaccessibleExchange : CObject {
+class CFinnhubInaccessibleExchange {
 public:
 	CFinnhubInaccessibleExchange();
-	~CFinnhubInaccessibleExchange() override;
+	virtual ~CFinnhubInaccessibleExchange();
 
 	bool LoadDB(void);
 	bool LoadDB(CString strFileDirectory);

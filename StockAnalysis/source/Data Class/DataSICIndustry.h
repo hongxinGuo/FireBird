@@ -2,10 +2,10 @@
 
 #include"SICIndustry.h"
 
-class CDataSICIndustry : public CObject {
+class CDataSICIndustry {
 public:
 	CDataSICIndustry();
-	~CDataSICIndustry() override;
+	virtual ~CDataSICIndustry() = default;
 	void Reset(void);
 
 	size_t GetTotalSICIndustry(void) const noexcept { return m_vSICIndustry.size(); }

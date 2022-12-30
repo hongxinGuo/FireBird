@@ -8,7 +8,6 @@
 
 class CProductTengxunRT final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductTengxunRT)
 	CProductTengxunRT();
 
 	~CProductTengxunRT() override = default;

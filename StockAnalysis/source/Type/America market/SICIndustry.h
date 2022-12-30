@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CSICIndustry final : public CObject {
+class CSICIndustry final {
 public:
 	CSICIndustry();
+	virtual ~CSICIndustry() = default;
 
 	void Append(CSetSICIndustry& setSICIndustry);
 	void Load(CSetSICIndustry& setSICIndustry);
@@ -22,4 +23,4 @@ public:
 	bool m_fUpdated;
 };
 
-typedef shared_ptr<CSICIndustry> CSICIndustryPtr;
+using CSICIndustryPtr = shared_ptr<CSICIndustry>;

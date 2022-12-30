@@ -4,10 +4,10 @@
 
 #include<memory>
 
-class CCountry final : public CObject {
+class CCountry final {
 public:
 	CCountry();
-	~CCountry() override = default;
+	virtual ~CCountry() = default;
 
 	void Append(CSetCountry& setCountry);
 	void Load(CSetCountry& setCountry);
@@ -21,5 +21,5 @@ public:
 	CString m_strCurrencyCode;
 };
 
-typedef shared_ptr<CCountry> CCountryPtr;
-typedef shared_ptr<vector<CCountryPtr>> CCountryVectorPtr;
+using CCountryPtr = shared_ptr<CCountry>;
+using CCountryVectorPtr = shared_ptr<vector<CCountryPtr>>;

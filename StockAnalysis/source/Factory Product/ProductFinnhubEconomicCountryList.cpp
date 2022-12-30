@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubEconomicCountryList, CProductFinnhub)
-
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strClassName = _T("Finnhub economic country list");
 	m_strInquiry = _T("https://finnhub.io/api/v1/country?");
@@ -25,7 +23,7 @@ CString CProductFinnhubEconomicCountryList::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) { if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry); } }
@@ -41,11 +39,11 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCountry;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvCountry;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvCountry;
 	}
 	const auto pjs = pWebData->GetJSon();
@@ -66,7 +64,8 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 			pCountry->m_strCurrencyCode = s.c_str();
 			pvCountry->push_back(pCountry);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}

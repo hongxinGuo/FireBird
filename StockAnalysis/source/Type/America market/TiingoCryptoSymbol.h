@@ -5,9 +5,10 @@
 #include<memory>
 #include<vector>
 
-class CTiingoCryptoSymbol final : public CObject {
+class CTiingoCryptoSymbol final {
 public:
 	CTiingoCryptoSymbol();
+	virtual ~CTiingoCryptoSymbol() = default;
 
 	void Reset(void);
 
@@ -26,5 +27,5 @@ protected:
 	// 无需存储数据区
 };
 
-typedef shared_ptr<CTiingoCryptoSymbol> CTiingoCryptoSymbolPtr;
-typedef shared_ptr<vector<CTiingoCryptoSymbolPtr>> CTiingoCryptoVectorPtr;
+using CTiingoCryptoSymbolPtr = shared_ptr<CTiingoCryptoSymbol>;
+using CTiingoCryptoVectorPtr = shared_ptr<vector<CTiingoCryptoSymbolPtr>>;

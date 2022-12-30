@@ -14,10 +14,10 @@ using gsl::not_null;
 
 #include<memory>
 
-class CVirtualHistoryCandleBasic : public CObject {
+class CVirtualHistoryCandleBasic {
 public:
 	CVirtualHistoryCandleBasic();
-	~CVirtualHistoryCandleBasic() override = default;;
+	virtual ~CVirtualHistoryCandleBasic() = default;;
 	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	bool SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic); // 存储基本数据
@@ -137,4 +137,4 @@ public:
 	double m_d120RS;
 };
 
-typedef shared_ptr<CVirtualHistoryCandleBasic> CVirtualHistoryCandleBasicPtr;
+using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;

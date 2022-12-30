@@ -11,8 +11,6 @@
 
 using namespace std;
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockEstimatesEPSSurprise, CProductFinnhub)
-
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strClassName = _T("Finnhub estimates EPS surprise");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
@@ -20,7 +18,7 @@ CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurpri
 }
 
 CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto strMiddle = pStock->GetSymbol();
@@ -31,7 +29,7 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage(void) {
 }
 
 bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
@@ -56,11 +54,11 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvEPSSurprise;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvEPSSurprise;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvEPSSurprise;
 	}
 	const auto pjs = pWebData->GetJSon();
@@ -77,7 +75,8 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-	} catch (json::exception& e) {
+	}
+	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}

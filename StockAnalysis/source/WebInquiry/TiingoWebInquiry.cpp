@@ -37,5 +37,5 @@ void CTiingoWebInquiry::ConfigureSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseUsingNlohmannJson(0, 0);
+	return pWebData->CreateNlohmannJson(0, 0);
 }

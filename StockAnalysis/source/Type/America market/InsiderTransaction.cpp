@@ -3,7 +3,7 @@
 #include"ConvertToString.h"
 #include"InsiderTransaction.h"
 
-CInsiderTransaction::CInsiderTransaction() : CObject() {
+CInsiderTransaction::CInsiderTransaction() {
 	m_strSymbol = _T(" ");
 	m_strPersonName = _T(" ");
 	m_lShare = 0;

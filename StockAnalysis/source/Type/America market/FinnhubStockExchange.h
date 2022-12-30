@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CFinnhubStockExchange final : public CObject {
+class CFinnhubStockExchange final {
 public:
 	CFinnhubStockExchange();
+	virtual ~CFinnhubStockExchange() = default;
 
 	void Append(CSetFinnhubStockExchange& setFinnhubExchange);
 
@@ -28,4 +29,4 @@ public:
 	bool m_fUpdated;
 };
 
-typedef shared_ptr<CFinnhubStockExchange> CFinnhubStockExchangePtr;
+using CFinnhubStockExchangePtr = shared_ptr<CFinnhubStockExchange>;

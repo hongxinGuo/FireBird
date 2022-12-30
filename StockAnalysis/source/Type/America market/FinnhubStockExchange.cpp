@@ -2,7 +2,7 @@
 
 #include"FinnhubStockExchange.h"
 
-CFinnhubStockExchange::CFinnhubStockExchange() : CObject() {
+CFinnhubStockExchange::CFinnhubStockExchange() {
 	m_strCode = _T(" ");
 	m_strName = _T(" ");
 	m_strMic = _T(" ");

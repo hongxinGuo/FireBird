@@ -2,10 +2,10 @@
 
 #include"Country.h"
 
-class CDataFinnhubCountry final : public CObject {
+class CDataFinnhubCountry final {
 public:
 	CDataFinnhubCountry();
-	~CDataFinnhubCountry() override = default;
+	virtual ~CDataFinnhubCountry() = default;
 	void Reset(void);
 
 	size_t GetTotalCountry(void) const noexcept { return m_vCountry.size(); }

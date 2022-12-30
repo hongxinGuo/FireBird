@@ -8,7 +8,6 @@
 
 class CProductSinaRT final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductSinaRT)
 	CProductSinaRT();
 
 	~CProductSinaRT() override = default;

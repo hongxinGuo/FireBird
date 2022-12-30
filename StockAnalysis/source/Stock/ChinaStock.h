@@ -395,11 +395,6 @@ public:
 	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine(void) noexcept { return &m_dataDayLine; }
 	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine(void) noexcept { return &m_dataWeekLine; }
 
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
-
 public:
 	// 测试专用函数
 	void TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。

@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CInsiderTransaction final : public CObject {
+class CInsiderTransaction final {
 public:
 	CInsiderTransaction();
+	virtual ~CInsiderTransaction() = default;
 
 	void Append(CSetInsiderTransaction& setInsiderTransaction);
 	void Update(CSetInsiderTransaction& setInsiderTransaction);
@@ -25,5 +26,5 @@ public:
 	double m_dTransactionPrice;
 };
 
-typedef shared_ptr<CInsiderTransaction> CInsiderTransactionPtr;
-typedef shared_ptr<vector<CInsiderTransactionPtr>> CInsiderTransactionVectorPtr;
+using CInsiderTransactionPtr = shared_ptr<CInsiderTransaction>;
+using CInsiderTransactionVectorPtr = shared_ptr<vector<CInsiderTransactionPtr>>;

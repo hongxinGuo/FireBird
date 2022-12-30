@@ -28,14 +28,6 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-IMPLEMENT_DYNCREATE(CChinaMarket, CVirtualMarket)
-
 CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	if (static int siInstance = 0; ++siInstance > 1) { TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n")); }
 	m_strMarketId = _T("中国股票市场");
@@ -177,17 +169,17 @@ bool CChinaMarket::IsWorkingTime(const long lTime) {
 	return true;
 }
 
-bool CChinaMarket::IsWorkingTime(void) { return IsWorkingTime(GetMarketTime()); }
+bool CChinaMarket::IsWorkingTime(void) {
+	return IsWorkingTime(GetMarketTime());
+}
 
-bool CChinaMarket::IsDummyTime(long lTime) { return !IsWorkingTime(lTime); }
+bool CChinaMarket::IsDummyTime(long lTime) {
+	return !IsWorkingTime(lTime);
+}
 
-bool CChinaMarket::IsDummyTime(void) { return !IsWorkingTime(); }
-
-#ifdef _DEBUG
-void CChinaMarket::AssertValid() const { CVirtualMarket::AssertValid(); }
-
-void CChinaMarket::Dump(CDumpContext& dc) const { CVirtualMarket::Dump(dc); }
-#endif //_DEBUG
+bool CChinaMarket::IsDummyTime(void) {
+	return !IsWorkingTime();
+}
 
 bool CChinaMarket::CheckMarketReady(void) {
 	if (!IsSystemReady()) {
@@ -267,8 +259,7 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
 		if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
 		else { m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	}
-	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }
@@ -278,8 +269,7 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
 		if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
 		else { m_lCurrentSelectedStockSet++; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	}
-	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }

@@ -8,8 +8,6 @@
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductTiingoCryptoSymbol, CVirtualWebProduct)
-
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo crypto symbols");
 	m_strInquiry = _T("https://api.tiingo.com/tiingo/crypto?");

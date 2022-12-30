@@ -13,7 +13,7 @@
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-class CSystemData final : public CObject {
+class CSystemData final {
 public:
 	CSystemData(void) = default;
 	// 不允许赋值。
@@ -21,7 +21,7 @@ public:
 	CSystemData& operator=(const CSystemData&) = delete;
 	CSystemData(const CSystemData&&) noexcept = delete;
 	CSystemData& operator=(const CSystemData&&) noexcept = delete;
-	~CSystemData(void) override = default;
+	virtual ~CSystemData(void) = default;
 
 public:
 	// Finnhub Socket缓存数据

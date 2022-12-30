@@ -2,9 +2,7 @@
 
 #include"VirtualWebProduct.h"
 
-IMPLEMENT_DYNCREATE(CVirtualWebProduct, CObject)
-
-CVirtualWebProduct::CVirtualWebProduct() : CObject() {
+CVirtualWebProduct::CVirtualWebProduct() {
 	m_pMarket = nullptr;
 	m_lIndex = -1; // 设置为越界
 

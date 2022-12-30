@@ -5,7 +5,7 @@
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoIEXSocket final : public CObject {
+class CTiingoIEXSocket final {
 public:
 	CTiingoIEXSocket() {
 		m_chMessageType = 'Q';

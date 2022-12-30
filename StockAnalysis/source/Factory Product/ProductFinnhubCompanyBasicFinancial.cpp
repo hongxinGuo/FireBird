@@ -8,8 +8,6 @@
 #include"FinnhubStockBasicFinancial.h"
 #include "ProductFinnhubCompanyBasicFinancial.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCompanyBasicFinancial, CProductFinnhub)
-
 CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	m_strClassName = _T("Finnhub company basic financials");
 	m_strInquiry = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
@@ -17,7 +15,7 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 }
 
 CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -36,7 +34,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
 //
 //
 bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -249,11 +247,11 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return false;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
 	const auto pjs = pWebData->GetJSon();

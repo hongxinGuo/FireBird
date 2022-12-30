@@ -45,6 +45,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{B2A9CE23-96BB-4CC9-8469-1746C2328291}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Internal\NetError.txt = docs\Internal\NetError.txt
+		readme.md = readme.md
 		docs\安装使用手册(中文版).md = docs\安装使用手册(中文版).md
 	EndProjectSection
 EndProject

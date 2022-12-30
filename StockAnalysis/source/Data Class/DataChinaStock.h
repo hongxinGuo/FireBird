@@ -3,7 +3,7 @@
 #include"RSReference.h"
 #include"ChinaStock.h"
 
-class CDataChinaStock : public CObject {
+class CDataChinaStock {
 public:
 	CDataChinaStock();
 	// 只能有一个实例,不允许赋值。
@@ -11,7 +11,7 @@ public:
 	CDataChinaStock& operator=(const CDataChinaStock&) = delete;
 	CDataChinaStock(const CDataChinaStock&&) noexcept = delete;
 	CDataChinaStock& operator=(const CDataChinaStock&&) noexcept = delete;
-	~CDataChinaStock() override = default;
+	virtual ~CDataChinaStock() = default;
 	void Reset(void);
 
 	[[nodiscard]] long GetIndex(const CString& strSymbol) const { return m_mapStock.at(strSymbol); }

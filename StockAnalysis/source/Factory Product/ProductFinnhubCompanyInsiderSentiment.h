@@ -5,7 +5,6 @@
 
 class CProductFinnhubCompanyInsiderSentiment final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCompanyInsiderSentiment)
 	CProductFinnhubCompanyInsiderSentiment();
 	~CProductFinnhubCompanyInsiderSentiment() override = default;
 

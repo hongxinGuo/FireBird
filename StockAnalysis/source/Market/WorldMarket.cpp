@@ -26,12 +26,6 @@
 using std::thread;
 using std::make_shared;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-IMPLEMENT_DYNCREATE(CWorldMarket, CVirtualMarket)
-
 CWorldMarket::CWorldMarket() {
 	if (static int siInstance = 0; ++siInstance > 1) { TRACE("CWorldMarket市场变量只允许存在一个实例\n"); }
 
@@ -179,13 +173,13 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	//StopAllWebSocketIfOutOfTime();
+	StopWebSocketsIfOutOfTime();
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
-	//StartAllWebSocket();
+	StartAllWebSocket();
 
 	TaskResetMarket(lCurrentTime);
 
@@ -795,7 +789,7 @@ void CWorldMarket::DisconnectAllWebSocket(void) {
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
 /// <param name=""></param>
-void CWorldMarket::StopAllWebSocketIfOutOfTime(void) {
+void CWorldMarket::StopWebSocketsIfOutOfTime(void) {
 	if (IsSystemReady()) {
 		StopFinnhubWebSocketIfOutOfTime();
 		StopTiingoIEXWebSocketIfOutOfTime();

@@ -4,10 +4,10 @@
 
 #include<memory>
 
-class CEconomicCalendar final : public CObject {
+class CEconomicCalendar final {
 public:
 	CEconomicCalendar();
-	~CEconomicCalendar() override = default;
+	virtual ~CEconomicCalendar() = default;
 
 	void Load(CSetEconomicCalendar& setEconomicCalendar);
 	void Append(CSetEconomicCalendar& setEconomicCalendar);
@@ -25,5 +25,5 @@ public:
 	CString m_strUnit;
 };
 
-typedef shared_ptr<CEconomicCalendar> CEconomicCalendarPtr;
-typedef shared_ptr<vector<CEconomicCalendarPtr>> CEconomicCalendarVectorPtr;
+using CEconomicCalendarPtr = shared_ptr<CEconomicCalendar>;
+using CEconomicCalendarVectorPtr = shared_ptr<vector<CEconomicCalendarPtr>>;

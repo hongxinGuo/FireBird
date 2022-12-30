@@ -54,5 +54,5 @@ void CQuandlWebInquiry::ConfigureSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CQuandlWebInquiry::ParseData(CWebDataPtr pWebData) {
-	return pWebData->ParseUsingNlohmannJson(0, 0);
+	return pWebData->CreateNlohmannJson(0, 0);
 }

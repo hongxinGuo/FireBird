@@ -8,7 +8,6 @@
 
 class CProductNeteaseRT final : public CVirtualWebProduct {
 public:
-	DECLARE_DYNCREATE(CProductNeteaseRT)
 	CProductNeteaseRT();
 
 	~CProductNeteaseRT() override = default;

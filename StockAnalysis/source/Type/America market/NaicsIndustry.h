@@ -4,9 +4,10 @@
 
 #include<memory>
 
-class CNaicsIndustry final : public CObject {
+class CNaicsIndustry final {
 public:
 	CNaicsIndustry();
+	virtual ~CNaicsIndustry() = default;
 
 	void Append(CSetNaicsIndustry& setNaicsIndustry);
 
@@ -24,4 +25,4 @@ public:
 	bool m_fUpdated;
 };
 
-typedef shared_ptr<CNaicsIndustry> CNaicsIndustryPtr;
+using CNaicsIndustryPtr = shared_ptr<CNaicsIndustry>;

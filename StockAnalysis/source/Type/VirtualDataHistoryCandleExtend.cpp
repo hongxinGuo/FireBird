@@ -6,7 +6,9 @@
 #include<memory>
 using std::make_shared;
 
-CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() : CObject() { Reset(); }
+CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {
+	Reset();
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //

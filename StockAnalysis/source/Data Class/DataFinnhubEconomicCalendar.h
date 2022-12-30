@@ -2,10 +2,10 @@
 
 #include"EconomicCalendar.h"
 
-class CDataFinnhubEconomicCalendar final : public CObject {
+class CDataFinnhubEconomicCalendar final {
 public:
 	CDataFinnhubEconomicCalendar();
-	~CDataFinnhubEconomicCalendar() override = default;
+	virtual ~CDataFinnhubEconomicCalendar() = default;
 	void Reset(void);
 
 	bool LoadDB(void);

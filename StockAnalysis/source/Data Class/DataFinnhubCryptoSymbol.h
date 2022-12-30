@@ -2,10 +2,10 @@
 
 #include"FinnhubCryptoSymbol.h"
 
-class CDataFinnhubCryptoSymbol : public CObject {
+class CDataFinnhubCryptoSymbol {
 public:
 	CDataFinnhubCryptoSymbol();
-	~CDataFinnhubCryptoSymbol() override = default;
+	virtual ~CDataFinnhubCryptoSymbol() = default;
 	void Reset(void);
 
 	bool IsFinnhubCryptoSymbol(const CString& strSymbol) const noexcept {

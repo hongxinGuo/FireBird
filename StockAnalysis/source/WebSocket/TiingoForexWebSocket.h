@@ -5,7 +5,7 @@
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg);
 
-class CTiingoForexSocket : public CObject {
+class CTiingoForexSocket {
 public:
 	CTiingoForexSocket() {
 		m_chMessageType = 'Q';

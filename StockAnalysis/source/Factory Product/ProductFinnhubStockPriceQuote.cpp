@@ -8,8 +8,6 @@
 
 #include "ProductFinnhubStockPriceQuote.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubStockPriceQuote, CProductFinnhub)
-
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
 	m_strInquiry = _T("https://finnhub.io/api/v1/quote?symbol=");
@@ -17,7 +15,7 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 }
 
 CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto strMiddle = pStock->GetSymbol();
@@ -28,7 +26,7 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 }
 
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
@@ -49,11 +47,11 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return false;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
 	const auto pjs = pWebData->GetJSon();

@@ -5,7 +5,6 @@
 
 class CProductFinnhubCompanyInsiderTransaction final : public CProductFinnhub {
 public:
-	DECLARE_DYNCREATE(CProductFinnhubCompanyInsiderTransaction)
 	CProductFinnhubCompanyInsiderTransaction();
 	~CProductFinnhubCompanyInsiderTransaction() override = default;
 

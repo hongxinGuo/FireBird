@@ -2,7 +2,7 @@
 
 #include"TiingoStock.h"
 
-CTiingoStock::CTiingoStock() : CObject() {
+CTiingoStock::CTiingoStock() {
 	Reset();
 }
 

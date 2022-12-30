@@ -5,8 +5,6 @@
 
 #include "ProductFinnhubCryptoSymbol.h"
 
-IMPLEMENT_DYNCREATE(CProductFinnhubCryptoSymbol, CProductFinnhub)
-
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strClassName = _T("Finnhub crypto symbols");
 	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
@@ -22,7 +20,7 @@ CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_pMarket->IsKindOf(RUNTIME_CLASS(CWorldMarket)));
+		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
@@ -57,11 +55,11 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvCryptoSymbol;
 	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = _VOID_DATA_;
+		m_iReceivedDataStatus = VOID_DATA_;
 		return pvCryptoSymbol;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = _NO_ACCESS_RIGHT_;
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return pvCryptoSymbol;
 	}
 	const auto pjs = pWebData->GetJSon();

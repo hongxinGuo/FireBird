@@ -2,7 +2,7 @@
 
 #include"TiingoIndustry.h"
 
-CTiingoIndustry::CTiingoIndustry() : CObject() {
+CTiingoIndustry::CTiingoIndustry() {
 	m_strIndustry = _T(" ");
 	m_strSector = _T(" ");
 
