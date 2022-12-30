@@ -541,21 +541,22 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	CHighPerformanceCounter counter;
-	char buffer[50]{};
-	CString str;
-	static long long s_TickCount = 0;
+	static CHighPerformanceCounter counter;
+	char buffer[100]{};
 
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
+
+	counter.stop();
+	gl_pQuandlWebInquiry->SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	counter.start();
 
 	if (gl_systemStatus.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
 
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
-	counter.start();
+
 	// 调用主调度函数,由各市场调度函数执行具体任务
 	SchedulingTask();
-	const long long llTickCount = GetTickCount64();
 
 	//CMainFrame只执行更新状态任务
 	UpdateStatus();
@@ -564,14 +565,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	if (!gl_systemStatus.IsWorkingMode()) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
 	}
-
-	const long lCurrentPeriod = llTickCount - s_TickCount;
-	//EXPECT_FALSE(1) << "OnTimer's time > 100ms";
-	//TRACE("OnTimer's time > 100ms, %d\n", lCurrentPeriod);
-	sprintf_s(buffer, _T("%d"), lCurrentPeriod);
-	str = buffer;
-	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
-	s_TickCount = llTickCount;
 
 	SysCallOnTimer(nIDEvent);
 }

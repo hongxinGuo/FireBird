@@ -1,7 +1,9 @@
 # FireBird StockAnalysis
 
 ### 当前状态
-Version 0.27:增加自动判断是否有权读取数据的功能，自动添加不允许读取数据的交易所名称。准备发行Version0.27版本。
+准备发行Version0.27版本。
+
+Version 0.27:增加自动判断是否有权读取数据的功能，自动添加不允许读取数据的交易所名称。
 
 ### 欢迎使用FireBird StockAnalysis
 FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库中。
@@ -21,15 +23,17 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 参看\Lib目录中的安装使用手册。
 
 ### 致谢
-1.GoogleTest(https://github.com/google/googletest).
+1.GoogleTest(https://github.com/google/googletest), 用于单元测试。
 
-2.OpenSSL库(https://www.openssl.org/).
+2.OpenSSL(https://www.openssl.org/)， 用于WebSocket中的套接字。
 
-3.ixWebSocket库(https://github.com/machinezone/IXWebSocket).
+3.ixWebSocket(https://github.com/machinezone/IXWebSocket)，用于WebSocket.
 
-4.Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1).
+4.Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1), 用于检查系统的内存漏洞。
 
-5.Nlohmann json(https://github.com/nlohmann/json).
+5.Nlohmann json(https://github.com/nlohmann/json), 用于解析json制式的数据。
+
+6.Google benchmark(https://github.com/google/benchmark), 用于关键函数的基准时间测试。
 
 
 

@@ -610,7 +610,7 @@ bool CFinnhubDataSource::InquireEconomicCalendar(void) {
 			SetInquiring(true);
 		}
 		else { SetEconomicCalendarUpdated(true); }
-		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar"));
+		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar updated"));
 		return true;
 	}
 	return false;

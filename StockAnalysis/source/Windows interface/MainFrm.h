@@ -5,7 +5,7 @@
 #include"stdafx.h"
 #include "OutputWnd.h"
 
-constexpr int STOCK_ANALYSIS_TIMER_ = 1;
+constexpr UINT STOCK_ANALYSIS_TIMER_ = 1;
 
 class CMainFrame : public CFrameWndEx {
 	DECLARE_DYNCREATE(CMainFrame)

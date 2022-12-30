@@ -68,6 +68,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	case CRYPTO_CANDLES_:
 	case ECONOMIC_COUNTRY_LIST_:
 	case ECONOMIC_CALENDAR_:
+		break;
 	default:
 		// error. not implement yet.
 		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
@@ -91,8 +92,12 @@ bool CTiingoDataSource::Inquire(const long lCurrentTime) {
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
 		sbWebErrorOccurred = false; // 申请时清除错误标识
-		if (!IsInquiring()) { InquireTiingo(); }
-		if (IsInquiring()) { sllLastTimeTickCount = llTickCount; }
+		if (!IsInquiring()) {
+			InquireTiingo();
+		}
+		if (IsInquiring()) {
+			sllLastTimeTickCount = llTickCount;
+		}
 	}
 	return true;
 }
@@ -111,10 +116,10 @@ bool CTiingoDataSource::InquireTiingo(void) {
 
 bool CTiingoDataSource::InquireCompanySymbol(void) {
 	if (!IsInquiring() && !IsStockSymbolUpdated()) {
-		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
+		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		gl_pWorldMarket->SetCurrentFunction(_T("Tiingo stock synmbol"));
+		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo stock synmbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 
 		return true;
@@ -127,7 +132,7 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto synmbol"));
+		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto synmbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
 		return true;
@@ -163,13 +168,12 @@ bool CTiingoDataSource::InquireDayLine(void) {
 			CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_);
 			p->SetIndex(gl_pWorldMarket->GetStockIndex(pStock->GetSymbol()));
 			m_qProduct.push(p);
-			gl_pWorldMarket->SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
+			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
 			SetInquiring(true);
 			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			SetDayLineUpdated(true);
-			TRACE("Tiingo日线更新完毕\n");
 			str = _T("美国市场自选股票日线历史数据更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 		}

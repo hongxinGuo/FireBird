@@ -5,6 +5,7 @@
 #include"Thread.h"
 
 #include"InfoReport.h"
+#include"HighPerformanceCounter.h"
 
 #include"ChinaMarket.h"
 
@@ -102,11 +103,13 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	const ULONGLONG llCurrentTick = GetTickCount64();
+	//const ULONGLONG llCurrentTick = GetTickCount64();
+	CHighPerformanceCounter counter;
 
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
 	PrepareReadingWebData();
+	counter.start();
 	if (ReadingWebData()) {
 		const auto pWebData = make_shared<CWebData>();
 		VerifyDataLength();
@@ -125,7 +128,9 @@ void CVirtualWebInquiry::Read(void) {
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
-	SetCurrentInquiryTime(static_cast<time_t>(GetTickCount64() - llCurrentTick));
+	//SetCurrentInquiryTime(static_cast<time_t>(GetTickCount64() - llCurrentTick));
+	counter.stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
 }
@@ -200,10 +205,12 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 	try {
 		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 		// 其他的数据尚未需要提供头部验证数据。
-		if (gl_systemStatus.IsExitingSystem()) { fSucceedOpen = false; }
-		else {
-			m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
-		}
+		if (gl_systemStatus.IsExitingSystem()) { return false; }
+		CStdioFile* file = m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength);
+		auto p = typeid(*file).name();
+		ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
+		m_pFile = dynamic_cast<CHttpFile*>(file);
+		//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 	}
 	catch (CInternetException& exception) {
 		ASSERT(m_pFile == nullptr);
