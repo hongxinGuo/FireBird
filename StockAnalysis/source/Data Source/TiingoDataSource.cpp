@@ -119,9 +119,8 @@ bool CTiingoDataSource::InquireCompanySymbol(void) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo stock synmbol"));
+		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo stock symbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
-
 		return true;
 	}
 	return false;
@@ -132,7 +131,7 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto synmbol"));
+		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto symbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
 		return true;

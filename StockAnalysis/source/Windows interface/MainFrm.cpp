@@ -541,14 +541,8 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	static CHighPerformanceCounter counter;
 	char buffer[100]{};
-
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
-
-	counter.stop();
-	gl_pQuandlWebInquiry->SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
-	counter.start();
 
 	if (gl_systemStatus.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
 
@@ -558,6 +552,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	// 调用主调度函数,由各市场调度函数执行具体任务
 	SchedulingTask();
 
+	if (gl_counter.GetElapsedMilliSecond() > 20) {
+		sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMilliSecond());
+		//str = buffer;
+		m_wndInnerSystemBar.SetPaneText(7, buffer);
+	}
 	//CMainFrame只执行更新状态任务
 	UpdateStatus();
 	UpdateInnerSystemStatus();
@@ -673,7 +672,7 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	// 更新Quandl数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
+	//SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(8, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());

@@ -3,7 +3,7 @@
 
 CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 	m_strClassName = _T("Tiingo company profile");
-	ASSERT(0); // ипн╢й╣ож
+	ASSERT(0); // О©╫О©╫н╢й╣О©╫О©╫
 }
 
 CString CProductTiingoCompanyProfile::CreateMessage(void) {
@@ -11,6 +11,6 @@ CString CProductTiingoCompanyProfile::CreateMessage(void) {
 	return m_strTotalInquiryMessage;
 }
 
-bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pData) {
+bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }

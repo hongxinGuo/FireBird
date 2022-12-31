@@ -66,6 +66,7 @@ public:
 	bool GetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始拷贝
 	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
 	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
+	void StoreData(char* ptr, size_t size);
 
 	char GetData(const INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
 	void SetData(const INT64 lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }

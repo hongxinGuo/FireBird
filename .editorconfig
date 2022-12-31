@@ -143,6 +143,7 @@ resharper_cpp_indent_size = 2
 resharper_cpp_indent_style = tab
 resharper_cpp_max_line_length = 3000
 resharper_cpp_tab_width = 2
+resharper_cpp_use_indent_from_vs = false
 resharper_disable_space_changes_before_trailing_comment = true
 resharper_empty_block_style = together
 resharper_function_declaration_return_type_style = on_single_line
@@ -157,6 +158,7 @@ resharper_other_braces = end_of_line
 resharper_requires_expression_braces = end_of_line
 resharper_simple_block_style = do_not_change
 resharper_simple_embedded_statement_style = on_single_line
+resharper_toplevel_function_definition_return_type_style = on_single_line
 resharper_type_declaration_braces = end_of_line
 resharper_wrap_enumeration_style = wrap_if_long
 

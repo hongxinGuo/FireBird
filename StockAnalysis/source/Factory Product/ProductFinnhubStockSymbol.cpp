@@ -25,7 +25,7 @@ CString CProductFinnhubStockSymbol::CreateMessage(void) {
 
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-
+	gl_counter.start();
 	// 临时输出数据至文件中。
 	// SaveToFile(_T("C:\\StockAnalysis\\StockSymbol.json"), pWebData->GetDataBuffer());
 
@@ -51,7 +51,7 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
 	}
-
+	gl_counter.stop();
 	return true;
 }
 

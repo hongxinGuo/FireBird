@@ -7,8 +7,8 @@ public:
 	CTengxunRTDataSource();
 	~CTengxunRTDataSource() override = default;
 
-	bool Reset(void) final;
-	bool UpdateStatus(void) final;
+	bool Reset(void) override;
+	bool UpdateStatus(void) override;
 
 	bool Inquire(const long lCurrentTime) override;
 

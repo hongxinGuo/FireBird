@@ -37,6 +37,8 @@ CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全
 CSystemStatus gl_systemStatus; // 系统状态。
 CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 
+CHighPerformanceCounter gl_counter;
+
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
 // 为了事先初始化，信号量必须声明为全局变量

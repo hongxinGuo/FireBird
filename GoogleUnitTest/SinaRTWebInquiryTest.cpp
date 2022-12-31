@@ -7,7 +7,6 @@
 #include"SinaRTDataSource.h"
 #include"MockSinaRTWebInquiry.h"
 
-
 #include<atomic>
 
 using namespace testing;
@@ -31,22 +30,23 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_SinaRTWebInquiry.SetDataSource(gl_pSinaRTDataSource.get());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 		}
+
 	public:
 		CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
 	};
 
 	TEST_F(CSinaRTWebInquiryTest, TestInitialize) {
-		EXPECT_STREQ(m_SinaRTWebInquiry.GetHeaders(), _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
+		EXPECT_STREQ(m_SinaRTWebInquiry.GetHeaders(), _T("Referer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiryFunction(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
 		EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_FALSE(m_SinaRTWebInquiry.IsReportStatus());

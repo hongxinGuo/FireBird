@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Tiingo´ËÏî¹¦ÄÜÎª·ÇÃâ·ÑÏîÄ¿£¬Ä¿Ç°ÉÐÎ´Ê¹ÓÃ¡£
+// Tiingoï¿½ï¿½ï¿½î¹¦ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ä¿Ç°ï¿½ï¿½Î´Ê¹ï¿½Ã¡ï¿½
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -13,7 +13,7 @@ public:
 	~CProductTiingoCompanyProfile() override = default;
 
 	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pData) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 };
 
 using CTiingoCompanyProfilePtr = shared_ptr<CProductTiingoCompanyProfile>;

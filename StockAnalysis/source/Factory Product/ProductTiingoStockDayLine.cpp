@@ -18,7 +18,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() 
 }
 
 CString CProductTiingoStockDayLine::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());
 	const CString strMiddle = pStock->GetTiingoDayLineInquiryString(m_pMarket->GetMarketDate());
@@ -30,7 +30,7 @@ CString CProductTiingoStockDayLine::CreateMessage(void) {
 
 bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CDayLineVectorPtr pvDayLine = nullptr;
 

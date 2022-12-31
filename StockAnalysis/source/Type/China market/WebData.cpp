@@ -42,6 +42,17 @@ bool CWebData::SetData(char* buffer, INT64 lDataLength) {
 	return true;
 }
 
+void CWebData::StoreData(char* ptr, size_t size) {
+	char* pCurrent = ptr;
+	if (m_lBufferLength < m_lCurrentPos + 1024 * 1024) {
+		m_sDataBuffer.resize(m_lBufferLength + 1024 * 1024);
+		m_lBufferLength += 1024 * 1024;
+	}
+	for (size_t i = 0; i < size; i++) {
+		m_sDataBuffer.at(m_lCurrentPos++) = *pCurrent++;
+	}
+}
+
 bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	string s;
 	ASSERT(m_fParsed);

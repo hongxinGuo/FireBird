@@ -12,7 +12,8 @@
 CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
 	// 2022年1月20日后，新浪实时数据服务器需要添加报头验证数据，格式为： Referer:https://finance.sina.com.cn
 	// User-Agent部分只用于说明格式,即报头皆以\r\n（CRLF)结束
-	m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
+	//m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
+	m_strHeaders = _T("Referer:https://finance.sina.com.cn\r\n");
 
 	m_strInquiryFunction = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
 	m_strInquiryToken = _T("");

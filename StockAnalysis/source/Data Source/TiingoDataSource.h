@@ -6,10 +6,10 @@
 class CTiingoDataSource final : public CVirtualDataSource {
 public:
 	CTiingoDataSource(void);
-	~CTiingoDataSource(void) override = default;;
+	~CTiingoDataSource(void) override = default;
 
-	bool Reset(void) final;
-	bool UpdateStatus(void) final;
+	bool Reset(void) override;
+	bool UpdateStatus(void) override;
 
 	bool Inquire(const long lCurrentTime) override;
 

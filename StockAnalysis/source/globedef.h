@@ -15,3 +15,6 @@
 #include"SystemMessage.h"
 
 #include"ClassDeclaration.h"
+
+#include"HighPerformanceCounter.h"
+extern CHighPerformanceCounter gl_counter;

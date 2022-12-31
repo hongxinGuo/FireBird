@@ -8,6 +8,7 @@
 #include"HighPerformanceCounter.h"
 
 #include"ChinaMarket.h"
+#include"curl/curl.h"
 
 #include<thread>
 using std::thread;
@@ -103,7 +104,6 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 }
 
 void CVirtualWebInquiry::Read(void) {
-	//const ULONGLONG llCurrentTick = GetTickCount64();
 	CHighPerformanceCounter counter;
 
 	ASSERT(IsReadingWebData());
@@ -128,7 +128,6 @@ void CVirtualWebInquiry::Read(void) {
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
-	//SetCurrentInquiryTime(static_cast<time_t>(GetTickCount64() - llCurrentTick));
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
@@ -184,6 +183,75 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	ASSERT(m_pFile == nullptr);
 
 	return fReadingSuccess;
+}
+
+void CVirtualWebInquiry::Read2(void) {
+	CHighPerformanceCounter counter;
+
+	ASSERT(IsReadingWebData());
+	ASSERT(m_pDataSource != nullptr);
+	m_pWebData = make_shared<CWebData>();
+	PrepareReadingWebData();
+	counter.start();
+	if (ReadingWebData2()) {
+		ResetBuffer();
+		ParseData(m_pWebData);
+		UpdateStatusAfterSucceed(m_pWebData);
+
+		m_pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
+		m_pDataSource->StoreReceivedData(m_pWebData);
+		ASSERT(m_pDataSource->IsInquiring());
+	}
+	else {
+		// error handling
+		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
+	}
+	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
+	counter.stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+
+	SetReadingWebData(false);
+}
+
+static size_t receive_data_func(void* ptr, size_t size, size_t nmemb, void* userOp) {
+	size_t realSize = size * nmemb;
+
+	(static_cast<CWebData*>(userOp))->StoreData(static_cast<char*>(ptr), realSize);
+
+	return realSize;
+}
+
+bool CVirtualWebInquiry::ReadingWebData2(void) {
+	CURL* curl_handle;
+	CURLcode res;
+	struct curl_slist* list = nullptr;
+
+	gl_ThreadStatus.IncreaseWebInquiringThread();
+	m_pWebData = make_shared<CWebData>();
+
+	curl_handle = curl_easy_init();
+	if (curl_handle) {
+		curl_easy_setopt(curl_handle, CURLOPT_URL, m_strInquiry);
+		if (m_strHeaders.GetLength() > 0) {
+			list = curl_slist_append(list, m_strHeaders);
+			curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list);
+		}
+		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, m_pWebData.get());
+		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, receive_data_func);
+	}
+	res = curl_easy_perform(curl_handle);
+	curl_easy_cleanup(curl_handle);
+	m_pWebData->Resize(m_pWebData->GetCurrentPos());
+	sm_lTotalByteRead += m_pWebData->GetCurrentPos();
+	m_pWebData->SetCurrentPos(0);
+	// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
+	m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
+
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+
+	return true;
 }
 
 /// <summary>
@@ -252,8 +320,8 @@ long CVirtualWebInquiry::QueryDataLength() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualWebInquiry::ReadWebFileOneTime(void) {
-	char buffer[1024];
-	const UINT uByteRead = m_pFile->Read(buffer, 1024);
+	char buffer[1024 * 16];
+	const UINT uByteRead = m_pFile->Read(buffer, 1024 * 16);
 	for (UINT i = 0; i < uByteRead; i++) {
 		m_sBuffer.at(m_lByteRead++) = buffer[i];
 	}

@@ -14,8 +14,7 @@ static char THIS_FILE[] = __FILE__;
 namespace StockAnalysisTest {
 	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
 
-	class CDownLoadedNeteaseDayLineTest : public ::testing::Test
-	{
+	class CDownLoadedNeteaseDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -25,11 +24,11 @@ namespace StockAnalysisTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -82,19 +81,5 @@ namespace StockAnalysisTest {
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader());
 		EXPECT_EQ(DayLine.GetCurrentPos(), str.GetLength());
 		DayLine.SetCurrentPos(0);
-	}
-
-	TEST_F(CDownLoadedNeteaseDayLineTest, TestTransferNeteaseDayLineWebDataToBuffer) {
-		CNeteaseDayLineWebInquiry DayLineWebInquiry;
-		CNeteaseDayLineWebData DayLine;
-		CString str = _T("abcedfg\r\n");
-		EXPECT_EQ(DayLine.GetBufferLength(), 0);
-		DayLineWebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-		DayLineWebInquiry.SetByteRead(str.GetLength());
-		for (int i = 0; i < str.GetLength(); i++) {
-			DayLineWebInquiry.SetData(i, str.GetAt(i));
-		}
-		DayLine.TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
-		EXPECT_EQ(DayLine.GetBufferLength(), str.GetLength());
 	}
 };

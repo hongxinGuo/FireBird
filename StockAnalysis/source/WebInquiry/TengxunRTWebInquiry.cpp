@@ -3,7 +3,7 @@
 #include"ChinaMarket.h"
 
 #include "TengxunRTWebInquiry.h"
-#include"TengxunRTDataSource.h"
+//#include"TengxunRTDataSource.h"
 
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");

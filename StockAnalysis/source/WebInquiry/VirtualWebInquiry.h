@@ -30,6 +30,8 @@ public:
 	void SetDefaultSessionOption(void);
 
 	virtual bool ReadingWebData(void); // 网络实际读取函数
+	void Read2();
+	bool ReadingWebData2();
 	virtual bool OpenFile(CString strInquiring);
 	void DeleteWebFile();
 	long QueryDataLength();
@@ -137,6 +139,7 @@ protected:
 	DWORD m_dwWebErrorCode; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer; // 接收到数据的缓冲区
 	long m_lByteRead; // 接收到的字符数.
+	CWebDataPtr m_pWebData;
 
 	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
 	CString m_strInquiryFunction; // 查询字符串功能部分

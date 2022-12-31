@@ -21,7 +21,9 @@ CString CProductTiingoStockSymbol::CreateMessage(void) {
 }
 
 bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	gl_counter.start();
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
+	gl_counter.stop();
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
 		long lTemp = 0;
@@ -41,13 +43,11 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 				// do nothing now.
 			}
 		}
-		TRACE("今日Tiingo活跃股票数为：%d\n", lTemp);
 		sprintf_s(buffer, _T("%6d"), lTemp);
 		CString strNumber = buffer;
 		CString str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-
 	return true;
 }
 
@@ -87,6 +87,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 	CString strNumber;
 	long year, month, day;
 
+	pWebData->CreateNlohmannJson(0, 0);
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvTiingoStock;
 	if (pWebData->IsVoidJson()) return pvTiingoStock;
@@ -97,50 +98,46 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 		int iCount = 0;
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 			pStock = make_shared<CTiingoStock>();
-			s = jsonGetString(it,_T("permaTicker"));
-			if (!s.empty()) pStock->m_strTiingoPermaTicker = s.c_str();
+			pStock->m_strTiingoPermaTicker = jsonGetString(it,_T("permaTicker")).c_str();
 			s = jsonGetString(it,_T("ticker"));
-			ranges::transform(s.begin(), s.end(), s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
+			ranges::transform(s, s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->m_strTicker = s.c_str();
-			s = jsonGetString(it,_T("name"));
-			if (!s.empty()) pStock->m_strName = s.c_str();
+			pStock->m_strName = jsonGetString(it,_T("name")).c_str();
 			pStock->m_fIsActive = it->at(_T("isActive"));
 			pStock->m_fIsADR = it->at(_T("isADR"));
 			s = jsonGetString(it,_T("industry"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strTiingoIndustry = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strTiingoIndustry = s.c_str(); }
 			else pStock->m_strTiingoIndustry = strNULL;
 			s = jsonGetString(it,_T("sector"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strTiingoSector = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strTiingoSector = s.c_str(); }
 			else pStock->m_strTiingoSector = strNULL;
 			auto s2 = it->at(_T("sicCode"));
 			if (s2.is_number()) pStock->m_iSICCode = s2;
 			else pStock->m_iSICCode = 0;
 			s = jsonGetString(it,_T("sicIndustry"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSICIndustry = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strSICIndustry = s.c_str(); }
 			else pStock->m_strSICIndustry = strNULL;
 			s = jsonGetString(it,_T("sicSector"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSICSector = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strSICSector = s.c_str(); }
 			else pStock->m_strSICSector = strNULL;
 			s = jsonGetString(it,_T("reportingCurrency"));
 			if (s != strNotAvailable) {	// 此项应该永远存在
-				if ((!s.empty())) pStock->m_strReportingCurrency = s.c_str();
+				pStock->m_strReportingCurrency = s.c_str();
 			}
 			else pStock->m_strReportingCurrency = strNULL;
 			s = jsonGetString(it,_T("location"));
-			if (s != strNotAvailable) { if ((!s.empty())) pStock->m_strLocation = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strLocation = s.c_str(); }
 			else pStock->m_strLocation = _T(" ");
 			s = jsonGetString(it,_T("companyWebsite"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strCompanyWebSite = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strCompanyWebSite = s.c_str(); }
 			else pStock->m_strCompanyWebSite = strNULL;
 			s = jsonGetString(it,_T("secFilingWebsite"));
-			if (s != strNotAvailable) { if (!s.empty()) pStock->m_strSECFilingWebSite = s.c_str(); }
+			if (s != strNotAvailable) { pStock->m_strSECFilingWebSite = s.c_str(); }
 			else pStock->m_strSECFilingWebSite = strNULL;
-			s = jsonGetString(it,_T("statementLastUpdated"));
-			if (!s.empty()) str = s.c_str();
+			if (!s.empty()) str = jsonGetString(it,_T("statementLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
-			s = jsonGetString(it,_T("dailyLastUpdated"));
-			if (!s.empty()) str = s.c_str();
+			str = jsonGetString(it,_T("dailyLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
 			pvTiingoStock->push_back(pStock);
