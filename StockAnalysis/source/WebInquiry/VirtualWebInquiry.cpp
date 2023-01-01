@@ -186,13 +186,10 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 }
 
 void CVirtualWebInquiry::Read2(void) {
-	CHighPerformanceCounter counter;
-
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
 	m_pWebData = make_shared<CWebData>();
 	PrepareReadingWebData();
-	counter.start();
 	if (ReadingWebData2()) {
 		ResetBuffer();
 		ParseData(m_pWebData);
@@ -208,8 +205,6 @@ void CVirtualWebInquiry::Read2(void) {
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
-	counter.stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
 	SetReadingWebData(false);
 }
@@ -223,25 +218,30 @@ static size_t receive_data_func(void* ptr, size_t size, size_t nmemb, void* user
 }
 
 bool CVirtualWebInquiry::ReadingWebData2(void) {
-	CURL* curl_handle;
-	CURLcode res;
-	struct curl_slist* list = nullptr;
-
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	m_pWebData = make_shared<CWebData>();
 
-	curl_handle = curl_easy_init();
+	CURL* curl_handle = curl_easy_init();
+	CURLcode code;
 	if (curl_handle) {
 		curl_easy_setopt(curl_handle, CURLOPT_URL, m_strInquiry);
 		if (m_strHeaders.GetLength() > 0) {
+			struct curl_slist* list = nullptr;
 			list = curl_slist_append(list, m_strHeaders);
-			curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list);
+			curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list); // 提交报头
+			curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1); // 关闭进度条
+			//curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 60); // TimeOut
+			//curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, static_cast<curl_off_t>(2 * 512 * 1024)); // 最大下载速度为2M Bytes/S
+			code = curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 1024 * 512);
 		}
-		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0); // 不校验SSL
 		curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, m_pWebData.get());
 		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, receive_data_func);
 	}
-	res = curl_easy_perform(curl_handle);
+	CURLcode res = curl_easy_perform(curl_handle);
+	double d = 0.0;
+	curl_easy_getinfo(curl_handle, CURLINFO_TOTAL_TIME, &d);
+	m_tCurrentInquiryTime = d * 1000;
 	curl_easy_cleanup(curl_handle);
 	m_pWebData->Resize(m_pWebData->GetCurrentPos());
 	sm_lTotalByteRead += m_pWebData->GetCurrentPos();

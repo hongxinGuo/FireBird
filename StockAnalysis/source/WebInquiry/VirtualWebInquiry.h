@@ -48,6 +48,7 @@ public:
 
 	// 唯一的公共接口函数
 	virtual bool GetWebData(void);
+	virtual bool GetWebData2(); // 采用libcurl的用于对比;
 
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 

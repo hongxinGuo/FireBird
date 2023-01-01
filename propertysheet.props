@@ -4,11 +4,11 @@
   <PropertyGroup Label="UserMacros">
 		<AnalysisInclude>$(MSBuildStartupDirectory);$(MSBuildStartupDirectory)\StockAnalysis;$(MSBuildStartupDirectory)\StockAnalysis\source;$(MSBuildStartupDirectory)\StockAnalysis\source\Windows interface;$(MSBuildStartupDirectory)\StockAnalysis\source\Accessory;$(MSBuildStartupDirectory)\StockAnalysis\source\WebSocket;$(MSBuildStartupDirectory)\StockAnalysis\source\Type;$(MSBuildStartupDirectory)\StockAnalysis\source\Type\China Market;$(MSBuildStartupDirectory)\StockAnalysis\source\Type\America Market;$(MSBuildStartupDirectory)\StockAnalysis\source\Working threqd;$(MSBuildStartupDirectory)\StockAnalysis\source\Working thread\China market;$(MSBuildStartupDirectory)\StockAnalysis\source\Working thread\America market;$(MSBuildStartupDirectory)\StockAnalysis\source\System;$(MSBuildStartupDirectory)\StockAnalysis\source\WebInquiry;$(MSBuildStartupDirectory)\StockAnalysis\source\Utilities;$(MSBuildStartupDirectory)\StockAnalysis\source\Stock;$(MSBuildStartupDirectory)\StockAnalysis\source\Data Source;$(MSBuildStartupDirectory)\StockAnalysis\source\Market;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase;$(MSBuildStartupDirectory)\StockAnalysis\source\AmericaMarket\DataBase;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase\ChinaMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\DataBase\WorldMarket;$(MSBuildStartupDirectory)\StockAnalysis\source\Factory Product;$(MSBuildStartupDirectory)\StockAnalysis\source\Data Class</AnalysisInclude>
 		<GoogletestInclude>$(MSBuildStartupDirectory)\Lib\googletest\googletest\;$(MSBuildStartupDirectory)\Lib\googletest\googletest\include;$(MSBuildStartupDirectory)\Lib\googletest\googlemock;$(MSBuildStartupDirectory)\Lib\googletest\googlemock\include</GoogletestInclude>
-		<LibInclude>$(MSBuildStartupDirectory)\Lib\nlohmann json\single_include;$(MSBuildStartupDirectory)\Lib\gsl\include;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\packages\curl.7.30.0.2\build\native\lib\v110\x64\release\dynamic</LibInclude>
+		<LibInclude>$(MSBuildStartupDirectory)\Lib\nlohmann json\single_include;$(MSBuildStartupDirectory)\Lib\gsl\include;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\Lib\libcurl\include;$(MSBuildStartupDirectory)\Lib\libcurl\lib</LibInclude>
 	    <IXWebSocket>$(MSBuildStartupDirectory)\Lib;$(MSBuildStartupDirectory)\Lib\IXWebSocket</IXWebSocket>
 		<GoogleBenchmark>$(MSBuildStartupDirectory)\Lib\Google Benchmark\include;$(MSBuildStartupDirectory)\Lib\Google Benchmark\lib</GoogleBenchmark>
-	</PropertyGroup>
-  <PropertyGroup />
+ 	</PropertyGroup>
+ <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
     <BuildMacro Include="AnalysisInclude">

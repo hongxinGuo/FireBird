@@ -105,8 +105,8 @@ bool CTiingoDataSource::Inquire(const long lCurrentTime) {
 bool CTiingoDataSource::InquireTiingo(void) {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
-		InquireCompanySymbol();
 		InquireCryptoSymbol();
+		InquireCompanySymbol();
 		// 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
 		InquireDayLine(); // 初步测试完毕。
 		return true;
