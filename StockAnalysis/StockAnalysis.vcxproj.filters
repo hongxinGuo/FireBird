@@ -51,7 +51,6 @@
       <Filter>资源文件</Filter>
     </None>
     <None Include="..\readme.md" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

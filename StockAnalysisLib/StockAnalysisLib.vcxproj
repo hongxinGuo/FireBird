@@ -391,6 +391,7 @@
     <ClCompile Include="..\StockAnalysis\source\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Type\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\FinnhubWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\GetWebDataUsingLibCurl.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquiry\QuandlWebInquiry.cpp" />
@@ -442,7 +443,6 @@
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Working thread\China market\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="GetWebDataUsingLibCurl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
@@ -451,9 +451,6 @@
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -568,13 +565,5 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
-  </Target>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

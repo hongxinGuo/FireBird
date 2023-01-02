@@ -1,0 +1,1 @@
+nmake /f makefile.vc mode=dll MACHINE=x64 GEN_PDB=yes WITH_SSL=dll WITH_ZLIB=dll SSL_PATH=..\..\deps\openssl\ ZLIB_PATH=..\..\deps\zlib

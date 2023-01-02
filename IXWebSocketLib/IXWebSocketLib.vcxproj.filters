@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\Lib\IXWebSocket\IXBase64.h">
       <Filter>Header Files</Filter>
     </ClInclude>

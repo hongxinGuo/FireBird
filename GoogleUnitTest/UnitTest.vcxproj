@@ -52,7 +52,7 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -65,7 +65,7 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
-    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemGroup>
@@ -252,14 +252,9 @@
       <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -308,7 +303,7 @@
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalDependencies>\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -337,13 +332,7 @@
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackCommitSize>40971520</StackCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib;libcurl.lib</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib;libcurl.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
-  </Target>
 </Project>

@@ -28,7 +28,12 @@ public:
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread(void) const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
 	void IncreaseSavingThread(void) noexcept { ++m_NumberOfSavingThread; }
-	void DecreaseSavingThread(void) noexcept { if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread; }
+
+	void DecreaseSavingThread(void) noexcept {
+		if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread;
+		else
+			ASSERT(0);
+	}
 
 	[[nodiscard]] int GetNumberOfSavingThread(void) const noexcept {
 		const int iNumber = m_NumberOfSavingThread;
@@ -42,7 +47,12 @@ public:
 
 	void IncreaseWebInquiringThread(void) noexcept { ++m_NumberOfWebInquiringThread; }
 
-	void DecreaseWebInquiringThread(void) noexcept { if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread; }
+	void DecreaseWebInquiringThread(void) noexcept {
+		if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread;
+		else {
+			ASSERT(0);
+		}
+	}
 
 	int GetNumberOfWebInquiringThread(void) const noexcept {
 		const int iNumber = m_NumberOfWebInquiringThread;

@@ -12,11 +12,11 @@
 
 #include"pch.h"
 
-#include "StockAnalysis.h"
+#include "StockAnalysis.h"  
 #include "MainFrm.h"
 
 #include "StockAnalysisDoc.h"
-#include "StockAnalysisView.h"
+#include "StockAnalysisView.h" 
 
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL

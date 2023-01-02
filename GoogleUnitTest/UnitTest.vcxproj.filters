@@ -633,7 +633,4 @@
       <Filter>Mock类\WebInquiry</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

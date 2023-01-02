@@ -23,17 +23,21 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 参看\Lib目录中的安装使用手册。
 
 ### 致谢
-1.GoogleTest(https://github.com/google/googletest), 用于单元测试。
+1.GoogleTest(https://github.com/google/googletest)。
 
-2.OpenSSL(https://www.openssl.org/)， 用于WebSocket中的套接字。
+2.OpenSSL(https://www.openssl.org/)。
 
-3.ixWebSocket(https://github.com/machinezone/IXWebSocket)，用于WebSocket.
+3.ixWebSocket(https://github.com/machinezone/IXWebSocket)。
 
-4.Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1), 用于检查系统的内存漏洞。
+4.Visual Leak Detector(https://github.com/KindDragon/vld/tree/v2.5.1)。
 
-5.Nlohmann json(https://github.com/nlohmann/json), 用于解析json制式的数据。
+5.Nlohmann json(https://github.com/nlohmann/json)。
 
-6.Google benchmark(https://github.com/google/benchmark), 用于关键函数的基准时间测试。
+6.Google benchmark(https://github.com/google/benchmark)。
+
+7.curl(https://github.com/curl/curl)。
+
+8.zlib(https://github.com/madler/zlib)。
 
 
 

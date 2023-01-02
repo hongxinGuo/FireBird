@@ -169,11 +169,11 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 		}
-		catch (CInternetException& exception) {
+		catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
 			fReadingSuccess = false;
-			m_dwWebErrorCode = exception.m_dwError;
+			m_dwWebErrorCode = exception->m_dwError;
 			ReportWebError(m_dwWebErrorCode, m_strInquiry);
-			//exception.Delete();
+			exception->Delete();
 		}
 		DeleteWebFile();
 	}
@@ -185,7 +185,15 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	return fReadingSuccess;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 使用libcurl单线程读取网络数据的模式。
+///	与Windows自带的CHTTPFile读取模式相比，没有任何速度上的提高，且降低了不少。
+///	不使用此模式。
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualWebInquiry::Read2(void) {
+	ASSERT(0); // 此模式速度降低了不少，不使用此模式。保留的原因是用于对比。
 	ASSERT(IsReadingWebData());
 	ASSERT(m_pDataSource != nullptr);
 	m_pWebData = make_shared<CWebData>();
@@ -263,7 +271,7 @@ bool CVirtualWebInquiry::ReadingWebData2(void) {
 /// </summary>
 /// <param name="strInquiring"></param>
 /// <returns></returns>
-bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
+bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 	bool fSucceedOpen = true;
 	const long lHeadersLength = m_strHeaders.GetLength();
 
@@ -274,19 +282,20 @@ bool CVirtualWebInquiry::OpenFile(CString strInquiring) {
 		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 		// 其他的数据尚未需要提供头部验证数据。
 		if (gl_systemStatus.IsExitingSystem()) { return false; }
-		CStdioFile* file = m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength);
-		auto p = typeid(*file).name();
-		ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
-		m_pFile = dynamic_cast<CHttpFile*>(file);
-		//m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+		//CStdioFile* file = m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength);
+		//auto p = typeid(*file).name();
+		//ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
+		//m_pFile = dynamic_cast<CHttpFile*>(file);
+		m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+		ASSERT(std::strcmp(typeid(*m_pFile).name(), _T("class CHttpFile")) == 0);
 	}
-	catch (CInternetException& exception) {
+	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
 		ASSERT(m_pFile == nullptr);
 		DeleteWebFile();
-		m_dwWebErrorCode = exception.m_dwError;
+		m_dwWebErrorCode = exception->m_dwError;
 		ReportWebError(m_dwWebErrorCode, GetTickCount64() - llCurrentTickCount, m_strInquiry);
 		fSucceedOpen = false;
-		//exception->Delete();
+		exception->Delete();
 	}
 	if (fSucceedOpen) {
 		QueryDataLength();

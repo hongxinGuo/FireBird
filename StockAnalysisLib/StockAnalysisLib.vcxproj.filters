@@ -1340,11 +1340,8 @@
     <ClCompile Include="..\StockAnalysis\source\accessory\JsonGetValue.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="GetWebDataUsingLibCurl.cpp">
+    <ClCompile Include="..\StockAnalysis\source\WebInquiry\GetWebDataUsingLibCurl.cpp">
       <Filter>源文件\Web Inquiry</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

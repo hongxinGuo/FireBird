@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\Lib\GoogleTest\googletest\src\gtest-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>

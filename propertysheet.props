@@ -7,6 +7,7 @@
 		<LibInclude>$(MSBuildStartupDirectory)\Lib\nlohmann json\single_include;$(MSBuildStartupDirectory)\Lib\gsl\include;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\Lib\Visual Leak Detector;$(MSBuildStartupDirectory)\Lib\libcurl\include;$(MSBuildStartupDirectory)\Lib\libcurl\lib</LibInclude>
 	    <IXWebSocket>$(MSBuildStartupDirectory)\Lib;$(MSBuildStartupDirectory)\Lib\IXWebSocket</IXWebSocket>
 		<GoogleBenchmark>$(MSBuildStartupDirectory)\Lib\Google Benchmark\include;$(MSBuildStartupDirectory)\Lib\Google Benchmark\lib</GoogleBenchmark>
+		<zlibInclude>$(MSBuildStartupDirectory)\Lib\zlib\include;$(MSBuildStartupDirectory)\Lib\zlib\lib;</zlibInclude>
  	</PropertyGroup>
  <PropertyGroup />
   <ItemDefinitionGroup />

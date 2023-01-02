@@ -32,7 +32,7 @@ public:
 	virtual bool ReadingWebData(void); // 网络实际读取函数
 	void Read2();
 	bool ReadingWebData2();
-	virtual bool OpenFile(CString strInquiring);
+	virtual bool OpenFile(const CString& strInquiring);
 	void DeleteWebFile();
 	long QueryDataLength();
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。

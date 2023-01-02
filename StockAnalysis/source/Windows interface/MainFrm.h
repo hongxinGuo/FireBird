@@ -74,7 +74,7 @@ protected:
 
 	char m_aStockCodeTemp[30];
 
-	static bool sm_fInitIxWebSocket;
+	static bool sm_fGlobeInit;
 
 protected: // 控件条嵌入成员
 	CMFCMenuBar m_wndMenuBar;

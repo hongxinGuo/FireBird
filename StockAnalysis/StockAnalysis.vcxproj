@@ -63,7 +63,7 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -74,7 +74,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
-    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -120,7 +120,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
       <AdditionalLibraryDirectories>C:\Program Files\OpenSSL-Win64\lib;C:\Program Files\OpenSSL-Win64\lib\VC;C:\Program Files\OpenSSL-Win64\lib\VC\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;libcurl.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;libcurl.lib;zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -141,6 +141,9 @@
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <PostBuildEvent>
+      <Command>copy  $(SolutionDir)\Lib\bin_release\*.DLL $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -173,7 +176,7 @@
       <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
       <Profile>true</Profile>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;libcurl.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;vld.lib;libcurl.lib;zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>40971520</HeapReserveSize>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -188,6 +191,9 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy  $(SolutionDir)\Lib\bin_release\*.DLL $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc" />
@@ -205,7 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\readme.md" />
-    <None Include="packages.config" />
     <None Include="res\StockAnalysis.rc2" />
   </ItemGroup>
   <ItemGroup>
@@ -230,13 +235,5 @@
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
-  </Target>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
