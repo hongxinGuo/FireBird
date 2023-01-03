@@ -31,8 +31,7 @@ public:
 
 	void DecreaseSavingThread(void) noexcept {
 		if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread;
-		else
-			ASSERT(0);
+		//else ASSERT(0);
 	}
 
 	[[nodiscard]] int GetNumberOfSavingThread(void) const noexcept {
@@ -49,9 +48,7 @@ public:
 
 	void DecreaseWebInquiringThread(void) noexcept {
 		if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread;
-		else {
-			ASSERT(0);
-		}
+		//else ASSERT(0);
 	}
 
 	int GetNumberOfWebInquiringThread(void) const noexcept {

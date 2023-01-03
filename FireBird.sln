@@ -25,10 +25,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\CreateEnvionment.bat = Lib\CreateEnvionment.bat
-		..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json = ..\..\..\..\..\StockAnalysis\FinnhubInaccessibleExchange.json
 		Lib\libcurl_build.bat = Lib\libcurl_build.bat
 		propertysheet.props = propertysheet.props
-		..\..\..\..\..\StockAnalysis\SystemConfiguration.json = ..\..\..\..\..\StockAnalysis\SystemConfiguration.json
+		..\..\..\..\..\FireBird\SystemConfiguration.json = ..\..\..\..\..\FireBird\SystemConfiguration.json
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmark", "Benchmark\Benchmark.vcxproj", "{9E2349D0-2086-41CB-97FF-882700BE9C07}"
@@ -42,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{B2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FireBird", "FireBird\FireBird.vcxproj", "{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StockAnalysisLib", "FireBirdLib\FireBirdLib.vcxproj", "{4DAC4767-5D5B-4F93-9677-F27227996E69}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FireBirdLib", "FireBirdLib\FireBirdLib.vcxproj", "{4DAC4767-5D5B-4F93-9677-F27227996E69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
