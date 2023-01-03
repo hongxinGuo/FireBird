@@ -863,9 +863,6 @@
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp">
       <Filter>源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.cpp">
-      <Filter>源文件\database\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp">
       <Filter>源文件\database\ChinaMarket</Filter>
     </ClCompile>
@@ -894,12 +891,6 @@
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp">
-      <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoSymbol.cpp">
-      <Filter>源文件\database\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubForexSymbol.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp">

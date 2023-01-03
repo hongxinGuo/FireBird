@@ -211,6 +211,7 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
       <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
@@ -244,7 +245,6 @@
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRealTimeData.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp" />
@@ -264,8 +264,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
