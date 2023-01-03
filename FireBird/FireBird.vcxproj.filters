@@ -13,7 +13,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="StockAnalysis.rc">
+    <ResourceCompile Include="FireBird.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -27,10 +27,10 @@
     <Image Include="res\userimages.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\StockAnalysisDoc.ico">
+    <Image Include="res\FireBirdDoc.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\StockAnalysis.ico">
+    <Image Include="res\FireBird.ico">
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\Toolbar.bmp">
@@ -47,7 +47,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\StockAnalysis.rc2">
+    <None Include="res\FireBird.rc2">
       <Filter>资源文件</Filter>
     </None>
     <None Include="..\readme.md" />

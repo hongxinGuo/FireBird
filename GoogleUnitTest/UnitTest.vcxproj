@@ -248,9 +248,6 @@
     <ProjectReference Include="..\StockAnalysisLib\StockAnalysisLib.vcxproj">
       <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
-      <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

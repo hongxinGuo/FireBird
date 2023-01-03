@@ -196,22 +196,22 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ResourceCompile Include="StockAnalysis.rc" />
+    <ResourceCompile Include="FireBird.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap1.bmp" />
     <Image Include="RES\IDR_MAIN.BMP" />
     <Image Include="res\output_wnd.ico" />
     <Image Include="res\output_wnd_hc.ico" />
-    <Image Include="res\StockAnalysis.ico" />
-    <Image Include="res\StockAnalysisDoc.ico" />
+    <Image Include="res\FireBird.ico" />
+    <Image Include="res\FireBirdDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\userimages.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\readme.md" />
-    <None Include="res\StockAnalysis.rc2" />
+    <None Include="res\FireBird.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
@@ -219,9 +219,6 @@
     </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\StockAnalysisLib\StockAnalysisLib.vcxproj">
-      <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
