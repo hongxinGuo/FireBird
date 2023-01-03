@@ -175,7 +175,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 
 	// 截取实时数据时用。为了测试解析速度
 	if (static int i = 0; i < pData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\StockAnalysis\\NeteaseRTData.json"), pData->GetDataBuffer());
+		//SaveToFile(_T("C:\\FireBird\\NeteaseRTData.json"), pData->GetDataBuffer());
 		i = pData->GetBufferLength();
 	}
 	bool fProcess = true;

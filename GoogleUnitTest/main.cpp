@@ -58,41 +58,41 @@
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
 //ExcludeSourceFromCodeCoverage(Exclude1, _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
-//ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");
+//ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBirdDoc.cpp");
 //ExcludeFromCodeCoverage(CMainFrame2, L"CMainFrame::Dump", "abc");
 
 #if _MSVC_LANG <= 201703 // C17及以下版本？
 ExcludeSourceFromCodeCoverage("Exclude1", _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
-ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.*");
+ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*");
 
 // 排除GoogleUnitTest
-ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\Packages\\*.*"); // 排除扩展程序包
-ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\gsl\\*.*"); // 排除gsl库
-ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\googletest\\*.*");
+ExcludeSourceFromCodeCoverage(Exclude12, L"C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*"); // 排除扩展程序包
+ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\FireBird\\gsl\\*.*"); // 排除gsl库
+ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\FireBird\\googletest\\*.*");
 
 // 排除GoogleTest
 ExcludeSourceFromCodeCoverage(
-	Exclude13, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除数据库类
-ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\DataBase\\*.*"); // 排除所有的数据库类
-ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\ixwebsocket\\*.*");
+	Exclude13, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*"); // 排除数据库类
+ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*"); // 排除所有的数据库类
+ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\FireBird\\ixwebsocket\\*.*");
 
 // 排除ixWebSocket库
-ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\vld\\*.*"); // 排除vld库
-ExcludeSourceFromCodeCoverage(Exclude22, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\OPenSSL\\*.*"); // 排除OpenSSL库
+ExcludeSourceFromCodeCoverage(Exclude21, L"C:\\users\\hxguo\\source\\repos\\FireBird\\vld\\*.*"); // 排除vld库
+ExcludeSourceFromCodeCoverage(Exclude22, L"C:\\users\\hxguo\\source\\repos\\FireBird\\OPenSSL\\*.*"); // 排除OpenSSL库
 ExcludeSourceFromCodeCoverage(Exclude24, L"d:\\cfiles\\projects\\winssl\\*.*"); // 排除OpenSSL库
 
 // 排除无需测试的单个文件
-ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysisDoc.cpp");
-ExcludeSourceFromCodeCoverage(Exclude105, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.cpp");
-ExcludeSourceFromCodeCoverage(Exclude106, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\StockAnalysis.h");
-ExcludeSourceFromCodeCoverage(Exclude107, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.cpp");
-ExcludeSourceFromCodeCoverage(Exclude108, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\OutputWnd.h");
-ExcludeSourceFromCodeCoverage(Exclude109,	L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataFinnhubWebSocket.cpp");
-ExcludeSourceFromCodeCoverage(Exclude110, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoIEXWebSocket.cpp");
-ExcludeSourceFromCodeCoverage(Exclude111,	L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoCryptoWebSocket.cpp");
-ExcludeSourceFromCodeCoverage(Exclude112, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\data class\\DataTiingoForexWebSocket.cpp");
-ExcludeSourceFromCodeCoverage(Exclude113, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\StockAnalysis\\source\\semaphore.h");
+ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBirdDoc.cpp");
+ExcludeSourceFromCodeCoverage(Exclude105, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBird.cpp");
+ExcludeSourceFromCodeCoverage(Exclude106, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBird.h");
+ExcludeSourceFromCodeCoverage(Exclude107, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\OutputWnd.cpp");
+ExcludeSourceFromCodeCoverage(Exclude108, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\OutputWnd.h");
+ExcludeSourceFromCodeCoverage(Exclude109,	L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\data class\\DataFinnhubWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude110, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\data class\\DataTiingoIEXWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude111,	L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\data class\\DataTiingoCryptoWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude112, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\data class\\DataTiingoForexWebSocket.cpp");
+ExcludeSourceFromCodeCoverage(Exclude113, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\semaphore.h");
 
 //  排除单个类或单个类函数
 ExcludeFromCodeCoverage(CMainFrame1, L"CMainFrame::AssertValid");
@@ -121,44 +121,44 @@ ExcludeFromCodeCoverage(CMainFrame23, L"CMainFrame::SetDockingWindowIcons");
 ExcludeFromCodeCoverage(CMainFrame26, L"CMainFrame::CreateDockingWindows");
 ExcludeFromCodeCoverage(CMainFrame27, L"CMainFrame::SysCallSetInnerSystemPaneText");
 ExcludeFromCodeCoverage(CMainFrame28, L"CMainFrame::SysCallOnSysCommand");
-ExcludeFromCodeCoverage(CStockAnalysisView1, L"CStockAnalysisView::AssertValid");
-ExcludeFromCodeCoverage(CStockAnalysisView2, L"CStockAnalysisView::CreateObject");
-ExcludeFromCodeCoverage(CStockAnalysisView3, L"CStockAnalysisView::Dump");
-ExcludeFromCodeCoverage(CStockAnalysisView4, L"CStockAnalysisView::GetBaseClass");
-ExcludeFromCodeCoverage(CStockAnalysisView5, L"CStockAnalysisView::GetDocument");
-ExcludeFromCodeCoverage(CStockAnalysisView6, L"CStockAnalysisView::GetMessageMap");
-ExcludeFromCodeCoverage(CStockAnalysisView7, L"CStockAnalysisView::GetRuntimeClass");
-ExcludeFromCodeCoverage(CStockAnalysisView8, L"CStockAnalysisView::GetThisClass");
-ExcludeFromCodeCoverage(CStockAnalysisView9, L"CStockAnalysisView::GetThisMessageMap");
-ExcludeFromCodeCoverage(CStockAnalysisView10, L"CStockAnalysisView::OnBeginPrinting");
-ExcludeFromCodeCoverage(CStockAnalysisView11, L"CStockAnalysisView::OnContextMenu");
-ExcludeFromCodeCoverage(CStockAnalysisView12, L"CStockAnalysisView::OnEndPrinting");
-ExcludeFromCodeCoverage(CStockAnalysisView13, L"CStockAnalysisView::OnFilePrintPreview");
-ExcludeFromCodeCoverage(CStockAnalysisView14, L"CStockAnalysisView::OnPreparePrinting");
-ExcludeFromCodeCoverage(CStockAnalysisView15, L"CStockAnalysisView::PreCreateWindow");
-ExcludeFromCodeCoverage(CStockAnalysisView16, L"CStockAnalysisView::SysCallCmdUIEnable");
-ExcludeFromCodeCoverage(CStockAnalysisView17, L"CStockAnalysisView::SysCallCmdUISetCheck");
-ExcludeFromCodeCoverage(CStockAnalysisView18, L"CStockAnalysisView::SysCallFillSolidRect");
-ExcludeFromCodeCoverage(CStockAnalysisView19, L"CStockAnalysisView::SysCallGetTextExtent");
-ExcludeFromCodeCoverage(CStockAnalysisView20, L"CStockAnalysisView::SysCallLineTo");
-ExcludeFromCodeCoverage(CStockAnalysisView21, L"CStockAnalysisView::SysCallMoveTo");
-ExcludeFromCodeCoverage(CStockAnalysisView22, L"CStockAnalysisView::SysCallOnSize");
-ExcludeFromCodeCoverage(CStockAnalysisView23, L"CStockAnalysisView::SysCallSelectObject");
-ExcludeFromCodeCoverage(CStockAnalysisView24, L"CStockAnalysisView::SysCallTextOut");
-ExcludeFromCodeCoverage(CStockAnalysisView25, L"CStockAnalysisView::SysCallGetClientRect");
-ExcludeFromCodeCoverage(CStockAnalysisView26, L"CStockAnalysisView::OnCreate");
-ExcludeFromCodeCoverage(CStockAnalysisView27, L"CStockAnalysisView::ShowAttackBuySell");
-ExcludeFromCodeCoverage(CStockAnalysisView28, L"CStockAnalysisView::ShowBuySell");
-ExcludeFromCodeCoverage(CStockAnalysisView29, L"CStockAnalysisView::ShowCurrentTransactionInfo");
-ExcludeFromCodeCoverage(CStockAnalysisView30, L"CStockAnalysisView::ShowGuadan");
-ExcludeFromCodeCoverage(CStockAnalysisView31, L"CStockAnalysisView::ShowRealtimeData");
-ExcludeFromCodeCoverage(CStockAnalysisView32, L"CStockAnalysisView::ShowRealtimeGuadan");
-ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDayLine");
-ExcludeFromCodeCoverage(CStockAnalysisView34, L"CStockAnalysisView::OnDraw");
-ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp");
-ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
-ExcludeFromCodeCoverage(CStockAnalysisView37, L"CStockAnalysisView::SysCallBitBlt");
-ExcludeFromCodeCoverage(CStockAnalysisView38, L"CStockAnalysisView::ShowStockHistoryDayLine");
+ExcludeFromCodeCoverage(CFireBirdView1, L"CFireBirdView::AssertValid");
+ExcludeFromCodeCoverage(CFireBirdView2, L"CFireBirdView::CreateObject");
+ExcludeFromCodeCoverage(CFireBirdView3, L"CFireBirdView::Dump");
+ExcludeFromCodeCoverage(CFireBirdView4, L"CFireBirdView::GetBaseClass");
+ExcludeFromCodeCoverage(CFireBirdView5, L"CFireBirdView::GetDocument");
+ExcludeFromCodeCoverage(CFireBirdView6, L"CFireBirdView::GetMessageMap");
+ExcludeFromCodeCoverage(CFireBirdView7, L"CFireBirdView::GetRuntimeClass");
+ExcludeFromCodeCoverage(CFireBirdView8, L"CFireBirdView::GetThisClass");
+ExcludeFromCodeCoverage(CFireBirdView9, L"CFireBirdView::GetThisMessageMap");
+ExcludeFromCodeCoverage(CFireBirdView10, L"CFireBirdView::OnBeginPrinting");
+ExcludeFromCodeCoverage(CFireBirdView11, L"CFireBirdView::OnContextMenu");
+ExcludeFromCodeCoverage(CFireBirdView12, L"CFireBirdView::OnEndPrinting");
+ExcludeFromCodeCoverage(CFireBirdView13, L"CFireBirdView::OnFilePrintPreview");
+ExcludeFromCodeCoverage(CFireBirdView14, L"CFireBirdView::OnPreparePrinting");
+ExcludeFromCodeCoverage(CFireBirdView15, L"CFireBirdView::PreCreateWindow");
+ExcludeFromCodeCoverage(CFireBirdView16, L"CFireBirdView::SysCallCmdUIEnable");
+ExcludeFromCodeCoverage(CFireBirdView17, L"CFireBirdView::SysCallCmdUISetCheck");
+ExcludeFromCodeCoverage(CFireBirdView18, L"CFireBirdView::SysCallFillSolidRect");
+ExcludeFromCodeCoverage(CFireBirdView19, L"CFireBirdView::SysCallGetTextExtent");
+ExcludeFromCodeCoverage(CFireBirdView20, L"CFireBirdView::SysCallLineTo");
+ExcludeFromCodeCoverage(CFireBirdView21, L"CFireBirdView::SysCallMoveTo");
+ExcludeFromCodeCoverage(CFireBirdView22, L"CFireBirdView::SysCallOnSize");
+ExcludeFromCodeCoverage(CFireBirdView23, L"CFireBirdView::SysCallSelectObject");
+ExcludeFromCodeCoverage(CFireBirdView24, L"CFireBirdView::SysCallTextOut");
+ExcludeFromCodeCoverage(CFireBirdView25, L"CFireBirdView::SysCallGetClientRect");
+ExcludeFromCodeCoverage(CFireBirdView26, L"CFireBirdView::OnCreate");
+ExcludeFromCodeCoverage(CFireBirdView27, L"CFireBirdView::ShowAttackBuySell");
+ExcludeFromCodeCoverage(CFireBirdView28, L"CFireBirdView::ShowBuySell");
+ExcludeFromCodeCoverage(CFireBirdView29, L"CFireBirdView::ShowCurrentTransactionInfo");
+ExcludeFromCodeCoverage(CFireBirdView30, L"CFireBirdView::ShowGuadan");
+ExcludeFromCodeCoverage(CFireBirdView31, L"CFireBirdView::ShowRealtimeData");
+ExcludeFromCodeCoverage(CFireBirdView32, L"CFireBirdView::ShowRealtimeGuadan");
+ExcludeFromCodeCoverage(CFireBirdView33, L"CFireBirdView::ShowStockDayLine");
+ExcludeFromCodeCoverage(CFireBirdView34, L"CFireBirdView::OnDraw");
+ExcludeFromCodeCoverage(CFireBirdView35, L"CFireBirdView::OnRButtonUp");
+ExcludeFromCodeCoverage(CFireBirdView36, L"CFireBirdView::Show");
+ExcludeFromCodeCoverage(CFireBirdView37, L"CFireBirdView::SysCallBitBlt");
+ExcludeFromCodeCoverage(CFireBirdView38, L"CFireBirdView::ShowStockHistoryDayLine");
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");
 ExcludeFromCodeCoverage(CVirtualMarket3, L"CVirtualMarket::ResetMarket");

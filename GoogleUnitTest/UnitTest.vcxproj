@@ -245,9 +245,6 @@
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\StockAnalysisLib\StockAnalysisLib.vcxproj">
-      <Project>{4dac4767-5d5b-4f93-9677-f27227996e69}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

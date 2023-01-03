@@ -126,7 +126,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
 	// 截取实时数据时用。为了测试解析速度
 	if (static int i = 0; i < pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
-		//SaveToFile(_T("C:\\StockAnalysis\\SinaRTData.dat"), s.c_str());
+		//SaveToFile(_T("C:\\FireBird\\SinaRTData.dat"), s.c_str());
 		i = pWebData->GetBufferLength();
 	}
 	pWebData->ResetCurrentPos();
@@ -246,7 +246,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 	// 截取实时数据时用。为了测试解析速度
 	if (i <= pWebData->GetBufferLength()) {
 		string s = pWebData->GetDataBuffer();
-		//SaveToFile(_T("C:\\StockAnalysis\\TengxunRTData.dat"), s.c_str());
+		//SaveToFile(_T("C:\\FireBird\\TengxunRTData.dat"), s.c_str());
 		i = pWebData->GetBufferLength();
 	}
 

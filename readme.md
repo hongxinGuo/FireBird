@@ -1,12 +1,12 @@
-# FireBird StockAnalysis
+# FireBird
 
 ### 当前状态
 准备发行Version0.27版本。
 
 Version 0.27:增加自动判断是否有权读取数据的功能，自动添加不允许读取数据的交易所名称。
 
-### 欢迎使用FireBird StockAnalysis
-FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库中。
+### 欢迎使用FireBird
+FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库中。
 
 #### 功能
 1.分别从新浪、腾讯和网易实时行情服务器中提取实时交易数据，保证读取到所有的Level 1数据。

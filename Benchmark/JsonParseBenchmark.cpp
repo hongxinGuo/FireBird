@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// StockAnalysis中比较费时的函数是各个数据的解析工作。
+// FireBird中比较费时的函数是各个数据的解析工作。
 // 目前最繁重的解析工作，时US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
 // 解析时，release模式用时320毫秒。
 //
@@ -273,7 +273,8 @@ public:
 	void SetUp(const ::benchmark::State& state) override {
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, s);
-		try { js = json::parse(s.begin() + 21, s.end() - 2); } catch (json::parse_error&) { fDone = false; }
+		try { js = json::parse(s.begin() + 21, s.end() - 2); }
+		catch (json::parse_error&) { fDone = false; }
 	}
 
 	void TearDown(const ::benchmark::State& state) override { }
