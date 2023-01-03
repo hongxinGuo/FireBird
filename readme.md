@@ -20,7 +20,7 @@ FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信
 #### 使用方法
 
 ###### 系统设置
-参看\Lib目录中的安装使用手册。
+参看\Lib目录中的安装手册。
 
 ### 致谢
 1.GoogleTest(https://github.com/google/googletest)。

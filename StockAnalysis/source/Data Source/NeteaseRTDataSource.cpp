@@ -14,12 +14,19 @@ bool CNeteaseRTDataSource::UpdateStatus(void) { return true; }
 bool CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 	const ULONGLONG llTickCount = GetTickCount64();
 	if (static ULONGLONG sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
-		if (!IsInquiring()) { InquireRTData(lCurrentTime); }
-		if (IsInquiring()) {
-			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {	// 系统配置为：测试系统时，不降低轮询速度
+		if (!IsInquiring()) {
+			InquireRTData(lCurrentTime);
+		}
+		if (m_pWebInquiry->IsWebError()) {
+			sllLastTimeTickCount = llTickCount + 30000; //网络出现错误时，延迟三十秒再查询
+		}
+		else {
+			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) { // 系统配置为：测试系统时，不降低轮询速度
 				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
-			else { sllLastTimeTickCount = llTickCount; }
+			else {
+				sllLastTimeTickCount = llTickCount;
+			}
 		}
 	}
 	return true;

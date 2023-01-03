@@ -35,6 +35,7 @@ public:
 
 	CString GetClassName(void) const noexcept { return m_strClassName; }
 	CString GetInquiry(void) const noexcept { return m_strInquiry; }
+	CString GetTotalInquiryMessage(void) const noexcept { return m_strTotalInquiryMessage; }
 
 	long GetIndex(void) const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }

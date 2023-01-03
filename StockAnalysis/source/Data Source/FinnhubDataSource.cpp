@@ -166,7 +166,7 @@ bool CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	if (!sbWebErrorOccurred) {
 		if (m_pWebInquiry->IsWebError()) {
 			sbWebErrorOccurred = true;
-			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
+			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟五分钟再重新申请。
 		}
 	}
 

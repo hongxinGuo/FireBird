@@ -15,11 +15,20 @@ bool CTengxunRTDataSource::Inquire(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();
 	if (static long long sllLastTimeTickCount = 0; gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.
 		GetChinaMarketRTDataInquiryTime() * 5)) {
-		if (!IsInquiring()) { InquireRTData(lCurrentTime); }
-		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
-			sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+		if (!IsInquiring()) {
+			InquireRTData(lCurrentTime);
 		}
-		else { sllLastTimeTickCount = llTickCount; }
+		if (m_pWebInquiry->IsWebError()) {
+			sllLastTimeTickCount = llTickCount + 60000; //网络出现错误时，延迟一分钟再查询
+		}
+		else {
+			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
+				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+			}
+			else {
+				sllLastTimeTickCount = llTickCount;
+			}
+		}
 	}
 	return true;
 }

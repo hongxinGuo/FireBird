@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 申请数据时使用了MFC的CInternetSession的OpenURL函数。其速度超过libcurl中的curl_easy_perform()。
+///	同时申请若干个数据时，由于受到网络带宽的影响，下载速度会互相影响，导致时间延长。如下载Tiingo的StockSymbol时，
+///	瞬间下载速度会达到70M bit/秒， 导致sina实时数据的下载时间由几十毫秒 延长至300-700毫秒。还可以接受。
+/// 使用libcurl的curl_multi_perform多线程模式，估计能有所改善，但感觉也不会比MFC好多少。
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
 #include "VirtualWebInquiry.h"
@@ -169,7 +177,7 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 		}
-		catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
+		catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
 			fReadingSuccess = false;
 			m_dwWebErrorCode = exception->m_dwError;
 			ReportWebError(m_dwWebErrorCode, m_strInquiry);
@@ -183,83 +191,6 @@ bool CVirtualWebInquiry::ReadingWebData(void) {
 	ASSERT(m_pFile == nullptr);
 
 	return fReadingSuccess;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// 使用libcurl单线程读取网络数据的模式。
-///	与Windows自带的CHTTPFile读取模式相比，没有任何速度上的提高，且降低了不少。
-///	不使用此模式。
-///
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualWebInquiry::Read2(void) {
-	ASSERT(0); // 此模式速度降低了不少，不使用此模式。保留的原因是用于对比。
-	ASSERT(IsReadingWebData());
-	ASSERT(m_pDataSource != nullptr);
-	m_pWebData = make_shared<CWebData>();
-	PrepareReadingWebData();
-	if (ReadingWebData2()) {
-		ResetBuffer();
-		ParseData(m_pWebData);
-		UpdateStatusAfterSucceed(m_pWebData);
-
-		m_pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
-		m_pDataSource->StoreReceivedData(m_pWebData);
-		ASSERT(m_pDataSource->IsInquiring());
-	}
-	else {
-		// error handling
-		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
-		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
-	}
-	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
-
-	SetReadingWebData(false);
-}
-
-static size_t receive_data_func(void* ptr, size_t size, size_t nmemb, void* userOp) {
-	size_t realSize = size * nmemb;
-
-	(static_cast<CWebData*>(userOp))->StoreData(static_cast<char*>(ptr), realSize);
-
-	return realSize;
-}
-
-bool CVirtualWebInquiry::ReadingWebData2(void) {
-	gl_ThreadStatus.IncreaseWebInquiringThread();
-	m_pWebData = make_shared<CWebData>();
-
-	CURL* curl_handle = curl_easy_init();
-	CURLcode code;
-	if (curl_handle) {
-		curl_easy_setopt(curl_handle, CURLOPT_URL, m_strInquiry);
-		if (m_strHeaders.GetLength() > 0) {
-			struct curl_slist* list = nullptr;
-			list = curl_slist_append(list, m_strHeaders);
-			curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list); // 提交报头
-			curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1); // 关闭进度条
-			//curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 60); // TimeOut
-			//curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, static_cast<curl_off_t>(2 * 512 * 1024)); // 最大下载速度为2M Bytes/S
-			code = curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 1024 * 512);
-		}
-		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0); // 不校验SSL
-		curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, m_pWebData.get());
-		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, receive_data_func);
-	}
-	CURLcode res = curl_easy_perform(curl_handle);
-	double d = 0.0;
-	curl_easy_getinfo(curl_handle, CURLINFO_TOTAL_TIME, &d);
-	m_tCurrentInquiryTime = d * 1000;
-	curl_easy_cleanup(curl_handle);
-	m_pWebData->Resize(m_pWebData->GetCurrentPos());
-	sm_lTotalByteRead += m_pWebData->GetCurrentPos();
-	m_pWebData->SetCurrentPos(0);
-	// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
-	m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
-
-	gl_ThreadStatus.DecreaseWebInquiringThread();
-
-	return true;
 }
 
 /// <summary>
@@ -289,7 +220,7 @@ bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 		m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 		ASSERT(std::strcmp(typeid(*m_pFile).name(), _T("class CHttpFile")) == 0);
 	}
-	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
+	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
 		ASSERT(m_pFile == nullptr);
 		DeleteWebFile();
 		m_dwWebErrorCode = exception->m_dwError;
@@ -363,6 +294,83 @@ bool CVirtualWebInquiry::VerifyDataLength() const {
 		}
 		return false;
 	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 使用libcurl的curl_easy_perform()读取网络数据的模式。
+///	与Windows自带的CHttpFile读取模式相比，没有任何速度上的提高，且降低了不少。
+///	不使用此模式，保留在此仅为对照。
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////
+void CVirtualWebInquiry::Read2(void) {
+	ASSERT(0); // 此模式速度降低了不少，不使用此模式。保留的原因是用于对比。
+	ASSERT(IsReadingWebData());
+	ASSERT(m_pDataSource != nullptr);
+	m_pWebData = make_shared<CWebData>();
+	PrepareReadingWebData();
+	if (ReadingWebData2()) {
+		ResetBuffer();
+		ParseData(m_pWebData);
+		UpdateStatusAfterSucceed(m_pWebData);
+
+		m_pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
+		m_pDataSource->StoreReceivedData(m_pWebData);
+		ASSERT(m_pDataSource->IsInquiring());
+	}
+	else {
+		// error handling
+		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
+		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
+	}
+	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
+
+	SetReadingWebData(false);
+}
+
+static size_t receive_data_func(void* ptr, size_t size, size_t nmemb, void* userOp) {
+	const size_t realSize = size * nmemb;
+
+	(static_cast<CWebData*>(userOp))->StoreData(static_cast<char*>(ptr), realSize);
+
+	return realSize;
+}
+
+bool CVirtualWebInquiry::ReadingWebData2(void) {
+	gl_ThreadStatus.IncreaseWebInquiringThread();
+	m_pWebData = make_shared<CWebData>();
+
+	CURL* curl_handle = curl_easy_init();
+	CURLcode code;
+	if (curl_handle) {
+		curl_easy_setopt(curl_handle, CURLOPT_URL, m_strInquiry);
+		if (m_strHeaders.GetLength() > 0) {
+			struct curl_slist* list = nullptr;
+			list = curl_slist_append(list, m_strHeaders);
+			curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, list); // 提交报头
+			curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1); // 关闭进度条
+			//curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 60); // TimeOut
+			//curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, static_cast<curl_off_t>(2 * 512 * 1024)); // 最大下载速度为2M Bytes/S
+			code = curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 1024 * 512);
+		}
+		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0); // 不校验SSL
+		curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, m_pWebData.get());
+		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, receive_data_func);
+	}
+	CURLcode res = curl_easy_perform(curl_handle);
+	double d = 0.0;
+	curl_easy_getinfo(curl_handle, CURLINFO_TOTAL_TIME, &d);
+	m_tCurrentInquiryTime = d * 1000;
+	curl_easy_cleanup(curl_handle);
+	m_pWebData->Resize(m_pWebData->GetCurrentPos());
+	sm_lTotalByteRead += m_pWebData->GetCurrentPos();
+	m_pWebData->SetCurrentPos(0);
+	// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
+	m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
+
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+
 	return true;
 }
 

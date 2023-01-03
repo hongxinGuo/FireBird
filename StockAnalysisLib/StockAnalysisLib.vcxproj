@@ -458,6 +458,7 @@
     <ProjectGuid>{4dac4767-5d5b-4f93-9677-f27227996e69}</ProjectGuid>
     <RootNamespace>StockAnalysisLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>StockAnalysisLib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
