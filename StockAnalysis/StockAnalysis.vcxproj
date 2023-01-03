@@ -225,14 +225,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Windows interface\StockAnalysis.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="source\Windows interface\StockAnalysis.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Windows interface\StockAnalysis.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\StockAnalysis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

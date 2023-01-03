@@ -54,12 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="source\Windows interface\StockAnalysis.h">
+    <ClInclude Include="..\src\Windows interface\StockAnalysis.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Windows interface\StockAnalysis.cpp">
+    <ClCompile Include="..\src\Windows interface\StockAnalysis.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

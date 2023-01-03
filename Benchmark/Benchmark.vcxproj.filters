@@ -24,10 +24,10 @@
     <ClCompile Include="WebRTDataBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\pch.cpp">
+    <ClCompile Include="FinnhubInaccessibleExchangeBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubInaccessibleExchangeBenchmark.cpp">
+    <ClCompile Include="..\src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

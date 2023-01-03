@@ -366,9 +366,6 @@
     <ClCompile Include="FinnhubProductTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\pch.cpp">
-      <Filter>Test源文件</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp">
       <Filter>Test源文件\Web Inquiry</Filter>
     </ClCompile>
@@ -566,6 +563,9 @@
     <ClCompile Include="DataChoicedIEXTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\pch.cpp">
+      <Filter>Test源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
