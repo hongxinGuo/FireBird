@@ -18,6 +18,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\FireBird.ico">
+      <Filter>资源文件</Filter>
+    </Image>
     <Image Include="res\output_wnd.ico">
       <Filter>资源文件</Filter>
     </Image>
@@ -29,10 +32,7 @@
     </Image>
     <Image Include="res\FireBirdDoc.ico">
       <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="res\FireBird.ico">
-      <Filter>资源文件</Filter>
-    </Image>
+    </Image> 
     <Image Include="res\Toolbar.bmp">
       <Filter>资源文件</Filter>
     </Image>

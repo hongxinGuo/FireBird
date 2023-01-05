@@ -1,6 +1,6 @@
 cd c:\
 md FireBird
-cd stockAnalysis
+cd FireBird
 md Test Data
 cd Test Data
 md Benchmark
