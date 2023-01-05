@@ -291,6 +291,9 @@ bool CVirtualWebInquiry::VerifyDataLength() const {
 			str += buffer;
 			str += m_strInquiry.Left(120);
 			gl_systemMessage.PushErrorMessage(str);
+			str = m_sBuffer.c_str();
+			str = str.Left(200);
+			gl_systemMessage.PushErrorMessage(str);
 		}
 		return false;
 	}

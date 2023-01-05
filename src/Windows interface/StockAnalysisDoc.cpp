@@ -11,6 +11,8 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
 // CStockAnalysisDoc
@@ -21,14 +23,12 @@ BEGIN_MESSAGE_MAP(CStockAnalysisDoc, CDocument)
 END_MESSAGE_MAP()
 
 // CStockAnalysisDoc 构造/析构
-
 CStockAnalysisDoc::CStockAnalysisDoc() {
 	// TODO: 在此添加一次性构造代码
 }
 
 BOOL CStockAnalysisDoc::OnNewDocument() {
-	if (!CDocument::OnNewDocument())
-		return FALSE;
+	if (!CDocument::OnNewDocument()) return FALSE;
 
 	// TODO: 在此添加重新初始化代码
 	// (SDI 文档将重用该文档)

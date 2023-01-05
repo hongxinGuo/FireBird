@@ -38,7 +38,7 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = TransferToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
+			const long lTemp = ConvertToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(*pvDayLine);

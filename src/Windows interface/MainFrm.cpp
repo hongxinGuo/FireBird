@@ -37,8 +37,12 @@
 #include"curl/curl.h"
 #include <ixwebsocket/IXNetSystem.h>
 
+#include<exception>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
 bool CMainFrame::sm_fGlobeInit = false;
@@ -553,7 +557,15 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	ResetMarket();
 
 	// 调用主调度函数,由各市场调度函数执行具体任务
-	SchedulingTask();
+	try {
+		SchedulingTask();
+	}
+	catch (std::exception* e) {
+		CString str = _T("Unhandled exception founded : ");
+		str += e->what();
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
 
 	if (gl_counter.GetElapsedMilliSecond() > 20) {
 		sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMilliSecond());

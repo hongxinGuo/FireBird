@@ -207,7 +207,7 @@ namespace StockAnalysisTest {
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(ALTERNATIVE_DATA_COVID_19_), _T("AlternativeDataCOVID_19"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(ALTERNATIVE_DATA_FDA_CALENDAR_), _T("AlternativeDataFDACalendar"));
 
-		// Econimic
+		// Economic
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(ECONOMIC_COUNTRY_LIST_), _T("EconomicCountryList"));
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(ECONOMIC_CALENDAR_), _T("EconomicCalendar")); //Premium
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(ECONOMIC_CODES_), _T("EconomicCodes")); //Premium
@@ -314,7 +314,7 @@ namespace StockAnalysisTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataCOVID_19")), ALTERNATIVE_DATA_COVID_19_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("AlternativeDataFDACalendar")), ALTERNATIVE_DATA_FDA_CALENDAR_);
 
-		// Econimic
+		// Economic
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCountryList")), ECONOMIC_COUNTRY_LIST_);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCalendar")), ECONOMIC_CALENDAR_); //Premium
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(_T("EconomicCodes")), ECONOMIC_CODES_); //Premium
@@ -330,6 +330,7 @@ namespace StockAnalysisTest {
 			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];
 			exchange.AddExchange(s.c_str());
 		}
+		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
 		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
 		EXPECT_STREQ(exchange.GetExchange(0), _T("SS"));
 		EXPECT_STREQ(exchange.GetExchange(1), _T("SZ"));
@@ -344,6 +345,7 @@ namespace StockAnalysisTest {
 		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
+		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
 		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
@@ -351,6 +353,7 @@ namespace StockAnalysisTest {
 		gl_finnhubInaccessibleExchange.Clear();
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
 		             _T("WebSocketTrades"));

@@ -40,7 +40,7 @@ bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = TransferToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
+			const long lTemp = ConvertToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
@@ -99,7 +99,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 			tTemp = jsonGetLongLong(it);
 			pDayLine = make_shared<CDayLine>();
 			pDayLine->SetTime(tTemp);
-			lTemp = TransferToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
+			lTemp = ConvertToDate(tTemp, gl_pWorldMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}

@@ -62,8 +62,11 @@ public:
 		m_finnhubInaccessibleExchange.clear();
 	}
 
-	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
-	CString GetDefaultFileName(void) const { return m_strFileName; }
+	void SetDefaultFileName(const CString& fileName) noexcept { m_strFileName = fileName; }
+	CString GetDefaultFileName(void) { return m_strFileName; }
+
+	void SetUpdateDate(const long lDate) noexcept {	m_lUpdateDate = lDate; }
+	long GetUpdateDate() { return m_lUpdateDate; }
 
 	void CreateFinnhubInquiryIndexToStringMap();
 	void CreateFinnhubInquiryStringToIndexMap();
@@ -84,12 +87,14 @@ public:
 protected:
 	CString m_strFileName; // 配置文件名称
 
+	long m_lUpdateDate; // 本文件更新日期
 	map<int, CInaccessibleExchangesPtr> m_mapInaccessibleExchange; //
 	map<int, CString> m_mapFinnhubInquiryIndexToString;
 	map<CString, int> m_mapFinnhubInquiryStringToIndex;
 
 	bool m_fInitialized = false;
 	bool m_fUpdate;
+
 
 	json m_finnhubInaccessibleExchange;
 };

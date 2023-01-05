@@ -101,7 +101,7 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDa
 			s = jsonGetString(it, _T("category"));
 			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
 			const auto dateTime = jsonGetLongLong(it, _T("datetime"));
-			pCompanyNews->m_llDateTime = TransferToDateTime(dateTime, 0);
+			pCompanyNews->m_llDateTime = ConvertToDateTime(dateTime, 0);
 			s = jsonGetString(it, _T("headline"));
 			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();
 			pCompanyNews->m_iNewsID = jsonGetInt(it,_T("id"));

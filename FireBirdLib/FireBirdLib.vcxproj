@@ -25,6 +25,7 @@
     <ClInclude Include="..\src\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
+    <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Class\DataChinaDayLine.h" />
     <ClInclude Include="..\src\Data Class\DataChinaStock.h" />
     <ClInclude Include="..\src\Data Class\DataChinaWeekLine.h" />
@@ -136,9 +137,11 @@
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
+    <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
+    <ClInclude Include="..\src\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />

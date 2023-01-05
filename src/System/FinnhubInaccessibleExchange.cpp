@@ -4,6 +4,8 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
+#include"TimeConvert.h"
+
 using namespace std;
 #include<string>
 #include<iostream>
@@ -15,7 +17,8 @@ using std::make_shared;
 using std::exception;
 
 std::string gl_sFinnhubInaccessibleExchange = R"(
-{ "InaccessibleExchange" :
+{ "UpdateDate" : 20221205,
+ "InaccessibleExchange" :
 [
 {
 	"Function" : "StockFundamentalsCompanyProfileConcise",
@@ -99,6 +102,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
 	m_strFileName = _T("FinnhubInaccessibleExchange.json"); // json file name
+	m_lUpdateDate = 19800101;
 
 	ASSERT(m_strFileName.Compare(_T("FinnhubInaccessibleExchange.json")) == 0);
 	if (LoadDB()) { Update(); }
@@ -142,26 +146,34 @@ void CFinnhubInaccessibleExchange::SaveDB(void) const {
 
 void CFinnhubInaccessibleExchange::Update(void) {
 	CInaccessibleExchangesPtr pExchange = nullptr;
-	for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
-		const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
-		if (size > 0) {
-			// 有exchange数据的话才建立数据集
-			pExchange = make_shared<CInaccessibleExchanges>();
-			string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-			pExchange->SetFunctionString(s2.c_str());
-			pExchange->SetFunction(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()));
-			for (int j = 0; j < size; j++) {
-				string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-				pExchange->AddExchange(s.c_str());
+	try {
+		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
+	}
+	catch (json::exception&) { }
+	try {
+		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
+			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
+			if (size > 0) {
+				// 有exchange数据的话才建立数据集
+				pExchange = make_shared<CInaccessibleExchanges>();
+				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
+				pExchange->SetFunctionString(s2.c_str());
+				pExchange->SetFunction(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()));
+				for (int j = 0; j < size; j++) {
+					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
+					pExchange->AddExchange(s.c_str());
+				}
+				gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString())] = pExchange;
 			}
-			gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString())] = pExchange;
 		}
 	}
+	catch (json::exception&) {}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson(void) {
 	m_finnhubInaccessibleExchange.clear();
 
+	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;
 	for (const auto& pExchange : m_mapInaccessibleExchange) {
 		if (pExchange.second->HaveExchange()) {
 			// 有exchange数据的话才建立数据集

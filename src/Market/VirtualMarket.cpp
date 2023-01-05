@@ -75,7 +75,7 @@ time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) {
 }
 
 time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) {
-	return ::TransferToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
+	return ::ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
 }
 
 long CVirtualMarket::TransferToMarketDate(time_t tUTC) {

@@ -40,7 +40,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
 		pDayLine->SetDisplaySymbol(pStock->GetTicker());
-		const auto lTemp = TransferToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
+		const auto lTemp = ConvertToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
 		pDayLine->SetDate(lTemp);
 	}
 	if (!pvDayLine->empty()) {

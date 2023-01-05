@@ -17,6 +17,8 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
 // CStockAnalysisView
@@ -621,8 +623,7 @@ BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
 void CStockAnalysisView::OnDraw(CDC* pdc) {
 	const CStockAnalysisDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
+	if (!pDoc) return;
 
 	pdc = GetDC();
 
@@ -645,8 +646,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
 
 	CRect rect;
 	SysCallGetClientRect(&rect);
-	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) {
-	}
+	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) { }
 	else {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
@@ -741,8 +741,7 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent) {
 }
 
 int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-	if (CView::OnCreate(lpCreateStruct) == -1)
-		return -1;
+	if (CView::OnCreate(lpCreateStruct) == -1) return -1;
 
 	GetClientRect(&m_rectClient);
 

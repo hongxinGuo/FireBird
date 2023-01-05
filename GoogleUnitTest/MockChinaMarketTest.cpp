@@ -247,7 +247,7 @@ namespace StockAnalysisTest {
 		gl_pMockChinaMarket->SetTodayStockProcessed(false);
 		gl_pMockChinaMarket->CalculateTime();
 		gl_pMockChinaMarket->SetNewestTransactionTime(gl_pMockChinaMarket->GetUTCTime());
-		long lDate = TransferToDate(gl_pMockChinaMarket->GetNewestTransactionTime());
+		long lDate = ConvertToDate(gl_pMockChinaMarket->GetNewestTransactionTime());
 		gl_pMockChinaMarket->TEST_SetFormattedMarketTime(130000); // 设置市场时间为小于150400，
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildDayLine(lDate))
 			.Times(1)

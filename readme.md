@@ -20,7 +20,7 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 #### 使用方法
 
 ###### 系统设置
-参看\Lib目录中的安装手册。
+参看\Docs目录中的安装手册。
 
 ### 致谢
 1.GoogleTest(https://github.com/google/googletest)。

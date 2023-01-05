@@ -544,7 +544,7 @@ namespace StockAnalysisTest {
 		auto pRTData = make_shared<CWebRTData>();
 		time_t tt;
 		time(&tt);
-		long lDateSource = TransferToDate(tt);
+		long lDateSource = ConvertToDate(tt);
 
 		pRTData->SetTransactionTime(tt);
 		pRTData->SetLastClose(10101010);
@@ -563,7 +563,7 @@ namespace StockAnalysisTest {
 			pRTData->SetVSell(i, i * 45678);
 		}
 		stock.UpdateStatus(pRTData);
-		long lDateDest = TransferToDate(stock.GetTransactionTime());
+		long lDateDest = ConvertToDate(stock.GetTransactionTime());
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
@@ -608,12 +608,12 @@ namespace StockAnalysisTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CChinaStock stock;
 		long lDate = 21091101;
-		time_t tt = TransferToTTime(lDate, -8 * 3600, 150000);
+		time_t tt = ConvertToTTime(lDate, -8 * 3600, 150000);
 		CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));
 		stock.SetDisplaySymbol("浦东发展");
-		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.TransferToDate()作比较
+		stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.ConvertToDate()作比较
 		stock.SetLastClose(101010);
 		stock.SetOpen(202020);
 		stock.SetHigh(303030);
@@ -1789,7 +1789,7 @@ namespace StockAnalysisTest {
 
 		pStock->UpdateCurrentHistoryCandle(pDayLine);
 
-		EXPECT_EQ(pDayLine->GetMarketDate(), TransferToDate(pStock->GetTransactionTime()));
+		EXPECT_EQ(pDayLine->GetMarketDate(), ConvertToDate(pStock->GetTransactionTime()));
 		EXPECT_STREQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
 		EXPECT_STREQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
 		EXPECT_STREQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());

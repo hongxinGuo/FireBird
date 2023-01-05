@@ -136,6 +136,8 @@ protected:
 
 	CInternetSession* m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
+	long m_lHTTPStatusCode; //网络状态码
+
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 	DWORD m_dwWebErrorCode; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer; // 接收到数据的缓冲区

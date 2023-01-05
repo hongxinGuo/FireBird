@@ -3,6 +3,8 @@
 #include "WorldMarket.h"
 #include"thread.h"
 
+#include"FinnhubInaccessibleExchange.h"
+
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
@@ -18,7 +20,7 @@
 #include"SetWorldStockDayLine.h"
 
 #include <ixwebsocket/IXNetSystem.h>
-#include <ixwebsocket/IXWebSocket.h>
+//#include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
 
 #include<thread>
@@ -41,7 +43,9 @@ CWorldMarket::CWorldMarket() {
 	Reset();
 }
 
-CWorldMarket::~CWorldMarket() { PreparingExitMarket(); }
+CWorldMarket::~CWorldMarket() {
+	PreparingExitMarket();
+}
 
 void CWorldMarket::Reset(void) {
 	ResetFinnhub();
@@ -55,6 +59,10 @@ void CWorldMarket::ResetFinnhub(void) {
 
 	m_fRebuildDayLine = false;
 	SetSystemReady(false); // 市场初始状态为未设置好。
+	if (IsEarlyThen(gl_finnhubInaccessibleExchange.GetUpdateDate(), GetMarketDate(), 7)) {
+		gl_finnhubInaccessibleExchange.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
+		gl_finnhubInaccessibleExchange.SetUpdateDate(GetMarketDate());
+	}
 }
 
 void CWorldMarket::ResetQuandl(void) {}

@@ -10,7 +10,7 @@ long GetDayOfWeek(void) {
 	return tm_.tm_wday;
 }
 
-time_t TransferToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
+time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
 	tm tmMarket{0, 0, 0, 0, 0, 0};
 
 	ASSERT(lDate >= 19700101);
@@ -24,30 +24,30 @@ time_t TransferToTTime(const long lDate, const time_t tTimeZone, const long lTim
 	return _mkgmtime(&tmMarket) + tTimeZone;
 }
 
-long TransferToDate(const time_t tUTC, const time_t tTimeZone) noexcept {
+long ConvertToDate(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long TransferToTime(const time_t tUTC, const time_t tTimeZone) noexcept {
+long ConvertToTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return (tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 TransferToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
+INT64 ConvertToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, tTimeZone);
 	return ((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 +
 		static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long TransferToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
+long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
 
-long TransferToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
+long ConvertToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
 
-INT64 TransferToDateTime(const tm* ptm) noexcept {
+INT64 ConvertToDateTime(const tm* ptm) noexcept {
 	return ((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 +
 		static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
