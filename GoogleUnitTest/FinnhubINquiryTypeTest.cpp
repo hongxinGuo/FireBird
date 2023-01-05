@@ -14,7 +14,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	TEST(FinnhubInquiryTypeTest, Test) {
 		EXPECT_EQ(WEBSOCKET_TRADES_, 1);
 		EXPECT_EQ(WEBSOCKET_NEWS_, WEBSOCKET_TRADES_ + 1);

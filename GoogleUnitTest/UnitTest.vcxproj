@@ -230,7 +230,7 @@
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
     <ClInclude Include="MockQuandlWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
-    <ClInclude Include="MockStockAnalysisView.h" />
+    <ClInclude Include="MockFireBirdView.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />
     <ClInclude Include="MockTiingoWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />

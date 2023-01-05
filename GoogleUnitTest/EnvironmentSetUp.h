@@ -45,7 +45,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	// 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
 	CMockWorldMarketPtr gl_pMockWorldMarket;
 	CMockChinaMarketPtr gl_pMockChinaMarket;

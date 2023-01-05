@@ -10,7 +10,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class COneGuadanTest : public ::testing::Test
 	{
 	protected:
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
 	}
 }
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CGuadanTest : public ::testing::Test
 	{
 	protected:

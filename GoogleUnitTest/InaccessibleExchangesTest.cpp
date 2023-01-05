@@ -16,7 +16,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CInaccessibleExchangesTest : public ::testing::Test {
 		void SetUp(void) override {
 			GeneralCheck();
@@ -74,7 +74,7 @@ namespace StockAnalysisTest {
 	}
 }
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public ::testing::Test {
 		void SetUp(void) override { GeneralCheck(); }
 

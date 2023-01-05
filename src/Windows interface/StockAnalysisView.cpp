@@ -1,4 +1,4 @@
-﻿// StockAnalysisView.cpp: CStockAnalysisView 类的实现
+﻿// FireBirdView.cpp: CFireBirdView 类的实现
 //
 
 #include"pch.h"
@@ -9,11 +9,11 @@
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDayLineERS
-#include "StockAnalysis.h"
+#include "FireBird.h"
 #endif
 
-#include "StockAnalysisDoc.h"
-#include "StockAnalysisView.h"
+#include "FireBirdDoc.h"
+#include "FireBirdView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,49 +21,49 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// CStockAnalysisView
+// CFireBirdView
 
-IMPLEMENT_DYNCREATE(CStockAnalysisView, CView)
+IMPLEMENT_DYNCREATE(CFireBirdView, CView)
 
-BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
+BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	// 标准打印命令
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CFireBirdView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_TIMER()
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
-	ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
-	ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
-	ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
-	ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
-	ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
-	ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
-	ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnShowRsInLinear)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
-	ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
-	ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
-	ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
-	ON_COMMAND(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnShowWeekLine)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CStockAnalysisView::OnUpdateShowWeekLine)
+	ON_COMMAND(ID_SHOW_RS3, &CFireBirdView::OnShowRs3)
+	ON_COMMAND(ID_SHOW_RS5, &CFireBirdView::OnShowRs5)
+	ON_COMMAND(ID_SHOW_RS10, &CFireBirdView::OnShowRs10)
+	ON_COMMAND(ID_SHOW_RS30, &CFireBirdView::OnShowRs30)
+	ON_COMMAND(ID_SHOW_RS60, &CFireBirdView::OnShowRs60)
+	ON_COMMAND(ID_SHOW_RS120, &CFireBirdView::OnShowRs120)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CFireBirdView::OnUpdateShowRs10)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CFireBirdView::OnUpdateShowRs120)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CFireBirdView::OnUpdateShowRs3)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CFireBirdView::OnUpdateShowRs30)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CFireBirdView::OnUpdateShowRs5)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CFireBirdView::OnUpdateShowRs60)
+	ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CFireBirdView::OnShowRsInLogarithm)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CFireBirdView::OnUpdateShowRsInLogarithm)
+	ON_COMMAND(ID_SHOW_RS_IN_LINEAR, &CFireBirdView::OnShowRsInLinear)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CFireBirdView::OnUpdateShowRsInLinear)
+	ON_COMMAND(ID_SHOW_RS_INDEX, &CFireBirdView::OnShowRsIndex)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CFireBirdView::OnUpdateShowRsIndex)
+	ON_COMMAND(ID_SHOW_DAYLINE, &CFireBirdView::OnShowDayLine)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CFireBirdView::OnUpdateShowDayLine)
+	ON_COMMAND(ID_SHOW_REALTIME, &CFireBirdView::OnShowRealTime)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
+	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
+	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
 END_MESSAGE_MAP()
 
-// CStockAnalysisView 构造/析构
+// CFireBirdView 构造/析构
 
-CStockAnalysisView::CStockAnalysisView() {
+CFireBirdView::CFireBirdView() {
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
@@ -87,7 +87,7 @@ CStockAnalysisView::CStockAnalysisView() {
 	m_fCreateMemoryDC = false;
 }
 
-bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
+bool CFireBirdView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
 	CString str = _T("abcd");
 	const CSize sizeText = SysCallGetTextExtent(pDC, str);
 	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
@@ -119,7 +119,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart
 	return true;
 }
 
-bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
+bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
 	if (gl_pChinaMarket->GetTotalStock() > 0) {
 		pStock = gl_pChinaMarket->GetStock(0); // 000001.SS
 	}
@@ -137,7 +137,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
 	return true;
 }
 
-void CStockAnalysisView::ShowRealtimeData(CDC* pDC) {
+void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 	const int cFirstPosition = 0;
 	const int cSecondPosition = cFirstPosition + 200;
 	const int cThirdPosition = cSecondPosition + 300;
@@ -155,7 +155,7 @@ void CStockAnalysisView::ShowRealtimeData(CDC* pDC) {
 	//ShowRealtimeGuadan(pDC);
 }
 
-void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
+void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	CString str;
 	COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
 	COLORREF crBefore;
@@ -222,7 +222,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
 	SysCallSelectObject(pDC, ppen);
 }
 
-void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
 	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -272,7 +272,7 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rect
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
 	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -318,7 +318,7 @@ void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRec
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
 	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -396,7 +396,7 @@ void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CR
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
 	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
@@ -475,7 +475,7 @@ void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CR
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
+void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
 	CPen* ppen = nullptr;
@@ -565,7 +565,7 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
 	pDC->SelectObject(ppen);
 }
 
-void CStockAnalysisView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
+void CFireBirdView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
 	auto it = vRS.end();
 	int i = 1;
 	--it;
@@ -576,7 +576,7 @@ void CStockAnalysisView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
 	}
 }
 
-bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
+bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 	int y = m_rectClient.bottom - dValue * m_rectClient.bottom / 200;
 	SysCallLineTo(pDC, m_rectClient.right - 1 - 3 * i, y);
 	if (3 * i > iSize) return false;
@@ -584,7 +584,7 @@ bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 	return true;
 }
 
-bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
+bool CFireBirdView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
 	if (pStock != nullptr) {
 		switch (m_iCurrentShowType) {
 		case _SHOW_DAY_LINE_DATA_:
@@ -601,7 +601,7 @@ bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
 	return true;
 }
 
-void CStockAnalysisView::ZoomIn(vector<double>& vData, double dLevel, double dRate) {
+void CFireBirdView::ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 	double d = 0;
 
 	for (int i = 0; i < vData.size(); i++) {
@@ -612,16 +612,16 @@ void CStockAnalysisView::ZoomIn(vector<double>& vData, double dLevel, double dRa
 	}
 }
 
-BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
+BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
 	//  CREATESTRUCT cs 来修改窗口类或样式
 
 	return CView::PreCreateWindow(cs);
 }
 
-// CStockAnalysisView 绘图
+// CFireBirdView 绘图
 
-void CStockAnalysisView::OnDraw(CDC* pdc) {
-	const CStockAnalysisDoc* pDoc = GetDocument();
+void CFireBirdView::OnDraw(CDC* pdc) {
+	const CFireBirdDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
@@ -632,7 +632,7 @@ void CStockAnalysisView::OnDraw(CDC* pdc) {
 	ReleaseDC(pdc);
 }
 
-void CStockAnalysisView::Show(CDC* pdc) {
+void CFireBirdView::Show(CDC* pdc) {
 	CBitmap* pOldBitmap = nullptr;
 	COLORREF crGray(RGB(24, 24, 24));
 
@@ -678,59 +678,59 @@ void CStockAnalysisView::Show(CDC* pdc) {
 	} // switch
 }
 
-// CStockAnalysisView 打印
+// CFireBirdView 打印
 
-void CStockAnalysisView::OnFilePrintPreview() {
+void CFireBirdView::OnFilePrintPreview() {
 #ifndef SHARED_HANDayLineERS
 	AFXPrintPreview(this);
 #endif
 }
 
-BOOL CStockAnalysisView::OnPreparePrinting(CPrintInfo* pInfo) {
+BOOL CFireBirdView::OnPreparePrinting(CPrintInfo* pInfo) {
 	// 默认准备
 	return DoPreparePrinting(pInfo);
 }
 
-void CStockAnalysisView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
 	// TODO: 添加额外的打印前进行的初始化过程
 }
 
-void CStockAnalysisView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
 	// TODO: 添加打印后进行的清理过程
 }
 
-void CStockAnalysisView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
+void CFireBirdView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
 
-void CStockAnalysisView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
+void CFireBirdView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 #ifndef SHARED_HANDayLineERS
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
 }
 
-// CStockAnalysisView 诊断
+// CFireBirdView 诊断
 
 #ifdef _DEBUG
-void CStockAnalysisView::AssertValid() const {
+void CFireBirdView::AssertValid() const {
 	CView::AssertValid();
 }
 
-void CStockAnalysisView::Dump(CDumpContext& dc) const {
+void CFireBirdView::Dump(CDumpContext& dc) const {
 	CView::Dump(dc);
 }
 
-CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
+CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
-	return dynamic_cast<CStockAnalysisDoc*>(m_pDocument);
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CFireBirdDoc)));
+	return dynamic_cast<CFireBirdDoc*>(m_pDocument);
 }
 #endif //_DEBUG
 
-// CStockAnalysisView 消息处理程序
+// CFireBirdView 消息处理程序
 
-void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent) {
+void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
 	CDC* pdc = GetDC();
 
 	Show(pdc);
@@ -740,7 +740,7 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent) {
 	CView::OnTimer(nIDEvent);
 }
 
-int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CView::OnCreate(lpCreateStruct) == -1) return -1;
 
 	GetClientRect(&m_rectClient);
@@ -753,74 +753,74 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
+void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	SysCallOnSize(nType, cx, cy);
 
 	m_rectClient.right = cx;
 	m_rectClient.bottom = cy;
 }
 
-void CStockAnalysisView::OnShowRs3() {
+void CFireBirdView::OnShowRs3() {
 	if (m_fShow3DaysRS) m_fShow3DaysRS = false;
 	else m_fShow3DaysRS = true;
 }
 
-void CStockAnalysisView::OnShowRs5() {
+void CFireBirdView::OnShowRs5() {
 	if (m_fShow5DaysRS) m_fShow5DaysRS = false;
 	else m_fShow5DaysRS = true;
 }
 
-void CStockAnalysisView::OnShowRs10() {
+void CFireBirdView::OnShowRs10() {
 	if (m_fShow10DaysRS) m_fShow10DaysRS = false;
 	else m_fShow10DaysRS = true;
 }
 
-void CStockAnalysisView::OnShowRs30() {
+void CFireBirdView::OnShowRs30() {
 	if (m_fShow30DaysRS) m_fShow30DaysRS = false;
 	else m_fShow30DaysRS = true;
 }
 
-void CStockAnalysisView::OnShowRs60() {
+void CFireBirdView::OnShowRs60() {
 	if (m_fShow60DaysRS) m_fShow60DaysRS = false;
 	else m_fShow60DaysRS = true;
 }
 
-void CStockAnalysisView::OnShowRs120() {
+void CFireBirdView::OnShowRs120() {
 	if (m_fShow120DaysRS) m_fShow120DaysRS = false;
 	else m_fShow120DaysRS = true;
 }
 
-void CStockAnalysisView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
 	if (m_fShow10DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
 	if (m_fShow120DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
 	if (m_fShow3DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
 	if (m_fShow30DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
 	if (m_fShow5DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
 	if (m_fShow60DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnShowRsInLogarithm() {
+void CFireBirdView::OnShowRsInLogarithm() {
 	if (m_iShowRSOption != 2) {
 		m_iShowRSOption = 2;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -830,7 +830,7 @@ void CStockAnalysisView::OnShowRsInLogarithm() {
 	}
 }
 
-void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -841,7 +841,7 @@ void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
 	}
 }
 
-void CStockAnalysisView::OnShowRsInLinear() {
+void CFireBirdView::OnShowRsInLinear() {
 	if (m_iShowRSOption != 1) {
 		m_iShowRSOption = 1;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -851,7 +851,7 @@ void CStockAnalysisView::OnShowRsInLinear() {
 	}
 }
 
-void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -862,7 +862,7 @@ void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
 	}
 }
 
-void CStockAnalysisView::OnShowRsIndex() {
+void CFireBirdView::OnShowRsIndex() {
 	if (m_iShowRSOption != 0) {
 		m_iShowRSOption = 0;
 		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
@@ -872,7 +872,7 @@ void CStockAnalysisView::OnShowRsIndex() {
 	}
 }
 
-void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
@@ -883,35 +883,35 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 	}
 }
 
-void CStockAnalysisView::OnShowDayLine() {
+void CFireBirdView::OnShowDayLine() {
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
 	}
 }
 
-void CStockAnalysisView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == _SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnShowRealTime() {
+void CFireBirdView::OnShowRealTime() {
 	m_iCurrentShowType = _SHOW_REAL_TIME_DATA_;
 }
 
-void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == _SHOW_REAL_TIME_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
-void CStockAnalysisView::OnShowWeekLine() {
+void CFireBirdView::OnShowWeekLine() {
 	m_iCurrentShowType = _SHOW_WEEK_LINE_DATA_;
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaWeekLine();
 	}
 }
 
-void CStockAnalysisView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
+void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == _SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }

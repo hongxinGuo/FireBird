@@ -195,10 +195,8 @@
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
     <ClInclude Include="..\src\Windows interface\MainFrm.h" />
     <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
-    <ClInclude Include="..\src\Windows interface\StockAnalysis.h" />
-    <ClInclude Include="..\src\Windows interface\StockAnalysisDoc.h" />
-    <ClInclude Include="..\src\Windows interface\StockAnalysisView.h" />
-    <ClInclude Include="..\StockAnalysis\source\accessory\TemplateMutexAccessQueue.h" />
+    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
+    <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp" />
@@ -368,7 +366,7 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp" />
     <ClCompile Include="..\src\Windows interface\MainFrm.cpp" />
     <ClCompile Include="..\src\Windows interface\OutputWnd.cpp" />
-    <ClCompile Include="..\src\Windows interface\StockAnalysis.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
     <ClCompile Include="..\src\Windows interface\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\src\Windows interface\StockAnalysisView.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp" />

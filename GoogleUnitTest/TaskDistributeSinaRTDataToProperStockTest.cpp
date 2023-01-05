@@ -16,7 +16,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	struct SinaRTData {
 		SinaRTData(int count, CString Symbol, int iType, bool fActive, time_t tt) {
 			m_iCount = count;

@@ -5,10 +5,10 @@
 #include"ThreadStatus.h"
 #include"HighPerformanceCounter.h"
 
-#include "StockAnalysis.h"
+#include "FireBird.h"
 
 #include "MainFrm.h"
-#include"StockAnalysisView.h"
+#include"FireBirdView.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -818,7 +818,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
 		auto pChild = (CMDIChildWnd*)GetActiveFrame();
-		auto pView = (CStockAnalysisView*)pChild->GetActiveView();
+		auto pView = (CFireBirdView*)pChild->GetActiveView();
 		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
 	}
 
@@ -865,7 +865,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
 		auto pChild = (CMDIChildWnd*)GetActiveFrame();
-		auto pView = (CStockAnalysisView*)pChild->GetActiveView();
+		auto pView = (CFireBirdView*)pChild->GetActiveView();
 		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
 	}
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);

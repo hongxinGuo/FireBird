@@ -12,7 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CStockDayLineTest : public ::testing::Test
 	{
 	protected:

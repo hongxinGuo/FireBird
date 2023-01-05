@@ -9,7 +9,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	struct CheckNeteaseDayLineInquiryStrData {
 		CheckNeteaseDayLineInquiryStrData(int count, CString Data) {
 			m_iCount = count;

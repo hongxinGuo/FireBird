@@ -22,7 +22,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CMockWorldStockTest : public ::testing::Test
 	{
 	protected:

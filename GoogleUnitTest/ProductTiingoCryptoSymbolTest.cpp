@@ -16,7 +16,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CProductTiingoCryptoSymbolsTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearu
+			// clearUp
 			GeneralCheck();
 		}
 

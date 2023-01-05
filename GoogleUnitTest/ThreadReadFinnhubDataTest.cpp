@@ -23,7 +23,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CThreadReadFinnhubDataTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {

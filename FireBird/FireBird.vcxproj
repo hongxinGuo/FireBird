@@ -225,11 +225,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Windows interface\StockAnalysis.h" />
+    <ClInclude Include="..\src\Windows interface\FireBird.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Windows interface\StockAnalysis.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

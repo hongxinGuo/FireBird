@@ -12,7 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	CVirtualMarketPtr gl_pVirtualMarket;
 
 	class CVirtualMarketTest : public ::testing::Test {

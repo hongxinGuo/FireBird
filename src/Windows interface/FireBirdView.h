@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include"ChinaStock.h"
-#include"StockAnalysisDoc.h"
+#include"FireBirdDoc.h"
 
 enum {
 	_SHOW_DAY_LINE_DATA_ = 1,
@@ -9,15 +9,15 @@ enum {
 	_SHOW_WEEK_LINE_DATA_ = 3,
 };
 
-class CStockAnalysisView : public CView {
+class CFireBirdView : public CView {
 protected: // 使用protected关键字，以保证仅从序列化创建
-	DECLARE_DYNCREATE(CStockAnalysisView)
-	CStockAnalysisView();
+	DECLARE_DYNCREATE(CFireBirdView)
+	CFireBirdView();
 
 	// 特性
 public:
-	virtual ~CStockAnalysisView(void) override = default;
-	CStockAnalysisDoc* GetDocument() const;
+	~CFireBirdView(void) override = default;
+	CFireBirdDoc* GetDocument() const;
 
 	CRect GetClientSize(void) const noexcept { return m_rectClient; }
 	bool IsShowRS(void) const noexcept { return m_fShowRS; }
@@ -75,19 +75,19 @@ public:
 
 	// 重写
 public:
-	virtual void OnDraw(CDC* pDC); // 重写以绘制该视图
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	void OnDraw(CDC* pDC) override; // 重写以绘制该视图
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
+	void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo) override;
+	void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo) override;
 
 	// 实现
 public:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
@@ -155,8 +155,8 @@ public:
 	afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 };
 
-#ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本
-inline CStockAnalysisDoc* CStockAnalysisView::GetDocument() const {
-	return reinterpret_cast<CStockAnalysisDoc*>(m_pDocument);
+#ifndef _DEBUG  // FireBirdView.cpp 中的调试版本
+inline CFireBirdDoc* CFireBirdView::GetDocument() const {
+	return reinterpret_cast<CFireBirdDoc*>(m_pDocument);
 }
 #endif

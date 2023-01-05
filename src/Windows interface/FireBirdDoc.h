@@ -1,12 +1,12 @@
-﻿// StockAnalysisDoc.h: CStockAnalysisDoc 类的接口
+﻿// FireBirdDoc.h: CFireBirdDoc 类的接口
 //
 
 #pragma once
 
-class CStockAnalysisDoc : public CDocument {
+class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
-	CStockAnalysisDoc();
-	DECLARE_DYNCREATE(CStockAnalysisDoc)
+	CFireBirdDoc();
+	DECLARE_DYNCREATE(CFireBirdDoc)
 
 	// 特性
 public:
@@ -23,7 +23,7 @@ public:
 
 	// 实现
 public:
-	~CStockAnalysisDoc() override = default;
+	~CFireBirdDoc() override = default;
 #ifdef _DEBUG
 	void AssertValid() const override;
 	void Dump(CDumpContext& dc) const override;

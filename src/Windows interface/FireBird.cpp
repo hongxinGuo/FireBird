@@ -1,4 +1,4 @@
-﻿// StockAnalysis.cpp: 定义应用程序的类行为。
+﻿// FireBird.cpp: 定义应用程序的类行为。
 //
 // 可以使用Virtual leak detector(vld)查找内存泄漏。
 // 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
@@ -12,11 +12,11 @@
 
 #include"pch.h"
 
-#include "StockAnalysis.h"  
+#include "FireBird.h"  
 #include "MainFrm.h"
 
-#include "StockAnalysisDoc.h"
-#include "StockAnalysisView.h" 
+#include "FireBirdDoc.h"
+#include "FireBirdView.h" 
 
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
@@ -46,10 +46,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// CStockAnalysisApp
+// CFireBirdApp
 
-BEGIN_MESSAGE_MAP(CStockAnalysisApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CStockAnalysisApp::OnAppAbout)
+BEGIN_MESSAGE_MAP(CFireBirdApp, CWinAppEx)
+	ON_COMMAND(ID_APP_ABOUT, &CFireBirdApp::OnAppAbout)
 	// 基于文件的标准文档命令
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
@@ -57,9 +57,9 @@ BEGIN_MESSAGE_MAP(CStockAnalysisApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
-// CStockAnalysisApp 构造
+// CFireBirdApp 构造
 
-CStockAnalysisApp::CStockAnalysisApp() {
+CFireBirdApp::CFireBirdApp() {
 	m_bHiColorIcons = TRUE;
 
 	// 支持重新启动管理器
@@ -71,16 +71,16 @@ CStockAnalysisApp::CStockAnalysisApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	SetAppID(_T("FiriBird.StockAnalysis.AppID.0.27"));
+	SetAppID(_T("FiriBird.AppID.0.27"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
-// 唯一的 CStockAnalysisApp 对象
-CStockAnalysisApp theApp;
+// 唯一的 CFireBirdApp 对象
+CFireBirdApp theApp;
 
 bool IsAlreadyRun() {
-	HANDLE hMutex = ::CreateMutex(nullptr, false, _T("StockAnalysisAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	HANDLE hMutex = ::CreateMutex(nullptr, false, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	if(hMutex) {
 		if(ERROR_ALREADY_EXISTS == ::GetLastError()) {
 			return true;
@@ -89,8 +89,8 @@ bool IsAlreadyRun() {
 	return false;
 }
 
-// CStockAnalysisApp 初始化
-BOOL CStockAnalysisApp::InitInstance() {
+// CFireBirdApp 初始化
+BOOL CFireBirdApp::InitInstance() {
 	if (IsAlreadyRun()) {
 		MessageBox(nullptr,
 			"Only one instance can run!",
@@ -121,7 +121,7 @@ BOOL CStockAnalysisApp::InitInstance() {
 	// 最终可执行文件的大小，则应移除下列
 	// 不需要的特定初始化例程
 	// 更改用于存储设置的注册表项
-	SetRegistryKey(_T("FireBird StockAnalysis"));
+	SetRegistryKey(_T("FireBird"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
 	InitContextMenuManager();
@@ -136,9 +136,9 @@ BOOL CStockAnalysisApp::InitInstance() {
 
 	CSingleDocTemplate* pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
-		RUNTIME_CLASS(CStockAnalysisDoc),
+		RUNTIME_CLASS(CFireBirdDoc),
 		RUNTIME_CLASS(CMainFrame), // main SDI frame window
-		RUNTIME_CLASS(CStockAnalysisView));
+		RUNTIME_CLASS(CFireBirdView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -158,13 +158,13 @@ BOOL CStockAnalysisApp::InitInstance() {
 	return TRUE;
 }
 
-int CStockAnalysisApp::ExitInstance() {
+int CFireBirdApp::ExitInstance() {
 	AfxOleTerm(FALSE);
 
 	return CWinAppEx::ExitInstance();
 }
 
-// CStockAnalysisApp 消息处理程序
+// CFireBirdApp 消息处理程序
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 class CAboutDlg : public CDialogEx
@@ -196,24 +196,24 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
-void CStockAnalysisApp::OnAppAbout() {
+void CFireBirdApp::OnAppAbout() {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
-// CStockAnalysisApp 自定义加载/保存方法
+// CFireBirdApp 自定义加载/保存方法
 
-void CStockAnalysisApp::PreLoadState() {
+void CFireBirdApp::PreLoadState() {
 	CString strName;
 	const BOOL bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }
 
-void CStockAnalysisApp::LoadCustomState() {
+void CFireBirdApp::LoadCustomState() {
 }
 
-void CStockAnalysisApp::SaveCustomState() {
+void CFireBirdApp::SaveCustomState() {
 }
 
-// CStockAnalysisApp 消息处理程序
+// CFireBirdApp 消息处理程序

@@ -13,7 +13,7 @@ using std::make_shared;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	struct HighLowData {
 		HighLowData(CString strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
 			m_strSymbol = strStockCode;

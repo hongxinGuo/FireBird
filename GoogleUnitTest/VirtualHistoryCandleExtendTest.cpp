@@ -10,7 +10,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CVirtualHistoryCandleExtendTest : public ::testing::Test
 	{
 	protected:

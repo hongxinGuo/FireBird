@@ -21,7 +21,7 @@
 using namespace testing;
 #include<memory>
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	extern CMockChinaMarketPtr gl_pMockChinaMarket;
 
 	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;

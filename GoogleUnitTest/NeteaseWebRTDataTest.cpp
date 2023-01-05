@@ -15,7 +15,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	TEST(CWebRTDataTest, TestNeteaseInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWebRTData RTData;

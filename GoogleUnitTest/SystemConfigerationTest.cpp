@@ -13,7 +13,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CSystemConfigurationTest : public ::testing::Test {
 		void SetUp(void) override { GeneralCheck(); }
 

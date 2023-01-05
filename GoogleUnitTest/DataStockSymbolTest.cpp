@@ -15,7 +15,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	static CDataStockSymbolPtr s_pDataStockSymbol = nullptr;
 
 	class CDataStockSymbolTest : public ::testing::Test {

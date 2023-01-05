@@ -1,4 +1,4 @@
-﻿// StockAnalysisDoc.cpp: CStockAnalysisDoc 类的实现
+﻿// FireBirdDoc.cpp: CFireBirdDoc 类的实现
 //
 
 #include"pch.h"
@@ -7,7 +7,7 @@
 #ifndef SHARED_HANDayLineERS
 #endif
 
-#include "StockAnalysisDoc.h"
+#include "FireBirdDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,19 +15,19 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// CStockAnalysisDoc
+// CFireBirdDoc
 
-IMPLEMENT_DYNCREATE(CStockAnalysisDoc, CDocument)
+IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CStockAnalysisDoc, CDocument)
+BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)
 END_MESSAGE_MAP()
 
-// CStockAnalysisDoc 构造/析构
-CStockAnalysisDoc::CStockAnalysisDoc() {
+// CFireBirdDoc 构造/析构
+CFireBirdDoc::CFireBirdDoc() {
 	// TODO: 在此添加一次性构造代码
 }
 
-BOOL CStockAnalysisDoc::OnNewDocument() {
+BOOL CFireBirdDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument()) return FALSE;
 
 	// TODO: 在此添加重新初始化代码
@@ -36,9 +36,9 @@ BOOL CStockAnalysisDoc::OnNewDocument() {
 	return TRUE;
 }
 
-// CStockAnalysisDoc 序列化
+// CFireBirdDoc 序列化
 
-void CStockAnalysisDoc::Serialize(CArchive& ar) {
+void CFireBirdDoc::Serialize(CArchive& ar) {
 	if (ar.IsStoring()) {
 		// TODO: 在此添加存储代码
 	}
@@ -50,7 +50,7 @@ void CStockAnalysisDoc::Serialize(CArchive& ar) {
 #ifdef SHARED_HANDayLineERS
 
 // 缩略图的支持
-void CStockAnalysisDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
+void CFireBirdDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
   // 修改此代码以绘制文档数据
   dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
@@ -70,7 +70,7 @@ void CStockAnalysisDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
 }
 
 // 搜索处理程序的支持
-void CStockAnalysisDoc::InitializeSearchContent() {
+void CFireBirdDoc::InitializeSearchContent() {
   CString strSearchContent;
   // 从文档数据设置搜索内容。
   // 内容部分应由“;”分隔
@@ -79,7 +79,7 @@ void CStockAnalysisDoc::InitializeSearchContent() {
   SetSearchContent(strSearchContent);
 }
 
-void CStockAnalysisDoc::SetSearchContent(const CString& value) {
+void CFireBirdDoc::SetSearchContent(const CString& value) {
   if (value.IsEmpty())
   {
     RemoveChunk(PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid);
@@ -98,16 +98,16 @@ void CStockAnalysisDoc::SetSearchContent(const CString& value) {
 
 #endif // SHARED_HANDayLineERS
 
-// CStockAnalysisDoc 诊断
+// CFireBirdDoc 诊断
 
 #ifdef _DEBUG
-void CStockAnalysisDoc::AssertValid() const {
+void CFireBirdDoc::AssertValid() const {
 	CDocument::AssertValid();
 }
 
-void CStockAnalysisDoc::Dump(CDumpContext& dc) const {
+void CFireBirdDoc::Dump(CDumpContext& dc) const {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
-// CStockAnalysisDoc 命令
+// CFireBirdDoc 命令

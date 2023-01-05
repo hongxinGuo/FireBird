@@ -1,9 +1,9 @@
 #pragma once
 
-#include"StockAnalysisView.h"
+#include"FireBirdView.h"
 
 namespace testing {
-	class CMockStockAnalysisView final : public CStockAnalysisView {
+	class CMockFireBirdView final : public CFireBirdView {
 	public:
 		MOCK_METHOD(CSize, SysCallGetTextExtent, (CDC* pDC, CString str), (override));
 		MOCK_METHOD(BOOL, SysCallTextOut, (CDC* pDC, int x, int y, CString str), (override));

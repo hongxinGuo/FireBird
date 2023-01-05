@@ -15,7 +15,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	struct NetEaseDayLineData {
 		NetEaseDayLineData(int count, CString Data) {
 			m_iCount = count;

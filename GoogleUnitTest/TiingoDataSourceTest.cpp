@@ -21,7 +21,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
 
 	class CTiingoDataSourceTest : public ::testing::Test {
@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 		}
 
 		void TearDown(void) override {
-			// clearu
+			// clearUp
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 
 			GeneralCheck();

@@ -14,7 +14,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class TimeConvertTest : public ::testing::Test {
 		virtual void SetUp(void) override {
 			GeneralCheck();

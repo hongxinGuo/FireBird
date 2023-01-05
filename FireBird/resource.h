@@ -14,7 +14,7 @@
 #define ID_VIEW_CUSTOMIZE               126
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDR_StockAnalysisTYPE           130
+#define IDR_FIREBIRDTYPE								130
 #define ID_WINDOW_MANAGER               131
 #define ID_VIEW_OUTPUTWND               149
 #define IDS_OUTPUT_WND                  157

@@ -168,7 +168,7 @@
     <ClCompile Include="MockMainFrmTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="MockStockAnalysisViewTest.cpp">
+    <ClCompile Include="MockFireBirdViewTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
@@ -558,14 +558,20 @@
     <ClCompile Include="TengxunRTDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedCryptoTest.cpp" />
-    <ClCompile Include="DataChoicedForexTest.cpp" />
-    <ClCompile Include="DataChoicedIEXTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
       <Filter>Test源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChoicedCryptoTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChoicedForexTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
+    </ClCompile>
+    <ClCompile Include="DataChoicedIEXTest.cpp">
+      <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -575,7 +581,7 @@
     <ClInclude Include="MockMainFrm.h">
       <Filter>Mock类\Windows界面</Filter>
     </ClInclude>
-    <ClInclude Include="MockStockAnalysisView.h">
+    <ClInclude Include="MockFireBirdView.h">
       <Filter>Mock类\Windows界面</Filter>
     </ClInclude>
     <ClInclude Include="MockSystemMessage.h">

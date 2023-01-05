@@ -305,7 +305,7 @@ ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryC
 
 #include"EnvironmentSetUp.h"
 
-using namespace StockAnalysisTest;
+using namespace FireBirdTest;
 
 int main(int argc, char* argv[]) {
 	::testing::InitGoogleTest(&argc, argv);

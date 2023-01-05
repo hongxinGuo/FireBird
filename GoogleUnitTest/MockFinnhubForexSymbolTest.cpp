@@ -24,7 +24,7 @@ using std::make_shared;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CMockFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { GeneralCheck(); }

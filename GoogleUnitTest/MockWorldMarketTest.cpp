@@ -49,7 +49,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	extern CMockWorldMarketPtr gl_pMockWorldMarket;
 
 	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;

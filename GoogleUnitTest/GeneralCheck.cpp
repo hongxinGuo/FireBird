@@ -15,7 +15,7 @@ using namespace testing;
 
 #include "GeneralCheck.h"
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	void SystemMessageCheck(void) {
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
 		EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();

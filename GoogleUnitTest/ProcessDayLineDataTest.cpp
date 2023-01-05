@@ -16,7 +16,7 @@ using std::make_shared;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	struct NeteaseDayLineData {
 		NeteaseDayLineData(int count, CString Symbol, CString Data) {
 			m_iCount = count;

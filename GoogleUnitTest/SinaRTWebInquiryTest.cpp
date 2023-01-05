@@ -17,7 +17,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CSinaRTWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {

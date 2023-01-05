@@ -26,7 +26,7 @@ atomic_long CVirtualWebInquiry::sm_lTotalByteRead = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() {
 	m_pDataSource = nullptr;
 
-	m_pSession = new CInternetSession(_T("StockAnalysis")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
+	m_pSession = new CInternetSession(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	SetDefaultSessionOption();
 	m_pFile = nullptr;
 	m_strHeaders = _T("");

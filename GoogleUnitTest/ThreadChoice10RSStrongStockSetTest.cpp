@@ -13,7 +13,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CThreadChoice10RSStrong1StockSet : public ::testing::Test
 	{
 	protected:

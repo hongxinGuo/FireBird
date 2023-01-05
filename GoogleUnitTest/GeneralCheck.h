@@ -1,6 +1,6 @@
 #pragma once
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	void GeneralCheck(void);
 
 	void SystemMessageCheck(void);

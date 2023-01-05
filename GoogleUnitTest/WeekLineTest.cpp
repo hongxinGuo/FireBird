@@ -14,7 +14,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	class CWeekLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {

@@ -23,7 +23,7 @@ using namespace testing;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-namespace StockAnalysisTest {
+namespace FireBirdTest {
 	static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
 	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
 	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
