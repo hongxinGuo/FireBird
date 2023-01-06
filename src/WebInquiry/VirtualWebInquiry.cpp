@@ -217,7 +217,7 @@ bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 		//auto p = typeid(*file).name();
 		//ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
 		//m_pFile = dynamic_cast<CHttpFile*>(file);
-		m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
 		ASSERT(std::strcmp(typeid(*m_pFile).name(), _T("class CHttpFile")) == 0);
 	}
 	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
@@ -228,6 +228,7 @@ bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 		fSucceedOpen = false;
 		exception->Delete();
 	}
+	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
 	if (fSucceedOpen) {
 		QueryDataLength();
 	}
@@ -289,10 +290,13 @@ bool CVirtualWebInquiry::VerifyDataLength() const {
 			str += _T("，实际长度：");
 			sprintf_s(buffer, _T("%d"), byteRead);
 			str += buffer;
-			str += m_strInquiry.Left(120);
+			str += m_strInquiry.Left(200);
 			gl_systemMessage.PushErrorMessage(str);
-			str = m_sBuffer.c_str();
-			str = str.Left(200);
+			sprintf_s(buffer, _T("%d"), m_dwHTTPStatusCode);
+			str = _T("Status code : ");
+			str += buffer;
+			str += m_sBuffer.c_str();
+			str = str.Left(400);
 			gl_systemMessage.PushErrorMessage(str);
 		}
 		return false;

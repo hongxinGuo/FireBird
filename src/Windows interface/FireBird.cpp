@@ -94,7 +94,7 @@ BOOL CFireBirdApp::InitInstance() {
 	if (IsAlreadyRun()) {
 		MessageBox(nullptr,
 			"Only one instance can run!",
-			"FireBird Stock Analysis Warning:",
+			"FireBird Warning:",
 			MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}

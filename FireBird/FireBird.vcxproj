@@ -142,7 +142,7 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>copy  $(SolutionDir)\Lib\bin_release\*.DLL $(OutDir)</Command>
+      <Command>copy  $(SolutionDir)\Lib\bin_release\*.* $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -192,7 +192,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy  $(SolutionDir)\Lib\bin_release\*.DLL $(OutDir)</Command>
+      <Command>copy  $(SolutionDir)\Lib\bin_release\*.* $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

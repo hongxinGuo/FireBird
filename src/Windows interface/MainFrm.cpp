@@ -210,7 +210,6 @@ CMainFrame::~CMainFrame() {
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待WebSocket退出
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
 
-	gl_systemConfiguration.SaveDB(); // 保存全局参数。
 	TRACE("finally exited\n");
 }
 

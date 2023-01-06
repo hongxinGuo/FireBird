@@ -76,6 +76,9 @@ std::string gl_sSystemConfiguration = R"(
 	"InsideTransaction" : 30,
 	"InsideSentiment" : 30,
 	"StockPeer" : 90
+},
+"TestConfiguration" : {
+	"BenchmarkTestFileDirectory" : "C:\\FireBird\\Test Data\\Benchmark\\"
 }
 })";
 
@@ -139,7 +142,9 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
 	ASSERT(GetDefaultFileDirectoryAndName().Compare(_T("C:\\FireBird\\SystemConfiguration.json")) == 0);
-	if (LoadDB()) { Update(); }
+	if (LoadDB()) {
+		Update();
+	}
 	else { m_fUpdate = true; }
 
 	// 具体工作计算机的初始参数
@@ -295,6 +300,7 @@ void CSystemConfiguration::Update() {
 }
 
 void CSystemConfiguration::UpdateJson(void) {
+	m_systemConfiguration.clear(); // 清除之前的数据。
 	// system
 	m_systemConfiguration["SystemConfiguration"]["UsingFastCPU"] = m_bUsingFastCPU;
 	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;

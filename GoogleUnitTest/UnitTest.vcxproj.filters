@@ -168,9 +168,6 @@
     <ClCompile Include="MockMainFrmTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="MockFireBirdViewTest.cpp">
-      <Filter>Test源文件\Windows界面</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>
@@ -327,7 +324,7 @@
     <ClCompile Include="TiingoDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="SystemConfigerationTest.cpp">
+    <ClCompile Include="SystemConfigurationTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
@@ -573,6 +570,7 @@
     <ClCompile Include="DataChoicedIEXTest.cpp">
       <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
+    <ClCompile Include="MockStockAnalysisViewTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
