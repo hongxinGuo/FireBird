@@ -7,12 +7,6 @@
 
 #include"ConvertToString.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct StrConvertDoubleToString {
 		StrConvertDoubleToString(double dValue, CString CValueOfPeriod, long lDividend) {
@@ -34,10 +28,9 @@ namespace FireBirdTest {
 	StrConvertDoubleToString Data4(110234, _T("110.234"), 1000);
 	StrConvertDoubleToString Data5(-12102346, _T("-1210.235"), 10000);
 
-	class ConvertDoubleToStringTest : public::testing::TestWithParam<StrConvertDoubleToString*>
-	{
+	class ConvertDoubleToStringTest : public::testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
@@ -45,7 +38,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 
@@ -56,7 +49,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1, &Data2, &Data3, &Data4
-		, &Data5));
+		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
 		CString str = ConvertValueToString(dValue, lDividend);
@@ -92,10 +85,9 @@ namespace FireBirdTest {
 	StrConvertLongToString Data12
 	*/
 
-	class ConvertLongToStringTest : public::testing::TestWithParam<StrConvertLongToString*>
-	{
+	class ConvertLongToStringTest : public::testing::TestWithParam<StrConvertLongToString*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
@@ -103,7 +95,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 
@@ -114,7 +106,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertLongToString, ConvertLongToStringTest, testing::Values(&Data10, &Data11,
-		&Data12, &Data13, &Data14, &Data15));
+		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
 		CString str = ConvertValueToString(lValue, lDividend);
@@ -150,10 +142,9 @@ namespace FireBirdTest {
 	StrConvertIntegerToString Data32
 	*/
 
-	class ConvertIntegerToStringTest : public::testing::TestWithParam<StrConvertIntegerToString*>
-	{
+	class ConvertIntegerToStringTest : public::testing::TestWithParam<StrConvertIntegerToString*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
@@ -161,7 +152,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 
@@ -172,7 +163,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertIntegerToString, ConvertIntegerToStringTest, testing::Values(&Data20, &Data21,
-		&Data22, &Data23, &Data24, &Data25));
+		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
 		CString str = ConvertValueToString(iValue, lDividend);
@@ -208,10 +199,9 @@ namespace FireBirdTest {
 	StrConvertINT64ToString Data52
 	*/
 
-	class ConvertINT64ToStringTest : public::testing::TestWithParam<StrConvertINT64ToString*>
-	{
+	class ConvertINT64ToStringTest : public::testing::TestWithParam<StrConvertINT64ToString*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
@@ -219,7 +209,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 
@@ -230,7 +220,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertINT64ToString, ConvertINT64ToStringTest, testing::Values(&Data40, &Data41,
-		&Data42, &Data43, &Data44, &Data45));
+		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
 		CString str = ConvertValueToString(iValue, lDividend);
@@ -238,9 +228,9 @@ namespace FireBirdTest {
 	}
 
 	class CRSReferenceTest : public ::testing::Test {
-		virtual void SetUp(void) override {
-		}
-		virtual void TearDown(void) override {
+		void SetUp(void) override { }
+
+		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 		}
 	};

@@ -9,12 +9,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CTengxunRTWebInquiryTest : public ::testing::Test {
 	protected:
@@ -27,14 +21,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_TengxunRTWebInquiry.SetDataSource(gl_pTengxunRTDataSource.get());
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pChinaMarket->SetSystemReady(false);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);

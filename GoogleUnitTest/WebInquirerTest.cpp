@@ -8,17 +8,10 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
 
-	class CWebInquirerTest : public ::testing::Test
-	{
+	class CWebInquirerTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -35,12 +28,12 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
@@ -52,7 +45,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWebInquirerTest, TestPushPopWebSocketData) {
-		shared_ptr<string> pData = make_shared<string>(_T("abc"));
+		auto pData = make_shared<string>(_T("abc"));
 		shared_ptr<string> pData2;
 		gl_finnhubWebSocket.PushData(pData);
 		EXPECT_EQ(gl_finnhubWebSocket.DataSize(), 1);

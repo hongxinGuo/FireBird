@@ -8,12 +8,6 @@
 #include"WeekLine.h"
 #include"SetWeekLineExtendInfo.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CWeekLineTest : public ::testing::Test {
 	protected:
@@ -26,11 +20,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -902,7 +896,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestUpdateWeekLine1) {
 		CWeekLine weekLine;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetTime(100100100100);
 		pDayLine->SetDate(20200202);
 		pDayLine->SetStockSymbol(_T("600000.SS"));
@@ -1062,7 +1056,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestUpdateWeekLine2) {
 		CWeekLine weekLine;
-		CDayLinePtr pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
+		auto pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
 		pDayLine1->SetTime(100100100100);
 		pDayLine1->SetDate(20200727);
 		pDayLine1->SetStockSymbol(_T("60000.SS"));

@@ -7,19 +7,12 @@
 
 #include"GeneralCheck.h"
 
-
 using namespace testing;
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 namespace FireBirdTest {
 	static bool m_fSystemStatus;
-	class CQuandlWebInquiryTest : public ::testing::Test
-	{
+
+	class CQuandlWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
@@ -32,20 +25,22 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pWorldMarket->SetResetMarket(true);
 			GeneralCheck();
 		}
+
 		CMockQuandlWebInquiry m_QuandlWebInquiry; // 网易日线历史数据
 	};
+
 	TEST_F(CQuandlWebInquiryTest, TestInitialize) {
 		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryToken(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
@@ -75,7 +70,8 @@ namespace FireBirdTest {
 				str = m_QuandlWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Right(29), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
 			}
-			else EXPECT_EQ(str.GetLength(), 0);
+			else
+				EXPECT_EQ(str.GetLength(), 0);
 		}
 		gl_pWorldMarket->SetSystemReady(false);
 	}

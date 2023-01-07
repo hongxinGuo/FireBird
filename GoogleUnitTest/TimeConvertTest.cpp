@@ -8,18 +8,13 @@
 //#include"ConvertToString.h"
 #include"TimeConvert.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class TimeConvertTest : public ::testing::Test {
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
-		virtual void TearDown(void) override {
+
+		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();
@@ -210,10 +205,9 @@ namespace FireBirdTest {
 	strConvertBufferToTime Data104(_T("%4d/%4d/%4d %2d:%2d:%2d"), _T("1900/01/01"), -1);
 	strConvertBufferToTime Data106(_T("%4d/%4d%4d %2d:%2d:%2d"), _T(" 12:12:12"), -1);
 
-	class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*>
-	{
+	class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			strConvertBufferToTime* pData = GetParam();
 			strBuffer = pData->m_strBuffer;
@@ -221,7 +215,7 @@ namespace FireBirdTest {
 			iTime = pData->m_Time;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 
@@ -232,7 +226,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
-		&Data104, &Data105, &Data106));
+		                         &Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
 		time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());

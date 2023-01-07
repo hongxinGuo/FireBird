@@ -7,12 +7,6 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	TEST(CWebRTDataTest, TestTengxunInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
@@ -84,6 +78,7 @@ namespace FireBirdTest {
 			m_iCount = count;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strData;
@@ -174,7 +169,7 @@ namespace FireBirdTest {
 
 	class CalculateTengxunWebRTDataTest : public::testing::TestWithParam<TengxunRTData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			TengxunRTData* pData = GetParam();
@@ -203,7 +198,7 @@ namespace FireBirdTest {
 			m_RTData.SetBuy(-1);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			// clearUp
 			GeneralCheck();
@@ -217,11 +212,11 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(CWebRTDataTest, CalculateTengxunWebRTDataTest, testing::Values(&Data1, &Data2, &Data3,
-		&Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-		&Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-		&Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-		&Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
-	));
+		                         &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+		                         &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+		                         &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+		                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
+	                         ));
 
 	TEST_P(CalculateTengxunWebRTDataTest, TestReadTengxunData) {
 		bool fSucceed = m_RTData.ReadTengxunData(m_pTengxunWebRTData);
@@ -717,6 +712,7 @@ namespace FireBirdTest {
 			m_iCount = count;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strData;
@@ -743,7 +739,7 @@ namespace FireBirdTest {
 
 	class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			ReadTengxunOneValueData* pData = GetParam();
@@ -757,7 +753,7 @@ namespace FireBirdTest {
 			m_pTengxunWebRTData->ResetCurrentPos();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -771,8 +767,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,
-		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
-		));
+	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
+	                         ));
 
 	// ½«×Ö·û´®×ª»»ÎªINT64
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue1) {

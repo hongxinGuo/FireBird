@@ -4,15 +4,8 @@
 
 #include"Guadan.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class COneGuadanTest : public ::testing::Test
-	{
+	class COneGuadanTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -22,11 +15,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 	};
@@ -54,21 +47,19 @@ namespace FireBirdTest {
 }
 
 namespace FireBirdTest {
-	class CGuadanTest : public ::testing::Test
-	{
+	class CGuadanTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
-		static void TearDownTestSuite() {
-		}
+		static void TearDownTestSuite() { }
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 	};

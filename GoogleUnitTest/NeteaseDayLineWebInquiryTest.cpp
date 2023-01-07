@@ -6,18 +6,10 @@
 #include"NeteaseDayLineDataSource.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 
-
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CNeteaseDayLineWebInquiryTest : public ::testing::Test
-	{
+	class CNeteaseDayLineWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,7 +21,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 
 			m_NeteaseDayLineWebInquiry.SetDataSource(gl_pNeteaseDayLineDataSource.get());
@@ -40,7 +32,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 
@@ -55,6 +47,7 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
+
 		CMockNeteaseDayLineWebInquiry m_MockNeteaseDayLineWebInquiry; // 网易日线历史数据
 		CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry;
 	};
@@ -107,7 +100,8 @@ namespace FireBirdTest {
 				str = m_NeteaseDayLineWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Left(54), _T("http://quotes.money.163.com/service/chddata.html?code="));
 			}
-			else EXPECT_EQ(str.GetLength(), 0);
+			else
+				EXPECT_EQ(str.GetLength(), 0);
 		}
 		gl_pChinaMarket->SetSystemReady(false);
 		EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());

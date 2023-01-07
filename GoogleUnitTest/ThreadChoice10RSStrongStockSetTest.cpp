@@ -7,15 +7,8 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CThreadChoice10RSStrong1StockSet : public ::testing::Test
-	{
+	class CThreadChoice10RSStrong1StockSet : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -25,10 +18,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			GeneralCheck();
 		}
 
@@ -47,20 +39,17 @@ namespace FireBirdTest {
 		while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 	}
 
-	class CThreadChoice10RSStrong2StockSet : public ::testing::Test
-	{
+	class CThreadChoice10RSStrong2StockSet : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-		}
+		static void SetUpTestSuite(void) { }
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			GeneralCheck();
 		}
 
@@ -79,20 +68,17 @@ namespace FireBirdTest {
 		while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 	}
 
-	class CThreadChoice10RSStrongStockSet : public ::testing::Test
-	{
+	class CThreadChoice10RSStrongStockSet : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
-		}
+		static void TearDownTestSuite(void) { }
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			GeneralCheck();
 		}
 

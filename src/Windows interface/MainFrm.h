@@ -35,11 +35,7 @@ public:
 	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CFrameWndEx::OnSysCommand(nID, lParam); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
-
-	virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) {
-		SendMessage(message, wParam, lParam);
-	}
-
+	virtual LRESULT SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { return SendMessage(message, wParam, lParam); }
 	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CFrameWndEx::PreTranslateMessage(pMsg); }
 	virtual void SysCallInvalidate(void) { Invalidate(); }
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }

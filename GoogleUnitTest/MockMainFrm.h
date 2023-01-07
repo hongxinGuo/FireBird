@@ -13,7 +13,7 @@ namespace testing {
 		MOCK_METHOD(void, CalculateTodayRS, (), (override));
 		MOCK_METHOD(void, SysCallCmdUIEnable, (CCmdUI* pCmdUI, bool fFlag), (override));
 		MOCK_METHOD(void, SysCallCmdUISetCheck, (CCmdUI* pCmdUI, bool fFlag), (override));
-		MOCK_METHOD(void, SysCallSendMessage, (UINT message, WPARAM wParam, LPARAM lParam), (override));
+		MOCK_METHOD(LRESULT, SysCallSendMessage, (UINT message, WPARAM wParam, LPARAM lParam), (override));
 		MOCK_METHOD(BOOL, SysCallPreTranslateMessage, (MSG* pMsg), (override));
 		MOCK_METHOD(void, SysCallInvalidate, (), (override));
 		MOCK_METHOD(void, SysCallOnChar, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
@@ -21,4 +21,6 @@ namespace testing {
 		MOCK_METHOD(bool, SchedulingTask, (), (override));
 		MOCK_METHOD(bool, ResetMarket, (), (override));
 	};
+
+	using CMockMainFramePtr = shared_ptr<CMockMainFrame>;
 }

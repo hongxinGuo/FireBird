@@ -6,15 +6,7 @@
 
 #include"MockFireBirdView.h"
 
-#include"GeneralCheck.h"
-
 using namespace testing;
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 namespace FireBirdTest {
 	class CMockFireBirdViewTest : public ::testing::Test {
@@ -30,7 +22,7 @@ namespace FireBirdTest {
 		void SetUp(void) override {
 			GeneralCheck();
 
-			s_pFireBirdView = new CMockFireBirdView;
+			s_pFireBirdView = make_shared<CMockFireBirdView>();
 			EXPECT_EQ(s_pFireBirdView->GetClientSize().Height(), 0);
 			EXPECT_EQ(s_pFireBirdView->GetClientSize().Width(), 0);
 			EXPECT_FALSE(s_pFireBirdView->IsShowRS());
@@ -47,13 +39,13 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			delete s_pFireBirdView;
+			s_pFireBirdView = nullptr;
 
 			GeneralCheck();
 		}
 
 	public:
-		CMockFireBirdView* s_pFireBirdView;
+		CMockFireBirdViewPtr s_pFireBirdView;
 	};
 
 	TEST_F(CMockFireBirdViewTest, TestGetCurrentShowType) {

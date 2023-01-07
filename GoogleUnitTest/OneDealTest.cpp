@@ -5,15 +5,8 @@
 
 #include"OneDeal.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class COneDealTest : public ::testing::Test
-	{
+	class COneDealTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -23,11 +16,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 	};
@@ -51,11 +44,13 @@ namespace FireBirdTest {
 		oneDeal.SetType(30303030);
 		EXPECT_EQ(oneDeal.GetType(), 30303030);
 	}
+
 	TEST_F(COneDealTest, TestGetPrice) {
 		COneDeal oneDeal;
 		oneDeal.SetPrice(40404040);
 		EXPECT_EQ(oneDeal.GetPrice(), 40404040);
 	}
+
 	TEST_F(COneDealTest, TestGetVolume) {
 		COneDeal oneDeal;
 		oneDeal.SetVolume(50505050);

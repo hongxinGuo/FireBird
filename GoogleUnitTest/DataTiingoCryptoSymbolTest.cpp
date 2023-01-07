@@ -8,12 +8,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CDataTiingoCryptoSymbolTest : public ::testing::Test {
 	protected:
@@ -25,10 +19,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -43,7 +36,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataTiingoCryptoSymbolTest, TestIsNeedUpdate) {
-		CTiingoCryptoSymbolPtr pCrypto = make_shared<CTiingoCryptoSymbol>();
+		auto pCrypto = make_shared<CTiingoCryptoSymbol>();
 
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
 		m_dataTiingoCryptoSymbol.Add(pCrypto);
@@ -54,9 +47,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 0);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0);
 
-		CTiingoCryptoSymbolPtr pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
+		auto pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
 		pTiingoCrypto->m_strTicker = _T("SS.SS");
-		CTiingoCryptoSymbolPtr pTiingoCrypto2 = make_shared<CTiingoCryptoSymbol>();
+		auto pTiingoCrypto2 = make_shared<CTiingoCryptoSymbol>();
 		pTiingoCrypto2->m_strTicker = _T("SS.SS.SS");
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 1);

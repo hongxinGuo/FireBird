@@ -21,4 +21,6 @@ namespace testing {
 		MOCK_METHOD(void, ShowStockHistoryDataLine, (CDC* pDC), (override));
 		MOCK_METHOD(void, ShowRealtimeData, (CDC* pDC), (override));
 	};
+
+	using CMockFireBirdViewPtr = shared_ptr<CMockFireBirdView>;
 }

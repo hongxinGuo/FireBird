@@ -11,17 +11,10 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CThreadReadNeteaseDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-		}
+		static void SetUpTestSuite(void) { }
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();

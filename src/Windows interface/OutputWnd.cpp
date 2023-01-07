@@ -6,12 +6,6 @@
 
 #include"ChinaMarket.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar
 
@@ -19,8 +13,7 @@ COutputWnd::COutputWnd() {
 	m_uIdTimer = 0;
 }
 
-COutputWnd::~COutputWnd() {
-}
+COutputWnd::~COutputWnd() {}
 
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -29,8 +22,7 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 END_MESSAGE_MAP()
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
-		return -1;
+	if (CDockablePane::OnCreate(lpCreateStruct) == -1) return -1;
 
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
@@ -92,7 +84,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)8);  // 错误消息
 
 	// 设置1000毫秒每次的软调度，用于接受处理实时网络数据
-	m_uIdTimer = SetTimer(3, 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
+	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
 	if (m_uIdTimer == 0) {
 		CString str;
 	}
@@ -139,8 +131,7 @@ void COutputWnd::UpdateFonts() {
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1
 
-COutputList::COutputList() {
-}
+COutputList::COutputList() {}
 
 void COutputList::TruncateList(long lNumberOfTruncation) {
 	for (int i = 0; i < lNumberOfTruncation; i++) {
@@ -153,8 +144,7 @@ void COutputList::SetCurAtLastLine(void) {
 	SetTopIndex(GetCount() - 1);
 }
 
-COutputList::~COutputList() {
-}
+COutputList::~COutputList() {}
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_WM_CONTEXTMENU()
@@ -175,8 +165,7 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
 		auto pPopupMenu = new CMFCPopupMenu;
 
-		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
-			return;
+		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE)) return;
 
 		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
 		UpdateDialogControls(this, FALSE);
@@ -213,8 +202,8 @@ void COutputList::OnViewOutput() {
 /////////////////////////////////////////////////////////////////////////////////////////
 void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	CString str, str2;
-	size_t lTotal = 0;
-	long lCurrentPos = 0;
+	size_t lTotal;
+	long lCurrentPos;
 	bool fUpdate = false;
 	CString strTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 

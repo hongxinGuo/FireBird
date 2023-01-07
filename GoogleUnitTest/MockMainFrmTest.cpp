@@ -10,14 +10,8 @@
 using namespace testing;
 using namespace ::testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	extern CMockMainFrame* gl_pMockMainFrame;
+	extern CMockMainFramePtr gl_pMockMainFrame;
 
 	class CMockMainFrameTest : public ::testing::Test {
 	public:

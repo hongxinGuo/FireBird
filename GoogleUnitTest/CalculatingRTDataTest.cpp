@@ -7,12 +7,6 @@
 
 #include<memory>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct RTData {
 		// 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
@@ -150,7 +144,7 @@ namespace FireBirdTest {
 
 	class CStockTest2 : public::testing::TestWithParam<RTData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			RTData* pData = GetParam();
 			pCurrentData = make_shared<CWebRTData>();
@@ -174,7 +168,7 @@ namespace FireBirdTest {
 			iCount = pData->iCount;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -202,8 +196,8 @@ namespace FireBirdTest {
 		m_stock.ProcessOneRTData(pCurrentData);
 		//EXPECT_TRUE(m_stock.IsVolumeConsistence());
 		INT64 lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
-			+ m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.
-			GetStrongSellVolume();
+		+ m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.
+		GetStrongSellVolume();
 		EXPECT_EQ(m_stock.GetCurrentTransactionVolume(), lCurrentVolume - lFirstVolume);
 		switch (iCount) {
 		case 0: // 成交1万股@10.00
@@ -375,7 +369,7 @@ namespace FireBirdTest {
 	}
 
 	TEST(CStockTest3, TestINitializeCalculatingRTDataEnvironment) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		CChinaStock id;
 
 		id.SetUnknownVolume(100000);
@@ -398,7 +392,7 @@ namespace FireBirdTest {
 	}
 
 	TEST(CStockTest3, TestGetLastRTDataPtr) {
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		CChinaStock id;
 		CWebRTDataPtr pRTData2 = pRTData;
 
@@ -408,7 +402,7 @@ namespace FireBirdTest {
 
 	TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
 		CChinaStock id;
-		CWebRTDataPtr pLastRTData = make_shared<CWebRTData>();
+		auto pLastRTData = make_shared<CWebRTData>();
 
 		pLastRTData->SetPSell(0, 100000);
 		pLastRTData->SetPBuy(0, 99990);

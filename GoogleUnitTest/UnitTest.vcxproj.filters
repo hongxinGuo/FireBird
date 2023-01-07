@@ -10,18 +10,6 @@
     <Filter Include="Test源文件\辅助类和函数">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Windows界面">
-      <UniqueIdentifier>{a4a49057-7948-4a2b-b695-24e24be21424}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类">
-      <UniqueIdentifier>{b1bffc53-3e6e-4ff3-b8f2-6d8ed4fa392e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Windows界面">
-      <UniqueIdentifier>{175d2e97-b77f-48b4-8c0f-46f1dcea41e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\辅助类和函数">
-      <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\全局函数">
       <UniqueIdentifier>{7bec1d02-ec36-408c-bc78-9ff482485a4c}</UniqueIdentifier>
     </Filter>
@@ -118,38 +106,50 @@
     <Filter Include="Test源文件\Stock\World stock">
       <UniqueIdentifier>{8f3801b1-e389-4d01-a3c9-53eb227b7b61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\Working thread">
-      <UniqueIdentifier>{ac58acf6-635d-40f5-ac88-424c7d21568b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Type">
-      <UniqueIdentifier>{22725008-0c1a-4fa9-a116-49d02afebf1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Type\China market">
-      <UniqueIdentifier>{23aa7c02-c95a-4d59-a3b1-1ea064276804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\WebInquiry">
-      <UniqueIdentifier>{dfe9f939-36b4-4491-ad96-d64e95fe2c32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\WebInquiry\China market">
-      <UniqueIdentifier>{b9116ebb-55a7-4ddb-996a-fe16bee3bffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\WebInquiry\World market">
-      <UniqueIdentifier>{32a9d475-120c-4bae-9f61-bd5cd4e8943c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Market">
-      <UniqueIdentifier>{90e60b62-05df-412c-9d0b-7c785977ea03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Stock">
-      <UniqueIdentifier>{f9c6dc70-4604-48f4-859a-3ab25e322ba7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\Type\World market">
-      <UniqueIdentifier>{c423a512-8365-477e-a24f-4de93c059604}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Data Source">
       <UniqueIdentifier>{d40221f3-8292-408e-8c70-388a5df3f7a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Test源文件\Web Inquiry">
       <UniqueIdentifier>{2c8810c2-1502-427a-8a0b-3e610dd4ae43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class">
+      <UniqueIdentifier>{b1bffc53-3e6e-4ff3-b8f2-6d8ed4fa392e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Windows interface">
+      <UniqueIdentifier>{175d2e97-b77f-48b4-8c0f-46f1dcea41e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\辅助类和函数">
+      <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Working thread">
+      <UniqueIdentifier>{ac58acf6-635d-40f5-ac88-424c7d21568b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Type">
+      <UniqueIdentifier>{22725008-0c1a-4fa9-a116-49d02afebf1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Type\China market">
+      <UniqueIdentifier>{23aa7c02-c95a-4d59-a3b1-1ea064276804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Type\World market">
+      <UniqueIdentifier>{c423a512-8365-477e-a24f-4de93c059604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\WebInquiry">
+      <UniqueIdentifier>{dfe9f939-36b4-4491-ad96-d64e95fe2c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\WebInquiry\China market">
+      <UniqueIdentifier>{b9116ebb-55a7-4ddb-996a-fe16bee3bffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\WebInquiry\World market">
+      <UniqueIdentifier>{32a9d475-120c-4bae-9f61-bd5cd4e8943c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Market">
+      <UniqueIdentifier>{90e60b62-05df-412c-9d0b-7c785977ea03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock class\Stock">
+      <UniqueIdentifier>{f9c6dc70-4604-48f4-859a-3ab25e322ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Windows interface">
+      <UniqueIdentifier>{a4a49057-7948-4a2b-b695-24e24be21424}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +166,7 @@
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="MockMainFrmTest.cpp">
-      <Filter>Test源文件\Windows界面</Filter>
+      <Filter>Test源文件\Windows interface</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
@@ -570,71 +570,73 @@
     <ClCompile Include="DataChoicedIEXTest.cpp">
       <Filter>Test源文件\Data Class\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="MockStockAnalysisViewTest.cpp" />
+    <ClCompile Include="MockFireBirdViewTest.cpp">
+      <Filter>Test源文件\Windows interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
       <Filter>Test源文件</Filter>
     </ClInclude>
     <ClInclude Include="MockMainFrm.h">
-      <Filter>Mock类\Windows界面</Filter>
+      <Filter>Mock class\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="MockFireBirdView.h">
-      <Filter>Mock类\Windows界面</Filter>
+      <Filter>Mock class\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="MockSystemMessage.h">
-      <Filter>Mock类\辅助类和函数</Filter>
+      <Filter>Mock class\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="GeneralCheck.h">
       <Filter>Test头文件</Filter>
     </ClInclude>
     <ClInclude Include="MockDataChinaDayLine.h">
-      <Filter>Mock类\Type\China market</Filter>
+      <Filter>Mock class\Type\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockDataChinaWeekLine.h">
-      <Filter>Mock类\Type\China market</Filter>
+      <Filter>Mock class\Type\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
-      <Filter>Mock类\WebInquiry\China market</Filter>
+      <Filter>Mock class\WebInquiry\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseRTWebInquiry.h">
-      <Filter>Mock类\WebInquiry\China market</Filter>
+      <Filter>Mock class\WebInquiry\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockSinaRTWebInquiry.h">
-      <Filter>Mock类\WebInquiry\China market</Filter>
+      <Filter>Mock class\WebInquiry\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockTengxunRTWebInquiry.h">
-      <Filter>Mock类\WebInquiry\China market</Filter>
+      <Filter>Mock class\WebInquiry\China market</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnHubWebInquiry.h">
-      <Filter>Mock类\WebInquiry\World market</Filter>
+      <Filter>Mock class\WebInquiry\World market</Filter>
     </ClInclude>
     <ClInclude Include="MockQuandlWebInquiry.h">
-      <Filter>Mock类\WebInquiry\World market</Filter>
+      <Filter>Mock class\WebInquiry\World market</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoWebInquiry.h">
-      <Filter>Mock类\WebInquiry\World market</Filter>
+      <Filter>Mock class\WebInquiry\World market</Filter>
     </ClInclude>
     <ClInclude Include="MockWorldMarket.h">
-      <Filter>Mock类\Market</Filter>
+      <Filter>Mock class\Market</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaMarket.h">
-      <Filter>Mock类\Market</Filter>
+      <Filter>Mock class\Market</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaStock.h">
-      <Filter>Mock类\Stock</Filter>
+      <Filter>Mock class\Stock</Filter>
     </ClInclude>
     <ClInclude Include="MockWorldStock.h">
-      <Filter>Mock类\Stock</Filter>
+      <Filter>Mock class\Stock</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnhubForexSymbol.h">
-      <Filter>Mock类\Type\World market</Filter>
+      <Filter>Mock class\Type\World market</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnhubCryptoSymbol.h">
-      <Filter>Mock类\Type\World market</Filter>
+      <Filter>Mock class\Type\World market</Filter>
     </ClInclude>
     <ClInclude Include="MockVirtualWebInquiry.h">
-      <Filter>Mock类\WebInquiry</Filter>
+      <Filter>Mock class\WebInquiry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

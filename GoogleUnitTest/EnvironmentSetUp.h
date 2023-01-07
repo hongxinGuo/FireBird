@@ -39,17 +39,11 @@ using namespace testing;
 
 #include<memory>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	// 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
 	CMockWorldMarketPtr gl_pMockWorldMarket;
 	CMockChinaMarketPtr gl_pMockChinaMarket;
-	CMockMainFrame* gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
+	CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
 	class TestEnvironment : public::testing::Environment {
 		// 全局初始化，由main()函数调用。
@@ -137,7 +131,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL); //
-			gl_pMockMainFrame = new CMockMainFrame;
+			gl_pMockMainFrame = make_shared<CMockMainFrame>();
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
@@ -232,7 +226,7 @@ namespace FireBirdTest {
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			gl_systemStatus.SetExitingSystem(false);
-			delete gl_pMockMainFrame;
+			gl_pMockMainFrame = nullptr;
 			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。

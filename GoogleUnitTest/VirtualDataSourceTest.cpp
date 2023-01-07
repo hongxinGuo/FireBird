@@ -8,12 +8,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CDataSourceTest : public ::testing::Test {
 	protected:
@@ -25,10 +19,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 
 			GeneralCheck();
@@ -72,7 +65,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataSourceTest, Test_SetInquiry) {
-		CVirtualProductWebDataPtr p = std::make_shared<CVirtualWebProduct>();
+		auto p = std::make_shared<CVirtualWebProduct>();
 		p->SetIndex(10000);
 
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);

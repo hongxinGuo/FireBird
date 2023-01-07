@@ -12,12 +12,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	static CMockNeteaseRTWebInquiryPtr s_pMockNeteaseRTWebInquiry;
 
@@ -34,38 +28,39 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
 
 			gl_pNeteaseRTDataSource->SetWebInquiringPtr(s_pMockNeteaseRTWebInquiry.get());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
 
 			GeneralCheck();
 		}
+
 	protected:
 	};
 
 	TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_pChinaMarket->PushNeteaseRT(pRTData);
-		CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
+		auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(200200200);
 		pRTData2->SetBuy(1);
 		gl_pChinaMarket->PushNeteaseRT(pRTData2);
-		CWebRTDataPtr pRTData3 = make_shared<CWebRTData>();
+		auto pRTData3 = make_shared<CWebRTData>();
 		pRTData3->SetTransactionTime(200200);
 		gl_pChinaMarket->PushNeteaseRT(pRTData3);
-		CWebRTDataPtr pRTData4 = make_shared<CWebRTData>();
+		auto pRTData4 = make_shared<CWebRTData>();
 		pRTData4->SetTransactionTime(200);
 		gl_pChinaMarket->PushNeteaseRT(pRTData4);
-		CWebRTDataPtr pRTData5 = make_shared<CWebRTData>();
+		auto pRTData5 = make_shared<CWebRTData>();
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_pChinaMarket->PushNeteaseRT(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后

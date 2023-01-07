@@ -3,18 +3,13 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct CheckNeteaseDayLineInquiryStrData {
 		CheckNeteaseDayLineInquiryStrData(int count, CString Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
+
 	public:
 		int m_iCount;
 		CString m_strData;
@@ -33,14 +28,14 @@ namespace FireBirdTest {
 
 	class CheckNeteaseDayLineInquiryStrTest : public::testing::TestWithParam<CheckNeteaseDayLineInquiryStrData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			CheckNeteaseDayLineInquiryStrData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			m_strCode = pData->m_strData;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
@@ -53,8 +48,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, CheckNeteaseDayLineInquiryStrTest,
-		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8
-		));
+	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8
+	                         ));
 
 	TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
 		bool fSucceed = gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);

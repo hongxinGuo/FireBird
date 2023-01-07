@@ -12,19 +12,11 @@
 #include"WorldStock.h"
 #include"MockWorldStock.h"
 
-
 using namespace testing;
 #include<memory>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CMockWorldStockTest : public ::testing::Test
-	{
+	class CMockWorldStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -34,11 +26,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 
 			GeneralCheck();

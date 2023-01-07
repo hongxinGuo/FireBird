@@ -7,12 +7,6 @@
 
 #include<memory>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct GuadanData {
 		// 共四十三个数据，一个序列号，二十个当前实时数据（挂单价位和数量），二十个上次实时数据（挂单价位和数量），一个成交类型，一个成交价格
@@ -158,7 +152,7 @@ namespace FireBirdTest {
 
 	class RTDataGuadanTest : public::testing::TestWithParam<GuadanData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			GuadanData* pData = GetParam();
 			// 预设20个挂单
@@ -188,7 +182,7 @@ namespace FireBirdTest {
 			iCount = pData->iCount;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -400,7 +394,7 @@ namespace FireBirdTest {
 
 	class NeedCheckTest : public::testing::TestWithParam<GuadanData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			GuadanData* pData = GetParam();
 			// 预设20个挂单
@@ -432,7 +426,7 @@ namespace FireBirdTest {
 			m_stock.SetCanceledSellVolume(0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -843,7 +837,7 @@ namespace FireBirdTest {
 
 	TEST(CStockTest3, TestSetCurrentGuadan) {
 		CChinaStock id;
-		CWebRTDataPtr pCurrentRTData = make_shared<CWebRTData>();
+		auto pCurrentRTData = make_shared<CWebRTData>();
 
 		for (int i = 0; i < 5; i++) {
 			pCurrentRTData->SetPBuy(i, 10080 - i * 20);

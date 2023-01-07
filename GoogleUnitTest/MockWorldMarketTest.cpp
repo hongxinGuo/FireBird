@@ -39,15 +39,8 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-
 using namespace testing;
 #include<memory>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 namespace FireBirdTest {
 	extern CMockWorldMarketPtr gl_pMockWorldMarket;
@@ -56,8 +49,7 @@ namespace FireBirdTest {
 	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
 	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
 
-	class CMockWorldMarketTest : public ::testing::Test
-	{
+	class CMockWorldMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -81,7 +73,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
 			gl_systemStatus.SetExitingSystem(false);
@@ -92,7 +84,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 

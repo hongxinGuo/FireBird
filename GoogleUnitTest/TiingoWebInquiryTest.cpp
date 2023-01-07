@@ -6,19 +6,12 @@
 #include"TiingoDataSource.h"
 #include"MockTiingoWebInquiry.h"
 
-
 using namespace testing;
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 namespace FireBirdTest {
 	static bool m_fSystemStatus;
-	class CTiingoWebInquiryTest : public ::testing::Test
-	{
+
+	class CTiingoWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
@@ -31,18 +24,19 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_TiingoWebInquiry.SetDataSource(gl_pTiingoDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pWorldMarket->SetResetMarket(true);
 			GeneralCheck();
 		}
+
 		CMockTiingoWebInquiry m_TiingoWebInquiry; // 网易日线历史数据
 	};
 
@@ -76,7 +70,8 @@ namespace FireBirdTest {
 				str = m_TiingoWebInquiry.GetInquiringString();
 				EXPECT_STREQ(str.Right(47), _T(""));
 			}
-			else EXPECT_EQ(str.GetLength(), 0);
+			else
+				EXPECT_EQ(str.GetLength(), 0);
 		}
 		gl_pWorldMarket->SetSystemReady(false);
 	}

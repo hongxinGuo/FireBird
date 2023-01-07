@@ -6,18 +6,10 @@
 #include"FinnhubDataSource.h"
 #include"MockFinnhubWebInquiry.h"
 
-
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CFinnhubWebInquiryTest : public ::testing::Test
-	{
+	class CFinnhubWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -27,19 +19,20 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
 			gl_pWorldMarket->CalculateTime();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pWorldMarket->SetResetMarket(true);
 			gl_pWorldMarket->SetSystemReady(false);
 			GeneralCheck();
 		}
+
 		CMockFinnhubWebInquiry m_FinnhubWebInquiry; // 网易日线历史数据
 	};
 

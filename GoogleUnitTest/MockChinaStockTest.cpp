@@ -17,12 +17,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
 	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
@@ -39,14 +33,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
 
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pChinaMarket->CalculateTime();
@@ -111,7 +105,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pStock->StoreDayLine(pDayLine);
 		InSequence seq;
 		EXPECT_CALL(*pStock, LoadDayLine)
@@ -123,7 +117,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		pStock->StoreWeekLine(pWeekLine);
 		EXPECT_CALL(*pStock, LoadWeekLine)
 			.Times(1);

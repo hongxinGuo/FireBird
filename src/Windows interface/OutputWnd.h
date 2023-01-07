@@ -13,7 +13,7 @@ public:
 	void SetCurAtLastLine(void);
 
 public:
-	virtual ~COutputList();
+	~COutputList() override;
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -52,7 +52,7 @@ protected:
 
 	// 实现
 public:
-	virtual ~COutputWnd();
+	~COutputWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

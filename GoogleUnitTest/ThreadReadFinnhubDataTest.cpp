@@ -17,12 +17,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CThreadReadFinnhubDataTest : public ::testing::Test {
 	protected:
@@ -39,8 +33,7 @@ namespace FireBirdTest {
 			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 
-		void TearDown(void) override {
-		}
+		void TearDown(void) override { }
 
 		CMockFinnhubWebInquiry FinnhubWebInquiry;
 	};

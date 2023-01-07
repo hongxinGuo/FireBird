@@ -25,12 +25,6 @@ using namespace testing;
 
 #include<memory>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	static CMockSinaRTWebInquiryPtr s_pMockSinaRTWebInquiry;
 	static CMockTengxunRTWebInquiryPtr s_pMockTengxunRTWebInquiry;

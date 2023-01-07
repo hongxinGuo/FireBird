@@ -4,27 +4,18 @@
 
 #include"HighPerformanceCounter.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CHighPerformanceCounterTest : public ::testing::Test
-	{
+	class CHighPerformanceCounterTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-		}
+		static void SetUpTestSuite(void) { }
 
-		static void TearDownTestSuite(void) {
-		}
+		static void TearDownTestSuite(void) { }
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}

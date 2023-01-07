@@ -9,12 +9,6 @@
 
 #include<vector>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct NetEaseDayLineData {
 		NetEaseDayLineData(int count, CString Data) {
@@ -51,7 +45,7 @@ namespace FireBirdTest {
 
 	class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
@@ -89,7 +83,7 @@ namespace FireBirdTest {
 			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&WebInquiry);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -205,7 +199,7 @@ namespace FireBirdTest {
 
 	class ReadDayLineOneValueTest2 : public::testing::TestWithParam<ReadDayLineOneValueData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
@@ -217,7 +211,7 @@ namespace FireBirdTest {
 			m_lCountPos = 0;
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}

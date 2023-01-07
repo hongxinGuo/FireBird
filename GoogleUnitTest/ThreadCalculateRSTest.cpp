@@ -8,15 +8,8 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CThreadCalculateRSTest : public ::testing::Test
-	{
+	class CThreadCalculateRSTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,15 +22,16 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			pMockStock = make_shared<CMockChinaStock>();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			pMockStock = nullptr;
 			vStock.resize(0);
 			gl_systemStatus.SetExitingSystem(false);
 		}
+
 		CMockChinaStockPtr pMockStock;
 		vector<CChinaStockPtr> vStock;
 		CRSReference ref;

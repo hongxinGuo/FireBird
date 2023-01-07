@@ -9,21 +9,14 @@
 
 #include"GeneralCheck.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class SystemMessageTest : public ::testing::Test
-	{
+	class SystemMessageTest : public ::testing::Test {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 
@@ -152,10 +145,12 @@ namespace FireBirdTest {
 		gl_systemMessage.SetCurrentTiingoWebSocketIEX(_T("600000.SS"));
 		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX(), _T("600000.SS"));
 	}
+
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketForex) {
 		gl_systemMessage.SetCurrentTiingoWebSocketForex(_T("600000.SS"));
 		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketForex(), _T("600000.SS"));
 	}
+
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketCrypto) {
 		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(_T("600000.SS"));
 		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), _T("600000.SS"));

@@ -9,17 +9,10 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CThreadReadTengxunRTDataTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
-		}
+		static void SetUpTestSuite(void) { }
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();
@@ -30,8 +23,7 @@ namespace FireBirdTest {
 			TengxunRTWebInquiry.SetReadingWebData(true);
 		}
 
-		void TearDown(void) override {
-		}
+		void TearDown(void) override { }
 
 		CMockTengxunRTWebInquiry TengxunRTWebInquiry;
 	};

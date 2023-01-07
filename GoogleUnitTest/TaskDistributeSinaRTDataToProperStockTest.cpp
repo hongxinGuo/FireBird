@@ -10,12 +10,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct SinaRTData {
 		SinaRTData(int count, CString Symbol, int iType, bool fActive, time_t tt) {
@@ -69,7 +63,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			SinaRTData* pData = GetParam();
@@ -87,7 +81,7 @@ namespace FireBirdTest {
 			pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

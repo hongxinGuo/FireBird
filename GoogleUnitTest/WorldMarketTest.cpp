@@ -37,28 +37,23 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CWorldMarketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 		}
+
 		static void TearDownTestSuite(void) {
 			EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pFinnhubDataSource->SetInquiring(false);
 
@@ -98,6 +93,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(170500));
 		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(170501));
 	}
+
 	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
 		tm tm_, tm2_;
 		time_t tt;
@@ -120,7 +116,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("A")));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
-		CWorldStockPtr pStock = make_shared<CWorldStock>();
+		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
 		pStock->SetSymbol(_T("000001.SS"));
@@ -140,7 +136,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("A")));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
-		CWorldStockPtr pStock = make_shared<CWorldStock>();
+		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
 		pStock->SetSymbol(_T("AA"));
@@ -152,7 +148,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(_T("000001.SZ"));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
 
-		CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+		auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_strTicker = _T("000000.SS");
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("AA");
@@ -189,7 +185,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
-		CWorldStockPtr pStock = make_shared<CWorldStock>();
+		auto pStock = make_shared<CWorldStock>();
 		long lTotalStock = gl_pWorldMarket->GetStockSize();
 		pStock->SetSymbol(_T("000001.SZ"));
 
@@ -222,7 +218,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
-		CTiingoStockPtr pStock = make_shared<CTiingoStock>();
+		auto pStock = make_shared<CTiingoStock>();
 		long lTotalStock = gl_pWorldMarket->GetTotalTiingoStock();
 		pStock->m_strTicker = _T("ABCDEF");
 
@@ -275,7 +271,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
 
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
@@ -285,7 +281,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		long lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -339,7 +335,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")));
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("COINBASE:TRIBE-USD")));
 
-		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("BINANCE:USDTUAH"));
@@ -349,7 +345,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
-		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		long lTotalCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -375,7 +371,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
-		CCountryPtr pCountry = make_shared<CCountry>();
+		auto pCountry = make_shared<CCountry>();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsCountry(_T("ABC")));
 		EXPECT_TRUE(gl_pWorldMarket->IsCountry(_T("American Samoa")));
@@ -387,7 +383,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCountry) {
-		CCountryPtr pCountry = make_shared<CCountry>();
+		auto pCountry = make_shared<CCountry>();
 		long lTotalCountry = gl_pWorldMarket->GetTotalCountry();
 		pCountry->m_strCountry = _T("SZ");
 
@@ -442,7 +438,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
-		CWorldStockPtr pStock = make_shared<CWorldStock>();
+		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
 		gl_pWorldMarket->AddStock(pStock);
@@ -497,7 +493,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
-		CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
@@ -535,7 +531,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
-		CFinnhubCryptoSymbolPtr pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
@@ -575,7 +571,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 
-		CTiingoStockPtr pTiingoStock = make_shared<CTiingoStock>();
+		auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSICCode = 1002;
@@ -799,7 +795,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
 		CSetEconomicCalendar setEconomicCalendar;
-		CEconomicCalendarPtr pEconomicCalendar = make_shared<CEconomicCalendar>();
+		auto pEconomicCalendar = make_shared<CEconomicCalendar>();
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 
 		pEconomicCalendar->m_strCountry = _T("USA");

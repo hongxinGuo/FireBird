@@ -61,7 +61,7 @@
 //ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBirdDoc.cpp");
 //ExcludeFromCodeCoverage(CMainFrame2, L"CMainFrame::Dump", "abc");
 
-#if _MSVC_LANG <= 201703 // C17及以下版本？
+#if _MSVC_LANG <= 201703 // C17及以下版本？Exclude个函数在C20下编译出错
 ExcludeSourceFromCodeCoverage("Exclude1", _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\Program Files\\*.*"); // 排除VS2022系统库
 ExcludeSourceFromCodeCoverage(Exclude11, L"C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*");

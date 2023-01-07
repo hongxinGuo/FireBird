@@ -10,12 +10,6 @@
 #include"WebRTData.h"
 #include"SinaRTWebInquiry.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CStockWebRTDataTest : public ::testing::Test {
 	protected:
@@ -28,11 +22,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -420,7 +414,7 @@ namespace FireBirdTest {
 
 	class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			SinaRTData* pData = GetParam();
@@ -447,7 +441,7 @@ namespace FireBirdTest {
 			m_RTData.SetBuy(-1);
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -1313,7 +1307,7 @@ namespace FireBirdTest {
 
 	class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
 	protected:
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			ReadSinaOneCalueData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
@@ -1325,7 +1319,7 @@ namespace FireBirdTest {
 			m_pSinaWebRTData->ResetCurrentPos();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -1531,7 +1525,7 @@ namespace FireBirdTest {
 
 	TEST_F(CStockWebRTDataTest, TestSaveData) {
 		CSetRealTimeData setRTData;
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		time_t tt = ConvertToTTime(21101123, -8 * 3600, 150000);
 
 		pRTData->SetTransactionTime(tt);
@@ -1590,7 +1584,7 @@ namespace FireBirdTest {
 
 	TEST_F(CStockWebRTDataTest, TestLoadData) {
 		CSetRealTimeData setRTData;
-		CWebRTDataPtr pRTData = make_shared<CWebRTData>();
+		auto pRTData = make_shared<CWebRTData>();
 		CWebRTData id;
 		time_t tt = ConvertToTTime(21101123, -8 * 3600, 150000);
 

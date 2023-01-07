@@ -9,15 +9,8 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CFinnhubCryptoSymbolTest : public ::testing::Test
-	{
+	class CFinnhubCryptoSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -27,11 +20,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
 	};
@@ -69,6 +62,7 @@ namespace FireBirdTest {
 		symbol.SetDisplaySymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
 	}
+
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetSymbol) {
 		CFinnhubCryptoSymbol symbol;
 
@@ -82,6 +76,7 @@ namespace FireBirdTest {
 		symbol.SetDayLineStartDate(20202020);
 		EXPECT_EQ(symbol.GetDayLineStartDate(), 20202020);
 	}
+
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineEndDate) {
 		CFinnhubCryptoSymbol symbol;
 
@@ -95,6 +90,7 @@ namespace FireBirdTest {
 		symbol.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_EQ(symbol.GetIPOStatus(), _STOCK_IPOED_);
 	}
+
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineNeedSaving) {
 		CFinnhubCryptoSymbol symbol;
 
@@ -298,7 +294,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		vector<CDayLinePtr> vDayLine;
 		CSetCryptoDayLine setCryptoDayLine;
 

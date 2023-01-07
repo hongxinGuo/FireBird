@@ -6,20 +6,10 @@
 #include"NeteaseRTDataSource.h"
 #include"MockNeteaseRTWebInquiry.h"
 
-
-#include<atomic>
-
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CNeteaseRTWebInquiryTest : public ::testing::Test
-	{
+	class CNeteaseRTWebInquiryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,18 +19,19 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 
 			m_NeteaseRTWebInquiry.SetDataSource(gl_pNeteaseRTDataSource.get());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			gl_pChinaMarket->SetSystemReady(false);
 			GeneralCheck();
 		}
+
 		CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 网易实时数据采集
 	};
 

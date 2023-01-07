@@ -10,12 +10,6 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CFinnhubEconomicCountryListTest : public ::testing::Test {
 	protected:
@@ -27,8 +21,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp

@@ -10,12 +10,6 @@
 #include"FinnhubInaccessibleExchange.h"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	class CInaccessibleExchangesTest : public ::testing::Test {
 		void SetUp(void) override {

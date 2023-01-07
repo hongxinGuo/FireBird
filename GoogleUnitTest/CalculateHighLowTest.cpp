@@ -7,12 +7,6 @@
 #include<memory>
 using std::make_shared;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
 	struct HighLowData {
 		HighLowData(CString strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {

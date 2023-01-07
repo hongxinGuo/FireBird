@@ -8,15 +8,8 @@
 
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CThreadBuildDayLineRSOfDateTest : public ::testing::Test
-	{
+	class CThreadBuildDayLineRSOfDateTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -26,12 +19,12 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			gl_systemStatus.SetExitingSystem(false);
 		}
+
 		CMockChinaMarket market;
 	};
 

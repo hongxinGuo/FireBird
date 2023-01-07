@@ -8,22 +8,15 @@
 using namespace testing;
 using namespace testing;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CMockSystemMessageTest : public ::testing::Test
-	{
+	class CMockSystemMessageTest : public ::testing::Test {
 	protected:
-		virtual void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 		}
+
 		CMockSystemDeque systemDeque;
 	};
 

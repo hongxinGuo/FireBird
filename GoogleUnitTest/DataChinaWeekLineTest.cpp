@@ -9,15 +9,8 @@
 
 #include"SetCurrentWeekLine.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 namespace FireBirdTest {
-	class CStockDataChinaWeekLineTest : public ::testing::Test
-	{
+	class CStockDataChinaWeekLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -27,23 +20,23 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		virtual void SetUp(void) override {
+		void SetUp(void) override {
 			GeneralCheck();
 		}
 
-		virtual void TearDown(void) override {
+		void TearDown(void) override {
 			// clearUp
 			GeneralCheck();
 		}
 	};
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
-		CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
+		auto pWeekLine2 = make_shared<CWeekLine>();
 		pWeekLine2->SetStockSymbol(_T("600001.SS"));
 		pWeekLine2->SetDate(20200201);
 		pWeekLine2->SetHigh(11000);
@@ -69,13 +62,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(20200101);
 		pDayLine->SetHigh(10000);
 		pDayLine->SetLow(100);
 		pDayLine->SetTransactionNumber(101);
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
@@ -93,12 +86,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
-		CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
+		auto pWeekLine2 = make_shared<CWeekLine>();
 		pWeekLine2->SetStockSymbol(_T("600001.SS"));
 		pWeekLine2->SetDate(20200201);
 		pWeekLine2->SetHigh(11000);
@@ -131,7 +124,7 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveLoadCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
-		CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+		auto pWeekLine = make_shared<CWeekLine>();
 		CDataChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
