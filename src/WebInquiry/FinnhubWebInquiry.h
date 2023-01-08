@@ -17,14 +17,15 @@ public:
 	CFinnhubWebInquiry();
 	~CFinnhubWebInquiry() override;
 
-	virtual bool PrepareNextInquiringString(void) override;
-	virtual CString GetNextInquiringMiddleString(long, bool) override final { return _T(""); }
-	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void ConfigureSession(void) override final;
-	virtual bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+	bool PrepareNextInquiringString(void) override;
+	void CreateTotalInquiringString(CString strMiddle) override;
+	CString GetNextInquiringMiddleString(long, bool) final { return _T(""); }
+	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) final;
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:
 };
 
-typedef shared_ptr<CFinnhubWebInquiry> CFinnhubWebInquiryPtr;
+using CFinnhubWebInquiryPtr = shared_ptr<CFinnhubWebInquiry>;
 extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息

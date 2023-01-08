@@ -95,7 +95,6 @@ string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
 	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
 
-	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 	vSymbol.push_back(_T("dkaeth")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	vSymbol.push_back(_T("ksmust")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);

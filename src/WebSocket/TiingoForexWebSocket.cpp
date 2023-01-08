@@ -91,7 +91,6 @@ string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	const string strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
-	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 
 	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	vSymbol.push_back(_T("eurusd")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。

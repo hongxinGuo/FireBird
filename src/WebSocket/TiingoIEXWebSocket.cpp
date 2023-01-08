@@ -82,7 +82,6 @@ string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
 	const string strSuffix = _T("]}}");
 	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
-	strAuth.erase(strAuth.begin(), strAuth.begin() + 7);
 
 	vSymbol.emplace_back(_T("rig")); // 多加一个Tiingo制式的代码。
 	vSymbol.emplace_back(_T("aapl")); // 多加一个Tiingo制式的代码。

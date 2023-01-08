@@ -43,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CQuandlWebInquiryTest, TestInitialize) {
 		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryFunction(), _T(""));
-		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryToken(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_STREQ(m_QuandlWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_STREQ(m_QuandlWebInquiry.GetConnectionName(), _T("Quandl"));
 	}
 
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 4; i++) {
 			if (m_QuandlWebInquiry.PrepareNextInquiringString()) {
 				str = m_QuandlWebInquiry.GetInquiringString();
-				EXPECT_STREQ(str.Right(29), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
+				EXPECT_STREQ(str, _T("&api_key=")) << "默认状态下，各字符串皆为空，故而只剩下&api_key=";
 			}
 			else
 				EXPECT_EQ(str.GetLength(), 0);

@@ -38,7 +38,7 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
-	bool VerifyDataLength() const;
+	void VerifyDataLength() const;
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数\n");
@@ -73,7 +73,7 @@ public:
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) { } //成功接收后更新系统状态。默认无动作
 
-	void CreateTotalInquiringString(CString strMiddle);
+	virtual void CreateTotalInquiringString(CString strMiddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
 	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
@@ -93,6 +93,8 @@ public:
 
 	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
 	void SetInquiryFunction(const CString& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
+	CString GetInquirySuffix(void) const noexcept { return m_strSuffix; }
+	void SetInquirySuffix(const CString& strSuffix) noexcept { m_strSuffix = strSuffix; }
 	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
 	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
@@ -134,7 +136,7 @@ public:
 protected:
 	CVirtualDataSource* m_pDataSource; // 指向包含自己的数据源。此指针必须使用裸指针，不能使用智能指针，否则解析时会出现循环，导致不可知的结果。
 
-	CInternetSession* m_pSession;
+	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
 	DWORD m_dwHTTPStatusCode; //网络状态码
 
@@ -146,6 +148,7 @@ protected:
 
 	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
 	CString m_strInquiryFunction; // 查询字符串功能部分
+	CString m_strSuffix; // 查询字符串的后缀部分
 	CString m_strInquiryToken; // 查询字符串令牌
 
 	atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识

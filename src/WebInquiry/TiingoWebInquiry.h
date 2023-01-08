@@ -10,12 +10,13 @@ public:
 	CTiingoWebInquiry();
 	~CTiingoWebInquiry() override = default;
 
-	virtual bool PrepareNextInquiringString(void) override;
-	virtual CString GetNextInquiringMiddleString(long, bool) override final { return _T(""); }
-	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void ConfigureSession(void) override final; // 设置m_pSession状态。
-	virtual bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+	bool PrepareNextInquiringString(void) override;
+	void CreateTotalInquiringString(CString strMiddle) override;
+	CString GetNextInquiringMiddleString(long, bool) final { return _T(""); }
+	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) final; // 设置m_pSession状态。
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 };
 
-typedef shared_ptr<CTiingoWebInquiry> CTiingoWebInquiryPtr;
+using CTiingoWebInquiryPtr = shared_ptr<CTiingoWebInquiry>;
 extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;

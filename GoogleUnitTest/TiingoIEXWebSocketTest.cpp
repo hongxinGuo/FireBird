@@ -64,6 +64,6 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
 		string str = gl_tiingoIEXWebSocket.CreateMessage(vSymbol);
-		EXPECT_TRUE(str == _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"rig\",\"aapl\"]}}")) << "最后两个代码是为了测试手工加上的";
+		EXPECT_STREQ(str.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"rig\",\"aapl\"]}}")) << "最后两个代码是为了测试手工加上的";
 	}
 }

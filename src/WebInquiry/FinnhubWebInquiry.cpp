@@ -7,6 +7,7 @@
 
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strSuffix = _T("&token=");
 	m_strInquiryToken = _T("");
 	m_strConnectionName = _T("Finnhub");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
@@ -22,6 +23,10 @@ bool CFinnhubWebInquiry::PrepareNextInquiringString(void) {
 	CreateTotalInquiringString(_T(""));
 
 	return true;
+}
+
+void CFinnhubWebInquiry::CreateTotalInquiringString(CString strMiddle) {
+	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
 }
 
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) const {

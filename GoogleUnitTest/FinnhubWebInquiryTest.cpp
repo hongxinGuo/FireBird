@@ -64,7 +64,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 4; i++) {
 			if (m_FinnhubWebInquiry.PrepareNextInquiringString()) {
 				str = m_FinnhubWebInquiry.GetInquiringString();
-				EXPECT_STREQ(str.Right(27), _T(""));
+				EXPECT_STREQ(str, _T("&token="));
 			}
 			gl_pWorldMarket->SetSystemReady(false);
 		}

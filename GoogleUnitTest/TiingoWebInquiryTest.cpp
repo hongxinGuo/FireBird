@@ -68,7 +68,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < 4; i++) {
 			if (m_TiingoWebInquiry.PrepareNextInquiringString()) {
 				str = m_TiingoWebInquiry.GetInquiringString();
-				EXPECT_STREQ(str.Right(47), _T(""));
+				EXPECT_STREQ(str, _T("&token="));
 			}
 			else
 				EXPECT_EQ(str.GetLength(), 0);

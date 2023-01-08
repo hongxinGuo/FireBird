@@ -70,7 +70,7 @@ CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
 /// <returns></returns>
 bool CFinnhubWebSocket::Connect(void) {
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiryToken();
-	strToken = "/?" + strToken.Right(strToken.GetLength() - 1);
+	strToken = "/?token=" + strToken;
 	const string urlAndAuth = m_url + strToken.GetBuffer();
 
 	return Connecting(urlAndAuth, ProcessFinnhubWebSocket);

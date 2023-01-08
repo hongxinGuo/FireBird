@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CCompanyNewsTest, TestInitialize) {
-		CFinnhubCompanyNews companyNews;
+		const CFinnhubCompanyNews companyNews;
 		EXPECT_EQ(companyNews.m_llDateTime, 0);
 		EXPECT_EQ(companyNews.m_iNewsID, 0);
 

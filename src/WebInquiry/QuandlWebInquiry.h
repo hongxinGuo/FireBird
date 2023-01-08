@@ -9,12 +9,13 @@ public:
 	CQuandlWebInquiry();
 	~CQuandlWebInquiry() override = default;
 
-	virtual bool PrepareNextInquiringString(void) override;
-	virtual CString GetNextInquiringMiddleString(long, bool) override { return _T(""); }
-	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual void ConfigureSession(void) override final;
-	virtual bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+	bool PrepareNextInquiringString(void) override;
+	void CreateTotalInquiringString(CString strMiddle) override;
+	CString GetNextInquiringMiddleString(long, bool) override { return _T(""); }
+	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) final;
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 };
 
-typedef shared_ptr<CQuandlWebInquiry> CQuandlWebInquiryPtr;
+using CQuandlWebInquiryPtr = shared_ptr<CQuandlWebInquiry>;
 extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;

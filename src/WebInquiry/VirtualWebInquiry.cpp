@@ -26,7 +26,7 @@ atomic_long CVirtualWebInquiry::sm_lTotalByteRead = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() {
 	m_pDataSource = nullptr;
 
-	m_pSession = new CInternetSession(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
+	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	SetDefaultSessionOption();
 	m_pFile = nullptr;
 	m_strHeaders = _T("");
@@ -35,6 +35,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 	m_dwWebErrorCode = 0;
 	m_strInquiry = _T("");
 	m_strInquiryFunction = _T("");
+	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
 	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
@@ -53,10 +54,6 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 
 CVirtualWebInquiry::~CVirtualWebInquiry(void) {
 	m_pDataSource = nullptr;
-	if (m_pSession != nullptr) {
-		delete m_pSession;
-		m_pSession = nullptr;
-	}
 }
 
 void CVirtualWebInquiry::SetDefaultSessionOption(void) {
@@ -278,7 +275,7 @@ bool CVirtualWebInquiry::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 	return true;
 }
 
-bool CVirtualWebInquiry::VerifyDataLength() const {
+void CVirtualWebInquiry::VerifyDataLength() const {
 	const auto byteRead = GetByteRead();
 
 	if (m_lContentLength > 0) {
@@ -299,9 +296,7 @@ bool CVirtualWebInquiry::VerifyDataLength() const {
 			str = str.Left(400);
 			gl_systemMessage.PushErrorMessage(str);
 		}
-		return false;
 	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -395,7 +390,9 @@ bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) const {
 	return true;
 }
 
-void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) { m_strInquiry = m_strInquiryFunction + strMiddle + m_strInquiryToken; }
+void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
+	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
+}
 
 void CVirtualWebInquiry::TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);

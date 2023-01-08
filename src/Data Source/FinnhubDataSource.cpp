@@ -767,7 +767,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine(void) {
 		long lCurrentUpdateCryptoDayLinePos;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubCryptoDayLine) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub crypto day line..."));
 			m_fInquiringFinnhubCryptoDayLine = true;
 		}
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize;

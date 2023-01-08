@@ -1,21 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 这里的密钥是用来测试的，用户需要自己申请各自的密钥。
-//
-// Finnhub密钥：
-// 1："&token=bv985d748v6ujthqfke0"
-// 2："&token=c1i57rv48v6vit20lrc0"
-// 3: "&token=bv4ac1n48v6tcp17l5cg"
-//
-// Tiingo密钥：
-// 1："&token=c897a00b7cfc2adffc630d23befd5316a4683156"
-// 2："&token=fad87279362b9e580e4fb364a263cda3c67336c8"
-//
-// Quandl密钥：
-//  api_key=zBMXMyoTyiy_N3pMb3ex
-// m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
-// 下面的是第二个,用于dell240工作机。
-// m_strInquiryToken = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 密钥放在最后
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
@@ -64,7 +48,7 @@ std::string gl_sSystemConfiguration = R"(
 "WorldMarket" : {
 	"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
 	"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
-	"QuandlToken" : "&api_key=zBMXMyoTyiy_N3pMb3ex",
+	"QuandlToken" : "aBMXMyoTyiy_N3pMb3ex",
 	"FinnhubInquiryTime" : 1100,
 	"TiingoInquiryTime" : 9000,
 	"QuandlInquiryTime" : 36000
@@ -119,7 +103,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	// World Market
 	m_strFinnhubToken = "&token=bv985d748v6ujthqfke0"; // Finnhub token
 	m_strTiingoToken = "&token=c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
-	m_strQuandlToken = "&api_key=zBMXMyoTyiy_N3pMb3ex"; // Quandl token
+	m_strQuandlToken = _T(""); // Quandl token
 	m_iWorldMarketFinnhubInquiryTime = 1100; // 默认每小时最多查询3300次
 	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
 	m_iWorldMarketQuandlInquiryTime = 3600000 / 100; // 默认每小时最多查询100次
