@@ -16,9 +16,13 @@
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"
 
-CWorldStock::CWorldStock() : CVirtualStock() { CWorldStock::Reset(); }
+CWorldStock::CWorldStock() : CVirtualStock() {
+	CWorldStock::Reset();
+}
 
-CWorldStock::~CWorldStock() { m_pBasicFinancial = nullptr; }
+CWorldStock::~CWorldStock() {
+	m_pBasicFinancial = nullptr;
+}
 
 void CWorldStock::Reset(void) {
 	CVirtualStock::Reset();
@@ -87,6 +91,26 @@ void CWorldStock::Reset(void) {
 	m_fUpdateFinnhubBasicFinancialDB = false;
 
 	m_pBasicFinancial = nullptr;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 所有更新日期的json数据皆在此预设。这样保证提取数据时不会发生exception，如果发生了exception,则程序出现错误。
+/// 可以使用exception判断参数名称的正确与否。
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CWorldStock::ResetAllUpdateDate(void) {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800101;
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
@@ -659,6 +683,156 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	}
 	else { m_fFinnhubInsiderSentimentNeedUpdate = true; }
 	return m_fFinnhubInsiderSentimentNeedUpdate;
+}
+
+long CWorldStock::GetProfileUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetProfileUpdateDate(const long lProfileUpdateDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = lProfileUpdateDate;
+}
+
+long CWorldStock::GetCompanyNewsUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = lCompanyNewsUpdateDate;
+}
+
+long CWorldStock::GetBasicFinancialUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = lBasicFinancialUpdateDate;
+}
+
+long CWorldStock::GetLastRTDataUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetLastRTDataUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = lDate;
+}
+
+long CWorldStock::GetPeerUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetPeerUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = lDate;
+}
+
+long CWorldStock::GetInsiderTransactionUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = lDate;
+}
+
+long CWorldStock::GetInsiderSentimentUpdateDate(void) const {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetInsiderSentimentUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = lDate;
+}
+
+long CWorldStock::GetLastEPSSurpriseUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = lDate;
+}
+
+long CWorldStock::GetTiingoStatementUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockFundamentalsCompanyProfile");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetTiingoStatementUpdateDate(const long lStatementUpdateDate) noexcept {
+	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = lStatementUpdateDate;
+}
+
+long CWorldStock::GetTiingoDailyDataUpdateDate(void) {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockPriceCandles");
+		return lDate;
+	}
+	catch (json::exception&) {
+		ASSERT(0);
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) noexcept {
+	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = lDailyDataUpdateDate;
 }
 
 CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
