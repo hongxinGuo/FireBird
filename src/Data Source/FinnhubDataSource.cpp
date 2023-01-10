@@ -68,7 +68,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 	case NEWS_SENTIMENT_:
 		break;
 	case PEERS_:
-		m_fPeerUpdated = true;
 		break;
 	case BASIC_FINANCIALS_:
 		break;

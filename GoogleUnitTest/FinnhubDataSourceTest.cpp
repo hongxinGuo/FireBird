@@ -62,7 +62,9 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CFinnhubDataSourceTest, TestInitialize) { EXPECT_STREQ(gl_pFinnhubDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Finnhub")); }
+	TEST_F(CFinnhubDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(gl_pFinnhubDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Finnhub"));
+	}
 
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus) {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
@@ -77,17 +79,17 @@ namespace FireBirdTest {
 
 		p->SetProductType(COMPANY_PROFILE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated()) << "UpdateStatus不修改StockProfile项";
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
 		p->SetProductType(COMPANY_PROFILE_CONCISE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated()) << "UpdateStatus不修改StockProfile项";
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
 		p->SetProductType(PEERS_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsPeerUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated()) << "UpdateStatus不修改Peer项";
 		gl_pFinnhubDataSource->SetPeerUpdated(false);
 
 		p->SetProductType(FOREX_EXCHANGE_);

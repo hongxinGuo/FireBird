@@ -320,7 +320,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	setWorldStock.m_WebURL = m_strWebURL.Left(150);
 	setWorldStock.m_Logo = m_strLogo.Left(110);
 	setWorldStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
-	setWorldStock.m_Peer = m_strPeer.Left(200);
+	setWorldStock.m_Peer = m_strPeer.Left(2000);
 	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
 	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
 

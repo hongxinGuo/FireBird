@@ -307,30 +307,51 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 10101010);
 	}
 
+	TEST_F(CWorldStockTest, TestGetCompanyNewsUpdateDate) {
+		CWorldStock stock;
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800102);
+		stock.SetCompanyNewsUpdateDate(10101010);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 10101010);
+	}
+
+	TEST_F(CWorldStockTest, TestGetBasicFinancialUpdateDate) {
+		CWorldStock stock;
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800103);
+		stock.SetBasicFinancialUpdateDate(10101010);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 10101010);
+	}
+
 	TEST_F(CWorldStockTest, TestGetLastRTDataUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800104);
 		stock.SetLastRTDataUpdateDate(10101010);
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 10101010);
 	}
 
 	TEST_F(CWorldStockTest, TestPeerUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800105);
 		stock.SetPeerUpdateDate(10101010);
 		EXPECT_EQ(stock.GetPeerUpdateDate(), 10101010);
 	}
 
 	TEST_F(CWorldStockTest, TestInsiderTransactionUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800106);
 		stock.SetInsiderTransactionUpdateDate(10101010);
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101010);
 	}
 
+	TEST_F(CWorldStockTest, TestGetInsiderSentimentUpdateDate) {
+		CWorldStock stock;
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800107);
+		stock.SetInsiderSentimentUpdateDate(10101010);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 10101010);
+	}
+
 	TEST_F(CWorldStockTest, TestLastEPSSurpriseUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800108);
 		stock.SetLastEPSSurpriseUpdateDate(10101010);
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101010);
 	}

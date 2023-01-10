@@ -18,7 +18,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_Country = _T(" ");
 	m_ListedExchange = _T(" ");
 	m_FinnhubIndustry = _T(" ");
-	m_Peer = _T(" ");
+	m_Peer = _T("{}");
 	m_Name = _T(" ");
 	m_Phone = _T(" ");
 	m_Symbol = _T(" ");
@@ -101,7 +101,7 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
 	RFX_Text(pFX, _T("[Logo]"), m_Logo);
 	RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
-	RFX_Text(pFX, _T("[Peer]"), m_Peer);
+	RFX_Text(pFX, _T("[Peer]"), m_Peer, 2000);
 	RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
 	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
