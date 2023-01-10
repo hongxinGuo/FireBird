@@ -154,17 +154,16 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strPeer = setWorldStock.m_Peer;
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
-	string sUpdateDate;
 	if (setWorldStock.m_UpdateDate.IsEmpty()) {
-		sUpdateDate = _T("{}");
+		ResetAllUpdateDate();
 	}
 	else {
-		sUpdateDate = setWorldStock.m_UpdateDate.GetBuffer();
+		string sUpdateDate = setWorldStock.m_UpdateDate.GetBuffer();
+		try {
+			m_jsonUpdateDate = json::parse(sUpdateDate);
+		}
+		catch (json::exception&) {}
 	}
-	try {
-		m_jsonUpdateDate = json::parse(sUpdateDate);
-	}
-	catch (json::exception&) { }
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
 
 	// Tiingo–≈œ¢
@@ -192,8 +191,12 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 }
 
 bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
-	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) { m_fCompanyProfileUpdated = false; }
-	else { m_fCompanyProfileUpdated = true; }
+	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
+		m_fCompanyProfileUpdated = false;
+	}
+	else {
+		m_fCompanyProfileUpdated = true;
+	}
 	return m_fCompanyProfileUpdated;
 }
 

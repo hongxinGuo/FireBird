@@ -52,10 +52,8 @@ bool CFinnhubDataSource::Reset(void) {
 bool CFinnhubDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case COMPANY_PROFILE_: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
-		m_fStockProfileUpdated = true;
 		break;
 	case COMPANY_PROFILE_CONCISE_:
-		m_fStockProfileUpdated = true;
 		break;
 	case STOCK_SYMBOLS_:
 		break;
