@@ -28,6 +28,7 @@ public:
 
 	virtual bool Connect(void) = 0;
 	virtual bool Send(vector<string> vSymbol) = 0;
+	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 
 	string CreateTiingoWebSocketSymbolString(vectorString vSymbol);
@@ -71,7 +72,6 @@ public:
 	bool CreateThreadDisconnectWebSocket(void);
 	// 用于系统退出时。
 	bool DisconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。
-	bool SendMessage(const string& message);
 
 	vectorString m_vCurrentSymbol;
 

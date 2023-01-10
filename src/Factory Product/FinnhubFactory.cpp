@@ -41,10 +41,10 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket
 	case COMPANY_PROFILE_CONCISE_:
 		p = make_shared<CProductFinnhubCompanyProfileConcise>();
 		break;
-	case  STOCK_SYMBOLS_:
+	case STOCK_SYMBOLS_:
 		p = make_shared<CProductFinnhubStockSymbol>();
 		break;
-	case COMPANY_EXECTIVE_: // Premium
+	case COMPANY_EXECUTIVE_: // Premium
 		break;
 	case MARKET_NEWS_:
 		break;

@@ -24,7 +24,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 		break;
 	case COMPANY_PROFILE_:
 	case COMPANY_PROFILE_CONCISE_:
-	case COMPANY_EXECTIVE_: // Premium
+	case COMPANY_EXECUTIVE_: // Premium
 	case MARKET_NEWS_:
 	case COMPANY_NEWS_:
 	case PRESS_RELEASE_: // Premium

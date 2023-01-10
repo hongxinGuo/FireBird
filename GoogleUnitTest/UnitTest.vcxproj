@@ -179,6 +179,7 @@
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockDataChinaDayLineTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockFinnhubCryptoSymbol.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />

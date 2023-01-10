@@ -309,6 +309,7 @@
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
+    <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
     <ClCompile Include="..\src\globedef.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
     <ClCompile Include="..\src\Market\VirtualMarket.cpp" />

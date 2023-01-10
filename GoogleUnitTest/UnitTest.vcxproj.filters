@@ -573,6 +573,9 @@
     <ClCompile Include="MockFireBirdViewTest.cpp">
       <Filter>Test源文件\Windows interface</Filter>
     </ClCompile>
+    <ClCompile Include="XferFinnhubInquiryTest.cpp">
+      <Filter>Test源文件\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

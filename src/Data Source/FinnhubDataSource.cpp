@@ -59,7 +59,7 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 		break;
 	case STOCK_SYMBOLS_:
 		break;
-	case COMPANY_EXECTIVE_: // Premium
+	case COMPANY_EXECUTIVE_: // Premium
 		break;
 	case MARKET_NEWS_:
 		break;

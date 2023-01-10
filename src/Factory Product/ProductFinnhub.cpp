@@ -39,7 +39,7 @@ bool CProductFinnhub::AddInaccessibleExchangeIfNeeded(void) {
 		// 新的数据
 		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
 		pNewExchange->SetFunction(m_iProductType);
-		pNewExchange->SetFunctionString(gl_finnhubInaccessibleExchange.GetFinnhubInquiryString(m_iProductType));
+		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iProductType));
 		pNewExchange->AddExchange(m_strInquiringExchange);
 		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(m_iProductType, pNewExchange);
 		return true;

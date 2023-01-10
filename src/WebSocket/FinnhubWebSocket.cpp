@@ -82,7 +82,7 @@ bool CFinnhubWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
-		SendMessage(strMessage);
+		SendString(strMessage);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
 

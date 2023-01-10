@@ -151,9 +151,3 @@ bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
 
 	return true;
 }
-
-bool CVirtualWebSocket::SendMessage(const string& message) {
-	m_webSocket.send(message);
-
-	return true;
-}

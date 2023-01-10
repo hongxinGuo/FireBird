@@ -70,13 +70,27 @@ bool CTiingoIEXWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
-	SendMessage(messageAuth);
+	SendString(messageAuth);
 
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////
+///
+/// ∏Ò Ω£∫
+/// {
+///  "eventName" : "subscribe",
+///  "authorization" : d897a00b7cfc2adffc630d23befd5316a4683156, // tiingo token
+///  "eventData" :
+///   {
+///    "thresholdLevel" : 5,
+///		 "tickers" : ["AAPL","MSFT", "RIG"]
+///   }
+/// }
+///
+///////////////////////////////////////////////////////////////////////
 string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");

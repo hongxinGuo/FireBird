@@ -1310,8 +1310,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
 		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
 		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
-		EXPECT_EQ(stock.GetStatementUpdateDate(), pTiingoStock->m_lStatementUpdateDate);
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), pTiingoStock->m_lDailyDataUpdateDate);
+		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), pTiingoStock->m_lStatementUpdateDate);
+		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), pTiingoStock->m_lDailyDataUpdateDate);
 	}
 
 	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
@@ -1556,17 +1556,26 @@ namespace FireBirdTest {
 		stock.SetPeerUpdateDate(20010101);
 		stock.SetInsiderTransactionUpdateDate(20000101);
 		stock.SetInsiderSentimentUpdateDate(20010101);
-		stock.SetDailyDataUpdateDate(20202020);
-		stock.SetStatementUpdateDate(10101010);
+		stock.SetCompanyNewsUpdateDate(20200101);
+		stock.SetBasicFinancialUpdateDate(20200101);
+		stock.SetTiingoDailyDataUpdateDate(20202020);
+		stock.SetTiingoStatementUpdateDate(20201220);
 
 		setWorldStock.Open();
+		setWorldStock.m_pDatabase->BeginTrans();
 		stock.Append(setWorldStock);
+		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
 		setWorldStock.m_strFilter = _T("[Symbol] = '000001.US'");
 		setWorldStock.Open();
 		stock2.Load(setWorldStock);
-		setWorldStock.Delete();
+		setWorldStock.m_pDatabase->BeginTrans();
+		while (!setWorldStock.IsEOF()) {
+			setWorldStock.Delete();
+			setWorldStock.MoveNext();
+		}
+		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
 		EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
@@ -1624,8 +1633,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetPeerUpdateDate(), stock2.GetPeerUpdateDate());
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), stock2.GetInsiderTransactionUpdateDate());
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), stock2.GetInsiderSentimentUpdateDate());
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), stock2.GetDailyDataUpdateDate());
-		EXPECT_EQ(stock.GetStatementUpdateDate(), stock2.GetStatementUpdateDate());
+		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), stock2.GetTiingoDailyDataUpdateDate());
+		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), stock2.GetTiingoStatementUpdateDate());
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCompanyNewsUpdated) {

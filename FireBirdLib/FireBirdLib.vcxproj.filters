@@ -1037,12 +1037,6 @@
     <ClCompile Include="..\src\Windows interface\FireBird.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp">
       <Filter>源文件\Working thread\America market</Filter>
     </ClCompile>
@@ -1324,6 +1318,11 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\StockAnalysisDoc.cpp" />
+    <ClCompile Include="..\src\Windows interface\StockAnalysisView.cpp" />
+    <ClCompile Include="..\src\FinnhubInquiryType.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

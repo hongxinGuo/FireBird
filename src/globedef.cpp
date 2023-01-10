@@ -5,6 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"FinnhubInquiryType.h"
 #include"FinnhubInaccessibleExchange.h"
 
 #include"FinnhubDataSource.h"
@@ -36,6 +37,8 @@ CSystemConfiguration gl_systemConfiguration; // ÏµÍ³ÅäÖÃ²ÎÊıµÄ×Ü»ã.´ËÈ«¾Ö±äÁ¿ÒªÎ
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚ¶şÎ»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿£¨µ±±¨´íÊ±£©¡£
 CSystemStatus gl_systemStatus; // ÏµÍ³×´Ì¬¡£
 CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞ¹¤×÷Ïß³ÌµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
+
+CFinnhubInquiryType gl_FinnhubInquiryType;
 
 CHighPerformanceCounter gl_counter;
 

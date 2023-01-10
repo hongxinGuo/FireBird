@@ -83,12 +83,26 @@ bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 
 	ASSERT(IsOpen());
 
-	ix::WebSocketSendInfo info = SendMessage(messageAuth);
+	ix::WebSocketSendInfo info = SendString(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////
+///
+/// ∏Ò Ω£∫
+/// {
+///  "eventName" : "subscribe",
+///  "authorization" : d897a00b7cfc2adffc630d23befd5316a4683156, // tiingo token
+///  "eventData" :
+///   {
+///    "thresholdLevel" : 5,
+///		 "tickers" : ["dkaeth","ksmust"]
+///   }
+/// }
+///
+///////////////////////////////////////////////////////////////////////
 string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5£∫Trade Updates per-exchange.2£∫Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange

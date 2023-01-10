@@ -11,8 +11,8 @@ enum {
 	STOCK_SYMBOLS_ = SYMBOL_LOOKUP_ + 1,
 	COMPANY_PROFILE_ = STOCK_SYMBOLS_ + 1, //Premium
 	COMPANY_PROFILE_CONCISE_ = COMPANY_PROFILE_ + 1,
-	COMPANY_EXECTIVE_ = COMPANY_PROFILE_CONCISE_ + 1, //Premium
-	MARKET_NEWS_ = COMPANY_EXECTIVE_ + 1,
+	COMPANY_EXECUTIVE_ = COMPANY_PROFILE_CONCISE_ + 1, //Premium
+	MARKET_NEWS_ = COMPANY_EXECUTIVE_ + 1,
 	COMPANY_NEWS_ = MARKET_NEWS_ + 1,
 	PRESS_RELEASE_ = COMPANY_NEWS_ + 1, //Premium
 	NEWS_SENTIMENT_ = PRESS_RELEASE_ + 1,
@@ -108,3 +108,21 @@ enum {
 	ECONOMIC_ECONOMIC_ = ECONOMIC_CODES_ + 1,
 	//Premium
 };
+
+class CFinnhubInquiryType {
+public:
+	CFinnhubInquiryType();
+	~CFinnhubInquiryType() = default;
+
+	CString GetInquiryString(const long lInquiryType);
+	long GetInquiryType(const CString& strInquiryString) const;
+
+	void CreateFinnhubInquiryIndexToStringMap();
+	void CreateFinnhubInquiryStringToIndexMap();
+
+protected:
+	map<int, CString> m_mapFinnhubInquiryIndexToString;
+	map<CString, int> m_mapFinnhubInquiryStringToIndex;
+};
+
+extern CFinnhubInquiryType gl_FinnhubInquiryType;

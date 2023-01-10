@@ -225,8 +225,8 @@ bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 		fSucceedOpen = false;
 		exception->Delete();
 	}
-	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
 	if (fSucceedOpen) {
+		m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
 		QueryDataLength();
 	}
 

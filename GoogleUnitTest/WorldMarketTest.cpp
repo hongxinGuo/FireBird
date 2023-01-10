@@ -106,7 +106,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsStock) {

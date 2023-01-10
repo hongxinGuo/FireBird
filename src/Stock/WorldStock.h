@@ -1,5 +1,7 @@
 #pragma once
 
+#include"nlohmannJsonDeclaration.h"
+
 #include"VirtualStock.h"
 #include"TiingoStock.h"
 
@@ -195,22 +197,118 @@ public:
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	CString GetPeer(void) const { return m_strPeer; }
 	void SetPeer(const CString& strPeer) { m_strPeer = strPeer; }
-	long GetProfileUpdateDate(void) const noexcept { return m_lProfileUpdateDate; }
-	void SetProfileUpdateDate(const long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
-	long GetCompanyNewsUpdateDate(void) const noexcept { return m_lCompanyNewsUpdateDate; }
-	void SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept { m_lCompanyNewsUpdateDate = lCompanyNewsUpdateDate; }
-	long GetBasicFinancialUpdateDate(void) const noexcept { return m_lBasicFinancialUpdateDate; }
-	void SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept { m_lBasicFinancialUpdateDate = lBasicFinancialUpdateDate; }
-	long GetLastRTDataUpdateDate(void) const noexcept { return m_lLastRTDataUpdateDate; }
-	void SetLastRTDataUpdateDate(const long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
-	long GetPeerUpdateDate(void) const noexcept { return m_lPeerUpdateDate; }
-	void SetPeerUpdateDate(const long lDate) noexcept { m_lPeerUpdateDate = lDate; }
-	long GetInsiderTransactionUpdateDate(void) const noexcept { return m_lInsiderTransactionUpdateDate; }
-	void SetInsiderTransactionUpdateDate(const long lDate) noexcept { m_lInsiderTransactionUpdateDate = lDate; }
-	long GetInsiderSentimentUpdateDate(void) const noexcept { return m_lInsiderSentimentUpdateDate; }
-	void SetInsiderSentimentUpdateDate(const long lDate) noexcept { m_lInsiderSentimentUpdateDate = lDate; }
-	long GetLastEPSSurpriseUpdateDate(void) const noexcept { return m_lLastEPSSurpriseUpdateDate; }
-	void SetLastEPSSurpriseUpdateDate(const long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
+
+	long GetProfileUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetProfileUpdateDate(const long lProfileUpdateDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = lProfileUpdateDate;
+	}
+
+	long GetCompanyNewsUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = lCompanyNewsUpdateDate;
+	}
+
+	long GetBasicFinancialUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = lBasicFinancialUpdateDate;
+	}
+
+	long GetLastRTDataUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetLastRTDataUpdateDate(const long lDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = lDate;
+	}
+
+	long GetPeerUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetPeerUpdateDate(const long lDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = lDate;
+	}
+
+	long GetInsiderTransactionUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetInsiderTransactionUpdateDate(const long lDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = lDate;
+	}
+
+	long GetInsiderSentimentUpdateDate(void) const {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetInsiderSentimentUpdateDate(const long lDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = lDate;
+	}
+
+	long GetLastEPSSurpriseUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
+		m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = lDate;
+	}
 
 	CString GetTiingoPermaTicker(void) noexcept { return m_strTiingoPermaTicker; }
 	void SetTiingoPermaTicker(const CString& strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
@@ -232,10 +330,34 @@ public:
 	void SetCompanyWebSite(const CString& strCompanyWebSite) noexcept { m_strCompanyWebSite = strCompanyWebSite; }
 	CString GetSECFilingWebSite(void) noexcept { return m_strSECFilingWebSite; }
 	void SetSECFilingWebSite(const CString& strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
-	long GetStatementUpdateDate(void) const noexcept { return m_lStatementUpdateDate; }
-	void SetStatementUpdateDate(const long lStatementUpdateDate) noexcept { m_lStatementUpdateDate = lStatementUpdateDate; }
-	long GetDailyDataUpdateDate(void) const noexcept { return m_lDailyDataUpdateDate; }
-	void SetDailyDataUpdateDate(const long lDailyDataUpdateDate) noexcept { m_lDailyDataUpdateDate = lDailyDataUpdateDate; }
+
+	long GetTiingoStatementUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockFundamentalsCompanyProfile");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetTiingoStatementUpdateDate(const long lStatementUpdateDate) noexcept {
+		m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = lStatementUpdateDate;
+	}
+
+	long GetTiingoDailyDataUpdateDate(void) {
+		try {
+			const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockPriceCandles");
+			return lDate;
+		}
+		catch (json::exception&) {
+			return 19800101;
+		}
+	}
+
+	void SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) noexcept {
+		m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = lDailyDataUpdateDate;
+	}
 
 	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
 	CString GetTiingoDayLineInquiryString(long lCurrentDate);
@@ -290,14 +412,7 @@ protected:
 	CString m_strLogo;
 	CString m_strFinnhubIndustry;
 	CString m_strPeer;
-	long m_lProfileUpdateDate; // 最新简介更新日期
-	long m_lCompanyNewsUpdateDate; // 最新公司新闻更新日期
-	long m_lBasicFinancialUpdateDate; // 最新基本财务更新日期
-	long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
-	long m_lPeerUpdateDate; // 最新竞争对手数据更新日期
-	long m_lInsiderTransactionUpdateDate; // 最新内部人员交易数据更新日期
-	long m_lInsiderSentimentUpdateDate; // 最新内部人员交易数据更新日期
-	long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
+	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，就取代了上述所有的整形存储方式，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// Tiingo Symbol信息
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
@@ -310,8 +425,6 @@ protected:
 	CString m_strTiingoSector;
 	CString m_strCompanyWebSite;
 	CString m_strSECFilingWebSite;
-	long m_lStatementUpdateDate;
-	long m_lDailyDataUpdateDate;
 
 	// 系统生成信息
 	CDataWorldStockDayLine m_dataDayLine;

@@ -250,11 +250,11 @@ public:
 	void StartTiingoCryptoWebSocket(void);
 	void StartTiingoForexWebSocket(void);
 	void DisconnectAllWebSocket(void); // // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-	void StopWebSocketsIfOutOfTime(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-	void StopFinnhubWebSocketIfOutOfTime(void);
-	void StopTiingoIEXWebSocketIfOutOfTime(void);
-	void StopTiingoCryptoWebSocketIfOutOfTime(void);
-	void StopTiingoForexWebSocketIfOutOfTime(void);
+	void StopWebSocketsIfTimeOut(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+	void StopFinnhubWebSocketIfTimeOut(void);
+	void StopTiingoIEXWebSocketIfTimeOut(void);
+	void StopTiingoCryptoWebSocketIfTimeOut(void);
+	void StopTiingoForexWebSocketIfTimeOut(void);
 
 	bool TaskProcessWebSocketData(void);
 	bool ProcessFinnhubWebSocketData();

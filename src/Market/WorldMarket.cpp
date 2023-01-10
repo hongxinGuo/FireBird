@@ -20,7 +20,6 @@
 #include"SetWorldStockDayLine.h"
 
 #include <ixwebsocket/IXNetSystem.h>
-//#include <ixwebsocket/IXWebSocket.h>
 #include <ixwebsocket/IXUserAgent.h>
 
 #include<thread>
@@ -113,7 +112,7 @@ void CWorldMarket::ResetMarket(void) {
 }
 
 bool CWorldMarket::PreparingExitMarket(void) {
-	ASSERT(gl_systemStatus.IsExitingSystem());
+	//ASSERT(gl_systemStatus.IsExitingSystem());
 	DisconnectAllWebSocket();
 
 	return true;
@@ -181,7 +180,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	StopWebSocketsIfOutOfTime();
+	StopWebSocketsIfTimeOut();
 	return true;
 }
 
@@ -786,7 +785,7 @@ void CWorldMarket::StartTiingoForexWebSocket(void) {
 /// </summary>
 /// <param name=""></param>
 void CWorldMarket::DisconnectAllWebSocket(void) {
-	ASSERT(gl_systemStatus.IsExitingSystem()); //本函数只在系统退出时调用
+	//ASSERT(gl_systemStatus.IsExitingSystem()); //本函数只在系统退出时调用
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Disconnect();
@@ -797,37 +796,37 @@ void CWorldMarket::DisconnectAllWebSocket(void) {
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
 /// <param name=""></param>
-void CWorldMarket::StopWebSocketsIfOutOfTime(void) {
+void CWorldMarket::StopWebSocketsIfTimeOut(void) {
 	if (IsSystemReady()) {
-		StopFinnhubWebSocketIfOutOfTime();
-		StopTiingoIEXWebSocketIfOutOfTime();
-		StopTiingoCryptoWebSocketIfOutOfTime();
-		StopTiingoForexWebSocketIfOutOfTime();
+		StopFinnhubWebSocketIfTimeOut();
+		StopTiingoIEXWebSocketIfTimeOut();
+		StopTiingoCryptoWebSocketIfTimeOut();
+		StopTiingoForexWebSocketIfTimeOut();
 	}
 }
 
-void CWorldMarket::StopFinnhubWebSocketIfOutOfTime(void) {
+void CWorldMarket::StopFinnhubWebSocketIfTimeOut(void) {
 	if ((gl_pFinnhubWebInquiry->IsTimeout()) && !gl_finnhubWebSocket.IsClosed()) {
 		gl_finnhubWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoIEXWebSocketIfOutOfTime(void) {
+void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoIEXWebSocket.IsClosed()) {
 		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoCryptoWebSocketIfOutOfTime(void) {
+void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoCryptoWebSocket.IsClosed()) {
 		gl_tiingoCryptoWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoForexWebSocketIfOutOfTime(void) {
+void CWorldMarket::StopTiingoForexWebSocketIfTimeOut(void) {
 	if ((gl_pTiingoWebInquiry->IsTimeout()) && !gl_tiingoForexWebSocket.IsClosed()) {
 		gl_tiingoForexWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web故障12002，关闭Web socket服务"));
@@ -848,7 +847,7 @@ bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_finnhubWebSocket.PopData();
-		CString strMessage = "Finnhub: ";
+		CString strMessage = _T("Finnhub: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -864,7 +863,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_tiingoIEXWebSocket.PopData();
-		CString strMessage = "Tiingo IEX: ";
+		CString strMessage = _T("Tiingo IEX: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -880,7 +879,7 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_tiingoCryptoWebSocket.PopData();
-		CString strMessage = "Tiingo Crypto: ";
+		CString strMessage = _T("Tiingo Crypto: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -895,7 +894,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	int iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_tiingoForexWebSocket.PopData();
-		CString strMessage = "Tiingo Forex: ";
+		CString strMessage = _T("Tiingo Forex: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
@@ -944,10 +943,8 @@ bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
 }
 
 bool CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEXbData) {
-	CWorldStockPtr pStock = nullptr;
-
 	if (IsStock(pTiingoIEXbData->m_sSymbol.c_str())) {
-		pStock = GetStock(pTiingoIEXbData->m_sSymbol.c_str());
+		const CWorldStockPtr pStock = GetStock(pTiingoIEXbData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		switch (pTiingoIEXbData->m_chMessageType) {
 		case 'T':

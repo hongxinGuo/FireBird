@@ -21,7 +21,7 @@ bool CQuandlDataSource::UpdateStatus(void) {
 		break;
 	case COMPANY_PROFILE_:
 	case COMPANY_PROFILE_CONCISE_:
-	case COMPANY_EXECTIVE_: // Premium
+	case COMPANY_EXECUTIVE_: // Premium
 	case MARKET_NEWS_:
 	case COMPANY_NEWS_:
 	case PRESS_RELEASE_: // Premium
@@ -84,8 +84,7 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
 		sbWebError = false;
-		if (!IsInquiring()) {
-		}
+		if (!IsInquiring()) { }
 		if (IsInquiring()) sllLastTimeTickCount = llTickCount;
 	}
 	return true;

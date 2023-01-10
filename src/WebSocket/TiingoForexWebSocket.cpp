@@ -80,12 +80,26 @@ bool CTiingoForexWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
-	ix::WebSocketSendInfo info = SendMessage(messageAuth);
+	ix::WebSocketSendInfo info = SendString(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////
+///
+/// ∏Ò Ω£∫
+/// {
+///  "eventName" : "subscribe",
+///  "authorization" : d897a00b7cfc2adffc630d23befd5316a4683156, // tiingo token
+///  "eventData" :
+///   {
+///    "thresholdLevel" : 5,
+///		 "tickers" : ["gbpaud","eurusd"]
+///   }
+/// }
+///
+///////////////////////////////////////////////////////////////////////
 string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
 	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
 	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7£∫A top - of - book update that is due to a change in either the bid / ask price or size.
