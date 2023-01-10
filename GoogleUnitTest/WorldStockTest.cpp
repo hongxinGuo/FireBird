@@ -34,6 +34,22 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock;
 	};
 
+	TEST_F(CWorldStockTest, TestResetAllUpdateDate) {
+		CWorldStock stock;
+		stock.ResetAllUpdateDate();
+		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800102);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800103);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800104);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800105);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800106);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800107);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800108);
+
+		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), 19800102);
+	}
+
 	TEST_F(CWorldStockTest, TestGetRatio) {
 		CWorldStock stock;
 		EXPECT_EQ(stock.GetRatio(), 1000) << "国际市场的股票价格，放大倍数为1000";
@@ -1553,11 +1569,11 @@ namespace FireBirdTest {
 		stock.SetLastEPSSurpriseUpdateDate(20000104);
 		stock.SetDayLineStartDate(19700101);
 		stock.SetDayLineEndDate(19700102);
-		stock.SetPeerUpdateDate(20010101);
-		stock.SetInsiderTransactionUpdateDate(20000101);
-		stock.SetInsiderSentimentUpdateDate(20010101);
-		stock.SetCompanyNewsUpdateDate(20200101);
-		stock.SetBasicFinancialUpdateDate(20200101);
+		stock.SetPeerUpdateDate(20000105);
+		stock.SetInsiderTransactionUpdateDate(20000106);
+		stock.SetInsiderSentimentUpdateDate(20000107);
+		stock.SetCompanyNewsUpdateDate(20000108);
+		stock.SetBasicFinancialUpdateDate(20000109);
 		stock.SetTiingoDailyDataUpdateDate(20202020);
 		stock.SetTiingoStatementUpdateDate(20201220);
 

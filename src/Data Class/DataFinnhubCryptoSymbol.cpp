@@ -49,13 +49,13 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
-	m_lLastTotalCryptoSymbol = m_vCryptoSymbol.size();
+	m_lLastTotalCryptoSymbol = static_cast<long>(m_vCryptoSymbol.size());
 
 	return true;
 }
 
 bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
-	const long lTotalCryptoSymbol = m_vCryptoSymbol.size();
+	const long lTotalCryptoSymbol = static_cast<long>(m_vCryptoSymbol.size());
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	bool fUpdateSymbol = false;
@@ -63,7 +63,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 	if (m_lLastTotalCryptoSymbol < lTotalCryptoSymbol) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
+		for (auto l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
 			pSymbol = m_vCryptoSymbol.at(l);
 			pSymbol->AppendSymbol(setCryptoSymbol);
 		}

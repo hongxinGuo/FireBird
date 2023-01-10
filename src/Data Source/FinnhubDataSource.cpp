@@ -194,8 +194,8 @@ bool CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
-			InquireCompanyNews(); // 由于mysql字符集的问题，导致有些数据无法存储， 目前未找到解决的方法。故暂时不执行此查询
 			InquireCompanyProfileConcise();
+			InquireCompanyNews(); // 由于mysql字符集的问题，导致有些数据无法存储， 目前未找到解决的方法。故暂时不执行此查询
 			InquireCompanyBasicFinancial();
 			InquirePeer();
 			InquireInsiderTransaction();

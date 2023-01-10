@@ -8,18 +8,18 @@ public:
 	virtual ~CDataFinnhubCryptoSymbol() = default;
 	void Reset(void);
 
-	bool IsFinnhubCryptoSymbol(const CString& strSymbol) const noexcept {
+	[[nodiscard]] bool IsFinnhubCryptoSymbol(const CString& strSymbol) const noexcept {
 		if (m_mapCryptoSymbol.contains(strSymbol)) return true;
 		else return false;
 	}
 
-	size_t GetCryptoSymbolSize(void) const noexcept { return m_vCryptoSymbol.size(); }
-	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const long lIndex) const { return m_vCryptoSymbol.at(lIndex); }
+	[[nodiscard]] size_t GetCryptoSymbolSize(void) const noexcept { return m_vCryptoSymbol.size(); }
+	[[nodiscard]] CFinnhubCryptoSymbolPtr GetCryptoSymbol(const size_t lIndex) const { return m_vCryptoSymbol.at(lIndex); }
 
-	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString& strSymbol) const { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
+	[[nodiscard]] CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString& strSymbol) const { return GetCryptoSymbol(m_mapCryptoSymbol.at(strSymbol)); }
 
-	bool Delete(CFinnhubCryptoSymbolPtr pSymbol);
-	void Add(CFinnhubCryptoSymbolPtr pSymbol);
+	bool Delete(CFinnhubCryptoSymbolPtr pCryptoSymbol);
+	void Add(CFinnhubCryptoSymbolPtr pCryptoSymbol);
 
 	bool LoadDB(void);
 	bool UpdateDB(void);

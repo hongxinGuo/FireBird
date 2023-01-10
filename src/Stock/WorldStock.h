@@ -215,7 +215,6 @@ public:
 	void SetInsiderSentimentUpdateDate(long lDate) noexcept;
 	long GetLastEPSSurpriseUpdateDate();
 	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept;
-	long GetTiingoStatementUpdateDate();
 
 	CString GetTiingoPermaTicker(void) noexcept { return m_strTiingoPermaTicker; }
 	void SetTiingoPermaTicker(const CString& strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
@@ -238,6 +237,7 @@ public:
 	CString GetSECFilingWebSite(void) noexcept { return m_strSECFilingWebSite; }
 	void SetSECFilingWebSite(const CString& strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
 
+	long GetTiingoStatementUpdateDate();
 	void SetTiingoStatementUpdateDate(long lStatementUpdateDate) noexcept;
 	long GetTiingoDailyDataUpdateDate();
 	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
