@@ -641,9 +641,12 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldStockTest, TestGetPeer) {
 		CWorldStock stock;
-		EXPECT_STREQ(stock.GetPeer(), _T(" "));
-		stock.SetPeer(_T("abcdef"));
-		EXPECT_STREQ(stock.GetPeer(), _T("abcdef"));
+		EXPECT_TRUE(stock.GetPeer().empty());
+		const json jSon = json::parse(_T("[\"abcdef\",\"000001.SS\"]"));
+		stock.SetPeer(jSon);
+		const json jSon2 = stock.GetPeer();
+		const string s1 = jSon2.dump();
+		EXPECT_STREQ(s1.c_str(), _T("[\"abcdef\",\"000001.SS\"]"));
 	}
 
 	TEST_F(CWorldStockTest, TestIsUSMarket) {
@@ -1647,7 +1650,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetTicker(), stock2.GetTicker());
 		EXPECT_STREQ(stock.GetWebURL(), stock2.GetWebURL());
 		EXPECT_STREQ(stock.GetLogo(), stock2.GetLogo());
-		EXPECT_STREQ(stock.GetPeer(), stock2.GetPeer());
+		EXPECT_STREQ(stock.GetPeer().dump().c_str(), stock2.GetPeer().dump().c_str());
 		EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
 		EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());
 		EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());

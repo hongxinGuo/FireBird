@@ -25,8 +25,8 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	const CString strPeer = ParseFinnhubStockPeer(pWebData);
-	pStock->SetPeer(strPeer);
+	const json jsonPeer = ParseFinnhubStockPeer(pWebData);
+	pStock->SetPeer(jsonPeer);
 	pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
 	pStock->SetPeerUpdated(true);
 	pStock->SetUpdateProfileDB(true);
@@ -34,31 +34,18 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-CString CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
-	CString strPeer = _T("{}"); // 默认的空状态（没有竞争对手)
-	char buffer[1000]{};
+json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
+	json jsonPeer; // 默认的空状态（没有竞争对手)
 	int i;
 	string sError;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return strPeer;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return strPeer;
-	}
+	if (!pWebData->IsParsed()) return jsonPeer;
+
 	if (pWebData->CheckNoRightToAccess()) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return strPeer;
+		return jsonPeer;
 	}
-	for (i = 0; i < pWebData->GetBufferLength(); i++) {
-		buffer[i] = pWebData->GetData(i);
-	}
-	if (i > 200) {
-		buffer[200] = 0x000;
-	}
-	else {
-		buffer[pWebData->GetBufferLength()] = 0x000;
-	}
-	strPeer = buffer;
-	return strPeer;
+
+	return *pWebData->GetJSon();
 }

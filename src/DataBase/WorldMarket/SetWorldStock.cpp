@@ -18,7 +18,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_Country = _T(" ");
 	m_ListedExchange = _T(" ");
 	m_FinnhubIndustry = _T(" ");
-	m_Peer = _T("{}");
+	m_Peer = _T("{}"); // 这个是json制式数据
 	m_Name = _T(" ");
 	m_Phone = _T(" ");
 	m_Symbol = _T(" ");

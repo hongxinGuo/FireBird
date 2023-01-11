@@ -39,7 +39,8 @@ void CWorldStock::Reset(void) {
 	m_strCountry = _T(" ");
 	m_strListedExchange = _T(" ");
 	m_strFinnhubIndustry = _T(" ");
-	m_strPeer = _T(" ");
+	string sPeer = _T("{}");
+	m_jsonPeer = json::parse(sPeer);
 	m_strLogo = _T(" ");
 	m_strName = _T(" ");
 	m_strPhone = _T(" ");
@@ -151,7 +152,11 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strWebURL = setWorldStock.m_WebURL;
 	m_strLogo = setWorldStock.m_Logo;
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
-	m_strPeer = setWorldStock.m_Peer;
+	try {
+		string sPeer = setWorldStock.m_Peer.GetBuffer();
+		m_jsonPeer = json::parse(sPeer);
+	}
+	catch (json::exception&) {}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
 	if (setWorldStock.m_UpdateDate.IsEmpty()) {
@@ -320,7 +325,8 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	setWorldStock.m_WebURL = m_strWebURL.Left(150);
 	setWorldStock.m_Logo = m_strLogo.Left(110);
 	setWorldStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
-	setWorldStock.m_Peer = m_strPeer.Left(2000);
+	const string sPeer = m_jsonPeer.dump();
+	setWorldStock.m_Peer = sPeer.c_str();
 	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
 	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
 
@@ -360,7 +366,7 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 	long lCurrentPos = 0, lSizeOfOldInsiderTransaction = 0;
 
-	ASSERT(m_vInsiderTransaction.size() > 0);
+	ASSERT(!m_vInsiderTransaction.empty());
 
 	setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
 	setInsiderTransaction.m_strFilter += m_strSymbol + _T("'");

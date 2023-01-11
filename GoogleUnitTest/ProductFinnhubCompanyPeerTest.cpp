@@ -60,12 +60,12 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
-			m_strPeer = _T("");
+			m_jsonPeer.clear();
 		}
 
 		void TearDown(void) override {
@@ -75,8 +75,8 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
-		CString m_strPeer;
+		long m_lIndex{0};
+		json m_jsonPeer;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
@@ -86,22 +86,22 @@ namespace FireBirdTest {
 		                         &finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
-		m_strPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
+		m_jsonPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
-			EXPECT_STREQ(m_strPeer, _T("{}"));
+			EXPECT_TRUE(m_jsonPeer.empty());
 			break;
 		case 3: // 格式不对
-			EXPECT_STREQ(m_strPeer, _T("{}")) << "没有改变";
+			EXPECT_TRUE(m_jsonPeer.empty()) << "没有改变";
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_STREQ(m_strPeer, _T("{}")) << "没有改变";
+			EXPECT_TRUE(m_jsonPeer.empty()) << "没有改变";
 			break;
-		case 5: // 正确的数据，但超过200个字符
-			EXPECT_EQ(m_strPeer.GetLength(), 200) << "多余200个字符时截断";
+		case 5: // 正确的数据，但超过2000个字符
+			EXPECT_FALSE(m_jsonPeer.empty()) << "多余2000个字符时截断";
 			break;
 		case 10:
-			EXPECT_STREQ(m_strPeer, _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_STREQ(m_jsonPeer.dump().c_str(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			break;
 		default:
 			break;
@@ -128,7 +128,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex;
+		long m_lIndex{0};
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
@@ -138,6 +138,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData110));
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
+		string s;
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		bool fSucceed = m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
@@ -145,27 +146,28 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pStock->GetPeer(), _T("{}"));
+			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pStock->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pStock->GetPeer(), _T("{}")) << "没有改变";
+			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 正确的数据，但超过200个字符
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(pStock->GetPeer().GetLength(), 200) << "多余200个字符时截断";
+			EXPECT_FALSE(pStock->GetPeer().empty()) << "多余2000个字符时截断";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(pStock->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			s = pStock->GetPeer().dump();
+			EXPECT_STREQ(s.c_str(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		default:

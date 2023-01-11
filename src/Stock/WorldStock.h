@@ -196,9 +196,8 @@ public:
 	void SetLogo(const CString& strLogo) { m_strLogo = strLogo; }
 	CString GetFinnhubIndustry(void) const { return m_strFinnhubIndustry; }
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
-	CString GetPeer(void) const { return m_strPeer; }
-	void SetPeer(const CString& strPeer) { m_strPeer = strPeer; }
-
+	json GetPeer(void) { return m_jsonPeer; }
+	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer;	}
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();
@@ -293,8 +292,8 @@ protected:
 	CString m_strWebURL;
 	CString m_strLogo;
 	CString m_strFinnhubIndustry;
-	CString m_strPeer;
-	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，就取代了上述所有的整形存储方式，当增加或减少更新日期时，无需修改相应数据表的结构。
+	json m_jsonPeer; // 读取到的Peer数据为json制式
+	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// Tiingo Symbol信息
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识

@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
-	CString ParseFinnhubStockPeer(CWebDataPtr pWebData);
+	json ParseFinnhubStockPeer(CWebDataPtr pWebData);
 };
 
 using CFinnhubCompanyPeerPtr = shared_ptr<CProductFinnhubCompanyPeer>;
