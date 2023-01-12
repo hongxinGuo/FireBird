@@ -250,3 +250,13 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_
 	}
 	return tt;
 }
+
+time_t XferToTTime(CString strTime, CString strFormat) {
+	tm t1{};
+	int hourOffset, minuteOffset;
+	int noUse;
+	sscanf_s(strTime.GetBuffer(), strFormat, &t1.tm_year, &t1.tm_mon, &t1.tm_mday, &t1.tm_hour, &t1.tm_min, &t1.tm_sec, &noUse, &hourOffset, &minuteOffset);
+	time_t tt = _mktime64(&t1);
+	tt += hourOffset * 3600 + minuteOffset * 60;
+	return tt;
+}

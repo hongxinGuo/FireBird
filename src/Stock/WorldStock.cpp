@@ -21,7 +21,6 @@ CWorldStock::CWorldStock() : CVirtualStock() {
 }
 
 CWorldStock::~CWorldStock() {
-	m_pBasicFinancial = nullptr;
 }
 
 void CWorldStock::Reset(void) {
@@ -39,8 +38,7 @@ void CWorldStock::Reset(void) {
 	m_strCountry = _T(" ");
 	m_strListedExchange = _T(" ");
 	m_strFinnhubIndustry = _T(" ");
-	string sPeer = _T("{}");
-	m_jsonPeer = json::parse(sPeer);
+	m_jsonPeer = json({});
 	m_strLogo = _T(" ");
 	m_strName = _T(" ");
 	m_strPhone = _T(" ");
@@ -152,11 +150,14 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strWebURL = setWorldStock.m_WebURL;
 	m_strLogo = setWorldStock.m_Logo;
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
-	try {
-		string sPeer = setWorldStock.m_Peer.GetBuffer();
-		m_jsonPeer = json::parse(sPeer);
+	if (setWorldStock.m_Peer.GetLength() > 2) {
+		try {
+			string sPeer = setWorldStock.m_Peer.GetBuffer();
+			m_jsonPeer = json::parse(sPeer);
+		}
+		catch (json::exception&) {
+		}
 	}
-	catch (json::exception&) {}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
 	if (setWorldStock.m_UpdateDate.IsEmpty()) {
@@ -167,7 +168,8 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 		try {
 			m_jsonUpdateDate = json::parse(sUpdateDate);
 		}
-		catch (json::exception&) {}
+		catch (json::exception&) {
+		}
 	}
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
 
@@ -205,11 +207,9 @@ bool CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 	return m_fCompanyProfileUpdated;
 }
 
-/// <summary>
+///
 /// 默认状态为每周更新一次
-/// </summary>
-/// <param name=""></param>
-/// <returns></returns>
+///
 bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 	ASSERT(!m_fCompanyNewsUpdated);
 	if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
@@ -364,7 +364,7 @@ void CWorldStock::SaveInsiderTransaction(void) {
 
 	vector<CInsiderTransactionPtr> vInsiderTransaction;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
-	long lCurrentPos = 0, lSizeOfOldInsiderTransaction = 0;
+	long lSizeOfOldInsiderTransaction = 0;
 
 	ASSERT(!m_vInsiderTransaction.empty());
 
@@ -386,7 +386,6 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
 	setSaveInsiderTransaction.Open();
 	setSaveInsiderTransaction.m_pDatabase->BeginTrans();
-	lCurrentPos = 0;
 	for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 		pInsiderTransaction = m_vInsiderTransaction.at(i);
 		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
@@ -409,9 +408,9 @@ void CWorldStock::SaveInsiderSentiment(void) {
 
 	vector<CInsiderSentimentPtr> vInsiderSentiment;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-	long lCurrentPos = 0, lSizeOfOldInsiderSentiment = 0;
+	long lSizeOfOldInsiderSentiment = 0;
 
-	ASSERT(m_vInsiderSentiment.size() > 0);
+	ASSERT(!m_vInsiderSentiment.empty());
 
 	setInsiderSentiment.m_strFilter = _T("[Symbol] = '");
 	setInsiderSentiment.m_strFilter += m_strSymbol + _T("'");
@@ -431,7 +430,6 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");
 	setSaveInsiderSentiment.Open();
 	setSaveInsiderSentiment.m_pDatabase->BeginTrans();
-	lCurrentPos = 0;
 	for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 		pInsiderSentiment = m_vInsiderSentiment.at(i);
 		if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
@@ -454,7 +452,7 @@ void CWorldStock::SaveInsiderSentiment(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldStock::UpdateCompanyNewsDB(void) {
 	ASSERT(m_vCompanyNews.size() > 0);
-	const size_t lSize = m_vCompanyNews.size();
+	const long lSize = static_cast<long>(m_vCompanyNews.size());
 	if (m_strSymbol.GetLength() > 0) {
 		CCompanyNewsPtr pCompanyNews;
 		CSetCompanyNews setCompanyNews;
@@ -475,7 +473,7 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 			}
 			if (++lCurrentPos == lSize) break;;
 		}
-		for (int i = lCurrentPos; i < lSize; i++) {
+		for (long i = lCurrentPos; i < lSize; i++) {
 			pCompanyNews = m_vCompanyNews.at(i);
 			pCompanyNews->Append(setCompanyNews);
 		}
@@ -487,7 +485,7 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 
 bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	CSetEPSSurprise setEPSSurprise;
-	long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
+	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
 	if (m_vEPSSurprise.empty()) return true;
 	if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > lLastEPSSurpriseUpdateDate) { SetUpdateProfileDB(true); }
@@ -551,13 +549,17 @@ void CWorldStock::AppendBasicFinancialQuarter(void) {
 
 void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
 	m_vCompanyNews.resize(0);
-	for (auto& p : *pvCompanyNews) { m_vCompanyNews.push_back(p); }
+	for (auto& p : *pvCompanyNews) {
+		m_vCompanyNews.push_back(p);
+	}
 	sort(m_vCompanyNews.begin(), m_vCompanyNews.end(), CompareFinnhubCompanyNews); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
-	for (auto& p : vEPSSurprise) { m_vEPSSurprise.push_back(p); }
+	for (auto& p : vEPSSurprise) {
+		m_vEPSSurprise.push_back(p);
+	}
 }
 
 bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {

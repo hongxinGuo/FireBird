@@ -85,7 +85,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
 		                         &finnhubWebData110));
 
-	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer0) {
+	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer2) {
 		m_jsonPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // ²»×ãÈý¸ö×Ö·û
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
 		                         &finnhubWebData110));
 
-	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer) {
+	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer1) {
 		string s;
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());

@@ -17,7 +17,6 @@ public:
 
 public:
 	char m_chMessageType; // 'Q', 'T', or 'B'
-	CTime m_date;
 	INT64 m_iNanoseconds;
 	string m_sSymbol;
 	double m_dBidSize;

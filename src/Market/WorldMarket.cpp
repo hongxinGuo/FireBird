@@ -64,9 +64,11 @@ void CWorldMarket::ResetFinnhub(void) {
 	}
 }
 
-void CWorldMarket::ResetQuandl(void) {}
+void CWorldMarket::ResetQuandl(void) {
+}
 
-void CWorldMarket::ResetTiingo(void) {}
+void CWorldMarket::ResetTiingo(void) {
+}
 
 void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubStockExchange.Reset();
@@ -704,8 +706,8 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 //
 // 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
 //
-// thresholdlevel 2: Top-of-Book AND Last Trade updates.
-// thresholdlevel 5: only Last Trade updates.
+// thresholdLevel 2: Top-of-Book AND Last Trade updates.
+// thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {

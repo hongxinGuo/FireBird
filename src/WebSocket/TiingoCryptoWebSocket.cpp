@@ -1,3 +1,4 @@
+#include "TiingoCryptoWebSocket.h"
 #include "pch.h"
 
 #include"JsonParse.h"
@@ -6,10 +7,7 @@
 #include"TiingoWebInquiry.h"
 #include "TiingoCryptoWebSocket.h"
 
-#include<memory>
-#include<thread>
-using std::make_shared;
-using std::thread;
+using namespace std;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
@@ -104,18 +102,20 @@ bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
-	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":["); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	const string strSuffix = _T("]}}"); // 5：Trade Updates per-exchange.2：Top-of-Book quote updates as well as Trade updates. Both quote and trade updates are per-exchange
-	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
+	vectorString vSymbols;
+	json message;
+	message["eventName"] = _T("subscribe");
+	message["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
+	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为0或者5
+	for (auto str : vSymbol) {
+		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
+		vSymbols.push_back(str);
+	}
+	message["eventData"]["tickers"] = vSymbols;
+	message["eventData"]["tickers"].emplace_back("bcteth"); // tiingo使用的crypto符号与finnhub完全不同，
+	message["eventData"]["tickers"].emplace_back("ksmust");// tiingo使用的crypto符号与finnhub完全不同，
 
-	vSymbol.push_back(_T("dkaeth")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	vSymbol.push_back(_T("ksmust")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
-
-	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
-
-	return str;
+	return message.dump();
 }
 
 bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {

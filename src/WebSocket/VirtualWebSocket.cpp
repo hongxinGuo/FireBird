@@ -19,7 +19,9 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) {
 	Reset();
 }
 
-CVirtualWebSocket::~CVirtualWebSocket() { Disconnect(); }
+CVirtualWebSocket::~CVirtualWebSocket() {
+	Disconnect();
+}
 
 void CVirtualWebSocket::Reset(void) {
 	m_iSubscriptionId = 0;
@@ -81,18 +83,6 @@ bool CVirtualWebSocket::DeleteSymbol(const string& sSymbol) {
 void CVirtualWebSocket::ClearSymbol(void) {
 	m_vSymbol.resize(0);
 	m_mapSymbol.clear();
-}
-
-string CVirtualWebSocket::CreateTiingoWebSocketSymbolString(vectorString vSymbol) {
-	string sSymbols;
-
-	for (auto& s : vSymbol) {
-		const string sSymbol = _T("\"") + s + _T("\"") + _T(",");
-		sSymbols += sSymbol;
-	}
-	sSymbols.erase(sSymbols.end() - 1); // 去除最后多余的字符','
-
-	return sSymbols;
 }
 
 bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {

@@ -31,8 +31,6 @@ public:
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 
-	string CreateTiingoWebSocketSymbolString(vectorString vSymbol);
-
 	bool IsSymbol(string sSymbol);
 	void AppendSymbol(vectorString vSymbol);
 	bool AddSymbol(const string& sSymbol);

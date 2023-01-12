@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -34,16 +35,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_tiingoForexWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/fx"));
 	}
 
-	TEST_F(CDataTiingoForexWebSocketTest, TestCreateTiingoForexWebSocketSymbolString) {
-		vectorString vSymbol;
-		vSymbol.push_back(_T("A"));
-		vSymbol.push_back(_T("AA"));
-		vSymbol.push_back(_T("AAL"));
-		vSymbol.push_back(_T("AAPL"));
-		string sSymbols = gl_tiingoForexWebSocket.CreateTiingoWebSocketSymbolString(vSymbol);
-		EXPECT_TRUE(sSymbols == _T("\"A\",\"AA\",\"AAL\",\"AAPL\""));
-	}
-
 	TEST_F(CDataTiingoForexWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
@@ -51,6 +42,13 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
 		string sSymbols = gl_tiingoForexWebSocket.CreateMessage(vSymbol);
-		EXPECT_STREQ(sSymbols.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"A\",\"AA\",\"AAL\",\"AAPL\",\"gbpaud\",\"eurusd\"]}}")) << "最后两个代码是为了测试手工加上的";
+		json jsonMessage;
+		try {
+			jsonMessage = json::parse(sSymbols);
+		}
+		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
+		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 5);
+		EXPECT_STREQ(sSymbols.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"a\",\"aa\",\"aal\",\"aapl\"]}}"));
 	}
 }

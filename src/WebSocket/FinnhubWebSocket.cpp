@@ -42,6 +42,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Pong"));
 		break;
 	default: // error
+		ASSERT(0);
 		break;
 	}
 }
@@ -66,8 +67,6 @@ CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
 /// <summary>
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 bool CFinnhubWebSocket::Connect(void) {
 	CString strToken = gl_pFinnhubWebInquiry->GetInquiryToken();
 	strToken = "/?token=" + strToken;
@@ -93,13 +92,11 @@ bool CFinnhubWebSocket::Send(vectorString vSymbol) {
 /// Finnhub web socket格式： {"type":"subscribe","symbol":"符号串"},IEX， Crypto, Forex皆使用此格式
 /// 如{"type":"subscribe","symbol":"MSFT"}, {"type":"subscribe","symbol":"BINANCE:LTCBTC"}, {"type":"subscribe","symbol":"OANDA:AUD_SGD"}
 /// </summary>
-/// <param name="strSymbol"></param>
-/// <returns></returns>
 string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
-	const string sPrefix = _T("{\"type\":\"subscribe\",\"symbol\":\"");
-	const string sSuffix = _T("\"}");
-
-	return sPrefix + sSymbol + sSuffix;
+	json symbol;
+	symbol["type"] = _T("subscribe");
+	symbol["symbol"] = sSymbol;
+	return symbol.dump();
 }
 
 bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {

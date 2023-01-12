@@ -277,4 +277,19 @@ namespace FireBirdTest {
 		if (iTime < 19000101000000) tt2 = iTime;
 		EXPECT_EQ(tt, tt2);
 	}
+
+	TEST_F(TimeConvertTest, TestXferToTTime) {
+		CString strTime = _T("2019-07-05T15:49:15.157000+00:00");
+		time_t t = XferToTTime(strTime, _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
+		tm t1{15, 49, 15, 05, 07, 2019};
+		time_t t2 = _mktime64(&t1);
+		EXPECT_EQ(t2, t);
+
+		strTime = _T("2019-07-05T15:49:15.157000+08:15");
+		t = XferToTTime(strTime, _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
+		tm t3{15, 49, 15, 05, 07, 2019};
+		t2 = _mktime64(&t3);
+		t2 += 3600 * 8 + 60 * 15;
+		EXPECT_EQ(t2, t);
+	}
 }

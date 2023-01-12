@@ -15,8 +15,8 @@ public:
 
 public:
 	char m_chMessageType; // ±ÿ–Î «'Q'
+	time_t tTime;
 	string m_sSymbol;
-	CTime m_date;
 	double m_dBidSize;
 	double m_dBidPrice;
 	double m_dMidPrice;

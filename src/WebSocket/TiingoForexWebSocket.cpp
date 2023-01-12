@@ -2,14 +2,12 @@
 
 #include"JsonParse.h"
 #include"JsonGetValue.h"
+#include"TimeConvert.h"
 
 #include"TiingoWebInquiry.h"
 #include "TiingoForexWebSocket.h"
 
-#include<thread>
-#include<memory>
-using std::thread;
-using std::make_shared;
+using namespace std;
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
@@ -56,7 +54,8 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/fx"); }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {}
+CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
+}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
@@ -101,18 +100,18 @@ bool CTiingoForexWebSocket::Send(vectorString vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
-	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":["); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	const string strSuffix = _T("]}}"); //7：A top - of - book update that is due to a change in either the bid / ask price or size.
-	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
+	vectorString vSymbols;
+	json jsonMessage;
+	jsonMessage["eventName"] = _T("subscribe");
+	jsonMessage["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
+	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
+	for (auto str : vSymbol) {
+		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
+		vSymbols.push_back(str);
+	}
+	jsonMessage["eventData"]["tickers"] = vSymbols;
 
-	vSymbol.push_back(_T("gbpaud")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	vSymbol.push_back(_T("eurusd")); // 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
-	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol);
-
-	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
-
-	return str;
+	return jsonMessage.dump();
 }
 
 bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
@@ -182,6 +181,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pForexData->m_sSymbol = jsonGetString(it); // 证券名称
 				++it;
 				sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+				pForexData->tTime = XferToTTime(sDatetime.c_str(), _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
 				++it;
 				pForexData->m_dBidSize = jsonGetDouble(it); // 买价数量
 				++it;

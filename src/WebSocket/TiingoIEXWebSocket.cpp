@@ -1,3 +1,4 @@
+#include "TiingoIEXWebSocket.h"
 #include "pch.h"
 
 #include"JsonParse.h"
@@ -6,10 +7,7 @@
 #include"TiingoWebInquiry.h"
 #include "TiingoIEXWebSocket.h"
 
-#include<thread>
-#include<memory>
-using std::thread;
-using std::make_shared;
+using namespace std;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	switch (msg->type) {
@@ -53,7 +51,9 @@ UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*
 	return 71;
 }
 
-CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/iex"); }
+CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/iex");
+}
 
 /// <summary>
 /// Tiingo IEX的数据源格式：wss://api.tiingo.com/iex，其密钥是随后发送的。
@@ -92,18 +92,18 @@ bool CTiingoIEXWebSocket::Send(vectorString vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
-	const string strPrefix = _T("{\"eventName\":\"subscribe\",\"authorization\":\"");
-	const string strMiddle = _T("\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[");
-	const string strSuffix = _T("]}}");
-	string strAuth = gl_pTiingoWebInquiry->GetInquiryToken().GetBuffer();
+	vector<string> vSymbols;
+	json jsonMessage;
+	jsonMessage["eventName"] = _T("subscribe");
+	jsonMessage["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
+	jsonMessage["eventData"]["thresholdLevel"] = 0; // threshold的有效数字为0或者5
+	for (auto str : vSymbol) {
+		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
+		vSymbols.push_back(str);
+	}
+	jsonMessage["eventData"]["tickers"] = vSymbols;
 
-	vSymbol.emplace_back(_T("rig")); // 多加一个Tiingo制式的代码。
-	vSymbol.emplace_back(_T("aapl")); // 多加一个Tiingo制式的代码。
-	const string strSymbols = CreateTiingoWebSocketSymbolString(vSymbol); // 去除最后多余的字符','
-
-	string str = strPrefix + strAuth + strMiddle + strSymbols + strSuffix;
-
-	return str;
+	return jsonMessage.dump();
 }
 
 bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
@@ -123,7 +123,7 @@ bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorStr
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
-//
+// {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	string sSymbol;
@@ -238,8 +238,11 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
 				break;
-			case 'H': // Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
+			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
 				// 无需处理
+				break;
+			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
+				// todo
 				break;
 			default:
 				return false;

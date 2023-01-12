@@ -17,7 +17,6 @@ public:
 public:
 	char m_chMessageType; // 'Q' or 'T'
 	string m_sSymbol;
-	CTime m_date;
 	string m_strExchange;
 	double m_dBidSize;
 	double m_dBidPrice;
@@ -37,6 +36,8 @@ public:
 
 	bool Connect(void) override;
 	bool Send(vectorString vSymbol) override;
+
+	string CreateMessage2(vectorString vSymbol);
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
