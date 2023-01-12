@@ -71,8 +71,10 @@ bool CTiingoForexWebSocket::Connect(void) {
 //
 // 5状态下每秒接收100K左右。
 //
-// threshlodlevel 5: ALL Top-of-Book updates
-// thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
+// 有效的thresholdLevel为：2， 5， 7
+// thresholdLevel 5: ALL Top-of-Book updates
+// thresholdLevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
+// {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoForexWebSocket::Send(vectorString vSymbol) {
@@ -148,14 +150,14 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			string sService;
 			string sType;
 			json::iterator it;
-			json js2;
+			json js2, js3, js4;
 			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 				js2 = jsonGetChild(&js, _T("data"));
 				try {
-					json js3 = js2.at(_T("tickers"));
+					js3 = js2.at(_T("tickers"));
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
 						m_vCurrentSymbol.push_back(strSymbol.c_str());
@@ -167,7 +169,14 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
-				// do nothing
+				js3 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js3.at(_T("code"));
+				m_statusMessage = js3.at(_T("message"));
+				break;
+			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
+				js4 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js4.at(_T("code"));
+				m_statusMessage = js4.at(_T("message"));
 				break;
 			case 'A': // new data
 				sService = jsonGetString(&js, _T("service"));

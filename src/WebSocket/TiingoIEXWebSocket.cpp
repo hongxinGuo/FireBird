@@ -1,4 +1,3 @@
-#include "TiingoIEXWebSocket.h"
 #include "pch.h"
 
 #include"JsonParse.h"
@@ -124,6 +123,7 @@ bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorStr
 // {"messageType":"A","service":"iex","data":["Q","2019-01-30T13:33:45.383129126-05:00",1548873225383129126,"vym",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	string sSymbol;
@@ -139,7 +139,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			char chType;
 			string sService;
 			string sType;
-			json js2;
+			json js2, js3, js4;
 			json::iterator it;
 			sType = jsonGetString(&js, _T("messageType"));
 			if (sType.empty()) return false;
@@ -227,7 +227,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			case 'I': // authentication  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				js2 = jsonGetChild(&js, _T("data"));
 				try {
-					json js3 = js2.at(_T("tickers"));
+					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
@@ -239,10 +239,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				// 无需处理
+				js3 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js3.at(_T("code"));
+				m_statusMessage = js3.at(_T("message"));
 				break;
-			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
-				// todo
+			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}}
+				js4 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js4.at(_T("code"));
+				m_statusMessage = js4.at(_T("message"));
 				break;
 			default:
 				return false;

@@ -47,6 +47,6 @@ namespace FireBirdTest {
 		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 2);
-		EXPECT_STREQ(strSymbols.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"a\",\"aa\",\"aal\",\"aapl\",\"bcteth\",\"ksmust\"]}}"));
+		EXPECT_STREQ(strSymbols.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":2,\"tickers\":[\"a\",\"aa\",\"aal\",\"aapl\",\"bcteth\",\"ksmust\"]}}")) << "最后两个代码是故意加上的";
 	}
 }

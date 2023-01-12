@@ -70,8 +70,8 @@ bool CTiingoCryptoWebSocket::Connect(void) {
 //
 // 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
 //
-// thresholdlevel 2: Top-of-Book AND Last Trade updates.
-// thresholdlevel 5: only Last Trade updates.
+// thresholdLevel 2: Top-of-Book AND Last Trade updates.
+// thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
@@ -106,7 +106,7 @@ string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 	json message;
 	message["eventName"] = _T("subscribe");
 	message["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
-	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为0或者5
+	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
 	for (auto str : vSymbol) {
 		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
 		vSymbols.push_back(str);
@@ -135,6 +135,7 @@ bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorSt
 // {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
 // {"messageType":"A","service":"crypto_data","data":["Q","neojpy","2019-01-30T18:03:40.195515+00:00","bitfinex",38.11162867,787.82,787.83,42.4153887,787.84]}
 // {"messageType":"A","service":"crypto_data","data":["T","evxbtc","2019-01-30T18:03:40.056000+00:00","binance",405.0,9.631e-05]}
+// {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 // </summary>
 // <param name="pData"></param>
@@ -152,7 +153,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			string sMessageType;
 			char chType;
 			string sType;
-			json js2;
+			json js2, js3, js4;
 			json::iterator it;
 			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
@@ -161,7 +162,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				// 或者  {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 				js2 = jsonGetChild(&js, _T("data"));
 				try {
-					json js3 = js2.at(_T("tickers"));
+					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
 						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
@@ -173,7 +174,9 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				// do nothing
+				js3 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js3.at(_T("code"));
+				m_statusMessage = js3.at(_T("message"));
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
@@ -191,7 +194,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
 					sExchange = jsonGetString(it); // 交易所
-					pCryptoData->m_strExchange = sExchange.c_str();
+					pCryptoData->m_strExchange = sExchange;
 					++it;
 					pCryptoData->m_dLastSize = jsonGetDouble(it); // 最新数量
 					++it;
@@ -206,7 +209,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					++it;
 					sExchange = jsonGetString(it);// 交易所
-					pCryptoData->m_strExchange = sExchange.c_str();
+					pCryptoData->m_strExchange = sExchange;
 					++it;
 					pCryptoData->m_dBidSize = jsonGetDouble(it); // 买价数量
 					++it;
@@ -224,6 +227,11 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				gl_SystemData.PushTiingoCryptoSocket(pCryptoData);
 				m_fReceivingData = true;
+				break;
+			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
+				js4 = jsonGetChild(&js, _T("response"));
+				m_iStatusCode = js4.at(_T("code"));
+				m_statusMessage = js4.at(_T("message"));
 				break;
 			default: // 错误
 				return false;

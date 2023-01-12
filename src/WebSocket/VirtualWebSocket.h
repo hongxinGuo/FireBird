@@ -87,6 +87,8 @@ protected:
 	ix::WebSocket m_webSocket;
 	string m_url;
 
+	int m_iStatusCode; // WebSocket返回的状态码。正确：200， 错误：400等。
+	string m_statusMessage; // 正确时为状态信息，错误时为错误信息。
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
 	vectorString m_vSymbol;
