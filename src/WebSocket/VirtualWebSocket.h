@@ -45,6 +45,11 @@ public:
 	bool IsClosing(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
 	bool IsConnecting(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
 
+	int GetStatusCode() const noexcept { return m_iStatusCode; }
+	void SetStatusCode(int iCode) noexcept { m_iStatusCode = iCode; }
+	string GetStatusMessage() const noexcept { return m_statusMessage; }
+	void SetStatusMessage(const string& sMessage) noexcept { m_statusMessage = sMessage; }
+
 	string GetURL(void) noexcept { return m_url; }
 	void SetURL(const string& url) noexcept { m_url = url; }
 

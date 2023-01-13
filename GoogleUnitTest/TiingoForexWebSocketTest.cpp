@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataTiingoForexWebSocketTest : public ::testing::Test {
+	class CTiingoForexWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -31,11 +31,11 @@ namespace FireBirdTest {
 		CTiingoForexWebSocket gl_tiingoForexWebSocket;
 	};
 
-	TEST_F(CDataTiingoForexWebSocketTest, TestGetURL) {
+	TEST_F(CTiingoForexWebSocketTest, TestGetURL) {
 		EXPECT_STREQ(gl_tiingoForexWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/fx"));
 	}
 
-	TEST_F(CDataTiingoForexWebSocketTest, TestCreateMessage) {
+	TEST_F(CTiingoForexWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AA"));

@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{5C4C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
 	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
 		Lib\CreateEnvionment.bat = Lib\CreateEnvionment.bat
 		..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json = ..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json
 		Lib\libcurl_build.bat = Lib\libcurl_build.bat

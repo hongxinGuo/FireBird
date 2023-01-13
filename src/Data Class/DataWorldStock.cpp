@@ -14,6 +14,8 @@
 
 #include "DataWorldStock.h"
 
+using namespace std;
+
 CDataWorldStock::CDataWorldStock() {
 	Reset();
 }
@@ -351,7 +353,7 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock
 void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (pStock->IsUpdateBasicFinancialDB()) {
-			CString strMessage = _T("found stock") + pStock->GetSymbol() + _T(" need update basic financial data");
+			CString strMessage = _T("found stock:") + pStock->GetSymbol() + _T(" need update basic financial data");
 			TRACE(strMessage);
 			gl_systemMessage.PushErrorMessage(strMessage);
 		}
@@ -361,10 +363,10 @@ void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStoc
 
 bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	CString strSymbol = pStock->GetSymbol();
-	CString strExchangeCode = pStock->GetExchangeCode();
+	const CString strExchangeCode = pStock->GetExchangeCode();
 
 	if (strExchangeCode.Compare(_T("US")) == 0) return true;
-	int pos = strSymbol.Find(_T(".") + strExchangeCode);
+	const int pos = strSymbol.Find(_T(".") + strExchangeCode);
 	if ((pos + 1) < (strSymbol.GetLength() - strExchangeCode.GetLength())) {
 		gl_systemMessage.PushErrorMessage(_T("stock sysmbol Error: ") + strSymbol);
 		return false;
@@ -373,9 +375,10 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 }
 
 bool CDataWorldStock::IsNeedSaveDayLine(void) {
-	for (const auto& pStock : m_vWorldStock) {
-		if (pStock->IsDayLineNeedSaving()) return true;
-	}
+	/*	for (const auto& pStock : m_vWorldStock) {
+			if (pStock->IsDayLineNeedSaving()) return true;
+		}*/
+	ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p) { return p->IsDayLineNeedSaving(); });
 	return false;
 }
 
@@ -390,7 +393,6 @@ bool CDataWorldStock::IsNeedSaveInsiderSentiment(void) {
 	for (const auto& pStock : m_vWorldStock) {
 		if (pStock->IsInsiderSentimentNeedSave()) return true;
 	}
-	//CWorldStockPtr pStock;
-	//pStock = ranges::any_of(m_vWorldStock.begin(), m_vWorldStock.end(), true);
+	// ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p){ return p->isInsiderSentimentNeedSave();});
 	return false;
 }

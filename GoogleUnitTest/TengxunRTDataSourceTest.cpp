@@ -37,6 +37,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
+			gl_pTengxunRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
 		}
@@ -44,7 +45,23 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST(RTDataContainerTest, TestGetTengxunRTDataDuqueSize) {
+	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData1) {
+		gl_pTengxunRTDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pTengxunRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";
+	}
+
+	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData2) {
+		gl_pTengxunRTDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pTengxunRTDataSource->InquireRTData(0));
+
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsInquiring());
+		EXPECT_EQ(gl_pTengxunRTDataSource->GetInquiryQueueSize(), 1);
+		auto pProduct = gl_pTengxunRTDataSource->GetInquiry();
+		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
+
+	}
+
+	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
 		auto pRTData = make_shared<CWebRTData>();

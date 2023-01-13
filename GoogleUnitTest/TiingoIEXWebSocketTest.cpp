@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataTiingoIEXWebSocketTest : public ::testing::Test {
+	class CTiingoIEXWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,11 +29,11 @@ namespace FireBirdTest {
 		CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
 	};
 
-	TEST_F(CDataTiingoIEXWebSocketTest, TestGetURL) {
+	TEST_F(CTiingoIEXWebSocketTest, TestGetURL) {
 		EXPECT_STREQ(gl_tiingoIEXWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
 	}
 
-	TEST_F(CDataTiingoIEXWebSocketTest, TestSetScriptionStatus) {
+	TEST_F(CTiingoIEXWebSocketTest, TestSetScriptionStatus) {
 		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());
 		gl_tiingoIEXWebSocket.SetSubscriptionStatus(false);
 		EXPECT_FALSE(gl_tiingoIEXWebSocket.IsSubscriptable());
@@ -41,14 +41,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());
 	}
 
-	TEST_F(CDataTiingoIEXWebSocketTest, TestSetSubscriptionId) {
+	TEST_F(CTiingoIEXWebSocketTest, TestSetSubscriptionId) {
 		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());// 必须设置此标识
 		EXPECT_EQ(gl_tiingoIEXWebSocket.GetSubscriptionId(), 0);
 		gl_tiingoIEXWebSocket.SetSubscriptionId(101010);
 		EXPECT_EQ(gl_tiingoIEXWebSocket.GetSubscriptionId(), 101010);
 	}
 
-	TEST_F(CDataTiingoIEXWebSocketTest, TestCreateMessage) {
+	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AA"));

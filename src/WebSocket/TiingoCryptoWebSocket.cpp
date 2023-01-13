@@ -1,4 +1,3 @@
-#include "TiingoCryptoWebSocket.h"
 #include "pch.h"
 
 #include"JsonParse.h"
@@ -143,7 +142,7 @@ bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorSt
 bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
 	string sSymbol;
 	string strSymbol;
-	string sTickers, sExchange;
+	string sTickers;
 
 	try {
 		if (json js; NlohmannCreateJson(&js, *pData)) {
@@ -188,38 +187,23 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				if (sMessageType.at(0) == 'T') {
 					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
-					++it;
-					pCryptoData->m_sSymbol = jsonGetString(it); // 证券名称
-					++it;
-					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
-					++it;
-					sExchange = jsonGetString(it); // 交易所
-					pCryptoData->m_strExchange = sExchange;
-					++it;
-					pCryptoData->m_dLastSize = jsonGetDouble(it); // 最新数量
-					++it;
-					pCryptoData->m_dLastPrice = jsonGetDouble(it); // 最新价格
+					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
+					sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					pCryptoData->m_strExchange = jsonGetString(++it); // 交易所
+					pCryptoData->m_dLastSize = jsonGetDouble(++it); // 最新数量
+					pCryptoData->m_dLastPrice = jsonGetDouble(++it); // 最新价格
 				}
 				else if (sMessageType.at(0) == 'Q') {
 					// 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
-					++it;
-					pCryptoData->m_sSymbol = jsonGetString(it); // 证券名称
-					++it;
-					sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
-					++it;
-					sExchange = jsonGetString(it);// 交易所
-					pCryptoData->m_strExchange = sExchange;
-					++it;
-					pCryptoData->m_dBidSize = jsonGetDouble(it); // 买价数量
-					++it;
-					pCryptoData->m_dBidPrice = jsonGetDouble(it); // 买价
-					++it;
-					pCryptoData->m_dMidPrice = jsonGetDouble(it); // 中间价 （BidPrice + AskPrice)/2
-					++it;
-					pCryptoData->m_dAskSize = jsonGetDouble(it); // 卖价数量
-					++it;
-					pCryptoData->m_dAskPrice = jsonGetDouble(it); // 卖价
+					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
+					sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					pCryptoData->m_strExchange = jsonGetString(++it);// 交易所
+					pCryptoData->m_dBidSize = jsonGetDouble(++it); // 买价数量
+					pCryptoData->m_dBidPrice = jsonGetDouble(++it); // 买价
+					pCryptoData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2
+					pCryptoData->m_dAskSize = jsonGetDouble(++it); // 卖价数量
+					pCryptoData->m_dAskPrice = jsonGetDouble(++it); // 卖价
 				}
 				else {
 					// 格式不对

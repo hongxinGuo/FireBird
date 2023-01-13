@@ -12,7 +12,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataFinnhubWebSocketTest : public ::testing::Test {
+	class CFinnhubWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -22,7 +22,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,11 +34,11 @@ namespace FireBirdTest {
 		CFinnhubWebSocket m_finnhubWebSocket;
 	};
 
-	TEST_F(CDataFinnhubWebSocketTest, TestGetURL) {
+	TEST_F(CFinnhubWebSocketTest, TestGetURL) {
 		EXPECT_STREQ(m_finnhubWebSocket.GetURL().c_str(), _T("wss://ws.finnhub.io"));
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestSetScriptionStatus) {
+	TEST_F(CFinnhubWebSocketTest, TestSetScriptionStatus) {
 		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());
 		m_finnhubWebSocket.SetSubscriptionStatus(true);
 		EXPECT_TRUE(m_finnhubWebSocket.IsSubscriptable());
@@ -45,7 +46,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestSetSubscriptionId) {
+	TEST_F(CFinnhubWebSocketTest, TestSetSubscriptionId) {
 		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());// 必须设置此标识
 		m_finnhubWebSocket.SetSubscriptionStatus(true);
 		EXPECT_EQ(m_finnhubWebSocket.GetSubscriptionId(), 0);
@@ -55,7 +56,7 @@ namespace FireBirdTest {
 		m_finnhubWebSocket.SetSubscriptionStatus(false);
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestSetReceivingData) {
+	TEST_F(CFinnhubWebSocketTest, TestSetReceivingData) {
 		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 		m_finnhubWebSocket.SetReceivingData(true);
 		EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
@@ -63,11 +64,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestGetState) {
+	TEST_F(CFinnhubWebSocketTest, TestGetState) {
 		EXPECT_EQ(m_finnhubWebSocket.GetState(), ix::ReadyState::Closed);
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestIsClosed) {
+	TEST_F(CFinnhubWebSocketTest, TestIsClosed) {
 		EXPECT_EQ(m_finnhubWebSocket.GetState(), ix::ReadyState::Closed);
 		EXPECT_TRUE(m_finnhubWebSocket.IsClosed()) << "无法设置此标识。此标识默认为真，只能判断这种状态， 无法测试为假的状态";
 		EXPECT_FALSE(m_finnhubWebSocket.IsOpen()) << "无法设置此标识，只能判断此标识为假";
@@ -75,13 +76,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_finnhubWebSocket.IsConnecting()) << "无法设置此标识，只能判断此标识为假";
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestCreateFinnhubWebSocketString) {
+	TEST_F(CFinnhubWebSocketTest, TestCreateFinnhubWebSocketString) {
 		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("AAPL")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
 		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
 		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("IC MARKETS:1")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, TestAddSymbol) {
+	TEST_F(CFinnhubWebSocketTest, TestAddSymbol) {
 		vectorString vSymbol{_T("a"), _T("b"), _T("c"), _T("d"), _T("e")};
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
@@ -106,7 +107,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 	}
 
-	TEST_F(CDataFinnhubWebSocketTest, Test3) {}
-	TEST_F(CDataFinnhubWebSocketTest, Test4) {}
-	TEST_F(CDataFinnhubWebSocketTest, Test5) {}
+	TEST_F(CFinnhubWebSocketTest, Test3) {
+	}
+
+	TEST_F(CFinnhubWebSocketTest, Test4) {
+	}
+
+	TEST_F(CFinnhubWebSocketTest, Test5) {
+	}
 }

@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataTiingoCryptoWebSocketTest : public ::testing::Test {
+	class CTiingoCryptoWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,11 +29,11 @@ namespace FireBirdTest {
 		CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
 	};
 
-	TEST_F(CDataTiingoCryptoWebSocketTest, TestGetURL) {
+	TEST_F(CTiingoCryptoWebSocketTest, TestGetURL) {
 		EXPECT_STREQ(gl_tiingoCryptoWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
 	}
 
-	TEST_F(CDataTiingoCryptoWebSocketTest, TestCreateMessage) {
+	TEST_F(CTiingoCryptoWebSocketTest, TestCreateMessage) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AA"));

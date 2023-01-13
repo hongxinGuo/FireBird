@@ -37,12 +37,28 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			s_pMockNeteaseRTWebInquiry->SetReadingWebData(false);
+			EXPECT_TRUE(gl_pNeteaseRTDataSource->IsInquiring());
 
 			GeneralCheck();
 		}
 
 	protected:
 	};
+
+	TEST_F(CNeteaseRTDataSourceTest, TestInquireRTData1) {
+		gl_pNeteaseRTDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pNeteaseRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";
+	}
+
+	TEST_F(CNeteaseRTDataSourceTest, TestInquireRTData2) {
+		gl_pNeteaseRTDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->InquireRTData(0));
+
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsInquiring());
+		EXPECT_EQ(gl_pNeteaseRTDataSource->GetInquiryQueueSize(), 1);
+		auto pProduct = gl_pNeteaseRTDataSource->GetInquiry();
+		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
+	}
 
 	TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());

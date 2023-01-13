@@ -1532,7 +1532,7 @@ namespace FireBirdTest {
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20180101);
-		strMiddle = _T("600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1");
+		strMiddle = _T("600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1");
 
 		EXPECT_STREQ(stock.GetTiingoDayLineInquiryString(20200101), strMiddle);
 	}

@@ -37,6 +37,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			s_pMockSinaRTWebInquiry->SetReadingWebData(false);
+			gl_pSinaRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
 		}
@@ -44,8 +45,24 @@ namespace FireBirdTest {
 	protected:
 	};
 
+	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {
+		gl_pSinaRTDataSource->SetInquiring(true);
+		EXPECT_FALSE(gl_pSinaRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";
+	}
+
+	TEST_F(CSinaRTDataSourceTest, TestInquireRTData2) {
+		gl_pSinaRTDataSource->SetInquiring(false);
+		EXPECT_TRUE(gl_pSinaRTDataSource->InquireRTData(0));
+
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsInquiring());
+		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 1);
+		auto pProduct = gl_pSinaRTDataSource->GetInquiry();
+		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductSinaRT"));
+
+	}
+
 	// 测试有优先级的队列存储临时实时数据。
-	TEST(CSinaRTDataSourceTest, TestGetDataSize) {
+	TEST_F(CSinaRTDataSourceTest, TestGetDataSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
 		auto pRTData = make_shared<CWebRTData>();

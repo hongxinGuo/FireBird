@@ -867,11 +867,18 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
+	const long year2 = m_lDayLineEndDate / 10000;
+	const long month2 = m_lDayLineEndDate / 100 - year2 * 100;
+	const long date2 = m_lDayLineEndDate - year2 * 10000 - month2 * 100;
 
 	strMiddle += m_strSymbol;
-	strMiddle += _T("/prices?&startDate=1980-1-1&endDate=");
+	strMiddle += _T("/prices?&startDate=");
+	sprintf_s(buffer, _T("%4d-%d-%d"), year2, month2, date2);
+	CString strTemp = buffer;
+	strMiddle += strTemp;
+	strMiddle += _T("&endDate=");
 	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
-	const CString strTemp = buffer;
+	strTemp = buffer;
 	strMiddle += strTemp;
 
 	return strMiddle;

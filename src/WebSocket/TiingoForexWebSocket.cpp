@@ -186,21 +186,14 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				it = js2.begin();
 				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);
-				++it;
-				pForexData->m_sSymbol = jsonGetString(it); // 证券名称
-				++it;
-				sDatetime = jsonGetString(it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+				pForexData->m_sSymbol = jsonGetString(++it); // 证券名称
+				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 				pForexData->tTime = XferToTTime(sDatetime.c_str(), _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
-				++it;
-				pForexData->m_dBidSize = jsonGetDouble(it); // 买价数量
-				++it;
-				pForexData->m_dBidPrice = jsonGetDouble(it); // 买价
-				++it;
-				pForexData->m_dMidPrice = jsonGetDouble(it); // 中间价 （BidPrice + AskPrice)/2
-				++it;
-				pForexData->m_dAskSize = jsonGetDouble(it); // 卖价数量
-				++it;
-				pForexData->m_dAskPrice = jsonGetDouble(it); // 卖价
+				pForexData->m_dBidSize = jsonGetDouble(++it); // 买价数量
+				pForexData->m_dBidPrice = jsonGetDouble(++it); // 买价
+				pForexData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2
+				pForexData->m_dAskSize = jsonGetDouble(++it); // 卖价数量
+				pForexData->m_dAskPrice = jsonGetDouble(++it); // 卖价
 				gl_SystemData.PushTiingoForexSocket(pForexData);
 				m_fReceivingData = true;
 				break;

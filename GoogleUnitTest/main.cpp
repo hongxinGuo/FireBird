@@ -59,6 +59,7 @@
 #pragma managed(push, off)
 //ExcludeSourceFromCodeCoverage(Exclude1, _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
 //ExcludeSourceFromCodeCoverage(Exclude103, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\FireBirdDoc.cpp");
+
 //ExcludeFromCodeCoverage(CMainFrame2, L"CMainFrame::Dump", "abc");
 
 #if _MSVC_LANG <= 201703 // C17及以下版本？Exclude个函数在C20下编译出错
@@ -72,8 +73,7 @@ ExcludeSourceFromCodeCoverage(Exclude15, L"C:\\users\\hxguo\\source\\repos\\Fire
 ExcludeSourceFromCodeCoverage(Exclude16, L"C:\\users\\hxguo\\source\\repos\\FireBird\\googletest\\*.*");
 
 // 排除GoogleTest
-ExcludeSourceFromCodeCoverage(
-	Exclude13, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*"); // 排除数据库类
+ExcludeSourceFromCodeCoverage(Exclude13, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*"); // 排除数据库类
 ExcludeSourceFromCodeCoverage(Exclude19, L"C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*"); // 排除所有的数据库类
 ExcludeSourceFromCodeCoverage(Exclude20, L"C:\\users\\hxguo\\source\\repos\\FireBird\\ixwebsocket\\*.*");
 

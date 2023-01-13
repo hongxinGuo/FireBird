@@ -37,9 +37,6 @@
     <Filter Include="Test源文件\Data Class">
       <UniqueIdentifier>{5e657f7e-5e8b-4b66-a363-4d14bd91127a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Data Class\WebSocket">
-      <UniqueIdentifier>{01fdd977-2ec6-4fde-9a3d-b50494a9c813}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Data Class\Chosen">
       <UniqueIdentifier>{554077ac-bba7-4a24-ba28-1986b6009468}</UniqueIdentifier>
     </Filter>
@@ -261,20 +258,8 @@
     <ClCompile Include="FinnhubStockPriceQuoteTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoCryptoWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class\WebSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoIEXWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class\WebSocket</Filter>
-    </ClCompile>
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoForexWebSocketTest.cpp">
-      <Filter>Test源文件\Data Class\WebSocket</Filter>
     </ClCompile>
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Class\Tiingo</Filter>
@@ -575,6 +560,18 @@
     </ClCompile>
     <ClCompile Include="XferFinnhubInquiryTest.cpp">
       <Filter>Test源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoCryptoWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoForexWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoIEXWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
