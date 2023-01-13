@@ -375,10 +375,10 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 }
 
 bool CDataWorldStock::IsNeedSaveDayLine(void) {
-	/*	for (const auto& pStock : m_vWorldStock) {
-			if (pStock->IsDayLineNeedSaving()) return true;
-		}*/
-	ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p) { return p->IsDayLineNeedSaving(); });
+	for (const auto& pStock : m_vWorldStock) {
+		if (pStock->IsDayLineNeedSaving()) return true;
+	}
+	//ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p) { return p->IsDayLineNeedSaving(); });
 	return false;
 }
 
