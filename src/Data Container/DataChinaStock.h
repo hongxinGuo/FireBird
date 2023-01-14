@@ -32,6 +32,8 @@ public:
 
 	bool Delete(const CChinaStockPtr& pStock);
 	bool Add(const CChinaStockPtr& pStock);
+	bool UpdateStockMap();
+	bool SortStock(void);
 
 	long LoadStockCodeDB(void);
 	bool UpdateStockCodeDB(void);
@@ -45,9 +47,9 @@ public:
 	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
 	[[nodiscard]] bool IsUpdateStockCodeDB(void) noexcept;
 	[[nodiscard]] bool IsDayLineNeedUpdate(void) noexcept;
+	[[nodiscard]] bool IsDayLineNeedSaving(void);
 	void SetAllDayLineNeedMaintain(void);
 	void SetAllDayLineNeedUpdate(void);
-	[[nodiscard]] bool IsDayLineNeedSaving(void) const;
 
 	void ClearDayLineDBUpdatedFlag(void) const noexcept;
 	void ClearDayLineNeedUpdateStatus(void) const;
@@ -72,7 +74,6 @@ public:
 	bool Choice10RSStrong1StockSet(void);
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-	bool SortStock(void);
 	[[nodiscard]] double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
 	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseDayLineDataInquiringIndex = lIndex; }

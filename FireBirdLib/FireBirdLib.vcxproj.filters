@@ -225,21 +225,6 @@
     <ClInclude Include="..\src\accessory\TimeConvert.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataCryptoDayLine.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataForexDayLine.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataNaicsIndustry.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataSICIndustry.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataStockSymbol.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
@@ -585,60 +570,6 @@
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChinaDayLine.h">
-      <Filter>头文件\Data container\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChinaStock.h">
-      <Filter>头文件\Data container\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChinaWeekLine.h">
-      <Filter>头文件\Data container\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChosenCrypto.h">
-      <Filter>头文件\Data container\Chosen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChosenForex.h">
-      <Filter>头文件\Data container\Chosen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataChosenStock.h">
-      <Filter>头文件\Data container\Chosen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubCountry.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubCryptoExchange.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubCryptoSymbol.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubEconomicCalendar.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubForexExchange.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubForexSymbol.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataFinnhubStockExchange.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataWorldStock.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataWorldStockDayline.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataTiingoCryptoSymbol.h">
-      <Filter>头文件\Data container\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataTiingoIndustry.h">
-      <Filter>头文件\Data container\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Class\DataTiingoStock.h">
-      <Filter>头文件\Data container\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
@@ -741,6 +672,78 @@
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChinaDayLine.h">
+      <Filter>头文件\Data container\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChinaStock.h">
+      <Filter>头文件\Data container\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChinaWeekLine.h">
+      <Filter>头文件\Data container\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChosenCrypto.h">
+      <Filter>头文件\Data container\Chosen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChosenForex.h">
+      <Filter>头文件\Data container\Chosen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataChosenStock.h">
+      <Filter>头文件\Data container\Chosen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubCountry.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubCryptoExchange.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubCryptoSymbol.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubEconomicCalendar.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubForexExchange.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubForexSymbol.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataFinnhubStockExchange.h">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataTiingoCryptoSymbol.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataTiingoIndustry.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataTiingoStock.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataWorldStock.h">
+      <Filter>头文件\Data container\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataWorldStockDayline.h">
+      <Filter>头文件\Data container\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\CContainerVirtualStock.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataCryptoDayLine.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataForexDayLine.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataNaicsIndustry.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataSICIndustry.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\DataStockSymbol.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp">
@@ -778,15 +781,6 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\TimeConvert.cpp">
       <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataCryptoDayLine.cpp">
-      <Filter>源文件\Data container</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataForexDayLine.cpp">
-      <Filter>源文件\Data container</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataStockSymbol.cpp">
-      <Filter>源文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp">
       <Filter>源文件\Data Source</Filter>
@@ -1166,57 +1160,6 @@
     <ClCompile Include="..\src\WebInquiry\TiingoWebInquiry.cpp">
       <Filter>源文件\Web Inquiry\World market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChinaDayLine.cpp">
-      <Filter>源文件\Data container\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChinaStock.cpp">
-      <Filter>源文件\Data container\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChinaWeekLine.cpp">
-      <Filter>源文件\Data container\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChosenCrypto.cpp">
-      <Filter>源文件\Data container\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChosenForex.cpp">
-      <Filter>源文件\Data container\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataChosenStock.cpp">
-      <Filter>源文件\Data container\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubCountry.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubCryptoExchange.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubCryptoSymbol.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubEconomicCalendar.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubForexExchange.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubForexSymbol.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataFinnhubStockExchange.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataTiingoCryptoSymbol.cpp">
-      <Filter>源文件\Data container\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataTiingoStock.cpp">
-      <Filter>源文件\Data container\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataWorldStock.cpp">
-      <Filter>源文件\Data container\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Class\DataWorldStockDayLine.cpp">
-      <Filter>源文件\Data container\WorldMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp">
       <Filter>源文件\Data Source\WorldMarket</Filter>
     </ClCompile>
@@ -1323,6 +1266,69 @@
     <ClCompile Include="..\src\Windows interface\StockAnalysisView.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChinaDayLine.cpp">
+      <Filter>源文件\Data container\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChinaStock.cpp">
+      <Filter>源文件\Data container\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChinaWeekLine.cpp">
+      <Filter>源文件\Data container\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChosenCrypto.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChosenForex.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataChosenStock.cpp">
+      <Filter>源文件\Data container\Chosen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubStockExchange.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubCountry.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubCryptoExchange.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubCryptoSymbol.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubEconomicCalendar.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubForexExchange.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataFinnhubForexSymbol.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataTiingoCryptoSymbol.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataWorldStock.cpp">
+      <Filter>源文件\Data container\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp">
+      <Filter>源文件\Data container\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\CContainerVirtualStock.cpp">
+      <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataCryptoDayLine.cpp">
+      <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataForexDayLine.cpp">
+      <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\DataStockSymbol.cpp">
+      <Filter>源文件\Data container</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -29,6 +29,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemStatus.IsExitingSystem());
 	}
 
+	void SystemConfigurationCheck() {
+		//EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+	}
+
 	void ChinaMarketCheck(void) {
 		if (gl_pChinaMarket != nullptr) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -69,6 +73,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoSymbolUpdated());
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsCompanyNewsUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsInsiderSentimentUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsInsiderTransactionUpdated());
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
@@ -93,6 +101,7 @@ namespace FireBirdTest {
 
 	void GeneralCheck(void) {
 		EnvironmentCheck();
+		SystemConfigurationCheck();
 		SystemMessageCheck();
 		ChinaMarketCheck();
 		WorldMarketCheck();

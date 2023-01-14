@@ -141,7 +141,7 @@ namespace FireBirdTest {
 		CChinaStockPtr pStock = nullptr;
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			pStock = gl_pChinaMarket->GetStock(i);
-			EXPECT_EQ(pStock->GetOffset(), i);
+			EXPECT_EQ(pStock->GetOffset(), i) << pStock->GetSymbol();
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			if (IsShanghaiExchange(pStock->GetSymbol())) { if ((pStock->GetSymbol().Left(6) >= _T("000000")) && (pStock->GetSymbol().Left(6) <= _T("000999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); } }
 			else if ((pStock->GetSymbol().Left(6) >= _T("399000")) && (pStock->GetSymbol().Left(6) <= _T("399999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); }

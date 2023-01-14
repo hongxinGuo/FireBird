@@ -85,7 +85,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaStockTest, TestSortStock) {
-		auto pStock = make_shared<CChinaStock>();
+		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_dataChinaStock.Add(pStock);
 		EXPECT_STREQ(m_dataChinaStock.GetStock(m_dataChinaStock.GetStockSize() - 1)->GetSymbol(), _T("0.A"));

@@ -66,7 +66,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_pFinnhubDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Finnhub"));
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus) {
+	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus1) {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
 
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
@@ -101,10 +101,19 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->UpdateStatus();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
 		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus2) {
+		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		gl_pFinnhubDataSource->SetCurrentInquiry(p);
 
 		p->SetProductType(ECONOMIC_CALENDAR_);
+		EXPECT_FALSE(p->IsNoRightToAccess());
+
 		gl_pFinnhubDataSource->UpdateStatus();
+
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
+
 		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(false);
 	}
 
@@ -303,6 +312,7 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -345,6 +355,9 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock peer..."));
 		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
+
+		// »Ö¸´Ô­×´
+		gl_pFinnhubDataSource->SetPeerUpdated(false);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireInsiderTransaction) {

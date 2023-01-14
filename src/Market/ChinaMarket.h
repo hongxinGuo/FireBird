@@ -243,7 +243,7 @@ public:
 
 	bool IsDayLineNeedUpdate(void) noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess(void);
-	bool IsDayLineNeedSaving(void) const { return m_dataChinaStock.IsDayLineNeedSaving(); }
+	bool IsDayLineNeedSaving(void) { return m_dataChinaStock.IsDayLineNeedSaving(); }
 	long GetDayLineNeedUpdateNumber(void) { return m_dataChinaStock.GetDayLineNeedUpdateNumber(); }
 	long GetDayLineNeedSaveNumber(void) { return m_dataChinaStock.GetDayLineNeedSaveNumber(); }
 

@@ -34,24 +34,6 @@
     <Filter Include="Test源文件\Factory Product\Quandl">
       <UniqueIdentifier>{01482b08-1aaf-4d80-aeb0-699ba08bccd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Data Class">
-      <UniqueIdentifier>{5e657f7e-5e8b-4b66-a363-4d14bd91127a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Data Class\Chosen">
-      <UniqueIdentifier>{554077ac-bba7-4a24-ba28-1986b6009468}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Data Class\Finnhub">
-      <UniqueIdentifier>{d55b2075-9206-44c7-8f35-c9ca0c16a758}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Data Class\Tiingo">
-      <UniqueIdentifier>{a44519eb-fe95-4d13-bf29-13a7814acb26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Data Class\China Market">
-      <UniqueIdentifier>{49e03dbc-d9a8-4511-b8d6-fc8faf29bba8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Data Class\World Market">
-      <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Template">
       <UniqueIdentifier>{f40c7b2e-813d-495c-87fa-36becac40cb8}</UniqueIdentifier>
     </Filter>
@@ -147,6 +129,24 @@
     </Filter>
     <Filter Include="Test源文件\Windows interface">
       <UniqueIdentifier>{a4a49057-7948-4a2b-b695-24e24be21424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container">
+      <UniqueIdentifier>{5e657f7e-5e8b-4b66-a363-4d14bd91127a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container\Chosen">
+      <UniqueIdentifier>{554077ac-bba7-4a24-ba28-1986b6009468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container\Finnhub">
+      <UniqueIdentifier>{d55b2075-9206-44c7-8f35-c9ca0c16a758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container\Tiingo">
+      <UniqueIdentifier>{a44519eb-fe95-4d13-bf29-13a7814acb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container\China Market">
+      <UniqueIdentifier>{49e03dbc-d9a8-4511-b8d6-fc8faf29bba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\Data Container\World Market">
+      <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,34 +262,34 @@
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
-      <Filter>Test源文件\Data Class\Tiingo</Filter>
+      <Filter>Test源文件\Data Container\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="DataChinaStockTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="DataStockSymbolTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="DataCryptoDayLineTest.cpp">
-      <Filter>Test源文件\Data Class\World Market</Filter>
+      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="DataForexDayLineTest.cpp">
-      <Filter>Test源文件\Data Class\World Market</Filter>
+      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="DataWorldStockDayLineTest.cpp">
-      <Filter>Test源文件\Data Class\World Market</Filter>
+      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="DataChinaDayLineTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="DataChinaWeekLineTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="MockDataChinaDayLineTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="MockDataChinaWeekLineTest.cpp">
-      <Filter>Test源文件\Data Class\China Market</Filter>
+      <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp">
       <Filter>Test源文件\Template</Filter>
@@ -547,13 +547,13 @@
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="DataChoicedCryptoTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
+      <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="DataChoicedForexTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
+      <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="DataChoicedIEXTest.cpp">
-      <Filter>Test源文件\Data Class\Chosen</Filter>
+      <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="MockFireBirdViewTest.cpp">
       <Filter>Test源文件\Windows interface</Filter>
@@ -574,7 +574,7 @@
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
     <ClCompile Include="DataWorldStockTest.cpp">
-      <Filter>Test源文件\Data Class\World Market</Filter>
+      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

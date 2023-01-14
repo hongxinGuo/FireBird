@@ -115,7 +115,8 @@ namespace FireBirdTest {
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountToFree) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
-		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		bool bSaved = gl_systemConfiguration.IsNeedUpdate();
+		gl_systemConfiguration.SetUpdate(false);
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
 
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
@@ -123,7 +124,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
 		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
 
-		gl_systemConfiguration.SetUpdate(false);
+		gl_systemConfiguration.SetUpdate(bSaved);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSave) {

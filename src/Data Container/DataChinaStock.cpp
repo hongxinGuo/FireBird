@@ -32,7 +32,9 @@ void CDataChinaStock::Reset(void) {
 
 long CDataChinaStock::GetActiveStockSize(void) const {
 	long lTotalActiveStock = 0;
-	for (const auto& pStock : m_vStock) { if (pStock->IsActive()) lTotalActiveStock++; }
+	for (const auto& pStock : m_vStock) {
+		if (pStock->IsActive()) lTotalActiveStock++;
+	}
 	return lTotalActiveStock;
 }
 
@@ -60,8 +62,12 @@ bool CDataChinaStock::IsAStock(const CString& strStockCode) const {
 ////////////////////////////////////////////////////////////////////////////////
 CChinaStockPtr CDataChinaStock::GetStock(const CString& strStockCode) {
 	CChinaStockPtr pStock;
-	if (!IsStock(strStockCode)) { return nullptr; }
-	else { return (m_vStock.at(m_mapStock.at(strStockCode))); }
+	if (!IsStock(strStockCode)) {
+		return nullptr;
+	}
+	else {
+		return (m_vStock.at(m_mapStock.at(strStockCode)));
+	}
 }
 
 CChinaStockPtr CDataChinaStock::GetStock(const long lIndex) {
@@ -77,7 +83,7 @@ bool CDataChinaStock::Delete(const CChinaStockPtr& pStock) {
 	if (!IsStock(pStock->GetSymbol())) return false;
 
 	m_vStock.erase(m_vStock.begin() + m_mapStock.at(pStock->GetSymbol()));
-	m_mapStock.erase(pStock->GetSymbol());
+	UpdateStockMap();
 
 	return true;
 }
@@ -89,6 +95,24 @@ bool CDataChinaStock::Add(const CChinaStockPtr& pStock) {
 	m_mapStock[pStock->GetSymbol()] = m_vStock.size(); // 使用下标生成新的映射
 	m_vStock.push_back(pStock);
 
+	return true;
+}
+
+bool CDataChinaStock::UpdateStockMap() {
+	m_mapStock.clear();
+	int j = 0;
+	for (const auto& pStock : m_vStock) {
+		pStock->SetOffset(j);
+		ASSERT(!IsStock(pStock->GetSymbol()));
+		m_mapStock[pStock->GetSymbol()] = j++;
+	}
+	return false;
+}
+
+bool CDataChinaStock::SortStock(void) {
+	ranges::sort(m_vStock, [](const CChinaStockPtr& p1, const CChinaStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+	UpdateStockMap();
+	ASSERT(m_vStock.size() == m_mapStock.size());
 	return true;
 }
 
@@ -140,7 +164,9 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 	//更新原有的代码集状态
 	if (IsUpdateStockCodeDB()) {
 		CSetChinaStockSymbol setChinaStockSymbol;
-		for (const auto& pStock2 : m_vStock) { if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++; }
+		for (const auto& pStock2 : m_vStock) {
+			if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
+		}
 		setChinaStockSymbol.m_strSort = _T("[Symbol]");
 		setChinaStockSymbol.Open();
 		setChinaStockSymbol.m_pDatabase->BeginTrans();
@@ -185,13 +211,21 @@ void CDataChinaStock::ClearDayLineDBUpdatedFlag(void) const noexcept {
 
 INT64 CDataChinaStock::GetTotalAttackBuyAmount(void) const {
 	INT64 lAmount = 0;
-	for (auto& pStock : m_vStock) { if (pStock->IsActive() && IsAStock(pStock)) { lAmount += pStock->GetAttackBuyAmount(); } }
+	for (auto& pStock : m_vStock) {
+		if (pStock->IsActive() && IsAStock(pStock)) {
+			lAmount += pStock->GetAttackBuyAmount();
+		}
+	}
 	return (lAmount);
 }
 
 INT64 CDataChinaStock::GetTotalAttackSellAmount(void) const {
 	INT64 lAmount = 0;
-	for (const auto& pStock : m_vStock) { if (pStock->IsActive() && IsAStock(pStock)) { lAmount += pStock->GetAttackSellAmount(); } }
+	for (const auto& pStock : m_vStock) {
+		if (pStock->IsActive() && IsAStock(pStock)) {
+			lAmount += pStock->GetAttackSellAmount();
+		}
+	}
 	return (lAmount);
 }
 
@@ -297,7 +331,7 @@ void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) const {
 }
 
 bool CDataChinaStock::IsUpdateStockCodeDB(void) noexcept {
-	return ranges::any_of(m_vStock, [](CChinaStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
+	return ranges::any_of(m_vStock, [](const CChinaStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,45 +354,40 @@ bool CDataChinaStock::UnloadDayLine(void) noexcept {
 	return true;
 }
 
-bool CDataChinaStock::SortStock(void) {
-	ranges::sort(m_vStock, [](const CChinaStockPtr& p1, const CChinaStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
-	m_mapStock.clear();
-	int j = 0;
-	for (const auto& pStock : m_vStock) {
-		pStock->SetOffset(j);
-		ASSERT(!IsStock(pStock->GetSymbol()));
-		m_mapStock[pStock->GetSymbol()] = j++;
-	}
-	ASSERT(m_vStock.size() == m_mapStock.size());
-	return true;
+bool CDataChinaStock::IsDayLineNeedUpdate(void) noexcept {
+	return ranges::any_of(m_vStock, [](const CChinaStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
 }
 
-bool CDataChinaStock::IsDayLineNeedUpdate(void) noexcept {
-	return ranges::any_of(m_vStock, [](CChinaStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
-	return false;
+bool CDataChinaStock::IsDayLineNeedSaving(void) {
+	return ranges::any_of(m_vStock, [](const CChinaStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
 }
 
 void CDataChinaStock::SetAllDayLineNeedMaintain(void) {
 	SetAllDayLineNeedUpdate();
-	for (auto& pStock : m_vStock) { pStock->SetDayLineEndDate(19900101); }
+	for (auto& pStock : m_vStock) {
+		pStock->SetDayLineEndDate(19900101);
+	}
 }
 
-void CDataChinaStock::SetAllDayLineNeedUpdate(void) { for (auto& pStock : m_vStock) { pStock->SetDayLineNeedUpdate(true); } }
-
-bool CDataChinaStock::IsDayLineNeedSaving(void) const {
-	for (auto& pStock : m_vStock) { if (pStock->IsDayLineNeedSaving()) { return true; } }
-	return false;
+void CDataChinaStock::SetAllDayLineNeedUpdate(void) {
+	for (const auto& pStock : m_vStock) {
+		pStock->SetDayLineNeedUpdate(true);
+	}
 }
 
 long CDataChinaStock::GetDayLineNeedUpdateNumber(void) {
 	long l = 0;
-	for (auto& pStock : m_vStock) { if (pStock->IsDayLineNeedUpdate()) l++; }
+	for (const auto& pStock : m_vStock) {
+		if (pStock->IsDayLineNeedUpdate()) l++;
+	}
 	return l;
 }
 
 long CDataChinaStock::GetDayLineNeedSaveNumber(void) {
 	long l = 0;
-	for (auto& pStock : m_vStock) { if (pStock->IsDayLineNeedSaving()) ++l; }
+	for (const auto& pStock : m_vStock) {
+		if (pStock->IsDayLineNeedSaving()) ++l;
+	}
 	return l;
 }
 
