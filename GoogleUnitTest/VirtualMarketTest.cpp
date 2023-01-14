@@ -32,6 +32,42 @@ namespace FireBirdTest {
 		}
 	};
 
+	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime1) {
+		EXPECT_TRUE(gl_pVirtualMarket->IsOrdinaryTradeTime());
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime2) {
+		EXPECT_TRUE(gl_pVirtualMarket->IsOrdinaryTradeTime(0));
+		EXPECT_TRUE(gl_pVirtualMarket->IsOrdinaryTradeTime(100));
+		EXPECT_TRUE(gl_pVirtualMarket->IsOrdinaryTradeTime(gl_pVirtualMarket->GetMarketTime()));
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsWorkingTime1) {
+		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingTime());
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsWorkingTime2) {
+		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingTime(0));
+		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingTime(100));
+		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingTime(gl_pVirtualMarket->GetMarketTime()));
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsDummyTime1) {
+		EXPECT_FALSE(gl_pVirtualMarket->IsDummyTime());
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsDummyTime2) {
+		EXPECT_FALSE(gl_pVirtualMarket->IsDummyTime(0));
+		EXPECT_FALSE(gl_pVirtualMarket->IsDummyTime(100));
+		EXPECT_FALSE(gl_pVirtualMarket->IsDummyTime(gl_pVirtualMarket->GetMarketTime()));
+	}
+
+	TEST_F(CVirtualMarketTest, TestIsTimeToResetSystem) {
+		EXPECT_FALSE(gl_pVirtualMarket->IsTimeToResetSystem(0));
+		EXPECT_FALSE(gl_pVirtualMarket->IsTimeToResetSystem(1000));
+		EXPECT_FALSE(gl_pVirtualMarket->IsTimeToResetSystem(gl_pVirtualMarket->GetMarketTime()));
+	}
+
 	TEST_F(CVirtualMarketTest, TestIsReadyToRun) {
 		EXPECT_TRUE(gl_pVirtualMarket->IsReadyToRun());
 		gl_pVirtualMarket->SetReadyToRun(false);

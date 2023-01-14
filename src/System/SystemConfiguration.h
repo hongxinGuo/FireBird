@@ -28,6 +28,9 @@ public:
 
 	void UpdateSystem(void); // 使用本参数去更新系统
 
+	void ChangeFinnhubAccountTypeToFree();
+	void ChangeFinnhubAccountTypeToPaid();
+
 	void SetDefaultFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
 	[[nodiscard]] CString GetDefaultFileDirectory(void) { return m_strDirectory; }
 
@@ -221,6 +224,9 @@ public:
 
 	[[nodiscard]] bool IsInitialized(void) const noexcept { return m_fInitialized; }
 
+	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
+	void SetUpdate(bool fFlag) noexcept { m_fUpdate = fFlag; }
+
 public:
 
 protected:
@@ -239,13 +245,16 @@ protected:
 	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器
 	int m_iChinaMarketRTDataInquiryTime; // 中国市场实时数据查询间隔时间
 
-	int m_iWorldMarketFinnhubInquiryTime; // 每次查询间隔时间，单位为毫秒
-	int m_iWorldMarketTiingoInquiryTime; // 每次查询间隔时间，单位为毫秒
-	int m_iWorldMarketQuandlInquiryTime; // 每次查询间隔时间，单位为毫秒
-
-	CString m_strFinnhubToken;
+	// World Market
+	CString m_strFinnhubToken; // 令牌
 	CString m_strTiingoToken;
 	CString m_strQuandlToken;
+	bool m_bFinnhubAccountFeePaid; // 付费账户或者免费账户
+	bool m_bTiingoAccountFeePaid;
+	bool m_bQuandlAccountFeePaid;
+	int m_iWorldMarketFinnhubInquiryTime; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	int m_iWorldMarketTiingoInquiryTime; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
+	int m_iWorldMarketQuandlInquiryTime; // 每次查询间隔时间，单位为毫秒
 
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket;

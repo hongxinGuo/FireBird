@@ -1,3 +1,4 @@
+#include "SystemConfiguration.h"
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -46,9 +47,12 @@ std::string gl_sSystemConfiguration = R"(
 },
 
 "WorldMarket" : {
-	"FinnhubToken" : "&token=bv985d748v6ujthqfke0",
-	"TiingoToken" : "&token=c897a00b7cfc2adffc630d23befd5316a4683156",
+	"FinnhubToken" : "bv985d748v6ujthqfke0",
+	"FinnhubAccountFeePaid" : true,
+	"TiingoToken" : "c897a00b7cfc2adffc630d23befd5316a4683156",
+	"TiingoAccountFeePaid" : false,
 	"QuandlToken" : "aBMXMyoTyiy_N3pMb3ex",
+	"QuandlAccountFeePaid" : false,
 	"FinnhubInquiryTime" : 1100,
 	"TiingoInquiryTime" : 9000,
 	"QuandlInquiryTime" : 36000
@@ -101,12 +105,15 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iTengxunRTDataInquiryPerTime = 900;
 
 	// World Market
-	m_strFinnhubToken = "&token=bv985d748v6ujthqfke0"; // Finnhub token
-	m_strTiingoToken = "&token=c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
+	m_strFinnhubToken = "bv985d748v6ujthqfke0"; // Finnhub token
+	m_strTiingoToken = "c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
 	m_strQuandlToken = _T(""); // Quandl token
 	m_iWorldMarketFinnhubInquiryTime = 1100; // 默认每小时最多查询3300次
 	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
 	m_iWorldMarketQuandlInquiryTime = 3600000 / 100; // 默认每小时最多查询100次
+	m_bFinnhubAccountFeePaid = true; // 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
+	m_bQuandlAccountFeePaid = true;// 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
+	m_bQuandlAccountFeePaid = true;// 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
 
 	// WebSocket
 	m_bUsingFinnhubWebSocket = true; // 是否使用Finnhub的WebSocket
@@ -218,13 +225,25 @@ void CSystemConfiguration::Update() {
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
+			m_bFinnhubAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("FinnhubAccountFeePaid");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
 			sTemp = m_systemConfiguration.at("WorldMarket").at("TiingoToken"); // Tiingo token
 			m_strTiingoToken = sTemp.c_str();
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
+			m_bTiingoAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("TiingoAccountFeePaid");
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
 			sTemp = m_systemConfiguration.at("WorldMarket").at("QuandlToken"); // Quandl token
 			m_strQuandlToken = sTemp.c_str();
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			m_bQuandlAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("QuandlAccountFeePaid");
 		}
 		catch (json::out_of_range&) { m_fUpdate = true; }
 		try {
@@ -316,8 +335,11 @@ void CSystemConfiguration::UpdateJson(void) {
 
 	// World market
 	m_systemConfiguration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
+	m_systemConfiguration["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
 	m_systemConfiguration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
+	m_systemConfiguration["WorldMarket"]["TiingoAccountFeePaid"] = m_bTiingoAccountFeePaid;
 	m_systemConfiguration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
+	m_systemConfiguration["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
 	m_systemConfiguration["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
 	m_systemConfiguration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
 	m_systemConfiguration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
@@ -338,7 +360,25 @@ void CSystemConfiguration::UpdateJson(void) {
 	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
 }
 
-void CSystemConfiguration::UpdateSystem(void) { if (m_iBackgroundThreadPermittedNumber > 8) { for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) { gl_BackGroundTaskThread.release(); } } }
+void CSystemConfiguration::UpdateSystem(void) {
+	if (m_iBackgroundThreadPermittedNumber > 8) {
+		for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) {
+			gl_BackGroundTaskThread.release();
+		}
+	}
+}
+
+void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
+	m_bFinnhubAccountFeePaid = false;
+	m_iWorldMarketFinnhubInquiryTime = 1100; // 每次1100毫秒
+	m_fUpdate = true;
+}
+
+void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
+	m_bFinnhubAccountFeePaid = true;
+	m_iWorldMarketFinnhubInquiryTime = 220; // 每次220毫秒
+	m_fUpdate = true;
+}
 
 bool CSystemConfiguration::LoadDB() {
 	fstream f(GetDefaultFileDirectoryAndName(), ios::in);

@@ -42,9 +42,9 @@ public:
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
 
-	[[nodiscard]] bool IsDayLineDBUpdated(void) const noexcept;
-	[[nodiscard]] bool IsUpdateStockCodeDB(void) const;
-	[[nodiscard]] bool IsDayLineNeedUpdate(void) const noexcept;
+	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
+	[[nodiscard]] bool IsUpdateStockCodeDB(void) noexcept;
+	[[nodiscard]] bool IsDayLineNeedUpdate(void) noexcept;
 	void SetAllDayLineNeedMaintain(void);
 	void SetAllDayLineNeedUpdate(void);
 	[[nodiscard]] bool IsDayLineNeedSaving(void) const;
@@ -72,7 +72,7 @@ public:
 	bool Choice10RSStrong1StockSet(void);
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-	bool SortStockVector(void);
+	bool SortStock(void);
 	[[nodiscard]] double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
 	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseDayLineDataInquiringIndex = lIndex; }

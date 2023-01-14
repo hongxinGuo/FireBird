@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"TimeConvert.h"
+#include"SystemConfiguration.h"
 
 #include"FinnhubInquiryType.h"
 #include"FinnhubInaccessibleExchange.h"
@@ -140,6 +141,9 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 		break;
 	case ECONOMIC_CALENDAR_:
 		m_fEconomicCalendarUpdated = true;
+		if (m_pCurrentProduct->IsNoRightToAccess()) {
+			gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+		}
 		break;
 	default:
 		TRACE("未处理指令%d\n", m_pCurrentProduct->GetProductType());
@@ -181,13 +185,13 @@ bool CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) {
 		// 下午五时重启系统，故而此时不允许接收网络信息。
+		InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 		InquireCountryList();
 		InquireForexExchange();
 		InquireCryptoExchange();
 		InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
 		InquireForexSymbol();
 		InquireCryptoSymbol();
-		InquireEconomicCalendar();
 
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
@@ -601,13 +605,11 @@ bool CFinnhubDataSource::InquireEconomicCalendar(void) {
 	constexpr int iInquiryType = ECONOMIC_CALENDAR_;
 
 	if (!IsInquiring() && !IsEconomicCalendarUpdated()) {
-		if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, _T("ALL"))) {
-			const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
-			StoreInquiry(product);
-			SetInquiring(true);
-		}
-		else { SetEconomicCalendarUpdated(true); }
+		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+		StoreInquiry(product);
+		SetInquiring(true);
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar updated"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub ecomomic calendar"));
 		return true;
 	}
 	return false;

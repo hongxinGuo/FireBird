@@ -16,8 +16,7 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
 
-#include<thread>
-using std::thread;
+using namespace std;
 
 CDataChinaStock::CDataChinaStock() { Reset(); }
 
@@ -66,7 +65,8 @@ CChinaStockPtr CDataChinaStock::GetStock(const CString& strStockCode) {
 }
 
 CChinaStockPtr CDataChinaStock::GetStock(const long lIndex) {
-	try { return m_vStock.at(lIndex); } catch (exception& e) {
+	try { return m_vStock.at(lIndex); }
+	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStock "), e);
 		return nullptr;
 	}
@@ -128,7 +128,7 @@ long CDataChinaStock::LoadStockCodeDB(void) {
 	setChinaStockSymbol.m_pDatabase->CommitTrans();
 	setChinaStockSymbol.Close();
 	m_lLoadedStock = m_vStock.size();
-	SortStockVector();
+	SortStock();
 
 	return lDayLineNeedCheck;
 }
@@ -173,12 +173,15 @@ bool CDataChinaStock::UpdateStockCodeDB(void) {
 	return true;
 }
 
-bool CDataChinaStock::IsDayLineDBUpdated(void) const noexcept {
-	for (auto& pStock : m_vStock) { if (pStock->IsDayLineDBUpdated()) return true; }
-	return false;
+bool CDataChinaStock::IsDayLineDBUpdated(void) noexcept {
+	return ranges::any_of(m_vStock, [](const CChinaStockPtr& pStock) { return pStock->IsDayLineDBUpdated(); });
 }
 
-void CDataChinaStock::ClearDayLineDBUpdatedFlag(void) const noexcept { for (auto& pStock : m_vStock) { pStock->SetDayLineDBUpdated(false); } }
+void CDataChinaStock::ClearDayLineDBUpdatedFlag(void) const noexcept {
+	for (auto& pStock : m_vStock) {
+		pStock->SetDayLineDBUpdated(false);
+	}
+}
 
 INT64 CDataChinaStock::GetTotalAttackBuyAmount(void) const {
 	INT64 lAmount = 0;
@@ -279,15 +282,22 @@ long CDataChinaStock::GetNextIndex(long lIndex) const {
 }
 
 bool CDataChinaStock::TaskProcessRTData(void) const {
-	for (auto& pStock : m_vStock) { if (pStock->IsActive()) { pStock->ProcessRTData(); } }
+	for (auto& pStock : m_vStock) {
+		if (pStock->IsActive()) {
+			pStock->ProcessRTData();
+		}
+	}
 	return true;
 }
 
-void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) const { for (auto& pStock : m_vStock) { pStock->SetDayLineNeedUpdate(false); } }
+void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) const {
+	for (auto& pStock : m_vStock) {
+		pStock->SetDayLineNeedUpdate(false);
+	}
+}
 
-bool CDataChinaStock::IsUpdateStockCodeDB(void) const {
-	for (const auto& pStock : m_vStock) { if (pStock->IsUpdateProfileDB()) return true; }
-	return false;
+bool CDataChinaStock::IsUpdateStockCodeDB(void) noexcept {
+	return ranges::any_of(m_vStock, [](CChinaStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,20 +306,22 @@ bool CDataChinaStock::IsUpdateStockCodeDB(void) const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CDataChinaStock::GetStockName(const CString& strStockCode) {
-	try { return (m_vStock.at(m_mapStock.at(strStockCode))->GetDisplaySymbol()); } catch (exception& e) {
+	try { return (m_vStock.at(m_mapStock.at(strStockCode))->GetDisplaySymbol()); }
+	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
 		return _T("");
 	}
 }
 
 bool CDataChinaStock::UnloadDayLine(void) noexcept {
-	for (const auto& pStock : m_vStock) { pStock->UnloadDayLine(); }
-
+	for (const auto& pStock : m_vStock) {
+		pStock->UnloadDayLine();
+	}
 	return true;
 }
 
-bool CDataChinaStock::SortStockVector(void) {
-	sort(m_vStock.begin(), m_vStock.end(), CompareChinaStock);
+bool CDataChinaStock::SortStock(void) {
+	ranges::sort(m_vStock, [](const CChinaStockPtr& p1, const CChinaStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
 	m_mapStock.clear();
 	int j = 0;
 	for (const auto& pStock : m_vStock) {
@@ -321,8 +333,8 @@ bool CDataChinaStock::SortStockVector(void) {
 	return true;
 }
 
-bool CDataChinaStock::IsDayLineNeedUpdate(void) const noexcept {
-	for (auto& pStock : m_vStock) { if (pStock->IsDayLineNeedUpdate()) return true; }
+bool CDataChinaStock::IsDayLineNeedUpdate(void) noexcept {
+	return ranges::any_of(m_vStock, [](CChinaStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
 	return false;
 }
 

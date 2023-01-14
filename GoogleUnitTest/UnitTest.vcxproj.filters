@@ -573,6 +573,9 @@
     <ClCompile Include="TiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
+    <ClCompile Include="DataWorldStockTest.cpp">
+      <Filter>Test源文件\Data Class\World Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

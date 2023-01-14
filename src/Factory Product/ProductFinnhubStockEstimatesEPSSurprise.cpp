@@ -80,6 +80,7 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}
-	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
+		[](CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

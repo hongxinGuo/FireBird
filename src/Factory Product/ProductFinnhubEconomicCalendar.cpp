@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// Finnhub经济日历。
+///	此信息为premium，使用此信息来判断finnhub账户类型（免费还是付费）
+///
+///
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
 #include"jsonParse.h"
@@ -21,7 +29,7 @@ CString CProductFinnhubEconomicCalendar::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	dynamic_cast<CWorldMarket*>(m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);

@@ -241,7 +241,7 @@ public:
 	// 选择10日强势股票集（一次峰值）
 	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, const int iIndex) { return m_dataChinaStock.Choice10RSStrongStockSet(pRef, iIndex); }
 
-	bool IsDayLineNeedUpdate(void) const noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
+	bool IsDayLineNeedUpdate(void) noexcept { return m_dataChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess(void);
 	bool IsDayLineNeedSaving(void) const { return m_dataChinaStock.IsDayLineNeedSaving(); }
 	long GetDayLineNeedUpdateNumber(void) { return m_dataChinaStock.GetDayLineNeedUpdateNumber(); }
@@ -260,7 +260,7 @@ public:
 	bool IsTodayTempRTDataLoaded(void) const noexcept { return m_fTodayTempDataLoaded; }
 	void SetTodayTempRTDataLoaded(const bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-	bool IsDayLineDBUpdated(void) const noexcept { return m_dataChinaStock.IsDayLineDBUpdated(); }
+	bool IsDayLineDBUpdated(void) { return m_dataChinaStock.IsDayLineDBUpdated(); }
 	void ClearDayLineDBUpdatedFlag(void) const noexcept { m_dataChinaStock.ClearDayLineDBUpdatedFlag(); }
 
 	long GetRSStartDate(void) const noexcept { return m_lRSStartDate; }
@@ -370,7 +370,7 @@ public:
 		else return false;
 	}
 
-	bool IsUpdateStockCodeDB(void) const { return m_dataChinaStock.IsUpdateStockCodeDB(); }
+	bool IsUpdateStockCodeDB(void) { return m_dataChinaStock.IsUpdateStockCodeDB(); }
 	void SetUpdateOptionDB(const bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
 
 	bool IsUpdateOptionDB(void) const noexcept {

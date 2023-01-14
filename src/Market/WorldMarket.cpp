@@ -724,8 +724,8 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 //
 // 5状态下每秒接收100K左右。
 //
-// threshlodlevel 5: ALL Top-of-Book updates
-// thresholdlevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
+// threshlodLevel 5: ALL Top-of-Book updates
+// thresholdLevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {

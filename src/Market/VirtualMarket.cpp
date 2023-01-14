@@ -62,7 +62,7 @@ bool CVirtualMarket::UpdateMarketInfo(void) {
 	return true;
 }
 
-tm CVirtualMarket::TransferToMarketTime(time_t tUTC) {
+tm CVirtualMarket::TransferToMarketTime(time_t tUTC) const {
 	tm tm_{};
 
 	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
@@ -70,15 +70,15 @@ tm CVirtualMarket::TransferToMarketTime(time_t tUTC) {
 	return tm_;
 }
 
-time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) {
+time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) const {
 	return _mkgmtime(tmMarketTime) + m_lMarketTimeZone;
 }
 
-time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) {
+time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) const {
 	return ::ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
 }
 
-long CVirtualMarket::TransferToMarketDate(time_t tUTC) {
+long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
 	tm tm_{};
 
 	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
@@ -193,7 +193,7 @@ CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfMarketTime(void) {
+CString CVirtualMarket::GetStringOfMarketTime(void) const {
 	char buffer[30];
 
 	sprintf_s(buffer, _T("%02d:%02d:%02d "), m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
@@ -201,7 +201,7 @@ CString CVirtualMarket::GetStringOfMarketTime(void) {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDateTime(void) {
+CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
 	char buffer[100];
 
 	sprintf_s(buffer, _T("%04dƒÍ%02d‘¬%02d»’ %02d:%02d:%02d "), m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);

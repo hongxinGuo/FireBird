@@ -31,7 +31,8 @@ namespace FireBirdTest {
 			m_strError = strError;
 		}
 
-		~WebSocketMessageData() { }
+		~WebSocketMessageData() {
+		}
 
 	public:
 		long m_lType;
@@ -74,9 +75,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubWebSocket1, ProcessFinnhubWebSocketTest,
-	                         testing::Values(&finnhubWebSocketMessage1,
-		                         &finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &
-		                         finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
+		testing::Values(&finnhubWebSocketMessage1,
+			&finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &
+			finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
 
 	TEST_P(ProcessFinnhubWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -151,9 +152,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoIEXWebSocket1, ProcessTiingoIEXWebSocketTest,
-	                         testing::Values(&tiingoIEXWebSocketMessage1,
-		                         &tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &
-		                         tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
+		testing::Values(&tiingoIEXWebSocketMessage1,
+			&tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &
+			tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
 
 	TEST_P(ProcessTiingoIEXWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -228,10 +229,10 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCryptoWebSocket1, ProcessTiingoCryptoWebSocketTest,
-	                         testing::Values(&tiingoCryptoWebSocketMessage1,
-		                         &tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &
-		                         tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &
-		                         tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
+		testing::Values(&tiingoCryptoWebSocketMessage1,
+			&tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &
+			tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &
+			tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
 
 	TEST_P(ProcessTiingoCryptoWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -306,10 +307,10 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoForexWebSocket1, ProcessTiingoForexWebSocketTest,
-	                         testing::Values(&tiingoForexWebSocketMessage1,
-		                         &tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4
-		                         , &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &
-		                         tiingoForexWebSocketMessage7));
+		testing::Values(&tiingoForexWebSocketMessage1,
+			&tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4
+			, &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &
+			tiingoForexWebSocketMessage7));
 
 	TEST_P(ProcessTiingoForexWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -351,20 +352,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST(CallableFunctionTest, TestCompareEPSSurprise) {
-		auto p1 = make_shared<CEPSSurprise>();
-		auto p2 = make_shared<CEPSSurprise>();
-		p1->m_lDate = 0;
-		p2->m_lDate = 1;
-		EXPECT_TRUE(CompareEPSSurprise(p1, p2));
-		p1->m_lDate = 1;
-		p2->m_lDate = 1;
-		EXPECT_FALSE(CompareEPSSurprise(p1, p2));
-		p1->m_lDate = 2;
-		p2->m_lDate = 1;
-		EXPECT_FALSE(CompareEPSSurprise(p1, p2));
-	}
-
 	TEST(CallableFunctionTest, TestCompareDayLine) {
 		auto p1 = make_shared<CDayLine>();
 		auto p2 = make_shared<CDayLine>();
@@ -377,61 +364,5 @@ namespace FireBirdTest {
 		p1->SetDate(2);
 		p2->SetDate(1);
 		EXPECT_FALSE(CompareDayLineDate(p1, p2));
-	}
-
-	TEST(CallableFunctionTest, TestCompareCountryList) {
-		auto p1 = make_shared<CCountry>();
-		auto p2 = make_shared<CCountry>();
-		p1->m_strCountry = _T("abc");
-		p2->m_strCountry = _T("abd");
-		EXPECT_TRUE(CompareCountryList(p1, p2));
-		p1->m_strCountry = _T("abd");
-		p2->m_strCountry = _T("abd");
-		EXPECT_FALSE(CompareCountryList(p1, p2));
-		p1->m_strCountry = _T("abe");
-		p2->m_strCountry = _T("abd");
-		EXPECT_FALSE(CompareCountryList(p1, p2));
-	}
-
-	TEST(CallableFunctionTest, TestCompareInsiderTransaction) {
-		auto p1 = make_shared<CInsiderTransaction>();
-		auto p2 = make_shared<CInsiderTransaction>();
-		p1->m_lTransactionDate = 0;
-		p2->m_lTransactionDate = 1;
-		EXPECT_TRUE(CompareInsiderTransaction(p1, p2));
-		p1->m_lTransactionDate = 1;
-		p2->m_lTransactionDate = 1;
-		EXPECT_FALSE(CompareInsiderTransaction(p1, p2));
-		p1->m_lTransactionDate = 2;
-		p2->m_lTransactionDate = 1;
-		EXPECT_FALSE(CompareInsiderTransaction(p1, p2));
-	}
-
-	TEST(CallableFunctionTest, TestCompareChinaStock) {
-		auto p1 = make_shared<CChinaStock>();
-		auto p2 = make_shared<CChinaStock>();
-		p1->SetSymbol(_T("abc"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_TRUE(CompareChinaStock(p1, p2));
-		p1->SetSymbol(_T("abd"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_FALSE(CompareChinaStock(p1, p2));
-		p1->SetSymbol(_T("abe"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_FALSE(CompareChinaStock(p1, p2));
-	}
-
-	TEST(CallableFunctionTest, TestCompareWorldStock) {
-		auto p1 = make_shared<CWorldStock>();
-		auto p2 = make_shared<CWorldStock>();
-		p1->SetSymbol(_T("abc"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_TRUE(CompareWorldStock(p1, p2));
-		p1->SetSymbol(_T("abd"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_FALSE(CompareWorldStock(p1, p2));
-		p1->SetSymbol(_T("abe"));
-		p2->SetSymbol(_T("abd"));
-		EXPECT_FALSE(CompareWorldStock(p1, p2));
 	}
 }

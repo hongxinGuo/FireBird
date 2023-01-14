@@ -116,6 +116,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}
-	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(), CompareInsiderSentiment);
+	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
+		[](CInsiderSentimentPtr& p1, CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
 	return pvInsiderSentiment;
 }

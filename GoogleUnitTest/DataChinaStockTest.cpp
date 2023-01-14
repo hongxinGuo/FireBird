@@ -83,4 +83,16 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataChinaStock.GetNextIndex(l), 0) << "默认的Stock数为100";
 		EXPECT_EQ(l, 99);
 	}
+
+	TEST_F(CDataChinaStockTest, TestSortStock) {
+		auto pStock = make_shared<CChinaStock>();
+		pStock->SetSymbol(_T("0.A")); // 
+		m_dataChinaStock.Add(pStock);
+		EXPECT_STREQ(m_dataChinaStock.GetStock(m_dataChinaStock.GetStockSize() - 1)->GetSymbol(), _T("0.A"));
+
+		m_dataChinaStock.SortStock();
+		EXPECT_STREQ(m_dataChinaStock.GetStock(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
+
+		m_dataChinaStock.Delete(pStock);
+	}
 }

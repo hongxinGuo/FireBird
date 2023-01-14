@@ -81,6 +81,7 @@
     <ClCompile Include="DataChoicedIEXTest.cpp" />
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
+    <ClCompile Include="DataWorldStockTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="NeteaseRTDataSourceTest.cpp" />

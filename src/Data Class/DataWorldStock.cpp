@@ -27,7 +27,7 @@ void CDataWorldStock::Reset(void) {
 }
 
 bool CDataWorldStock::SortStock(void) {
-	sort(m_vWorldStock.begin(), m_vWorldStock.end(), CompareWorldStock);
+	ranges::sort(m_vWorldStock, [](CWorldStockPtr& p1, CWorldStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
 	m_mapWorldStock.clear();
 	int j = 0;
 	for (const auto& pStock : m_vWorldStock) {
@@ -375,24 +375,13 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 }
 
 bool CDataWorldStock::IsNeedSaveDayLine(void) {
-	for (const auto& pStock : m_vWorldStock) {
-		if (pStock->IsDayLineNeedSaving()) return true;
-	}
-	//ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p) { return p->IsDayLineNeedSaving(); });
-	return false;
+	return ranges::any_of(m_vWorldStock, [](CWorldStockPtr& p) { return p->IsDayLineNeedSaving(); });
 }
 
 bool CDataWorldStock::IsNeedSaveInsiderTransaction(void) {
-	for (const auto& pStock : m_vWorldStock) {
-		if (pStock->IsInsiderTransactionNeedSave()) return true;
-	}
-	return false;
+	return ranges::any_of(m_vWorldStock, [](CWorldStockPtr& P) { return P->IsInsiderTransactionNeedSave(); });
 }
 
 bool CDataWorldStock::IsNeedSaveInsiderSentiment(void) {
-	for (const auto& pStock : m_vWorldStock) {
-		if (pStock->IsInsiderSentimentNeedSave()) return true;
-	}
-	// ranges::any_of(m_vWorldStock.cbegin(), m_vWorldStock.cend(), [](const CWorldStockPtr p){ return p->isInsiderSentimentNeedSave();});
-	return false;
+	return ranges::any_of(m_vWorldStock, [](CWorldStockPtr& p) { return p->IsInsiderSentimentNeedSave(); });
 }

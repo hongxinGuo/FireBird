@@ -23,7 +23,7 @@ CString CProductFinnhubEconomicCountryList::CreateMessage(void) {
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) { if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry); } }
@@ -69,6 +69,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}
-	ranges::sort(pvCountry->begin(), pvCountry->end(), CompareCountryList);
+	ranges::sort(pvCountry->begin(), pvCountry->end(),
+		[](CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
 	return pvCountry;
 }

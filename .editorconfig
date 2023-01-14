@@ -135,8 +135,9 @@ tab_width = 2
 [*]
 
 # ReSharper properties
+resharper_align_multiline_argument = false
 resharper_align_ternary = none
-resharper_anonymous_method_declaration_braces = end_of_line
+resharper_anonymous_method_declaration_braces = next_line_shifted
 resharper_case_block_braces = end_of_line
 resharper_continuous_line_indent = none
 resharper_cpp_indent_size = 2

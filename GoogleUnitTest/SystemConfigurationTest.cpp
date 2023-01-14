@@ -42,11 +42,15 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
-		EXPECT_TRUE(sTemp == _T("&token=bv985d748v6ujthqfke0"));
+		EXPECT_TRUE(sTemp == _T("bv985d748v6ujthqfke0"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoToken"));
-		EXPECT_TRUE(sTemp == _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
 		EXPECT_TRUE(sTemp == _T("aBMXMyoTyiy_N3pMb3ex"));
+
+		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
+		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoAccountFeePaid")));
+		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
 
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
@@ -82,7 +86,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 3600000 / 3000) << "默认每小时查询最大数量为3000";
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100) << "默认每次查询时间为1100毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
@@ -107,6 +111,19 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountToFree) {
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
+		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
+
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
+		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
+
+		gl_systemConfiguration.SetUpdate(false);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSave) {

@@ -16,6 +16,8 @@
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"
 
+using namespace std;
+
 CWorldStock::CWorldStock() : CVirtualStock() {
 	CWorldStock::Reset();
 }
@@ -389,12 +391,13 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 		pInsiderTransaction = m_vInsiderTransaction.at(i);
 		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-		            [pInsiderTransaction](CInsiderTransactionPtr& p) {
-			            return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-				            && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-				            && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-				            && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-		            }) == vInsiderTransaction.end()) {
+			[pInsiderTransaction](CInsiderTransactionPtr& p)
+				{
+				return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+					&& (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+					&& (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+					&& (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+				}) == vInsiderTransaction.end()) {
 			// 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
 			pInsiderTransaction->Append(setSaveInsiderTransaction);
 		}
@@ -433,9 +436,10 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 		pInsiderSentiment = m_vInsiderSentiment.at(i);
 		if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-		            [pInsiderSentiment](CInsiderSentimentPtr& p) {
-			            return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-		            }) == vInsiderSentiment.end()) {
+			[pInsiderSentiment](CInsiderSentimentPtr& p)
+				{
+				return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+				}) == vInsiderSentiment.end()) {
 			// 如果报告日期为新的数据，则存储该数据
 			pInsiderSentiment->Append(setSaveInsiderSentiment);
 		}
@@ -552,7 +556,7 @@ void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
-	sort(m_vCompanyNews.begin(), m_vCompanyNews.end(), CompareFinnhubCompanyNews); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
+	ranges::sort(m_vCompanyNews, [](CCompanyNewsPtr& p1, CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
