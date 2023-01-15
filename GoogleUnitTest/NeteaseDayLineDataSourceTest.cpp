@@ -68,6 +68,6 @@ namespace FireBirdTest {
 		gl_pNeteaseDayLineDataSource->SetInquiring(true);
 
 		EXPECT_TRUE(gl_pNeteaseDayLineDataSource->Inquire(0));
-		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetInquiryQueueSize(), 0) << "没有申请数据";
 	}
 }

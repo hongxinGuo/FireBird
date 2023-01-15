@@ -3,8 +3,7 @@
 #include "DataFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 
-#include<memory>
-using std::make_shared;
+using namespace std;
 
 CDataFinnhubForexSymbol::CDataFinnhubForexSymbol() { Reset(); }
 
@@ -98,6 +97,5 @@ bool CDataFinnhubForexSymbol::UpdateDB(void) {
 }
 
 bool CDataFinnhubForexSymbol::IsNeedUpdate(void) {
-	for (auto& pForex : m_vForexSymbol) { if (pForex->IsUpdateProfileDB()) { return true; } }
-	return false;
+	return ranges::any_of(m_vForexSymbol, [](const CForexSymbolPtr& pForex) { return pForex->IsUpdateProfileDB(); });
 }

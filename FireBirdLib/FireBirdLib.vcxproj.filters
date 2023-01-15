@@ -726,7 +726,7 @@
     <ClInclude Include="..\src\Data Container\DataWorldStockDayline.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\CContainerVirtualStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\DataCryptoDayLine.h">
@@ -1316,7 +1316,7 @@
     <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\CContainerVirtualStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataCryptoDayLine.cpp">

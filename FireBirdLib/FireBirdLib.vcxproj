@@ -26,7 +26,7 @@
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
-    <ClInclude Include="..\src\Data Container\CContainerVirtualStock.h" />
+    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
     <ClInclude Include="..\src\Data Container\DataChinaDayLine.h" />
     <ClInclude Include="..\src\Data Container\DataChinaStock.h" />
     <ClInclude Include="..\src\Data Container\DataChinaWeekLine.h" />
@@ -219,7 +219,7 @@
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
-    <ClCompile Include="..\src\Data Container\CContainerVirtualStock.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaWeekLine.cpp" />

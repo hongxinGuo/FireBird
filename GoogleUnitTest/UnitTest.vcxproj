@@ -74,6 +74,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp" />
+    <ClCompile Include="ContainerVirtualStockTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="DataChinaStockTest.cpp" />
     <ClCompile Include="DataChoicedCryptoTest.cpp" />

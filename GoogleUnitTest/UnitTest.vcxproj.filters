@@ -591,6 +591,9 @@
     <ClCompile Include="ProductNeteaseRTTestcpp.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
+    <ClCompile Include="ContainerVirtualStockTest.cpp">
+      <Filter>Test源文件\Data Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
