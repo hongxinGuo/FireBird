@@ -82,10 +82,6 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\vld\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\OPenSSL\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\\\x64\\debug\\*.dll</Source>
-								<Source>.\\x64\\debug\\zlibwapi.dll</Source>
-	              <Source>C:\\fireBird\\libcurl.dll</Source>
-	              <Source>C:\\x64\\zlibwapi.dll</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
 	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\*.*</Source>
 	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\lib\\*.*</Source>

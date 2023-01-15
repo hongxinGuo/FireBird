@@ -11,6 +11,8 @@
 // debug模式下，解析900个NeteaseRTData，nlohmann json耗时160毫秒，PTree耗时120毫秒。
 // release模式下，解析900个NeteaseRTData，nlohmann json耗时16毫秒，PTree耗时35毫秒。
 //
+// 决定只使用nlohmann json解析json制式数据，不再使用boost PropertyTree。
+//
 // 在Debug模式下，无论怎样调整编译参数，由于连接的动态系统库是debug模式（/MDd），且该json库使用的std库为调试模式，故而其解析速度无法与release模式相比。
 //
 // Debug模式下，本文件采用全局优化(/GL)等优化选项，其他文件使用默认值。

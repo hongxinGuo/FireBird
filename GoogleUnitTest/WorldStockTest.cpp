@@ -38,16 +38,16 @@ namespace FireBirdTest {
 		CWorldStock stock;
 		stock.ResetAllUpdateDate();
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800102);
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800103);
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800104);
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800105);
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800106);
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800107);
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800108);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
 
 		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), 19800102);
+		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), 19800101);
 	}
 
 	TEST_F(CWorldStockTest, TestGetRatio) {
@@ -303,57 +303,57 @@ namespace FireBirdTest {
 	TEST_F(CWorldStockTest, TestGetProfileUpdateDate) {
 		CWorldStock stock;
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
-		stock.SetProfileUpdateDate(10101010);
-		EXPECT_EQ(stock.GetProfileUpdateDate(), 10101010);
+		stock.SetProfileUpdateDate(10101016);
+		EXPECT_EQ(stock.GetProfileUpdateDate(), 10101016);
 	}
 
 	TEST_F(CWorldStockTest, TestGetCompanyNewsUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800102);
-		stock.SetCompanyNewsUpdateDate(10101010);
-		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
+		stock.SetCompanyNewsUpdateDate(10101017);
+		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 10101017);
 	}
 
 	TEST_F(CWorldStockTest, TestGetBasicFinancialUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800103);
-		stock.SetBasicFinancialUpdateDate(10101010);
-		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800101);
+		stock.SetBasicFinancialUpdateDate(10101018);
+		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 10101018);
 	}
 
 	TEST_F(CWorldStockTest, TestGetLastRTDataUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800104);
-		stock.SetLastRTDataUpdateDate(10101010);
-		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
+		stock.SetLastRTDataUpdateDate(10101011);
+		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 10101011);
 	}
 
 	TEST_F(CWorldStockTest, TestPeerUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800105);
-		stock.SetPeerUpdateDate(10101010);
-		EXPECT_EQ(stock.GetPeerUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
+		stock.SetPeerUpdateDate(10101012);
+		EXPECT_EQ(stock.GetPeerUpdateDate(), 10101012);
 	}
 
 	TEST_F(CWorldStockTest, TestInsiderTransactionUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800106);
-		stock.SetInsiderTransactionUpdateDate(10101010);
-		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
+		stock.SetInsiderTransactionUpdateDate(10101013);
+		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101013);
 	}
 
 	TEST_F(CWorldStockTest, TestGetInsiderSentimentUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800107);
-		stock.SetInsiderSentimentUpdateDate(10101010);
-		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
+		stock.SetInsiderSentimentUpdateDate(10101014);
+		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 10101014);
 	}
 
 	TEST_F(CWorldStockTest, TestLastEPSSurpriseUpdateDate) {
 		CWorldStock stock;
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800108);
-		stock.SetLastEPSSurpriseUpdateDate(10101010);
-		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101010);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
+		stock.SetLastEPSSurpriseUpdateDate(10101015);
+		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101015);
 	}
 
 	TEST_F(CWorldStockTest, TestIsProfileUpdated) {

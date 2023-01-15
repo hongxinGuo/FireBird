@@ -197,7 +197,7 @@ public:
 	CString GetFinnhubIndustry(void) const { return m_strFinnhubIndustry; }
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	json GetPeer(void) { return m_jsonPeer; }
-	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer;	}
+	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();
@@ -210,7 +210,7 @@ public:
 	void SetPeerUpdateDate(long lDate) noexcept;
 	long GetInsiderTransactionUpdateDate();
 	void SetInsiderTransactionUpdateDate(long lDate) noexcept;
-	long GetInsiderSentimentUpdateDate() const;
+	long GetInsiderSentimentUpdateDate();
 	void SetInsiderSentimentUpdateDate(long lDate) noexcept;
 	long GetLastEPSSurpriseUpdateDate();
 	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept;

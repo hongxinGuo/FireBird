@@ -25,15 +25,3 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 
 	return 13;
 }
-
-/// <summary>
-/// 此线程与存储实时数据的线程互斥。
-/// </summary>
-/// <param name="pMarket"></param>
-/// <returns></returns>
-UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket) {
-	gl_ProcessChinaMarketRTData.acquire();
-	pMarket->TaskProcessRTData();
-	gl_ProcessChinaMarketRTData.release();
-	return 107;
-}

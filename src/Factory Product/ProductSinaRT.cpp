@@ -21,7 +21,7 @@ bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
 
 	pvWebRTData = ParseSinaRTData(pWebData);
-	for (auto& pRTData : *pvWebRTData) {
+	for (const auto& pRTData : *pvWebRTData) {
 		gl_pChinaMarket->PushSinaRT(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 

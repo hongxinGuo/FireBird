@@ -1262,8 +1262,6 @@
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Windows interface\StockAnalysisDoc.cpp" />
-    <ClCompile Include="..\src\Windows interface\StockAnalysisView.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -1329,6 +1327,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataStockSymbol.cpp">
       <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
+      <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

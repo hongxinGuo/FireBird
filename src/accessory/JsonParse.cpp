@@ -255,7 +255,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 		// 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsProcessedAllTheData()) {
 			auto pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadTengxunData(pWebData)) { pvWebRTData->push_back(pRTData); }
+			if (pRTData->ReadTengxunData(pWebData)) {
+				pvWebRTData->push_back(pRTData);
+			}
 			else {
 				break; // 后面的数据出问题，抛掉不用。
 			}

@@ -105,16 +105,16 @@ void CWorldStock::Reset(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldStock::ResetAllUpdateDate(void) {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800102;
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800103;
-	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = 19800104;
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = 19800105;
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = 19800106;
-	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = 19800107;
-	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800108;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 	//Tiingo自成一体
 	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800102;
+	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800101;
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
@@ -789,7 +789,7 @@ void CWorldStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = lDate;
 }
 
-long CWorldStock::GetInsiderSentimentUpdateDate(void) const {
+long CWorldStock::GetInsiderSentimentUpdateDate(void) {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
 		return lDate;

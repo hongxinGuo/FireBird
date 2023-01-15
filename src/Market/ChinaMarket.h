@@ -80,7 +80,7 @@ public:
 
 	void TaskGetActiveStockSize(void);
 
-	//处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
+	//处理个股票的实时数据，计算挂单变化等。
 	bool TaskProcessRTData(void) const { return m_dataChinaStock.TaskProcessRTData(); }
 
 	// 是否所有股票的历史日线数据都查询过一遍了

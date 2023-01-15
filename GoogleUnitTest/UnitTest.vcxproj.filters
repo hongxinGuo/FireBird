@@ -576,6 +576,21 @@
     <ClCompile Include="DataWorldStockTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
+    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductDummyTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductSinaRTTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTengxunRTTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductNeteaseRTTestcpp.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

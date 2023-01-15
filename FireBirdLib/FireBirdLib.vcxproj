@@ -370,8 +370,8 @@
     <ClCompile Include="..\src\Windows interface\MainFrm.cpp" />
     <ClCompile Include="..\src\Windows interface\OutputWnd.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
-    <ClCompile Include="..\src\Windows interface\StockAnalysisDoc.cpp" />
-    <ClCompile Include="..\src\Windows interface\StockAnalysisView.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp" />
