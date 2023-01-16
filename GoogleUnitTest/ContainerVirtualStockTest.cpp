@@ -40,13 +40,13 @@ namespace FireBirdTest {
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap1) {
 		const CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
 
-		EXPECT_TRUE(m_containerVirtualStock.IsInSymbolMap(strSymbol)) << "位于1-100之间";
+		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap2) {
 		const CString strSymbol = gl_pChinaMarket->GetStock(101)->GetSymbol();
 
-		EXPECT_FALSE(m_containerVirtualStock.IsInSymbolMap(strSymbol)) << "位于1-100之间";
+		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestIsUpdateProfileDB1) {

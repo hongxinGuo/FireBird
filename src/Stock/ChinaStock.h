@@ -51,9 +51,6 @@ public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
 
 	// 本股票各变量状态
-	long GetOffset(void) const noexcept { return m_lOffsetInContainer; }
-	void SetOffset(const long lValue) noexcept { m_lOffsetInContainer = lValue; }
-
 	long GetHighLimit(void) const noexcept { return m_lHighLimit; }
 	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
 	long GetLowLimit(void) const noexcept { return m_lLowLimit; }
@@ -400,7 +397,6 @@ public:
 	void TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 public:
 protected:
-	long m_lOffsetInContainer; // 在容器中的偏移量
 	short m_nHand; // 每手股数
 
 	long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）

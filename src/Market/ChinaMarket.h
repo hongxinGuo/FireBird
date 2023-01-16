@@ -137,6 +137,7 @@ public:
 	// 得到股票指针
 	CChinaStockPtr GetStock(const CString& strStockCode) { return m_dataChinaStock.GetStock(strStockCode); }
 	CChinaStockPtr GetStock(const long lIndex) { return m_dataChinaStock.GetStock(lIndex); }
+	size_t GetStockIndex(CChinaStockPtr pStock) { return m_dataChinaStock.GetIndex(pStock->GetSymbol()); }
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock(void) const noexcept { return m_pCurrentStock; }

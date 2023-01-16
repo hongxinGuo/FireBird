@@ -26,14 +26,17 @@ void CDataWorldStock::Reset(void) {
 	m_lLastTotalWorldStock = 0;
 }
 
-bool CDataWorldStock::SortStock(void) {
-	ranges::sort(m_vWorldStock, [](CWorldStockPtr& p1, CWorldStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+void CDataWorldStock::UpdateSymbolMap() {
 	m_mapWorldStock.clear();
 	int j = 0;
 	for (const auto& pStock : m_vWorldStock) {
 		m_mapWorldStock[pStock->GetSymbol()] = j++;
 	}
+}
 
+bool CDataWorldStock::SortStock(void) {
+	ranges::sort(m_vWorldStock, [](CWorldStockPtr& p1, CWorldStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+	UpdateSymbolMap();
 	return true;
 }
 
@@ -106,6 +109,7 @@ bool CDataWorldStock::Delete(CWorldStockPtr pStock) {
 
 	m_vWorldStock.erase(m_vWorldStock.begin() + m_mapWorldStock.at(pStock->GetSymbol()));
 	m_mapWorldStock.erase(pStock->GetSymbol());
+	UpdateSymbolMap();
 
 	return true;
 }
@@ -182,9 +186,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateStockProfileDB任务用时超过五分钟"));
 		return false;
 	}
-	else {
-		sm_fInProcess = true;
-	}
+	sm_fInProcess = true;
 
 	//更新原有的代码集状态
 	if (IsStockProfileNeedUpdate()) {
@@ -256,9 +258,7 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
 		return false;
 	}
-	else {
-		s_fInProcess = true;
-	}
+	s_fInProcess = true;
 
 	s_vStock.clear();
 	for (auto& pStock4 : m_vWorldStock) {

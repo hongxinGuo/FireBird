@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CThreadCalculateRSTest : public ::testing::Test {
+	class CThreadCalculateRSTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "与当前所选股票不一致时，则卸载已加载的日线数据";
 	}
@@ -58,7 +58,6 @@ namespace FireBirdTest {
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
-		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 			.Times(1)
@@ -66,7 +65,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_TRUE(pMockStock->IsDayLineLoaded()) << "与当前所选股票一致时，则不卸载已加载的日线数据";
 	}
@@ -80,7 +79,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -94,7 +93,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -108,7 +107,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -124,7 +123,7 @@ namespace FireBirdTest {
 			.WillOnce(Return(true));
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), (UINT)104);
+		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
 	}
@@ -140,7 +139,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "与当前所选股票不一致时，则卸载已加载的日线数据";
 	}
@@ -149,7 +148,6 @@ namespace FireBirdTest {
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
-		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 			.Times(1)
@@ -157,7 +155,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_TRUE(pMockStock->IsDayLineLoaded()) << "与当前所选股票一致时，则不卸载已加载的日线数据";
 	}
@@ -171,7 +169,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -185,7 +183,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -199,7 +197,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -215,7 +213,7 @@ namespace FireBirdTest {
 			.WillOnce(Return(true));
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), (UINT)105);
+		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
 	}
@@ -231,7 +229,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "与当前所选股票不一致时，则卸载已加载的日线数据";
 	}
@@ -240,7 +238,6 @@ namespace FireBirdTest {
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_systemStatus.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
-		pMockStock->SetOffset(gl_pChinaMarket->GetStock(_T("600000.SS"))->GetOffset()); // 设置此变量以防止函数报错。
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 			.Times(1)
@@ -248,7 +245,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_TRUE(pMockStock->IsDayLineLoaded()) << "与当前所选股票一致时，则不卸载已加载的日线数据";
 	}
@@ -262,7 +259,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -276,7 +273,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -290,7 +287,7 @@ namespace FireBirdTest {
 			.Times(0);
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 	}
@@ -306,7 +303,7 @@ namespace FireBirdTest {
 			.WillOnce(Return(true));
 		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
 			.Times(0);
-		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), (UINT)106);
+		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 1);
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "日线数据已卸载";
 	}

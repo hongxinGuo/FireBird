@@ -1,4 +1,5 @@
-﻿#include "pch.h"
+﻿#include "ContainerVirtualStock.h"
+#include "pch.h"
 
 #include "ContainerVirtualStock.h"
 
@@ -16,9 +17,17 @@ bool CContainerVirtualStock::IsUpdateProfileDB(void) {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
+bool CContainerVirtualStock::IsDayLineNeedUpdate(void) noexcept {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
+}
+
+bool CContainerVirtualStock::IsDayLineNeedSaving(void) {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
+}
+
 bool CContainerVirtualStock::Add(CVirtualStockPtr pStock) {
 	if (pStock == nullptr) return false;
-	if (IsInSymbolMap(pStock->GetSymbol())) return false;
+	if (IsSymbol(pStock->GetSymbol())) return false;
 
 	m_mapSymbol[pStock->GetSymbol()] = m_vStock.size(); // 使用下标生成新的映射
 	m_vStock.push_back(pStock);
@@ -28,7 +37,7 @@ bool CContainerVirtualStock::Add(CVirtualStockPtr pStock) {
 
 bool CContainerVirtualStock::Delete(CVirtualStockPtr pStock) {
 	if (pStock == nullptr) return false;
-	if (!IsInSymbolMap(pStock->GetSymbol())) return false;
+	if (!IsSymbol(pStock->GetSymbol())) return false;
 
 	m_vStock.erase(m_vStock.begin() + m_mapSymbol.at(pStock->GetSymbol()));
 	m_mapSymbol.erase(pStock->GetSymbol());

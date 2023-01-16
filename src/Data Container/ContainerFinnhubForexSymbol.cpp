@@ -24,7 +24,7 @@ bool CContainerFinnhubForexSymbol::LoadDB(void) {
 	setForexSymbol.Open();
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
-		if (!IsInSymbolMap(setForexSymbol.m_Symbol)) {
+		if (!IsSymbol(setForexSymbol.m_Symbol)) {
 			const auto pSymbol = make_shared<CFinnhubForexSymbol>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();

@@ -196,7 +196,7 @@ bool CChinaMarket::CheckMarketReady(void) {
 
 bool CChinaMarket::ChangeToNextStock(void) {
 	ASSERT(m_pCurrentStock != nullptr);
-	const long lIndex = m_pCurrentStock->GetOffset();
+	const long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
@@ -227,7 +227,7 @@ bool CChinaMarket::ChangeToNextStock(void) {
 
 bool CChinaMarket::ChangeToPrevStock(void) {
 	ASSERT(m_pCurrentStock != nullptr);
-	const long lIndex = m_pCurrentStock->GetOffset();
+	const long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
@@ -287,7 +287,6 @@ bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool 
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
 	pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
-	pStock->SetOffset(GetTotalStock());
 	pStock->SetDayLineEndDate(19900101);
 	pStock->SetDayLineStartDate(19900101);
 	pStock->SetUpdateProfileDB(true);

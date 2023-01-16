@@ -21,7 +21,7 @@ namespace FireBirdTest {
 	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
 	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
 
-	class CChinaStockTest : public ::testing::Test {
+	class CChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -322,7 +322,6 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineStartDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -347,17 +346,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
 		stock.SetSymbol(_T("abcde"));
 		stock.SetDisplaySymbol(_T("dcba"));
-		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
-		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		stock.Reset();
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 	}
@@ -367,13 +363,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		stock.SetDisplaySymbol(_T("浦发银行"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("浦发银行"));
-	}
-
-	TEST_F(CChinaStockTest, TestGetOffset) {
-		CChinaStock stock;
-		EXPECT_EQ(stock.GetOffset(), -1);
-		stock.SetOffset(10101);
-		EXPECT_EQ(stock.GetOffset(), 10101);
 	}
 
 	TEST_F(CChinaStockTest, TestGetHighLimit) {
@@ -454,17 +443,14 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetSymbol(_T("abcde"));
 		stock.SetDisplaySymbol(_T("dcba"));
-		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
-		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		pRTData->SetTransactionTime(12345);
 		pRTData->SetLastClose(10101010);
@@ -487,7 +473,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsNotChecked());
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 
@@ -516,22 +501,18 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetSymbol(_T("abcde"));
 		stock.SetDisplaySymbol(_T("dcba"));
-		stock.SetOffset(1);
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
 		EXPECT_STREQ(stock.GetSymbol(), _T("abcde"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("dcba"));
-		EXPECT_EQ(stock.GetOffset(), 1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 		stock.Reset();
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 
@@ -561,7 +542,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
-		EXPECT_EQ(stock.GetOffset(), -1);
 		EXPECT_EQ(stock.GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.IsNotChecked());
 
@@ -573,8 +553,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetVolume(), 6060606060606060);
 		EXPECT_EQ(stock.GetAmount(), 7070707070707070);
 		EXPECT_EQ(stock.GetUpDown(), pRTData->GetNew() - pRTData->GetLastClose());
-		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), (double)(pRTData->GetNew() - pRTData->GetLastClose()) * 100 / pRTData->GetLastClose());
-		if (pRTData->GetTotalValue() != 0) { EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), (double)(pRTData->GetAmount()) * 100 / pRTData->GetTotalValue()); }
+		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), static_cast<double>(pRTData->GetNew() - pRTData->GetLastClose()) * 100 / pRTData->GetLastClose());
+		if (pRTData->GetTotalValue() != 0) { EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), static_cast<double>(pRTData->GetAmount()) * 100 / pRTData->GetTotalValue()); }
 		else { EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0); }
 		EXPECT_EQ(stock.GetTotalValue(), pRTData->GetTotalValue());
 		EXPECT_EQ(stock.GetCurrentValue(), pRTData->GetCurrentValue());
@@ -616,7 +596,7 @@ namespace FireBirdTest {
 		stock.SetVolume(6060606060);
 		stock.SetAmount(70707070707);
 		stock.SetUpDown(stock.GetOpen() - stock.GetNew());
-		stock.SetUpDownRate((double)stock.GetUpDown() / stock.GetLastClose() * 100);
+		stock.SetUpDownRate(static_cast<double>(stock.GetUpDown()) / stock.GetLastClose() * 100);
 		stock.SetCurrentValue(8080808080808);
 		stock.SetTotalValue(9090909090909);
 
@@ -1067,7 +1047,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetAttackSellAbove200000(), 101010102);
 	}
 
-	TEST_F(CChinaStockTest, TestReadOnlyFunctions) { }
+	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
+	}
 
 	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
 		CChinaStock stock;
@@ -1219,7 +1200,6 @@ namespace FireBirdTest {
 		stock.SetDescription(_T("abcdefg"));
 		stock.SetExchangeCode(_T("SS"));
 		stock.SetSymbol(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
-		stock.SetOffset(13000);
 		stock.SetDisplaySymbol(_T("未使用过"));
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
@@ -1414,7 +1394,7 @@ namespace FireBirdTest {
 		pStock->SetVolume(60606060606060);
 		pStock->SetAmount(707070707070707);
 		pStock->SetUpDown(pStock->GetOpen() - pStock->GetNew());
-		pStock->SetUpDownRate((double)pStock->GetUpDown() / pStock->GetLastClose() * 100);
+		pStock->SetUpDownRate(static_cast<double>(pStock->GetUpDown()) / pStock->GetLastClose() * 100);
 		pStock->SetCurrentValue(808080808080808);
 		pStock->SetTotalValue(909090909090909);
 
@@ -1509,14 +1489,14 @@ namespace FireBirdTest {
 		setDayLineTemp.Open();
 		EXPECT_EQ(setDayLineTemp.m_Date, 20191101);
 		EXPECT_STREQ(setDayLineTemp.m_Symbol, pStock->GetSymbol());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_LastClose), (double)pStock->GetLastClose() / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Open), (double)pStock->GetOpen() / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_High), (double)pStock->GetHigh() / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Low), (double)pStock->GetLow() / pStock->GetRatio());
-		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Close), (double)pStock->GetNew() / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_LastClose), static_cast<double>(pStock->GetLastClose()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Open), static_cast<double>(pStock->GetOpen()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_High), static_cast<double>(pStock->GetHigh()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Low), static_cast<double>(pStock->GetLow()) / pStock->GetRatio());
+		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_Close), static_cast<double>(pStock->GetNew()) / pStock->GetRatio());
 		EXPECT_EQ(atoll(setDayLineTemp.m_Volume), pStock->GetVolume());
 		EXPECT_EQ(atoll(setDayLineTemp.m_Amount), pStock->GetAmount());
-		EXPECT_EQ(atof(setDayLineTemp.m_UpAndDown), (double)pStock->GetUpDown() / pStock->GetRatio());
+		EXPECT_EQ(atof(setDayLineTemp.m_UpAndDown), static_cast<double>(pStock->GetUpDown()) / pStock->GetRatio());
 		EXPECT_DOUBLE_EQ(atof(setDayLineTemp.m_UpDownRate), pStock->GetUpDownRate());
 		EXPECT_EQ(atoll(setDayLineTemp.m_CurrentValue), pStock->GetCurrentValue());
 		EXPECT_EQ(atoll(setDayLineTemp.m_TotalValue), pStock->GetTotalValue());
@@ -1710,7 +1690,7 @@ namespace FireBirdTest {
 		pStock->SetVolume(60606060606060);
 		pStock->SetAmount(707070707070707);
 		pStock->SetUpDown(pStock->GetOpen() - pStock->GetNew());
-		pStock->SetUpDownRate((double)pStock->GetUpDown() / pStock->GetLastClose() * 100);
+		pStock->SetUpDownRate(static_cast<double>(pStock->GetUpDown()) / pStock->GetLastClose() * 100);
 		pStock->SetCurrentValue(808080808080808);
 		pStock->SetTotalValue(909090909090909);
 
@@ -1886,7 +1866,7 @@ namespace FireBirdTest {
 		pid->SetClose(4535);
 		pid->SetVolume(34454);
 		pid->SetAmount(3245235345);
-		pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+		pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 		pid->SetUpDownRate(123.45);
 		pid->SetTotalValue(234523452345);
 		pid->SetCurrentValue(234145345245);
@@ -2110,7 +2090,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2188,7 +2168,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2254,7 +2234,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2293,7 +2273,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2332,7 +2312,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2600,7 +2580,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);
@@ -2669,7 +2649,7 @@ namespace FireBirdTest {
 			pid->SetClose(452435);
 			pid->SetVolume(34523454);
 			pid->SetAmount(3245235345);
-			pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / pid->GetRatio());
+			pid->SetUpDown((static_cast<double>(pid->GetClose()) - pid->GetLastClose()) / pid->GetRatio());
 			pid->SetUpDownRate(123.45);
 			pid->SetTotalValue(234523452345);
 			pid->SetCurrentValue(234145345245);

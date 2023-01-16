@@ -21,7 +21,7 @@ bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsInSymbolMap(setCryptoSymbol.m_Symbol)) {
+		if (!IsSymbol(setCryptoSymbol.m_Symbol)) {
 			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();

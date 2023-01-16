@@ -10,7 +10,7 @@ public:
 
 	bool IsStock(const CString& strSymbol) const {
 		if (m_mapWorldStock.contains(strSymbol)) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
@@ -21,6 +21,7 @@ public:
 	size_t GetStockSize(void) const noexcept { return m_vWorldStock.size(); }
 	size_t GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 
+	void UpdateSymbolMap();
 	bool SortStock(void);
 
 	bool IsStockProfileNeedUpdate(void);

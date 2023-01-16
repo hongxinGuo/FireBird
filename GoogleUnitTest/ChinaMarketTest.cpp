@@ -141,7 +141,6 @@ namespace FireBirdTest {
 		CChinaStockPtr pStock = nullptr;
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			pStock = gl_pChinaMarket->GetStock(i);
-			EXPECT_EQ(pStock->GetOffset(), i) << pStock->GetSymbol();
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			if (IsShanghaiExchange(pStock->GetSymbol())) { if ((pStock->GetSymbol().Left(6) >= _T("000000")) && (pStock->GetSymbol().Left(6) <= _T("000999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); } }
 			else if ((pStock->GetSymbol().Left(6) >= _T("399000")) && (pStock->GetSymbol().Left(6) <= _T("399999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); }
@@ -950,7 +949,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetStock(0));
 		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), 1);
+		EXPECT_EQ(gl_pChinaMarket->GetStockIndex(gl_pChinaMarket->GetCurrentStock()), 1);
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
@@ -981,10 +980,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetStock(1)); // 选取A股指数
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是上证指数");
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock()->GetOffset(), gl_pChinaMarket->GetTotalStock() - 1) << _T(
-			"上证指数前的为空，然后就转到最后面的中证煤炭了");
+		EXPECT_EQ(gl_pChinaMarket->GetStockIndex(gl_pChinaMarket->GetCurrentStock()), gl_pChinaMarket->GetTotalStock() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 	}

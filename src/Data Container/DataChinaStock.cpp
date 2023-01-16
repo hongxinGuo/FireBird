@@ -100,7 +100,6 @@ bool CDataChinaStock::UpdateStockMap() {
 	m_mapStock.clear();
 	int j = 0;
 	for (const auto& pStock : m_vStock) {
-		pStock->SetOffset(j);
 		ASSERT(!IsStock(pStock->GetSymbol()));
 		m_mapStock[pStock->GetSymbol()] = j++;
 	}

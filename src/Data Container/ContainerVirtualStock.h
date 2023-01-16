@@ -2,6 +2,11 @@
 
 #include"VirtualStock.h"
 
+#include<vector>
+#include<map>
+using std::vector;
+using std::map;
+
 class CContainerVirtualStock {
 public:
 	CContainerVirtualStock();
@@ -9,12 +14,14 @@ public:
 
 	void Reset();
 
-	bool IsInSymbolMap(const CString& strSymbol) const {
+	bool IsSymbol(const CString& strSymbol) const {
 		if (m_mapSymbol.contains(strSymbol)) return true;
 		return false;
 	}
 
 	bool IsUpdateProfileDB(void);
+	bool IsDayLineNeedUpdate(void) noexcept;
+	bool IsDayLineNeedSaving(void);
 
 	CVirtualStockPtr Get(const long lIndex) { return m_vStock.at(lIndex); }
 	CVirtualStockPtr Get(const CString& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }

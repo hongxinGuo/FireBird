@@ -16,7 +16,6 @@ CChinaStock::CChinaStock() { CChinaStock::Reset(); }
 void CChinaStock::Reset(void) {
 	CVirtualStock::Reset();
 
-	m_lOffsetInContainer = -1;
 	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;
@@ -126,7 +125,7 @@ void CChinaStock::ClearRTDataDeque(void) {
 bool CChinaStock::HaveNewDayLineData(void) {
 	if (m_dataDayLine.Size() <= 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
-	else return false;
+	return false;
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine(void) {
@@ -557,7 +556,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 	if (!fFind3) return false;
 
 	if (pRef->m_lDayLength[3] == 0) return true; // DayLength4为零的话，不做通盘选择
-	else if (fFindHigh4) {
+	if (fFindHigh4) {
 		for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[3]); i--) {
 			if (m_v10DaysRS.at(i) > dStrong4) iCountFourth++;
 			if (iCountFourth >= pRef->m_lStrongDayLength[3]) {
@@ -1097,7 +1096,7 @@ void CChinaStock::CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume) {
 
 bool CChinaStock::HaveGuadan(INT64 lPrice) {
 	if (!m_mapGuadan.contains(lPrice)) return false;
-	else if (m_mapGuadan.at(lPrice) == 0) return false;
+	if (m_mapGuadan.at(lPrice) == 0) return false;
 	return true;
 }
 
@@ -1135,7 +1134,7 @@ void CChinaStock::ReportGuadanTransaction(void) {
 	sprintf_s(buffer, _T("%02d:%02d:%02d"), ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
 	const CString strTime = buffer;
 	sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), GetSymbol().GetBuffer(),
-	          m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
+		m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
 	CString str = strTime;
 	str += buffer;
 	CString str1;
@@ -1267,7 +1266,6 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 bool CChinaStock::IsSameStock(const CChinaStockPtr& pStock) const {
 	if (pStock == nullptr) return false;
 	if (m_strSymbol.Compare(pStock->GetSymbol()) == 0) {
-		ASSERT(m_lOffsetInContainer == pStock->GetOffset());
 		return true;
 	}
 	return false;
@@ -1281,7 +1279,7 @@ bool CChinaStock::IsSameStock(const CChinaStockPtr& pStock) const {
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataActive(void) const {
 	if (!m_fActive) return false;
-	else { return IsTodayDataChanged(); }
+	return IsTodayDataChanged();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1292,7 +1290,7 @@ bool CChinaStock::IsTodayDataActive(void) const {
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataChanged(void) const {
 	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) { return true; }
-	else { return false; }
+	return false;
 }
 
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
@@ -1307,10 +1305,10 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
 		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(m_TransactionTime), GetSymbol().GetBuffer(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
-		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+			GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;
 	}
-	else return true;
+	return true;
 }
 
 bool CChinaStock::CalculatingWeekLine(long lStartDate) {
@@ -1329,5 +1327,5 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 		m_dataWeekLine.SetDataLoaded(true);
 		return true;
 	}
-	else return false;
+	return false;
 }

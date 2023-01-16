@@ -97,9 +97,6 @@
     <Filter Include="源文件\Working thread\China market">
       <UniqueIdentifier>{bd52023c-87e1-4db2-adb7-37c22efb81d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Working thread\America market">
-      <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Type\China market">
       <UniqueIdentifier>{2452158e-07ba-4983-838a-2e482eb7aada}</UniqueIdentifier>
     </Filter>
@@ -180,6 +177,9 @@
     </Filter>
     <Filter Include="头文件\Data Source\China market">
       <UniqueIdentifier>{d6ae6ebf-aa91-4881-a6ac-2fb919c6240f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Working thread\World market">
+      <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1032,67 +1032,67 @@
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCountryList.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCryptoDayLineDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCryptoExchangeDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCryptoSymbolDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateDayLineStartEndDate.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateEconomicCalendarDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateEPSSurpriseDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateForexDayLineDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateForexExchangeDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateForexSymbolDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateInsiderSentimentDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateInsiderTransactionDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateNaicsIndustry.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateSICIndustry.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateWorldMarketStockProfileDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoCryptoDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoIndustry.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoStockDB.cpp">
-      <Filter>源文件\Working thread\America market</Filter>
+      <Filter>源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp">
       <Filter>源文件\Working thread\China market</Filter>
