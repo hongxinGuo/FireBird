@@ -196,17 +196,17 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	if (!IsTimeToResetSystem(lCurrentTime)) {
 		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) { TaskUpdateCountryListDB(); }
-		if (IsNeedUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
-		if (IsNeedUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
-		if (IsNeedUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
-		if (IsNeedUpdateCryptoSymbolDB()) TaskUpdateFinnhubCryptoSymbolDB();
-		if (IsNeedUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
-		if (IsNeedUpdateInsiderSentimentDB()) TaskUpdateInsiderSentimentDB();
+		if (IsUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
+		if (IsUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
+		if (IsUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
+		if (IsUpdateCryptoSymbolDB()) TaskUpdateFinnhubCryptoSymbolDB();
+		if (IsUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
+		if (IsUpdateInsiderSentimentDB()) TaskUpdateInsiderSentimentDB();
 		TaskUpdateForexDayLineDB();
 		TaskUpdateCryptoDayLineDB();
-		if (IsNeedSaveStockDayLineDB()) TaskUpdateDayLineDB();
+		if (IsSaveStockDayLineDB()) TaskUpdateDayLineDB();
 		TaskUpdateEPSSurpriseDB();
-		if (IsNeedUpdateEconomicCalendarDB()) TaskUpdateEconomicCalendarDB();
+		if (IsUpdateEconomicCalendarDB()) TaskUpdateEconomicCalendarDB();
 		return true;
 	}
 
@@ -291,11 +291,11 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
 
-	for (int i = 0; i < m_dataFinnhubForexSymbol.GetForexSymbolSize(); i++) {
+	for (int i = 0; i < m_dataFinnhubForexSymbol.Size(); i++) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = m_dataFinnhubForexSymbol.GetForexSymbol(i);
+		pSymbol = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataFinnhubForexSymbol.Get(i));
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
@@ -336,11 +336,11 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 
-	for (int i = 0; i < m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); ++i) {
+	for (int i = 0; i < m_dataFinnhubCryptoSymbol.Size(); ++i) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = m_dataFinnhubCryptoSymbol.GetCryptoSymbol(i);
+		pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataFinnhubCryptoSymbol.Get(i));
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
@@ -655,20 +655,20 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 
 	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataChosenStock.GetSize(); l++) {
-		pStock = m_dataChosenStock.GetStock(l);
+	for (long l = 0; l < m_dataChosenStock.Size(); l++) {
+		pStock = dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(l));
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
-	for (long l = 0; l < m_dataChosenCrypto.GetSize(); l++) {
-		pCrypto = m_dataChosenCrypto.GetCrypto(l);
+	for (long l = 0; l < m_dataChosenCrypto.Size(); l++) {
+		pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataChosenCrypto.Get(l));
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
 	CForexSymbolPtr pForex = nullptr;
-	for (long l = 0; l < m_dataChosenForex.GetSize(); l++) {
-		pForex = m_dataChosenForex.GetForex(l);
+	for (long l = 0; l < m_dataChosenForex.Size(); l++) {
+		pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataChosenForex.Get(l));
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 
@@ -694,8 +694,8 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenStock.GetSize(); l++) {
-		const CWorldStockPtr pStock = m_dataChosenStock.GetStock(l);
+	for (long l = 0; l < m_dataChosenStock.Size(); l++) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(l));
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
@@ -712,8 +712,8 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenCrypto.GetSize(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = m_dataChosenCrypto.GetCrypto(l);
+	for (long l = 0; l < m_dataChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataChosenCrypto.Get(l));
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
@@ -724,14 +724,14 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 //
 // 5状态下每秒接收100K左右。
 //
-// threshlodLevel 5: ALL Top-of-Book updates
+// thresholdLevel 5: ALL Top-of-Book updates
 // thresholdLevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenForex.GetSize(); l++) {
-		const CForexSymbolPtr pForex = m_dataChosenForex.GetForex(l);
+	for (long l = 0; l < m_dataChosenForex.Size(); l++) {
+		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataChosenForex.Get(l));
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 

@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductFinnhubForexSymbolTest : public ::testing::Test {
+	class CProductFinnhubForexSymbolTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -17,7 +17,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -54,7 +55,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData90(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"New Symbol\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
 
-	class ParseFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -80,8 +81,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
-	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-		                         &finnhubWebData85, &finnhubWebData90));
+		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+			&finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
@@ -108,7 +109,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -134,8 +135,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
-	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-		                         &finnhubWebData85, &finnhubWebData90));
+		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+			&finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;

@@ -2,20 +2,19 @@
 
 #include"WorldMarket.h"
 #include"SetWorldChosenCrypto.h"
-#include "DataChosenCrypto.h"
+#include "containerChosenCrypto.h"
+#include"FinnhubCryptoSymbol.h"
 
-CDataChosenCrypto::CDataChosenCrypto() {
+CContianerChosenCrypto::CContianerChosenCrypto() {
 	m_lChosenCryptoPos = 0;
 	Reset();
 }
 
-void CDataChosenCrypto::Reset(void) {
-	m_vWorldChosenCrypto.resize(0);
-	m_mapWorldChosenCrypto.clear();
+void CContianerChosenCrypto::Reset(void) {
 	m_lChosenCryptoPos = 0;
 }
 
-bool CDataChosenCrypto::LoadDB(void) {
+bool CContianerChosenCrypto::LoadDB(void) {
 	CSetWorldChosenCrypto setWorldChosenCrypto;
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 
@@ -24,8 +23,8 @@ bool CDataChosenCrypto::LoadDB(void) {
 	while (!setWorldChosenCrypto.IsEOF()) {
 		if (gl_pWorldMarket->IsFinnhubCryptoSymbol(setWorldChosenCrypto.m_Symbol)) {
 			pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(setWorldChosenCrypto.m_Symbol);
-			m_mapWorldChosenCrypto[setWorldChosenCrypto.m_Symbol] = m_mapWorldChosenCrypto.size();
-			m_vWorldChosenCrypto.push_back(pCrypto);
+			m_mapSymbol[setWorldChosenCrypto.m_Symbol] = m_mapSymbol.size();
+			m_vStock.push_back(pCrypto);
 		}
 		setWorldChosenCrypto.MoveNext();
 	}

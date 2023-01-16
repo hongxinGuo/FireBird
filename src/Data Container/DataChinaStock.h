@@ -21,13 +21,13 @@ public:
 
 	[[nodiscard]] bool IsStock(const CString& strSymbol) const {
 		if (m_mapStock.contains(strSymbol)) return true;
-		else return false;
+		return false;
 	}
 
 	[[nodiscard]] bool IsAStock(const CString& strStockCode) const;
 	[[nodiscard]] bool IsAStock(const not_null<CChinaStockPtr>& pStock) const { return (IsAStock(pStock->GetSymbol())); }
 	CChinaStockPtr GetStock(const CString& strStockCode);
-	CChinaStockPtr GetStock(const long lIndex);
+	CChinaStockPtr GetStock(long lIndex);
 	CString GetStockName(const CString& strStockCode);
 
 	bool Delete(const CChinaStockPtr& pStock);
@@ -35,8 +35,8 @@ public:
 	bool UpdateStockMap();
 	bool SortStock(void);
 
-	long LoadStockCodeDB(void);
-	bool UpdateStockCodeDB(void);
+	long LoadStockProfileDB(void);
+	bool UpdateStockProfileDB(void);
 	bool UnloadDayLine(void) noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
@@ -45,7 +45,7 @@ public:
 	bool BuildWeekLineRS(long lDate);
 
 	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
-	[[nodiscard]] bool IsUpdateStockCodeDB(void) noexcept;
+	[[nodiscard]] bool IsUpdateStockProfileDB(void) noexcept;
 	[[nodiscard]] bool IsDayLineNeedUpdate(void) noexcept;
 	[[nodiscard]] bool IsDayLineNeedSaving(void);
 	void SetAllDayLineNeedMaintain(void);
@@ -62,7 +62,7 @@ public:
 
 	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber);
+	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
 	[[nodiscard]] bool TaskProcessRTData(void) const;
 	bool TaskSaveDayLineData(void);

@@ -7,6 +7,15 @@ using namespace std;
 CContainerVirtualStock::CContainerVirtualStock() {
 }
 
+void CContainerVirtualStock::Reset() {
+	m_vStock.resize(0);
+	m_mapSymbol.clear();
+}
+
+bool CContainerVirtualStock::IsUpdateProfileDB(void) {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
+}
+
 bool CContainerVirtualStock::Add(CVirtualStockPtr pStock) {
 	if (pStock == nullptr) return false;
 	if (IsInSymbolMap(pStock->GetSymbol())) return false;

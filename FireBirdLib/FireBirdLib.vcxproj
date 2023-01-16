@@ -30,16 +30,16 @@
     <ClInclude Include="..\src\Data Container\DataChinaDayLine.h" />
     <ClInclude Include="..\src\Data Container\DataChinaStock.h" />
     <ClInclude Include="..\src\Data Container\DataChinaWeekLine.h" />
-    <ClInclude Include="..\src\Data Container\DataChosenCrypto.h" />
-    <ClInclude Include="..\src\Data Container\DataChosenForex.h" />
-    <ClInclude Include="..\src\Data Container\DataChosenStock.h" />
+    <ClInclude Include="..\src\Data Container\containerChosenCrypto.h" />
+    <ClInclude Include="..\src\Data Container\containerChosenForex.h" />
+    <ClInclude Include="..\src\Data Container\containerChosenStock.h" />
     <ClInclude Include="..\src\Data Container\DataCryptoDayLine.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubCountry.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubCryptoExchange.h" />
-    <ClInclude Include="..\src\Data Container\DataFinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubEconomicCalendar.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubForexExchange.h" />
-    <ClInclude Include="..\src\Data Container\DataFinnhubForexSymbol.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubStockExchange.h" />
     <ClInclude Include="..\src\Data Container\DataForexDayLine.h" />
     <ClInclude Include="..\src\Data Container\DataNaicsIndustry.h" />
@@ -223,16 +223,16 @@
     <ClCompile Include="..\src\Data Container\DataChinaDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaWeekLine.cpp" />
-    <ClCompile Include="..\src\Data Container\DataChosenCrypto.cpp" />
-    <ClCompile Include="..\src\Data Container\DataChosenForex.cpp" />
-    <ClCompile Include="..\src\Data Container\DataChosenStock.cpp" />
+    <ClCompile Include="..\src\Data Container\containerChosenCrypto.cpp" />
+    <ClCompile Include="..\src\Data Container\containerChosenForex.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerChosenStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubCryptoExchange.cpp" />
-    <ClCompile Include="..\src\Data Container\DataFinnhubCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubForexExchange.cpp" />
-    <ClCompile Include="..\src\Data Container\DataFinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubStockExchange.cpp" />
     <ClCompile Include="..\src\Data Container\DataForexDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\DataStockSymbol.cpp" />
@@ -389,7 +389,7 @@
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateInsiderTransactionDB.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateNaicsIndustry.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateSICIndustry.cpp" />
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateStockProfileDB.cpp" />
+    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateWorldMarketStockProfileDB.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoCryptoDB.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoStockDB.cpp" />
@@ -405,7 +405,7 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveTempRTData.cpp" />
-    <ClCompile Include="..\src\Working thread\China market\ThreadUpdateStockCodeDB.cpp" />
+    <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

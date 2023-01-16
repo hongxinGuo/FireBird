@@ -104,7 +104,7 @@ public:
 	virtual bool CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
 	virtual bool CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
 	virtual bool CreatingThreadProcessTodayStock(void);
-	virtual bool CreatingThreadUpdateStockCodeDB(void);
+	virtual bool CreatingThreadUpdateStockProfileDB(void);
 	// interface function
 
 public:
@@ -150,17 +150,17 @@ public:
 
 	bool IsTodayStockNotProcessed(void) const noexcept {
 		if (m_iTodayStockProcessed == 0) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsProcessingTodayStock(void) const noexcept {
 		if (m_iTodayStockProcessed == 1) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsTodayStockProcessed(void) const noexcept {
 		if (m_iTodayStockProcessed == 0) return false;
-		else return true;
+		return true;
 	}
 
 	void SetProcessingTodayStock(void) noexcept { m_iTodayStockProcessed = 1; }
@@ -188,8 +188,8 @@ public:
 	// 数据库读取存储操作
 	virtual bool SaveRTData(void); // 实时数据处理函数，将读取到的实时数据存入数据库中
 	bool TaskSaveDayLineData(void) { return m_dataChinaStock.TaskSaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-	virtual bool UpdateStockCodeDB(void) { return m_dataChinaStock.UpdateStockCodeDB(); }
-	void LoadStockCodeDB(void) { m_lStockDayLineNeedUpdate = m_dataChinaStock.LoadStockCodeDB(); }
+	virtual bool UpdateStockProfileDB(void) { return m_dataChinaStock.UpdateStockProfileDB(); }
+	void LoadStockProfileDB(void) { m_lStockDayLineNeedUpdate = m_dataChinaStock.LoadStockProfileDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
@@ -367,10 +367,10 @@ public:
 
 	bool IsRecordingRTData(void) const noexcept {
 		if (m_fSaveRTData) return true;
-		else return false;
+		return false;
 	}
 
-	bool IsUpdateStockCodeDB(void) { return m_dataChinaStock.IsUpdateStockCodeDB(); }
+	bool IsUpdateStockCodeDB(void) { return m_dataChinaStock.IsUpdateStockProfileDB(); }
 	void SetUpdateOptionDB(const bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
 
 	bool IsUpdateOptionDB(void) const noexcept {
@@ -398,7 +398,7 @@ public:
 
 	bool IsTotalStockSetSelected(void) const noexcept {
 		if (m_lCurrentSelectedStockSet == -1) return true;
-		else return false;
+		return false;
 	}
 
 	size_t GetCurrentStockSetSize(void);
@@ -407,7 +407,7 @@ public:
 
 	bool TooManyStockDayLineNeedUpdate(void) const noexcept {
 		if (m_lStockDayLineNeedUpdate > 1000) return true;
-		else return false;
+		return false;
 	}
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_dataStockSymbol.SetUpdateStockSection(fFlag); }

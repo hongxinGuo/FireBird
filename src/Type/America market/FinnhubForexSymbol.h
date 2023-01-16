@@ -14,8 +14,8 @@ public:
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&) = delete;
 	CFinnhubForexSymbol(const CFinnhubForexSymbol&&) noexcept = delete;
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&&) noexcept = delete;
-	virtual void Reset(void);
-	virtual int GetRatio(void) const override final { return 1000; }
+	void Reset(void) override;
+	int GetRatio(void) const final { return 1000; }
 
 	virtual bool UpdateDayLineDB(void) { return m_dataDayLine.SaveDB(m_strSymbol); }
 
@@ -35,5 +35,5 @@ public:
 protected:
 };
 
-typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;
-typedef shared_ptr<vector<CForexSymbolPtr>> CForexSymbolVectorPtr;
+using CForexSymbolPtr = shared_ptr<CFinnhubForexSymbol>;
+using CForexSymbolVectorPtr = shared_ptr<vector<CForexSymbolPtr>>;

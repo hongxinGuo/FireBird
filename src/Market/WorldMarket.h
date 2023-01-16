@@ -5,14 +5,14 @@
 #include"DataFinnhubStockExchange.h"
 #include"DataFinnhubForexExchange.h"
 #include"DataFinnhubCryptoExchange.h"
-#include"DataFinnhubForexSymbol.h"
-#include"DataFinnhubCryptoSymbol.h"
+#include"containerFinnhubForexSymbol.h"
+#include"containerFinnhubCryptoSymbol.h"
 #include"DataFinnhubCountry.h"
 #include"DataFinnhubEconomicCalendar.h"
 
-#include"DataChosenStock.h"
-#include"DataChosenForex.h"
-#include"DataChosenCrypto.h"
+#include"ContainerChosenStock.h"
+#include"ContainerChosenForex.h"
+#include"containerChosenCrypto.h"
 
 #include"DataWorldStock.h"
 #include"DataTiingoStock.h"
@@ -22,8 +22,12 @@
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 
+#include"FinnhubCryptoSymbol.h"
+#include"FinnhubForexSymbol.h"
+
 #include<semaphore>
 using std::binary_semaphore;
+using std::dynamic_pointer_cast;
 
 extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库
 
@@ -48,7 +52,7 @@ public:
 
 	bool IsTimeToResetSystem(long lCurrentTime) final {
 		if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true;
-		else return false;
+		return false;
 	}
 
 	bool SchedulingTask(void) final;
@@ -111,8 +115,8 @@ public:
 	bool IsCompanyNewsNeedUpdate(void) { return m_dataWorldStock.IsCompanyNewsNeedUpdate(); }
 	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
 
-	CWorldStockPtr GetChosenStock(const long lIndex) { return m_dataChosenStock.GetStock(lIndex); }
-	size_t GetChosenStockSize(void) const noexcept { return m_dataChosenStock.GetSize(); }
+	CWorldStockPtr GetChosenStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(lIndex)); }
+	size_t GetChosenStockSize(void) const noexcept { return m_dataChosenStock.Size(); }
 
 	bool IsTiingoStock(const CString strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
 	bool IsTiingoStock(const CWorldStockPtr pStock) const { return m_dataTiingoStock.IsStock(pStock); }
@@ -127,13 +131,13 @@ public:
 	size_t GetForexExchangeSize(void) const noexcept { return m_dataFinnhubForexExchange.GetForexExchangeSize(); }
 	CString GetForexExchange(const long lIndex) const { return m_dataFinnhubForexExchange.GetForexExchange(lIndex); }
 
-	bool IsForexSymbol(const CString strForexSymbol) const { return m_dataFinnhubForexSymbol.IsForexSymbol(strForexSymbol); }
+	bool IsForexSymbol(const CString strForexSymbol) const { return m_dataFinnhubForexSymbol.IsInSymbolMap(strForexSymbol); }
 	bool IsForexSymbol(const CForexSymbolPtr pForexSymbol) const { return IsForexSymbol(pForexSymbol->GetSymbol()); }
 	void AddForexSymbol(const CForexSymbolPtr pForexSymbol) { m_dataFinnhubForexSymbol.Add(pForexSymbol); }
 	bool DeleteForexSymbol(const CForexSymbolPtr pForexSymbol) { return m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
-	CForexSymbolPtr GetForexSymbol(const long lIndex) const { return m_dataFinnhubForexSymbol.GetForexSymbol(lIndex); }
-	CForexSymbolPtr GetForexSymbol(const CString strSymbol) const { return m_dataFinnhubForexSymbol.GetForexSymbol(strSymbol); }
-	size_t GetForexSymbolSize(void) const noexcept { return m_dataFinnhubForexSymbol.GetForexSymbolSize(); }
+	CForexSymbolPtr GetForexSymbol(const long lIndex) { return dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataFinnhubForexSymbol.Get(lIndex)); }
+	CForexSymbolPtr GetForexSymbol(CString strSymbol) { return dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataFinnhubForexSymbol.Get(strSymbol)); }
+	size_t GetForexSymbolSize(void) const noexcept { return m_dataFinnhubForexSymbol.Size(); }
 
 	bool IsCryptoExchange(CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange.GetBuffer()); }
 
@@ -142,32 +146,20 @@ public:
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
 	CString GetCryptoExchange(const long lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex).c_str(); }
 
-	bool IsFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.IsFinnhubCryptoSymbol(strSymbol); }
-
+	bool IsFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.IsInSymbolMap(strSymbol); }
 	bool IsFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) const { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
-
 	void AddFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
-
 	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr pCryptoSymbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
-
-	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const long lIndex) const { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(lIndex); }
-
-	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.GetCryptoSymbol(strSymbol); }
-
-	size_t GetFinnhubCryptoSymbolSize(void) const noexcept { return m_dataFinnhubCryptoSymbol.GetCryptoSymbolSize(); }
+	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const long lIndex) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataFinnhubCryptoSymbol.Get(lIndex)); }
+	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(CString strSymbol) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataFinnhubCryptoSymbol.Get(strSymbol)); }
+	size_t GetFinnhubCryptoSymbolSize(void) const noexcept { return m_dataFinnhubCryptoSymbol.Size(); }
 
 	bool IsTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
-
 	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
-
 	void AddTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
-
 	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol); }
-
 	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const long lIndex) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(lIndex); }
-
 	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
-
 	size_t GetTiingoCryptoSymbolSize(void) const noexcept { return m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(); }
 
 	size_t GetTotalCountry(void) const noexcept { return m_dataFinnhubCountry.GetTotalCountry(); }
@@ -180,14 +172,14 @@ public:
 	CString GetCurrentFunction(void) { return m_strCurrentFunction; }
 	void SetCurrentFunction(const CString str) { m_strCurrentFunction = str; }
 
-	bool IsNeedUpdateForexExchangeDB(void) const noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
-	bool IsNeedUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsNeedUpdate(); }
-	bool IsNeedUpdateCryptoExchangeDB(void) const noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
-	bool IsNeedUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsNeedUpdate(); }
-	bool IsNeedUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
-	bool IsNeedUpdateInsiderSentimentDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderSentiment(); }
-	bool IsNeedSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsNeedSaveDayLine(); }
-	bool IsNeedUpdateEconomicCalendarDB(void) const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
+	bool IsUpdateForexExchangeDB(void) const noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
+	bool IsUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsUpdateProfileDB(); }
+	bool IsUpdateCryptoExchangeDB(void) const noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
+	bool IsUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsUpdateProfileDB(); }
+	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
+	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderSentiment(); }
+	bool IsSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsNeedSaveDayLine(); }
+	bool IsUpdateEconomicCalendarDB(void) const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 
 	bool IsNeedUpdateTiingoStock(void) const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
 	bool IsNeedUpdateTiingoCryptoSymbol(void) const noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
@@ -275,8 +267,8 @@ protected:
 	CDataFinnhubStockExchange m_dataFinnhubStockExchange;
 	CDataFinnhubForexExchange m_dataFinnhubForexExchange;
 	CDataFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
-	CDataFinnhubForexSymbol m_dataFinnhubForexSymbol;
-	CDataFinnhubCryptoSymbol m_dataFinnhubCryptoSymbol;
+	CContainerFinnhubForexSymbol m_dataFinnhubForexSymbol;
+	CContainerFinnhubCryptoSymbol m_dataFinnhubCryptoSymbol;
 	CDataFinnhubCountry m_dataFinnhubCountry;
 	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
@@ -285,9 +277,9 @@ protected:
 	CDataTiingoStock m_dataTiingoStock;
 	CDataTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
 
-	CDataChosenStock m_dataChosenStock;
+	CContainerChosenStock m_dataChosenStock;
 	CDataChosenForex m_dataChosenForex;
-	CDataChosenCrypto m_dataChosenCrypto;
+	CContianerChosenCrypto m_dataChosenCrypto;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

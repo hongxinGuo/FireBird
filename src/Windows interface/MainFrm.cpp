@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
-	                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
+		&CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
@@ -204,7 +204,7 @@ CMainFrame::~CMainFrame() {
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
 	if (gl_pChinaMarket->IsUpdateStockCodeDB()) {
 		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
-		gl_pChinaMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+		gl_pChinaMarket->UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待WebSocket退出
@@ -320,8 +320,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT,
-	                           WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY |
-	                           CBRS_SIZE_DYNAMIC) ||
+			WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY |
+			CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME)) {
 		TRACE0("Failed to create toolbar\n");
 		return -1; // fail to create
@@ -409,10 +409,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	auto hOutputBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(),
-	                                         MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
-	                                         IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
-	                                         ::GetSystemMetrics(SM_CYSMICON), 0);
+	auto hOutputBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(),
+		MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
+		IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
+		::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
 
@@ -453,7 +453,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 	bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
 	ASSERT(bNameValid);
 	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND,
-	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
 		return FALSE; // 未能创建
 	}
@@ -591,38 +591,38 @@ void CMainFrame::UpdateStatus(void) {
 	//更新状态条
 	if (gl_pChinaMarket->IsCurrentEditStockChanged()) {
 		str = m_aStockCodeTemp;
-		SysCallSetPaneText(1, (LPCTSTR)str);
+		SysCallSetPaneText(1, str);
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
 		gl_pChinaMarket->SetCurrentStockChanged(false);
-		SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetSymbol());
-		SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetDisplaySymbol());
+		SysCallSetPaneText(2, pCurrentStock->GetSymbol());
+		SysCallSetPaneText(3, pCurrentStock->GetDisplaySymbol());
 	}
 
 	// 显示当前选择的股票
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedStockSet());
 	str = buffer;
-	SysCallSetPaneText(4, (LPCTSTR)str);
+	SysCallSetPaneText(4, str);
 
 	// 显示当前选择的位置
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedPosition());
 	str = buffer;
-	SysCallSetPaneText(5, (LPCTSTR)str);
+	SysCallSetPaneText(5, str);
 
 	// 显示当前读取的新浪实时数据股票代码
-	SysCallSetPaneText(6, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringRTData());
+	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetTotalActiveStock());
 	str = buffer;
-	SysCallSetPaneText(7, (LPCTSTR)str);
+	SysCallSetPaneText(7, str);
 
 	// 显示当前读取网易日线历史的股票代码
-	SysCallSetPaneText(8, (LPCTSTR)gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
+	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
 
-	SysCallSetPaneText(9, (LPCTSTR)gl_pWorldMarket->GetCurrentFunction());
+	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) {
@@ -631,14 +631,14 @@ void CMainFrame::UpdateStatus(void) {
 			str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteRead());
 			gl_pSinaRTWebInquiry->ClearTotalByteRead();
 			m_timeLast = gl_pChinaMarket->GetUTCTime();
-			m_wndStatusBar.SetPaneText(10, (LPCTSTR)str);
+			m_wndStatusBar.SetPaneText(10, str);
 		}
 	}
 	// 更新当前工作线程数
 	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	str = buffer;
-	SysCallSetPaneText(11, (LPCTSTR)str);
+	SysCallSetPaneText(11, str);
 
 	// 更新当前后台工作线程数
 	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
@@ -649,10 +649,10 @@ void CMainFrame::UpdateStatus(void) {
 	}
 	sprintf_s(buffer, _T("%1.3f"), dRatio);
 	str = buffer;
-	SysCallSetPaneText(12, (LPCTSTR)str);
+	SysCallSetPaneText(12, str);
 
 	//更新当地时间的显示
-	SysCallSetPaneText(13, (LPCTSTR)gl_pChinaMarket->GetStringOfLocalTime());
+	SysCallSetPaneText(13, gl_pChinaMarket->GetStringOfLocalTime());
 }
 
 void CMainFrame::UpdateInnerSystemStatus(void) {
@@ -661,55 +661,55 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	// 更新新浪实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
 	CString str = buffer;
-	SysCallSetInnerSystemPaneText(1, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(1, str);
 	// 更新网易实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(2, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(2, str);
 	// 更新腾讯实时数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(3, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(3, str);
 	// 更新网易日线数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(4, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(4, str);
 
 	// 更新Finnhub数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(5, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(5, str);
 	// 更新Tiingo数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
-	SysCallSetInnerSystemPaneText(6, (LPCTSTR)str);
+	SysCallSetInnerSystemPaneText(6, str);
 	// 更新Quandl数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	//SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(8, (LPCTSTR)gl_systemMessage.GetCurrentFinnhubWebSocketStake());
+		SysCallSetInnerSystemPaneText(8, gl_systemMessage.GetCurrentFinnhubWebSocketStake());
 		str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
-		SysCallSetInnerSystemPaneText(9, (LPCTSTR)str);
+		SysCallSetInnerSystemPaneText(9, str);
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoIEXWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(10, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketIEX());
+		SysCallSetInnerSystemPaneText(10, gl_systemMessage.GetCurrentTiingoWebSocketIEX());
 		str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
-		SysCallSetInnerSystemPaneText(11, (LPCTSTR)str);
+		SysCallSetInnerSystemPaneText(11, str);
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoForexWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(12, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketForex());
+		SysCallSetInnerSystemPaneText(12, gl_systemMessage.GetCurrentTiingoWebSocketForex());
 		str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
-		SysCallSetInnerSystemPaneText(13, (LPCTSTR)str);
+		SysCallSetInnerSystemPaneText(13, str);
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
-		SysCallSetInnerSystemPaneText(14, (LPCTSTR)gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
+		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
 		//str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
-		SysCallSetInnerSystemPaneText(15, (LPCTSTR)str);
+		SysCallSetInnerSystemPaneText(15, str);
 	}
 }
 
@@ -788,7 +788,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	case 'z':
 	case '.':
 		if (m_lCurrentPos < 10) {
-			m_aStockCodeTemp[m_lCurrentPos] = ::toupper(nChar);
+			m_aStockCodeTemp[m_lCurrentPos] = toupper(nChar);
 			m_lCurrentPos++;
 			m_aStockCodeTemp[m_lCurrentPos] = 0x000;
 		}
@@ -816,8 +816,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		break;
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		auto pChild = (CMDIChildWnd*)GetActiveFrame();
-		auto pView = (CFireBirdView*)pChild->GetActiveView();
+		auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
+		auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
 		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
 	}
 
@@ -863,8 +863,8 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		}
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		auto pChild = (CMDIChildWnd*)GetActiveFrame();
-		auto pView = (CFireBirdView*)pChild->GetActiveView();
+		auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
+		auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
 		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
 	}
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
@@ -1002,7 +1002,7 @@ void CMainFrame::OnUpdateStockSection() {
 }
 
 void CMainFrame::OnUpdateStockCode() {
-	gl_pChinaMarket->CreatingThreadUpdateStockCodeDB();
+	gl_pChinaMarket->CreatingThreadUpdateStockProfileDB();
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {

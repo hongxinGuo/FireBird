@@ -1,35 +1,19 @@
 #include "pch.h"
 
-#include "DataFinnhubCryptoSymbol.h"
+#include "ContainerFinnhubCryptoSymbol.h"
 #include"SetFinnhubCryptoSymbol.h"
+#include"FinnhubCryptoSymbol.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataFinnhubCryptoSymbol::CDataFinnhubCryptoSymbol() { Reset(); }
+CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() { Reset(); }
 
-void CDataFinnhubCryptoSymbol::Reset(void) {
-	m_vCryptoSymbol.resize(0);
-	m_mapCryptoSymbol.clear();
+void CContainerFinnhubCryptoSymbol::Reset(void) {
 	m_lLastTotalCryptoSymbol = 0;
 }
 
-bool CDataFinnhubCryptoSymbol::Delete(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
-	if (pCryptoSymbol == nullptr) return false;
-	if (!IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol())) return false;
-
-	m_vCryptoSymbol.erase(m_vCryptoSymbol.begin() + m_mapCryptoSymbol.at(pCryptoSymbol->GetSymbol()));
-	m_mapCryptoSymbol.erase(pCryptoSymbol->GetSymbol());
-
-	return true;
-}
-
-void CDataFinnhubCryptoSymbol::Add(CFinnhubCryptoSymbolPtr pCryptoSymbol) {
-	m_mapCryptoSymbol[pCryptoSymbol->GetSymbol()] = m_mapCryptoSymbol.size();
-	m_vCryptoSymbol.push_back(pCryptoSymbol);
-}
-
-bool CDataFinnhubCryptoSymbol::LoadDB(void) {
+bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 
@@ -37,11 +21,11 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsFinnhubCryptoSymbol(setCryptoSymbol.m_Symbol)) {
+		if (!IsInSymbolMap(setCryptoSymbol.m_Symbol)) {
 			pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapCryptoSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
+			if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
 			Add(pSymbol);
 		}
 		else { setCryptoSymbol.Delete(); }
@@ -49,13 +33,13 @@ bool CDataFinnhubCryptoSymbol::LoadDB(void) {
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
-	m_lLastTotalCryptoSymbol = static_cast<long>(m_vCryptoSymbol.size());
+	m_lLastTotalCryptoSymbol = static_cast<long>(m_vStock.size());
 
 	return true;
 }
 
-bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
-	const long lTotalCryptoSymbol = static_cast<long>(m_vCryptoSymbol.size());
+bool CContainerFinnhubCryptoSymbol::UpdateDB(void) {
+	const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	bool fUpdateSymbol = false;
@@ -64,7 +48,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		for (auto l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
-			pSymbol = m_vCryptoSymbol.at(l);
+			pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_vStock.at(l));
 			pSymbol->AppendSymbol(setCryptoSymbol);
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();
@@ -72,7 +56,7 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 		m_lLastTotalCryptoSymbol = lTotalCryptoSymbol;
 	}
 
-	for (const auto& pSymbol2 : m_vCryptoSymbol) {
+	for (const auto& pSymbol2 : m_vStock) {
 		if (pSymbol2->IsUpdateProfileDB()) {
 			fUpdateSymbol = true;
 			break;
@@ -82,8 +66,8 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapCryptoSymbol.contains(setCryptoSymbol.m_Symbol)) {
-				pSymbol = m_vCryptoSymbol.at(m_mapCryptoSymbol.at(setCryptoSymbol.m_Symbol));
+			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
+				pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_vStock.at(m_mapSymbol.at(setCryptoSymbol.m_Symbol)));
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setCryptoSymbol);
 					pSymbol->SetUpdateProfileDB(false);
@@ -96,9 +80,4 @@ bool CDataFinnhubCryptoSymbol::UpdateDB(void) {
 	}
 
 	return true;
-}
-
-bool CDataFinnhubCryptoSymbol::IsNeedUpdate(void) {
-	for (const auto& pCrypto : m_vCryptoSymbol) { if (pCrypto->IsUpdateProfileDB()) { return true; } }
-	return false;
 }

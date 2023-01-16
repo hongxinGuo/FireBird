@@ -2,12 +2,13 @@
 
 #include"GeneralCheck.h"
 
-#include"DataChosenCrypto.h"
+#include"containerChosenCrypto.h"
+#include"FinnhubCryptoSymbol.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataChosenCryptoTest : public ::testing::Test {
+	class CDataChosenCryptoTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -17,7 +18,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -25,20 +27,20 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataChosenCrypto m_dataChosenCrypto;
+		CContianerChosenCrypto m_dataChosenCrypto;
 	};
 
 	TEST_F(CDataChosenCryptoTest, TestInitialize) {
-		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 0);
+		EXPECT_EQ(m_dataChosenCrypto.Size(), 0);
 	}
 
 	TEST_F(CDataChosenCryptoTest, TestLoad) {
-		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 0) << "初始未装载Crypto代码";
+		EXPECT_EQ(m_dataChosenCrypto.Size(), 0) << "初始未装载Crypto代码";
 
 		m_dataChosenCrypto.LoadDB();
-		EXPECT_EQ(m_dataChosenCrypto.GetSize(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
+		EXPECT_EQ(m_dataChosenCrypto.Size(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
 
-		CFinnhubCryptoSymbolPtr pCrypto = m_dataChosenCrypto.GetCrypto(2);
+		CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataChosenCrypto.Get(2));
 		EXPECT_STREQ(pCrypto->GetSymbol(), _T("BINANCE:OCEANBTC")) << "装载时没有排序，使用的是原始位置";
 	}
 }

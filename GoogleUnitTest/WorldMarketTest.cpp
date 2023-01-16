@@ -34,11 +34,12 @@
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+#include"FinnhubCryptoSymbol.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CWorldMarketTest : public ::testing::Test {
+	class CWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

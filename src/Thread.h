@@ -39,7 +39,7 @@ UINT ThreadLoadDayLine(not_null<CChinaStock*> pStock); // 此工作线程返回值为16
 // 维护日线数据库线程（尚未实现）
 UINT ThreadMaintainDayLineDataBase(void); // 此工作线程返回值为17
 //更新股票代码数据库线程
-UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为18
+UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarket*> pMarket); // 此线程返回值为18
 //存储所选股票实时数据线程
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为19
 // 更新选项数据库
@@ -124,6 +124,8 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为105
 // 计算股票的10日强势与否2
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为106
+// 计算chinaMarket的实时数据
+UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为107
 
 // 后台处理线程
 // WebSource ParseAndSaveWebData线程。 此线程的返回值为203

@@ -69,6 +69,7 @@ public:
 	//
 	bool IsTodayNewStock(void) const noexcept { return m_fTodayNewStock; }
 	void SetTodayNewStock(const bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
+
 	bool IsUpdateProfileDB(void) const noexcept { return m_fUpdateProfileDB; }
 
 	bool IsUpdateProfileDBAndClearFlag(void) noexcept {
@@ -77,6 +78,7 @@ public:
 	}
 
 	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
+
 	bool IsUpdateCompanyNewsDB(void) const noexcept { return m_fUpdateCompanyNewsDB; }
 
 	bool IsUpdateCompanyNewsDBAndClearFlag(void) noexcept {
@@ -85,6 +87,7 @@ public:
 	}
 
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
+
 	bool IsClearDayLineVector(void) const noexcept { return m_fClearDayLineVector; }
 
 	bool IsClearDayLineVectorAndClearFlag(void) noexcept {
@@ -93,6 +96,7 @@ public:
 	}
 
 	void SetClearDayLineVector(const bool fFlag) noexcept { m_fClearDayLineVector = fFlag; }
+
 	bool IsActive(void) const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 

@@ -65,9 +65,7 @@ CChinaStockPtr CDataChinaStock::GetStock(const CString& strStockCode) {
 	if (!IsStock(strStockCode)) {
 		return nullptr;
 	}
-	else {
-		return (m_vStock.at(m_mapStock.at(strStockCode)));
-	}
+	return (m_vStock.at(m_mapStock.at(strStockCode)));
 }
 
 CChinaStockPtr CDataChinaStock::GetStock(const long lIndex) {
@@ -116,7 +114,7 @@ bool CDataChinaStock::SortStock(void) {
 	return true;
 }
 
-long CDataChinaStock::LoadStockCodeDB(void) {
+long CDataChinaStock::LoadStockProfileDB(void) {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{0, 0, 0};
 	CString str;
@@ -157,12 +155,12 @@ long CDataChinaStock::LoadStockCodeDB(void) {
 	return lDayLineNeedCheck;
 }
 
-bool CDataChinaStock::UpdateStockCodeDB(void) {
+bool CDataChinaStock::UpdateStockProfileDB(void) {
 	int iStockCodeNeedUpdate = 0;
 	int iCount = 0;
 
 	//更新原有的代码集状态
-	if (IsUpdateStockCodeDB()) {
+	if (IsUpdateStockProfileDB()) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
@@ -330,7 +328,7 @@ void CDataChinaStock::ClearDayLineNeedUpdateStatus(void) const {
 	}
 }
 
-bool CDataChinaStock::IsUpdateStockCodeDB(void) noexcept {
+bool CDataChinaStock::IsUpdateStockProfileDB(void) noexcept {
 	return ranges::any_of(m_vStock, [](const CChinaStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 

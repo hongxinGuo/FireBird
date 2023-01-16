@@ -49,12 +49,21 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_containerVirtualStock.IsInSymbolMap(strSymbol)) << "位于1-100之间";
 	}
 
+	TEST_F(CContainerVirtualStockTest, TestIsUpdateProfileDB1) {
+		EXPECT_FALSE(m_containerVirtualStock.IsUpdateProfileDB());
+		m_containerVirtualStock.Get(0)->SetUpdateProfileDB(true);
+
+		EXPECT_TRUE(m_containerVirtualStock.IsUpdateProfileDB());
+
+		m_containerVirtualStock.Get(0)->SetUpdateProfileDB(false);
+	}
+
 	TEST_F(CContainerVirtualStockTest, TestGet1) {
 		EXPECT_STREQ(gl_pChinaMarket->GetStock(50)->GetSymbol(), m_containerVirtualStock.Get(50)->GetSymbol());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet2) {
-		const CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
+		CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
 
 		EXPECT_STREQ(gl_pChinaMarket->GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
 	}

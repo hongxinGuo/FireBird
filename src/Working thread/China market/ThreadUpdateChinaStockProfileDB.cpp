@@ -10,10 +10,9 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket) {
-	//
+UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarket*> pMarket) {	//
 	gl_ThreadStatus.IncreaseSavingThread();
-	pMarket->UpdateStockCodeDB();
+	pMarket->UpdateStockProfileDB();
 	gl_ThreadStatus.DecreaseSavingThread();
 	return 18;
 }

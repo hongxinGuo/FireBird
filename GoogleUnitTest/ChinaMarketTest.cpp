@@ -30,7 +30,7 @@ namespace FireBirdTest {
 	static CMockTengxunRTWebInquiryPtr s_pMockTengxunRTWebInquiry;
 	static CMockNeteaseRTWebInquiryPtr s_pMockNeteaseRTWebInquiry;
 
-	class CChinaMarketTest : public ::testing::Test {
+	class CChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -1308,7 +1308,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(setStockCode.find(_T("600001.SS")) != setStockCode.end());
 	}
 
-	TEST_F(CChinaMarketTest, TestUpdateStockCodeDB) {
+	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
 		ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
 		auto pStock = make_shared<CChinaStock>();
@@ -1321,7 +1321,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetIPOStatus(_STOCK_DELISTED_);
-		gl_pChinaMarket->UpdateStockCodeDB();
+		gl_pChinaMarket->UpdateStockProfileDB();
 
 		CSetChinaStockSymbol setChinaStock;
 		setChinaStock.m_strFilter = _T("[Symbol] = '000001.SS'");

@@ -26,7 +26,7 @@ namespace FireBirdTest {
 
 	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
 
-	class CMockChinaMarketTest : public ::testing::Test {
+	class CMockChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -120,13 +120,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
 	}
 
-	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockCodeDB) {
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateStockCodeDB())
+	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockProfileDB) {
+		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateStockProfileDB())
 			.Times(0);
 		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
 
 		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateStockCodeDB())
+		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadUpdateStockProfileDB())
 			.Times(1);
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
 
@@ -260,7 +260,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
+		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockProfileDB)
 			.Times(1)
 			.WillOnce(Return(true));
 		gl_pMockChinaMarket->SetSystemReady(true);
@@ -283,7 +283,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(GetCurrentMonday(lDate)))
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
+		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockProfileDB)
 			.Times(1)
 			.WillOnce(Return(true));
 		gl_pMockChinaMarket->SetSystemReady(true);
@@ -342,13 +342,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadUpdateOptionDB(gl_pMockChinaMarket.get()), static_cast<UINT>(20));
 	}
 
-	TEST_F(CMockChinaMarketTest, TestThreadUpdateStockCodeDB) {
+	TEST_F(CMockChinaMarketTest, TestThreadUpdateStockProfileDB) {
 		ASSERT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockCodeDB)
+		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockProfileDB)
 			.Times(1);
 		gl_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadUpdateStockCodeDB(gl_pMockChinaMarket.get()), static_cast<UINT>(18));
+		EXPECT_EQ(ThreadUpdateChinaStockProfileDB(gl_pMockChinaMarket.get()), static_cast<UINT>(18));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateChosenStockDB) {

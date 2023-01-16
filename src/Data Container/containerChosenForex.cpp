@@ -3,7 +3,8 @@
 #include"WorldMarket.h"
 #include"FinnhubForexSymbol.h"
 #include"SetWorldChosenForex.h"
-#include "DataChosenForex.h"
+#include "ContainerChosenForex.h"
+#include"FinnhubForexSymbol.h"
 
 CDataChosenForex::CDataChosenForex() {
 	m_lChosenForexPos = 0;
@@ -12,8 +13,6 @@ CDataChosenForex::CDataChosenForex() {
 
 void CDataChosenForex::Reset(void) {
 	m_lChosenForexPos = 0;
-	m_vWorldChosenForex.resize(0);
-	m_mapWorldChosenForex.clear();
 }
 
 bool CDataChosenForex::LoadDB(void) {
@@ -25,8 +24,8 @@ bool CDataChosenForex::LoadDB(void) {
 	while (!setWorldChosenForex.IsEOF()) {
 		if (gl_pWorldMarket->IsForexSymbol(setWorldChosenForex.m_Symbol)) {
 			pForex = gl_pWorldMarket->GetForexSymbol(setWorldChosenForex.m_Symbol);
-			m_mapWorldChosenForex[setWorldChosenForex.m_Symbol] = m_mapWorldChosenForex.size();
-			m_vWorldChosenForex.push_back(pForex);
+			m_mapSymbol[setWorldChosenForex.m_Symbol] = m_mapSymbol.size();
+			m_vStock.push_back(pForex);
 		}
 		setWorldChosenForex.MoveNext();
 	}
