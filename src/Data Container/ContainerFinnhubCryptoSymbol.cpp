@@ -7,10 +7,12 @@
 #include<memory>
 using std::make_shared;
 
-CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() { Reset(); }
+CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
+	CContainerFinnhubCryptoSymbol::Reset();
+}
 
 void CContainerFinnhubCryptoSymbol::Reset(void) {
-	m_lLastTotalCryptoSymbol = 0;
+	m_lLastTotalSymbol = 0;
 }
 
 bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
@@ -33,27 +35,27 @@ bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
-	m_lLastTotalCryptoSymbol = static_cast<long>(m_vStock.size());
+	m_lLastTotalSymbol = static_cast<long>(m_vStock.size());
 
 	return true;
 }
 
 bool CContainerFinnhubCryptoSymbol::UpdateDB(void) {
 	const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
-	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoSymbolPtr pSymbol;
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	bool fUpdateSymbol = false;
 
-	if (m_lLastTotalCryptoSymbol < lTotalCryptoSymbol) {
+	if (m_lLastTotalSymbol < lTotalCryptoSymbol) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (auto l = m_lLastTotalCryptoSymbol; l < lTotalCryptoSymbol; l++) {
+		for (auto l = m_lLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
 			pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_vStock.at(l));
 			pSymbol->AppendSymbol(setCryptoSymbol);
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
-		m_lLastTotalCryptoSymbol = lTotalCryptoSymbol;
+		m_lLastTotalSymbol = lTotalCryptoSymbol;
 	}
 
 	for (const auto& pSymbol2 : m_vStock) {

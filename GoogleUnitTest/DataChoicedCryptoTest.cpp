@@ -27,7 +27,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CContianerChosenCrypto m_dataChosenCrypto;
+		CContainerChosenCrypto m_dataChosenCrypto;
 	};
 
 	TEST_F(CDataChosenCryptoTest, TestInitialize) {

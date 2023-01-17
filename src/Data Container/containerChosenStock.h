@@ -7,7 +7,7 @@ class CContainerChosenStock : public CContainerVirtualStock {
 public:
 	CContainerChosenStock();
 	~CContainerChosenStock() override = default;
-	void Reset(void);
+	void Reset(void) override;
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

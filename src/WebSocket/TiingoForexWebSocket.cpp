@@ -203,7 +203,6 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				// error
 				gl_systemMessage.PushErrorMessage(_T("Tiingo Forex WebSocket type Error"));
 				return false;
-				break;
 			}
 		}
 		else {

@@ -734,7 +734,7 @@ void CChinaStock::InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData) 
 }
 
 void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
-	long lCurrentGuadanTransactionPrice = 0;
+	long lCurrentGuadanTransactionPrice;
 
 	ResetCalculatingData();
 	m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();

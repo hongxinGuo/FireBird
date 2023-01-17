@@ -1,5 +1,4 @@
-﻿#include "ContainerVirtualStock.h"
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "ContainerVirtualStock.h"
 

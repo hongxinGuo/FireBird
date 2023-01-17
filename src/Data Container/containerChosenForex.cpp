@@ -4,11 +4,10 @@
 #include"FinnhubForexSymbol.h"
 #include"SetWorldChosenForex.h"
 #include "ContainerChosenForex.h"
-#include"FinnhubForexSymbol.h"
 
 CDataChosenForex::CDataChosenForex() {
 	m_lChosenForexPos = 0;
-	Reset();
+	CDataChosenForex::Reset();
 }
 
 void CDataChosenForex::Reset(void) {

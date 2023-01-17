@@ -6,11 +6,11 @@ class CContainerFinnhubCryptoSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubCryptoSymbol();
 	~CContainerFinnhubCryptoSymbol() override = default;
-	void Reset(void);
+	void Reset(void) override;
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
 protected:
-	long m_lLastTotalCryptoSymbol;
+	long m_lLastTotalSymbol;
 };

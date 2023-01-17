@@ -6,11 +6,11 @@ class CContainerFinnhubForexSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubForexSymbol();
 	~CContainerFinnhubForexSymbol() override = default;
-	void Reset(void);
+	void Reset(void) override;
 
 	bool LoadDB(void);
 	bool UpdateDB(void);
 
 protected:
-	long m_lLastTotalForexSymbol;
+	long m_lLastTotalSymbol;
 };

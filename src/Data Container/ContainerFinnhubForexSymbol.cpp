@@ -7,13 +7,13 @@
 using namespace std;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
-	Reset();
+	CContainerFinnhubForexSymbol::Reset();
 }
 
 void CContainerFinnhubForexSymbol::Reset(void) {
 	CContainerVirtualStock::Reset();
 
-	m_lLastTotalForexSymbol = 0;
+	m_lLastTotalSymbol = 0;
 }
 
 bool CContainerFinnhubForexSymbol::LoadDB(void) {
@@ -35,7 +35,7 @@ bool CContainerFinnhubForexSymbol::LoadDB(void) {
 	}
 	setForexSymbol.m_pDatabase->CommitTrans();
 	setForexSymbol.Close();
-	m_lLastTotalForexSymbol = m_vStock.size();
+	m_lLastTotalSymbol = m_vStock.size();
 
 	return true;
 }
@@ -46,16 +46,16 @@ bool CContainerFinnhubForexSymbol::UpdateDB(void) {
 	CSetFinnhubForexSymbol setForexSymbol;
 	bool fUpdateSymbol = false;
 
-	if (m_lLastTotalForexSymbol < lTotalForexSymbol) {
+	if (m_lLastTotalSymbol < lTotalForexSymbol) {
 		setForexSymbol.Open();
 		setForexSymbol.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalForexSymbol; l < lTotalForexSymbol; l++) {
+		for (long l = m_lLastTotalSymbol; l < lTotalForexSymbol; l++) {
 			pSymbol = dynamic_pointer_cast<CFinnhubForexSymbol>(m_vStock.at(l));
 			pSymbol->AppendSymbol(setForexSymbol);
 		}
 		setForexSymbol.m_pDatabase->CommitTrans();
 		setForexSymbol.Close();
-		m_lLastTotalForexSymbol = lTotalForexSymbol;
+		m_lLastTotalSymbol = lTotalForexSymbol;
 	}
 
 	for (const auto& pSymbol2 : m_vStock) {

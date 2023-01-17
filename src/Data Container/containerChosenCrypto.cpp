@@ -5,16 +5,16 @@
 #include "containerChosenCrypto.h"
 #include"FinnhubCryptoSymbol.h"
 
-CContianerChosenCrypto::CContianerChosenCrypto() {
+CContainerChosenCrypto::CContainerChosenCrypto() {
 	m_lChosenCryptoPos = 0;
-	Reset();
+	CContainerChosenCrypto::Reset();
 }
 
-void CContianerChosenCrypto::Reset(void) {
+void CContainerChosenCrypto::Reset(void) {
 	m_lChosenCryptoPos = 0;
 }
 
-bool CContianerChosenCrypto::LoadDB(void) {
+bool CContainerChosenCrypto::LoadDB(void) {
 	CSetWorldChosenCrypto setWorldChosenCrypto;
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 

@@ -7,7 +7,7 @@
 
 CContainerChosenStock::CContainerChosenStock() {
 	m_lChosenStockPos = 0;
-	Reset();
+	CContainerChosenStock::Reset();
 }
 
 void CContainerChosenStock::Reset(void) {

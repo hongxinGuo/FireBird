@@ -194,8 +194,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					i++;
 					break;
 				default: // ´íÎó
+					gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket type error"));
 					return false;
-					break;
 				}
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);
 				m_fReceivingData = true;
@@ -225,8 +225,8 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				m_statusMessage = js4.at(_T("message"));
 				break;
 			default:
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket type error"));
 				return false;
-				break;
 			}
 		}
 		else {

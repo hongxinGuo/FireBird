@@ -727,17 +727,14 @@ bool CDataChinaStock::BuildDayLineRS(long lDate) {
 	vector<double> vRS;
 	int iTotalAShare = 0;
 	CString strSQL;
-	CString strDate;
 	char pch[30];
-	int iStockNumber = 0;
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
-	double dIndexUpDownRate{0.0};
-	double dRSIndex{0.0};
+	double dRSIndex;
 
 	sprintf_s(pch, _T("%08d"), lDate);
-	strDate = pch;
+	const CString strDate = pch;
 	setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
 	setDayLineBasicInfo.m_strFilter += strDate;
@@ -751,7 +748,7 @@ bool CDataChinaStock::BuildDayLineRS(long lDate) {
 		return false;
 	}
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-	iStockNumber = 0;
+	int iStockNumber = 0;
 	while (!setDayLineBasicInfo.IsEOF()) {
 		if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {
 			// 上海综指
@@ -770,7 +767,7 @@ bool CDataChinaStock::BuildDayLineRS(long lDate) {
 		iStockNumber++;
 		setDayLineBasicInfo.MoveNext();
 	}
-	dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
+	const double dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
 
 	setDayLineBasicInfo.MoveFirst();
 	int iCount = 0;
@@ -786,14 +783,13 @@ bool CDataChinaStock::BuildDayLineRS(long lDate) {
 		const double dLow = atof(setDayLineBasicInfo.m_Low);
 		const double dHigh = atof(setDayLineBasicInfo.m_High);
 		const double dClose = atof(setDayLineBasicInfo.m_Close);
-		double dUpDownRate = 0;
 		// 计算指数相对强度
 		if (dLastClose < 0.001) {
 			// 新股上市等，昨日收盘价格为零
 			dRSIndex = 50;
 		}
 		else {
-			dUpDownRate = (dClose - dLastClose) / dLastClose;
+			const double dUpDownRate = (dClose - dLastClose) / dLastClose;
 			if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) {
 				// 除权等导致价格突变
 				dRSIndex = 50;
@@ -854,20 +850,17 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 	vector<double> vRS;
 	int iTotalAShare = 0;
 	CString strSQL;
-	CString strDate;
 	char pch[30];
-	int iStockNumber = 0;
 	//CTime ctTime;
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
-	double dIndexUpDownRate{0};
-	double dRSIndex{0};
+	double dRSIndex;
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
 	sprintf_s(pch, _T("%08d"), lDate);
-	strDate = pch;
+	const CString strDate = pch;
 	setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
 	setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
 	setWeekLineBasicInfo.m_strFilter += strDate;
@@ -881,7 +874,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 		return false;
 	}
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-	iStockNumber = 0;
+	int iStockNumber = 0;
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {
 			// 上海综指
@@ -900,7 +893,7 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 		iStockNumber++;
 		setWeekLineBasicInfo.MoveNext();
 	}
-	dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
+	const double dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
 
 	setWeekLineBasicInfo.MoveFirst();
 	int iCount = 0;
@@ -914,14 +907,13 @@ bool CDataChinaStock::BuildWeekLineRS(long lDate) {
 		setWeekLineBasicInfo.Edit();
 		const double dLastClose = atof(setWeekLineBasicInfo.m_LastClose);
 		const double dClose = atof(setWeekLineBasicInfo.m_Close);
-		double dUpDownRate = 0;
 		// 计算指数相对强度
 		if (dLastClose < 0.001) {
 			// 新股上市等，昨日收盘价格为零
 			dRSIndex = 50;
 		}
 		else {
-			dUpDownRate = (dClose - dLastClose) / dLastClose;
+			const double dUpDownRate = (dClose - dLastClose) / dLastClose;
 			dRSIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
 		}
 		setWeekLineBasicInfo.m_RSIndex = ConvertValueToString(dRSIndex);

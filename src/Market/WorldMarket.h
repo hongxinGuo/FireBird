@@ -279,7 +279,7 @@ protected:
 
 	CContainerChosenStock m_dataChosenStock;
 	CDataChosenForex m_dataChosenForex;
-	CContianerChosenCrypto m_dataChosenCrypto;
+	CContainerChosenCrypto m_dataChosenCrypto;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

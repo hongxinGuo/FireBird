@@ -2,11 +2,11 @@
 
 #include"ContainerVirtualStock.h"
 
-class CContianerChosenCrypto : public CContainerVirtualStock {
+class CContainerChosenCrypto : public CContainerVirtualStock {
 public:
-	CContianerChosenCrypto();
-	~CContianerChosenCrypto() override = default;
-	void Reset(void);
+	CContainerChosenCrypto();
+	~CContainerChosenCrypto() override = default;
+	void Reset(void) override;
 
 	bool LoadDB(void);
 	//bool UpdateDB(void);

@@ -65,7 +65,7 @@ namespace FireBirdTest {
 	// error message
 	TiingoWebSocketData tiingoForexData13(13, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
 
-	class ProcessOneTiingoForexWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
+	class ProcessOneTiingoForexWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -92,9 +92,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
-	                         testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &
-		                         tiingoForexData8, &tiingoForexData9,
-		                         &tiingoForexData10, &tiingoForexData11, &tiingoForexData12, &tiingoForexData13));
+		testing::Values(&tiingoForexData1, &tiingoForexData2, &tiingoForexData6, &tiingoForexData7, &
+			tiingoForexData8, &tiingoForexData9,
+			&tiingoForexData10, &tiingoForexData11, &tiingoForexData12, &tiingoForexData13));
 
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
@@ -155,9 +155,9 @@ namespace FireBirdTest {
 	}
 
 	TiingoWebSocketData tiingoCryptoData1(1, _T(""), _T(
-		                                      "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
+		"{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}"));
 	TiingoWebSocketData tiingoCryptoData2(2, _T(""), _T(
-		                                      "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
+		"{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"T\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}"));
 	// heart beat
 	TiingoWebSocketData tiingoCryptoData3(
 		3, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 	// error message
 	TiingoWebSocketData tiingoCryptoData11(11, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
 
-	class ProcessOneTiingoCryptoWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
+	class ProcessOneTiingoCryptoWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -203,9 +203,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
-	                         testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &
-		                         tiingoCryptoData4, &tiingoCryptoData5,
-		                         &tiingoCryptoData6, &tiingoCryptoData7, &tiingoCryptoData9, &tiingoCryptoData10, &tiingoCryptoData11));
+		testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &
+			tiingoCryptoData4, &tiingoCryptoData5,
+			&tiingoCryptoData6, &tiingoCryptoData7, &tiingoCryptoData9, &tiingoCryptoData10, &tiingoCryptoData11));
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
@@ -280,37 +280,37 @@ namespace FireBirdTest {
 
 	// 正确数据
 	TiingoWebSocketData tiingoIEXData1(1, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		"{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	TiingoWebSocketData tiingoIEXData2(2, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
+		"{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
 	// authentication
 	TiingoWebSocketData tiingoIEXData3(3, _T(""), _T(
-		                                   "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+		"{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 	// Heart beat
 	TiingoWebSocketData tiingoIEXData4(
 		4, _T(""), _T("{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}"));
 	// messageType只能为'A''I''H'
 	TiingoWebSocketData tiingoIEXData5(5, _T(""), _T(
-		                                   "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		"{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// data的首项只能为‘Q’ ‘T’ 或者‘B’
 	TiingoWebSocketData tiingoIEXData6(6, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"C\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		"{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"C\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// 错误。service的名称不为"iex",
 	TiingoWebSocketData tiingoIEXData7(7, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		"{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// service错为servi
 	TiingoWebSocketData tiingoIEXData8(8, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
+		"{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
 	// json格式错误
 	TiingoWebSocketData tiingoIEXData9(9, _T(""), _T(
-		                                   "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		"\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// subscribe
 	TiingoWebSocketData tiingoIEXData10(10, _T(""), _T(
-		                                    "{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
+		"{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
 	// error message
 	TiingoWebSocketData tiingoIEXData11(11, _T(""), _T("{\"messageType\":\"E\",\"response\":{\"code\":400,\"message\":\"thresholdLevel not valid\"}}"));
 
-	class ProcessOneTiingoIEXWebSocketDataTest : public::testing::TestWithParam<TiingoWebSocketData*> {
+	class ProcessOneTiingoIEXWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -338,9 +338,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
-	                         testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &
-		                         tiingoIEXData5,
-		                         &tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9, &tiingoIEXData10,&tiingoCryptoData11));
+		testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &
+			tiingoIEXData5,
+			&tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9, &tiingoIEXData10,&tiingoCryptoData11));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
@@ -392,9 +392,13 @@ namespace FireBirdTest {
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 6: //
 			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 7: // service的名称必须为"iex"
 			EXPECT_FALSE(fSucceed);

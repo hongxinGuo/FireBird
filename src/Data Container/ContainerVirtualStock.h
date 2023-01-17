@@ -12,7 +12,7 @@ public:
 	CContainerVirtualStock();
 	virtual ~CContainerVirtualStock() = default;
 
-	void Reset();
+	virtual void Reset();
 
 	bool IsSymbol(const CString& strSymbol) const {
 		if (m_mapSymbol.contains(strSymbol)) return true;
