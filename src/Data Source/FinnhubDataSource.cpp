@@ -162,8 +162,9 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 bool CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
-	const long long llTickCount = GetTickCount64();;
+	const long long llTickCount = GetTickCount64();
 
+	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
 	if (!sbWebErrorOccurred) {
 		if (m_pWebInquiry->IsWebError()) {
 			sbWebErrorOccurred = true;

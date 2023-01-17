@@ -77,12 +77,12 @@
     <ClCompile Include="ContainerVirtualStockTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="DataChinaStockTest.cpp" />
-    <ClCompile Include="DataChoicedCryptoTest.cpp" />
-    <ClCompile Include="DataChoicedForexTest.cpp" />
-    <ClCompile Include="DataChoicedIEXTest.cpp" />
+    <ClCompile Include="ContainerChoicedCryptoTest.cpp" />
+    <ClCompile Include="ContainerChoicedForexTest.cpp" />
+    <ClCompile Include="ContainerChoicedIEXTest.cpp" />
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
-    <ClCompile Include="DataWorldStockTest.cpp" />
+    <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />

@@ -546,13 +546,13 @@
     <ClCompile Include="..\src\pch.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedCryptoTest.cpp">
+    <ClCompile Include="ContainerChoicedCryptoTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedForexTest.cpp">
+    <ClCompile Include="ContainerChoicedForexTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="DataChoicedIEXTest.cpp">
+    <ClCompile Include="ContainerChoicedIEXTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
     <ClCompile Include="MockFireBirdViewTest.cpp">
@@ -573,7 +573,7 @@
     <ClCompile Include="TiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
-    <ClCompile Include="DataWorldStockTest.cpp">
+    <ClCompile Include="ContainerWorldStockTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">

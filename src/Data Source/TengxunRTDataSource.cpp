@@ -13,13 +13,12 @@ bool CTengxunRTDataSource::UpdateStatus(void) { return true; }
 
 bool CTengxunRTDataSource::Inquire(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();
-	if (static long long sllLastTimeTickCount = 0; gl_pChinaMarket->IsSystemReady() && llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.
-		GetChinaMarketRTDataInquiryTime() * 5)) {
-		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
-		}
+	static long long sllLastTimeTickCount = 0;
+
+	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
+	if (gl_pChinaMarket->IsSystemReady() && (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5))) {
 		if (m_pWebInquiry->IsWebError()) {
-			sllLastTimeTickCount = llTickCount + 60000; //网络出现错误时，延迟一分钟再查询
+			sllLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
 		}
 		else {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
@@ -28,6 +27,9 @@ bool CTengxunRTDataSource::Inquire(const long lCurrentTime) {
 			else {
 				sllLastTimeTickCount = llTickCount;
 			}
+		}
+		if (!IsInquiring()) {
+			InquireRTData(lCurrentTime);
 		}
 	}
 	return true;

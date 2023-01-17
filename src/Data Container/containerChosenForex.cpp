@@ -5,16 +5,16 @@
 #include"SetWorldChosenForex.h"
 #include "ContainerChosenForex.h"
 
-CDataChosenForex::CDataChosenForex() {
+CContainerChosenForex::CContainerChosenForex() {
 	m_lChosenForexPos = 0;
-	CDataChosenForex::Reset();
+	CContainerChosenForex::Reset();
 }
 
-void CDataChosenForex::Reset(void) {
+void CContainerChosenForex::Reset(void) {
 	m_lChosenForexPos = 0;
 }
 
-bool CDataChosenForex::LoadDB(void) {
+bool CContainerChosenForex::LoadDB(void) {
 	CSetWorldChosenForex setWorldChosenForex;
 	CForexSymbolPtr pForex = nullptr;
 

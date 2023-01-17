@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// CDataWorldStock类操作worldmarket数据库中的stock_profile表。
+// CContainerWorldStock类操作worldMarket数据库中的stock_profile表。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -11,65 +11,69 @@
 
 #include"SetWorldStock.h"
 
-#include "DataWorldStock.h"
+#include "ContainerWorldStock.h"
 
 using namespace std;
 
-CDataWorldStock::CDataWorldStock() {
-	CDataWorldStock::Reset();
+CContainerWorldStock::CContainerWorldStock() {
+	CContainerWorldStock::Reset();
 }
 
-void CDataWorldStock::Reset(void) {
+void CContainerWorldStock::Reset(void) {
 	CContainerVirtualStock::Reset();
 	m_lLastTotalWorldStock = 0;
 }
 
-bool CDataWorldStock::IsCompanyNewsNeedUpdate(void) {
+bool CContainerWorldStock::IsCompanyNewsNeedUpdate(void) {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
 }
 
-bool CDataWorldStock::IsBasicFinancialNeedUpdate(void) {
+bool CContainerWorldStock::IsBasicFinancialNeedUpdate(void) {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
-void CDataWorldStock::ResetEPSSurprise(void) {
+void CContainerWorldStock::ResetEPSSurprise(void) {
 	for (auto& p : m_vStock) {
-		dynamic_pointer_cast<CWorldStock>(p)->SetLastEPSSurpriseUpdateDate(19800101);
-		dynamic_pointer_cast<CWorldStock>(p)->m_fEPSSurpriseUpdated = false;
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(p);
+		pStock->SetLastEPSSurpriseUpdateDate(19800101);
+		pStock->m_fEPSSurpriseUpdated = false;
 	}
 }
 
-void CDataWorldStock::ResetPeer(void) {
-	for (const auto& pStock : m_vStock) {
-		if (dynamic_pointer_cast<CWorldStock>(pStock)->GetPeerUpdateDate() != 19800101) {
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetPeerUpdateDate(19800101);
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetPeerUpdated(false);
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetUpdateProfileDB(true);
+void CContainerWorldStock::ResetPeer(void) {
+	for (const auto& pVirtualStock : m_vStock) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+		if (pStock->GetPeerUpdateDate() != 19800101) {
+			pStock->SetPeerUpdateDate(19800101);
+			pStock->SetPeerUpdated(false);
+			pStock->SetUpdateProfileDB(true);
 		}
 	}
 }
 
-void CDataWorldStock::ResetBasicFinancial(void) {
-	for (const auto& pStock : m_vStock) {
-		if (dynamic_pointer_cast<CWorldStock>(pStock)->GetBasicFinancialUpdateDate() != 19800101) {
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetBasicFinancialUpdateDate(19800101);
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetBasicFinancialUpdated(false);
-			dynamic_pointer_cast<CWorldStock>(pStock)->SetUpdateProfileDB(true);
+void CContainerWorldStock::ResetBasicFinancial(void) {
+	for (const auto& pVirtualStock : m_vStock) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
+			pStock->SetBasicFinancialUpdateDate(19800101);
+			pStock->SetBasicFinancialUpdated(false);
+			pStock->SetUpdateProfileDB(true);
 		}
 	}
 }
 
-void CDataWorldStock::ResetDayLine(void) {
-	for (const auto& pStock : m_vStock) {
-		dynamic_pointer_cast<CWorldStock>(pStock)->SetIPOStatus(_STOCK_NOT_CHECKED_);
-		dynamic_pointer_cast<CWorldStock>(pStock)->SetDayLineStartDate(29900101);
-		dynamic_pointer_cast<CWorldStock>(pStock)->SetDayLineEndDate(19800101);
-		dynamic_pointer_cast<CWorldStock>(pStock)->SetDayLineNeedUpdate(true);
-		dynamic_pointer_cast<CWorldStock>(pStock)->SetUpdateProfileDB(true);
+void CContainerWorldStock::ResetDayLine(void) {
+	for (const auto& pVirtualStock : m_vStock) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
+		pStock->SetDayLineStartDate(29900101);
+		pStock->SetDayLineEndDate(19800101);
+		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateProfileDB(true);
 	}
 }
 
-bool CDataWorldStock::LoadDB(void) {
+bool CContainerWorldStock::LoadDB(void) {
 	CSetWorldStock setWorldStock;
 	CWorldStockPtr pWorldStock = nullptr;
 	CString str;
@@ -119,12 +123,8 @@ bool CDataWorldStock::LoadDB(void) {
 /// <summary>
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-bool CDataWorldStock::UpdateProfileDB(void) {
+bool CContainerWorldStock::UpdateProfileDB(void) {
 	static bool sm_fInProcess = false;
-	CWorldStockPtr pStock = nullptr;
-	CSetWorldStock setWorldStock;
 	int iStockNeedUpdate = 0;
 	int iCurrentUpdated = 0;
 	time_t tt = GetTickCount64();
@@ -137,6 +137,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
+		CSetWorldStock setWorldStock;
 		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
@@ -145,7 +146,7 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 		setWorldStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {
 			if (setWorldStock.IsEOF()) break;
-			pStock = dynamic_pointer_cast<CWorldStock>(Get(setWorldStock.m_Symbol));
+			const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(Get(setWorldStock.m_Symbol));
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
 				pStock->Update(setWorldStock);
@@ -156,12 +157,13 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 		if (iCurrentUpdated < iStockNeedUpdate) {
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
-			for (const auto& pStock3 : m_vStock) {
+			for (const auto& pVirtualStock : m_vStock) {
+				const CWorldStockPtr pStock3 = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
 				if (pStock3->IsUpdateProfileDB()) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
 					iCurrentUpdated++;
-					dynamic_pointer_cast<CWorldStock>(pStock3)->Append(setWorldStock);
-					dynamic_pointer_cast<CWorldStock>(pStock3)->SetTodayNewStock(false);
+					pStock3->Append(setWorldStock);
+					pStock3->SetTodayNewStock(false);
 					TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
 				}
 				if (iCurrentUpdated >= iStockNeedUpdate) break;
@@ -196,10 +198,9 @@ bool CDataWorldStock::UpdateProfileDB(void) {
 // 完毕后vStock的内存就释放了，而工作线程可能尚未执行完毕前，参数vStock就无效了。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataWorldStock::UpdateBasicFinancialDB(void) {
+bool CContainerWorldStock::UpdateBasicFinancialDB(void) {
 	static bool s_fInProcess = false;
 	static vector<CWorldStockPtr> s_vStock{}; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
-	CWorldStockPtr pStock = nullptr;
 
 	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
@@ -208,9 +209,10 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 	s_fInProcess = true;
 
 	s_vStock.clear();
-	for (auto& pStock4 : m_vStock) {
-		if (dynamic_pointer_cast<CWorldStock>(pStock4)->IsUpdateBasicFinancialDB()) {
-			s_vStock.push_back(dynamic_pointer_cast<CWorldStock>(pStock4));
+	for (auto& pVirtualStock : m_vStock) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+		if (pStock->IsUpdateBasicFinancialDB()) {
+			s_vStock.push_back(pStock);
 		}
 	}
 
@@ -233,7 +235,7 @@ bool CDataWorldStock::UpdateBasicFinancialDB(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
+bool CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
@@ -249,7 +251,7 @@ bool CDataWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStoc
 // 决定还是使用串行方式，不再生成线程。--20221101
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
+bool CContainerWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
@@ -257,7 +259,7 @@ bool CDataWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock
 	return true;
 }
 
-bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
+bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
 	auto iBasicFinancialNeedUpdate = vStock.size();
 	size_t iCurrentUpdated = 0;
@@ -297,7 +299,7 @@ bool CDataWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock
 	return true;
 }
 
-void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			CString strMessage = _T("found stock:") + pStock->GetSymbol() + _T(" need update basic financial data");
@@ -308,7 +310,7 @@ void CDataWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStoc
 	}
 }
 
-bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
+bool CContainerWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	CString strSymbol = pStock->GetSymbol();
 	const CString strExchangeCode = pStock->GetExchangeCode();
 
@@ -321,10 +323,10 @@ bool CDataWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	return true;
 }
 
-bool CDataWorldStock::IsNeedSaveInsiderTransaction(void) {
+bool CContainerWorldStock::IsNeedSaveInsiderTransaction(void) {
 	return ranges::any_of(m_vStock, [](CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsInsiderTransactionNeedSave(); });
 }
 
-bool CDataWorldStock::IsNeedSaveInsiderSentiment(void) {
+bool CContainerWorldStock::IsNeedSaveInsiderSentiment(void) {
 	return ranges::any_of(m_vStock, [](CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsInsiderSentimentNeedSave(); });
 }

@@ -3,10 +3,10 @@
 #include"WorldStock.h"
 #include"ContainerVirtualStock.h"
 
-class CDataWorldStock : public CContainerVirtualStock {
+class CContainerWorldStock : public CContainerVirtualStock {
 public:
-	CDataWorldStock();
-	~CDataWorldStock() override = default;
+	CContainerWorldStock();
+	~CContainerWorldStock() override = default;
 	void Reset(void) override;
 
 	bool IsStock(const CWorldStockPtr pStock) const { return IsSymbol(pStock->GetSymbol()); }

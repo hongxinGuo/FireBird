@@ -71,7 +71,8 @@ public:
 		TRACE("调用了基类函数ConfigureSession\n");
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) { } //成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
+	} //成功接收后更新系统状态。默认无动作
 
 	virtual void CreateTotalInquiringString(CString strMiddle);
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
@@ -101,17 +102,13 @@ public:
 	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
 	void SetReadingWebData(const bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-	bool IsWebError(void) const noexcept {
-		if (m_dwWebErrorCode == 0) return false;
-		else return true;
-	}
-
+	bool IsWebError(void) const noexcept { return m_dwWebErrorCode > 0; }
 	DWORD GetErrorCode(void) const noexcept { return m_dwWebErrorCode; }
 	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
 	bool IsTimeout(void) const noexcept {
 		if (m_dwWebErrorCode == 12002) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }

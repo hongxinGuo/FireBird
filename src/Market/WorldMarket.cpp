@@ -1,3 +1,4 @@
+// ReSharper disable All
 #include"pch.h"
 
 #include "WorldMarket.h"
@@ -6,7 +7,7 @@
 #include"FinnhubInaccessibleExchange.h"
 
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
+//#include"TiingoDataSource.h"
 
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
@@ -79,12 +80,12 @@ void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubCountry.Reset();
 	m_dataFinnhubEconomicCalendar.Reset();
 
-	m_dataWorldStock.Reset();
+	m_containerStock.Reset();
 	m_dataTiingoStock.Reset();
 
-	m_dataChosenStock.Reset();
-	m_dataChosenForex.Reset();
-	m_dataChosenCrypto.Reset();
+	m_containerChosenStock.Reset();
+	m_containerChosenForex.Reset();
+	m_containerChosenCrypto.Reset();
 }
 
 void CWorldMarket::ResetMarket(void) {
@@ -232,7 +233,6 @@ bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) { return true; }
 ///
 /// 此任务必须放置于每分钟执行一次的调度中。
 /// <returns></returns>
-///
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
 	if (HaveResetMarketPermission()) {
@@ -377,8 +377,8 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	CString str;
 
 	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataWorldStock.Size(); ++l) {
-		pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
+	for (long l = 0; l < m_containerStock.Size(); ++l) {
+		pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
@@ -524,8 +524,8 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 }
 
 bool CWorldMarket::UpdateCompanyNewsDB(void) {
-	for (long l = 0; l < m_dataWorldStock.Size(); l++) {
-		const auto pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
+	for (long l = 0; l < m_containerStock.Size(); l++) {
+		const auto pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
@@ -540,10 +540,8 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 }
 
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {
-	CWorldStockPtr pStock = nullptr;
-
 	for (long i = 0; i < GetStockSize(); i++) {
-		pStock = GetStock(i);
+		const CWorldStockPtr pStock = GetStock(i);
 		if (pStock->IsInsiderTransactionNeedSaveAndClearFlag()) {
 			if (pStock->HaveInsiderTransaction()) {
 				pStock->SaveInsiderTransaction();
@@ -593,28 +591,28 @@ bool CWorldMarket::UpdateNaicsIndustry(void) {
 }
 
 bool CWorldMarket::RebuildEPSSurprise(void) {
-	m_dataWorldStock.ResetEPSSurprise();
+	m_containerStock.ResetEPSSurprise();
 	gl_pFinnhubDataSource->SetEPSSurpriseUpdated(false);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildPeer(void) {
-	m_dataWorldStock.ResetPeer();
+	m_containerStock.ResetPeer();
 	gl_pFinnhubDataSource->SetPeerUpdated(false);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildBasicFinancial(void) {
-	m_dataWorldStock.ResetBasicFinancial();
+	m_containerStock.ResetBasicFinancial();
 	gl_pFinnhubDataSource->SetStockBasicFinancialUpdated(false);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildStockDayLineDB(void) {
-	m_dataWorldStock.ResetDayLine();
+	m_containerStock.ResetDayLine();
 	gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 
 	return true;
@@ -624,8 +622,8 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 	const CString strFilterPrefix = _T("[Symbol] = '");
 	CSetWorldStockDayLine setWorldStockDayLine;
 
-	for (long l = 0; l < m_dataWorldStock.Size(); l++) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
+	for (long l = 0; l < m_containerStock.Size(); l++) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
 		setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
 		setWorldStockDayLine.m_strSort = _T("[Date]");
 		setWorldStockDayLine.Open();
@@ -649,26 +647,21 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 /// <summary>
 /// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 
-	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataChosenStock.Size(); l++) {
-		pStock = dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(l));
+	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(l));
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
-	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
-	for (long l = 0; l < m_dataChosenCrypto.Size(); l++) {
-		pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataChosenCrypto.Get(l));
+	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_containerChosenCrypto.Get(l));
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
-	CForexSymbolPtr pForex = nullptr;
-	for (long l = 0; l < m_dataChosenForex.Size(); l++) {
-		pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataChosenForex.Get(l));
+	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
+		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(l));
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 
@@ -694,8 +687,8 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenStock.Size(); l++) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(l));
+	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(l));
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
@@ -712,8 +705,8 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataChosenCrypto.Get(l));
+	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_containerChosenCrypto.Get(l));
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
@@ -730,8 +723,8 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	vectorString vSymbol;
-	for (long l = 0; l < m_dataChosenForex.Size(); l++) {
-		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataChosenForex.Get(l));
+	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
+		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(l));
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 
@@ -785,7 +778,6 @@ void CWorldMarket::StartTiingoForexWebSocket(void) {
 /// <summary>
 /// // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
-/// <param name=""></param>
 void CWorldMarket::DisconnectAllWebSocket(void) {
 	//ASSERT(gl_systemStatus.IsExitingSystem()); //本函数只在系统退出时调用
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Disconnect();
@@ -797,7 +789,6 @@ void CWorldMarket::DisconnectAllWebSocket(void) {
 /// <summary>
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
-/// <param name=""></param>
 void CWorldMarket::StopWebSocketsIfTimeOut(void) {
 	if (IsSystemReady()) {
 		StopFinnhubWebSocketIfTimeOut();
@@ -910,7 +901,6 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// 更新证券的实时信息
 /// 目前只使用IEX和Crypto的数据，其他数据抛弃掉
 /// </summary>
-/// <param name=""></param>
 /// <returns></returns>
 bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
 	//CWorldStockPtr pStock;

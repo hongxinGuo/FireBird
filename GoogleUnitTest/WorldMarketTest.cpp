@@ -4,36 +4,36 @@
 
 #include"WorldStock.h"
 
-#include"ProductFinnhubForexExchange.h"
-#include"ProductFinnhubEconomicCountryList.h"
-#include"ProductFinnhubEconomicCalendar.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubCompanyPeer.h"
+//#include"ProductFinnhubForexExchange.h"
+//#include"ProductFinnhubEconomicCountryList.h"
+//#include"ProductFinnhubEconomicCalendar.h"
+//#include"ProductFinnhubCompanyProfileConcise.h"
+//#include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
-#include"ProductFinnhubCryptoDayLine.h"
-#include"ProductFinnhubForexDayLine.h"
-#include"ProductFinnhubStockDayLine.h"
-#include"ProductFinnhubForexSymbol.h"
+//#include"ProductFinnhubCryptoDayLine.h"
+//#include"ProductFinnhubForexDayLine.h"
+//#include"ProductFinnhubStockDayLine.h"
+//#include"ProductFinnhubForexSymbol.h"
 #include"ProductFinnhubCryptoSymbol.h"
-#include"ProductFinnhubStockSymbol.h"
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
-#include"ProductFinnhubStockPriceQuote.h"
+//#include"ProductFinnhubStockSymbol.h"
+//#include"ProductFinnhubStockEstimatesEPSSurprise.h"
+//#include"ProductFinnhubStockPriceQuote.h"
 
 #include"ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
+//#include"ProductTiingoStockDayLine.h"
 
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 
-#include"MockFinnhubWebInquiry.h"
-#include"MockQuandlWebInquiry.h"
-#include"MockTiingoWebInquiry.h"
+//#include"MockFinnhubWebInquiry.h"
+//#include"MockQuandlWebInquiry.h"
+//#include"MockTiingoWebInquiry.h"
 
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
+//#include"TiingoDataSource.h"
 #include"FinnhubCryptoSymbol.h"
 
 using namespace testing;
@@ -171,9 +171,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
-		CWorldStockPtr pStock = nullptr;
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
 		EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
@@ -837,7 +836,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {
-		CWorldStockPtr pStock = nullptr;
+		CWorldStockPtr pStock;
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
@@ -856,7 +855,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
-		CWorldStockPtr pStock = nullptr;
+		CWorldStockPtr pStock;
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetPeerUpdateDate(20200101);
@@ -883,7 +882,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
-		CWorldStockPtr pStock = nullptr;
+		CWorldStockPtr pStock;
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetIPOStatus(_STOCK_IPOED_);

@@ -720,7 +720,7 @@
     <ClInclude Include="..\src\Data Container\DataTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataWorldStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerWorldStock.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\DataWorldStockDayline.h">
@@ -1310,7 +1310,7 @@
     <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataWorldStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp">

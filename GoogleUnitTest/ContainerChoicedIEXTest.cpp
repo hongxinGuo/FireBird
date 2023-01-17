@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataChosenIEXTest : public Test {
+	class CContainerChosenIEXTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,11 +29,11 @@ namespace FireBirdTest {
 		CContainerChosenStock m_dataChosenIEX;
 	};
 
-	TEST_F(CDataChosenIEXTest, TestInitialize) {
+	TEST_F(CContainerChosenIEXTest, TestInitialize) {
 		EXPECT_EQ(m_dataChosenIEX.Size(), 0);
 	}
 
-	TEST_F(CDataChosenIEXTest, TestLoad) {
+	TEST_F(CContainerChosenIEXTest, TestLoad) {
 		EXPECT_EQ(m_dataChosenIEX.Size(), 0) << "³õÊ¼Î´×°ÔØIEX´úÂë";
 
 		m_dataChosenIEX.LoadDB();

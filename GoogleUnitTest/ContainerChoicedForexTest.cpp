@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataChosenForexTest : public Test {
+	class CContainerChosenForexTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -27,20 +27,20 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataChosenForex m_dataChosenForex;
+		CContainerChosenForex m_containerChosenForex;
 	};
 
-	TEST_F(CDataChosenForexTest, TestInitialize) {
-		EXPECT_EQ(m_dataChosenForex.Size(), 0);
+	TEST_F(CContainerChosenForexTest, TestInitialize) {
+		EXPECT_EQ(m_containerChosenForex.Size(), 0);
 	}
 
-	TEST_F(CDataChosenForexTest, TestLoad) {
-		EXPECT_EQ(m_dataChosenForex.Size(), 0) << "初始未装载Forex代码";
+	TEST_F(CContainerChosenForexTest, TestLoad) {
+		EXPECT_EQ(m_containerChosenForex.Size(), 0) << "初始未装载Forex代码";
 
-		m_dataChosenForex.LoadDB();
-		EXPECT_EQ(m_dataChosenForex.Size(), 3) << "默认状态下装载3个代码";
+		m_containerChosenForex.LoadDB();
+		EXPECT_EQ(m_containerChosenForex.Size(), 3) << "默认状态下装载3个代码";
 
-		CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataChosenForex.Get(2));
+		CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(2));
 		EXPECT_STREQ(pForex->GetSymbol(), _T("OANDA:AUD_SGD")) << "装载时没有排序，使用的是原始位置";
 	}
 }

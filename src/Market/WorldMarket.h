@@ -14,7 +14,7 @@
 #include"ContainerChosenForex.h"
 #include"containerChosenCrypto.h"
 
-#include"DataWorldStock.h"
+#include"ContainerWorldStock.h"
 #include"DataTiingoStock.h"
 
 #include"DataTiingoCryptoSymbol.h"
@@ -99,26 +99,26 @@ public:
 	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
 	long GetStockExchangeSize(void) const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
 
-	bool IsStockProfileNeedUpdate(void) { return m_dataWorldStock.IsUpdateProfileDB(); }
+	bool IsStockProfileNeedUpdate(void) { return m_containerStock.IsUpdateProfileDB(); }
 
-	void AddStock(const CWorldStockPtr pStock) { m_dataWorldStock.Add(pStock); }
-	bool DeleteStock(const CWorldStockPtr pStock) { return m_dataWorldStock.Delete(pStock); }
-	size_t GetStockSize(void) const noexcept { return m_dataWorldStock.Size(); }
+	void AddStock(const CWorldStockPtr pStock) { m_containerStock.Add(pStock); }
+	bool DeleteStock(const CWorldStockPtr pStock) { return m_containerStock.Delete(pStock); }
+	size_t GetStockSize(void) const noexcept { return m_containerStock.Size(); }
 	void AddTiingoStock(const CTiingoStockPtr pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
 	bool DeleteTiingoStock(const CTiingoStockPtr pStock) { return m_dataTiingoStock.Delete(pStock); }
 	size_t GetTotalTiingoStock(void) const noexcept { return m_dataTiingoStock.GetTotalStock(); }
-	bool IsStock(const CString strSymbol) const { return m_dataWorldStock.IsSymbol(strSymbol); }
+	bool IsStock(const CString strSymbol) const { return m_containerStock.IsSymbol(strSymbol); }
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
-	CWorldStockPtr GetStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(lIndex)); }
-	CWorldStockPtr GetStock(const CString strSymbol) { return dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(strSymbol)); }
-	size_t GetStockIndex(const CString strSymbol) const { return m_dataWorldStock.GetOffset(strSymbol); }
-	void SortStock(void) { m_dataWorldStock.Sort(); }
+	CWorldStockPtr GetStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(lIndex)); }
+	CWorldStockPtr GetStock(const CString strSymbol) { return dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(strSymbol)); }
+	size_t GetStockIndex(const CString strSymbol) const { return m_containerStock.GetOffset(strSymbol); }
+	void SortStock(void) { m_containerStock.Sort(); }
 
-	bool IsCompanyNewsNeedUpdate(void) { return m_dataWorldStock.IsCompanyNewsNeedUpdate(); }
-	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
+	bool IsCompanyNewsNeedUpdate(void) { return m_containerStock.IsCompanyNewsNeedUpdate(); }
+	bool IsBasicFinancialNeedUpdate(void) { return m_containerStock.IsBasicFinancialNeedUpdate(); }
 
-	CWorldStockPtr GetChosenStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_dataChosenStock.Get(lIndex)); }
-	size_t GetChosenStockSize(void) const noexcept { return m_dataChosenStock.Size(); }
+	CWorldStockPtr GetChosenStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(lIndex)); }
+	size_t GetChosenStockSize(void) const noexcept { return m_containerChosenStock.Size(); }
 
 	bool IsTiingoStock(const CString strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
 	bool IsTiingoStock(const CWorldStockPtr pStock) const { return m_dataTiingoStock.IsStock(pStock); }
@@ -178,9 +178,9 @@ public:
 	bool IsUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsUpdateProfileDB(); }
 	bool IsUpdateCryptoExchangeDB(void) const noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
 	bool IsUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsUpdateProfileDB(); }
-	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
-	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderSentiment(); }
-	bool IsSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsDayLineNeedSaving(); }
+	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_containerStock.IsNeedSaveInsiderTransaction(); }
+	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_containerStock.IsNeedSaveInsiderSentiment(); }
+	bool IsSaveStockDayLineDB(void) noexcept { return m_containerStock.IsDayLineNeedSaving(); }
 	bool IsUpdateEconomicCalendarDB(void) const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 
 	bool IsNeedUpdateTiingoStock(void) const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
@@ -191,13 +191,13 @@ public:
 	// 数据库操作
 	bool LoadWorldExchangeDB(void) { return m_dataFinnhubStockExchange.LoadDB(); }
 
-	bool LoadStockDB(void) { return m_dataWorldStock.LoadDB(); }
-	bool LoadWorldChosenStock(void) { return m_dataChosenStock.LoadDB(); }
+	bool LoadStockDB(void) { return m_containerStock.LoadDB(); }
+	bool LoadWorldChosenStock(void) { return m_containerChosenStock.LoadDB(); }
 
 	virtual bool UpdateCountryListDB(void) { return m_dataFinnhubCountry.UpdateDB(); }
-	virtual bool UpdateStockProfileDB(void) { return m_dataWorldStock.UpdateProfileDB(); }
+	virtual bool UpdateStockProfileDB(void) { return m_containerStock.UpdateProfileDB(); }
 	virtual bool UpdateCompanyNewsDB(void);
-	virtual bool UpdateBasicFinancialDB(void) { return m_dataWorldStock.UpdateBasicFinancialDB(); }
+	virtual bool UpdateBasicFinancialDB(void) { return m_containerStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB(void);
 	virtual bool UpdateForexSymbolDB(void) { return m_dataFinnhubForexSymbol.UpdateDB(); }
 	virtual bool UpdateForexExchangeDB(void) { return m_dataFinnhubForexExchange.UpdateDB(); }
@@ -216,8 +216,8 @@ public:
 	bool LoadFinnhubForexSymbol(void) { return m_dataFinnhubForexSymbol.LoadDB(); }
 	bool LoadCryptoExchange(void) { return m_dataFinnhubCryptoExchange.LoadDB(); }
 	bool LoadFinnhubCryptoSymbol(void) { return m_dataFinnhubCryptoSymbol.LoadDB(); }
-	bool LoadWorldChosenForex(void) { return m_dataChosenForex.LoadDB(); }
-	bool LoadWorldChosenCrypto(void) { return m_dataChosenCrypto.LoadDB(); }
+	bool LoadWorldChosenForex(void) { return m_containerChosenForex.LoadDB(); }
+	bool LoadWorldChosenCrypto(void) { return m_containerChosenCrypto.LoadDB(); }
 
 	bool LoadCountryDB(void) { return m_dataFinnhubCountry.LoadDB(); }
 	bool LoadEconomicCalendarDB(void) { return m_dataFinnhubEconomicCalendar.LoadDB(); }
@@ -272,14 +272,14 @@ protected:
 	CDataFinnhubCountry m_dataFinnhubCountry;
 	CDataFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
-	CDataWorldStock m_dataWorldStock;
+	CContainerWorldStock m_containerStock;
 
 	CDataTiingoStock m_dataTiingoStock;
 	CDataTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
 
-	CContainerChosenStock m_dataChosenStock;
-	CDataChosenForex m_dataChosenForex;
-	CContainerChosenCrypto m_dataChosenCrypto;
+	CContainerChosenStock m_containerChosenStock;
+	CContainerChosenForex m_containerChosenForex;
+	CContainerChosenCrypto m_containerChosenCrypto;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

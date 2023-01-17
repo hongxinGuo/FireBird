@@ -1,5 +1,8 @@
 #pragma once
 
+#include"SinaRTWebInquiry.h"
+#include"NeteaseDayLineWebInquiry.h"
+
 class CSystemStatus final {
 public:
 	CSystemStatus();
@@ -16,6 +19,9 @@ public:
 	bool IsExitingCalculatingRS() const { return m_fExitingCalculatingRS; }
 	void SetWorkingMode(const bool bNormal) { m_fWorkingMode = bNormal; }
 	bool IsWorkingMode() const { return m_fWorkingMode; }
+
+	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
+	static bool IsWebBusy() { return gl_pSinaRTWebInquiry->IsWebError() || gl_pNeteaseDayLineWebInquiry->IsWebError(); }
 
 protected:
 	std::atomic_bool m_fExitingSystem; //  系统退出标识，用于终止其他线程。

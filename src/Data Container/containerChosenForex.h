@@ -2,10 +2,10 @@
 
 #include"ContainerVirtualStock.h"
 
-class CDataChosenForex : public CContainerVirtualStock {
+class CContainerChosenForex : public CContainerVirtualStock {
 public:
-	CDataChosenForex();
-	~CDataChosenForex() override = default;
+	CContainerChosenForex();
+	~CContainerChosenForex() override = default;
 	void Reset(void) override;
 
 	bool LoadDB(void);
