@@ -311,7 +311,7 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) 
 ////////////////////////////////////////////////////////////////////////
 long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 	ASSERT(tUTC >= 0);
-	tm tmMarketTime{};
+	tm tmMarketTime;
 
 	tmMarketTime = TransferToMarketTime(tUTC);
 	tmMarketTime.tm_hour = 9;
@@ -341,14 +341,13 @@ bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
 	const size_t lTotalNumber = SinaRTSize();
 	CString strVolume;
 	CString strStandardStockCode;
-	CWebRTDataPtr pRTData = nullptr;
 	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		pRTData = PopSinaRT();
+		const CWebRTDataPtr pRTData = PopSinaRT();
 		if (pRTData->GetDataSource() == INVALID_RT_WEB_DATA_) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
 			continue;
@@ -371,7 +370,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { m_ttNewestTransactionTime = pRTData->GetTransactionTime(); }
 		const auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
-			// 这里在发行版运行时出现错误，原因待查。
+			// todo 这里在发行版运行时出现错误，原因待查。
 			if (pRTData->IsValidTime(14)) {
 				pStock->SetActive(true);
 				pStock->SetDayLineLoaded(false);
@@ -454,11 +453,10 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) {
 }
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
-	CWebRTDataPtr pRTData = nullptr;
 	const size_t lTotalData = TengxunRTSize();
 
 	for (int i = 0; i < lTotalData; i++) {
-		pRTData = PopTengxunRT();
+		const CWebRTDataPtr pRTData = PopTengxunRT();
 		if (pRTData->IsActive()) {
 			ASSERT(IsStock(pRTData->GetSymbol()));
 			const auto pStock = GetStock(pRTData->GetSymbol());
@@ -515,7 +513,6 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	static int s_iCountDownProcessWebRTData = 0;
 	static int s_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
 	static int s_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
 	static int s_iCount1Minute = 58; // 与10秒每次的错开1秒钟
@@ -555,27 +552,22 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 判断中国股票市场开市状态
 	TaskCheckMarketOpen(lCurrentTime);
 
-	if (s_iCountDownProcessWebRTData <= 0) {
-		// 将接收到的实时数据分发至各相关股票的实时数据队列中。
-		// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-		TaskDistributeSinaRTDataToStock();
-		// 分发网易实时数据至各相关股票中。
-		TaskDistributeNeteaseRTDataToStock();
+	// 将接收到的实时数据分发至各相关股票的实时数据队列中。
+	// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
+	TaskDistributeSinaRTDataToStock();
+	// 分发网易实时数据至各相关股票中。
+	TaskDistributeNeteaseRTDataToStock();
 
-		TaskProcessTengxunRTData();
-
-		s_iCountDownProcessWebRTData = 0;
-	}
-	else s_iCountDownProcessWebRTData--;
-
+	TaskProcessTengxunRTData();
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDistributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
+	// 使用线程同步模式，就解决了这个问题。无需等待。
 	if (IsSystemReady() && IsTodayTempRTDataLoaded()) {
 		if (IsRTDataNeedCalculate()) {
-			//thread thread1(ThreadProcessRTData, this);
-			//thread1.detach();
-			TaskProcessRTData();
+			thread thread1(ThreadProcessRTData, this);
+			thread1.detach();
+			//TaskProcessRTData();
 			SetRTDataNeedCalculate(false);
 		}
 	}
@@ -1109,8 +1101,12 @@ bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) 
 	while (!setDayLineBasicInfo.IsEOF()) {
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->LoadBasicData(&setDayLineBasicInfo);
-		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) { setDayLineExtendInfo.MoveNext(); }
-		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) { pDayLine->LoadExtendData(&setDayLineExtendInfo); }
+		while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
+			setDayLineExtendInfo.MoveNext();
+		}
+		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
+			pDayLine->LoadExtendData(&setDayLineExtendInfo);
+		}
 		dataChinaDayLine.StoreData(pDayLine);
 		setDayLineBasicInfo.MoveNext();
 	}
@@ -1237,7 +1233,9 @@ bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
 	setCurrentWeekLineInfo.Open();
 	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
 	while (!setCurrentWeekLineInfo.IsEOF()) {
-		if (setCurrentWeekLineInfo.m_Date < lCutOffDate) { setCurrentWeekLineInfo.Delete(); }
+		if (setCurrentWeekLineInfo.m_Date < lCutOffDate) {
+			setCurrentWeekLineInfo.Delete();
+		}
 		setCurrentWeekLineInfo.MoveNext();
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
@@ -1247,7 +1245,9 @@ bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
 }
 
 CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
-	if (m_lCurrentSelectedStockSet >= 0) { return m_avChosenStock.at(m_lCurrentSelectedStockSet).at(0); }
+	if (m_lCurrentSelectedStockSet >= 0) {
+		return m_avChosenStock.at(m_lCurrentSelectedStockSet).at(0);
+	}
 	return GetStock(0);
 }
 
@@ -1282,12 +1282,10 @@ bool CChinaMarket::IsDayLineNeedProcess(void) {
 }
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeteaseServer(void) {
-	CChinaStockPtr pStock = nullptr;
-
 	while (NeteaseDayLineSize() > 0) {
 		CNeteaseDayLineWebDataPtr pData = PopNeteaseDayLine();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
-		pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。
 		pStock->UpdateStatusByDownloadedDayLine();
 

@@ -95,12 +95,16 @@ string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
-	jsonMessage["eventData"]["thresholdLevel"] = 0; // threshold的有效数字为0或者5
+	jsonMessage["eventData"]["thresholdLevel"] = 5; // threshold的有效数字为0或者5
 	for (auto str : vSymbol) {
 		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
 		vSymbols.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbols;
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("rig"));// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("spy"));// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("uso"));// tiingo使用的stock符号与finnhub不同
 
 	return jsonMessage.dump();
 }

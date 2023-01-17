@@ -10,7 +10,6 @@
 #include"WorldMarket.h"
 
 #include"SetWorldStock.h"
-#include"CallableFunction.h"
 
 #include "DataWorldStock.h"
 
@@ -41,29 +40,15 @@ bool CDataWorldStock::SortStock(void) {
 }
 
 bool CDataWorldStock::IsStockProfileNeedUpdate(void) {
-	const size_t iTotal = m_vWorldStock.size();
-	for (size_t i = 0; i < iTotal; i++) {
-		if (m_vWorldStock.at(i)->IsUpdateProfileDB()) return true;
-	}
-	return false;
+	return ranges::any_of(m_vWorldStock, [](const CWorldStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
 bool CDataWorldStock::IsCompanyNewsNeedUpdate(void) {
-	const size_t iTotal = m_vWorldStock.size();
-	for (size_t i = 0; i < iTotal; i++) {
-		if (m_vWorldStock.at(i)->IsUpdateCompanyNewsDB()) return true;
-	}
-	return false;
+	return ranges::any_of(m_vWorldStock, [](const CWorldStockPtr& pStock) { return pStock->IsUpdateCompanyNewsDB(); });
 }
 
 bool CDataWorldStock::IsBasicFinancialNeedUpdate(void) {
-	const size_t iTotal = m_vWorldStock.size();
-	for (size_t i = 0; i < iTotal; i++) {
-		if (m_vWorldStock.at(i)->IsUpdateBasicFinancialDB()) {
-			return true;
-		}
-	}
-	return false;
+	return ranges::any_of(m_vWorldStock, [](const CWorldStockPtr& pStock) { return pStock->IsUpdateBasicFinancialDB(); });
 }
 
 void CDataWorldStock::ResetEPSSurprise(void) {

@@ -137,7 +137,7 @@ public:
 	// 得到股票指针
 	CChinaStockPtr GetStock(const CString& strStockCode) { return m_dataChinaStock.GetStock(strStockCode); }
 	CChinaStockPtr GetStock(const long lIndex) { return m_dataChinaStock.GetStock(lIndex); }
-	size_t GetStockIndex(CChinaStockPtr pStock) { return m_dataChinaStock.GetIndex(pStock->GetSymbol()); }
+	size_t GetStockIndex(const CChinaStockPtr pStock) const { return m_dataChinaStock.GetIndex(pStock->GetSymbol()); }
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock(void) const noexcept { return m_pCurrentStock; }
@@ -283,7 +283,7 @@ public:
 
 	long GetStockOffset(const CString& str) const { return m_dataChinaStock.GetIndex(str); }
 
-	void StoreChoiceRTData(CWebRTDataPtr pRTData) { m_qRTData.push(pRTData); }
+	void StoreChoiceRTData(const CWebRTDataPtr pRTData) { m_qRTData.push(pRTData); }
 
 	//处理实时股票变化等
 	bool TaskDistributeSinaRTDataToStock(void);
@@ -322,17 +322,17 @@ public:
 	bool IsCurrentEditStockChanged(void) const noexcept { return m_fCurrentEditStockChanged; }
 	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-	size_t SinaRTSize(void) { return m_qSinaRT.Size(); }
-	void PushSinaRT(CWebRTDataPtr pData) { m_qSinaRT.PushData(pData); }
+	size_t SinaRTSize(void) noexcept { return m_qSinaRT.Size(); }
+	void PushSinaRT(const CWebRTDataPtr pData) noexcept { m_qSinaRT.PushData(pData); }
 	CWebRTDataPtr PopSinaRT(void) { return m_qSinaRT.PopData(); }
-	size_t NeteaseRTSize(void) { return m_qNeteaseRT.Size(); }
-	void PushNeteaseRT(CWebRTDataPtr pData) { m_qNeteaseRT.PushData(pData); }
+	size_t NeteaseRTSize(void) noexcept { return m_qNeteaseRT.Size(); }
+	void PushNeteaseRT(const CWebRTDataPtr pData) noexcept { m_qNeteaseRT.PushData(pData); }
 	CWebRTDataPtr PopNeteaseRT(void) { return m_qNeteaseRT.PopData(); }
-	size_t TengxunRTSize(void) { return m_qTengxunRT.Size(); }
-	void PushTengxunRT(CWebRTDataPtr pData) { m_qTengxunRT.PushData(pData); }
+	size_t TengxunRTSize(void) noexcept { return m_qTengxunRT.Size(); }
+	void PushTengxunRT(const CWebRTDataPtr pData) noexcept { m_qTengxunRT.PushData(pData); }
 	CWebRTDataPtr PopTengxunRT(void) { return m_qTengxunRT.PopData(); }
-	size_t NeteaseDayLineSize(void) { return m_qNeteaseDayLine.Size(); }
-	void PushNeteaseDayLine(CNeteaseDayLineWebDataPtr pData) { m_qNeteaseDayLine.PushData(pData); }
+	size_t NeteaseDayLineSize(void) noexcept { return m_qNeteaseDayLine.Size(); }
+	void PushNeteaseDayLine(const CNeteaseDayLineWebDataPtr pData) noexcept { m_qNeteaseDayLine.PushData(pData); }
 	CNeteaseDayLineWebDataPtr PopNeteaseDayLine(void) { return m_qNeteaseDayLine.PopData(); }
 
 	// 实时数据需要计算与否和设置
@@ -359,7 +359,6 @@ public:
 	long GetTengxunRTDataInquiringIndex(void) const noexcept { return m_dataChinaStock.GetTengxunRTDataInquiringIndex(); }
 
 	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_dataChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex); }
-
 	long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_dataChinaStock.GetNeteaseDayLineDataInquiringIndex(); }
 
 	void ClearDayLineNeedUpdateStatus(void) const { m_dataChinaStock.ClearDayLineNeedUpdateStatus(); }

@@ -112,6 +112,8 @@ string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
 		vSymbols.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbols;
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("gbpaud"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 
 	return jsonMessage.dump();
 }

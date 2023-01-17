@@ -634,7 +634,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
 	double d1, d2;
 	int iAdjust = 0;
 	int iCompare;
-	int i2 = 0;
+	int i2;
 
 	if (pRTData->GetPSell(0) == 0) {
 		// 卖一价格为零
@@ -1289,13 +1289,17 @@ bool CChinaStock::IsTodayDataActive(void) const {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataChanged(void) const {
-	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) { return true; }
+	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
+		return true;
+	}
 	return false;
 }
 
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
 	if ((m_lHighLimit2 > 0) && (m_lLowLimit2 > 0)) {
-		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) { TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2); }
+		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
+			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
+		}
 		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {
 			// 当涨跌停板打开时
 			m_lHighLimit2 = m_lLowLimit2 = 0; // 重置此两变量
@@ -1318,7 +1322,9 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	CWeekLinePtr pWeekLine = nullptr;
 
 	m_dataWeekLine.Unload();
-	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) { i++; }
+	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
+		i++;
+	}
 	if (i < m_dataDayLine.Size()) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);

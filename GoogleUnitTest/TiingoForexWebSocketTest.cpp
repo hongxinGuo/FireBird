@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CTiingoForexWebSocketTest : public ::testing::Test {
+	class CTiingoForexWebSocketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -49,6 +49,12 @@ namespace FireBirdTest {
 		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 5);
-		EXPECT_STREQ(sSymbols.c_str(), _T("{\"eventName\":\"subscribe\",\"authorization\":\"c897a00b7cfc2adffc630d23befd5316a4683156\",\"eventData\":{\"thresholdLevel\":5,\"tickers\":[\"a\",\"aa\",\"aal\",\"aapl\"]}}"));
+		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), _T("a"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), _T("aa"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), _T("aal"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(3), _T("aapl"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), _T("gbpaud"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), _T("eurusd"));
 	}
 }

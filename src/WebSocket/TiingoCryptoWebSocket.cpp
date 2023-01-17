@@ -111,7 +111,8 @@ string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 		vSymbols.push_back(str);
 	}
 	message["eventData"]["tickers"] = vSymbols;
-	message["eventData"]["tickers"].emplace_back("bcteth"); // tiingo使用的crypto符号与finnhub完全不同，
+	message["eventData"]["tickers"].emplace_back("dkaeth"); // tiingo使用的crypto符号与finnhub完全不同，
+	message["eventData"]["tickers"].emplace_back("eurusd");// tiingo使用的crypto符号与finnhub完全不同，
 	message["eventData"]["tickers"].emplace_back("ksmust");// tiingo使用的crypto符号与finnhub完全不同，
 
 	return message.dump();

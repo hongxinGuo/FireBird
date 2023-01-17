@@ -1162,16 +1162,15 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {
 		char buffer[20];
-		CString strDate;
 
 		CSetDayLineBasicInfo setDayLine, setDayLine2;
-		auto pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
-		strDate = buffer;
+		const CString strDate = buffer;
 		setDayLine.m_strFilter = _T("[Date] =");
 		setDayLine.m_strFilter += strDate;
 		setDayLine.Open();
@@ -1197,16 +1196,15 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestDeleteDayLineExtendInfo) {
 		char buffer[20];
-		CString strDate;
 
 		CSetDayLineExtendInfo setDayLine, setDayLine2;
-		auto pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
-		strDate = buffer;
+		const CString strDate = buffer;
 		setDayLine.m_strFilter = _T("[ID] = 1");
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
@@ -1234,7 +1232,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
-		auto pWeekLine = make_shared<CWeekLine>();
+		const auto pWeekLine = make_shared<CWeekLine>();
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(GetCurrentMonday(20200101));
@@ -1259,27 +1257,24 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestLoadDayLine) {
 		CDataChinaDayLine dataChinaDayLine;
-		long lDate = GetCurrentMonday(20200101);
+		const long lDate = GetCurrentMonday(20200101);
 
 		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
 
 		CString strSQL;
-		CString strDate;
 		char pch[30];
-		CTime ctTime;
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
-		CDayLinePtr pDayLine;
 		long i = 0;
 
 		sprintf_s(pch, _T("%08d"), lDate);
-		strDate = pch;
+		const CString strDate = pch;
 		setDayLineBasicInfo.m_strSort = _T("[Symbol]");
 		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
 		setDayLineBasicInfo.m_strFilter += strDate;
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
-			pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
+			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
 			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
 			setDayLineBasicInfo.MoveNext();
 		}
