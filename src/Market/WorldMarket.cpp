@@ -377,8 +377,8 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	CString str;
 
 	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_dataWorldStock.GetStockSize(); ++l) {
-		pStock = m_dataWorldStock.GetStock(l);
+	for (long l = 0; l < m_dataWorldStock.Size(); ++l) {
+		pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
@@ -524,8 +524,8 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 }
 
 bool CWorldMarket::UpdateCompanyNewsDB(void) {
-	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
-		const auto pStock = m_dataWorldStock.GetStock(l);
+	for (long l = 0; l < m_dataWorldStock.Size(); l++) {
+		const auto pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
@@ -624,8 +624,8 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 	const CString strFilterPrefix = _T("[Symbol] = '");
 	CSetWorldStockDayLine setWorldStockDayLine;
 
-	for (long l = 0; l < m_dataWorldStock.GetStockSize(); l++) {
-		const CWorldStockPtr pStock = m_dataWorldStock.GetStock(l);
+	for (long l = 0; l < m_dataWorldStock.Size(); l++) {
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(l));
 		setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
 		setWorldStockDayLine.m_strSort = _T("[Date]");
 		setWorldStockDayLine.Open();

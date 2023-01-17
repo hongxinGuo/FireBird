@@ -99,18 +99,20 @@ public:
 	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
 	long GetStockExchangeSize(void) const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
 
-	bool IsStockProfileNeedUpdate(void) { return m_dataWorldStock.IsStockProfileNeedUpdate(); }
+	bool IsStockProfileNeedUpdate(void) { return m_dataWorldStock.IsUpdateProfileDB(); }
+
 	void AddStock(const CWorldStockPtr pStock) { m_dataWorldStock.Add(pStock); }
 	bool DeleteStock(const CWorldStockPtr pStock) { return m_dataWorldStock.Delete(pStock); }
-	size_t GetStockSize(void) const noexcept { return m_dataWorldStock.GetStockSize(); }
+	size_t GetStockSize(void) const noexcept { return m_dataWorldStock.Size(); }
 	void AddTiingoStock(const CTiingoStockPtr pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
 	bool DeleteTiingoStock(const CTiingoStockPtr pStock) { return m_dataTiingoStock.Delete(pStock); }
 	size_t GetTotalTiingoStock(void) const noexcept { return m_dataTiingoStock.GetTotalStock(); }
-	bool IsStock(const CString strSymbol) const { return m_dataWorldStock.IsStock(strSymbol); }
+	bool IsStock(const CString strSymbol) const { return m_dataWorldStock.IsSymbol(strSymbol); }
 	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
-	CWorldStockPtr GetStock(const long lIndex) const { return m_dataWorldStock.GetStock(lIndex); }
-	CWorldStockPtr GetStock(const CString strSymbol) const { return m_dataWorldStock.GetStock(strSymbol); }
-	size_t GetStockIndex(const CString strSymbol) const { return m_dataWorldStock.GetStockIndex(strSymbol); }
+	CWorldStockPtr GetStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(lIndex)); }
+	CWorldStockPtr GetStock(const CString strSymbol) { return dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(strSymbol)); }
+	size_t GetStockIndex(const CString strSymbol) const { return m_dataWorldStock.GetOffset(strSymbol); }
+	void SortStock(void) { m_dataWorldStock.Sort(); }
 
 	bool IsCompanyNewsNeedUpdate(void) { return m_dataWorldStock.IsCompanyNewsNeedUpdate(); }
 	bool IsBasicFinancialNeedUpdate(void) { return m_dataWorldStock.IsBasicFinancialNeedUpdate(); }
@@ -178,7 +180,7 @@ public:
 	bool IsUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsUpdateProfileDB(); }
 	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderTransaction(); }
 	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_dataWorldStock.IsNeedSaveInsiderSentiment(); }
-	bool IsSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsNeedSaveDayLine(); }
+	bool IsSaveStockDayLineDB(void) noexcept { return m_dataWorldStock.IsDayLineNeedSaving(); }
 	bool IsUpdateEconomicCalendarDB(void) const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 
 	bool IsNeedUpdateTiingoStock(void) const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
@@ -228,8 +230,6 @@ public:
 	bool RebuildEPSSurprise(void);
 	bool RebuildPeer(void);
 	bool RebuildBasicFinancial(void);
-
-	bool SortStock(void) { return m_dataWorldStock.SortStock(); }
 
 	vectorString GetFinnhubWebSocketSymbolVector(void);
 	vectorString GetTiingoIEXWebSocketSymbolVector(void);

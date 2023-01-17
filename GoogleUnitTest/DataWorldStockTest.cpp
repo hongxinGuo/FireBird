@@ -14,7 +14,7 @@ using namespace testing;
 CDataWorldStock m_dataWorldStock{};
 
 namespace FireBirdTest {
-	class CDataWorldStockTest : public ::testing::Test {
+	class CDataWorldStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -40,30 +40,29 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataWorldStockTest, TestIsNeedSaveDayLine) {
-		EXPECT_FALSE(m_dataWorldStock.IsNeedSaveDayLine());
-		m_dataWorldStock.GetStock(0)->SetDayLineNeedSaving(true);
+		EXPECT_FALSE(m_dataWorldStock.IsDayLineNeedSaving());
+		m_dataWorldStock.Get(0)->SetDayLineNeedSaving(true);
 
-		EXPECT_TRUE(m_dataWorldStock.IsNeedSaveDayLine());
+		EXPECT_TRUE(m_dataWorldStock.IsDayLineNeedSaving());
 
-		m_dataWorldStock.GetStock(0)->SetDayLineNeedSaving(false);
+		m_dataWorldStock.Get(0)->SetDayLineNeedSaving(false);
 	}
 
 	TEST_F(CDataWorldStockTest, TestIsNeedSaveInsiderTransaction) {
 		EXPECT_FALSE(m_dataWorldStock.IsNeedSaveInsiderTransaction());
-		m_dataWorldStock.GetStock(0)->SetInsiderTransactionNeedSave(true);
+		dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(0))->SetInsiderTransactionNeedSave(true);
 
 		EXPECT_TRUE(m_dataWorldStock.IsNeedSaveInsiderTransaction());
 
-		m_dataWorldStock.GetStock(0)->SetInsiderTransactionNeedSave(false);
+		dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(0))->SetInsiderTransactionNeedSave(false);
 	}
 
 	TEST_F(CDataWorldStockTest, TestIsNeedSaveInsiderSentiment) {
 		EXPECT_FALSE(m_dataWorldStock.IsNeedSaveInsiderSentiment());
-		m_dataWorldStock.GetStock(0)->SetInsiderSentimentNeedSave(true);
+		dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(0))->SetInsiderSentimentNeedSave(true);
 
 		EXPECT_TRUE(m_dataWorldStock.IsNeedSaveInsiderSentiment());
 
-		m_dataWorldStock.GetStock(0)->SetInsiderSentimentNeedSave(false);
+		dynamic_pointer_cast<CWorldStock>(m_dataWorldStock.Get(0))->SetInsiderSentimentNeedSave(false);
 	}
-
 }

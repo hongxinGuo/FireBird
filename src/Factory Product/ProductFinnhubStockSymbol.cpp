@@ -45,7 +45,9 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	for (const auto& pStock2 : *pvStock) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pStock2->GetSymbol())) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pStock2)) {
+			pStock2->SetTodayNewStock(true);
+			pStock2->SetUpdateProfileDB(true);
 			dynamic_cast<CWorldMarket*>(m_pMarket)->AddStock(pStock2);
 			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -59,12 +61,10 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, C
 	int iLength = strExchangeCode.GetLength();
 	int iSymbolLength = strStockSymbol.GetLength();
 	CString strRight = strStockSymbol.Right(iLength);
-	if ((strRight.CompareNoCase((LPCSTR)strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
+	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

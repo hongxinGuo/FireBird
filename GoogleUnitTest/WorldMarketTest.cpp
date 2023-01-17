@@ -441,7 +441,10 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
 		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
+		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
+		pStock->SetTodayNewStock(true);
+		pStock->SetUpdateProfileDB(true);
 		gl_pWorldMarket->AddStock(pStock);
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_STREQ(pStock->GetCurrency(), _T(""));

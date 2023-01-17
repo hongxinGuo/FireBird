@@ -1,30 +1,17 @@
 #pragma once
 
 #include"WorldStock.h"
+#include"ContainerVirtualStock.h"
 
-class CDataWorldStock {
+class CDataWorldStock : public CContainerVirtualStock {
 public:
 	CDataWorldStock();
-	virtual ~CDataWorldStock() = default;
-	void Reset(void);
+	~CDataWorldStock() override = default;
+	void Reset(void) override;
 
-	bool IsStock(const CString& strSymbol) const {
-		if (m_mapWorldStock.contains(strSymbol)) return true;
-		return false;
-	}
-
-	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
-	CWorldStockPtr GetStock(const long lIndex) const { return m_vWorldStock.at(lIndex); }
-	CWorldStockPtr GetStock(const CString& strSymbol) const { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
-	size_t GetIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
-	size_t GetStockIndex(const CString& strSymbol) const { return m_mapWorldStock.at(strSymbol); }
-	size_t GetStockSize(void) const noexcept { return m_vWorldStock.size(); }
+	bool IsStock(const CWorldStockPtr pStock) const { return IsSymbol(pStock->GetSymbol()); }
 	size_t GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 
-	void UpdateSymbolMap();
-	bool SortStock(void);
-
-	bool IsStockProfileNeedUpdate(void);
 	bool IsCompanyNewsNeedUpdate(void);
 	bool IsBasicFinancialNeedUpdate(void);
 
@@ -32,9 +19,6 @@ public:
 	void ResetPeer(void);
 	void ResetBasicFinancial(void);
 	void ResetDayLine(void);
-
-	bool Delete(CWorldStockPtr pStock);
-	void Add(CWorldStockPtr pStock);
 
 	bool LoadDB(void);
 	bool UpdateProfileDB(void);
@@ -47,12 +31,9 @@ public:
 
 	bool CheckStockSymbol(CWorldStockPtr pStock);
 
-	bool IsNeedSaveDayLine(void);
 	bool IsNeedSaveInsiderTransaction(void);
 	bool IsNeedSaveInsiderSentiment(void);
 
 protected:
-	vector<CWorldStockPtr> m_vWorldStock;
-	map<CString, size_t> m_mapWorldStock;
 	size_t m_lLastTotalWorldStock;
 };
