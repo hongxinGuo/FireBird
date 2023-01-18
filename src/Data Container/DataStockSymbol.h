@@ -10,7 +10,7 @@ public:
 	CDataStockSymbol& operator=(const CDataStockSymbol&) = delete;
 	CDataStockSymbol(const CDataStockSymbol&&) noexcept = delete;
 	CDataStockSymbol& operator=(const CDataStockSymbol&&) noexcept = delete;
-	virtual ~CDataStockSymbol() = default;
+	~CDataStockSymbol() = default;
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
 
@@ -19,7 +19,7 @@ public:
 
 	[[nodiscard]] bool IsStockSymbol(const CString& strSymbol) const {
 		if (m_mapStockSymbol.contains(strSymbol)) return true;
-		else return false;
+		return false;
 	}
 
 	bool Delete(const CString& strSymbol);
@@ -41,7 +41,7 @@ public:
 	void CreateStockSection(const CString& strFirstStockCode);
 
 	[[nodiscard]] bool UpdateStockSection(const CString& strStockCode) const;
-	[[nodiscard]] bool UpdateStockSection(const long lIndex) const;
+	[[nodiscard]] bool UpdateStockSection(long lIndex) const;
 
 	long GetNextIndex(long lIndex);
 

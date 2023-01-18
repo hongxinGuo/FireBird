@@ -30,7 +30,6 @@ void CDataTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 
 bool CDataTiingoCryptoSymbol::LoadDB(void) {
 	CSetTiingoCrypto setCryptoSymbol;
-	int i = 0;
 
 	setCryptoSymbol.m_strSort = _T("[Ticker]");
 	setCryptoSymbol.Open();
@@ -53,15 +52,13 @@ bool CDataTiingoCryptoSymbol::LoadDB(void) {
 
 bool CDataTiingoCryptoSymbol::UpdateDB(void) {
 	const long lTotalTiingoCryptoSymbol = m_vTiingoCrypto.size();
-	CTiingoCryptoSymbolPtr pSymbol = nullptr;
-	CSetTiingoCrypto setCryptoSymbol;
-	bool fUpdateSymbol = false;
 
 	if (m_lLastTotalTiingoCrypto < lTotalTiingoCryptoSymbol) {
+		CSetTiingoCrypto setCryptoSymbol;
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalTiingoCrypto; l < lTotalTiingoCryptoSymbol; l++) {
-			pSymbol = m_vTiingoCrypto.at(l);
+			const CTiingoCryptoSymbolPtr pSymbol = m_vTiingoCrypto.at(l);
 			pSymbol->Append(setCryptoSymbol);
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();

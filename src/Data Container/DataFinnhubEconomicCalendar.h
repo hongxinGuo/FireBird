@@ -5,7 +5,7 @@
 class CDataFinnhubEconomicCalendar final {
 public:
 	CDataFinnhubEconomicCalendar();
-	virtual ~CDataFinnhubEconomicCalendar() = default;
+	~CDataFinnhubEconomicCalendar() = default;
 	void Reset(void);
 
 	bool LoadDB(void);

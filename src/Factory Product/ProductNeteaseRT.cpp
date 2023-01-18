@@ -11,8 +11,6 @@ CProductNeteaseRT::CProductNeteaseRT() {
 }
 
 CString CProductNeteaseRT::CreateMessage(void) {
-	static long slCurrentStockPosition = 0;
-
 	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作。
 }
 

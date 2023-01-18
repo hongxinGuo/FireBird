@@ -8,7 +8,7 @@
 class CTiingoCryptoSymbol final {
 public:
 	CTiingoCryptoSymbol();
-	virtual ~CTiingoCryptoSymbol() = default;
+	~CTiingoCryptoSymbol() = default;
 
 	void Reset(void);
 

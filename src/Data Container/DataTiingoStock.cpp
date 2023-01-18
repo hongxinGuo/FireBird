@@ -28,14 +28,12 @@ bool CDataTiingoStock::Delete(CTiingoStockPtr pTiingoStock) {
 }
 
 bool CDataTiingoStock::UpdateDB(void) {
-	CTiingoStockPtr pTiingoStock = nullptr;
-	CSetTiingoStock setTiingoStock;
-
 	if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
+		CSetTiingoStock setTiingoStock;
 		setTiingoStock.Open();
 		setTiingoStock.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalTiingoStock; l < m_vTiingoStock.size(); l++) {
-			pTiingoStock = m_vTiingoStock.at(l);
+			const CTiingoStockPtr pTiingoStock = m_vTiingoStock.at(l);
 			pTiingoStock->Append(setTiingoStock);
 		}
 		setTiingoStock.m_pDatabase->CommitTrans();
@@ -48,14 +46,13 @@ bool CDataTiingoStock::UpdateDB(void) {
 
 bool CDataTiingoStock::LoadDB(void) {
 	CSetTiingoStock setTiingoStock;
-	CTiingoStockPtr pTiingoStock = nullptr;
 	CString strSymbol = _T("");
 
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
 		if (!IsStock(setTiingoStock.m_Ticker)) {
-			pTiingoStock = make_shared<CTiingoStock>();
+			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
 			Add(pTiingoStock);
 		}

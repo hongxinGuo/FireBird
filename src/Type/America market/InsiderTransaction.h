@@ -7,7 +7,7 @@
 class CInsiderTransaction final {
 public:
 	CInsiderTransaction();
-	virtual ~CInsiderTransaction() = default;
+	~CInsiderTransaction() = default;
 
 	void Append(CSetInsiderTransaction& setInsiderTransaction);
 	void Update(CSetInsiderTransaction& setInsiderTransaction);

@@ -4,7 +4,7 @@
 #include "FinnhubCryptoSymbol.h"
 
 CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() : CVirtualStock() {
-	Reset();
+	CFinnhubCryptoSymbol::Reset();
 }
 
 void CFinnhubCryptoSymbol::Reset(void) {
@@ -36,13 +36,12 @@ void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	char buffer[50];
-	time_t tStartTime = 0;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
-	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
+	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
+	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
 	strMiddle += strTemp;
 	strMiddle += _T("&to=");
@@ -75,5 +74,5 @@ void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate(void) {
 bool CFinnhubCryptoSymbol::HaveNewDayLineData(void) {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
-	else return false;
+	return false;
 }

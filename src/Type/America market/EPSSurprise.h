@@ -7,7 +7,7 @@
 class CEPSSurprise final {
 public:
 	CEPSSurprise();
-	virtual ~CEPSSurprise() = default;
+	~CEPSSurprise() = default;
 
 	void Append(CSetEPSSurprise& setEPSSurprise);
 	void Load(CSetEPSSurprise& setEPSSurprise);

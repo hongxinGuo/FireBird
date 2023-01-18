@@ -18,7 +18,6 @@ void CContainerFinnhubForexSymbol::Reset(void) {
 
 bool CContainerFinnhubForexSymbol::LoadDB(void) {
 	CSetFinnhubForexSymbol setForexSymbol;
-	int i = 0;
 
 	setForexSymbol.m_strSort = _T("[Symbol]");
 	setForexSymbol.Open();
@@ -42,7 +41,7 @@ bool CContainerFinnhubForexSymbol::LoadDB(void) {
 
 bool CContainerFinnhubForexSymbol::UpdateDB(void) {
 	const long lTotalForexSymbol = m_vStock.size();
-	CForexSymbolPtr pSymbol = nullptr;
+	CForexSymbolPtr pSymbol;
 	CSetFinnhubForexSymbol setForexSymbol;
 	bool fUpdateSymbol = false;
 

@@ -7,13 +7,13 @@ public:
 	CNeteaseRTWebInquiry();
 	~CNeteaseRTWebInquiry() override = default;
 
-	virtual bool ReportStatus(long lNumberOfData) const override;
-	virtual bool PrepareNextInquiringString(void) override;
-	virtual CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet = false) override final;
-	virtual void ConfigureSession(void) override final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+	bool ReportStatus(long lNumberOfData) const override;
+	bool PrepareNextInquiringString(void) override;
+	CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) final;
+	void ConfigureSession(void) final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
 
-	virtual bool ParseData(CWebDataPtr pWebData) override final;
+	bool ParseData(CWebDataPtr pWebData) final;
 };
 
-typedef shared_ptr<CNeteaseRTWebInquiry> CNeteaseRTWebInquiryPtr;
+using CNeteaseRTWebInquiryPtr = shared_ptr<CNeteaseRTWebInquiry>;
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集

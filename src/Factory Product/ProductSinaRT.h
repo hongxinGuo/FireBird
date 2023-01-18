@@ -2,7 +2,6 @@
 
 #include"ClassDeclaration.h"
 #include"WebRTData.h"
-#include"WebData.h"
 
 #include"VirtualWebProduct.h"
 
@@ -12,8 +11,8 @@ public:
 
 	~CProductSinaRT() override = default;
 
-	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	CString CreateMessage(void);
+	bool ParseAndStoreWebData(CWebDataPtr pWebData);
 
 public:
 	bool ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

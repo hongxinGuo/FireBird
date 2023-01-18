@@ -220,7 +220,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				break;
 			default: // ´íÎó
 				return false;
-				break;
 			}
 		}
 		else { return false; }

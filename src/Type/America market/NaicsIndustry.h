@@ -7,7 +7,7 @@
 class CNaicsIndustry final {
 public:
 	CNaicsIndustry();
-	virtual ~CNaicsIndustry() = default;
+	~CNaicsIndustry() = default;
 
 	void Append(CSetNaicsIndustry& setNaicsIndustry);
 

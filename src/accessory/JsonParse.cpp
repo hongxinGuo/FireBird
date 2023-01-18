@@ -14,7 +14,7 @@
 #include "JsonParse.h"
 
 #include"WebRTData.h"
-#include"SaveAndLoad.h"
+//#include"SaveAndLoad.h"
 
 #include<string>
 #include<memory>
@@ -46,7 +46,7 @@ string to_byte_string(const wstring& input) {
 	for (int i = 0; i < input.size(); i++) { pBufferW[i] = input.at(i); }
 	const auto pBuffer = new char[lLength * 2];
 
-	const long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, NULL, NULL);
+	const long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, nullptr, nullptr);
 	pBuffer[lReturnSize] = 0x000;
 	string s = pBuffer;
 
@@ -58,7 +58,7 @@ string to_byte_string(const wstring& input) {
 
 void ReportJsonError(json::parse_error& e, std::string& s) {
 	char buffer[180]{}, buffer2[100];
-	int i = 0;
+	int i;
 	CString str = e.what();
 	gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
 	for (i = 0; i < 180; i++) buffer[i] = 0x000;
@@ -162,7 +162,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 		ASSERT(WebDataReceived.GetBufferLength() == 21);
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

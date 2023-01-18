@@ -7,7 +7,7 @@
 class CSICIndustry final {
 public:
 	CSICIndustry();
-	virtual ~CSICIndustry() = default;
+	~CSICIndustry() = default;
 
 	void Append(CSetSICIndustry& setSICIndustry);
 	void Load(CSetSICIndustry& setSICIndustry);

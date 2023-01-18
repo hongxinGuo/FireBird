@@ -31,8 +31,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		pMarket->CreatingThreadBuildWeekLineRSOfDate(lToday);
 		ctCurrent += sevenDay;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-	}
-	while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
+	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
@@ -67,11 +66,6 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-	CTime ctCurrent(year, month, day, 12, 0, 0);
-	const CTimeSpan oneDay(1, 0, 0, 0);
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 

@@ -96,15 +96,13 @@ bool CNeteaseDayLineWebData::ProcessNeteaseDayLineData(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	char buffer2[200], buffer3[100];
-	long i = 0;
-	long lMarketDate = 0;
 	int year = 0, month = 0, day = 0;
-	double dTemp = 0;
+	double dTemp;
 
 	ASSERT(m_pCurrentProcessingDayLine == nullptr);
 	m_pCurrentProcessingDayLine = make_shared<CDayLine>();
 
-	i = 0;
+	long i = 0;
 	// 日期
 	while ((m_sDataBuffer.at(m_lCurrentPos) != 0x02c)) {
 		// 读取日期，直到遇到逗号
@@ -117,7 +115,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	m_lCurrentPos++;
 	buffer3[i] = 0x00;
 	sscanf_s(buffer3, _T("%04d-%02d-%02d"), &year, &month, &day);
-	lMarketDate = year * 10000 + month * 100 + day;
+	const long lMarketDate = year * 10000 + month * 100 + day;
 	m_pCurrentProcessingDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
 	m_pCurrentProcessingDayLine->SetDate(lMarketDate);
 	//TRACE("%d %d %d\n", year, month, day);
@@ -174,7 +172,7 @@ bool CNeteaseDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	}
 	else {
 		// 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，也要增大100倍。
-		m_pCurrentProcessingDayLine->SetUpDownRate(((double)(m_pCurrentProcessingDayLine->GetUpDown() * 100000.0)) / m_pCurrentProcessingDayLine->GetLastClose());
+		m_pCurrentProcessingDayLine->SetUpDownRate(m_pCurrentProcessingDayLine->GetUpDown() * 100000.0 / m_pCurrentProcessingDayLine->GetLastClose());
 	}
 
 	// 换手率

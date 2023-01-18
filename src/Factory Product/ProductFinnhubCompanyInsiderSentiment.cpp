@@ -34,10 +34,9 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	CInsiderSentimentVectorPtr pvInsiderSentiment = nullptr;
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
-	pStock->SetInsiderSentimentUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
+	pStock->SetInsiderSentimentUpdateDate(m_pMarket->GetMarketDate());
 	pStock->SetInsiderSentimentNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {

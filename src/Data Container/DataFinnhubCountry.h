@@ -5,7 +5,7 @@
 class CDataFinnhubCountry final {
 public:
 	CDataFinnhubCountry();
-	virtual ~CDataFinnhubCountry() = default;
+	~CDataFinnhubCountry() = default;
 	void Reset(void);
 
 	size_t GetTotalCountry(void) const noexcept { return m_vCountry.size(); }
@@ -13,7 +13,7 @@ public:
 
 	bool IsCountry(const CString& strCountry) const noexcept {
 		if (m_mapCountry.contains(strCountry)) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsCountry(const CCountryPtr pCountry) const noexcept { return IsCountry(pCountry->m_strCountry); }

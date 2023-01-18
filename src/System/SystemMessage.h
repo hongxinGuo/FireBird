@@ -33,7 +33,7 @@ public:
 	CSystemMessage& operator=(const CSystemMessage&) = delete;
 	CSystemMessage(const CSystemMessage&&) noexcept = delete;
 	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
-	virtual ~CSystemMessage();
+	~CSystemMessage();
 
 	void PushInformationMessage(const CString& str) { m_SystemInformation.PushMessage(str); }
 	CString PopInformationMessage(void) { return m_SystemInformation.PopMessage(); }

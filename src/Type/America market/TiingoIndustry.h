@@ -7,7 +7,7 @@
 class CTiingoIndustry final {
 public:
 	CTiingoIndustry();
-	virtual ~CTiingoIndustry() = default;
+	~CTiingoIndustry() = default;
 
 	void Append(CSetTiingoIndustry& setTiingoIndustry);
 	void Load(CSetTiingoIndustry& setTiingoIndustry);

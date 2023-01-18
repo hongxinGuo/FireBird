@@ -146,7 +146,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebRTData) {
 			throw exception();
 		}
 		m_strSymbol = XferSinaToStandard(strSinaStockCode);
-		long lStockCode = static_cast<long>(atof(buffer2));
+
 		pSinaWebRTData->IncreaseCurrentPos(6);
 
 		pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // 读入'="'
@@ -404,7 +404,6 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	try {
 		CString strTengxunStockCode;
 		WORD wMarket;
-		long lStockCode = 0;
 		double dTemp = 0.0;
 		INT64 llTemp = 0;
 		char buffer3[200];
@@ -449,7 +448,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 			return false;
 		}
 		m_strSymbol = XferTengxunToStandard(strTengxunStockCode);
-		lStockCode = atoi(buffer2);
+		const long lStockCode = atoi(buffer2);
 		pTengxunWebRTData->IncreaseCurrentPos(6);
 
 		pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // 读入'="'
@@ -813,8 +812,8 @@ bool CWebRTData::IsValidTime(long lDays) const {
 		// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
-	else if (m_time > gl_pChinaMarket->GetUTCTime()) { return false; }
-	else return true;
+	if (m_time > gl_pChinaMarket->GetUTCTime()) { return false; }
+	return true;
 }
 
 void CWebRTData::SaveData(CSetRealTimeData& setRTData) {

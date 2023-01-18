@@ -11,16 +11,12 @@ CProductTengxunRT::CProductTengxunRT() {
 }
 
 CString CProductTengxunRT::CreateMessage(void) {
-	static long slCurrentStockPosition = 0;
-
 	return m_strInquiry; // 新浪实时数据的申请字符串由CTengxunRTWebInquiry类完成，本Product无需动作。
 }
 
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = nullptr;
-
-	pvWebRTData = ParseTengxunRTData(pWebData);
-	for (auto& pRTData : *pvWebRTData) {
+	shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
+	for (const auto& pRTData : *pvWebRTData) {
 		gl_pChinaMarket->PushTengxunRT(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 

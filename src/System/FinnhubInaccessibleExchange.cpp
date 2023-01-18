@@ -4,11 +4,9 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
-#include"TimeConvert.h"
-
 using namespace std;
 #include<string>
-#include<iostream>
+//#include<iostream>
 #include<fstream>
 #include<memory>
 using std::fstream;
@@ -80,12 +78,12 @@ bool CInaccessibleExchanges::DeleteExchange(const CString& sExchangeName) {
 
 bool CInaccessibleExchanges::HaveExchange(const CString& sExchange) const {
 	if (m_setExchange.contains(sExchange)) return true;
-	else return false;
+	return false;
 }
 
 bool CInaccessibleExchanges::HaveExchange(void) const {
 	if (m_vExchange.empty()) return false;
-	else return true;
+	return true;
 }
 
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
@@ -142,17 +140,17 @@ void CFinnhubInaccessibleExchange::SaveDB(void) const {
 }
 
 void CFinnhubInaccessibleExchange::Update(void) {
-	CInaccessibleExchangesPtr pExchange = nullptr;
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	}
-	catch (json::exception&) { }
+	catch (json::exception&) {
+	}
 	try {
 		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
 			if (size > 0) {
 				// 有exchange数据的话才建立数据集
-				pExchange = make_shared<CInaccessibleExchanges>();
+				const auto pExchange = make_shared<CInaccessibleExchanges>();
 				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
 				pExchange->SetFunctionString(s2.c_str());
 				pExchange->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString()));
@@ -164,7 +162,8 @@ void CFinnhubInaccessibleExchange::Update(void) {
 			}
 		}
 	}
-	catch (json::exception&) {}
+	catch (json::exception&) {
+	}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson(void) {
@@ -194,9 +193,7 @@ bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const 
 		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 	catch (exception&) {
 		return false;

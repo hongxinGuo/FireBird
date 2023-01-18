@@ -1,6 +1,5 @@
 #pragma once
 
-#include"WebData.h"
 #include"ProductFinnhub.h"
 
 class CProductFinnhubStockDayLine final : public CProductFinnhub {
@@ -8,8 +7,8 @@ public:
 	CProductFinnhubStockDayLine();
 	~CProductFinnhubStockDayLine() override = default;
 
-	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	CString CreateMessage(void);
+	bool ParseAndStoreWebData(CWebDataPtr pWebData);
 	CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
 };
 

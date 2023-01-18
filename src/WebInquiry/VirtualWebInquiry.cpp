@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include "VirtualWebInquiry.h"
+#include"VirtualWebInquiry.h"
 #include"ThreadStatus.h"
 #include"Thread.h"
 
@@ -89,9 +89,9 @@ bool CVirtualWebInquiry::GetWebData(void) {
 			StartReadingThread();
 			return true;
 		}
-		else return false;
-	}
-	else return false; // 工作线程已在执行接收数据的任务
+		return false;
+	}  // 工作线程已在执行接收数据的任务
+	return false;
 }
 
 void CVirtualWebInquiry::PrepareReadingWebData(void) {
@@ -214,7 +214,7 @@ bool CVirtualWebInquiry::OpenFile(const CString& strInquiring) {
 		//auto p = typeid(*file).name();
 		//ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
 		//m_pFile = dynamic_cast<CHttpFile*>(file);
-		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength));
+		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, m_strHeaders, lHeadersLength));
 		ASSERT(std::strcmp(typeid(*m_pFile).name(), _T("class CHttpFile")) == 0);
 	}
 	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
@@ -344,7 +344,6 @@ bool CVirtualWebInquiry::ReadingWebData2(void) {
 	m_pWebData = make_shared<CWebData>();
 
 	CURL* curl_handle = curl_easy_init();
-	CURLcode code;
 	if (curl_handle) {
 		curl_easy_setopt(curl_handle, CURLOPT_URL, m_strInquiry);
 		if (m_strHeaders.GetLength() > 0) {
@@ -354,7 +353,7 @@ bool CVirtualWebInquiry::ReadingWebData2(void) {
 			curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1); // 关闭进度条
 			//curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 60); // TimeOut
 			//curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, static_cast<curl_off_t>(2 * 512 * 1024)); // 最大下载速度为2M Bytes/S
-			code = curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 1024 * 512);
+			CURLcode code = curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 1024 * 512);
 		}
 		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0); // 不校验SSL
 		curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, m_pWebData.get());

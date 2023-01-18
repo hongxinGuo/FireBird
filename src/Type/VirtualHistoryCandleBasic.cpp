@@ -4,7 +4,7 @@
 #include"VirtualHistoryCandleBasic.h"
 
 CVirtualHistoryCandleBasic::CVirtualHistoryCandleBasic() {
-	Reset();
+	CVirtualHistoryCandleBasic::Reset();
 }
 
 void CVirtualHistoryCandleBasic::Reset() {
@@ -40,7 +40,7 @@ bool CVirtualHistoryCandleBasic::IsActive(void) const {
 	if (GetClose() != 0) {
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 bool CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {

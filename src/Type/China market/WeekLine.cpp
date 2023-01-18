@@ -4,7 +4,7 @@
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {
-	Reset();
+	CWeekLine::Reset();
 }
 
 void CWeekLine::Reset(void) {
@@ -12,7 +12,7 @@ void CWeekLine::Reset(void) {
 }
 
 bool CWeekLine::UpdateWeekLine(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) {
-	if (m_lDate == 0) m_lDate = GetCurrentMonday(pHistoryCandleExtend->GetMarketDate());;
+	if (m_lDate == 0) m_lDate = GetCurrentMonday(pHistoryCandleExtend->GetMarketDate());
 	if (m_time == 0) m_time = pHistoryCandleExtend->GetMarketTime();
 	if (m_strStockSymbol == _T("")) m_strStockSymbol = pHistoryCandleExtend->GetStockSymbol();
 	if (m_strDisplaySymbol == _T("")) m_strDisplaySymbol = pHistoryCandleExtend->GetDisplaySymbol();

@@ -39,7 +39,7 @@ bool CVirtualMarket::SchedulingTask(void) {
 		stLastTime = sm_tUTC;
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 /// <summary>
@@ -75,7 +75,7 @@ time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) const {
 }
 
 time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) const {
-	return ::ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
+	return ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
 }
 
 long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
@@ -95,7 +95,7 @@ void CVirtualMarket::CalculateTime(void) noexcept {
 }
 
 void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
-	time_t tMarket = 0;
+	time_t tMarket;
 
 	switch (m_tmMarket.tm_wday) {
 	case 1: // ÐÇÆÚÒ»
@@ -118,14 +118,14 @@ bool CVirtualMarket::IsWorkingDay(void) const noexcept {
 	if ((m_tmMarket.tm_wday == 0) || (m_tmMarket.tm_wday == 6)) {
 		return false;
 	}
-	else return true;
+	return true;
 }
 
 bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) const noexcept {
 	if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
 		return false;
 	}
-	else return true;
+	return true;
 }
 
 bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
@@ -137,7 +137,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
 	if ((ct.GetDayOfWeek() == 1) || (ct.GetDayOfWeek() == 7)) {
 		return false;
 	}
-	else return true;
+	return true;
 }
 
 bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept {
@@ -241,7 +241,5 @@ bool CVirtualMarket::SchedulingTaskPerMinute(long lSeconds, long lCurrentTime) {
 		TaskResetMarketFlagAtMidnight(lCurrentTime);
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }

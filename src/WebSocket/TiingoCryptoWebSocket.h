@@ -37,8 +37,6 @@ public:
 	bool Connect(void) override;
 	bool Send(vectorString vSymbol) override;
 
-	string CreateMessage2(vectorString vSymbol);
-
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
 	string CreateMessage(vectorString vSymbol);

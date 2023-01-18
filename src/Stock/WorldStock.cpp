@@ -252,7 +252,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 		SetDayLineNeedUpdate(false);
 		return m_fDayLineNeedUpdate;
 	}
-	else if (IsDelisted() || IsNotYetList()) {
+	if (IsDelisted() || IsNotYetList()) {
 		// 摘牌股票?
 		if (lDayOfWeek != 4) {
 			// 每星期四检查一次
@@ -475,7 +475,7 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 				// 没有这个时间点的新闻？
 				pCompanyNews->Append(setCompanyNews);
 			}
-			if (++lCurrentPos == lSize) break;;
+			if (++lCurrentPos == lSize) break;
 		}
 		for (long i = lCurrentPos; i < lSize; i++) {
 			pCompanyNews = m_vCompanyNews.at(i);
@@ -626,7 +626,7 @@ bool CWorldStock::HaveNewDayLineData(void) {
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
 		return true;
-	else return false;
+	return false;
 }
 
 bool CWorldStock::UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial) {
@@ -848,13 +848,12 @@ void CWorldStock::SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) 
 CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	char buffer[50];
-	time_t tStartTime = 0;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
-	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
+	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
+	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
 	strMiddle += strTemp;
 	strMiddle += _T("&to=");
@@ -890,5 +889,5 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
 
 bool CWorldStock::IsUSMarket(void) const {
 	if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
-	else return false;
+	return false;
 }

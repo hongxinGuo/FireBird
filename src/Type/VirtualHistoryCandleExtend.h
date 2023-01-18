@@ -13,14 +13,14 @@
 #include<memory>
 
 class CVirtualHistoryCandleExtend;
-typedef shared_ptr<CVirtualHistoryCandleExtend> CVirtualHistoryCandleExtendPtr;
+using CVirtualHistoryCandleExtendPtr = shared_ptr<CVirtualHistoryCandleExtend>;
 
 class CVirtualHistoryCandleExtend : public CVirtualHistoryCandleBasic {
 public:
 	CVirtualHistoryCandleExtend();
 	~CVirtualHistoryCandleExtend() override = default;
-	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
-	virtual int GetRatio(void) const override final { return 1000; };
+	void Reset(void) override; // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
+	int GetRatio(void) const final { return 1000; };
 
 	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend); // 存储扩展数据
 	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);

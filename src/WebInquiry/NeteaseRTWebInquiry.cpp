@@ -25,7 +25,6 @@
 #include"ChinaMarket.h"
 
 #include "NeteaseRTWebInquiry.h"
-#include"NeteaseRTDataSource.h"
 
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
@@ -73,7 +72,6 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleString(long lTotalNumber, bo
 /// 网易实时数据的接收，不时出现错误数据。目前无法确定是服务器本身的错误还是接收中出现的错误。如果服务器本身就发送错了，就无法修正了。
 /// 修改session各参数，试试能否解决问题。
 /// </summary>
-/// <param name=""></param>
 void CNeteaseRTWebInquiry::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 设置连接超时时间为4000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。

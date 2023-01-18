@@ -3,12 +3,12 @@
 class CDataFinnhubCryptoExchange final {
 public:
 	CDataFinnhubCryptoExchange();
-	virtual ~CDataFinnhubCryptoExchange() = default;
+	~CDataFinnhubCryptoExchange() = default;
 	void Reset(void);
 
 	bool IsCryptoExchange(const string& sExchange) const noexcept {
 		if (m_mapCryptoExchange.contains(sExchange)) return true;
-		else return false;
+		return false;
 	}
 
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_vCryptoExchange.size(); }
@@ -21,7 +21,7 @@ public:
 
 	bool IsNeedUpdate(void) const noexcept {
 		if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) return true;
-		else return false;
+		return false;
 	}
 
 protected:

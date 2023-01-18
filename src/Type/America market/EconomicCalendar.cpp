@@ -5,6 +5,7 @@
 
 CEconomicCalendar::CEconomicCalendar() {
 	m_strCountry = _T(" ");
+	m_iTime = 0;
 	m_strEvent = _T(" ");
 	m_strImpact = _T(" ");
 	m_dActual = 0.0;

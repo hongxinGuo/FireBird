@@ -19,28 +19,26 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 }
 
 CString CProductFinnhubForexDayLine::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = static_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryString(((CWorldMarket*)m_pMarket)->GetUTCTime());
+	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryString(m_pMarket->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-
-	CDayLineVectorPtr pvDayLine = nullptr;
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
-	pvDayLine = ParseFinnhubForexCandle(pWebData);
+	const CDayLineVectorPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = ConvertToDate(pDayLine->m_time, ((CWorldMarket*)m_pMarket)->GetMarketTimeZone());
+			const long lTemp = ConvertToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
@@ -50,12 +48,10 @@ bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		return true;
 	}
-	else {
-		pForexSymbol->SetDayLineNeedSaving(false);
-		pForexSymbol->SetUpdateProfileDB(false);
-		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
-		return false;
-	}
+	pForexSymbol->SetDayLineNeedSaving(false);
+	pForexSymbol->SetUpdateProfileDB(false);
+	TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+	return false;
 }
 
 CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {

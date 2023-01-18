@@ -34,14 +34,12 @@ bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
 //
 //////////////////////////////////////////////////////////////////////////
 bool CDataFinnhubCountry::UpdateDB(void) {
-	CCountryPtr pCountry = nullptr;
-	CSetCountry setCountry;
-
 	if (m_lLastTotalCountry < m_vCountry.size()) {
+		CSetCountry setCountry;
 		setCountry.Open();
 		setCountry.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalCountry; l < m_vCountry.size(); l++) {
-			pCountry = m_vCountry.at(l);
+			const CCountryPtr pCountry = m_vCountry.at(l);
 			pCountry->Append(setCountry);
 		}
 		setCountry.m_pDatabase->CommitTrans();

@@ -125,7 +125,6 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 //
 ////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
-	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	int iPosition = 0;
 
 	if (gl_systemStatus.IsWorkingMode())
@@ -133,7 +132,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 	ASSERT(pSetHistoryCandleExtend->IsOpen());
 
 	while (!pSetHistoryCandleExtend->IsEOF()) {
-		pHistoryCandle = GetData(iPosition);
+		CVirtualHistoryCandleExtendPtr pHistoryCandle = GetData(iPosition);
 		while ((pHistoryCandle->GetMarketDate() < pSetHistoryCandleExtend->m_Date)
 			&& (Size() > (iPosition + 1))) {
 			iPosition++;
@@ -153,11 +152,10 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataHistoryCandleExtend::UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData, bool fRevertSave) {
-	CVirtualHistoryCandleExtendPtr pData = nullptr;
 	Unload(); // 清除已载入的数据（如果有的话）
 	if (fRevertSave) {
 		for (int i = vTempData.size() - 1; i > -1; i--) {
-			pData = vTempData.at(i);
+			const CVirtualHistoryCandleExtendPtr pData = vTempData.at(i);
 			if (pData->IsActive()) StoreData(pData);
 		}
 	}
@@ -210,7 +208,7 @@ void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
 		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
 		if (3 * i > m_vHistoryData.size()) break;
 		if (rectClient.right <= 3 * i) break; // 画到
-		else i++;
+		i++;
 	}
 
 	it = m_vHistoryData.end();
@@ -280,10 +278,9 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSIndex0(void) {
 }
 
 bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
-	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
-		dTempRS = 0;
+		double dTempRS = 0;
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRSLogarithm(); }
 		switch (lNumber) {
 		case 3:
@@ -312,10 +309,9 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
 }
 
 bool CVirtualDataHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
-	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
-		dTempRS = 0;
+		double dTempRS = 0;
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRS(); }
 		switch (lNumber) {
 		case 3:
@@ -344,10 +340,9 @@ bool CVirtualDataHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
 }
 
 bool CVirtualDataHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
-	double dTempRS = 0;
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
-		dTempRS = 0;
+		double dTempRS = 0;
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRSIndex(); }
 		switch (lNumber) {
 		case 3:

@@ -13,10 +13,10 @@ public:
 
 	bool IsTiingoIndustry(const CString& strTiingoIndustry) const {
 		if (!m_mapTiingoIndustry.contains(strTiingoIndustry)) return true;
-		else return false;
+		return false;
 	}
 
-	bool IsTiingoIndustry(const CTiingoIndustryPt& pTiingoIndustry) const { return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector); }
+	bool IsTiingoIndustry(const CTiingoIndustryPtr& pTiingoIndustry) const { return IsTiingoIndustry(pTiingoIndustry->m_strIndustry + pTiingoIndustry->m_strSector); }
 
 	void Add(CTiingoIndustryPtr pTiingoIndustry);
 	bool Delete(CTiingoIndustryPtr pTiingoIndustry);

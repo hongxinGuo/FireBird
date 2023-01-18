@@ -21,7 +21,6 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
-    <ClInclude Include="..\src\accessory\TemplateDataStake.h" />
     <ClInclude Include="..\src\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />

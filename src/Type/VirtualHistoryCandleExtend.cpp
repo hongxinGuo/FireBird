@@ -4,7 +4,7 @@
 #include"VirtualHistoryCandleExtend.h"
 
 CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCandleBasic() {
-	Reset();
+	CVirtualHistoryCandleExtend::Reset();
 }
 
 void CVirtualHistoryCandleExtend::Reset(void) {

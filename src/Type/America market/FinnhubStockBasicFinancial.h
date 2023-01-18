@@ -200,7 +200,7 @@ public:
 class CFinnhubStockBasicFinancial final {
 public:
 	CFinnhubStockBasicFinancial();
-	virtual ~CFinnhubStockBasicFinancial() = default;
+	~CFinnhubStockBasicFinancial() = default;
 
 	void AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);
 	void UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);

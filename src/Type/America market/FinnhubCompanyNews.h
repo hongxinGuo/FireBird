@@ -30,7 +30,7 @@
 class CFinnhubCompanyNews final {
 public:
 	CFinnhubCompanyNews();
-	virtual ~CFinnhubCompanyNews() = default;
+	~CFinnhubCompanyNews() = default;
 
 	void Append(CSetCompanyNews& setCompanyNews);
 	void Update(CSetCompanyNews& setCompanyNews);

@@ -30,10 +30,9 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage(void) {
 bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	CInsiderTransactionVectorPtr pvInsiderTransaction = nullptr;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
-	pStock->SetInsiderTransactionUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	const CInsiderTransactionVectorPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
+	pStock->SetInsiderTransactionUpdateDate(m_pMarket->GetMarketDate());
 	pStock->SetInsiderTransactionNeedUpdate(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderTransaction->empty()) {

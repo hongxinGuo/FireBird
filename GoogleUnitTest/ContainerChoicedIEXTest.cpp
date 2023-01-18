@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerChosenStock.h"
+#include"WorldStock.h"
 
 using namespace testing;
 

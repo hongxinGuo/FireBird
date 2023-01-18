@@ -147,7 +147,6 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine(void) {
-	CString str = _T("");
 	const auto lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
 	bool fHaveInquiry = false;
 
@@ -173,7 +172,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 		}
 		else {
 			SetDayLineUpdated(true);
-			str = _T("美国市场自选股票日线历史数据更新完毕");
+			CString str = "美国市场自选股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

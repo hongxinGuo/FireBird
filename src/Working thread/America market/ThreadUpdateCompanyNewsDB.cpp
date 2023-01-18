@@ -2,7 +2,6 @@
 
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
-#include"WorldStock.h"
 
 UINT ThreadUpdateCompanyNewsDB(not_null<CWorldMarket*> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();

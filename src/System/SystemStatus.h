@@ -11,7 +11,7 @@ public:
 	CSystemStatus& operator=(const CSystemStatus&) = delete;
 	CSystemStatus(const CSystemStatus&&) noexcept = delete;
 	CSystemStatus& operator=(const CSystemStatus&&) noexcept = delete;
-	virtual ~CSystemStatus() = default;
+	~CSystemStatus() = default;
 
 	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
 	bool IsExitingSystem() { return m_fExitingSystem; }

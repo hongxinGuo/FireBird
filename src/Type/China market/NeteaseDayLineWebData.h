@@ -9,7 +9,7 @@
 class CNeteaseDayLineWebData final {
 public:
 	CNeteaseDayLineWebData();
-	virtual ~CNeteaseDayLineWebData() = default;
+	~CNeteaseDayLineWebData() = default;
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数

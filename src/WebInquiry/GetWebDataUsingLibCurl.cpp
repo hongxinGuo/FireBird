@@ -8,7 +8,7 @@
 //#include"HighPerformanceCounter.h"
 
 //#include"ChinaMarket.h"
-#include"curl/curl.h"
+//#include"curl/curl.h"
 
 #include<thread>
 

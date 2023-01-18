@@ -21,7 +21,7 @@ public:
 	CSystemData& operator=(const CSystemData&) = delete;
 	CSystemData(const CSystemData&&) noexcept = delete;
 	CSystemData& operator=(const CSystemData&&) noexcept = delete;
-	virtual ~CSystemData(void) = default;
+	~CSystemData(void) = default;
 
 public:
 	// Finnhub Socket»º´æÊý¾Ý

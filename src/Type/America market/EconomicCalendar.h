@@ -7,7 +7,7 @@
 class CEconomicCalendar final {
 public:
 	CEconomicCalendar();
-	virtual ~CEconomicCalendar() = default;
+	~CEconomicCalendar() = default;
 
 	void Load(CSetEconomicCalendar& setEconomicCalendar);
 	void Append(CSetEconomicCalendar& setEconomicCalendar);

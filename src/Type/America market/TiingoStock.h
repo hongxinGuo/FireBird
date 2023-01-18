@@ -13,7 +13,7 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&) = delete;
 	CTiingoStock(const CTiingoStock&&) noexcept = delete;
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
-	virtual ~CTiingoStock() = default;
+	~CTiingoStock() = default;
 
 	void Reset(void);
 

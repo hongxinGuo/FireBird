@@ -3,12 +3,12 @@
 class CDataFinnhubForexExchange final {
 public:
 	CDataFinnhubForexExchange();
-	virtual ~CDataFinnhubForexExchange() = default;
+	~CDataFinnhubForexExchange() = default;
 	void Reset(void);
 
 	bool IsForexExchange(const CString& strExchange) const noexcept {
 		if (m_mapForexExchange.contains(strExchange)) return true;
-		else return false;
+		return false;
 	}
 
 	size_t GetForexExchangeSize(void) const noexcept { return m_vForexExchange.size(); }
@@ -21,7 +21,7 @@ public:
 
 	bool IsNeedUpdate(void) const noexcept {
 		if (m_lLastTotalForexExchange < m_vForexExchange.size()) return true;
-		else return false;
+		return false;
 	}
 
 protected:

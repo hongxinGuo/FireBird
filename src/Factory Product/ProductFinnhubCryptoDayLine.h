@@ -1,6 +1,5 @@
 #pragma once
 
-#include"WebData.h"
 #include"DayLine.h"
 
 #include"ProductFinnhub.h"
@@ -10,8 +9,8 @@ public:
 	CProductFinnhubCryptoDayLine();
 	~CProductFinnhubCryptoDayLine() override = default;
 
-	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	CString CreateMessage(void);
+	bool ParseAndStoreWebData(CWebDataPtr pWebData);
 	CDayLineVectorPtr ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
 };
 

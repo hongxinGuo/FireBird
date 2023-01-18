@@ -6,7 +6,7 @@
 class CDataTiingoStock final {
 public:
 	CDataTiingoStock();
-	virtual ~CDataTiingoStock() = default;
+	~CDataTiingoStock() = default;
 	void Reset(void);
 
 	void Add(CTiingoStockPtr pTiingoStock);
@@ -15,7 +15,7 @@ public:
 
 	bool IsStock(const CString& strSymbol) const noexcept {
 		if (m_mapTiingoStock.contains(strSymbol)) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
@@ -28,7 +28,7 @@ public:
 
 	bool IsNeedUpdate(void) const noexcept {
 		if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) return true;
-		else return false;
+		return false;
 	}
 
 protected:

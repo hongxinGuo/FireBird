@@ -34,15 +34,12 @@ bool CDataFinnhubEconomicCalendar::LoadDB(void) {
 }
 
 bool CDataFinnhubEconomicCalendar::UpdateDB(void) {
-	const long lTotalEconomicCalendar = m_vEconomicCalendar.size();
-	CEconomicCalendarPtr pEconomicCalendar = nullptr;
-	CSetEconomicCalendar setEconomicCalendar;
-
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
+		CSetEconomicCalendar setEconomicCalendar;
 		setEconomicCalendar.Open();
 		setEconomicCalendar.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-			pEconomicCalendar = m_vEconomicCalendar.at(l);
+			const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
 			pEconomicCalendar->Append(setEconomicCalendar);
 		}
 		setEconomicCalendar.m_pDatabase->CommitTrans();

@@ -5,7 +5,7 @@
 class CDataNaicsIndustry final {
 public:
 	CDataNaicsIndustry();
-	Virtual ~CDataNaicsIndustry() = default;
+	~CDataNaicsIndustry() = default;
 	void Reset(void);
 
 	size_t GetTotalNaicsIndustry(void) const noexcept { return m_vNaicsIndustry.size(); }
@@ -13,7 +13,7 @@ public:
 
 	bool IsNaicsIndustry(const CString& strNaicsIndustry) const {
 		if (!m_mapNaicsIndustry.contains(strNaicsIndustry)) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsNaicsIndustry(const CNaicsIndustryPtr& pNaicsIndustry) const { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }

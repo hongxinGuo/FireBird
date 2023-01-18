@@ -5,7 +5,7 @@
 class CDataTiingoCryptoSymbol final {
 public:
 	CDataTiingoCryptoSymbol();
-	virtual ~CDataTiingoCryptoSymbol() = default;
+	~CDataTiingoCryptoSymbol() = default;
 	void Reset(void);
 
 	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);
@@ -15,7 +15,7 @@ public:
 
 	bool IsTiingoCryptoSymbol(const CString& strSymbol) const {
 		if (m_mapTiingoCrypto.contains(strSymbol)) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCrypto) const { return IsTiingoCryptoSymbol(pCrypto->m_strTicker); }
@@ -28,7 +28,7 @@ public:
 
 	bool IsNeedUpdate(void) const noexcept {
 		if (m_lLastTotalTiingoCrypto < m_vTiingoCrypto.size()) return true;
-		else return false;
+		return false;
 	}
 
 protected:

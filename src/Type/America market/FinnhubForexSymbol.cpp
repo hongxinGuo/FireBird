@@ -4,7 +4,7 @@
 #include "FinnhubForexSymbol.h"
 
 CFinnhubForexSymbol::CFinnhubForexSymbol() : CVirtualStock() {
-	Reset();
+	CFinnhubForexSymbol::Reset();
 }
 
 void CFinnhubForexSymbol::Reset(void) {
@@ -32,17 +32,16 @@ void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
 CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
 	char buffer[50];
-	time_t tStartTime = 0;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("&resolution=D");
 	strMiddle += _T("&from=");
-	tStartTime = gl_pWorldMarket->TransferToUTCTime(m_lDayLineEndDate);
+	time_t tStartTime = gl_pWorldMarket->TransferToUTCTime(m_lDayLineEndDate);
 	if (tStartTime < (tCurrentTime - static_cast<time_t>(365) * 24 * 3600)) {
 		// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
 	}
-	sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
+	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
 	strMiddle += strTemp;
 	strMiddle += _T("&to=");
@@ -75,5 +74,5 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
-	else return false;
+	return false;
 }

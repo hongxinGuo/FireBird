@@ -85,7 +85,6 @@ void CDataStockSymbol::LoadStockSectionDB(void) {
 
 bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	CSetStockSection setStockSection;
-	CStockSectionPtr pStockSection = nullptr;
 
 	setStockSection.m_strSort = _T("[ID]");
 	setStockSection.Open();
@@ -93,7 +92,7 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	if (setStockSection.IsEOF()) {
 		// ¿Õ±í
 		for (int i = 0; i < 2000; i++) {
-			pStockSection = m_vStockSection.at(i);
+			CStockSectionPtr pStockSection = m_vStockSection.at(i);
 			setStockSection.AddNew();
 			setStockSection.m_ID = i;
 			setStockSection.m_Active = pStockSection->IsActive();

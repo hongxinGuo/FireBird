@@ -60,7 +60,6 @@ CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
-/// <param name=""></param>
 /// <returns></returns>
 bool CTiingoForexWebSocket::Connect(void) {
 	Connecting(m_url, ProcessTiingoForexWebSocket);

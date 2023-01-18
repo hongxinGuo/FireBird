@@ -130,7 +130,7 @@ public:
 	CWebRTData& operator=(const CWebRTData&) = delete;
 	CWebRTData(const CWebRTData&&) noexcept = delete;
 	CWebRTData& operator=(const CWebRTData&&) noexcept = delete;
-	virtual ~CWebRTData(void) = default;
+	~CWebRTData(void) = default;
 
 	void Reset(void);
 
@@ -209,7 +209,7 @@ public:
 
 	[[nodiscard]] bool IsValidDataSource(void) const noexcept {
 		if (m_lDataSource != INVALID_RT_WEB_DATA_) return true;
-		else return false;
+		return false;
 	}
 
 	// Êý¾Ý

@@ -7,7 +7,7 @@
 class CCountry final {
 public:
 	CCountry();
-	virtual ~CCountry() = default;
+	~CCountry() = default;
 
 	void Append(CSetCountry& setCountry);
 	void Load(CSetCountry& setCountry);

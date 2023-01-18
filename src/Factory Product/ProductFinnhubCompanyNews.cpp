@@ -18,17 +18,16 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	char buffer[50]{};
-	int iUpdateDate = 0, iMarketDate = 0;
 	int year = 0, month = 0, day = 0;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiry + pStock->GetSymbol();
-	iUpdateDate = pStock->GetCompanyNewsUpdateDate();
+	const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 	XferDateToYearMonthDay(iUpdateDate, year, month, day);
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
 	CString strTemp = buffer;
 	strMessage += _T("&from=");
 	strMessage += strTemp;
-	iMarketDate = gl_pWorldMarket->GetMarketDate();
+	const int iMarketDate = gl_pWorldMarket->GetMarketDate();
 	XferDateToYearMonthDay(iMarketDate, year, month, day);
 	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
 	strTemp = buffer;
@@ -55,7 +54,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->UpdateCompanyNews(pvFinnhubCompanyNews);
 		pStock->SetUpdateCompanyNewsDB(true);
 	}
-	pStock->SetCompanyNewsUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetCompanyNewsUpdateDate(m_pMarket->GetMarketDate());
 	pStock->SetCompanyNewsUpdated(true);
 	pStock->SetUpdateProfileDB(true);
 

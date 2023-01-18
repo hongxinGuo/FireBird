@@ -5,7 +5,7 @@
 class CDataFinnhubStockExchange final {
 public:
 	CDataFinnhubStockExchange();
-	virtual ~CDataFinnhubStockExchange() = default;
+	~CDataFinnhubStockExchange() = default;
 	void Reset();
 
 	CFinnhubStockExchangePtr GetExchange(const long lIndex) const { return m_vFinnhubStockExchange.at(lIndex); }

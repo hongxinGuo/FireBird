@@ -27,7 +27,7 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const json jsonPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(jsonPeer);
-	pStock->SetPeerUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+	pStock->SetPeerUpdateDate(m_pMarket->GetMarketDate());
 	pStock->SetPeerUpdated(true);
 	pStock->SetUpdateProfileDB(true);
 
@@ -36,7 +36,7 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(CWebDataPtr pWebData) {
 	json jsonPeer; // 默认的空状态（没有竞争对手)
-	int i;
+
 	string sError;
 
 	ASSERT(pWebData->IsJSonContentType());

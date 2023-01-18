@@ -1,7 +1,6 @@
 #pragma once
 
 #include "VirtualWebInquiry.h"
-#include"WebRTData.h"
 
 #include<memory>
 

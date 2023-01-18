@@ -236,7 +236,7 @@ bool CFinnhubDataSource::InquireCompanySymbol(void) {
 	if (!IsInquiring() && !IsSymbolUpdated()) {
 		CFinnhubStockExchangePtr pExchange;
 		bool fFound = false;
-		long lCurrentStockExchangePos = 0;
+		long lCurrentStockExchangePos;
 		if (!m_fInquiringFinnhubStockSymbol) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock symbol..."));
 			m_fInquiringFinnhubStockSymbol = true;
@@ -365,7 +365,6 @@ bool CFinnhubDataSource::InquireCompanyNews(void) {
 bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
-	CVirtualProductWebDataPtr product = nullptr;
 	constexpr int iInquiryType = BASIC_FINANCIALS_;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -386,7 +385,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 			}
 		}
 		if (fFound) {
-			product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentBasicFinancialsPos);
 			StoreInquiry(product);
 			gl_pWorldMarket->SetCurrentFunction(_T("基本财务:") + gl_pWorldMarket->GetStock(lCurrentBasicFinancialsPos)->GetSymbol());
@@ -458,7 +457,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction(void) {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsInsiderTransactionUpdated()) {
-		long lCurrentUpdateInsiderTransactionPos = 0;
+		long lCurrentUpdateInsiderTransactionPos;
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockInsiderTransaction) {
@@ -504,7 +503,7 @@ bool CFinnhubDataSource::InquireInsiderSentiment(void) {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsInsiderSentimentUpdated()) {
-		long lCurrentUpdateInsiderSentimentPos = 0;
+		long lCurrentUpdateInsiderSentimentPos;
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockInsiderSentiment) {
@@ -559,21 +558,20 @@ bool CFinnhubDataSource::InquireRTQuote(void) {
 }
 
 bool CFinnhubDataSource::InquirePeer(void) {
-	CWorldStockPtr pStock = nullptr;
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = PEERS_;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && !IsPeerUpdated()) {
-		long lCurrentUpdatePeerPos = 0;
+		long lCurrentUpdatePeerPos;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockPeer) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock peer..."));
 			m_fInquiringFinnhubStockPeer = true;
 		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
-			pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
+			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
 			if (!pStock->IsPeerUpdated()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;

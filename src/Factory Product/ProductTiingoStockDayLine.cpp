@@ -32,10 +32,8 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	CDayLineVectorPtr pvDayLine = nullptr;
-
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pvDayLine = ParseTiingoStockDayLine(pWebData);
+	const CDayLineVectorPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
@@ -49,13 +47,9 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		return true;
 	}
-	else {
-		pStock->SetDayLineNeedSaving(false);
-		pStock->SetUpdateProfileDB(false);
-		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
-		return false;
-	}
-
+	pStock->SetDayLineNeedSaving(false);
+	pStock->SetUpdateProfileDB(false);
+	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 	return false;
 }
 

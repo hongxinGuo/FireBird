@@ -7,7 +7,7 @@
 class CInsiderSentiment final {
 public:
 	CInsiderSentiment();
-	virtual ~CInsiderSentiment() = default;
+	~CInsiderSentiment() = default;
 
 	void Append(CSetInsiderSentiment& setInsiderTransaction);
 	void Update(CSetInsiderSentiment& setInsiderTransaction);

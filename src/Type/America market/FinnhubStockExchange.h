@@ -7,7 +7,7 @@
 class CFinnhubStockExchange final {
 public:
 	CFinnhubStockExchange();
-	virtual ~CFinnhubStockExchange() = default;
+	~CFinnhubStockExchange() = default;
 
 	void Append(CSetFinnhubStockExchange& setFinnhubExchange);
 

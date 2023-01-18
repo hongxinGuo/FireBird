@@ -32,11 +32,11 @@ public:
 	CWebData& operator=(const CWebData&) = delete;
 	CWebData(const CWebData&&) noexcept = delete;
 	CWebData& operator=(const CWebData&&) noexcept = delete;
-	virtual ~CWebData();
+	~CWebData();
 
 	bool IsProcessedAllTheData(void) const noexcept {
 		if (m_lCurrentPos < m_lBufferLength) return false;
-		else return true;
+		return true;
 	}
 
 	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
@@ -44,7 +44,7 @@ public:
 
 	bool OutOfRange(void) const noexcept {
 		if (m_lCurrentPos >= m_lBufferLength) return true;
-		else return false;
+		return false;
 	}
 
 	void Resize(const long lSize) {
@@ -80,7 +80,7 @@ public:
 
 	bool IsVoidJson(void) const noexcept {
 		if (IsJSonContentType() && (m_sDataBuffer == _T("{}"))) return true;
-		else return false;
+		return false;
 	}
 
 	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）

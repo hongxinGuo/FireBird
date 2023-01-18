@@ -108,7 +108,6 @@ long GetNextMonday(long lDate) {
 	case 1:
 		ctNext += s_1Day;
 		break;
-		break;
 	default: // 不可能
 		break;
 	}
@@ -146,7 +145,6 @@ long GetPrevMonday(long lDate) {
 	case 1: // 星期日
 		ctNext -= s_6Day;
 		break;
-		break;
 	default: // 不可能
 		break;
 	}
@@ -183,7 +181,6 @@ long GetCurrentMonday(long lDate) {
 	case 1: // 星期日
 		ctNext -= s_6Day;
 		break;
-		break;
 	default: // 不可能
 		break;
 	}
@@ -212,7 +209,6 @@ CString ConvertDateToString(const long lDate) {
 }
 
 time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset) {
-	time_t tt{0};
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
 
@@ -224,7 +220,7 @@ time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time
 	tm_.tm_min = minute;
 	tm_.tm_sec = second;
 	tm_.tm_isdst = 0;
-	tt = _mkgmtime(&tm_); // 先变成GMT时间
+	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
 	if (tt > -1) {
 		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
 	}
@@ -232,7 +228,6 @@ time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time
 }
 
 time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset) {
-	time_t tt{0};
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
 
@@ -244,7 +239,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_
 	tm_.tm_min = minute;
 	tm_.tm_sec = second;
 	tm_.tm_isdst = 0;
-	tt = _mkgmtime(&tm_);
+	time_t tt = _mkgmtime(&tm_);
 	if (tt > -1) {
 		tt += tTimeZoneOffset; //
 	}
