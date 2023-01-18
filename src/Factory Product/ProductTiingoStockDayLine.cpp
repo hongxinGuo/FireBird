@@ -17,11 +17,24 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() 
 	m_lIndex = -1;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 即使是免费账户，tiingo日线也能够提供30年以上的数据，故而至少申请一次全部数据（自19800101开始）。
+///	此后为了减少数据流量，可以只申请未下载的数据。
+///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
+///
+///////////////////////////////////////////////////////////////////////////////////////////
 CString CProductTiingoStockDayLine::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());
-	const CString strMiddle = pStock->GetTiingoDayLineInquiryString(m_pMarket->GetMarketDate());
+	CString strMiddle;
+	if (pStock->GetDayLineStartDate() > 20180101) {
+		strMiddle = pStock->GetTiingoDayLineInquiryString(19800101, m_pMarket->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+	}
+	else {
+		strMiddle = pStock->GetTiingoDayLineInquiryString(pStock->GetDayLineEndDate(), m_pMarket->GetMarketDate());
+	}
 	pStock->SetDayLineNeedUpdate(false);
 
 	m_strTotalInquiryMessage = m_strInquiry + strMiddle;

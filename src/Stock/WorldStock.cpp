@@ -864,15 +864,16 @@ CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
 	return strMiddle;
 }
 
-CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
+CString CWorldStock::GetTiingoDayLineInquiryString(long lStartDate, long lCurrentDate) {
 	CString strMiddle = _T("");
 	char buffer[50];
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
-	const long year2 = m_lDayLineEndDate / 10000;
-	const long month2 = m_lDayLineEndDate / 100 - year2 * 100;
-	const long date2 = m_lDayLineEndDate - year2 * 10000 - month2 * 100;
+
+	const long year2 = lStartDate / 10000;
+	const long month2 = lStartDate / 100 - year2 * 100;
+	const long date2 = lStartDate - year2 * 10000 - month2 * 100;
 
 	strMiddle += m_strSymbol;
 	strMiddle += _T("/prices?&startDate=");

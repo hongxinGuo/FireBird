@@ -17,7 +17,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CWorldStockTest : public ::testing::Test {
+	class CWorldStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) { GeneralCheck(); }
 
@@ -1501,18 +1501,17 @@ namespace FireBirdTest {
 		long lDate = 20200101;
 
 		time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate);
-		time_t ttOld = tt - (time_t)(365) * 24 * 3600;
+		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;
 
 		char buffer[30];
 		sprintf_s(buffer, _T("%I64i"), tt);
 		CString strTime = buffer;
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		CString strTimeOld = buffer;
-		CString strMiddle, strMiddle2;
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20180101); // 早于20190102
-		strMiddle2 = _T("600601.SS&resolution=D");
+		CString strMiddle2 = "600601.SS&resolution=D";
 		strMiddle2 += _T("&from=") + strTimeOld + _T("&to=") + strTime;
 		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "免费账户最多只能申请一年的日线数据";
 
@@ -1521,20 +1520,25 @@ namespace FireBirdTest {
 		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501);
 		sprintf_s(buffer, _T("%I64i"), ttOld);
 		strTimeOld = buffer;
-		strMiddle = _T("600601.SS&resolution=D");
+		CString strMiddle = "600601.SS&resolution=D";
 		strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
 		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle2) << "检查一年的数据";
 	}
 
 	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString) {
 		CWorldStock stock;
-		CString strMiddle;
-
 		stock.SetSymbol(_T("600601.SS"));
-		stock.SetDayLineEndDate(20180101);
-		strMiddle = _T("600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1");
+		CString strMiddle = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
 
-		EXPECT_STREQ(stock.GetTiingoDayLineInquiryString(20200101), strMiddle);
+		EXPECT_STREQ(stock.GetTiingoDayLineInquiryString(20180101, 20200101), strMiddle);
+	}
+
+	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString2) {
+		CWorldStock stock;
+		stock.SetSymbol(_T("600601.SS"));
+		CString strMiddle = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
+
+		EXPECT_STREQ(stock.GetTiingoDayLineInquiryString(19800101, 20200101), strMiddle);
 	}
 
 	TEST_F(CWorldStockTest, TestSave) {

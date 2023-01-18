@@ -10,7 +10,6 @@
 #include"ProductTiingoStockDayLine.h"
 #include"ProductDummy.h"
 
-#include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
 using namespace testing;
@@ -18,7 +17,7 @@ using namespace testing;
 namespace FireBirdTest {
 	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
 
-	class CTiingoDataSourceTest : public ::testing::Test {
+	class CTiingoDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -67,8 +66,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
-		CVirtualProductWebDataPtr p = nullptr;
-
 		gl_pTiingoDataSource->SetStockSymbolUpdated(true);
 		EXPECT_FALSE(gl_pTiingoDataSource->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
 
@@ -79,7 +76,7 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireCompanySymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
-		p = gl_pTiingoDataSource->GetInquiry();
+		CVirtualProductWebDataPtr p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockSymbol"));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated()) << "此标识需要等处理完数据后方设置";
 		CString str = gl_systemMessage.PopInformationMessage();
@@ -88,8 +85,6 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoDayLine) {
 		CWorldStockPtr pStock;
-		CVirtualProductWebDataPtr p = nullptr;
-		long lStockIndex = 0;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -108,8 +103,8 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireDayLine());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
-		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
-		p = gl_pTiingoDataSource->GetInquiry();
+		long lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
+		CVirtualProductWebDataPtr p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
@@ -183,8 +178,8 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_CANDLES_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
-
 		p->SetMarket(gl_pWorldMarket.get());
+		gl_pWorldMarket->GetStock(0)->SetDayLineStartDate(20180101); // 不早于20180101，使用19800101
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
@@ -195,7 +190,7 @@ namespace FireBirdTest {
 			.Times(1);
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryFunction(),
-		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(gl_pWorldMarket->GetMarketDate()));
+			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryString(19800101, gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));

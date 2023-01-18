@@ -97,7 +97,7 @@ public:
 
 	bool HaveInsiderTransaction(void) const noexcept {
 		if (!m_vInsiderTransaction.empty()) return true;
-		else return false;
+		return false;
 	}
 
 	void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
@@ -115,7 +115,7 @@ public:
 
 	bool HaveInsiderSentiment(void) const noexcept {
 		if (m_vInsiderSentiment.size() > 0) return true;
-		else return false;
+		return false;
 	}
 
 	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
@@ -241,7 +241,7 @@ public:
 	long GetTiingoDailyDataUpdateDate();
 	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
 	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
-	CString GetTiingoDayLineInquiryString(long lCurrentDate);
+	CString GetTiingoDayLineInquiryString(long lStartDate, long lCurrentDate);
 
 	bool IsUSMarket(void) const;
 

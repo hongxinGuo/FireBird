@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoStockDayLineTest : public ::testing::Test {
+	class CProductTiingoStockDayLineTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -35,20 +36,40 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stockPriceCandle.GetInquiry(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
-	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage) {
-		CString strMessage, strTest;
+	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
-		strMessage = stockPriceCandle.CreateMessage();
-		long lMarketDate = gl_pWorldMarket->GetMarketDate();
-		long year = lMarketDate / 10000;
-		long month = lMarketDate / 100 - year * 100;
-		long day = lMarketDate - year * 10000 - month * 100;
+		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		pStock->SetDayLineStartDate(20171231); // 早于20180101
+		const CString strMessage = stockPriceCandle.CreateMessage();
+		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
+		const long year = lMarketDate / 10000;
+		const long month = lMarketDate / 100 - year * 100;
+		const long day = lMarketDate - year * 10000 - month * 100;
 		char buffer[30];
 		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
-		CString strEndDate = buffer;
+		const CString strEndDate = buffer;
 		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		strTest = _T("https://api.tiingo.com/tiingo/daily/000001.SS/prices?&startDate=1980-1-1&endDate=") + strEndDate;
+		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/000001.SS/prices?&startDate=1980-1-1&endDate=") + strEndDate;
+
+		EXPECT_STREQ(strMessage, strTest) << "当股票日线的起始日期早于20180101时，使用之前的结束日期为申请数据的起始日期";
+	}
+
+	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
+		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
+		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
+		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		pStock->SetDayLineStartDate(20171231); // 早于20180101
+		const CString strMessage = stockPriceCandle.CreateMessage();
+		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
+		const long year = lMarketDate / 10000;
+		const long month = lMarketDate / 100 - year * 100;
+		const long day = lMarketDate - year * 10000 - month * 100;
+		char buffer[30];
+		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
+		const CString strEndDate = buffer;
+		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
+		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/000001.SS/prices?&startDate=1980-1-1&endDate=") + strEndDate;
 		EXPECT_STREQ(strMessage, strTest);
 	}
 
@@ -77,11 +98,11 @@ namespace FireBirdTest {
 	// 股票没有日线数据
 	TiingoWebData tiingoWebData41(11, _T("AAPL"), _T("{\"detail\":\"Error:Ticker 'AAPL' not found\"}"));
 
-	class ParseTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoStockDayLineTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			TiingoWebData* pData = GetParam();
+			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -101,9 +122,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest,
-	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
-		                         &tiingoWebData41));
+		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+			&tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CDayLineVectorPtr pvDayLine;
@@ -156,11 +177,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseTiingoStockDayLineTest2 : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoStockDayLineTest2 : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			TiingoWebData* pData = GetParam();
+			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -180,9 +201,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest2,
-	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
-		                         &tiingoWebData41));
+		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
+			&tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest2, TestParseTiingoStockDayLine0) {
 		CDayLineVectorPtr pvDayLine;
@@ -235,11 +256,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessTiingoStockDayLineTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ProcessTiingoStockDayLineTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			TiingoWebData* pData = GetParam();
+			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -264,8 +285,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockDayLine, ProcessTiingoStockDayLineTest,
-	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
+		testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
+			&tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
 		CDayLineVectorPtr pvDayLine;

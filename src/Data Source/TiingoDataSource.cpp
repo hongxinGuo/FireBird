@@ -172,7 +172,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 		}
 		else {
 			SetDayLineUpdated(true);
-			CString str = "美国市场自选股票日线历史数据更新完毕";
+			const CString str = "美国市场自选股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
