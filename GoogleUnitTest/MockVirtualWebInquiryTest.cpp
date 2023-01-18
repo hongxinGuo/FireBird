@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"afxinet.h"
-
 #include"FinnhubDataSource.h"
 #include"MockVirtualWebInquiry.h"
 
@@ -10,7 +8,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CMockVirtualWebInquiryTest : public ::testing::Test {
+	class CMockVirtualWebInquiryTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

@@ -6,19 +6,15 @@
 
 #include"WorldMarket.h"
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
 
 #include"MockFinnhubWebInquiry.h"
-
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
 
 #include"thread.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CThreadReadFinnhubDataTest : public ::testing::Test {
+	class CThreadReadFinnhubDataTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -33,7 +29,8 @@ namespace FireBirdTest {
 			FinnhubWebInquiry.SetReadingWebData(true);
 		}
 
-		void TearDown(void) override { }
+		void TearDown(void) override {
+		}
 
 		CMockFinnhubWebInquiry FinnhubWebInquiry;
 	};
@@ -47,7 +44,7 @@ namespace FireBirdTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		FinnhubWebInquiry.TESTSetBuffer(_T("testData"));
-		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
+		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 
@@ -59,7 +56,7 @@ namespace FireBirdTest {
 			.WillOnce(Return(true));
 		FinnhubWebInquiry.TESTSetBuffer(strMessage);
 		FinnhubWebInquiry.SetReadingWebData(true);
-		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), (UINT)1);
+		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 1);
 		CWebDataPtr pWebData = gl_pFinnhubDataSource->GetReceivedData();

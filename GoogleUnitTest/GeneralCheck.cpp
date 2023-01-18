@@ -8,11 +8,6 @@ using namespace testing;
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
-#include"SinaRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-
 #include "GeneralCheck.h"
 
 namespace FireBirdTest {

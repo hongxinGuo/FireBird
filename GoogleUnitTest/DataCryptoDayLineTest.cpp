@@ -31,9 +31,8 @@ namespace FireBirdTest {
 
 	TEST_F(CDataCryptoDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 测试数据库中最早的日期为20200817，故此数据位于最前面
 		pDayLine->SetStockSymbol(_T("BINANCE:USDTUAH"));
 		pDayLine->SetClose(100);

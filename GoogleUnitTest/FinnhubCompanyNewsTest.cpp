@@ -10,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubCompanyNewsTest : public ::testing::Test {
+	class CFinnhubCompanyNewsTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -20,7 +20,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -38,22 +39,20 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
 		char buffer[50]{};
-		int iUpdateDate = 0, iMarketDate = 0;
 		int year = 0, month = 0, day = 0;
-		CString strTemp, strMessage;
 
 		gl_pWorldMarket->GetStock(1)->SetCompanyNewsUpdated(false);
 		companyNews.SetMarket(gl_pWorldMarket.get());
 		companyNews.SetIndex(1);
-		CWorldStockPtr pStock = ((CWorldMarket*)(companyNews.GetMarket()))->GetStock(1);
-		strMessage = companyNews.GetInquiry() + pStock->GetSymbol();
-		iUpdateDate = pStock->GetCompanyNewsUpdateDate();
+		const CWorldStockPtr pStock = static_cast<CWorldMarket*>(companyNews.GetMarket())->GetStock(1);
+		CString strMessage = companyNews.GetInquiry() + pStock->GetSymbol();
+		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-		strTemp = buffer;
+		CString strTemp = buffer;
 		strMessage += _T("&from=");
 		strMessage += strTemp;
-		iMarketDate = gl_pWorldMarket->GetMarketDate();
+		const int iMarketDate = gl_pWorldMarket->GetMarketDate();
 		XferDateToYearMonthDay(iMarketDate, year, month, day);
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
 		strTemp = buffer;
@@ -78,7 +77,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebDataCompanyNews10(10, _T("AAPL"), _T("[{\"category\":\"company news\",\"datetime\":1,\"headline\":\"More\",\"id\":25286,\"image\":\"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg\",\"related\":\"AAPL\",\"source\":\"The Economic Times India\",\"summary\":\"NEW DELHI\",\"url\":\"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms\"},{\"category\":\"company news\",\"datetime\":1569550361,\"headline\":\"More2\",\"id\":25287,\"image\":\"https://img.etimg.com/thumb/msid-71321314,width-1070,height-580,imgsize-481831,overlay-economictimes/photo.jpg\",\"related\":\"AAPL\",\"source\":\"The Economic Times India\",\"summary\":\"NEW DELHI2\",\"url\":\"https://economictimes.indiatimes.com/industry/cons-products/electronics/more-sops-needed-to-boost-electronic-manufacturing-top-govt-official/articleshow/71321308.cms\"}]"));
 
-	class ProcessFinnhubStockCompanyNewsTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockCompanyNewsTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -113,7 +112,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCompanyNews1, ProcessFinnhubStockCompanyNewsTest, testing::Values(&finnhubWebDataCompanyNews2,
-		                         &finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
+		&finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
 		bool fSucceed = false;

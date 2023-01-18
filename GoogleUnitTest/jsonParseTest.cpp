@@ -6,10 +6,9 @@
 
 #include<memory>
 using std::make_shared;
-#include"JsonGetValue.h"
 
 namespace FireBirdTest {
-	class jsonParseTest : public ::testing::Test {
+	class jsonParseTest : public testing::Test {
 		void SetUp(void) override {
 			GeneralCheck();
 		}

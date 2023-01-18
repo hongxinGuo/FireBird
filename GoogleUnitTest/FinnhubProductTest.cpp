@@ -2,7 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"TimeConvert.h"
 #include"WorldMarket.h"
 
 #include"FinnhubInquiryType.h"
@@ -13,7 +12,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubProductTest : public ::testing::Test {
+	class CFinnhubProductTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -23,7 +22,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp

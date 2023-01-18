@@ -6,8 +6,6 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include"GeneralCheck.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
@@ -45,7 +43,7 @@ namespace FireBirdTest {
 
 	static time_t s_tCurrentMarketTime;
 
-	class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
+	class TaskDistributeSinaRTDataToProperStockTest : public TestWithParam<SinaRTData*> {
 	protected:
 		static void SetUpTestSuite(void) {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
@@ -99,8 +97,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
-	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
-	                         ));
+		testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
+		));
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;

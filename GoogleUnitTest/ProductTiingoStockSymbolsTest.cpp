@@ -12,7 +12,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoStockSymbolsTest : public ::testing::Test {
+	class CProductTiingoStockSymbolsTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -22,7 +22,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -57,7 +58,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	TiingoWebData tiingoWebData10(10, _T(""),_T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"new symbol\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"New Name\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
-	class ParseTiingoStockTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoStockTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -82,9 +83,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-	                         ParseTiingoStockTest,
-	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
-		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+		ParseTiingoStockTest,
+		testing::Values(&tiingoWebData1, &tiingoWebData2,
+			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
@@ -136,10 +137,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
 			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
 			break;
+		default:
+			break;
 		}
 	}
 
-	class ParseTiingoStockTest2 : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoStockTest2 : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -164,9 +167,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-	                         ParseTiingoStockTest2,
-	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
-		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+		ParseTiingoStockTest2,
+		testing::Values(&tiingoWebData1, &tiingoWebData2,
+			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest2, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
@@ -218,10 +221,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
 			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
 			break;
+		default:
+			break;
 		}
 	}
 
-	class ProcessTiingoStockTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ProcessTiingoStockTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -248,9 +253,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock,
-	                         ProcessTiingoStockTest,
-	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
-		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+		ProcessTiingoStockTest,
+		testing::Values(&tiingoWebData1, &tiingoWebData2,
+			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
@@ -299,6 +304,8 @@ namespace FireBirdTest {
 			pStock->SetUpdateProfileDB(false);
 			pStock->SetName(_T("Alcoa Corp"));
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+			break;
+		default:
 			break;
 		}
 	}

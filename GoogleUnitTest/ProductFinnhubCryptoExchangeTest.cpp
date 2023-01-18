@@ -4,14 +4,13 @@
 
 #include"WorldMarket.h"
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
 
 #include"ProductFinnhubCryptoExchange.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductFinnhubCryptoExchangeTest : public ::testing::Test {
+	class CProductFinnhubCryptoExchangeTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -21,7 +20,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]"));
 
-	class ParseFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
-	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
@@ -98,7 +98,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCryptoExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
-	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);

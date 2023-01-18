@@ -54,7 +54,8 @@
 #error _T("本系统必须使用GOOGLE MOCK")
 #endif
 
-// 排除外部代码
+// 目前使用.runsettings文件来排除外部代码，不再使用以下的模式。且以下模式目前在C20标准下无法编译。
+
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
 //ExcludeSourceFromCodeCoverage(Exclude1, _T("C:\\Program Files (x86)\\*.*")); // 排除VS2019系统库
@@ -308,9 +309,9 @@ ExcludeFromCodeCoverage(CChinaStockHistoryDataContainer1, L"CVirtualDataHistoryC
 using namespace FireBirdTest;
 
 int main(int argc, char* argv[]) {
-	::testing::InitGoogleTest(&argc, argv);
+	InitGoogleTest(&argc, argv);
 	// gtest takes ownership of the TestEnvironment ptr - we don't delete it.
-	::testing::AddGlobalTestEnvironment(new TestEnvironment);
+	AddGlobalTestEnvironment(new TestEnvironment);
 
 	ASSERT(!gl_systemStatus.IsWorkingMode());
 

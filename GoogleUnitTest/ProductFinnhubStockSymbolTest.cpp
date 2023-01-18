@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubCompanySymbolProductTest : public ::testing::Test {
+	class CFinnhubCompanySymbolProductTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -17,7 +17,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -56,7 +57,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData30(10, _T("AAPL"), _T("[{\"currency\":\"USD\",\"description\":\"CERECOR INC\",\"displaySymbol\":\"A\",\"figi\":\"BBG001QHW0Y8\",\"isin\":\"not null\",\"mic\":\"XNAS\",\"shareClassFIGI\":\"\",\"symbol\":\"A\",\"symbol2\":\"\",\"type\":\"Common Stock\"},{\"currency\":\"USD\",\"description\":\"ACTIVE ENERGY GROUP PLC\",\"displaySymbol\":\"AA\",\"figi\":\"BBG009LQZG05\",\"isin\":null,\"mic\":\"OOTC\",\"shareClassFIGI\":\"\",\"symbol\":\"New Symbol\",\"symbol2\":\"\",\"type\":\"Common Stock\"}]"));
 
-	class ParseFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -89,7 +90,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		                         &finnhubWebData30));
+		&finnhubWebData30));
 
 	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);
@@ -112,7 +113,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubStockSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -140,11 +141,11 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		                         &finnhubWebData30));
+		&finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
-		CWorldStockPtr pStock = nullptr;
-		bool fSucceed = m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		CWorldStockPtr pStock;
+		const bool fSucceed = m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

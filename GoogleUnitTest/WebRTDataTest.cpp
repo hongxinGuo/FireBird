@@ -2,16 +2,14 @@
 
 #include"GeneralCheck.h"
 
-//
 #include"TimeConvert.h"
 
 #include"ChinaMarket.h"
 
 #include"WebRTData.h"
-#include"SinaRTWebInquiry.h"
 
 namespace FireBirdTest {
-	class CStockWebRTDataTest : public ::testing::Test {
+	class CStockWebRTDataTest : public testing::Test {
 	protected:
 		static void SetUpTestSuite() {
 			// 本测试类的初始化函数
@@ -412,7 +410,7 @@ namespace FireBirdTest {
 		39, _T(
 			"var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\"\n"));
 
-	class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
+	class CalculateSinaRTDataTest : public testing::TestWithParam<SinaRTData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -458,11 +456,11 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestSinaRTData, CalculateSinaRTDataTest, testing::Values(&Data1, &Data2, &Data3,
-		                         &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-		                         &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-		                         &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-		                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
-	                         ));
+		&Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+		&Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+		&Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+		&Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
+	));
 
 	TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
 		time_t ttime, tUTCTime;
@@ -1305,7 +1303,7 @@ namespace FireBirdTest {
 	// 只有','
 	ReadSinaOneCalueData rdata9(9, _T(","));
 
-	class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
+	class ReadOneValueTest : public testing::TestWithParam<ReadSinaOneCalueData*> {
 	protected:
 		void SetUp(void) override {
 			ReadSinaOneCalueData* pData = GetParam();
@@ -1333,9 +1331,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadOneValue, ReadOneValueTest,
-	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &
-		                         rdata9
-	                         ));
+		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &
+			rdata9
+		));
 
 	TEST_P(ReadOneValueTest, TestReadSinaOneValue4) {
 		double dTemp = 0;

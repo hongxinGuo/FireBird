@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-#include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoCryptoSymbol.h"
@@ -11,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoCryptoSymbolsTest : public ::testing::Test {
+	class CProductTiingoCryptoSymbolsTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -21,7 +20,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 
-	class ParseTiingoCryptoTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoCryptoTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -73,8 +73,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-	                         ParseTiingoCryptoTest,
-	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+		ParseTiingoCryptoTest,
+		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -93,10 +93,12 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
 			break;
+		default:
+			break;
 		}
 	}
 
-	class ParseTiingoCryptoTest2 : public::testing::TestWithParam<TiingoWebData*> {
+	class ParseTiingoCryptoTest2 : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -121,8 +123,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-	                         ParseTiingoCryptoTest2,
-	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+		ParseTiingoCryptoTest2,
+		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest2, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -141,10 +143,12 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
 			break;
+		default:
+			break;
 		}
 	}
 
-	class ProcessTiingoCryptoTest : public::testing::TestWithParam<TiingoWebData*> {
+	class ProcessTiingoCryptoTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -169,13 +173,13 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCrypto1,
-	                         ProcessTiingoCryptoTest,
-	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+		ProcessTiingoCryptoTest,
+		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
-		CTiingoCryptoSymbolPtr pCrypto = nullptr;
+		CTiingoCryptoSymbolPtr pCrypto;
 		long l = gl_pWorldMarket->GetTiingoCryptoSymbolSize();
-		bool fSucceed = m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		const bool fSucceed = m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 11: // 格式不对
 			EXPECT_TRUE(fSucceed);
@@ -192,6 +196,8 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			pCrypto = gl_pWorldMarket->GetTiingoCryptoSymbol(_T("New Symbol"));
 			gl_pWorldMarket->DeleteTiingoCryptoSymbol(pCrypto);
+			break;
+		default:
 			break;
 		}
 		EXPECT_FALSE(gl_pTiingoDataSource->IsCryptoSymbolUpdated()) << "此标识由UpdateStatus函数更新";

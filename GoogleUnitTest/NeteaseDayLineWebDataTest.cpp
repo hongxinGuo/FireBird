@@ -6,9 +6,7 @@
 #include"NeteaseDayLineWebData.h"
 
 namespace FireBirdTest {
-	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
-
-	class CDownLoadedNeteaseDayLineTest : public ::testing::Test {
+	class CDownLoadedNeteaseDayLineTest : public testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();

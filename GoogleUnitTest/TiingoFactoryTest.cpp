@@ -6,14 +6,11 @@
 #include"FinnhubInquiryType.h"
 
 #include"TiingoFactory.h"
-#include"ProductTiingoStockSymbol.h"
-#include"ProductTiingoCryptoSymbol.h"
-#include"ProductTiingoStockDayLine.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CTiingoFactoryTest : public ::testing::Test {
+	class CTiingoFactoryTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -23,7 +20,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp

@@ -145,10 +145,9 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveDB) {
 		vector<CWeekLinePtr> vWeekLine;
-		CWeekLinePtr pWeekLine = nullptr;
 		CDataChinaWeekLine dataChinaWeekLine;
 
-		pWeekLine = make_shared<CWeekLine>();
+		const CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面
 		pWeekLine->SetStockSymbol(_T("000003.SZ"));
 		pWeekLine->SetClose(100);

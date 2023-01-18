@@ -13,10 +13,9 @@
 #include"MockWorldStock.h"
 
 using namespace testing;
-#include<memory>
 
 namespace FireBirdTest {
-	class CMockWorldStockTest : public ::testing::Test {
+	class CMockWorldStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -41,6 +40,6 @@ namespace FireBirdTest {
 		CMockWorldStock stock;
 		EXPECT_CALL(stock, UpdateEPSSurpriseDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), (UINT)41);
+		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(&stock), static_cast<UINT>(41));
 	}
 }

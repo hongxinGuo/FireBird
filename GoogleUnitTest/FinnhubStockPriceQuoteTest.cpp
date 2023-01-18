@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubStockPriceQuoteTest : public ::testing::Test {
+	class CFinnhubStockPriceQuoteTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -62,7 +63,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData60(10, _T("AAPL"), _T("{\"c\":121.03,\"h\":121.17,\"l\":119.16,\"o\":120.4,\"pc\":121.96,\"t\":1615507200}"));
 
-	class ProcessFinnhubStockQuoteTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockQuoteTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -105,13 +106,12 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-	                         ProcessFinnhubStockQuoteTest,
-	                         testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
-		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
+		ProcessFinnhubStockQuoteTest,
+		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
-		bool fSucceed = false;
-		fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
+		const bool fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 3: // 格式不对
 			EXPECT_FALSE(fSucceed);

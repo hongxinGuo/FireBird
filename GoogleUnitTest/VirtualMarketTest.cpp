@@ -9,7 +9,7 @@
 namespace FireBirdTest {
 	CVirtualMarketPtr gl_pVirtualMarket;
 
-	class CVirtualMarketTest : public ::testing::Test {
+	class CVirtualMarketTest : public testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			gl_pVirtualMarket = make_shared<CVirtualMarket>();
@@ -200,9 +200,8 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualMarketTest, TestTransferToMarketDate) {
 		tm tmMarket;
-		long lMarketDate = 20000301, lMarketDate2 = 0;
-		long lMarketTime = 002030;
-		time_t tTime = 0;
+		const long lMarketDate = 20000301;
+		const long lMarketTime = 002030;
 
 		tmMarket.tm_year = lMarketDate / 10000 - 1900;
 		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
@@ -211,9 +210,9 @@ namespace FireBirdTest {
 		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
 		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
 
-		tTime = gl_pVirtualMarket->TransferToUTCTime(&tmMarket);
+		const time_t tTime = gl_pVirtualMarket->TransferToUTCTime(&tmMarket);
 
-		lMarketDate2 = gl_pVirtualMarket->TransferToMarketDate(tTime);
+		const long lMarketDate2 = gl_pVirtualMarket->TransferToMarketDate(tTime);
 		EXPECT_EQ(lMarketDate2, lMarketDate);
 	}
 

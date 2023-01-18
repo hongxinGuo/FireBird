@@ -7,8 +7,6 @@
 #include"WebRTData.h"
 #include"JsonParse.h"
 
-#include"NeteaseRTWebInquiry.h"
-
 namespace FireBirdTest {
 	TEST(CWebRTDataTest, TestNeteaseInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
@@ -77,7 +75,7 @@ namespace FireBirdTest {
 	// 一个数据，只有报头
 	NeteaseRTData Data105(4, _T("{\"0600001\":{\"code\": \"0600001\", \"update\": \"2019/11/11 15:59:59\", \"name\": \"don't use chinese character\", \"time\": \"2019/11/11 15:59:55\"} }"));
 
-	class CalculateNeteaseWebRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
+	class CalculateNeteaseWebRTDataTest : public testing::TestWithParam<NeteaseRTData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -126,7 +124,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseWebRTDataTest, testing::Values(&Data101, &Data102, &Data103, &Data104
-	                         ));
+	));
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJson());

@@ -14,30 +14,10 @@
 #include"MockQuandlWebInquiry.h"
 #include"MockTiingoWebInquiry.h"
 
-#include"ProductFinnhubCompanyProfile.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
-
-#include"ProductFinnhubCryptoExchange.h"
-#include"ProductFinnhubForexExchange.h"
-
-#include"ProductFinnhubStockPriceQuote.h"
-#include"ProductFinnhubCryptoDayLine.h"
-#include"ProductFinnhubForexDayLine.h"
-#include"ProductFinnhubStockDayLine.h"
-
 #include"PRoductFinnhubForexSymbol.h"
-#include"ProductFinnhubCryptoSymbol.h"
-#include"ProductFinnhubStockSymbol.h"
-
-#include "ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
-
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
 
 using namespace testing;
 #include<memory>
@@ -49,7 +29,7 @@ namespace FireBirdTest {
 	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
 	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
 
-	class CMockWorldMarketTest : public ::testing::Test {
+	class CMockWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -116,90 +96,90 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateCountryListDB)
 			.Times(1)
 			.WillOnce(Return(true));
-		EXPECT_EQ(ThreadUpdateCountryListDB(gl_pMockWorldMarket.get()), (UINT)40);
+		EXPECT_EQ(ThreadUpdateCountryListDB(gl_pMockWorldMarket.get()), static_cast<UINT>(40));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockProfileDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockProfileDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldMarketStockProfileDB(gl_pMockWorldMarket.get()), (UINT)37);
+		EXPECT_EQ(ThreadUpdateWorldMarketStockProfileDB(gl_pMockWorldMarket.get()), static_cast<UINT>(37));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockDayLineDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(gl_pMockWorldMarket.get()), (UINT)42);
+		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(gl_pMockWorldMarket.get()), static_cast<UINT>(42));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateForexSymbolDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexSymbolDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), (UINT)39);
+		EXPECT_EQ(ThreadUpdateForexSymbolDB(gl_pMockWorldMarket.get()), static_cast<UINT>(39));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateForexExchangedDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateForexExchangeDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), (UINT)49);
+		EXPECT_EQ(ThreadUpdateForexExchangeDB(gl_pMockWorldMarket.get()), static_cast<UINT>(49));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateFinnhubCryptoSymbolDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateFinnhubCryptoSymbolDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateFinnhubCryptoSymbolDB(gl_pMockWorldMarket.get()), (UINT)52);
+		EXPECT_EQ(ThreadUpdateFinnhubCryptoSymbolDB(gl_pMockWorldMarket.get()), static_cast<UINT>(52));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCryptoExchangedDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateCryptoExchangeDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateCryptoExchangeDB(gl_pMockWorldMarket.get()), (UINT)51);
+		EXPECT_EQ(ThreadUpdateCryptoExchangeDB(gl_pMockWorldMarket.get()), static_cast<UINT>(51));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderTransactionDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), (UINT)48);
+		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(gl_pMockWorldMarket.get()), static_cast<UINT>(48));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderSentimentDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateInsiderSentimentDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateInsiderSentimentDB(gl_pMockWorldMarket.get()), (UINT)58);
+		EXPECT_EQ(ThreadUpdateInsiderSentimentDB(gl_pMockWorldMarket.get()), static_cast<UINT>(58));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoStockDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoStockDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoStockDB(gl_pMockWorldMarket.get()), (UINT)44);
+		EXPECT_EQ(ThreadUpdateTiingoStockDB(gl_pMockWorldMarket.get()), static_cast<UINT>(44));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateTiingoIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoIndustry(gl_pMockWorldMarket.get()), (UINT)45);
+		EXPECT_EQ(ThreadUpdateTiingoIndustry(gl_pMockWorldMarket.get()), static_cast<UINT>(45));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateSICIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateSICIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateSICIndustry(gl_pMockWorldMarket.get()), (UINT)46);
+		EXPECT_EQ(ThreadUpdateSICIndustry(gl_pMockWorldMarket.get()), static_cast<UINT>(46));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateNaicsIndustry) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateNaicsIndustry)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateNaicsIndustry(gl_pMockWorldMarket.get()), (UINT)47);
+		EXPECT_EQ(ThreadUpdateNaicsIndustry(gl_pMockWorldMarket.get()), static_cast<UINT>(47));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateDayLineStartEndDate) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateStockDayLineStartEndDate)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), (UINT)43);
+		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(gl_pMockWorldMarket.get()), static_cast<UINT>(43));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateEconmicCalendarDB) {
 		EXPECT_CALL(*gl_pMockWorldMarket, UpdateEconomicCalendarDB)
 			.Times(1);
-		EXPECT_EQ(ThreadUpdateEconomicCalendarDB(gl_pMockWorldMarket.get()), (UINT)50);
+		EXPECT_EQ(ThreadUpdateEconomicCalendarDB(gl_pMockWorldMarket.get()), static_cast<UINT>(50));
 	}
 }

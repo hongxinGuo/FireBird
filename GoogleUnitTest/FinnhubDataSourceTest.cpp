@@ -9,12 +9,12 @@
 
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubForexExchange.h"
-#include"ProductFinnhubEconomicCountryList.h"
-#include"ProductFinnhubEconomicCalendar.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
+//#include"ProductFinnhubForexExchange.h"
+//#include"ProductFinnhubEconomicCountryList.h"
+//#include"ProductFinnhubEconomicCalendar.h"
+//#include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyPeer.h"
-#include"ProductFinnhubCompanyInsiderTransaction.h"
+//#include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCryptoDayLine.h"
 #include"ProductFinnhubForexDayLine.h"
 #include"ProductFinnhubStockDayLine.h"
@@ -25,7 +25,7 @@
 #include"ProductFinnhubStockPriceQuote.h"
 
 #include"ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
+//#include"ProductTiingoStockDayLine.h"
 #include"ProductDummy.h"
 
 using namespace testing;
@@ -33,7 +33,7 @@ using namespace testing;
 namespace FireBirdTest {
 	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;
 
-	class CFinnhubDataSourceTest : public ::testing::Test {
+	class CFinnhubDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
-		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated());
 		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(true);
@@ -220,7 +220,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanyProfileConcise());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
-		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
+		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		gl_pWorldMarket->GetStock(10)->SetCompanyProfileUpdated(true);
@@ -296,15 +296,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireRTQuote) {
-		CVirtualProductWebDataPtr p = nullptr;
-
 		gl_pWorldMarket->SetSystemReady(true);
 
 		gl_pFinnhubDataSource->SetDayLineUpdated(false);
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireRTQuote());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
-		p = gl_pFinnhubDataSource->GetInquiry();
+		CVirtualProductWebDataPtr p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockPriceQuote"));
 	}
 
@@ -332,7 +330,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
-		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";;
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated());
@@ -342,7 +340,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquirePeer());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
-		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";;
+		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
 		gl_pWorldMarket->GetStock(10)->SetPeerUpdated(true);
@@ -414,8 +412,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireEconomicCalendar) {
-		CVirtualProductWebDataPtr p = nullptr;
-
 		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEconomicCalendar()) << "EconomicCalendar Updated";
 
@@ -426,7 +422,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireEconomicCalendar());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
-		p = gl_pFinnhubDataSource->GetInquiry();
+		CVirtualProductWebDataPtr p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic calendar"));
 
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -434,12 +430,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryEPSSurprise) {
-		CWorldStockPtr pStock;
-		CVirtualProductWebDataPtr p = nullptr;
-
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetEPSSurpriseUpdated(true);
 		}
 		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
@@ -454,7 +447,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireEPSSurprise());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
-		p = gl_pFinnhubDataSource->GetInquiry();
+		CVirtualProductWebDataPtr p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
@@ -478,8 +471,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexExchange) {
-		CVirtualProductWebDataPtr p = nullptr;
-
 		gl_pFinnhubDataSource->SetForexExchangeUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexExchange()) << "FinnhubForexExchange Updated";
 
@@ -490,7 +481,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexExchange());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
-		p = gl_pFinnhubDataSource->GetInquiry();
+		const CVirtualProductWebDataPtr p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub forex exchange"));
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
@@ -498,13 +489,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexSymbol) {
-		CVirtualProductWebDataPtr p = nullptr;
+		CVirtualProductWebDataPtr p;
 
 		gl_pFinnhubDataSource->SetForexSymbolUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexSymbol()) << "ForexSymbol Updated";
 
 		gl_pFinnhubDataSource->SetForexSymbolUpdated(false);
-		size_t lTotal = gl_pWorldMarket->GetForexExchangeSize();
+		const size_t lTotal = gl_pWorldMarket->GetForexExchangeSize();
 		for (int i = 0; i < lTotal - 1; i++) {
 			gl_pFinnhubDataSource->SetInquiring(false);
 			EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexSymbol());
@@ -530,7 +521,6 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexDayLine) {
 		CForexSymbolPtr pStock;
-		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetForexSymbolSize(); i++) {
@@ -549,7 +539,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireForexDayLine());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
-		p = gl_pFinnhubDataSource->GetInquiry();
+		CVirtualProductWebDataPtr p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";

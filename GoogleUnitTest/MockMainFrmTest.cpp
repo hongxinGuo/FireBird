@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
@@ -8,12 +7,12 @@
 #include"MockMainFrm.h"
 
 using namespace testing;
-using namespace ::testing;
+using namespace testing;
 
 namespace FireBirdTest {
 	extern CMockMainFramePtr gl_pMockMainFrame;
 
-	class CMockMainFrameTest : public ::testing::Test {
+	class CMockMainFrameTest : public Test {
 	public:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -65,7 +64,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("  12K"));
 		str = gl_pMockMainFrame->FormatToMK(12 * 1024 * 1024);
 		EXPECT_STREQ(str, _T("  12M"));
-		str = gl_pMockMainFrame->FormatToMK((long long)12345 * 1024 * 1024);
+		str = gl_pMockMainFrame->FormatToMK(static_cast<long long>(12345) * 1024 * 1024);
 		EXPECT_STREQ(str, _T("12345M"));
 	}
 
@@ -550,20 +549,20 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83001);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(83001);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)92959);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(92959);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83000);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
 			.Times(1);
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
-		gl_pChinaMarket->TEST_SetFormattedMarketTime((long)83000);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
 			.Times(1);

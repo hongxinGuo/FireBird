@@ -32,9 +32,8 @@ namespace FireBirdTest {
 
 	TEST_F(CDataForexDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200411); // 此日为星期六，新数据
 		pDayLine->SetStockSymbol(_T("OANDA:AUD_SGD"));
 		pDayLine->SetClose(100);

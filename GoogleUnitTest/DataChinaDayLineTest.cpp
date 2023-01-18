@@ -31,9 +31,8 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -75,9 +74,8 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -120,9 +118,8 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -167,11 +164,9 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
-		CWeekLinePtr pWeekLine = nullptr;
 		long lCurrentDayLinePos = 0;
 
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -220,7 +215,7 @@ namespace FireBirdTest {
 		vDayLine.push_back(pDayLine);
 
 		dataChinaDayLine.UpdateData(vDayLine, false);
-		pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
+		CWeekLinePtr pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
 		EXPECT_THAT(pWeekLine->GetMarketDate(), 20191230) << "本周一";
@@ -243,10 +238,8 @@ namespace FireBirdTest {
 		vector<CWeekLinePtr> vWeekLine;
 		CDataChinaDayLine dataChinaDayLine;
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -313,10 +306,9 @@ namespace FireBirdTest {
 
 	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 		CDataChinaDayLine dataChinaDayLine;
 
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为20200817，故此数据位于最前面
 		pDayLine->SetStockSymbol(_T("000001.SZ"));
 		pDayLine->SetClose(100);

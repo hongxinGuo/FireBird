@@ -1,14 +1,13 @@
 #include"pch.h"
 
 #include"WorldMarket.h"
-#include"ChinaMarket.h"
 
 #include"GeneralCheck.h"
 
 #include"ChinaStockCodeConverter.h"
 
 namespace FireBirdTest {
-	class StockCodeConverterTest : public ::testing::Test {
+	class StockCodeConverterTest : public testing::Test {
 		void SetUp(void) override {
 			GeneralCheck();
 		}

@@ -1,17 +1,14 @@
 #include"pch.h"
 
 #include"WorldMarket.h"
-#include"ChinaMarket.h"
 
 #include"GeneralCheck.h"
-
-#include"FinnhubInquiryType.h"
 
 #include"FinnhubInaccessibleExchange.h"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 namespace FireBirdTest {
-	class CInaccessibleExchangesTest : public ::testing::Test {
+	class CInaccessibleExchangesTest : public testing::Test {
 		void SetUp(void) override {
 			GeneralCheck();
 
@@ -69,7 +66,7 @@ namespace FireBirdTest {
 }
 
 namespace FireBirdTest {
-	class CFinnhubInaccessibleExchangeTest : public ::testing::Test {
+	class CFinnhubInaccessibleExchangeTest : public testing::Test {
 		void SetUp(void) override { GeneralCheck(); }
 
 		void TearDown(void) override {
@@ -116,7 +113,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
 		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
-		             _T("WebSocketTrades"));
+			_T("WebSocketTrades"));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
 		CString str;
 		str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);

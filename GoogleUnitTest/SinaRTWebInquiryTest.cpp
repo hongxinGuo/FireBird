@@ -7,12 +7,10 @@
 #include"SinaRTDataSource.h"
 #include"MockSinaRTWebInquiry.h"
 
-#include<atomic>
-
 using namespace testing;
 
 namespace FireBirdTest {
-	class CSinaRTWebInquiryTest : public ::testing::Test {
+	class CSinaRTWebInquiryTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

@@ -1,14 +1,11 @@
 #include"pch.h"
 
 #include"WorldMarket.h"
-#include"ChinaMarket.h"
-
-#include"finnhubInquiryType.h"
 
 #include"GeneralCheck.h"
 
 namespace FireBirdTest {
-	class CSystemConfigurationTest : public ::testing::Test {
+	class CSystemConfigurationTest : public testing::Test {
 		void SetUp(void) override { GeneralCheck(); }
 
 		void TearDown(void) override {

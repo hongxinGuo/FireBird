@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 
@@ -17,7 +16,6 @@
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
-#include"MockNeteaseDayLineWebInquiry.h"
 
 #include"GeneralCheck.h"
 
@@ -402,7 +400,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedUpdate) {
-		CChinaStockPtr pStock = nullptr;
+		CChinaStockPtr pStock;
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedUpdate());
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			pStock = gl_pChinaMarket->GetStock(i);
@@ -782,9 +780,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
-		// 股票代码数据库在全局环境设置时即已装入测试系统，故而直接测试即可。
-		CChinaStockPtr pStock = nullptr;
-		pStock = gl_pChinaMarket->GetStock(0);
+		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
@@ -833,8 +829,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockPtr) {
-		CChinaStockPtr pStock = nullptr;
-		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
 	}
 
@@ -1477,10 +1472,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestAppendChosenStock) {
-		// 也测试UpdateChosenStock和LoadChosenStock
-		CChinaStockPtr pStock = nullptr;
-
-		pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
+		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600601.SS"));
 		pStock->SetChosen(true);
 		gl_pChinaMarket->AddChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));

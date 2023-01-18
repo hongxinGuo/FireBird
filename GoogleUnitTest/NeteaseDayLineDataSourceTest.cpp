@@ -6,8 +6,6 @@
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
-#include "ProductNeteaseDayLine.h"
-
 #include"MockNeteaseDayLineWebInquiry.h"
 
 using namespace testing;
@@ -15,7 +13,7 @@ using namespace testing;
 namespace FireBirdTest {
 	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
 
-	class CNeteaseDayLineDataSourceTest : public ::testing::Test {
+	class CNeteaseDayLineDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();

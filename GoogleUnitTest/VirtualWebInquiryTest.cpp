@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"afxinet.h"
-
 #include"GeneralCheck.h"
 
 #include"VirtualWebInquiry.h"
@@ -9,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CVirtualWebInquiryTest : public ::testing::Test {
+	class CVirtualWebInquiryTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) { GeneralCheck(); }
 

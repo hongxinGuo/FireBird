@@ -6,29 +6,13 @@
 
 #include"FinnhubFactory.h"
 
-#include"ProductFinnhubEconomicCountryList.h"
-#include"ProductFinnhubEconomicCalendar.h"
-#include"ProductFinnhubCryptoExchange.h"
-#include"ProductFinnhubForexExchange.h"
-#include"ProductFinnhubCryptoSymbol.h"
 #include"ProductFinnhubStockSymbol.h"
-#include"ProductFinnhubForexSymbol.h"
-#include"ProductFinnhubCompanyProfile.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubCompanyNews.h"
-#include"ProductFinnhubCompanyPeer.h"
 #include"ProductFinnhubCompanyBasicFinancial.h"
-#include"ProductFinnhubCompanyInsiderTransaction.h"
-#include"ProductFinnhubCompanyInsiderSentiment.h"
-#include"ProductFinnhubCryptoDayLine.h"
-#include"ProductFinnhubForexDayLine.h"
-#include"PRoductFinnhubStockPriceQuote.h"
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubFactoryTest : public ::testing::Test {
+	class CFinnhubFactoryTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -38,7 +22,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp

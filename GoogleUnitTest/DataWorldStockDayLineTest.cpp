@@ -32,9 +32,8 @@ namespace FireBirdTest {
 
 	TEST_F(CDataWorldStockDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine = nullptr;
 
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20220101); // 测试库中的数据最新日期为20210330，此日期位于其后
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetClose(100);

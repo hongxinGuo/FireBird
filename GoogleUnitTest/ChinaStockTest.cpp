@@ -8,19 +8,9 @@
 #include"WebRTData.h"
 #include"NeteaseDayLineWebData.h"
 
-#include"NeteaseRTWebInquiry.h"
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-
-#include"MockChinaStock.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
-	static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
-	static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
-	static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
-
 	class CChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -2151,7 +2141,6 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadDayLine) {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
-		CDayLinePtr pDayLine = nullptr;
 		CChinaStock stock;
 
 		pStock = gl_pChinaMarket->GetStock(_T("600010.SS"));
@@ -2186,7 +2175,7 @@ namespace FireBirdTest {
 		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
 		for (int i = 0; i < 10; i++) {
 			pid = stock.GetDayLine(i);
-			pDayLine = pStock->GetDayLine(i);
+			CDayLinePtr pDayLine = pStock->GetDayLine(i);
 			EXPECT_EQ(pDayLine->GetMarketDate(), pid->GetMarketDate());
 			EXPECT_STREQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
@@ -2632,7 +2621,6 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadWeekLine) {
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		CWeekLinePtr pid;
-		CWeekLinePtr pWeekLine = nullptr;
 		CChinaStock stock;
 
 		pStock = gl_pChinaMarket->GetStock(_T("600010.SS"));
@@ -2667,7 +2655,7 @@ namespace FireBirdTest {
 		stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
 		for (int i = 0; i < 10; i++) {
 			pid = stock.GetWeekLine(i);
-			pWeekLine = pStock->GetWeekLine(i);
+			CWeekLinePtr pWeekLine = pStock->GetWeekLine(i);
 			EXPECT_EQ(pWeekLine->GetMarketDate(), pid->GetMarketDate());
 			EXPECT_STREQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());

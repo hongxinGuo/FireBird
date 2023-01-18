@@ -11,7 +11,7 @@
 using std::make_shared;
 
 namespace FireBirdTest {
-	class CSystemDataTest : public ::testing::Test {
+	class CSystemDataTest : public testing::Test {
 	protected:
 		void SetUp(void) override { GeneralCheck(); }
 
@@ -26,7 +26,6 @@ namespace FireBirdTest {
 		auto pData = make_shared<CFinnhubSocket>();
 		pData->m_sSymbol = _T("Test1");
 		gl_SystemData.PushFinnhubSocket(pData);
-		pData = nullptr;
 		EXPECT_EQ(gl_SystemData.GetFinnhubSocketSize(), 1);
 		pData = gl_SystemData.PopFinnhubSocket();
 		EXPECT_TRUE(pData->m_sSymbol == _T("Test1"));
@@ -37,7 +36,6 @@ namespace FireBirdTest {
 		auto pData = make_shared<CTiingoCryptoSocket>();
 		pData->m_sSymbol = _T("Test1");
 		gl_SystemData.PushTiingoCryptoSocket(pData);
-		pData = nullptr;
 		EXPECT_EQ(gl_SystemData.GetTiingoCryptoSocketSize(), 1);
 		pData = gl_SystemData.PopTiingoCryptoSocket();
 		EXPECT_TRUE(pData->m_sSymbol == _T("Test1"));
@@ -48,7 +46,6 @@ namespace FireBirdTest {
 		auto pData = make_shared<CTiingoIEXSocket>();
 		pData->m_sSymbol = _T("Test1");
 		gl_SystemData.PushTiingoIEXSocket(pData);
-		pData = nullptr;
 		EXPECT_EQ(gl_SystemData.GetTiingoIEXSocketSize(), 1);
 		pData = gl_SystemData.PopTiingoIEXSocket();
 		EXPECT_TRUE(pData->m_sSymbol == _T("Test1"));
@@ -59,7 +56,6 @@ namespace FireBirdTest {
 		auto pData = make_shared<CTiingoForexSocket>();
 		pData->m_sSymbol = _T("Test1");
 		gl_SystemData.PushTiingoForexSocket(pData);
-		pData = nullptr;
 		EXPECT_EQ(gl_SystemData.GetTiingoForexSocketSize(), 1);
 		pData = gl_SystemData.PopTiingoForexSocket();
 		EXPECT_TRUE(pData->m_sSymbol == _T("Test1"));

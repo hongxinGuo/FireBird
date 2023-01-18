@@ -5,14 +5,13 @@
 #include"WorldMarket.h"
 
 #include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
 
 #include"ProductFinnhubForexExchange.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubForexExchangeTest : public ::testing::Test {
+	class CFinnhubForexExchangeTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -22,7 +21,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
-	class ParseFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubForexExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		                         &finnhubWebData80));
+		&finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubForexExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -129,7 +129,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		                         &finnhubWebData80));
+		&finnhubWebData80));
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
