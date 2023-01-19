@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pTiingoDataSource->InquireDayLine());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring());
-		long lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
+		auto lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
 		CVirtualProductWebDataPtr p = gl_pTiingoDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";

@@ -266,8 +266,8 @@ bool CContainerChinaStock::TaskProcessRTData(void) {
 	return true;
 }
 
-void CContainerChinaStock::ClearDayLineNeedUpdateStatus(void) {
-	for (auto& pStock : m_vStock) {
+void CContainerChinaStock::ClearDayLineNeedUpdateStatus(void) const {
+	for (const auto& pStock : m_vStock) {
 		pStock->SetDayLineNeedUpdate(false);
 	}
 }
@@ -293,20 +293,20 @@ bool CContainerChinaStock::UnloadDayLine(void) noexcept {
 	return true;
 }
 
-void CContainerChinaStock::SetAllDayLineNeedMaintain(void) {
+void CContainerChinaStock::SetAllDayLineNeedMaintain(void) const {
 	SetAllDayLineNeedUpdate();
 	for (auto& pStock : m_vStock) {
 		pStock->SetDayLineEndDate(19900101);
 	}
 }
 
-void CContainerChinaStock::SetAllDayLineNeedUpdate(void) {
+void CContainerChinaStock::SetAllDayLineNeedUpdate(void) const {
 	for (const auto& pStock : m_vStock) {
 		pStock->SetDayLineNeedUpdate(true);
 	}
 }
 
-long CContainerChinaStock::GetDayLineNeedUpdateNumber(void) {
+long CContainerChinaStock::GetDayLineNeedUpdateNumber(void) const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsDayLineNeedUpdate()) l++;
@@ -314,7 +314,7 @@ long CContainerChinaStock::GetDayLineNeedUpdateNumber(void) {
 	return l;
 }
 
-long CContainerChinaStock::GetDayLineNeedSaveNumber(void) {
+long CContainerChinaStock::GetDayLineNeedSaveNumber(void) const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsDayLineNeedSaving()) ++l;
@@ -470,7 +470,7 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 	}
 	setRSStrong.m_pDatabase->CommitTrans();
 	setRSStrong.m_pDatabase->BeginTrans();
-	for (auto& pStock : v10RSStrongStock) {
+	for (const auto& pStock : v10RSStrongStock) {
 		setRSStrong.AddNew();
 		setRSStrong.m_Symbol = pStock->GetSymbol();
 		setRSStrong.Update();
@@ -698,7 +698,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 			dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
 		}
 		if (IsAStock(setDayLineBasicInfo.m_Symbol)) {
-			long lIndex = m_mapSymbol.at(setDayLineBasicInfo.m_Symbol);
+			const auto lIndex = m_mapSymbol.at(setDayLineBasicInfo.m_Symbol);
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;
@@ -823,7 +823,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 			dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
 		}
 		if (IsAStock(setWeekLineBasicInfo.m_Symbol)) {
-			const long lIndex = m_mapSymbol.at(setWeekLineBasicInfo.m_Symbol);
+			const auto lIndex = m_mapSymbol.at(setWeekLineBasicInfo.m_Symbol);
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
 			iTotalAShare++;

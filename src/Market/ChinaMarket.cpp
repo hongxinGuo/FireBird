@@ -134,8 +134,8 @@ void CChinaMarket::Reset(void) {
 
 	m_pCurrentStock = nullptr;
 
-	m_dataChinaStock.Reset();
-	m_dataStockSymbol.Reset();
+	m_containerChinaStock.Reset();
+	m_containerStockSymbol.Reset();
 
 	m_lRTDataReceivedInOrdinaryTradeTime = 0;
 	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
@@ -185,7 +185,7 @@ bool CChinaMarket::IsDummyTime(void) {
 bool CChinaMarket::CheckMarketReady(void) {
 	if (!IsSystemReady()) {
 		if (IsResetMarket()) return false;
-		const long lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
+		const auto lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
 			gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
@@ -196,17 +196,17 @@ bool CChinaMarket::CheckMarketReady(void) {
 
 bool CChinaMarket::ChangeToNextStock(void) {
 	ASSERT(m_pCurrentStock != nullptr);
-	const long lIndex = GetStockIndex(m_pCurrentStock);
+	long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
-		int i = 1;
 		while (!fFound) {
-			if ((lIndex + i) < GetTotalStock()) { pStock = GetStock(lIndex + i); }
-			else { pStock = GetStock(lIndex + i - GetTotalStock()); }
+			if (++lIndex == GetTotalStock()) {
+				lIndex = 0;
+			}
+			pStock = GetStock(lIndex);
 			if (!pStock->IsNullStock()) fFound = true;
-			i++;
 		}
 	}
 	else {
@@ -227,17 +227,17 @@ bool CChinaMarket::ChangeToNextStock(void) {
 
 bool CChinaMarket::ChangeToPrevStock(void) {
 	ASSERT(m_pCurrentStock != nullptr);
-	const long lIndex = GetStockIndex(m_pCurrentStock);
+	long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
-		int i = 1;
 		while (!fFound) {
-			if ((lIndex - i) >= 0) { pStock = GetStock(lIndex - i); }
-			else { pStock = GetStock(lIndex + GetTotalStock() - i); }
+			if (--lIndex < 0) {
+				lIndex = GetTotalStock() - 1;
+			}
+			pStock = GetStock(lIndex);
 			if (!pStock->IsNullStock()) fFound = true;
-			i++;
 		}
 	}
 	else {
@@ -648,9 +648,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 	TaskCheckDayLineDB();
 
-	if (m_dataStockSymbol.IsUpdateStockSection()) {
+	if (m_containerStockSymbol.IsUpdateStockSection()) {
 		TaskSaveStockSection();
-		m_dataStockSymbol.SetUpdateStockSection(false);
+		m_containerStockSymbol.SetUpdateStockSection(false);
 	}
 
 	return true;
@@ -886,7 +886,7 @@ bool CChinaMarket::TaskSaveStockSection(void) {
 	return true;
 }
 
-void CChinaMarket::TaskGetActiveStockSize(void) { m_lTotalActiveStock = m_dataChinaStock.GetActiveStockSize(); }
+void CChinaMarket::TaskGetActiveStockSize(void) { m_lTotalActiveStock = m_containerChinaStock.GetActiveStockSize(); }
 
 bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {
 	CSetDayLineExtendInfo setDayLineExtendInfo;

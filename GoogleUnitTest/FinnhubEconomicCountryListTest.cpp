@@ -11,7 +11,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubEconomicCountryListTest : public ::testing::Test {
+	class CFinnhubEconomicCountryListTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -21,7 +21,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -67,7 +68,7 @@ namespace FireBirdTest {
 		_T(
 			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
-	class ParseFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -93,8 +94,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
-	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-		                         &finnhubWebData95, &finnhubWebData100));
+		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+			&finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
@@ -129,7 +130,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -158,13 +159,13 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
-	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-		                         &finnhubWebData95, &finnhubWebData100));
+		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+			&finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
-		long l = gl_pWorldMarket->GetTotalCountry();
+		const auto l = gl_pWorldMarket->GetTotalCountry();
 		CCountryPtr pCountry = nullptr;
-		bool fSucceed = m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
+		const bool fSucceed = m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);

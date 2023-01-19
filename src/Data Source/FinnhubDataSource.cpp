@@ -272,7 +272,7 @@ bool CFinnhubDataSource::InquireCompanySymbol(void) {
 }
 
 bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = COMPANY_PROFILE_CONCISE_;
 
@@ -319,7 +319,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 /// <param name=""></param>
 /// <returns></returns>
 bool CFinnhubDataSource::InquireCompanyNews(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = COMPANY_NEWS_;
 
@@ -363,7 +363,7 @@ bool CFinnhubDataSource::InquireCompanyNews(void) {
 }
 
 bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = BASIC_FINANCIALS_;
 
@@ -406,7 +406,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 }
 
 bool CFinnhubDataSource::InquireStockDayLine(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_PRICE_CANDLES_;
 
@@ -451,7 +451,7 @@ bool CFinnhubDataSource::InquireStockDayLine(void) {
 }
 
 bool CFinnhubDataSource::InquireInsiderTransaction(void) {
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = INSIDER_TRANSACTION_;
 
@@ -497,7 +497,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction(void) {
 }
 
 bool CFinnhubDataSource::InquireInsiderSentiment(void) {
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = INSIDER_SENTIMENT_;
 
@@ -558,7 +558,7 @@ bool CFinnhubDataSource::InquireRTQuote(void) {
 }
 
 bool CFinnhubDataSource::InquirePeer(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = PEERS_;
 
@@ -615,7 +615,7 @@ bool CFinnhubDataSource::InquireEconomicCalendar(void) {
 }
 
 bool CFinnhubDataSource::InquireEPSSurprise(void) {
-	long lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_ESTIMATES_EPS_SURPRISE_;
 
@@ -681,7 +681,7 @@ bool CFinnhubDataSource::InquireForexSymbol(void) {
 }
 
 bool CFinnhubDataSource::InquireForexDayLine(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetForexSymbolSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetForexSymbolSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = FOREX_CANDLES_;
 
@@ -755,7 +755,7 @@ bool CFinnhubDataSource::InquireCryptoSymbol(void) {
 }
 
 bool CFinnhubDataSource::InquireCryptoDayLine(void) {
-	const long lStockSetSize = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
+	const auto lStockSetSize = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = CRYPTO_CANDLES_;
 

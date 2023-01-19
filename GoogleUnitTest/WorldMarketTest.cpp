@@ -167,8 +167,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
-		auto pStock = make_shared<CWorldStock>();
-		long lTotalStock = gl_pWorldMarket->GetStockSize();
+		const auto pStock = make_shared<CWorldStock>();
+		const auto lTotalStock = gl_pWorldMarket->GetStockSize();
 		pStock->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
@@ -200,8 +200,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
-		auto pStock = make_shared<CTiingoStock>();
-		long lTotalStock = gl_pWorldMarket->GetTotalTiingoStock();
+		const auto pStock = make_shared<CTiingoStock>();
+		const auto lTotalStock = gl_pWorldMarket->GetTotalTiingoStock();
 		pStock->m_strTicker = _T("ABCDEF");
 
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
@@ -231,8 +231,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexExchange) {
-		long lTotalForexExchange = gl_pWorldMarket->GetForexExchangeSize();
-		CString strForexExchange = _T("000001.SZ");
+		const auto lTotalForexExchange = gl_pWorldMarket->GetForexExchangeSize();
+		const CString strForexExchange = _T("000001.SZ");
 
 		EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strForexExchange));
 		gl_pWorldMarket->AddForexExchange(strForexExchange);
@@ -263,8 +263,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
-		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
-		long lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
+		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		const auto lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
@@ -294,8 +294,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoExchange) {
-		long lTotalCryptoExchange = gl_pWorldMarket->GetCryptoExchangeSize();
-		CString strCryptoExchange = _T("000001.SZ");
+		const auto lTotalCryptoExchange = gl_pWorldMarket->GetCryptoExchangeSize();
+		const CString strCryptoExchange = _T("000001.SZ");
 
 		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
 		gl_pWorldMarket->AddCryptoExchange(strCryptoExchange);
@@ -327,8 +327,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
-		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
-		long lTotalCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
+		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		const auto lTotalCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
@@ -365,8 +365,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCountry) {
-		auto pCountry = make_shared<CCountry>();
-		long lTotalCountry = gl_pWorldMarket->GetTotalCountry();
+		const auto pCountry = make_shared<CCountry>();
+		const auto lTotalCountry = gl_pWorldMarket->GetTotalCountry();
 		pCountry->m_strCountry = _T("SZ");
 
 		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
@@ -380,7 +380,6 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestDeleteCountry) {
 		// do nothing. 已经在TestAddCountry中测试了DeleteCountry函数
-
 		CCountryPtr pCountry = nullptr;
 
 		EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "空指针";
@@ -391,14 +390,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {
-		// 暂缓
+		// todo 暂缓
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCountryDB) {
-		CCountryPtr pCountry;
-		size_t lTotal = gl_pWorldMarket->GetTotalCountry();
+		const size_t lTotal = gl_pWorldMarket->GetTotalCountry();
 
-		pCountry = make_shared<CCountry>();
+		const auto pCountry = make_shared<CCountry>();
 		pCountry->m_strCode2 = _T("AB");
 		pCountry->m_strCountry = _T("NoName");
 		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));

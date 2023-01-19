@@ -43,7 +43,7 @@ namespace FireBirdTest {
 
 	static time_t s_tCurrentMarketTime;
 
-	class TaskDistributeNeteaseRTDataToProperStockTest : public::testing::TestWithParam<NeteaseData*> {
+	class TaskDistributeNeteaseRTDataToProperStockTest : public TestWithParam<NeteaseData*> {
 	protected:
 		static void SetUpTestSuite(void) {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
@@ -93,12 +93,12 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeNeteaseRTDataToProperStockTest,
-	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //&Data7, &Data8
-	                         ));
+		testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //&Data7, &Data8
+		));
 
 	TEST_P(TaskDistributeNeteaseRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;
-		long lTotalStock = gl_pChinaMarket->GetTotalStock();
+		auto lTotalStock = gl_pChinaMarket->GetTotalStock();
 		CString strSymbol;
 
 		gl_pChinaMarket->PushNeteaseRT(pRTData);

@@ -12,7 +12,7 @@ public:
 	}
 
 	size_t GetCryptoExchangeSize(void) const noexcept { return m_vCryptoExchange.size(); }
-	string GetCryptoExchange(const long lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
+	string GetCryptoExchange(const size_t lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
 	bool Delete(const string& sCryptoExchange);
 	void Add(const string& sCryptoExchange);
 

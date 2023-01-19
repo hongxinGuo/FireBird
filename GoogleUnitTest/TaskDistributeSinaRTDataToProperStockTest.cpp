@@ -102,7 +102,7 @@ namespace FireBirdTest {
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;
-		long lTotalStock = gl_pChinaMarket->GetTotalStock();
+		auto lTotalStock = gl_pChinaMarket->GetTotalStock();
 		CString strSymbol;
 
 		gl_pChinaMarket->PushSinaRT(pRTData);

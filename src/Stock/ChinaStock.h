@@ -333,7 +333,7 @@ public:
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.PushData(pData); }
 	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
 	CWebRTDataPtr GetRTDataAtHead(void) const { return m_qRTData.GetHead(); }
-	INT64 GetRTDataQueueSize(void) { return static_cast<INT64>(m_qRTData.Size()); }
+	auto GetRTDataQueueSize(void) { return m_qRTData.Size(); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque(void);
 

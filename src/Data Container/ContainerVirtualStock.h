@@ -23,7 +23,7 @@ public:
 	bool IsDayLineNeedUpdate(void) noexcept;
 	bool IsDayLineNeedSaving(void);
 
-	CVirtualStockPtr Get(const long lIndex) {
+	CVirtualStockPtr Get(const size_t lIndex) {
 		try { return m_vStock.at(lIndex); }
 		catch (std::out_of_range&) { return nullptr; }
 	}

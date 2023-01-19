@@ -12,7 +12,7 @@ public:
 	}
 
 	size_t GetForexExchangeSize(void) const noexcept { return m_vForexExchange.size(); }
-	CString GetForexExchange(const long lIndex) const { return m_vForexExchange.at(lIndex); }
+	CString GetForexExchange(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
 	bool Delete(CString strForexExchange);
 	void Add(CString strForexExchange);
 

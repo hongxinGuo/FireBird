@@ -14,7 +14,7 @@ public:
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
 
-	[[nodiscard]] long GetIndex(const CString& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
+	[[nodiscard]] size_t GetIndex(const CString& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
 	[[nodiscard]] size_t GetStockSize(void) const noexcept { return m_vStockSymbol.size(); }
 
 	[[nodiscard]] bool IsStockSymbol(const CString& strSymbol) const {

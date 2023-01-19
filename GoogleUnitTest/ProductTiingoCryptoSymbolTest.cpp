@@ -178,7 +178,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto;
-		long l = gl_pWorldMarket->GetTiingoCryptoSymbolSize();
+		const auto l = gl_pWorldMarket->GetTiingoCryptoSymbolSize();
 		const bool fSucceed = m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 11: // 格式不对

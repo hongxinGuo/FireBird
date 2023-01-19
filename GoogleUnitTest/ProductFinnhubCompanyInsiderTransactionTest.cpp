@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubCompanyInsiderTransactionTest : public ::testing::Test {
+	class CFinnhubCompanyInsiderTransactionTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -47,15 +48,15 @@ namespace FireBirdTest {
 
 	// 正确数据
 	FinnhubWebData finnhubWebData131(1, _T("AAPL"), _T(
-		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+		"{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 data项
 	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T(
-		                                 "{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
+		"{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 Symbol项
 	FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
-		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
+		"{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
 
-	class ProcessFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -70,7 +71,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
-			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderTransaction.SetIndex(lIndex);
 		}
 
@@ -92,7 +93,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
@@ -118,7 +119,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseFinnhubInsiderTransactionTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -149,7 +150,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
@@ -176,7 +177,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseFinnhubInsiderTransactionTest2 : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubInsiderTransactionTest2 : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -207,7 +208,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest2,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+		testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest2, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);

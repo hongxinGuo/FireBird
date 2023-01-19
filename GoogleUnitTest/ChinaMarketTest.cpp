@@ -1355,7 +1355,7 @@ namespace FireBirdTest {
 
 		pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
-		long lTotal = gl_pChinaMarket->GetTotalStock();
+		auto lTotal = gl_pChinaMarket->GetTotalStock();
 		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol()));
 		EXPECT_TRUE(gl_pChinaMarket->AddStock(pStock));
 		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), lTotal + 1);

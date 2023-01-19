@@ -9,13 +9,14 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductFinnhubCompanyBasicFinancialTest : public ::testing::Test {
+	class CProductFinnhubCompanyBasicFinancialTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) { GeneralCheck(); }
 
 		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -43,7 +44,7 @@ namespace FireBirdTest {
 	}
 
 	FinnhubWebData finnhubWebData1001(1, _T("AAPL"),
-	                                  _T("{\
+		_T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -242,7 +243,7 @@ namespace FireBirdTest {
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
 	FinnhubWebData finnhubWebData1002(2, _T("BVDRF"),
-	                                  _T("{\
+		_T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -442,7 +443,7 @@ namespace FireBirdTest {
 	// 有些股票只有部分数据
 	FinnhubWebData finnhubWebData1003(3, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"all\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 
-	class ParseFinnhubStockBasicFinancialTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -457,7 +458,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
-			const long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 
@@ -480,7 +481,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+		testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
@@ -512,7 +513,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubStockBasicFinancialTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -526,7 +527,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
-			long lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 
@@ -548,7 +549,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+		testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
@@ -558,7 +559,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 
 			EXPECT_THAT(0, 0);
@@ -567,7 +568,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			break;
@@ -575,7 +576,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), ((CWorldMarket*)m_finnhubCompanyBasicFinancial.GetMarket())->GetMarketDate());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			break;

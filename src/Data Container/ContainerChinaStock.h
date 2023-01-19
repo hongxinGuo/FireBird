@@ -7,7 +7,7 @@
 #include <memory>
 using std::dynamic_pointer_cast;
 
-class CContainerChinaStock : public CContainerVirtualStock {
+class CContainerChinaStock final : public CContainerVirtualStock {
 public:
 	CContainerChinaStock();
 	// 只能有一个实例,不允许赋值。
@@ -25,7 +25,7 @@ public:
 	bool IsAStock(const CChinaStockPtr pStock) const { return IsAStock(pStock->GetSymbol()); }
 
 	CChinaStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
-	CChinaStockPtr GetStock(const long lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
+	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
 	CString GetStockName(const CString& strStockCode);
 
 	long LoadStockProfileDB(void);
@@ -39,11 +39,11 @@ public:
 
 	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
 
-	void SetAllDayLineNeedMaintain(void);
-	void SetAllDayLineNeedUpdate(void);
+	void SetAllDayLineNeedMaintain(void) const;
+	void SetAllDayLineNeedUpdate(void) const;
 
 	void ClearDayLineDBUpdatedFlag(void) noexcept;
-	void ClearDayLineNeedUpdateStatus(void);
+	void ClearDayLineNeedUpdateStatus(void) const;
 
 	[[nodiscard]] INT64 GetTotalAttackBuyAmount(void);
 	[[nodiscard]] INT64 GetTotalAttackSellAmount(void);
@@ -58,8 +58,8 @@ public:
 	[[nodiscard]] bool TaskProcessRTData(void);
 	bool TaskSaveDayLineData(void);
 
-	[[nodiscard]] long GetDayLineNeedUpdateNumber(void);
-	[[nodiscard]] long GetDayLineNeedSaveNumber(void);
+	[[nodiscard]] long GetDayLineNeedUpdateNumber(void) const;
+	[[nodiscard]] long GetDayLineNeedSaveNumber(void) const;
 
 	bool Choice10RSStrong2StockSet(void);
 	bool Choice10RSStrong1StockSet(void);
