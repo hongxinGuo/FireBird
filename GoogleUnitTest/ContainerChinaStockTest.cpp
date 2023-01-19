@@ -3,12 +3,12 @@
 #include"GeneralCheck.h"
 #include"ChinaMarket.h"
 
-#include"DataChinaStock.h"
+#include"ContainerChinaStock.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataChinaStockTest : public ::testing::Test {
+	class CDataChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -33,7 +33,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataChinaStock m_dataChinaStock;
+		CContainerChinaStock m_dataChinaStock;
 	};
 
 	TEST_F(CDataChinaStockTest, TestGetUpDownRate) {
@@ -88,9 +88,9 @@ namespace FireBirdTest {
 		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_dataChinaStock.Add(pStock);
-		EXPECT_STREQ(m_dataChinaStock.GetStock(m_dataChinaStock.GetStockSize() - 1)->GetSymbol(), _T("0.A"));
+		EXPECT_STREQ(m_dataChinaStock.GetStock(m_dataChinaStock.Size() - 1)->GetSymbol(), _T("0.A"));
 
-		m_dataChinaStock.SortStock();
+		m_dataChinaStock.Sort();
 		EXPECT_STREQ(m_dataChinaStock.GetStock(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
 
 		m_dataChinaStock.Delete(pStock);

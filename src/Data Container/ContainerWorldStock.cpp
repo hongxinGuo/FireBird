@@ -7,6 +7,7 @@
 #include "pch.h"
 
 #include"thread.h"
+#include"infoReport.h"
 #include"WorldMarket.h"
 
 #include"SetWorldStock.h"
@@ -24,25 +25,17 @@ void CContainerWorldStock::Reset(void) {
 	m_lLastTotalWorldStock = 0;
 }
 
-bool CContainerWorldStock::IsCompanyNewsNeedUpdate(void) {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
-}
-
-bool CContainerWorldStock::IsBasicFinancialNeedUpdate(void) {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
-}
-
 void CContainerWorldStock::ResetEPSSurprise(void) {
-	for (auto& p : m_vStock) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(p);
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CWorldStockPtr pStock = GetStock(l);
 		pStock->SetLastEPSSurpriseUpdateDate(19800101);
 		pStock->m_fEPSSurpriseUpdated = false;
 	}
 }
 
 void CContainerWorldStock::ResetPeer(void) {
-	for (const auto& pVirtualStock : m_vStock) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetPeerUpdateDate() != 19800101) {
 			pStock->SetPeerUpdateDate(19800101);
 			pStock->SetPeerUpdated(false);
@@ -52,8 +45,8 @@ void CContainerWorldStock::ResetPeer(void) {
 }
 
 void CContainerWorldStock::ResetBasicFinancial(void) {
-	for (const auto& pVirtualStock : m_vStock) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
 			pStock->SetBasicFinancialUpdateDate(19800101);
 			pStock->SetBasicFinancialUpdated(false);
@@ -63,8 +56,8 @@ void CContainerWorldStock::ResetBasicFinancial(void) {
 }
 
 void CContainerWorldStock::ResetDayLine(void) {
-	for (const auto& pVirtualStock : m_vStock) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CWorldStockPtr pStock = GetStock(l);
 		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
@@ -146,7 +139,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		setWorldStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {
 			if (setWorldStock.IsEOF()) break;
-			const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(Get(setWorldStock.m_Symbol));
+			const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
 				pStock->Update(setWorldStock);
@@ -157,8 +150,8 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		if (iCurrentUpdated < iStockNeedUpdate) {
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
 			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
-			for (const auto& pVirtualStock : m_vStock) {
-				const CWorldStockPtr pStock3 = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+			for (size_t l = 0; l < m_vStock.size(); l++) {
+				const CWorldStockPtr pStock3 = GetStock(l);
 				if (pStock3->IsUpdateProfileDB()) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
 					iCurrentUpdated++;
@@ -209,8 +202,8 @@ bool CContainerWorldStock::UpdateBasicFinancialDB(void) {
 	s_fInProcess = true;
 
 	s_vStock.clear();
-	for (auto& pVirtualStock : m_vStock) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(pVirtualStock);
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			s_vStock.push_back(pStock);
 		}
@@ -261,7 +254,7 @@ bool CContainerWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> v
 
 bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
 	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	auto iBasicFinancialNeedUpdate = vStock.size();
+	const auto iBasicFinancialNeedUpdate = vStock.size();
 	size_t iCurrentUpdated = 0;
 
 	ASSERT(IsBasicFinancialNeedUpdate());
@@ -271,7 +264,7 @@ bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> v
 	//更新原有的基本财务信息
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
-		CWorldStockPtr pStockNeedUpdate = dynamic_pointer_cast<CWorldStock>(Get(setBasicFinancialMetric.m_symbol));
+		CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
 		if (vStock.end() != find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 			iCurrentUpdated++;
 			pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
@@ -311,7 +304,7 @@ void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> 
 }
 
 bool CContainerWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
-	CString strSymbol = pStock->GetSymbol();
+	const CString strSymbol = pStock->GetSymbol();
 	const CString strExchangeCode = pStock->GetExchangeCode();
 
 	if (strExchangeCode.Compare(_T("US")) == 0) return true;
@@ -321,6 +314,14 @@ bool CContainerWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 		return false;
 	}
 	return true;
+}
+
+bool CContainerWorldStock::IsCompanyNewsNeedUpdate(void) {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
+}
+
+bool CContainerWorldStock::IsBasicFinancialNeedUpdate(void) {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
 bool CContainerWorldStock::IsNeedSaveInsiderTransaction(void) {

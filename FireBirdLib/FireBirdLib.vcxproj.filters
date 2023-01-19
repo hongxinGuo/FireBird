@@ -672,7 +672,7 @@
     <ClInclude Include="..\src\Data Container\DataChinaDayLine.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataChinaStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\DataChinaWeekLine.h">
@@ -1265,7 +1265,7 @@
     <ClCompile Include="..\src\Data Container\DataChinaDayLine.cpp">
       <Filter>源文件\Data container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataChinaStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp">
       <Filter>源文件\Data container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataChinaWeekLine.cpp">

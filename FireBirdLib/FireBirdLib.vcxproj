@@ -27,7 +27,7 @@
     <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
     <ClInclude Include="..\src\Data Container\DataChinaDayLine.h" />
-    <ClInclude Include="..\src\Data Container\DataChinaStock.h" />
+    <ClInclude Include="..\src\Data Container\ContainerChinaStock.h" />
     <ClInclude Include="..\src\Data Container\DataChinaWeekLine.h" />
     <ClInclude Include="..\src\Data Container\containerChosenCrypto.h" />
     <ClInclude Include="..\src\Data Container\containerChosenForex.h" />
@@ -220,7 +220,7 @@
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaDayLine.cpp" />
-    <ClCompile Include="..\src\Data Container\DataChinaStock.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataChinaWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\containerChosenCrypto.cpp" />
     <ClCompile Include="..\src\Data Container\containerChosenForex.cpp" />

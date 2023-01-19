@@ -9,11 +9,9 @@ public:
 	~CContainerWorldStock() override = default;
 	void Reset(void) override;
 
-	bool IsStock(const CWorldStockPtr pStock) const { return IsSymbol(pStock->GetSymbol()); }
+	CWorldStockPtr GetStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); };
+	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); };
 	size_t GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
-
-	bool IsCompanyNewsNeedUpdate(void);
-	bool IsBasicFinancialNeedUpdate(void);
 
 	void ResetEPSSurprise(void);
 	void ResetPeer(void);
@@ -31,6 +29,8 @@ public:
 
 	bool CheckStockSymbol(CWorldStockPtr pStock);
 
+	bool IsCompanyNewsNeedUpdate(void);
+	bool IsBasicFinancialNeedUpdate(void);
 	bool IsNeedSaveInsiderTransaction(void);
 	bool IsNeedSaveInsiderSentiment(void);
 

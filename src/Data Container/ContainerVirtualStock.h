@@ -23,8 +23,15 @@ public:
 	bool IsDayLineNeedUpdate(void) noexcept;
 	bool IsDayLineNeedSaving(void);
 
-	CVirtualStockPtr Get(const long lIndex) { return m_vStock.at(lIndex); }
-	CVirtualStockPtr Get(const CString& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
+	CVirtualStockPtr Get(const long lIndex) {
+		try { return m_vStock.at(lIndex); }
+		catch (std::out_of_range&) { return nullptr; }
+	}
+
+	CVirtualStockPtr Get(const CString& strSymbol) {
+		try { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
+		catch (std::out_of_range&) { return nullptr; }
+	}
 
 	size_t GetOffset(const CString& strSymbol) const { return m_mapSymbol.at(strSymbol); }
 

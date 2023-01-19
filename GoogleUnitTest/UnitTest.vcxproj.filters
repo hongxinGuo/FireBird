@@ -264,7 +264,7 @@
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="DataChinaStockTest.cpp">
+    <ClCompile Include="ContainerChinaStockTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="DataStockSymbolTest.cpp">
