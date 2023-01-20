@@ -8,7 +8,7 @@ public:
 	~CProductFinnhubCompanyPeer() override = default;
 
 	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	json ParseFinnhubStockPeer(CWebDataPtr pWebData);
 };
 

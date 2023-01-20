@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubForexSymbol() override = default;
 
 	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
 };
 

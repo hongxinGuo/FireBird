@@ -8,11 +8,10 @@
 class CProductTengxunRT final : public CVirtualWebProduct {
 public:
 	CProductTengxunRT();
-
 	~CProductTengxunRT() override = default;
 
-	CString CreateMessage(void);
-	bool ParseAndStoreWebData(CWebDataPtr pWebData);
+	CString CreateMessage(void) override;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
 	bool ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

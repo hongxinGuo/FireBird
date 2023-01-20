@@ -8,11 +8,10 @@
 class CProductSinaRT final : public CVirtualWebProduct {
 public:
 	CProductSinaRT();
-
 	~CProductSinaRT() override = default;
 
-	CString CreateMessage(void);
-	bool ParseAndStoreWebData(CWebDataPtr pWebData);
+	CString CreateMessage(void) override;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
 	bool ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

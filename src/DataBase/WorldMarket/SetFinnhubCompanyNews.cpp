@@ -41,6 +41,7 @@ void CSetCompanyNews::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("Summary"), m_Summary, 50000);
 	RFX_Text(pFX, _T("URL"), m_URL, 50000);
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // CSetCompanyNews ’Ô∂œ
 

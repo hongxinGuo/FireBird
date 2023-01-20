@@ -14,7 +14,7 @@ CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 }
 
 CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
@@ -25,12 +25,12 @@ CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
 }
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetCompanyProfileUpdated(true);
 	if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
-		pStock->SetProfileUpdateDate(((CWorldMarket*)m_pMarket)->GetMarketDate());
+		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return true;
 	}

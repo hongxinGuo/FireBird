@@ -6,8 +6,7 @@
 
 class CProductFinnhub : public CVirtualWebProduct {
 public:
-	CProductFinnhub() { }
-
+	CProductFinnhub() = default;
 	~CProductFinnhub() override = default;
 
 	bool CheckNoRightToAccess(CWebDataPtr pWebData) final;

@@ -9,8 +9,8 @@ public:
 	CProductFinnhubCryptoDayLine();
 	~CProductFinnhubCryptoDayLine() override = default;
 
-	CString CreateMessage(void);
-	bool ParseAndStoreWebData(CWebDataPtr pWebData);
+	CString CreateMessage(void) override;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CDayLineVectorPtr ParseFinnhubCryptoCandle(CWebDataPtr pWebData);
 };
 

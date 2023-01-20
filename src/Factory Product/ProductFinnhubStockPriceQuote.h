@@ -8,7 +8,7 @@ public:
 	~CProductFinnhubStockPriceQuote() override = default;
 
 	CString CreateMessage(void) final;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) final;
+	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	bool ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };
 

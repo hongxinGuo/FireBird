@@ -4,7 +4,6 @@
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
-//#include"ChinaMarket.h"
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;
