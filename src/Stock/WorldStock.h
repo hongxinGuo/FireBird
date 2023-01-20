@@ -63,16 +63,16 @@ public:
 
 	bool HaveNewDayLineData(void);
 
-	bool IsCompanyProfileUpdated(void) const noexcept { return m_fCompanyProfileUpdated; }
-	void SetCompanyProfileUpdated(const bool fFlag) noexcept { m_fCompanyProfileUpdated = fFlag; }
+	bool IsUpdateCompanyProfile(void) const noexcept { return m_fUpdateCompanyProfile; }
+	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }
 
-	bool IsCompanyNewsUpdated(void) const noexcept { return m_fCompanyNewsUpdated; }
-	void SetCompanyNewsUpdated(const bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
+	bool IsUpdateCompanyNews(void) const noexcept { return m_fUpdateCompanyNews; }
+	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
 	size_t GetCompanyNewsSize(void) const noexcept { return m_vCompanyNews.size(); }
 	long long GetCompanyNewsDateTime(const int iIndex) const { return m_vCompanyNews.at(iIndex)->m_llDateTime; }
 
-	bool IsBasicFinancialUpdated(void) const noexcept { return m_fBasicFinancialUpdated; }
-	void SetBasicFinancialUpdated(const bool fFlag) noexcept { m_fBasicFinancialUpdated = fFlag; }
+	bool IsUpdateBasicFinancial(void) const noexcept { return m_fUpdateBasicFinancial; }
+	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
 	bool IsUpdateBasicFinancialDB(void) const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
 	void SetUpdateBasicFinancialDB(const bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
 
@@ -91,8 +91,8 @@ public:
 	void SetEPSSurpriseNeedSave(const bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
 	bool IsEPSSurpriseNeedSaveAndClearFlag(void);
 
-	bool IsPeerUpdated(void) const noexcept { return m_fFinnhubPeerUpdated; }
-	void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
+	bool IsUpdatePeer(void) const noexcept { return m_fUpdateFinnhubPeer; }
+	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
 
 	bool HaveInsiderTransaction(void) const noexcept {
@@ -315,10 +315,10 @@ protected:
 	CFinnhubStockBasicFinancialPtr m_pBasicFinancial;
 
 	// 无需存储数据区
-	bool m_fCompanyProfileUpdated; // 公司简介已更新
-	bool m_fCompanyNewsUpdated; // 公司简介已更新
-	bool m_fBasicFinancialUpdated; // 基本财务已更新
-	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
+	bool m_fUpdateCompanyProfile; // 更新公司简介
+	bool m_fUpdateCompanyNews; // 更新公司新闻
+	bool m_fUpdateBasicFinancial; // 更新基本财务
+	bool m_fUpdateFinnhubPeer; // 更新同业公司数据
 	bool m_fUpdateFinnhubInsiderTransaction; // 公司内部交易数据已更新
 	bool m_fUpdateFinnhubInsiderSentiment; // 公司内部交易情绪数据已更新
 	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存

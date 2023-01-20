@@ -342,11 +342,11 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101015);
 	}
 
-	TEST_F(CWorldStockTest, TestIsProfileUpdated) {
+	TEST_F(CWorldStockTest, TestIsUpdateCompanyProfile) {
 		CWorldStock stock;
-		EXPECT_FALSE(stock.IsCompanyProfileUpdated());
-		stock.SetCompanyProfileUpdated(true);
-		EXPECT_TRUE(stock.IsCompanyProfileUpdated());
+		EXPECT_TRUE(stock.IsUpdateCompanyProfile());
+		stock.SetUpdateCompanyProfile(false);
+		EXPECT_FALSE(stock.IsUpdateCompanyProfile());
 	}
 
 	TEST_F(CWorldStockTest, TestIsEPSSurpriseUpdated) {
@@ -1402,22 +1402,22 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldStockTest, TestCheckPeerStatus) {
 		CWorldStock stock;
-		EXPECT_FALSE(stock.IsPeerUpdated());
+		EXPECT_TRUE(stock.IsUpdatePeer());
 
-		stock.SetPeerUpdated(true);
+		stock.SetUpdatePeer(false);
 		stock.SetPeerUpdateDate(20200101);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckPeerStatus(20200401); // 91天
-		EXPECT_FALSE(stock.IsPeerUpdated()) << "九十一天需更新";
+		EXPECT_TRUE(stock.IsUpdatePeer()) << "九十一天需更新";
 		stock.CheckPeerStatus(20200331); // 90天
-		EXPECT_TRUE(stock.IsPeerUpdated());
+		EXPECT_FALSE(stock.IsUpdatePeer());
 
-		stock.SetPeerUpdated(false);
+		stock.SetUpdatePeer(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckPeerStatus(20200331); // 90天
-		EXPECT_TRUE(stock.IsPeerUpdated()) << "九十天内无需更新";
+		EXPECT_FALSE(stock.IsUpdatePeer()) << "九十天内无需更新";
 		stock.CheckPeerStatus(20200401); // 91天
-		EXPECT_TRUE(stock.IsPeerUpdated()) << "摘牌股票无需更新Peer";
+		EXPECT_FALSE(stock.IsUpdatePeer()) << "摘牌股票无需更新Peer";
 	}
 
 	TEST_F(CWorldStockTest, TestHaveInsiderTransaction) {
@@ -1670,12 +1670,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldStockTest, TestCheckCompanyNewsUpdated) {
 		CWorldStock stock;
 		stock.SetCompanyNewsUpdateDate(20220101);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220102));
-		stock.SetCompanyNewsUpdated(false);
-		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220107)) << "只有六天";
-		stock.SetCompanyNewsUpdated(false);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
-		stock.SetCompanyNewsUpdated(false);
-		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220110));
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220107)) << "只有六天";
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220108)) << "每周检查一次公司新闻";
+		stock.SetUpdateCompanyNews(true);
+		EXPECT_TRUE(stock.CheckCompanyNewsUpdateStatus(20220110));
 	}
 }

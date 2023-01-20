@@ -28,7 +28,7 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const json jsonPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(jsonPeer);
 	pStock->SetPeerUpdateDate(m_pMarket->GetMarketDate());
-	pStock->SetPeerUpdated(true);
+	pStock->SetUpdatePeer(false);
 	pStock->SetUpdateProfileDB(true);
 
 	return true;

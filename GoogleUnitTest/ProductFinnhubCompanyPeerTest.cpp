@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubCompanyPeerTest : public ::testing::Test {
+	class CFinnhubCompanyPeerTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -36,13 +37,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
-		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true);
 		companyPeer.SetMarket(gl_pWorldMarket.get());
 		companyPeer.SetIndex(1);
 		EXPECT_STREQ(companyPeer.CreateMessage(), companyPeer.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true);
 	}
 
 	// 不足三个字符
@@ -56,7 +57,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 
-	class ParseFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubStockPeerTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -82,8 +83,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
-	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-		                         &finnhubWebData110));
+		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+			&finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer2) {
 		m_jsonPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
@@ -108,7 +109,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockPeerTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -134,15 +135,15 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer, ProcessFinnhubStockPeerTest,
-	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-		                         &finnhubWebData110));
+		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+			&finnhubWebData110));
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer1) {
 		string s;
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		bool fSucceed = m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
-		EXPECT_TRUE(pStock->IsPeerUpdated());
+		EXPECT_FALSE(pStock->IsUpdatePeer());
 		switch (m_lIndex) {
 		case 2: // 不足三个字符
 			EXPECT_TRUE(fSucceed);

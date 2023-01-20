@@ -839,7 +839,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetPeerUpdateDate(20200101);
-			pStock->SetPeerUpdated(true);
+			pStock->SetUpdatePeer(false);
 			pStock->SetUpdateProfileDB(false);
 		}
 		gl_pFinnhubDataSource->SetPeerUpdated(true);
@@ -849,14 +849,14 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
-			EXPECT_FALSE(pStock->IsPeerUpdated());
+			EXPECT_TRUE(pStock->IsUpdatePeer());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetPeerUpdated(false);
+			pStock->SetUpdatePeer(true);
 			pStock->SetUpdateProfileDB(false);
 		}
 	}

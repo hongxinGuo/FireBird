@@ -80,12 +80,12 @@ void CWorldStock::Reset(void) {
 	m_dMarketCapitalization = 0;
 	m_dShareOutstanding = 0;
 
-	m_fCompanyProfileUpdated = false;
-	m_fCompanyNewsUpdated = false;
-	m_fBasicFinancialUpdated = false;
+	m_fUpdateCompanyProfile = true;
+	m_fUpdateCompanyNews = true;
+	m_fUpdateBasicFinancial = true;
 	m_fEPSSurpriseUpdated = false;
 	m_fEPSSurpriseNeedSave = false;
-	m_fFinnhubPeerUpdated = false;
+	m_fUpdateFinnhubPeer = true;
 
 	m_fUpdateFinnhubInsiderTransaction = true;
 	m_fSaveFinnhubInsiderTransaction = false;
@@ -201,10 +201,10 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 
 void CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
-		m_fCompanyProfileUpdated = false;
+		m_fUpdateCompanyProfile = true;
 	}
 	else {
-		m_fCompanyProfileUpdated = true;
+		m_fUpdateCompanyProfile = false;
 	}
 }
 
@@ -212,14 +212,14 @@ void CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 /// 默认状态为每周更新一次
 ///
 bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
-	ASSERT(!m_fCompanyNewsUpdated);
+	ASSERT(m_fUpdateCompanyNews);
 	if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
 		// 每星期更新一次公司新闻
-		m_fCompanyNewsUpdated = true;
+		m_fUpdateCompanyNews = false;
 	}
-	else m_fCompanyNewsUpdated = false;
+	else m_fUpdateCompanyNews = true;
 
-	return m_fCompanyNewsUpdated;
+	return m_fUpdateCompanyNews;
 }
 
 /// <summary>
@@ -230,10 +230,10 @@ bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 		// 系统每季更新一次数据，故查询两次即可。
-		m_fBasicFinancialUpdated = false;
+		m_fUpdateBasicFinancial = true;
 	}
-	else { m_fBasicFinancialUpdated = true; }
-	return m_fBasicFinancialUpdated;
+	else { m_fUpdateBasicFinancial = false; }
+	return m_fUpdateBasicFinancial;
 }
 
 /// <summary>
@@ -659,13 +659,13 @@ bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag(void) {
 }
 
 bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
-	if (IsNullStock() || IsDelisted()) { m_fFinnhubPeerUpdated = true; }
+	if (IsNullStock() || IsDelisted()) { m_fUpdateFinnhubPeer = false; }
 	else if (!IsEarlyThen(GetPeerUpdateDate(), lCurrentDate, gl_systemConfiguration.GetStockPeerUpdateRate())) {
 		// 有不早于90天的数据？
-		m_fFinnhubPeerUpdated = true;
+		m_fUpdateFinnhubPeer = false;
 	}
-	else { m_fFinnhubPeerUpdated = false; }
-	return m_fFinnhubPeerUpdated;
+	else { m_fUpdateFinnhubPeer = true; }
+	return m_fUpdateFinnhubPeer;
 }
 
 void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction) {

@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubStockEstimatesEPSSurpriseTest : public ::testing::Test {
+	class CFinnhubStockEstimatesEPSSurpriseTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -56,7 +57,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData130(10, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
 
-	class ParseFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubEPSSurpriseTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -73,7 +74,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetCompanyProfileUpdated(false);
+			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 			GeneralCheck();
 		}
@@ -87,8 +88,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-		                         &finnhubWebData125, &finnhubWebData130));
+		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+			&finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
@@ -129,7 +130,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubEPSSurpriseTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -147,7 +148,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			m_pStock->SetCompanyProfileUpdated(false);
+			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 			GeneralCheck();
 		}
@@ -160,8 +161,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-		                         &finnhubWebData125, &finnhubWebData130));
+		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+			&finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);

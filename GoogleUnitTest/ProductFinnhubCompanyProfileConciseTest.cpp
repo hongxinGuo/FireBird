@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CFinnhubCompanyProfileConciseTest : public ::testing::Test {
+	class CFinnhubCompanyProfileConciseTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -36,13 +37,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
-		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
 		companyProfileConcise.SetIndex(1);
 		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "处理接收到的数据后才设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -54,7 +55,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	FinnhubWebData finnhubWebData20(10, _T("AAPL"), _T("{\"country\":\"US\",\"currency\":\"USD\",\"exchange\":\"NASDAQ NMS - GLOBAL MARKET\",\"finnhubIndustry\":\"Technology\",\"ipo\":\"1980-12-12\",\"logo\":\"https://finnhub.io/api/logo?symbol=AAPL\",\"marketCapitalization\":2014236,\"name\":\"Apple Inc\",\"phone\":\"14089961010.0\",\"shareOutstanding\":16788.096,\"ticker\":\"AAPL\",\"weburl\":\"https://www.apple.com/\"}"));
 
-	class ProcessFinnhubStockProfileConciseTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockProfileConciseTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
@@ -74,7 +75,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdateDate(19800101);
-			m_pStock->SetCompanyProfileUpdated(false);
+			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 
 			GeneralCheck();
@@ -88,7 +89,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData12,
-		                         &finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
+		&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
@@ -96,20 +97,20 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏address项
 			EXPECT_FALSE(fSucceed);
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
-			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // 空数据
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
@@ -117,7 +118,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_STREQ(m_pStock->GetCountry(), _T("US"));
-			EXPECT_TRUE(m_pStock->IsCompanyProfileUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;

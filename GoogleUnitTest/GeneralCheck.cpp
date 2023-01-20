@@ -40,8 +40,8 @@ namespace FireBirdTest {
 
 	void WorldMarketCheck(void) {
 		if (gl_pWorldMarket != nullptr) {
-			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
-			EXPECT_FALSE(pStock->IsCompanyProfileUpdated());
+			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
+			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());

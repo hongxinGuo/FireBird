@@ -46,7 +46,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
 	pStock->SetBasicFinancialUpdateDate(m_pMarket->GetMarketDate());
-	pStock->SetBasicFinancialUpdated(true);
+	pStock->SetUpdateBasicFinancial(false);
 	pStock->SetUpdateProfileDB(true);
 
 	return true;

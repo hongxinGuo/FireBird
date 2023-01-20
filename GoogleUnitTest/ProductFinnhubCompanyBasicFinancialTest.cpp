@@ -33,14 +33,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
-		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(1);
-		pStock->SetBasicFinancialUpdated(false);
+		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(1);
+		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 		companyBasicFinancial.SetIndex(1);
 		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
-		EXPECT_FALSE(pStock->IsBasicFinancialUpdated()) << "处理接收到的数据后方设置此标识";
+		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetBasicFinancialUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(true);
 	}
 
 	FinnhubWebData finnhubWebData1001(1, _T("AAPL"),
@@ -452,7 +452,7 @@ namespace FireBirdTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
-			m_pStock->SetBasicFinancialUpdated(false);
+			m_pStock->SetUpdateBasicFinancial(true);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -467,7 +467,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetBasicFinancialUpdateDate(19800101);
-			m_pStock->SetBasicFinancialUpdated(false);
+			m_pStock->SetUpdateBasicFinancial(true);
 			m_pStock->UpdateBasicFinancial(nullptr);
 
 			GeneralCheck();
@@ -485,7 +485,7 @@ namespace FireBirdTest {
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
-		bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
+		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
@@ -517,7 +517,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -556,7 +556,7 @@ namespace FireBirdTest {
 		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1:
-			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
@@ -565,7 +565,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(0, 0);
 			break;
 		case 2: // ADR
-			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
@@ -573,7 +573,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			break;
 		case 3: // 部分数据
-			EXPECT_TRUE(m_pStock->IsBasicFinancialUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());

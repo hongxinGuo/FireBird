@@ -55,7 +55,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->SetUpdateCompanyNewsDB(true);
 	}
 	pStock->SetCompanyNewsUpdateDate(m_pMarket->GetMarketDate());
-	pStock->SetCompanyNewsUpdated(true);
+	pStock->SetUpdateCompanyNews(false);
 	pStock->SetUpdateProfileDB(true);
 
 	return true;

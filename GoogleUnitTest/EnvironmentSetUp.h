@@ -188,7 +188,7 @@ namespace FireBirdTest {
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			gl_pWorldMarket->GetStock(_T("AAPL"))->SetCompanyProfileUpdated(false);
+			gl_pWorldMarket->GetStock(_T("AAPL"))->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange
 			gl_finnhubInaccessibleExchange.Clear();

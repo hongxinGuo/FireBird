@@ -154,7 +154,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {
 		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
 		gl_pTiingoDataSource->SetWebInquiryFinished(true);

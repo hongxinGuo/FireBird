@@ -37,7 +37,7 @@ void CContainerWorldStock::ResetPeer(void) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetPeerUpdateDate() != 19800101) {
 			pStock->SetPeerUpdateDate(19800101);
-			pStock->SetPeerUpdated(false);
+			pStock->SetUpdatePeer(true);
 			pStock->SetUpdateProfileDB(true);
 		}
 	}
@@ -48,7 +48,7 @@ void CContainerWorldStock::ResetBasicFinancial(void) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
 			pStock->SetBasicFinancialUpdateDate(19800101);
-			pStock->SetBasicFinancialUpdated(false);
+			pStock->SetUpdateBasicFinancial(true);
 			pStock->SetUpdateProfileDB(true);
 		}
 	}

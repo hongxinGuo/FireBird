@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		char buffer[50]{};
 		int year = 0, month = 0, day = 0;
 
-		gl_pWorldMarket->GetStock(1)->SetCompanyNewsUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyNews(true);
 		companyNews.SetMarket(gl_pWorldMarket.get());
 		companyNews.SetIndex(1);
 		const CWorldStockPtr pStock = static_cast<CWorldMarket*>(companyNews.GetMarket())->GetStock(1);
@@ -60,9 +60,9 @@ namespace FireBirdTest {
 		strMessage += strTemp;
 
 		EXPECT_STREQ(companyNews.CreateMessage(), strMessage);
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyNewsUpdated()) << "处理接收到的数据后才设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetCompanyNewsUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyNews(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetCompanyNewsUpdateDate(19800101);
-			m_pStock->SetCompanyNewsUpdated(false);
+			m_pStock->SetUpdateCompanyNews(true);
 			m_pStock->SetUpdateCompanyNewsDB(false);
 			m_pStock->SetUpdateProfileDB(false);
 
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
@@ -128,14 +128,14 @@ namespace FireBirdTest {
 		case 3: // 缺乏address项
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
-			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4: // 空数据
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_FinnhubCompanyNews.IsVoidData()) << "此标识已设置";
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 			break;
 		case 5: // 无权利访问
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_FinnhubCompanyNews.IsNoRightToAccess()) << "无权利访问标识已设置";
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
 			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), 19700101000001);
-			EXPECT_TRUE(m_pStock->IsCompanyNewsUpdated());
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_TRUE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());

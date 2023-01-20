@@ -285,7 +285,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 			m_fInquiringFinnhubStockProfile = true;
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
-			if (const auto pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos); !pStock->IsCompanyProfileUpdated()) {
+			if (const auto pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -331,7 +331,7 @@ bool CFinnhubDataSource::InquireCompanyNews(void) {
 		}
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos);
-			if (!pStock->IsCompanyNewsUpdated()) {
+			if (pStock->IsUpdateCompanyNews()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					// 目前只处理美国市场
 					fFound = true;
@@ -375,7 +375,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 		}
 		for (lCurrentBasicFinancialsPos = 0; lCurrentBasicFinancialsPos < lStockSetSize; lCurrentBasicFinancialsPos++) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentBasicFinancialsPos);
-			if (!pStock->IsBasicFinancialUpdated()) {
+			if (pStock->IsUpdateBasicFinancial()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -570,7 +570,7 @@ bool CFinnhubDataSource::InquirePeer(void) {
 		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
 			CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
-			if (!pStock->IsPeerUpdated()) {
+			if (pStock->IsUpdatePeer()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;

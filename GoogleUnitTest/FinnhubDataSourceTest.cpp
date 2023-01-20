@@ -195,10 +195,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetCompanyProfileUpdated(true);
+			pStock->SetUpdateCompanyProfile(false);
 		}
-		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(false);
-		gl_pWorldMarket->GetStock(10)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_pWorldMarket->GetStock(10)->SetUpdateCompanyProfile(true);
 		gl_pFinnhubDataSource->SetStockProfileUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanyProfileConcise()) << "Stock Profile Updated";
 
@@ -212,18 +212,18 @@ namespace FireBirdTest {
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated());
-		gl_pWorldMarket->GetStock(1)->SetCompanyProfileUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "此更新标识需要等待处理完数据后才设置";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyProfile());
+		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCompanyProfileConcise());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsCompanyProfileUpdated());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsCompanyProfileUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		gl_pWorldMarket->GetStock(10)->SetCompanyProfileUpdated(true);
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyProfile()) << "此更新标识需要等待处理完数据后才设置";
+		gl_pWorldMarket->GetStock(10)->SetUpdateCompanyProfile(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
@@ -236,7 +236,7 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetCompanyProfileUpdated(false);
+			pStock->SetUpdateCompanyProfile(true);
 		}
 		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
 	}
@@ -314,10 +314,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetPeerUpdated(true);
+			pStock->SetUpdatePeer(false);
 		}
-		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-		gl_pWorldMarket->GetStock(10)->SetPeerUpdated(false);
+		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(true);
 		gl_pFinnhubDataSource->SetPeerUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquirePeer()) << "Peers Updated";
 
@@ -332,18 +332,18 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
 
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated());
-		gl_pWorldMarket->GetStock(1)->SetPeerUpdated(true);
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "此更新标识需要等待处理完数据后才设置";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdatePeer());
+		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquirePeer());
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
-		gl_pWorldMarket->GetStock(10)->SetPeerUpdated(true);
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer());
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdatePeer()) << "此更新标识需要等待处理完数据后才设置";
+		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquirePeer()) << "第三次查询时没有找到待查询的股票";
@@ -461,7 +461,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
-		gl_pWorldMarket->GetStock(10)->SetPeerUpdated(true);
+		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEPSSurprise()) << "第三次查询时没有找到待查询的股票";
@@ -639,7 +639,7 @@ namespace FireBirdTest {
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pFinnhubDataSource->StoreInquiry(p);
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false); // 无论是否使用mock，被操作的都是gl_pWorldMarket
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true); // 无论是否使用mock，被操作的都是gl_pWorldMarket
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
 		gl_pFinnhubDataSource->SetWebInquiryFinished(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
@@ -649,14 +649,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfile"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
@@ -665,7 +665,7 @@ namespace FireBirdTest {
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pFinnhubDataSource->StoreInquiry(p);
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
 		gl_pFinnhubDataSource->SetWebInquiryFinished(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
@@ -675,14 +675,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsCompanyProfileUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 
@@ -690,7 +690,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubStockSymbol>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
-		gl_pWorldMarket->GetStock(0)->SetCompanyProfileUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pFinnhubDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
 		gl_pFinnhubDataSource->SetWebInquiryFinished(true);
@@ -715,7 +715,7 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyPeer>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
-		gl_pWorldMarket->GetStock(0)->SetPeerUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdatePeer(true);
 		gl_pFinnhubDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
 		gl_pFinnhubDataSource->SetWebInquiryFinished(true);
@@ -726,14 +726,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->ProcessInquiringMessage());
 		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryFunction(),
 			p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetSymbol());
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsPeerUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
-		gl_pWorldMarket->GetStock(0)->SetPeerUpdated(false);
+		gl_pWorldMarket->GetStock(0)->SetUpdatePeer(true);
 		gl_pFinnhubDataSource->SetInquiring(false);
 	}
 

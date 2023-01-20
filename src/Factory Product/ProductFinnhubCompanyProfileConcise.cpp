@@ -28,7 +28,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	pStock->SetCompanyProfileUpdated(true);
+	pStock->SetUpdateCompanyProfile(false);
 	if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
 		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
