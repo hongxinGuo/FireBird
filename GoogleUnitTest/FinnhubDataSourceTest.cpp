@@ -367,10 +367,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
-			pStock->SetInsiderTransactionNeedUpdate(false);
+			pStock->SetUpdateInsiderTransaction(false);
 		}
-		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-		gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionNeedUpdate(true); // 这个是美国股票
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(true); // 这个是美国股票
 		gl_pFinnhubDataSource->SetInsiderTransactionUpdated(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireInsiderTransaction()) << "InsiderTransactions Updated";
 
@@ -384,9 +384,9 @@ namespace FireBirdTest {
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票为中国股票";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票为中国股票，没有复原";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
-		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(false);
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "第一个股票为中国股票，没有复原";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "需要接收到数据后方才设置此标识";
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireInsiderTransaction());
@@ -394,9 +394,9 @@ namespace FireBirdTest {
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
 		EXPECT_EQ(p->GetIndex(), 2500) << "第二次待查询股票为美国股票，位于2500";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "第一个股票已复原";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsInsiderTransactionNeedUpdate()) << "需要接收到数据后方才设置此标识";
-		gl_pWorldMarket->GetStock(2500)->SetInsiderTransactionNeedUpdate(false);
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "第一个股票已复原";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "需要接收到数据后方才设置此标识";
+		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(false);
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireInsiderTransaction()) << "第三次查询时没有找到待查询的股票";

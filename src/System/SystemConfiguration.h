@@ -19,7 +19,7 @@ public:
 	CSystemConfiguration& operator=(const CSystemConfiguration&) = delete;
 	CSystemConfiguration(const CSystemConfiguration&&) noexcept = delete;
 	CSystemConfiguration& operator=(const CSystemConfiguration&&) noexcept = delete;
-	virtual ~CSystemConfiguration();
+	~CSystemConfiguration();
 
 	bool LoadDB();
 	bool SaveDB();
@@ -91,12 +91,12 @@ public:
 
 	[[nodiscard]] bool IsUsingSinaRTServer(void) const noexcept {
 		if (m_iChinaMarketRealtimeServer == 0) return true;
-		else return false;
+		return false;
 	}
 
 	[[nodiscard]] bool IsUsingNeteaseRTServer(void) const noexcept {
 		if (m_iChinaMarketRealtimeServer == 1) return true;
-		else return false;
+		return false;
 	}
 
 	// WebSocket

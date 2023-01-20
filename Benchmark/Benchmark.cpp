@@ -2,7 +2,7 @@
 
 #include<benchmark/benchmark.h>
 
-#include <Shlwapi.h>
+//#include <Shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 
 #ifdef _DEBUG

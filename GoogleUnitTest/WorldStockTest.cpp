@@ -367,38 +367,38 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedUpdate) {
 		CWorldStock stock;
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
-		stock.SetInsiderTransactionNeedUpdate(false);
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
-		stock.SetInsiderTransactionNeedUpdate(true);
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
+		stock.SetUpdateInsiderTransaction(false);
+		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
+		stock.SetUpdateInsiderTransaction(true);
+		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedSave) {
 		CWorldStock stock;
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedSave());
-		stock.SetInsiderTransactionNeedSave(true);
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedSave());
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedSaveAndClearFlag());
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedSave());
+		EXPECT_FALSE(stock.IsSaveInsiderTransaction());
+		stock.SetSaveInsiderTransaction(true);
+		EXPECT_TRUE(stock.IsSaveInsiderTransaction());
+		EXPECT_TRUE(stock.IsSaveInsiderTransactionAndClearFlag());
+		EXPECT_FALSE(stock.IsSaveInsiderTransaction());
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedUpdate) {
 		CWorldStock stock;
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
-		stock.SetInsiderSentimentNeedUpdate(false);
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate());
-		stock.SetInsiderSentimentNeedUpdate(true);
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
+		stock.SetUpdateInsiderSentiment(false);
+		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());
+		stock.SetUpdateInsiderSentiment(true);
+		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedSave) {
 		CWorldStock stock;
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedSave());
-		stock.SetInsiderSentimentNeedSave(true);
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedSave());
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedSaveAndClearFlag());
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedSave());
+		EXPECT_FALSE(stock.IsSaveInsiderSentiment());
+		stock.SetSaveInsiderSentiment(true);
+		EXPECT_TRUE(stock.IsSaveInsiderSentiment());
+		EXPECT_TRUE(stock.IsSaveInsiderSentimentAndClearFlag());
+		EXPECT_FALSE(stock.IsSaveInsiderSentiment());
 	}
 
 	TEST_F(CWorldStockTest, TestGetDescription) {
@@ -1433,22 +1433,22 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
 		CWorldStock stock;
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 
-		stock.SetInsiderTransactionNeedUpdate(false);
+		stock.SetUpdateInsiderTransaction(false);
 		stock.SetInsiderTransactionUpdateDate(20200101);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderTransactionStatus(20200201); // 31天
-		EXPECT_TRUE(stock.IsInsiderTransactionNeedUpdate()) << "三十一天需更新";
+		EXPECT_TRUE(stock.IsUpdateInsiderTransaction()) << "三十一天需更新";
 		stock.CheckInsiderTransactionStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate());
+		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
 
-		stock.SetInsiderTransactionNeedUpdate(true);
+		stock.SetUpdateInsiderTransaction(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckInsiderTransactionStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "三十天内无需更新";
+		EXPECT_FALSE(stock.IsUpdateInsiderTransaction()) << "三十天内无需更新";
 		stock.CheckInsiderTransactionStatus(20200201); // 31天
-		EXPECT_FALSE(stock.IsInsiderTransactionNeedUpdate()) << "摘牌股票无需更新InsiderTransaction";
+		EXPECT_FALSE(stock.IsUpdateInsiderTransaction()) << "摘牌股票无需更新InsiderTransaction";
 	}
 
 	TEST_F(CWorldStockTest, TestHaveInsiderSentiment) {
@@ -1464,22 +1464,22 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldStockTest, TestCheckInsiderSentimentStatus) {
 		CWorldStock stock;
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 
-		stock.SetInsiderSentimentNeedUpdate(false);
+		stock.SetUpdateInsiderSentiment(false);
 		stock.SetInsiderSentimentUpdateDate(20200101);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.CheckInsiderSentimentStatus(20200201); // 31天
-		EXPECT_TRUE(stock.IsInsiderSentimentNeedUpdate()) << "三十一天需更新";
+		EXPECT_TRUE(stock.IsUpdateInsiderSentiment()) << "三十一天需更新";
 		stock.CheckInsiderSentimentStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate());
+		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());
 
-		stock.SetInsiderSentimentNeedUpdate(true);
+		stock.SetUpdateInsiderSentiment(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckInsiderSentimentStatus(20200131); // 30天
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate()) << "三十天内无需更新";
+		EXPECT_FALSE(stock.IsUpdateInsiderSentiment()) << "三十天内无需更新";
 		stock.CheckInsiderSentimentStatus(20200201); // 31天
-		EXPECT_FALSE(stock.IsInsiderSentimentNeedUpdate()) << "摘牌股票无需更新InsiderSentiment";
+		EXPECT_FALSE(stock.IsUpdateInsiderSentiment()) << "摘牌股票无需更新InsiderSentiment";
 	}
 
 	TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryString) {

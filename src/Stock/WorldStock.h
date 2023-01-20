@@ -30,7 +30,7 @@ public:
 public:
 	void Load(CSetWorldStock& setWorldStock);
 	void CheckUpdateStatus(long lTodayDate);
-	bool CheckProfileUpdateStatus(long lTodayDate);
+	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
@@ -102,14 +102,14 @@ public:
 
 	void UnloadInsiderTransaction(void) { m_vInsiderTransaction.resize(0); }
 	void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
-	bool IsInsiderTransactionNeedUpdate(void) const noexcept { return m_fFinnhubInsiderTransactionNeedUpdate; }
-	void SetInsiderTransactionNeedUpdate(const bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedUpdate = fFlag; }
+	bool IsUpdateInsiderTransaction(void) const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
+	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
-	bool IsInsiderTransactionNeedSave(void) const noexcept { return m_fFinnhubInsiderTransactionNeedSave; }
-	void SetInsiderTransactionNeedSave(const bool fFlag) noexcept { m_fFinnhubInsiderTransactionNeedSave = fFlag; }
+	bool IsSaveInsiderTransaction(void) const noexcept { return m_fSaveFinnhubInsiderTransaction; }
+	void SetSaveInsiderTransaction(const bool fFlag) noexcept { m_fSaveFinnhubInsiderTransaction = fFlag; }
 
-	bool IsInsiderTransactionNeedSaveAndClearFlag(void) {
-		const bool fNeedSave = m_fFinnhubInsiderTransactionNeedSave.exchange(false);
+	bool IsSaveInsiderTransactionAndClearFlag(void) {
+		const bool fNeedSave = m_fSaveFinnhubInsiderTransaction.exchange(false);
 		return fNeedSave;
 	}
 
@@ -120,14 +120,14 @@ public:
 
 	void UnloadInsiderSentiment(void) { m_vInsiderSentiment.resize(0); }
 	void UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment);
-	bool IsInsiderSentimentNeedUpdate(void) const noexcept { return m_fFinnhubInsiderSentimentNeedUpdate; }
-	void SetInsiderSentimentNeedUpdate(const bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedUpdate = fFlag; }
+	bool IsUpdateInsiderSentiment(void) const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
+	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
-	bool IsInsiderSentimentNeedSave(void) const noexcept { return m_fFinnhubInsiderSentimentNeedSave; }
-	void SetInsiderSentimentNeedSave(const bool fFlag) noexcept { m_fFinnhubInsiderSentimentNeedSave = fFlag; }
+	bool IsSaveInsiderSentiment(void) const noexcept { return m_fSaveFinnhubInsiderSentiment; }
+	void SetSaveInsiderSentiment(const bool fFlag) noexcept { m_fSaveFinnhubInsiderSentiment = fFlag; }
 
-	bool IsInsiderSentimentNeedSaveAndClearFlag(void) {
-		const bool fNeedSave = m_fFinnhubInsiderSentimentNeedSave.exchange(false);
+	bool IsSaveInsiderSentimentAndClearFlag(void) {
+		const bool fNeedSave = m_fSaveFinnhubInsiderSentiment.exchange(false);
 		return fNeedSave;
 	}
 
@@ -319,11 +319,11 @@ protected:
 	bool m_fCompanyNewsUpdated; // 公司简介已更新
 	bool m_fBasicFinancialUpdated; // 基本财务已更新
 	bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
-	bool m_fFinnhubInsiderTransactionNeedUpdate; // 公司内部交易数据已更新
-	bool m_fFinnhubInsiderSentimentNeedUpdate; // 公司内部交易情绪数据已更新
+	bool m_fUpdateFinnhubInsiderTransaction; // 公司内部交易数据已更新
+	bool m_fUpdateFinnhubInsiderSentiment; // 公司内部交易情绪数据已更新
 	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存
-	atomic_bool m_fFinnhubInsiderTransactionNeedSave; // 内部交易数据需要存储
-	atomic_bool m_fFinnhubInsiderSentimentNeedSave; // 内部交易情绪数据需要存储
+	atomic_bool m_fSaveFinnhubInsiderTransaction; // 内部交易数据需要存储
+	atomic_bool m_fSaveFinnhubInsiderSentiment; // 内部交易情绪数据需要存储
 };
 
 using CWorldStockPtr = shared_ptr<CWorldStock>;

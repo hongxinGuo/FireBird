@@ -245,8 +245,8 @@ public:
 	bool IsDayLineNeedUpdate(void) noexcept { return m_containerChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess(void);
 	bool IsDayLineNeedSaving(void) { return m_containerChinaStock.IsDayLineNeedSaving(); }
-	long GetDayLineNeedUpdateNumber(void) { return m_containerChinaStock.GetDayLineNeedUpdateNumber(); }
-	long GetDayLineNeedSaveNumber(void) { return m_containerChinaStock.GetDayLineNeedSaveNumber(); }
+	long GetDayLineNeedUpdateNumber(void) const { return m_containerChinaStock.GetDayLineNeedUpdateNumber(); }
+	long GetDayLineNeedSaveNumber(void) const { return m_containerChinaStock.GetDayLineNeedSaveNumber(); }
 
 	virtual long BuildDayLine(const long lCurrentTradeDay) { return m_containerChinaStock.BuildDayLine(lCurrentTradeDay); }
 	virtual bool BuildDayLineRS(const long lDate) { return m_containerChinaStock.BuildDayLineRS(lDate); }
@@ -361,7 +361,7 @@ public:
 	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex); }
 	long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(); }
 
-	void ClearDayLineNeedUpdateStatus(void) { m_containerChinaStock.ClearDayLineNeedUpdateStatus(); }
+	void ClearDayLineNeedUpdateStatus(void) const { m_containerChinaStock.ClearDayLineNeedUpdateStatus(); }
 
 	void SetRecordRTData(const bool fFlag) noexcept { m_fSaveRTData = fFlag; }
 

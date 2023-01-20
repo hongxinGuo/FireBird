@@ -43,14 +43,14 @@ namespace FireBirdTest {
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 		strCurrentDate = buffer;
 
-		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(),
 			companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderSentimentNeedUpdate()) << "接收到的数处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderSentiment()) << "接收到的数处理后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetInsiderSentimentNeedUpdate(true);
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(true);
 	}
 
 	// 正确数据
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101);
-			m_pStock->SetInsiderSentimentNeedSave(false);
+			m_pStock->SetSaveInsiderSentiment(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetInsiderSentimentNeedSave(false);
+			m_pStock->SetSaveInsiderSentiment(false);
 			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
 			GeneralCheck();
@@ -107,28 +107,28 @@ namespace FireBirdTest {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
-			EXPECT_TRUE(m_pStock->IsInsiderSentimentNeedSave());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2:
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			break;
 		case 3:
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			break;
 		case 4: // 空数据
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsInsiderSentimentNeedSave());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			break;
 		default:
 			break;

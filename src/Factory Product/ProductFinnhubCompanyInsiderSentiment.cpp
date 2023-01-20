@@ -37,11 +37,11 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(m_pMarket->GetMarketDate());
-	pStock->SetInsiderSentimentNeedUpdate(false);
+	pStock->SetUpdateInsiderSentiment(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
-		pStock->SetInsiderSentimentNeedSave(true);
+		pStock->SetSaveInsiderSentiment(true);
 	}
 
 	return true;

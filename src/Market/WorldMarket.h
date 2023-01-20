@@ -114,8 +114,8 @@ public:
 	size_t GetStockIndex(const CString strSymbol) const { return m_containerStock.GetOffset(strSymbol); }
 	void SortStock(void) { m_containerStock.Sort(); }
 
-	bool IsCompanyNewsNeedUpdate(void) { return m_containerStock.IsCompanyNewsNeedUpdate(); }
-	bool IsBasicFinancialNeedUpdate(void) { return m_containerStock.IsBasicFinancialNeedUpdate(); }
+	bool IsUpdateCompanyNewsDB(void) { return m_containerStock.IsUpdateCompanyNewsDB(); }
+	bool IsUpdateBasicFinancialDB(void) { return m_containerStock.IsUpdateBasicFinancialDB(); }
 
 	CWorldStockPtr GetChosenStock(const long lIndex) { return dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(lIndex)); }
 	size_t GetChosenStockSize(void) const noexcept { return m_containerChosenStock.Size(); }
@@ -178,8 +178,8 @@ public:
 	bool IsUpdateForexSymbolDB(void) noexcept { return m_dataFinnhubForexSymbol.IsUpdateProfileDB(); }
 	bool IsUpdateCryptoExchangeDB(void) const noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
 	bool IsUpdateCryptoSymbolDB(void) noexcept { return m_dataFinnhubCryptoSymbol.IsUpdateProfileDB(); }
-	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_containerStock.IsNeedSaveInsiderTransaction(); }
-	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_containerStock.IsNeedSaveInsiderSentiment(); }
+	bool IsUpdateInsiderTransactionDB(void) noexcept { return m_containerStock.IsSaveInsiderTransaction(); }
+	bool IsUpdateInsiderSentimentDB(void) noexcept { return m_containerStock.IsSaveInsiderSentiment(); }
 	bool IsSaveStockDayLineDB(void) noexcept { return m_containerStock.IsDayLineNeedSaving(); }
 	bool IsUpdateEconomicCalendarDB(void) const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 

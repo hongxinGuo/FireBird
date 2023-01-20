@@ -316,8 +316,6 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 /// <summary>
 /// 公司新闻。目前finnhub.io只提供北美公司的新闻
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 bool CFinnhubDataSource::InquireCompanyNews(void) {
 	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
 	bool fHaveInquiry = false;
@@ -467,7 +465,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction(void) {
 		for (lCurrentUpdateInsiderTransactionPos = 0; lCurrentUpdateInsiderTransactionPos < lStockSetSize;
 		     lCurrentUpdateInsiderTransactionPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderTransactionPos);
-			if (pStock->IsInsiderTransactionNeedUpdate()) {
+			if (pStock->IsUpdateInsiderTransaction()) {
 				// 目前免费账户只能下载美国市场的股票日线。
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -512,7 +510,7 @@ bool CFinnhubDataSource::InquireInsiderSentiment(void) {
 		}
 		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
-			if (pStock->IsInsiderSentimentNeedUpdate()) {
+			if (pStock->IsUpdateInsiderSentiment()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;

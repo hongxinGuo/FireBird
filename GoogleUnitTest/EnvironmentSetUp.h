@@ -45,7 +45,7 @@ namespace FireBirdTest {
 	CMockChinaMarketPtr gl_pMockChinaMarket;
 	CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
-	class TestEnvironment : public::testing::Environment {
+	class TestEnvironment : public Environment {
 		// 全局初始化，由main()函数调用。
 	public:
 		TestEnvironment(void) = default;
@@ -56,12 +56,12 @@ namespace FireBirdTest {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
-			             _T("C:\\FireBird\\SystemConfiguration.json"));
+				_T("C:\\FireBird\\SystemConfiguration.json"));
 			gl_systemConfiguration.SetDefaultFileDirectory(
 				_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
-			             _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
+				_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
 			gl_systemConfiguration.LoadDB();
 			gl_systemConfiguration.Update();
 

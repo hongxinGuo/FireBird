@@ -256,7 +256,7 @@ bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> v
 	const auto iBasicFinancialNeedUpdate = vStock.size();
 	size_t iCurrentUpdated = 0;
 
-	ASSERT(IsBasicFinancialNeedUpdate());
+	ASSERT(IsUpdateBasicFinancialDB());
 	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
 	setBasicFinancialMetric.Open();
 	setBasicFinancialMetric.m_pDatabase->BeginTrans();
@@ -315,18 +315,18 @@ bool CContainerWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
 	return true;
 }
 
-bool CContainerWorldStock::IsCompanyNewsNeedUpdate(void) {
+bool CContainerWorldStock::IsUpdateCompanyNewsDB(void) {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
 }
 
-bool CContainerWorldStock::IsBasicFinancialNeedUpdate(void) {
+bool CContainerWorldStock::IsUpdateBasicFinancialDB(void) {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
-bool CContainerWorldStock::IsNeedSaveInsiderTransaction(void) {
-	return ranges::any_of(m_vStock, [](CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsInsiderTransactionNeedSave(); });
+bool CContainerWorldStock::IsSaveInsiderTransaction(void) {
+	return ranges::any_of(m_vStock, [](CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
 }
 
-bool CContainerWorldStock::IsNeedSaveInsiderSentiment(void) {
-	return ranges::any_of(m_vStock, [](CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsInsiderSentimentNeedSave(); });
+bool CContainerWorldStock::IsSaveInsiderSentiment(void) {
+	return ranges::any_of(m_vStock, [](CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
 }

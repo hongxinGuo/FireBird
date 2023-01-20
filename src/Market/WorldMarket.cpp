@@ -215,8 +215,8 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
-	if (IsCompanyNewsNeedUpdate()) TaskUpdateCompanyNewsDB();
-	if (IsBasicFinancialNeedUpdate()) TaskUpdateBasicFinancialDB();
+	if (IsUpdateCompanyNewsDB()) TaskUpdateCompanyNewsDB();
+	if (IsUpdateBasicFinancialDB()) TaskUpdateBasicFinancialDB();
 	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
 	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
@@ -542,7 +542,7 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
-		if (pStock->IsInsiderTransactionNeedSaveAndClearFlag()) {
+		if (pStock->IsSaveInsiderTransactionAndClearFlag()) {
 			if (pStock->HaveInsiderTransaction()) {
 				pStock->SaveInsiderTransaction();
 				const CString str = pStock->GetSymbol() + _T("内部交易资料更新完成");
@@ -560,7 +560,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 bool CWorldMarket::UpdateInsiderSentimentDB(void) {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
-		if (pStock->IsInsiderSentimentNeedSaveAndClearFlag()) {
+		if (pStock->IsSaveInsiderSentimentAndClearFlag()) {
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->SaveInsiderSentiment();
 				const CString str = pStock->GetSymbol() + _T("内部交易情绪资料更新完成");

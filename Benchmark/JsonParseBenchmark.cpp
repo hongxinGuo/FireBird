@@ -220,14 +220,16 @@ std::string sData101 = _T("{\
 
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
-	for (auto _ : state) { auto f = NlohmannCreateJson(&j, sData101); }
+	for (auto _ : state) {
+		auto f = NlohmannCreateJson(&j, sData101);
+	}
 }
 
 BENCHMARK(ParseWithNlohmannJSon);
 
 class CJsonParse : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) override {
+	void SetUp(const benchmark::State& state) override {
 		CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 		LoadFromFile(strFileName, sUSExchangeStockCode);
 
@@ -239,7 +241,8 @@ public:
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 	}
 
-	void TearDown(const ::benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -249,7 +252,9 @@ public:
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
-	for (auto _ : state) { auto f = NlohmannCreateJson(&j, sUSExchangeStockCode); }
+	for (auto _ : state) {
+		auto f = NlohmannCreateJson(&j, sUSExchangeStockCode);
+	}
 }
 
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
@@ -270,14 +275,15 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 
 class CWithNlohmannJson : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) override {
+	void SetUp(const benchmark::State& state) override {
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, s);
 		try { js = json::parse(s.begin() + 21, s.end() - 2); }
 		catch (json::parse_error&) { fDone = false; }
 	}
 
-	void TearDown(const ::benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
@@ -290,7 +296,7 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) { f
 
 class CTengxunRTData : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) override {
+	void SetUp(const benchmark::State& state) override {
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
 		LoadFromFile(strFileName, s);
 		CString str = s.c_str();
@@ -302,7 +308,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -318,7 +325,7 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
 
 class CSinaRTData : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) override {
+	void SetUp(const benchmark::State& state) override {
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
 		LoadFromFile(strFileName, s);
 		CString str = s.c_str();
@@ -330,7 +337,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const ::benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;

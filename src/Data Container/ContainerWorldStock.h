@@ -29,10 +29,10 @@ public:
 
 	bool CheckStockSymbol(CWorldStockPtr pStock);
 
-	bool IsCompanyNewsNeedUpdate(void);
-	bool IsBasicFinancialNeedUpdate(void);
-	bool IsNeedSaveInsiderTransaction(void);
-	bool IsNeedSaveInsiderSentiment(void);
+	bool IsUpdateCompanyNewsDB(void);
+	bool IsUpdateBasicFinancialDB(void);
+	bool IsSaveInsiderTransaction(void);
+	bool IsSaveInsiderSentiment(void);
 
 protected:
 	size_t m_lLastTotalWorldStock;

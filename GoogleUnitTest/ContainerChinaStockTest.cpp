@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataChinaStockTest : public Test {
+	class CContainerChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -36,7 +36,7 @@ namespace FireBirdTest {
 		CContainerChinaStock m_containerChinaStock;
 	};
 
-	TEST_F(CDataChinaStockTest, TestGetUpDownRate) {
+	TEST_F(CContainerChinaStockTest, TestGetUpDownRate) {
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("10.0"), _T("0.0009")), 0.0) << _T("LastClose小于0.001时返回0");
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("11.0"), _T("10.0")), 0.1);
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("10.5"), _T("10.0")), 0.05);
@@ -45,31 +45,31 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
 	}
 
-	TEST_F(CDataChinaStockTest, TestGetNeteaseDayLineDataInquiringIndex) {
+	TEST_F(CContainerChinaStockTest, TestGetNeteaseDayLineDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(), 0);
 		m_containerChinaStock.SetNeteaseDayLineDataInquiringIndex(100);
 		EXPECT_EQ(m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(), 100);
 	}
 
-	TEST_F(CDataChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
+	TEST_F(CContainerChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetNeteaseRTDataInquiringIndex(), 0);
 		m_containerChinaStock.SetNeteaseRTDataInquiringIndex(100);
 		EXPECT_EQ(m_containerChinaStock.GetNeteaseRTDataInquiringIndex(), 100);
 	}
 
-	TEST_F(CDataChinaStockTest, TestGetSinaRTDataInquiringIndex) {
+	TEST_F(CContainerChinaStockTest, TestGetSinaRTDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetSinaRTDataInquiringIndex(), 0);
 		m_containerChinaStock.SetSinaRTDataInquiringIndex(100);
 		EXPECT_EQ(m_containerChinaStock.GetSinaRTDataInquiringIndex(), 100);
 	}
 
-	TEST_F(CDataChinaStockTest, TestGetTengxunRTDataInquiringIndex) {
+	TEST_F(CContainerChinaStockTest, TestGetTengxunRTDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetTengxunRTDataInquiringIndex(), 0);
 		m_containerChinaStock.SetTengxunRTDataInquiringIndex(100);
 		EXPECT_EQ(m_containerChinaStock.GetTengxunRTDataInquiringIndex(), 100);
 	}
 
-	TEST_F(CDataChinaStockTest, TestGetNextIndex) {
+	TEST_F(CContainerChinaStockTest, TestGetNextIndex) {
 		long l = 0;
 		EXPECT_EQ(m_containerChinaStock.GetNextIndex(l), 1);
 		EXPECT_EQ(l, 0);
@@ -84,7 +84,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(l, 99);
 	}
 
-	TEST_F(CDataChinaStockTest, TestSortStock) {
+	TEST_F(CContainerChinaStockTest, TestSortStock) {
 		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_containerChinaStock.Add(pStock);
@@ -94,5 +94,11 @@ namespace FireBirdTest {
 		EXPECT_STREQ(m_containerChinaStock.GetStock(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
 
 		m_containerChinaStock.Delete(pStock);
+	}
+
+	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedUpdate) {
+	}
+
+	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedMaintain) {
 	}
 }

@@ -33,11 +33,11 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const CInsiderTransactionVectorPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(m_pMarket->GetMarketDate());
-	pStock->SetInsiderTransactionNeedUpdate(false);
+	pStock->SetUpdateInsiderTransaction(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderTransaction->empty()) {
 		pStock->UpdateInsiderTransaction(*pvInsiderTransaction);
-		pStock->SetInsiderTransactionNeedSave(true);
+		pStock->SetSaveInsiderTransaction(true);
 	}
 
 	return true;

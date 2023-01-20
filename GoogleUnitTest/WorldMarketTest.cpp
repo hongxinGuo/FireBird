@@ -677,7 +677,7 @@ namespace FireBirdTest {
 		pStock = gl_pWorldMarket->GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
 
-		pStock->SetInsiderTransactionNeedSave(true);
+		pStock->SetSaveInsiderTransaction(true);
 		pStock->SetInsiderTransactionUpdateDate(20210123);
 		pStock->UpdateInsiderTransaction(vInsiderTransaction);
 
@@ -686,7 +686,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易资料更新完成"));
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderTransactionNeedSave());
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderTransaction());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
 
 		// 验证并恢复原状
@@ -749,7 +749,7 @@ namespace FireBirdTest {
 		pStock = gl_pWorldMarket->GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
 
-		pStock->SetInsiderSentimentNeedSave(true);
+		pStock->SetSaveInsiderSentiment(true);
 		pStock->SetInsiderSentimentUpdateDate(20210101);
 		pStock->UpdateInsiderSentiment(vInsiderSentiment);
 
@@ -758,7 +758,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易情绪资料更新完成"));
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsInsiderSentimentNeedSave());
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderSentiment());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
 
 		// 验证并恢复原状

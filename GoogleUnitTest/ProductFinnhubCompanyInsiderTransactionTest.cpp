@@ -37,13 +37,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage) {
-		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 		companyInsiderTransaction.SetIndex(1);
 		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsInsiderTransactionNeedUpdate()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionNeedUpdate(true);
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
 	}
 
 	// 正确数据
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
-			m_pStock->SetInsiderTransactionNeedSave(false);
+			m_pStock->SetSaveInsiderTransaction(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetInsiderTransactionNeedSave(false);
+			m_pStock->SetSaveInsiderTransaction(false);
 			m_pStock->SetInsiderTransactionUpdateDate(19800101);
 
 			GeneralCheck();
@@ -97,22 +97,22 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
-		EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedUpdate());
+		EXPECT_FALSE(m_pStock->IsUpdateInsiderTransaction());
 		switch (m_lIndex) {
 		case 1: // 正确
-			EXPECT_TRUE(m_pStock->IsInsiderTransactionNeedSave());
+			EXPECT_TRUE(m_pStock->IsSaveInsiderTransaction());
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2:
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedSave());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
 			break;
 		case 3:
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsInsiderTransactionNeedSave());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
 			break;
 		default:
 			break;
