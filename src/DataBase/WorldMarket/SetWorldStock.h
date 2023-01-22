@@ -6,7 +6,6 @@
 class CSetWorldStock : public CVirtualRecordset {
 public:
 	CSetWorldStock(CString strSchema = _T("WorldMarket"), CString strTable = _T("stock_profile"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetWorldStock)
 
 	// 字段/参数数据
 
@@ -74,10 +73,4 @@ public:
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
-
-	// 实现
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
 };

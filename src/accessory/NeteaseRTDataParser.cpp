@@ -75,10 +75,10 @@ CString XferToCString(const std::string& s);
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
-	bool fSucceed = true;
+	bool fSucceed;
 	string strTime, strUpdateTime, strName;
 	CString strSymbol4, str1, strName3;
-	json js = it.value();;
+	json js = it.value();
 	const string symbolName = it.key();
 
 	try {

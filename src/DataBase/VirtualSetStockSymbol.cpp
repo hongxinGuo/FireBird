@@ -4,8 +4,6 @@
 
 #include "VirtualSetStockSymbol.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetStockSymbol, CVirtualRecordset)
-
 CVirtualSetStockSymbol::CVirtualSetStockSymbol(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Description = _T(" ");
@@ -33,15 +31,3 @@ void CVirtualSetStockSymbol::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CVirtualSetStockSymbol ’Ô∂œ
-
-#ifdef _DEBUG
-void CVirtualSetStockSymbol::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CVirtualSetStockSymbol::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

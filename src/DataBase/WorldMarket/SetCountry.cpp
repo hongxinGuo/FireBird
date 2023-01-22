@@ -6,8 +6,6 @@
 
 #include "SetCountry.h"
 
-IMPLEMENT_DYNAMIC(CSetCountry, CVirtualRecordset)
-
 CSetCountry::CSetCountry(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -33,15 +31,3 @@ void CSetCountry::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("Currency"), m_Currency);
 	RFX_Text(pFX, _T("CurrencyCode"), m_CurrencyCode);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetCountry ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetCountry::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetCountry::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

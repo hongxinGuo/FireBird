@@ -4,8 +4,6 @@
 
 #include "SetTiingoIndustry.h"
 
-IMPLEMENT_DYNAMIC(CSetTiingoIndustry, CVirtualRecordset)
-
 CSetTiingoIndustry::CSetTiingoIndustry(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -23,15 +21,3 @@ void CSetTiingoIndustry::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Industry]"), m_Industry);
 	RFX_Text(pFX, _T("[Sector]"), m_Sector);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetTiingoIndustry ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetTiingoIndustry::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetTiingoIndustry::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

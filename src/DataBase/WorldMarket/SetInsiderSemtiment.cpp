@@ -6,8 +6,6 @@
 
 #include "SetInsiderSentiment.h"
 
-IMPLEMENT_DYNAMIC(CSetInsiderSentiment, CVirtualRecordset)
-
 CSetInsiderSentiment::CSetInsiderSentiment(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -29,15 +27,3 @@ void CSetInsiderSentiment::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[Change]"), m_Change);
 	RFX_Double(pFX, _T("[mspr]"), m_mspr);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetInsiderTransaction ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetInsiderSentiment::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetInsiderSentiment::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

@@ -6,11 +6,9 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CVirtualSetStockSymbol : public CVirtualRecordset
-{
+class CVirtualSetStockSymbol : public CVirtualRecordset {
 public:
 	CVirtualSetStockSymbol(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetStockSymbol)
 
 	// 字段/参数数据
 
@@ -32,11 +30,5 @@ public:
 	long m_IPOStatus;
 
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

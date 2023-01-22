@@ -4,11 +4,9 @@
 
 #include"VirtualRecordset.h"
 
-class CSetInsiderTransaction : public CVirtualRecordset
-{
+class CSetInsiderTransaction : public CVirtualRecordset {
 public:
 	CSetInsiderTransaction(CString strSchema = _T("WorldMarket"), CString strTable = _T("insider_transaction"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetInsiderTransaction)
 
 	// 字段/参数数据
 
@@ -31,13 +29,7 @@ public:
 	double m_TransactionPrice;
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

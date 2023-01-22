@@ -1,11 +1,9 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CSetRSOption : public CVirtualRecordset
-{
+class CSetRSOption : public CVirtualRecordset {
 public:
 	CSetRSOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("option_calculatingrs"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetRSOption)
 
 	long m_ID;
 	long m_Index;
@@ -22,12 +20,7 @@ public:
 	CString m_RSStrongSecond;
 	CString m_RSStrongThird;
 	CString m_RSStrongFourth;
-public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+public:
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

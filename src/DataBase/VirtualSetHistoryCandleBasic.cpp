@@ -4,8 +4,6 @@
 
 #include "VirtualSetHistoryCandleBasic.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetHistoryCandleBasic, CVirtualRecordset)
-
 CVirtualSetHistoryCandleBasic::CVirtualSetHistoryCandleBasic(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -57,16 +55,3 @@ void CVirtualSetHistoryCandleBasic::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RSIndex);	//相对于市场指数的强度
 	RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RSBackup);	//相对于市场指数的强度
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CVirtualSetHistoryCandleBasic 诊断
-
-#ifdef _DEBUG
-void CVirtualSetHistoryCandleBasic::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CVirtualSetHistoryCandleBasic::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

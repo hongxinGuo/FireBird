@@ -100,14 +100,4 @@ void CFireBirdDoc::SetSearchContent(const CString& value) {
 
 // CFireBirdDoc 诊断
 
-#ifdef _DEBUG
-void CFireBirdDoc::AssertValid() const {
-	CDocument::AssertValid();
-}
-
-void CFireBirdDoc::Dump(CDumpContext& dc) const {
-	CDocument::Dump(dc);
-}
-#endif //_DEBUG
-
 // CFireBirdDoc 命令

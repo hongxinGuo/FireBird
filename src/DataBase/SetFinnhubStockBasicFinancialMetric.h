@@ -160,7 +160,6 @@ class CSetFinnhubStockBasicFinancialMetric : public CVirtualRecordset
 {
 public:
 	CSetFinnhubStockBasicFinancialMetric(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetFinnhubStockBasicFinancialMetric)
 
 	// 字段/参数数据
 
@@ -326,10 +325,4 @@ public:
 		// 向导生成的虚函数重写
 public:
 	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
 };

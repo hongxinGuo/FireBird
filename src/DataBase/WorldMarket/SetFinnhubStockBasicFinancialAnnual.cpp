@@ -6,8 +6,6 @@
 
 #include "SetFinnhubStockBasicFinancialAnnual.h"
 
-IMPLEMENT_DYNAMIC(CSetFinnhubStockBasicFinancialAnnual, CVirtualRecordset)
-
 CSetFinnhubStockBasicFinancialAnnual::CSetFinnhubStockBasicFinancialAnnual(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -30,15 +28,3 @@ void CSetFinnhubStockBasicFinancialAnnual::DoFieldExchange(CFieldExchange* pFX) 
 	RFX_Int(pFX, _T("Date"), m_date);
 	RFX_Double(pFX, _T("Value"), m_value);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetCountry ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetFinnhubStockBasicFinancialAnnual::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetFinnhubStockBasicFinancialAnnual::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

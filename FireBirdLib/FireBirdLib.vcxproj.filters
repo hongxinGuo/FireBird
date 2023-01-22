@@ -848,9 +848,6 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\SetImplementationDeclare.cpp">
-      <Filter>源文件\database</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\VirtualRecordset.cpp">
       <Filter>源文件\database</Filter>
     </ClCompile>

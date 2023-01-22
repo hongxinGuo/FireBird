@@ -4,8 +4,6 @@
 
 #include "VirtualSetHistoryCandleExtend.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetHistoryCandleExtend, CVirtualRecordset)
-
 CVirtualSetHistoryCandleExtend::CVirtualSetHistoryCandleExtend(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -150,16 +148,3 @@ void CVirtualSetHistoryCandleExtend::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[CanceledSellBelow200000]"), m_CanceledSellVolumeBelow200000);
 	RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CVirtualSetHistoryCandleExtend ’Ô∂œ
-
-#ifdef _DEBUG
-void CVirtualSetHistoryCandleExtend::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CVirtualSetHistoryCandleExtend::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

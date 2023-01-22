@@ -6,8 +6,6 @@
 
 #include "SetInsiderTransaction.h"
 
-IMPLEMENT_DYNAMIC(CSetInsiderTransaction, CVirtualRecordset)
-
 CSetInsiderTransaction::CSetInsiderTransaction(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -37,15 +35,3 @@ void CSetInsiderTransaction::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[TransactionCode]"), m_TransactionCode);
 	RFX_Double(pFX, _T("[TransactionPrice]"), m_TransactionPrice);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetInsiderTransaction ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetInsiderTransaction::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetInsiderTransaction::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

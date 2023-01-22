@@ -260,8 +260,10 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& stat
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
-
-	for (auto _ : state) { [[maybe_unused]] auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2); }
+	bool f = false;
+	for (auto _ : state) {
+		f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
+	}
 }
 
 // 解析并处理netease实时数据。

@@ -3,11 +3,9 @@
 
 #include"VirtualRecordset.h"
 
-class CSetTiingoIndustry : public CVirtualRecordset
-{
+class CSetTiingoIndustry : public CVirtualRecordset {
 public:
 	CSetTiingoIndustry(CString strSchema = _T("WorldMarket"), CString strTable = _T("tiingo_industry"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetTiingoIndustry)
 
 	// 字段/参数数据
 
@@ -24,13 +22,7 @@ public:
 	CString m_Sector;
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

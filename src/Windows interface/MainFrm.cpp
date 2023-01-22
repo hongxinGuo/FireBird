@@ -409,10 +409,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	auto hOutputBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(),
+	auto hOutputBarIcon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
 		MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
-		IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON),
-		::GetSystemMetrics(SM_CYSMICON), 0));
+		IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
+		GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
 
@@ -463,13 +463,6 @@ BOOL CMainFrame::CreateDockingWindows() {
 }
 
 // CMainFrame 诊断
-
-#ifdef _DEBUG
-
-void CMainFrame::AssertValid() const { CFrameWndEx::AssertValid(); }
-
-void CMainFrame::Dump(CDumpContext& dc) const { CFrameWndEx::Dump(dc); }
-#endif //_DEBUG
 
 CString CMainFrame::FormatToMK(long long iNumber) {
 	char buffer[100];

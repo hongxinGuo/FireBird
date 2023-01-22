@@ -70,7 +70,7 @@ public:
 	virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }
-	virtual void SysCallGetClientRect(LPRECT lpRect) { CView::GetClientRect(lpRect); }
+	virtual void SysCallGetClientRect(LPRECT lpRect) { GetClientRect(lpRect); }
 	virtual BOOL SysCallBitBlt(CDC* pdc, int x, int y, int nWidth, int nHeight, CDC* pSrcDC, int xSrc, int ySrc, DWORD dwRop) { return (pdc->BitBlt(x, y, nWidth, nHeight, pSrcDC, xSrc, ySrc, dwRop)); }
 
 	// 重写
@@ -85,10 +85,6 @@ protected:
 
 	// 实现
 public:
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
 
 protected:
 	bool m_fCreateMemoryDC;

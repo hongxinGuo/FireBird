@@ -6,8 +6,6 @@
 
 #include "SetFinnhubCompanyNews.h"
 
-IMPLEMENT_DYNAMIC(CSetCompanyNews, CVirtualRecordset)
-
 CSetCompanyNews::CSetCompanyNews(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -41,16 +39,3 @@ void CSetCompanyNews::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("Summary"), m_Summary, 50000);
 	RFX_Text(pFX, _T("URL"), m_URL, 50000);
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CSetCompanyNews ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetCompanyNews::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetCompanyNews::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

@@ -2,8 +2,6 @@
 
 #include "SetRSStrong2Stock.h"
 
-IMPLEMENT_DYNAMIC(CSetRSStrong2Stock, CVirtualRecordset)
-
 CSetRSStrong2Stock::CSetRSStrong2Stock(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Symbol = _T("");
@@ -17,15 +15,3 @@ void CSetRSStrong2Stock::DoFieldExchange(CFieldExchange* pFX) {
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetRSStrong2Stock 诊断
-
-#ifdef _DEBUG
-void CSetRSStrong2Stock::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetRSStrong2Stock::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

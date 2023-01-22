@@ -4,13 +4,11 @@
 
 #include"VirtualRecordset.h"
 
-class CSetCountry : public CVirtualRecordset
-{
+class CSetCountry : public CVirtualRecordset {
 public:
 	CSetCountry(CString strSchema = _T("WorldMarket"), CString strTable = _T("country_list"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetCountry)
 
-		long m_ID;
+	long m_ID;
 	CString m_Code2;
 	CString m_Code3;
 	CString m_CodeNo;
@@ -19,13 +17,7 @@ public:
 	CString m_CurrencyCode;
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-	// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

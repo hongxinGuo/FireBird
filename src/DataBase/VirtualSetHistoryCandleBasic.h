@@ -8,11 +8,9 @@
 
 #include"VirtualRecordset.h"
 
-class CVirtualSetHistoryCandleBasic : public CVirtualRecordset
-{
+class CVirtualSetHistoryCandleBasic : public CVirtualRecordset {
 public:
 	CVirtualSetHistoryCandleBasic(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetHistoryCandleBasic)
 
 	// 字段/参数数据
 
@@ -45,14 +43,8 @@ public:
 	CString m_RSIndex;	//相对于市场指数的强度
 	CString m_RSBackup;	//备用数据
 
-// 重写
+	// 重写
 	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

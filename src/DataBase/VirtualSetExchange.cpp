@@ -4,8 +4,6 @@
 
 #include "VirtualSetExchange.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetExchange, CVirtualRecordset)
-
 CVirtualSetExchange::CVirtualSetExchange(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Code = _T("");
@@ -34,15 +32,3 @@ void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Country]"), m_Country);
 	RFX_Text(pFX, _T("[Source]"), m_Source);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetWorldStock ’Ô∂œ
-
-#ifdef _DEBUG
-void CVirtualSetExchange::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CVirtualSetExchange::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

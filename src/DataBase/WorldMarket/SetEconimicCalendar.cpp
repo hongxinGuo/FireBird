@@ -8,8 +8,6 @@
 
 #include "SetEconomicCalendar.h"
 
-IMPLEMENT_DYNAMIC(CSetEconomicCalendar, CVirtualRecordset)
-
 CSetEconomicCalendar::CSetEconomicCalendar(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -38,15 +36,3 @@ void CSetEconomicCalendar::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("Prev"), m_Prev);
 	RFX_Text(pFX, _T("Unit"), m_Unit);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetEconomicCalendar ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetEconomicCalendar::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetEconomicCalendar::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

@@ -8,8 +8,6 @@
 
 #include "SetEPSSurprise.h"
 
-IMPLEMENT_DYNAMIC(CSetEPSSurprise, CVirtualRecordset)
-
 CSetEPSSurprise::CSetEPSSurprise(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -31,15 +29,3 @@ void CSetEPSSurprise::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Double(pFX, _T("[Actual]"), m_Actual);
 	RFX_Double(pFX, _T("[Estimate]"), m_Estimate);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetEPSSurprise ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetEPSSurprise::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetEPSSurprise::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

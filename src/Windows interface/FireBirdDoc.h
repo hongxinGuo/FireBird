@@ -24,10 +24,6 @@ public:
 	// 实现
 public:
 	~CFireBirdDoc() override = default;
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
 
 protected:
 	// 生成的消息映射函数

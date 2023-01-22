@@ -8,8 +8,6 @@
 
 #include "SetSICIndustry.h"
 
-IMPLEMENT_DYNAMIC(CSetSICIndustry, CVirtualRecordset)
-
 CSetSICIndustry::CSetSICIndustry(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -29,15 +27,3 @@ void CSetSICIndustry::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Industry]"), m_Industry);
 	RFX_Text(pFX, _T("[Sector]"), m_Sector);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetSICIndustry ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetSICIndustry::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetSICIndustry::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

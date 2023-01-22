@@ -2,8 +2,6 @@
 
 #include "SetOption.h"
 
-IMPLEMENT_DYNAMIC(CSetOption, CVirtualRecordset)
-
 CSetOption::CSetOption(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -30,15 +28,3 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS2]"), m_UpdatedDateFor10DaysRS2);
 	RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS]"), m_UpdatedDateFor10DaysRS);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetOption ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetOption::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetOption::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

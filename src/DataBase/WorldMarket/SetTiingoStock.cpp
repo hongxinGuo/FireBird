@@ -4,8 +4,6 @@
 
 #include "SetTiingoStock.h"
 
-IMPLEMENT_DYNAMIC(CSetTiingoStock, CVirtualRecordset)
-
 CSetTiingoStock::CSetTiingoStock(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_TiingoPermaTicker = _T("");
@@ -51,15 +49,3 @@ void CSetTiingoStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[StatementUpdateDate]"), m_StatementUpdateDate);
 	RFX_Long(pFX, _T("[DailyDataUpdateDate]"), m_DailyDataUpdateDate);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetTiingoStock ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetTiingoStock::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetTiingoStock::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

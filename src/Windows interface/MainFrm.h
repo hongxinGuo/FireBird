@@ -58,11 +58,6 @@ public:
 public:
 	CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
 
-#ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
-#endif
-
 protected:
 	UINT m_uIdTimer;
 	long m_lCurrentPos;

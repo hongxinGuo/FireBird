@@ -12,5 +12,5 @@ public:
 	bool UpdateDB(void);
 
 protected:
-	long m_lLastTotalSymbol;
+	size_t m_lastTotalSymbol;
 };

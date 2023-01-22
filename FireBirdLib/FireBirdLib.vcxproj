@@ -254,7 +254,6 @@
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrongStock.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetStockSection.cpp" />
-    <ClCompile Include="..\src\DataBase\SetImplementationDeclare.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualRecordset.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetChoicedStake.cpp" />
     <ClCompile Include="..\src\DataBase\VirtualSetExchange.cpp" />

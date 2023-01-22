@@ -3,8 +3,6 @@
 
 #include "SetStockSection.h"
 
-IMPLEMENT_DYNAMIC(CSetStockSection, CVirtualRecordset)
-
 CSetStockSection::CSetStockSection(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Active = false;
@@ -25,16 +23,3 @@ void CSetStockSection::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("IndexNumber"), m_IndexNumber);
 	RFX_Text(pFX, _T("Comment"), m_Comment);
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CSetStockSection ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetStockSection::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetStockSection::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

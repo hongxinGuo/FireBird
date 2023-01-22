@@ -4,8 +4,6 @@
 
 #include "SetTiingoCrypto.h"
 
-IMPLEMENT_DYNAMIC(CSetTiingoCrypto, CVirtualRecordset)
-
 CSetTiingoCrypto::CSetTiingoCrypto(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Ticker = _T("");
@@ -29,15 +27,3 @@ void CSetTiingoCrypto::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[QuoteCurrency]"), m_QuoteCurrency);
 	RFX_Text(pFX, _T("[Description]"), m_Description);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetTiingoCrypto ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetTiingoCrypto::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetTiingoCrypto::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

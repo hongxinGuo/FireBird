@@ -8,8 +8,6 @@
 
 #include "SetNaicsIndustry.h"
 
-IMPLEMENT_DYNAMIC(CSetNaicsIndustry, CVirtualRecordset)
-
 CSetNaicsIndustry::CSetNaicsIndustry(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -31,15 +29,3 @@ void CSetNaicsIndustry::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Sector]"), m_Sector);
 	RFX_Text(pFX, _T("[SubSector]"), m_SubSector);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetNaicsIndustry ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetNaicsIndustry::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetNaicsIndustry::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

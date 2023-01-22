@@ -4,11 +4,9 @@
 
 #include"VirtualSetHistoryCandleBasic.h"
 
-class CSetForexDayLine : public CVirtualSetHistoryCandleBasic
-{
+class CSetForexDayLine : public CVirtualSetHistoryCandleBasic {
 public:
 	CSetForexDayLine(CString strSchema = _T("WorldMarket"), CString strTable = _T("forex_dayline"), CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {
 	}
-	DECLARE_DYNAMIC(CSetForexDayLine)
 };

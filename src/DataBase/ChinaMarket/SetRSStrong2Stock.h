@@ -1,11 +1,9 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CSetRSStrong2Stock : public CVirtualRecordset
-{
+class CSetRSStrong2Stock : public CVirtualRecordset {
 public:
 	CSetRSStrong2Stock(CString strSchema = _T("ChinaMarket"), CString strTable = _T("10rs2above55"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetRSStrong2Stock)
 
 	// 字段/参数数据
 
@@ -17,16 +15,10 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	CString	m_Symbol;
+	CString m_Symbol;
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

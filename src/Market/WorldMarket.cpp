@@ -837,7 +837,7 @@ bool CWorldMarket::TaskProcessWebSocketData(void) {
 
 bool CWorldMarket::ProcessFinnhubWebSocketData() {
 	const auto total = gl_finnhubWebSocket.DataSize();
-	int iTotalDataSize = 0;
+	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_finnhubWebSocket.PopData();
 		CString strMessage = _T("Finnhub: ");
@@ -869,7 +869,7 @@ bool CWorldMarket::ProcessTiingoIEXWebSocketData() {
 bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	const auto total = gl_tiingoCryptoWebSocket.DataSize();
 
-	int iTotalDataSize = 0;
+	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
 		auto pString = gl_tiingoCryptoWebSocket.PopData();
 		CString strMessage = _T("Tiingo Crypto: ");
@@ -884,8 +884,8 @@ bool CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 
 bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 	const auto total = gl_tiingoForexWebSocket.DataSize();
-	int iTotalDataSize = 0;
-	for (auto i = 0; i < total; i++) {
+	size_t iTotalDataSize = 0;
+	for (size_t i = 0; i < total; i++) {
 		auto pString = gl_tiingoForexWebSocket.PopData();
 		CString strMessage = _T("Tiingo Forex: ");
 		strMessage += (*pString).c_str();
@@ -903,8 +903,6 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// </summary>
 /// <returns></returns>
 bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
-	//CWorldStockPtr pStock;
-
 	auto total = gl_SystemData.GetTiingoIEXSocketSize();
 	for (auto i = 0; i < total; i++) {
 		const CTiingoIEXSocketPtr pIEXData = gl_SystemData.PopTiingoIEXSocket();

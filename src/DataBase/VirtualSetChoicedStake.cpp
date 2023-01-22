@@ -4,8 +4,6 @@
 
 #include "VirtualSetChosenStake.h"
 
-IMPLEMENT_DYNAMIC(CVirtualSetChosenStake, CVirtualRecordset)
-
 CVirtualSetChosenStake::CVirtualSetChosenStake(CString strSchema, CString strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {
 	m_ID = 0;
@@ -21,16 +19,3 @@ void CVirtualSetChosenStake::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CVirtualSetChosenStake ’Ô∂œ
-
-#ifdef _DEBUG
-void CVirtualSetChosenStake::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CVirtualSetChosenStake::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

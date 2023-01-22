@@ -6,11 +6,9 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CVirtualSetExchange : public CVirtualRecordset
-{
+class CVirtualSetExchange : public CVirtualRecordset {
 public:
 	CVirtualSetExchange(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetExchange)
 
 	// 字段/参数数据
 
@@ -33,11 +31,5 @@ public:
 	CString m_Source;
 
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

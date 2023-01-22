@@ -5,11 +5,9 @@
 
 #include"VirtualSetExchange.h"
 
-class CSetFinnhubForexExchange : public CVirtualSetExchange
-{
+class CSetFinnhubForexExchange : public CVirtualSetExchange {
 public:
 	CSetFinnhubForexExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_forex_exchange"), CDatabase* pDatabase = nullptr)
 		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
 	}
-	DECLARE_DYNAMIC(CSetFinnhubForexExchange)
 };

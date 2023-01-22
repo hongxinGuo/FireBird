@@ -3,8 +3,6 @@
 #include"pch.h"
 #include "SetRealTimeData.h"
 
-IMPLEMENT_DYNAMIC(CSetRealTimeData, CVirtualRecordset)
-
 CSetRealTimeData::CSetRealTimeData(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -78,15 +76,3 @@ void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[PSell5]"), m_PSell5);
 	RFX_Text(pFX, _T("[VSell5]"), m_VSell5);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetRealTimeData ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetRealTimeData::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetRealTimeData::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

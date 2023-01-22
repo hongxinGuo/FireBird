@@ -4,8 +4,6 @@
 
 #include "SetWorldStock.h"
 
-IMPLEMENT_DYNAMIC(CSetWorldStock, CVirtualRecordset)
-
 CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Description = _T(" ");
@@ -117,18 +115,3 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[SECFilingWebSite]"), m_SECFilingWebSite);
 	RFX_Text(pFX, _T("UpdateDate"), m_UpdateDate, 10000); // RFX_Text默认最大长度为256.
 }
-
-/////////////////////////////////////////////////////////////////////////////
-// CSetWorldStock 诊断
-
-#ifdef _DEBUG
-void CSetWorldStock::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-	ASSERT(m_DayLineStartDate >= 19700101);
-	ASSERT(m_DayLineEndDate >= 19700101);
-}
-
-void CSetWorldStock::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

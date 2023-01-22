@@ -86,9 +86,10 @@
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
+    <ClCompile Include="NeteaseRTDataParserTest.cpp" />
     <ClCompile Include="NeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
-    <ClCompile Include="ProductNeteaseRTTestcpp.cpp" />
+    <ClCompile Include="ProductNeteaseRTTest.cpp" />
     <ClCompile Include="ProductSinaRTTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
     <ClCompile Include="SinaRTDataSourceTest.cpp" />

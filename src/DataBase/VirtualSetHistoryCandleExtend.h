@@ -8,11 +8,9 @@
 
 #include"VirtualRecordset.h"
 
-class CVirtualSetHistoryCandleExtend : public CVirtualRecordset
-{
+class CVirtualSetHistoryCandleExtend : public CVirtualRecordset {
 public:
 	CVirtualSetHistoryCandleExtend(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CVirtualSetHistoryCandleExtend)
 
 	// 字段/参数数据
 
@@ -32,21 +30,21 @@ public:
 	CString m_TransactionNumberBelow50000; // 本日的盘口变化数
 	CString m_TransactionNumberBelow200000; // 本日的盘口变化数
 	CString m_TransactionNumberAbove200000; // 本日的盘口变化数
-	CString	m_AttackBuyVolume;	//攻击性买盘数量
-	CString	m_AttackSellVolume;	//攻击性买盘数量
-	CString	m_StrongBuyVolume;	//强攻击性买盘数量
-	CString	m_StrongSellVolume;	//强攻击性买盘数量
+	CString m_AttackBuyVolume;	//攻击性买盘数量
+	CString m_AttackSellVolume;	//攻击性买盘数量
+	CString m_StrongBuyVolume;	//强攻击性买盘数量
+	CString m_StrongSellVolume;	//强攻击性买盘数量
 	CString m_OrdinaryBuyVolume;
 	CString m_OrdinarySellVolume;
-	CString	m_UnknownVolume;	//未知买卖盘数量
-	CString	m_CanceledBuyVolume;	//买单撤单数量
-	CString	m_CanceledSellVolume;	//卖单撤单数量
-	CString	m_AttackBuyBelow50000;
-	CString	m_AttackBuyBelow200000;
-	CString	m_AttackBuyAbove200000;
-	CString	m_AttackSellBelow50000;
-	CString	m_AttackSellBelow200000;
-	CString	m_AttackSellAbove200000;
+	CString m_UnknownVolume;	//未知买卖盘数量
+	CString m_CanceledBuyVolume;	//买单撤单数量
+	CString m_CanceledSellVolume;	//卖单撤单数量
+	CString m_AttackBuyBelow50000;
+	CString m_AttackBuyBelow200000;
+	CString m_AttackBuyAbove200000;
+	CString m_AttackSellBelow50000;
+	CString m_AttackSellBelow200000;
+	CString m_AttackSellAbove200000;
 
 	CString m_OrdinaryBuyVolumeBelow5000;
 	CString m_OrdinaryBuyVolumeBelow10000;
@@ -93,13 +91,7 @@ public:
 	CString m_CanceledSellVolumeAbove200000;
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

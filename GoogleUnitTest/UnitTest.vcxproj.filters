@@ -7,9 +7,6 @@
     <Filter Include="Test源文件">
       <UniqueIdentifier>{2ab98a78-c6ad-4adb-af4d-5d58250ca9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\辅助类和函数">
-      <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\全局函数">
       <UniqueIdentifier>{7bec1d02-ec36-408c-bc78-9ff482485a4c}</UniqueIdentifier>
     </Filter>
@@ -148,19 +145,22 @@
     <Filter Include="Test源文件\Data Container\World Market">
       <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\accessory">
+      <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="ConvertToStringTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="WebDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="MockMainFrmTest.cpp">
       <Filter>Test源文件\Windows interface</Filter>
@@ -175,7 +175,7 @@
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="CallableFunctionTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
@@ -298,7 +298,7 @@
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="HighPerformanceCounterTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="VirtualDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
@@ -319,25 +319,25 @@
       <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="jsonParseTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="TimeConvertTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="InfoReportTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="VirtualRecordsetTest.cpp">
       <Filter>Test源文件\Data Base</Filter>
     </ClCompile>
     <ClCompile Include="ChinaStockCodeConverterTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubINquiryTypeTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubCompanyNewsTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
@@ -541,7 +541,7 @@
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="JsonGetValueTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
       <Filter>Test源文件</Filter>
@@ -588,11 +588,14 @@
     <ClCompile Include="ProductTengxunRTTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
-    <ClCompile Include="ProductNeteaseRTTestcpp.cpp">
+    <ClCompile Include="ProductNeteaseRTTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
     <ClCompile Include="ContainerVirtualStockTest.cpp">
       <Filter>Test源文件\Data Container</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseRTDataParserTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

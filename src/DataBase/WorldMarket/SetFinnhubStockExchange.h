@@ -9,6 +9,4 @@ public:
 	CSetFinnhubStockExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_exchange"), CDatabase* pDatabase = nullptr)
 		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
 	}
-
-	DECLARE_DYNAMIC(CSetFinnhubStockExchange)
 };

@@ -3,11 +3,9 @@
 #pragma once
 #include"VirtualRecordset.h"
 
-class CSetStockSection : public CVirtualRecordset
-{
+class CSetStockSection : public CVirtualRecordset {
 public:
 	CSetStockSection(CString strSchema = _T("ChinaMarket"), CString strTable = _T("Stock_Code_Section"), CDatabase* pDatabase = nullptr);
-	DECLARE_DYNAMIC(CSetStockSection)
 
 	// 字段/参数数据
 
@@ -25,13 +23,7 @@ public:
 	long m_IndexNumber;
 	CString m_Comment;
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

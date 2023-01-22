@@ -7,11 +7,9 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetFinnhubCryptoExchange : public CVirtualSetExchange
-{
+class CSetFinnhubCryptoExchange : public CVirtualSetExchange {
 public:
 	CSetFinnhubCryptoExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_crypto_exchange"), CDatabase* pDatabase = nullptr)
 		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
 	}
-	DECLARE_DYNAMIC(CSetFinnhubCryptoExchange)
 };

@@ -2,8 +2,6 @@
 #include"pch.h"
 #include "SetRSOption.h"
 
-IMPLEMENT_DYNAMIC(CSetRSOption, CVirtualRecordset)
-
 CSetRSOption::CSetRSOption(CString strSchema, CString strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
@@ -45,15 +43,3 @@ void CSetRSOption::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[RSStrongThird]"), m_RSStrongThird);
 	RFX_Text(pFX, _T("[RSStrongFourth]"), m_RSStrongFourth);
 }
-/////////////////////////////////////////////////////////////////////////////
-// CSetRSOption ’Ô∂œ
-
-#ifdef _DEBUG
-void CSetRSOption::AssertValid() const {
-	CVirtualRecordset::AssertValid();
-}
-
-void CSetRSOption::Dump(CDumpContext& dc) const {
-	CVirtualRecordset::Dump(dc);
-}
-#endif //_DEBUG

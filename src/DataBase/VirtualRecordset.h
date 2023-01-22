@@ -6,8 +6,7 @@
 #pragma once
 #include"afxdb.h"
 
-class CVirtualRecordset : public CRecordset
-{
+class CVirtualRecordset : public CRecordset {
 public:
 	// 本系统使用的数据库类，必须提供Schema和Table两个参数。
 	CVirtualRecordset(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr)
@@ -17,7 +16,6 @@ public:
 		m_Schema = strSchema;
 		m_Table = strTable;
 	}
-	DECLARE_DYNAMIC(CVirtualRecordset)
 
 	CString GetSchemaConnect(void);// 用于数据集的GetDefaultConnect()，以保持一致性。参数strSchema为该市场的名称
 
@@ -25,12 +23,6 @@ public:
 	CString m_Table; // 数据库中默认的表名称
 
 public:
-	virtual CString GetDefaultConnect();	// 默认连接字符串
-	virtual CString GetDefaultSQL(); 	// 记录集的默认SQL
-
-// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	CString GetDefaultConnect() override;	// 默认连接字符串
+	CString GetDefaultSQL() override; 	// 记录集的默认SQL
 };
