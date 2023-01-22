@@ -152,8 +152,8 @@ namespace FireBirdTest {
 			&finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
-		bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
+		const bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
@@ -174,6 +174,6 @@ namespace FireBirdTest {
 			break;
 		}
 		gl_pWorldMarket->ClearEconomicCalendar();
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 	}
 }

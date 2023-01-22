@@ -67,40 +67,40 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus1) {
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
 
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pFinnhubDataSource->SetCurrentInquiry(p);
 
 		p->SetProductType(ECONOMIC_COUNTRY_LIST_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsCountryListUpdated());
-		gl_pFinnhubDataSource->SetCountryListUpdated(false);
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
+		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 
 		p->SetProductType(COMPANY_PROFILE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated()) << "UpdateStatus不修改StockProfile项";
-		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile()) << "UpdateStatus不修改StockProfile项";
+		gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 
 		p->SetProductType(COMPANY_PROFILE_CONCISE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated()) << "UpdateStatus不修改StockProfile项";
-		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile()) << "UpdateStatus不修改StockProfile项";
+		gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 
 		p->SetProductType(PEERS_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated()) << "UpdateStatus不修改Peer项";
-		gl_pFinnhubDataSource->SetPeerUpdated(false);
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer()) << "UpdateStatus不修改Peer项";
+		gl_pFinnhubDataSource->SetUpdatePeer(true);
 
 		p->SetProductType(FOREX_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexExchange());
+		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 
 		p->SetProductType(CRYPTO_EXCHANGE_);
 		gl_pFinnhubDataSource->UpdateStatus();
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
-		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
+		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus2) {
@@ -112,21 +112,21 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->UpdateStatus();
 
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsEconomicCalendarUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 
-		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireCountryList) {
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
-		gl_pFinnhubDataSource->SetCountryListUpdated(true);
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
+		gl_pFinnhubDataSource->SetUpdateCountryList(false);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCountryList()) << "其他FinnhubInquiry正在进行";
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCountryList());
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
-		gl_pFinnhubDataSource->SetCountryListUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireCountryList());
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
@@ -149,10 +149,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStockExchange(1)->m_fUpdated = false;
 		gl_pWorldMarket->GetStockExchange(10)->m_fUpdated = false;
-		gl_pFinnhubDataSource->SetSymbolUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateSymbol(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanySymbol()) << "Symbol Updated";
 
-		gl_pFinnhubDataSource->SetSymbolUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateSymbol(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanySymbol()) << "其他FinnhubInquiry正在进行";
 
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->GetStockExchange(10)->m_fUpdated = true;
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsSymbolUpdated()) << "交易所都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateSymbol()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock symbol..."));
@@ -185,7 +185,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Finnhub交易所代码数据查询完毕"));
 
 		// 恢复原状
-		gl_pFinnhubDataSource->SetSymbolUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateSymbol(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireCompanyProfileConcise) {
@@ -199,10 +199,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
 		gl_pWorldMarket->GetStock(10)->SetUpdateCompanyProfile(true);
-		gl_pFinnhubDataSource->SetStockProfileUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateStockProfile(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanyProfileConcise()) << "Stock Profile Updated";
 
-		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanyProfileConcise()) << "其他FinnhubInquiry正在进行";
 
@@ -227,7 +227,7 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockProfileUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateStockProfile()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock profile..."));
@@ -238,14 +238,14 @@ namespace FireBirdTest {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateCompanyProfile(true);
 		}
-		gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubDayLine) {
+	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubStockDayLine) {
 		CWorldStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockDayLineUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockDayLine());
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -253,10 +253,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
 		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(true);
-		gl_pFinnhubDataSource->SetDayLineUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateStockDayLine(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireStockDayLine()) << "DayLine Updated";
 
-		gl_pFinnhubDataSource->SetDayLineUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateStockDayLine(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireStockDayLine()) << "其他FinnhubInquiry正在进行";
 
@@ -280,7 +280,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireStockDayLine()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsStockDayLineUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateStockDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));
@@ -292,13 +292,13 @@ namespace FireBirdTest {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
 		}
-		gl_pFinnhubDataSource->SetDayLineUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateStockDayLine(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireRTQuote) {
 		gl_pWorldMarket->SetSystemReady(true);
 
-		gl_pFinnhubDataSource->SetDayLineUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateStockDayLine(true);
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_TRUE(gl_pFinnhubDataSource->InquireRTQuote());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsInquiring());
@@ -310,7 +310,7 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer());
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -318,10 +318,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
 		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(true);
-		gl_pFinnhubDataSource->SetPeerUpdated(true);
+		gl_pFinnhubDataSource->SetUpdatePeer(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquirePeer()) << "Peers Updated";
 
-		gl_pFinnhubDataSource->SetPeerUpdated(false);
+		gl_pFinnhubDataSource->SetUpdatePeer(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquirePeer()) << "其他FinnhubInquiry正在进行";
 
@@ -347,7 +347,7 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquirePeer()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsPeerUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdatePeer()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock peer..."));
@@ -355,14 +355,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
 
 		// 恢复原状
-		gl_pFinnhubDataSource->SetPeerUpdated(false);
+		gl_pFinnhubDataSource->SetUpdatePeer(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireInsiderTransaction) {
 		CWorldStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsInsiderTransactionUpdated()) << "股票都查询完了";
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateInsiderTransaction()) << "股票待查询";
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
@@ -371,10 +371,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
 		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(true); // 这个是美国股票
-		gl_pFinnhubDataSource->SetInsiderTransactionUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateInsiderTransaction(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireInsiderTransaction()) << "InsiderTransactions Updated";
 
-		gl_pFinnhubDataSource->SetInsiderTransactionUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateInsiderTransaction(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireInsiderTransaction()) << "其他FinnhubInquiry正在进行";
 
@@ -400,7 +400,7 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireInsiderTransaction()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsInsiderTransactionUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateInsiderTransaction()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider transaction..."));
@@ -408,14 +408,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("US Market Insider Transaction数据更新完毕"));
 
 		// 恢复原状
-		gl_pFinnhubDataSource->SetInsiderTransactionUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateInsiderTransaction(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireEconomicCalendar) {
-		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEconomicCalendar()) << "EconomicCalendar Updated";
 
-		gl_pFinnhubDataSource->SetEconomicCalendarUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEconomicCalendar()) << "其他FinnhubInquiry正在进行";
 
@@ -437,10 +437,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
 		gl_pWorldMarket->GetStock(10)->SetEPSSurpriseUpdated(false);
-		gl_pFinnhubDataSource->SetEPSSurpriseUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateEPSSurprise(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEPSSurprise()) << "Finnhub EPS Surprise  Updated";
 
-		gl_pFinnhubDataSource->SetEPSSurpriseUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateEPSSurprise(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEPSSurprise()) << "其他FinnhubInquiry正在进行";
 
@@ -465,16 +465,16 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireEPSSurprise()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsEPSSurpriseUpdated()) << "股票都查询完了";
-		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEPSSurprise()) << "股票都查询完了";
+		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub EPS Surprise Updated"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexExchange) {
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateForexExchange(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexExchange()) << "FinnhubForexExchange Updated";
 
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexExchange()) << "其他FinnhubInquiry正在进行";
 
@@ -485,16 +485,16 @@ namespace FireBirdTest {
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub forex exchange"));
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated()) << "此标识需要等处理完数据后方设置";
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange()) << "此标识需要等处理完数据后方设置";
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexSymbol) {
 		CVirtualProductWebDataPtr p;
 
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexSymbol()) << "ForexSymbol Updated";
 
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 		const size_t lTotal = gl_pWorldMarket->GetForexExchangeSize();
 		for (int i = 0; i < lTotal - 1; i++) {
 			gl_pFinnhubDataSource->SetInquiring(false);
@@ -503,7 +503,7 @@ namespace FireBirdTest {
 			p = gl_pFinnhubDataSource->GetInquiry();
 			EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 			EXPECT_EQ(p->GetIndex(), i);
-			EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
+			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexSymbol());
 		}
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexSymbol()) << "其他FinnhubInquiry正在进行";
@@ -514,9 +514,9 @@ namespace FireBirdTest {
 		p = gl_pFinnhubDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexSymbol());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex symbols..."));
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(false); //恢复原状
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(true); //恢复原状
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexDayLine) {
@@ -529,10 +529,10 @@ namespace FireBirdTest {
 		}
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
 		gl_pWorldMarket->GetForexSymbol(10)->SetDayLineNeedUpdate(true);
-		gl_pFinnhubDataSource->SetForexDayLineUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateForexDayLine(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexDayLine()) << "Finnhub Forex Symbol DayLine Updated";
 
-		gl_pFinnhubDataSource->SetForexDayLineUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateForexDayLine(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexDayLine()) << "其他FinnhubInquiry正在进行";
 
@@ -556,7 +556,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->GetForexSymbol(10)->SetDayLineNeedUpdate(false);
 		EXPECT_FALSE(gl_pFinnhubDataSource->InquireForexDayLine()) << "第三次查询时没有找到待查询的股票";
-		EXPECT_TRUE(gl_pFinnhubDataSource->IsForexDayLineUpdated()) << "股票都查询完了";
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub forex day line..."));
@@ -569,7 +569,7 @@ namespace FireBirdTest {
 		}
 
 		// 恢复原状
-		gl_pFinnhubDataSource->SetForexDayLineUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateForexDayLine(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestTaskCheckSystemReady) {
@@ -577,42 +577,42 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pWorldMarket->SetSystemReady(false);
-		gl_pFinnhubDataSource->SetSymbolUpdated(false);
-		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
-		gl_pFinnhubDataSource->SetCryptoSymbolUpdated(false);
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateSymbol(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
+		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(true);
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
-		gl_pFinnhubDataSource->SetSymbolUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateSymbol(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateForexExchange(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
-		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoExchange(false);
 		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
-		gl_pFinnhubDataSource->SetCryptoSymbolUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskCheckSystemReady());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("世界市场初始化完毕"));
 
 		// 恢复原状
-		gl_pFinnhubDataSource->SetSymbolUpdated(false);
-		gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
-		gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
-		gl_pFinnhubDataSource->SetCryptoSymbolUpdated(false);
-		gl_pFinnhubDataSource->SetForexSymbolUpdated(false);
+		gl_pFinnhubDataSource->SetUpdateSymbol(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
+		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
+		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(true);
+		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestProcessInquiringMessage01) {

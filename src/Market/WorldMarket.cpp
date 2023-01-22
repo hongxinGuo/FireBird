@@ -221,7 +221,7 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
 	// 更新股票基本情况最好放在最后。
-	if (gl_pFinnhubDataSource->IsSymbolUpdated() && IsStockProfileNeedUpdate()) { TaskUpdateStockProfileDB(); }
+	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsStockProfileNeedUpdate()) { TaskUpdateStockProfileDB(); }
 
 	return true;
 }
@@ -249,7 +249,7 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 }
 
 bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
-	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
+	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) { // 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateTiingoIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
@@ -258,7 +258,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 }
 
 bool CWorldMarket::TaskUpdateSICIndustry(void) {
-	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
+	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateSICIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
@@ -267,7 +267,7 @@ bool CWorldMarket::TaskUpdateSICIndustry(void) {
 }
 
 bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
-	if (gl_pFinnhubDataSource->IsStockProfileUpdated()) {
+	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateNaicsIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
@@ -395,9 +395,8 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 
 bool CWorldMarket::TaskCheckSystemReady(void) {
 	if (!IsSystemReady()) {
-		if (gl_pFinnhubDataSource->IsSymbolUpdated() && gl_pFinnhubDataSource->IsForexExchangeUpdated() &&
-			gl_pFinnhubDataSource->IsForexSymbolUpdated()
-			&& gl_pFinnhubDataSource->IsCryptoExchangeUpdated() && gl_pFinnhubDataSource->IsCryptoSymbolUpdated()) {
+		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
+			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
 			const CString str = "世界市场初始化完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			SetSystemReady(true);
@@ -592,28 +591,28 @@ bool CWorldMarket::UpdateNaicsIndustry(void) {
 
 bool CWorldMarket::RebuildEPSSurprise(void) {
 	m_containerStock.ResetEPSSurprise();
-	gl_pFinnhubDataSource->SetEPSSurpriseUpdated(false);
+	gl_pFinnhubDataSource->SetUpdateEPSSurprise(true);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildPeer(void) {
 	m_containerStock.ResetPeer();
-	gl_pFinnhubDataSource->SetPeerUpdated(false);
+	gl_pFinnhubDataSource->SetUpdatePeer(true);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildBasicFinancial(void) {
 	m_containerStock.ResetBasicFinancial();
-	gl_pFinnhubDataSource->SetStockBasicFinancialUpdated(false);
+	gl_pFinnhubDataSource->SetUpdateStockBasicFinancial(true);
 
 	return true;
 }
 
 bool CWorldMarket::RebuildStockDayLineDB(void) {
 	m_containerStock.ResetDayLine();
-	gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+	gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 
 	return true;
 }

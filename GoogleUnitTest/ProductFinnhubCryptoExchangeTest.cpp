@@ -108,13 +108,13 @@ namespace FireBirdTest {
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket.get());
-			EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
+			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			gl_pFinnhubDataSource->SetCryptoExchangeUpdated(false);
+			gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 
 			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
@@ -145,6 +145,6 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 	}
 }

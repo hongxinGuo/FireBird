@@ -58,27 +58,20 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
 		EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCountryListUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoDayLineUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexDayLineUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockDayLineUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoSymbolUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsSymbolUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCompanyNewsUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsInsiderSentimentUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsInsiderTransactionUpdated());
-
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoExchangeUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsCryptoSymbolUpdated());
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsForexSymbolUpdated());
-
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoDayLine());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexDayLine());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockDayLine());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoSymbol());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexSymbol());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateSymbol());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCompanyNews());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateInsiderSentiment());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateInsiderTransaction());
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsStockSymbolUpdated());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsCryptoSymbolUpdated());

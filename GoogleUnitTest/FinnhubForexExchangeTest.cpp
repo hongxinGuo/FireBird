@@ -110,13 +110,13 @@ namespace FireBirdTest {
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket.get());
-			EXPECT_FALSE(gl_pFinnhubDataSource->IsForexExchangeUpdated());
+			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			gl_pFinnhubDataSource->SetForexExchangeUpdated(false);
+			gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 
 			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";

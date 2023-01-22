@@ -11,9 +11,9 @@ public:
 	bool Reset(void) override;
 	bool UpdateStatus(void) override;
 
-	bool Inquire(const long lCurrentTime) override;
+	bool Inquire(long lCurrentTime) override;
 
-	bool InquireFinnhub(const long lCurrentTime);
+	bool InquireFinnhub(long lCurrentTime);
 
 	bool InquireCountryList(void);
 	bool InquireCompanySymbol(void);
@@ -34,65 +34,66 @@ public:
 	bool InquireCryptoSymbol(void);
 	bool InquireCryptoDayLine(void);
 
-	bool IsCountryListUpdated(void) const noexcept { return m_fCountryListUpdated; }
-	void SetCountryListUpdated(const bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
-	bool IsSymbolUpdated(void) const noexcept { return m_fSymbolUpdated; }
-	void SetSymbolUpdated(const bool fFlag) noexcept { m_fSymbolUpdated = fFlag; }
-	bool IsStockProfileUpdated(void) const noexcept { return m_fStockProfileUpdated; }
-	void SetStockProfileUpdated(const bool fFlag) noexcept { m_fStockProfileUpdated = fFlag; }
-	bool IsCompanyNewsUpdated(void) const noexcept { return m_fCompanyNewsUpdated; }
-	void SetCompanyNewsUpdated(const bool fFlag) noexcept { m_fCompanyNewsUpdated = fFlag; }
-	bool IsCompanyPriceMetricsUpdated(void) const noexcept { return m_fCompanyPriceMetricsUpdated; }
-	void SetCompanyPriceMetricsUpdated(const bool fFlag) noexcept { m_fCompanyPriceMetricsUpdated = fFlag; }
-	bool IsStockBasicFinancialUpdated(void) const noexcept { return m_fStockBasicFinancialUpdated; }
-	void SetStockBasicFinancialUpdated(const bool fFlag) noexcept { m_fStockBasicFinancialUpdated = fFlag; }
-	bool IsStockDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
-	void SetDayLineUpdated(const bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
-	bool IsForexExchangeUpdated(void) const noexcept { return m_fForexExchangeUpdated; }
-	void SetForexExchangeUpdated(const bool fFlag) noexcept { m_fForexExchangeUpdated = fFlag; }
-	bool IsForexSymbolUpdated(void) const noexcept { return m_fForexSymbolUpdated; }
-	void SetForexSymbolUpdated(const bool fFlag) noexcept { m_fForexSymbolUpdated = fFlag; }
-	bool IsForexDayLineUpdated(void) const noexcept { return m_fForexDayLineUpdated; }
-	void SetForexDayLineUpdated(const bool fFlag) noexcept { m_fForexDayLineUpdated = fFlag; }
-	bool IsCryptoExchangeUpdated(void) const noexcept { return m_fCryptoExchangeUpdated; }
-	void SetCryptoExchangeUpdated(const bool fFlag) noexcept { m_fCryptoExchangeUpdated = fFlag; }
-	bool IsCryptoSymbolUpdated(void) const noexcept { return m_fCryptoSymbolUpdated; }
-	void SetCryptoSymbolUpdated(const bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
-	bool IsCryptoDayLineUpdated(void) const noexcept { return m_fCryptoDayLineUpdated; }
-	void SetCryptoDayLineUpdated(const bool fFlag) noexcept { m_fCryptoDayLineUpdated = fFlag; }
-	bool IsPeerUpdated(void) const noexcept { return m_fPeerUpdated; }
-	void SetPeerUpdated(const bool fFlag) noexcept { m_fPeerUpdated = fFlag; }
-	bool IsInsiderTransactionUpdated(void) const noexcept { return m_fInsiderTransactionUpdated; }
-	void SetInsiderTransactionUpdated(const bool fFlag) noexcept { m_fInsiderTransactionUpdated = fFlag; }
-	bool IsInsiderSentimentUpdated(void) const noexcept { return m_fInsiderSentimentUpdated; }
-	void SetInsiderSentimentUpdated(const bool fFlag) noexcept { m_fInsiderSentimentUpdated = fFlag; }
-	bool IsEconomicCalendarUpdated(void) const noexcept { return m_fEconomicCalendarUpdated; }
-	void SetEconomicCalendarUpdated(const bool fFlag) noexcept { m_fEconomicCalendarUpdated = fFlag; }
-	bool IsEPSSurpriseUpdated(void) const noexcept { return m_fEPSSurpriseUpdated; }
-	void SetEPSSurpriseUpdated(const bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
+	bool IsUpdateCountryList(void) const noexcept { return m_fUpdateCountryList; }
+	void SetUpdateCountryList(const bool fFlag) noexcept { m_fUpdateCountryList = fFlag; }
+	bool IsUpdateSymbol(void) const noexcept { return m_fUpdateSymbol; }
+	void SetUpdateSymbol(const bool fFlag) noexcept { m_fUpdateSymbol = fFlag; }
+	bool IsUpdateStockProfile(void) const noexcept { return m_fUpdateStockProfile; }
+	void SetUpdateStockProfile(const bool fFlag) noexcept { m_fUpdateStockProfile = fFlag; }
+	bool IsUpdateCompanyNews(void) const noexcept { return m_fUpdateCompanyNews; }
+	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
+	bool IsUpdateCompanyPriceMetrics(void) const noexcept { return m_fUpdateCompanyPriceMetrics; }
+	void SetUpdateCompanyPriceMetrics(const bool fFlag) noexcept { m_fUpdateCompanyPriceMetrics = fFlag; }
+	bool IsUpdateStockBasicFinancial(void) const noexcept { return m_fUpdateStockBasicFinancial; }
+	void SetUpdateStockBasicFinancial(const bool fFlag) noexcept { m_fUpdateStockBasicFinancial = fFlag; }
+	bool IsUpdateStockDayLine(void) const noexcept { return m_fUpdateStockDayLine; }
+	void SetUpdateStockDayLine(const bool fFlag) noexcept { m_fUpdateStockDayLine = fFlag; }
+	bool IsUpdateForexExchange(void) const noexcept { return m_fUpdateForexExchange; }
+	void SetUpdateForexExchange(const bool fFlag) noexcept { m_fUpdateForexExchange = fFlag; }
+	bool IsUpdateForexSymbol(void) const noexcept { return m_fUpdateForexSymbol; }
+	void SetUpdateForexSymbol(const bool fFlag) noexcept { m_fUpdateForexSymbol = fFlag; }
+	bool IsUpdateForexDayLine(void) const noexcept { return m_fUpdateForexDayLine; }
+	void SetUpdateForexDayLine(const bool fFlag) noexcept { m_fUpdateForexDayLine = fFlag; }
+	bool IsUpdateCryptoExchange(void) const noexcept { return m_fUpdateCryptoExchange; }
+	void SetUpdateCryptoExchange(const bool fFlag) noexcept { m_fUpdateCryptoExchange = fFlag; }
+	bool IsUpdateCryptoSymbol(void) const noexcept { return m_fUpdateCryptoSymbol; }
+	void SetUpdateCryptoSymbol(const bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
+	bool IsUpdateCryptoDayLine(void) const noexcept { return m_fUpdateCryptoDayLine; }
+	void SetUpdateCryptoDayLine(const bool fFlag) noexcept { m_fUpdateCryptoDayLine = fFlag; }
+	bool IsUpdatePeer(void) const noexcept { return m_fUpdatePeer; }
+	void SetUpdatePeer(const bool fFlag) noexcept { m_fUpdatePeer = fFlag; }
+	bool IsUpdateInsiderTransaction(void) const noexcept { return m_fUpdateInsiderTransaction; }
+	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateInsiderTransaction = fFlag; }
+	bool IsUpdateInsiderSentiment(void) const noexcept { return m_fUpdateInsiderSentiment; }
+	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateInsiderSentiment = fFlag; }
+	bool IsUpdateEconomicCalendar(void) const noexcept { return m_fUpdateEconomicCalendar; }
+	void SetUpdateEconomicCalendar(const bool fFlag) noexcept { m_fUpdateEconomicCalendar = fFlag; }
+	bool IsUpdateEPSSurprise(void) const noexcept { return m_fUpdateEPSSurprise; }
+	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 
-	bool m_fCountryListUpdated;
-	bool m_fSymbolUpdated; // 每日更新公司代码库
-	bool m_fStockProfileUpdated; // 每日更新公司简介
-	bool m_fCompanyNewsUpdated; // 每日更新公司新闻
-	bool m_fCompanyPriceMetricsUpdated;
-	bool m_fStockBasicFinancialUpdated; // 每日更新公司日线
-	bool m_fDayLineUpdated; // 每日更新公司日线数据
-	bool m_fForexExchangeUpdated; // 每日更新Forex交易所
-	bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
-	bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
-	bool m_fCryptoExchangeUpdated; // 每日更新Crypto交易所
-	bool m_fCryptoSymbolUpdated; // 每日更新Crypto交易所代码
-	bool m_fCryptoDayLineUpdated; // 每日更新Crypto日线数据
-	bool m_fPeerUpdated; // 每90天更新Peers数据
-	bool m_fInsiderTransactionUpdated; // 每30天更新InsiderTransaction数据
-	bool m_fInsiderSentimentUpdated; // 每30天更新InsiderSentiment数据
-	bool m_fEconomicCalendarUpdated; // 每日更新经济日历数据
-	bool m_fEPSSurpriseUpdated;
+	// todo
+	bool m_fUpdateCountryList;
+	bool m_fUpdateSymbol; // 每日更新公司代码库
+	bool m_fUpdateStockProfile; // 每日更新公司简介
+	bool m_fUpdateCompanyNews; // 每日更新公司新闻
+	bool m_fUpdateCompanyPriceMetrics;
+	bool m_fUpdateStockBasicFinancial; // 每日更新公司日线
+	bool m_fUpdateStockDayLine; // 每日更新公司日线数据
+	bool m_fUpdateForexExchange; // 每日更新Forex交易所
+	bool m_fUpdateForexSymbol; // 每日更新Forex交易所代码
+	bool m_fUpdateForexDayLine; // 每日更新Forex日线数据
+	bool m_fUpdateCryptoExchange; // 每日更新Crypto交易所
+	bool m_fUpdateCryptoSymbol; // 每日更新Crypto交易所代码
+	bool m_fUpdateCryptoDayLine; // 每日更新Crypto日线数据
+	bool m_fUpdatePeer; // 每90天更新Peers数据
+	bool m_fUpdateInsiderTransaction; // 每30天更新InsiderTransaction数据
+	bool m_fUpdateInsiderSentiment; // 每30天更新InsiderSentiment数据
+	bool m_fUpdateEconomicCalendar; // 每日更新经济日历数据
+	bool m_fUpdateEPSSurprise;
 
 	CFinnhubFactory m_FinnhubFactory;
 

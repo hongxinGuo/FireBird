@@ -60,7 +60,7 @@ namespace FireBirdTest {
 			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
 			s_pMockTiingoWebInquiry->SetReadingWebData(false);
 			s_pMockQuandlWebInquiry->SetReadingWebData(false);
-			gl_pFinnhubDataSource->SetStockProfileUpdated(false);
+			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
 

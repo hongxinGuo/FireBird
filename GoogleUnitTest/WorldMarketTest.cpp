@@ -822,7 +822,7 @@ namespace FireBirdTest {
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
 			pStock->m_fEPSSurpriseUpdated = true;
 		}
-		gl_pFinnhubDataSource->SetEPSSurpriseUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateEPSSurprise(false);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildEPSSurprise());
 
@@ -831,7 +831,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
 		}
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsEPSSurpriseUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEPSSurprise());
 	}
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
@@ -842,7 +842,7 @@ namespace FireBirdTest {
 			pStock->SetUpdatePeer(false);
 			pStock->SetUpdateProfileDB(false);
 		}
-		gl_pFinnhubDataSource->SetPeerUpdated(true);
+		gl_pFinnhubDataSource->SetUpdatePeer(false);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildPeer());
 
@@ -852,7 +852,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsUpdatePeer());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsPeerUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer());
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -871,7 +871,7 @@ namespace FireBirdTest {
 			pStock->SetDayLineNeedUpdate(false);
 			pStock->SetUpdateProfileDB(false);
 		}
-		gl_pFinnhubDataSource->SetStockProfileUpdated(true);
+		gl_pFinnhubDataSource->SetUpdateStockProfile(false);
 
 		EXPECT_TRUE(gl_pWorldMarket->RebuildStockDayLineDB());
 
@@ -882,7 +882,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
-		EXPECT_FALSE(gl_pFinnhubDataSource->IsStockProfileUpdated());
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile());
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
