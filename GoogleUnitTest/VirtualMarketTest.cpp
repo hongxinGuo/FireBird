@@ -373,6 +373,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);
 	}
 
+	TEST_F(CVirtualMarketTest, TestPreparingExitMarket) {
+		EXPECT_TRUE(gl_pVirtualMarket->PreparingExitMarket()) << "简单返回";
+	}
+
 	TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) {
 		// 这个其实是测试的CVirtualMarket类中的函数。
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());

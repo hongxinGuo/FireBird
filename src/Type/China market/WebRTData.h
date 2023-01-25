@@ -142,11 +142,11 @@ public:
 public:
 	// 读取新浪实时数据函数
 	// 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-	bool ReadSinaData(const CWebDataPtr& pSinaWebRTData);
-	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, long& lReturnValue); // 从file中读入一个长整型
-	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
-	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
+	bool ReadSinaData(const CWebDataPtr& pSinaWebData);
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llReturnValue); // 从file中读入一个长整型
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue); // 从file中读入一个浮点数
+	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
 
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束

@@ -2,7 +2,7 @@
 
 #include"nlohmannJsonDeclaration.h"
 
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 
 #include<string>
 using std::wstring;
@@ -14,7 +14,9 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData);
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData);
-CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData);
+CDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData);
+CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pWebData);
+shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockCode);
 
 // 以下四个函数的定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
 [[nodiscard]] bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos = 0, const long lEndPos = 0);// 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）

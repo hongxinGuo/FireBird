@@ -7,6 +7,11 @@ json jsonGetChild(json* pjs, const char* szKey) {
 	return js;
 }
 
+json jsonGetChild(json* pjs, char* szKey) {
+	auto js = pjs->at(szKey);
+	return js;
+}
+
 double jsonGetDouble(json* pjs, const char* szKey, const double dDefault) {
 	const auto d = pjs->at(szKey);
 	if (d.is_number()) return d;

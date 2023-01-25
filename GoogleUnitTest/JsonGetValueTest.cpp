@@ -21,11 +21,24 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(jsonGetValueTest, jsonGetChild) {
+	TEST_F(jsonGetValueTest, jsonGetChild1) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"child\":[{\"period\":\"2021-03-31\", \"v\" : -2.7551}, { \"period\":\"2020-12-31\",\"v\" : -0.5305 }]}")};
 		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
 		json js = jsonGetChild(pjs.get(), _T("child"));
+		EXPECT_TRUE(js.is_structured());
+		const auto it = js.begin();
+		const string s2 = it->at("period");
+		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
+	}
+
+	TEST_F(jsonGetValueTest, jsonGetChild2) {
+		const auto pjs = make_shared<json>();
+		string s{_T("{\"child\":[{\"period\":\"2021-03-31\", \"v\" : -2.7551}, { \"period\":\"2020-12-31\",\"v\" : -0.5305 }]}")};
+		CString str = _T("child");
+		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		json js = jsonGetChild(pjs.get(), str);
 		EXPECT_TRUE(js.is_structured());
 		const auto it = js.begin();
 		const string s2 = it->at("period");

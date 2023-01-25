@@ -15,7 +15,7 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 }
 
 CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto strMiddle = pStock->GetSymbol();
@@ -26,7 +26,7 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 }
 
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
@@ -40,7 +40,7 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 		}
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {

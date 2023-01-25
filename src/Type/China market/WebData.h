@@ -24,7 +24,7 @@ public:
 	friend CSinaRTWebInquiry;
 	friend CTengxunRTWebInquiry;
 	friend CNeteaseDayLineWebInquiry;
-	friend CNeteaseDayLineWebData;
+	friend CDayLineWebData;
 
 	CWebData();
 	// ≤ª‘ –Ì∏≥÷µ°£

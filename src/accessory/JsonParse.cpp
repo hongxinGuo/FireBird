@@ -13,12 +13,16 @@
 
 #include "JsonParse.h"
 
+#include"WebData.h"
 #include"WebRTData.h"
 //#include"SaveAndLoad.h"
 
 #include<string>
 #include<memory>
-using std::make_shared;
+
+#include "ChinaStockCodeConverter.h"
+#include "JsonGetValue.h"
+using namespace std;
 
 wstring to_wide_string(const std::string& input) {
 	const long lLength = input.size();
@@ -56,7 +60,7 @@ string to_byte_string(const wstring& input) {
 	return s;
 }
 
-void ReportJsonError(json::parse_error& e, std::string& s) {
+void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	char buffer[180]{}, buffer2[100];
 	int i;
 	CString str = e.what();
@@ -274,13 +278,107 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 // 日线数据是逆序的，最新日期的在前面。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-CNeteaseDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
-	auto pData = make_shared<CNeteaseDayLineWebData>();
+CDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
+	auto pData = make_shared<CDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
 	pData->ProcessNeteaseDayLineData(); //pData的日线数据是逆序的，最新日期的在前面。
 
 	return pData;
+}
+
+//
+// {
+// "code":0,
+// "msg":"",
+// "data":
+//   {
+//   "sh600601":
+//      { "day":
+//				[ ["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],
+//					["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],
+//				"qt":{},
+//				"mx_price":{"mx":[],"price":[]},
+//				"prec":"2.560",
+//				"version":"16"
+//		  }
+//	 }
+// }
+//
+shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockCode) {
+	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+	string sTemp;
+	try {
+		json js2 = pjs->at(_T("data"));
+		json js3 = jsonGetChild(&js2, strStockCode);
+		double dLastClose = 0;
+		//json js6 = js2.();
+		json js4 = js3.at("day");
+		for (auto it = js4.begin(); it != js4.end(); ++it) {
+			auto pDayLine = make_shared<CDayLine>();
+			long year, month, day;
+			json js5 = it.value();
+			pDayLine->SetLastClose(dLastClose * 1000);
+			sTemp = js5.at(0);
+			sscanf_s(sTemp.c_str(), _T("%4d-%02d-%02d"), &year, &month, &day);
+			pDayLine->SetDate(year * 10000 + month * 100 + day);
+			sTemp = js5.at(1);
+			pDayLine->SetOpen(atof(sTemp.c_str()) * 1000);
+			sTemp = js5.at(2);
+			double dClose = atof(sTemp.c_str());
+			pDayLine->SetClose(dClose * 1000);
+			dLastClose = dClose;
+			sTemp = js5.at(3);
+			pDayLine->SetHigh(atof(sTemp.c_str()) * 1000);
+			sTemp = js5.at(2);
+			pDayLine->SetLow(atof(sTemp.c_str()) * 1000);
+			pvDayLine->push_back(pDayLine);
+		}
+	}
+	catch (json::exception&) {
+		return pvDayLine;
+	}
+	return pvDayLine;
+}
+
+//
+// {
+// "code":0,
+// "msg":"",
+// "data":
+//   {
+//   "sh600601":
+//      { "day":
+//				[ ["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],
+//					["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],
+//				"qt":{},
+//				"mx_price":{"mx":[],"price":[]},
+//				"prec":"2.560",
+//				"version":"16"
+//		  }
+//	 }
+// }
+//
+CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
+	auto pDayLineData = make_shared<CDayLineWebData>();
+	shared_ptr<vector<CDayLinePtr>> pvDayLine = nullptr;
+	bool fProcess = true;
+	if (!pData->IsParsed()) {
+		if (!pData->CreateNlohmannJson()) {	// 网易数据前21位为前缀，后两位为后缀
+			gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
+			fProcess = false;
+		}
+	}
+	if (fProcess && pData->IsParsed()) {
+		json* pjs = pData->GetJSon();
+		pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pData->GetStockCode()));
+		ranges::sort(*pvDayLine, [](CDayLinePtr pData1, CDayLinePtr pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
+		for (const auto& pDayLine : *pvDayLine) {
+			pDayLine->SetStockSymbol(pData->GetStockCode());
+			pDayLineData->PushDayLine(pDayLine);
+		}
+	}
+	return pDayLineData;
 }
 
 // 将utf-8字符串转化为CString

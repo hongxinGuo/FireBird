@@ -415,22 +415,22 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
-		auto pData = make_shared<CNeteaseDayLineWebData>();
-		gl_pChinaMarket->PushNeteaseDayLine(pData);
+		const auto pData = make_shared<CDayLineWebData>();
+		gl_pChinaMarket->PushDayLine(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_pChinaMarket->PopNeteaseDayLine();
+		gl_pChinaMarket->PopDayLine();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
-		auto pData = make_shared<CNeteaseDayLineWebData>();
+		auto pData = make_shared<CDayLineWebData>();
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
 		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
-		gl_pChinaMarket->PushNeteaseDayLine(pData);
+		gl_pChinaMarket->PushDayLine(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->TaskProcessDayLineGetFromNeteaseServer());
 	}

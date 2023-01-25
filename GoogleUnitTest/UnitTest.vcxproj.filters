@@ -597,6 +597,12 @@
     <ClCompile Include="NeteaseRTDataParserTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
+    <ClCompile Include="ProductNeteaseDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTengxunDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

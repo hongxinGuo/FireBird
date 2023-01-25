@@ -41,4 +41,13 @@ namespace FireBirdTest {
 
 		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
+
+	TEST_F(jsonParseTest, TestParseTengxunDayLine) {
+		const string sTengxunDayLine = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
+		auto pjs = make_shared<json>();
+		NlohmannCreateJson(pjs.get(), sTengxunDayLine, 0, 0);
+		shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs.get(), _T("sh600601"));
+
+		EXPECT_EQ(pvDayLine->size(), 2);
+	}
 }

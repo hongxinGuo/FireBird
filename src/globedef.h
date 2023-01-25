@@ -18,3 +18,4 @@
 
 #include"HighPerformanceCounter.h"
 extern CHighPerformanceCounter gl_counter;
+extern bool gl_bStartInitializeGlobeVariable;

@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 
 using namespace testing;
 
@@ -2344,7 +2344,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestStoreDayLine2) {
-		CNeteaseDayLineWebData data;
+		CDayLineWebData data;
 
 		CDayLinePtr pDayLine;
 		for (int i = 0; i < 10; i++) {

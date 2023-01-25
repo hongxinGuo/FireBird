@@ -81,7 +81,7 @@ bool CWebData::CreateNlohmannJson(long lBeginPos, long lEndPos) {
 
 void CWebData::Test_SetBuffer_(CString strBuffer) {
 	m_lBufferLength = strBuffer.GetLength();
+	m_sDataBuffer.resize(m_lBufferLength);
 	const char* pBuffer = strBuffer.GetBuffer();
 	for (INT64 i = 0; i < m_lBufferLength; i++) { m_sDataBuffer.at(i) = pBuffer[i]; }
-	m_sDataBuffer.resize(m_lBufferLength);
 }

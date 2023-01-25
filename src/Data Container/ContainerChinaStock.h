@@ -49,6 +49,7 @@ public:
 	[[nodiscard]] INT64 GetTotalAttackSellAmount(void);
 
 	CString CreateNeteaseDayLineInquiringStr();
+	CString CreateTengxunDayLineInquiringStr();
 	CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
 
 	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
@@ -86,6 +87,7 @@ protected:
 	long m_lLoadedStock; // 本次装载的股票总数
 
 	long m_lNeteaseDayLineDataInquiringIndex;
+	long m_lTengxunDayLineDataInquiringIndex;
 	long m_lNeteaseRTDataInquiringIndex;
 	long m_lSinaRTDataInquiringIndex;
 	long m_lTengxunRTDataInquiringIndex;

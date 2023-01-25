@@ -2,7 +2,7 @@
 
 #include"VirtualMarket.h"
 
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 
 #include"DataStockSymbol.h"
 #include"ContainerChinaStock.h"
@@ -125,6 +125,7 @@ public:
 
 	//日线历史数据读取
 	CString CreateNeteaseDayLineInquiringStr() { return m_containerChinaStock.CreateNeteaseDayLineInquiringStr(); }
+	CString CreateTengxunDayLineInquiringStr() { return m_containerChinaStock.CreateTengxunDayLineInquiringStr(); }
 
 	long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
@@ -331,9 +332,9 @@ public:
 	size_t TengxunRTSize(void) noexcept { return m_qTengxunRT.Size(); }
 	void PushTengxunRT(const CWebRTDataPtr pData) noexcept { m_qTengxunRT.PushData(pData); }
 	CWebRTDataPtr PopTengxunRT(void) { return m_qTengxunRT.PopData(); }
-	size_t NeteaseDayLineSize(void) noexcept { return m_qNeteaseDayLine.Size(); }
-	void PushNeteaseDayLine(const CNeteaseDayLineWebDataPtr pData) noexcept { m_qNeteaseDayLine.PushData(pData); }
-	CNeteaseDayLineWebDataPtr PopNeteaseDayLine(void) { return m_qNeteaseDayLine.PopData(); }
+	size_t DayLineSize(void) noexcept { return m_qDayLine.Size(); }
+	void PushDayLine(const CDayLineWebDataPtr pData) noexcept { m_qDayLine.PushData(pData); }
+	CDayLineWebDataPtr PopDayLine(void) { return m_qDayLine.PopData(); }
 
 	// 实时数据需要计算与否和设置
 	void SetRTDataNeedCalculate(const bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
@@ -455,7 +456,7 @@ protected:
 	CPriorityQueueWebRTData m_qSinaRT; // 中国市场实时数据队列。
 	CPriorityQueueWebRTData m_qNeteaseRT; // 中国市场实时数据队列。
 	CPriorityQueueWebRTData m_qTengxunRT; // 中国市场实时数据队列。
-	CTemplateMutexAccessQueue<CNeteaseDayLineWebData> m_qNeteaseDayLine; // 网易日线数据
+	CTemplateMutexAccessQueue<CDayLineWebData> m_qDayLine; // 网易日线数据
 
 	bool m_RTDataNeedCalculate;
 	bool m_CalculatingDayLineRS;

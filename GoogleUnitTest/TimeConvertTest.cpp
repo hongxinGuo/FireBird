@@ -5,7 +5,6 @@
 
 #include"GeneralCheck.h"
 
-//#include"ConvertToString.h"
 #include"TimeConvert.h"
 
 namespace FireBirdTest {
@@ -119,6 +118,19 @@ namespace FireBirdTest {
 		EXPECT_EQ(20200713, GetPrevMonday(20200720));
 	}
 
+	TEST_F(TimeConvertTest, TestIsEarlyThen) {
+		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 32));
+		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 33));
+		EXPECT_TRUE(IsEarlyThen(20200101, 20200201, 30));
+		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 31));
+	}
+
+	TEST_F(TimeConvertTest, TestTimeSpawn) {
+		EXPECT_EQ(TimeSpawn(20200201, 20200101), 31);
+		EXPECT_EQ(TimeSpawn(20210101, 20200101), 366);
+		EXPECT_EQ(TimeSpawn(20220101, 20210101), 365);
+	}
+
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
 		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << _T("20200720ÎªÐÇÆÚÒ»");
 		EXPECT_EQ(20200720, GetCurrentMonday(20200721));
@@ -226,7 +238,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
-		                         &Data104, &Data105, &Data106));
+		&Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
 		time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());

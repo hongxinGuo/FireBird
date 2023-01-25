@@ -3,13 +3,14 @@
 #include "SystemMessage.h"
 #include"OutputWnd.h"
 
-CSystemDeque::CSystemDeque() {}
+CSystemDeque::CSystemDeque() {
+}
 
 CSystemDeque::~CSystemDeque() { m_dequeMessage.clear(); }
 
 CSystemMessage::~CSystemMessage() = default;
 
-void CSystemDeque::Display(COutputList *pOutputList, const CString &strTime) {
+void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	const size_t lTotal = Size();
 	for (int i = 0; i < lTotal; i++) {
 		CString str = PopMessage();
@@ -18,9 +19,9 @@ void CSystemDeque::Display(COutputList *pOutputList, const CString &strTime) {
 	}
 }
 
-void CSystemDeque::SysCallOutputListAddString(COutputList *pOutputList, const CString &str) { pOutputList->AddString(str); }
+void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const CString& str) { pOutputList->AddString(str); }
 
-void CSystemDeque::PushMessage(const CString &str) {
+void CSystemDeque::PushMessage(const CString& str) {
 	m_mutex.lock();
 	m_dequeMessage.push_back(str);
 	m_mutex.unlock();
@@ -42,6 +43,7 @@ size_t CSystemDeque::Size(void) {
 }
 
 CSystemMessage::CSystemMessage() {
+	ASSERT(gl_bStartInitializeGlobeVariable);
 	if (static int siCounter = 0; siCounter++ > 0) {
 		TRACE("系统消息只允许一个实例\n");
 		gl_systemMessage.PushErrorMessage(_T("错误：系统不允许生成多个CSystemMessage实例"));

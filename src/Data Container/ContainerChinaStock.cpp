@@ -1,3 +1,4 @@
+#include "ContainerChinaStock.h"
 #include"pch.h"
 
 #include"ConvertToString.h"
@@ -26,6 +27,7 @@ void CContainerChinaStock::Reset(void) {
 	CContainerVirtualStock::Reset();
 
 	m_lNeteaseDayLineDataInquiringIndex = 0;
+	m_lTengxunDayLineDataInquiringIndex = 0;
 	m_lNeteaseRTDataInquiringIndex = 0;
 	m_lSinaRTDataInquiringIndex = 0;
 	m_lTengxunRTDataInquiringIndex = 0;
@@ -232,6 +234,53 @@ CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, 
 		iStockIndex = GetNextIndex(iStockIndex);
 	}
 
+	return strReturn;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成网易日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+//
+//  此函数是检查m_vStock股票池
+//
+//
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
+	bool fFound = false;
+	int iCount = 0;
+	CString strTemp;
+	CString strReturn = _T("");
+
+	while (!fFound && (iCount++ < Size())) {
+		const CChinaStockPtr pStock = GetStock(m_lTengxunDayLineDataInquiringIndex);
+		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
+			// TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
+			m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
+		}
+		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
+			// TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
+			m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
+		}
+		else { fFound = true; }
+	}
+
+	if (iCount >= Size()) {
+		//  没有找到需要申请日线的证券
+		TRACE("未找到需更新日线历史数据的股票\n");
+		return _T("");
+	}
+
+	// 找到了需申请日线历史数据的股票（siCounter为索引）
+	const CChinaStockPtr pStock = GetStock(m_lTengxunDayLineDataInquiringIndex);
+	ASSERT(!pStock->IsDayLineNeedSaving());
+	ASSERT(pStock->IsDayLineNeedUpdate());
+	pStock->SetDayLineNeedUpdate(false);
+	strReturn += XferStandardToTengxun(pStock->GetSymbol());
+	m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
 	return strReturn;
 }
 

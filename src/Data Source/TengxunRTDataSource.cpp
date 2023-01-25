@@ -7,9 +7,13 @@
 
 CTengxunRTDataSource::CTengxunRTDataSource() { Reset(); }
 
-bool CTengxunRTDataSource::Reset(void) { return true; }
+bool CTengxunRTDataSource::Reset(void) {
+	return true;
+}
 
-bool CTengxunRTDataSource::UpdateStatus(void) { return true; }
+bool CTengxunRTDataSource::UpdateStatus(void) {
+	return true;
+}
 
 bool CTengxunRTDataSource::Inquire(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();

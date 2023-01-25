@@ -6,6 +6,7 @@
 using std::string;
 
 [[nodiscard]] json jsonGetChild(json* pjs, const char* szKey);
+[[nodiscard]] json jsonGetChild(json* pjs, char* szKey);
 [[nodiscard]] std::string jsonGetString(json* pjs, const char* szKey, const char* szDefault = _T(""));
 [[nodiscard]] double jsonGetDouble(json* pjs, const char* szKey, double dDefault = 0.0);
 [[nodiscard]] int jsonGetInt(json* pjs, const char* szKey, int iDefault = 0);

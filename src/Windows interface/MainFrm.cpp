@@ -18,6 +18,7 @@
 #include"TengxunRTDataSource.h"
 #include"NeteaseRTDataSource.h"
 #include"NeteaseDayLineDataSource.h"
+#include"TengxunDayLineDataSource.h"
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
@@ -26,6 +27,7 @@
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
+#include"TengxunDayLineWebInquiry.h"
 #include"FinnhubWebInquiry.h"
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
@@ -226,6 +228,7 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
 	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
 	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
+	gl_pTengxunDayLineWebInquiry = make_shared<CTengxunDayLineWebInquiry>();
 	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
 	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
@@ -235,16 +238,19 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
 	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
 	gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
+	gl_pTengxunDayLineDataSource->SetWebInquiringPtr(gl_pTengxunDayLineWebInquiry.get());
 
 	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
 	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
 	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
 	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDayLineDataSource.get());
+	gl_pTengxunDayLineWebInquiry->SetDataSource(gl_pTengxunDayLineDataSource.get());
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
+	//gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 
 	if (gl_systemConfiguration.GetChinaMarketRealtimeServer() == 0) {
 		// 使用新浪实时数据服务器
@@ -279,11 +285,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.LoadDB(); // 装入系统参数
 	gl_systemConfiguration.UpdateSystem(); // 更新系统参数
 
-	// 此四个要在gl_pChinaMarket前生成
+	// 此五个要在gl_pChinaMarket前生成
+	ASSERT(gl_pChinaMarket == nullptr);
 	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 	gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 	gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
 	gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
+	gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 
 	// 此三个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);

@@ -10,6 +10,8 @@
 [[nodiscard]] long ConvertToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 [[nodiscard]] INT64 ConvertToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
 [[nodiscard]] bool IsEarlyThen(const long lEarlyDate, const long lLatelyDate, const long lTimeSpawnOfDays);
+long TimeSpawn(long lLatelyDate, long lEarlyDate);
+
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
 
 [[nodiscard]] long GetNextMonday(const long lDate); // 找到lDate的下一个星期一的数值

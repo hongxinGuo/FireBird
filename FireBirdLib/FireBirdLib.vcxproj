@@ -49,6 +49,7 @@
     <ClInclude Include="..\src\Data Container\DataTiingoStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerWorldStock.h" />
     <ClInclude Include="..\src\Data Container\DataWorldStockDayline.h" />
+    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseRTDataSource.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h" />
     <ClInclude Include="..\src\Factory Product\FinnhubFactory.h" />
     <ClInclude Include="..\src\Factory Product\ProductDummy.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h" />
@@ -138,6 +140,7 @@
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
+    <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
@@ -171,7 +174,7 @@
     <ClInclude Include="..\src\Type\America market\TiingoStock.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
-    <ClInclude Include="..\src\Type\China market\NeteaseDayLineWebData.h" />
+    <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
     <ClInclude Include="..\src\Type\China market\OneDeal.h" />
     <ClInclude Include="..\src\Type\China market\StockSection.h" />
     <ClInclude Include="..\src\Type\China market\WebData.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
+    <ClInclude Include="..\src\WebInquiry\TengxunDayLineWebInquiry.h" />
     <ClInclude Include="..\src\WebInquiry\FinnhubWebInquiry.h" />
     <ClInclude Include="..\src\WebInquiry\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\src\WebInquiry\NeteaseRTWebInquiry.h" />
@@ -239,6 +243,7 @@
     <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp" />
+    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseRTDataSource.cpp" />
@@ -276,6 +281,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhub.cpp" />
@@ -342,7 +348,7 @@
     <ClCompile Include="..\src\Type\America market\TiingoStock.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
     <ClCompile Include="..\src\Type\China market\Guadan.cpp" />
-    <ClCompile Include="..\src\Type\China market\NeteaseDayLineWebData.cpp" />
+    <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
     <ClCompile Include="..\src\Type\China market\OneDeal.cpp" />
     <ClCompile Include="..\src\Type\China market\StockSection.cpp" />
     <ClCompile Include="..\src\Type\China market\WebData.cpp" />
@@ -351,6 +357,7 @@
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp" />
+    <ClCompile Include="..\src\WebInquiry\TengxunDayLineWebInquiry.cpp" />
     <ClCompile Include="..\src\WebInquiry\FinnhubWebInquiry.cpp" />
     <ClCompile Include="..\src\WebInquiry\GetWebDataUsingLibCurl.cpp" />
     <ClCompile Include="..\src\WebInquiry\NeteaseDayLineWebInquiry.cpp" />

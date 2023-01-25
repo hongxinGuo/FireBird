@@ -4,7 +4,8 @@
 
 #include"ChinaStock.h"
 
-#include"NeteaseDayLineWebData.h"
+#include"WebData.h"
+#include"DayLineWebData.h"
 
 #include<vector>
 #include<memory>
@@ -51,13 +52,13 @@ namespace FireBirdTest {
 		void SetUp(void) override {
 			GeneralCheck();
 
-			NeteaseDayLineData* pData = GetParam();
-			CNeteaseDayLineWebInquiry DayLineWebInquiry;
-			DayLineWebInquiry.SetDownLoadingStockCode(pData->m_strSymbol);
-			DayLineWebInquiry.SetByteRead(pData->m_strData.GetLength());
-			for (int i = 0; i < pData->m_strData.GetLength(); i++) { DayLineWebInquiry.SetData(i, pData->m_strData.GetAt(i)); }
-			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
-			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&DayLineWebInquiry);
+			const NeteaseDayLineData* pData = GetParam();
+			const auto pWebData = make_shared<CWebData>();
+			pWebData->Test_SetBuffer_(pData->m_strData);
+
+			pDownLoadedDayLine = make_shared<CDayLineWebData>();
+			pDownLoadedDayLine->SetStockCode(pData->m_strSymbol);
+			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
 			m_iCount = pData->m_iCount;
 		}
 
@@ -70,17 +71,17 @@ namespace FireBirdTest {
 
 	public:
 		int m_iCount;
-		CNeteaseDayLineWebDataPtr pDownLoadedDayLine;
+		CDayLineWebDataPtr pDownLoadedDayLine;
 		long lDate;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
-	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-	                         ));
+		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+		));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
-		bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();
+		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);

@@ -84,7 +84,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
 		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
 		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
-		EXPECT_EQ(gl_pChinaMarket->NeteaseDayLineSize(), 0);
+		EXPECT_EQ(gl_pChinaMarket->DayLineSize(), 0);
 	}
 
 	void GeneralCheck(void) {

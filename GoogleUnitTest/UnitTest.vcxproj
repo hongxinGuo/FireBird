@@ -89,8 +89,10 @@
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
     <ClCompile Include="NeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
+    <ClCompile Include="ProductNeteaseDayLineTest.cpp" />
     <ClCompile Include="ProductNeteaseRTTest.cpp" />
     <ClCompile Include="ProductSinaRTTest.cpp" />
+    <ClCompile Include="ProductTengxunDayLineTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
     <ClCompile Include="SinaRTDataSourceTest.cpp" />
     <ClCompile Include="TengxunRTDataSourceTest.cpp" />

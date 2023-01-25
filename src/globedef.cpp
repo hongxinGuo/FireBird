@@ -14,10 +14,12 @@
 #include"QuandlDataSource.h"
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
 #include"FinnhubWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
+#include"TengxunDayLineWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
 #include"QuandlWebInquiry.h"
 #include"SinaRTWebInquiry.h"
@@ -32,6 +34,8 @@
 #include"ThreadStatus.h"
 
 #include "ChinaMarket.h"
+
+bool gl_bStartInitializeGlobeVariable = false;
 
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
@@ -60,6 +64,8 @@ CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
 CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
 CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+CTengxunDayLineWebInquiryPtr gl_pTengxunDayLineWebInquiry = nullptr; // 网易日线历史数据
+
 CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.io证券信息
 CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
@@ -69,8 +75,10 @@ CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
 CNeteaseRTDataSourcePtr gl_pNeteaseRTDataSource = nullptr;
 CNeteaseDayLineDataSourcePtr gl_pNeteaseDayLineDataSource = nullptr;
+CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
+
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
 
 // Web socket

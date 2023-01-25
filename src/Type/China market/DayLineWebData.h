@@ -6,10 +6,10 @@
 #include<vector>
 #include<memory>
 
-class CNeteaseDayLineWebData final {
+class CDayLineWebData final {
 public:
-	CNeteaseDayLineWebData();
-	~CNeteaseDayLineWebData() = default;
+	CDayLineWebData();
+	~CDayLineWebData() = default;
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数
@@ -19,15 +19,14 @@ public:
 	void SetStockCode(const CString strSymbol) noexcept { m_strStockCode = strSymbol; }
 	CString GetStockCode(void) { return m_strStockCode; }
 
-	bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
 	bool TransferWebDataToBuffer(CWebDataPtr pWebData);
+	string GetBuffer() { return m_sDataBuffer; }
 	bool ProcessNeteaseDayLineData();
-	bool ProcessOneNeteaseDayLineData(void);
+	CDayLinePtr ProcessOneNeteaseDayLineData(void);
 	INT64 GetBufferLength(void) const noexcept { return m_lBufferLength; }
 	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
-	CDayLinePtr GetCurrentProcessingDayLine(void) { return m_pCurrentProcessingDayLine; }
-	bool SkipNeteaseDayLineInformationHeader(void);
+	bool SkipNeteaseDayLineInformationHeader(string& sDataBuffer, INT64& lCurrentPos);
 	void ReportDayLineDownLoaded(void);
 
 	// 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
@@ -45,8 +44,6 @@ private:
 	vector<CDayLinePtr> m_vTempDayLine; // 日线数据缓冲区
 	INT64 m_lBufferLength; // 缓冲区大小。
 	INT64 m_lCurrentPos;
-
-	CDayLinePtr m_pCurrentProcessingDayLine;
 };
 
-using CNeteaseDayLineWebDataPtr = shared_ptr<CNeteaseDayLineWebData>;
+using CDayLineWebDataPtr = shared_ptr<CDayLineWebData>;

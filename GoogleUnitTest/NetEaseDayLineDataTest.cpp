@@ -5,7 +5,7 @@
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
 
 #include"DayLine.h"
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 
 #include<vector>
 
@@ -76,11 +76,11 @@ namespace FireBirdTest {
 			m_DayLinePtr->SetTotalValue(-1);
 			m_DayLinePtr->SetCurrentValue(-1);
 
-			WebInquiry.TESTSetBuffer(pData->m_strData);
-			WebInquiry.SetByteRead(pData->m_strData.GetLength());
-			WebInquiry.SetDownLoadingStockCode(_T("600000.SS"));
-			pDownLoadedDayLine = make_shared<CNeteaseDayLineWebData>();
-			pDownLoadedDayLine->TransferNeteaseDayLineWebDataToBuffer(&WebInquiry);
+			pWebData = make_shared<CWebData>();
+			pWebData->Test_SetBuffer_(pData->m_strData);
+			pDownLoadedDayLine = make_shared<CDayLineWebData>();
+			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
+			pDownLoadedDayLine->SetStockCode(_T("600000.SS"));
 		}
 
 		void TearDown(void) override {
@@ -95,24 +95,20 @@ namespace FireBirdTest {
 		CDayLine m_DayLine;
 		CDayLinePtr m_DayLinePtr;
 
-		CNeteaseDayLineWebInquiry WebInquiry;
-		CNeteaseDayLineWebDataPtr pDownLoadedDayLine;
+		CWebDataPtr pWebData;
+		CDayLineWebDataPtr pDownLoadedDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
-	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-	                         ));
+		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+		));
 
 	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData) {
-		bool fSucceed;
-		fSucceed = pDownLoadedDayLine->ProcessOneNeteaseDayLineData();
-		if (fSucceed) {
-			m_DayLinePtr = pDownLoadedDayLine->GetCurrentProcessingDayLine();
-		}
+		m_DayLinePtr = pDownLoadedDayLine->ProcessOneNeteaseDayLineData();
 		switch (m_iCount) {
 		case 1:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
@@ -122,26 +118,26 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
 			break;
 		case 2:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 3:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 4:
 		case 5:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 6:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 7:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 8:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			break;
 		case 9:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("价值7030"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
 			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
@@ -152,13 +148,13 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
 			break;
 		case 10: // 时间字符串超过30个
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr == nullptr);
 			break;
 		case 11: // 流通市值字符串超过30个
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr == nullptr);
 			break;
 		case 12:
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(m_DayLinePtr == nullptr);
 			break;
 		default:
 			break;
@@ -220,12 +216,12 @@ namespace FireBirdTest {
 		int m_iCount;
 		string m_pData;
 		INT64 m_lCountPos = 0;
-		CNeteaseDayLineWebData NeteaseData;
+		CDayLineWebData NeteaseData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest2,
-	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
-	                         ));
+		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
+		));
 
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
 		char buffer[30];

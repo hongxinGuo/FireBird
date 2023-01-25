@@ -468,7 +468,7 @@
     <ClInclude Include="..\src\Type\China market\Guadan.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\NeteaseDayLineWebData.h">
+    <ClInclude Include="..\src\Type\China market\DayLineWebData.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\China market\OneDeal.h">
@@ -741,6 +741,18 @@
     <ClInclude Include="..\src\Data Container\DataStockSymbol.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\globedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
+      <Filter>头文件\Factory-Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WebInquiry\TengxunDayLineWebInquiry.h">
+      <Filter>头文件\Web inquiry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp">
@@ -968,7 +980,7 @@
     <ClCompile Include="..\src\Type\China market\Guadan.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\China market\NeteaseDayLineWebData.cpp">
+    <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\OneDeal.cpp">
@@ -1327,6 +1339,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
       <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp">
+      <Filter>源文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
+      <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebInquiry\TengxunDayLineWebInquiry.cpp">
+      <Filter>源文件\Web Inquiry\China market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

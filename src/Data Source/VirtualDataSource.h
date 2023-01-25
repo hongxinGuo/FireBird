@@ -26,7 +26,7 @@ public:
 
 	virtual bool Reset(void);
 
-	void Run(const long lCurrentTime);
+	void InquireAndProcess(long lCurrentTime);
 	virtual bool Inquire(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
@@ -54,7 +54,7 @@ public:
 
 	bool HaveInquiry(void) const {
 		if (m_qProduct.empty()) return false;
-		else return true;
+		return true;
 	}
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
@@ -83,7 +83,7 @@ public:
 
 	bool HaveReceivedData(void) {
 		if (m_qReceivedData.Empty()) return false;
-		else return true;
+		return true;
 	}
 
 	bool IsEnable(void) const noexcept { return m_fEnable; }

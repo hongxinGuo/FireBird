@@ -65,6 +65,22 @@ bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
 	return (lNewDate < lLatelyDate);
 }
 
+long TimeSpawn(long lLatelyDate, long lEarlyDate) {
+	ASSERT(lEarlyDate >= 19700101);
+	ASSERT(lLatelyDate >= 19700101);
+	ASSERT(lLatelyDate >= lEarlyDate);
+	const long year = lEarlyDate / 10000;
+	const long month = lEarlyDate / 100 - year * 100;
+	const long day = lEarlyDate - year * 10000 - month * 100;
+	const CTime ctEarly(year, month, day, 12, 0, 0);
+	const long year2 = lLatelyDate / 10000;
+	const long month2 = lLatelyDate / 100 - year2 * 100;
+	const long day2 = lLatelyDate - year2 * 10000 - month2 * 100;
+	const CTime ctLately(year2, month2, day2, 12, 0, 0);
+	const CTimeSpan ts = ctLately - ctEarly;
+	return (ts.GetDays());
+}
+
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
 	year = lDate / 10000;
 	month = (lDate - year * 10000) / 100;

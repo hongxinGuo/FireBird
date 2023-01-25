@@ -4,7 +4,7 @@
 
 #include"TemplateMutexAccessQueue.h"
 
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 #include"WebData.h"
 
 #include<memory>
@@ -59,6 +59,6 @@ namespace FireBirdTest {
 
 	REGISTER_TYPED_TEST_SUITE_P(CTemplateMutexAccessQueueTest, TestReset, TestPushPopData);
 
-	using MyTypes = ::testing::Types<string, CWebData, CNeteaseDayLineWebData, int>;
+	using MyTypes = ::testing::Types<string, CWebData, CDayLineWebData, int>;
 	INSTANTIATE_TYPED_TEST_SUITE_P(MyTestTemplateMutexAccessQueue, CTemplateMutexAccessQueueTest, MyTypes);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"NeteaseDayLineWebData.h"
+#include"DayLineWebData.h"
 
 class CNeteaseDayLineDataSource final : public CVirtualDataSource {
 public:
