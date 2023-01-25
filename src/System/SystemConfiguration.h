@@ -59,6 +59,13 @@ public:
 		m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer;
 	}
 
+	[[nodiscard]] int GetChinaMarketDayLineServer(void) const noexcept { return m_iChinaMarketDayLineServer; }
+
+	void SetChinaMarketDayLineServer(const int iChinaMarketDayLineServer) noexcept {
+		m_fUpdate = true;
+		m_iChinaMarketDayLineServer = iChinaMarketDayLineServer;
+	}
+
 	[[nodiscard]] int GetChinaMarketRTDataInquiryTime(void) const noexcept { return m_iChinaMarketRTDataInquiryTime; }
 
 	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
@@ -96,6 +103,16 @@ public:
 
 	[[nodiscard]] bool IsUsingNeteaseRTServer(void) const noexcept {
 		if (m_iChinaMarketRealtimeServer == 1) return true;
+		return false;
+	}
+
+	[[nodiscard]] bool IsUsingNeteaseDayLineServer(void) const noexcept {
+		if (m_iChinaMarketDayLineServer == 0) return true;
+		return false;
+	}
+
+	[[nodiscard]] bool IsUsingTengxunDayLineServer(void) const noexcept {
+		if (m_iChinaMarketDayLineServer == 1) return true;
 		return false;
 	}
 
@@ -242,7 +259,8 @@ protected:
 	int m_iSavingThreadPermittedNumber; // 允许的最大存储线程数， 默认为4
 
 	// 系统参数
-	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器
+	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
+	int m_iChinaMarketDayLineServer; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
 	int m_iChinaMarketRTDataInquiryTime; // 中国市场实时数据查询间隔时间
 
 	// World Market

@@ -330,8 +330,10 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 			dLastClose = dClose;
 			sTemp = js5.at(3);
 			pDayLine->SetHigh(atof(sTemp.c_str()) * 1000);
-			sTemp = js5.at(2);
+			sTemp = js5.at(4);
 			pDayLine->SetLow(atof(sTemp.c_str()) * 1000);
+			sTemp = js5.at(5);
+			pDayLine->SetVolume(atof(sTemp.c_str()) * 100);
 			pvDayLine->push_back(pDayLine);
 		}
 	}

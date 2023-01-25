@@ -1286,7 +1286,7 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeteaseServer(void) {
 		CDayLineWebDataPtr pData = PopDayLine();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
-		pStock->UpdateDayLine(pData->GetProcessedDayLine(), true); // pData的日线数据是逆序的，最新日期的在前面。
+		pStock->UpdateDayLine(pData->GetProcessedDayLine(), false); // pData的日线数据是正序的，最新日期的在最后面。
 		pStock->UpdateStatusByDownloadedDayLine();
 
 		pStock->SetDayLineLoaded(true);

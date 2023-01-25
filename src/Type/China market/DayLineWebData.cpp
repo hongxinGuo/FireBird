@@ -1,8 +1,9 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
-#include"NeteaseDayLineWebInquiry.h"
 #include"DayLineWebData.h"
+
+using namespace std;
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();
@@ -65,8 +66,10 @@ bool CDayLineWebData::ProcessNeteaseDayLineData(void) {
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
 		}
-		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
+		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
 	}
+	// 正序排列
+	ranges::sort(m_vTempDayLine, [](CDayLinePtr p1, CDayLinePtr p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 	ReportDayLineDownLoaded();
 
 	return true;

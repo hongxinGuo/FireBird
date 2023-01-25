@@ -37,6 +37,7 @@ std::string gl_sSystemConfiguration = R"(
 
 "ChinaMarket" : {
 	"RealtimeServer" : "sina",
+	"DayLineServer" : "tengxun",
 	"RealtimeInquiryTime" : 250,
 	"SavingStockDayLineThread" : 4,
 	"FastInquiringRealtimeData" : false,
@@ -94,6 +95,7 @@ CSystemConfiguration::CSystemConfiguration() {
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+	m_iChinaMarketDayLineServer = 0; // 日线数据服务器。
 	m_iChinaMarketRTDataInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
@@ -194,6 +196,17 @@ void CSystemConfiguration::Update() {
 			else {
 				// 非法服务器名称，使用默认sina服务器
 				m_iChinaMarketRealtimeServer = 0;
+				m_fUpdate = true;
+			}
+		}
+		catch (json::out_of_range&) { m_fUpdate = true; }
+		try {
+			sTemp = m_systemConfiguration.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+			if (sTemp == _T("netease")) { m_iChinaMarketDayLineServer = 0; }
+			else if (sTemp == _T("tengxun")) { m_iChinaMarketDayLineServer = 1; }
+			else {
+				// 非法服务器名称，使用默认sina服务器
+				m_iChinaMarketDayLineServer = 0;
 				m_fUpdate = true;
 			}
 		}
@@ -326,6 +339,17 @@ void CSystemConfiguration::UpdateJson(void) {
 		break;
 	default:
 		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		break;
+	}
+	switch (m_iChinaMarketDayLineServer) {
+	case 0:
+		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("netease");
+		break;
+	case 1:
+		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("tengxun");
+		break;
+	default:
+		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("netease");
 		break;
 	}
 	m_systemConfiguration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;

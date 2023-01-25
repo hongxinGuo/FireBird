@@ -249,7 +249,7 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
-	//gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
+	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 
 	if (gl_systemConfiguration.GetChinaMarketRealtimeServer() == 0) {
@@ -260,6 +260,16 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	else {
 		gl_pSinaRTDataSource->Enable(false);
 		gl_pNeteaseRTDataSource->Enable(true);
+	}
+
+	if (gl_systemConfiguration.GetChinaMarketDayLineServer() == 0) {
+		// 使用网易日线数据服务器
+		gl_pNeteaseDayLineDataSource->Enable(true);
+		gl_pTengxunDayLineDataSource->Enable(false);
+	}
+	else {
+		gl_pNeteaseDayLineDataSource->Enable(false);
+		gl_pTengxunDayLineDataSource->Enable(true);
 	}
 
 	// 查询器和数据源要一一对应

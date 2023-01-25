@@ -77,6 +77,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetSavingThreadPermittedNumber(), 4);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0) << "默认使用网易日线数据服务器";
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
@@ -108,6 +109,17 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestUsingNeteaseDayLineServer) {
+		gl_systemConfiguration.SetChinaMarketDayLineServer(0);
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
+		gl_systemConfiguration.SetChinaMarketDayLineServer(1);
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
+
+		gl_systemConfiguration.SetChinaMarketDayLineServer(0);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountToFree) {
