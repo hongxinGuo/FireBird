@@ -7,7 +7,7 @@ public:
 	CTengxunDayLineWebInquiry();
 	~CTengxunDayLineWebInquiry() override = default;
 
-	bool ParseData(CWebDataPtr pWebData) final { return true; } // 数据为非JSon格式，不解析
+	bool ParseData(CWebDataPtr pWebData) final;
 
 	bool PrepareNextInquiringString(void) override;
 	void CreateTotalInquiringString(CString strMiddle) override;

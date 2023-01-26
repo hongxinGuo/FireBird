@@ -37,8 +37,8 @@ public:
 	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic);
 	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend);
 
-	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData, bool fRevertSave = false);
-	void UpdateData(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false);
+	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData);
+	void UpdateData(vector<CDayLinePtr>& vTempDayLine);
 
 	void ShowData(CDC* pDC, CRect rectClient);
 

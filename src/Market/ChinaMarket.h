@@ -3,6 +3,7 @@
 #include"VirtualMarket.h"
 
 #include"DayLineWebData.h"
+#include"WebRTData.h"
 
 #include"DataStockSymbol.h"
 #include"ContainerChinaStock.h"

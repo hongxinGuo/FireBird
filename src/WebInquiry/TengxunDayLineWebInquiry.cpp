@@ -17,6 +17,15 @@ CTengxunDayLineWebInquiry::CTengxunDayLineWebInquiry() : CVirtualWebInquiry() {
 	ConfigureSession();
 }
 
+//
+//
+// 腾讯日线数据为json制式，目前在productTengxunDayLine中解析。
+//
+//
+bool CTengxunDayLineWebInquiry::ParseData(CWebDataPtr pWebData) {
+	return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：
@@ -24,7 +33,7 @@ CTengxunDayLineWebInquiry::CTengxunDayLineWebInquiry() : CVirtualWebInquiry() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineWebInquiry::PrepareNextInquiringString(void) {
-	// 准备网易日线数据申请格式
+	// 准备腾讯日线数据申请格式
 	CString strMiddle = gl_pChinaMarket->CreateTengxunDayLineInquiringStr();
 	if (strMiddle.GetLength() > 0) {
 		char buffer[20];

@@ -95,6 +95,7 @@
     <ClCompile Include="ProductTengxunDayLineTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
     <ClCompile Include="SinaRTDataSourceTest.cpp" />
+    <ClCompile Include="TengxunDayLineWebInquiryTest.cpp" />
     <ClCompile Include="TengxunRTDataSourceTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="MockQuandlWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
     <ClInclude Include="MockFireBirdView.h" />
+    <ClInclude Include="MockTengxunDayLineWebInquiry.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />
     <ClInclude Include="MockTiingoWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />

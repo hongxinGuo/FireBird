@@ -90,7 +90,6 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData(void) {
 	double dTemp;
 
 	auto pDayLine = make_shared<CDayLine>();
-	pDayLine = make_shared<CDayLine>();
 
 	long i = 0;
 	// ÈÕÆÚ

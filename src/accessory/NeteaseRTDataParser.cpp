@@ -75,7 +75,7 @@ CString XferToCString(const std::string& s);
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
-	bool fSucceed;
+	bool fSucceed = false;
 	string strTime, strUpdateTime, strName;
 	CString strSymbol4, str1, strName3;
 	json js = it.value();
@@ -97,7 +97,6 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		strError2 += _T(" ");
 		strError2 += e.what();
 		gl_systemMessage.PushErrorMessage(strError2);
-		fSucceed = false;
 	}
 	try {
 		pWebRTData->SetVolume(jsonGetLongLong(&js, _T("volume")));

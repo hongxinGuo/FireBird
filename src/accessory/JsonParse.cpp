@@ -20,6 +20,7 @@
 #include<string>
 #include<memory>
 
+#include "ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "JsonGetValue.h"
 using namespace std;
@@ -363,7 +364,8 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 //
 CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
-	shared_ptr<vector<CDayLinePtr>> pvDayLine = nullptr;
+	const CString strSymbol = pData->GetStockCode();
+	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
 		if (!pData->CreateNlohmannJson()) {	// 网易数据前21位为前缀，后两位为后缀
@@ -373,10 +375,11 @@ CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
 	}
 	if (fProcess && pData->IsParsed()) {
 		json* pjs = pData->GetJSon();
-		pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pData->GetStockCode()));
+		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pData->GetStockCode()));
 		ranges::sort(*pvDayLine, [](CDayLinePtr pData1, CDayLinePtr pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
 		for (const auto& pDayLine : *pvDayLine) {
-			pDayLine->SetStockSymbol(pData->GetStockCode());
+			pDayLine->SetStockSymbol(strSymbol);
+			pDayLine->SetDisplaySymbol(strDisplaySymbol);
 			pDayLineData->PushDayLine(pDayLine);
 		}
 	}

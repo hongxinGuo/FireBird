@@ -32,7 +32,7 @@ namespace FireBirdTest {
 
 		vector<CDayLinePtr> vDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		vDayLine.push_back(pDayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
-		dataChinaDayLine.UpdateData(vDayLine, false);
+		dataChinaDayLine.UpdateData(vDayLine);
 		long lStartDate = 0, lEndDate = 0;
 		dataChinaDayLine.GetStartEndDate(lStartDate, lEndDate);
 
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 
 		vector<CDayLinePtr> vDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -106,58 +106,12 @@ namespace FireBirdTest {
 
 		dataChinaDayLine.SetDataLoaded(false);
 
-		dataChinaDayLine.UpdateData(vDayLine, false);
+		dataChinaDayLine.UpdateData(vDayLine);
 
 		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
 		EXPECT_THAT(dataChinaDayLine.Size(), 3);
 		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10001) << "正序存储，第一个数据的收盘价";
 		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10003) << "正序存储，第三个数据的收盘价";
-	}
-
-	TEST_F(CDataChinaDayLineTest, TestUpdateData2) {
-		CDataChinaDayLine dataChinaDayLine;
-
-		vector<CDayLinePtr> vDayLine;
-
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200101); // 星期三
-		pDayLine->SetHigh(10010);
-		pDayLine->SetLow(9910);
-		pDayLine->SetClose(10001);
-		pDayLine->SetLastClose(10005);
-		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
-
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200102); // 星期四
-		pDayLine->SetHigh(10020);
-		pDayLine->SetLow(9920);
-		pDayLine->SetClose(10002);
-		pDayLine->SetLastClose(10001);
-		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
-
-		pDayLine = nullptr;
-		pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200103); // 星期五
-		pDayLine->SetHigh(10030);
-		pDayLine->SetLow(9930);
-		pDayLine->SetClose(10003);
-		pDayLine->SetLastClose(10002);
-		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
-
-		dataChinaDayLine.SetDataLoaded(false);
-
-		dataChinaDayLine.UpdateData(vDayLine, true); // 逆序存储
-
-		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
-		EXPECT_THAT(dataChinaDayLine.Size(), 3);
-		EXPECT_THAT(dataChinaDayLine.GetData(0)->GetClose(), 10003) << "逆序存储，第三个数据的收盘价";
-		EXPECT_THAT(dataChinaDayLine.GetData(2)->GetClose(), 10001) << "逆序存储，第一个数据的收盘价";
-
-		vDayLine.resize(0);
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
@@ -166,7 +120,7 @@ namespace FireBirdTest {
 		vector<CDayLinePtr> vDayLine;
 		long lCurrentDayLinePos = 0;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -214,7 +168,7 @@ namespace FireBirdTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dataChinaDayLine.UpdateData(vDayLine, false);
+		dataChinaDayLine.UpdateData(vDayLine);
 		CWeekLinePtr pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
@@ -239,7 +193,7 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 		vector<CDayLinePtr> vDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
 		pDayLine->SetHigh(10010);
 		pDayLine->SetLow(9910);
@@ -287,7 +241,7 @@ namespace FireBirdTest {
 		pDayLine->SetVolume(10000);
 		vDayLine.push_back(pDayLine);
 
-		dataChinaDayLine.UpdateData(vDayLine, false);
+		dataChinaDayLine.UpdateData(vDayLine);
 		dataChinaDayLine.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
@@ -308,7 +262,7 @@ namespace FireBirdTest {
 		vector<CDayLinePtr> vDayLine;
 		CDataChinaDayLine dataChinaDayLine;
 
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为20200817，故此数据位于最前面
 		pDayLine->SetStockSymbol(_T("000001.SZ"));
 		pDayLine->SetClose(100);

@@ -52,10 +52,14 @@ void CNeteaseDayLineWebInquiry::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-void CNeteaseDayLineWebInquiry::UpdateStatusAfterSucceed(CWebDataPtr pData) { pData->SetStockCode(GetDownLoadingStockCode()); }
+void CNeteaseDayLineWebInquiry::UpdateStatusAfterSucceed(CWebDataPtr pData) {
+	pData->SetStockCode(GetDownLoadingStockCode());
+}
 
 /// <summary>
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) { m_strDownLoadingStockCode = strStockCode; }
+void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
+	m_strDownLoadingStockCode = strStockCode;
+}

@@ -371,7 +371,7 @@ public:
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine(void);
 
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine, bool fRevertSave = false) { m_dataDayLine.UpdateData(vTempDayLine, fRevertSave); }
+	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 
 	void ReportDayLineDownLoaded(void);
 

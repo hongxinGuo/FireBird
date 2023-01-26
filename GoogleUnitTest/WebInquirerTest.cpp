@@ -45,11 +45,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWebInquirerTest, TestPushPopWebSocketData) {
-		auto pData = make_shared<string>(_T("abc"));
-		shared_ptr<string> pData2;
+		const auto pData = make_shared<string>(_T("abc"));
 		gl_finnhubWebSocket.PushData(pData);
 		EXPECT_EQ(gl_finnhubWebSocket.DataSize(), 1);
-		pData2 = gl_finnhubWebSocket.PopData();
+		const shared_ptr<string> pData2 = gl_finnhubWebSocket.PopData();
 		EXPECT_STREQ(pData2->c_str(), _T("abc"));
 	}
 }

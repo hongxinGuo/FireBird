@@ -34,8 +34,6 @@
 
 #include"Thread.h"
 
-#include"HighPerformanceCounter.h"
-
 #include"curl/curl.h"
 #include <ixwebsocket/IXNetSystem.h>
 
@@ -325,8 +323,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
 
-	BOOL bNameValid{true};
-
 	if (!m_wndMenuBar.Create(this)) {
 		TRACE0("未能创建菜单栏\n");
 		return -1; // 未能创建
@@ -346,7 +342,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	CString strToolBarName;
-	bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
+	BOOL bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
 	ASSERT(bNameValid);
 	m_wndToolBar.SetWindowText(strToolBarName);
 
