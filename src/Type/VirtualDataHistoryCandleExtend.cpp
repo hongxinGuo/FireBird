@@ -17,14 +17,15 @@ CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {
 //  当存在旧日线历史数据时，本函数只是更新。
 //
 //  具体操作的数据表由第一个参数传入，
+//  自动删除旧数据中的重复数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic,
-                                                    const CString& strStockSymbol) {
-	vector<CVirtualHistoryCandleExtendPtr> vHistoryCandle;
+bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol) {
+	vector<CVirtualHistoryCandleExtendPtr> vOldHistoryCandle;
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
+	long lLastDate = 0;
 
 	ASSERT(Size() > 0);
 
@@ -35,13 +36,21 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
 
 		pSetHistoryCandleBasic->Open();
+		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 		while (!pSetHistoryCandleBasic->IsEOF()) {
-			pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-			pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
-			vHistoryCandle.push_back(pHistoryCandle);
-			lSizeOfOldDayLine++;
+			if (pSetHistoryCandleBasic->m_Date > lLastDate) {
+				pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
+				pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
+
+				vOldHistoryCandle.push_back(pHistoryCandle);
+				lSizeOfOldDayLine++;
+			}
+			else {
+				pSetHistoryCandleBasic->Delete(); //删除日期重复的数据
+			}
 			pSetHistoryCandleBasic->MoveNext();
 		}
+		pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
 		pSetHistoryCandleBasic->Close();
 	}
 	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
@@ -53,16 +62,13 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		for (int i = 0; i < lSize; i++) {
 			// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
-			if (pHistoryCandle->GetMarketDate() < vHistoryCandle.at(0)->GetMarketDate()) {
-				// 有更早的新数据？
+			if (pHistoryCandle->GetMarketDate() < vOldHistoryCandle.at(0)->GetMarketDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 			}
 			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->
-					GetMarketDate()))
-					lCurrentPos++;
+				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
 				if (lCurrentPos < lSizeOfOldDayLine) {
-					if (vHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) {
+					if (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) { // 前数据集中有遗漏的日期
 						pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 						fNeedUpdate = true;
 					}

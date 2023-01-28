@@ -5,6 +5,8 @@
 
 #include"JsonParse.h"
 
+using namespace std;
+
 long CProductTengxunDayLine::sm_lCurrentNumber = 0;
 long CProductTengxunDayLine::sm_lInquiryNumber = 0;
 vector<CDayLinePtr> CProductTengxunDayLine::sm_vDayLinePtr{};
@@ -48,9 +50,11 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
 		sm_vDayLinePtr.push_back(pData);
 	}
+	sm_lCurrentNumber++;
 	if (ReceivedAllData()) {
 		pDayLineWebData->SetStockCode(pWebData->GetStockCode());
 		pDayLineWebData->ClearDayLine();
+		CheckAndPrepareDayLine();
 		for (const auto& pData : sm_vDayLinePtr) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
@@ -67,8 +71,20 @@ void CProductTengxunDayLine::AppendDayLine(vector<CDayLinePtr> vDayLine) {
 	}
 }
 
+void CProductTengxunDayLine::CheckAndPrepareDayLine() {
+	if (sm_vDayLinePtr.size() > 1) {
+		ranges::sort(sm_vDayLinePtr, [](CDayLinePtr p1, CDayLinePtr p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+
+		for (int i = 0; i < sm_vDayLinePtr.size() - 1; i++) {
+			const auto p1 = sm_vDayLinePtr.at(i);
+			const auto p2 = sm_vDayLinePtr.at(i + 1);
+			ASSERT(p1->GetMarketDate() < p2->GetMarketDate()); // 没有重复数据
+			p2->SetLastClose(p1->GetClose());
+		}
+	}
+}
+
 bool CProductTengxunDayLine::ReceivedAllData(void) {
-	sm_lCurrentNumber++;
 	if (sm_lCurrentNumber >= sm_lInquiryNumber) return true;
 	return false;
 }

@@ -235,13 +235,13 @@ void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	gmtime_s(tm_, &tMarket);
 }
 
-CString ConvertDateToString(const long lDate) {
+CString ConvertDateToString(const long lDate, CString strFormat) {
 	char buffer[30];
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;
 
-	sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), year, month, day);
+	sprintf_s(buffer, strFormat, year, month, day);
 	CString str = buffer;
 	return (str);
 }

@@ -677,8 +677,13 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTWebInquiry->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(3, str);
-	// 更新网易日线数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
+	// 更新日线数据读取时间
+	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
+		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
+	}
+	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
+		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunDayLineWebInquiry->GetCurrentInquiryTime());
+	}
 	str = buffer;
 	SysCallSetInnerSystemPaneText(4, str);
 
@@ -1094,9 +1099,24 @@ void CMainFrame::OnMaintainDayLine() {
 	gl_pChinaMarket->MaintainDayLine();
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 维护日线数据库的工作，可能会超过一个小时，故而需要在当天交易结束后方允许执行。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////
+
 void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_pChinaMarket->IsDummyTime()) {
+#ifndef _DEBUG
+   if(gl_pChinaMarket->GetMarketTime() > 151000) 
+#endif
+		SysCallCmdUIEnable(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnSize(UINT nType, int cx, int cy) {

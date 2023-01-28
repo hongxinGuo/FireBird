@@ -26,7 +26,7 @@ void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);
 void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
-[[nodiscard]] CString ConvertDateToString(const long lDate);
+[[nodiscard]] CString ConvertDateToString(const long lDate, CString strFormat);
 [[nodiscard]] time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
 [[nodiscard]] time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
 

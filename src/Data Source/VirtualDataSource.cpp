@@ -24,7 +24,12 @@ bool CVirtualDataSource::Reset(void) {
 
 void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 	if (!m_fEnable) return; // 不允许执行的话，直接返回
-	Inquire(lCurrentTime);
+	if (!HaveInquiry()) { // 目前允许一次申请生成多个查询，故而有可能需要多次查询后方允许再次申请。
+		Inquire(lCurrentTime);
+	}
+	else {
+		SetInquiring(true); // 队列中还有待查询的申请，设置此标识。
+	}
 	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
 		UpdateStatus();
 	}
@@ -76,7 +81,9 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 			}
 		}
 		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-		SetInquiring(false); // 此标识的重置需要位于位于最后一步
+		if (!HaveInquiry()) { // 没有现存的申请时
+			SetInquiring(false); // 此标识的重置需要位于位于最后一步
+		}
 		// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
 		// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
 		thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);

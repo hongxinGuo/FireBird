@@ -47,8 +47,6 @@ bool CTengxunDayLineDataSource::Inquire(const long lCurrentTime) {
 bool CTengxunDayLineDataSource::InquireDayLine(void) {
 	const auto lStockSetSize = gl_pChinaMarket->GetTotalStock();
 	bool fHaveInquiry = false;
-	const CString strFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
-	const CString strSuffix = _T(",2000,,");
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
 		CChinaStockPtr pStock;
@@ -67,47 +65,13 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			long lStartDate = GetPrevDay(pStock->GetDayLineEndDate());
-			const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
-			const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
-			const long lStockIndex = gl_pChinaMarket->GetStockIndex(pStock);
-			long l = 0;
-			int iCounter = 0;
-			long yearEnd, monthEnd, dayEnd;
-			char buffer[50], bufferEnd[50];
-			const CString strStockCode = XferStandardToTengxun(pStock->GetSymbol());
-			shared_ptr<CProductTengxunDayLine> product = nullptr;
-			do {
-				product = make_shared<CProductTengxunDayLine>();
-				const long year = lStartDate / 10000;
-				const long month = lStartDate / 100 - year * 100;
-				const long day = lStartDate - year * 10000 - month * 100;
-				sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-				CString strStartDate = buffer;
-				if ((l + 7) > yearDiffer) {
-					yearEnd = lCurrentDate / 10000;
-					monthEnd = lCurrentDate / 100 - yearEnd * 100;
-					dayEnd = lCurrentDate - yearEnd * 10000 - month * 100;
-				}
-				else {
-					yearEnd = lStartDate / 10000 + 6;
-					monthEnd = 12;
-					dayEnd = 31;
-				}
-				sprintf_s(bufferEnd, _T("%4d-%02d-%02d"), yearEnd, monthEnd, dayEnd);
-				CString strEndDate = bufferEnd;
-				const CString strTotalMessage = strFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + strSuffix;
-				product->SetIndex(lStockIndex);
-				product->SetInquiry(strTotalMessage);
+			const vector<CVirtualProductWebDataPtr> vProduct = CreateWebProduct(pStock);
+			ASSERT(!vProduct.empty());
+			for (auto& product : vProduct) {
 				StoreInquiry(product);
-				l += 7;
-				lStartDate = (year + 7) * 10000 + 1 * 100 + 1;
-				iCounter++;
-			} while (l < yearDiffer);
-			product->Reset();
-			product->SetInquiryNumber(iCounter);
+			}
 			(dynamic_cast<CTengxunDayLineWebInquiry*>(m_pWebInquiry))->SetDownLoadingStockCode(pStock->GetSymbol());
-			gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
+			gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(pStock->GetSymbol());
 			pStock->SetDayLineNeedUpdate(false);
 			SetInquiring(true);
 		}
@@ -118,4 +82,41 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 		}
 	}
 	return fHaveInquiry;
+}
+
+vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateWebProduct(CChinaStockPtr pStock) {
+	const CString strFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
+	const CString strSuffix = _T(",2000,,");
+	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
+	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
+	const long lStockIndex = gl_pChinaMarket->GetStockIndex(pStock);
+	vector<CVirtualWebProductPtr> vProduct;
+	long l = 0;
+	int iCounter = 0;
+	const CString strStockCode = XferStandardToTengxun(pStock->GetSymbol());
+	shared_ptr<CProductTengxunDayLine> product = nullptr;
+	do {
+		product = make_shared<CProductTengxunDayLine>();
+		CString strStartDate = ConvertDateToString(lStartDate, _T("%4d-%02d-%02d"));
+		CString strEndDate;
+		const long year = lStartDate / 10000;
+		if ((l + 7) > yearDiffer) {
+			strEndDate = ConvertDateToString(lCurrentDate, _T("%4d-%02d-%02d"));
+		}
+		else {
+			strEndDate = ConvertDateToString((year + 6) * 10000 + 1231, _T("%4d-%02d-%02d"));
+		}
+		const CString strTotalMessage = strFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + strSuffix;
+		product->SetIndex(lStockIndex);
+		product->SetInquiry(strTotalMessage);
+		vProduct.push_back(product);
+		l += 7;
+		lStartDate = (year + 7) * 10000 + 101;
+		iCounter++;
+	} while (l < yearDiffer);
+	product->Reset();
+	product->SetInquiryNumber(iCounter);
+
+	return vProduct;
 }

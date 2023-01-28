@@ -545,7 +545,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
 
 	CString str = "开始处理";
-	str += ConvertDateToString(lCurrentTradeDay);
+	str += ConvertDateToString(lCurrentTradeDay, _T("%4d年%2d月%2d日"));
 	str += _T("的实时数据");
 	gl_systemMessage.PushInformationMessage(str);
 
@@ -588,7 +588,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();
 
-	str = ConvertDateToString(lCurrentTradeDay);
+	str = ConvertDateToString(lCurrentTradeDay, _T("%4d年%2d月%2d日"));
 	str += _T("的日线数据已生成");
 	gl_systemMessage.PushInformationMessage(str);
 
@@ -816,7 +816,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	vIndex.clear();
 	vRS.clear();
 
-	const CString strDate2 = ConvertDateToString(lDate);
+	const CString strDate2 = ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
 	const CString strTemp = strDate2 + _T("的股票日线相对强度计算完成");
 	gl_systemMessage.PushDayLineInfoMessage(strTemp); // 采用同步机制报告信息
 
@@ -921,7 +921,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	vIndex.clear();
 	vRS.clear();
 
-	const CString strDate2 = ConvertDateToString(lDate);
+	const CString strDate2 = ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
 	const CString strTemp = strDate2 + _T("的股票周线相对强度计算完成");
 	gl_systemMessage.PushInformationMessage(strTemp); // 采用同步机制报告信息
 

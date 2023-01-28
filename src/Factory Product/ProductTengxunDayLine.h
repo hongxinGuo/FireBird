@@ -19,16 +19,18 @@ public:
 	CString CreateMessage(void) final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
+	bool ReceivedAllData(void);
+
 	static void Reset() {
 		sm_vDayLinePtr.resize(0);
-		sm_lInquiryNumber = 0;
+		sm_lInquiryNumber = 1;
 		sm_lCurrentNumber = 0;
 	}
 
 	static void SetInquiryNumber(long lNumber) { sm_lInquiryNumber = lNumber; }
 	static void AppendDayLine(vector<CDayLinePtr> vDayLine);
 
-	static bool ReceivedAllData(void);
+	void CheckAndPrepareDayLine();
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

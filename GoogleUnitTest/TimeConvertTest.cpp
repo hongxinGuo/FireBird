@@ -194,7 +194,7 @@ namespace FireBirdTest {
 		sprintf_s(buffer, _T("%4d年%2d月%2d日"), 2020, 02, 02);
 		CString str;
 		str = buffer;
-		EXPECT_STREQ(ConvertDateToString(20200202), str);
+		EXPECT_STREQ(ConvertDateToString(20200202, _T("%4d年%2d月%2d日")), str);
 	}
 
 	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {

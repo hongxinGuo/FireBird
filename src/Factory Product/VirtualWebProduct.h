@@ -63,7 +63,7 @@ protected:
 	// 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
-using CVirtualProductWebDataPtr = shared_ptr<CVirtualWebProduct>;
+using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;
 
 // 此结构只用于测试中
 struct FinnhubWebData {

@@ -591,7 +591,9 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 	TaskUpdateOptionDB();
 	TaskUpdateStockCodeDB();
 
-	if (IsSavingTempData()) { TaskSaveTempDataIntoDB(lCurrentTime); }
+	if (IsSavingTempData()) {
+		TaskSaveTempDataIntoDB(lCurrentTime);
+	}
 
 	return true;
 }
@@ -728,7 +730,7 @@ void CChinaMarket::ProcessTodayStock(void) {
 		}
 		else { SetTodayStockProcessed(false); }
 	}
-	CString str = ConvertDateToString(lDate);
+	CString str = ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
 	str += _T("的实时数据处理完毕");
 	gl_systemMessage.PushInformationMessage(str);
 }
@@ -908,7 +910,9 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {
 bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 	// 计算每十秒钟一次的任务
 	// 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-	if (IsDayLineNeedProcess()) { TaskProcessDayLineGetFromNeteaseServer(); }
+	if (IsDayLineNeedProcess()) {
+		TaskProcessDayLineGetFromNeteaseServer();
+	}
 
 	// 判断是否存储日线库和股票代码库
 	if (IsDayLineNeedSaving()) {
