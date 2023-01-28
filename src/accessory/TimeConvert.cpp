@@ -87,6 +87,28 @@ void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
 	day = lDate - year * 10000 - month * 100;
 }
 
+long GetNextDay(long lDate, long lTimeSpanDays) noexcept {
+	const CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
+	const long year = lDate / 10000;
+	const long month = lDate / 100 - year * 100;
+	const long day = lDate - year * 10000 - month * 100;
+	CTime ctDay(year, month, day, 12, 0, 0);
+	ctDay += ts;
+	const long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
+	return (lNewDate);
+}
+
+long GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
+	const CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
+	const long year = lDate / 10000;
+	const long month = lDate / 100 - year * 100;
+	const long day = lDate - year * 10000 - month * 100;
+	CTime ctDay(year, month, day, 12, 0, 0);
+	ctDay -= ts;
+	const long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
+	return (lNewDate);
+}
+
 const static CTimeSpan s_1Day(1, 0, 0, 0);
 const static CTimeSpan s_2Day(2, 0, 0, 0);
 const static CTimeSpan s_3Day(3, 0, 0, 0);

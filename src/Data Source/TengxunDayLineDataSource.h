@@ -11,7 +11,13 @@ public:
 
 	bool Inquire(const long lCurrentTime) override;
 
+	bool InquireDayLine(void);
+
+	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }
+	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+
 protected:
+	bool m_fUpdateDayLine; // 每日更新公司日线数据
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;

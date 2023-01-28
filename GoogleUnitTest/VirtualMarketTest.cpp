@@ -271,29 +271,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pVirtualMarket->IsWorkingDay(20191201));
 	}
 
-	TEST_F(CVirtualMarketTest, TestIsEarlyThen) {
-		EXPECT_TRUE(gl_pVirtualMarket->IsEarlyThen(20200101, 20200115, 13));
-		EXPECT_FALSE(gl_pVirtualMarket->IsEarlyThen(20200101, 20200115, 14));
-		EXPECT_TRUE(gl_pVirtualMarket->IsEarlyThen(20200115, 20200201, 16));
-		EXPECT_FALSE(gl_pVirtualMarket->IsEarlyThen(20200115, 20200201, 17));
-		EXPECT_TRUE(gl_pVirtualMarket->IsEarlyThen(20191101, 20200115, 74));
-		EXPECT_FALSE(gl_pVirtualMarket->IsEarlyThen(20191101, 20200115, 75));
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetNextDate) {
-		EXPECT_EQ(gl_pVirtualMarket->GetNextDay(20200101, 1), 20200102);
-		EXPECT_EQ(gl_pVirtualMarket->GetNextDay(20200101, 11), 20200112);
-		EXPECT_EQ(gl_pVirtualMarket->GetNextDay(20201231, 1), 20210101);
-		EXPECT_EQ(gl_pVirtualMarket->GetNextDay(20201221, 14), 20210104);
-	}
-
-	TEST_F(CVirtualMarketTest, TestGetPrevDay) {
-		EXPECT_EQ(gl_pVirtualMarket->GetPrevDay(20200102), 20200101);
-		EXPECT_EQ(gl_pVirtualMarket->GetPrevDay(20200112, 10), 20200102);
-		EXPECT_EQ(gl_pVirtualMarket->GetPrevDay(20200102, 11), 20191222);
-		EXPECT_EQ(gl_pVirtualMarket->GetPrevDay(20200202, 11), 20200122);
-	}
-
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalTime) {
 		gl_pVirtualMarket->CalculateTime();
 
@@ -301,11 +278,10 @@ namespace FireBirdTest {
 		time(&tUTC);
 		tm tmLocal;
 		char buffer[30];
-		CString str;
 
 		localtime_s(&tmLocal, &tUTC);
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		str = buffer;
+		CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfLocalTime(), str);
 	}
 

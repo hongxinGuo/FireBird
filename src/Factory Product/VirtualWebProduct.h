@@ -34,8 +34,9 @@ public:
 	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 
 	CString GetClassName(void) const noexcept { return m_strClassName; }
-	CString GetInquiry(void) const noexcept { return m_strInquiry; }
 	CString GetTotalInquiryMessage(void) const noexcept { return m_strTotalInquiryMessage; }
+	CString GetInquiry(void) const noexcept { return m_strInquiry; }
+	void SetInquiry(CString strMessage) noexcept { m_strInquiry = strMessage; }
 
 	long GetIndex(void) const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
@@ -90,7 +91,8 @@ struct TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~TiingoWebData() { }
+	~TiingoWebData() {
+	}
 
 public:
 	long m_lIndex;

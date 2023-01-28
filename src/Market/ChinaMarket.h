@@ -3,7 +3,6 @@
 #include"VirtualMarket.h"
 
 #include"DayLineWebData.h"
-#include"WebRTData.h"
 
 #include"DataStockSymbol.h"
 #include"ContainerChinaStock.h"
@@ -214,7 +213,7 @@ public:
 	bool DeleteWeekLineBasicInfo(long lMonday);
 	bool DeleteWeekLineExtendInfo(long lMonday);
 
-	void MaintainDayLine(void) { m_containerChinaStock.SetAllDayLineNeedMaintain(); }
+	void MaintainDayLine(void) const { m_containerChinaStock.SetAllDayLineNeedMaintain(); }
 
 	bool DeleteDayLine(long lDate);
 	bool DeleteDayLineBasicInfo(long lDate);

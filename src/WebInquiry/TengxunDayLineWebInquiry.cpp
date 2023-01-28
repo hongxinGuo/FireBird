@@ -2,11 +2,9 @@
 
 #include "TengxunDayLineWebInquiry.h"
 
-#include"ChinaStockCodeConverter.h"
 #include"ChinaMarket.h"
 
 #include"TengxunDayLineDataSource.h"
-#include "TimeConvert.h"
 
 CTengxunDayLineWebInquiry::CTengxunDayLineWebInquiry() : CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
@@ -33,25 +31,10 @@ bool CTengxunDayLineWebInquiry::ParseData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineWebInquiry::PrepareNextInquiringString(void) {
-	// 准备腾讯日线数据申请格式
-	CString strMiddle = gl_pChinaMarket->CreateTengxunDayLineInquiringStr();
-	if (strMiddle.GetLength() > 0) {
-		char buffer[20];
-		const CString strStockCode = XferTengxunToStandard(strMiddle);
-		SetDownLoadingStockCode(strStockCode);
-		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
-		strMiddle += _T(",day,,,");
-		long lDiffer = TimeSpawn(gl_pChinaMarket->GetMarketDate(), gl_pChinaMarket->GetStock(strStockCode)->GetDayLineEndDate());
-		lDiffer++; // 由于腾讯日线不提供前收盘数据，故需往前多提取一日的数据
-		if (lDiffer > 2000) lDiffer = 2000; // 目前腾讯日线只能提供2000个数据。
-		sprintf_s(buffer, _T("%d"), lDiffer);
-		strMiddle += buffer;
-		strMiddle += _T(",,");
-		CreateTotalInquiringString(strMiddle);
+	// 腾讯日线的申请信息由TengxunDayLineDataSource负责完成。
+	CreateTotalInquiringString(_T(""));
 
-		return true;
-	}
-	return false;
+	return true;
 }
 
 void CTengxunDayLineWebInquiry::CreateTotalInquiringString(CString strMiddle) {

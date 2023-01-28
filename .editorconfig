@@ -159,6 +159,7 @@ resharper_other_braces = end_of_line
 resharper_requires_expression_braces = end_of_line
 resharper_simple_block_style = do_not_change
 resharper_simple_embedded_statement_style = on_single_line
+resharper_toplevel_function_declaration_return_type_style = on_single_line
 resharper_toplevel_function_definition_return_type_style = on_single_line
 resharper_type_declaration_braces = end_of_line
 resharper_wrap_enumeration_style = wrap_if_long

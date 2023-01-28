@@ -13,7 +13,9 @@ public:
 	void Reset(void);
 
 	// 提取网易日线历史数据各函数
+	void ClearDayLine() noexcept { m_vTempDayLine.clear(); }
 	vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
+	void AppendDayLine(const CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
 
 	void SetStockCode(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
 	void SetStockCode(const CString strSymbol) noexcept { m_strStockCode = strSymbol; }
@@ -31,9 +33,6 @@ public:
 
 	// 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 	bool ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos);
-
-	// 用于调试
-	void PushDayLine(const CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
 
 protected:
 

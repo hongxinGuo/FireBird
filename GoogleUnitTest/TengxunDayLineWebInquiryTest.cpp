@@ -107,7 +107,7 @@ namespace FireBirdTest {
 			}
 		}
 		gl_pChinaMarket->SetSystemReady(false);
-		EXPECT_LT(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+		EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		// 目前将索引移入函数内，作为静态变量存在，故而无法知道确切位置了。
 		//EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
 

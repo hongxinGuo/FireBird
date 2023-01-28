@@ -1259,7 +1259,7 @@ namespace FireBirdTest {
 		CChinaStock stock;
 
 		gl_pChinaMarket->CalculateTime();
-		stock.SetDayLineEndDate(gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
+		stock.SetDayLineEndDate(GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
@@ -1268,7 +1268,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetSymbol(), _T("000003.SZ"));
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
-		EXPECT_EQ(stock.GetDayLineEndDate(), gl_pChinaMarket->GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
+		EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		setChinaStockSymbol.Close();
 	}
 
@@ -2352,7 +2352,7 @@ namespace FireBirdTest {
 			pDayLine->SetDate(19900101 + i);
 			pDayLine->SetClose(10);
 			pDayLine->SetLastClose(10);
-			data.PushDayLine(pDayLine);
+			data.AppendDayLine(pDayLine);
 		}
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());

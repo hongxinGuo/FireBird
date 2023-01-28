@@ -55,9 +55,9 @@ public:
 	virtual bool IsDummyTime(void) { return false; } // 空闲时间
 	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
-	bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;
-	long GetNextDay(long lDate, long lTimeSpanDays = 1) const noexcept;
-	long GetPrevDay(long lDate, long lTimeSpanDays = 1) const noexcept;
+	//bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept;
+	//long GetNextDay(long lDate, long lTimeSpanDays = 1) const noexcept;
+	//long GetPrevDay(long lDate, long lTimeSpanDays = 1) const noexcept;
 
 	CString GetStringOfLocalTime(void) const; // 得到本地时间的字符串
 	CString GetStringOfLocalDateTime(void) const;

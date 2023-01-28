@@ -380,7 +380,7 @@ CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetStockSymbol(strSymbol);
 			pDayLine->SetDisplaySymbol(strDisplaySymbol);
-			pDayLineData->PushDayLine(pDayLine);
+			pDayLineData->AppendDayLine(pDayLine);
 		}
 	}
 	return pDayLineData;

@@ -14,6 +14,9 @@ long TimeSpawn(long lLatelyDate, long lEarlyDate);
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
 
+long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
+long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
+
 [[nodiscard]] long GetNextMonday(const long lDate); // 找到lDate的下一个星期一的数值
 [[nodiscard]] long GetPrevMonday(const long lDate); // 找到lDate的上一个星期一的数值
 [[nodiscard]] long GetCurrentMonday(const long lDate); // 找到包含lDate的那个星期的星期一

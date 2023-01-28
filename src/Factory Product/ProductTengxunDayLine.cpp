@@ -5,13 +5,17 @@
 
 #include"JsonParse.h"
 
+long CProductTengxunDayLine::sm_lCurrentNumber = 0;
+long CProductTengxunDayLine::sm_lInquiryNumber = 0;
+vector<CDayLinePtr> CProductTengxunDayLine::sm_vDayLinePtr{};
+
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiry = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 }
 
 CString CProductTengxunDayLine::CreateMessage(void) {
-	return m_strInquiry; // 腾讯日线数据的申请字符串目前由CNeteaseDayLineWebInquiry类完成，本Product无需动作。
+	return m_strInquiry; // 腾讯日线数据的申请字符串目前由CNeteaseDayLineDataSource类完成，本Product无需动作。
 }
 
 //
@@ -31,11 +35,40 @@ CString CProductTengxunDayLine::CreateMessage(void) {
 //		  }
 //	 }
 // }
+//
+//
+//
+// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要分次查询不同日期的数据方可。
+// 使用内部计数器来计算是否全部数据都查询完毕了。
+// 尚未完毕时将日线数据暂存于本Product的静态数据内，当完毕时方将所有数据提交给gl_pChinaMarket.
 // 
+////////////////////////////////////
 bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
-	pDayLineWebData->SetStockCode(pWebData->GetStockCode());
-	gl_pChinaMarket->PushDayLine(pDayLineWebData);
+	for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
+		sm_vDayLinePtr.push_back(pData);
+	}
+	if (ReceivedAllData()) {
+		pDayLineWebData->SetStockCode(pWebData->GetStockCode());
+		pDayLineWebData->ClearDayLine();
+		for (const auto& pData : sm_vDayLinePtr) {
+			pDayLineWebData->AppendDayLine(pData);
+		}
+		Reset();
+		gl_pChinaMarket->PushDayLine(pDayLineWebData);
+	}
 
 	return true;
+}
+
+void CProductTengxunDayLine::AppendDayLine(vector<CDayLinePtr> vDayLine) {
+	for (auto& pDayLine : vDayLine) {
+		sm_vDayLinePtr.push_back(pDayLine);
+	}
+}
+
+bool CProductTengxunDayLine::ReceivedAllData(void) {
+	sm_lCurrentNumber++;
+	if (sm_lCurrentNumber >= sm_lInquiryNumber) return true;
+	return false;
 }

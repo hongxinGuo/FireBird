@@ -25,6 +25,8 @@
 
 #include<thread>
 #include<memory>
+
+#include "TimeConvert.h"
 using std::thread;
 using std::make_shared;
 

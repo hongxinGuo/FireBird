@@ -259,7 +259,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 			return m_fDayLineNeedUpdate;
 		}
 	}
-	else if ((!IsNotChecked()) && (gl_pWorldMarket->IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
+	else if ((!IsNotChecked()) && (IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
 		SetDayLineNeedUpdate(false);
 		return m_fDayLineNeedUpdate;
 	}

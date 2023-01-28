@@ -84,6 +84,29 @@ namespace FireBirdTest {
 		EXPECT_TRUE((year == 2020) && (month == 12) && (day == 30));
 	}
 
+	TEST_F(TimeConvertTest, TestIsEarlyThen) {
+		EXPECT_TRUE(IsEarlyThen(20200101, 20200115, 13));
+		EXPECT_FALSE(IsEarlyThen(20200101, 20200115, 14));
+		EXPECT_TRUE(IsEarlyThen(20200115, 20200201, 16));
+		EXPECT_FALSE(IsEarlyThen(20200115, 20200201, 17));
+		EXPECT_TRUE(IsEarlyThen(20191101, 20200115, 74));
+		EXPECT_FALSE(IsEarlyThen(20191101, 20200115, 75));
+	}
+
+	TEST_F(TimeConvertTest, TestGetNextDate) {
+		EXPECT_EQ(GetNextDay(20200101, 1), 20200102);
+		EXPECT_EQ(GetNextDay(20200101, 11), 20200112);
+		EXPECT_EQ(GetNextDay(20201231, 1), 20210101);
+		EXPECT_EQ(GetNextDay(20201221, 14), 20210104);
+	}
+
+	TEST_F(TimeConvertTest, TestGetPrevDay) {
+		EXPECT_EQ(GetPrevDay(20200102), 20200101);
+		EXPECT_EQ(GetPrevDay(20200112, 10), 20200102);
+		EXPECT_EQ(GetPrevDay(20200102, 11), 20191222);
+		EXPECT_EQ(GetPrevDay(20200202, 11), 20200122);
+	}
+
 	TEST_F(TimeConvertTest, TestGetNextMonday) {
 		EXPECT_EQ(20200727, GetNextMonday(20200720));
 		EXPECT_EQ(20200727, GetNextMonday(20200721));
@@ -118,7 +141,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(20200713, GetPrevMonday(20200720));
 	}
 
-	TEST_F(TimeConvertTest, TestIsEarlyThen) {
+	TEST_F(TimeConvertTest, TestIsEarlyThen2) {
 		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 32));
 		EXPECT_FALSE(IsEarlyThen(20200101, 20200201, 33));
 		EXPECT_TRUE(IsEarlyThen(20200101, 20200201, 30));

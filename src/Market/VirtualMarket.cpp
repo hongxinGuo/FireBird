@@ -140,6 +140,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
 	return true;
 }
 
+/*
 bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept {
 	const CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
 	const long year = lEarlyDate / 10000;
@@ -172,7 +173,7 @@ long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) const noexcept {
 	const long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
 	return (lNewDate);
 }
-
+*/
 CString CVirtualMarket::GetStringOfLocalTime(void) const {
 	char buffer[30];
 	tm tmLocal;
