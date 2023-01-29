@@ -12,7 +12,7 @@ public:
 	bool Inquire(const long lCurrentTime) override;
 
 	bool InquireDayLine(void);
-	vector<CVirtualWebProductPtr> CreateWebProduct(CChinaStockPtr pStock);
+	vector<CVirtualWebProductPtr> CreateProduct(CChinaStockPtr pStock);
 
 	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }

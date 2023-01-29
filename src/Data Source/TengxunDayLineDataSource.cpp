@@ -49,6 +49,7 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 	bool fHaveInquiry = false;
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
+		ASSERT(!HaveInquiry());
 		CChinaStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
@@ -65,7 +66,7 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const vector<CVirtualProductWebDataPtr> vProduct = CreateWebProduct(pStock);
+			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
 			ASSERT(!vProduct.empty());
 			for (auto& product : vProduct) {
 				StoreInquiry(product);
@@ -84,7 +85,7 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 	return fHaveInquiry;
 }
 
-vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateWebProduct(CChinaStockPtr pStock) {
+vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaStockPtr pStock) {
 	const CString strFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 	const CString strSuffix = _T(",2000,,");
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
@@ -115,7 +116,6 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateWebProduct(CChina
 		lStartDate = (year + 7) * 10000 + 101;
 		iCounter++;
 	} while (l < yearDiffer);
-	product->Reset();
 	product->SetInquiryNumber(iCounter);
 
 	return vProduct;

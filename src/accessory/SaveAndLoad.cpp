@@ -2,7 +2,7 @@
 
 #include "SaveAndLoad.h"
 
-void SaveToFile(const CString& strFileName, CString& s) {
+void SaveToFile(const CString& strFileName, CString s) {
 	CFile f;
 	if (f.Open(strFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		f.Write(s.GetBuffer(), s.GetLength());

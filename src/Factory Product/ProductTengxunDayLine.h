@@ -10,6 +10,9 @@
 
 #include"VirtualWebProduct.h"
 
+#include"atomic"
+using std::atomic_int;
+
 class CProductTengxunDayLine final : public CVirtualWebProduct {
 public:
 	CProductTengxunDayLine();
@@ -23,11 +26,11 @@ public:
 
 	static void Reset() {
 		sm_vDayLinePtr.resize(0);
-		sm_lInquiryNumber = 1;
-		sm_lCurrentNumber = 0;
+		sm_iInquiryNumber = 1;
+		sm_iCurrentNumber = 0;
 	}
 
-	static void SetInquiryNumber(long lNumber) { sm_lInquiryNumber = lNumber; }
+	static void SetInquiryNumber(int iNumber) { sm_iInquiryNumber = iNumber; }
 	static void AppendDayLine(vector<CDayLinePtr> vDayLine);
 
 	void CheckAndPrepareDayLine();
@@ -35,7 +38,7 @@ public:
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
 
-	static long sm_lInquiryNumber; // 本轮查询次数
-	static long sm_lCurrentNumber; // 本次计数
+	static atomic_int sm_iInquiryNumber; // 本轮查询次数
+	static atomic_int sm_iCurrentNumber; // 本次计数
 	static vector<CDayLinePtr> sm_vDayLinePtr; //本轮查询到的日线数据。 
 };

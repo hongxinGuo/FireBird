@@ -55,7 +55,7 @@ counting_semaphore<8> gl_BackGroundTaskThread{8}; // 后台工作线程数。最大为8
 binary_semaphore gl_ProcessChinaMarketRTData{1}; // 处理中国市场的实时数据时，不允许同时存储之。
 // 信号量gl_WebSourceParseAndStoreData用于解析WebSource中的数据。
 // 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
-counting_semaphore<3> gl_WebSourceParseAndStoreData{3};
+counting_semaphore<1> gl_WebSourceParseAndStoreData{1};
 
 CSystemData gl_SystemData;
 

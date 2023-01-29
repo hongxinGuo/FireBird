@@ -23,6 +23,7 @@
 #include "ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "JsonGetValue.h"
+#include "SaveAndLoad.h"
 using namespace std;
 
 wstring to_wide_string(const std::string& input) {
@@ -363,6 +364,14 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 // }
 //
 CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
+	long i = 0;
+	// 截取实时数据时用。为了测试解析速度
+	if (i <= pData->GetBufferLength()) {
+		string s = pData->GetDataBuffer();
+		//SaveToFile(_T("C:\\FireBird\\TengxunDayLineData.json"), s.c_str());
+		i = pData->GetBufferLength();
+	}
+
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pData->GetStockCode();
 	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
