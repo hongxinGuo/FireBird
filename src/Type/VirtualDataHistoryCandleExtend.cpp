@@ -25,12 +25,12 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
 	bool fNeedUpdate = false;
-	long lLastDate = 0;
 
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
 	if (strStockSymbol.GetLength() > 0) {
+		long lLastDate = 0;
 		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
 		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
@@ -39,6 +39,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 		while (!pSetHistoryCandleBasic->IsEOF()) {
 			if (pSetHistoryCandleBasic->m_Date > lLastDate) {
+				lLastDate = pSetHistoryCandleBasic->m_Date;
 				pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
 				pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 

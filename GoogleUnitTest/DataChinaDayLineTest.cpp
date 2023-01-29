@@ -263,16 +263,31 @@ namespace FireBirdTest {
 		CDataChinaDayLine dataChinaDayLine;
 
 		const auto pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为20200817，故此数据位于最前面
+		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
 		pDayLine->SetStockSymbol(_T("000001.SZ"));
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
 		dataChinaDayLine.UpdateData(vDayLine);
 
+		CSetDayLineBasicInfo setDayLineBasic;
+		setDayLineBasic.m_strFilter = _T("[symbol] = '000001.SZ'");
+		setDayLineBasic.m_strSort = _T("Date");
+		setDayLineBasic.Open();
+		setDayLineBasic.m_pDatabase->BeginTrans();
+		setDayLineBasic.AddNew();
+		setDayLineBasic.m_Date = 19910103; // 这个日期存在于数据集中
+		setDayLineBasic.m_Symbol = _T("000001.SZ");
+		setDayLineBasic.m_Amount = _T("10000"); // 用这个作为删除此数据的标志。
+		setDayLineBasic.Update();
+		setDayLineBasic.m_pDatabase->CommitTrans();
+		setDayLineBasic.Close();
+
 		dataChinaDayLine.SaveDB(_T("000001.SZ"));
 
 		dataChinaDayLine.LoadDB(_T("000001.SZ"));
 		EXPECT_EQ(dataChinaDayLine.GetData(0)->GetMarketDate(), 19910102) << "新存储数据的日期";
+		EXPECT_EQ(dataChinaDayLine.GetData(1)->GetMarketDate(), 19910103) << "旧数据的起始日期";
+		EXPECT_EQ(dataChinaDayLine.GetData(2)->GetMarketDate(), 19910104) << "旧数据的第二个日期，之前存储的另一个日期为19910103的数据已被删除";
 
 		// 恢复原状
 		CSetDayLineBasicInfo setChinaStockDayLineBasic;
