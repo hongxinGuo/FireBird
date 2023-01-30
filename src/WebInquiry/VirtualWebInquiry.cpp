@@ -37,7 +37,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	m_fReadingWebData = false; // 接收实时数据线程是否执行标识
+	m_fInquiringWebData = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -82,10 +82,10 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 bool CVirtualWebInquiry::GetWebData(void) {
 	ASSERT(m_pDataSource != nullptr);
 
-	if (!IsReadingWebData()) {
+	if (!IsInquiringWebData()) {
 		// 工作线程没有启动？
 		if (PrepareNextInquiringString()) {
-			SetReadingWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
+			SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
 			StartReadingThread();
 			return true;
 		}
@@ -111,7 +111,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualWebInquiry*> pVirtualWebInquiry) 
 void CVirtualWebInquiry::Read(void) {
 	CHighPerformanceCounter counter;
 
-	ASSERT(IsReadingWebData());
+	ASSERT(IsInquiringWebData());
 	ASSERT(m_pDataSource != nullptr);
 	PrepareReadingWebData();
 	counter.start();
@@ -136,7 +136,7 @@ void CVirtualWebInquiry::Read(void) {
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
-	SetReadingWebData(false);
+	SetInquiringWebData(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ void CVirtualWebInquiry::Read(void) {
 bool CVirtualWebInquiry::ReadingWebData(void) {
 	bool fReadingSuccess = true;
 
-	ASSERT(IsReadingWebData());
+	ASSERT(IsInquiringWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);
 
@@ -308,7 +308,7 @@ void CVirtualWebInquiry::VerifyDataLength() const {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualWebInquiry::Read2(void) {
 	ASSERT(0); // 此模式速度降低了不少，不使用此模式。保留的原因是用于对比。
-	ASSERT(IsReadingWebData());
+	ASSERT(IsInquiringWebData());
 	ASSERT(m_pDataSource != nullptr);
 	m_pWebData = make_shared<CWebData>();
 	PrepareReadingWebData();
@@ -328,7 +328,7 @@ void CVirtualWebInquiry::Read2(void) {
 	}
 	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
 
-	SetReadingWebData(false);
+	SetInquiringWebData(false);
 }
 
 static size_t receive_data_func(void* ptr, size_t size, size_t nmemb, void* userOp) {

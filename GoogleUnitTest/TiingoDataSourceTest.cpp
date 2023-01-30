@@ -31,14 +31,14 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
-			s_pMockTiingoWebInquiry->SetReadingWebData(false);
+			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 
 			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockTiingoWebInquiry->SetReadingWebData(false);
+			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 
 			GeneralCheck();
 		}
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(gl_pTiingoDataSource->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_TRUE(gl_pTiingoDataSource->IsDayLineUpdated()) << "股票都查询完了";
-		CString str = gl_systemMessage.PopInformationMessage();
+		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
 
 		// 恢复原状
@@ -139,7 +139,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
-		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
@@ -153,13 +153,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {
-		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
 		gl_pTiingoDataSource->SetWebInquiryFinished(true);
 		gl_pTiingoDataSource->SetInquiring(true);
-		s_pMockTiingoWebInquiry->SetReadingWebData(false);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
 			.Times(1);
@@ -169,14 +169,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockSymbol"));
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pTiingoDataSource->SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_CANDLES_) {
-		CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockDayLine>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockDayLine>();
 		p->SetIndex(0);
 		p->SetMarket(gl_pWorldMarket.get());
 		gl_pWorldMarket->GetStock(0)->SetDayLineStartDate(20180101); // 不早于20180101，使用19800101
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -210,7 +210,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
@@ -222,7 +222,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
 		gl_pTiingoDataSource->SetWebInquiryFinished(false);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
@@ -235,8 +235,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		auto pData = make_shared<CWebData>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const auto pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
 		pData->CreateNlohmannJson();
 		pData->SetParsed(true);

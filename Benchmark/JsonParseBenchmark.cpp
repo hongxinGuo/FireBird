@@ -236,6 +236,9 @@ public:
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, sNeteaseRTData);
 
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunDayLine.json");
+		LoadFromFile(strFileName, sTengxunDayLine);
+
 		sNeteaseRTDataForPTree = sNeteaseRTData;
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
@@ -247,6 +250,7 @@ public:
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
 	string sNeteaseRTDataForPTree;
+	string sTengxunDayLine;
 };
 
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
@@ -272,6 +276,15 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 	for (auto _ : state) {
 		auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
+	}
+}
+
+// 解析并处理tengxun日线数据。
+json jTengxunDayLine;
+BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
+	for (auto _ : state) {
+		auto f = NlohmannCreateJson(&jTengxunDayLine, sTengxunDayLine, 0, 0);
+		auto vData = ParseTengxunDayLine(&jTengxunDayLine, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 

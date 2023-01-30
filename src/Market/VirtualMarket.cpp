@@ -211,7 +211,7 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
 }
 
 CString CVirtualMarket::GetStringOfMarketDate(void) const {
-	return ConvertDateToString(m_lMarketDate, _T("%4dÄê%2dÔÂ%2dÈÕ"));
+	return ConvertDateToChineseTimeStampString(m_lMarketDate);
 }
 
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {

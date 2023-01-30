@@ -17,20 +17,12 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	char buffer[50]{};
-	int year = 0, month = 0, day = 0;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiry + pStock->GetSymbol();
-	const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
-	XferDateToYearMonthDay(iUpdateDate, year, month, day);
-	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-	CString strTemp = buffer;
+	CString strTemp = ConvertDateToTimeStampString(pStock->GetCompanyNewsUpdateDate());
 	strMessage += _T("&from=");
 	strMessage += strTemp;
-	const int iMarketDate = gl_pWorldMarket->GetMarketDate();
-	XferDateToYearMonthDay(iMarketDate, year, month, day);
-	sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-	strTemp = buffer;
+	strTemp = ConvertDateToTimeStampString(gl_pWorldMarket->GetMarketDate());
 	strMessage += _T("&to=");
 	strMessage += strTemp;
 
@@ -64,9 +56,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// <summary>
 /// 公司新闻，目前只提供北美公司的新闻
 /// </summary>
-/// <param name="pWebData"></param>
-/// <param name="pStock"></param>
-/// <returns></returns>
+///
 /// {
 ///"category": "company",
 ///"datetime" : 1666012311,

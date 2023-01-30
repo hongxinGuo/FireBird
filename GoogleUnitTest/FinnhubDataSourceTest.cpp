@@ -47,14 +47,14 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
-			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
+			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
 
 			gl_pFinnhubDataSource->SetWebInquiringPtr(s_pMockFinnhubWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
+			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
 
 			GeneralCheck();
 		}
@@ -653,7 +653,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfile"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
@@ -679,7 +679,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyProfileConcise"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
@@ -695,7 +695,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 1);
 		gl_pFinnhubDataSource->SetWebInquiryFinished(true);
 		gl_pFinnhubDataSource->SetInquiring(true);
-		s_pMockFinnhubWebInquiry->SetReadingWebData(false);
+		s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
 
 		EXPECT_CALL(*s_pMockFinnhubWebInquiry, StartReadingThread())
 			.Times(1);
@@ -705,7 +705,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockSymbol"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -730,7 +730,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCompanyPeer"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetUpdatePeer(true);
@@ -754,7 +754,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -777,7 +777,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockPriceQuote"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -802,7 +802,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
@@ -826,7 +826,7 @@ namespace FireBirdTest {
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -852,7 +852,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(p->GetIndex())->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -876,7 +876,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*gl_pFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubCryptoSymbol"));
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);
@@ -901,7 +901,7 @@ namespace FireBirdTest {
 			+ gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryString(gl_pWorldMarket->GetUTCTime()));
 		// 顺便测试一下
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebInquiryFinished());
-		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
+		EXPECT_TRUE(s_pMockFinnhubWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
 		gl_pFinnhubDataSource->SetInquiring(false);

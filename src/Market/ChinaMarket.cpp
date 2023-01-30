@@ -730,7 +730,7 @@ void CChinaMarket::ProcessTodayStock(void) {
 		}
 		else { SetTodayStockProcessed(false); }
 	}
-	CString str = ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
+	CString str = ConvertDateToChineseTimeStampString(lDate);
 	str += _T("的实时数据处理完毕");
 	gl_systemMessage.PushInformationMessage(str);
 }

@@ -43,14 +43,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestGetWebData) {
-		m_NeteaseRTWebInquiry.SetReadingWebData(true);
+		m_NeteaseRTWebInquiry.SetInquiringWebData(true);
 		EXPECT_FALSE(m_NeteaseRTWebInquiry.GetWebData());
-		m_NeteaseRTWebInquiry.SetReadingWebData(false);
+		m_NeteaseRTWebInquiry.SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(m_NeteaseRTWebInquiry, StartReadingThread)
 			.Times(1);
 		m_NeteaseRTWebInquiry.GetWebData();
-		EXPECT_TRUE(m_NeteaseRTWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_TRUE(m_NeteaseRTWebInquiry.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 
 	TEST_F(CNeteaseRTWebInquiryTest, TestReportStatus) {

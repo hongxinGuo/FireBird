@@ -24,7 +24,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
-			QuandlWebInquiry.SetReadingWebData(true);
+			QuandlWebInquiry.SetInquiringWebData(true);
 		}
 
 		void TearDown(void) override { }
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		QuandlWebInquiry.TESTSetBuffer(strMessage);
-		QuandlWebInquiry.SetReadingWebData(true);
+		QuandlWebInquiry.SetInquiringWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&QuandlWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pQuandlDataSource->GetReceivedDataSize(), 1);

@@ -39,13 +39,13 @@ namespace FireBirdTest {
 			.WillOnce(Return(false));
 		NeteaseDayLineWebInquiry.TESTSetBuffer(_T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2022-01-05,'600600,浦发银行,101.0,103.0,98.51,99.04,99.66,1.34,0.7881,5484453,555944110.0,1.37799834093e+11,70287275317.0\r\n"));
 		NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("600601.SS"));
-		NeteaseDayLineWebInquiry.SetReadingWebData(true);
+		NeteaseDayLineWebInquiry.SetInquiringWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&NeteaseDayLineWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 
 		gl_pNeteaseDayLineDataSource->SetInquiring(true);
-		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
-		NeteaseDayLineWebInquiry.SetReadingWebData(true);
+		EXPECT_FALSE(NeteaseDayLineWebInquiry.IsInquiringWebData());
+		NeteaseDayLineWebInquiry.SetInquiringWebData(true);
 		EXPECT_CALL(NeteaseDayLineWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

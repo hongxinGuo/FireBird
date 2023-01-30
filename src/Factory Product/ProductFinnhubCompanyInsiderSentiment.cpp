@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include"TimeConvert.h"
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
@@ -19,12 +20,9 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	const long lCurrentDate = m_pMarket->GetMarketDate();
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	char buffer[100];
 
-	sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
-	const CString strCurrentDate = buffer;
+	const CString strCurrentDate = ConvertDateToTimeStampString(m_pMarket->GetMarketDate());
 	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 

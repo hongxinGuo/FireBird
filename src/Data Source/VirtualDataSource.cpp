@@ -28,7 +28,7 @@ void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 		Inquire(lCurrentTime);
 	}
 	else {
-		SetInquiring(true); // 队列中还有待查询的申请，设置此标识。
+		SetInquiring(true); // 队列中还有待查询的申请，设置此标识，继续查询数据。
 	}
 	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
 		UpdateStatus();
@@ -42,8 +42,7 @@ void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
-	if (HaveInquiry()) {
-		// 有申请等待？
+	if (HaveInquiry()) {// 有申请等待？
 		if (IsWebInquiryFinishedAndClearFlag()) {//已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（StartThreadGetWebData）之前，否则工作线程中的断言容易出错。
 			GetInquiry();
 			SetCurrentInquiryFunction(m_pCurrentProduct->CreateMessage()); // 设置功能字符串

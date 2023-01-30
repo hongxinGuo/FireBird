@@ -26,7 +26,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
-			FinnhubWebInquiry.SetReadingWebData(true);
+			FinnhubWebInquiry.SetInquiringWebData(true);
 		}
 
 		void TearDown(void) override {
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		FinnhubWebInquiry.TESTSetBuffer(strMessage);
-		FinnhubWebInquiry.SetReadingWebData(true);
+		FinnhubWebInquiry.SetInquiringWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 1);

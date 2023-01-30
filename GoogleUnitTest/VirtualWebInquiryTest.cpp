@@ -15,7 +15,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			GeneralCheck();
-			EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+			EXPECT_FALSE(m_VirtualWebInquiry.IsInquiringWebData());
 		}
 
 		void TearDown(void) override {
@@ -23,7 +23,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			m_VirtualWebInquiry.SetInquiringString(_T(""));
-			m_VirtualWebInquiry.SetReadingWebData(false);
+			m_VirtualWebInquiry.SetInquiringWebData(false);
 		}
 
 	public:
@@ -36,7 +36,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(m_VirtualWebInquiry.GetInquiryToken(), _T(""));
 		EXPECT_EQ(m_VirtualWebInquiry.GetByteRead(), 0);
-		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+		EXPECT_FALSE(m_VirtualWebInquiry.IsInquiringWebData());
 		EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
 	}
 
@@ -74,11 +74,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestIsReadingWebData) {
-		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
-		m_VirtualWebInquiry.SetReadingWebData(true);
-		EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData());
-		m_VirtualWebInquiry.SetReadingWebData(false);
-		EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+		EXPECT_FALSE(m_VirtualWebInquiry.IsInquiringWebData());
+		m_VirtualWebInquiry.SetInquiringWebData(true);
+		EXPECT_TRUE(m_VirtualWebInquiry.IsInquiringWebData());
+		m_VirtualWebInquiry.SetInquiringWebData(false);
+		EXPECT_FALSE(m_VirtualWebInquiry.IsInquiringWebData());
 	}
 
 	TEST_F(CVirtualWebInquiryTest, TestIsWebError) {

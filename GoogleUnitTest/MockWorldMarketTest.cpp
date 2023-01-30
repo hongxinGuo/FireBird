@@ -57,9 +57,9 @@ namespace FireBirdTest {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
 			gl_systemStatus.SetExitingSystem(false);
-			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
-			s_pMockTiingoWebInquiry->SetReadingWebData(false);
-			s_pMockQuandlWebInquiry->SetReadingWebData(false);
+			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
+			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
+			s_pMockQuandlWebInquiry->SetInquiringWebData(false);
 			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
@@ -68,9 +68,9 @@ namespace FireBirdTest {
 			// clearUp
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
-			s_pMockFinnhubWebInquiry->SetReadingWebData(false);
-			s_pMockTiingoWebInquiry->SetReadingWebData(false);
-			s_pMockQuandlWebInquiry->SetReadingWebData(false);
+			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
+			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
+			s_pMockQuandlWebInquiry->SetInquiringWebData(false);
 
 			gl_pMockWorldMarket->SetSystemReady(true);
 

@@ -26,7 +26,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			TiingoWebInquiry.SetDataSource(gl_pTiingoDataSource.get());
-			TiingoWebInquiry.SetReadingWebData(true);
+			TiingoWebInquiry.SetInquiringWebData(true);
 		}
 
 		void TearDown(void) override { }
@@ -43,7 +43,7 @@ namespace FireBirdTest {
 			.Times(1)
 			.WillOnce(Return(false));
 		TiingoWebInquiry.TESTSetBuffer(_T("testData"));
-		TiingoWebInquiry.SetReadingWebData(true);
+		TiingoWebInquiry.SetInquiringWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 			.Times(1)
 			.WillOnce(Return(true));
 		TiingoWebInquiry.TESTSetBuffer(strMessage);
-		TiingoWebInquiry.SetReadingWebData(true);
+		TiingoWebInquiry.SetInquiringWebData(true);
 		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 1);

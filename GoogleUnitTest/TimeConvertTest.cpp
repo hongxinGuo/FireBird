@@ -21,36 +21,36 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(TimeConvertTest, TestTransferToDate) {
-		tm tm_, tm_2;
+		tm tm_{};
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
 		tm_.tm_mday = 5;
 		tm_.tm_hour = 20; // GMT时间为20时，东八区时间为次日4时
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		tm_2 = tm_;
-		long lDate = ConvertToDate(&tm_);
-		time_t tt = _mkgmtime(&tm_2);
-		long lDate2 = ConvertToDate(tt, 0); // UTC时间
-		long lDate3 = ConvertToDate(tt); // 默认东八区时间
+		tm tm_2 = tm_;
+		const long lDate = ConvertToDate(&tm_);
+		const time_t tt = _mkgmtime(&tm_2);
+		const long lDate2 = ConvertToDate(tt, 0); // UTC时间
+		const long lDate3 = ConvertToDate(tt); // 默认东八区时间
 		EXPECT_EQ(lDate, 20000105);
 		EXPECT_EQ(lDate2, 20000105);
 		EXPECT_EQ(lDate3, 20000106) << "东八区时间比UTC时间早8小时，故而是6日了";
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToTime) {
-		tm tm_, tm_2;
+		tm tm_{};
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
 		tm_.tm_mday = 5;
 		tm_.tm_hour = 10;
 		tm_.tm_min = 20;
 		tm_.tm_sec = 30;
-		tm_2 = tm_;
-		long lTime = ConvertToTime(&tm_);
-		time_t tt = _mkgmtime(&tm_2);
-		long lTime2 = ConvertToTime(tt, 0); // UTC时间
-		long lTime3 = ConvertToTime(tt); // 默认东八区时间
+		tm tm_2 = tm_;
+		const long lTime = ConvertToTime(&tm_);
+		const time_t tt = _mkgmtime(&tm_2);
+		const long lTime2 = ConvertToTime(tt, 0); // UTC时间
+		const long lTime3 = ConvertToTime(tt); // 默认东八区时间
 		EXPECT_EQ(lTime, lTime2);
 		EXPECT_EQ(lTime, 102030);
 		EXPECT_EQ(lTime2, 102030);
@@ -58,18 +58,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToDateTime) {
-		tm tm_, tm_2;
+		tm tm_{};
 		tm_.tm_year = 2000 - 1900;
 		tm_.tm_mon = 0;
 		tm_.tm_mday = 5;
 		tm_.tm_hour = 10;
 		tm_.tm_min = 20;
 		tm_.tm_sec = 30;
-		tm_2 = tm_;
-		INT64 lDateTime = ConvertToDateTime(&tm_);
-		time_t tt = _mkgmtime(&tm_2);
-		INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
-		INT64 lDateTime3 = ConvertToDateTime(tt); // 默认东八区时间
+		tm tm_2 = tm_;
+		const INT64 lDateTime = ConvertToDateTime(&tm_);
+		const time_t tt = _mkgmtime(&tm_2);
+		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
+		const INT64 lDateTime3 = ConvertToDateTime(tt); // 默认东八区时间
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);
@@ -184,22 +184,21 @@ namespace FireBirdTest {
 		tm_.tm_hour = 0;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = _mkgmtime(&tm_);
-		long lDate = ConvertToDate(tt, 0); // UTC时间
+		const time_t tt = _mkgmtime(&tm_);
+		const long lDate = ConvertToDate(tt, 0); // UTC时间
 		EXPECT_EQ(lDate, 20000105);
 	}
 
-	TEST_F(TimeConvertTest, TestGetStringOfDate) {
+	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {
 		char buffer[30];
 		sprintf_s(buffer, _T("%4d年%2d月%2d日"), 2020, 02, 02);
-		CString str;
-		str = buffer;
-		EXPECT_STREQ(ConvertDateToString(20200202, _T("%4d年%2d月%2d日")), str);
+		const CString str = buffer;
+		EXPECT_STREQ(ConvertDateToChineseTimeStampString(20200202), str);
 	}
 
 	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {
 		tm tm_;
-		time_t tUTC = 0;
+		const time_t tUTC = 0;
 
 		GetUTCTimeStruct(&tm_, &tUTC);
 		EXPECT_EQ(tm_.tm_year, 70);
@@ -244,7 +243,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-			strConvertBufferToTime* pData = GetParam();
+			const strConvertBufferToTime* pData = GetParam();
 			strBuffer = pData->m_strBuffer;
 			strFormat = pData->m_strFormat;
 			iTime = pData->m_Time;
@@ -264,15 +263,14 @@ namespace FireBirdTest {
 		&Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
-		time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
-		time_t tt2;
+		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
 		tm tm_;
-		INT64 year = iTime / 10000000000;
-		INT64 month = iTime / 100000000 - year * 100;
-		INT64 day = iTime / 1000000 - year * 10000 - month * 100;
-		INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
-		INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
-		INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
+		const INT64 year = iTime / 10000000000;
+		const INT64 month = iTime / 100000000 - year * 100;
+		const INT64 day = iTime / 1000000 - year * 10000 - month * 100;
+		const INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
+		const INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
+		const INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
 		tm_.tm_year = year - 1900;
 		tm_.tm_mon = month - 1;
 		tm_.tm_mday = day;
@@ -280,7 +278,7 @@ namespace FireBirdTest {
 		tm_.tm_min = minute;
 		tm_.tm_sec = second;
 		tm_.tm_isdst = 0;
-		tt2 = _mkgmtime(&tm_);
+		time_t tt2 = _mkgmtime(&tm_);
 		if (tt2 > -1) {
 			tt2 -= 8 * 3600; // ConvertBufferToTime默认使用东八区标准时间
 		}
@@ -289,15 +287,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertStringToTime) {
-		time_t tt = ConvertStringToTime(strFormat, strBuffer);
-		time_t tt2;
+		const time_t tt = ConvertStringToTime(strFormat, strBuffer);
 		tm tm_;
-		INT64 year = iTime / 10000000000;
-		INT64 month = iTime / 100000000 - year * 100;
-		INT64 day = iTime / 1000000 - year * 10000 - month * 100;
-		INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
-		INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
-		INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
+		const INT64 year = iTime / 10000000000;
+		const INT64 month = iTime / 100000000 - year * 100;
+		const INT64 day = iTime / 1000000 - year * 10000 - month * 100;
+		const INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
+		const INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
+		const INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
 		tm_.tm_year = year - 1900;
 		tm_.tm_mon = month - 1;
 		tm_.tm_mday = day;
@@ -305,7 +302,7 @@ namespace FireBirdTest {
 		tm_.tm_min = minute;
 		tm_.tm_sec = second;
 		tm_.tm_isdst = 0;
-		tt2 = _mkgmtime(&tm_);
+		time_t tt2 = _mkgmtime(&tm_);
 		if (tt2 > -1) {
 			tt2 -= 8 * 3600; // ConvertStringToTime默认采用东八区标准时间
 		}

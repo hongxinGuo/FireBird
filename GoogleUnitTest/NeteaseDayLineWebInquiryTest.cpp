@@ -61,9 +61,9 @@ namespace FireBirdTest {
 
 	TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		m_MockNeteaseDayLineWebInquiry.SetReadingWebData(true);
+		m_MockNeteaseDayLineWebInquiry.SetInquiringWebData(true);
 		EXPECT_FALSE(m_MockNeteaseDayLineWebInquiry.GetWebData());
-		m_MockNeteaseDayLineWebInquiry.SetReadingWebData(false);
+		m_MockNeteaseDayLineWebInquiry.SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, PrepareNextInquiringString())
 			.Times(1)
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(m_MockNeteaseDayLineWebInquiry, StartReadingThread)
 			.Times(1);
 		m_MockNeteaseDayLineWebInquiry.GetWebData();
-		EXPECT_TRUE(m_MockNeteaseDayLineWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_TRUE(m_MockNeteaseDayLineWebInquiry.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);

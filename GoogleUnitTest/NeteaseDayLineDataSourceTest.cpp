@@ -28,12 +28,12 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
-			s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
+			s_pMockNeteaseDayLineWebInquiry->SetInquiringWebData(false);
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockNeteaseDayLineWebInquiry->SetReadingWebData(false);
+			s_pMockNeteaseDayLineWebInquiry->SetInquiringWebData(false);
 
 			GeneralCheck();
 		}

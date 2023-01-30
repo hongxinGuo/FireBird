@@ -8,6 +8,8 @@
 
 using namespace std;
 
+static binary_semaphore s_semaphoreTransferData{1};
+
 atomic_int CProductTengxunDayLine::sm_iCurrentNumber = 0;
 atomic_int CProductTengxunDayLine::sm_iInquiryNumber = 0;
 vector<CDayLinePtr> CProductTengxunDayLine::sm_vDayLinePtr{};
@@ -49,6 +51,8 @@ CString CProductTengxunDayLine::CreateMessage(void) {
 ////////////////////////////////////
 bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
+	// 以下操作静态变量，需要使用criticalSection，同时仅允许一个线程进入
+	s_semaphoreTransferData.acquire();
 	for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
 		if (gl_pChinaMarket->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 			sm_vDayLinePtr.push_back(pData);
@@ -68,6 +72,7 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		Reset();
 		gl_pChinaMarket->PushDayLine(pDayLineWebData);
 	}
+	s_semaphoreTransferData.release();
 
 	return true;
 }

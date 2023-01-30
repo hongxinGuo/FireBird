@@ -246,6 +246,14 @@ CString ConvertDateToString(const long lDate, CString strFormat) {
 	return (str);
 }
 
+CString ConvertDateToTimeStampString(const long lDate) {
+	return (ConvertDateToString(lDate, _T("%04d-%02d-%02d")));
+}
+
+CString ConvertDateToChineseTimeStampString(const long lDate) {
+	return (ConvertDateToString(lDate, _T("%4dƒÍ%2d‘¬%2d»’")));
+}
+
 time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset) {
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;

@@ -99,14 +99,14 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 	shared_ptr<CProductTengxunDayLine> product = nullptr;
 	do {
 		product = make_shared<CProductTengxunDayLine>();
-		CString strStartDate = ConvertDateToString(lStartDate, _T("%4d-%02d-%02d"));
+		CString strStartDate = ConvertDateToTimeStampString(lStartDate);
 		CString strEndDate;
 		const long year = lStartDate / 10000;
 		if ((l + 7) > yearDiffer) {
-			strEndDate = ConvertDateToString(lCurrentDate, _T("%4d-%02d-%02d"));
+			strEndDate = ConvertDateToTimeStampString(lCurrentDate);
 		}
 		else {
-			strEndDate = ConvertDateToString((year + 6) * 10000 + 1231, _T("%4d-%02d-%02d"));
+			strEndDate = ConvertDateToTimeStampString((year + 6) * 10000 + 1231);
 		}
 		const CString strTotalMessage = strFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + strSuffix;
 		product->SetIndex(lStockIndex);

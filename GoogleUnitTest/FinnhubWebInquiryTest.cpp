@@ -44,14 +44,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubWebInquiryTest, TestGetWebData) {
-		m_FinnhubWebInquiry.SetReadingWebData(true);
+		m_FinnhubWebInquiry.SetInquiringWebData(true);
 		EXPECT_FALSE(m_FinnhubWebInquiry.GetWebData());
-		m_FinnhubWebInquiry.SetReadingWebData(false);
+		m_FinnhubWebInquiry.SetInquiringWebData(false);
 		gl_pWorldMarket->SetSystemReady(true);
 		EXPECT_CALL(m_FinnhubWebInquiry, StartReadingThread)
 			.Times(1);
 		m_FinnhubWebInquiry.GetWebData();
-		EXPECT_TRUE(m_FinnhubWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_TRUE(m_FinnhubWebInquiry.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 
 	TEST_F(CFinnhubWebInquiryTest, TestReportStatus) {

@@ -99,8 +99,8 @@ public:
 	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
 	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
-	bool IsReadingWebData(void) const noexcept { return m_fReadingWebData; }
-	void SetReadingWebData(const bool fFlag) noexcept { m_fReadingWebData = fFlag; }
+	bool IsInquiringWebData(void) const noexcept { return m_fInquiringWebData; }
+	void SetInquiringWebData(const bool fFlag) noexcept { m_fInquiringWebData = fFlag; }
 
 	bool IsWebError(void) const noexcept { return m_dwWebErrorCode > 0; }
 	DWORD GetErrorCode(void) const noexcept { return m_dwWebErrorCode; }
@@ -148,7 +148,7 @@ protected:
 	CString m_strSuffix; // 查询字符串的后缀部分
 	CString m_strInquiryToken; // 查询字符串令牌
 
-	atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
+	atomic_bool m_fInquiringWebData; // 接收实时数据线程是否执行标识
 
 	bool m_fReportStatus; //
 	long m_lContentLength; // 数据长度

@@ -29,14 +29,14 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
-			s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
+			s_pMockTengxunRTWebInquiry->SetInquiringWebData(false);
 
 			gl_pTengxunRTDataSource->SetWebInquiringPtr(s_pMockTengxunRTWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockTengxunRTWebInquiry->SetReadingWebData(false);
+			s_pMockTengxunRTWebInquiry->SetInquiringWebData(false);
 			gl_pTengxunRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
