@@ -19,7 +19,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -46,22 +47,6 @@ namespace FireBirdTest {
 		ASSERT_FALSE(dataSource.IsInquiring());
 		dataSource.IsInquiringAndClearFlag();
 		ASSERT_FALSE(dataSource.IsInquiring());
-	}
-
-	TEST_F(CDataSourceTest, Test_IsDataReceived) {
-		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
-		dataSource.SetWebInquiryFinished(false);
-		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
-		dataSource.SetWebInquiryFinished(true);
-		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
-	}
-
-	TEST_F(CDataSourceTest, Test_IsWebInquiryHaveRunAndClearFlag) {
-		ASSERT_TRUE(dataSource.IsWebInquiryFinished());
-		dataSource.IsWebInquiryFinishedAndClearFlag();
-		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
-		dataSource.IsWebInquiryFinishedAndClearFlag();
-		ASSERT_FALSE(dataSource.IsWebInquiryFinished());
 	}
 
 	TEST_F(CDataSourceTest, Test_SetInquiry) {

@@ -29,37 +29,36 @@ namespace FireBirdTest {
 			TiingoWebInquiry.SetInquiringWebData(true);
 		}
 
-		void TearDown(void) override { }
+		void TearDown(void) override {
+		}
 
 		CMockTiingoWebInquiry TiingoWebInquiry;
 	};
 
 	TEST_F(CThreadReadTiingoDataTest, TestThreadReadTiingoData) {
 		gl_pTiingoDataSource->SetInquiring(true);
-		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+		const int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
 		TiingoWebInquiry.TESTSetBuffer(_T("testData"));
 		TiingoWebInquiry.SetInquiringWebData(true);
-		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 
 		gl_pTiingoDataSource->SetInquiring(true);
-		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
+		const CString strMessage = _T("{\"test\":\"testData\"}");
 		EXPECT_CALL(TiingoWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
 		TiingoWebInquiry.TESTSetBuffer(strMessage);
 		TiingoWebInquiry.SetInquiringWebData(true);
-		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), (UINT)1);
+		EXPECT_EQ(ThreadReadVirtualWebData(&TiingoWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 1);
-		CWebDataPtr pWebData = gl_pTiingoDataSource->GetReceivedData();
+		const CWebDataPtr pWebData = gl_pTiingoDataSource->GetReceivedData();
 		EXPECT_EQ(TiingoWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_TRUE(pWebData->IsParsed());

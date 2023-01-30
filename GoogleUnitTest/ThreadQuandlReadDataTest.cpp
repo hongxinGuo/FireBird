@@ -16,7 +16,8 @@ using namespace testing;
 namespace FireBirdTest {
 	class CThreadReadQuandlDataTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { }
+		static void SetUpTestSuite(void) {
+		}
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();
@@ -24,10 +25,12 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
+			gl_pQuandlDataSource->SetWebInquiringPtr(&QuandlWebInquiry);
 			QuandlWebInquiry.SetInquiringWebData(true);
 		}
 
-		void TearDown(void) override { }
+		void TearDown(void) override {
+		}
 
 		CMockQuandlWebInquiry QuandlWebInquiry;
 	};
@@ -36,7 +39,7 @@ namespace FireBirdTest {
 		gl_pQuandlDataSource->SetInquiring(true);
 		const int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pQuandlDataSource->SetWebInquiryFinished(false);
+		QuandlWebInquiry.SetInquiringWebData(true);
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -47,7 +50,7 @@ namespace FireBirdTest {
 
 		gl_pQuandlDataSource->SetInquiring(true);
 		const CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pQuandlDataSource->SetWebInquiryFinished(false);
+		QuandlWebInquiry.SetInquiringWebData(true);
 		EXPECT_CALL(QuandlWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));

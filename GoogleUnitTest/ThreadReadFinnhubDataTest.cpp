@@ -26,6 +26,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
+			gl_pFinnhubDataSource->SetWebInquiringPtr(&FinnhubWebInquiry);
 			FinnhubWebInquiry.SetInquiringWebData(true);
 		}
 
@@ -37,9 +38,9 @@ namespace FireBirdTest {
 
 	TEST_F(CThreadReadFinnhubDataTest, TestThreadReadFinnhubData) {
 		gl_pFinnhubDataSource->SetInquiring(true);
-		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+		const int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 
-		gl_pFinnhubDataSource->SetWebInquiryFinished(false);
+		FinnhubWebInquiry.SetInquiringWebData(true);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(false));
@@ -49,8 +50,8 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 
 		gl_pFinnhubDataSource->SetInquiring(true);
-		CString strMessage = _T("{\"test\":\"testData\"}");
-		gl_pFinnhubDataSource->SetWebInquiryFinished(false);
+		const CString strMessage = _T("{\"test\":\"testData\"}");
+		FinnhubWebInquiry.SetInquiringWebData(true);
 		EXPECT_CALL(FinnhubWebInquiry, ReadingWebData())
 			.Times(1)
 			.WillOnce(Return(true));
@@ -59,7 +60,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadReadVirtualWebData(&FinnhubWebInquiry), static_cast<UINT>(1));
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 1);
-		CWebDataPtr pWebData = gl_pFinnhubDataSource->GetReceivedData();
+		const CWebDataPtr pWebData = gl_pFinnhubDataSource->GetReceivedData();
 		EXPECT_EQ(FinnhubWebInquiry.GetBufferSize(), 1024 * 1024) << "重置缓冲区大小为默认值";
 		EXPECT_EQ(pWebData->GetBufferLength(), strMessage.GetLength());
 		EXPECT_TRUE(pWebData->IsParsed());

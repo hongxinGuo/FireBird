@@ -68,15 +68,6 @@ public:
 		return fInquiring;
 	}
 
-	void SetWebInquiryFinished(const bool fFlag) noexcept { m_fWebInquiryFinished = fFlag; }
-
-	bool IsWebInquiryFinished(void) const noexcept { return m_fWebInquiryFinished; }
-
-	bool IsWebInquiryFinishedAndClearFlag(void) noexcept {
-		const bool fWebInquiryFinished = m_fWebInquiryFinished.exchange(false);
-		return fWebInquiryFinished;
-	}
-
 	void StoreReceivedData(const CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
@@ -94,7 +85,6 @@ protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 	atomic_bool m_fInquiring;
-	atomic_bool m_fWebInquiryFinished; // WebInquiry已经执行完毕
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识

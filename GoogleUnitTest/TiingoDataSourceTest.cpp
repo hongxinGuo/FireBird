@@ -142,7 +142,7 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(true);
 		gl_pTiingoDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessInquiringMessage()) << "Tiingo web data尚未接受到";
 		EXPECT_TRUE(gl_pTiingoDataSource->IsInquiring()) << "没有处理，故此标识没有重置";
@@ -157,7 +157,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetWebInquiryFinished(true);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 		gl_pTiingoDataSource->SetInquiring(true);
 		s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 
@@ -167,8 +167,6 @@ namespace FireBirdTest {
 
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockSymbol"));
-
-		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
@@ -183,7 +181,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		gl_pTiingoDataSource->SetWebInquiryFinished(true);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 		gl_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_CALL(*s_pMockTiingoWebInquiry, StartReadingThread())
@@ -194,7 +192,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*gl_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));
-		EXPECT_FALSE(gl_pTiingoDataSource->IsWebInquiryFinished());
 		EXPECT_TRUE(s_pMockTiingoWebInquiry->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
 		// 恢复原状
@@ -203,7 +200,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(true);
 		gl_pTiingoDataSource->SetCurrentInquiry(nullptr);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
@@ -212,7 +209,7 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(true);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->ProcessWebDataReceived()) << "DataReceived标识为假";
@@ -224,7 +221,7 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		gl_pTiingoDataSource->SetWebInquiryFinished(false);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(true);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 		while (gl_pTiingoDataSource->GetReceivedDataSize() > 0) gl_pTiingoDataSource->GetReceivedData();
 
@@ -243,7 +240,7 @@ namespace FireBirdTest {
 
 		gl_pTiingoDataSource->StoreReceivedData(pData);
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
-		gl_pTiingoDataSource->SetWebInquiryFinished(true);
+		s_pMockTiingoWebInquiry->SetInquiringWebData(false);
 		gl_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_TRUE(gl_pTiingoDataSource->ProcessWebDataReceived());

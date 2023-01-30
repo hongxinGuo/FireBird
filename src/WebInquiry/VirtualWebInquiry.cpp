@@ -132,7 +132,7 @@ void CVirtualWebInquiry::Read(void) {
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
+	//m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
@@ -326,7 +326,7 @@ void CVirtualWebInquiry::Read2(void) {
 		while (m_pDataSource->GetReceivedDataSize() > 0) m_pDataSource->GetReceivedData();
 		m_pDataSource->SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
+	//m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
 
 	SetInquiringWebData(false);
 }
