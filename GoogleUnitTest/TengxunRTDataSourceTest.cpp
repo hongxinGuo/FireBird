@@ -13,30 +13,22 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockTengxunRTWebInquiryPtr s_pMockTengxunRTWebInquiry;
-
 	class CTengxunRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 			ASSERT_THAT(gl_pTengxunRTWebInquiry, NotNull());
-			s_pMockTengxunRTWebInquiry = static_pointer_cast<CMockTengxunRTWebInquiry>(gl_pTengxunRTWebInquiry);
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockTengxunRTWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
 		void SetUp(void) override {
-			s_pMockTengxunRTWebInquiry->SetInquiringWebData(false);
-
-			gl_pTengxunRTDataSource->SetWebInquiringPtr(s_pMockTengxunRTWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockTengxunRTWebInquiry->SetInquiringWebData(false);
 			gl_pTengxunRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
@@ -58,7 +50,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pTengxunRTDataSource->GetInquiryQueueSize(), 1);
 		auto pProduct = gl_pTengxunRTDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
-
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {

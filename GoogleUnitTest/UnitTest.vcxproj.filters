@@ -85,9 +85,6 @@
     <Filter Include="Test源文件\Data Source">
       <UniqueIdentifier>{d40221f3-8292-408e-8c70-388a5df3f7a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Web Inquiry">
-      <UniqueIdentifier>{2c8810c2-1502-427a-8a0b-3e610dd4ae43}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock class">
       <UniqueIdentifier>{b1bffc53-3e6e-4ff3-b8f2-6d8ed4fa392e}</UniqueIdentifier>
     </Filter>
@@ -147,12 +144,6 @@
     </Filter>
     <Filter Include="Test源文件\accessory">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Web Inquiry\ChinaMarket">
-      <UniqueIdentifier>{89a1af3f-a7b7-4e43-9a2e-6d8209d22410}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\Web Inquiry\WorldMarket">
-      <UniqueIdentifier>{138f4c6a-41af-41a6-b8e5-3b2c6123e79b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -306,15 +297,6 @@
     <ClCompile Include="HighPerformanceCounterTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FinnhubDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="SystemConfigurationTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
@@ -383,27 +365,6 @@
     </ClCompile>
     <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp">
       <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp">
-      <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp">
-      <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadReadSinaRTDataTest.cpp">
-      <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadReadTengxunRTDataTest.cpp">
-      <Filter>Test源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadQuandlReadDataTest.cpp">
-      <Filter>Test源文件\Working thread\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadReadFinnhubDataTest.cpp">
-      <Filter>Test源文件\Working thread\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadTiingoReadDataTest.cpp">
-      <Filter>Test源文件\Working thread\World market</Filter>
     </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
@@ -483,14 +444,8 @@
     <ClCompile Include="ProcessTiingoWebDataTest.cpp">
       <Filter>Test源文件\Market\World market</Filter>
     </ClCompile>
-    <ClCompile Include="MockVirtualWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry</Filter>
-    </ClCompile>
     <ClCompile Include="VirtualMarketTest.cpp">
       <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry</Filter>
     </ClCompile>
     <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\Stock\China stock</Filter>
@@ -512,18 +467,6 @@
     </ClCompile>
     <ClCompile Include="WorldStockTest.cpp">
       <Filter>Test源文件\Stock\World stock</Filter>
-    </ClCompile>
-    <ClCompile Include="WebInquirerTest.cpp">
-      <Filter>Test源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="SinaRTDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseRTDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunRTDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="JsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
@@ -561,9 +504,6 @@
     <ClCompile Include="ContainerWorldStockTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
-      <Filter>Test源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="ProductDummyTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
@@ -588,30 +528,6 @@
     <ClCompile Include="ProductTengxunDayLineTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseRTWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="QuandlWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="SinaRTWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunRTWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\ChinaMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunDayLineWebInquiryTest.cpp">
-      <Filter>Test源文件\Web Inquiry\ChinaMarket</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -635,27 +551,6 @@
     <ClInclude Include="MockDataChinaWeekLine.h">
       <Filter>Mock class\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
-      <Filter>Mock class\WebInquiry\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockNeteaseRTWebInquiry.h">
-      <Filter>Mock class\WebInquiry\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockSinaRTWebInquiry.h">
-      <Filter>Mock class\WebInquiry\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockTengxunRTWebInquiry.h">
-      <Filter>Mock class\WebInquiry\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockFinnHubWebInquiry.h">
-      <Filter>Mock class\WebInquiry\World market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockQuandlWebInquiry.h">
-      <Filter>Mock class\WebInquiry\World market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockTiingoWebInquiry.h">
-      <Filter>Mock class\WebInquiry\World market</Filter>
-    </ClInclude>
     <ClInclude Include="MockWorldMarket.h">
       <Filter>Mock class\Market</Filter>
     </ClInclude>
@@ -673,12 +568,6 @@
     </ClInclude>
     <ClInclude Include="MockFinnhubCryptoSymbol.h">
       <Filter>Mock class\Type\World market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockVirtualWebInquiry.h">
-      <Filter>Mock class\WebInquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="MockTengxunDayLineWebInquiry.h">
-      <Filter>Mock class\WebInquiry\China market</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

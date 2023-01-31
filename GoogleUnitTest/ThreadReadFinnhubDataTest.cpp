@@ -26,7 +26,6 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			FinnhubWebInquiry.SetDataSource(gl_pFinnhubDataSource.get());
-			gl_pFinnhubDataSource->SetWebInquiringPtr(&FinnhubWebInquiry);
 			FinnhubWebInquiry.SetInquiringWebData(true);
 		}
 

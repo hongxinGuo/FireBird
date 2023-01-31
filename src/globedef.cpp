@@ -17,15 +17,6 @@
 #include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
-#include"FinnhubWebInquiry.h"
-#include"NeteaseDayLineWebInquiry.h"
-#include"TengxunDayLineWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"QuandlWebInquiry.h"
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-#include"TiingoWebInquiry.h"
-
 #include"FinnhubWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
@@ -58,17 +49,6 @@ binary_semaphore gl_ProcessChinaMarketRTData{1}; // 处理中国市场的实时数据时，不
 counting_semaphore<3> gl_WebSourceParseAndStoreData{3};
 
 CSystemData gl_SystemData;
-
-// 网络数据提取器
-CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
-CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
-CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-CTengxunDayLineWebInquiryPtr gl_pTengxunDayLineWebInquiry = nullptr; // 网易日线历史数据
-
-CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr; // Finnhub.io证券信息
-CQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr; // Quandl.com股票数据
-CTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr; // Tiingo.com股票数据
 
 // Data source
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;

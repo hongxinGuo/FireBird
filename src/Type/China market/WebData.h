@@ -11,6 +11,7 @@
 
 #include<memory>
 #include<string>
+
 using std::string;
 
 #include"nlohmannJsonDeclaration.h"
@@ -19,11 +20,7 @@ constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData final {
 public:
-	friend CVirtualWebInquiry;
-	friend CNeteaseRTWebInquiry;
-	friend CSinaRTWebInquiry;
-	friend CTengxunRTWebInquiry;
-	friend CNeteaseDayLineWebInquiry;
+	friend CVirtualDataSource;
 	friend CDayLineWebData;
 
 	CWebData();

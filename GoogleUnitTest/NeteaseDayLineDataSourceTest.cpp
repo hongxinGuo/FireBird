@@ -6,34 +6,25 @@
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
-#include"MockNeteaseDayLineWebInquiry.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
-
 	class CNeteaseDayLineDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
-			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
-			gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(s_pMockNeteaseDayLineWebInquiry.get());
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockNeteaseDayLineWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
 		void SetUp(void) override {
-			s_pMockNeteaseDayLineWebInquiry->SetInquiringWebData(false);
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockNeteaseDayLineWebInquiry->SetInquiringWebData(false);
 
 			GeneralCheck();
 		}

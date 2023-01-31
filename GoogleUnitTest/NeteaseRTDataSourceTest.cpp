@@ -8,35 +8,25 @@
 
 #include "ProductNeteaseRT.h"
 
-#include"MockNeteaseRTWebInquiry.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockNeteaseRTWebInquiryPtr s_pMockNeteaseRTWebInquiry;
-
 	class CNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 			ASSERT_THAT(gl_pNeteaseRTWebInquiry, NotNull());
-			s_pMockNeteaseRTWebInquiry = static_pointer_cast<CMockNeteaseRTWebInquiry>(gl_pNeteaseRTWebInquiry);
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockNeteaseRTWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
 		void SetUp(void) override {
-			s_pMockNeteaseRTWebInquiry->SetInquiringWebData(false);
-
-			gl_pNeteaseRTDataSource->SetWebInquiringPtr(s_pMockNeteaseRTWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockNeteaseRTWebInquiry->SetInquiringWebData(false);
 			EXPECT_TRUE(gl_pNeteaseRTDataSource->IsInquiring());
 
 			GeneralCheck();

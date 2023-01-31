@@ -85,19 +85,13 @@
     <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
-    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
-    <ClCompile Include="NeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
     <ClCompile Include="ProductNeteaseDayLineTest.cpp" />
     <ClCompile Include="ProductNeteaseRTTest.cpp" />
     <ClCompile Include="ProductSinaRTTest.cpp" />
     <ClCompile Include="ProductTengxunDayLineTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
-    <ClCompile Include="SinaRTDataSourceTest.cpp" />
-    <ClCompile Include="TengxunDayLineWebInquiryTest.cpp" />
-    <ClCompile Include="TengxunRTDataSourceTest.cpp" />
-    <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
     <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
@@ -107,7 +101,6 @@
     <ClCompile Include="InfoReportTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp" />
-    <ClCompile Include="FinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
@@ -118,7 +111,6 @@
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
-    <ClCompile Include="TiingoDataSourceTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="DataChinaDayLineTest.cpp" />
@@ -146,7 +138,6 @@
     <ClCompile Include="InsiderTransactionTest.cpp" />
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
-    <ClCompile Include="MockVirtualWebInquiryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
     <ClCompile Include="NaicsIndustryTest.cpp" />
@@ -157,9 +148,6 @@
     <ClCompile Include="StockSectionTest.cpp" />
     <ClCompile Include="SystemDataTest.cpp" />
     <ClCompile Include="ThreadCalculateRSTest.cpp" />
-    <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
-    <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
-    <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
     <ClCompile Include="TiingoFactoryTest.cpp" />
     <ClCompile Include="TiingoIndustryTest.cpp" />
     <ClCompile Include="ProductTiingoStockDayLineTest.cpp" />
@@ -180,7 +168,6 @@
     <ClCompile Include="EPSSurpriseTest.cpp" />
     <ClCompile Include="FinnhubExchangeTest.cpp" />
     <ClCompile Include="FinnhubForexSymbolTest.cpp" />
-    <ClCompile Include="FinnhubWebInquiryTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
@@ -197,37 +184,23 @@
     <ClInclude Include="MockDataChinaWeekLine.h" />
     <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
-    <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
-    <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
     <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
-    <ClCompile Include="QuandlWebInquiryTest.cpp" />
     <ClCompile Include="MockSystemMessageTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="MockFireBirdViewTest.cpp" />
     <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp" />
     <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp" />
-    <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp" />
-    <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp" />
-    <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
-    <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
-    <ClCompile Include="TiingoWebInquiryTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
-    <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunWebRTDataTest.cpp" />
-    <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
-    <ClCompile Include="VirtualWebInquiryTest.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="WebInquirerTest.cpp" />
     <ClCompile Include="DataChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
@@ -236,17 +209,8 @@
     <ClInclude Include="MockChinaMarket.h" />
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockDataChinaDayLine.h" />
-    <ClInclude Include="MockFinnHubWebInquiry.h" />
     <ClInclude Include="MockMainFrm.h" />
-    <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
-    <ClInclude Include="MockNeteaseRTWebInquiry.h" />
-    <ClInclude Include="MockQuandlWebInquiry.h" />
-    <ClInclude Include="MockSinaRTWebInquiry.h" />
     <ClInclude Include="MockFireBirdView.h" />
-    <ClInclude Include="MockTengxunDayLineWebInquiry.h" />
-    <ClInclude Include="MockTengxunRTWebInquiry.h" />
-    <ClInclude Include="MockTiingoWebInquiry.h" />
-    <ClInclude Include="MockVirtualWebInquiry.h" />
     <ClInclude Include="MockSystemMessage.h" />
     <ClInclude Include="MockWorldMarket.h" />
     <ClInclude Include="MockWorldStock.h" />
@@ -313,7 +277,7 @@
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -342,7 +306,7 @@
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackCommitSize>40971520</StackCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib;libcurl.lib</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 </Project>

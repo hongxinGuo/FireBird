@@ -13,10 +13,6 @@
 #include"TengxunRTDataSource.h"
 #include"NeteaseDayLineDataSource.h"
 
-#include"MockSinaRTWebInquiry.h"
-#include"MockTengxunRTWebInquiry.h"
-#include"MockNeteaseRTWebInquiry.h"
-
 #include"GeneralCheck.h"
 
 using namespace testing;
@@ -24,21 +20,10 @@ using namespace testing;
 #include<memory>
 
 namespace FireBirdTest {
-	static CMockSinaRTWebInquiryPtr s_pMockSinaRTWebInquiry;
-	static CMockTengxunRTWebInquiryPtr s_pMockTengxunRTWebInquiry;
-	static CMockNeteaseRTWebInquiryPtr s_pMockNeteaseRTWebInquiry;
-
 	class CChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-
-			ASSERT_THAT(gl_pSinaRTWebInquiry, NotNull());
-			s_pMockSinaRTWebInquiry = static_pointer_cast<CMockSinaRTWebInquiry>(gl_pSinaRTWebInquiry);
-			ASSERT_THAT(gl_pTengxunRTWebInquiry, NotNull());
-			s_pMockTengxunRTWebInquiry = static_pointer_cast<CMockTengxunRTWebInquiry>(gl_pTengxunRTWebInquiry);
-			ASSERT_THAT(gl_pNeteaseRTWebInquiry, NotNull());
-			s_pMockNeteaseRTWebInquiry = static_pointer_cast<CMockNeteaseRTWebInquiry>(gl_pNeteaseRTWebInquiry);
 
 			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
@@ -65,10 +50,6 @@ namespace FireBirdTest {
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockSinaRTWebInquiry = nullptr;
-			s_pMockTengxunRTWebInquiry = nullptr;
-			s_pMockNeteaseRTWebInquiry = nullptr;
-
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->SetCurrentStockChanged(false);

@@ -4,8 +4,9 @@
 #include"JsonGetValue.h"
 #include"TimeConvert.h"
 
-#include"TiingoWebInquiry.h"
 #include "TiingoForexWebSocket.h"
+
+#include "TiingoDataSource.h"
 
 using namespace std;
 
@@ -104,7 +105,7 @@ string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
 	vectorString vSymbols;
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
-	jsonMessage["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
+	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7£ºA top - of - book update that is due to a change in either the bid / ask price or size.
 	for (auto str : vSymbol) {
 		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocketÊ¹ÓÃÐ¡Ð´×Ö·û

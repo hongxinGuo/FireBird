@@ -11,7 +11,6 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
-#include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
@@ -21,8 +20,6 @@ using namespace testing;
 
 namespace FireBirdTest {
 	extern CMockChinaMarketPtr gl_pMockChinaMarket;
-
-	static CMockNeteaseDayLineWebInquiryPtr s_pMockNeteaseDayLineWebInquiry;
 
 	class CMockChinaMarketTest : public Test {
 	protected:
@@ -34,8 +31,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 
-			ASSERT_THAT(gl_pNeteaseDayLineWebInquiry, NotNull());
-			s_pMockNeteaseDayLineWebInquiry = static_pointer_cast<CMockNeteaseDayLineWebInquiry>(gl_pNeteaseDayLineWebInquiry);
+			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
 
 			GeneralCheck();
 		}
@@ -47,8 +43,6 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-
-			s_pMockNeteaseDayLineWebInquiry = nullptr;
 
 			GeneralCheck();
 		}

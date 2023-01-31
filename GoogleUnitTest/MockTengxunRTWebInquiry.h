@@ -1,13 +1,13 @@
 #pragma once
 
-#include"TengxunRTWebInquiry.h"
+#include"TengxunRTDataSource.h"
 
 namespace testing {
-	class CMockTengxunRTWebInquiry final : public CTengxunRTWebInquiry {
+	class CMockTengxunRTDataSource final : public CTengxunRTDataSource {
 	public:
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(bool, ReadingWebData, (), (override));
 	};
 
-	using CMockTengxunRTWebInquiryPtr = shared_ptr<CMockTengxunRTWebInquiry>;
+	using CMockTengxunRTDataSourcePtr = shared_ptr<CMockTengxunRTDataSource>;
 }

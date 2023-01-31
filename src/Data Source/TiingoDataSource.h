@@ -25,6 +25,13 @@ public:
 	bool IsDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
 	void SetDayLineUpdated(bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
 
+	bool PrepareNextInquiringString(void) override;
+	void CreateTotalInquiringString(CString strMiddle) override;
+	CString GetNextInquiringMiddleString(long, bool) final { return _T(""); }
+	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) final; // 设置m_pSession状态。
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+
 protected:
 	CTiingoFactory m_TiingoFactory;
 

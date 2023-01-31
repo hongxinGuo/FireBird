@@ -6,7 +6,15 @@
 
 #include"WorldMarket.h"
 
-CQuandlDataSource::CQuandlDataSource(void) { Reset(); }
+CQuandlDataSource::CQuandlDataSource(void) {
+	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strInquiryToken = _T("");
+	m_strConnectionName = _T("Quandl");
+	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
+
+	ConfigureSession();
+	Reset();
+}
 
 bool CQuandlDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
@@ -76,7 +84,7 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 
 	const long long llTickCount = GetTickCount64();
 	if (!sbWebError) {
-		if (m_pWebInquiry->IsWebError()) {
+		if (IsWebError()) {
 			sbWebError = true;
 			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 		}
@@ -84,8 +92,43 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
 		sbWebError = false;
-		if (!IsInquiring()) { }
+		if (!IsInquiring()) {
+		}
 		if (IsInquiring()) sllLastTimeTickCount = llTickCount;
 	}
 	return true;
+}
+
+bool CQuandlDataSource::PrepareNextInquiringString(void) {
+	// 由于Quandl提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
+	CreateTotalInquiringString(_T(""));
+
+	return true;
+}
+
+void CQuandlDataSource::CreateTotalInquiringString(CString strMiddle) {
+	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + _T("&api_key=") + m_strInquiryToken;
+}
+
+bool CQuandlDataSource::ReportStatus(long lNumberOfData) const {
+	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
+	return true;
+}
+
+void CQuandlDataSource::ConfigureSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 使用nlohmann json解析。
+//
+////////////////////////////////////////////////////////////////////////////////////
+bool CQuandlDataSource::ParseData(CWebDataPtr pWebData) {
+	return pWebData->CreateNlohmannJson(0, 0);
 }

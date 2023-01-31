@@ -8,35 +8,25 @@
 
 #include "ProductSinaRT.h"
 
-#include"MockSinaRTWebInquiry.h"
-
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockSinaRTWebInquiryPtr s_pMockSinaRTWebInquiry;
-
 	class CSinaRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 			ASSERT_THAT(gl_pSinaRTWebInquiry, NotNull());
-			s_pMockSinaRTWebInquiry = static_pointer_cast<CMockSinaRTWebInquiry>(gl_pSinaRTWebInquiry);
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockSinaRTWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
 		void SetUp(void) override {
-			s_pMockSinaRTWebInquiry->SetInquiringWebData(false);
-
-			gl_pSinaRTDataSource->SetWebInquiringPtr(s_pMockSinaRTWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockSinaRTWebInquiry->SetInquiringWebData(false);
 			gl_pSinaRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
@@ -58,7 +48,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 1);
 		auto pProduct = gl_pSinaRTDataSource->GetInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductSinaRT"));
-
 	}
 
 	// 测试有优先级的队列存储临时实时数据。

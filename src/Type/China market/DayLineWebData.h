@@ -1,7 +1,7 @@
 #pragma once
 
-#include"NeteaseDayLineWebInquiry.h"
 #include"DayLine.h"
+#include"NeteaseDaylineDataSource.h"
 
 #include<vector>
 #include<memory>
@@ -14,10 +14,9 @@ public:
 
 	// 提取网易日线历史数据各函数
 	void ClearDayLine() noexcept { m_vTempDayLine.clear(); }
-	vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
+	std::vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
 	void AppendDayLine(const CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
-
-	void SetStockCode(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
+	//void SetStockCode(CNeteaseDayLineDataSourcePtr pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
 	void SetStockCode(const CString strSymbol) noexcept { m_strStockCode = strSymbol; }
 	CString GetStockCode(void) { return m_strStockCode; }
 

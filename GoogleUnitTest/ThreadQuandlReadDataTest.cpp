@@ -25,7 +25,6 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			QuandlWebInquiry.SetDataSource(gl_pQuandlDataSource.get());
-			gl_pQuandlDataSource->SetWebInquiringPtr(&QuandlWebInquiry);
 			QuandlWebInquiry.SetInquiringWebData(true);
 		}
 

@@ -10,9 +10,6 @@
 #include"Thread.h"
 
 #include"MockWorldMarket.h"
-#include"MockFinnhubWebInquiry.h"
-#include"MockQuandlWebInquiry.h"
-#include"MockTiingoWebInquiry.h"
 
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 
@@ -25,10 +22,6 @@ using namespace testing;
 namespace FireBirdTest {
 	extern CMockWorldMarketPtr gl_pMockWorldMarket;
 
-	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;
-	static CMockQuandlWebInquiryPtr s_pMockQuandlWebInquiry;
-	static CMockTiingoWebInquiryPtr s_pMockTiingoWebInquiry;
-
 	class CMockWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -37,19 +30,9 @@ namespace FireBirdTest {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			EXPECT_TRUE(gl_pMockWorldMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
-
-			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
-			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
-			ASSERT_THAT(gl_pQuandlWebInquiry, NotNull());
-			s_pMockQuandlWebInquiry = static_pointer_cast<CMockQuandlWebInquiry>(gl_pQuandlWebInquiry);
-			ASSERT_THAT(gl_pTiingoWebInquiry, NotNull());
-			s_pMockTiingoWebInquiry = static_pointer_cast<CMockTiingoWebInquiry>(gl_pTiingoWebInquiry);
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockFinnhubWebInquiry = nullptr;
-			s_pMockQuandlWebInquiry = nullptr;
-			s_pMockTiingoWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
@@ -57,9 +40,6 @@ namespace FireBirdTest {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
 			gl_systemStatus.SetExitingSystem(false);
-			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
-			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
-			s_pMockQuandlWebInquiry->SetInquiringWebData(false);
 			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
@@ -68,10 +48,6 @@ namespace FireBirdTest {
 			// clearUp
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
-			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
-			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
-			s_pMockQuandlWebInquiry->SetInquiringWebData(false);
-
 			gl_pMockWorldMarket->SetSystemReady(true);
 
 			GeneralCheck();
@@ -79,17 +55,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryToken(), _T("bv985d748v6ujthqfke0"));
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryToken(), _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
-		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiryToken(), _T("zBMXMyoTyiy_N3pMb3ex"));
-
-		s_pMockFinnhubWebInquiry->SetInquiryToken(_T(""));
-		s_pMockTiingoWebInquiry->SetInquiryToken(_T(""));
-		s_pMockQuandlWebInquiry->SetInquiryToken(_T(""));
 		gl_pMockWorldMarket->UpdateToken();
-		EXPECT_STREQ(s_pMockFinnhubWebInquiry->GetInquiryToken(), _T("bv985d748v6ujthqfke0"));
-		EXPECT_STREQ(s_pMockTiingoWebInquiry->GetInquiryToken(), _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
-		EXPECT_STREQ(s_pMockQuandlWebInquiry->GetInquiryToken(), _T("zBMXMyoTyiy_N3pMb3ex"));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {

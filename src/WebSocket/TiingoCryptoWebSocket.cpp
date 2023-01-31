@@ -3,8 +3,9 @@
 #include"JsonParse.h"
 #include"JsonGetValue.h"
 
-#include"TiingoWebInquiry.h"
 #include "TiingoCryptoWebSocket.h"
+
+#include "TiingoDataSource.h"
 
 using namespace std;
 
@@ -104,7 +105,7 @@ string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 	vectorString vSymbols;
 	json message;
 	message["eventName"] = _T("subscribe");
-	message["authorization"] = gl_pTiingoWebInquiry->GetInquiryToken();
+	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
 	for (auto str : vSymbol) {
 		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符

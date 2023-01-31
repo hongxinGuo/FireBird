@@ -5,8 +5,6 @@
 #include"FinnhubInquiryType.h"
 #include"FinnhubDataSource.h"
 
-#include"MockFinnhubWebInquiry.h"
-
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
 //#include"ProductFinnhubForexExchange.h"
@@ -31,40 +29,28 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockFinnhubWebInquiryPtr s_pMockFinnhubWebInquiry;
-
 	class CFinnhubDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			ASSERT_THAT(gl_pFinnhubWebInquiry, NotNull());
-			s_pMockFinnhubWebInquiry = static_pointer_cast<CMockFinnhubWebInquiry>(gl_pFinnhubWebInquiry);
+			ASSERT_THAT(gl_pFinnhubDataSource, NotNull());
 		}
 
 		static void TearDownTestSuite(void) {
-			s_pMockFinnhubWebInquiry = nullptr;
 			GeneralCheck();
 		}
 
 		void SetUp(void) override {
-			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
-
-			gl_pFinnhubDataSource->SetWebInquiringPtr(s_pMockFinnhubWebInquiry.get());
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			s_pMockFinnhubWebInquiry->SetInquiringWebData(false);
 
 			GeneralCheck();
 		}
 
 	protected:
 	};
-
-	TEST_F(CFinnhubDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(gl_pFinnhubDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Finnhub"));
-	}
 
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus1) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());

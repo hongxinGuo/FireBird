@@ -24,17 +24,8 @@
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
 
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"TengxunDayLineWebInquiry.h"
-#include"FinnhubWebInquiry.h"
-#include"TiingoWebInquiry.h"
-#include"QuandlWebInquiry.h"
-
 #include"Thread.h"
 
-#include"curl/curl.h"
 #include <ixwebsocket/IXNetSystem.h>
 
 #include<exception>
@@ -167,7 +158,6 @@ CMainFrame::CMainFrame() {
 	if (!sm_fGlobeInit) {
 		sm_fGlobeInit = true;
 		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
-		curl_global_init(CURL_GLOBAL_ALL); // libcurl库需要初始化。
 	}
 
 	m_uIdTimer = 0;
@@ -189,7 +179,6 @@ CMainFrame::~CMainFrame() {
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
 		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
-		curl_global_cleanup(); // libcurl库全局析构。
 	}
 
 	if (gl_pChinaMarket->IsUpdateOptionDB()) { gl_pChinaMarket->UpdateOptionDB(); }
@@ -226,27 +215,6 @@ bool CMainFrame::CreateMarketContainer(void) {
 void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 	ASSERT(gl_pChinaMarket != nullptr);
 	ASSERT(gl_pWorldMarket != nullptr);
-	gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
-	gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
-	gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
-	gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
-	gl_pTengxunDayLineWebInquiry = make_shared<CTengxunDayLineWebInquiry>();
-	gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
-	gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
-	gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
-
-	// 查询器和数据源要一一对应、互相包含
-	gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
-	gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
-	gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
-	gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
-	gl_pTengxunDayLineDataSource->SetWebInquiringPtr(gl_pTengxunDayLineWebInquiry.get());
-
-	gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
-	gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
-	gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
-	gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDayLineDataSource.get());
-	gl_pTengxunDayLineWebInquiry->SetDataSource(gl_pTengxunDayLineDataSource.get());
 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
@@ -273,15 +241,6 @@ void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
 		gl_pNeteaseDayLineDataSource->Enable(false);
 		gl_pTengxunDayLineDataSource->Enable(true);
 	}
-
-	// 查询器和数据源要一一对应
-	gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
-	gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
-	gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
-
-	gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
-	gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
-	gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());
 
 	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
 	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
@@ -637,10 +596,10 @@ void CMainFrame::UpdateStatus(void) {
 
 	// 更新当前抓取的实时数据大小
 	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) {
-		if (gl_pSinaRTWebInquiry->GetTotalByteRead() > 0) {
+		if (gl_pSinaRTDataSource->GetTotalByteRead() > 0) {
 			// 每秒更新一次
-			str = FormatToMK(gl_pSinaRTWebInquiry->GetTotalByteRead());
-			gl_pSinaRTWebInquiry->ClearTotalByteRead();
+			str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteRead());
+			gl_pSinaRTDataSource->ClearTotalByteRead();
 			m_timeLast = gl_pChinaMarket->GetUTCTime();
 			m_wndStatusBar.SetPaneText(10, str);
 		}
@@ -670,37 +629,37 @@ void CMainFrame::UpdateInnerSystemStatus(void) {
 	char buffer[30];
 
 	// 更新新浪实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTDataSource->GetCurrentInquiryTime());
 	CString str = buffer;
 	SysCallSetInnerSystemPaneText(1, str);
 	// 更新网易实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(2, str);
 	// 更新腾讯实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTDataSource->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(3, str);
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
-		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
+		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
 	}
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
-		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunDayLineWebInquiry->GetCurrentInquiryTime());
+		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
 	}
 	str = buffer;
 	SysCallSetInnerSystemPaneText(4, str);
 
 	// 更新Finnhub数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubDataSource->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(5, str);
 	// 更新Tiingo数据读取时间
-	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoDataSource->GetCurrentInquiryTime());
 	str = buffer;
 	SysCallSetInnerSystemPaneText(6, str);
 	// 更新Quandl数据读取时间
-	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
+	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlDataSource->GetCurrentInquiryTime());
 	str = buffer;
 	//SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 

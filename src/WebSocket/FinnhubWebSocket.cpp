@@ -4,12 +4,13 @@
 #include"JsonGetValue.h"
 
 #include "FinnhubWebSocket.h"
-#include"FinnhubWebInquiry.h"
 
 #include <ixwebsocket/IXWebSocket.h>
 
 #include<thread>
 #include<memory>
+
+#include "FinnhubDataSource.h"
 using std::thread;
 using std::make_shared;
 
@@ -68,7 +69,7 @@ CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
 bool CFinnhubWebSocket::Connect(void) {
-	CString strToken = gl_pFinnhubWebInquiry->GetInquiryToken();
+	CString strToken = gl_pFinnhubDataSource->GetInquiryToken();
 	strToken = "/?token=" + strToken;
 	const string urlAndAuth = m_url + strToken.GetBuffer();
 

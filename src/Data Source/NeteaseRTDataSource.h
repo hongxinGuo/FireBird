@@ -14,6 +14,13 @@ public:
 
 	bool InquireRTData(const long lCurrentTime);
 
+	bool ReportStatus(long lNumberOfData) const override;
+	bool PrepareNextInquiringString(void) override;
+	CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) final;
+	void ConfigureSession(void) final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+
+	bool ParseData(CWebDataPtr pWebData) final;
+
 protected:
 };
 

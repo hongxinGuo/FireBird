@@ -23,14 +23,6 @@
 
 #include"MockMainFrm.h"
 
-#include"MockSinaRTWebInquiry.h"
-#include"MockTengxunRTWebInquiry.h"
-#include"MockNeteaseRTWebInquiry.h"
-#include"MockNeteaseDayLineWebInquiry.h"
-#include"MockFinnhubWebInquiry.h"
-#include"MockTiingoWebInquiry.h"
-#include"MockQuandlWebInquiry.h"
-
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
@@ -65,24 +57,6 @@ namespace FireBirdTest {
 			gl_systemConfiguration.LoadDB();
 			gl_systemConfiguration.Update();
 
-			gl_pSinaRTWebInquiry = nullptr;
-			gl_pTengxunRTWebInquiry = nullptr;
-			gl_pNeteaseRTWebInquiry = nullptr;
-			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-			gl_pFinnhubWebInquiry = nullptr;
-			gl_pFinnhubWebInquiry = nullptr;
-			gl_pTiingoWebInquiry = nullptr;
-			gl_pQuandlWebInquiry = nullptr;
-
-			// 下列网络提取器皆使用Mock类，以防止出现实际的网络读取动作。
-			gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
-			gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
-			gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
-			gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
-			gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
-			gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
-			gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
-
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
@@ -91,23 +65,6 @@ namespace FireBirdTest {
 			gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 			gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 			gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
-
-			// 查询器和数据源要一一对应、互相包含
-			gl_pSinaRTDataSource->SetWebInquiringPtr(gl_pSinaRTWebInquiry.get());
-			gl_pTengxunRTDataSource->SetWebInquiringPtr(gl_pTengxunRTWebInquiry.get());
-			gl_pNeteaseRTDataSource->SetWebInquiringPtr(gl_pNeteaseRTWebInquiry.get());
-			gl_pNeteaseDayLineDataSource->SetWebInquiringPtr(gl_pNeteaseDayLineWebInquiry.get());
-			gl_pFinnhubDataSource->SetWebInquiringPtr(gl_pFinnhubWebInquiry.get());
-			gl_pTiingoDataSource->SetWebInquiringPtr(gl_pTiingoWebInquiry.get());
-			gl_pQuandlDataSource->SetWebInquiringPtr(gl_pQuandlWebInquiry.get());
-
-			gl_pSinaRTWebInquiry->SetDataSource(gl_pSinaRTDataSource.get());
-			gl_pTengxunRTWebInquiry->SetDataSource(gl_pTengxunRTDataSource.get());
-			gl_pNeteaseRTWebInquiry->SetDataSource(gl_pNeteaseRTDataSource.get());
-			gl_pNeteaseDayLineWebInquiry->SetDataSource(gl_pNeteaseDayLineDataSource.get());
-			gl_pFinnhubWebInquiry->SetDataSource(gl_pFinnhubDataSource.get());
-			gl_pTiingoWebInquiry->SetDataSource(gl_pTiingoDataSource.get());
-			gl_pQuandlWebInquiry->SetDataSource(gl_pQuandlDataSource.get());
 
 			// 下列全局智能指针为实际类
 			gl_pChinaMarket = make_shared<CChinaMarket>();
@@ -228,16 +185,6 @@ namespace FireBirdTest {
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pMockMainFrame = nullptr;
 			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
-
-			// 重置以下指针，以测试是否存在没有配对的Mock。
-			gl_pSinaRTWebInquiry = nullptr;
-			gl_pTengxunRTWebInquiry = nullptr;
-			gl_pNeteaseRTWebInquiry = nullptr;
-			gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
-			gl_pFinnhubWebInquiry = nullptr;
-			gl_pFinnhubWebInquiry = nullptr;
-			gl_pTiingoWebInquiry = nullptr;
-			gl_pQuandlWebInquiry = nullptr;
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);

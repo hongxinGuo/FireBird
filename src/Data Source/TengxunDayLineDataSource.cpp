@@ -5,10 +5,16 @@
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
-#include "TengxunDayLineWebInquiry.h"
 #include "TimeConvert.h"
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
+	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
+	m_strSuffix = _T("");
+	m_strInquiryToken = _T("");
+	m_strConnectionName = _T("TengxunDayLine");
+
+	ConfigureSession();
+
 	CTengxunDayLineDataSource::Reset();
 }
 
@@ -71,7 +77,7 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 			for (auto& product : vProduct) {
 				StoreInquiry(product);
 			}
-			(dynamic_cast<CTengxunDayLineWebInquiry*>(m_pWebInquiry))->SetDownLoadingStockCode(pStock->GetSymbol());
+			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(pStock->GetSymbol());
 			pStock->SetDayLineNeedUpdate(false);
 			SetInquiring(true);
@@ -119,4 +125,50 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 	product->SetInquiryNumber(iCounter);
 
 	return vProduct;
+}
+
+//
+//
+// 腾讯日线数据为json制式，目前在productTengxunDayLine中解析。
+//
+//
+bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// 查询字符串的格式为：
+//
+//
+////////////////////////////////////////////////////////////////////////////////
+bool CTengxunDayLineDataSource::PrepareNextInquiringString(void) {
+	// 腾讯日线的申请信息由TengxunDayLineDataSource负责完成。
+	CreateTotalInquiringString(_T(""));
+
+	return true;
+}
+
+void CTengxunDayLineDataSource::CreateTotalInquiringString(CString strMiddle) {
+	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
+}
+
+void CTengxunDayLineDataSource::ConfigureSession(void) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 正常情况下Tengxun日线数据接收时间不超过1秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 60000); // 设置接收超时时间为5秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+}
+
+void CTengxunDayLineDataSource::UpdateStatusAfterSucceed(CWebDataPtr pData) {
+	pData->SetStockCode(GetDownLoadingStockCode());
+}
+
+/// <summary>
+/// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
+/// </summary>
+/// <param name="strStockCode"></param>
+void CTengxunDayLineDataSource::SetDownLoadingStockCode(CString strStockCode) {
+	m_strDownLoadingStockCode = strStockCode;
 }

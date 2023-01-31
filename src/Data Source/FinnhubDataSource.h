@@ -71,6 +71,13 @@ public:
 	bool IsUpdateEPSSurprise(void) const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 
+	bool PrepareNextInquiringString(void) override;
+	void CreateTotalInquiringString(CString strMiddle) override;
+	CString GetNextInquiringMiddleString(long, bool) final { return _T(""); }
+	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) final;
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新

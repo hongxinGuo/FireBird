@@ -3,6 +3,7 @@
 #include"VirtualHistoryCandleExtend.h"
 
 #include<memory>
+using std::vector;
 
 class CDayLine;
 using CDayLinePtr = shared_ptr<CDayLine>;

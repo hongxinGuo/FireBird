@@ -495,30 +495,6 @@
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\FinnhubWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\NeteaseDayLineWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\NeteaseRTWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\QuandlWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\SinaRTWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\TengxunRTWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\TiingoWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\VirtualWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
@@ -749,9 +725,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
       <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebInquiry\TengxunDayLineWebInquiry.h">
-      <Filter>头文件\Web inquiry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1007,12 +980,6 @@
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\GetWebDataUsingLibCurl.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\VirtualWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp">
       <Filter>源文件\Web Socket</Filter>
     </ClCompile>
@@ -1144,27 +1111,6 @@
     </ClCompile>
     <ClCompile Include="..\src\globedef.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\FinnhubWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\NeteaseDayLineWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\NeteaseRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\QuandlWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\SinaRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\TengxunRTWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\TiingoWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\World market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp">
       <Filter>源文件\Data Source\WorldMarket</Filter>
@@ -1345,9 +1291,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\WebInquiry\TengxunDayLineWebInquiry.cpp">
-      <Filter>源文件\Web Inquiry\China market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

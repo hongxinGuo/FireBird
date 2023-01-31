@@ -32,8 +32,6 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			s_pMockTiingoWebInquiry->SetInquiringWebData(false);
-
-			gl_pTiingoDataSource->SetWebInquiringPtr(s_pMockTiingoWebInquiry.get());
 		}
 
 		void TearDown(void) override {
@@ -45,10 +43,6 @@ namespace FireBirdTest {
 
 	protected:
 	};
-
-	TEST_F(CTiingoDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(gl_pTiingoDataSource->GetWebInquiryPtr()->GetConnectionName(), _T("Tiingo"));
-	}
 
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
