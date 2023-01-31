@@ -81,7 +81,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
 	ASSERT(m_pDataSource != nullptr);
-
+	ASSERT(!IsInquiringWebData());
 	if (!IsInquiringWebData()) {
 		// 工作线程没有启动？
 		if (PrepareNextInquiringString()) {

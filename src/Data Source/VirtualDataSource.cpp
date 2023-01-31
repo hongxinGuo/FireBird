@@ -22,6 +22,7 @@ bool CVirtualDataSource::Reset(void) {
 }
 
 void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
+	ASSERT(m_pWebInquiry != nullptr);
 	if (!m_fEnable) return; // 不允许执行的话，直接返回
 	if (!HaveInquiry()) { // 目前允许一次申请生成多个查询，故而有可能需要多次查询后方允许再次申请。
 		Inquire(lCurrentTime);
@@ -42,7 +43,7 @@ void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ProcessInquiringMessage(void) {
 	if (HaveInquiry()) {// 有申请等待？
-		if (!m_pWebInquiry->IsInquiringWebData()) {//已经发出了数据申请且数据已经接收到了？重置此标识需要放在启动工作线程（StartThreadGetWebData）之前，否则工作线程中的断言容易出错。
+		if (!m_pWebInquiry->IsInquiringWebData()) {//数据已经接收到了？
 			GetInquiry();
 			SetCurrentInquiryFunction(m_pCurrentProduct->CreateMessage()); // 设置功能字符串
 			StartThreadGetWebData();

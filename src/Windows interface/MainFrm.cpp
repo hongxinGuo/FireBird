@@ -116,6 +116,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
 	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
 	ON_WM_SIZE()
+	ON_COMMAND(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingNeteaseDayLineDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseDayLineDataServer)
+	ON_COMMAND(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingTengxunDayLineDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunDayLineDataServer)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1123,4 +1127,26 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy) {
 	CFrameWndEx::OnSize(nType, cx, cy);
 
 	gl_systemConfiguration.SetCurrentWindowRect(cx, cy);
+}
+
+void CMainFrame::OnUsingNeteaseDayLineDataServer() {
+	gl_systemConfiguration.SetChinaMarketDayLineServer(0);
+	gl_pTengxunDayLineDataSource->Enable(true);
+	gl_pNeteaseDayLineDataSource->Enable(false);
+}
+
+void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
+	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
+	else { SysCallCmdUISetCheck(pCmdUI, false); }
+}
+
+void CMainFrame::OnUsingTengxunDayLineDataServer() {
+	gl_systemConfiguration.SetChinaMarketDayLineServer(1);
+	gl_pTengxunDayLineDataSource->Enable(false);
+	gl_pNeteaseDayLineDataSource->Enable(true);
+}
+
+void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
+	if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
+	else { SysCallCmdUISetCheck(pCmdUI, false); }
 }

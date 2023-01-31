@@ -14,7 +14,7 @@
 #define ID_VIEW_CUSTOMIZE               126
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDR_FIREBIRDTYPE								130
+#define IDR_FIREBIRDTYPE                130
 #define ID_WINDOW_MANAGER               131
 #define ID_VIEW_OUTPUTWND               149
 #define IDS_OUTPUT_WND                  157
@@ -134,6 +134,11 @@
 #define ID_RECORD_TIINGO_FOREX_WEB_SOCKET 32907
 #define ID_32908                        32908
 #define ID_REBUILD_BASIC_FINANCIAL      32909
+#define ID_32910                        32910
+#define ID_32911                        32911
+#define ID_32912                        32912
+#define ID_USING_NETEASE_DAYLINE_DATA_SERVER 32914
+#define ID_USING_TENGXUN_DAYLINE_DATA_SERVER 32915
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -172,7 +177,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
-#define _APS_NEXT_COMMAND_VALUE         32910
+#define _APS_NEXT_COMMAND_VALUE         32916
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
