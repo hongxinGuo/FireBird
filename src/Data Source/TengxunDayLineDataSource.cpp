@@ -9,9 +9,9 @@
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
+	m_strParam = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("TengxunDayLine");
 
 	ConfigureSession();
 
@@ -144,13 +144,9 @@ bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::PrepareNextInquiringString(void) {
 	// 腾讯日线的申请信息由TengxunDayLineDataSource负责完成。
-	CreateTotalInquiringString(_T(""));
+	CreateTotalInquiringString();
 
 	return true;
-}
-
-void CTengxunDayLineDataSource::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
 }
 
 void CTengxunDayLineDataSource::ConfigureSession(void) {

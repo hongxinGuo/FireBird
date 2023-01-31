@@ -40,6 +40,11 @@ public:
 		return true;
 	}
 
+	bool HaveInquiry(void) const {
+		if (m_qProduct.empty()) return false;
+		return true;
+	}
+
 	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
 
@@ -47,11 +52,6 @@ public:
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();
 		return m_pCurrentProduct;
-	}
-
-	bool HaveInquiry(void) const {
-		if (m_qProduct.empty()) return false;
-		return true;
 	}
 
 	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
@@ -100,8 +100,6 @@ public:
 
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 
-	virtual bool ReportStatus(long lNumberOfData) const;
-
 	// 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
 	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
 	virtual bool PrepareNextInquiringString(void) {
@@ -109,10 +107,6 @@ public:
 		return true;
 	}
 
-	virtual CString GetNextInquiringMiddleString(long, bool) {
-		ASSERT(0);
-		return _T("");
-	} //申请下一个查询用字符串
 	virtual void PrepareReadingWebData(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession(void) {
 		TRACE("调用了基类函数ConfigureSession\n");
@@ -121,7 +115,7 @@ public:
 	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
 	} //成功接收后更新系统状态。默认无动作
 
-	virtual void CreateTotalInquiringString(CString strMiddle);
+	void CreateTotalInquiringString();
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
 	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
@@ -156,10 +150,6 @@ public:
 		return false;
 	}
 
-	bool IsReportStatus(void) const noexcept { return m_fReportStatus; }
-
-	CString GetConnectionName(void) const { return m_strConnectionName; }
-
 	long GetInquiringNumber(void) const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
@@ -178,12 +168,12 @@ public:
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	std::atomic_bool m_fInquiring;
+	atomic_bool m_fInquiring;
+	atomic_bool m_fInquiringWebData; // 接收实时数据线程是否执行标识
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识
 
-	// 以下为VirtualWebInquiry的变量
 	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
 	DWORD m_dwHTTPStatusCode; //网络状态码
@@ -192,22 +182,18 @@ protected:
 	DWORD m_dwWebErrorCode; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer; // 接收到数据的缓冲区
 	long m_lByteRead; // 接收到的字符数.
-	CWebDataPtr m_pWebData;
 
-	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strInquiryToken).
+	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
 	CString m_strInquiryFunction; // 查询字符串功能部分
+	CString m_strParam; // 查询字符串的参数
 	CString m_strSuffix; // 查询字符串的后缀部分
 	CString m_strInquiryToken; // 查询字符串令牌
 
-	atomic_bool m_fInquiringWebData; // 接收实时数据线程是否执行标识
-
-	bool m_fReportStatus; //
 	long m_lContentLength; // 数据长度
 
 	long m_lInquiringNumber; // 每次查询数量
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
-	CString m_strConnectionName; // 此网络读取器的名称
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 };
 

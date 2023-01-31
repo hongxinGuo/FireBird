@@ -3,7 +3,7 @@
 #include"VirtualDataSource.h"
 #include"QuandlFactory.h"
 
-class CQuandlDataSource final : public CVirtualDataSource {
+class CQuandlDataSource : public CVirtualDataSource {
 public:
 	CQuandlDataSource(void);
 	~CQuandlDataSource(void) override = default;
@@ -13,11 +13,8 @@ public:
 
 	bool Inquire(const long lCurrentTime) override;
 
+	void ConfigureSession(void) override;
 	bool PrepareNextInquiringString(void) override;
-	void CreateTotalInquiringString(CString strMiddle) override;
-	CString GetNextInquiringMiddleString(long, bool) override { return _T(""); }
-	bool ReportStatus(long lNumberOfData) const override;
-	void ConfigureSession(void) final;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:

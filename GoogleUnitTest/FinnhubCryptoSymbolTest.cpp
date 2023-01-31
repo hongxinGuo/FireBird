@@ -170,7 +170,7 @@ namespace FireBirdTest {
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryString(123456789);
+		str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=91920789&to=123456789")) << "91920789比123456789早一年（365天）";
 	}
 
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryString(1131536000);
+		str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
 	}
 

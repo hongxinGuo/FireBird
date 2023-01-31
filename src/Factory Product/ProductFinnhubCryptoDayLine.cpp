@@ -19,16 +19,16 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 }
 
 CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pCryptoSymbol->GetFinnhubDayLineInquiryString(CWorldMarket::GetUTCTime());
+	m_strTotalInquiryMessage = m_strInquiry + pCryptoSymbol->GetFinnhubDayLineInquiryParam(CWorldMarket::GetUTCTime());
 	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	bool fStatus = true;
 
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);

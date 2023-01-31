@@ -2,7 +2,7 @@
 
 #include"VirtualDataSource.h"
 
-class CNeteaseRTDataSource final : public CVirtualDataSource {
+class CNeteaseRTDataSource : public CVirtualDataSource {
 public:
 	CNeteaseRTDataSource();
 	~CNeteaseRTDataSource() override = default;
@@ -12,14 +12,11 @@ public:
 
 	bool Inquire(const long lCurrentTime) override;
 
-	bool InquireRTData(const long lCurrentTime);
-
-	bool ReportStatus(long lNumberOfData) const override;
+	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
 	bool PrepareNextInquiringString(void) override;
-	CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) final;
-	void ConfigureSession(void) final; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+	bool ParseData(CWebDataPtr pWebData) override;
 
-	bool ParseData(CWebDataPtr pWebData) final;
+	bool InquireRTData(const long lCurrentTime);
 
 protected:
 };

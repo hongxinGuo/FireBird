@@ -29,13 +29,13 @@ void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
 	}
 }
 
-CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
-	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+	CString strParam = _T("");
 	char buffer[50];
 
-	strMiddle += m_strSymbol;
-	strMiddle += _T("&resolution=D");
-	strMiddle += _T("&from=");
+	strParam += m_strSymbol;
+	strParam += _T("&resolution=D");
+	strParam += _T("&from=");
 	time_t tStartTime = gl_pWorldMarket->TransferToUTCTime(m_lDayLineEndDate);
 	if (tStartTime < (tCurrentTime - static_cast<time_t>(365) * 24 * 3600)) {
 		// 免费账户只能读取一年以内的日线数据。
@@ -43,13 +43,13 @@ CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime)
 	}
 	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
-	strMiddle += strTemp;
-	strMiddle += _T("&to=");
+	strParam += strTemp;
+	strParam += _T("&to=");
 	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
 	strTemp = buffer;
-	strMiddle += strTemp;
+	strParam += strTemp;
 
-	return strMiddle;
+	return strParam;
 }
 
 void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {

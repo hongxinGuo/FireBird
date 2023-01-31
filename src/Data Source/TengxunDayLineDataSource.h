@@ -2,7 +2,7 @@
 
 #include"VirtualDataSource.h"
 
-class CTengxunDayLineDataSource final : public CVirtualDataSource {
+class CTengxunDayLineDataSource : public CVirtualDataSource {
 public:
 	CTengxunDayLineDataSource();
 	~CTengxunDayLineDataSource() override = default;
@@ -11,19 +11,16 @@ public:
 
 	bool Inquire(const long lCurrentTime) override;
 
+	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。
+	bool PrepareNextInquiringString(void) override;
+	bool ParseData(CWebDataPtr pWebData) override;
+	void UpdateStatusAfterSucceed(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
+
 	bool InquireDayLine(void);
 	vector<CVirtualWebProductPtr> CreateProduct(CChinaStockPtr pStock);
 
 	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
-
-	bool ParseData(CWebDataPtr pWebData) final;
-
-	bool PrepareNextInquiringString(void) override;
-	void CreateTotalInquiringString(CString strMiddle) override;
-	void ConfigureSession(void) final; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。
-
-	void UpdateStatusAfterSucceed(CWebDataPtr pData) final; // 成功接收后更新系统状态, 此处更新其股票代码
 
 	void SetDownLoadingStockCode(CString strStockCode);
 	CString GetDownLoadingStockCode(void) { return m_strDownLoadingStockCode; }

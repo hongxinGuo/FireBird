@@ -17,9 +17,9 @@ CFinnhubDataSource::CFinnhubDataSource(void) {
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
 	m_strInquiryFunction = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strParam = _T("");
 	m_strSuffix = _T("&token=");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("Finnhub");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 
 	ConfigureSession();
@@ -809,17 +809,8 @@ bool CFinnhubDataSource::InquireCryptoDayLine(void) {
 bool CFinnhubDataSource::PrepareNextInquiringString(void) {
 	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此处解析申请字符串，只是将解析后的字符串组装起来。
 	// 具体的解析由各Product具体执行。
-	CreateTotalInquiringString(_T(""));
+	CreateTotalInquiringString();
 
-	return true;
-}
-
-void CFinnhubDataSource::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
-}
-
-bool CFinnhubDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个Finnhub数据\n", lNumberOfData);
 	return true;
 }
 

@@ -9,8 +9,6 @@
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("NeteaseRT");
-	m_fReportStatus = false;
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 
 	ConfigureSession();
@@ -70,23 +68,14 @@ bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
 	return false;
 }
 
-bool CNeteaseRTDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个网易实时数据\n", lNumberOfData);
-	return true;
-}
-
 bool CNeteaseRTDataSource::PrepareNextInquiringString(void) {
 	// 申请下一批次股票实时数据
-	const CString strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
-	const CString strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
+	m_strParam = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
+	const CString strNeteaseStockCode = m_strParam.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
-	CreateTotalInquiringString(strMiddle);
+	CreateTotalInquiringString();
 
 	return true;
-}
-
-CString CNeteaseRTDataSource::GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) {
-	return gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, fUsingTotalStockSet);
 }
 
 /// <summary>

@@ -8,8 +8,9 @@
 
 CQuandlDataSource::CQuandlDataSource(void) {
 	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strParam = _T("");
+	m_strSuffix = _T("&api_key=");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("Quandl");
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 
 	ConfigureSession();
@@ -101,17 +102,8 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 
 bool CQuandlDataSource::PrepareNextInquiringString(void) {
 	// 由于Quandl提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
-	CreateTotalInquiringString(_T(""));
+	CreateTotalInquiringString();
 
-	return true;
-}
-
-void CQuandlDataSource::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + _T("&api_key=") + m_strInquiryToken;
-}
-
-bool CQuandlDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
 	return true;
 }
 

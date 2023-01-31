@@ -16,8 +16,6 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
-	CVirtualDataSource::Reset();
-
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	SetDefaultSessionOption();
 	m_pFile = nullptr;
@@ -37,11 +35,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 
 	m_lContentLength = -1;
 
-#ifdef DEBUG
-	m_fReportStatus = false;
-#else
-	m_fReportStatus = false;
-#endif
+	CVirtualDataSource::Reset();
 }
 
 bool CVirtualDataSource::Reset(void) {
@@ -183,8 +177,8 @@ void CVirtualDataSource::StartReadingThread(void) {
 	thread1.detach();
 }
 
-UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualWebInquiry) {
-	pVirtualWebInquiry->Read();
+UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource) {
+	pVirtualDataSource->Read();
 	return 1;
 }
 
@@ -208,10 +202,10 @@ void CVirtualDataSource::Read(void) {
 	}
 	else {
 		// error handling
-		while (GetReceivedDataSize() > 0) GetReceivedData();
+		while (m_qProduct.size() > 0) m_qProduct.pop(); // 抛弃掉未处理的申请（当一次查询产生多次申请时，这些申请都是各自相关的）
+		while (GetReceivedDataSize() > 0) GetReceivedData(); // 抛弃接收到的数据
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	//m_pDataSource->SetWebInquiryFinished(true); // 无论成功与否，都要设置此标识
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
@@ -387,13 +381,8 @@ bool CVirtualDataSource::TransferDataToWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-bool CVirtualDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个实时数据\n", lNumberOfData);
-	return true;
-}
-
-void CVirtualDataSource::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
+void CVirtualDataSource::CreateTotalInquiringString() {
+	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
 }
 
 void CVirtualDataSource::TESTSetBuffer(char* buffer, INT64 lTotalNumber) {

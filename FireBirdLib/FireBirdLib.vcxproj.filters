@@ -109,9 +109,6 @@
     <Filter Include="源文件\Market">
       <UniqueIdentifier>{8a803185-2520-4215-bcf0-1d461de24aec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Web inquiry">
-      <UniqueIdentifier>{d24c6780-283a-4207-99d5-eb0ab25d03b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Accessory">
       <UniqueIdentifier>{41a95767-0fae-4bdb-9deb-a148393038c1}</UniqueIdentifier>
     </Filter>
@@ -154,20 +151,11 @@
     <Filter Include="头文件\Web Socket">
       <UniqueIdentifier>{4770675b-0e3b-4450-9a7f-a04e94192386}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Web Inquiry">
-      <UniqueIdentifier>{942f3990-931b-404b-903b-2e72b8a77d38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Web Socket">
       <UniqueIdentifier>{341d2226-0fda-4739-8404-5796deb51dc1}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Data Source\China market">
       <UniqueIdentifier>{3defefa3-b137-4390-8e74-74bbfdbac703}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Web Inquiry\China market">
-      <UniqueIdentifier>{bc8bfe47-ace4-4aab-9791-9d460a82e89e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Web Inquiry\World market">
-      <UniqueIdentifier>{04b7abed-f107-450d-bf34-24f02f191a01}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\Data container\Chosen">
       <UniqueIdentifier>{237ef972-1915-4cf5-a62b-f1fef65ddc84}</UniqueIdentifier>

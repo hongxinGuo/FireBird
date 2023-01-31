@@ -18,7 +18,6 @@ CSinaRTDataSource::CSinaRTDataSource() {
 
 	m_strInquiryFunction = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("SinaRT");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
 	ConfigureSession();
@@ -68,26 +67,22 @@ bool CSinaRTDataSource::InquireRTData(const long) {
 	return false;
 }
 
-bool CSinaRTDataSource::PrepareNextInquiringString(void) {
-	// 申请下一批次股票实时数据
-	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-	// 开市时使用今日活跃股票池
-	const CString strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
-	const CString strSinaStockCode = strMiddle.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
-	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
-	CreateTotalInquiringString(strMiddle);
-
-	return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 新浪网络实时数据提取函数。
 // 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CSinaRTDataSource::GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) {
-	return gl_pChinaMarket->GetSinaStockInquiringStr(lTotalNumber, fUsingTotalStockSet);
+bool CSinaRTDataSource::PrepareNextInquiringString(void) {
+	// 申请下一批次股票实时数据
+	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+	// 开市时使用今日活跃股票池
+	m_strParam = gl_pChinaMarket->GetSinaStockInquiringStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
+	const CString strSinaStockCode = m_strParam.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
+	CreateTotalInquiringString();
+
+	return true;
 }
 
 /// <summary>
@@ -101,9 +96,4 @@ void CSinaRTDataSource::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 3000); // 设置接收超时时间为4000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
-}
-
-bool CSinaRTDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个新浪实时数据\n", lNumberOfData);
-	return true;
 }

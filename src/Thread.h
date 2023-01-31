@@ -19,7 +19,7 @@ using gsl::not_null;
 
 // 网络读取任务
 //
-// VirtualWebInquiry线程。通用网络读取线程
+// VirtualDataSource线程。通用网络读取线程
 UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource); // 此线程返回值为1
 
 // 数据库处理任务

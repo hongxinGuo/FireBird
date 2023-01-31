@@ -12,15 +12,15 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 }
 
 CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
-	const CString strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
+	const CString strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
 
-	m_strInquiringExchange = strMiddle;
-	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
+	m_strInquiringExchange = strParam;
+	m_strTotalInquiryMessage = m_strInquiry + strParam;
 	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {

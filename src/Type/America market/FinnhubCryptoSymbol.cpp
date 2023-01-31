@@ -33,23 +33,23 @@ void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
 	}
 }
 
-CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
-	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+	CString strParam = _T("");
 	char buffer[50];
 
-	strMiddle += m_strSymbol;
-	strMiddle += _T("&resolution=D");
-	strMiddle += _T("&from=");
+	strParam += m_strSymbol;
+	strParam += _T("&resolution=D");
+	strParam += _T("&from=");
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
 	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
-	strMiddle += strTemp;
-	strMiddle += _T("&to=");
+	strParam += strTemp;
+	strParam += _T("&to=");
 	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
 	strTemp = buffer;
-	strMiddle += strTemp;
+	strParam += strTemp;
 
-	return strMiddle;
+	return strParam;
 }
 
 void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate(void) {

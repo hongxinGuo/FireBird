@@ -240,8 +240,8 @@ public:
 	void SetTiingoStatementUpdateDate(long lStatementUpdateDate) noexcept;
 	long GetTiingoDailyDataUpdateDate();
 	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
-	CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
-	CString GetTiingoDayLineInquiryString(long lStartDate, long lCurrentDate);
+	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
+	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate);
 
 	bool IsUSMarket(void) const;
 

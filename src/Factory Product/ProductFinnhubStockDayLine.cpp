@@ -20,18 +20,18 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 }
 
 CString CProductFinnhubStockDayLine::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	const auto strMiddle = pStock->GetFinnhubDayLineInquiryString(CVirtualMarket::GetUTCTime());
+	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(CVirtualMarket::GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strParam;
 	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);

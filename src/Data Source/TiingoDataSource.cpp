@@ -12,9 +12,10 @@ CTiingoDataSource::CTiingoDataSource(void) {
 	m_fDayLineUpdated = false;
 
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+	m_strParam = _T("");
+	m_strSuffix = _T("");
 	m_strSuffix = _T("&token=");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("Tiingo");
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
 	ConfigureSession();
@@ -190,18 +191,9 @@ bool CTiingoDataSource::InquireDayLine(void) {
 }
 
 bool CTiingoDataSource::PrepareNextInquiringString(void) {
-	// 由于Tiingo提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
-	CreateTotalInquiringString(_T(""));
+	// 由于Tiingo提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此分类。
+	CreateTotalInquiringString();
 
-	return true;
-}
-
-void CTiingoDataSource::CreateTotalInquiringString(CString strMiddle) {
-	m_strInquiry = m_strInquiryFunction + strMiddle + m_strSuffix + m_strInquiryToken;
-}
-
-bool CTiingoDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个Tiingo数据\n", lNumberOfData);
 	return true;
 }
 

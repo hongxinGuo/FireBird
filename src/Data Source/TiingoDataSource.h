@@ -3,7 +3,7 @@
 #include"VirtualDataSource.h"
 #include"TiingoFactory.h"
 
-class CTiingoDataSource final : public CVirtualDataSource {
+class CTiingoDataSource : public CVirtualDataSource {
 public:
 	CTiingoDataSource(void);
 	~CTiingoDataSource(void) override = default;
@@ -12,6 +12,10 @@ public:
 	bool UpdateStatus(void) override;
 
 	bool Inquire(const long lCurrentTime) override;
+
+	bool PrepareNextInquiringString(void) override;
+	void ConfigureSession(void) override; // 设置m_pSession状态。
+	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 	bool InquireTiingo(void);
 	bool InquireCompanySymbol(void);
@@ -24,13 +28,6 @@ public:
 	void SetCryptoSymbolUpdated(bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
 	bool IsDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
 	void SetDayLineUpdated(bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
-
-	bool PrepareNextInquiringString(void) override;
-	void CreateTotalInquiringString(CString strMiddle) override;
-	CString GetNextInquiringMiddleString(long, bool) final { return _T(""); }
-	bool ReportStatus(long lNumberOfData) const override;
-	void ConfigureSession(void) final; // 设置m_pSession状态。
-	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:
 	CTiingoFactory m_TiingoFactory;

@@ -14,17 +14,17 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 }
 
 CString CProductFinnhubForexSymbol::CreateMessage(void) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strMiddle = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);
+	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);
 
-	m_strInquiringExchange = strMiddle;
-	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
+	m_strInquiringExchange = strParam;
+	m_strTotalInquiryMessage = m_strInquiry + strParam;
 	return m_strTotalInquiryMessage;
 }
 
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
 	if (pvForexSymbol->empty()) return false;

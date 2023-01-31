@@ -18,10 +18,10 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = static_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	const auto strMiddle = pStock->GetSymbol();
+	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strParam;
 	return m_strTotalInquiryMessage;
 }
 

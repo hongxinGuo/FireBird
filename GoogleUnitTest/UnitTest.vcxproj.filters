@@ -106,15 +106,6 @@
     <Filter Include="Mock class\Type\World market">
       <UniqueIdentifier>{c423a512-8365-477e-a24f-4de93c059604}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock class\WebInquiry">
-      <UniqueIdentifier>{dfe9f939-36b4-4491-ad96-d64e95fe2c32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock class\WebInquiry\China market">
-      <UniqueIdentifier>{b9116ebb-55a7-4ddb-996a-fe16bee3bffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock class\WebInquiry\World market">
-      <UniqueIdentifier>{32a9d475-120c-4bae-9f61-bd5cd4e8943c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock class\Market">
       <UniqueIdentifier>{90e60b62-05df-412c-9d0b-7c785977ea03}</UniqueIdentifier>
     </Filter>

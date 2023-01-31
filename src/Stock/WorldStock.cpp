@@ -844,27 +844,27 @@ void CWorldStock::SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) 
 	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = lDailyDataUpdateDate;
 }
 
-CString CWorldStock::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
-	CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+	CString strParam = _T("");
 	char buffer[50];
 
-	strMiddle += m_strSymbol;
-	strMiddle += _T("&resolution=D");
-	strMiddle += _T("&from=");
+	strParam += m_strSymbol;
+	strParam += _T("&resolution=D");
+	strParam += _T("&from=");
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
 	sprintf_s(buffer, _T("%I64i"), tStartTime);
 	CString strTemp = buffer;
-	strMiddle += strTemp;
-	strMiddle += _T("&to=");
+	strParam += strTemp;
+	strParam += _T("&to=");
 	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
 	strTemp = buffer;
-	strMiddle += strTemp;
+	strParam += strTemp;
 
-	return strMiddle;
+	return strParam;
 }
 
-CString CWorldStock::GetTiingoDayLineInquiryString(long lStartDate, long lCurrentDate) {
-	CString strMiddle = _T("");
+CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) {
+	CString strParam = _T("");
 	char buffer[50];
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
@@ -874,17 +874,17 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lStartDate, long lCurren
 	const long month2 = lStartDate / 100 - year2 * 100;
 	const long date2 = lStartDate - year2 * 10000 - month2 * 100;
 
-	strMiddle += m_strSymbol;
-	strMiddle += _T("/prices?&startDate=");
+	strParam += m_strSymbol;
+	strParam += _T("/prices?&startDate=");
 	sprintf_s(buffer, _T("%4d-%d-%d"), year2, month2, date2);
 	CString strTemp = buffer;
-	strMiddle += strTemp;
-	strMiddle += _T("&endDate=");
+	strParam += strTemp;
+	strParam += _T("&endDate=");
 	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
 	strTemp = buffer;
-	strMiddle += strTemp;
+	strParam += strTemp;
 
-	return strMiddle;
+	return strParam;
 }
 
 bool CWorldStock::IsUSMarket(void) const {

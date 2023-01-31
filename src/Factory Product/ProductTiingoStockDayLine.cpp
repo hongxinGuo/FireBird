@@ -28,16 +28,16 @@ CString CProductTiingoStockDayLine::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());
-	CString strMiddle;
+	CString strParam;
 	if (pStock->GetDayLineStartDate() > 20180101) {
-		strMiddle = pStock->GetTiingoDayLineInquiryString(19800101, m_pMarket->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, m_pMarket->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 	}
 	else {
-		strMiddle = pStock->GetTiingoDayLineInquiryString(pStock->GetDayLineEndDate(), m_pMarket->GetMarketDate());
+		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), m_pMarket->GetMarketDate());
 	}
 	pStock->SetDayLineNeedUpdate(false);
 
-	m_strTotalInquiryMessage = m_strInquiry + strMiddle;
+	m_strTotalInquiryMessage = m_strInquiry + strParam;
 	return m_strTotalInquiryMessage;
 }
 

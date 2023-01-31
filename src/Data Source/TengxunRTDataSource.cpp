@@ -8,7 +8,6 @@
 CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
-	m_strConnectionName = _T("TengxunRT");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
 	ConfigureSession();
@@ -59,19 +58,13 @@ bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
 }
 
 bool CTengxunRTDataSource::PrepareNextInquiringString(void) {
-	CString strMiddle = _T("");
 	ASSERT(gl_pChinaMarket->IsSystemReady());
 	// 申请下一批次股票实时数据。
 	// 申请腾讯实时数据时，如果遇到不存在的股票代码，服务器会返回v_pv_none_match="1";，导致系统故障，
 	// 故而现在只使用有效股票代码。
-	strMiddle = GetNextInquiringMiddleString(m_lInquiringNumber, false); // 使用活跃股票池
-	CreateTotalInquiringString(strMiddle);
+	m_strParam = gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(m_lInquiringNumber); // 使用活跃股票池
+	CreateTotalInquiringString();
 	return true;
-}
-
-CString CTengxunRTDataSource::GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) {
-	ASSERT(gl_pChinaMarket->IsSystemReady());
-	return gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(lTotalNumber);
 }
 
 void CTengxunRTDataSource::ConfigureSession(void) {
@@ -80,11 +73,6 @@ void CTengxunRTDataSource::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 4000); // 设置接收超时时间为4000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
-}
-
-bool CTengxunRTDataSource::ReportStatus(long lNumberOfData) const {
-	TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

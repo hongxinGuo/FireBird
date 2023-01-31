@@ -170,7 +170,7 @@ namespace FireBirdTest {
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryString(123456789);
+		str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 	}
 
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryString(1131536000);
+		str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
 	}
 

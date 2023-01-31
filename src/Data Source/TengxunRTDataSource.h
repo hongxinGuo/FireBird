@@ -2,7 +2,7 @@
 
 #include"VirtualDataSource.h"
 
-class CTengxunRTDataSource final : public CVirtualDataSource {
+class CTengxunRTDataSource : public CVirtualDataSource {
 public:
 	CTengxunRTDataSource();
 	~CTengxunRTDataSource() override = default;
@@ -12,14 +12,11 @@ public:
 
 	bool Inquire(const long lCurrentTime) override;
 
-	bool InquireRTData(const long lCurrentTime);
-
-	virtual bool ParseData(CWebDataPtr pWebData) override final { return true; } // 数据为非JSon格式，不解析
-
+	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
 	bool PrepareNextInquiringString(void) override;
-	CString GetNextInquiringMiddleString(long lTotalNumber, bool fUsingTotalStockSet) override final;
-	void ConfigureSession(void) override final; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
-	bool ReportStatus(long lNumberOfData) const override;
+	bool ParseData(CWebDataPtr pWebData) override { return true; } // 数据为非JSon格式，不解析
+
+	bool InquireRTData(const long lCurrentTime);
 
 	bool IsTengxunRTDataInvalid(CWebData& WebDataReceived);
 

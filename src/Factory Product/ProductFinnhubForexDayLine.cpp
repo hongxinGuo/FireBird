@@ -24,7 +24,7 @@ CString CProductFinnhubForexDayLine::CreateMessage(void) {
 	const auto pForexSymbol = static_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryString(m_pMarket->GetUTCTime());
+	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryParam(m_pMarket->GetUTCTime());
 	return m_strTotalInquiryMessage;
 }
 
