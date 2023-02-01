@@ -136,6 +136,9 @@
     <Filter Include="Test源文件\accessory">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock class\Data Source">
+      <UniqueIdentifier>{82e2d096-ccab-4633-8089-a29284861b2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -519,6 +522,27 @@
     <ClCompile Include="ProductTengxunDayLineTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockVirtualDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockTiingoDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockQuandlDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockNeteaseRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -559,6 +583,21 @@
     </ClInclude>
     <ClInclude Include="MockFinnhubCryptoSymbol.h">
       <Filter>Mock class\Type\World market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockVirtualDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTiingoDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockQuandlDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockNeteaseDayLineDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockNeteaseRTDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

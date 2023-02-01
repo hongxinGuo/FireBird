@@ -33,8 +33,7 @@ public:
 	virtual bool Inquire(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool ProcessInquiringMessage(void);
 	virtual bool ProcessWebDataReceived(void);
-	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData);
-	// 默认是在处理完本次数据后方才允许再次接收。
+	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual bool UpdateStatus(void) {
 		ASSERT(0);
 		return true;
@@ -112,8 +111,7 @@ public:
 		TRACE("调用了基类函数ConfigureSession\n");
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {
-	} //成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString();
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
@@ -189,7 +187,7 @@ protected:
 	CString m_strSuffix; // 查询字符串的后缀部分
 	CString m_strInquiryToken; // 查询字符串令牌
 
-	long m_lContentLength; // 数据长度
+	long m_lContentLength; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
 
 	long m_lInquiringNumber; // 每次查询数量
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）

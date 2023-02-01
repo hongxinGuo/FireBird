@@ -32,6 +32,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
+	m_pCurrentProduct = nullptr;
 
 	m_lContentLength = -1;
 
@@ -320,6 +321,9 @@ long CVirtualDataSource::QueryDataLength() {
 	if (str.GetLength() > 0) {
 		char* p;
 		m_lContentLength = strtol(str.GetBuffer(), &p, 10);
+	}
+	else {
+		m_lContentLength = 0;
 	}
 	return m_lContentLength;
 }

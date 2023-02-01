@@ -85,6 +85,12 @@
     <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
+    <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp" />
+    <ClCompile Include="MockNeteaseRTDataSourceTest.cpp" />
+    <ClCompile Include="MockQuandlDataSourceTest.cpp" />
+    <ClCompile Include="MockTiingoDataSourceTest.cpp" />
+    <ClCompile Include="MockVirtualDataSourceTest.cpp" />
+    <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
     <ClCompile Include="ProductNeteaseDayLineTest.cpp" />
@@ -154,6 +160,7 @@
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="TimeConvertTest.cpp" />
+    <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="VirtualRecordsetTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
@@ -211,7 +218,12 @@
     <ClInclude Include="MockDataChinaDayLine.h" />
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockFireBirdView.h" />
+    <ClInclude Include="MockNeteaseDayLineDataSource.h" />
+    <ClInclude Include="MockNeteaseRTDataSource.h" />
+    <ClInclude Include="MockQuandlDataSource.h" />
     <ClInclude Include="MockSystemMessage.h" />
+    <ClInclude Include="MockTiingoDataSource.h" />
+    <ClInclude Include="MockVirtualDataSource.h" />
     <ClInclude Include="MockWorldMarket.h" />
     <ClInclude Include="MockWorldStock.h" />
   </ItemGroup>
