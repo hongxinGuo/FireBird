@@ -12,6 +12,7 @@
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
+#include "TengxunDayLineDataSource.h"
 #include"NeteaseRTDataSource.h"
 #include"NeteaseDayLineDataSource.h"
 
@@ -59,6 +60,7 @@ namespace FireBirdTest {
 
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
+			gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
 			gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 

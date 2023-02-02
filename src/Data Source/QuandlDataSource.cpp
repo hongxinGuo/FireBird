@@ -13,8 +13,8 @@ CQuandlDataSource::CQuandlDataSource(void) {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 
-	ConfigureSession();
-	Reset();
+	CQuandlDataSource::ConfigureSession();
+	CQuandlDataSource::Reset();
 }
 
 bool CQuandlDataSource::Reset(void) {
@@ -93,8 +93,7 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 
 	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
 		sbWebError = false;
-		if (!IsInquiring()) {
-		}
+		if (!IsInquiring()) { }
 		if (IsInquiring()) sllLastTimeTickCount = llTickCount;
 	}
 	return true;

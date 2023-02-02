@@ -246,7 +246,7 @@ CString ConvertDateToString(const long lDate, CString strFormat) {
 	return (str);
 }
 
-CString ConvertDateToTimeStampString(const long lDate) {
+CString ConvertDateToTimeStamp(const long lDate) {
 	return (ConvertDateToString(lDate, _T("%04d-%02d-%02d")));
 }
 

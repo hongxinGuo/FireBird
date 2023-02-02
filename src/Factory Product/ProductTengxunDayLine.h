@@ -31,6 +31,7 @@ public:
 	}
 
 	static void SetInquiryNumber(int iNumber) { sm_iInquiryNumber = iNumber; }
+	static int GetInquiryNumber() { return sm_iInquiryNumber; }
 	static void AppendDayLine(vector<CDayLinePtr> vDayLine);
 
 	void CheckAndPrepareDayLine();

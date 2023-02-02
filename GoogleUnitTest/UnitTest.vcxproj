@@ -83,11 +83,16 @@
     <ClCompile Include="DataCryptoDayLineTest.cpp" />
     <ClCompile Include="DataForexDayLineTest.cpp" />
     <ClCompile Include="ContainerWorldStockTest.cpp" />
+    <ClCompile Include="FinnhubDataSourceTest.cpp" />
+    <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockNeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="MockQuandlDataSourceTest.cpp" />
+    <ClCompile Include="MockSinaRTDataSourceTest.cpp" />
+    <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp" />
+    <ClCompile Include="MockTengxunRTDataSourceTest.cpp" />
     <ClCompile Include="MockTiingoDataSourceTest.cpp" />
     <ClCompile Include="MockVirtualDataSourceTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
@@ -112,6 +117,7 @@
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
     <ClCompile Include="jsonParseTest.cpp" />
     <ClCompile Include="ChinaStockCodeConverterTest.cpp" />
+    <ClCompile Include="SinaRTDataSourceTest.cpp" />
     <ClCompile Include="SystemConfigurationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
@@ -187,6 +193,7 @@
     <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockFinnhubCryptoSymbol.h" />
+    <ClInclude Include="MockFinnhubDataSource.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockDataChinaWeekLine.h" />
     <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
@@ -221,7 +228,10 @@
     <ClInclude Include="MockNeteaseDayLineDataSource.h" />
     <ClInclude Include="MockNeteaseRTDataSource.h" />
     <ClInclude Include="MockQuandlDataSource.h" />
+    <ClInclude Include="MockSinaRTDataSource.h" />
     <ClInclude Include="MockSystemMessage.h" />
+    <ClInclude Include="MockTengxunDayLineDataSource.h" />
+    <ClInclude Include="MockTengxunRTDataSource.h" />
     <ClInclude Include="MockTiingoDataSource.h" />
     <ClInclude Include="MockVirtualDataSource.h" />
     <ClInclude Include="MockWorldMarket.h" />

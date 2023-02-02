@@ -10,9 +10,9 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
-	ConfigureSession();
+	CTengxunRTDataSource::ConfigureSession();
 
-	Reset();
+	CTengxunRTDataSource::Reset();
 }
 
 bool CTengxunRTDataSource::Reset(void) {
@@ -80,14 +80,14 @@ void CTengxunRTDataSource::ConfigureSession(void) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunRTDataSource::IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
+bool CTengxunRTDataSource::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
 	char buffer[50]{};
 	char* pBuffer = buffer;
-	CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
 	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
 	buffer[21] = 0x000;
-	CString str1 = buffer;
+	const CString str1 = buffer;
 
 	if (str1.Compare(strInvalidStock) == 0) {
 		ASSERT(WebDataReceived.GetBufferLength() == 21);

@@ -10,11 +10,10 @@
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 	m_strParam = _T("");
-	m_strSuffix = _T("");
+	m_strSuffix = _T(",2000,,");
 	m_strInquiryToken = _T("");
 
-	ConfigureSession();
-
+	CTengxunDayLineDataSource::ConfigureSession();
 	CTengxunDayLineDataSource::Reset();
 }
 
@@ -92,8 +91,6 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 }
 
 vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaStockPtr pStock) {
-	const CString strFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
-	const CString strSuffix = _T(",2000,,");
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
@@ -105,16 +102,16 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 	shared_ptr<CProductTengxunDayLine> product = nullptr;
 	do {
 		product = make_shared<CProductTengxunDayLine>();
-		CString strStartDate = ConvertDateToTimeStampString(lStartDate);
+		CString strStartDate = ConvertDateToTimeStamp(lStartDate);
 		CString strEndDate;
 		const long year = lStartDate / 10000;
 		if ((l + 7) > yearDiffer) {
-			strEndDate = ConvertDateToTimeStampString(lCurrentDate);
+			strEndDate = ConvertDateToTimeStamp(lCurrentDate);
 		}
 		else {
-			strEndDate = ConvertDateToTimeStampString((year + 6) * 10000 + 1231);
+			strEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
-		const CString strTotalMessage = strFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + strSuffix;
+		const CString strTotalMessage = m_strInquiryFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + m_strSuffix;
 		product->SetIndex(lStockIndex);
 		product->SetInquiry(strTotalMessage);
 		vProduct.push_back(product);
@@ -122,7 +119,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 		lStartDate = (year + 7) * 10000 + 101;
 		iCounter++;
 	} while (l < yearDiffer);
-	product->SetInquiryNumber(iCounter);
+	if (iCounter > 0) product->SetInquiryNumber(iCounter);
 
 	return vProduct;
 }

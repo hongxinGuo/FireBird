@@ -7,9 +7,9 @@
 #include"WorldMarket.h"
 
 CTiingoDataSource::CTiingoDataSource(void) {
-	m_fStockSymbolUpdated = false;
-	m_fCryptoSymbolUpdated = false;
-	m_fDayLineUpdated = false;
+	m_fUpdateStockSymbol = true;
+	m_fUpdateCryptoSymbol = true;
+	m_fUpdateDayLine = true;
 
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = _T("");
@@ -18,9 +18,8 @@ CTiingoDataSource::CTiingoDataSource(void) {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
-	ConfigureSession();
-
-	Reset();
+	CTiingoDataSource::ConfigureSession();
+	CTiingoDataSource::Reset();
 }
 
 bool CTiingoDataSource::Reset(void) {
@@ -32,7 +31,7 @@ bool CTiingoDataSource::Reset(void) {
 bool CTiingoDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
-		m_fStockSymbolUpdated = true;
+		m_fUpdateStockSymbol = false;
 		break;
 	case STOCK_PRICE_CANDLES_:
 		break;
@@ -74,7 +73,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	case CRYPTO_EXCHANGE_:
 		break;
 	case CRYPTO_SYMBOLS_:
-		m_fCryptoSymbolUpdated = true;
+		m_fUpdateCryptoSymbol = false;
 		break;
 	case CRYPTO_CANDLES_:
 	case ECONOMIC_COUNTRY_LIST_:
@@ -118,15 +117,14 @@ bool CTiingoDataSource::InquireTiingo(void) {
 	if (gl_pWorldMarket->IsSystemReady()) {
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
-		// 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
-		InquireDayLine(); // 初步测试完毕。
+		InquireDayLine();
 		return true;
 	}
 	return false;
 }
 
 bool CTiingoDataSource::InquireCompanySymbol(void) {
-	if (!IsInquiring() && !IsStockSymbolUpdated()) {
+	if (!IsInquiring() && IsUpdateStockSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -138,7 +136,7 @@ bool CTiingoDataSource::InquireCompanySymbol(void) {
 }
 
 bool CTiingoDataSource::InquireCryptoSymbol(void) {
-	if (!IsInquiring() && !IsCryptoSymbolUpdated()) {
+	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
 		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
@@ -162,7 +160,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsInquiring() && !IsDayLineUpdated()) {
+	if (!IsInquiring() && IsUpdateDayLine()) {
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
@@ -182,7 +180,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
-			SetDayLineUpdated(true);
+			SetUpdateDayLine(false);
 			const CString str = "美国市场自选股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}

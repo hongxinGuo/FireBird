@@ -22,19 +22,19 @@ public:
 	bool InquireCryptoSymbol(void);
 	bool InquireDayLine(void);
 
-	bool IsStockSymbolUpdated(void) const noexcept { return m_fStockSymbolUpdated; }
-	void SetStockSymbolUpdated(bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }
-	bool IsCryptoSymbolUpdated(void) const noexcept { return m_fCryptoSymbolUpdated; }
-	void SetCryptoSymbolUpdated(bool fFlag) noexcept { m_fCryptoSymbolUpdated = fFlag; }
-	bool IsDayLineUpdated(void) const noexcept { return m_fDayLineUpdated; }
-	void SetDayLineUpdated(bool fFlag) noexcept { m_fDayLineUpdated = fFlag; }
+	bool IsUpdateStockSymbol(void) const noexcept { return m_fUpdateStockSymbol; }
+	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
+	bool IsUpdateCryptoSymbol(void) const noexcept { return m_fUpdateCryptoSymbol; }
+	void SetUpdateCryptoSymbol(bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
+	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }
+	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
 protected:
 	CTiingoFactory m_TiingoFactory;
 
-	bool m_fStockSymbolUpdated; // 每日更新公司代码库
-	bool m_fCryptoSymbolUpdated; // 每日更新crypto代码库
-	bool m_fDayLineUpdated; // 每日更新公司日线数据
+	bool m_fUpdateStockSymbol; // 每日更新公司代码库
+	bool m_fUpdateCryptoSymbol; // 每日更新crypto代码库
+	bool m_fUpdateDayLine; // 每日更新公司日线数据
 };
 
 using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;

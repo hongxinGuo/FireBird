@@ -15,15 +15,13 @@ namespace FireBirdTest {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			ASSERT_THAT(gl_pSinaRTWebInquiry, NotNull());
 		}
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -34,6 +32,15 @@ namespace FireBirdTest {
 
 	protected:
 	};
+
+	TEST_F(CSinaRTDataSourceTest, TestParseData) {
+		const auto pData = make_shared<CWebData>();
+		EXPECT_TRUE(gl_pSinaRTDataSource->ParseData(pData));
+	}
+
+	TEST_F(CSinaRTDataSourceTest, TestUpdateStatus) {
+		EXPECT_TRUE(gl_pSinaRTDataSource->UpdateStatus());
+	}
 
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {
 		gl_pSinaRTDataSource->SetInquiring(true);
@@ -54,20 +61,20 @@ namespace FireBirdTest {
 	TEST_F(CSinaRTDataSourceTest, TestGetDataSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
-		auto pRTData = make_shared<CWebRTData>();
+		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_pChinaMarket->PushSinaRT(pRTData);
-		auto pRTData2 = make_shared<CWebRTData>();
+		const auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(200200200);
 		pRTData2->SetBuy(1);
 		gl_pChinaMarket->PushSinaRT(pRTData2);
-		auto pRTData3 = make_shared<CWebRTData>();
+		const auto pRTData3 = make_shared<CWebRTData>();
 		pRTData3->SetTransactionTime(200200);
 		gl_pChinaMarket->PushSinaRT(pRTData3);
-		auto pRTData4 = make_shared<CWebRTData>();
+		const auto pRTData4 = make_shared<CWebRTData>();
 		pRTData4->SetTransactionTime(200);
 		gl_pChinaMarket->PushSinaRT(pRTData4);
-		auto pRTData5 = make_shared<CWebRTData>();
+		const auto pRTData5 = make_shared<CWebRTData>();
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_pChinaMarket->PushSinaRT(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后

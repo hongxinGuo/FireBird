@@ -33,6 +33,11 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pNeteaseDayLineDataSource->UpdateStatus());
 	}
 
+	TEST_F(CNeteaseDayLineDataSourceTest, TestParseData) {
+		const CWebDataPtr pData = make_shared<CWebData>();
+		EXPECT_TRUE(gl_pNeteaseDayLineDataSource->ParseData(pData));
+	}
+
 	TEST_F(CNeteaseDayLineDataSourceTest, TestPrepareNextInquiringStr) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		CString str;
@@ -56,7 +61,15 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CNeteaseDayLineDataSourceTest, TestInquire11) {
+	TEST_F(CNeteaseDayLineDataSourceTest, TestUpdateStatusAfterSucceed) {
+		const CWebDataPtr pData = make_shared<CWebData>();
+		gl_pNeteaseDayLineDataSource->SetDownLoadingStockCode(_T("Test"));
+		gl_pNeteaseDayLineDataSource->UpdateStatusAfterSucceed(pData);
+
+		EXPECT_STREQ(pData->GetStockCode(), _T("Test"));
+	}
+
+	TEST_F(CNeteaseDayLineDataSourceTest, TestInquire1) {
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000);

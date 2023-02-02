@@ -11,9 +11,9 @@ CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	m_strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strInquiryToken = _T("");
 
-	ConfigureSession();
+	CNeteaseDayLineDataSource::ConfigureSession();
 
-	Reset();
+	CNeteaseDayLineDataSource::Reset();
 }
 
 bool CNeteaseDayLineDataSource::Reset(void) {

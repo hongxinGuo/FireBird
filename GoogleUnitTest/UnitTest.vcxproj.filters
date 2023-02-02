@@ -543,6 +543,24 @@
     <ClCompile Include="MockNeteaseRTDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="MockTengxunRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockSinaRTDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MockFinnhubDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -597,6 +615,18 @@
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseRTDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTengxunRTDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTengxunDayLineDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockSinaRTDataSource.h">
+      <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockFinnhubDataSource.h">
       <Filter>Mock class\Data Source</Filter>
     </ClInclude>
   </ItemGroup>

@@ -37,6 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_VirtualDataSource.SetByteRead(0);
 		InSequence seq;
 		EXPECT_CALL(m_VirtualDataSource, OpenFile(strInquiry))
 			.Times(1)
@@ -54,6 +55,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_VirtualDataSource.ReadingWebData());
 
+		EXPECT_EQ(m_VirtualDataSource.GetByteRead(), 1024 * 4 + 10) << "这几次返回值之和";
 		EXPECT_FALSE(m_VirtualDataSource.IsWebError());
 		EXPECT_TRUE(m_VirtualDataSource.IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 	}

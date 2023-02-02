@@ -11,16 +11,17 @@ CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 
-	ConfigureSession();
-
-	Reset();
+	CNeteaseRTDataSource::ConfigureSession();
+	CNeteaseRTDataSource::Reset();
 }
 
 bool CNeteaseRTDataSource::Reset(void) {
 	return true;
 }
 
-bool CNeteaseRTDataSource::UpdateStatus(void) { return true; }
+bool CNeteaseRTDataSource::UpdateStatus(void) {
+	return true;
+}
 
 bool CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 	const ULONGLONG llTickCount = GetTickCount64();
@@ -65,7 +66,7 @@ bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
-	return false;
+	return true;
 }
 
 bool CNeteaseRTDataSource::PrepareNextInquiringString(void) {

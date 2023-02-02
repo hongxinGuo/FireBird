@@ -18,7 +18,7 @@ public:
 
 	bool InquireRTData(const long lCurrentTime);
 
-	bool IsTengxunRTDataInvalid(CWebData& WebDataReceived);
+	bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
 
 protected:
 };

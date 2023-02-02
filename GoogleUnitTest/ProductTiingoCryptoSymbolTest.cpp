@@ -20,8 +20,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -200,8 +199,8 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-		EXPECT_FALSE(gl_pTiingoDataSource->IsCryptoSymbolUpdated()) << "此标识由UpdateStatus函数更新";
+		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol()) << "此标识由UpdateStatus函数更新";
 
-		gl_pTiingoDataSource->SetCryptoSymbolUpdated(false);
+		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
 	}
 }

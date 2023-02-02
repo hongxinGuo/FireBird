@@ -19,10 +19,10 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiry + pStock->GetSymbol();
-	CString strTemp = ConvertDateToTimeStampString(pStock->GetCompanyNewsUpdateDate());
+	CString strTemp = ConvertDateToTimeStamp(pStock->GetCompanyNewsUpdateDate());
 	strMessage += _T("&from=");
 	strMessage += strTemp;
-	strTemp = ConvertDateToTimeStampString(gl_pWorldMarket->GetMarketDate());
+	strTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	strMessage += _T("&to=");
 	strMessage += strTemp;
 

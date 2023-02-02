@@ -20,9 +20,9 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
-	ConfigureSession();
+	CSinaRTDataSource::ConfigureSession();
 
-	Reset();
+	CSinaRTDataSource::Reset();
 }
 
 bool CSinaRTDataSource::Reset(void) {

@@ -242,6 +242,8 @@ bool CVirtualDataSource::ReadingWebData(void) {
 					break;
 				}
 				lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
+				XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
+				m_lByteRead += lCurrentByteRead;
 				IncreaseBufferSizeIfNeeded();
 			} while (lCurrentByteRead > 0);
 			sm_lTotalByteRead += m_lByteRead;
@@ -335,13 +337,14 @@ long CVirtualDataSource::QueryDataLength() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualDataSource::ReadWebFileOneTime(void) {
-	char buffer[1024 * 16];
-	const UINT uByteRead = m_pFile->Read(buffer, 1024 * 16);
-	for (UINT i = 0; i < uByteRead; i++) {
-		m_sBuffer.at(m_lByteRead++) = buffer[i];
-	}
-
+	const UINT uByteRead = m_pFile->Read(m_dataBuffer, DATA_BUFFER_SIZE_);
 	return uByteRead;
+}
+
+void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
+	for (UINT i = 0; i < uByteRead; i++) {
+		m_sBuffer.at(lPosition++) = m_dataBuffer[i];
+	}
 }
 
 bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {

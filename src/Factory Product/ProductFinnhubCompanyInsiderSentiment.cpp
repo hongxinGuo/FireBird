@@ -22,7 +22,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
-	const CString strCurrentDate = ConvertDateToTimeStampString(m_pMarket->GetMarketDate());
+	const CString strCurrentDate = ConvertDateToTimeStamp(m_pMarket->GetMarketDate());
 	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 

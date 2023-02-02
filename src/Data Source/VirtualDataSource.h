@@ -13,6 +13,8 @@ using std::list;
 using std::atomic_bool;
 using std::atomic_long;
 
+constexpr auto DATA_BUFFER_SIZE_ = 1024 * 16;
+
 // 此信号量用于解析WebSource中的数据。
 // 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
 extern counting_semaphore<3> gl_WebSourceParseAndStoreData;
@@ -84,6 +86,7 @@ public:
 	void DeleteWebFile();
 	long QueryDataLength();
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
+	void XferReadingToBuffer(long lPosition, UINT uByteRead);
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
 	void VerifyDataLength() const;
@@ -193,6 +196,9 @@ protected:
 	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+
+private:
+	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;

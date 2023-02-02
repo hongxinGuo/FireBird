@@ -22,9 +22,9 @@ CFinnhubDataSource::CFinnhubDataSource(void) {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 
-	ConfigureSession();
+	CFinnhubDataSource::ConfigureSession();
 
-	Reset();
+	CFinnhubDataSource::Reset();
 }
 
 bool CFinnhubDataSource::Reset(void) {

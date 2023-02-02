@@ -22,8 +22,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -230,14 +229,14 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			TiingoWebData* pData = GetParam();
+			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateNlohmannJson();
 			m_pWebData->SetJSonContentType(true);
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockSymbolProduct.SetIndex(0);
-			gl_pTiingoDataSource->SetStockSymbolUpdated(false);
+			gl_pTiingoDataSource->SetUpdateStockSymbol(true);
 		}
 
 		void TearDown(void) override {
