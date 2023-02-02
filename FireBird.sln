@@ -27,7 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文�
 		.runsettings = .runsettings
 		Lib\CreateEnvionment.bat = Lib\CreateEnvionment.bat
 		..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json = ..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json
-		Lib\libcurl_build.bat = Lib\libcurl_build.bat
 		propertysheet.props = propertysheet.props
 		..\..\..\..\..\FireBird\SystemConfiguration.json = ..\..\..\..\..\FireBird\SystemConfiguration.json
 	EndProjectSection
