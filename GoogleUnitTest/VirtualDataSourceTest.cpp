@@ -201,4 +201,28 @@ namespace FireBirdTest {
 		dataSource.SetCurrentInquiryTime(10102020);
 		EXPECT_EQ(dataSource.GetCurrentInquiryTime(), 10102020);
 	}
+
+	TEST_F(CDataSourceTest, TestDiscardProduct) {
+		auto p = make_shared<CVirtualWebProduct>();
+		auto p2 = make_shared<CVirtualWebProduct>();
+		dataSource.StoreInquiry(p);
+		dataSource.StoreInquiry(p2);
+		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 2);
+
+		dataSource.DiscardProduct();
+
+		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);
+	}
+
+	TEST_F(CDataSourceTest, TestDiscardReceivedData) {
+		auto p = make_shared<CWebData>();
+		auto p2 = make_shared<CWebData>();
+		dataSource.StoreReceivedData(p);
+		dataSource.StoreReceivedData(p2);
+		EXPECT_EQ(dataSource.GetReceivedDataSize(), 2);
+
+		dataSource.DiscardReceivedData();
+
+		EXPECT_EQ(dataSource.GetReceivedDataSize(), 0);
+	}
 }

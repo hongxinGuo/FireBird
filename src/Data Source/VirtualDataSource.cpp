@@ -100,8 +100,7 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 			if (m_pCurrentProduct->IsNoRightToAccess()) {
 				// 如果系统报告无权查询此类数据
 				// 目前先在软件系统消息中报告
-				gl_systemMessage.PushInnerSystemInformationMessage(
-					_T("No right to access: ") + m_pCurrentProduct->GetTotalInquiryMessage() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetTotalInquiryMessage() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
 		}
@@ -203,8 +202,8 @@ void CVirtualDataSource::Read(void) {
 	}
 	else {
 		// error handling
-		while (m_qProduct.size() > 0) m_qProduct.pop(); // 抛弃掉未处理的申请（当一次查询产生多次申请时，这些申请都是各自相关的）
-		while (GetReceivedDataSize() > 0) GetReceivedData(); // 抛弃接收到的数据
+		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只有出现一次错误，其他的申请就无意义了。
+		DiscardReceivedData();
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 	counter.stop();
@@ -225,88 +224,58 @@ void CVirtualDataSource::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::ReadingWebData(void) {
-	bool fReadingSuccess = true;
-
 	ASSERT(IsInquiringWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);
 
 	ASSERT(m_pFile == nullptr);
-	if (OpenFile(GetInquiringString())) {
-		try {
-			UINT lCurrentByteRead;
-			do {
-				if (gl_systemStatus.IsExitingSystem()) {
-					// 当系统退出时，要立即中断此进程，以防止内存泄露。
-					fReadingSuccess = false;
-					break;
-				}
-				lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
-				XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
-				m_lByteRead += lCurrentByteRead;
-				IncreaseBufferSizeIfNeeded();
-			} while (lCurrentByteRead > 0);
-			sm_lTotalByteRead += m_lByteRead;
-			// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
-			m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
+	try {
+		OpenFile(GetInquiringString());
+		UINT lCurrentByteRead;
+		do {
+			if (gl_systemStatus.IsExitingSystem()) {// 当系统退出时，要立即中断此进程，以防止内存泄露。
+				m_dwWebErrorCode = 0;
+				break;
+			}
+			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
+			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
+			m_lByteRead += lCurrentByteRead;
+			IncreaseBufferSizeIfNeeded();
 		}
-		catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
-			fReadingSuccess = false;
-			m_dwWebErrorCode = exception->m_dwError;
-			ReportWebError(m_dwWebErrorCode, m_strInquiry);
-			exception->Delete();
-		}
-		DeleteWebFile();
+		while (lCurrentByteRead > 0);
+		sm_lTotalByteRead += m_lByteRead;
+		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
+		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 	}
-	else fReadingSuccess = false;
-
+	catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
+		m_dwWebErrorCode = exception->m_dwError;
+		ReportWebError(m_dwWebErrorCode, m_strInquiry);
+		exception->Delete();
+	}
+	DeleteWebFile();
 	gl_ThreadStatus.DecreaseWebInquiringThread();
-	ASSERT(m_pFile == nullptr);
 
-	return fReadingSuccess;
+	return !IsWebError();
 }
 
 /// <summary>
 /// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误
 /// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致连接错误--20220401
 ///
+/// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
+/// 其他的数据尚未需要提供头部验证数据。
+
 /// 调用函数需要处理exception。
 ///
 /// </summary>
 /// <param name="strInquiring"></param>
 /// <returns></returns>
-bool CVirtualDataSource::OpenFile(const CString& strInquiring) {
-	bool fSucceedOpen = true;
-	const long lHeadersLength = m_strHeaders.GetLength();
-
-	const ULONG64 llCurrentTickCount = GetTickCount64();
-	ASSERT(m_pSession != nullptr);
-	ASSERT(m_pFile == nullptr);
-	try {
-		// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
-		// 其他的数据尚未需要提供头部验证数据。
-		if (gl_systemStatus.IsExitingSystem()) { return false; }
-		//CStdioFile* file = m_pSession->OpenURL((LPCTSTR)strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, (LPCTSTR)m_strHeaders, lHeadersLength);
-		//auto p = typeid(*file).name();
-		//ASSERT(std::strcmp(typeid(*file).name(), _T("class CHttpFile")) == 0);
-		//m_pFile = dynamic_cast<CHttpFile*>(file);
-		m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1, INTERNET_FLAG_TRANSFER_ASCII, m_strHeaders, lHeadersLength));
-		ASSERT(std::strcmp(typeid(*m_pFile).name(), _T("class CHttpFile")) == 0);
-	}
-	catch (CInternetException* exception) { //这里一般是使用引用。但我准备在处理完后就删除这个例外了，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
-		ASSERT(m_pFile == nullptr);
-		DeleteWebFile();
-		m_dwWebErrorCode = exception->m_dwError;
-		ReportWebError(m_dwWebErrorCode, GetTickCount64() - llCurrentTickCount, m_strInquiry);
-		fSucceedOpen = false;
-		exception->Delete();
-	}
-	if (fSucceedOpen) {
-		m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
-		QueryDataLength();
-	}
-
-	return fSucceedOpen;
+void CVirtualDataSource::OpenFile(const CString& strInquiring) {
+	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1,
+	                                                       INTERNET_FLAG_TRANSFER_ASCII,
+	                                                       m_strHeaders, m_strHeaders.GetLength()));
+	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
+	QueryDataLength();
 }
 
 void CVirtualDataSource::DeleteWebFile() {

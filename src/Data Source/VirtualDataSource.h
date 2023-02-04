@@ -8,6 +8,7 @@
 
 #include<semaphore>
 #include<list>
+
 using std::counting_semaphore;
 using std::list;
 using std::atomic_bool;
@@ -82,7 +83,7 @@ public:
 	void SetDefaultSessionOption(void);
 
 	virtual bool ReadingWebData(void); // 网络实际读取函数
-	virtual bool OpenFile(const CString& strInquiring);
+	virtual void OpenFile(const CString& strInquiring);
 	void DeleteWebFile();
 	long QueryDataLength();
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
@@ -160,6 +161,9 @@ public:
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
+
+	void DiscardProduct() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
+	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
 public:
 	// 以下为测试用函数

@@ -461,6 +461,7 @@ namespace FireBirdTest {
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_STREQ(pStock->GetCurrency(), _T("No Currency"));
 		pStock->SetCurrency(_T(""));
+		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {

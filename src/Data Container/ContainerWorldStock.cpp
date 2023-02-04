@@ -116,16 +116,9 @@ bool CContainerWorldStock::LoadDB(void) {
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
 bool CContainerWorldStock::UpdateProfileDB(void) {
-	static bool sm_fInProcess = false;
 	int iStockNeedUpdate = 0;
 	int iCurrentUpdated = 0;
 	time_t tt = GetTickCount64();
-
-	if (sm_fInProcess) {
-		gl_systemMessage.PushErrorMessage(_T("UpdateStockProfileDB任务用时超过五分钟"));
-		return false;
-	}
-	sm_fInProcess = true;
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
@@ -133,6 +126,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
+		if (iStockNeedUpdate > 1000) iStockNeedUpdate = 1000; // 每次更新最多1000个数据,保证此任务不占用过多时间（1000个大致需要3-10秒钟）。
 		setWorldStock.m_strSort = _T("[Symbol]");
 		setWorldStock.Open();
 		setWorldStock.m_pDatabase->BeginTrans();
@@ -155,6 +149,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
 					iCurrentUpdated++;
 					pStock3->Append(setWorldStock);
+					pStock3->SetUpdateProfileDB(false);
 					pStock3->SetTodayNewStock(false);
 					TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
 				}
@@ -175,9 +170,8 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 	sprintf_s(buffer3, _T("%d"), iCurrentUpdated);
 	strMessage += buffer3;
 	strMessage += _T("个股票");
-	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
+	gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
-	sm_fInProcess = false;
 	return true;
 }
 

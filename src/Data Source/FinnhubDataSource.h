@@ -18,24 +18,24 @@ public:
 
 	bool InquireFinnhub(long lCurrentTime);
 
-	bool InquireCountryList(void);
-	bool InquireCompanySymbol(void);
-	bool InquireCompanyProfileConcise(void);
-	bool InquireCompanyNews(void);
-	bool InquireCompanyBasicFinancial();
-	bool InquireStockDayLine(void);
-	bool InquireRTQuote(void);
-	bool InquirePeer(void);
-	bool InquireInsiderTransaction(void);
-	bool InquireInsiderSentiment(void);
-	bool InquireEconomicCalendar(void);
-	bool InquireEPSSurprise(void);
-	bool InquireForexExchange(void);
-	bool InquireForexSymbol(void);
-	bool InquireForexDayLine(void);
-	bool InquireCryptoExchange(void);
-	bool InquireCryptoSymbol(void);
-	bool InquireCryptoDayLine(void);
+	virtual bool InquireCountryList(void);
+	virtual bool InquireCompanySymbol(void);
+	virtual bool InquireCompanyProfileConcise(void);
+	virtual bool InquireCompanyNews(void);
+	virtual bool InquireCompanyBasicFinancial();
+	virtual bool InquireStockDayLine(void);
+	virtual bool InquireRTQuote(void);
+	virtual bool InquirePeer(void);
+	virtual bool InquireInsiderTransaction(void);
+	virtual bool InquireInsiderSentiment(void);
+	virtual bool InquireEconomicCalendar(void);
+	virtual bool InquireEPSSurprise(void);
+	virtual bool InquireForexExchange(void);
+	virtual bool InquireForexSymbol(void);
+	virtual bool InquireForexDayLine(void);
+	virtual bool InquireCryptoExchange(void);
+	virtual bool InquireCryptoSymbol(void);
+	virtual bool InquireCryptoDayLine(void);
 
 	bool IsUpdateCountryList(void) const noexcept { return m_fUpdateCountryList; }
 	void SetUpdateCountryList(const bool fFlag) noexcept { m_fUpdateCountryList = fFlag; }
