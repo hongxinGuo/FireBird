@@ -46,6 +46,23 @@ bool CNeteaseDayLineDataSource::Inquire(const long lCurrentTime) {
 	return true;
 }
 
+void CNeteaseDayLineDataSource::CreateProduct() {
+	// 准备网易日线数据申请格式
+	const CString strMessage;
+	CString strParam = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
+	char buffer2[200];
+	const CString strStockCode = XferNeteaseToStandard(strParam);
+	SetDownLoadingStockCode(strStockCode);
+	gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
+	strParam += _T("&start=19900101&end=");
+	sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
+	strParam += buffer2;
+	m_strParam = strParam;
+	gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);
+	m_pProductCurrentNeteaseDayLine = make_shared<CProductNeteaseDayLine>();
+	m_pProductCurrentNeteaseDayLine->SetInquiry(strMessage);
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：

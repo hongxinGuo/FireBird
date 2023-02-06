@@ -118,7 +118,6 @@ bool CContainerWorldStock::LoadDB(void) {
 bool CContainerWorldStock::UpdateProfileDB(void) {
 	int iStockNeedUpdate = 0;
 	int iCurrentUpdated = 0;
-	time_t tt = GetTickCount64();
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
@@ -161,16 +160,6 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		m_lLastTotalWorldStock = m_vStock.size();
 	}
 	ASSERT(iCurrentUpdated == iStockNeedUpdate);
-	tt = GetTickCount64() - tt;
-	char buffer3[30];
-	sprintf_s(buffer3, _T("%lld"), tt);
-	CString strMessage = _T("更新WorldMarket stock用时");
-	strMessage += buffer3;
-	strMessage += _T("毫秒,共更新了");
-	sprintf_s(buffer3, _T("%d"), iCurrentUpdated);
-	strMessage += buffer3;
-	strMessage += _T("个股票");
-	gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
 	return true;
 }

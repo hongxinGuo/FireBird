@@ -30,15 +30,7 @@
 
 #include<exception>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 bool CMainFrame::sm_fGlobeInit = false;
-
-// CMainFrame
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
@@ -88,7 +80,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
-		&CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
+	                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
@@ -297,8 +289,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT,
-			WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY |
-			CBRS_SIZE_DYNAMIC) ||
+	                           WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY |
+	                           CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME)) {
 		TRACE0("Failed to create toolbar\n");
 		return -1; // fail to create
@@ -387,9 +379,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	auto hOutputBarIcon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-		MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
-		IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
-		GetSystemMetrics(SM_CYSMICON), 0));
+	                                                     MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
+	                                                     IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
+	                                                     GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 }
 
@@ -430,7 +422,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 	bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
 	ASSERT(bNameValid);
 	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND,
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
+	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
 		return FALSE; // 未能创建
 	}

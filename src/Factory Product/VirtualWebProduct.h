@@ -91,8 +91,7 @@ struct TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~TiingoWebData() {
-	}
+	~TiingoWebData() { }
 
 public:
 	long m_lIndex;

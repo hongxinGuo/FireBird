@@ -55,16 +55,14 @@ namespace FireBirdTest {
 
 	TEST_F(CMockNeteaseDayLineDataSourceTest, TestGetWebData) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		m_MockNeteaseDayLineDataSource.SetInquiringWebData(true);
-		EXPECT_FALSE(m_MockNeteaseDayLineDataSource.GetWebData());
 		m_MockNeteaseDayLineDataSource.SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(m_MockNeteaseDayLineDataSource, PrepareNextInquiringString())
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
+		.Times(1)
+		.WillOnce(Return(true))
+		.RetiresOnSaturation();
 		EXPECT_CALL(m_MockNeteaseDayLineDataSource, StartReadingThread)
-			.Times(1);
+		.Times(1);
 		m_MockNeteaseDayLineDataSource.GetWebData();
 		EXPECT_TRUE(m_MockNeteaseDayLineDataSource.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());

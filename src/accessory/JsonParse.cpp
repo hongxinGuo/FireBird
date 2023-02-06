@@ -17,6 +17,12 @@
 #include"WebRTData.h"
 //#include"SaveAndLoad.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 #include<string>
 #include<memory>
 
@@ -364,21 +370,14 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 // }
 //
 CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
-	long i = 0;
-	// 截取实时数据时用。为了测试解析速度
-	if (i <= pData->GetBufferLength()) {
-		string s = pData->GetDataBuffer();
-		//SaveToFile(_T("C:\\FireBird\\TengxunDayLineData.json"), s.c_str());
-		i = pData->GetBufferLength();
-	}
-
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pData->GetStockCode();
 	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJson()) {	// 网易数据前21位为前缀，后两位为后缀
-			gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
+		if (!pData->CreateNlohmannJson()) {
+			const CString strMessage = pData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
+			gl_systemMessage.PushErrorMessage(strMessage);
 			fProcess = false;
 		}
 	}

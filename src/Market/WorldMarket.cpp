@@ -65,11 +65,9 @@ void CWorldMarket::ResetFinnhub(void) {
 	}
 }
 
-void CWorldMarket::ResetQuandl(void) {
-}
+void CWorldMarket::ResetQuandl(void) {}
 
-void CWorldMarket::ResetTiingo(void) {
-}
+void CWorldMarket::ResetTiingo(void) {}
 
 void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubStockExchange.Reset();
@@ -528,7 +526,6 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
-			TRACE("更新%s company news数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。

@@ -14,10 +14,12 @@ namespace FireBirdTest {
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
+			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
 		}
 
@@ -40,12 +42,59 @@ namespace FireBirdTest {
 	public:
 	};
 
+	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess1) {
+		m_pVirtualDataSource->Enable(false);
+
+		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(0);
+
+		m_pVirtualDataSource->InquireAndProcess(100000);
+	}
+
+	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess2) {
+		m_pVirtualDataSource->Enable(true);
+		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
+		auto p = make_shared<CVirtualWebProduct>();
+		m_pVirtualDataSource->StoreInquiry(p);
+		EXPECT_TRUE(m_pVirtualDataSource->HaveInquiry());
+		m_pVirtualDataSource->SetInquiring(false);
+
+		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
+		.WillOnce(Return(false));
+		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(1);
+
+		m_pVirtualDataSource->InquireAndProcess(100000);
+
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
+	}
+
+	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess3) {
+		m_pVirtualDataSource->Enable(true);
+		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
+		m_pVirtualDataSource->SetInquiring(false);
+
+		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(1)
+		.WillOnce(DoAll(Invoke([]() { m_pVirtualDataSource->SetInquiring(true); }), Return(true)));
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
+		.WillOnce(Return(true));
+		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(1);
+
+		m_pVirtualDataSource->InquireAndProcess(100000);
+
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
+	}
+
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		m_pVirtualDataSource->SetByteRead(0);
 		InSequence seq;
-		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry))
-		.Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(6)
 		.WillOnce(Return(1024)) //第一次返回值为0
 		.WillOnce(Return(1024))
@@ -69,13 +118,14 @@ namespace FireBirdTest {
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1)
 		.WillOnce(Throw(exception)); // 打开网络文件时出错。
+		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(0);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(0);
 		m_pVirtualDataSource->SetInquiringWebData(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
 
-		EXPECT_TRUE(m_pVirtualDataSource->IsWebError()) << "真实情况下是设置了的，故而Mock函数也仿真设置之";
+		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
@@ -86,6 +136,7 @@ namespace FireBirdTest {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(1)
 		.WillOnce(Throw(exception)); // 读取网络文件时出错。
 		m_pVirtualDataSource->SetInquiringWebData(true);
@@ -93,7 +144,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
 
-		EXPECT_TRUE(m_pVirtualDataSource->IsWebError()) << "真实情况下是设置了的，故而Mock函数也仿真设置之";
+		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
@@ -104,6 +155,7 @@ namespace FireBirdTest {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(2)
 		.WillOnce(Return(1024))
 		.WillOnce(Throw(exception)); // 第二次读取网络文件时出错。
@@ -112,16 +164,13 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
 
-		EXPECT_TRUE(m_pVirtualDataSource->IsWebError()) << "真实情况下是设置了的，故而Mock函数也仿真设置之";
+		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestGetWebData) {
-		m_pVirtualDataSource->SetInquiringWebData(true);
-		EXPECT_FALSE(m_pVirtualDataSource->GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");
-
 		m_pVirtualDataSource->SetInquiringWebData(false);
 		EXPECT_CALL(*m_pVirtualDataSource, PrepareNextInquiringString())
 		.WillOnce(Return(false));

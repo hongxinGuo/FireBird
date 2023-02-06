@@ -18,6 +18,7 @@
 #include "FireBirdDoc.h"
 #include "FireBirdView.h" 
 
+
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
 //#pragma comment(lib, "/vc/libcrypto64MTd.lib")
@@ -38,12 +39,6 @@
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
 #endif
 
 // CFireBirdApp

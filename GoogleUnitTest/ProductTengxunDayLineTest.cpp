@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -32,11 +31,11 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTengxunDayLineTest, TestInitialize) {
-		EXPECT_STREQ(tengxunDayLine.GetInquiry(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
+		EXPECT_STREQ(tengxunDayLine.GetInquiry(), _T(""));
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestCreateMessage) {
-		EXPECT_STREQ(tengxunDayLine.CreateMessage(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=")) << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作";
+		EXPECT_STREQ(tengxunDayLine.CreateMessage(), _T("")) << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestParseAndStoreWebData) {

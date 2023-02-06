@@ -9,6 +9,8 @@
 using namespace testing;
 
 namespace FireBirdTest {
+	CMockTengxunDayLineDataSourcePtr m_pMockTengxunDayLineDataSource; // 网易日线历史数据
+
 	class CMockTengxunDayLineDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -23,14 +25,16 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			m_pMockTengxunDayLineDataSource = make_shared<CMockTengxunDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
-			m_MockTengxunDayLineDataSource.ResetDownLoadingStockCode();
+			m_pMockTengxunDayLineDataSource->ResetDownLoadingStockCode();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
 		void TearDown(void) override {
 			// clearUp
+			m_pMockTengxunDayLineDataSource = nullptr;
 			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -38,74 +42,72 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSystemReady(false);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			m_MockTengxunDayLineDataSource.ResetDownLoadingStockCode();
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
-		CMockTengxunDayLineDataSource m_MockTengxunDayLineDataSource; // 网易日线历史数据
+	protected:
+		CTengxunDayLineDataSource TengxunDayLineDataSource;
 	};
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetInquirySuffix(), _T(",2000,,"));
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetInquiryToken(), _T(""));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetInquirySuffix(), _T(",2000,,"));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryToken(), _T(""));
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestIsUpdateDayLine) {
-		EXPECT_TRUE(m_MockTengxunDayLineDataSource.IsUpdateDayLine());
-		m_MockTengxunDayLineDataSource.SetUpdateDayLine(false);
-		EXPECT_FALSE(m_MockTengxunDayLineDataSource.IsUpdateDayLine());
-		m_MockTengxunDayLineDataSource.SetUpdateDayLine(true);
-		EXPECT_TRUE(m_MockTengxunDayLineDataSource.IsUpdateDayLine());
+		EXPECT_TRUE(TengxunDayLineDataSource.IsUpdateDayLine());
+		TengxunDayLineDataSource.SetUpdateDayLine(false);
+		EXPECT_FALSE(TengxunDayLineDataSource.IsUpdateDayLine());
+		TengxunDayLineDataSource.SetUpdateDayLine(true);
+		EXPECT_TRUE(TengxunDayLineDataSource.IsUpdateDayLine());
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_FALSE(m_MockTengxunDayLineDataSource.ParseData(pData));
+		EXPECT_FALSE(TengxunDayLineDataSource.ParseData(pData));
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestUpdateStatus) {
-		EXPECT_TRUE(m_MockTengxunDayLineDataSource.UpdateStatus());
+		EXPECT_TRUE(TengxunDayLineDataSource.UpdateStatus());
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestUpdateStatusAfterSucceed) {
 		const auto pData = make_shared<CWebData>();
-		m_MockTengxunDayLineDataSource.SetDownLoadingStockCode(_T("Test"));
-		m_MockTengxunDayLineDataSource.UpdateStatusAfterSucceed(pData);
+		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("Test"));
+		TengxunDayLineDataSource.UpdateStatusAfterSucceed(pData);
 
 		EXPECT_STREQ(pData->GetStockCode(), _T("Test"));
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGetWebData) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		m_MockTengxunDayLineDataSource.SetInquiringWebData(true);
-		EXPECT_FALSE(m_MockTengxunDayLineDataSource.GetWebData());
-		m_MockTengxunDayLineDataSource.SetInquiringWebData(false);
+		m_pMockTengxunDayLineDataSource->SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(m_MockTengxunDayLineDataSource, PrepareNextInquiringString())
-			.Times(1)
-			.WillOnce(Return(true))
-			.RetiresOnSaturation();
-		EXPECT_CALL(m_MockTengxunDayLineDataSource, StartReadingThread)
-			.Times(1);
-		m_MockTengxunDayLineDataSource.GetWebData();
-		EXPECT_TRUE(m_MockTengxunDayLineDataSource.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, PrepareNextInquiringString())
+		.Times(1)
+		.WillOnce(Return(true))
+		.RetiresOnSaturation();
+		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, StartReadingThread)
+		.Times(1);
+		m_pMockTengxunDayLineDataSource->GetWebData();
+		EXPECT_TRUE(m_pMockTengxunDayLineDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestSetDownLoadingStockCode) {
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetDownLoadingStockCode(), _T(""));
-		m_MockTengxunDayLineDataSource.SetDownLoadingStockCode(_T("000001.SS"));
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000001.SS"));
-		m_MockTengxunDayLineDataSource.SetDownLoadingStockCode(_T("0600001"));
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
-		m_MockTengxunDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
-		EXPECT_STREQ(m_MockTengxunDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T(""));
+		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("000001.SS"));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000001.SS"));
+		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("0600001"));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
+		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestPrepareNextInquiringStr) {
@@ -113,9 +115,9 @@ namespace FireBirdTest {
 		CString str;
 		gl_pChinaMarket->SetSystemReady(true);
 		for (int i = 0; i < 4; i++) {
-			if (gl_pTengxunDayLineDataSource->PrepareNextInquiringString()) {
-				str = gl_pTengxunDayLineDataSource->GetInquiringString();
-				EXPECT_STREQ(str.Left(57), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
+			if (TengxunDayLineDataSource.PrepareNextInquiringString()) {
+				str = TengxunDayLineDataSource.GetInquiringString();
+				EXPECT_STREQ(str, _T(""));
 			}
 			else {
 				EXPECT_EQ(str.GetLength(), 0);
@@ -138,7 +140,7 @@ namespace FireBirdTest {
 		const long lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(20200101); // 日期间隔小于八年
 
-		const auto vProduct = m_MockTengxunDayLineDataSource.CreateProduct(pStock);
+		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 1) << "日期间隔小于八年，只有一个申请";
 		const auto pProduct = vProduct.at(0);
@@ -157,7 +159,7 @@ namespace FireBirdTest {
 		const long lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(20100101); // 日期间隔大于八年小于十六年
 
-		const auto vProduct = m_MockTengxunDayLineDataSource.CreateProduct(pStock);
+		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 2) << "日期间隔大于八年小于十六年，有两个申请";
 		const auto pProduct1 = vProduct.at(0);
@@ -182,7 +184,7 @@ namespace FireBirdTest {
 		const long lEndDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(20000101); // 日期间隔大于十六年
 
-		const auto vProduct = m_MockTengxunDayLineDataSource.CreateProduct(pStock);
+		const auto vProduct = TengxunDayLineDataSource.CreateProduct(pStock);
 
 		EXPECT_EQ(vProduct.size(), 4) << "日期间隔大于十六年，有四个申请";
 		const auto pProduct1 = vProduct.at(0);

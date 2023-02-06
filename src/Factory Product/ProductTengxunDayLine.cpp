@@ -16,7 +16,6 @@ vector<CDayLinePtr> CProductTengxunDayLine::sm_vDayLinePtr{};
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiry = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 }
 
 CString CProductTengxunDayLine::CreateMessage(void) {

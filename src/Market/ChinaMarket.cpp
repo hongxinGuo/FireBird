@@ -56,8 +56,7 @@ CChinaMarket::~CChinaMarket() {
 		gl_systemStatus.SetExitingSystem(true);
 		gl_systemStatus.SetExitingSystem(false);
 	}
-	else {
-	}
+	else { }
 }
 
 void CChinaMarket::ResetMarket(void) {
@@ -260,7 +259,8 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
 		if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
 		else { m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	}
+	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }
@@ -270,7 +270,8 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
 		if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
 		else { m_lCurrentSelectedStockSet++; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	}
+	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }
@@ -722,9 +723,8 @@ void CChinaMarket::ProcessTodayStock(void) {
 		BuildWeekLineOfCurrentWeek();
 		BuildWeekLineRS(GetCurrentMonday(lDate));
 		UpdateStockProfileDB();
-		if (GetMarketTime() > 150400) {
-			// 如果中国股市闭市了
-			SetRSEndDate(gl_pChinaMarket->GetMarketDate());
+		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
+			SetRSEndDate(GetMarketDate());
 			SetUpdateOptionDB(true); // 更新状态
 			SetTodayStockProcessed(true); // 设置今日已处理标识
 		}

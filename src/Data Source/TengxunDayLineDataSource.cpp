@@ -1,4 +1,14 @@
-﻿#include "pch.h"
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 腾讯日线历史数据。
+///
+/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// product中存储的是处理后的完整申请字符串。
+/// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
+///
+/// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "pch.h"
 
 #include"ChinaStockCodeConverter.h"
 #include "TengxunDayLineDataSource.h"
@@ -8,7 +18,8 @@
 #include "TimeConvert.h"
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
-	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
+	m_strInquiry = _T("");
+	m_strInquiryFunction = _T(""); // 该变量由相应的product赋值，故初始为空。
 	m_strParam = _T("");
 	m_strSuffix = _T(",2000,,");
 	m_strInquiryToken = _T("");
@@ -38,9 +49,8 @@ bool CTengxunDayLineDataSource::UpdateStatus(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::Inquire(const long lCurrentTime) {
-	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
-	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime()
-		&& (gl_pChinaMarket->GetMarketTime() > 114500)) {
+	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
+	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
 			InquireDayLine();
 			return true;
@@ -111,14 +121,15 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 		else {
 			strEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
-		const CString strTotalMessage = m_strInquiryFunction + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + m_strSuffix;
+		const CString strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + m_strSuffix;
 		product->SetIndex(lStockIndex);
 		product->SetInquiry(strTotalMessage);
 		vProduct.push_back(product);
 		l += 7;
 		lStartDate = (year + 7) * 10000 + 101;
 		iCounter++;
-	} while (l < yearDiffer);
+	}
+	while (l < yearDiffer);
 	if (iCounter > 0) product->SetInquiryNumber(iCounter);
 
 	return vProduct;
@@ -140,9 +151,7 @@ bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::PrepareNextInquiringString(void) {
-	// 腾讯日线的申请信息由TengxunDayLineDataSource负责完成。
-	CreateTotalInquiringString();
-
+	m_strInquiry = m_strInquiryFunction; // 腾讯日线的查询字符串，在生成product时即完成了，并在ProcessInquiringMessage函数中赋值给strInquiryFunction.
 	return true;
 }
 

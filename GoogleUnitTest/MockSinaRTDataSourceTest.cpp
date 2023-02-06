@@ -9,6 +9,8 @@
 using namespace testing;
 
 namespace FireBirdTest {
+	CMockSinaRTDataSourcePtr m_pMockSinaRTDataSource; // 新浪实时数据采集
+
 	class CMockSinaRTDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
@@ -23,37 +25,37 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			GeneralCheck();
+			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
 		}
 
 		void TearDown(void) override {
 			// clearUp
+			m_pMockSinaRTDataSource = nullptr;
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 		}
 
 	public:
-		CMockSinaRTDataSource m_MockSinaRTDataSource; // 新浪实时数据采集
+		CSinaRTDataSource SinaDataSource;
 	};
 
 	TEST_F(CMockSinaRTDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(m_MockSinaRTDataSource.GetHeaders(), _T("Referer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
-		EXPECT_STREQ(m_MockSinaRTDataSource.GetInquiryFunction(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
-		EXPECT_STREQ(m_MockSinaRTDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(m_MockSinaRTDataSource.GetInquiringNumber(), 850) << _T("新浪默认值");
+		EXPECT_STREQ(SinaDataSource.GetHeaders(), _T("Referer:https://finance.sina.com.cn\r\n")) << "新浪实时数据服务器需要提供此报头信息，Referer为有用，User-Agent部分只用于说明格式";
+		EXPECT_STREQ(SinaDataSource.GetInquiryFunction(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据服务器已使用https";
+		EXPECT_STREQ(SinaDataSource.GetInquiryToken(), _T(""));
+		EXPECT_EQ(SinaDataSource.GetInquiringNumber(), 850) << _T("新浪默认值");
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestStartReadingThread) {
-		EXPECT_FALSE(m_MockSinaRTDataSource.IsInquiringWebData());
-		EXPECT_EQ(m_MockSinaRTDataSource.GetByteRead(), 0);
+		EXPECT_FALSE(SinaDataSource.IsInquiringWebData());
+		EXPECT_EQ(SinaDataSource.GetByteRead(), 0);
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestGetWebData) {
-		m_MockSinaRTDataSource.SetInquiringWebData(true);
-		EXPECT_FALSE(m_MockSinaRTDataSource.GetWebData());
-		m_MockSinaRTDataSource.SetInquiringWebData(false);
+		m_pMockSinaRTDataSource->SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(m_MockSinaRTDataSource, StartReadingThread)
-			.Times(1);
-		m_MockSinaRTDataSource.GetWebData();
-		EXPECT_TRUE(m_MockSinaRTDataSource.IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_CALL(*m_pMockSinaRTDataSource, StartReadingThread)
+		.Times(1);
+		m_pMockSinaRTDataSource->GetWebData();
+		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 }

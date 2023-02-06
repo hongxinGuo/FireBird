@@ -156,15 +156,11 @@ void CVirtualDataSource::SetDefaultSessionOption(void) {
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
 	ASSERT(!IsInquiringWebData());
-	if (!IsInquiringWebData()) {
-		// 工作线程没有启动？
-		if (PrepareNextInquiringString()) {
-			SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
-			StartReadingThread();
-			return true;
-		}
-		return false;
-	}  // 工作线程已在执行接收数据的任务
+	if (PrepareNextInquiringString()) {
+		SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
+		StartReadingThread();
+		return true;
+	}
 	return false;
 }
 
@@ -231,6 +227,7 @@ bool CVirtualDataSource::ReadingWebData(void) {
 	ASSERT(m_pFile == nullptr);
 	try {
 		OpenFile(GetInquiringString());
+		GetFileHeaderInformation();
 		UINT lCurrentByteRead;
 		do {
 			if (gl_systemStatus.IsExitingSystem()) {// 当系统退出时，要立即中断此进程，以防止内存泄露。
@@ -247,7 +244,7 @@ bool CVirtualDataSource::ReadingWebData(void) {
 		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 	}
-	catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。  // NOLINT(misc-throw-by-value-catch-by-reference)
+	catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
 		m_dwWebErrorCode = exception->m_dwError;
 		ReportWebError(m_dwWebErrorCode, m_strInquiry);
 		exception->Delete();
@@ -264,16 +261,17 @@ bool CVirtualDataSource::ReadingWebData(void) {
 ///
 /// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 /// 其他的数据尚未需要提供头部验证数据。
-
 /// 调用函数需要处理exception。
 ///
-/// </summary>
-/// <param name="strInquiring"></param>
-/// <returns></returns>
+/////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::OpenFile(const CString& strInquiring) {
 	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1,
 	                                                       INTERNET_FLAG_TRANSFER_ASCII,
 	                                                       m_strHeaders, m_strHeaders.GetLength()));
+}
+
+void CVirtualDataSource::GetFileHeaderInformation() {
+	ASSERT(m_pFile != nullptr);
 	m_pFile->QueryInfoStatusCode(m_dwHTTPStatusCode);
 	QueryDataLength();
 }

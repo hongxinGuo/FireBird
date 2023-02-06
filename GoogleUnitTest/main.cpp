@@ -51,8 +51,13 @@
 
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
 
-#include"EnvironmentSetUp.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
+#include"EnvironmentSetUp.h"
 using namespace FireBirdTest;
 
 int main(int argc, char* argv[]) {
