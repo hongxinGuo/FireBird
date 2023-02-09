@@ -8,6 +8,8 @@
 
 #include "ProductFinnhubStockPriceQuote.h"
 
+#include "TimeConvert.h"
+
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
@@ -30,7 +32,7 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
-		if ((pStock->GetTransactionTime() + 3600 * 12 - m_pMarket->GetUTCTime()) > 0) {
+		if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) {
 			// 交易时间不早于12小时，则设置此股票为活跃股票
 			pStock->SetActive(true);
 			if (!pStock->IsIPOed()) {

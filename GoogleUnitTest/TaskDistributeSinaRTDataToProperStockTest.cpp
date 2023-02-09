@@ -5,6 +5,7 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -49,7 +50,7 @@ namespace FireBirdTest {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
-			s_tCurrentMarketTime = gl_pChinaMarket->GetUTCTime();
+			s_tCurrentMarketTime = GetUTCTime();
 
 			GeneralCheck();
 		}
@@ -97,8 +98,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
-		testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
-		));
+	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
+	                         ));
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;

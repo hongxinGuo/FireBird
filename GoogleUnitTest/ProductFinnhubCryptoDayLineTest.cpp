@@ -5,6 +5,7 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubCryptoDayLine.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -39,7 +40,7 @@ namespace FireBirdTest {
 		cryptoDayLine.SetMarket(gl_pWorldMarket.get());
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreateMessage(),
-		             cryptoDayLine.GetInquiryFunction() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		             cryptoDayLine.GetInquiryFunction() + gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {

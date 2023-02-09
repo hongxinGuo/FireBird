@@ -23,7 +23,7 @@ CString CProductFinnhubStockDayLine::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(CVirtualMarket::GetUTCTime());
+	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + strParam;

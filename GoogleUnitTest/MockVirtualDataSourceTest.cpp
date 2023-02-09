@@ -94,10 +94,10 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetInquiringWebData(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
-		EXPECT_TRUE(m_pVirtualDataSource->ReadingWebData());
+		m_pVirtualDataSource->ReadWebData();
 
-		EXPECT_EQ(m_pVirtualDataSource->GetByteRead(), 1024 * 4 + 10) << "这几次返回值之和";
 		EXPECT_FALSE(m_pVirtualDataSource->IsWebError());
+		EXPECT_EQ(m_pVirtualDataSource->GetByteRead(), 1024 * 4 + 10) << "这几次返回值之和";
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 	}
 
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetInquiringWebData(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
-		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
+		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetInquiringWebData(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
-		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
+		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
@@ -151,7 +151,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetInquiringWebData(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
-		EXPECT_FALSE(m_pVirtualDataSource->ReadingWebData()) << "打开网络文件失败时，函数报错";
+		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";

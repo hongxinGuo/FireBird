@@ -101,7 +101,7 @@ namespace FireBirdTest {
 
 		time(&tUTC);
 		gl_pVirtualMarket->CalculateTime();
-		EXPECT_EQ(tUTC, gl_pVirtualMarket->GetUTCTime());
+		EXPECT_EQ(tUTC, GetUTCTime());
 		localtime_s(&tmLocal, &tUTC);
 		GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
 		long lTimeZone = 0;
@@ -288,7 +288,7 @@ namespace FireBirdTest {
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tUTC = gl_pVirtualMarket->GetUTCTime();
+		time_t tUTC = GetUTCTime();
 		tm tmLocal;
 		char buffer[100];
 		CString str;
@@ -303,7 +303,7 @@ namespace FireBirdTest {
 		gl_pVirtualMarket->CalculateTime();
 
 		tm tmMarket;
-		GetMarketTimeStruct(&tmMarket, gl_pVirtualMarket->GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
+		GetMarketTimeStruct(&tmMarket, GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		char buffer[30];
 		CString str;
 
@@ -319,7 +319,7 @@ namespace FireBirdTest {
 		char buffer[100];
 		CString str;
 
-		GetMarketTimeStruct(&tmMarket, gl_pVirtualMarket->GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
+		GetMarketTimeStruct(&tmMarket, GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		sprintf_s(buffer, _T("%04dÄê%02dÔÂ%02dÈÕ %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
 		str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketDateTime(), str);

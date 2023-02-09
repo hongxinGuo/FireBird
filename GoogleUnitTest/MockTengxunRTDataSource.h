@@ -6,7 +6,7 @@ namespace testing {
 	class CMockTengxunRTDataSource final : public CTengxunRTDataSource {
 	public:
 		MOCK_METHOD(void, StartReadingThread, (), (override));
-		MOCK_METHOD(bool, ReadingWebData, (), (override));
+		MOCK_METHOD(void, ReadWebData, (), (override));
 	};
 
 	using CMockTengxunRTDataSourcePtr = shared_ptr<CMockTengxunRTDataSource>;

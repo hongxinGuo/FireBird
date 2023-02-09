@@ -18,6 +18,7 @@
 #include"ProductFinnhubStockPriceQuote.h"
 
 #include"ProductTiingoStockSymbol.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -254,7 +255,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread()).Times(1);
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GetWebData());
-		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetStock(0)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*m_pMockFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubStockDayLine"));
@@ -297,7 +298,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread()).Times(1);
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GetWebData());
-		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetForexSymbol(p->GetIndex())->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetForexSymbol(p->GetIndex())->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*m_pMockFinnhubDataSource->GetCurrentInquiry()).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(p->GetIndex())->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
@@ -340,7 +341,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread()).Times(1);
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GetWebData());
-		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		EXPECT_STREQ(m_pMockFinnhubDataSource->GetInquiryFunction(), p->GetInquiryFunction() + gl_pWorldMarket->GetFinnhubCryptoSymbol(p->GetIndex())->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		// 顺便测试一下
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiringWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 

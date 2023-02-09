@@ -6,6 +6,7 @@
 
 #include"WebRTData.h"
 #include"JsonParse.h"
+#include "TimeConvert.h"
 
 namespace FireBirdTest {
 	TEST(CWebRTDataTest, TestNeteaseInitialize) {
@@ -124,7 +125,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseWebRTDataTest, testing::Values(&Data101, &Data102, &Data103, &Data104
-	));
+	                         ));
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJson());
@@ -143,7 +144,7 @@ namespace FireBirdTest {
 		ttime2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_sec = 55;
 		ttime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		tUTCTime = gl_pChinaMarket->GetUTCTime();
+		tUTCTime = GetUTCTime();
 		gl_pChinaMarket->TEST_SetUTCTime(ttime);
 		switch (m_iCount) {
 		case 0:

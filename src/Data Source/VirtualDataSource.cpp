@@ -8,6 +8,7 @@
 
 #include "ChinaMarket.h"
 #include "InfoReport.h"
+#include "TimeConvert.h"
 using std::thread;
 
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
@@ -186,16 +187,16 @@ void CVirtualDataSource::Read(void) {
 	ASSERT(IsInquiringWebData());
 	PrepareReadingWebData();
 	counter.start();
-	if (ReadingWebData()) {
+	ReadWebData();
+	if (!IsWebError()) {
 		const auto pWebData = make_shared<CWebData>();
 		VerifyDataLength();
+		SetDataTime(pWebData, GetUTCTime());
 		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
-		ResetBuffer();
 		ParseData(pWebData);
 		UpdateStatusAfterSucceed(pWebData);
-
-		pWebData->SetTime(gl_pChinaMarket->GetUTCTime());
 		StoreReceivedData(pWebData);
+		ResetBuffer();
 		ASSERT(IsInquiring());
 	}
 	else {
@@ -221,7 +222,7 @@ void CVirtualDataSource::Read(void) {
 // 设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。目前接收数据最长的是申请Tiingo stock，大致为60秒。--20220514
 //
 ///////////////////////////////////////////////////////////////////////////
-bool CVirtualDataSource::ReadingWebData(void) {
+void CVirtualDataSource::ReadWebData(void) {
 	ASSERT(IsInquiringWebData());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);
@@ -253,8 +254,6 @@ bool CVirtualDataSource::ReadingWebData(void) {
 	}
 	DeleteWebFile();
 	gl_ThreadStatus.DecreaseWebInquiringThread();
-
-	return !IsWebError();
 }
 
 /// <summary>
@@ -314,11 +313,8 @@ UINT CVirtualDataSource::ReadWebFileOneTime(void) {
 // 使用逐字节拷贝，16KB耗时11微秒（release），使用memcpy函数完成，耗时120纳秒。
 //
 void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
-	/*
-	for (UINT i = 0; i < uByteRead; i++) {
-		m_sBuffer.at(lPosition++) = m_dataBuffer[i];
-	}
-	*/
+	ASSERT((lPosition + uByteRead) < m_sBuffer.size());
+	// for (UINT i = 0; i < uByteRead; i++) { m_sBuffer.at(lPosition++) = m_dataBuffer[i];	}
 	char* p = &m_sBuffer.at(lPosition);
 	memcpy(p, m_dataBuffer, uByteRead);
 }

@@ -30,6 +30,8 @@
 
 #include<exception>
 
+#include "TimeConvert.h"
+
 bool CMainFrame::sm_fGlobeInit = false;
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
@@ -587,12 +589,12 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((gl_pChinaMarket->GetUTCTime() - m_timeLast) > 0) {
+	if ((GetUTCTime() - m_timeLast) > 0) {
 		if (gl_pSinaRTDataSource->GetTotalByteRead() > 0) {
 			// 每秒更新一次
 			str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteRead());
 			gl_pSinaRTDataSource->ClearTotalByteRead();
-			m_timeLast = gl_pChinaMarket->GetUTCTime();
+			m_timeLast = GetUTCTime();
 			m_wndStatusBar.SetPaneText(10, str);
 		}
 	}

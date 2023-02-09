@@ -82,7 +82,7 @@ public:
 	// 以下为VirtualWebInquiry的函数
 	void SetDefaultSessionOption(void);
 
-	virtual bool ReadingWebData(void); // 网络实际读取函数
+	virtual void ReadWebData(void); // 网络实际读取函数
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();
 	void DeleteWebFile();
@@ -92,6 +92,7 @@ public:
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
 	void VerifyDataLength() const;
+	void SetDataTime(CWebDataPtr pData, time_t time) noexcept { pData->SetTime(time); }
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数\n");

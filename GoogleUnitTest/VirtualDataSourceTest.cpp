@@ -238,12 +238,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestXferReadingToBuffer) {
-		char buffer[10]{'a', 'b', 'c', 'd'};
-		dataSource.TESTSetWebBuffer(buffer, 10);
-		dataSource.XferReadingToBuffer(0, 10);
+		char buffer[1024 * 16]{'a', 'b', 'c', 'd'};
+		buffer[1024 * 16 - 1] = 'e';
+		dataSource.TESTSetWebBuffer(buffer, 1024 * 16);
+		dataSource.XferReadingToBuffer(0, 1024 * 16);
 		EXPECT_EQ(dataSource.GetData(0), 'a');
 		EXPECT_EQ(dataSource.GetData(1), 'b');
 		EXPECT_EQ(dataSource.GetData(2), 'c');
 		EXPECT_EQ(dataSource.GetData(3), 'd');
+		EXPECT_EQ(dataSource.GetData(1024 * 16 -1), 'e');
 	}
 }

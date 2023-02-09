@@ -4,9 +4,6 @@
 
 #include "VirtualMarket.h"
 
-// 所有的市场使用同一个当地时间。
-time_t CVirtualMarket::sm_tUTC = 0;
-
 CVirtualMarket::CVirtualMarket(void) {
 	m_fResetMarketPermission = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
@@ -32,11 +29,11 @@ bool CVirtualMarket::SchedulingTask(void) {
 	CalculateTime();
 
 	static time_t stLastTime = 0;
-	const time_t tDiffer = sm_tUTC - stLastTime;
+	const time_t tDiffer = gl_tUTC - stLastTime;
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (tDiffer > 0) {
 		SchedulingTaskPerSecond(tDiffer);
-		stLastTime = sm_tUTC;
+		stLastTime = gl_tUTC;
 		return true;
 	}
 	return false;
@@ -87,7 +84,7 @@ long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
 }
 
 void CVirtualMarket::CalculateTime(void) noexcept {
-	time(&sm_tUTC);
+	time(&gl_tUTC);
 
 	m_tmMarket = TransferToMarketTime();
 	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
@@ -99,16 +96,16 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
 
 	switch (m_tmMarket.tm_wday) {
 	case 1: // 星期一
-		tMarket = sm_tUTC - 3 * 24 * 3600; //
+		tMarket = gl_tUTC - 3 * 24 * 3600; //
 		break;
 	case 0: //星期日
-		tMarket = sm_tUTC - 3 * 24 * 3600; //
+		tMarket = gl_tUTC - 3 * 24 * 3600; //
 		break;
 	case 6: // 星期六
-		tMarket = sm_tUTC - 2 * 24 * 3600; //
+		tMarket = gl_tUTC - 2 * 24 * 3600; //
 		break;
 	default: // 其他
-		tMarket = sm_tUTC - 24 * 3600; //
+		tMarket = gl_tUTC - 24 * 3600; //
 	}
 	const tm tmMarketTime = TransferToMarketTime(tMarket);
 	m_lMarketLastTradeDate = (tmMarketTime.tm_year + 1900) * 10000 + (tmMarketTime.tm_mon + 1) * 100 + tmMarketTime.tm_mday;
@@ -178,7 +175,7 @@ CString CVirtualMarket::GetStringOfLocalTime(void) const {
 	char buffer[30];
 	tm tmLocal;
 
-	localtime_s(&tmLocal, &sm_tUTC);
+	localtime_s(&tmLocal, &gl_tUTC);
 	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);
@@ -188,7 +185,7 @@ CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
 	char buffer[100];
 	tm tmLocal;
 
-	localtime_s(&tmLocal, &sm_tUTC);
+	localtime_s(&tmLocal, &gl_tUTC);
 	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);

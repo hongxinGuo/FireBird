@@ -1,5 +1,6 @@
 #pragma once
 
+#include "globedef.h"
 #include"VirtualDataSource.h"
 
 class CVirtualMarket {
@@ -24,14 +25,13 @@ public:
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
 
 	// 时间函数
-	tm TransferToMarketTime(time_t tUTC = sm_tUTC) const; // 得到本市场的时间（从UTC时间）
+	tm TransferToMarketTime(time_t tUTC = gl_tUTC) const; // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
-	long TransferToMarketDate(time_t tUTC = sm_tUTC) const; // 得到本市场的日期
+	long TransferToMarketDate(time_t tUTC = gl_tUTC) const; // 得到本市场的日期
 
 	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID(void) const noexcept { return m_strMarketId; }
-	static time_t GetUTCTime(void) noexcept { return sm_tUTC; }
 	long GetMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate(void) const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
@@ -87,7 +87,7 @@ public:
 
 public:
 	// 测试用函数
-	void TEST_SetUTCTime(time_t Time) noexcept { sm_tUTC = Time; }
+	void TEST_SetUTCTime(time_t Time) noexcept { gl_tUTC = Time; }
 	void TEST_SetFormattedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
 	void TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
 	void TEST_SetFormattedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
@@ -107,8 +107,6 @@ protected:
 
 	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 	CString m_strMarketId; // 该市场标识字符串
-
-	static time_t sm_tUTC; // 软件运行时的UTC时间。所有的市场都使用同一个UTC时间，故而为静态数据。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate; //本市场的日期

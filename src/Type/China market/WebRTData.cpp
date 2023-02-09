@@ -808,11 +808,11 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	if (m_time < (gl_pChinaMarket->GetUTCTime() - lDays * 24 * 3600)) {
+	if (m_time < (GetUTCTime() - lDays * 24 * 3600)) {
 		// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
-	if (m_time > gl_pChinaMarket->GetUTCTime()) { return false; }
+	if (m_time > GetUTCTime()) { return false; }
 	return true;
 }
 

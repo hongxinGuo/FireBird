@@ -5,6 +5,7 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubForexDayLine.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -40,7 +41,7 @@ namespace FireBirdTest {
 		forexDayLine.SetMarket(gl_pWorldMarket.get());
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreateMessage(),
-		             forexDayLine.GetInquiryFunction() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		             forexDayLine.GetInquiryFunction() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);

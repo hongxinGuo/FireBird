@@ -23,7 +23,7 @@ CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
-	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(CWorldMarket::GetUTCTime());
+	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
 	return m_strInquiry;
 }
 

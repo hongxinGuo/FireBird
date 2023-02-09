@@ -36,6 +36,7 @@ CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 CFinnhubInquiryType gl_FinnhubInquiryType;
 
 CHighPerformanceCounter gl_counter;
+time_t gl_tUTC = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
