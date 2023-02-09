@@ -16,7 +16,7 @@ public:
 	virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
-	void InquireAndProcessDataSource(long lCurrentTime) const;
+	void RunDataSource(long lCurrentTime) const;
 
 	bool SchedulingTaskPerSecond(long lSeconds); // 每秒调度一次
 	bool SchedulingTaskPerMinute(long lSeconds, long lCurrentTime); // 每一分钟调度一次

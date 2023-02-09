@@ -4,6 +4,7 @@
 #include"GeneralCheck.h"
 
 #include"MockNeteaseRTDataSource.h"
+#include "ProductNeteaseRT.h"
 
 using namespace testing;
 
@@ -55,7 +56,7 @@ namespace FireBirdTest {
 		m_pMockNeteaseRTDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->InquireRTData(1010));
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryQueueSize(), 1);
-		auto pProduct = m_pMockNeteaseRTDataSource->GetInquiry();
+		auto pProduct = m_pMockNeteaseRTDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
 	}
 
@@ -64,13 +65,16 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockNeteaseRTDataSource, StartReadingThread)
 		.Times(1);
-		m_pMockNeteaseRTDataSource->GetWebData();
+		m_pMockNeteaseRTDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->PrepareNextInquiringString());
+		auto p = make_shared<CProductNeteaseRT>();
+		p->SetInquiry(_T("http://api.money.126.net/data/feed/"));
+		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
+		m_pMockNeteaseRTDataSource->CreateInquiryMessageFromCurrentProduct();
 		const CString str = m_pMockNeteaseRTDataSource->GetInquiringString();
 		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
 	}

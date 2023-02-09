@@ -48,10 +48,10 @@ bool CVirtualDataSource::Reset(void) {
 	return true;
 }
 
-void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
-	if (!m_fEnable) return; // 不允许执行的话，直接返回
+void CVirtualDataSource::Run(const long lCurrentTime) {
+	ASSERT(m_fEnable);
 	if (!HaveInquiry()) { // 目前允许一次申请生成多个查询，故而有可能需要多次查询后方允许再次申请。
-		Inquire(lCurrentTime);
+		GenerateInquiryMessage(lCurrentTime);
 	}
 	else {
 		SetInquiring(true); // 队列中还有待查询的申请，设置此标识，继续查询数据。
@@ -59,7 +59,7 @@ void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
 		UpdateStatus();
 	}
-	ProcessInquiringMessage(); // 然后再申请下一个网络数据
+	GetWebData(); // 然后再申请下一个网络数据
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,12 +67,12 @@ void CVirtualDataSource::InquireAndProcess(const long lCurrentTime) {
 // DataSource读取函数采用申请和接收轮换执行方式，故而至少调用两次才完成一个轮回。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataSource::ProcessInquiringMessage(void) {
-	if (HaveInquiry()) {// 有申请等待？
-		if (!IsInquiringWebData()) {//数据已经接收到了？
-			GetInquiry();
-			SetInquiryFunction(m_pCurrentProduct->CreateMessage()); // 设置功能字符串
-			GetWebData();
+bool CVirtualDataSource::GetWebData(void) {
+	if (HaveInquiry()) {
+		if (!IsInquiringWebData()) {
+			GetCurrentProduct();
+			CreateInquiryMessageFromCurrentProduct();
+			ProcessInquiryMessage();
 			return true;
 		}
 	}
@@ -149,19 +149,21 @@ void CVirtualDataSource::SetDefaultSessionOption(void) {
 	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 }
 
+void CVirtualDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+	ASSERT(m_pCurrentProduct != nullptr);
+	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
+	CreateTotalInquiringString();
+}
+
 /////////////////////////////////////////////////////////////////////////
 //
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CVirtualDataSource::GetWebData(void) {
+void CVirtualDataSource::ProcessInquiryMessage(void) {
 	ASSERT(!IsInquiringWebData());
-	if (PrepareNextInquiringString()) {
-		SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
-		StartReadingThread();
-		return true;
-	}
-	return false;
+	SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
+	StartReadingThread();
 }
 
 void CVirtualDataSource::PrepareReadingWebData(void) {
@@ -308,10 +310,17 @@ UINT CVirtualDataSource::ReadWebFileOneTime(void) {
 	return uByteRead;
 }
 
+//
+// 使用逐字节拷贝，16KB耗时11微秒（release），使用memcpy函数完成，耗时120纳秒。
+//
 void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
+	/*
 	for (UINT i = 0; i < uByteRead; i++) {
 		m_sBuffer.at(lPosition++) = m_dataBuffer[i];
 	}
+	*/
+	char* p = &m_sBuffer.at(lPosition);
+	memcpy(p, m_dataBuffer, uByteRead);
 }
 
 bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
@@ -372,4 +381,8 @@ void CVirtualDataSource::TESTSetBuffer(CString str) {
 	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
+}
+
+void CVirtualDataSource::TESTSetWebBuffer(char* buffer, INT64 lTotalNumber) {
+	for (INT64 i = 0; i < lTotalNumber; i++) { m_dataBuffer[i] = buffer[i]; }
 }

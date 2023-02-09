@@ -58,16 +58,8 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, StartReadingThread)
 		.Times(1);
-		m_pMockTengxunRTDataSource->GetWebData();
+		m_pMockTengxunRTDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-	}
-
-	TEST_F(CMockTengxunRTDataSourceTest, TestPrepareNextInquiringStr) {
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(TengxunRTDataSource.PrepareNextInquiringString());
-		const CString str = TengxunRTDataSource.GetInquiringString();
-		EXPECT_STREQ(str.Left(21), _T("http://qt.gtimg.cn/q="));
-		gl_pChinaMarket->SetSystemReady(false);
 	}
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {

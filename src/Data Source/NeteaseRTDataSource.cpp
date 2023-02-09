@@ -23,7 +23,7 @@ bool CNeteaseRTDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
+bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const ULONGLONG llTickCount = GetTickCount64();
 	if (static ULONGLONG sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
 		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
@@ -49,6 +49,11 @@ bool CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductNeteaseRT>();
+		const CString strMessage = _T("http://api.money.126.net/data/feed/");
+		const CString strStocks = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
+		const CString strNeteaseStockCode = strStocks.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
+		gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
+		product->SetInquiry(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;
@@ -69,14 +74,8 @@ bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
 	return true;
 }
 
-bool CNeteaseRTDataSource::PrepareNextInquiringString(void) {
-	// 申请下一批次股票实时数据
-	m_strParam = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
-	const CString strNeteaseStockCode = m_strParam.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
-	gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
-	CreateTotalInquiringString();
-
-	return true;
+void CNeteaseRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
 /// <summary>

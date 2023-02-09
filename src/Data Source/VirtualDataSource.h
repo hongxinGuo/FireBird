@@ -32,9 +32,9 @@ public:
 
 	virtual bool Reset(void);
 
-	void InquireAndProcess(long lCurrentTime);
-	virtual bool Inquire(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
-	virtual bool ProcessInquiringMessage(void);
+	void Run(long lCurrentTime);
+	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	virtual bool GetWebData(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual bool UpdateStatus(void) {
@@ -50,7 +50,7 @@ public:
 	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
 
-	CVirtualProductWebDataPtr GetInquiry(void) {
+	CVirtualProductWebDataPtr GetCurrentProduct(void) {
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();
 		return m_pCurrentProduct;
@@ -100,16 +100,13 @@ public:
 	void ResetBuffer(void) { m_sBuffer.resize(DefaultWebDataBufferSize_); }
 
 	// 唯一的公共接口函数
-	virtual bool GetWebData(void);
+	virtual void ProcessInquiryMessage(void);
 
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 
 	// 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
 	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
-	virtual bool PrepareNextInquiringString(void) {
-		ASSERT(0);
-		return true;
-	}
+	virtual void CreateInquiryMessageFromCurrentProduct(void);
 
 	virtual void PrepareReadingWebData(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession(void) {
@@ -170,6 +167,7 @@ public:
 	// 以下为测试用函数
 	void TESTSetBuffer(char* buffer, INT64 lTotalNumber);
 	void TESTSetBuffer(CString str);
+	void TESTSetWebBuffer(char* buffer, INT64 lTotalNumber);
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列

@@ -84,7 +84,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireCompanySymbol());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetInquiry();
+		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockSymbol"));
 		EXPECT_TRUE(m_TiingoDataSource.IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 		const CString str = gl_systemMessage.PopInformationMessage();
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireCryptoSymbol());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetInquiry();
+		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoCryptoSymbol"));
 		EXPECT_TRUE(m_TiingoDataSource.IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 		const CString str = gl_systemMessage.PopInformationMessage();
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
 		auto lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
-		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetInquiry();
+		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
 		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(3)->GetSymbol());
-		p = m_TiingoDataSource.GetInquiry();
+		p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
 		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
@@ -160,8 +160,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage01) {
-		while (m_TiingoDataSource.GetInquiryQueueSize() > 0) m_TiingoDataSource.GetInquiry();
-		EXPECT_FALSE(m_TiingoDataSource.ProcessInquiringMessage());
+		while (m_TiingoDataSource.GetInquiryQueueSize() > 0) m_TiingoDataSource.GetCurrentProduct();
+		EXPECT_FALSE(m_TiingoDataSource.GetWebData());
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
@@ -170,11 +170,11 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_TiingoDataSource.GetInquiryQueueSize(), 1);
 		m_TiingoDataSource.SetInquiringWebData(true);
 		m_TiingoDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_TiingoDataSource.ProcessInquiringMessage()) << "Tiingo web data尚未接受到";
+		EXPECT_FALSE(m_TiingoDataSource.GetWebData()) << "Tiingo web data尚未接受到";
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring()) << "没有处理，故此标识没有重置";
 
 		// 恢复原状
-		m_TiingoDataSource.GetInquiry();
+		m_TiingoDataSource.GetCurrentProduct();
 		m_TiingoDataSource.SetInquiring(false);
 	}
 

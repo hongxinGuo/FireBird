@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pTiingoDataSource, StartReadingThread())
 		.Times(1)
 		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquiringWebData(false); }));
-		EXPECT_TRUE(m_pTiingoDataSource->ProcessInquiringMessage());
+		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_STREQ(typeid(*m_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockSymbol"));
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pTiingoDataSource, StartReadingThread())
 		.Times(1)
 		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquiringWebData(false); }));
-		EXPECT_TRUE(m_pTiingoDataSource->ProcessInquiringMessage());
+		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 		EXPECT_STREQ(m_pTiingoDataSource->GetInquiryFunction(),
 		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryParam(19800101, gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());

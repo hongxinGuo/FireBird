@@ -32,14 +32,12 @@ bool CNeteaseDayLineDataSource::UpdateStatus(void) {
 // 为了防止与重启系统发生冲突，实际执行时间延后至11:45:01,且不是下载实时数据的工作时间
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineDataSource::Inquire(const long lCurrentTime) {
+bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
 	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime()
 		&& (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
-			const auto product = make_shared<CProductNeteaseDayLine>();
-			StoreInquiry(product);
-			SetInquiring(true);
+			CreateProduct();
 			return true;
 		}
 	}
@@ -48,29 +46,8 @@ bool CNeteaseDayLineDataSource::Inquire(const long lCurrentTime) {
 
 void CNeteaseDayLineDataSource::CreateProduct() {
 	// 准备网易日线数据申请格式
-	const CString strMessage;
-	CString strParam = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
-	char buffer2[200];
-	const CString strStockCode = XferNeteaseToStandard(strParam);
-	SetDownLoadingStockCode(strStockCode);
-	gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(strStockCode);
-	strParam += _T("&start=19900101&end=");
-	sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
-	strParam += buffer2;
-	m_strParam = strParam;
-	gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);
-	m_pProductCurrentNeteaseDayLine = make_shared<CProductNeteaseDayLine>();
-	m_pProductCurrentNeteaseDayLine->SetInquiry(strMessage);
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// 查询字符串的格式为：
-//
-//
-////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineDataSource::PrepareNextInquiringString(void) {
-	// 准备网易日线数据申请格式
+	const CString strMessage = _T("http://quotes.money.163.com/service/chddata.html?code=");;
+	const CString strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	CString strParam = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
 	if (strParam.GetLength() > 0) {
 		char buffer2[200];
@@ -81,12 +58,27 @@ bool CNeteaseDayLineDataSource::PrepareNextInquiringString(void) {
 		sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
 		strParam += buffer2;
 		m_strParam = strParam;
-		CreateTotalInquiringString();
 		gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);
-
-		return true;
+		const CProductNeteaseDayLinePtr product = make_shared<CProductNeteaseDayLine>();
+		product->SetInquiry(strMessage + strParam + strSuffix);
+		StoreInquiry(product);
+		SetInquiring(true);
 	}
-	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// 查询字符串的格式为：
+//
+//
+////////////////////////////////////////////////////////////////////////////////
+void CNeteaseDayLineDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+	m_strInquiry = m_pCurrentProduct->CreateMessage();
+}
+
+bool CNeteaseDayLineDataSource::PrepareNextInquiringString2(void) {
+	m_strInquiry = m_strInquiryFunction;
+	return true;
 }
 
 void CNeteaseDayLineDataSource::ConfigureSession(void) {

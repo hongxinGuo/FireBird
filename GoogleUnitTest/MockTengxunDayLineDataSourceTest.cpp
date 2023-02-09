@@ -87,13 +87,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		m_pMockTengxunDayLineDataSource->SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, PrepareNextInquiringString())
-		.Times(1)
-		.WillOnce(Return(true))
-		.RetiresOnSaturation();
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, StartReadingThread)
 		.Times(1);
-		m_pMockTengxunDayLineDataSource->GetWebData();
+		m_pMockTengxunDayLineDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockTengxunDayLineDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
@@ -108,30 +104,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
 		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
-	}
-
-	TEST_F(CMockTengxunDayLineDataSourceTest, TestPrepareNextInquiringStr) {
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		CString str;
-		gl_pChinaMarket->SetSystemReady(true);
-		for (int i = 0; i < 4; i++) {
-			if (TengxunDayLineDataSource.PrepareNextInquiringString()) {
-				str = TengxunDayLineDataSource.GetInquiringString();
-				EXPECT_STREQ(str, _T(""));
-			}
-			else {
-				EXPECT_EQ(str.GetLength(), 0);
-			}
-		}
-		gl_pChinaMarket->SetSystemReady(false);
-		EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		// 目前将索引移入函数内，作为静态变量存在，故而无法知道确切位置了。
-		//EXPECT_FALSE(gl_pChinaMarket->GetStock(0)->IsDayLineNeedUpdate());
-
-		// 恢复原态
-		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
-		}
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestCreateProduct1) {

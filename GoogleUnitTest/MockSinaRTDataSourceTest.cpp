@@ -55,7 +55,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockSinaRTDataSource, StartReadingThread)
 		.Times(1);
-		m_pMockSinaRTDataSource->GetWebData();
+		m_pMockSinaRTDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 }

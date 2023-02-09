@@ -10,10 +10,10 @@ public:
 	bool Reset(void) override;
 	bool UpdateStatus(void) override;
 
-	bool Inquire(const long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置Tengxun RT的m_pSession状态。
-	bool PrepareNextInquiringString(void) override;
+	void CreateInquiryMessageFromCurrentProduct(void) override;
 	bool ParseData(CWebDataPtr pWebData) override { return true; } // 数据为非JSon格式，不解析
 
 	bool InquireRTData(const long lCurrentTime);

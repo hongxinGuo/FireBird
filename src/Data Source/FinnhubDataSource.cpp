@@ -139,7 +139,7 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::Inquire(const long lCurrentTime) {
+bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
 	const long long llTickCount = GetTickCount64();
@@ -242,7 +242,6 @@ bool CFinnhubDataSource::InquireCompanySymbol(void) {
 			m_fInquiringFinnhubStockSymbol = false;
 			fHaveInquiry = false;
 			SetUpdateSymbol(false);
-			TRACE("Finnhub交易所代码数据查询完毕\n");
 			const CString str = "Finnhub交易所代码数据查询完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
@@ -283,7 +282,6 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise(void) {
 		else {
 			m_fInquiringFinnhubStockProfile = false;
 			SetUpdateStockProfile(false);
-			TRACE("Finnhub股票简介更新完毕\n");
 			const CString str = "Finnhub股票简介更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
@@ -330,7 +328,6 @@ bool CFinnhubDataSource::InquireCompanyNews(void) {
 		else {
 			m_fInquiringFinnhubCompanyNews = false;
 			SetUpdateCompanyNews(false);
-			TRACE("Finnhub公司新闻更新完毕\n");
 			const CString str = "Finnhub公司新闻更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
@@ -373,7 +370,6 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial(void) {
 		else {
 			m_fInquiringFinnhubCompanyBasicFinancial = false;
 			SetUpdateStockBasicFinancial(false);
-			TRACE("Finnhub股票基本财务情况更新完毕\n");
 			const CString str = "Finnhub股票基本财务情况更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
@@ -464,7 +460,6 @@ bool CFinnhubDataSource::InquireInsiderTransaction(void) {
 			m_fInquiringFinnhubStockInsiderTransaction = false;
 			fHaveInquiry = false;
 			SetUpdateInsiderTransaction(false);
-			TRACE("FinnhubInsider Transaction更新完毕\n");
 			const CString str = "US Market Insider Transaction数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
@@ -567,7 +562,6 @@ bool CFinnhubDataSource::InquirePeer(void) {
 			m_fInquiringFinnhubStockPeer = false;
 			fHaveInquiry = false;
 			SetUpdatePeer(false);
-			TRACE("Finnhub Peers更新完毕\n");
 			const CString str = "Finnhub Peer Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
@@ -769,14 +763,6 @@ bool CFinnhubDataSource::InquireCryptoDayLine(void) {
 		}
 	}
 	return fHaveInquiry;
-}
-
-bool CFinnhubDataSource::PrepareNextInquiringString(void) {
-	// 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此处解析申请字符串，只是将解析后的字符串组装起来。
-	// 具体的解析由各Product具体执行。
-	CreateTotalInquiringString();
-
-	return true;
 }
 
 void CFinnhubDataSource::ConfigureSession(void) {

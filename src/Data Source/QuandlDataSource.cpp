@@ -79,7 +79,7 @@ bool CQuandlDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CQuandlDataSource::Inquire(long lCurrentTime) {
+bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebError = false;
 
@@ -96,13 +96,6 @@ bool CQuandlDataSource::Inquire(long lCurrentTime) {
 		if (!IsInquiring()) { }
 		if (IsInquiring()) sllLastTimeTickCount = llTickCount;
 	}
-	return true;
-}
-
-bool CQuandlDataSource::PrepareNextInquiringString(void) {
-	// 由于Quandl提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
-	CreateTotalInquiringString();
-
 	return true;
 }
 

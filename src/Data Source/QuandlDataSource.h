@@ -11,10 +11,9 @@ public:
 	bool Reset(void) override;
 	bool UpdateStatus(void) override;
 
-	bool Inquire(const long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	void ConfigureSession(void) override;
-	bool PrepareNextInquiringString(void) override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:

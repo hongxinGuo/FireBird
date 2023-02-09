@@ -52,21 +52,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, StartReadingThread)
 		.Times(1);
-		m_pMockQuandlDataSource->GetWebData();
+		m_pMockQuandlDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-	}
-
-	TEST_F(CMockQuandlDataSourceTest, TestPrepareNextInquiringStr) {
-		CString str;
-		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < 4; i++) {
-			if (QuandlDataSource.PrepareNextInquiringString()) {
-				str = QuandlDataSource.GetInquiringString();
-				EXPECT_STREQ(str, _T("&api_key=")) << "默认状态下，各字符串皆为空，故而只剩下&api_key=";
-			}
-			else
-				EXPECT_EQ(str.GetLength(), 0);
-		}
-		gl_pWorldMarket->SetSystemReady(false);
 	}
 }

@@ -88,7 +88,7 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CTiingoDataSource::Inquire(const long lCurrentTime) {
+bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
 	const long long llTickCount = GetTickCount64();
@@ -186,13 +186,6 @@ bool CTiingoDataSource::InquireDayLine(void) {
 		}
 	}
 	return fHaveInquiry;
-}
-
-bool CTiingoDataSource::PrepareNextInquiringString(void) {
-	// 由于Tiingo提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而不在此分类。
-	CreateTotalInquiringString();
-
-	return true;
 }
 
 void CTiingoDataSource::ConfigureSession(void) {

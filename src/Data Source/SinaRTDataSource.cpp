@@ -33,7 +33,7 @@ bool CSinaRTDataSource::UpdateStatus(void) {
 	return true;
 }
 
-bool CSinaRTDataSource::Inquire(const long lCurrentTime) {
+bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();
 	if (static long long sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
 		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
@@ -60,6 +60,14 @@ bool CSinaRTDataSource::Inquire(const long lCurrentTime) {
 bool CSinaRTDataSource::InquireRTData(const long) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductSinaRT>();
+		const CString strMessage = _T("https://hq.sinajs.cn/list=");
+		// 申请下一批次股票实时数据
+		// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+		// 开市时使用今日活跃股票池
+		const CString strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
+		const CString strSinaStockCode = strStocks.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+		gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
+		product->SetInquiry(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;
@@ -73,16 +81,9 @@ bool CSinaRTDataSource::InquireRTData(const long) {
 // 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CSinaRTDataSource::PrepareNextInquiringString(void) {
-	// 申请下一批次股票实时数据
-	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-	// 开市时使用今日活跃股票池
-	m_strParam = gl_pChinaMarket->GetSinaStockInquiringStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
-	const CString strSinaStockCode = m_strParam.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
-	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
-	CreateTotalInquiringString();
-
-	return true;
+void CSinaRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+	ASSERT(m_pCurrentProduct != nullptr);
+	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
 /// <summary>

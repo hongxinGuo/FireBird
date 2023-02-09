@@ -42,18 +42,7 @@ namespace FireBirdTest {
 	public:
 	};
 
-	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess1) {
-		m_pVirtualDataSource->Enable(false);
-
-		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(0);
-		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(0);
-		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
-		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(0);
-
-		m_pVirtualDataSource->InquireAndProcess(100000);
-	}
-
-	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess2) {
+	TEST_F(CMockVirtualDataSourceTest, TestRun1) {
 		m_pVirtualDataSource->Enable(true);
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		auto p = make_shared<CVirtualWebProduct>();
@@ -61,30 +50,30 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(false);
 
-		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(0);
+		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(0);
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
-		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1);
 
-		m_pVirtualDataSource->InquireAndProcess(100000);
+		m_pVirtualDataSource->Run(100000);
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestInquireAndProcess3) {
+	TEST_F(CMockVirtualDataSourceTest, TestRun2) {
 		m_pVirtualDataSource->Enable(true);
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(false);
 
-		EXPECT_CALL(*m_pVirtualDataSource, Inquire).Times(1)
+		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(1)
 		.WillOnce(DoAll(Invoke([]() { m_pVirtualDataSource->SetInquiring(true); }), Return(true)));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
 		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(1);
-		EXPECT_CALL(*m_pVirtualDataSource, ProcessInquiringMessage).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1);
 
-		m_pVirtualDataSource->InquireAndProcess(100000);
+		m_pVirtualDataSource->Run(100000);
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
 	}
@@ -172,17 +161,9 @@ namespace FireBirdTest {
 
 	TEST_F(CMockVirtualDataSourceTest, TestGetWebData) {
 		m_pVirtualDataSource->SetInquiringWebData(false);
-		EXPECT_CALL(*m_pVirtualDataSource, PrepareNextInquiringString())
-		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(0);
-		EXPECT_FALSE(m_pVirtualDataSource->GetWebData());
-
-		m_pVirtualDataSource->SetInquiringWebData(false);
 		EXPECT_FALSE(m_pVirtualDataSource->IsInquiringWebData());
-		EXPECT_CALL(*m_pVirtualDataSource, PrepareNextInquiringString())
-		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(1);
-		EXPECT_TRUE(m_pVirtualDataSource->GetWebData());
+		m_pVirtualDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
 	}
 

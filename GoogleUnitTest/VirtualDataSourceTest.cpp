@@ -41,7 +41,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataSourceTest, TestInquire) {
-		EXPECT_TRUE(dataSource.Inquire(10101010));
+		EXPECT_TRUE(dataSource.GenerateInquiryMessage(10101010));
 	}
 
 	TEST_F(CDataSourceTest, TestEnable) {
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 		dataSource.StoreInquiry(p);
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 1);
 		EXPECT_TRUE(dataSource.HaveInquiry());
-		const CVirtualProductWebDataPtr p2 = dataSource.GetInquiry();
+		const CVirtualProductWebDataPtr p2 = dataSource.GetCurrentProduct();
 		EXPECT_EQ(p2->GetIndex(), 10000);
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);
 		EXPECT_FALSE(dataSource.HaveInquiry());
@@ -224,5 +224,15 @@ namespace FireBirdTest {
 		dataSource.DiscardReceivedData();
 
 		EXPECT_EQ(dataSource.GetReceivedDataSize(), 0);
+	}
+
+	TEST_F(CDataSourceTest, TestXferReadingToBuffer) {
+		char buffer[10]{'a', 'b', 'c', 'd'};
+		dataSource.TESTSetWebBuffer(buffer, 10);
+		dataSource.XferReadingToBuffer(0, 10);
+		EXPECT_EQ(dataSource.GetData(0), 'a');
+		EXPECT_EQ(dataSource.GetData(1), 'b');
+		EXPECT_EQ(dataSource.GetData(2), 'c');
+		EXPECT_EQ(dataSource.GetData(3), 'd');
 	}
 }

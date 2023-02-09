@@ -10,9 +10,8 @@ public:
 
 	bool Reset(void) override;
 	bool UpdateStatus(void) override;
-	bool Inquire(long lCurrentTime) override;
+	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	bool PrepareNextInquiringString(void) override;
 	void ConfigureSession(void) override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 

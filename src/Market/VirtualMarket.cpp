@@ -47,9 +47,9 @@ bool CVirtualMarket::SchedulingTask(void) {
 /// 此函数在VirtualMarket中定义，但由最终衍生类来调用，应为lCurrentTime必须为该衍生类的当前市场时间。
 /// </summary>
 /// <param name="lCurrentTime"></param>
-void CVirtualMarket::InquireAndProcessDataSource(long lCurrentTime) const {
+void CVirtualMarket::RunDataSource(long lCurrentTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
-		if (pDataSource->IsEnable()) pDataSource->InquireAndProcess(lCurrentTime);
+		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
 	}
 }
 

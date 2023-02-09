@@ -48,7 +48,7 @@ bool CTengxunDayLineDataSource::UpdateStatus(void) {
 // 腾讯日线数据每次最多提供2000个。当所需数据超过两千个时，需要分次提取。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunDayLineDataSource::Inquire(const long lCurrentTime) {
+bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
 	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
@@ -150,9 +150,8 @@ bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CTengxunDayLineDataSource::PrepareNextInquiringString(void) {
-	m_strInquiry = m_strInquiryFunction; // 腾讯日线的查询字符串，在生成product时即完成了，并在ProcessInquiringMessage函数中赋值给strInquiryFunction.
-	return true;
+void CTengxunDayLineDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
 void CTengxunDayLineDataSource::ConfigureSession(void) {
