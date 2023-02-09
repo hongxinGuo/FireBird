@@ -13,7 +13,7 @@ using namespace std;
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strClassName = _T("Finnhub company insider transaction");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,8 +23,8 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage(void) {
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
@@ -92,7 +92,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
 	}
 	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiry(), e.what());
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
 
@@ -121,6 +121,6 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		return pvInsiderTransaction;
 	}
 	ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
-		[](CInsiderTransactionPtr& p1, CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
+	             [](CInsiderTransactionPtr& p1, CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
 	return pvInsiderTransaction;
 }

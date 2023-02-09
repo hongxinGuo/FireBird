@@ -382,7 +382,7 @@ TEST(CanonicalizeForStdLibVersioning, ElidesDoubleUnderNames) {
 // Tests FormatTimeInMillisAsSeconds().
 
 TEST(FormatTimeInMillisAsSecondsTest, FormatsZero) {
-  EXPECT_EQ("0", FormatTimeInMillisAsSeconds(0));
+  EXPECT_EQ("0.", FormatTimeInMillisAsSeconds(0));
 }
 
 TEST(FormatTimeInMillisAsSecondsTest, FormatsPositiveNumber) {
@@ -390,7 +390,11 @@ TEST(FormatTimeInMillisAsSecondsTest, FormatsPositiveNumber) {
   EXPECT_EQ("0.01", FormatTimeInMillisAsSeconds(10));
   EXPECT_EQ("0.2", FormatTimeInMillisAsSeconds(200));
   EXPECT_EQ("1.2", FormatTimeInMillisAsSeconds(1200));
-  EXPECT_EQ("3", FormatTimeInMillisAsSeconds(3000));
+  EXPECT_EQ("3.", FormatTimeInMillisAsSeconds(3000));
+  EXPECT_EQ("10.", FormatTimeInMillisAsSeconds(10000));
+  EXPECT_EQ("100.", FormatTimeInMillisAsSeconds(100000));
+  EXPECT_EQ("123.456", FormatTimeInMillisAsSeconds(123456));
+  EXPECT_EQ("1234567.89", FormatTimeInMillisAsSeconds(1234567890));
 }
 
 TEST(FormatTimeInMillisAsSecondsTest, FormatsNegativeNumber) {
@@ -398,7 +402,11 @@ TEST(FormatTimeInMillisAsSecondsTest, FormatsNegativeNumber) {
   EXPECT_EQ("-0.01", FormatTimeInMillisAsSeconds(-10));
   EXPECT_EQ("-0.2", FormatTimeInMillisAsSeconds(-200));
   EXPECT_EQ("-1.2", FormatTimeInMillisAsSeconds(-1200));
-  EXPECT_EQ("-3", FormatTimeInMillisAsSeconds(-3000));
+  EXPECT_EQ("-3.", FormatTimeInMillisAsSeconds(-3000));
+  EXPECT_EQ("-10.", FormatTimeInMillisAsSeconds(-10000));
+  EXPECT_EQ("-100.", FormatTimeInMillisAsSeconds(-100000));
+  EXPECT_EQ("-123.456", FormatTimeInMillisAsSeconds(-123456));
+  EXPECT_EQ("-1234567.89", FormatTimeInMillisAsSeconds(-1234567890));
 }
 
 // Tests FormatEpochTimeInMillisAsIso8601().  The correctness of conversion
@@ -438,7 +446,7 @@ class FormatEpochTimeInMillisAsIso8601Test : public Test {
     // tzset() distinguishes between the TZ variable being present and empty
     // and not being present, so we have to consider the case of time_zone
     // being NULL.
-#if _MSC_VER || GTEST_OS_WINDOWS_MINGW
+#if defined(_MSC_VER) || GTEST_OS_WINDOWS_MINGW
     // ...Unless it's MSVC, whose standard library's _putenv doesn't
     // distinguish between an empty and a missing variable.
     const std::string env_var =

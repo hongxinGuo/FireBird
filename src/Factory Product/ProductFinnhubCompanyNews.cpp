@@ -10,7 +10,7 @@
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strClassName = _T("Finnhub company news");
-	m_strInquiry = _T("https://finnhub.io/api/v1/company-news?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
 	m_lIndex = -1;
 }
 
@@ -18,7 +18,7 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
-	CString strMessage = m_strInquiry + pStock->GetSymbol();
+	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	CString strTemp = ConvertDateToTimeStamp(pStock->GetCompanyNewsUpdateDate());
 	strMessage += _T("&from=");
 	strMessage += strTemp;
@@ -26,9 +26,9 @@ CString CProductFinnhubCompanyNews::CreateMessage(void) {
 	strMessage += _T("&to=");
 	strMessage += strTemp;
 
-	m_strTotalInquiryMessage = strMessage;
+	m_strInquiry = strMessage;
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	return m_strTotalInquiryMessage;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {

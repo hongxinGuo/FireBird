@@ -10,7 +10,7 @@
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strClassName = _T("Finnhub stock price quote");
-	m_strInquiry = _T("https://finnhub.io/api/v1/quote?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
 	m_lIndex = -1;
 }
 
@@ -21,8 +21,8 @@ CString CProductFinnhubStockPriceQuote::CreateMessage(void) {
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {

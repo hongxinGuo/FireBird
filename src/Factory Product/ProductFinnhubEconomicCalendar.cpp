@@ -17,15 +17,15 @@
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strClassName = _T("Finnhub economic calendar");
-	m_strInquiry = _T("https://finnhub.io/api/v1/calendar/economic?");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCalendar::CreateMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiry;
+	m_strInquiry = m_strInquiryFunction;
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
-	return m_strTotalInquiryMessage;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -21,8 +21,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -35,7 +34,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexExchangeTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), -1);
-		EXPECT_STREQ(countryList.GetInquiry(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_STREQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/exchange?"));
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestCreatMessage) {
@@ -79,7 +78,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		&finnhubWebData80));
+		                         &finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
@@ -129,7 +128,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		&finnhubWebData80));
+		                         &finnhubWebData80));
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);

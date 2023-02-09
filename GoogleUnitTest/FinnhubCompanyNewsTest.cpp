@@ -20,8 +20,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -34,7 +33,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyNewsTest, TestInitialize) {
 		EXPECT_EQ(companyNews.GetIndex(), -1);
-		EXPECT_STREQ(companyNews.GetInquiry(), _T("https://finnhub.io/api/v1/company-news?symbol="));
+		EXPECT_STREQ(companyNews.GetInquiryFunction(), _T("https://finnhub.io/api/v1/company-news?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
@@ -45,7 +44,7 @@ namespace FireBirdTest {
 		companyNews.SetMarket(gl_pWorldMarket.get());
 		companyNews.SetIndex(1);
 		const CWorldStockPtr pStock = static_cast<CWorldMarket*>(companyNews.GetMarket())->GetStock(1);
-		CString strMessage = companyNews.GetInquiry() + pStock->GetSymbol();
+		CString strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
@@ -112,7 +111,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCompanyNews1, ProcessFinnhubStockCompanyNewsTest, testing::Values(&finnhubWebDataCompanyNews2,
-		&finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
+		                         &finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
 		bool fSucceed = false;

@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,7 +32,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestInitialize) {
 		EXPECT_EQ(companyInsiderSentiment.GetIndex(), -1);
-		EXPECT_STREQ(companyInsiderSentiment.GetInquiry(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
+		EXPECT_STREQ(companyInsiderSentiment.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
@@ -47,7 +46,7 @@ namespace FireBirdTest {
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(),
-			companyInsiderSentiment.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
+		             companyInsiderSentiment.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderSentiment()) << "接收到的数处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(true);
@@ -57,10 +56,10 @@ namespace FireBirdTest {
 	FinnhubWebData finnhubWebData141(1, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 data项
 	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T(
-		"{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+		                                 "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 Symbol项
 	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
-		"{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+		                                 "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 空数据
 	FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
 
@@ -101,7 +100,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderSentiment1, ProcessFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
@@ -166,7 +165,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
@@ -224,7 +223,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest2,
-		testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);

@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
+#include "ProductNeteaseRT.h"
 
 #include"VirtualDataSource.h"
 
@@ -9,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataSourceTest : public ::testing::Test {
+	class CVirtualDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -31,7 +32,7 @@ namespace FireBirdTest {
 		CVirtualDataSource dataSource;
 	};
 
-	TEST_F(CDataSourceTest, TestInitialize) {
+	TEST_F(CVirtualDataSourceTest, TestInitialize) {
 		EXPECT_STREQ(dataSource.GetHeaders(), _T(""));
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
 		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T(""));
@@ -40,11 +41,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(dataSource.IsInquiringWebData());
 	}
 
-	TEST_F(CDataSourceTest, TestInquire) {
+	TEST_F(CVirtualDataSourceTest, TestInquire) {
 		EXPECT_TRUE(dataSource.GenerateInquiryMessage(10101010));
 	}
 
-	TEST_F(CDataSourceTest, TestEnable) {
+	TEST_F(CVirtualDataSourceTest, TestEnable) {
 		EXPECT_TRUE(dataSource.IsEnable());
 		dataSource.Enable(false);
 		EXPECT_FALSE(dataSource.IsEnable());
@@ -52,7 +53,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(dataSource.IsEnable());
 	}
 
-	TEST_F(CDataSourceTest, Test_IsInquiry) {
+	TEST_F(CVirtualDataSourceTest, Test_IsInquiry) {
 		ASSERT_FALSE(dataSource.IsInquiring());
 		dataSource.SetInquiring(true);
 		ASSERT_TRUE(dataSource.IsInquiring());
@@ -60,7 +61,7 @@ namespace FireBirdTest {
 		ASSERT_FALSE(dataSource.IsInquiring());
 	}
 
-	TEST_F(CDataSourceTest, Test_IsInquiringAndClearFlag) {
+	TEST_F(CVirtualDataSourceTest, Test_IsInquiringAndClearFlag) {
 		ASSERT_FALSE(dataSource.IsInquiring());
 		dataSource.SetInquiring(true);
 		dataSource.IsInquiringAndClearFlag();
@@ -69,7 +70,7 @@ namespace FireBirdTest {
 		ASSERT_FALSE(dataSource.IsInquiring());
 	}
 
-	TEST_F(CDataSourceTest, Test_SetInquiry) {
+	TEST_F(CVirtualDataSourceTest, Test_SetInquiry) {
 		auto p = std::make_shared<CVirtualWebProduct>();
 		p->SetIndex(10000);
 
@@ -84,7 +85,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(dataSource.HaveInquiry());
 	}
 
-	TEST_F(CDataSourceTest, TestGetCurrentInquiry) {
+	TEST_F(CVirtualDataSourceTest, TestGetCurrentInquiry) {
 		const auto pProduct = std::make_shared<CVirtualWebProduct>();
 		pProduct->SetIndex(10000);
 
@@ -96,7 +97,17 @@ namespace FireBirdTest {
 		EXPECT_EQ(p2->GetIndex(), 10000);
 	}
 
-	TEST_F(CDataSourceTest, TestStoreReceivedData) {
+	TEST_F(CVirtualDataSourceTest, TestCreateInquiryMessageFromCurrentProduct) {
+		const auto pProduct = std::make_shared<CProductNeteaseRT>(); // 这个product不生成自己的Inquiry，直接赋而已。
+		pProduct->SetInquiryFunction(_T("TestGetInquiry"));
+		dataSource.StoreInquiry(pProduct);
+		dataSource.GetCurrentProduct();
+
+		dataSource.CreateInquiryMessageFromCurrentProduct();
+		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
+	}
+
+	TEST_F(CVirtualDataSourceTest, TestStoreReceivedData) {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->SetTime(10102020);
 
@@ -108,38 +119,38 @@ namespace FireBirdTest {
 		EXPECT_EQ(pData2->GetTime(), 10102020);
 	}
 
-	TEST_F(CDataSourceTest, TestGetHeaders) {
+	TEST_F(CVirtualDataSourceTest, TestGetHeaders) {
 		EXPECT_STREQ(dataSource.GetHeaders(), _T(""));
 		dataSource.SetHeaders(_T("abcdefg"));
 		EXPECT_STREQ(dataSource.GetHeaders(), _T("abcdefg"));
 	}
 
-	TEST_F(CDataSourceTest, TestReset) {
+	TEST_F(CVirtualDataSourceTest, TestReset) {
 		dataSource.SetByteRead(1000);
 		dataSource.Reset();
 		EXPECT_EQ(dataSource.GetByteRead(), 0);
 		EXPECT_FALSE(dataSource.IsWebError());
 	}
 
-	TEST_F(CDataSourceTest, TestGetInquiringStringPrefix) {
+	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringPrefix) {
 		dataSource.SetInquiryFunction(_T("abcdefghigh"));
 		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T("abcdefghigh"));
 		dataSource.SetInquiryFunction(_T(""));
 	}
 
-	TEST_F(CDataSourceTest, TestGetInquiringStringSuffix) {
+	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringSuffix) {
 		dataSource.SetInquiryToken(_T("cdefghigh"));
 		EXPECT_STREQ(dataSource.GetInquiryToken(), _T("cdefghigh"));
 		dataSource.SetInquiryToken(_T(""));
 	}
 
-	TEST_F(CDataSourceTest, TestCreateTotalInquiringString) {
+	TEST_F(CVirtualDataSourceTest, TestCreateTotalInquiringString) {
 		dataSource.SetInquirySuffix(_T("abcdef"));
 		dataSource.CreateTotalInquiringString();
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdef"));
 	}
 
-	TEST_F(CDataSourceTest, TestIsReadingWebData) {
+	TEST_F(CVirtualDataSourceTest, TestIsReadingWebData) {
 		EXPECT_FALSE(dataSource.IsInquiringWebData());
 		dataSource.SetInquiringWebData(true);
 		EXPECT_TRUE(dataSource.IsInquiringWebData());
@@ -147,7 +158,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(dataSource.IsInquiringWebData());
 	}
 
-	TEST_F(CDataSourceTest, TestIsWebError) {
+	TEST_F(CVirtualDataSourceTest, TestIsWebError) {
 		EXPECT_FALSE(dataSource.IsWebError());
 		dataSource.SetErrorCode(102);
 		EXPECT_TRUE(dataSource.IsWebError());
@@ -157,7 +168,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetErrorCode(), 0);
 	}
 
-	TEST_F(CDataSourceTest, TestIsTimeout) {
+	TEST_F(CVirtualDataSourceTest, TestIsTimeout) {
 		EXPECT_FALSE(dataSource.IsTimeout());
 		dataSource.SetErrorCode(12002);
 		EXPECT_TRUE(dataSource.IsTimeout());
@@ -165,7 +176,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(dataSource.IsTimeout());
 	}
 
-	TEST_F(CDataSourceTest, TestGetByteRead) {
+	TEST_F(CVirtualDataSourceTest, TestGetByteRead) {
 		EXPECT_EQ(dataSource.GetByteRead(), 0);
 		dataSource.SetByteRead(10000);
 		EXPECT_EQ(dataSource.GetByteRead(), 10000);
@@ -173,7 +184,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetByteRead(), 20000);
 	}
 
-	TEST_F(CDataSourceTest, TestGetInquiringString) {
+	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
 		dataSource.SetInquiringString(_T("abcdefg"));
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdefg"));
@@ -181,13 +192,13 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdefghijk"));
 	}
 
-	TEST_F(CDataSourceTest, TestGetInquiringNumber) {
+	TEST_F(CVirtualDataSourceTest, TestGetInquiringNumber) {
 		EXPECT_EQ(dataSource.GetInquiringNumber(), 500) << _T("默认值为500");
 		dataSource.SetInquiringNumber(800);
 		EXPECT_EQ(dataSource.GetInquiringNumber(), 800);
 	}
 
-	TEST_F(CDataSourceTest, TestGetTotalByteRead) {
+	TEST_F(CVirtualDataSourceTest, TestGetTotalByteRead) {
 		dataSource.ClearTotalByteRead();
 		EXPECT_EQ(dataSource.GetTotalByteRead(), 0);
 		dataSource.SetTotalByteRead(1000);
@@ -196,13 +207,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetTotalByteRead(), 0);
 	}
 
-	TEST_F(CDataSourceTest, TestGetCurrentInquiryTime) {
+	TEST_F(CVirtualDataSourceTest, TestGetCurrentInquiryTime) {
 		EXPECT_EQ(dataSource.GetCurrentInquiryTime(), 0);
 		dataSource.SetCurrentInquiryTime(10102020);
 		EXPECT_EQ(dataSource.GetCurrentInquiryTime(), 10102020);
 	}
 
-	TEST_F(CDataSourceTest, TestDiscardProduct) {
+	TEST_F(CVirtualDataSourceTest, TestDiscardProduct) {
 		auto p = make_shared<CVirtualWebProduct>();
 		auto p2 = make_shared<CVirtualWebProduct>();
 		dataSource.StoreInquiry(p);
@@ -214,7 +225,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);
 	}
 
-	TEST_F(CDataSourceTest, TestDiscardReceivedData) {
+	TEST_F(CVirtualDataSourceTest, TestDiscardReceivedData) {
 		auto p = make_shared<CWebData>();
 		auto p2 = make_shared<CWebData>();
 		dataSource.StoreReceivedData(p);
@@ -226,7 +237,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetReceivedDataSize(), 0);
 	}
 
-	TEST_F(CDataSourceTest, TestXferReadingToBuffer) {
+	TEST_F(CVirtualDataSourceTest, TestXferReadingToBuffer) {
 		char buffer[10]{'a', 'b', 'c', 'd'};
 		dataSource.TESTSetWebBuffer(buffer, 10);
 		dataSource.XferReadingToBuffer(0, 10);

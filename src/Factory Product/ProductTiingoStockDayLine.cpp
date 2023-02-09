@@ -13,7 +13,7 @@ using namespace std;
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo stock price candle");
-	m_strInquiry = _T("https://api.tiingo.com/tiingo/daily/");
+	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 	m_lIndex = -1;
 }
 
@@ -37,8 +37,8 @@ CString CProductTiingoStockDayLine::CreateMessage(void) {
 	}
 	pStock->SetDayLineNeedUpdate(false);
 
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

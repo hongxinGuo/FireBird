@@ -34,9 +34,9 @@ public:
 	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 
 	CString GetClassName(void) const noexcept { return m_strClassName; }
-	CString GetTotalInquiryMessage(void) const noexcept { return m_strTotalInquiryMessage; }
 	CString GetInquiry(void) const noexcept { return m_strInquiry; }
-	void SetInquiry(CString strMessage) noexcept { m_strInquiry = strMessage; }
+	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
+	void SetInquiryFunction(CString strMessage) noexcept { m_strInquiryFunction = strMessage; }
 
 	long GetIndex(void) const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
@@ -54,8 +54,8 @@ public:
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场
 	CString m_strClassName;
+	CString m_strInquiryFunction;
 	CString m_strInquiry;
-	CString m_strTotalInquiryMessage;
 	CString m_strInquiringExchange; // 目前查询的交易所代码
 	long m_lIndex;
 	int m_iProductType;

@@ -21,8 +21,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -35,13 +34,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
 		EXPECT_EQ(economicCalendar.GetIndex(), -1);
-		EXPECT_STREQ(economicCalendar.GetInquiry(), _T("https://finnhub.io/api/v1/calendar/economic?"));
+		EXPECT_STREQ(economicCalendar.GetInquiryFunction(), _T("https://finnhub.io/api/v1/calendar/economic?"));
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
 		economicCalendar.SetMarket(gl_pWorldMarket.get());
 		economicCalendar.SetIndex(1);
-		EXPECT_STREQ(economicCalendar.CreateMessage(), economicCalendar.GetInquiry());
+		EXPECT_STREQ(economicCalendar.CreateMessage(), economicCalendar.GetInquiryFunction());
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {
@@ -85,8 +84,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
-		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-			&finnhubWebData115, &finnhubWebData120));
+	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
@@ -148,8 +147,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
-		testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
-			&finnhubWebData115, &finnhubWebData120));
+	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());

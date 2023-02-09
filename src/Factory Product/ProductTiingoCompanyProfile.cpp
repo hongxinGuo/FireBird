@@ -7,8 +7,8 @@ CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 }
 
 CString CProductTiingoCompanyProfile::CreateMessage(void) {
-	m_strTotalInquiryMessage = _T("");
-	return m_strTotalInquiryMessage;
+	m_strInquiry = _T("");
+	return m_strInquiry;
 }
 
 bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,7 +32,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockDayLine.GetIndex(), -1);
-		EXPECT_STREQ(stockDayLine.GetInquiry(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
+		EXPECT_STREQ(stockDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
 	}
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
@@ -41,7 +40,7 @@ namespace FireBirdTest {
 		stockDayLine.SetMarket(gl_pWorldMarket.get());
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreateMessage(),
-			stockDayLine.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
+		             stockDayLine.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryParam(gl_pWorldMarket->GetUTCTime()));
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方重置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
@@ -106,9 +105,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockCandle1,
-		ProcessFinnhubStockCandleTest,
-		testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
-			&finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
+	                         ProcessFinnhubStockCandleTest,
+	                         testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
+		                         &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
 		CString strMessage;

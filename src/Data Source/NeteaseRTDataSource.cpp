@@ -53,7 +53,7 @@ bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 		const CString strStocks = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
 		const CString strNeteaseStockCode = strStocks.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 		gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
-		product->SetInquiry(strMessage + strStocks);
+		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

@@ -13,7 +13,7 @@ using namespace std;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strClassName = _T("Finnhub estimates EPS surprise");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
 	m_lIndex = -1;
 }
 
@@ -24,8 +24,8 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage(void) {
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
@@ -81,6 +81,6 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 		return pvEPSSurprise;
 	}
 	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
-		[](CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
+	             [](CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

@@ -14,7 +14,7 @@ using namespace std;
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strClassName = _T("Finnhub forex dayline");
-	m_strInquiry = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -24,8 +24,8 @@ CString CProductFinnhubForexDayLine::CreateMessage(void) {
 	const auto pForexSymbol = static_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pForexSymbol->GetFinnhubDayLineInquiryParam(m_pMarket->GetUTCTime());
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(m_pMarket->GetUTCTime());
+	return m_strInquiry;
 }
 
 bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

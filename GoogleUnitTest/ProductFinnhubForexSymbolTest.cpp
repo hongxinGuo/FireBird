@@ -17,8 +17,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -31,13 +30,13 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
 		EXPECT_EQ(productForexSymbol.GetIndex(), -1);
-		EXPECT_STREQ(productForexSymbol.GetInquiry(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
+		EXPECT_STREQ(productForexSymbol.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
 		productForexSymbol.SetMarket(gl_pWorldMarket.get());
 		productForexSymbol.SetIndex(1);
-		EXPECT_STREQ(productForexSymbol.CreateMessage(), productForexSymbol.GetInquiry() + gl_pWorldMarket->GetForexExchange(1));
+		EXPECT_STREQ(productForexSymbol.CreateMessage(), productForexSymbol.GetInquiryFunction() + gl_pWorldMarket->GetForexExchange(1));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {
@@ -81,8 +80,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
-		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-			&finnhubWebData85, &finnhubWebData90));
+	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
@@ -135,8 +134,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
-		testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
-			&finnhubWebData85, &finnhubWebData90));
+	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;

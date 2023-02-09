@@ -15,8 +15,7 @@ namespace FireBirdTest {
 
 		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -29,7 +28,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestInitialize) {
 		EXPECT_EQ(companyBasicFinancial.GetIndex(), -1);
-		EXPECT_STREQ(companyBasicFinancial.GetInquiry(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
+		EXPECT_STREQ(companyBasicFinancial.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
@@ -37,14 +36,14 @@ namespace FireBirdTest {
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
+		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(true);
 	}
 
 	FinnhubWebData finnhubWebData1001(1, _T("AAPL"),
-		_T("{\
+	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -243,7 +242,7 @@ namespace FireBirdTest {
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
 	FinnhubWebData finnhubWebData1002(2, _T("BVDRF"),
-		_T("{\
+	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -481,7 +480,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-		testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
@@ -549,7 +548,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-		testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);

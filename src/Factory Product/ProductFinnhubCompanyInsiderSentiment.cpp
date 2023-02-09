@@ -14,7 +14,7 @@ using namespace std;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strClassName = _T("Finnhub company insider sentiment");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,10 +23,10 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	const CString strCurrentDate = ConvertDateToTimeStamp(m_pMarket->GetMarketDate());
-	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
-	return m_strTotalInquiryMessage;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
@@ -91,7 +91,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		stockSymbol = jsonGetString(pjs, _T("symbol"));
 	}
 	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiry(), e.what());
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
 
@@ -114,6 +114,6 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		return pvInsiderSentiment;
 	}
 	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
-		[](CInsiderSentimentPtr& p1, CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
+	             [](CInsiderSentimentPtr& p1, CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
 	return pvInsiderSentiment;
 }

@@ -35,11 +35,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestInitialize) {
 		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiry(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+		EXPECT_STREQ(stockSymbols.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiry());
+		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoStockSymbolsTest, TestProcessWebData) {
@@ -82,9 +82,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-		ParseTiingoStockTest,
-		testing::Values(&tiingoWebData1, &tiingoWebData2,
-			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+	                         ParseTiingoStockTest,
+	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
+		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
@@ -166,9 +166,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-		ParseTiingoStockTest2,
-		testing::Values(&tiingoWebData1, &tiingoWebData2,
-			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+	                         ParseTiingoStockTest2,
+	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
+		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ParseTiingoStockTest2, TestParseStockProfile) {
 		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
@@ -252,9 +252,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock,
-		ProcessTiingoStockTest,
-		testing::Values(&tiingoWebData1, &tiingoWebData2,
-			&tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
+	                         ProcessTiingoStockTest,
+	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
+		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
 
 	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;

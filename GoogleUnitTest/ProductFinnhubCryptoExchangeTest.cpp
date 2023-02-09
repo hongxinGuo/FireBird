@@ -20,8 +20,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -34,7 +33,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), -1);
-		EXPECT_STREQ(countryList.GetInquiry(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_STREQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
@@ -77,7 +76,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
-		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
@@ -127,7 +126,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
-		testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);

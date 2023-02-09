@@ -7,11 +7,11 @@
 
 CProductNeteaseRT::CProductNeteaseRT() {
 	m_lCurrentStockPosition = 0;
-	m_strInquiry = _T("http://api.money.126.net/data/feed/");
+	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
 }
 
 CString CProductNeteaseRT::CreateMessage(void) {
-	return m_strInquiry; // 新浪实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作。
+	return m_strInquiryFunction; // 新浪实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作。
 }
 
 bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {

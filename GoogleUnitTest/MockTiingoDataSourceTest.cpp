@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquiringWebData(false); }));
 		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 		EXPECT_STREQ(m_pTiingoDataSource->GetInquiryFunction(),
-		             p->GetInquiry() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryParam(19800101, gl_pWorldMarket->GetMarketDate()));
+		             p->GetInquiryFunction() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryParam(19800101, gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// Ë³±ã²âÊÔÒ»ÏÂ
 		EXPECT_STREQ(typeid(*m_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));

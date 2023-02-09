@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,13 +32,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
 		EXPECT_EQ(stockPriceQuote.GetIndex(), -1);
-		EXPECT_STREQ(stockPriceQuote.GetInquiry(), _T("https://finnhub.io/api/v1/quote?symbol="));
+		EXPECT_STREQ(stockPriceQuote.GetInquiryFunction(), _T("https://finnhub.io/api/v1/quote?symbol="));
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetMarket(gl_pWorldMarket.get());
 		stockPriceQuote.SetIndex(1);
-		EXPECT_STREQ(stockPriceQuote.CreateMessage(), stockPriceQuote.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(stockPriceQuote.CreateMessage(), stockPriceQuote.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {
@@ -106,9 +105,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
-		ProcessFinnhubStockQuoteTest,
-		testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
-			&finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
+	                         ProcessFinnhubStockQuoteTest,
+	                         testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		const bool fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);

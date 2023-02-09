@@ -123,7 +123,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaSto
 		}
 		const CString strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + m_strSuffix;
 		product->SetIndex(lStockIndex);
-		product->SetInquiry(strTotalMessage);
+		product->SetInquiryFunction(strTotalMessage);
 		vProduct.push_back(product);
 		l += 7;
 		lStartDate = (year + 7) * 10000 + 101;

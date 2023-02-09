@@ -10,15 +10,15 @@
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo crypto symbols");
-	m_strInquiry = _T("https://api.tiingo.com/tiingo/crypto?");
+	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
 	m_differ1 = 0;
 	m_differ2 = 0;
 	m_ratio = 3;
 }
 
 CString CProductTiingoCryptoSymbol::CreateMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiry;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction;
+	return m_strInquiry;
 }
 
 bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

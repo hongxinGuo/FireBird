@@ -7,7 +7,7 @@
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strClassName = _T("Finnhub crypto symbols");
-	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -15,8 +15,8 @@ CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
 	const CString strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

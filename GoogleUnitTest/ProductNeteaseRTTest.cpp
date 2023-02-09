@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -32,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductNeteaseRTTest, TestInitialize) {
-		EXPECT_STREQ(neteaseRT.GetInquiry(), _T("http://api.money.126.net/data/feed/"));
+		EXPECT_STREQ(neteaseRT.GetInquiryFunction(), _T("http://api.money.126.net/data/feed/"));
 	}
 
 	TEST_F(CProductNeteaseRTTest, TestCreateMessage) {

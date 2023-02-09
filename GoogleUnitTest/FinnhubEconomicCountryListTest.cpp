@@ -21,8 +21,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -35,7 +34,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), -1);
-		EXPECT_STREQ(countryList.GetInquiry(), _T("https://finnhub.io/api/v1/country?"));
+		EXPECT_STREQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/country?"));
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestCreatMessage) {
@@ -94,8 +93,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
-		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-			&finnhubWebData95, &finnhubWebData100));
+	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+		                         &finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
@@ -159,8 +158,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
-		testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-			&finnhubWebData95, &finnhubWebData100));
+	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+		                         &finnhubWebData95, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		const auto l = gl_pWorldMarket->GetTotalCountry();

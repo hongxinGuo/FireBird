@@ -67,7 +67,7 @@ bool CSinaRTDataSource::InquireRTData(const long) {
 		const CString strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
 		const CString strSinaStockCode = strStocks.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
 		gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
-		product->SetInquiry(strMessage + strStocks);
+		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

@@ -9,7 +9,7 @@
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strClassName = _T("Finnhub company symbols");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -19,8 +19,8 @@ CString CProductFinnhubStockSymbol::CreateMessage(void) {
 	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

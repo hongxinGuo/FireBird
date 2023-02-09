@@ -72,7 +72,7 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
 		auto p = make_shared<CProductNeteaseRT>();
-		p->SetInquiry(_T("http://api.money.126.net/data/feed/"));
+		p->SetInquiryFunction(_T("http://api.money.126.net/data/feed/"));
 		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
 		m_pMockNeteaseRTDataSource->CreateInquiryMessageFromCurrentProduct();
 		const CString str = m_pMockNeteaseRTDataSource->GetInquiringString();

@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -32,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductNeteaseDayLineTest, TestInitialize) {
-		EXPECT_STREQ(neteaseDayLine.GetInquiry(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_STREQ(neteaseDayLine.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
 	}
 
 	TEST_F(CProductNeteaseDayLineTest, TestCreateMessage) {

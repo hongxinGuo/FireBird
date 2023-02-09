@@ -9,15 +9,15 @@
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strClassName = _T("Finnhub crypto exchange");
-	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/exchange?");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubCryptoExchange::CreateMessage(void) {
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
-	m_strTotalInquiryMessage = m_strInquiry;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {

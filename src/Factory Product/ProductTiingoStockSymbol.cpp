@@ -12,12 +12,12 @@ using namespace std;
 
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() : CVirtualWebProduct() {
 	m_strClassName = _T("Tiingo stock symbols");
-	m_strInquiry = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
+	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
 CString CProductTiingoStockSymbol::CreateMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiry;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction;
+	return m_strInquiry;
 }
 
 bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -9,19 +9,19 @@
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strClassName = _T("Finnhub forex exchange");
-	m_strInquiry = _T("https://finnhub.io/api/v1/forex/exchange?");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/exchange?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubForexExchange::CreateMessage(void) {
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
-	m_strTotalInquiryMessage = m_strInquiry;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-		ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {

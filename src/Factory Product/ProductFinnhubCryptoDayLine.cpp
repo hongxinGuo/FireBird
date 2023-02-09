@@ -14,7 +14,7 @@ using namespace std;
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strClassName = _T("Finnhub crypto dayline");
-	m_strInquiry = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -23,8 +23,8 @@ CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pCryptoSymbol->GetFinnhubDayLineInquiryParam(CWorldMarket::GetUTCTime());
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(CWorldMarket::GetUTCTime());
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {

@@ -31,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTengxunDayLineTest, TestInitialize) {
-		EXPECT_STREQ(tengxunDayLine.GetInquiry(), _T(""));
+		EXPECT_STREQ(tengxunDayLine.GetInquiryFunction(), _T(""));
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestCreateMessage) {

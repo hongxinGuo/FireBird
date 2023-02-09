@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,14 +32,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestInitialize) {
 		EXPECT_EQ(companyProfileConcise.GetIndex(), -1);
-		EXPECT_STREQ(companyProfileConcise.GetInquiry(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
+		EXPECT_STREQ(companyProfileConcise.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
@@ -89,7 +88,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData12,
-		&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
+		                         &finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;

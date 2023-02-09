@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,13 +32,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestInitialize) {
 		EXPECT_EQ(stockEstimatesEPSSurprise.GetIndex(), -1);
-		EXPECT_STREQ(stockEstimatesEPSSurprise.GetInquiry(), _T("https://finnhub.io/api/v1/stock/earnings?symbol="));
+		EXPECT_STREQ(stockEstimatesEPSSurprise.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/earnings?symbol="));
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
 		stockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket.get());
 		stockEstimatesEPSSurprise.SetIndex(1);
-		EXPECT_STREQ(stockEstimatesEPSSurprise.CreateMessage(), stockEstimatesEPSSurprise.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(stockEstimatesEPSSurprise.CreateMessage(), stockEstimatesEPSSurprise.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestProcessWebData) {
@@ -88,8 +87,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-			&finnhubWebData125, &finnhubWebData130));
+	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
@@ -161,8 +160,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-		testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
-			&finnhubWebData125, &finnhubWebData130));
+	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);

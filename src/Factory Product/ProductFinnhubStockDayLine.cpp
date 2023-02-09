@@ -15,7 +15,7 @@ bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strClassName = _T("Finnhub stock dayline");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 	m_lIndex = -1;
 }
 
@@ -26,8 +26,8 @@ CString CProductFinnhubStockDayLine::CreateMessage(void) {
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(CVirtualMarket::GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
@@ -91,7 +91,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	}
 	catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiry(), e.what());
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
 
@@ -106,7 +106,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		}
 	}
 	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiry(), e.what());
+		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
 	try {
@@ -149,7 +149,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 			pDayLine->SetVolume(llTemp);
 		}
 	}
-	catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiry(), e.what()); }
+	catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
 	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

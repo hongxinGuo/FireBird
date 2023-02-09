@@ -7,7 +7,7 @@
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strClassName = _T("Finnhub company peer");
-	m_strInquiry = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
 	m_lIndex = -1;
 }
 
@@ -17,8 +17,8 @@ CString CProductFinnhubCompanyPeer::CreateMessage(void) {
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strTotalInquiryMessage = m_strInquiry + pStock->GetSymbol();
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
+	return m_strInquiry;
 }
 
 bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {

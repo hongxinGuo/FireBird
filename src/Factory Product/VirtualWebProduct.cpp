@@ -10,8 +10,8 @@ CVirtualWebProduct::CVirtualWebProduct() {
 	m_iReceivedDataStatus = 0;
 	m_iProductType = 0;
 
+	m_strInquiryFunction = _T("");
 	m_strInquiry = _T("");
-	m_strTotalInquiryMessage = _T("");
 	m_strInquiringExchange = _T("ALL"); // 默认是申请所有的交易所数据。
 }
 

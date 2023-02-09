@@ -17,8 +17,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -31,13 +30,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestInitialize) {
 		EXPECT_EQ(companySymbolProduct.GetIndex(), -1);
-		EXPECT_STREQ(companySymbolProduct.GetInquiry(), _T("https://finnhub.io/api/v1/stock/symbol?exchange="));
+		EXPECT_STREQ(companySymbolProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/symbol?exchange="));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetMarket(gl_pWorldMarket.get());
 		companySymbolProduct.SetIndex(1);
-		EXPECT_STREQ(companySymbolProduct.CreateMessage(), companySymbolProduct.GetInquiry() + gl_pWorldMarket->GetStockExchangeCode(1));
+		EXPECT_STREQ(companySymbolProduct.CreateMessage(), companySymbolProduct.GetInquiryFunction() + gl_pWorldMarket->GetStockExchangeCode(1));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
@@ -90,7 +89,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		&finnhubWebData30));
+		                         &finnhubWebData30));
 
 	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);
@@ -141,7 +140,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
-		&finnhubWebData30));
+		                         &finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CWorldStockPtr pStock;

@@ -13,13 +13,13 @@ using namespace std;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strClassName = _T("Finnhub economic country list");
-	m_strInquiry = _T("https://finnhub.io/api/v1/country?");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");
 	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCountryList::CreateMessage(void) {
-	m_strTotalInquiryMessage = m_strInquiry;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
@@ -70,6 +70,6 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 		return pvCountry;
 	}
 	ranges::sort(pvCountry->begin(), pvCountry->end(),
-		[](CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
+	             [](CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
 	return pvCountry;
 }

@@ -55,7 +55,7 @@ bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
 		// 故而现在只使用有效股票代码。
 		const CString strMessage = _T("http://qt.gtimg.cn/q=");
 		const CString strStocks = gl_pChinaMarket->GetNextTengxunStockInquiringMiddleStr(m_lInquiringNumber); // 使用活跃股票池
-		product->SetInquiry(strMessage + strStocks);
+		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -32,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductSinaRTTest, TestInitialize) {
-		EXPECT_STREQ(sinaRT.GetInquiry(), _T("https://hq.sinajs.cn/list="));
+		EXPECT_STREQ(sinaRT.GetInquiryFunction(), _T("https://hq.sinajs.cn/list="));
 	}
 
 	TEST_F(CProductSinaRTTest, TestCreateMessage) {

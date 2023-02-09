@@ -9,7 +9,7 @@
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strClassName = _T("Finnhub forex symbols");
-	m_strInquiry = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 	m_lIndex = -1;
 }
 
@@ -19,8 +19,8 @@ CString CProductFinnhubForexSymbol::CreateMessage(void) {
 	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
-	m_strTotalInquiryMessage = m_strInquiry + strParam;
-	return m_strTotalInquiryMessage;
+	m_strInquiry = m_strInquiryFunction + strParam;
+	return m_strInquiry;
 }
 
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {

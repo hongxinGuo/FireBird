@@ -19,8 +19,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,14 +32,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyPeerTest, TestInitialize) {
 		EXPECT_EQ(companyPeer.GetIndex(), -1);
-		EXPECT_STREQ(companyPeer.GetInquiry(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
+		EXPECT_STREQ(companyPeer.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true);
 		companyPeer.SetMarket(gl_pWorldMarket.get());
 		companyPeer.SetIndex(1);
-		EXPECT_STREQ(companyPeer.CreateMessage(), companyPeer.GetInquiry() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyPeer.CreateMessage(), companyPeer.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true);
@@ -83,8 +82,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
-		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-			&finnhubWebData110));
+	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+		                         &finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer2) {
 		m_jsonPeer = m_finnhubCompanyPeer.ParseFinnhubStockPeer(m_pWebData);
@@ -135,8 +134,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer, ProcessFinnhubStockPeerTest,
-		testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
-			&finnhubWebData110));
+	                         testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+		                         &finnhubWebData110));
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer1) {
 		string s;

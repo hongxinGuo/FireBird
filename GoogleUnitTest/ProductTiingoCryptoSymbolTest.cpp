@@ -33,11 +33,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoCryptoSymbolsTest, TestInitialize) {
 		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiry(), _T("https://api.tiingo.com/tiingo/crypto?"));
+		EXPECT_STREQ(stockSymbols.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
 	TEST_F(CProductTiingoCryptoSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiry());
+		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiryFunction());
 	}
 
 	// 格式不对，缺乏'{'
@@ -72,8 +72,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-		ParseTiingoCryptoTest,
-		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+	                         ParseTiingoCryptoTest,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -122,8 +122,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoCrypto1,
-		ParseTiingoCryptoTest2,
-		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+	                         ParseTiingoCryptoTest2,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ParseTiingoCryptoTest2, TestParseCryptoSymbol) {
 		m_pvCrypto = m_tiingoCryptoSymbolProduct.ParseTiingoCryptoSymbol(m_pWebData);
@@ -172,8 +172,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCrypto1,
-		ProcessTiingoCryptoTest,
-		testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
+	                         ProcessTiingoCryptoTest,
+	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto;
