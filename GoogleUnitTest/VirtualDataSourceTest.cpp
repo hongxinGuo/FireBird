@@ -2,6 +2,7 @@
 
 #include"GeneralCheck.h"
 #include "ProductNeteaseRT.h"
+#include "TimeConvert.h"
 
 #include"VirtualDataSource.h"
 
@@ -98,13 +99,28 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestCreateInquiryMessageFromCurrentProduct) {
-		const auto pProduct = std::make_shared<CProductNeteaseRT>(); // 这个product不生成自己的Inquiry，直接赋而已。
+		const auto pProduct = std::make_shared<CProductNeteaseRT>(); // 这个product不生成自己的Inquiry，直接赋值而已。
 		pProduct->SetInquiryFunction(_T("TestGetInquiry"));
 		dataSource.StoreInquiry(pProduct);
 		dataSource.GetCurrentProduct();
 
 		dataSource.CreateInquiryMessageFromCurrentProduct();
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
+	}
+
+	TEST_F(CVirtualDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+		dataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
+		const time_t tUTCTime = GetUTCTime();
+		TestSetUTCTime(0);
+
+		const auto pWebData = dataSource.CreateWebDataAfterSucceedReading();
+
+		EXPECT_TRUE(pWebData != nullptr);
+		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
+		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
+
+		// restore
+		TestSetUTCTime(tUTCTime);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestStoreReceivedData) {

@@ -24,6 +24,7 @@
 
 #include"ProductTiingoStockSymbol.h"
 #include"ProductDummy.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -1022,5 +1023,21 @@ namespace FireBirdTest {
 		// 恢复原状
 		m_FinnhubDataSource.GetCurrentProduct();
 		m_FinnhubDataSource.SetInquiring(false);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+		m_FinnhubDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
+		const time_t tUTCTime = GetUTCTime();
+		TestSetUTCTime(0);
+
+		const auto pWebData = m_FinnhubDataSource.CreateWebDataAfterSucceedReading();
+
+		EXPECT_TRUE(pWebData != nullptr);
+		EXPECT_TRUE(pWebData->IsParsed()) << "finnhub data source会调用Parse，生成json数据";
+		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
+		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
+
+		// restore
+		TestSetUTCTime(tUTCTime);
 	}
 }

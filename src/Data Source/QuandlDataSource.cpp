@@ -22,7 +22,7 @@ bool CQuandlDataSource::Reset(void) {
 	return true;
 }
 
-bool CQuandlDataSource::UpdateStatus(void) {
+void CQuandlDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
 		break;
@@ -76,7 +76,6 @@ bool CQuandlDataSource::UpdateStatus(void) {
 	//ASSERT(0);
 		break;
 	}
-	return true;
 }
 
 bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {

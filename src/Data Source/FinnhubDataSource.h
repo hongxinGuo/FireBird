@@ -9,7 +9,7 @@ public:
 	~CFinnhubDataSource(void) override = default;
 
 	bool Reset(void) override;
-	bool UpdateStatus(void) override;
+	void UpdateStatus(void) override;
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureSession(void) override;

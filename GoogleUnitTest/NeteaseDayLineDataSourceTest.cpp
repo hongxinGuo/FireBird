@@ -5,6 +5,7 @@
 #include"NeteaseDayLineDataSource.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -30,10 +31,6 @@ namespace FireBirdTest {
 		CNeteaseDayLineDataSource NeteaseDayLineDataSource;
 	};
 
-	TEST_F(CNeteaseDayLineDataSourceTest, TestUpdateStatus) {
-		EXPECT_TRUE(NeteaseDayLineDataSource.UpdateStatus());
-	}
-
 	TEST_F(CNeteaseDayLineDataSourceTest, TestParseData) {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		EXPECT_TRUE(NeteaseDayLineDataSource.ParseData(pData));
@@ -57,5 +54,23 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 		}
+	}
+
+	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+		NeteaseDayLineDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
+		const time_t tUTCTime = GetUTCTime();
+		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("TEST"));
+		TestSetUTCTime(0);
+
+		const auto pWebData = NeteaseDayLineDataSource.CreateWebDataAfterSucceedReading();
+
+		EXPECT_TRUE(pWebData != nullptr);
+		EXPECT_FALSE(pWebData->IsParsed()) << "网易日线不是json制式，无需解析";
+		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "会设置StockCode";
+		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
+		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
+
+		// restore
+		TestSetUTCTime(tUTCTime);
 	}
 }

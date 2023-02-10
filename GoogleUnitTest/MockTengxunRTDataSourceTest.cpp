@@ -44,10 +44,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
 	}
 
-	TEST_F(CMockTengxunRTDataSourceTest, TestUpdateStatus) {
-		EXPECT_TRUE(TengxunRTDataSource.UpdateStatus()) << "网易实时数据无需更新状态，直接返回";
-	}
-
 	TEST_F(CMockTengxunRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
 		EXPECT_TRUE(TengxunRTDataSource.ParseData(pData)) << "网易实时数据无需解析";

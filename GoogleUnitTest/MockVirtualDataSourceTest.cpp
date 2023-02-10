@@ -2,6 +2,7 @@
 
 #include"afxinet.h"
 
+#include"SystemStatus.h"
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
@@ -78,8 +79,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestReadWebData) {
+	TEST_F(CMockVirtualDataSourceTest, TestReadWebData1) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetErrorCode(12002);
 		m_pVirtualDataSource->SetByteRead(0);
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
@@ -157,6 +159,28 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
+	}
+
+	TEST_F(CMockVirtualDataSourceTest, TestReadWebData5) {
+		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetErrorCode(12002);
+		InSequence seq;
+		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
+		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(2)
+		.WillOnce(Return(1024))
+		.WillOnce(DoAll(Invoke([]() { gl_systemStatus.SetExitingSystem(true); }), Return(1024))); // 第二次读取时系统要求立即退出。
+		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquiringString(strInquiry);
+
+		m_pVirtualDataSource->ReadWebData();
+
+		EXPECT_FALSE(m_pVirtualDataSource->IsWebError()) << "系统要求立即退出时，会重置网络错误代码";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
+
+		// restore
+		gl_systemStatus.SetExitingSystem(false);
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestGetWebData) {

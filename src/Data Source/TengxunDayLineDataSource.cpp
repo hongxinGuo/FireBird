@@ -34,10 +34,6 @@ bool CTengxunDayLineDataSource::Reset(void) {
 	return true;
 }
 
-bool CTengxunDayLineDataSource::UpdateStatus(void) {
-	return true;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 // 抓取日线数据.开始于11:45:01
@@ -162,7 +158,7 @@ void CTengxunDayLineDataSource::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-void CTengxunDayLineDataSource::UpdateStatusAfterSucceed(CWebDataPtr pData) {
+void CTengxunDayLineDataSource::UpdateStatusAfterReading(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

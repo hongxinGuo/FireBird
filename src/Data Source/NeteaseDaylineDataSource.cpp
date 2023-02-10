@@ -20,10 +20,6 @@ bool CNeteaseDayLineDataSource::Reset(void) {
 	return true;
 }
 
-bool CNeteaseDayLineDataSource::UpdateStatus(void) {
-	return true;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 // 抓取日线数据.开始于11:45:01
@@ -89,7 +85,7 @@ void CNeteaseDayLineDataSource::ConfigureSession(void) {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-void CNeteaseDayLineDataSource::UpdateStatusAfterSucceed(CWebDataPtr pData) {
+void CNeteaseDayLineDataSource::UpdateStatusAfterReading(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

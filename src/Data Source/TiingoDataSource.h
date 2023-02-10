@@ -9,7 +9,7 @@ public:
 	~CTiingoDataSource(void) override = default;
 
 	bool Reset(void) override;
-	bool UpdateStatus(void) override;
+	void UpdateStatus(void) override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 

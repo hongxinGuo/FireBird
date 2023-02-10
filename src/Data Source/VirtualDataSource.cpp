@@ -189,12 +189,8 @@ void CVirtualDataSource::Read(void) {
 	counter.start();
 	ReadWebData();
 	if (!IsWebError()) {
-		const auto pWebData = make_shared<CWebData>();
 		VerifyDataLength();
-		SetDataTime(pWebData, GetUTCTime());
-		TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
-		ParseData(pWebData);
-		UpdateStatusAfterSucceed(pWebData);
+		const auto pWebData = CreateWebDataAfterSucceedReading();
 		StoreReceivedData(pWebData);
 		ResetBuffer();
 		ASSERT(IsInquiring());
@@ -234,7 +230,6 @@ void CVirtualDataSource::ReadWebData(void) {
 		UINT lCurrentByteRead;
 		do {
 			if (gl_systemStatus.IsExitingSystem()) {// 当系统退出时，要立即中断此进程，以防止内存泄露。
-				m_dwWebErrorCode = 0;
 				break;
 			}
 			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
@@ -325,6 +320,16 @@ bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 		m_sBuffer.resize(m_sBuffer.size() + lIncreaseSize); // 扩大lSize（默认为1M）数据范围
 	}
 	return true;
+}
+
+CWebDataPtr CVirtualDataSource::CreateWebDataAfterSucceedReading() {
+	const auto pWebData = make_shared<CWebData>();
+	pWebData->SetTime(GetUTCTime());
+	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
+	ParseData(pWebData);
+	UpdateStatusAfterReading(pWebData);
+
+	return pWebData;
 }
 
 void CVirtualDataSource::VerifyDataLength() const {

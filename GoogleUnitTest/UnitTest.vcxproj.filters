@@ -564,6 +564,9 @@
     <ClCompile Include="TiingoDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="TengxunDayLineDataSourceTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

@@ -19,10 +19,6 @@ bool CTengxunRTDataSource::Reset(void) {
 	return true;
 }
 
-bool CTengxunRTDataSource::UpdateStatus(void) {
-	return true;
-}
-
 bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();
 	static long long sllLastTimeTickCount = 0;

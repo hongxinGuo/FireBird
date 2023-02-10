@@ -37,10 +37,7 @@ public:
 	virtual bool GetWebData(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
-	virtual bool UpdateStatus(void) {
-		ASSERT(0);
-		return true;
-	}
+	virtual void UpdateStatus(void) { }
 
 	bool HaveInquiry(void) const {
 		if (m_qProduct.empty()) return false;
@@ -79,7 +76,6 @@ public:
 	bool IsEnable(void) const noexcept { return m_fEnable; }
 	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
 
-	// 以下为VirtualWebInquiry的函数
 	void SetDefaultSessionOption(void);
 
 	virtual void ReadWebData(void); // 网络实际读取函数
@@ -91,8 +87,10 @@ public:
 	void XferReadingToBuffer(long lPosition, UINT uByteRead);
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 
+	virtual CWebDataPtr CreateWebDataAfterSucceedReading();
+
 	void VerifyDataLength() const;
-	void SetDataTime(CWebDataPtr pData, time_t time) noexcept { pData->SetTime(time); }
+	static void SetDataTime(CWebDataPtr pData, time_t time) noexcept { pData->SetTime(time); }
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数\n");
@@ -100,7 +98,6 @@ public:
 	} //解析接收到的数据。继承类必须实现此函数。
 	void ResetBuffer(void) { m_sBuffer.resize(DefaultWebDataBufferSize_); }
 
-	// 唯一的公共接口函数
 	virtual void ProcessInquiryMessage(void);
 
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
@@ -114,7 +111,7 @@ public:
 		TRACE("调用了基类函数ConfigureSession\n");
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
-	virtual void UpdateStatusAfterSucceed(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString();
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }

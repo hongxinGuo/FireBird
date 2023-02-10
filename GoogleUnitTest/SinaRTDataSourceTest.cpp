@@ -38,10 +38,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pSinaRTDataSource->ParseData(pData));
 	}
 
-	TEST_F(CSinaRTDataSourceTest, TestUpdateStatus) {
-		EXPECT_TRUE(gl_pSinaRTDataSource->UpdateStatus());
-	}
-
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {
 		gl_pSinaRTDataSource->SetInquiring(true);
 		EXPECT_FALSE(gl_pSinaRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";

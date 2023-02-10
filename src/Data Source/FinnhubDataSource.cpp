@@ -59,7 +59,7 @@ bool CFinnhubDataSource::Reset(void) {
 	return true;
 }
 
-bool CFinnhubDataSource::UpdateStatus(void) {
+void CFinnhubDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case COMPANY_PROFILE_: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
 		break;
@@ -130,7 +130,6 @@ bool CFinnhubDataSource::UpdateStatus(void) {
 		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

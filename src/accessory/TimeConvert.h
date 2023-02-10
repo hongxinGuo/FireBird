@@ -37,3 +37,4 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 [[nodiscard]] time_t XferToTTime(CString strTime, CString strFormat);
 
 inline time_t GetUTCTime(void) noexcept { return gl_tUTC; }
+inline void TestSetUTCTime(time_t time) noexcept { gl_tUTC = time; }

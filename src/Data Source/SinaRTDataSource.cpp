@@ -29,10 +29,6 @@ bool CSinaRTDataSource::Reset(void) {
 	return true;
 }
 
-bool CSinaRTDataSource::UpdateStatus(void) {
-	return true;
-}
-
 bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount64();
 	if (static long long sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {

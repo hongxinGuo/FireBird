@@ -19,10 +19,6 @@ bool CNeteaseRTDataSource::Reset(void) {
 	return true;
 }
 
-bool CNeteaseRTDataSource::UpdateStatus(void) {
-	return true;
-}
-
 bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const ULONGLONG llTickCount = GetTickCount64();
 	if (static ULONGLONG sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {

@@ -28,7 +28,7 @@ bool CTiingoDataSource::Reset(void) {
 	return true;
 }
 
-bool CTiingoDataSource::UpdateStatus(void) {
+void CTiingoDataSource::UpdateStatus(void) {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
 		m_fUpdateStockSymbol = false;
@@ -85,7 +85,6 @@ bool CTiingoDataSource::UpdateStatus(void) {
 	//ASSERT(0);
 		break;
 	}
-	return true;
 }
 
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
