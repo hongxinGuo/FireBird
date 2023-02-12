@@ -81,7 +81,7 @@ namespace FireBirdTest {
 		void SetUp(void) override {
 			GeneralCheck();
 
-			NeteaseRTData* pData = GetParam();
+			const NeteaseRTData* pData = GetParam();
 			m_pNeteaseWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.GetLength();
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJson());
 		auto it = m_pNeteaseWebRTData->GetJSon()->begin();
-		bool fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
+		ParseOneNeteaseRTData(it, m_pRTData);
 		time_t ttime, ttime2, ttime3, tUTCTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
@@ -146,9 +146,9 @@ namespace FireBirdTest {
 		ttime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = GetUTCTime();
 		gl_pChinaMarket->TEST_SetUTCTime(ttime);
+
 		switch (m_iCount) {
 		case 0:
-			EXPECT_TRUE(fSucceed); // 没有错误
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
@@ -179,13 +179,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime);
 			break;
 		case 1:
-			EXPECT_TRUE(fSucceed); // 第一个数据没有错误
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS"));
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime3);
 			++it;
-			fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
-			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
+			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
@@ -216,20 +214,17 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
 			break;
 		case 2:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_pRTData->GetHigh(), 12480); // 后续部分皆未设置。
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
-			EXPECT_TRUE(fSucceed) << "数据错误，跨过错误数据后继续，故而返回正确"; // 第一个数据错误
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS")); // 股票代码已设置
 			EXPECT_EQ(m_pRTData->GetHigh(), -1) << "此位置出错，使用默认值-1";
 			++it;
-			fSucceed = ParseOneNeteaseRTData(it, m_pRTData);
-			EXPECT_TRUE(fSucceed); // 第二个数据没有错误
+			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
@@ -261,7 +256,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";

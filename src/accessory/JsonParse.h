@@ -20,7 +20,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 
 // 以下四个函数的定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
 [[nodiscard]] bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos = 0, const long lEndPos = 0);// 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
-[[nodiscard]] bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData); // 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
+void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData); // 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData); // 解析一个WebData
 

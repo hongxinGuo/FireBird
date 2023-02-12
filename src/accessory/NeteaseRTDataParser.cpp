@@ -74,8 +74,7 @@ CString XferToCString(const std::string& s);
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
-	bool fSucceed = false;
+void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
 	string strTime, strUpdateTime, strName;
 	CString strSymbol4, str1, strName3;
 	json js = it.value();
@@ -130,15 +129,11 @@ bool ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(&js,_T("bid5")) * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
-		fSucceed = true;
 	}
 	catch (json::exception&) {
 		// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
-		fSucceed = true;
 	}
-
-	return fSucceed;
 }
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
@@ -147,10 +142,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 	for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 		auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
-		if (ParseOneNeteaseRTData(it, pRTData)) {
-			pRTData->CheckNeteaseRTDataActive();
-			pvWebRTData->push_back(pRTData);
-		}
+		ParseOneNeteaseRTData(it, pRTData);
+		pRTData->CheckNeteaseRTDataActive();
+		pvWebRTData->push_back(pRTData);
 	}
 	return pvWebRTData;
 }

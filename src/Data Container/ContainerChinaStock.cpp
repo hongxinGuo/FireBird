@@ -25,8 +25,6 @@ CContainerChinaStock::CContainerChinaStock() {
 void CContainerChinaStock::Reset(void) {
 	CContainerVirtualStock::Reset();
 
-	m_lNeteaseDayLineDataInquiringIndex = 0;
-	m_lTengxunDayLineDataInquiringIndex = 0;
 	m_lNeteaseRTDataInquiringIndex = 0;
 	m_lSinaRTDataInquiringIndex = 0;
 	m_lTengxunRTDataInquiringIndex = 0;
@@ -187,17 +185,18 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	int iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
+	long lIndex = 0;
 
 	while (!fFound && (iCount++ < Size())) {
-		const CChinaStockPtr pStock = GetStock(m_lNeteaseDayLineDataInquiringIndex);
+		const CChinaStockPtr pStock = GetStock(lIndex);
 		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
 			// TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
+			lIndex = GetNextIndex(lIndex);
 		}
 		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
 			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
 			// TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
+			lIndex = GetNextIndex(lIndex);
 		}
 		else { fFound = true; }
 	}
@@ -208,13 +207,12 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 		return _T("");
 	}
 
-	// 找到了需申请日线历史数据的股票（siCounter为索引）
-	const CChinaStockPtr pStock = GetStock(m_lNeteaseDayLineDataInquiringIndex);
+	// 找到了需申请日线历史数据的股票
+	const CChinaStockPtr pStock = GetStock(lIndex);
 	ASSERT(!pStock->IsDayLineNeedSaving());
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	pStock->SetDayLineNeedUpdate(false);
 	strReturn += XferStandardToNetease(pStock->GetSymbol());
-	m_lNeteaseDayLineDataInquiringIndex = GetNextIndex(m_lNeteaseDayLineDataInquiringIndex);
 	return strReturn;
 }
 
@@ -252,17 +250,18 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	int iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
+	long lIndex = 0;
 
 	while (!fFound && (iCount++ < Size())) {
-		const CChinaStockPtr pStock = GetStock(m_lTengxunDayLineDataInquiringIndex);
+		const CChinaStockPtr pStock = GetStock(lIndex);
 		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
 			// TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
+			lIndex = GetNextIndex(lIndex);
 		}
 		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
 			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
 			// TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
-			m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
+			lIndex = GetNextIndex(lIndex);
 		}
 		else { fFound = true; }
 	}
@@ -273,13 +272,12 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 		return _T("");
 	}
 
-	// 找到了需申请日线历史数据的股票（siCounter为索引）
-	const CChinaStockPtr pStock = GetStock(m_lTengxunDayLineDataInquiringIndex);
+	// 找到了需申请日线历史数据的股票
+	const CChinaStockPtr pStock = GetStock(lIndex);
 	ASSERT(!pStock->IsDayLineNeedSaving());
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	pStock->SetDayLineNeedUpdate(false);
 	strReturn += XferStandardToTengxun(pStock->GetSymbol());
-	m_lTengxunDayLineDataInquiringIndex = GetNextIndex(m_lTengxunDayLineDataInquiringIndex);
 	return strReturn;
 }
 

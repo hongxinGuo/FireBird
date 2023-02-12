@@ -68,8 +68,6 @@ public:
 
 	[[nodiscard]] double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
-	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseDayLineDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
 	void SetNeteaseRTDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
 	[[nodiscard]] long GetNeteaseRTDataInquiringIndex(void) const noexcept { return m_lNeteaseRTDataInquiringIndex; }
 	void SetSinaRTDataInquiringIndex(const long lIndex) noexcept { m_lSinaRTDataInquiringIndex = lIndex; }
@@ -86,8 +84,6 @@ private:
 protected:
 	long m_lLoadedStock; // 本次装载的股票总数
 
-	long m_lNeteaseDayLineDataInquiringIndex;
-	long m_lTengxunDayLineDataInquiringIndex;
 	long m_lNeteaseRTDataInquiringIndex;
 	long m_lSinaRTDataInquiringIndex;
 	long m_lTengxunRTDataInquiringIndex;

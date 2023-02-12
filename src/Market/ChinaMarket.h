@@ -359,9 +359,6 @@ public:
 	void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetTengxunRTDataInquiringIndex(lIndex); }
 	long GetTengxunRTDataInquiringIndex(void) const noexcept { return m_containerChinaStock.GetTengxunRTDataInquiringIndex(); }
 
-	void SetNeteaseDayLineDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetNeteaseDayLineDataInquiringIndex(lIndex); }
-	long GetNeteaseDayLineDataInquiringIndex(void) const noexcept { return m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(); }
-
 	void ClearDayLineNeedUpdateStatus(void) const { m_containerChinaStock.ClearDayLineNeedUpdateStatus(); }
 
 	void SetRecordRTData(const bool fFlag) noexcept { m_fSaveRTData = fFlag; }

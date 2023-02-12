@@ -10,7 +10,6 @@
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChosenStock.h"
 
-#include"TengxunRTDataSource.h"
 #include"NeteaseDayLineDataSource.h"
 
 #include"GeneralCheck.h"
@@ -161,12 +160,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
-		CString str;
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
-		long lDate;
 
-		gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
 		pStock->SetDayLineNeedUpdate(false);
 		pStock = gl_pChinaMarket->GetStock(1);
 		EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
@@ -174,9 +170,9 @@ namespace FireBirdTest {
 		pStock = gl_pChinaMarket->GetStock(2);
 		EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate());
-		lDate = pStock->GetDayLineEndDate();
+		const long lDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-		str = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
+		CString str = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
 		EXPECT_STREQ(str, _T("1000001"));
 		pStock = gl_pChinaMarket->GetStock(1);
 		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
@@ -184,7 +180,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("1000002"));
 
 		gl_pChinaMarket->GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
-		gl_pChinaMarket->SetNeteaseDayLineDataInquiringIndex(0);
 	}
 
 	TEST_F(CChinaMarketTest, TestGetMinLineOffset) {
@@ -481,7 +476,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket1) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
@@ -507,7 +502,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 0; // 星期日, 休息日
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
@@ -524,7 +519,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket3) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->SetSystemReady(true);
@@ -547,7 +542,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket4) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->SetSystemReady(true);
@@ -573,7 +568,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarketAgain) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
@@ -641,7 +636,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckMarketOpen) {
-		tm tm_;
+		tm tm_{};
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckMarketOpen(92800));

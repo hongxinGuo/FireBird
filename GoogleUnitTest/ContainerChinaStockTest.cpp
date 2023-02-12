@@ -45,12 +45,6 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
 	}
 
-	TEST_F(CContainerChinaStockTest, TestGetNeteaseDayLineDataInquiringIndex) {
-		EXPECT_EQ(m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(), 0);
-		m_containerChinaStock.SetNeteaseDayLineDataInquiringIndex(100);
-		EXPECT_EQ(m_containerChinaStock.GetNeteaseDayLineDataInquiringIndex(), 100);
-	}
-
 	TEST_F(CContainerChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
 		EXPECT_EQ(m_containerChinaStock.GetNeteaseRTDataInquiringIndex(), 0);
 		m_containerChinaStock.SetNeteaseRTDataInquiringIndex(100);
@@ -96,9 +90,7 @@ namespace FireBirdTest {
 		m_containerChinaStock.Delete(pStock);
 	}
 
-	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedUpdate) {
-	}
+	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedUpdate) { }
 
-	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedMaintain) {
-	}
+	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedMaintain) { }
 }
