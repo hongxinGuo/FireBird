@@ -20,7 +20,7 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) {
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
-	Disconnect();
+	CVirtualWebSocket::Disconnect();
 }
 
 void CVirtualWebSocket::Reset(void) {
@@ -32,12 +32,9 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Disconnect();
-		while (!IsClosed()) Sleep(1);
-		ASSERT(IsClosed());
 		Reset();
 		Connect();
 		while (!IsOpen()) Sleep(1);
-		ASSERT(IsOpen());
 		Send(m_vSymbol);
 	}
 	catch (exception& e) {
@@ -49,8 +46,7 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
 }
 
 bool CVirtualWebSocket::IsSymbol(string sSymbol) {
-	if (!m_mapSymbol.contains(sSymbol)) {
-		// ÐÂ·ûºÅ£¿
+	if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
 		return false;
 	}
 	else return true;
@@ -58,8 +54,7 @@ bool CVirtualWebSocket::IsSymbol(string sSymbol) {
 
 void CVirtualWebSocket::AppendSymbol(vectorString vSymbol) {
 	for (auto& sSymbol : vSymbol) {
-		if (!m_mapSymbol.contains(sSymbol)) {
-			// ÐÂ·ûºÅ£¿
+		if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
 			AddSymbol(sSymbol);
 		}
 	}
@@ -88,7 +83,7 @@ void CVirtualWebSocket::ClearSymbol(void) {
 bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
-	ASSERT(m_webSocket.getReadyState() == ix::ReadyState::Closed);
+	ASSERT(GetState() == ix::ReadyState::Closed);
 	TLSOption.tls = true;
 	m_webSocket.setTLSOptions(TLSOption);
 
@@ -105,15 +100,16 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 	m_webSocket.setOnMessageCallback(callback);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
-	m_webSocket.start();
+	StartWebSocket();
 
 	return true;
 }
 
 bool CVirtualWebSocket::Disconnect(void) {
-	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) { m_webSocket.stop(); }
-	while (m_webSocket.getReadyState() != ix::ReadyState::Closed) Sleep(1);
-
+	if (GetState() != ix::ReadyState::Closed) {
+		StopWebSocket();
+	}
+	while (GetState() != ix::ReadyState::Closed) Sleep(1);
 	m_iSubscriptionId = 0;
 
 	return true;
@@ -136,7 +132,9 @@ bool CVirtualWebSocket::CreateThreadDisconnectWebSocket(void) {
 }
 
 bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
-	if (m_webSocket.getReadyState() != ix::ReadyState::Closed) { m_webSocket.stop(); }
+	if (GetState() != ix::ReadyState::Closed) {
+		StopWebSocket();
+	}
 	m_iSubscriptionId = 0;
 
 	return true;

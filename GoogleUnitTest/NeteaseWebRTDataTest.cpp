@@ -128,7 +128,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
-		EXPECT_TRUE(m_pNeteaseWebRTData->CreateNlohmannJson());
+		EXPECT_TRUE(m_pNeteaseWebRTData->CreateJson());
 		auto it = m_pNeteaseWebRTData->GetJSon()->begin();
 		ParseOneNeteaseRTData(it, m_pRTData);
 		time_t ttime, ttime2, ttime3, tUTCTime;

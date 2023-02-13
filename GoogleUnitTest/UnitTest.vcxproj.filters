@@ -139,6 +139,9 @@
     <Filter Include="Mock class\Data Source">
       <UniqueIdentifier>{82e2d096-ccab-4633-8089-a29284861b2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock class\WebSocket">
+      <UniqueIdentifier>{827eae04-a51b-40ea-95e7-e913b9681254}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -567,6 +570,9 @@
     <ClCompile Include="TengxunDayLineDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="MockVirtualWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -634,6 +640,9 @@
     </ClInclude>
     <ClInclude Include="MockFinnhubDataSource.h">
       <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockVirtualWebSocket.h">
+      <Filter>Mock class\WebSocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvCountry = nullptr;
 		}
@@ -136,7 +136,7 @@ namespace FireBirdTest {
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}

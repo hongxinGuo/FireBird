@@ -132,7 +132,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage1) {
 		webData.Test_SetBuffer_("{\"error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateNlohmannJson());
+		EXPECT_TRUE(webData.CreateJson());
 		EXPECT_TRUE(webData.IsParsed());
 
 		EXPECT_TRUE(webData.CheckNoRightToAccess());
@@ -140,13 +140,13 @@ namespace FireBirdTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage2) {
 		webData.Test_SetBuffer_("{\"error2\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateNlohmannJson());
+		EXPECT_TRUE(webData.CreateJson());
 		EXPECT_TRUE(webData.IsParsed());
 
 		EXPECT_FALSE(webData.CheckNoRightToAccess());
 
 		webData.Test_SetBuffer_("{\"error\":\"You don't have access to this resour\"}");
-		EXPECT_TRUE(webData.CreateNlohmannJson());
+		EXPECT_TRUE(webData.CreateJson());
 		EXPECT_TRUE(webData.IsParsed());
 
 		EXPECT_FALSE(webData.CheckNoRightToAccess());
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWebDataTest, TestIsErrorMessage3) {
 		webData.Test_SetBuffer_("{\"no error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateNlohmannJson());
+		EXPECT_TRUE(webData.CreateJson());
 		EXPECT_TRUE(webData.IsParsed());
 
 		EXPECT_FALSE(webData.CheckNoRightToAccess());

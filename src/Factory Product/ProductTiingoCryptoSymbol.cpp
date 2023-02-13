@@ -67,7 +67,7 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebD
 	CString str, strNumber;
 	CTiingoCryptoSymbolPtr pTiingoCrypto = nullptr;
 
-	pWebData->CreateNlohmannJson(0, 0);
+	pWebData->CreateJson(0, 0);
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvTiingoCrypto;
 	if (pWebData->IsVoidJson()) return pvTiingoCrypto;

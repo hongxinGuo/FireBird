@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, jsonGetChild1) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"child\":[{\"period\":\"2021-03-31\", \"v\" : -2.7551}, { \"period\":\"2020-12-31\",\"v\" : -0.5305 }]}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		json js = jsonGetChild(pjs.get(), _T("child"));
 		EXPECT_TRUE(js.is_structured());
 		const auto it = js.begin();
@@ -37,7 +37,7 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"child\":[{\"period\":\"2021-03-31\", \"v\" : -2.7551}, { \"period\":\"2020-12-31\",\"v\" : -0.5305 }]}")};
 		CString str = _T("child");
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		json js = jsonGetChild(pjs.get(), str);
 		EXPECT_TRUE(js.is_structured());
 		const auto it = js.begin();
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetString) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		string str = jsonGetString(pjs.get(), _T("period"));
 		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
 		string str2 = jsonGetString(pjs.get(), _T("v"));
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetDouble) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		double d1 = jsonGetDouble(pjs.get(), _T("period"));
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
 		double d2 = jsonGetDouble(pjs.get(), _T("v"));
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetInt) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		int d1 = jsonGetInt(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		int d2 = jsonGetInt(pjs.get(), _T("v"));
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLong) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		long d1 = jsonGetLong(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		long d2 = jsonGetLong(pjs.get(), _T("v"));
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong) {
 		const auto pjs = make_shared<json>();
 		string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		long long d1 = jsonGetLongLong(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
 		long long d2 = jsonGetLongLong(pjs.get(), _T("v"));
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetString2) {
 		const auto pjs = make_shared<json>();
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		string str1 = jsonGetString(it, _T("period"));
 		EXPECT_STREQ(str1.c_str(), _T("2021-03-31"));
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetDouble2) {
 		const auto pjs = make_shared<json>();
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		double d1 = jsonGetDouble(it, _T("period"));
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetInt2) {
 		const auto pjs = make_shared<json>();
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		int d1 = jsonGetInt(it, _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLong2) {
 		const auto pjs = make_shared<json>();
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		long d1 = jsonGetLong(it, _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
@@ -147,7 +147,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong2) {
 		const auto pjs = make_shared<json>();
 		string s{_T("[{\"period\":\"2021-03-31\", \"v\" : -2.7551},{\"period\":\"2021-04-31\", \"v\" : -3.7551}]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const long long d1 = jsonGetLongLong(it, _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetString3) {
 		const auto pjs = make_shared<json>();
 		const string s{_T("[\"2021-03-31\", 2021]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const string str1 = jsonGetString(it);
 		EXPECT_STREQ(str1.c_str(), _T("2021-03-31"));
@@ -171,7 +171,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetInt3) {
 		const auto pjs = make_shared<json>();
 		const string s{_T("[1, \"2\"]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const int i1 = jsonGetInt(it);
 		EXPECT_EQ(i1, 1);
@@ -183,7 +183,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLong3) {
 		const auto pjs = make_shared<json>();
 		const string s{_T("[1, \"2\"]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const long i1 = jsonGetLong(it);
 		EXPECT_EQ(i1, 1);
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetLongLong3) {
 		const auto pjs = make_shared<json>();
 		const string s{_T("[1, \"2\"]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const long long i1 = jsonGetLongLong(it);
 		EXPECT_EQ(i1, 1);
@@ -207,7 +207,7 @@ namespace FireBirdTest {
 	TEST_F(jsonGetValueTest, TestjsonGetDouble3) {
 		const auto pjs = make_shared<json>();
 		const string s{_T("[1.1, \"2.1\"]")};
-		EXPECT_TRUE(NlohmannCreateJson(pjs.get(), s, 0, 0));
+		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const double i1 = jsonGetDouble(it);
 		EXPECT_DOUBLE_EQ(i1, 1.1);

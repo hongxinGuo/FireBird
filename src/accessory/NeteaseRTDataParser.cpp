@@ -38,15 +38,24 @@ using std::shared_ptr;
 using std::make_shared;
 using std::string;
 
-//using namespace std;
-
-bool NlohmannCreateJson(json* pjs, const std::string& s, const long lBeginPos, const long lEndPos) {
+bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos, const long lEndPos) {
 	try {
-		*pjs = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}
 	catch (json::parse_error&) {
-		//gl_systemMessage.PushErrorMessage("nlohmann json parse error");
-		pjs = nullptr;
+		js.clear();
+		return false;
+	}
+	return true;
+}
+
+bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const long lEndPos) {
+	string s = str.GetBuffer();
+	try {
+		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	}
+	catch (json::parse_error&) {
+		js.clear();
 		return false;
 	}
 	return true;
@@ -175,7 +184,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr
 	}
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
+		if (!pData->CreateJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
 			gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
 			fProcess = false;
 		}

@@ -66,7 +66,7 @@ namespace FireBirdTest {
 			m_pStock->SetProfileUpdateDate(19700101);
 			m_pStock->SetCity(_T(""));
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket.get());
 			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));

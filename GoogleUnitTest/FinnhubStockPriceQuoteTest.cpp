@@ -77,7 +77,7 @@ namespace FireBirdTest {
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket.get());
 			m_finnhubStockPriceQuote.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));

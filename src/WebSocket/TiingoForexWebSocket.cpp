@@ -55,8 +55,7 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/fx"); }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {
-}
+CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
@@ -145,7 +144,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (json js; NlohmannCreateJson(&js, *pData)) {
+		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			string sDatetime;
 			string sMessageType;
 			char chType;

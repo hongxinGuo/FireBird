@@ -24,12 +24,22 @@ class CVirtualWebSocket {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
 	virtual ~CVirtualWebSocket();
+	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 	void Reset(void);
 
-	virtual bool Connect(void) = 0;
-	virtual bool Send(vector<string> vSymbol) = 0;
+	virtual bool Connect(void) {
+		ASSERT(false);
+		return false;
+	}
+
+	bool Disconnect(void);
+
+	virtual bool Send(vector<string> vSymbol) {
+		ASSERT(FALSE);
+		return false;
+	}
+
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
-	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 
 	bool IsSymbol(string sSymbol);
 	void AppendSymbol(vectorString vSymbol);
@@ -39,11 +49,14 @@ public:
 	size_t GetSymbolSize(void) const noexcept { return m_vSymbol.size(); }
 
 	// 状态
-	ix::ReadyState GetState(void) const { return m_webSocket.getReadyState(); }
-	bool IsClosed(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Closed; }
-	bool IsOpen(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Open; }
-	bool IsClosing(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Closing; }
-	bool IsConnecting(void) const { return m_webSocket.getReadyState() == ix::ReadyState::Connecting; }
+	virtual ix::ReadyState GetState(void) const { return m_webSocket.getReadyState(); }
+	bool IsClosed(void) const { return GetState() == ix::ReadyState::Closed; }
+	bool IsOpen(void) const { return GetState() == ix::ReadyState::Open; }
+	bool IsClosing(void) const { return GetState() == ix::ReadyState::Closing; }
+	bool IsConnecting(void) const { return GetState() == ix::ReadyState::Connecting; }
+
+	virtual void StartWebSocket() { m_webSocket.start(); }
+	virtual void StopWebSocket() { m_webSocket.stop(); }
 
 	int GetStatusCode() const noexcept { return m_iStatusCode; }
 	void SetStatusCode(int iCode) noexcept { m_iStatusCode = iCode; }
@@ -71,7 +84,6 @@ public:
 
 	// 实现
 	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool Disconnect(void);
 	bool CreateThreadDisconnectWebSocket(void);
 	// 用于系统退出时。
 	bool DisconnectWithoutWaitingSucceed(void); // 用于程序运行中途时切断网络链接，此时无需等待。

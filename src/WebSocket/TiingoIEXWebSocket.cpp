@@ -137,7 +137,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	CTiingoIEXSocketPtr pIEXData = nullptr;
 
 	try {
-		if (json js; NlohmannCreateJson(&js, *pData)) {
+		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			int i = 0;
 			string sMessageType;
 			string sDatetime;

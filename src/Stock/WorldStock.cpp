@@ -1,3 +1,4 @@
+#include "WorldStock.h"
 #include"pch.h"
 
 #include"CallableFunction.h"
@@ -12,6 +13,7 @@
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
+#include "JsonParse.h"
 
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"
@@ -22,8 +24,7 @@ CWorldStock::CWorldStock() : CVirtualStock() {
 	CWorldStock::Reset();
 }
 
-CWorldStock::~CWorldStock() {
-}
+CWorldStock::~CWorldStock() {}
 
 void CWorldStock::Reset(void) {
 	CVirtualStock::Reset();
@@ -118,6 +119,7 @@ void CWorldStock::ResetAllUpdateDate(void) {
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
+	bool bSucceed;
 	m_strSymbol = setWorldStock.m_Symbol;
 	m_strExchangeCode = setWorldStock.m_ExchangeCode;
 	m_strDescription = setWorldStock.m_Description;
@@ -153,12 +155,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strLogo = setWorldStock.m_Logo;
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
 	if (setWorldStock.m_Peer.GetLength() > 2) {
-		try {
-			string sPeer = setWorldStock.m_Peer.GetBuffer();
-			m_jsonPeer = json::parse(sPeer);
-		}
-		catch (json::exception&) {
-		}
+		bSucceed = CreateJsonWithNlohmann(m_jsonPeer, setWorldStock.m_Peer);
 	}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
@@ -166,12 +163,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 		ResetAllUpdateDate();
 	}
 	else {
-		string sUpdateDate = setWorldStock.m_UpdateDate.GetBuffer();
-		try {
-			m_jsonUpdateDate = json::parse(sUpdateDate);
-		}
-		catch (json::exception&) {
-		}
+		bSucceed = CreateJsonWithNlohmann(m_jsonUpdateDate, setWorldStock.m_UpdateDate);
 	}
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
 
@@ -390,13 +382,12 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 		pInsiderTransaction = m_vInsiderTransaction.at(i);
 		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-			[pInsiderTransaction](CInsiderTransactionPtr& p)
-				{
-				return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-					&& (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-					&& (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-					&& (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-				}) == vInsiderTransaction.end()) {
+		            [pInsiderTransaction](CInsiderTransactionPtr& p) {
+			            return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+				            && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+				            && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+				            && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+		            }) == vInsiderTransaction.end()) {
 			// 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
 			pInsiderTransaction->Append(setSaveInsiderTransaction);
 		}
@@ -435,10 +426,9 @@ void CWorldStock::SaveInsiderSentiment(void) {
 	for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 		pInsiderSentiment = m_vInsiderSentiment.at(i);
 		if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-			[pInsiderSentiment](CInsiderSentimentPtr& p)
-				{
-				return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-				}) == vInsiderSentiment.end()) {
+		            [pInsiderSentiment](CInsiderSentimentPtr& p) {
+			            return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+		            }) == vInsiderSentiment.end()) {
 			// 如果报告日期为新的数据，则存储该数据
 			pInsiderSentiment->Append(setSaveInsiderSentiment);
 		}

@@ -147,7 +147,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 	string sTickers;
 
 	try {
-		if (json js; NlohmannCreateJson(&js, *pData)) {
+		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
 			string sDatetime;

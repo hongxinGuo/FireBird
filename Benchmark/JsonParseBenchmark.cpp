@@ -221,7 +221,7 @@ std::string sData101 = _T("{\
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		auto f = NlohmannCreateJson(&j, sData101);
+		auto f = CreateJsonWithNlohmann(j, sData101);
 	}
 }
 
@@ -242,22 +242,24 @@ public:
 		sNeteaseRTDataForPTree = sNeteaseRTData;
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
+
+		sWorldStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override { }
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
 	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
+	string sWorldStockUpdateParameter;
 };
 
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		auto f = NlohmannCreateJson(&j, sUSExchangeStockCode);
+		auto f = CreateJsonWithNlohmann(j, sUSExchangeStockCode);
 	}
 }
 
@@ -266,7 +268,16 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::Stat
 	json j;
 	bool f = false;
 	for (auto _ : state) {
-		f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
+		f = CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
+	}
+}
+
+// 解析WorldStock update parameter，nlohmann json用时50微秒（debug), 7微秒（release)。
+BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(benchmark::State& state) {
+	json j;
+	bool f = false;
+	for (auto _ : state) {
+		f = CreateJsonWithNlohmann(j, sWorldStockUpdateParameter);
 	}
 }
 
@@ -274,7 +285,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::Stat
 json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
 	for (auto _ : state) {
-		auto f = NlohmannCreateJson(&j, sNeteaseRTData, 21, 2);
+		auto f = CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
@@ -283,7 +294,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 json jTengxunDayLine;
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
 	for (auto _ : state) {
-		auto f = NlohmannCreateJson(&jTengxunDayLine, sTengxunDayLine, 0, 0);
+		auto f = CreateJsonWithNlohmann(jTengxunDayLine, sTengxunDayLine, 0, 0);
 		auto vData = ParseTengxunDayLine(&jTengxunDayLine, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
 	}
 }
@@ -297,8 +308,7 @@ public:
 		catch (json::parse_error&) { fDone = false; }
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override { }
 
 	string s;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
@@ -307,7 +317,11 @@ public:
 };
 
 // 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) { for (auto _ : state) { shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js); } }
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
+	for (auto _ : state) {
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js);
+	}
+}
 
 class CTengxunRTData : public benchmark::Fixture {
 public:
@@ -323,8 +337,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override { }
 
 	string s;
 	CWebDataPtr pWebData;
@@ -352,8 +365,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override { }
 
 	string s;
 	CWebDataPtr pWebData;

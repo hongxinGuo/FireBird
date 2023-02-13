@@ -67,7 +67,7 @@ namespace FireBirdTest {
 			m_pStock->SetSaveInsiderTransaction(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyInsiderTransaction.SetMarket(gl_pWorldMarket.get());
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderTransaction = nullptr;
 		}
@@ -185,7 +185,7 @@ namespace FireBirdTest {
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderTransaction = nullptr;
 		}

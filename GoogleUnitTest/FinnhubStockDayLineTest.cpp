@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateNlohmannJson();
+			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket.get());

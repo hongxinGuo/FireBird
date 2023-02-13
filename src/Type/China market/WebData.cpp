@@ -61,8 +61,8 @@ bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
 	}
 }
 
-bool CWebData::CreateNlohmannJson(long lBeginPos, long lEndPos) {
-	m_fParsed = ::NlohmannCreateJson(&m_js, m_sDataBuffer, lBeginPos, lEndPos);
+bool CWebData::CreateJson(long lBeginPos, long lEndPos) {
+	m_fParsed = ::CreateJsonWithNlohmann(m_js, m_sDataBuffer, lBeginPos, lEndPos);
 	SetJSonContentType(true);
 
 	return m_fParsed;

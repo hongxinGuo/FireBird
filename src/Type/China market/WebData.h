@@ -82,7 +82,7 @@ public:
 	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 
 	// 使用Nlohmann json将数据转换为json格式。
-	bool CreateNlohmannJson(long lBeginPos = 0, long lEndPos = 0);
+	bool CreateJson(long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon(void) { return &m_js; }
 
 	// 测试用函数

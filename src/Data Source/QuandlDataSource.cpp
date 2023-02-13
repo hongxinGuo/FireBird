@@ -113,5 +113,5 @@ void CQuandlDataSource::ConfigureSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CQuandlDataSource::ParseData(CWebDataPtr pWebData) {
-	return pWebData->CreateNlohmannJson(0, 0);
+	return pWebData->CreateJson(0, 0);
 }

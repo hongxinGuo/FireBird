@@ -87,7 +87,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebData
 	CString strNumber;
 	long year, month, day;
 
-	pWebData->CreateNlohmannJson(0, 0);
+	pWebData->CreateJson(0, 0);
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return pvTiingoStock;
 	if (pWebData->IsVoidJson()) return pvTiingoStock;

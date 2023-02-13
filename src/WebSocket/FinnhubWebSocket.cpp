@@ -123,7 +123,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	string code;
 
 	try {
-		if (json pt; NlohmannCreateJson(&pt, *pData)) {
+		if (json pt; CreateJsonWithNlohmann(pt, *pData)) {
 			sType = jsonGetString(&pt, _T("type"));
 			if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 				json js2;

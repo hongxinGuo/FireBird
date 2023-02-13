@@ -95,6 +95,7 @@
     <ClCompile Include="MockTengxunRTDataSourceTest.cpp" />
     <ClCompile Include="MockTiingoDataSourceTest.cpp" />
     <ClCompile Include="MockVirtualDataSourceTest.cpp" />
+    <ClCompile Include="MockVirtualWebSocketTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="NeteaseRTDataParserTest.cpp" />
     <ClCompile Include="ProductDummyTest.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="MockTengxunRTDataSource.h" />
     <ClInclude Include="MockTiingoDataSource.h" />
     <ClInclude Include="MockVirtualDataSource.h" />
+    <ClInclude Include="MockVirtualWebSocket.h" />
     <ClInclude Include="MockWorldMarket.h" />
     <ClInclude Include="MockWorldStock.h" />
   </ItemGroup>

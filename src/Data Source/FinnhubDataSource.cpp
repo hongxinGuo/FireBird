@@ -779,5 +779,5 @@ void CFinnhubDataSource::ConfigureSession(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::ParseData(CWebDataPtr pWebData) {
-	return pWebData->CreateNlohmannJson(0, 0);
+	return pWebData->CreateJson(0, 0);
 }

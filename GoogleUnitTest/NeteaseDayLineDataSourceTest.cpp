@@ -31,6 +31,21 @@ namespace FireBirdTest {
 		CNeteaseDayLineDataSource NeteaseDayLineDataSource;
 	};
 
+	TEST_F(CNeteaseDayLineDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquirySuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquiryToken(), _T(""));
+	}
+
+	TEST_F(CNeteaseDayLineDataSourceTest, TestSetDownLoadingStockCode) {
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T(""));
+		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("1000001"));
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("1000001"));
+		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("0600001"));
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
+		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
+		EXPECT_STREQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
+	};
 	TEST_F(CNeteaseDayLineDataSourceTest, TestParseData) {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		EXPECT_TRUE(NeteaseDayLineDataSource.ParseData(pData));

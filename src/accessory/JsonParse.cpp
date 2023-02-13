@@ -88,7 +88,9 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	gl_systemMessage.PushErrorMessage(str);
 }
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) { gl_systemMessage.PushErrorMessage(strPrefix + strWhat); }
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {
+	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -375,7 +377,7 @@ CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
 	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
-		if (!pData->CreateNlohmannJson()) {
+		if (!pData->CreateJson()) {
 			const CString strMessage = pData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
 			gl_systemMessage.PushErrorMessage(strMessage);
 			fProcess = false;
