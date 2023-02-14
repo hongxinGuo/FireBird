@@ -426,16 +426,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1).RetiresOnSaturation();
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1).RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1)
+		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1)
+		.RetiresOnSaturation();
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1).RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1)
+		.RetiresOnSaturation();
 		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), static_cast<UINT>(25));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine2) {
 		gl_pMockChinaMarket->CalculateTime();
-		long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetMarketDate());
+		const long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetMarketDate());
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine(lCurrentMonday)).Times(1);
 		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
 		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);

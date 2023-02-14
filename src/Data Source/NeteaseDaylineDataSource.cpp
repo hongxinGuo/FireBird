@@ -72,11 +72,6 @@ void CNeteaseDayLineDataSource::CreateInquiryMessageFromCurrentProduct(void) {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
-bool CNeteaseDayLineDataSource::PrepareNextInquiringString2(void) {
-	m_strInquiry = m_strInquiryFunction;
-	return true;
-}
-
 void CNeteaseDayLineDataSource::ConfigureSession(void) {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 正常情况下Netease日线数据接收时间不超过1秒。

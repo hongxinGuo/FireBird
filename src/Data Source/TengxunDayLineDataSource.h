@@ -15,7 +15,7 @@ public:
 	bool ParseData(CWebDataPtr pWebData) override;
 	void UpdateStatusAfterReading(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
-	bool InquireDayLine(void);
+	virtual bool InquireDayLine(void);
 	vector<CVirtualWebProductPtr> CreateProduct(CChinaStockPtr pStock);
 
 	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }

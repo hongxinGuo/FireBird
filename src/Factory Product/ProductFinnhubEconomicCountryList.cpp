@@ -26,7 +26,11 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
-	for (const auto& pCountry : *pvCountry) { if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry); } }
+	for (const auto& pCountry : *pvCountry) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCountry(pCountry)) {
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCountry(pCountry);
+		}
+	}
 
 	return true;
 }

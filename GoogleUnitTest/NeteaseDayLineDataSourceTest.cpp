@@ -59,6 +59,8 @@ namespace FireBirdTest {
 
 		const auto pProduct = NeteaseDayLineDataSource.GetCurrentProduct();
 		EXPECT_TRUE(pProduct != nullptr);
+		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseDayLine"));
+
 		const CString str = pProduct->GetInquiryFunction();
 		EXPECT_STREQ(str.Left(54), _T("http://quotes.money.163.com/service/chddata.html?code="));
 		EXPECT_STREQ(str.Right(81), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));

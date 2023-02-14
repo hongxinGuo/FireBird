@@ -42,36 +42,25 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	FinnhubWebData finnhubWebData92(
-		2, _T(""),
-		_T(
-			"{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第一个数据缺乏CodeNo
-	FinnhubWebData finnhubWebData93(
-		3, _T(""),
-		_T(
-			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData93(3, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第二个数据缺乏Code2
-	FinnhubWebData finnhubWebData94(
-		4, _T(""),
-		_T(
-			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData94(4, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 数据缺乏symbol
-	FinnhubWebData finnhubWebData95(
-		5, _T(""),
-		_T(
-			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData95(5, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	// 空数据
+	FinnhubWebData finnhubWebData96(6, _T(""), _T("{}"));
+	// 无权访问数据
+	FinnhubWebData finnhubWebData97(7, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData100(
-		10, _T(""),
-		_T(
-			"[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
 	class ParseFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -94,7 +83,7 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCountryList1, ParseFinnhubCountryListTest,
 	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-		                         &finnhubWebData95, &finnhubWebData100));
+		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
 
 	TEST_P(ParseFinnhubCountryListTest, TestParseFinnhubCountryList0) {
 		m_pvCountry = m_finnhubEconomicCountryList.ParseFinnhubCountryList(m_pWebData);
@@ -114,6 +103,14 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvCountry->size(), 1);
 			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
 			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
+			break;
+		case 6: // 空数据
+			EXPECT_TRUE(m_pvCountry->empty());
+			EXPECT_TRUE(m_finnhubEconomicCountryList.IsVoidData());
+			break;
+		case 7: // 无权访问数据
+			EXPECT_TRUE(m_pvCountry->empty());
+			EXPECT_TRUE(m_finnhubEconomicCountryList.IsNoRightToAccess());
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
@@ -144,7 +141,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			if (gl_pWorldMarket->IsCountry(_T("Zero"))) {
-				auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));
+				const auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));
 				gl_pWorldMarket->DeleteCountry(pCountry);
 			}
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
@@ -159,7 +156,7 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
 	                         testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
-		                         &finnhubWebData95, &finnhubWebData100));
+		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		const auto l = gl_pWorldMarket->GetTotalCountry();
@@ -179,6 +176,14 @@ namespace FireBirdTest {
 		case 5: // 第二个数据缺CodeNo
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), l + 1);
+			break;
+		case 6: // 空数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_finnhubEconomicCountryList.IsVoidData());
+			break;
+		case 7: // 无权访问数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_finnhubEconomicCountryList.IsNoRightToAccess());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

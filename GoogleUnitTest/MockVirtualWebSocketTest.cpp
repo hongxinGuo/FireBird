@@ -43,8 +43,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(3)
 		.WillOnce(Return(ix::ReadyState::Open)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		.WillOnce(Return(ix::ReadyState::Closed)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.WillOnce(Return(ix::ReadyState::Open)) // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
@@ -61,8 +60,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(3)
 		.WillOnce(Return(ix::ReadyState::Open)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		.WillOnce(Return(ix::ReadyState::Closed)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.WillOnce(Return(ix::ReadyState::Open)) // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Open)); // 调用Connect()后要等待ix链接上，其状态变为Open。链接需要时间。
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(vSymbol)).Times(1)
@@ -79,8 +77,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(2)
 		.WillOnce(Return(ix::ReadyState::Open)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.WillOnce(Return(ix::ReadyState::Closed)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Closed)); // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1)
 		.WillOnce(DoAll(Throw(e), Return(false)));
@@ -96,8 +93,7 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AAPL"));
 
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Open)); // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1)
 		.WillOnce(Throw(e));
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(0);
@@ -107,10 +103,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestDisconnect1) {
-		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(2)
-		.WillOnce(Return(ix::ReadyState::Open))
-		.WillOnce(Return(ix::ReadyState::Closed)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(3)
+		.WillOnce(Return(ix::ReadyState::Open))	// 状态不是Closed时，调用StopWebSocket函数。
+		.WillOnce(Return(ix::ReadyState::Open)) // 当状态不是Closed时，函数会等待，直到状态变成Closed。
+		.WillOnce(Return(ix::ReadyState::Closed)); // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1); // 当webSocket状态不是Closed时，需要执行关闭任务
 
 		EXPECT_TRUE(gl_pMockVirtualWebSocket->Disconnect());
@@ -119,8 +115,7 @@ namespace FireBirdTest {
 	TEST_F(CMockVirtualWebSocketTest, TestDisconnect2) {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(2)
 		.WillOnce(Return(ix::ReadyState::Closed)) // 
-		.WillOnce(Return(ix::ReadyState::Closed)) // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Closed)); // 调用Disconnect()后要等到ix关闭链接，其状态变为Closed。关闭需要时间
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(0); // 当webSocket状态为Closed时，无需执行关闭任务
 
 		EXPECT_TRUE(gl_pMockVirtualWebSocket->Disconnect());
@@ -128,8 +123,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockVirtualWebSocketTest, TestDisconnectWithoutWaitingSucceed1) {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open))
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Open));
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1);
 
 		EXPECT_TRUE(gl_pMockVirtualWebSocket->DisconnectWithoutWaitingSucceed());
@@ -137,8 +131,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockVirtualWebSocketTest, TestDisconnectWithoutWaitingSucceed2) {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Closed))
-		.RetiresOnSaturation();
+		.WillOnce(Return(ix::ReadyState::Closed));
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(0);
 
 		EXPECT_TRUE(gl_pMockVirtualWebSocket->DisconnectWithoutWaitingSucceed());

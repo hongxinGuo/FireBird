@@ -52,7 +52,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool CTengxunDayLineDataSource::InquireDayLine(void) {
