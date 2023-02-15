@@ -25,9 +25,6 @@ public:
 	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void SaveSymbol(CVirtualSetStockSymbol& setStockSymbol);
 
-public:
-	void UpdateRealTimeData(CVirtualStockPtr pStock);
-
 	CString GetDescription(void) const noexcept { return m_strDescription; }
 	void SetDescription(const CString& strDescription) noexcept { m_strDescription = strDescription; }
 	CString GetExchangeCode(void) const noexcept { return m_strExchangeCode; }

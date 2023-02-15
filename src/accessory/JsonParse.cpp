@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 #include "ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "JsonGetValue.h"
-#include "SaveAndLoad.h"
+
 using namespace std;
 
 wstring to_wide_string(const std::string& input) {
@@ -134,20 +134,12 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
-	int iTotal = 0;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	// 截取实时数据时用。为了测试解析速度
-	if (static int i = 0; i < pWebData->GetBufferLength()) {
-		string s = pWebData->GetDataBuffer();
-		//SaveToFile(_T("C:\\FireBird\\SinaRTData.dat"), s.c_str());
-		i = pWebData->GetBufferLength();
-	}
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsProcessedAllTheData()) {
 		auto pRTData = make_shared<CWebRTData>();
 		if (pRTData->ReadSinaData(pWebData)) {
-			iTotal++;
 			pvWebRTData->push_back(pRTData);
 		}
 		else {
@@ -254,19 +246,10 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
-	static int i = 0;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	// 截取实时数据时用。为了测试解析速度
-	if (i <= pWebData->GetBufferLength()) {
-		string s = pWebData->GetDataBuffer();
-		//SaveToFile(_T("C:\\FireBird\\TengxunRTData.dat"), s.c_str());
-		i = pWebData->GetBufferLength();
-	}
-
 	pWebData->ResetCurrentPos();
-	if (!IsTengxunRTDataInvalid(*pWebData)) {
-		// 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsProcessedAllTheData()) {
 			auto pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {

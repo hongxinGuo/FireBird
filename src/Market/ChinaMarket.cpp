@@ -430,7 +430,9 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet) {
-	if (fUsingTotalStockSet) { return GetNextSinaStockInquiringMiddleStrFromTotalStockSet(lTotalNumber); }
+	if (fUsingTotalStockSet) {
+		return GetNextSinaStockInquiringMiddleStrFromTotalStockSet(lTotalNumber);
+	}
 	return GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 }
 

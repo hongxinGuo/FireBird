@@ -2,6 +2,7 @@
 
 #include"ProductSinaRT.h"
 #include"ChinaMarket.h"
+#include "ChinaStockCodeConverter.h"
 
 #include"JsonParse.h"
 
@@ -11,7 +12,13 @@ CProductSinaRT::CProductSinaRT() {
 }
 
 CString CProductSinaRT::CreateMessage(void) {
-	return m_strInquiryFunction; // 新浪实时数据的申请字符串由CSinaRTWebInquiry类完成，本Product无需动作。
+	// 申请下一批次股票实时数据
+	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+	// 开市时使用今日活跃股票池
+	const CString strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), gl_pChinaMarket->IsCheckingActiveStock());
+	const CString strSinaStockCode = strStocks.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
+	return m_strInquiryFunction + strStocks;
 }
 
 bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {

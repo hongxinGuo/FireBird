@@ -41,7 +41,6 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
 			else {
-				//m_pWebInquiry->SetCurrentInquiryTime(llTickCount - sllLastTimeTickCount);
 				sllLastTimeTickCount = llTickCount;
 			}
 		}
@@ -56,14 +55,6 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 bool CSinaRTDataSource::InquireRTData(const long) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductSinaRT>();
-		const CString strMessage = _T("https://hq.sinajs.cn/list=");
-		// 申请下一批次股票实时数据
-		// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-		// 开市时使用今日活跃股票池
-		const CString strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock());
-		const CString strSinaStockCode = strStocks.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
-		gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
-		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;

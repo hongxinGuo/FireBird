@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
@@ -35,7 +36,23 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductSinaRTTest, TestCreateMessage) {
-		EXPECT_STREQ(sinaRT.CreateMessage(), _T("https://hq.sinajs.cn/list=")) << "新浪实时数据的申请字符串由CSinaRTWebInquiry类完成，本Product无需动作";
+		const CString strInquiry = sinaRT.CreateMessage();
+		EXPECT_STREQ(strInquiry.Left(26), _T("https://hq.sinajs.cn/list="));
+		EXPECT_GT(strInquiry.GetLength(), 26) << "无需检查随后的股票代码制式";
+	}
+
+	TEST_F(CProductSinaRTTest, TestParseAndStoreWebData) {
+		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\nvar hq_str_sh600001=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\n");
+		const CWebDataPtr pData = make_shared<CWebData>();
+		pData->Test_SetBuffer_(strData);
+		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
+
+		sinaRT.ParseAndStoreWebData(pData);
+
+		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 2);
+
+		// 恢复原状
+		while (gl_pChinaMarket->SinaRTSize() > 0) gl_pChinaMarket->PopSinaRT();
 	}
 
 	TEST_F(CProductSinaRTTest, TestParseSinaRT) {

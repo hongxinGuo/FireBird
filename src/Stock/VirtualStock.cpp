@@ -65,12 +65,3 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_DayLineEndDate = m_lDayLineEndDate;
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
 }
-
-void CVirtualStock::UpdateRealTimeData(CVirtualStockPtr pStock) {
-	m_TransactionTime = pStock->m_TransactionTime;
-	m_lLastClose = pStock->m_lLastClose;
-	m_lOpen = pStock->m_lOpen;
-	m_lHigh = pStock->m_lHigh;
-	m_lLow = pStock->m_lLow;
-	m_lNew = pStock->m_lNew;
-}
