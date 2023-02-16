@@ -371,7 +371,6 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { m_ttNewestTransactionTime = pRTData->GetTransactionTime(); }
 		const auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
-			// todo 这里在发行版运行时出现错误，原因待查。
 			if (pRTData->IsValidTime(14)) {
 				pStock->SetActive(true);
 				pStock->SetDayLineLoaded(false);

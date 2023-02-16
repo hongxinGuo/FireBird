@@ -21,7 +21,7 @@ public:
 	[[nodiscard]] long GetActiveStockSize(void) const;
 	[[nodiscard]] long GetLoadedStockSize(void) const noexcept { return m_lLoadedStock; }
 
-	bool IsAStock(const CString& strStockCode) const;
+	static bool IsAStock(const CString& strStockCode);
 	bool IsAStock(const CChinaStockPtr pStock) const { return IsAStock(pStock->GetSymbol()); }
 
 	CChinaStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
@@ -66,7 +66,7 @@ public:
 	bool Choice10RSStrong1StockSet(void);
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-	[[nodiscard]] double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
+	[[nodiscard]] static double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
 	void SetNeteaseRTDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
 	[[nodiscard]] long GetNeteaseRTDataInquiringIndex(void) const noexcept { return m_lNeteaseRTDataInquiringIndex; }
@@ -79,7 +79,6 @@ public:
 private:
 	bool DeleteDayLineBasicInfo(long lDate);
 	bool DeleteDayLineExtendInfo(long lDate);
-	bool DeleteTodayTempDB(void);
 
 protected:
 	long m_lLoadedStock; // 本次装载的股票总数

@@ -22,8 +22,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
@@ -33,6 +32,26 @@ namespace FireBirdTest {
 	protected:
 		CProductFinnhub finnhubProduct;
 	};
+
+	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess1) {
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString str = _T("{\"error2\":\"You don't have access to this resource.\"}");
+		pWebData->Test_SetBuffer_(str);
+		pWebData->CreateJson();
+		EXPECT_TRUE(pWebData->IsParsed());
+
+		EXPECT_FALSE(finnhubProduct.CheckNoRightToAccess(pWebData));
+	}
+
+	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString str = _T("{\"error\":\"You don't have access to this resource.\"}");
+		pWebData->Test_SetBuffer_(str);
+		pWebData->CreateJson();
+		EXPECT_TRUE(pWebData->IsParsed());
+
+		EXPECT_TRUE(finnhubProduct.CheckNoRightToAccess(pWebData));
+	}
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {
 		finnhubProduct.SetProductType(STOCK_SYMBOLS_);

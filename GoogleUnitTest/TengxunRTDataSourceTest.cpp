@@ -2,13 +2,11 @@
 
 #include"GeneralCheck.h"
 
-#include"TengxunRTDataSource.h"
+#include"tengxunRTDataSource.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
 #include "ProductTengxunRT.h"
-
-#include"MockTengxunRTWebInquiry.h"
 
 using namespace testing;
 
@@ -17,39 +15,73 @@ namespace FireBirdTest {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			ASSERT_THAT(gl_pTengxunRTWebInquiry, NotNull());
 		}
 
 		static void TearDownTestSuite(void) {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			// clearUp
-			gl_pTengxunRTDataSource->SetInquiring(false);
 
 			GeneralCheck();
 		}
 
 	protected:
+		CTengxunRTDataSource tengxunRTDataSource;
 	};
 
+	TEST_F(CTengxunRTDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(tengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
+		EXPECT_STREQ(tengxunRTDataSource.GetInquiryToken(), _T(""));
+		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
+	}
+
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData1) {
-		gl_pTengxunRTDataSource->SetInquiring(true);
-		EXPECT_FALSE(gl_pTengxunRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";
+		tengxunRTDataSource.SetInquiring(true);
+
+		EXPECT_FALSE(tengxunRTDataSource.InquireRTData(0));
+
+		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData2) {
-		gl_pTengxunRTDataSource->SetInquiring(false);
-		EXPECT_TRUE(gl_pTengxunRTDataSource->InquireRTData(0));
+		tengxunRTDataSource.SetInquiring(false);
 
-		EXPECT_TRUE(gl_pTengxunRTDataSource->IsInquiring());
-		EXPECT_EQ(gl_pTengxunRTDataSource->GetInquiryQueueSize(), 1);
-		auto pProduct = gl_pTengxunRTDataSource->GetInquiry();
+		EXPECT_TRUE(tengxunRTDataSource.InquireRTData(0));
+
+		EXPECT_TRUE(tengxunRTDataSource.IsInquiring());
+		EXPECT_TRUE(tengxunRTDataSource.HaveInquiry());
+		EXPECT_EQ(tengxunRTDataSource.GetInquiryQueueSize(), 1);
+		tengxunRTDataSource.GetCurrentProduct();
+		auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
+	}
+
+	TEST_F(CTengxunRTDataSourceTest, TestParseData) {
+		const auto pData = make_shared<CWebData>();
+		EXPECT_TRUE(tengxunRTDataSource.ParseData(pData)) << "网易实时数据无需解析";
+	}
+
+	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
+		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
+		CString str = _T("v_pv_none_match=\"1\";\n");
+		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
+		pWebDataReceived->SetBufferLength(str.GetLength());
+		pWebDataReceived->ResetCurrentPos();
+
+		EXPECT_TRUE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
+		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
+
+		str = _T("v_pv_none_mtch=\"1\";\n");
+		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
+		pWebDataReceived->SetBufferLength(str.GetLength());
+		pWebDataReceived->ResetCurrentPos();
+
+		EXPECT_FALSE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
+		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {

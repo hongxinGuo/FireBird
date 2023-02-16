@@ -22,12 +22,12 @@ public:
 	bool UpdateProfileDB(void);
 
 	bool UpdateBasicFinancialDB(void);
-	bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
-	bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
+	static bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
+	static bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
 	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
-	void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
+	static void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
 
-	bool CheckStockSymbol(CWorldStockPtr pStock);
+	static bool CheckStockSymbol(CWorldStockPtr pStock);
 
 	bool IsUpdateCompanyNewsDB(void);
 	bool IsUpdateBasicFinancialDB(void);

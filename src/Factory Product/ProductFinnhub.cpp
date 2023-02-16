@@ -4,7 +4,6 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
-#include<exception>
 using std::out_of_range;
 
 bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {

@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
@@ -35,12 +36,29 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTengxunRTTest, TestCreateMessage) {
-		EXPECT_STREQ(tengxunRT.CreateMessage(), _T("http://qt.gtimg.cn/q=")) << "腾讯实时数据的申请字符串由CTengxunRTWebInquiry类完成，本Product无需动作";
+		const CString strInquiry = tengxunRT.CreateMessage();
+		EXPECT_STREQ(strInquiry.Left(21), _T("http://qt.gtimg.cn/q="));
+		EXPECT_GT(strInquiry.GetLength(), 21) << "无需检查随后的股票代码制式";
+	}
+
+	TEST_F(CProductTengxunRTTest, TestParseTengxunRTData1) {
+		// 正确的两个数据
+		const CString strData = _T("v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\nv_sh600001=\"1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n");
+		const CWebDataPtr pData = make_shared<CWebData>();
+		pData->Test_SetBuffer_(strData);
+		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
+
+		tengxunRT.ParseAndStoreWebData(pData);
+
+		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 2);
+
+		//恢复原状
+		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
 	}
 
 	TEST_F(CProductTengxunRTTest, TestParseTengxunRT) {
 		vector<CWebRTDataPtr> vWebRTData;
 		const auto pWebData = make_shared<CWebData>();
-		EXPECT_FALSE(tengxunRT.ParseTengxunRT(vWebRTData, pWebData)) << "新浪实时数据非json制式，无需解析";
+		EXPECT_FALSE(tengxunRT.ParseTengxunRT(vWebRTData, pWebData));
 	}
 }

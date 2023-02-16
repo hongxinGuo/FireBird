@@ -49,6 +49,10 @@ namespace FireBirdTest {
 	FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 	// 格式不对
 	FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	// 空数据
+	FinnhubWebData finnhubWebData74(4, _T(""), _T("{}"));
+	// 无权访问数据
+	FinnhubWebData finnhubWebData75(5, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
 	FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
@@ -56,7 +60,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -78,7 +82,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexExchange1, ParseFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		                         &finnhubWebData80));
+		                         &finnhubWebData74, &finnhubWebData75, &finnhubWebData80));
 
 	TEST_P(ParseFinnhubForexExchangeTest, TestParseFinnhubForexExchange0) {
 		m_pvExchange = m_finnhubForexExchange.ParseFinnhubForexExchange(m_pWebData);
@@ -87,6 +91,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 3: // 缺乏字符串
+			EXPECT_EQ(m_pvExchange->size(), 0);
+			break;
+		case 4:
+			EXPECT_EQ(m_pvExchange->size(), 0);
+			break;
+		case 5:
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
@@ -128,16 +138,22 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
-		                         &finnhubWebData80));
+		                         &finnhubWebData74, &finnhubWebData75, &finnhubWebData80));
 
 	TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10);
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10);
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			break;
+		case 4:
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			break;
+		case 5:
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
 			break;
 		case 10:
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "加入了new exchange这个新的交易所";

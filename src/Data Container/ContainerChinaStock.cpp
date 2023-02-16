@@ -46,7 +46,7 @@ long CContainerChinaStock::GetActiveStockSize(void) const {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::IsAStock(const CString& strStockCode) const {
+bool CContainerChinaStock::IsAStock(const CString& strStockCode) {
 	const CString strSymbol = GetStockSymbol(strStockCode);
 	if (IsShanghaiExchange(strStockCode)) { if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) { if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) { return true; } } }
 	else if (IsShenzhenExchange(strStockCode)) { if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) { if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) { return true; } } }
@@ -417,7 +417,7 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 		thread thread1(ThreadBuildWeekLineOfStock, pStock.get(), lStartDate);
 		thread1.detach();
 	}
-	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(1000); }
+	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
 	gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));
 
 	return true;
@@ -650,7 +650,13 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	CSetDayLineTodaySaved setDayLineTemp;
 
-	DeleteTodayTempDB();
+	setDayLineTemp.Open();
+	setDayLineTemp.m_pDatabase->BeginTrans();
+	while (!setDayLineTemp.IsEOF()) {
+		setDayLineTemp.Delete();
+		setDayLineTemp.MoveNext();
+	}
+	setDayLineTemp.m_pDatabase->CommitTrans();
 
 	// 存储今日生成的数据于DayLineToday表中。
 	setDayLineTemp.m_strFilter = _T("[ID] = 1");
@@ -673,28 +679,6 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
-
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////
-//
-// 此函数使用硬编码，不允许测试
-//
-////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::DeleteTodayTempDB(void) {
-	CDatabase database;
-
-	if (!gl_systemStatus.IsWorkingMode()) {
-		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-		exit(1); //退出系统
-	}
-
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-	database.BeginTrans();
-	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"));
-	database.CommitTrans();
-	database.Close();
 
 	return true;
 }

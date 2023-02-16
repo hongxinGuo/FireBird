@@ -38,17 +38,6 @@ namespace FireBirdTest {
 		CTengxunRTDataSource TengxunRTDataSource;
 	};
 
-	TEST_F(CMockTengxunRTDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(TengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
-		EXPECT_STREQ(TengxunRTDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
-	}
-
-	TEST_F(CMockTengxunRTDataSourceTest, TestParseData) {
-		const auto pData = make_shared<CWebData>();
-		EXPECT_TRUE(TengxunRTDataSource.ParseData(pData)) << "网易实时数据无需解析";
-	}
-
 	TEST_F(CMockTengxunRTDataSourceTest, TestGetWebData) {
 		m_pMockTengxunRTDataSource->SetInquiringWebData(false);
 		gl_pChinaMarket->SetSystemReady(true);
@@ -56,24 +45,5 @@ namespace FireBirdTest {
 		.Times(1);
 		m_pMockTengxunRTDataSource->ProcessInquiryMessage();
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
-	}
-
-	TEST_F(CMockTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
-		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-		CString str = _T("v_pv_none_match=\"1\";\n");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-
-		EXPECT_TRUE(TengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
-		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
-
-		str = _T("v_pv_none_mtch=\"1\";\n");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
-		pWebDataReceived->SetBufferLength(str.GetLength());
-		pWebDataReceived->ResetCurrentPos();
-
-		EXPECT_FALSE(TengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
-		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 	}
 }

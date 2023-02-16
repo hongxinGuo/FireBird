@@ -36,7 +36,6 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWorldStockTest, TestResetAllUpdateDate) {
-		CWorldStock stock;
 		stock.ResetAllUpdateDate();
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
@@ -98,7 +97,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestGetNew) {
-		CWorldStock stock;
 		EXPECT_EQ(stock.GetNew(), 0);
 		stock.SetNew(10101010);
 		EXPECT_EQ(stock.GetNew(), 10101010);
@@ -111,7 +109,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestGetAmount) {
-		CWorldStock stock;
 		EXPECT_EQ(stock.GetAmount(), 0);
 		stock.SetAmount(1010101010101010);
 		EXPECT_EQ(stock.GetAmount(), 1010101010101010);
@@ -1117,7 +1114,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB2) {
-		CWorldStock stock;
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
@@ -1181,7 +1177,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestIsNeedUpdateProfile) {
-		CWorldStock stock;
 		auto pTiingoStock = make_shared<CTiingoStock>();
 
 		stock.SetSymbol(_T("asdjfkajsfkj"));
@@ -1334,7 +1329,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
-		CWorldStock stock;
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 
 		stock.SetUpdateInsiderTransaction(false);
@@ -1364,7 +1358,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestCheckInsiderSentimentStatus) {
-		CWorldStock stock;
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 
 		stock.SetUpdateInsiderSentiment(false);
