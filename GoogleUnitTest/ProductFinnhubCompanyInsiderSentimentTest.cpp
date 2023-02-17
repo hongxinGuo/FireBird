@@ -36,11 +36,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
-		long lCurrentDate = gl_pWorldMarket->GetMarketDate();
+		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
 		char buffer[100];
-		CString strCurrentDate;
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
-		strCurrentDate = buffer;
+		const CString strCurrentDate = buffer;
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
@@ -53,15 +52,15 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	FinnhubWebData finnhubWebData141(1, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 data项
-	FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T(
+	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
 		                                 "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 Symbol项
-	FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
+	FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T(
 		                                 "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 空数据
-	FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
+	FinnhubWebData finnhubWebData145(5, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
 
 	class ProcessFinnhubInsiderSentimentTest : public TestWithParam<FinnhubWebData*> {
 	protected:
@@ -100,22 +99,28 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderSentiment1, ProcessFinnhubInsiderSentimentTest,
-	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			break;
-		case 2:
+		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			break;
+		case 2: // 正确
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
@@ -123,7 +128,13 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			break;
-		case 4: // 空数据
+		case 4:
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			break;
+		case 5: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
@@ -138,7 +149,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -146,14 +157,17 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
+			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
 
 		void TearDown(void) override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			m_pStock->SetUpdateProfileDB(false);
 
 			GeneralCheck();
-			m_pStock->SetUpdateProfileDB(false);
 		}
 
 	public:
@@ -165,27 +179,41 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest,
-	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
-		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
+		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
-			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_STREQ(m_pvInsiderSentiment->at(1)->m_strSymbol, _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
-			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);
-			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "此序列按交易日期顺序排列";
+		case 0: // 空数据
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
-		case 2: // 缺乏data项
-			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
-		case 3: // 缺乏Symbol
-			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+		case 2: // 正确
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
-		case 4: //空数据
-			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+		case 3: // 缺乏data项
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			break;
+		case 4: // 缺乏Symbol
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			break;
+		case 5: //空数据
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		default:
 			break;
@@ -196,7 +224,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -204,6 +232,9 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
+			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
 
 		void TearDown(void) override {
@@ -223,12 +254,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderSentiment1, ParseFinnhubInsiderSentimentTest2,
-	                         testing::Values(&finnhubWebData141, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData145, &finnhubWebData142, &finnhubWebData143, &finnhubWebData144));
 
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 0: // 空数据
+			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
+			break;
+		case 2: // 正确
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
 			EXPECT_STREQ(m_pvInsiderSentiment->at(1)->m_strSymbol, _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
@@ -236,13 +273,13 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);
 			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "此序列按交易日期顺序排列";
 			break;
-		case 2: // 缺乏data项
+		case 3: // 缺乏data项
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 3: // 缺乏Symbol
+		case 4: // 缺乏Symbol
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 4: //空数据
+		case 5: //空数据
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
 		default:

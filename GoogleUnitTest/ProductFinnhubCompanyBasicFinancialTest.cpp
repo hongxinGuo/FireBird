@@ -42,7 +42,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(true);
 	}
 
-	FinnhubWebData finnhubWebData1001(1, _T("AAPL"),
+	FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
 	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
@@ -241,7 +241,7 @@ namespace FireBirdTest {
 }"));
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
-	FinnhubWebData finnhubWebData1002(2, _T("BVDRF"),
+	FinnhubWebData finnhubWebData1003(3, _T("BVDRF"),
 	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
@@ -440,7 +440,7 @@ namespace FireBirdTest {
 }"));
 
 	// 有些股票只有部分数据
-	FinnhubWebData finnhubWebData1003(3, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"all\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"all\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 
 	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
@@ -480,13 +480,19 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
 		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 0: // 空数据
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
@@ -496,12 +502,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_period, 20201231);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_value, 0.7634660421545667);
 			break;
-		case 2: //
+		case 3: //
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			break;
-		case 3:
+		case 4:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("OTSCS"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
@@ -548,13 +554,25 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData1001, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
 		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1:
+		case 0: // 空数据
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
+			break;
+		case 2:
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
@@ -563,7 +581,7 @@ namespace FireBirdTest {
 
 			EXPECT_THAT(0, 0);
 			break;
-		case 2: // ADR
+		case 3: // ADR
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
@@ -571,7 +589,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			break;
-		case 3: // 部分数据
+		case 4: // 部分数据
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());

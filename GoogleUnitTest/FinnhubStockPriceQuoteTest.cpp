@@ -66,7 +66,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -106,12 +106,18 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockQuote1,
 	                         ProcessFinnhubStockQuoteTest,
-	                         testing::Values(&finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData53, &finnhubWebData54, &finnhubWebData55, &finnhubWebData56,
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
 		const bool fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(fSucceed);
+			break;
 		case 3: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			break;

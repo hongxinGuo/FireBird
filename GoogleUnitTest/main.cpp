@@ -60,6 +60,11 @@ static char THIS_FILE[] = __FILE__;
 #include"EnvironmentSetUp.h"
 using namespace FireBirdTest;
 
+// 空数据
+FinnhubWebData finnhubWebData0(0, _T("AAPL"), _T("{}"));
+// 无权访问数据
+FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"error\":\"You don't have access to this resource.\"}"));
+
 int main(int argc, char* argv[]) {
 	InitGoogleTest(&argc, argv);
 	// gtest takes ownership of the TestEnvironment ptr - we don't delete it.

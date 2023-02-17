@@ -26,10 +26,11 @@ CString CProductFinnhubCompanyProfileConcise::CreateMessage(void) {
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-
+	bool fSucceed = false;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
-	if (ParseFinnhubStockProfileConcise(pWebData, pStock)) {
+	fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
+	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
 		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return true;

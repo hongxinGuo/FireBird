@@ -21,7 +21,7 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	bool IsVoidJson(const CWebDataPtr& pWebData) {
+	bool CheckVoidJson(const CWebDataPtr& pWebData) {
 		if (pWebData->IsVoidJson()) {
 			m_iReceivedDataStatus = VOID_DATA_;
 			return true;
@@ -81,6 +81,9 @@ public:
 	CString m_strSymbol;
 	CWebDataPtr m_pData;
 };
+
+extern FinnhubWebData finnhubWebData0;
+extern FinnhubWebData finnhubWebData1;
 
 // 此结构只用于测试中
 struct TiingoWebData {

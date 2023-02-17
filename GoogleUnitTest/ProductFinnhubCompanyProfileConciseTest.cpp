@@ -58,7 +58,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -87,13 +87,25 @@ namespace FireBirdTest {
 		CProductFinnhubCompanyProfileConcise m_FinnhubCompanyProfileConcise;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData12,
-		                         &finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockProfileConcise1, ProcessFinnhubStockProfileConciseTest, testing::Values(&finnhubWebData0,
+		                         &finnhubWebData1, &finnhubWebData12,&finnhubWebData13, &finnhubWebData14, &finnhubWebData20));
 
 	TEST_P(ProcessFinnhubStockProfileConciseTest, TestProcessStockProfileConcise0) {
 		bool fSucceed = false;
 		fSucceed = m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());

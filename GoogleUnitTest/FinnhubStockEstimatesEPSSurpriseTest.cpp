@@ -87,12 +87,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEPSSurprise1, ParseFinnhubEPSSurpriseTest,
-	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ParseFinnhubEPSSurpriseTest, TestParseFinnhubEPSSurprise0) {
 		m_pvEPSSurprise = m_finnhubStockEstimatesEPSSurprise.ParseFinnhubEPSSurprise(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvEPSSurprise->size(), 0);
 			break;
@@ -133,7 +139,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -160,13 +166,27 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise, ProcessFinnhubEPSSurpriseTest,
-	                         testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		bool fSucceed = m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
+			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);

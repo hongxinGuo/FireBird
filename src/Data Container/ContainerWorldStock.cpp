@@ -125,7 +125,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
-		if (iStockNeedUpdate > 1000) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
+		if (iStockNeedUpdate > 500) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
 		setWorldStock.m_strSort = _T("[Symbol]");
 		setWorldStock.Open();
 		setWorldStock.m_pDatabase->BeginTrans();

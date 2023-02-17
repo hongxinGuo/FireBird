@@ -84,12 +84,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubEconomicCalendar1, ParseFinnhubEconomicCalendarTest,
-	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
 		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ParseFinnhubEconomicCalendarTest, TestParseFinnhubEconomicCalendar10) {
 		m_pvEconomicCalendar = m_finnhubEconomicCalendar.ParseFinnhubEconomicCalendar(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 0);
 			break;
@@ -147,13 +153,19 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar, ProcessFinnhubEconomicCalendarTest,
-	                         testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
 		                         &finnhubWebData115, &finnhubWebData120));
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		const bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_TRUE(fSucceed);
+			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			break;
