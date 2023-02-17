@@ -1,3 +1,4 @@
+#include "ContainerChinaStock.h"
 #include"pch.h"
 
 #include"ConvertToString.h"
@@ -642,26 +643,18 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //////////////////////////////////////////////////////////////////////////////////
 //
 // 将当日处理好的数据储存于数据库中，以备万一系统崩溃时重新装入。
-// 似乎应该以一个定时工作线程的形式存在。
 //
-// 研究之。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	CSetDayLineTodaySaved setDayLineTemp;
 
+	DeleteTodayTempDB();
+
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
-	while (!setDayLineTemp.IsEOF()) {
-		setDayLineTemp.Delete();
-		setDayLineTemp.MoveNext();
-	}
-	setDayLineTemp.m_pDatabase->CommitTrans();
 
 	// 存储今日生成的数据于DayLineToday表中。
-	setDayLineTemp.m_strFilter = _T("[ID] = 1");
-	setDayLineTemp.Open();
-	setDayLineTemp.m_pDatabase->BeginTrans();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (!pStock->IsTodayDataActive()) {
@@ -679,6 +672,31 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////
+//
+// 此函数使用硬编码，不允许测试
+//
+// 使用原始的Delete数据模式，删除today表需要几秒钟的时间。
+//
+//
+////////////////////////////////////////////////////////////////////
+bool CContainerChinaStock::DeleteTodayTempDB(void) {
+	CDatabase database;
+
+	if (!gl_systemStatus.IsWorkingMode()) {
+		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+		exit(1); //退出系统
+	}
+
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"));
+	database.CommitTrans();
+	database.Close();
 
 	return true;
 }

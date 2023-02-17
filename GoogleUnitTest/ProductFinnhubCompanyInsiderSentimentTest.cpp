@@ -153,6 +153,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
@@ -166,6 +167,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
+			m_pStock->SetSaveInsiderSentiment(false);
 
 			GeneralCheck();
 		}
@@ -186,11 +188,13 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
@@ -202,16 +206,19 @@ namespace FireBirdTest {
 			break;
 		case 3: // 缺乏data项
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // 缺乏Symbol
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 5: //空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
